@@ -156,11 +156,11 @@ To get started, let's write a test that verifies we can log into our application
     use App\User;
     use Tests\DuskTestCase;
     use Laravel\Dusk\Chrome;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
 
     class ExampleTest extends DuskTestCase
     {
-        use RefreshDatabase;
+        use DatabaseMigrations;
 
         /**
          * A basic browser test example.
@@ -266,7 +266,12 @@ Dusk provides a variety of methods for interacting with forms and input elements
 
 Note that, although the method accepts one if necessary, we are not required to pass a CSS selector into the `type` method. If a CSS selector is not provided, Dusk will search for an input field with the given `name` attribute. Finally, Dusk will attempt to find a `textarea` with the given `name` attribute.
 
-You may "clear" the value of an input using the `clear` method:
+To append text to a field without clearing its content, you may use the `append` method:
+
+    $browser->type('tags', 'foo')
+            ->append('tags', ', bar, baz');
+
+You may clear the value of an input using the `clear` method:
 
     $browser->clear('email');
 

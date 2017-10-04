@@ -73,6 +73,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <div class="collection-method-list" markdown="1">
 
+[\__](#method-__)
 [camel_case](#method-camel-case)
 [class_basename](#method-class-basename)
 [e](#method-e)
@@ -129,14 +130,18 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [blank](#method-blank)
 [broadcast](#method-broadcast)
 [cache](#method-cache)
+[class_uses_recursive](#method-class-uses-recursive)
 [collect](#method-collect)
 [config](#method-config)
 [cookie](#method-cookie)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
+[decrypt](#method-decrypt)
 [dispatch](#method-dispatch)
 [dispatch_now](#method-dispatch-now)
+[dump](#method-dump)
+[encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
@@ -160,6 +165,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [today](#method-today)
 [throw_if](#method-throw-if)
 [throw_unless](#method-throw-unless)
+[trait_uses_recursive](#method-trait-uses-recursive)
 [transform](#method-transform)
 [validator](#method-validator)
 [value](#method-value)
@@ -181,12 +187,12 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 </style>
 
 <a name="arrays"></a>
-## Arrays
+## Arrays & Objects
 
 <a name="method-array-add"></a>
 #### `array_add()` {#collection-method .first-collection-method}
 
-The `array_add` function adds a given key / value pair to the array if the given key doesn't already exist in the array:
+The `array_add` function adds a given key / value pair to an array if the given key doesn't already exist in the array:
 
     $array = array_add(['name' => 'Desk'], 'price', 100);
 
@@ -204,7 +210,7 @@ The `array_collapse` function collapses an array of arrays into a single array:
 <a name="method-array-divide"></a>
 #### `array_divide()` {#collection-method}
 
-The `array_divide` function returns two arrays, one containing the keys, and the other containing the values of the original array:
+The `array_divide` function returns two arrays, one containing the keys, and the other containing the values of the given array:
 
     list($keys, $values) = array_divide(['name' => 'Desk']);
 
@@ -217,18 +223,20 @@ The `array_divide` function returns two arrays, one containing the keys, and the
 
 The `array_dot` function flattens a multi-dimensional array into a single level array that uses "dot" notation to indicate depth:
 
-    $array = array_dot(['foo' => ['bar' => 'baz']]);
+    $array = ['products' => ['desk' => ['price' => 100]]];
 
-    // ['foo.bar' => 'baz'];
+    $flattened = array_dot($array);
+
+    // ['products.desk.price' => 100]
 
 <a name="method-array-except"></a>
 #### `array_except()` {#collection-method}
 
-The `array_except` function removes the given key / value pairs from the array:
+The `array_except` function removes the given key / value pairs from an array:
 
     $array = ['name' => 'Desk', 'price' => 100];
 
-    $array = array_except($array, ['price']);
+    $filtered = array_except($array, ['price']);
 
     // ['name' => 'Desk']
 
@@ -239,7 +247,7 @@ The `array_first` function returns the first element of an array passing a given
 
     $array = [100, 200, 300];
 
-    $value = array_first($array, function ($value, $key) {
+    $first = array_first($array, function ($value, $key) {
         return $value >= 150;
     });
 
@@ -247,18 +255,18 @@ The `array_first` function returns the first element of an array passing a given
 
 A default value may also be passed as the third parameter to the method. This value will be returned if no value passes the truth test:
 
-    $value = array_first($array, $callback, $default);
+    $first = array_first($array, $callback, $default);
 
 <a name="method-array-flatten"></a>
 #### `array_flatten()` {#collection-method}
 
-The `array_flatten` function will flatten a multi-dimensional array into a single level.
+The `array_flatten` function flattens a multi-dimensional array into a single level array:
 
     $array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
 
-    $array = array_flatten($array);
+    $flattened = array_flatten($array);
 
-    // ['Joe', 'PHP', 'Ruby'];
+    // ['Joe', 'PHP', 'Ruby']
 
 <a name="method-array-forget"></a>
 #### `array_forget()` {#collection-method}
@@ -278,26 +286,28 @@ The `array_get` function retrieves a value from a deeply nested array using "dot
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    $value = array_get($array, 'products.desk');
+    $price = array_get($array, 'products.desk.price');
 
-    // ['price' => 100]
+    // 100
 
 The `array_get` function also accepts a default value, which will be returned if the specific key is not found:
 
-    $value = array_get($array, 'names.john', 'default');
+    $discount = array_get($array, 'products.desk.discount', 0);
+
+    // 0
 
 <a name="method-array-has"></a>
 #### `array_has()` {#collection-method}
 
-The `array_has` function checks that a given item or items exists in an array using "dot" notation:
+The `array_has` function checks whether a given item or items exists in an array using "dot" notation:
 
-    $array = ['product' => ['name' => 'desk', 'price' => 100]];
+    $array = ['product' => ['name' => 'Desk', 'price' => 100]];
 
-    $hasItem = array_has($array, 'product.name');
+    $contains = array_has($array, 'product.name');
 
     // true
 
-    $hasItems = array_has($array, ['product.price', 'product.discount']);
+    $contains = array_has($array, ['product.price', 'product.discount']);
 
     // false
 
@@ -308,7 +318,7 @@ The `array_last` function returns the last element of an array passing a given t
 
     $array = [100, 200, 300, 110];
 
-    $value = array_last($array, function ($value, $key) {
+    $last = array_last($array, function ($value, $key) {
         return $value >= 150;
     });
 
@@ -316,38 +326,38 @@ The `array_last` function returns the last element of an array passing a given t
 
 A default value may be passed as the third argument to the method. This value will be returned if no value passes the truth test:
 
-    $value = array_last($array, $callback, $default);
+    $last = array_last($array, $callback, $default);
 
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
 
-The `array_only` function will return only the specified key / value pairs from the given array:
+The `array_only` function returns only the specified key / value pairs from the given array:
 
     $array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 
-    $array = array_only($array, ['name', 'price']);
+    $slice = array_only($array, ['name', 'price']);
 
     // ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-pluck"></a>
 #### `array_pluck()` {#collection-method}
 
-The `array_pluck` function will pluck a list of the given key / value pairs from the array:
+The `array_pluck` function retrieves all of the values for a given key from an array:
 
     $array = [
         ['developer' => ['id' => 1, 'name' => 'Taylor']],
         ['developer' => ['id' => 2, 'name' => 'Abigail']],
     ];
 
-    $array = array_pluck($array, 'developer.name');
+    $names = array_pluck($array, 'developer.name');
 
-    // ['Taylor', 'Abigail'];
+    // ['Taylor', 'Abigail']
 
 You may also specify how you wish the resulting list to be keyed:
 
-    $array = array_pluck($array, 'developer.name', 'developer.id');
+    $names = array_pluck($array, 'developer.name', 'developer.id');
 
-    // [1 => 'Taylor', 2 => 'Abigail'];
+    // [1 => 'Taylor', 2 => 'Abigail']
 
 <a name="method-array-prepend"></a>
 #### `array_prepend()` {#collection-method}
@@ -358,7 +368,7 @@ The `array_prepend` function will push an item onto the beginning of an array:
 
     $array = array_prepend($array, 'zero');
 
-    // $array: ['zero', 'one', 'two', 'three', 'four']
+    // ['zero', 'one', 'two', 'three', 'four']
 
 If needed, you may specify the key that should be used for the value:
 
@@ -366,12 +376,12 @@ If needed, you may specify the key that should be used for the value:
 
     $array = array_prepend($array, 'Desk', 'name');
 
-    // $array: ['name' => 'Desk', 'price' => 100]
+    // ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
 
-The `array_pull` function returns and removes a key / value pair from the array:
+The `array_pull` function returns and removes a key / value pair from an array:
 
     $array = ['name' => 'Desk', 'price' => 100];
 
@@ -388,7 +398,7 @@ A default value may be passed as the third argument to the method. This value wi
 <a name="method-array-random"></a>
 #### `array_random()` {#collection-method}
 
-The `array_random()` function returns a random value from an array:
+The `array_random` function returns a random value from an array:
 
     $array = [1, 2, 3, 4, 5];
 
@@ -396,11 +406,11 @@ The `array_random()` function returns a random value from an array:
 
     // 4 - (retrieved randomly)
 
-You may also specify the number of items to return as an optional second parameter. Note that providing this parameter will return an array, even if only one item is desired:
+You may also specify the number of items to return as an optional second argument. Note that providing this argument will return an array, even if only one item is desired:
 
     $items = array_random($array, 2);
 
-    // $items: [2, 5]
+    // [2, 5] - (retrieved randomly)
 
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
@@ -418,30 +428,21 @@ The `array_set` function sets a value within a deeply nested array using "dot" n
 
 The `array_sort` function sorts an array by its values:
 
-    $array = [
-        'Desk',
-        'Table',
-        'Chair',
-    ];
+    $array = ['Desk', 'Table', 'Chair'];
 
-    $array = array_sort($array);
+    $sorted = array_sort($array);
 
-    /*
-        [
-            'Chair',
-            'Desk',
-            'Table',
-        ]
-    */
+    // ['Chair', 'Desk', 'Table']
 
 You may also sort the array by the results of the given Closure:
 
     $array = [
         ['name' => 'Desk'],
+        ['name' => 'Table'],
         ['name' => 'Chair'],
     ];
 
-    $array = array_values(array_sort($array, function ($value) {
+    $sorted = array_values(array_sort($array, function ($value) {
         return $value['name'];
     }));
 
@@ -449,52 +450,37 @@ You may also sort the array by the results of the given Closure:
         [
             ['name' => 'Chair'],
             ['name' => 'Desk'],
+            ['name' => 'Table'],
         ]
     */
 
 <a name="method-array-sort-recursive"></a>
 #### `array_sort_recursive()` {#collection-method}
 
-The `array_sort_recursive` function recursively sorts the array using the `sort` function:
+The `array_sort_recursive` function recursively sorts an array using the `sort` function:
 
     $array = [
-        [
-            'Roman',
-            'Taylor',
-            'Li',
-        ],
-        [
-            'PHP',
-            'Ruby',
-            'JavaScript',
-        ],
+        ['Roman', 'Taylor', 'Li'],
+        ['PHP', 'Ruby', 'JavaScript'],
     ];
 
-    $array = array_sort_recursive($array);
+    $sorted = array_sort_recursive($array);
 
     /*
         [
-            [
-                'Li',
-                'Roman',
-                'Taylor',
-            ],
-            [
-                'JavaScript',
-                'PHP',
-                'Ruby',
-            ]
-        ];
+            ['Li', 'Roman', 'Taylor'],
+            ['JavaScript', 'PHP', 'Ruby'],
+        ]
     */
 
 <a name="method-array-where"></a>
 #### `array_where()` {#collection-method}
 
-The `array_where` function filters the array using the given Closure:
+The `array_where` function filters an array using the given Closure:
 
     $array = [100, '200', 300, '400', 500];
 
-    $array = array_where($array, function ($value, $key) {
+    $filtered = array_where($array, function ($value, $key) {
         return is_string($value);
     });
 
@@ -503,47 +489,47 @@ The `array_where` function filters the array using the given Closure:
 <a name="method-array-wrap"></a>
 #### `array_wrap()` {#collection-method}
 
-The `array_wrap` function will wrap the given value in an array. If the given value is already an array it will not be changed:
+The `array_wrap` function wraps the given value in an array. If the given value is already an array it will not be changed:
 
     $string = 'Laravel';
 
     $array = array_wrap($string);
 
-    // [0 => 'Laravel']
+    // ['Laravel']
 
 <a name="method-data-fill"></a>
 #### `data_fill()` {#collection-method}
 
-The `data_fill` function will fill data in the target array or object using "dot" notation:
+The `data_fill` function sets a missing value within a nested array or object using "dot" notation:
 
-    $data = ['foo' => 'bar'];
+    $data = ['products' => ['desk' => ['price' => 100]]];
 
-    data_fill($data, 'baz', 'boom')
+    data_fill($data, 'products.desk.price', 200);
 
-     // ['foo' => 'bar', 'baz' => 'boom']
+    // ['products' => ['desk' => ['price' => 100]]]
+
+    data_fill($data, 'products.desk.discount', 10);
+
+    // ['products' => ['desk' => ['price' => 100, 'discount' => 10]]]
 
 This function also accepts asterisks as wildcards and will fill the target accordingly:
 
     $data = [
-        'posts' => [
-            'comments' => [
-                ['name' => 'Taylor'],
-                []
-            ],
-        ]
+        'products' => [
+            ['name' => 'Desk 1' => 'price' => 100],
+            ['name' => 'Desk 2'],
+        ],
     ];
 
-    data_fill($data,'posts.comments.*.name', 'N/A');
+    data_fill($data, 'products.*.price', 200);
 
     /*
         [
-            'posts' => [
-                'comments' => [
-                    ['name' => 'Taylor'],
-                    ['name' => 'N/A']
-                ],
-            ]
-        ];
+            'products' => [
+                ['name' => 'Desk 1' => 'price' => 100],
+                ['name' => 'Desk 2' => 'price' => 200],
+            ],
+        ]
     */
 
 <a name="method-data-get"></a>
@@ -553,13 +539,15 @@ The `data_get` function retrieves a value from a nested array or object using "d
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
-    $value = data_get($data, 'products.desk');
+    $price = data_get($data, 'products.desk.price');
 
-    // ['price' => 100]
+    // 100
 
 The `data_get` function also accepts a default value, which will be returned if the specified key is not found:
 
-    $value = data_get($data, 'names.john', 'default');
+    $discount = data_get($data, 'products.desk.discount', 0);
+
+    // 0
 
 <a name="method-data-set"></a>
 #### `data_set()` {#collection-method}
@@ -578,7 +566,7 @@ This function also accepts wildcards and will set values on the target according
         'products' => [
             ['name' => 'Desk 1', 'price' => 100],
             ['name' => 'Desk 2', 'price' => 150],
-        ]
+        ],
     ];
 
     data_set($data, 'products.*.price', 200);
@@ -586,13 +574,13 @@ This function also accepts wildcards and will set values on the target according
     /*
         [
             'products' => [
-                ['name'=> 'Desk 1' => 'price' => 200],
-                ['name'=> 'Desk 2' => 'price' => 200],
-            ]
-        ];
+                ['name' => 'Desk 1' => 'price' => 200],
+                ['name' => 'Desk 2' => 'price' => 200],
+            ],
+        ]
     */
 
-By default, any existing values are overwritten. If you wish to only set a value if it doesn't exist, you may pass `false` as the third parameter:
+By default, any existing values are overwritten. If you wish to only set a value if it doesn't exist, you may pass `false` as the third argument:
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
@@ -646,35 +634,41 @@ The `base_path` function returns the fully qualified path to the project root. Y
 <a name="method-config-path"></a>
 #### `config_path()` {#collection-method}
 
-The `config_path` function returns the fully qualified path to the application configuration directory:
+The `config_path` function returns the fully qualified path to the `config` directory. You may also use the `config_path` function to generate a fully qualified path to a given file within the application's configuration directory:
 
     $path = config_path();
+
+    $path = config_path('app.php');
 
 <a name="method-database-path"></a>
 #### `database_path()` {#collection-method}
 
-The `database_path` function returns the fully qualified path to the application's database directory:
+The `database_path` function returns the fully qualified path to the `database` directory. You may also use the `database_path` function to generate a fully qualified path to a given file within the database directory:
 
     $path = database_path();
+
+    $path = database_path('factories/UserFactory.php');
 
 <a name="method-mix"></a>
 #### `mix()` {#collection-method}
 
-The `mix` function gets the path to a [versioned Mix file](/docs/{{version}}/mix):
+The `mix` function returns the path to a [versioned Mix file](/docs/{{version}}/mix):
 
-    mix($file);
+    $path = mix('css/app.css');
 
 <a name="method-public-path"></a>
 #### `public_path()` {#collection-method}
 
-The `public_path` function returns the fully qualified path to the `public` directory:
+The `public_path` function returns the fully qualified path to the `public` directory. You may also use the `public_path` function to generate a fully qualified path to a given file within the public directory:
 
     $path = public_path();
+
+    $path = public_path('css/app.css');
 
 <a name="method-resource-path"></a>
 #### `resource_path()` {#collection-method}
 
-The `resource_path` function returns the fully qualified path to the `resources` directory. You may also use the `resource_path` function to generate a fully qualified path to a given file relative to the resources directory:
+The `resource_path` function returns the fully qualified path to the `resources` directory. You may also use the `resource_path` function to generate a fully qualified path to a given file within the resources directory:
 
     $path = resource_path();
 
@@ -683,7 +677,7 @@ The `resource_path` function returns the fully qualified path to the `resources`
 <a name="method-storage-path"></a>
 #### `storage_path()` {#collection-method}
 
-The `storage_path` function returns the fully qualified path to the `storage` directory. You may also use the `storage_path` function to generate a fully qualified path to a given file relative to the storage directory:
+The `storage_path` function returns the fully qualified path to the `storage` directory. You may also use the `storage_path` function to generate a fully qualified path to a given file within the storage directory:
 
     $path = storage_path();
 
@@ -692,19 +686,30 @@ The `storage_path` function returns the fully qualified path to the `storage` di
 <a name="strings"></a>
 ## Strings
 
+<a name="method-__"></a>
+#### `__()` {#collection-method}
+
+The `__` function translates the given translation string or translation key using your [localization files](/docs/{{version}}/localization):
+
+    echo __('Welcome to our application');
+
+    echo __('messages.welcome');
+
+If the specified translation string or key does not exist, the `__` function will simply return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
+
 <a name="method-camel-case"></a>
 #### `camel_case()` {#collection-method}
 
 The `camel_case` function converts the given string to `camelCase`:
 
-    $camel = camel_case('foo_bar');
+    $converted = camel_case('foo_bar');
 
     // fooBar
 
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
-The `class_basename` returns the class name of the given class with the class' namespace removed:
+-The `class_basename` returns the class name of the given class with the class' namespace removed:
 
     $class = class_basename('Foo\Bar\Baz');
 
@@ -724,7 +729,7 @@ The `e` function runs PHP's `htmlspecialchars` function with the `double_encode`
 
 The `ends_with` function determines if the given string ends with the given value:
 
-    $value = ends_with('This is my name', 'name');
+    $result = ends_with('This is my name', 'name');
 
     // true
 
@@ -733,14 +738,14 @@ The `ends_with` function determines if the given string ends with the given valu
 
 The `kebab_case` function converts the given string to `kebab-case`:
 
-    $value = kebab_case('fooBar');
+    $converted = kebab_case('fooBar');
 
     // foo-bar
 
 <a name="method-preg-replace-array"></a>
 #### `preg_replace_array()` {#collection-method}
 
-The `preg_replace_array()` function replaces a given pattern in the string sequentially using an array:
+The `preg_replace_array` function replaces a given pattern in the string sequentially using an array:
 
     $string = 'The event will take place between :start and :end';
 
@@ -753,7 +758,7 @@ The `preg_replace_array()` function replaces a given pattern in the string seque
 
 The `snake_case` function converts the given string to `snake_case`:
 
-    $snake = snake_case('fooBar');
+    $converted = snake_case('fooBar');
 
     // foo_bar
 
@@ -762,7 +767,7 @@ The `snake_case` function converts the given string to `snake_case`:
 
 The `starts_with` function determines if the given string begins with the given value:
 
-    $value = starts_with('This is my name', 'This');
+    $result = starts_with('This is my name', 'This');
 
     // true
 
@@ -771,31 +776,31 @@ The `starts_with` function determines if the given string begins with the given 
 
 The `str_after` function returns everything after the given value in a string:
 
-    $value = str_after('This is: a test', 'This is:');
+    $slice = str_after('This is my name', 'This is');
 
-    // ' a test'
+    // ' my name'
 
 <a name="method-str-before"></a>
 #### `str_before()` {#collection-method}
 
 The `str_before` function returns everything before the given value in a string:
 
-    $value = str_before('Test :it before', ':it before');
+    $slice = str_before('This is my name', 'my name');
 
-    // 'Test '
+    // 'This is '
 
 <a name="method-str-contains"></a>
 #### `str_contains()` {#collection-method}
 
 The `str_contains` function determines if the given string contains the given value:
 
-    $value = str_contains('This is my name', 'my');
+    $contains = str_contains('This is my name', 'my');
 
     // true
 
 You may also pass an array of values to determine if the given string contains any of the values:
 
-    $value = str_contains('This is my name', ['my', 'foo']);
+    $contains = str_contains('This is my name', ['my', 'foo']);
 
     // true
 
@@ -817,11 +822,11 @@ The `str_finish` function adds a single instance of the given value to a string 
 
 The `str_is` function determines if a given string matches a given pattern. Asterisks may be used to indicate wildcards:
 
-    $value = str_is('foo*', 'foobar');
+    $matches = str_is('foo*', 'foobar');
 
     // true
 
-    $value = str_is('baz*', 'foobar');
+    $matches = str_is('baz*', 'foobar');
 
     // false
 
@@ -868,12 +873,12 @@ You may provide an integer as a second argument to the function to retrieve the 
 
 The `str_random` function generates a random string of the specified length. This function uses PHP's `random_bytes` function:
 
-    $string = str_random(40);
+    $random = str_random(40);
 
 <a name="method-str-replace-array"></a>
 #### `str_replace_array()` {#collection-method}
 
-The `str_replace_array()` function replaces a given value in the string sequentially using an array:
+The `str_replace_array` function replaces a given value in the string sequentially using an array:
 
     $string = 'The event will take place between ? and ?';
 
@@ -884,7 +889,7 @@ The `str_replace_array()` function replaces a given value in the string sequenti
 <a name="method-str-replace-first"></a>
 #### `str_replace_first()` {#collection-method}
 
-The `str_replace_first()` function replaces the first occurrence of a given value in a string:
+The `str_replace_first` function replaces the first occurrence of a given value in a string:
 
     $replaced = str_replace_first('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
@@ -893,7 +898,7 @@ The `str_replace_first()` function replaces the first occurrence of a given valu
 <a name="method-str-replace-last"></a>
 #### `str_replace_last()` {#collection-method}
 
-The `str_replace_last()` function replaces the last occurrence of a given value in a string:
+The `str_replace_last` function replaces the last occurrence of a given value in a string:
 
     $replaced = str_replace_last('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
@@ -917,7 +922,7 @@ The `str_singular` function converts a string to its singular form. This functio
 
 The `str_slug` function generates a URL friendly "slug" from the given string:
 
-    $title = str_slug('Laravel 5 Framework', '-');
+    $slug = str_slug('Laravel 5 Framework', '-');
 
     // laravel-5-framework
 
@@ -939,7 +944,7 @@ The `str_start` function adds a single instance of the given value to a string i
 
 The `studly_case` function converts the given string to `StudlyCase`:
 
-    $value = studly_case('foo_bar');
+    $converted = studly_case('foo_bar');
 
     // FooBar
 
@@ -948,23 +953,27 @@ The `studly_case` function converts the given string to `StudlyCase`:
 
 The `title_case` function converts the given string to `Title Case`:
 
-    $title = title_case('a nice title uses the correct case');
+    $converted = title_case('a nice title uses the correct case');
 
     // A Nice Title Uses The Correct Case
 
 <a name="method-trans"></a>
 #### `trans()` {#collection-method}
 
-The `trans` function translates the given language line using your [localization files](/docs/{{version}}/localization):
+The `trans` function translates the given translation key using your [localization files](/docs/{{version}}/localization):
 
-    echo trans('validation.required'):
+    echo trans('messages.welcome');
+
+If the specified translation key does not exist, the `trans` function will simply return the given key. So, using the example above, the `trans` function would return `messages.welcome` if the translation key does not exist.
 
 <a name="method-trans-choice"></a>
 #### `trans_choice()` {#collection-method}
 
-The `trans_choice` function translates the given language line with inflection:
+The `trans_choice` function translates the given translation key with inflection:
 
-    $value = trans_choice('foo.bar', $count);
+    echo trans_choice('messages.notifications', $unreadCount);
+
+If the specified translation key does not exist, the `trans_choice` function will simply return the given key. So, using the example above, the `trans_choice` function would return `messages.notifications` if the translation key does not exist.
 
 <a name="urls"></a>
 ## URLs
@@ -983,16 +992,16 @@ If the method accepts route parameters, you may pass them as the second argument
 <a name="method-asset"></a>
 #### `asset()` {#collection-method}
 
-Generate a URL for an asset using the current scheme of the request (HTTP or HTTPS):
+The `asset` function generates a URL for an asset using the current scheme of the request (HTTP or HTTPS):
 
     $url = asset('img/photo.jpg');
 
 <a name="method-secure-asset"></a>
 #### `secure_asset()` {#collection-method}
 
-Generate a URL for an asset using HTTPS:
+The `secure_asset` function generates a URL for an asset using HTTPS:
 
-    echo secure_asset('foo/bar.zip');
+    $url = secure_asset('img/photo.jpg');
 
 <a name="method-route"></a>
 #### `route()` {#collection-method}
@@ -1005,7 +1014,7 @@ If the route accepts parameters, you may pass them as the second argument to the
 
     $url = route('routeName', ['id' => 1]);
 
-By default, the `route` function generates an absolute URL. If you wish to generate a relative URL, you may pass `false` as the third parameter:
+By default, the `route` function generates an absolute URL. If you wish to generate a relative URL, you may pass `false` as the third argument:
 
     $url = route('routeName', ['id' => 1], false);
 
@@ -1014,24 +1023,26 @@ By default, the `route` function generates an absolute URL. If you wish to gener
 
 The `secure_url` function generates a fully qualified HTTPS URL to the given path:
 
-    echo secure_url('user/profile');
+    $url = secure_url('user/profile');
 
-    echo secure_url('user/profile', [1]);
+    $url = secure_url('user/profile', [1]);
 
 <a name="method-url"></a>
 #### `url()` {#collection-method}
 
 The `url` function generates a fully qualified URL to the given path:
 
-    echo url('user/profile');
+    $url = url('user/profile');
 
-    echo url('user/profile', [1]);
+    $url = url('user/profile', [1]);
 
 If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned:
 
-    echo url()->current();
-    echo url()->full();
-    echo url()->previous();
+    $current = url()->current();
+
+    $full = url()->full();
+
+    $previous = url()->previous();
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
@@ -1039,13 +1050,13 @@ If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned
 <a name="method-abort"></a>
 #### `abort()` {#collection-method}
 
-The `abort` function throws a HTTP exception which will be rendered by the exception handler:
+The `abort` function throws [an HTTP exception](/docs/{{version}}/errors#http-exceptions) which will be rendered by the [exception handler](/docs/{{version}}/errors#the-exception-handler):
 
-    abort(401);
+    abort(403);
 
-You may also provide the exception's response text:
+You may also provide the exception's response text and custom response headers:
 
-    abort(401, 'Unauthorized.');
+    abort(403, 'Unauthorized.', $headers);
 
 <a name="method-abort-if"></a>
 #### `abort_if()` {#collection-method}
@@ -1054,12 +1065,16 @@ The `abort_if` function throws an HTTP exception if a given boolean expression e
 
     abort_if(! Auth::user()->isAdmin(), 403);
 
+Like the `abort` method, you may also provide the exception's response text as the third argument and an array of custom response headers as the fourth argument.
+
 <a name="method-abort-unless"></a>
 #### `abort_unless()` {#collection-method}
 
 The `abort_unless` function throws an HTTP exception if a given boolean expression evaluates to `false`:
 
     abort_unless(Auth::user()->isAdmin(), 403);
+
+Like the `abort` method, you may also provide the exception's response text as the third argument and an array of custom response headers as the fourth argument.
 
 <a name="method-app"></a>
 #### `app()` {#collection-method}
@@ -1079,17 +1094,23 @@ The `auth` function returns an [authenticator](/docs/{{version}}/authentication)
 
     $user = auth()->user();
 
+If needed, you may specify which guard instance you would like to access:
+
+    $user = auth('admin')->user();
+
 <a name="method-back"></a>
 #### `back()` {#collection-method}
 
-The `back()` function generates a redirect response to the user's previous location:
+The `back` function generates a [redirect HTTP response](/docs/{{version}}/responses#redirects) to the user's previous location:
+
+    return back($status = 302, $headers = [], $fallback = false);
 
     return back();
 
 <a name="method-bcrypt"></a>
 #### `bcrypt()` {#collection-method}
 
-The `bcrypt` function hashes the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
+The `bcrypt` function [hashes](/docs/{{version}}/hashing) the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
 
     $password = bcrypt('my-secret-password');
 
@@ -1105,23 +1126,25 @@ The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given 
 
 The `blank` function returns whether the given value is "blank":
 
-    // true
     blank('');
     blank('   ');
     blank(null);
     blank(collect());
 
-    // false
+    // true
+
     blank(0);
     blank(true);
     blank(false);
 
-For the inverse of `blank`, see the [filled](#method-filled) method.
+    // false
+
+For the inverse of `blank`, see the [`filled`](#method-filled) method.
 
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
 
-The `cache` function may be used to get values from the cache. If the given key does not exist in the cache, an optional default value will be returned:
+The `cache` function may be used to get values from the [cache](/docs/{{version}}/cache). If the given key does not exist in the cache, an optional default value will be returned:
 
     $value = cache('key');
 
@@ -1133,23 +1156,30 @@ You may add items to the cache by passing an array of key / value pairs to the f
 
     cache(['key' => 'value'], Carbon::now()->addSeconds(10));
 
+<a name="method-class-uses-recursive"></a>
+#### `class_uses_recursive()` {#collection-method}
+
+The `class_uses_recursive()` function returns all traits used by a class, including traits used by any subclasses:
+
+    $traits = class_uses_recursive(App\User::class);
+
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
 
-The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the given array:
+The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the given value:
 
     $collection = collect(['taylor', 'abigail']);
 
 <a name="method-config"></a>
 #### `config()` {#collection-method}
 
-The `config` function gets the value of a configuration variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and the option you wish to access. A default value may be specified and is returned if the configuration option does not exist:
+The `config` function gets the value of a [configuration](/docs/{{version}}/configuration) variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and the option you wish to access. A default value may be specified and is returned if the configuration option does not exist:
 
     $value = config('app.timezone');
 
     $value = config('app.timezone', $default);
 
-The `config` helper may also be used to set configuration variables at runtime by passing an array of key / value pairs:
+You may set configuration variables at runtime by passing an array of key / value pairs:
 
     config(['app.debug' => true]);
 
@@ -1183,9 +1213,14 @@ The `dd` function dumps the given variables and ends execution of the script:
 
     dd($value1, $value2, $value3, ...);
 
-If you do not want to halt the execution of your script, use the `dump` function instead:
+If you do not want to halt the execution of your script, use the [`dump`](#method-dump) function instead.
 
-    dump($value);
+<a name="method-decrypt"></a>
+#### `decrypt()` {#collection-method}
+
+The `decrypt` function decrypts the given value using Laravel's [encrypter](/docs/{{version}}/encryption):
+
+    $decrypted = decrypt($encrypted_value);
 
 <a name="method-dispatch"></a>
 #### `dispatch()` {#collection-method}
@@ -1201,14 +1236,32 @@ The `dispatch_now` function runs the given [job](/docs/{{version}}/queues#creati
 
     $result = dispatch_now(new App\Jobs\SendEmails);
 
+<a name="method-dump"></a>
+#### `dump()` {#collection-method}
+
+The `dump` function dumps the given variables:
+
+    dump($value);
+
+    dump($value1, $value2, $value3, ...);
+
+If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
+
+<a name="method-encrypt"></a>
+#### `encrypt()` {#collection-method}
+
+The `encrypt` function encrypts the given value using Laravel's [encrypter](/docs/{{version}}/encryption):
+
+    $encrypted = encrypt($unencrypted_value);
+
 <a name="method-env"></a>
 #### `env()` {#collection-method}
 
-The `env` function gets the value of an environment variable or returns a default value:
+The `env` function retrieves the value of an [environment variable](/docs/{{version}}/configuration#environment-configuration) or returns a default value:
 
     $env = env('APP_ENV');
 
-    // Return a default value if the variable doesn't exist...
+    // Returns 'production' if APP_ENV is not set...
     $env = env('APP_ENV', 'production');
 
 <a name="method-event"></a>
@@ -1230,23 +1283,25 @@ The `factory` function creates a model factory builder for a given class, name, 
 
 The `filled` function returns whether the given value is not "blank":
 
-    // true
     filled(0);
     filled(true);
     filled(false);
 
-    // false
+    // true
+
     filled('');
     filled('   ');
     filled(null);
     filled(collect());
 
-For the inverse of `filled`, see the [blank](#method-blank) method.
+    // false
+
+For the inverse of `filled`, see the [`blank`](#method-blank) method.
 
 <a name="method-info"></a>
 #### `info()` {#collection-method}
 
-The `info` function will write information to the log:
+The `info` function will write information to the [log](/docs/{{version}}/errors#logging):
 
     info('Some helpful information!');
 
@@ -1257,7 +1312,7 @@ An array of contextual data may also be passed to the function:
 <a name="method-logger"></a>
 #### `logger()` {#collection-method}
 
-The `logger` function can be used to write a `debug` level message to the log:
+The `logger` function can be used to write a `debug` level message to the [log](/docs/{{version}}/errors#logging):
 
     logger('Debug message');
 
@@ -1283,12 +1338,12 @@ The `method_field` function generates an HTML `hidden` input field containing th
 
 The `now` function creates a new `Illuminate\Support\Carbon` instance for the current time:
 
-    return now();
+    $now = now();
 
 <a name="method-old"></a>
 #### `old()` {#collection-method}
 
-The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session:
+The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an [old input](/docs/{{version}}/requests#old-input) value flashed into the session:
 
     $value = old('value');
 
@@ -1306,14 +1361,16 @@ The `optional` function accepts any argument and allows you to access properties
 <a name="method-policy"></a>
 #### `policy()` {#collection-method}
 
-The `policy` method gets a [policy](/docs/{{version}}/authorization#creating-policies) instance for a given class:
+The `policy` method retrieves a [policy](/docs/{{version}}/authorization#creating-policies) instance for a given class:
 
     $policy = policy(App\User::class);
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
 
-The `redirect` function returns a redirect HTTP response, or returns the redirector instance if called with no arguments:
+The `redirect` function returns a [redirect HTTP response](/docs/{{version}}/responses#redirects), or returns the redirector instance if called with no arguments:
+
+    return redirect($to = null, $status = 302, $headers = [], $secure = null);
 
     return redirect('/home');
 
@@ -1322,7 +1379,7 @@ The `redirect` function returns a redirect HTTP response, or returns the redirec
 <a name="method-report"></a>
 #### `report()` {#collection-method}
 
-The `report` function will report an exception using your exception handler's `report` method:
+The `report` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler)'s `report` method:
 
     report($e);
 
@@ -1333,12 +1390,12 @@ The `request` function returns the current [request](/docs/{{version}}/requests)
 
     $request = request();
 
-    $value = request('key', $default = null)
+    $value = request('key', $default = null);
 
 <a name="method-rescue"></a>
 #### `rescue()` {#collection-method}
 
-The `rescue` function executes the given Closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your exception handler's `report` method; however, the request will continue processing:
+The `rescue` function executes the given Closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](/docs/{{version}}/errors#the-exception-handler)'s `report` method; however, the request will continue processing:
 
     return rescue(function () {
         return $this->method();
@@ -1384,7 +1441,7 @@ The `retry` function attempts to execute the given callback until the given maxi
 <a name="method-session"></a>
 #### `session()` {#collection-method}
 
-The `session` function may be used to get or set session values:
+The `session` function may be used to get or set [session](/docs/{{version}}/session) values:
 
     $value = session('key');
 
@@ -1413,7 +1470,7 @@ If no Closure is passed to the `tap` function, you may call any method on the gi
 
     $user = tap($user)->update([
         'name' => $name,
-        'email' => $email
+        'email' => $email,
     ]);
 
 <a name="method-today"></a>
@@ -1421,21 +1478,40 @@ If no Closure is passed to the `tap` function, you may call any method on the gi
 
 The `today` function creates a new `Illuminate\Support\Carbon` instance for the current date:
 
-    return today();
+    $today = today();
 
 <a name="method-throw-if"></a>
 #### `throw_if()` {#collection-method}
 
 The `throw_if` function throws the given exception if a given boolean expression evaluates to `true`:
 
-    throw_if(! Auth::user()->isAdmin(), AuthorizationException::class, 'You are not allowed to access this page');
+    throw_if(! Auth::user()->isAdmin(), AuthorizationException::class);
+
+    throw_if(
+        ! Auth::user()->isAdmin(),
+        AuthorizationException::class,
+        'You are not allowed to access this page'
+    );
 
 <a name="method-throw-unless"></a>
 #### `throw_unless()` {#collection-method}
 
 The `throw_unless` function throws the given exception if a given boolean expression evaluates to `false`:
 
-    throw_unless(Auth::user()->isAdmin(), AuthorizationException::class, 'You are not allowed to access this page');
+    throw_unless(Auth::user()->isAdmin(), AuthorizationException::class);
+
+    throw_unless(
+        Auth::user()->isAdmin(),
+        AuthorizationException::class,
+        'You are not allowed to access this page'
+    );
+
+<a name="method-trait-uses-recursive"></a>
+#### `trait_uses_recursive()` {#collection-method}
+
+The `trait_uses_recursive()` function returns all traits used by a trait:
+
+    $traits = trait_uses_recursive(\Illuminate\Notifications\Notifiable::class);
 
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}
@@ -1452,7 +1528,9 @@ A default value or Closure may also be passed as the third parameter to the meth
 
     transform(null, function ($value) {
         return $value * 2;
-    }, "The value is blank.");
+    }, 'The value is blank');
+
+    // The value is blank
 
 <a name="method-validator"></a>
 #### `validator()` {#collection-method}
@@ -1469,6 +1547,8 @@ The `value` function's behavior will simply return the value it is given. Howeve
     $value = value(function () {
         return 'bar';
     });
+
+    // bar
 
 <a name="method-view"></a>
 #### `view()` {#collection-method}
