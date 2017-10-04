@@ -634,7 +634,7 @@ The `base_path` function returns the fully qualified path to the project root. Y
 <a name="method-config-path"></a>
 #### `config_path()` {#collection-method}
 
-The `config_path` function returns the fully qualified path to the `config` directory. You may also use the `config_path` function to generate a fully qualified path to a given file relative to the application's configuration directory:
+The `config_path` function returns the fully qualified path to the `config` directory. You may also use the `config_path` function to generate a fully qualified path to a given file within the application's configuration directory:
 
     $path = config_path();
 
@@ -643,7 +643,7 @@ The `config_path` function returns the fully qualified path to the `config` dire
 <a name="method-database-path"></a>
 #### `database_path()` {#collection-method}
 
-The `database_path` function returns the fully qualified path to the `database` directory. You may also use the `database_path` function to generate a fully qualified path to a given file relative to the database directory:
+The `database_path` function returns the fully qualified path to the `database` directory. You may also use the `database_path` function to generate a fully qualified path to a given file within the database directory:
 
     $path = database_path();
 
@@ -659,7 +659,7 @@ The `mix` function returns the path to a [versioned Mix file](/docs/{{version}}/
 <a name="method-public-path"></a>
 #### `public_path()` {#collection-method}
 
-The `public_path` function returns the fully qualified path to the `public` directory. You may also use the `public_path` function to generate a fully qualified path to a given file relative to the public directory:
+The `public_path` function returns the fully qualified path to the `public` directory. You may also use the `public_path` function to generate a fully qualified path to a given file within the public directory:
 
     $path = public_path();
 
@@ -668,7 +668,7 @@ The `public_path` function returns the fully qualified path to the `public` dire
 <a name="method-resource-path"></a>
 #### `resource_path()` {#collection-method}
 
-The `resource_path` function returns the fully qualified path to the `resources` directory. You may also use the `resource_path` function to generate a fully qualified path to a given file relative to the resources directory:
+The `resource_path` function returns the fully qualified path to the `resources` directory. You may also use the `resource_path` function to generate a fully qualified path to a given file within the resources directory:
 
     $path = resource_path();
 
@@ -677,7 +677,7 @@ The `resource_path` function returns the fully qualified path to the `resources`
 <a name="method-storage-path"></a>
 #### `storage_path()` {#collection-method}
 
-The `storage_path` function returns the fully qualified path to the `storage` directory. You may also use the `storage_path` function to generate a fully qualified path to a given file relative to the storage directory:
+The `storage_path` function returns the fully qualified path to the `storage` directory. You may also use the `storage_path` function to generate a fully qualified path to a given file within the storage directory:
 
     $path = storage_path();
 
@@ -695,7 +695,7 @@ The `__` function translates the given translation string or translation key usi
 
     echo __('messages.welcome');
 
-If the specified translation string or key does not exist, the `__` function will simply return the given value. So, using the example above, the `__` function would return `messages.welcome` if the translation key does not exist.
+If the specified translation string or key does not exist, the `__` function will simply return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
 
 <a name="method-camel-case"></a>
 #### `camel_case()` {#collection-method}
@@ -709,7 +709,7 @@ The `camel_case` function converts the given string to `camelCase`:
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
-The `class_basename` function returns the class name portion of a given fully qualified class name:
+-The `class_basename` returns the class name of the given class with the class' namespace removed:
 
     $class = class_basename('Foo\Bar\Baz');
 
@@ -1159,7 +1159,7 @@ You may add items to the cache by passing an array of key / value pairs to the f
 <a name="method-class-uses-recursive"></a>
 #### `class_uses_recursive()` {#collection-method}
 
-The `class_uses_recursive()` function returns all traits used by a class, its subclasses and their traits:
+The `class_uses_recursive()` function returns all traits used by a class, including traits used by any subclasses:
 
     $traits = class_uses_recursive(App\User::class);
 
@@ -1218,7 +1218,7 @@ If you do not want to halt the execution of your script, use the [`dump`](#metho
 <a name="method-decrypt"></a>
 #### `decrypt()` {#collection-method}
 
-The `decrypt` function decrypts the given value using the [built-in encrypter](/docs/{{version}}/encryption):
+The `decrypt` function decrypts the given value using Laravel's [encrypter](/docs/{{version}}/encryption):
 
     $decrypted = decrypt($encrypted_value);
 
@@ -1250,18 +1250,18 @@ If you want to stop executing the script after dumping the variables, use the [`
 <a name="method-encrypt"></a>
 #### `encrypt()` {#collection-method}
 
-The `encrypt` function encrypts the given value using the [built-in encrypter](/docs/{{version}}/encryption):
+The `encrypt` function encrypts the given value using Laravel's [encrypter](/docs/{{version}}/encryption):
 
     $encrypted = encrypt($unencrypted_value);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}
 
-The `env` function retrieves the value of an [environment](/docs/{{version}}/configuration#environment-configuration) variable or returns a default value:
+The `env` function retrieves the value of an [environment variable](/docs/{{version}}/configuration#environment-configuration) or returns a default value:
 
     $env = env('APP_ENV');
 
-    // Will return 'production' if APP_ENV is not set
+    // Returns 'production' if APP_ENV is not set...
     $env = env('APP_ENV', 'production');
 
 <a name="method-event"></a>
@@ -1509,7 +1509,7 @@ The `throw_unless` function throws the given exception if a given boolean expres
 <a name="method-trait-uses-recursive"></a>
 #### `trait_uses_recursive()` {#collection-method}
 
-The `trait_uses_recursive()` function returns all traits used by a trait and its traits:
+The `trait_uses_recursive()` function returns all traits used by a trait:
 
     $traits = trait_uses_recursive(\Illuminate\Notifications\Notifiable::class);
 
