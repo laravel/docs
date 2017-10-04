@@ -18,6 +18,7 @@
     - [Using The Mouse](#using-the-mouse)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
+    - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
     - [Generating Pages](#generating-pages)
@@ -25,6 +26,9 @@
     - [Navigating To Pages](#navigating-to-pages)
     - [Shorthand Selectors](#shorthand-selectors)
     - [Page Methods](#page-methods)
+- [Components](#components)
+    - [Generating Components](#generating-components)
+    - [Using Components](#using-components)
 - [Continuous Integration](#continuous-integration)
     - [Travis CI](#running-tests-on-travis-ci)
     - [CircleCI](#running-tests-on-circle-ci)
@@ -447,6 +451,44 @@ Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. Yo
         return $something->isReady();
     }, "Something wasn't ready in time.");
 
+<a name="making-vue-assertions"></a>
+### Making Vue Assertions
+
+Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org) component data. For example, imagine your application contains the following Vue component:
+
+    // HTML...
+
+    <profile dusk="profile-component"></profile>
+
+    // Component Definition...
+
+    Vue.component('profile', {
+        template: '<div>{{ user.name }}</div>',
+
+        data: function () {
+            return {
+                user: {
+                  name: 'Taylor'
+                }
+            };
+        }
+    });
+
+You may assert on the state of the Vue component like so:
+
+    /**
+     * A basic Vue test example.
+     *
+     * @return void
+     */
+    public function testVue()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/')
+                    ->assertVue('user.name', 'Taylor', '@profile-component');
+        });
+    }
+
 <a name="available-assertions"></a>
 ## Available Assertions
 
@@ -490,6 +532,8 @@ Assertion  | Description
 `$browser->assertVisible($selector)`  |  Assert the element matching the given selector is visible.
 `$browser->assertMissing($selector)`  |  Assert the element matching the given selector is not visible.
 `$browser->assertDialogOpened($message)`  |  Assert that a JavaScript dialog with given message has been opened.
+`$browser->assertVue($property, $value, $component)`  |  Assert that a given Vue component data property matches the given value.
+`$browser->assertVueIsNot($property, $value, $component)`  |  Assert that a given Vue component data property does not match the given value.
 
 <a name="pages"></a>
 ## Pages
@@ -628,6 +672,117 @@ Once the method has been defined, you may use it within any test that utilizes t
     $browser->visit(new Dashboard)
             ->createPlaylist('My Playlist')
             ->assertSee('My Playlist');
+
+<a name="components"></a>
+## Components
+
+Components are similar to Dusk’s “page objects”, but are intended for pieces of UI and functionality that are re-used throughout your application, such as a navigation bar or notification window. As such, components are not bound to specific URLs.
+
+<a name="generating-components"></a>
+### Generating Components
+
+To generate a component, use the `dusk:component` Artisan command. New components are placed in the `test/Browser/Components` directory:
+
+    php artisan dusk:component DatePicker
+
+As shown above, a "date picker" is an example of a component that might exist throughout your application on a variety of pages. It can become cumbersome to manually write the browser automation logic to select a date in dozens of tests throughout your test suite. Instead, we can define a Dusk component to represent the date picker, allowing us to encapsulate that logic within the component:
+
+    <?php
+
+    namespace Tests\Browser\Components;
+
+    use Laravel\Dusk\Browser;
+    use Laravel\Dusk\Component as BaseComponent;
+
+    class DatePicker extends BaseComponent
+    {
+        /**
+         * Get the root selector for the component.
+         *
+         * @return string
+         */
+        public function selector()
+        {
+            return '.date-picker';
+        }
+
+        /**
+         * Assert that the browser page contains the component.
+         *
+         * @param  Browser  $browser
+         * @return void
+         */
+        public function assert(Browser $browser)
+        {
+            $browser->assertVisible($this->selector());
+        }
+
+        /**
+         * Get the element shortcuts for the component.
+         *
+         * @return array
+         */
+        public function elements()
+        {
+            return [
+                '@date-field' => 'input.datepicker-input',
+                '@month-list' => 'div > div.datepicker-months',
+                '@day-list' => 'div > div.datepicker-days',
+            ];
+        }
+
+        /**
+         * Select the given date.
+         *
+         * @param  \Laravel\Dusk\Browser  $browser
+         * @param  int  $month
+         * @param  int  $year
+         * @return void
+         */
+        public function selectDate($browser, $month, $year)
+        {
+            $browser->click('@date-field')
+                    ->within('@month-list', function ($browser) use ($month) {
+                        $browser->click($month);
+                    })
+                    ->within('@day-list', function ($browser) use ($day) {
+                        $browser->click($day);
+                    });
+        }
+    }
+
+<a name="using-components"></a>
+### Using Components
+
+Once the component has been defined, we can easily select a date within the date picker from any test. And, if the logic necessary to select a date changes, we only need to update the component:
+
+    <?php
+
+    namespace Tests\Browser;
+
+    use Tests\DuskTestCase;
+    use Laravel\Dusk\Browser;
+    use Tests\Browser\Components\DatePicker;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+    class ExampleTest extends DuskTestCase
+    {
+        /**
+         * A basic component test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $this->browse(function (Browser $browser) {
+                $browser->visit('/')
+                        ->within(new DatePicker, function ($browser) {
+                            $browser->selectDate(1, 2018);
+                        })
+                        ->assertSee('January');
+            });
+        }
+    }
 
 <a name="continuous-integration"></a>
 ## Continuous Integration
