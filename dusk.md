@@ -18,6 +18,7 @@
     - [Using The Mouse](#using-the-mouse)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
+    - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
     - [Generating Pages](#generating-pages)
@@ -449,6 +450,44 @@ Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. Yo
     $browser->waitUsing(10, 1, function () use ($something) {
         return $something->isReady();
     }, "Something wasn't ready in time.");
+
+<a name="making-vue-assertions"></a>
+### Making Vue Assertions
+
+Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org) component data. For example, imagine your application contains the following Vue component:
+
+    // HTML...
+
+    <profile dusk="profile-component"></profile>
+
+    // Component Definition...
+
+    Vue.component('profile', {
+        template: '<div>{{ user.name }}</div>',
+
+        data: function () {
+            return {
+                user: {
+                  name: 'Taylor'
+                }
+            };
+        }
+    });
+
+You may assert on the state of the Vue component like so:
+
+    /**
+     * A basic Vue test example.
+     *
+     * @return void
+     */
+    public function testVue()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/')
+                    ->assertVue('user.name', 'Taylor', '@profile-component');
+        });
+    }
 
 <a name="available-assertions"></a>
 ## Available Assertions
