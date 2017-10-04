@@ -493,6 +493,8 @@ Assertion  | Description
 `$browser->assertVisible($selector)`  |  Assert the element matching the given selector is visible.
 `$browser->assertMissing($selector)`  |  Assert the element matching the given selector is not visible.
 `$browser->assertDialogOpened($message)`  |  Assert that a JavaScript dialog with given message has been opened.
+`$browser->assertVue($property, $value, $component)`  |  Assert that a given Vue component data property matches the given value.
+`$browser->assertVueIsNot($property, $value, $component)`  |  Assert that a given Vue component data property does not match the given value.
 
 <a name="pages"></a>
 ## Pages
