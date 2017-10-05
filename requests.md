@@ -287,6 +287,14 @@ The `cookie` method also accepts a few more arguments which are used less freque
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
 
+Alternatively, you can use the `Cookie` facade to queue cookies. The `queue` method accepts both a `Cookie` instance or a list of arguments to create one:
+
+    Cookie::queue(Cookie::make('name', 'value', $minutes));
+
+    Cookie::queue('name', 'value', $minutes);
+
+These cookies will be attached to the response on its creation.
+
 #### Generating Cookie Instances
 
 If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be given to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
