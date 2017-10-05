@@ -818,8 +818,8 @@ The `isNotEmpty` method returns `true` if the collection is not empty; otherwise
 The `keyBy` method keys the collection by the given key. If multiple items have the same key, only the last one will appear in the new collection:
 
     $collection = collect([
-        ['product_id' => 'prod-100', 'name' => 'desk'],
-        ['product_id' => 'prod-200', 'name' => 'chair'],
+        ['product_id' => 'prod-100', 'name' => 'Desk'],
+        ['product_id' => 'prod-200', 'name' => 'Chair'],
     ]);
 
     $keyed = $collection->keyBy('product_id');
