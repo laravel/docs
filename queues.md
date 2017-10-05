@@ -12,6 +12,7 @@
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
     - [Rate Limiting](#rate-limiting)
+    - [Job's display name](#job-display-name)
     - [Error Handling](#error-handling)
 - [Running The Queue Worker](#running-the-queue-worker)
     - [Queue Priorities](#queue-priorities)
@@ -379,6 +380,28 @@ Alternatively, you may specify the maximum number of workers that may simultaneo
     });
 
 > {tip} When using rate limiting, the number of attempts your job will need to run successfully can be hard to determine. Therefore, it is useful to combine rate limiting with [time based attempts](#time-based-attempts).
+
+<a name="job-display-name"></a>
+### Job's display name
+
+If your application has a many jobs and you need to see more user-friendly name, you can define it's display name:
+
+    <?php
+
+    namespace App\Jobs;
+
+    class ProcessPodcast implements ShouldQueue
+    {
+        /**
+         * Get the display name for the queued job.
+         *
+         * @return string
+         */
+        public function displayName()
+        {
+            return 'A podcast conversion is in progress...';
+        }
+    }
 
 <a name="error-handling"></a>
 ### Error Handling
