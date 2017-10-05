@@ -273,9 +273,9 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
     $value = $request->cookie('name');
 
-Alternatively, you can use the `Cookie` facade:
+Alternatively, you may use the `Cookie` facade to access cookie values:
 
-    Cookie::get('name');
+    $value = Cookie::get('name');
 
 #### Attaching Cookies To Responses
 
@@ -291,13 +291,11 @@ The `cookie` method also accepts a few more arguments which are used less freque
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
 
-Alternatively, you can use the `Cookie` facade to queue cookies. The `queue` method accepts both a `Cookie` instance or a list of arguments to create one:
+Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment to the outgoing response from your application. The `queue` method accepts a `Cookie` instance or the arguments needed to create a `Cookie` instance. These cookies will be attached to the outgoing response before it is sent to the browser:
 
     Cookie::queue(Cookie::make('name', 'value', $minutes));
 
     Cookie::queue('name', 'value', $minutes);
-
-These cookies will be attached to the response on its creation.
 
 #### Generating Cookie Instances
 
