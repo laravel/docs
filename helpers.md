@@ -170,6 +170,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [validator](#method-validator)
 [value](#method-value)
 [view](#method-view)
+[with](#method-with)
 
 </div>
 
@@ -709,7 +710,7 @@ The `camel_case` function converts the given string to `camelCase`:
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
--The `class_basename` returns the class name of the given class with the class' namespace removed:
+The `class_basename` returns the class name of the given class with the class' namespace removed:
 
     $class = class_basename('Foo\Bar\Baz');
 
@@ -833,7 +834,7 @@ The `str_is` function determines if a given string matches a given pattern. Aste
 <a name="method-str-limit"></a>
 #### `str_limit()` {#collection-method}
 
-The `str_limit` function limits the number of characters in a string. The function accepts a string as its first argument and the maximum number of resulting characters as its second argument:
+The `str_limit` function truncates the given string at the specified length:
 
     $truncated = str_limit('The quick brown fox jumps over the lazy dog', 20);
 
@@ -1159,7 +1160,7 @@ You may add items to the cache by passing an array of key / value pairs to the f
 <a name="method-class-uses-recursive"></a>
 #### `class_uses_recursive()` {#collection-method}
 
-The `class_uses_recursive()` function returns all traits used by a class, including traits used by any subclasses:
+The `class_uses_recursive` function returns all traits used by a class, including traits used by any subclasses:
 
     $traits = class_uses_recursive(App\User::class);
 
@@ -1509,26 +1510,26 @@ The `throw_unless` function throws the given exception if a given boolean expres
 <a name="method-trait-uses-recursive"></a>
 #### `trait_uses_recursive()` {#collection-method}
 
-The `trait_uses_recursive()` function returns all traits used by a trait:
+The `trait_uses_recursive` function returns all traits used by a trait:
 
     $traits = trait_uses_recursive(\Illuminate\Notifications\Notifiable::class);
 
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}
 
-The `transform` function executes a Closure on a given value if the value is not [blank](#method-blank) and returns the result of the Closure:
+The `transform` function executes a `Closure` on a given value if the value is not [blank](#method-blank) and returns the result of the `Closure`:
 
-    transform(5, function ($value) {
+    $callback = function ($value) {
         return $value * 2;
-    });
+    };
+
+    $result = transform(5, $callback);
 
     // 10
 
-A default value or Closure may also be passed as the third parameter to the method. This value will be returned if the given value is blank:
+A default value or `Closure` may also be passed as the third parameter to the method. This value will be returned if the given value is blank:
 
-    transform(null, function ($value) {
-        return $value * 2;
-    }, 'The value is blank');
+    $result = transform(null, $callback, 'The value is blank');
 
     // The value is blank
 
@@ -1542,13 +1543,17 @@ The `validator` function creates a new [validator](/docs/{{version}}/validation)
 <a name="method-value"></a>
 #### `value()` {#collection-method}
 
-The `value` function's behavior will simply return the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed then its result will be returned:
+The `value` function returns the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed then its result will be returned:
 
-    $value = value(function () {
-        return 'bar';
+    $result = value(true);
+
+    // true
+
+    $result = value(function () {
+        return false;
     });
 
-    // bar
+    // false
 
 <a name="method-view"></a>
 #### `view()` {#collection-method}
@@ -1556,3 +1561,24 @@ The `value` function's behavior will simply return the value it is given. Howeve
 The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 
     return view('auth.login');
+
+<a name="method-with"></a>
+#### `with()` {#collection-method}
+	
+The `with` function returns the value it is given. However, if you also pass a `Closure` as a second argument to the function, the `Closure` will be executed then its result will be returned:
+
+    $callback = function ($value) {
+        return (is_numeric($value)) ? $value * 2 : 0;
+    };
+
+    $result = with(5, $callback);
+
+    // 10
+
+    $result = with(null, $callback);
+
+    // 0
+
+    $result = with(5, null);
+
+    // 5
