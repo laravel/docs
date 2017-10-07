@@ -169,8 +169,10 @@ Sometimes you may pass an array to your view with the intention of rendering it 
 However, instead of manually calling `json_encode`, you may use the `@json` Blade directive:
 
     <script>
-        var app = @json($array)
+        var app = @json($array);
     </script>
+
+> {note} Don't forget a semicolon after the `@json` directive. Blade, [like PHP](http://www.php.net/manual/en/language.basic-syntax.instruction-separation.php), eats trailing newlines after closing tags. Thus, when you usually [omit semicolons](https://github.com/laravel/framework/pull/21431) in your JavaScript code, when using this directive, you either need to add an additional newline or a semicolon at its end.
 
 <a name="blade-and-javascript-frameworks"></a>
 ### Blade & JavaScript Frameworks
