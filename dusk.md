@@ -18,6 +18,7 @@
     - [Using The Mouse](#using-the-mouse)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
+    - [Selector Hooks](#selector-hooks)
     - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
@@ -450,6 +451,30 @@ Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. Yo
     $browser->waitUsing(10, 1, function () use ($something) {
         return $something->isReady();
     }, "Something wasn't ready in time.");
+
+
+<a name="selector hooks"></a>
+### Selector Hooks
+
+Choosing good CSS Selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
+
+    // HTML...
+
+    <button>Login</button>
+
+    // Test...
+
+    $browser->click('.login-page .container div > button');
+
+Selector hooks allow you to focus on writing effective tests rather than wrangling CSS selectors. To register a hook, add a `dusk` attribute to your HTML element, then prefix the hook with `@` to use it as a selector:
+
+    // HTML...
+
+    <button dusk="login-button">Login</button>
+
+    // Test...
+
+    $browser->click('@login-button');
 
 <a name="making-vue-assertions"></a>
 ### Making Vue Assertions
