@@ -169,7 +169,7 @@ Sometimes you may pass an array to your view with the intention of rendering it 
 However, instead of manually calling `json_encode`, you may use the `@json` Blade directive:
 
     <script>
-        var app = @json($array)
+        var app = @json($array);
     </script>
 
 <a name="blade-and-javascript-frameworks"></a>
