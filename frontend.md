@@ -5,6 +5,7 @@
 - [Writing JavaScript](#writing-javascript)
     - [Writing Vue Components](#writing-vue-components)
     - [Using React](#using-react)
+    - [Using Community Built Presets](#using-community-built-presets)
 
 <a name="introduction"></a>
 ## Introduction
@@ -84,3 +85,8 @@ If you prefer to use React to build your JavaScript application, Laravel makes i
     php artisan preset react
 
 This single command will remove the Vue scaffolding and replace it with React scaffolding, including an example component.
+
+<a name="using-community-built-presets"></a>
+### Using Community Built Presets
+
+Presets for other frameworks built by community can be found here [laravel-frontend-presets](https://packagist.org/packages/laravel-frontend-presets/)
