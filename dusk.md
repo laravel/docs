@@ -10,6 +10,7 @@
     - [Creating Browsers](#creating-browsers)
     - [Authentication](#authentication)
 - [Interacting With Elements](#interacting-with-elements)
+    - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
     - [Text, Values, & Attributes](#text-values-and-attributes)
     - [Using Forms](#using-forms)
@@ -18,7 +19,6 @@
     - [Using The Mouse](#using-the-mouse)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
-    - [Selector Hooks](#selector-hooks)
     - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
@@ -225,6 +225,29 @@ Often, you will be testing pages that require authentication. You can use Dusk's
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
+
+<a name="dusk-selectors"></a>
+### Dusk Selectors
+
+Choosing good CSS selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
+
+    // HTML...
+
+    <button>Login</button>
+
+    // Test...
+
+    $browser->click('.login-page .container div > button');
+
+Dusk selectors allow you to focus on writing effective tests rather than remembering CSS selectors. To define a selector, add a `dusk` attribute to your HTML element. Then, prefix the selector with `@` to manipulate the attached element within a Dusk test:
+
+    // HTML...
+
+    <button dusk="login-button">Login</button>
+
+    // Test...
+
+    $browser->click('@login-button');
 
 <a name="clicking-links"></a>
 ### Clicking Links
@@ -451,30 +474,6 @@ Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. Yo
     $browser->waitUsing(10, 1, function () use ($something) {
         return $something->isReady();
     }, "Something wasn't ready in time.");
-
-
-<a name="selector hooks"></a>
-### Selector Hooks
-
-Choosing good CSS Selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
-
-    // HTML...
-
-    <button>Login</button>
-
-    // Test...
-
-    $browser->click('.login-page .container div > button');
-
-Selector hooks allow you to focus on writing effective tests rather than wrangling CSS selectors. To register a hook, add a `dusk` attribute to your HTML element, then prefix the hook with `@` to use it as a selector:
-
-    // HTML...
-
-    <button dusk="login-button">Login</button>
-
-    // Test...
-
-    $browser->click('@login-button');
 
 <a name="making-vue-assertions"></a>
 ### Making Vue Assertions
