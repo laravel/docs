@@ -150,6 +150,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [logger](#method-logger)
 [method_field](#method-method-field)
 [now](#method-now)
+[object_get](#method-object-get)
 [old](#method-old)
 [optional](#method-optional)
 [policy](#method-policy)
@@ -1340,6 +1341,13 @@ The `method_field` function generates an HTML `hidden` input field containing th
 The `now` function creates a new `Illuminate\Support\Carbon` instance for the current time:
 
     $now = now();
+
+<a name="method-object-get"></a>
+#### `object_get()` {#collection-method}
+
+The `object_get` function retrieves a value from a deeply nested object using "dot" notation:
+
+    $name = object_get($comment, 'user.name', 'Unknown user')
 
 <a name="method-old"></a>
 #### `old()` {#collection-method}
