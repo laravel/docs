@@ -94,6 +94,10 @@ Laravel's Flysystem integrations works great with Rackspace; however, a sample c
         'url_type'  => 'publicURL',
     ],
 
+#### Additional Plugin Integrations
+
+There are additional drivers available for Laravel's Flysystem that can be found under (Integrations)[http://flysystem.thephpleague.com/integrations/].
+
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
 
