@@ -8,6 +8,7 @@
     - [Running Tests](#running-tests)
     - [Environment Handling](#environment-handling)
     - [Creating Browsers](#creating-browsers)
+    - [Resizing Browser Windows](#resizing-browser-windows)
     - [Authentication](#authentication)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
@@ -210,6 +211,17 @@ Sometimes you may need multiple browsers in order to properly carry out a test. 
         $first->waitForText('Hey Taylor')
               ->assertSee('Jeffrey Way');
     });
+
+<a href="resizing-browser-windows"></a>
+### Resizing Browser Windows
+
+To force dusk to run tests in a certain browser window size, call the browser `resize` method:
+
+    $browser->resize(1920, 1080);
+
+If you wish to run tests with the browser window maximized, call the `maximize` method:
+    
+    $browser->maximize();
 
 <a name="authentication"></a>
 ### Authentication
