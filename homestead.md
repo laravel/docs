@@ -87,7 +87,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd Homestead
 
     // Clone the desired release...
-    git checkout v6.2.2
+    git checkout v6.3.0
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -148,7 +148,7 @@ You may also pass any options supported by Vagrant's [Synced Folders](https://ww
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on:
 
     sites:
-        - map: homestead.app
+        - map: homestead.localhost
           to: /home/vagrant/code/Laravel/public
 
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
@@ -157,11 +157,11 @@ If you change the `sites` property after provisioning the Homestead box, you sho
 
 You must add the "domains" for your Nginx sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
-    192.168.10.10  homestead.app
+    192.168.10.10  homestead.localhost
 
 Make sure the IP address listed is the one set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
 
-    http://homestead.app
+    http://homestead.localhost
 
 <a name="launching-the-vagrant-box"></a>
 ### Launching The Vagrant Box
@@ -189,7 +189,7 @@ Windows:
 
     vendor\\bin\\homestead make
 
-Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.app` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
+Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.localhost` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
 
 <a name="installing-mariadb"></a>
 ### Installing MariaDB
@@ -268,15 +268,15 @@ To connect to your MySQL or PostgreSQL database from your host machine's databas
 Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `Homestead.yaml` file:
 
     sites:
-        - map: homestead.app
+        - map: homestead.localhost
           to: /home/vagrant/code/Laravel/public
-        - map: another.app
+        - map: another.localhost
           to: /home/vagrant/code/another/public
 
 If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well:
 
-    192.168.10.10  homestead.app
-    192.168.10.10  another.app
+    192.168.10.10  homestead.localhost
+    192.168.10.10  another.localhost
 
 Once the site has been added, run the `vagrant reload --provision` command from your Homestead directory.
 
@@ -286,7 +286,7 @@ Once the site has been added, run the `vagrant reload --provision` command from 
 Homestead supports several types of sites which allow you to easily run projects that are not based on Laravel. For example, we may easily add a Symfony application to Homestead using the `symfony2` site type:
 
     sites:
-        - map: symfony2.app
+        - map: symfony2.localhost
           to: /home/vagrant/code/Symfony/web
           type: symfony2
 
@@ -298,7 +298,7 @@ The available site types are: `apache`, `laravel` (the default), `proxy`, `silve
 You may add additional Nginx `fastcgi_param` values to your site via the `params` site directive. For example, we'll add a `FOO` parameter with a value of `BAR`:
 
     sites:
-        - map: homestead.app
+        - map: homestead.localhost
           to: /home/vagrant/code/Laravel/public
           params:
               - key: FOO
@@ -312,7 +312,7 @@ Laravel provides a convenient way to [schedule Cron jobs](/docs/{{version}}/sche
 If you would like the `schedule:run` command to be run for a Homestead site, you may set the `schedule` option to `true` when defining the site:
 
     sites:
-        - map: homestead.app
+        - map: homestead.localhost
           to: /home/vagrant/code/Laravel/public
           schedule: true
 
@@ -336,6 +336,7 @@ Mailhog allows you to easily catch your outgoing email and examine it without ac
 By default, the following ports are forwarded to your Homestead environment:
 
 - **SSH:** 2222 &rarr; Forwards To 22
+- **ngrok UI:** 4040 &rarr; Forwards To 4040
 - **HTTP:** 8000 &rarr; Forwards To 80
 - **HTTPS:** 44300 &rarr; Forwards To 443
 - **MySQL:** 33060 &rarr; Forwards To 3306
@@ -358,13 +359,13 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
 
 Sometimes you may wish to share what you're currently working on with coworkers or a  client. Vagrant has a built-in way to support this via `vagrant share`; however, this will not work if you have multiple sites configured in your `Homestead.yaml` file.
 
-To solve this problem, Homestead includes its own `share` command. To get started, SSH into your Homestead machine via `vagrant ssh` and run `share homestead.app`. This will share the `homestead.app` site from your `Homestead.yaml` configuration file. Of course, you may substitute any of your other configured sites for `homestead.app`:
+To solve this problem, Homestead includes its own `share` command. To get started, SSH into your Homestead machine via `vagrant ssh` and run `share homestead.localhost`. This will share the `homestead.localhost` site from your `Homestead.yaml` configuration file. Of course, you may substitute any of your other configured sites for `homestead.localhost`:
 
-    share homestead.app
+    share homestead.localhost
 
 After running the command, you will see an Ngrok screen appear which contains the activity log and the publicly accessible URLs for the shared site. If you would like to specify a custom region, subdomain, or other Ngrok runtime option, you may add them to your `share` command:
 
-    share homestead.app -region=eu -subdomain=laravel
+    share homestead.localhost -region=eu -subdomain=laravel
 
 > {note} Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the Internet when running the `share` command.
 
@@ -376,7 +377,7 @@ After running the command, you will see an Ngrok screen appear which contains th
 Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", and "7.1":
 
     sites:
-        - map: homestead.app
+        - map: homestead.localhost
           to: /home/vagrant/code/Laravel/public
           php: "5.6"
 
