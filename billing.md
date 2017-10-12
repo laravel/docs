@@ -587,6 +587,8 @@ The invoice will be charged immediately against the user's credit card. The `inv
 
 > {note} The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
 
+> {note} If you want to use `invoiceFor` with Braintree as provider, don't forget to specify a custom option named `description`. Otherwise the method will throw an exception.
+
 <a name="invoices"></a>
 ## Invoices
 
