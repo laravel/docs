@@ -207,11 +207,11 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
 <a name="installing-elasticsearch"></a>
 ### Installing Elasticsearch
 
-To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml` file. The default installation names the cluster 'homestead', and allocates 2GB of memory. It is recommended to never give Elasticsearch more than half of the OS memory, so make sure your Homestead machine has at least 4GB of memory. If you cannot provision this much memory to Homestead, you can go as low as 1GB for Elasticsearch. Anything below this usually results in Elasticsearch crashing.
+To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml` file. The default installation will create a cluster named 'homestead' and allocate it 2GB of memory. You should never give Elasticsearch more than half of the operating system's memory, so make sure your Homestead machine has at least 4GB of memory:
 
     box: laravel/homestead
     ip: "192.168.20.20"
-    memory: 2048
+    memory: 4096
     cpus: 4
     provider: virtualbox
     elasticsearch: true
