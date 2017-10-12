@@ -7,6 +7,7 @@
     - [Launching The Vagrant Box](#launching-the-vagrant-box)
     - [Per Project Installation](#per-project-installation)
     - [Installing MariaDB](#installing-mariadb)
+    - [Installing Elasticsearch](#installing-elasticsearch)
     - [Aliases](#aliases)
 - [Daily Usage](#daily-usage)
     - [Accessing Homestead Globally](#accessing-homestead-globally)
@@ -202,6 +203,18 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
     cpus: 4
     provider: virtualbox
     mariadb: true
+
+<a name="installing-elasticsearch"></a>
+### Installing Elasticsearch
+
+To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml` file. The default installation names the cluster 'homestead', and allocates 2GB of memory. It is recommended to never give Elasticsearch more than half of the OS memory, so make sure your Homestead machine has at least 4GB of memory. If you cannot provision this much memory to Homestead, you can go as low as 1GB for Elasticsearch. Anything below this usually results in Elasticsearch crashing.
+
+    box: laravel/homestead
+    ip: "192.168.20.20"
+    memory: 2048
+    cpus: 4
+    provider: virtualbox
+    elasticsearch: true
 
 <a name="aliases"></a>
 ### Aliases
