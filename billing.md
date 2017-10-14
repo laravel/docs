@@ -312,6 +312,10 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
 Alternatively, you may set a specific quantity using the `updateQuantity` method:
 
     $user->subscription('main')->updateQuantity(10);
+    
+To remove stripe's default [prorate](https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration) calculation you can use the `noProrate()` method:
+   
+    $user->subscription('main')->noProrate()->updateQuantity(10);
 
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
 
