@@ -29,7 +29,7 @@ By default, Laravel's sample [environment configuration](/docs/{{version}}/confi
 
 #### SQLite Configuration
 
-After creating a new SQLite database using a command such as `touch database/database.sqlite`, you can easily configure your environment variables to point to this newly created database by using the database's absolute path:
+After creating a new SQLite database using a command such as `touch database/database.sqlite`, you can easily configure your environment variables in the `.env` file to point to this newly created database by using the database's absolute path:
 
     DB_CONNECTION=sqlite
     DB_DATABASE=/absolute/path/to/database.sqlite
