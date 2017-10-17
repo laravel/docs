@@ -48,6 +48,32 @@ As you can see, the original value of the column is passed to the accessor, allo
     $user = App\User::find(1);
 
     $firstName = $user->first_name;
+    
+Accessors can also be used to create attributes that don't exist otherwise:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        /**
+         * Get the user's full name.
+         *
+         * @param  string  $value
+         * @return string
+         */
+        public function getFullNameAttribute()
+        {
+            return "{$this->first_name} {$this->last_name}";
+        }
+    }
+
+    $user = App\User::find(1);
+
+    $fullName = $user->full_name;
 
 <a name="defining-a-mutator"></a>
 ### Defining A Mutator
