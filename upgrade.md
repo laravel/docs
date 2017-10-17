@@ -56,6 +56,22 @@ In previous versions of Laravel, the `$key` was passed first. Since most use cas
 
 The `make:console` command has been renamed to `make:command`.
 
+##### Closure Console Commands
+
+To register closure based console commands for your application you may add a [fresh copy of the `routes/console.php` file from github](https://github.com/laravel/laravel/blob/5.3/routes/console.php) to your application. You can load the commands from this file by [creating a `commands` method in the `app/Console/Kernel.php` file](https://github.com/laravel/laravel/blob/5.3/app/Console/Kernel.php#L31-L39):
+
+    <?php
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        require base_path('routes/console.php');
+    }
+
 ### Authentication
 
 #### Authentication Scaffolding
@@ -490,6 +506,10 @@ If you are queueing jobs using this syntax, Eloquent models will no longer be au
     Queue::push(new ClassName);
 
 ### Routing
+
+#### Routes Files
+
+Registering routes should be moved from the `app/Http/routes.php` file to the new top-level `routes/` directory which is split into two files: `routes/web.php` and `routes/api.php`. The routes in the `web` and `api` route files are automatically assigned the `web` and `api` middleware respectively by the `RouteServiceProvider`, as well as the `api` prefix for `api` routes, so any manual application of the aforementioned middleware or prefix can be removed when transferring your routes to their new location.
 
 #### Resource Parameters Are Singular By Default
 
