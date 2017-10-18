@@ -96,15 +96,17 @@ To get a better understanding of the `validate` method, let's jump back into the
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'title' => 'required|unique:posts|max:255',
             'body' => 'required',
         ]);
 
-        // The blog post is valid, store in database...
+        // The blog post is valid, and all data was stored inside $data...
     }
 
 As you can see, we simply pass the desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
+
+> {note} Since the `validate` method returns `request()->only()`, you will need to be sure and define all of your fields in the validation, even if they are not required.
 
 #### Stopping On First Validation Failure
 
