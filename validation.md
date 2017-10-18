@@ -106,6 +106,47 @@ To get a better understanding of the `validate` method, let's jump back into the
 
 As you can see, we simply pass the desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
 
+#### Retrieving data from the Validator
+A common situation after validation is get the validated data, like:
+
+    /**
+     * Store a new blog post.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ]);
+
+        $data = $request->only('title', 'body');
+
+        Post::create($data)
+    }
+
+As we validate the request, all the validated data will be available:
+
+    /**
+     * Store a new blog post.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ]);
+
+        Post::create($data)
+    }
+
+> {note} You will need to be sure and define all of your fields in the validation, even if they are not required.
+
 #### Stopping On First Validation Failure
 
 Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
