@@ -85,7 +85,9 @@ Note that we did not tell Eloquent which table to use for our `Flight` model. By
 
 Eloquent will also assume that each table has a primary key column named `id`. You may define a protected `$primaryKey` property to override this convention.
 
-In addition, Eloquent assumes that the primary key is an incrementing integer value, which means that by default the primary key will be cast to an `int` automatically. If you wish to use a non-incrementing or a non-numeric primary key you must set the public `$incrementing` property on your model to `false`.
+In addition, Eloquent automatically casts the primary key to the type defined in its `$keyType` property, defaulting to `int`.  
+To use a non-incrementing or a non-numeric primary key, set the public `$incrementing` property on your model to `false`, and the `$keyType` property to a string containing your preferred type.
+
 
 #### Timestamps
 
