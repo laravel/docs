@@ -322,7 +322,7 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
         parent::boot();
 
         Route::bind('user', function ($value) {
-            return App\User::where('name', $value)->first();
+            return App\User::where('name', $value)->first() ?? abort(404);
         });
     }
 
