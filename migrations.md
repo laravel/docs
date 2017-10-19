@@ -246,11 +246,11 @@ Command  | Description
 `$table->text('description');`  |  TEXT equivalent for the database.
 `$table->time('sunrise');`  |  TIME equivalent for the database.
 `$table->timeTz('sunrise');`  |  TIME (with timezone) equivalent for the database.
-`$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
 `$table->timestampTz('added_on');`  |  TIMESTAMP (with timezone) equivalent for the database.
 `$table->timestamps();`  |  Adds nullable `created_at` and `updated_at` columns.
 `$table->timestampsTz();`  |  Adds nullable `created_at` and `updated_at` (with timezone) columns.
+`$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
 `$table->unsignedBigInteger('votes');`  |  Unsigned BIGINT equivalent for the database.
 `$table->unsignedInteger('votes');`  |  Unsigned INT equivalent for the database.
 `$table->unsignedMediumInteger('votes');`  |  Unsigned MEDIUMINT equivalent for the database.
