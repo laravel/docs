@@ -6,6 +6,7 @@
     - [Aggregates](#aggregates)
 - [Selects](#selects)
 - [Raw Expressions](#raw-expressions)
+    - [Raw Methods](#raw-methods)
 - [Joins](#joins)
 - [Unions](#unions)
 - [Where Clauses](#where-clauses)
@@ -149,13 +150,55 @@ If you already have a query builder instance and you wish to add a column to its
 <a name="raw-expressions"></a>
 ## Raw Expressions
 
-Sometimes you may need to use a raw expression in a query. These expressions will be injected into the query as strings, so be careful not to create any SQL injection points! To create a raw expression, you may use the `DB::raw` method:
+Sometimes you may need to use a raw expression in a query. To create a raw expression, you may use the `DB::raw` method:
 
     $users = DB::table('users')
                          ->select(DB::raw('count(*) as user_count, status'))
                          ->where('status', '<>', 1)
                          ->groupBy('status')
                          ->get();
+
+> {note} Raw statements will be injected into the query as strings, so be careful about creating SQL injection points. You may be able to accomplish the same task safely using [Conditional Clauses](#conditional-clauses) or [Parameter Grouping](#parameter-grouping).
+
+<a name="raw-methods"></a>
+#### Raw Methods
+
+Instead of using `DB::raw`, you can also use the following methods to insert a raw expression into a part of your query.
+
+**selectRaw**
+
+The `selectRaw` method can be used in place of `select(DB::raw(...))`, with an optional second parameter of bindings:
+
+    $orders = DB::table('orders')
+                    ->selectRaw('price * ? as price_with_tax'), [1.0825])
+                    ->get();
+
+**whereRaw / orWhereRaw**
+
+The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clause into your query, with an optional second parameter of bindings:
+
+    $orders = DB::table('orders')
+                    ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
+                    ->get();
+
+**havingRaw / orHavingRaw**
+
+The `havingRaw` and `orHavingRaw` methods may be used to set a raw string as the value of the `having` clause, with an optional second parameter of bindings. For example, we can find all of the departments with sales greater than $2,500:
+
+    $orders = DB::table('orders')
+                    ->select('department', DB::raw('SUM(price) as total_sales'))
+                    ->groupBy('department')
+                    ->havingRaw('SUM(price) > 2500')
+                    ->get();
+
+**orderByRaw**
+
+The `orderByRaw` method will insert a raw statement in the `order by` clause, with an optional second parameter of bindings. Note that unlike [`orderBy`](#ordering-grouping-limit-and-offset), you must include the sort direction in your raw string:
+
+    $orders = DB::table('orders')
+                    ->orderByRaw('updated_at - created_at DESC')
+                    ->get();
+
 
 <a name="joins"></a>
 ## Joins
@@ -435,7 +478,7 @@ The `inRandomOrder` method may be used to sort the query results randomly. For e
                     ->inRandomOrder()
                     ->first();
 
-#### groupBy / having / havingRaw
+#### groupBy / having
 
 The `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
 
@@ -444,13 +487,7 @@ The `groupBy` and `having` methods may be used to group the query results. The `
                     ->having('account_id', '>', 100)
                     ->get();
 
-The `havingRaw` method may be used to set a raw string as the value of the `having` clause. For example, we can find all of the departments with sales greater than $2,500:
-
-    $users = DB::table('orders')
-                    ->select('department', DB::raw('SUM(price) as total_sales'))
-                    ->groupBy('department')
-                    ->havingRaw('SUM(price) > 2500')
-                    ->get();
+For more advanced `having` statements, see the [`havingRaw`](#raw-methods) method.
 
 #### skip / take
 
