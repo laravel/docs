@@ -839,6 +839,27 @@ In this example, Eloquent will only eager load posts where the post's `title` co
         $query->orderBy('created_at', 'desc');
     }])->get();
 
+If you always need the relationships to load with the model, you can define a `$with` property on your model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Book extends Model
+    {
+        /**
+         * The relationships that will always load.
+         *
+         * @var array
+         */
+        protected $with = [
+            'author',
+            'publisher'
+        ];
+    }
+
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
