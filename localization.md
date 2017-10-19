@@ -29,6 +29,8 @@ All language files simply return an array of keyed strings. For example:
         'welcome' => 'Welcome to our application'
     ];
 
+Be aware that value can only be string or array, integers and floats values will be ignored.
+
 ### Configuring The Locale
 
 The default language for your application is stored in the `config/app.php` configuration file. Of course, you may modify this value to suit the needs of your application. You may also change the active language at runtime using the `setLocale` method on the `App` facade:
