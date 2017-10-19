@@ -545,7 +545,7 @@ Finally, you may use a service like [Mailtrap](https://mailtrap.io) and the `smt
 <a name="events"></a>
 ## Events
 
-Laravel fires two events during the process of sending mail messages. Prior to a message being sent the `MessageSending` event is fired. After a message has been sent the `MessageSent` event is fired. Remember, these events are fired when the mail is being *sent*, not when it is queued. You may register an event listener for this event in your `EventServiceProvider`:
+Laravel fires two events during the process of sending mail messages. The `MessageSending` event is fired prior to a message being sent, while the `MessageSent` event is fired after a message has been sent. Remember, these events are fired when the mail is being *sent*, not when it is queued. You may register an event listener for this event in your `EventServiceProvider`:
 
     /**
      * The event listener mappings for the application.
