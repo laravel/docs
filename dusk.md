@@ -10,6 +10,7 @@
     - [Creating Browsers](#creating-browsers)
     - [Authentication](#authentication)
 - [Interacting With Elements](#interacting-with-elements)
+    - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
     - [Text, Values, & Attributes](#text-values-and-attributes)
     - [Using Forms](#using-forms)
@@ -210,6 +211,16 @@ Sometimes you may need multiple browsers in order to properly carry out a test. 
               ->assertSee('Jeffrey Way');
     });
 
+#### Resizing Browser Windows
+
+You may use the `resize` method to adjust the size of the browser window:
+
+    $browser->resize(1920, 1080);
+
+The `maximize` method may be used to maximize the browser window:
+
+    $browser->maximize();
+
 <a name="authentication"></a>
 ### Authentication
 
@@ -224,6 +235,29 @@ Often, you will be testing pages that require authentication. You can use Dusk's
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
+
+<a name="dusk-selectors"></a>
+### Dusk Selectors
+
+Choosing good CSS selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
+
+    // HTML...
+
+    <button>Login</button>
+
+    // Test...
+
+    $browser->click('.login-page .container div > button');
+
+Dusk selectors allow you to focus on writing effective tests rather than remembering CSS selectors. To define a selector, add a `dusk` attribute to your HTML element. Then, prefix the selector with `@` to manipulate the attached element within a Dusk test:
+
+    // HTML...
+
+    <button dusk="login-button">Login</button>
+
+    // Test...
+
+    $browser->click('@login-button');
 
 <a name="clicking-links"></a>
 ### Clicking Links

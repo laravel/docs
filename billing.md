@@ -313,6 +313,10 @@ Alternatively, you may set a specific quantity using the `updateQuantity` method
 
     $user->subscription('main')->updateQuantity(10);
 
+The `noProrate` method may be used to update the subscription's quantity without pro-rating the charges:
+
+    $user->subscription('main')->noProrate()->updateQuantity(10);
+
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
 
 <a name="subscription-taxes"></a>
