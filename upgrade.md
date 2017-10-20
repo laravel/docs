@@ -27,6 +27,19 @@ Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.5 support.
 
+#### Tinker
+Laravel Tinker now allows you to omit namespaces when calling your application classes. By analyzing Composer's classmap file, Tinker will attempt to find a class in the App namespace and alias it automatically.
+This feature requires adding the following to the `config` section of composer.json and then running `composer dump-autoload`:
+```
+"config": {
+    ...
+    "sort-packages": true,
+    "optimize-autoloader": true
+}
+```
+
+#### Laravel Installer
+
 > {tip} If you commonly use the Laravel installer via `laravel new`, you should update your Laravel installer package using the `composer global update` command.
 
 #### Laravel Dusk
