@@ -77,7 +77,9 @@ It is often useful to reset your database after each test so that data from a pr
 
 When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories. To get started, take a look at the `database/factories/UserFactory.php` file in your application. Out of the box, this file contains one factory definition:
 
-    $factory->define(App\User::class, function (Faker\Generator $faker) {
+    use Faker\Generator as Faker;
+
+    $factory->define(App\User::class, function (Faker $faker) {
         static $password;
 
         return [

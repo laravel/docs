@@ -75,9 +75,11 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
      */
     public function run()
     {
-        $this->call(UsersTableSeeder::class);
-        $this->call(PostsTableSeeder::class);
-        $this->call(CommentsTableSeeder::class);
+        $this->call([
+            UsersTableSeeder::class,
+            PostsTableSeeder::class,
+            CommentsTableSeeder::class,
+        ]);
     }
 
 <a name="running-seeders"></a>

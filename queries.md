@@ -149,13 +149,54 @@ If you already have a query builder instance and you wish to add a column to its
 <a name="raw-expressions"></a>
 ## Raw Expressions
 
-Sometimes you may need to use a raw expression in a query. These expressions will be injected into the query as strings, so be careful not to create any SQL injection points! To create a raw expression, you may use the `DB::raw` method:
+Sometimes you may need to use a raw expression in a query. To create a raw expression, you may use the `DB::raw` method:
 
     $users = DB::table('users')
                          ->select(DB::raw('count(*) as user_count, status'))
                          ->where('status', '<>', 1)
                          ->groupBy('status')
                          ->get();
+
+> {note} Raw statements will be injected into the query as strings, so you should be extremely careful to not create SQL injection vulnerabilities.
+
+<a name="raw-methods"></a>
+### Raw Methods
+
+Instead of using `DB::raw`, you may also use the following methods to insert a raw expression into various parts of your query.
+
+#### `selectRaw`
+
+The `selectRaw` method can be used in place of `select(DB::raw(...))`. This method accepts an optional array of bindings as its second argument:
+
+    $orders = DB::table('orders')
+                    ->selectRaw('price * ? as price_with_tax'), [1.0825])
+                    ->get();
+
+#### `whereRaw / orWhereRaw`
+
+The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clause into your query. These methods accept an optional array of bindings as their second argument:
+
+    $orders = DB::table('orders')
+                    ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
+                    ->get();
+
+#### `havingRaw / orHavingRaw`
+
+The `havingRaw` and `orHavingRaw` methods may be used to set a raw string as the value of the `having` clause:
+
+    $orders = DB::table('orders')
+                    ->select('department', DB::raw('SUM(price) as total_sales'))
+                    ->groupBy('department')
+                    ->havingRaw('SUM(price) > 2500')
+                    ->get();
+
+#### `orderByRaw`
+
+The `orderByRaw` method may be used to set a raw string as the value of the `order by` clause:
+
+    $orders = DB::table('orders')
+                    ->orderByRaw('updated_at - created_at DESC')
+                    ->get();
 
 <a name="joins"></a>
 ## Joins
@@ -435,7 +476,7 @@ The `inRandomOrder` method may be used to sort the query results randomly. For e
                     ->inRandomOrder()
                     ->first();
 
-#### groupBy / having / havingRaw
+#### groupBy / having
 
 The `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
 
@@ -444,13 +485,7 @@ The `groupBy` and `having` methods may be used to group the query results. The `
                     ->having('account_id', '>', 100)
                     ->get();
 
-The `havingRaw` method may be used to set a raw string as the value of the `having` clause. For example, we can find all of the departments with sales greater than $2,500:
-
-    $users = DB::table('orders')
-                    ->select('department', DB::raw('SUM(price) as total_sales'))
-                    ->groupBy('department')
-                    ->havingRaw('SUM(price) > 2500')
-                    ->get();
+For more advanced `having` statements, see the [`havingRaw`](#raw-methods) method.
 
 #### skip / take
 
@@ -518,7 +553,7 @@ If the table has an auto-incrementing id, use the `insertGetId` method to insert
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-> {note} When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
+> {note} When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the column name as the second parameter to the `insertGetId` method.
 
 <a name="updates"></a>
 ## Updates

@@ -27,6 +27,8 @@ Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.5 support.
 
+#### Laravel Installer
+
 > {tip} If you commonly use the Laravel installer via `laravel new`, you should update your Laravel installer package using the `composer global update` command.
 
 #### Laravel Dusk
@@ -310,6 +312,15 @@ Some authentication assertions were renamed for better consistency with the rest
 #### Mail Fake
 
 If you are using the `Mail` fake to determine if a mailable was **queued** during a request, you should now use `Mail::assertQueued` instead of `Mail::assertSent`. This distinction allows you to specifically assert that the mail was queued for background sending and not sent during the request itself.
+
+#### Tinker
+
+Laravel Tinker now supports omitting namespaces when referring to your application classes. This feature requires an optimized Composer class-map, so you should add the `optimize-autoloader` directive to the `config` section of your `composer.json` file:
+
+    "config": {
+        ...
+        "optimize-autoloader": true
+    }
 
 ### Translation
 
