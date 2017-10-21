@@ -157,14 +157,18 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
 
 #### The Hosts File
+If you don't use the autonetwork plugin, you must add the "domains" for your Nginx sites to the `hosts` file on your machine.
 
-You must add the "domains" for your Nginx sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
+The `hosts` file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
     192.168.10.10  homestead.test
 
 Make sure the IP address listed is the one set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
 
     http://homestead.test
+
+If you prefer, you can install the vagrant auto-network plugin (Run `vagrant plugin install vagrant-auto_network
+` from your host machine), and change the ip setting in your `Homestead.yaml` file to `autonetwork`. Then the plugin itself will use a unique IP address for your Virtual machines and update your hosts file automatically.
 
 <a name="launching-the-vagrant-box"></a>
 ### Launching The Vagrant Box
