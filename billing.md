@@ -46,10 +46,6 @@ First, add the Cashier package for Stripe to your dependencies:
 
     composer require "laravel/cashier":"~7.0"
 
-#### Service Provider
-
-Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/docs/{{version}}/providers) in your `config/app.php` configuration file.
-
 #### Database Migrations
 
 Before using Cashier, we'll also need to [prepare the database](/docs/{{version}}/migrations). We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
