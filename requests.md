@@ -273,6 +273,10 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
     $value = $request->cookie('name');
 
+Alternatively, you may use the `Cookie` facade to access cookie values:
+
+    $value = Cookie::get('name');
+
 #### Attaching Cookies To Responses
 
 You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and number of minutes the cookie should be considered valid to this method:
@@ -286,6 +290,12 @@ The `cookie` method also accepts a few more arguments which are used less freque
     return response('Hello World')->cookie(
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
+
+Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment to the outgoing response from your application. The `queue` method accepts a `Cookie` instance or the arguments needed to create a `Cookie` instance. These cookies will be attached to the outgoing response before it is sent to the browser:
+
+    Cookie::queue(Cookie::make('name', 'value', $minutes));
+
+    Cookie::queue('name', 'value', $minutes);
 
 #### Generating Cookie Instances
 

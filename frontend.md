@@ -60,16 +60,19 @@ By default, the Laravel `webpack.mix.js` file compiles your SASS and the `resour
 <a name="writing-vue-components"></a>
 ### Writing Vue Components
 
-By default, fresh Laravel applications contain an `Example.vue` Vue component located in the `resources/assets/js/components` directory. The `Example.vue` file is an example of a [single file Vue component](https://vuejs.org/guide/single-file-components) which defines its JavaScript and HTML template in the same file. Single file components provide a very convenient approach to building JavaScript driven applications. The example component is registered in your `app.js` file:
+By default, fresh Laravel applications contain an `ExampleComponent.vue` Vue component located in the `resources/assets/js/components` directory. The `ExampleComponent.vue` file is an example of a [single file Vue component](https://vuejs.org/guide/single-file-components) which defines its JavaScript and HTML template in the same file. Single file components provide a very convenient approach to building JavaScript driven applications. The example component is registered in your `app.js` file:
 
-    Vue.component('example', require('./components/Example.vue'));
+    Vue.component(
+        'example-component',
+        require('./components/ExampleComponent.vue')
+    );
 
 To use the component in your application, you may simply drop it into one of your HTML templates. For example, after running the `make:auth` Artisan command to scaffold your application's authentication and registration screens, you could drop the component into the `home.blade.php` Blade template:
 
     @extends('layouts.app')
 
     @section('content')
-        <example></example>
+        <example-component></example-component>
     @endsection
 
 > {tip} Remember, you should run the `npm run dev` command each time you change a Vue component. Or, you may run the `npm run watch` command to monitor and automatically recompile your components each time they are modified.
