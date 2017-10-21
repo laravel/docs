@@ -497,6 +497,14 @@ The `array_wrap` function wraps the given value in an array. If the given value 
     $array = array_wrap($string);
 
     // ['Laravel']
+  
+If the given value is null, an empty array will be returned:
+
+    $nothing = null;
+
+    $array = array_wrap($nothing);
+
+    // []
 
 <a name="method-data-fill"></a>
 #### `data_fill()` {#collection-method}
