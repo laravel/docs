@@ -169,7 +169,7 @@ Sometimes you may pass an array to your view with the intention of rendering it 
 However, instead of manually calling `json_encode`, you may use the `@json` Blade directive:
 
     <script>
-        var app = @json($array)
+        var app = @json($array);
     </script>
 
 <a name="blade-and-javascript-frameworks"></a>
@@ -516,6 +516,8 @@ Once the custom conditional has been defined, we can easily use it on our templa
 
     @env('local')
         // The application is in the local environment...
+    @elseenv('testing')
+        // The application is in the testing environment...
     @else
-        // The application is not in the local environment...
+        // The application is not in the local or testing environment...
     @endenv
