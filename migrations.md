@@ -275,7 +275,7 @@ Modifier  | Description
 `->comment('my comment')`  |  Add a comment to a column (MySQL Only)
 `->default($value)`  |  Specify a "default" value for the column
 `->first()`  |  Place the column "first" in the table (MySQL Only)
-`->nullable()`  |  Allow NULL values to be inserted into the column
+`->nullable()`  |  Allow NULL values to be inserted into the column. Can take a boolean as an argument to either add or remove the ability to insert NULL values. Defaults to true.
 `->storedAs($expression)`  |  Create a stored generated column (MySQL Only)
 `->unsigned()`  |  Set `integer` columns to `UNSIGNED`
 `->virtualAs($expression)`  |  Create a virtual generated column (MySQL Only)
@@ -302,6 +302,12 @@ We could also modify a column to be nullable:
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->nullable()->change();
+    });
+
+To undo the above change, we would pass false to the nullable modifier:
+
+    Schema::table('users', function (Blueprint $table) {
+        $table->string('name', 50)->nullable(false)->change();
     });
 
 > {note} The following column types can not be "changed": char, double, enum, mediumInteger, timestamp, tinyInteger, ipAddress, json, jsonb, macAddress, mediumIncrements, morphs, nullableMorphs, nullableTimestamps, softDeletes, timeTz, timestampTz, timestamps, timestampsTz, unsignedMediumInteger, unsignedTinyInteger, uuid.
