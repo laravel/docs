@@ -761,7 +761,7 @@ If you are listening for many events on a given model, you may use observers to 
         /**
          * Listen to the User created event.
          *
-         * @param  User  $user
+         * @param  \App\User  $user
          * @return void
          */
         public function created(User $user)
@@ -772,7 +772,7 @@ If you are listening for many events on a given model, you may use observers to 
         /**
          * Listen to the User deleting event.
          *
-         * @param  User  $user
+         * @param  \App\User  $user
          * @return void
          */
         public function deleting(User $user)
