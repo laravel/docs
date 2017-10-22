@@ -295,9 +295,9 @@ If you would like to disable the wrapping of the outer-most resource, you may us
 
 ### Wrapping Nested Resources
 
-You have total freedom to determine how your resource's relationships are wrapped. If you would like all resource collections to wrapped in a `data` key, regardless of their nesting, you should define a resource collection class for each resource and return the collection with in a `data` key.
+You have total freedom to determine how your resource's relationships are wrapped. If you would like all resource collections to be wrapped in a `data` key, regardless of their nesting, you should define a resource collection class for each resource and return the collection within a `data` key.
 
-Of course, you may be wondering if this will cause your outer-most resource to wrapped in two `data` keys. Don't worry, Laravel will never let your resources be accidentally double-wrapped, so you don't have to be concerned about the nesting level of the resource collection you are transforming:
+Of course, you may be wondering if this will cause your outer-most resource to be wrapped in two `data` keys. Don't worry, Laravel will never let your resources be accidentally double-wrapped, so you don't have to be concerned about the nesting level of the resource collection you are transforming:
 
     <?php
 
