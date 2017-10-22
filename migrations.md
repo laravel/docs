@@ -127,11 +127,13 @@ You may rollback & re-migrate a limited number of migrations by providing the `s
 
     php artisan migrate:refresh --step=5
 
-#### Drop tables & Migrate
+#### Drop All Tables & Migrate
+
+The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
 
     php artisan migrate:fresh
 
-This command is very similar to `migrate:refresh`. However, instead of rolling back your migrations via the down method of each migration, the fresh command simply drops all tables in your database and then re-applies your migrations.
+    php artisan migrate:fresh --seed
 
 <a name="tables"></a>
 ## Tables
