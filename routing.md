@@ -250,6 +250,8 @@ Route groups may also be used to handle sub-domain routing. Sub-domains may be a
         });
     });
 
+> {note} With the above example, usage of the `route()` helper method will require that you provide the `$account` variable.
+
 <a name="route-group-prefixes"></a>
 ### Route Prefixes
 
