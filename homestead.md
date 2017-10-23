@@ -389,7 +389,7 @@ After running the command, you will see an Ngrok screen appear which contains th
 
 > {note} This feature is only compatible with Nginx.
 
-Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", and "7.1":
+Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1" and "7.2":
 
     sites:
         - map: homestead.test
@@ -401,6 +401,7 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php5.6 artisan list
     php7.0 artisan list
     php7.1 artisan list
+    php7.2 artisan list
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
@@ -463,6 +464,7 @@ When you use an older version of the Homestead box you need to match that with a
 | PHP 7.1 | 4.0.0 | 1.0.0 |
 | PHP 7.1 | 5.0.0 | 2.0.0 |
 | PHP 7.1 | 6.0.0 | 3.0.0 |
+| PHP 7.2 RC3 | 6.4.0 | 4.0.0 |
 
 <a name="provider-specific-settings"></a>
 ## Provider Specific Settings
