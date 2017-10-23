@@ -145,6 +145,10 @@ Next, you may register a resourceful route to the controller:
 
     Route::resource('photos', 'PhotoController');
 
+You can also register many resource controllers at once:
+
+    Route::resources(['photos' => 'PhotoController', 'posts' => 'PostController']);
+
 This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions, including notes informing you of the HTTP verbs and URIs they handle.
 
 #### Actions Handled By Resource Controller
