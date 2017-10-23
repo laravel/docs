@@ -42,7 +42,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 <div class="content-list" markdown="1">
 - Ubuntu 16.04
 - Git
-- PHP 7.2 RC3 (default 7.1)
+- PHP 7.1
 - Nginx
 - MySQL
 - MariaDB
