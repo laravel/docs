@@ -192,7 +192,7 @@ Windows:
 
     vendor\\bin\\homestead make
 
-Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.test` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
+Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.test` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.test` or the domain of your choice.
 
 <a name="installing-mariadb"></a>
 ### Installing MariaDB
