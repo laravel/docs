@@ -176,6 +176,7 @@ The `put` method may be used to store raw file contents on a disk. You may also 
 
 If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either a `Illuminate\Http\File` or `Illuminate\Http\UploadedFile` instance and will automatically stream the file to your desired location:
 
+    use Illuminate\Http\File;
     use Illuminate\Support\Facades\Storage;
 
     // Automatically generate a unique ID for file name...
