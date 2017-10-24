@@ -385,9 +385,7 @@ If you would like to make all attributes mass assignable, you may define the `$g
 
 There are two other methods you may use to create models by mass assigning attributes: `firstOrCreate` and `firstOrNew`. The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the attributes from the first parameter, along with those in the optional second parameter.
 
-The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to call `save` manually to persist it.
-
-In addition, should the model be found in the database, the found instance *will not* be filled with the data from the second parameter. Should you require this behavior, you use the `updateOrCreate` method instead.
+The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to call `save` manually to persist it:
 
     // Retrieve flight by name, or create it if it doesn't exist...
     $flight = App\Flight::firstOrCreate(['name' => 'Flight 10']);
