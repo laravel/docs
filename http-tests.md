@@ -213,6 +213,7 @@ Method  | Description
 `$response->assertHeader($headerName, $value = null);`  |  Assert that the given header is present on the response.
 `$response->assertCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie.
 `$response->assertPlainCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie (unencrypted).
+`$response->assertCookieExpired($cookieName);`  |  Assert that the response contains the given cookie and it is expired.
 `$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
 `$response->assertSessionHasErrors(array $keys, $format = null, $errorBag = 'default');`  |  Assert that the session contains an error for the given field.
 `$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
