@@ -381,6 +381,8 @@ You can set global environment variables by adding them to your `Homestead.yaml`
         - key: FOO
           value: bar
 
+After updating the `Homestead.yaml`, be sure to re-provision the machine by running `vagrant reload --provision`. This will update the php-fpm configuration for all installed PHP versions and also set the environment for the `vagrant` user.
+
 <a name="sharing-your-environment"></a>
 ### Sharing Your Environment
 
