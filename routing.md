@@ -201,12 +201,14 @@ If you would like to determine if the current request was routed to a given name
      */
     public function handle($request, Closure $next)
     {
-        if ($request->route()->named('profile')) {
+        if ($request->routeIs('profile')) {
             //
         }
 
         return $next($request);
     }
+
+This method accepts wildcard parameters, such as ```'profile*'```, allowing you to test check against routes which may be grouped.
 
 <a name="route-groups"></a>
 ## Route Groups
