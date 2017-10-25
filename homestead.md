@@ -17,6 +17,7 @@
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring Mailhog](#configuring-mailhog)
     - [Ports](#ports)
+    - [Environment Variables](#environment-variables)
     - [Sharing Your Environment](#sharing-your-environment)
     - [Multiple PHP Versions](#multiple-php-versions)
 - [Network Interfaces](#network-interfaces)
@@ -368,6 +369,19 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
         - send: 7777
           to: 777
           protocol: udp
+
+<a name="environment-variables"></a>
+### Environment Variables
+
+You can set global environment variables by adding them to your `Homestead.yaml` file.
+
+    variables:
+        - key: APP_ENV
+          value: local
+        - key: FOO
+          value: bar
+
+After updating the `Homestead.yaml`, be sure to re-provision the machine by running `vagrant reload --provision`. This will update the php-fpm configuration for all installed PHP versions and also set the environment for the `vagrant` user.
 
 <a name="sharing-your-environment"></a>
 ### Sharing Your Environment
