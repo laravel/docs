@@ -32,7 +32,7 @@ The Artisan CLI can generate a new provider via the `make:provider` command:
 
 As mentioned previously, within the `register` method, you should only bind things into the [service container](/docs/{{version}}/container). You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method. Otherwise, you may accidentally use a service that is provided by a service provider which has not loaded yet.
 
-Let's take a look at a basic service provider. Within any of your service provider methods, you always have access to the `$app` property which provides access to the service container:
+Let's take a look at a basic service provider. Within any of your service provider methods, you always have access to the `$this->app` property which provides access to the service container:
 
     <?php
 
