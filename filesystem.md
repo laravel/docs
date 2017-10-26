@@ -60,7 +60,7 @@ Before using the S3 or Rackspace drivers, you will need to install the appropria
 
 #### S3 Driver Configuration
 
-The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials, however, the default configuration takes your existing [environment variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-environment.html) into account.
+The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
 
 #### FTP Driver Configuration
 
