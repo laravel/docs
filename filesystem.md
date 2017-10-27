@@ -291,7 +291,7 @@ The `delete` method accepts a single filename or an array of files to remove fro
 
     Storage::delete(['file1.jpg', 'file2.jpg']);
 
-In addition you can specify the disk that you want to delete the file from:
+If necessary, you may specify the disk that the file should be deleted from:
     
     use Illuminate\Support\Facades\Storage;
     
