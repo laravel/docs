@@ -99,7 +99,7 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
     bash init.sh
 
     // Windows...
-    init.bat
+    .\init.bat
 
 <a name="configuring-homestead"></a>
 ### Configuring Homestead
