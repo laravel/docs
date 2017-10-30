@@ -1345,6 +1345,26 @@ The `reverse` method reverses the order of the collection's items:
 
     // [5, 4, 3, 2, 1]
 
+`reverse`, unlike PHP's [`array_reserve`](https://secure.php.net/manual/en/function.array-reverse.php), will preserve keys by default. Pass `false` if you do not want this behaviour:
+
+    $collection = collect(['a', 'b', 'c']);
+
+    $collection->reverse()->keys()->all();
+
+    // [2, 1, 0]
+
+    $collection->reverse(false)->keys()->all();
+
+    // [0, 1, 2]
+
+No matter which version is used, string keys are always preseved:
+
+    $collection = collect([0 => 'first', 1 => 'second', 'framework' => 'laravel']);
+
+    $collection->reverse(false)->all();
+
+    // ['framework' => 'laravel', 0 => 'second', 1 => 'first']
+
 <a name="method-search"></a>
 #### `search()` {#collection-method}
 
