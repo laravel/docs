@@ -584,6 +584,8 @@ If your SMS message will contain unicode characters, you should call the `unicod
                     ->content('Your unicode message')
                     ->unicode();
     }
+    
+> {tip} Messages are limited to 160 characters before Nexmo will automatically split them and send as multiple messages. Messages that are called with `unicode` are limited to 70 characters.
 
 <a name="customizing-the-from-number"></a>
 ### Customizing The "From" Number
