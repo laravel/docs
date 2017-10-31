@@ -585,6 +585,8 @@ If your SMS message will contain unicode characters, you should call the `unicod
                     ->unicode();
     }
 
+> {tip} Current character limits for sending messages can be found [here](https://developer.nexmo.com/messaging/sms/guides/global-messaging#maximum-number-of-characters)
+
 <a name="customizing-the-from-number"></a>
 ### Customizing The "From" Number
 
