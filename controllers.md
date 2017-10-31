@@ -12,6 +12,7 @@
     - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
     - [Localizing Resource URIs](#restful-localizing-resource-uris)
     - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
+    - [Nesting Resource Controllers](#restful-nesting-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
 - [Route Caching](#route-caching)
 
@@ -255,6 +256,17 @@ If you need to add additional routes to a resource controller beyond the default
     Route::resource('photos', 'PhotoController');
 
 > {tip} Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
+
+<a name="restful-nesting-resource-controllers"></a>
+### Nesting Resource Controllers
+
+To register "nested" resource controllers, use the "dot" notation in your route declaration:
+
+    Route::resource('photos.comments', 'PhotoCommentController');
+    
+This will create routes such as `photos/{photo}/comments/{comment}` which are appropriately named (e.g. `photos.comments.update`). To create a nested resource controller using the `make:controller` Artisan command, you need to define the model and its parent.
+
+    php artisan make:controller PhotoCommentController --model=Comment --parent=Photo 
 
 <a name="dependency-injection-and-controllers"></a>
 ## Dependency Injection & Controllers
