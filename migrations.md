@@ -215,7 +215,7 @@ Command  | Description
 `$table->bigInteger('votes');`  |  BIGINT equivalent column.
 `$table->binary('data');`  |  BLOB equivalent column.
 `$table->boolean('confirmed');`  |  BOOLEAN equivalent column.
-`$table->char('name', 100);`  |  CHAR equivalent column with a optional length.
+`$table->char('name', 100);`  |  CHAR equivalent column with an optional length.
 `$table->date('created_at');`  |  DATE equivalent column.
 `$table->dateTime('created_at');`  |  DATETIME equivalent column.
 `$table->dateTimeTz('created_at');`  |  DATETIME (with timezone) equivalent column.
