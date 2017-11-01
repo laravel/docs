@@ -654,6 +654,7 @@ When using this method of authentication, Axios will automatically send the `X-C
 
 > {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
 
+> {note} You should make sure that `X-CSRF-TOKEN` [is available in a HTML meta tag.](/docs/{{version}}/csrf#csrf-x-csrf-token)
 
 <a name="events"></a>
 ## Events
