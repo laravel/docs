@@ -33,6 +33,7 @@
 - [Continuous Integration](#continuous-integration)
     - [Travis CI](#running-tests-on-travis-ci)
     - [CircleCI](#running-tests-on-circle-ci)
+    - [Codeship](#running-tests-on-codeship)
 
 <a name="introduction"></a>
 ## Introduction
@@ -896,3 +897,15 @@ If you are using CircleCI 1.0 to run your Dusk tests, you may use this configura
                 - run:
                    name: Run Laravel Dusk Tests
                    command: php artisan dusk
+
+<a name="running-tests-on-codeship"></a>
+### Codeship
+
+Running Dusk tests on [Codeship](https://codeship.com) is as simple as adding several setup commands to your Codeship Basic project. Set your desired PHP version and the latest version of Chrome is already installed:
+
+    phpenv local 7.1
+    cp .env.testing .env
+    composer install --no-interaction
+    nohup bash -c "./vendor/laravel/dusk/bin/chromedriver-linux 2>&1 &"
+    nohup bash -c "php artisan serve 2>&1 &" && sleep 5
+    php artisan dusk
