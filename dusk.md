@@ -901,7 +901,7 @@ If you are using CircleCI 1.0 to run your Dusk tests, you may use this configura
 <a name="running-tests-on-codeship"></a>
 ### Codeship
 
-Running Dusk tests on [Codeship](https://codeship.com) is as simple as adding several setup commands to your Codeship Basic project. Set your desired PHP version and the latest version of Chrome is already installed:
+To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. Of course, these commands are simply a starting point and you are free to add additional commands as needed:
 
     phpenv local 7.1
     cp .env.testing .env
