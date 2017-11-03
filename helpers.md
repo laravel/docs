@@ -517,7 +517,7 @@ This function also accepts asterisks as wildcards and will fill the target accor
 
     $data = [
         'products' => [
-            ['name' => 'Desk 1' => 'price' => 100],
+            ['name' => 'Desk 1', 'price' => 100],
             ['name' => 'Desk 2'],
         ],
     ];
@@ -527,8 +527,8 @@ This function also accepts asterisks as wildcards and will fill the target accor
     /*
         [
             'products' => [
-                ['name' => 'Desk 1' => 'price' => 100],
-                ['name' => 'Desk 2' => 'price' => 200],
+                ['name' => 'Desk 1', 'price' => 100],
+                ['name' => 'Desk 2', 'price' => 200],
             ],
         ]
     */
@@ -575,8 +575,8 @@ This function also accepts wildcards and will set values on the target according
     /*
         [
             'products' => [
-                ['name' => 'Desk 1' => 'price' => 200],
-                ['name' => 'Desk 2' => 'price' => 200],
+                ['name' => 'Desk 1', 'price' => 200],
+                ['name' => 'Desk 2', 'price' => 200],
             ],
         ]
     */
