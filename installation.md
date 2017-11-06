@@ -39,14 +39,12 @@ First, download the Laravel installer using Composer:
 
     composer global require "laravel/installer"
 
-Make sure to place composer's system-wide vendor bin directory in your `$PATH` so the laravel executable can be located by your system. It can be different on each system, but some common locations include:
+Make sure to place composer's system-wide vendor bin directory in your `$PATH` so the laravel executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
 
- * MacOS: `$HOME/.composer/vendor/bin`
- * Most GNU/Linux distributions: `$HOME/.config/composer/vendor/bin`
- 
-However, some distributions or operating systems may use a different path. If you're having trouble finding this directory, composer could assist you in finding it:
-    
-    composer config --list --global | grep "\[home\]" | awk '{print $2}'
+<div class="content-list" markdown="1">
+- MacOS: `$HOME/.composer/vendor/bin`
+- GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin`
+</div>
 
 Once installed, the `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed:
 
