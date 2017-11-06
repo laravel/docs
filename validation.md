@@ -886,7 +886,7 @@ The field under validation must be a string. If you would like to allow the fiel
 The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function.
 
 <a name="rule-unique"></a>
-#### unique:_table_,_column_,_except_,_idColumn_
+#### unique:_table_,_column_,_except_id_,_Column_
 
 The field under validation must be unique in a given database table. If the `column` option is not specified, the field name will be used.
 
