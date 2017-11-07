@@ -38,7 +38,11 @@ Two of the primary benefits of using Blade are _template inheritance_ and _secti
 
     <html>
         <head>
-            <title>App Name - @yield('title')</title>
+            @hasSection('title)
+                <title>App Name - @yield('title')</title>
+            @else
+                <title>App Name</title>
+            @endif
         </head>
         <body>
             @section('sidebar')
