@@ -217,6 +217,8 @@ The `cursor` method allows you to iterate through your database records using a 
         //
     }
 
+The downside is that each row is fetched individually, meaning it will ask the database for the next row untill now rows is left, which results in a lot of calls to the database. Still only executing a single query.
+
 <a name="retrieving-single-models"></a>
 ## Retrieving Single Models / Aggregates
 
