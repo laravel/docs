@@ -1,14 +1,13 @@
-# Social Authentication (Laravel Socialite)
+# Laravel Socialite
 
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
-    - [Routing](#routing)
-    - [Optional Parameters](#optional-parameters)
-    - [Access Scopes](#access-scopes)
-    - [Stateless Authentication](#stateless-authentication)
-    - [Retrieving User Details](#retrieving-user-details)
+- [Routing](#routing)
+- [Optional Parameters](#optional-parameters)
+- [Access Scopes](#access-scopes)
+- [Stateless Authentication](#stateless-authentication)
+- [Retrieving User Details](#retrieving-user-details)
 
 <a name="introduction"></a>
 ## Introduction
@@ -37,13 +36,10 @@ After installing the Socialite library, you will also need to add credentials fo
         'redirect' => 'http://your-callback-url',
     ],
 
-If the `redirect` option contains a relative path, it will automatically be resolved to a fully qualified URL.
-
-<a name="basic-usage"></a>
-## Basic Usage
+> {tip} If the `redirect` option contains a relative path, it will automatically be resolved to a fully qualified URL.
 
 <a name="routing"></a>
-### Routing
+## Routing
 
 Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. We will access Socialite using the `Socialite` facade:
 
@@ -86,7 +82,7 @@ Of course, you will need to define routes to your controller methods:
     Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');
 
 <a name="optional-parameters"></a>
-### Optional Parameters
+## Optional Parameters
 
 A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
 
@@ -94,10 +90,10 @@ A number of OAuth providers support optional parameters in the redirect request.
         ->with(['hd' => 'example.com'])
         ->redirect();
 
-When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
+> {note} When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
 
 <a name="access-scopes"></a>
-### Access Scopes
+## Access Scopes
 
 Before redirecting the user, you may also add additional "scopes" on the request using the `scopes` method. This method will merge all existing scopes with the ones you supply:
 
@@ -112,14 +108,14 @@ You can overwrite all exisiting scopes using the `setScopes` method:
         ->redirect();
 
 <a name="stateless-authentication"></a>
-### Stateless Authentication
+## Stateless Authentication
 
 The `stateless` method may be used to disable session state verification. This is useful when adding social authentication to an API:
 
     return Socialite::driver('google')->stateless()->user();
 
 <a name="retrieving-user-details"></a>
-### Retrieving User Details
+## Retrieving User Details
 
 Once you have a user instance, you can grab a few more details about the user:
 
@@ -141,7 +137,7 @@ Once you have a user instance, you can grab a few more details about the user:
     $user->getEmail();
     $user->getAvatar();
 
-#### Retrieving User Details From Token
+#### Retrieving User Details From A Token
 
 If you already have a valid access token for a user, you can retrieve their details using the `userFromToken` method:
 
