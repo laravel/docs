@@ -160,7 +160,7 @@ You may easily check for the existence of a table or column using the `hasTable`
         //
     }
 
-#### Connection & Storage Engine
+#### Database Connection & Table Options
 
 If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
 
@@ -168,13 +168,14 @@ If you want to perform a schema operation on a database connection that is not y
         $table->increments('id');
     });
 
-You may use the `engine` property on the schema builder to define the table's storage engine:
+You may use the following commands on the schema builder to define the table's options:
 
-    Schema::create('users', function (Blueprint $table) {
-        $table->engine = 'InnoDB';
-
-        $table->increments('id');
-    });
+Command  |  Description
+-------  |  -----------
+`$table->engine = 'InnoDB';`  |  Specify the table storage engine (MySQL)
+`$table->charset = 'utf8';`  |  Specify a default character set for the table (MySQL)
+`$table->collation = 'utf8_unicode_ci';`  |  Specify a default collation for the table (MySQL)
+`$table->temporary();`  |  Create a temporary table (except SQL Server)
 
 <a name="renaming-and-dropping-tables"></a>
 ### Renaming / Dropping Tables
@@ -209,8 +210,8 @@ The `table` method on the `Schema` facade may be used to update existing tables.
 
 Of course, the schema builder contains a variety of column types that you may specify when building your tables:
 
-Command  | Description
-------------- | -------------
+Command  |  Description
+-------  |  -----------
 `$table->bigIncrements('id');`  |  Auto-incrementing UNSIGNED BIGINT (primary key) equivalent column.
 `$table->bigInteger('votes');`  |  BIGINT equivalent column.
 `$table->binary('data');`  |  BLOB equivalent column.
@@ -233,7 +234,7 @@ Command  | Description
 `$table->lineString('positions');`  |  LINESTRING equivalent column.
 `$table->longText('description');`  |  LONGTEXT equivalent column.
 `$table->macAddress('device');`  |  MAC address equivalent column.
-`$table->mediumIncrements('id');`  |  Auto-incrementing UNSIGNED MEDIUMINT (primary key) equivalent colum.
+`$table->mediumIncrements('id');`  |  Auto-incrementing UNSIGNED MEDIUMINT (primary key) equivalent column.
 `$table->mediumInteger('votes');`  |  MEDIUMINT equivalent column.
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent column.
 `$table->morphs('taggable');`  |  Adds `taggable_id` UNSIGNED INTEGER and `taggable_type` VARCHAR equivalent columns.
@@ -241,7 +242,7 @@ Command  | Description
 `$table->multiPoint('positions');`  |  MULTIPOINT equivalent column.
 `$table->multiPolygon('positions');`  |  MULTIPOLYGON equivalent column.
 `$table->nullableMorphs('taggable');`  |  Adds nullable versions of `morphs()` columns.
-`$table->nullableTimestamps();`  |  Adds nullable versions of `timestamps()` columns.
+`$table->nullableTimestamps();`  |  Alias of `timestamps()` method.
 `$table->point('position');`  |  POINT equivalent column.
 `$table->polygon('positions');`  |  POLYGON equivalent column.
 `$table->rememberToken();`  |  Adds a nullable `remember_token` VARCHAR(100) equivalent column.
@@ -278,8 +279,8 @@ In addition to the column types listed above, there are several column "modifier
 
 Below is a list of all the available column modifiers. This list does not include the [index modifiers](#creating-indexes):
 
-Modifier  | Description
-------------- | -------------
+Modifier  |  Description
+--------  |  -----------
 `->after('column')`  |  Place the column "after" another column (MySQL)
 `->autoIncrement()`  |  Set INTEGER columns as auto-increment (primary key)
 `->charset('utf8')`  |  Specify a character set for the column (MySQL)
@@ -316,7 +317,7 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} The following column types can not be "changed": char, double, enum, mediumInteger, timestamp, tinyInteger, ipAddress, json, jsonb, macAddress, mediumIncrements, morphs, nullableMorphs, nullableTimestamps, softDeletes, timeTz, timestampTz, timestamps, timestampsTz, unsignedMediumInteger, unsignedTinyInteger, uuid.
+> {note} Only the following column types can be "changed": bigInteger, binary, boolean, date, dateTime, dateTimeTz, decimal, integer, json, longText, mediumText, smallInteger, string, text, time, unsignedBigInteger, unsignedInteger and unsignedSmallInteger.
 
 #### Renaming Columns
 
@@ -345,6 +346,16 @@ You may drop multiple columns from a table by passing an array of column names t
 
 > {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
 
+#### Available Command Aliases
+
+Command  |  Description
+-------  |  -----------
+`$table->dropRememberToken();`  |  Drop the `remember_token` column
+`$table->dropSoftDeletes();`  |  Drop the `deleted_at` column
+`$table->dropSoftDeletesTz();`  |  Alias of `dropSoftDeletes()` method
+`$table->dropTimestamps();`  |  Drop the `created_at` and `updated_at` columns
+`$table->dropTimestampsTz();` |  Alias of `dropTimestamps()` method
+
 <a name="indexes"></a>
 ## Indexes
 
@@ -369,13 +380,13 @@ Laravel will automatically generate a reasonable index name, but you may pass a 
 
 #### Available Index Types
 
-Command  | Description
-------------- | -------------
+Command  |  Description
+-------  |  -----------
 `$table->primary('id');`  |  Adds a primary key.
 `$table->primary(['id', 'parent_id']);`  |  Adds composite keys.
 `$table->unique('email');`  |  Adds a unique index.
 `$table->index('state');`  |  Adds a plain index.
-`$table->spatialIndex('location');`  |  Adds a spatial index. (MySQL)
+`$table->spatialIndex('location');`  |  Adds a spatial index. (except SQLite)
 
 #### Index Lengths & MySQL / MariaDB
 
@@ -400,11 +411,12 @@ Alternatively, you may enable the `innodb_large_prefix` option for your database
 
 To drop an index, you must specify the index's name. By default, Laravel automatically assigns a reasonable name to the indexes. Simply concatenate the table name, the name of the indexed column, and the index type. Here are some examples:
 
-Command  | Description
-------------- | -------------
+Command  |  Description
+-------  |  -----------
 `$table->dropPrimary('users_id_primary');`  |  Drop a primary key from the "users" table.
 `$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
 `$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
+`$table->dropSpatialIndex('geo_location_spatialindex');`  |  Drop a spatial index from the "geo" table. (except SQLite)
 
 If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type:
 
