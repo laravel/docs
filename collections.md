@@ -225,7 +225,7 @@ The `combine` method combines the keys of the collection with the values of anot
 <a name="method-concat"></a>
 #### `concat()` {#collection-method}
  
-The `concat` method appends the given `array` or collection values into the end of the collection, ignoring any existing keys in the given items:
+The `concat` method appends the given `array` or collection values onto the end of the collection, ignoring any existing keys in the given items:
  
     $collection = collect(['John Doe']);
  
