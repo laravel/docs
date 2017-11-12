@@ -75,4 +75,4 @@
     - [Envoy](/docs/{{version}}/envoy)
     - [Passport](/docs/{{version}}/passport)
     - [Scout](/docs/{{version}}/scout)
-    - [Socialite](https://github.com/laravel/socialite)
+    - [Socialite](/docs/{{version}}/socialite)
