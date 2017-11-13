@@ -172,10 +172,10 @@ You may use the following commands on the schema builder to define the table's o
 
 Command  |  Description
 -------  |  -----------
-`$table->engine = 'InnoDB';`  |  Specify the table storage engine (MySQL)
-`$table->charset = 'utf8';`  |  Specify a default character set for the table (MySQL)
-`$table->collation = 'utf8_unicode_ci';`  |  Specify a default collation for the table (MySQL)
-`$table->temporary();`  |  Create a temporary table (except SQL Server)
+`$table->engine = 'InnoDB';`  |  Specify the table storage engine (MySQL).
+`$table->charset = 'utf8';`  |  Specify a default character set for the table (MySQL).
+`$table->collation = 'utf8_unicode_ci';`  |  Specify a default collation for the table (MySQL).
+`$table->temporary();`  |  Create a temporary table (except SQL Server).
 
 <a name="renaming-and-dropping-tables"></a>
 ### Renaming / Dropping Tables
@@ -350,11 +350,11 @@ You may drop multiple columns from a table by passing an array of column names t
 
 Command  |  Description
 -------  |  -----------
-`$table->dropRememberToken();`  |  Drop the `remember_token` column
-`$table->dropSoftDeletes();`  |  Drop the `deleted_at` column
-`$table->dropSoftDeletesTz();`  |  Alias of `dropSoftDeletes()` method
-`$table->dropTimestamps();`  |  Drop the `created_at` and `updated_at` columns
-`$table->dropTimestampsTz();` |  Alias of `dropTimestamps()` method
+`$table->dropRememberToken();`  |  Drop the `remember_token` column.
+`$table->dropSoftDeletes();`  |  Drop the `deleted_at` column.
+`$table->dropSoftDeletesTz();`  |  Alias of `dropSoftDeletes()` method.
+`$table->dropTimestamps();`  |  Drop the `created_at` and `updated_at` columns.
+`$table->dropTimestampsTz();` |  Alias of `dropTimestamps()` method.
 
 <a name="indexes"></a>
 ## Indexes
@@ -416,7 +416,7 @@ Command  |  Description
 `$table->dropPrimary('users_id_primary');`  |  Drop a primary key from the "users" table.
 `$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
 `$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
-`$table->dropSpatialIndex('geo_location_spatialindex');`  |  Drop a spatial index from the "geo" table. (except SQLite)
+`$table->dropSpatialIndex('geo_location_spatialindex');`  |  Drop a spatial index from the "geo" table  (except SQLite).
 
 If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type:
 
