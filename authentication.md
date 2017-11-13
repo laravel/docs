@@ -354,7 +354,7 @@ Next, [register the route middleware](/docs/{{version}}/middleware#registering-m
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards
 
-You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place this call to `provider` within a [service provider](/docs/{{version}}/providers). Since Laravel already ships with an `AuthServiceProvider`, we can place the code in that provider:
+You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers). Since Laravel already ships with an `AuthServiceProvider`, we can place the code in that provider:
 
     <?php
 
