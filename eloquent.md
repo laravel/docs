@@ -383,7 +383,7 @@ If you would like to make all attributes mass assignable, you may define the `$g
 
 #### `firstOrCreate`/ `firstOrNew`
 
-There are two other methods you may use to create models by mass assigning attributes: `firstOrCreate` and `firstOrNew`. The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the given attributes.
+There are two other methods you may use to create models by mass assigning attributes: `firstOrCreate` and `firstOrNew`. The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the attributes from the first parameter, along with those in the optional second parameter.
 
 The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to call `save` manually to persist it:
 
@@ -761,7 +761,7 @@ If you are listening for many events on a given model, you may use observers to 
         /**
          * Listen to the User created event.
          *
-         * @param  User  $user
+         * @param  \App\User  $user
          * @return void
          */
         public function created(User $user)
@@ -772,7 +772,7 @@ If you are listening for many events on a given model, you may use observers to 
         /**
          * Listen to the User deleting event.
          *
-         * @param  User  $user
+         * @param  \App\User  $user
          * @return void
          */
         public function deleting(User $user)

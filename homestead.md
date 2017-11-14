@@ -14,6 +14,7 @@
     - [Connecting Via SSH](#connecting-via-ssh)
     - [Connecting To Databases](#connecting-to-databases)
     - [Adding Additional Sites](#adding-additional-sites)
+    - [Environment Variables](#environment-variables)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring Mailhog](#configuring-mailhog)
     - [Ports](#ports)
@@ -192,7 +193,7 @@ Windows:
 
     vendor\\bin\\homestead make
 
-Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.test` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
+Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.test` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.test` or the domain of your choice.
 
 <a name="installing-mariadb"></a>
 ### Installing MariaDB
@@ -319,6 +320,19 @@ You may add additional Nginx `fastcgi_param` values to your site via the `params
               - key: FOO
                 value: BAR
 
+<a name="environment-variables"></a>
+### Environment Variables
+
+You can set global environment variables by adding them to your `Homestead.yaml` file:
+
+    variables:
+        - key: APP_ENV
+          value: local
+        - key: FOO
+          value: bar
+
+After updating the `Homestead.yaml`, be sure to re-provision the machine by running `vagrant reload --provision`. This will update the PHP-FPM configuration for all of the installed PHP versions and also update the environment for the `vagrant` user.
+
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules
 
@@ -389,7 +403,7 @@ After running the command, you will see an Ngrok screen appear which contains th
 
 > {note} This feature is only compatible with Nginx.
 
-Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", and "7.1":
+Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1" and "7.2":
 
     sites:
         - map: homestead.test
@@ -401,6 +415,7 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php5.6 artisan list
     php7.0 artisan list
     php7.1 artisan list
+    php7.2 artisan list
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
@@ -463,6 +478,7 @@ When you use an older version of the Homestead box you need to match that with a
 | PHP 7.1 | 4.0.0 | 1.0.0 |
 | PHP 7.1 | 5.0.0 | 2.0.0 |
 | PHP 7.1 | 6.0.0 | 3.0.0 |
+| PHP 7.2 RC3 | 6.4.0 | 4.0.0 |
 
 <a name="provider-specific-settings"></a>
 ## Provider Specific Settings

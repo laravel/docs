@@ -255,7 +255,7 @@ In contrast, this statement would remove only caches tagged with `authors`, so `
 <a name="writing-the-driver"></a>
 ### Writing The Driver
 
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts) contract. So, a MongoDB cache implementation would look something like this:
+To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts). So, a MongoDB cache implementation would look something like this:
 
     <?php
 

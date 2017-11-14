@@ -147,6 +147,13 @@ Next, you may register a resourceful route to the controller:
 
 This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions, including notes informing you of the HTTP verbs and URIs they handle.
 
+You may register many resource controllers at once by passing an array to the `resources` method:
+
+    Route::resources([
+        'photos' => 'PhotoController',
+        'posts' => 'PostController'
+    ]);
+
 #### Actions Handled By Resource Controller
 
 Verb      | URI                  | Action       | Route Name
@@ -189,6 +196,13 @@ When declaring a resource route, you may specify a subset of actions the control
 When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
 
     Route::apiResource('photo', 'PhotoController');
+    
+You may register many API resource controllers at once by passing an array to the `apiResources` method:
+
+    Route::apiResources([
+        'photos' => 'PhotoController',
+        'posts' => 'PostController'
+    ]);
 
 <a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes

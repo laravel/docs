@@ -34,20 +34,6 @@ After creating a new SQLite database using a command such as `touch database/dat
     DB_CONNECTION=sqlite
     DB_DATABASE=/absolute/path/to/database.sqlite
 
-#### SQL Server Configuration
-
-Laravel supports SQL Server out of the box; however, you will need to add the connection configuration for the database to your `config/database.php` configuration file:
-
-    'sqlsrv' => [
-        'driver' => 'sqlsrv',
-        'host' => env('DB_HOST', 'localhost'),
-        'database' => env('DB_DATABASE', 'forge'),
-        'username' => env('DB_USERNAME', 'forge'),
-        'password' => env('DB_PASSWORD', ''),
-        'charset' => 'utf8',
-        'prefix' => '',
-    ],
-
 <a name="read-and-write-connections"></a>
 ### Read & Write Connections
 
@@ -234,4 +220,4 @@ Lastly, you can commit a transaction via the `commit` method:
 
     DB::commit();
 
-> {tip} Using the `DB` facade's transaction methods also controls transactions for the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+> {tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
