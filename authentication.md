@@ -90,7 +90,7 @@ By default, Laravel uses the `email` field for authentication. If you would like
 
     public function username()
     {
-        return 'username';
+        return 'user';
     }
 
 #### Guard Customization
