@@ -213,6 +213,8 @@ Method  | Description
 `$response->assertHeader($headerName, $value = null);`  |  Assert that the given header is present on the response.
 `$response->assertCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie.
 `$response->assertPlainCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie (unencrypted).
+`$response->assertCookieExpired($cookieName);`  |  Assert that the response contains the given cookie and it is expired.
+`$response->assertCookieMissing($cookieName);`  |  Assert that the response does not contains the given cookie.
 `$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
 `$response->assertSessionHasErrors(array $keys, $format = null, $errorBag = 'default');`  |  Assert that the session contains an error for the given field.
 `$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
@@ -223,6 +225,7 @@ Method  | Description
 `$response->assertJsonStructure(array $structure);`  |  Assert that the response has a given JSON structure.
 `$response->assertViewIs($value);`  |  Assert that the given view was returned by the route.
 `$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data.
+`$response->assertViewHasAll(array $data);`  |  Assert that the response view has a given list of data.
 `$response->assertViewMissing($key);`  |  Assert that the response view is missing a piece of bound data.
 `$response->assertSee($value);`  |  Assert that the given string is contained within the response.
 `$response->assertDontSee($value);`  |  Assert that the given string is not contained within the response.

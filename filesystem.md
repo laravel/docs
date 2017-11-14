@@ -60,7 +60,7 @@ Before using the S3 or Rackspace drivers, you will need to install the appropria
 
 #### S3 Driver Configuration
 
-The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials.
+The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
 
 #### FTP Driver Configuration
 
@@ -177,6 +177,7 @@ The `put` method may be used to store raw file contents on a disk. You may also 
 If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either a `Illuminate\Http\File` or `Illuminate\Http\UploadedFile` instance and will automatically stream the file to your desired location:
 
     use Illuminate\Http\File;
+    use Illuminate\Support\Facades\Storage;
 
     // Automatically generate a unique ID for file name...
     Storage::putFile('photos', new File('/path/to/photo'));
@@ -289,6 +290,12 @@ The `delete` method accepts a single filename or an array of files to remove fro
     Storage::delete('file.jpg');
 
     Storage::delete(['file1.jpg', 'file2.jpg']);
+
+If necessary, you may specify the disk that the file should be deleted from:
+    
+    use Illuminate\Support\Facades\Storage;
+    
+    Storage::disk('s3')->delete('folder_path/file_name.jpg');
 
 <a name="directories"></a>
 ## Directories

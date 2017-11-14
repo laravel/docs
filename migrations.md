@@ -83,7 +83,6 @@ Within both of these methods you may use the Laravel schema builder to expressiv
         }
     }
 
-
 <a name="running-migrations"></a>
 ## Running Migrations
 
@@ -127,6 +126,14 @@ You may rollback & re-migrate a limited number of migrations by providing the `s
 
     php artisan migrate:refresh --step=5
 
+#### Drop All Tables & Migrate
+
+The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
+
+    php artisan migrate:fresh
+
+    php artisan migrate:fresh --seed
+
 <a name="tables"></a>
 ## Tables
 
@@ -153,7 +160,7 @@ You may easily check for the existence of a table or column using the `hasTable`
         //
     }
 
-#### Connection & Storage Engine
+#### Database Connection & Table Options
 
 If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
 
@@ -161,13 +168,14 @@ If you want to perform a schema operation on a database connection that is not y
         $table->increments('id');
     });
 
-You may use the `engine` property on the schema builder to define the table's storage engine:
+You may use the following commands on the schema builder to define the table's options:
 
-    Schema::create('users', function (Blueprint $table) {
-        $table->engine = 'InnoDB';
-
-        $table->increments('id');
-    });
+Command  |  Description
+-------  |  -----------
+`$table->engine = 'InnoDB';`  |  Specify the table storage engine (MySQL).
+`$table->charset = 'utf8';`  |  Specify a default character set for the table (MySQL).
+`$table->collation = 'utf8_unicode_ci';`  |  Specify a default collation for the table (MySQL).
+`$table->temporary();`  |  Create a temporary table (except SQL Server).
 
 <a name="renaming-and-dropping-tables"></a>
 ### Renaming / Dropping Tables
@@ -202,61 +210,63 @@ The `table` method on the `Schema` facade may be used to update existing tables.
 
 Of course, the schema builder contains a variety of column types that you may specify when building your tables:
 
-Command  | Description
-------------- | -------------
-`$table->bigIncrements('id');`  |  Incrementing ID (primary key) using a "UNSIGNED BIG INTEGER" equivalent.
-`$table->bigInteger('votes');`  |  BIGINT equivalent for the database.
-`$table->binary('data');`  |  BLOB equivalent for the database.
-`$table->boolean('confirmed');`  |  BOOLEAN equivalent for the database.
-`$table->char('name', 4);`  |  CHAR equivalent with a length.
-`$table->date('created_at');`  |  DATE equivalent for the database.
-`$table->dateTime('created_at');`  |  DATETIME equivalent for the database.
-`$table->dateTimeTz('created_at');`  |  DATETIME (with timezone) equivalent for the database.
-`$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale.
-`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point.
-`$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent for the database.
-`$table->float('amount', 8, 2);`  |  FLOAT equivalent for the database, 8 digits in total and 2 after the decimal point.
-`$table->geometry('column');`  | GEOMETRY equivalent for the database.
-`$table->geometryCollection('column');`  | GEOMETRYCOLLECTION equivalent for the database.
-`$table->increments('id');`  |  Incrementing ID (primary key) using a "UNSIGNED INTEGER" equivalent.
-`$table->integer('votes');`  |  INTEGER equivalent for the database.
-`$table->ipAddress('visitor');`  |  IP address equivalent for the database.
-`$table->json('options');`  |  JSON equivalent for the database.
-`$table->jsonb('options');`  |  JSONB equivalent for the database.
-`$table->lineString('column');`  |  LINESTRING equivalent for the database.
-`$table->longText('description');`  |  LONGTEXT equivalent for the database.
-`$table->macAddress('device');`  |  MAC address equivalent for the database.
-`$table->mediumIncrements('id');`  |  Incrementing ID (primary key) using a "UNSIGNED MEDIUM INTEGER" equivalent.
-`$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent for the database.
-`$table->mediumText('description');`  |  MEDIUMTEXT equivalent for the database.
-`$table->morphs('taggable');`  |  Adds unsigned INTEGER `taggable_id` and STRING `taggable_type`.
-`$table->multiLineString('column');`  |  MULTILINESTRING equivalent for the database.
-`$table->multiPoint('column');`  |  MULTIPOINT equivalent for the database.
-`$table->multiPolygon('column');`  |  MULTIPOLYGON equivalent for the database.
-`$table->nullableMorphs('taggable');`  |  Nullable versions of the `morphs()` columns.
-`$table->nullableTimestamps();`  |  Nullable versions of the `timestamps()` columns.
-`$table->point('column');`  | POINT equivalent for the database.
-`$table->polygon('column');`  | POLYGON equivalent for the database.
-`$table->rememberToken();`  |  Adds `remember_token` as VARCHAR(100) NULL.
-`$table->smallIncrements('id');`  |  Incrementing ID (primary key) using a "UNSIGNED SMALL INTEGER" equivalent.
-`$table->smallInteger('votes');`  |  SMALLINT equivalent for the database.
-`$table->softDeletes();`  |  Adds nullable `deleted_at` column for soft deletes.
-`$table->string('email');`  |  VARCHAR equivalent column.
-`$table->string('name', 100);`  |  VARCHAR equivalent with a length.
-`$table->text('description');`  |  TEXT equivalent for the database.
-`$table->time('sunrise');`  |  TIME equivalent for the database.
-`$table->timeTz('sunrise');`  |  TIME (with timezone) equivalent for the database.
-`$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
-`$table->timestampTz('added_on');`  |  TIMESTAMP (with timezone) equivalent for the database.
-`$table->timestamps();`  |  Adds nullable `created_at` and `updated_at` columns.
-`$table->timestampsTz();`  |  Adds nullable `created_at` and `updated_at` (with timezone) columns.
-`$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
-`$table->unsignedBigInteger('votes');`  |  Unsigned BIGINT equivalent for the database.
-`$table->unsignedInteger('votes');`  |  Unsigned INT equivalent for the database.
-`$table->unsignedMediumInteger('votes');`  |  Unsigned MEDIUMINT equivalent for the database.
-`$table->unsignedSmallInteger('votes');`  |  Unsigned SMALLINT equivalent for the database.
-`$table->unsignedTinyInteger('votes');`  |  Unsigned TINYINT equivalent for the database.
-`$table->uuid('id');`  |  UUID equivalent for the database.
+Command  |  Description
+-------  |  -----------
+`$table->bigIncrements('id');`  |  Auto-incrementing UNSIGNED BIGINT (primary key) equivalent column.
+`$table->bigInteger('votes');`  |  BIGINT equivalent column.
+`$table->binary('data');`  |  BLOB equivalent column.
+`$table->boolean('confirmed');`  |  BOOLEAN equivalent column.
+`$table->char('name', 100);`  |  CHAR equivalent column with an optional length.
+`$table->date('created_at');`  |  DATE equivalent column.
+`$table->dateTime('created_at');`  |  DATETIME equivalent column.
+`$table->dateTimeTz('created_at');`  |  DATETIME (with timezone) equivalent column.
+`$table->decimal('amount', 8, 2);`  |  DECIMAL equivalent column with a precision (total digits) and scale (decimal digits).
+`$table->double('amount', 8, 2);`  |  DOUBLE equivalent column with a precision (total digits) and scale (decimal digits).
+`$table->enum('level', ['easy', 'hard']);`  |  ENUM equivalent column.
+`$table->float('amount', 8, 2);`  |  FLOAT equivalent column with a precision (total digits) and scale (decimal digits).
+`$table->geometry('positions');`  |  GEOMETRY equivalent column.
+`$table->geometryCollection('positions');`  |  GEOMETRYCOLLECTION equivalent column.
+`$table->increments('id');`  |  Auto-incrementing UNSIGNED INTEGER (primary key) equivalent column.
+`$table->integer('votes');`  |  INTEGER equivalent column.
+`$table->ipAddress('visitor');`  |  IP address equivalent column.
+`$table->json('options');`  |  JSON equivalent column.
+`$table->jsonb('options');`  |  JSONB equivalent column.
+`$table->lineString('positions');`  |  LINESTRING equivalent column.
+`$table->longText('description');`  |  LONGTEXT equivalent column.
+`$table->macAddress('device');`  |  MAC address equivalent column.
+`$table->mediumIncrements('id');`  |  Auto-incrementing UNSIGNED MEDIUMINT (primary key) equivalent column.
+`$table->mediumInteger('votes');`  |  MEDIUMINT equivalent column.
+`$table->mediumText('description');`  |  MEDIUMTEXT equivalent column.
+`$table->morphs('taggable');`  |  Adds `taggable_id` UNSIGNED INTEGER and `taggable_type` VARCHAR equivalent columns.
+`$table->multiLineString('positions');`  |  MULTILINESTRING equivalent column.
+`$table->multiPoint('positions');`  |  MULTIPOINT equivalent column.
+`$table->multiPolygon('positions');`  |  MULTIPOLYGON equivalent column.
+`$table->nullableMorphs('taggable');`  |  Adds nullable versions of `morphs()` columns.
+`$table->nullableTimestamps();`  |  Alias of `timestamps()` method.
+`$table->point('position');`  |  POINT equivalent column.
+`$table->polygon('positions');`  |  POLYGON equivalent column.
+`$table->rememberToken();`  |  Adds a nullable `remember_token` VARCHAR(100) equivalent column.
+`$table->smallIncrements('id');`  |  Auto-incrementing UNSIGNED SMALLINT (primary key) equivalent column.
+`$table->smallInteger('votes');`  |  SMALLINT equivalent column.
+`$table->softDeletes();`  |  Adds a nullable `deleted_at` TIMESTAMP equivalent column for soft deletes.
+`$table->softDeletesTz();`  |  Adds a nullable `deleted_at` TIMESTAMP (with timezone) equivalent column for soft deletes.
+`$table->string('name', 100);`  |  VARCHAR equivalent column with a optional length.
+`$table->text('description');`  |  TEXT equivalent column.
+`$table->time('sunrise');`  |  TIME equivalent column.
+`$table->timeTz('sunrise');`  |  TIME (with timezone) equivalent column.
+`$table->timestamp('added_on');`  |  TIMESTAMP equivalent column.
+`$table->timestampTz('added_on');`  |  TIMESTAMP (with timezone) equivalent column.
+`$table->timestamps();`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP equivalent columns.
+`$table->timestampsTz();`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP (with timezone) equivalent columns.
+`$table->tinyIncrements('id');`  |  Auto-incrementing UNSIGNED TINYINT (primary key) equivalent column.
+`$table->tinyInteger('votes');`  |  TINYINT equivalent column.
+`$table->unsignedBigInteger('votes');`  |  UNSIGNED BIGINT equivalent column.
+`$table->unsignedDecimal('amount', 8, 2);`  |  UNSIGNED DECIMAL equivalent column with a precision (total digits) and scale (decimal digits).
+`$table->unsignedInteger('votes');`  |  UNSIGNED INTEGER equivalent column.
+`$table->unsignedMediumInteger('votes');`  |  UNSIGNED MEDIUMINT equivalent column.
+`$table->unsignedSmallInteger('votes');`  |  UNSIGNED SMALLINT equivalent column.
+`$table->unsignedTinyInteger('votes');`  |  UNSIGNED TINYINT equivalent column.
+`$table->uuid('id');`  |  UUID equivalent column.
 
 <a name="column-modifiers"></a>
 ### Column Modifiers
@@ -269,18 +279,21 @@ In addition to the column types listed above, there are several column "modifier
 
 Below is a list of all the available column modifiers. This list does not include the [index modifiers](#creating-indexes):
 
-Modifier  | Description
-------------- | -------------
-`->after('column')`  |  Place the column "after" another column (MySQL Only)
-`->comment('my comment')`  |  Add a comment to a column (MySQL Only)
+Modifier  |  Description
+--------  |  -----------
+`->after('column')`  |  Place the column "after" another column (MySQL)
+`->autoIncrement()`  |  Set INTEGER columns as auto-increment (primary key)
+`->charset('utf8')`  |  Specify a character set for the column (MySQL)
+`->collation('utf8_unicode_ci')`  |  Specify a collation for the column (MySQL/SQL Server)
+`->comment('my comment')`  |  Add a comment to a column (MySQL)
 `->default($value)`  |  Specify a "default" value for the column
-`->first()`  |  Place the column "first" in the table (MySQL Only)
-`->nullable()`  |  Allow NULL values to be inserted into the column
-`->storedAs($expression)`  |  Create a stored generated column (MySQL Only)
-`->unsigned()`  |  Set `integer` columns to `UNSIGNED`
-`->virtualAs($expression)`  |  Create a virtual generated column (MySQL Only)
+`->first()`  |  Place the column "first" in the table (MySQL)
+`->nullable($value = true)`  |  Allows (by default) NULL values to be inserted into the column
+`->storedAs($expression)`  |  Create a stored generated column (MySQL)
+`->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL)
+`->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value
+`->virtualAs($expression)`  |  Create a virtual generated column (MySQL)
 
-<a name="changing-columns"></a>
 <a name="modifying-columns"></a>
 ### Modifying Columns
 
@@ -304,9 +317,8 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} The following column types can not be "changed": char, double, enum, mediumInteger, timestamp, tinyInteger, ipAddress, json, jsonb, macAddress, mediumIncrements, morphs, nullableMorphs, nullableTimestamps, softDeletes, timeTz, timestampTz, timestamps, timestampsTz, unsignedMediumInteger, unsignedTinyInteger, uuid.
+> {note} Only the following column types can be "changed": bigInteger, binary, boolean, date, dateTime, dateTimeTz, decimal, integer, json, longText, mediumText, smallInteger, string, text, time, unsignedBigInteger, unsignedInteger and unsignedSmallInteger.
 
-<a name="renaming-columns"></a>
 #### Renaming Columns
 
 To rename a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file:
@@ -334,6 +346,16 @@ You may drop multiple columns from a table by passing an array of column names t
 
 > {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
 
+#### Available Command Aliases
+
+Command  |  Description
+-------  |  -----------
+`$table->dropRememberToken();`  |  Drop the `remember_token` column.
+`$table->dropSoftDeletes();`  |  Drop the `deleted_at` column.
+`$table->dropSoftDeletesTz();`  |  Alias of `dropSoftDeletes()` method.
+`$table->dropTimestamps();`  |  Drop the `created_at` and `updated_at` columns.
+`$table->dropTimestampsTz();` |  Alias of `dropTimestamps()` method.
+
 <a name="indexes"></a>
 ## Indexes
 
@@ -348,24 +370,23 @@ Alternatively, you may create the index after defining the column. For example:
 
     $table->unique('email');
 
-You may even pass an array of columns to an index method to create a compound index:
+You may even pass an array of columns to an index method to create a compound (or composite) index:
 
     $table->index(['account_id', 'created_at']);
 
 Laravel will automatically generate a reasonable index name, but you may pass a second argument to the method to specify the name yourself:
 
-    $table->index('email', 'my_index_name');
+    $table->unique('email', 'unique_email');
 
 #### Available Index Types
 
-Command  | Description
-------------- | -------------
-`$table->primary('id');`  |  Add a primary key.
-`$table->primary(['first', 'last']);`  |  Add composite keys.
-`$table->unique('email');`  |  Add a unique index.
-`$table->unique('state', 'my_index_name');`  |  Add a custom index name.
-`$table->unique(['first', 'last']);`  |  Add a composite unique index.
-`$table->index('state');`  |  Add a basic index.
+Command  |  Description
+-------  |  -----------
+`$table->primary('id');`  |  Adds a primary key.
+`$table->primary(['id', 'parent_id']);`  |  Adds composite keys.
+`$table->unique('email');`  |  Adds a unique index.
+`$table->index('state');`  |  Adds a plain index.
+`$table->spatialIndex('location');`  |  Adds a spatial index. (except SQLite)
 
 #### Index Lengths & MySQL / MariaDB
 
@@ -390,11 +411,12 @@ Alternatively, you may enable the `innodb_large_prefix` option for your database
 
 To drop an index, you must specify the index's name. By default, Laravel automatically assigns a reasonable name to the indexes. Simply concatenate the table name, the name of the indexed column, and the index type. Here are some examples:
 
-Command  | Description
-------------- | -------------
+Command  |  Description
+-------  |  -----------
 `$table->dropPrimary('users_id_primary');`  |  Drop a primary key from the "users" table.
 `$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
 `$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
+`$table->dropSpatialIndex('geo_location_spatialindex');`  |  Drop a spatial index from the "geo" table  (except SQLite).
 
 If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type:
 

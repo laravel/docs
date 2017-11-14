@@ -204,7 +204,7 @@ Your custom session driver should implement the `SessionHandlerInterface`. This 
 
     namespace App\Extensions;
 
-    class MongoHandler implements SessionHandlerInterface
+    class MongoSessionHandler implements \SessionHandlerInterface
     {
         public function open($savePath, $sessionName) {}
         public function close() {}
@@ -214,7 +214,7 @@ Your custom session driver should implement the `SessionHandlerInterface`. This 
         public function gc($lifetime) {}
     }
 
-> {tip} Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoHandler`.
+> {tip} Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`.
 
 Since the purpose of these methods is not readily understandable, let's quickly cover what each of the methods do:
 
@@ -236,7 +236,7 @@ Once your driver has been implemented, you are ready to register it with the fra
 
     namespace App\Providers;
 
-    use App\Extensions\MongoSessionStore;
+    use App\Extensions\MongoSessionHandler;
     use Illuminate\Support\Facades\Session;
     use Illuminate\Support\ServiceProvider;
 
@@ -251,7 +251,7 @@ Once your driver has been implemented, you are ready to register it with the fra
         {
             Session::extend('mongo', function ($app) {
                 // Return implementation of SessionHandlerInterface...
-                return new MongoSessionStore;
+                return new MongoSessionHandler;
             });
         }
 

@@ -54,7 +54,6 @@ Of course, you may also use accessors to return new, computed values from existi
     /**
      * Get the user's full name.
      *
-     * @param  string  $value
      * @return string
      */
     public function getFullNameAttribute()
