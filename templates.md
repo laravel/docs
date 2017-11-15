@@ -184,3 +184,32 @@ The following example creates a `@datetime($var)` directive which simply calls `
 
 		return preg_replace($pattern, '$1<?php echo $2->format(\'m/d/Y H:i\'); ?>', $view);
 	});
+
+<a name="namespaces"></a>
+## Namespaces
+
+Blade allows you to configure namespaces located in different paths.
+
+```php 
+// app/start/global.php
+
+View::addNamespace('frontoffice', __DIR__ . '/../views/frontoffice/');
+View::addNamespace('backoffice', __DIR__ . '/../views/backoffice/');
+View::addNamespace('errors', __DIR__ . '/../views/errors/');
+View::addNamespace('emails', __DIR__ . '/../views/emails/');
+```
+
+In a controller, you can easily build your response
+
+```php
+Route::get('/', function(){
+    // app/views/frontoffice/layout.blade.php
+    return View::make('frontoffice::layout');
+});
+
+Route::get('/backoffice', function(){
+    // app/views/backoffice/layout.blade.php
+    return View::make('backoffice::layout');
+});
+
+```
