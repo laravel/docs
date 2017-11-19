@@ -162,7 +162,7 @@ Next, add the `Billable` trait to your model definition:
 
 #### API Keys
 
-Next, You should configure the following options in your `services.php` file:
+Next, you should configure the following options in your `services.php` file:
 
     'braintree' => [
         'model'  => App\User::class,
