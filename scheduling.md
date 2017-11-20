@@ -26,6 +26,8 @@ When using the scheduler, you only need to add the following Cron entry to your 
 
 This Cron will call the Laravel command scheduler every minute. When the `schedule:run` command is executed, Laravel will evaluate your scheduled tasks and runs the tasks that are due.
 
+If you are using Homestead for development. Scheduling for a site can be enabled by just adding an entry in the Homestead.yaml file. Please refer [Homestead Configuring Cron Schedules](/docs/{{version}}/homestead#configuring-cron-schedules)
+
 <a name="defining-schedules"></a>
 ## Defining Schedules
 
