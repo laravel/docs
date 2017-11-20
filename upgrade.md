@@ -248,13 +248,13 @@ The unused `$data` and `$callback` arguments were removed from the `Illuminate\C
 
 #### The `dispatch` Helper
 
-If you would like to dispatch a job that runs immediately and returns a value from the `handle` method, you should use the `dispatch_now` or `Bus::dispatch` method to dispatch the job:
+If you would like to dispatch a job that runs immediately and returns a value from the `handle` method, you should use the `dispatch_now` or `Bus::dispatchNow` method to dispatch the job:
 
     use Illuminate\Support\Facades\Bus;
 
     $value = dispatch_now(new Job);
 
-    $value = Bus::dispatch(new Job);
+    $value = Bus::dispatchNow(new Job);
 
 ### Requests
 
