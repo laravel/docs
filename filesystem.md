@@ -144,7 +144,7 @@ If you would like to pre-define the host for files stored on a disk using the `l
     'public' => [
         'driver' => 'local',
         'root' => storage_path('app/public'),
-        'url' => env('APP_URL').'/storage',
+        'url' => env('APP_URL').':8000/storage',
         'visibility' => 'public',
     ],
 
