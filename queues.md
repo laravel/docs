@@ -563,10 +563,10 @@ You may define a `failed` method directly on your job class, allowing you to per
         /**
          * The job failed to process.
          *
-         * @param  Exception  $exception
+         * @param \Exception $exception
          * @return void
          */
-        public function failed(Exception $exception)
+        public function failed(\Exception $exception)
         {
             // Send user notification of failure, etc...
         }
