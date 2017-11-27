@@ -53,6 +53,12 @@ Any `fire` methods present on your Artisan commands should be renamed to `handle
 
 With recent improvements to PHP op-code caching, the `optimize` Artisan command is no longer needed. You should remove any references to this command from your deployment scripts as it will be removed in a future release of Laravel.
 
+#### Auto-loading Commands
+
+To take advantage of the new auto-loading feature for commands, you will need to add the following line to the `commands` method of your  `App\Console\Kernel` class:
+
+    $this->load(__DIR__.'/Commands');
+
 ### Authorization
 
 #### The `authorizeResource` Controller Method
