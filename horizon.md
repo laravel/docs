@@ -170,10 +170,10 @@ If you would like to manually define the tags for one of your queueable objects,
 
 > **Note:** Before using notifications, you should add the `guzzlehttp/guzzle` Composer package to your project. When configuring Horizon to send SMS notifications, you should also review the [prerequisites for the Nexmo notification driver](https://laravel.com/docs/5.5/notifications#sms-notifications).
 
-If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeSlackNotificationsTo` and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from your application's `AppServiceProvider`:
+If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from your application's `AppServiceProvider`:
 
+    Horizon::routeMailNotificationsTo('example@example.com');
     Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');
-
     Horizon::routeSmsNotificationsTo('15556667777');
 
 #### Configuring Notification Wait Time Thresholds
