@@ -44,6 +44,8 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
         }
     }
 
+> {note} Mass Assignment protection is disabled during seeding.
+
 <a name="using-model-factories"></a>
 ### Using Model Factories
 
