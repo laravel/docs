@@ -162,7 +162,7 @@ Next, add the `Billable` trait to your model definition:
 
 #### API Keys
 
-Next, You should configure the following options in your `services.php` file:
+Next, you should configure the following options in your `services.php` file:
 
     'braintree' => [
         'model'  => App\User::class,
@@ -369,7 +369,7 @@ The `updateCard` method may be used to update a customer's credit card informati
 <a name="with-credit-card-up-front"></a>
 ### With Credit Card Up Front
 
-If you would like to offer trial periods to your customers while still collecting payment method information up front, You should use the `trialDays` method when creating your subscriptions:
+If you would like to offer trial periods to your customers while still collecting payment method information up front, you should use the `trialDays` method when creating your subscriptions:
 
     $user = User::find(1);
 

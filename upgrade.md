@@ -45,6 +45,12 @@ Laravel 5.5 requires version `~6.0` of Swift Mailer.
 
 ### Artisan
 
+#### Auto-Loading Commands
+
+In Laravel 5.5, Artisan can automatically discover commands so that you do not have to manually register them in your kernel. To take advantage of this new feature, you should add the following line to the `commands` method of your  `App\Console\Kernel` class:
+
+    $this->load(__DIR__.'/Commands');
+
 #### The `fire` Method
 
 Any `fire` methods present on your Artisan commands should be renamed to `handle`.
@@ -248,13 +254,13 @@ The unused `$data` and `$callback` arguments were removed from the `Illuminate\C
 
 #### The `dispatch` Helper
 
-If you would like to dispatch a job that runs immediately and returns a value from the `handle` method, you should use the `dispatch_now` or `Bus::dispatch` method to dispatch the job:
+If you would like to dispatch a job that runs immediately and returns a value from the `handle` method, you should use the `dispatch_now` or `Bus::dispatchNow` method to dispatch the job:
 
     use Illuminate\Support\Facades\Bus;
 
     $value = dispatch_now(new Job);
 
-    $value = Bus::dispatch(new Job);
+    $value = Bus::dispatchNow(new Job);
 
 ### Requests
 
