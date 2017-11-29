@@ -20,6 +20,8 @@ To generate a seeder, execute the `make:seeder` [Artisan command](/docs/{{versio
 
 A seeder class only contains one method by default: `run`. This method is called when the `db:seed` [Artisan command](/docs/{{version}}/artisan) is executed. Within the `run` method, you may insert data into your database however you wish. You may use the [query builder](/docs/{{version}}/queries) to manually insert data or you may use [Eloquent model factories](/docs/{{version}}/database-testing#writing-factories).
 
+> {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled during database seeding.
+
 As an example, let's modify the default `DatabaseSeeder` class and add a database insert statement to the `run` method:
 
     <?php
@@ -43,8 +45,6 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
             ]);
         }
     }
-
-> {note} Mass Assignment protection is disabled during seeding.
 
 <a name="using-model-factories"></a>
 ### Using Model Factories
