@@ -24,7 +24,7 @@ The Laravel framework has a few system requirements. Of course, all of these req
 - Tokenizer PHP Extension
 </div>
 
-> **Note** recent changes to PHP (version 7.2.0 and above) can, in some situations, cause errors and warnings. If you want to use PHP 7.2.0 and above, consider using a newer version of PHP.
+> **Note** recent changes to PHP (version 7.2.0 and above) can, in some situations, cause errors and warnings. If you want to use PHP 7.2.0 and above, consider using a newer version of Laravel.
 
 <a name="install-laravel"></a>
 ### Installing Laravel
