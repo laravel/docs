@@ -414,11 +414,10 @@ First install the `laravel/browser-kit-testing` package:
 Once the package has been installed, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTestCase.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTestCase.php`. In order for your `BrowserKitTestCase` class to be properly loaded, you may need to add it to your `composer.json` file:
 
     "autoload-dev": {
-        "classmap": [
-            "tests/TestCase.php",
-            "tests/BrowserKitTestCase.php"
-        ]
-    },
+        "psr-4": {
+            "Tests\\": "tests/"
+       }
+    }
 
 Tests written on Laravel 5.3 will extend the `BrowserKitTestCase` class while any new tests that use the Laravel 5.4 testing layer will extend the `TestCase` class. Your `BrowserKitTestCase` class should look like the following:
 
