@@ -737,7 +737,7 @@ The `ends_with` function determines if the given string ends with the given valu
 <a name="method-kebab-case"></a>
 #### `kebab_case()` {#collection-method}
 
-The `kebab_case` function converts the given string to `kebab-case`:
+The `kebab_case` function converts the given `camelCase` string to `kebab-case`:
 
     $converted = kebab_case('fooBar');
 
@@ -757,7 +757,7 @@ The `preg_replace_array` function replaces a given pattern in the string sequent
 <a name="method-snake-case"></a>
 #### `snake_case()` {#collection-method}
 
-The `snake_case` function converts the given string to `snake_case`:
+The `snake_case` function converts the given `camelCase` string to `snake_case`:
 
     $converted = snake_case('fooBar');
 
