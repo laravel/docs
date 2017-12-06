@@ -67,7 +67,7 @@ When passing a multi-word model name to the `authorizeResource` method, the resu
 
 #### The `before` Policy Method
 
-The `before` method of a policy class will not be called if the class doesn't contain a method with name matching the name of the ability being checked.
+The `before` method of a policy class will not be called if the class doesn't contain a method matching the name of the ability being checked.
 
 ### Cache
 
