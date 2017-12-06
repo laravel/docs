@@ -124,6 +124,20 @@ If you are overriding the `is` method of your Eloquent model, you should remove 
         //
     }
 
+If you are using PHP 7.1, nullable types were introduced as a [new feature](http://php.net/manual/en/migration71.new-features.php) so that
+a type declaration can still be used:
+
+     /**
+     * Determine if two models have the same ID and belong to the same table.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model|null  $model
+     * @return bool
+     */
+    public function is(?Model $model)
+    {
+        //
+    }
+
 #### Model `$events` Property
 
 The `$events` property on your models should be renamed to `$dispatchesEvents`. This change was made because of a high number of users needing to define an `events` relationship, which caused a conflict with the old property name.
