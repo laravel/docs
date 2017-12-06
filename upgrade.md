@@ -111,7 +111,7 @@ The `getQualifiedForeignKeyName` method has been renamed to `getQualifiedForeign
 
 #### Model `is` Method
 
-If you are overriding the `is` method of your Eloquent model, you should remove the `Model` type-hint from the method. This allows the `is` method to receive `null` as an argument:
+If you are overriding the `is` method of your Eloquent model, you can remove the `Model` type-hint from the method. This allows the `is` method to receive `null` as an argument:
 
     /**
      * Determine if two models have the same ID and belong to the same table.
@@ -120,6 +120,20 @@ If you are overriding the `is` method of your Eloquent model, you should remove 
      * @return bool
      */
     public function is($model)
+    {
+        //
+    }
+
+If you are using PHP 7.1, nullable types were introduced as a [new feature](http://php.net/manual/en/migration71.new-features.php) so that
+a type declaration can still be used:
+
+     /**
+     * Determine if two models have the same ID and belong to the same table.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model|null  $model
+     * @return bool
+     */
+    public function is(?Model $model)
     {
         //
     }
