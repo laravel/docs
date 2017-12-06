@@ -111,7 +111,7 @@ The `getQualifiedForeignKeyName` method has been renamed to `getQualifiedForeign
 
 #### Model `is` Method
 
-If you are overriding the `is` method of your Eloquent model, you can remove the `Model` type-hint from the method. This allows the `is` method to receive `null` as an argument:
+If you are overriding the `is` method of your Eloquent model, you should remove the `Model` type-hint from the method. This allows the `is` method to receive `null` as an argument:
 
     /**
      * Determine if two models have the same ID and belong to the same table.
