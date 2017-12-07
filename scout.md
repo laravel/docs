@@ -274,7 +274,7 @@ Once you have retrieved the results, you may display the results and render the 
 
 #### Writing The Engine
 
-If one of the built-in Scout search engines doesn't fit your needs, you may write your own custom engine and register it with Scout. Your engine should extend the `Laravel\Scout\Engines\Engine` abstract class. This abstract class contains five methods your custom engine must implement:
+If one of the built-in Scout search engines doesn't fit your needs, you may write your own custom engine and register it with Scout. Your engine should extend the `Laravel\Scout\Engines\Engine` abstract class. This abstract class contains seven methods your custom engine must implement:
 
     use Laravel\Scout\Builder;
 
@@ -282,7 +282,9 @@ If one of the built-in Scout search engines doesn't fit your needs, you may writ
     abstract public function delete($models);
     abstract public function search(Builder $builder);
     abstract public function paginate(Builder $builder, $perPage, $page);
+    abstract public function mapIds($results);
     abstract public function map($results, $model);
+    abstract public function getTotalCount($results);
 
 You may find it helpful to review the implementations of these methods on the `Laravel\Scout\Engines\AlgoliaEngine` class. This class will provide you with a good starting point for learning how to implement each of these methods in your own engine.
 
