@@ -750,7 +750,7 @@ Generate a URL for an asset using the current scheme of the request (HTTP or HTT
 
 Generate a URL for an asset using HTTPS:
 
-    echo secure_asset('foo/bar.zip', $title, $attributes = []);
+    echo secure_asset('foo/bar.zip');
 
 <a name="method-route"></a>
 #### `route()` {#collection-method}
