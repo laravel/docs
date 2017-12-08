@@ -351,7 +351,7 @@ The `whereNotNull` method verifies that the column's value is not `NULL`:
                         ->whereNotNull('updated_at')
                         ->get();
 
-**whereDate / whereMonth / whereDay / whereYear**
+**whereDate / whereMonth / whereDay / whereYear / whereTime**
 
 The `whereDate` method may be used to compare a column's value against a date:
 
@@ -375,6 +375,12 @@ The `whereYear` method may be used to compare a column's value against a specifi
 
     $users = DB::table('users')
                     ->whereYear('created_at', '2016')
+                    ->get();
+
+The `whereTime` method may be used to compare a column's value against a specific time:
+
+    $users = DB::table('users')
+                    ->whereTime('created_at', '=', '11:20')
                     ->get();
 
 **whereColumn**
