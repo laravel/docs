@@ -267,6 +267,7 @@ Command  |  Description
 `$table->unsignedSmallInteger('votes');`  |  UNSIGNED SMALLINT equivalent column.
 `$table->unsignedTinyInteger('votes');`  |  UNSIGNED TINYINT equivalent column.
 `$table->uuid('id');`  |  UUID equivalent column.
+`$table->year('birth_year');`  |  YEAR equivalent column.
 
 <a name="column-modifiers"></a>
 ### Column Modifiers
