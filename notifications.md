@@ -554,7 +554,7 @@ The `sms_from` option is the phone number that your SMS messages will be sent fr
 <a name="formatting-sms-notifications"></a>
 ### Formatting SMS Notifications
 
-If a notification supports being sent as a SMS, you should define a `toNexmo` method on the notification class. This method will receive a `$notifiable` entity and should return a `Illuminate\Notifications\Messages\NexmoMessage` instance:
+If a notification supports being sent as an SMS, you should define a `toNexmo` method on the notification class. This method will receive a `$notifiable` entity and should return a `Illuminate\Notifications\Messages\NexmoMessage` instance:
 
     /**
      * Get the Nexmo / SMS representation of the notification.
