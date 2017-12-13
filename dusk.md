@@ -9,6 +9,7 @@
     - [Environment Handling](#environment-handling)
     - [Creating Browsers](#creating-browsers)
     - [Authentication](#authentication)
+    - [Database Migrations](#migrations)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
@@ -233,6 +234,26 @@ Often, you will be testing pages that require authentication. You can use Dusk's
     });
 
 > {note} After using the `loginAs` method, the user session will be maintained for all tests within the file.
+
+<a name="migrations"></a>
+### Database Migrations
+
+When your test requires migrations, like the authentication example above, make sure to use the trait `DatabaseMigrations` since `RefreshDatabase` will not work:
+
+    <?php
+
+    namespace Tests\Browser;
+
+    use App\User;
+    use Tests\DuskTestCase;
+    use Laravel\Dusk\Chrome;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+    class ExampleTest extends DuskTestCase
+    {
+        use DatabaseMigrations;
+
+        public function testBasicExample()
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
