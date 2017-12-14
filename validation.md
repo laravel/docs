@@ -888,7 +888,7 @@ The field under validation must be a valid timezone identifier according to the 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
-The field under validation must be unique in a given database table. If the `column` option is not specified, the field name will be used.
+The field under validation must be unique in a given database table. If the `column` option is not specified, the field name will be used. To check for duplicate values within the input array, use the [`distinct`](#rule-distinct) rule.
 
 **Specifying A Custom Column Name:**
 
@@ -993,6 +993,8 @@ Likewise, you may use the `*` character when specifying your validation messages
             'unique' => 'Each person must have a unique e-mail address',
         ]
     ],
+    
+> {tip} While `Unique` checks the database for matching content, the [Distinct rule](#rule-distinct) will detect duplicate values within the input array.
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
