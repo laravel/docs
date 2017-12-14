@@ -994,7 +994,7 @@ Likewise, you may use the `*` character when specifying your validation messages
         ]
     ],
     
-> {tip} While `Unique` checks the database for matching content, the [Distinct rule](#rule-distinct) will detect duplicate values within the input array.
+> {tip} While `Unique` checks the database for matching content, [`Distinct`](#rule-distinct) will check for duplicate values within the input array.
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
