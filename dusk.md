@@ -238,7 +238,7 @@ Often, you will be testing pages that require authentication. You can use Dusk's
 <a name="migrations"></a>
 ### Database Migrations
 
-When your test requires migrations, like the authentication example above, make sure to use the trait `DatabaseMigrations` since `RefreshDatabase` will not work:
+When your test requires migrations, like the authentication example above, you should never use the `RefreshDatabase` trait. The `RefreshDatabase` trait leverages database transactions which will not be applicable across HTTP requests. Instead, use the `DatabaseMigrations` trait:
 
     <?php
 
@@ -252,8 +252,7 @@ When your test requires migrations, like the authentication example above, make 
     class ExampleTest extends DuskTestCase
     {
         use DatabaseMigrations;
-
-        public function testBasicExample()
+    }
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
