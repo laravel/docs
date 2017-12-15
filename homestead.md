@@ -419,6 +419,8 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php7.1 artisan list
     php7.2 artisan list
 
+> {note} In order to get the proper dependency versions with composer you also need to run it with the php version supported by your production server, eg: `php5.6 /usr/local/bin/composer update`.
+
 <a name="network-interfaces"></a>
 ## Network Interfaces
 
