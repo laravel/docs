@@ -13,6 +13,7 @@
     - [Updating Records](#updating-records)
     - [Removing Records](#removing-records)
     - [Pausing Indexing](#pausing-indexing)
+    - [Disable Indexing For Model Instance](#disable-indexing-for-model-instance)
 - [Searching](#searching)
     - [Where Clauses](#where-clauses)
     - [Pagination](#pagination)
@@ -215,6 +216,21 @@ Sometimes you may need to perform a batch of Eloquent operations on a model with
     App\Order::withoutSyncingToSearch(function () {
         // Perform model actions...
     });
+
+<a name="disable-indexing-for-model-instance"></a>
+### Disable Indexing For Model Instance
+
+Sometimes you may need to conditionally make a model **instance** searchable. For example, if you have `App\Post` entities in your system that may be in one of two states: "draft" and "published" and you only want to make the "published" posts searchable. In order to determine which model instances should be searchable at runtime, you can override the method `shouldBeSearchable()` on your searchable models:
+
+    class Post extends Model
+    {
+        use Searchable;
+
+        public function shouldBeSearchable()
+        {
+            return $this->published_at !== null;
+        }
+    }
 
 <a name="searching"></a>
 ## Searching
