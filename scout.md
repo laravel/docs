@@ -218,7 +218,7 @@ Sometimes you may need to perform a batch of Eloquent operations on a model with
     });
 
 <a name="disable-indexing-for-model-instance"></a>
-### Disable Indexing For Model Instance
+### Disable Indexing for Model Instance
 
 Sometimes you may need to conditionally make a model **instance** searchable. For example, if you have `App\Post` entities in your system that may be in one of two states: "draft" and "published" and you only want to make the "published" posts searchable. In order to determine which model instances should be searchable at runtime, you can override the method `shouldBeSearchable()` on your searchable models:
 
