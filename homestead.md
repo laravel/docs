@@ -72,6 +72,8 @@ To use the VMware provider, you will need to purchase both VMware Fusion / Works
 
 To use the Parallels provider, you will need to install [Parallels Vagrant plug-in](https://github.com/Parallels/vagrant-parallels). It is free of charge.
 
+Because Homestead can't support all the features on Hyper-V as other providers, Hyper-V will ignore all networking settings. [Read more](https://www.vagrantup.com/docs/hyperv/limitations.html)
+
 #### Installing The Homestead Vagrant Box
 
 Once VirtualBox / VMware and Vagrant have been installed, you should add the `laravel/homestead` box to your Vagrant installation using the following command in your terminal. It will take a few minutes to download the box, depending on your Internet connection speed:
