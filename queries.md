@@ -491,7 +491,7 @@ The `groupBy` and `having` methods may be used to group the query results. The `
                     ->having('account_id', '>', 100)
                     ->get();
 
-You can pass multiple arguments to `groupBy` to group by multiple columns:
+You may pass multiple arguments to the `groupBy` method to group by multiple columns:
 
     $users = DB::table('users')
                     ->groupBy('first_name', 'status')
