@@ -398,7 +398,7 @@ If you would like to offer trial periods without collecting the user's payment m
 
     $user = User::create([
         // Populate other user properties...
-        'trial_ends_at' => Carbon::now()->addDays(10),
+        'trial_ends_at' => now()->addDays(10),
     ]);
 
 > {note}  Be sure to add a [date mutator](/docs/{{version}}/eloquent-mutators#date-mutators) for `trial_ends_at` to your model definition.

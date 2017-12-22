@@ -489,7 +489,7 @@ This method will automatically take care of pushing a job onto the queue so the 
 
 If you wish to delay the delivery of a queued email message, you may use the `later` method. As its first argument, the `later` method accepts a `DateTime` instance indicating when the message should be sent:
 
-    $when = Carbon\Carbon::now()->addMinutes(10);
+    $when = now()->addMinutes(10);
 
     Mail::to($request->user())
         ->cc($moreUsers)
