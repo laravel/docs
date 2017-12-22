@@ -169,7 +169,7 @@ You may use the `put` method on the `Cache` facade to store items in the cache. 
 
 Instead of passing the number of minutes as an integer, you may also pass a `DateTime` instance representing the expiration time of the cached item:
 
-    $expiresAt = Carbon::now()->addMinutes(10);
+    $expiresAt = now()->addMinutes(10);
 
     Cache::put('key', 'value', $expiresAt);
 
@@ -211,7 +211,7 @@ If you provide an array of key / value pairs and an expiration time to the funct
 
     cache(['key' => 'value'], $minutes);
 
-    cache(['key' => 'value'], Carbon::now()->addSeconds(10));
+    cache(['key' => 'value'], now()->addSeconds(10));
 
 > {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing a facade](/docs/{{version}}/mocking#mocking-facades).
 

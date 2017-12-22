@@ -166,8 +166,6 @@ When deploying Passport to your production servers for the first time, you will 
 
 By default, Passport issues long-lived access tokens that never need to be refreshed. If you would like to configure a shorter token lifetime, you may use the `tokensExpireIn` and `refreshTokensExpireIn` methods. These methods should be called from the `boot` method of your `AuthServiceProvider`:
 
-    use Carbon\Carbon;
-
     /**
      * Register any authentication / authorization services.
      *
@@ -179,9 +177,9 @@ By default, Passport issues long-lived access tokens that never need to be refre
 
         Passport::routes();
 
-        Passport::tokensExpireIn(Carbon::now()->addDays(15));
+        Passport::tokensExpireIn(now()->addDays(15));
 
-        Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
     }
 
 <a name="issuing-access-tokens"></a>

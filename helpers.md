@@ -1163,7 +1163,7 @@ You may add items to the cache by passing an array of key / value pairs to the f
 
     cache(['key' => 'value'], 5);
 
-    cache(['key' => 'value'], Carbon::now()->addSeconds(10));
+    cache(['key' => 'value'], now()->addSeconds(10));
 
 <a name="method-class-uses-recursive"></a>
 #### `class_uses_recursive()` {#collection-method}

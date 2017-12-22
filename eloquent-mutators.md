@@ -123,7 +123,7 @@ When a column is considered a date, you may set its value to a UNIX timestamp, d
 
     $user = App\User::find(1);
 
-    $user->deleted_at = Carbon::now();
+    $user->deleted_at = now();
 
     $user->save();
 
