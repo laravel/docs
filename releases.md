@@ -67,7 +67,7 @@ For more information on updating your packages to use service provider and facad
 
 When building an API, you may need a transformation layer that sits between your Eloquent models and the JSON responses that are actually returned to your application's users. Laravel's resource classes allow you to expressively and easily transform your models and model collections into JSON.
 
-A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `User` resource class:
+A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` class:
 
     <?php
 
@@ -75,7 +75,7 @@ A resource class represents a single model that needs to be transformed into a J
 
     use Illuminate\Http\Resources\Json\Resource;
 
-    class User extends Resource
+    class UserResource extends Resource
     {
         /**
          * Transform the resource into an array.
