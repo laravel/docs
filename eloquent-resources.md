@@ -38,7 +38,7 @@ To create a resource collection, you should use the `--collection` flag when cre
 
 > {tip} This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources.
 
-Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `User` resource class:
+Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` class:
 
     <?php
 
@@ -46,7 +46,7 @@ Before diving into all of the options available to you when writing resources, l
 
     use Illuminate\Http\Resources\Json\Resource;
 
-    class User extends Resource
+    class UserResource extends Resource
     {
         /**
          * Transform the resource into an array.
@@ -139,7 +139,7 @@ In essence, resources are simple. They only need to transform a given model into
 
     use Illuminate\Http\Resources\Json\Resource;
 
-    class User extends Resource
+    class UserResource extends Resource
     {
         /**
          * Transform the resource into an array.
@@ -609,7 +609,7 @@ Alternatively, you may define a `withResponse` method within the resource itself
 
     use Illuminate\Http\Resources\Json\Resource;
 
-    class User extends Resource
+    class UserResource extends Resource
     {
         /**
          * Transform the resource into an array.
