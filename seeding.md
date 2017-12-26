@@ -87,7 +87,7 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
 <a name="running-seeders"></a>
 ## Running Seeders
 
-Once you have written your seeder classes you will need register the new class for autoloading by running `composer du`:
+Once you have written your seeder, you may need to regenerate Composer's autoloader using the `dump-autoload` command:
 
     composer dump-autoload
 
