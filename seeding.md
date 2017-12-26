@@ -27,7 +27,7 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
     <?php
 
     use Illuminate\Database\Seeder;
-    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Support\Facades\DB;
 
     class DatabaseSeeder extends Seeder
     {
@@ -87,7 +87,11 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
 <a name="running-seeders"></a>
 ## Running Seeders
 
-Once you have written your seeder classes, you may use the `db:seed` Artisan command to seed your database. By default, the `db:seed` command runs the `DatabaseSeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
+Once you have written your seeder classes you will need register the new class for autoloading by running `composer du`:
+
+    composer dump-autoload
+
+Now you may use the `db:seed` Artisan command to seed your database. By default, the `db:seed` command runs the `DatabaseSeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
 
     php artisan db:seed
 
