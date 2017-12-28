@@ -124,7 +124,7 @@ For this example, let's register the view composers within a [service provider](
         {
             // Using class based composers...
             View::composer(
-                'profile', 'App\Http\ViewComposers\ProfileComposer'
+                'profile', App\Http\ViewComposers\ProfileComposer::class
             );
 
             // Using Closure based composers...
@@ -198,7 +198,7 @@ You may attach a view composer to multiple views at once by passing an array of 
 
     View::composer(
         ['profile', 'dashboard'],
-        'App\Http\ViewComposers\MyViewComposer'
+        App\Http\ViewComposers\MyViewComposer::class
     );
 
 The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
