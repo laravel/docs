@@ -7,6 +7,7 @@
 - [Redirects](#redirects)
     - [Redirecting To Named Routes](#redirecting-named-routes)
     - [Redirecting To Controller Actions](#redirecting-controller-actions)
+    - [Redirecting To External Domains](#redirecting-external-domains)
     - [Redirecting With Flashed Session Data](#redirecting-with-flashed-session-data)
 - [Other Response Types](#other-response-types)
     - [View Responses](#view-responses)
@@ -159,6 +160,13 @@ If your controller route requires parameters, you may pass them as the second ar
     return redirect()->action(
         'UserController@profile', ['id' => 1]
     );
+
+<a name="redirecting-external-domains"></a>
+### Redirecting To External Domains
+
+Sometimes you may need to redirect the user to a different domain than that of your application. You may do so by calling the `away` method, which creates a `RedirectResponse` without any additional URL checks or generations.
+
+    return redirect()->away('https://www.google.com');
 
 <a name="redirecting-with-flashed-session-data"></a>
 ### Redirecting With Flashed Session Data
