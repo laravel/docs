@@ -106,6 +106,7 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
 
             // Perform order shipping...
 
+            // Assert that a message was sent with a correct order id...
             Mail::assertSent(OrderShipped::class, function ($mail) use ($order) {
                 return $mail->order->id === $order->id;
             });
