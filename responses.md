@@ -164,7 +164,7 @@ If your controller route requires parameters, you may pass them as the second ar
 <a name="redirecting-external-domains"></a>
 ### Redirecting To External Domains
 
-Sometimes you may need to redirect the user to a different domain than that of your application. You may do so by calling the `away` method, which creates a `RedirectResponse` without any additional URL checks or generations.
+Sometimes you may need to redirect to a domain outside of your application. You may do so by calling the `away` method, which creates a `RedirectResponse` without any additional URL encoding, validation, or verification:
 
     return redirect()->away('https://www.google.com');
 
