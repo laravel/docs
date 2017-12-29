@@ -379,6 +379,10 @@ Once this route middleware has been registered, you should add it to the `api` m
         'bindings',
     ],
 
+#### Authenticate Middleware
+
+The `App\Http\Middleware\Authenticate` middleware has been renamed to `Illuminate\Auth\Middleware\Authenticate`.
+
 ### Notifications
 
 #### Installation
