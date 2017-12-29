@@ -8,6 +8,7 @@
 - [Controller Middleware](#controller-middleware)
 - [Resource Controllers](#resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
+    - [Middleware Resource Routes](#restful-middleware-resource-routes)
     - [Naming Resource Routes](#restful-naming-resource-routes)
     - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
     - [Localizing Resource URIs](#restful-localizing-resource-uris)
@@ -196,12 +197,21 @@ When declaring a resource route, you may specify a subset of actions the control
 When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
 
     Route::apiResource('photo', 'PhotoController');
-    
+
 You may register many API resource controllers at once by passing an array to the `apiResources` method:
 
     Route::apiResources([
         'photos' => 'PhotoController',
         'posts' => 'PostController'
+    ]);
+
+<a name="restful-middleware-resource-routes"></a>
+### Middleware Resource Routes
+
+By default, all resource controller actions are under the `web` middleware group; however, you can override it by passing a `names` array with your options:
+
+    Route::resource('photo', 'PhotoController', [
+        'middleware' => 'auth'
     ]);
 
 <a name="restful-naming-resource-routes"></a>
