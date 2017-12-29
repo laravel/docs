@@ -451,6 +451,8 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         }
     }
 
+> {note} When using this feature, you should be careful with ambiguous, providing the table name before the field in the first argument if needed.
+
 <a name="polymorphic-relations"></a>
 ### Polymorphic Relations
 
