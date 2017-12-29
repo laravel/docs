@@ -145,4 +145,4 @@ If you already have a valid access token for a user, you can retrieve their deta
 
 If you already have a valid pair of token / secret for a user, you can retrieve their details using the `userFromTokenAndSecret` method:
 
-    $user = Socialite::driver('twitter')->userFromTokenAndSecret($token);
+    $user = Socialite::driver('twitter')->userFromTokenAndSecret($token, $secret);
