@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Customizing Request Headers](#customizing-request-headers)
 - [Session / Authentication](#session-and-authentication)
+    - [Available Assertions](#authentication-available-assertions)
 - [Testing JSON APIs](#testing-json-apis)
 - [Testing File Uploads](#testing-file-uploads)
 - [Available Assertions](#available-assertions)
@@ -102,6 +103,19 @@ Of course, one common use of the session is for maintaining state for the authen
 You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:
 
     $this->actingAs($user, 'api')
+
+<a name="authentication-available-assertions"></a>
+## Available Assertions
+
+Laravel provides several authentication assertions for your [PHPUnit](https://phpunit.de/) tests:
+
+Method  | Description
+------------- | -------------
+`$this->assertAuthenticated($guard = null);`  |  Assert that the user is authenticated.
+`$this->assertGuest($guard = null);`  |  Assert that the user is not authenticated.
+`$this->assertAuthenticatedAs($user, $guard = null);`  |  Assert that the user is authenticated as the given user.
+`$this->assertCredentials(array $credentials, $guard = null);`  |  Assert that the given credentials are valid.
+`$this->assertInvalidCredentials(array $credentials, $guard = null);`  |  Assert that the given credentials are invalid.
 
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
