@@ -221,13 +221,18 @@ Method  | Description
 `$response->assertCookieExpired($cookieName);`  |  Assert that the response contains the given cookie and it is expired.
 `$response->assertCookieMissing($cookieName);`  |  Assert that the response does not contains the given cookie.
 `$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
+`$response->assertSessionHasAll($key, $value = null);`  |  Assert that the session has a given list of values.
 `$response->assertSessionHasErrors(array $keys, $format = null, $errorBag = 'default');`  |  Assert that the session contains an error for the given field.
+`$response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);`  |  Assert that the session has the given errors.
 `$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
 `$response->assertJson(array $data);`  |  Assert that the response contains the given JSON data.
+`$response->assertJsonCount(int $count, $key = null);`  |  Assert that the response JSON has the expected count of items at the given key.
 `$response->assertJsonFragment(array $data);`  |  Assert that the response contains the given JSON fragment.
 `$response->assertJsonMissing(array $data);`  |  Assert that the response does not contain the given JSON fragment.
+`$response->assertJsonMissingExact(array $data);`  |  Assert that the response does not contain the exact JSON fragment.
 `$response->assertExactJson(array $data);`  |  Assert that the response contains an exact match of the given JSON data.
 `$response->assertJsonStructure(array $structure);`  |  Assert that the response has a given JSON structure.
+`$response->assertJsonValidationErrors($keys);`  |  Assert that the response has the given JSON validation errors for the given keys.
 `$response->assertViewIs($value);`  |  Assert that the given view was returned by the route.
 `$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data.
 `$response->assertViewHasAll(array $data);`  |  Assert that the response view has a given list of data.
