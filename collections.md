@@ -564,7 +564,7 @@ You may also call the `first` method with no arguments to get the first element 
     collect([1, 2, 3, 4])->first();
 
     // 1
-    
+
 <a name="method-first-where"></a>
 #### `firstWhere()` {#collection-method}
 
@@ -576,7 +576,7 @@ The `firstWhere` method returns the first element in the collection with the giv
         ['name' => 'Diego', 'age' => 23],
         ['name' => 'Linda', 'age' => 84],
     ]);
-    
+
     $collection->firstWhere('name', 'Linda');
 
     // ['name' => 'Linda', 'age' => 14]
