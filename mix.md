@@ -50,7 +50,6 @@ The only remaining step is to install Laravel Mix. Within a fresh installation o
 
     npm install
 
-
 <a name="running-mix"></a>
 ## Running Mix
 

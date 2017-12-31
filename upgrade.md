@@ -108,7 +108,6 @@ The `getQualifiedRelatedKeyName` method has been renamed to `getQualifiedRelated
 
 The `getQualifiedForeignKeyName` method has been renamed to `getQualifiedForeignPivotKeyName`.
 
-
 #### Model `is` Method
 
 If you are overriding the `is` method of your Eloquent model, you should remove the `Model` type-hint from the method. This allows the `is` method to receive `null` as an argument:
@@ -154,7 +153,6 @@ When using an alias, the `withCount` method will no longer automatically append 
 However, in Laravel 5.5, the alias will be used exactly as it is given. If you would like to append `_count` to the resulting column, you must specify that suffix when defining the alias:
 
     $users = User::withCount('foo as bar_count')->get();
-
 
 #### Model Methods & Attribute Names
 

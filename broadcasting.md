@@ -251,7 +251,6 @@ If you customize the broadcast name using the `broadcastAs` method, you should m
         ....
     });
 
-
 <a name="broadcast-data"></a>
 ### Broadcast Data
 

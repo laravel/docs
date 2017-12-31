@@ -550,7 +550,6 @@ When calling routes that are protected by Passport, your application's API consu
 <a name="token-scopes"></a>
 ## Token Scopes
 
-
 <a name="defining-scopes"></a>
 ### Defining Scopes
 
