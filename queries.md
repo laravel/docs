@@ -526,7 +526,6 @@ Sometimes you may want clauses to apply to a query only when something else is t
                     })
                     ->get();
 
-
 The `when` method only executes the given Closure when the first parameter is `true`. If the first parameter is `false`, the Closure will not be executed.
 
 You may pass another Closure as the third parameter to the `when` method. This Closure will execute if the first parameter evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default sorting of a query:
@@ -540,7 +539,6 @@ You may pass another Closure as the third parameter to the `when` method. This C
                         return $query->orderBy('name');
                     })
                     ->get();
-
 
 <a name="inserts"></a>
 ## Inserts

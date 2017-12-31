@@ -150,7 +150,6 @@ You may also pass any options supported by Vagrant's [Synced Folders](https://ww
               rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
               rsync__exclude: ["node_modules"]
 
-
 #### Configuring Nginx Sites
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on:

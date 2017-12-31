@@ -122,7 +122,6 @@ If your place-holder contains all capital letters, or only has its first letter 
     'welcome' => 'Welcome, :NAME', // Welcome, DAYLE
     'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle
 
-
 <a name="pluralization"></a>
 ### Pluralization
 
