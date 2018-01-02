@@ -325,7 +325,7 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 
     <?php
 
-    namespace Illuminate\Auth\Middleware;
+    namespace App\Http\Middleware;
 
     use Illuminate\Support\Facades\Auth;
 
