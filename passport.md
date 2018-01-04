@@ -151,6 +151,20 @@ After registering the components, make sure to run `npm run dev` to recompile yo
     <passport-authorized-clients></passport-authorized-clients>
     <passport-personal-access-tokens></passport-personal-access-tokens>
 
+Assuming your Vue is defined as:
+
+    const app = new Vue({
+        el: '#app'
+    });
+
+You can test these components in the body of a Blade file by registering the Vue `el` in an HTML `id`:
+
+    <div id="app">
+        <passport-clients></passport-clients>
+        <passport-authorized-clients></passport-authorized-clients>
+        <passport-personal-access-tokens></passport-personal-access-tokens>
+    </div>
+
 <a name="deploying-passport"></a>
 ### Deploying Passport
 
