@@ -1273,7 +1273,7 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
     // Returns 'production' if APP_ENV is not set...
     $env = env('APP_ENV', 'production');
 
-> {note} After calling `config:cache` command during your deployment process, `env` function will always return null: you must call it only from within your configuration files.
+> {note} If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
 
 <a name="method-event"></a>
 #### `event()` {#collection-method}
