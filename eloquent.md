@@ -678,7 +678,7 @@ Scopes should always return a query builder instance:
 
 #### Utilizing A Local Scope
 
-Once the scope has been defined, you may call the scope methods when querying the model. However, you do not need to include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
+Once the scope has been defined, you may call the scope methods when querying the model. However, you should not include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
 
     $users = App\User::popular()->active()->orderBy('created_at')->get();
 
