@@ -106,6 +106,16 @@ Of course if you are using the [Blade templating engine](/docs/{{version}}/blade
 
 If the specified translation string does not exist, the `__` function will simply return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist.
 
+If you are using a nested directory structure, you should specify the path to the translation file using forward slashes:
+
+    {{ __('invoices/customer.title') }}
+    {{ __('invoices/business.title') }}
+
+    // and not:
+
+    // {{ __('invoices.customer.title') }}
+    // {{ __('invoices.business.title') }}
+
 <a name="replacing-parameters-in-translation-strings"></a>
 ### Replacing Parameters In Translation Strings
 
