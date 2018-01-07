@@ -467,3 +467,9 @@ By default, Homestead configures the `natdnshostresolver` setting to `on`. This 
 
     provider: virtualbox
     natdnshostresolver: off
+
+On Windows if you find symlinks are not working properly in Virtualbox shared folders you may need to add the following block to `Vagrantfile`:
+
+    config.vm.provider "virtualbox" do |v|
+        v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+    end
