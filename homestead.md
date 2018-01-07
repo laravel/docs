@@ -169,6 +169,8 @@ You must add the "domains" for your Nginx sites to the `hosts` file on your mach
 Make sure the IP address listed is the one set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
 
     http://homestead.test
+    
+If you want to have the hosts file updated automatically when new sites are added, you can use [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) or [vagrant-hostmanager](https://github.com/devopsgroup-io/vagrant-hostmanager) plug-ins, which Homestead supports out of the box.
 
 <a name="launching-the-vagrant-box"></a>
 ### Launching The Vagrant Box
