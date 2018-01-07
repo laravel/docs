@@ -472,7 +472,7 @@ The following example creates a `@datetime($var)` directive which formats a give
         public function boot()
         {
             Blade::directive('datetime', function ($expression) {
-                return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
+                return "<?php echo e(($expression)->format('m/d/Y H:i')); ?>";
             });
         }
 
