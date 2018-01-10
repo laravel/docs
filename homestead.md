@@ -309,9 +309,9 @@ Homestead supports several types of sites which allow you to easily run projects
     sites:
         - map: symfony2.test
           to: /home/vagrant/code/Symfony/web
-          type: symfony2
+          type: "symfony2"
 
-The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, and `symfony4`.
+The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, and `symfony4`. You cannot mix `apache` with other site types as it will purge nginx.
 
 <a name="site-parameters"></a>
 #### Site Parameters
