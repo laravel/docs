@@ -86,13 +86,11 @@ If this command fails, make sure your Vagrant installation is up to date.
 
 You may install Homestead by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel projects:
 
-    cd ~
-
-    git clone https://github.com/laravel/homestead.git Homestead
+    git clone https://github.com/laravel/homestead.git ~/Homestead
 
 You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [GitHub Release Page](https://github.com/laravel/homestead/releases):
 
-    cd Homestead
+    cd ~/Homestead
 
     // Clone the desired release...
     git checkout v7.0.1
