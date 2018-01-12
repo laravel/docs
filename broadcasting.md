@@ -531,14 +531,14 @@ You may listen for the join event via Echo's `listen` method:
 
 Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like "typing" notifications, where you want to alert users of your application that another user is typing a message on a given screen. To broadcast client events, you may use Echo's `whisper` method:
 
-    Echo.channel('chat')
+    Echo.private('chat')
         .whisper('typing', {
             name: this.user.name
         });
 
 To listen for client events, you may use the `listenForWhisper` method:
 
-    Echo.channel('chat')
+    Echo.private('chat')
         .listenForWhisper('typing', (e) => {
             console.log(e.name);
         });
