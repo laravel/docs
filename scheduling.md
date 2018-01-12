@@ -47,7 +47,7 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
          * @var array
          */
         protected $commands = [
-            \App\Console\Commands\Inspire::class,
+            //
         ];
 
         /**
