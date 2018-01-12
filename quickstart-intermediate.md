@@ -30,7 +30,7 @@
 
 This quickstart guide provides an intermediate introduction to the Laravel framework and includes content on database migrations, the Eloquent ORM, routing, authentication, authorization, dependency injection, validation, views, and Blade templates. This is a great starting point if you are familiar with the basics of the Laravel framework or PHP frameworks in general.
 
-To sample a basic selection of Laravel features, we will build a task list we can use to track all of the tasks we want to accomplish (the typical "to-do list" example). In contrast to the "basic" quickstart, this tutorial will allow users to create accounts and authenticate with the application. The complete, finished source code for this project is [available on GitHub](http://github.com/laravel/quickstart-intermediate).
+To sample a basic selection of Laravel features, we will build a task list we can use to track all of the tasks we want to accomplish (the typical "to-do list" example). In contrast to the "basic" quickstart, this tutorial will allow users to create accounts and authenticate with the application. The complete, finished source code for this project is [available on GitHub](https://github.com/laravel/quickstart-intermediate).
 
 <a name="installation"></a>
 ## Installation
@@ -306,7 +306,7 @@ To require an authenticated users for all actions on the controller, we can add 
 
 This application only has a single view which contains a form for adding new tasks as well as a listing of all current tasks. To help you visualize the view, here is a screenshot of the finished application with basic Bootstrap CSS styling applied:
 
-![Application Image](http://laravel.com/assets/img/quickstart/basic-overview.png)
+![Application Image](https://laravel.com/assets/img/quickstart/basic-overview.png)
 
 <a name="defining-the-layout"></a>
 ### Defining The Layout
