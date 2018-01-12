@@ -227,6 +227,15 @@ In addition to the conditional directives already discussed, the `@isset` and `@
         // $records is "empty"...
     @endempty
 
+You may also check if a section has any content using the `@hasSection` directive:
+
+    @hasSection('navigation')
+        <div class="pull-right">
+            @yield('navigation')
+        </div>
+        <div class="clearfix"></div>
+    @endif
+
 #### Authentication Shortcuts
 
 The `@auth` and `@guest` directives may be used to quickly determine if the current user is authenticated or is a guest:
