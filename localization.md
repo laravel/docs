@@ -89,6 +89,12 @@ Translation files that use translation strings as keys are stored as JSON files 
         "I love programming.": "Me encanta programar."
     }
 
+You can also nest your json files under a locale directory, e.g `resources/lang/es/general.json`, this way you can logically separate your language files, they will all be merged together when loaded.
+
+It will not load recursively, it will only find json files one level deep (e.g `resources/lang/es/general.json`, not `resources/lang/es/another/general.json`).
+
+If you have both `resources/lang/es/general.json` and `resources/lang/es.json`, `resources/lang/es.json` will take precendence and be loaded, the nested json files will not be loaded.
+
 <a name="retrieving-translation-strings"></a>
 ## Retrieving Translation Strings
 
