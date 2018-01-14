@@ -57,7 +57,7 @@ The `config` directory, as the name implies, contains all of your application's 
 <a name="the-database-directory"></a>
 #### The Database Directory
 
-The `database` directory contains your database migration and seeds. If you wish, you may also use this directory to hold an SQLite database.
+The `database` directory contains your model factories, database migration and seeds. If you wish, you may also use this directory to hold an SQLite database.
 
 <a name="the-public-directory"></a>
 #### The Public Directory
