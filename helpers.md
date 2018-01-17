@@ -1575,7 +1575,7 @@ The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 <a name="method-with"></a>
 #### `with()` {#collection-method}
 
-The `with` function returns the value it is given. If a `Closure` is passed as the second argument to the function, the `Closure` will be executed its result will be returned:
+The `with` function returns the value it is given. If a `Closure` is passed as the second argument to the function, the `Closure` will be executed and its result will be returned:
 
     $callback = function ($value) {
         return (is_numeric($value)) ? $value * 2 : 0;
