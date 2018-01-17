@@ -537,7 +537,7 @@ If you were previously using the `has` method to determine if an `Illuminate\Sup
 
 When validating arrays, booleans, integers, numerics, and strings, `null` will no longer be considered a valid value unless the rule set contains the new `nullable` rule:
 
-    Validate::make($request->all(), [
+    Validator::make($request->all(), [
         'field' => 'nullable|max:5',
     ]);
 
