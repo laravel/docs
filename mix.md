@@ -327,7 +327,12 @@ You may pass either a string (proxy) or object (BrowserSync settings) to this me
 <a name="environment-variables"></a>
 ## Environment Variables
 
-You may inject environment variables into Mix by prefixing a key in your `.env` file with `MIX_`:
+To inject environment variables into Mix first require the `dotenv` package (which is installed by Mix) at the top of `webpack.mix.js`:
+
+    let mix = require('laravel-mix');
+    require('dotenv').config();
+
+Then prefix keys in your `.env` file with `MIX_`:
 
     MIX_SENTRY_DSN_PUBLIC=http://example.com
 
