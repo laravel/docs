@@ -553,6 +553,7 @@ Assertion  | Description
 ------------- | -------------
 `$browser->assertTitle($title)`  |  Assert the page title matches the given text.
 `$browser->assertTitleContains($title)`  |  Assert the page title contains the given text.
+`$browser->assertUrlIs($url)`  |  Assert that the current URL (without the query string) matches the given string.
 `$browser->assertPathBeginsWith($path)`  |  Assert that the current URL path begins with given path.
 `$browser->assertPathIs('/home')`  |  Assert the current path matches the given path.
 `$browser->assertPathIsNot('/home')`  |  Assert the current path does not match the given path.
