@@ -47,8 +47,9 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - PHP 7.0
 - PHP 5.6
 - Nginx
+- Apache (optional)
 - MySQL
-- MariaDB
+- MariaDB (optional)
 - Sqlite3
 - PostgreSQL
 - Composer
@@ -57,6 +58,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Memcached
 - Beanstalkd
 - Mailhog
+- Elasticsearch (optional)
 - ngrok
 </div>
 
