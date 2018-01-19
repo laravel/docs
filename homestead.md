@@ -106,6 +106,10 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
 <a name="configuring-homestead"></a>
 ### Configuring Homestead
 
+Then you should open the created Homestead.yaml file to configure Homestead for your machine. It's common to use `nano` for editing files directly in terminal; to open the file with nano, run the following command:
+
+    nano ~/Homestead/homestead.yaml
+
 #### Setting Your Provider
 
 The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion`, `vmware_workstation`, `parallels` or `hyperv`. You may set this to the provider you prefer:
