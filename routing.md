@@ -13,6 +13,7 @@
     - [Namespaces](#route-group-namespaces)
     - [Sub-Domain Routing](#route-group-sub-domain-routing)
     - [Route Prefixes](#route-group-prefixes)
+    - [Route Name Prefixes](#route-group-name-prefixes)
 - [Route Model Binding](#route-model-binding)
     - [Implicit Binding](#implicit-binding)
     - [Explicit Binding](#explicit-binding)
@@ -260,6 +261,19 @@ The `prefix` method may be used to prefix each route in the group with a given U
             // Matches The "/admin/users" URL
         });
     });
+    
+<a name="route-group-name-prefixes"></a>
+### Route Name Prefixes
+
+The `name` method may be used to prefix each route name in the group with a given route name accessor. For example, you may want to prefix all route names within the group with `admin`:
+
+    Route::name('admin.')->group(function () {
+        Route::get('users', function () {
+            // Matches a call to route helper function: route('admin.users');
+        });
+    });
+    
+> Observe the DOT after `admin` in the method `name('admin.')` is required.
 
 <a name="route-model-binding"></a>
 ## Route Model Binding
