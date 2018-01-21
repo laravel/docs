@@ -261,19 +261,17 @@ The `prefix` method may be used to prefix each route in the group with a given U
             // Matches The "/admin/users" URL
         });
     });
-    
+
 <a name="route-group-name-prefixes"></a>
 ### Route Name Prefixes
 
-The `name` method may be used to prefix each route name in the group with a given route name accessor. For example, you may want to prefix all route names within the group with `admin`:
+The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix all of the grouped route's names with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
 
     Route::name('admin.')->group(function () {
         Route::get('users', function () {
-            // Matches a call to route helper function: route('admin.users');
+            // Route assigned name "admin.users"...
         });
     });
-    
-> Observe the DOT after `admin` in the method `name('admin.')` is required.
 
 <a name="route-model-binding"></a>
 ## Route Model Binding
