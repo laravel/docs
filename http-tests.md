@@ -210,37 +210,246 @@ In addition to creating images, you may create files of any other type using the
 
 Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) tests. These assertions may be accessed on the response that is returned from the `json`, `get`, `post`, `put`, and `delete` test methods:
 
-Method  | Description
-------------- | -------------
-`$response->assertSuccessful();`  |  Assert that the response has a successful status code.
-`$response->assertStatus($code);`  |  Assert that the response has a given code.
-`$response->assertRedirect($uri);`  |  Assert that the response is a redirect to a given URI.
-`$response->assertHeader($headerName, $value = null);`  |  Assert that the given header is present on the response.
-`$response->assertCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie.
-`$response->assertPlainCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie (unencrypted).
-`$response->assertCookieExpired($cookieName);`  |  Assert that the response contains the given cookie and it is expired.
-`$response->assertCookieMissing($cookieName);`  |  Assert that the response does not contains the given cookie.
-`$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
-`$response->assertSessionHasAll($key, $value = null);`  |  Assert that the session has a given list of values.
-`$response->assertSessionHasErrors(array $keys, $format = null, $errorBag = 'default');`  |  Assert that the session contains an error for the given field.
-`$response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);`  |  Assert that the session has the given errors.
-`$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
-`$response->assertJson(array $data);`  |  Assert that the response contains the given JSON data.
-`$response->assertJsonCount(int $count, $key = null);`  |  Assert that the response JSON has the expected count of items at the given key.
-`$response->assertJsonFragment(array $data);`  |  Assert that the response contains the given JSON fragment.
-`$response->assertJsonMissing(array $data);`  |  Assert that the response does not contain the given JSON fragment.
-`$response->assertJsonMissingExact(array $data);`  |  Assert that the response does not contain the exact JSON fragment.
-`$response->assertExactJson(array $data);`  |  Assert that the response contains an exact match of the given JSON data.
-`$response->assertJsonStructure(array $structure);`  |  Assert that the response has a given JSON structure.
-`$response->assertJsonValidationErrors($keys);`  |  Assert that the response has the given JSON validation errors for the given keys.
-`$response->assertViewIs($value);`  |  Assert that the given view was returned by the route.
-`$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data.
-`$response->assertViewHasAll(array $data);`  |  Assert that the response view has a given list of data.
-`$response->assertViewMissing($key);`  |  Assert that the response view is missing a piece of bound data.
-`$response->assertSee($value);`  |  Assert that the given string is contained within the response.
-`$response->assertDontSee($value);`  |  Assert that the given string is not contained within the response.
-`$response->assertSeeText($value);`  |  Assert that the given string is contained within the response text.
-`$response->assertDontSeeText($value);`  |  Assert that the given string is not contained within the response text.
+<style>
+    .collection-method-list > p {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    }
+
+    .collection-method-list a {
+        display: block;
+    }
+</style>
+
+<div class="collection-method-list" markdown="1">
+
+[assertCookie](#assert-cookie)
+[assertCookieExpired](#assert-cookie-expired)
+[assertCookieMissing](#assert-cookie-missing)
+[assertDontSee](#assert-dont-see)
+[assertDontSeeText](#assert-dont-see-text)
+[assertExactJson](#assert-exact-json)
+[assertHeader](#assert-header)
+[assertJson](#assert-json)
+[assertJsonFragment](#assert-json-fragment)
+[assertJsonMissing](#assert-json-missing)
+[assertJsonMissing](#assert-json-missing)
+[assertJsonMissingExact](#assert-json-missing-exact)
+[assertJsonStructure](#assert-json-structure)
+[assertJsonValidationErrors](#assert-json-validation-errors)
+[assertPlainCookie](#assert-plain-cookie)
+[assertRedirect](#assert-redirect)
+[assertSee](#assert-see)
+[assertSeeText](#assert-see-text)
+[assertSessionHas](#assert-session-has)
+[assertSessionHasAll](#assert-session-has-all)
+[assertSessionHasErrors](#assert-session-has-errors)
+[assertSessionHasErrorsIn](#assert-session-has-errors-in)
+[assertSessionMissing](#assert-session-missing)
+[assertStatus](#assert-status)
+[assertSuccessful](#assert-successful)
+[assertViewHas](#assert-view-has)
+[assertViewHasAll](#assert-view-has-all)
+[assertViewIs](#assert-view-is)
+[assertViewMissing](#assert-view-missing)
+
+</div>
+
+<a name="assert-cookie"></a>
+#### assertCookie
+
+Assert that the response contains the given cookie:
+
+    $response->assertCookie($cookieName, $value = null);
+
+<a name="assert-cookie-expired"></a>
+#### assertCookieExpired
+
+Assert that the response contains the given cookie and it is expired:
+
+    $response->assertCookieExpired($cookieName);
+
+<a name="assert-cookie-missing"></a>
+#### assertCookieMissing
+
+Assert that the response does not contains the given cookie:
+
+    $response->assertCookieMissing($cookieName);
+
+<a name="assert-dont-see"></a>
+#### assertDontSee
+
+Assert that the given string is not contained within the response:
+
+    $response->assertDontSee($value);
+
+<a name="assert-dont-see-text"></a>
+#### assertDontSeeText
+
+Assert that the given string is not contained within the response text:
+
+    $response->assertDontSeeText($value);
+
+<a name="assert-exact-json"></a>
+#### assertExactJson
+
+Assert that the response contains an exact match of the given JSON data:
+
+    $response->assertExactJson(array $data);
+
+<a name="assert-header"></a>
+#### assertHeader
+
+Assert that the given header is present on the response:
+
+    $response->assertHeader($headerName, $value = null);
+
+<a name="assert-json"></a>
+#### assertJson
+
+Assert that the response contains the given JSON data:
+
+    $response->assertJson(array $data);
+
+<a name="assert-json-fragment"></a>
+#### assertJsonFragment
+
+Assert that the response contains the given JSON fragment:
+
+    $response->assertJsonFragment(array $data);
+
+<a name="assert-json-missing"></a>
+#### assertJsonMissing
+
+Assert that the response does not contain the given JSON fragment:
+
+    $response->assertJsonMissing(array $data);
+
+<a name="assert-json-missing-exact"></a>
+#### assertJsonMissingExact
+
+Assert that the response does not contain the exact JSON fragment:
+
+    $response->assertJsonMissingExact(array $data);
+
+<a name="assert-json-structure"></a>
+#### assertJsonStructure
+
+Assert that the response has a given JSON structure:
+
+    $response->assertJsonStructure(array $structure);
+
+<a name="assert-json-validation-errors"></a>
+#### assertJsonValidationErrors
+
+Assert that the response has the given JSON validation errors for the given keys:
+
+    $response->assertJsonValidationErrors($keys);
+
+<a name="assert-plain-cookie"></a>
+#### assertPlainCookie
+
+Assert that the response contains the given cookie (unencrypted):
+
+    $response->assertPlainCookie($cookieName, $value = null);
+
+<a name="assert-redirect"></a>
+#### assertRedirect
+
+Assert that the response is a redirect to a given URI:
+
+    $response->assertRedirect($uri);
+
+<a name="assert-see"></a>
+#### assertSee
+
+Assert that the given string is contained within the response:
+
+    $response->assertSee($value);
+
+<a name="assert-see-text"></a>
+#### assertSeeText
+
+Assert that the given string is contained within the response text:
+
+    $response->assertSeeText($value);
+
+<a name="assert-session-has"></a>
+#### assertSessionHas
+
+Assert that the session contains the given piece of data:
+
+    $response->assertSessionHas($key, $value = null);
+
+<a name="assert-session-has-all"></a>
+#### assertSessionHasAll
+
+Assert that the session has a given list of values:
+
+    $response->assertSessionHasAll($key, $value = null);
+
+<a name="assert-session-has-errors"></a>
+#### assertSessionHasErrors
+
+Assert that the session contains an error for the given field:
+
+    $response->assertSessionHasErrors(array $keys, $format = null, $errorBag = 'default');
+
+<a name="assert-session-has-errors-in"></a>
+#### assertSessionHasErrorsIn
+
+Assert that the session has the given errors:
+
+    $response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);
+
+<a name="assert-session-missing"></a>
+#### assertSessionMissing
+
+Assert that the session does not contain the given key:
+
+    $response->assertSessionMissing($key);
+
+<a name="assert-status"></a>
+#### assertStatus
+
+Assert that the response has a given code:
+
+    $response->assertStatus($code);
+
+<a name="assert-successful"></a>
+#### assertSuccessful
+
+Assert that the response has a successful status code:
+
+    $response->assertSuccessful();
+
+<a name="assert-view-has"></a>
+#### assertViewHas
+
+Assert that the response view was given a piece of data:
+
+    $response->assertViewHas($key, $value = null);
+
+<a name="assert-view-has-all"></a>
+#### assertViewHasAll
+
+Assert that the response view has a given list of data:
+
+    $response->assertViewHasAll(array $data);
+
+<a name="assert-view-is"></a>
+#### assertViewIs
+
+Assert that the given view was returned by the route:
+
+    $response->assertViewIs($value);
+
+<a name="assert-view-missing"></a>
+#### assertViewMissing
+
+Assert that the response view is missing a piece of bound data:
+
+    $response->assertViewMissing($key);
 
 <a name="authentication-assertions"></a>
 ### Authentication Assertions
