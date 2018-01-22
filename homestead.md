@@ -20,6 +20,7 @@
     - [Ports](#ports)
     - [Sharing Your Environment](#sharing-your-environment)
     - [Multiple PHP Versions](#multiple-php-versions)
+    - [Web Servers](#web-servers)
 - [Network Interfaces](#network-interfaces)
 - [Updating Homestead](#updating-homestead)
 - [Provider Specific Settings](#provider-specific-settings)
@@ -421,6 +422,15 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php7.0 artisan list
     php7.1 artisan list
     php7.2 artisan list
+    
+<a name="web-servers"></a>
+### Web Servers
+
+By default Homestead uses the Nginx web server, but can also install Apache if specified as a site type. While both web servers can *exist* in Homestead at the same time, both cannot be *running* at the same time. The process to turn one off and then turn the other on is cumbersome, so the `flip` command is provided to make this process easier. `flip` will automatically determine which web server is running, shut it off, and then turn the other on. This makes Homestead a powerful virtual machine that can run all of your projects, no matter which web server they may require. To use this command, SSH into your Homestead machine and run it on the command line.
+
+```sh
+flip
+```
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
