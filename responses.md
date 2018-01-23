@@ -21,7 +21,7 @@
 
 #### Strings & Arrays
 
-All routes and controllers should return a response to be sent back to the user's browser. Laravel provides several different ways to return responses. The most basic response is simply returning a string from a route or controller. The framework will automatically convert the string into a full HTTP response:
+All routes and controllers should return a response to be sent back to the user's browser. Laravel provides several different ways to return responses. The most basic response is returning a string from a route or controller. The framework will automatically convert the string into a full HTTP response:
 
     Route::get('/', function () {
         return 'Hello World';
@@ -130,7 +130,7 @@ If your route has parameters, you may pass them as the second argument to the `r
 
 #### Populating Parameters Via Eloquent Models
 
-If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may simply pass the model itself. The ID will be extracted automatically:
+If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may pass the model itself. The ID will be extracted automatically:
 
     // For a route with the following URI: profile/{id}
 

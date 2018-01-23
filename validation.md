@@ -104,7 +104,7 @@ To get a better understanding of the `validate` method, let's jump back into the
         // The blog post is valid...
     }
 
-As you can see, we simply pass the desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
+As you can see, we pass the desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
 
 #### Stopping On First Validation Failure
 
@@ -254,7 +254,7 @@ Since all form requests extend the base Laravel request class, we may use the `u
 
 If the `authorize` method returns `false`, a HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
 
-If you plan to have authorization logic in another part of your application, simply return `true` from the `authorize` method:
+If you plan to have authorization logic in another part of your application, return `true` from the `authorize` method:
 
     /**
      * Determine if the user is authorized to make this request.
@@ -339,7 +339,7 @@ If you would like to create a validator instance manually but still take advanta
 <a name="named-error-bags"></a>
 ### Named Error Bags
 
-If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors, allowing you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
+If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors, allowing you to retrieve the error messages for a specific form. Pass a name as the second argument to `withErrors`:
 
     return redirect('register')
                 ->withErrors($validator, 'login');

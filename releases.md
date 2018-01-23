@@ -219,7 +219,7 @@ A rule object only has two methods: `passes` and `message`. The `passes` method 
         }
     }
 
-Once the rule has been defined, you may use it by simply passing an instance of the rule object with your other validation rules:
+Once the rule has been defined, you may use it by passing an instance of the rule object with your other validation rules:
 
     use App\Rules\ValidName;
 
