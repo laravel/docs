@@ -756,6 +756,47 @@ In addition to passing a string `key`, you may also pass a callback. The callbac
             ],
         ]
     */
+    
+Also you can pass criterias as an array. Each array element will applied for the particular level within a multidimensional tree structure:
+
+    $data = new Collection([
+        10 => ['user' => 1, 'skilllevel' => 1, 'roles' => ['Role_1', 'Role_3']],
+        20 => ['user' => 2, 'skilllevel' => 1, 'roles' => ['Role_1', 'Role_2']],
+        30 => ['user' => 3, 'skilllevel' => 2, 'roles' => ['Role_1']],
+        40 => ['user' => 4, 'skilllevel' => 2, 'roles' => ['Role_2']],
+    ]);
+
+    $result = $data->groupBy([
+        'skilllevel',
+        function ($item) {
+            return $item['roles'];
+        },
+    ], true);
+
+    /*
+    [
+        1 => [
+            'Role_1' => [
+                10 => ['user' => 1, 'skilllevel' => 1, 'roles' => ['Role_1', 'Role_3']],
+                20 => ['user' => 2, 'skilllevel' => 1, 'roles' => ['Role_1', 'Role_2']],
+            ],
+            'Role_3' => [
+                10 => ['user' => 1, 'skilllevel' => 1, 'roles' => ['Role_1', 'Role_3']],
+            ],
+            'Role_2' => [
+                20 => ['user' => 2, 'skilllevel' => 1, 'roles' => ['Role_1', 'Role_2']],
+            ],
+        ],
+        2 => [
+            'Role_1' => [
+                30 => ['user' => 3, 'skilllevel' => 2, 'roles' => ['Role_1']],
+            ],
+            'Role_2' => [
+                40 => ['user' => 4, 'skilllevel' => 2, 'roles' => ['Role_2']],
+            ],
+        ],
+    ];
+    */
 
 <a name="method-has"></a>
 #### `has()` {#collection-method}
