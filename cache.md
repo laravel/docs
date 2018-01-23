@@ -325,7 +325,7 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
 
 The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
 
-Once your extension is registered, simply update your `config/cache.php` configuration file's `driver` option to the name of your extension.
+Once your extension is registered, update your `config/cache.php` configuration file's `driver` option to the name of your extension.
 
 <a name="events"></a>
 ## Events

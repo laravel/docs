@@ -80,7 +80,7 @@ To get started, open your `tests/DuskTestCase.php` file, which is the base Dusk 
         // static::startChromeDriver();
     }
 
-Next, you may simply modify the `driver` method to connect to the URL and port of your choice. In addition, you may modify the "desired capabilities" that should be passed to the WebDriver:
+Next, you may modify the `driver` method to connect to the URL and port of your choice. In addition, you may modify the "desired capabilities" that should be passed to the WebDriver:
 
     /**
      * Create the RemoteWebDriver instance.
@@ -196,7 +196,7 @@ As you can see in the example above, the `browse` method accepts a callback. A b
 
 #### Creating Multiple Browsers
 
-Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, simply "ask" for more than one browser in the signature of the callback given to the `browse` method:
+Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, "ask" for more than one browser in the signature of the callback given to the `browse` method:
 
     $this->browse(function ($first, $second) {
         $first->loginAs(User::find(1))
@@ -922,7 +922,7 @@ If you are using CircleCI 1.0 to run your Dusk tests, you may use this configura
 <a name="running-tests-on-codeship"></a>
 ### Codeship
 
-To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. Of course, these commands are simply a starting point and you are free to add additional commands as needed:
+To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. Of course, these commands are a starting point and you are free to add additional commands as needed:
 
     phpenv local 7.1
     cp .env.testing .env

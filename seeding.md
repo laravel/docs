@@ -68,7 +68,7 @@ For example, let's create 50 users and attach a relationship to each user:
 <a name="calling-additional-seeders"></a>
 ### Calling Additional Seeders
 
-Within the `DatabaseSeeder` class, you may use the `call` method to execute additional seed classes. Using the `call` method allows you to break up your database seeding into multiple files so that no single seeder class becomes overwhelmingly large. Simply pass the name of the seeder class you wish to run:
+Within the `DatabaseSeeder` class, you may use the `call` method to execute additional seed classes. Using the `call` method allows you to break up your database seeding into multiple files so that no single seeder class becomes overwhelmingly large. Pass the name of the seeder class you wish to run:
 
     /**
      * Run the database seeds.

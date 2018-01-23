@@ -291,7 +291,7 @@ In addition to customizing the name of the joining table, you may also customize
 
 #### Defining The Inverse Of The Relationship
 
-To define the inverse of a many-to-many relationship, you simply place another call to `belongsToMany` on your related model. To continue our user roles example, let's define the `users` method on the `Role` model:
+To define the inverse of a many-to-many relationship, you place another call to `belongsToMany` on your related model. To continue our user roles example, let's define the `users` method on the `Role` model:
 
     <?php
 
@@ -310,7 +310,7 @@ To define the inverse of a many-to-many relationship, you simply place another c
         }
     }
 
-As you can see, the relationship is defined exactly the same as its `User` counterpart, with the exception of simply referencing the `App\User` model. Since we're reusing the `belongsToMany` method, all of the usual table and key customization options are available when defining the inverse of many-to-many relationships.
+As you can see, the relationship is defined exactly the same as its `User` counterpart, with the exception of referencing the `App\User` model. Since we're reusing the `belongsToMany` method, all of the usual table and key customization options are available when defining the inverse of many-to-many relationships.
 
 #### Retrieving Intermediate Table Columns
 
@@ -521,7 +521,7 @@ Next, let's examine the model definitions needed to build this relationship:
 
 #### Retrieving Polymorphic Relations
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the comments for a post, we can simply use the `comments` dynamic property:
+Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the comments for a post, we can use the `comments` dynamic property:
 
     $post = App\Post::find(1);
 
@@ -626,7 +626,7 @@ Next, on the `Tag` model, you should define a method for each of its related mod
 
 #### Retrieving The Relationship
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you can simply use the `tags` dynamic property:
+Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you can use the `tags` dynamic property:
 
     $post = App\Post::find(1);
 
@@ -677,7 +677,7 @@ You are able to use any of the [query builder](/docs/{{version}}/queries) method
 <a name="relationship-methods-vs-dynamic-properties"></a>
 ### Relationship Methods Vs. Dynamic Properties
 
-If you do not need to add additional constraints to an Eloquent relationship query, you may simply access the relationship as if it were a property. For example, continuing to use our `User` and `Post` example models, we may access all of a user's posts like so:
+If you do not need to add additional constraints to an Eloquent relationship query, you may access the relationship as if it were a property. For example, continuing to use our `User` and `Post` example models, we may access all of a user's posts like so:
 
     $user = App\User::find(1);
 

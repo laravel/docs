@@ -27,7 +27,7 @@ To generate a resource class, you may use the `make:resource` Artisan command. B
 
 In addition to generating resources that transform individual models, you may generate resources that are responsible for transforming collections of models. This allows your response to include links and other meta information that is relevant to an entire collection of a given resource.
 
-To create a resource collection, you should use the `--collection` flag when creating the resource. Or, simply including the word `Collection` in the resource name will indicate to Laravel that it should create a collection resource. Collection resources extend the `Illuminate\Http\Resources\Json\ResourceCollection` class:
+To create a resource collection, you should use the `--collection` flag when creating the resource. Or, including the word `Collection` in the resource name will indicate to Laravel that it should create a collection resource. Collection resources extend the `Illuminate\Http\Resources\Json\ResourceCollection` class:
 
     php artisan make:resource Users --collection
 
@@ -170,7 +170,7 @@ Once a resource has been defined, it may be returned directly from a route or co
 
 #### Relationships
 
-If you would like to include related resources in your response, you may simply add them to the array returned by your `toArray` method. In this example, we will use the `Post` resource's `collection` method to add the user's blog posts to the resource response:
+If you would like to include related resources in your response, you may add them to the array returned by your `toArray` method. In this example, we will use the `Post` resource's `collection` method to add the user's blog posts to the resource response:
 
     /**
      * Transform the resource into an array.
@@ -510,7 +510,7 @@ In addition to conditionally including relationship information in your resource
 <a name="adding-meta-data"></a>
 ### Adding Meta Data
 
-Some JSON API standards require the addition of meta data to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or meta data about the resource itself. If you need to return additional meta data about a resource, simply include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:
+Some JSON API standards require the addition of meta data to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or meta data about the resource itself. If you need to return additional meta data about a resource, include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:
 
     /**
      * Transform the resource into an array.
@@ -528,7 +528,7 @@ Some JSON API standards require the addition of meta data to your resource and r
         ];
     }
 
-When returning additional meta data from your resources, you never have to worry about accidentally overriding the `links` or `meta` keys that are automatically added by Laravel when returning paginated responses. Any additional `links` you define will simply be merged with the links provided by the paginator.
+When returning additional meta data from your resources, you never have to worry about accidentally overriding the `links` or `meta` keys that are automatically added by Laravel when returning paginated responses. Any additional `links` you define will be merged with the links provided by the paginator.
 
 #### Top Level Meta Data
 
