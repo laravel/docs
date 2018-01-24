@@ -137,6 +137,14 @@ After defining a translation string that has pluralization options, you may use 
 
     echo trans_choice('messages.apples', 10);
 
+You may also define parameters in translation string:
+
+    'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',
+
+Array of replacements should be passed as third argument of `trans_choice` function:
+
+    echo trans_choice('time.minutes_ago', 5, ['value' => 5]);
+
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
 
