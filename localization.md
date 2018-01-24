@@ -137,11 +137,9 @@ After defining a translation string that has pluralization options, you may use 
 
     echo trans_choice('messages.apples', 10);
 
-You may also define parameters in translation string:
+You may also define place-holder attributes in pluralization strings. These place-holders may be replaced by passing an array as the third argument to the `trans_choice` function:
 
     'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',
-
-Array of replacements should be passed as third argument of `trans_choice` function:
 
     echo trans_choice('time.minutes_ago', 5, ['value' => 5]);
 
