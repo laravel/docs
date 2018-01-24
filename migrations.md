@@ -34,7 +34,7 @@ To create a migration, use the `make:migration` [Artisan command](/docs/{{versio
 
 The new migration will be placed in your `database/migrations` directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
 
-The `--table` and `--create` options may also be used to indicate the name of the table and whether the migration will be creating a new table. These options simply pre-fill the generated migration stub file with the specified table:
+The `--table` and `--create` options may also be used to indicate the name of the table and whether the migration will be creating a new table. These options pre-fill the generated migration stub file with the specified table:
 
     php artisan make:migration create_users_table --create=users
 
@@ -45,7 +45,7 @@ If you would like to specify a custom output path for the generated migration, y
 <a name="migration-structure"></a>
 ## Migration Structure
 
-A migration class contains two methods: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should simply reverse the operations performed by the `up` method.
+A migration class contains two methods: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should reverse the operations performed by the `up` method.
 
 Within both of these methods you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, this migration example creates a `flights` table:
 
@@ -363,7 +363,7 @@ Command  |  Description
 <a name="creating-indexes"></a>
 ### Creating Indexes
 
-The schema builder supports several types of indexes. First, let's look at an example that specifies a column's values should be unique. To create the index, we can simply chain the `unique` method onto the column definition:
+The schema builder supports several types of indexes. First, let's look at an example that specifies a column's values should be unique. To create the index, we can chain the `unique` method onto the column definition:
 
     $table->string('email')->unique();
 
@@ -410,7 +410,7 @@ Alternatively, you may enable the `innodb_large_prefix` option for your database
 <a name="dropping-indexes"></a>
 ### Dropping Indexes
 
-To drop an index, you must specify the index's name. By default, Laravel automatically assigns a reasonable name to the indexes. Simply concatenate the table name, the name of the indexed column, and the index type. Here are some examples:
+To drop an index, you must specify the index's name. By default, Laravel automatically assigns a reasonable name to the indexes. Concatenate the table name, the name of the indexed column, and the index type. Here are some examples:
 
 Command  |  Description
 -------  |  -----------

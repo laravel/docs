@@ -21,7 +21,7 @@ Laravel's localization features provide a convenient way to retrieve strings in 
             /es
                 messages.php
 
-All language files simply return an array of keyed strings. For example:
+All language files return an array of keyed strings. For example:
 
     <?php
 
@@ -68,7 +68,7 @@ Typically, translation strings are stored in files within the `resources/lang` d
             /es
                 messages.php
 
-All language files simply return an array of keyed strings. For example:
+All language files return an array of keyed strings. For example:
 
     <?php
 
@@ -104,7 +104,7 @@ Of course if you are using the [Blade templating engine](/docs/{{version}}/blade
 
     @lang('messages.welcome')
 
-If the specified translation string does not exist, the `__` function will simply return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist.
+If the specified translation string does not exist, the `__` function will return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist.
 
 <a name="replacing-parameters-in-translation-strings"></a>
 ### Replacing Parameters In Translation Strings
@@ -136,6 +136,12 @@ You may even create more complex pluralization rules which specify translation s
 After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the translation string is returned:
 
     echo trans_choice('messages.apples', 10);
+
+You may also define place-holder attributes in pluralization strings. These place-holders may be replaced by passing an array as the third argument to the `trans_choice` function:
+
+    'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',
+
+    echo trans_choice('time.minutes_ago', 5, ['value' => 5]);
 
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files

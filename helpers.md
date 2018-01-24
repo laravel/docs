@@ -704,7 +704,7 @@ The `__` function translates the given translation string or translation key usi
 
     echo __('messages.welcome');
 
-If the specified translation string or key does not exist, the `__` function will simply return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
+If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
 
 <a name="method-camel-case"></a>
 #### `camel_case()` {#collection-method}
@@ -973,7 +973,7 @@ The `trans` function translates the given translation key using your [localizati
 
     echo trans('messages.welcome');
 
-If the specified translation key does not exist, the `trans` function will simply return the given key. So, using the example above, the `trans` function would return `messages.welcome` if the translation key does not exist.
+If the specified translation key does not exist, the `trans` function will return the given key. So, using the example above, the `trans` function would return `messages.welcome` if the translation key does not exist.
 
 <a name="method-trans-choice"></a>
 #### `trans_choice()` {#collection-method}
@@ -982,7 +982,7 @@ The `trans_choice` function translates the given translation key with inflection
 
     echo trans_choice('messages.notifications', $unreadCount);
 
-If the specified translation key does not exist, the `trans_choice` function will simply return the given key. So, using the example above, the `trans_choice` function would return `messages.notifications` if the translation key does not exist.
+If the specified translation key does not exist, the `trans_choice` function will return the given key. So, using the example above, the `trans_choice` function would return `messages.notifications` if the translation key does not exist.
 
 <a name="urls"></a>
 ## URLs
@@ -1363,7 +1363,7 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an [
 <a name="method-optional"></a>
 #### `optional()` {#collection-method}
 
-The `optional` function accepts any argument and allows you to access properties or call methods on that object. If the given object is `null`, properties and methods will simply return `null` instead of causing an error:
+The `optional` function accepts any argument and allows you to access properties or call methods on that object. If the given object is `null`, properties and methods will return `null` instead of causing an error:
 
     return optional($user->address)->street;
 

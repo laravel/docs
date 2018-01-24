@@ -24,7 +24,7 @@ Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flys
 <a name="configuration"></a>
 ## Configuration
 
-The filesystem configuration file is located at `config/filesystems.php`. Within this file you may configure all of your "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file. So, simply modify the configuration to reflect your storage preferences and credentials.
+The filesystem configuration file is located at `config/filesystems.php`. Within this file you may configure all of your "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file. So, modify the configuration to reflect your storage preferences and credentials.
 
 Of course, you may configure as many disks as you like, and may even have multiple disks that use the same driver.
 
@@ -210,7 +210,7 @@ The `copy` method may be used to copy an existing file to a new location on the 
 <a name="file-uploads"></a>
 ### File Uploads
 
-In web applications, one of the most common use-cases for storing files is storing user uploaded files such as profile pictures, photos, and documents. Laravel makes it very easy to store uploaded files using the `store` method on an uploaded file instance. Simply call the `store` method with the path at which you wish to store the uploaded file:
+In web applications, one of the most common use-cases for storing files is storing user uploaded files such as profile pictures, photos, and documents. Laravel makes it very easy to store uploaded files using the `store` method on an uploaded file instance. Call the `store` method with the path at which you wish to store the uploaded file:
 
     <?php
 

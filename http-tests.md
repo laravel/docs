@@ -230,6 +230,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertDontSeeText](#assert-dont-see-text)
 [assertExactJson](#assert-exact-json)
 [assertHeader](#assert-header)
+[assertHeaderMissing](#assert-header-missing)
 [assertJson](#assert-json)
 [assertJsonFragment](#assert-json-fragment)
 [assertJsonMissing](#assert-json-missing)
@@ -303,6 +304,13 @@ Assert that the response contains an exact match of the given JSON data:
 Assert that the given header is present on the response:
 
     $response->assertHeader($headerName, $value = null);
+
+<a name="assert-header-missing"></a>
+#### assertHeaderMissing
+
+Assert that the given header is not present on the response:
+
+    $response->assertHeaderMissing($headerName);
 
 <a name="assert-json"></a>
 #### assertJson

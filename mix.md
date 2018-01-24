@@ -194,7 +194,7 @@ Though disabled by default, source maps may be activated by calling the `mix.sou
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
 
-Mix provides several features to help you work with your JavaScript files, such as compiling ECMAScript 2015, module bundling, minification, and simply concatenating plain JavaScript files. Even better, this all works seamlessly, without requiring an ounce of custom configuration:
+Mix provides several features to help you work with your JavaScript files, such as compiling ECMAScript 2015, module bundling, minification, and concatenating plain JavaScript files. Even better, this all works seamlessly, without requiring an ounce of custom configuration:
 
     mix.js('resources/assets/js/app.js', 'public/js');
 

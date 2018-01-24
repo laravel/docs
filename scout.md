@@ -190,7 +190,7 @@ You may also use the `searchable` method on an Eloquent query to update a collec
 <a name="removing-records"></a>
 ### Removing Records
 
-To remove a record from your index, simply `delete` the model from the database. This form of removal is even compatible with [soft deleted](/docs/{{version}}/eloquent#soft-deleting) models:
+To remove a record from your index, `delete` the model from the database. This form of removal is even compatible with [soft deleted](/docs/{{version}}/eloquent#soft-deleting) models:
 
     $order = App\Order::find(1);
 

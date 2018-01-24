@@ -121,7 +121,7 @@ Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/
 
 Before using Cashier with Braintree, you will need to define a `plan-credit` discount in your Braintree control panel. This discount will be used to properly prorate subscriptions that change from yearly to monthly billing, or from monthly to yearly billing.
 
-The discount amount configured in the Braintree control panel can be any value you wish, as Cashier will simply override the defined amount with our own custom amount each time we apply the coupon. This coupon is needed since Braintree does not natively support prorating subscriptions across subscription frequencies.
+The discount amount configured in the Braintree control panel can be any value you wish, as Cashier will override the defined amount with our own custom amount each time we apply the coupon. This coupon is needed since Braintree does not natively support prorating subscriptions across subscription frequencies.
 
 #### Database Migrations
 
@@ -147,7 +147,7 @@ Before using Cashier, we'll need to [prepare the database](/docs/{{version}}/mig
         $table->timestamps();
     });
 
-Once the migrations have been created, simply run the `migrate` Artisan command.
+Once the migrations have been created, run the `migrate` Artisan command.
 
 #### Billable Model
 
@@ -331,7 +331,7 @@ The `taxPercentage` method enables you to apply a tax rate on a model-by-model b
 <a name="cancelling-subscriptions"></a>
 ### Cancelling Subscriptions
 
-To cancel a subscription, simply call the `cancel` method on the user's subscription:
+To cancel a subscription, call the `cancel` method on the user's subscription:
 
     $user->subscription('main')->cancel();
 
@@ -354,7 +354,7 @@ If a user has cancelled their subscription and you wish to resume it, use the `r
 
     $user->subscription('main')->resume();
 
-If the user cancels a subscription and then resumes that subscription before the subscription has fully expired, they will not be billed immediately. Instead, their subscription will simply be re-activated, and they will be billed on the original billing cycle.
+If the user cancels a subscription and then resumes that subscription before the subscription has fully expired, they will not be billed immediately. Instead, their subscription will be re-activated, and they will be billed on the original billing cycle.
 
 <a name="updating-credit-cards"></a>
 ### Updating Credit Cards
@@ -394,7 +394,7 @@ You may determine if the user is within their trial period using either the `onT
 <a name="without-credit-card-up-front"></a>
 ### Without Credit Card Up Front
 
-If you would like to offer trial periods without collecting the user's payment method information up front, you may simply set the `trial_ends_at` column on the user record to your desired trial ending date. This is typically done during user registration:
+If you would like to offer trial periods without collecting the user's payment method information up front, you may set the `trial_ends_at` column on the user record to your desired trial ending date. This is typically done during user registration:
 
     $user = User::create([
         // Populate other user properties...
@@ -446,7 +446,7 @@ Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellation on failed charges, but if you have additional Stripe webhook events you would like to handle, simply extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the Stripe webhook you wish to handle. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you should add a `handleInvoicePaymentSucceeded` method to the controller:
+Cashier automatically handles subscription cancellation on failed charges, but if you have additional Stripe webhook events you would like to handle, extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the Stripe webhook you wish to handle. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you should add a `handleInvoicePaymentSucceeded` method to the controller:
 
     <?php
 
@@ -505,7 +505,7 @@ Since Braintree webhooks need to bypass Laravel's [CSRF protection](/docs/{{vers
 <a name="defining-braintree-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellation on failed charges, but if you have additional Braintree webhook events you would like to handle, simply extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the Braintree webhook you wish to handle. For example, if you wish to handle the `dispute_opened` webhook, you should add a `handleDisputeOpened` method to the controller:
+Cashier automatically handles subscription cancellation on failed charges, but if you have additional Braintree webhook events you would like to handle, extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the Braintree webhook you wish to handle. For example, if you wish to handle the `dispute_opened` webhook, you should add a `handleDisputeOpened` method to the controller:
 
     <?php
 

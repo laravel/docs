@@ -189,7 +189,7 @@ For Eloquent methods like `all` and `get` which retrieve multiple results, an in
         return $flight->cancelled;
     });
 
-Of course, you may also simply loop over the collection like an array:
+Of course, you may also loop over the collection like an array:
 
     foreach ($flights as $flight) {
         echo $flight->name;
@@ -260,7 +260,7 @@ You may also use the `count`, `sum`, `max`, and other [aggregate methods](/docs/
 <a name="inserts"></a>
 ### Inserts
 
-To create a new record in the database, simply create a new model instance, set attributes on the model, then call the `save` method:
+To create a new record in the database, create a new model instance, set attributes on the model, then call the `save` method:
 
     <?php
 
@@ -290,7 +290,7 @@ To create a new record in the database, simply create a new model instance, set 
         }
     }
 
-In this example, we simply assign the `name` parameter from the incoming HTTP request to the `name` attribute of the `App\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually.
+In this example, we assign the `name` parameter from the incoming HTTP request to the `name` attribute of the `App\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually.
 
 <a name="updates"></a>
 ### Updates
@@ -641,7 +641,7 @@ If you would like to remove several or even all of the global scopes, you may us
 <a name="local-scopes"></a>
 ### Local Scopes
 
-Local scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`.
+Local scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, prefix an Eloquent model method with `scope`.
 
 Scopes should always return a query builder instance:
 

@@ -79,7 +79,7 @@ You should typically run the `php artisan config:cache` command as part of your 
 
 When your application is in maintenance mode, a custom view will be displayed for all requests into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, a `MaintenanceModeException` will be thrown with a status code of 503.
 
-To enable maintenance mode, simply execute the `down` Artisan command:
+To enable maintenance mode, execute the `down` Artisan command:
 
     php artisan down
 
