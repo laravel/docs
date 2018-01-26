@@ -7,6 +7,7 @@
     - [Scheduling Shell Commands](#scheduling-shell-commands)
     - [Schedule Frequency Options](#schedule-frequency-options)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
+    - [Running Tasks On One Server](#running-tasks-on-one-server)
     - [Maintenance Mode](#maintenance-mode)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
@@ -179,6 +180,18 @@ By default, scheduled tasks will be run even if the previous instance of the tas
     $schedule->command('emails:send')->withoutOverlapping();
 
 In this example, the `emails:send` [Artisan command](/docs/{{version}}/artisan) will be run every minute if it is not already running. The `withoutOverlapping` method is especially useful if you have tasks that vary drastically in their execution time, preventing you from predicting exactly how long a given task will take.
+
+<a name="running-tasks-on-one-server"></a>
+### Running Tasks On One Server
+
+If your application is running on multiple servers, you may limit a scheduled job to only execute on a single server. For instance, assume you have a scheduled task that generates a new report every Friday night. If the task scheduler is running on three worker servers, the scheduled task will run on all three servers and generate the report three times. Not good!
+
+To indicate that the task should run on only one server, use the `onOneServer` method when defining the scheduled task. The first server to obtain the task will secure an atomic lock on the job to prevent other servers from running the same task at the same time:
+
+    $schedule->command('report:generate')
+                    ->fridays()
+                    ->at('17:00')
+                    ->onOneServer();
 
 <a name="maintenance-mode"></a>
 ### Maintenance Mode
