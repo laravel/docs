@@ -33,7 +33,39 @@ By default, Monolog is instantiated with a "channel name" that matches the curre
 <a name="building-log-stacks"></a>
 ### Building Log Stacks
 
-Here Test
+As previously mentioned, the `stack` driver allows you to combine multiple channels into a single log channel. To illustrate how to use log stacks, let's take a look at an example configuration that you might see in a production application:
+
+    'channels' => [
+        'stack' => [
+            'driver' => 'stack',
+            'channels' => ['syslog', 'slack'],
+        ],
+
+        'syslog' => [
+            'driver' => 'syslog',
+            'level' => 'debug',
+        ],
+
+        'slack' => [
+            'driver' => 'slack',
+            'url' => env('LOG_SLACK_WEBHOOK_URL'),
+            'username' => 'Laravel Log',
+            'emoji' => ':boom:',
+            'level' => 'critical',
+        ],
+    ],
+
+Let's dissect this configuration. First, notice our `stack` channels aggregates two other channels via its `channel` option: `syslog` and `slack`. So, when logging messages, both of these channels will log the message.
+
+However, take note of the `level` configuration option present on the `syslog` and `slack` channel configurations. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in [RFC 5424](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**.
+
+So, imagine we log a message like so:
+
+    Log::debug('An informational message.');
+
+Given our configuration, the `syslog` channel will write the message to the system log; however, since the error message is not level `critical` or above, it will not be sent to Slack. However, if we log an `emergency` message, it will be sent to both the system log and Slack since the `emergency` level is above our minimum level threshold for both channels:
+
+    Log::emergency('The system is down!');
 
 <a name="log-severity-levels"></a>
 #### Log Severity Levels
