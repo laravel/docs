@@ -240,7 +240,9 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertSee](#assert-see)
+[assertSeeInOrder](#assert-see-in-order)
 [assertSeeText](#assert-see-text)
+[assertSeeTextInOrder](#assert-see-text-in-order)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasAll](#assert-session-has-all)
 [assertSessionHasErrors](#assert-session-has-errors)
@@ -374,12 +376,26 @@ Assert that the given string is contained within the response:
 
     $response->assertSee($value);
 
+<a name="assert-see-in-order"></a>
+#### assertSeeInOrder
+
+Assert that the given strings are contained in order within the response:
+
+    $response->assertSeeInOrder(array $values);
+
 <a name="assert-see-text"></a>
 #### assertSeeText
 
 Assert that the given string is contained within the response text:
 
     $response->assertSeeText($value);
+
+<a name="assert-see-text-in-order"></a>
+#### assertSeeTextInOrder
+
+Assert that the given strings are contained in order within the response text:
+
+    $response->assertSeeTextInOrder(array $values);
 
 <a name="assert-session-has"></a>
 #### assertSessionHas
