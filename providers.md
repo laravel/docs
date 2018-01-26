@@ -58,6 +58,41 @@ Let's take a look at a basic service provider. Within any of your service provid
 
 This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Connection` in the service container. If you don't understand how the service container works, check out [its documentation](/docs/{{version}}/container).
 
+#### The `bindings` And `singletons` Properties
+
+If your service provider registers many simple bindings, you may wish to use the `bindings` and `singletons` properties instead of manually registering each container binding. When the service provider is loaded by the framework, it will automatically check for these properties and register their bindings:
+
+    <?php
+
+    namespace App\Providers;
+
+    use App\Contracts\ServerProvider;
+    use App\Contracts\DowntimeNotifier;
+    use Illuminate\Support\ServiceProvider;
+    use App\Services\PingdomDowntimeNotifier;
+    use App\Services\DigitalOceanServerProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * All of the container bindings that should be registered.
+         *
+         * @var array
+         */
+        public $bindings = [
+            ServerProvider::class => DigitalOceanServerProvider::class,
+        ];
+
+        /**
+         * All of the container singletons that should be registered.
+         *
+         * @var array
+         */
+        public $singletons = [
+            DowntimeNotifier::class => PingdomDowntimeNotifier
+        ];
+    }
+
 <a name="the-boot-method"></a>
 ### The Boot Method
 
