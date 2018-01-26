@@ -299,6 +299,12 @@ The `request` helper will no longer retrieve nested keys. If needed, you may use
 
     return request()->input('filters.date');
 
+### Throttle Limit
+The default throttle limit middleware `ThrottleRequests` now counts requests per user, not anymore per request/route. In fact all routes have the same common thottle counter per user: the counter depends from user, not from request/route.  
+So if you want to restrict some routes (for example if you want a lower limit on a specific route) you have to override the middleware.
+
+You have to override `resolveRequestSignature` method, returning always `$request->fingerprint()`. In this way the key used for throttle counter depends from request/route.
+
 ### Testing
 
 #### Authentication Assertions
