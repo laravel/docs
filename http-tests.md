@@ -234,7 +234,6 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertJson](#assert-json)
 [assertJsonFragment](#assert-json-fragment)
 [assertJsonMissing](#assert-json-missing)
-[assertJsonMissing](#assert-json-missing)
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
