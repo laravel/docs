@@ -235,6 +235,15 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
         new ReleasePodcast
     ])->dispatch();
 
+#### Chain Connection & Queue
+
+If you would like to specify the default connection and queue that should be used for the chained jobs, you may use the `allOnConnection` and `allOnQueue` methods. These methods specify the queue connection and queue name that should be used unless the queued job is explicitly assigned a different connection / queue:
+
+    ProcessPodcast::withChain([
+        new OptimizePodcast,
+        new ReleasePodcast
+    ])->dispatch()->allOnConnection('redis')->allOnQueue('podcasts');
+
 <a name="customizing-the-queue-and-connection"></a>
 ### Customizing The Queue & Connection
 
