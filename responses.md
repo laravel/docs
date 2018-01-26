@@ -234,7 +234,7 @@ The `download` method may be used to generate a response that forces the user's 
 
 #### Streamed Downloads
 
-Sometimes you may wish to turn the string response of a given operation into a downloadable response without having to write the contents of the operation to disk. You may use the `streamDownload` method in this scenario:
+Sometimes you may wish to turn the string response of a given operation into a downloadable response without having to write the contents of the operation to disk. You may use the `streamDownload` method in this scenario. This method accepts a callback, file name, and an optional array of headers as its arguments:
 
     return response()->streamDownload(function () {
         echo GitHub::api('repo')
