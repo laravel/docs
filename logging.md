@@ -3,8 +3,10 @@
 - [Introduction](#introduction)
 - [Configuration](#configuration)
     - [Building Log Stacks](#building-log-stacks)
-    - [Customizing Monolog](#customizing-monolog)
 - [Writing Log Messages](#writing-log-messages)
+    - [Writing To Specific Channels](#writing-to-specific-channels)
+- [Customizing Monolog For Channels](#customizing-monolog-for-channels)
+- [Creating Custom Channels](#creating-custom-channels)
 
 <a name="introduction"></a>
 ## Introduction
@@ -55,44 +57,35 @@ As previously mentioned, the `stack` driver allows you to combine multiple chann
         ],
     ],
 
-Let's dissect this configuration. First, notice our `stack` channels aggregates two other channels via its `channel` option: `syslog` and `slack`. So, when logging messages, both of these channels will log the message.
+Let's dissect this configuration. First, notice our `stack` channels aggregates two other channels via its `channel` option: `syslog` and `slack`. So, when logging messages, both of these channels have the opportunity log the message.
 
-However, take note of the `level` configuration option present on the `syslog` and `slack` channel configurations. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in [RFC 5424](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**.
+#### Log Levels
 
-So, imagine we log a message like so:
+Note the `level` configuration option present on the `syslog` and `slack` channel configurations in the example above. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info**, and **debug**.
+
+So, imagine we log a message using the `debug` method:
 
     Log::debug('An informational message.');
 
-Given our configuration, the `syslog` channel will write the message to the system log; however, since the error message is not level `critical` or above, it will not be sent to Slack. However, if we log an `emergency` message, it will be sent to both the system log and Slack since the `emergency` level is above our minimum level threshold for both channels:
+Given our configuration, the `syslog` channel will write the message to the system log; however, since the error message is not `critical` or above, it will not be sent to Slack. However, if we log an `emergency` message, it will be sent to both the system log and Slack since the `emergency` level is above our minimum level threshold for both channels:
 
     Log::emergency('The system is down!');
-
-<a name="log-severity-levels"></a>
-#### Log Severity Levels
-
-Log messages may have different levels of severity. By default, Laravel typically writes all log levels to storage. However, in your production environment, you may wish to configure the minimum severity that should be logged.
-
-Once this option has been configured, Laravel will log all levels greater than or equal to the specified severity. For example, a default `log_level` of `error` will log **error**, **critical**, **alert**, and **emergency** messages:
-
-    'log_level' => env('APP_LOG_LEVEL', 'error'),
-
-> {tip} Monolog recognizes the following severity levels - from least severe to most severe: `debug`, `info`, `notice`, `warning`, `error`, `critical`, `alert`, `emergency`.
-
-<a name="customizing-monolog"></a>
-### Customizing Monolog
-
-If you would like to have complete control over how Monolog is configured for your application, you may use the application's `configureMonologUsing` method. You should place a call to this method in your `bootstrap/app.php` file right before the `$app` variable is returned by the file:
-
-    $app->configureMonologUsing(function ($monolog) {
-        $monolog->pushHandler(...);
-    });
-
-    return $app;
 
 <a name="writing-log-messages"></a>
 ## Writing Log Messages
 
-Laravel provides a simple abstraction layer on top of the powerful [Monolog](https://github.com/seldaek/monolog) library. By default, Laravel is configured to create a log file for your application in the `storage/logs` directory. You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades):
+You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades). As previously mentioned, the logger provides the eight logging levels defined in [RFC 5424](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**:
+
+    Log::emergency($message);
+    Log::alert($message);
+    Log::critical($message);
+    Log::error($message);
+    Log::warning($message);
+    Log::notice($message);
+    Log::info($message);
+    Log::debug($message);
+
+So, you may call any of these methods from within your application to log a message for the corresponding level. By default, the message will be written to the default channel as configured by your `config/logging.php` configuration file:
 
     <?php
 
@@ -118,25 +111,90 @@ Laravel provides a simple abstraction layer on top of the powerful [Monolog](htt
         }
     }
 
-The logger provides the eight logging levels defined in [RFC 5424](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**.
-
-    Log::emergency($message);
-    Log::alert($message);
-    Log::critical($message);
-    Log::error($message);
-    Log::warning($message);
-    Log::notice($message);
-    Log::info($message);
-    Log::debug($message);
-
 #### Contextual Information
 
 An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
 
     Log::info('User failed to login.', ['id' => $user->id]);
 
-#### Accessing The Underlying Monolog Instance
+<a name="writing-to-specific-channels"></a>
+### Writing To Specific Channels
 
-Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
+Sometimes you may wish to log a message to a channel other than your application's default channel. You may use the `channel` method on the `Log` facade to retrieve and log to any channel defined in your configuration file:
 
-    $monolog = Log::getMonolog();
+    Log::channel('slack')->info('Something happened!');
+
+If you would like to create an on-demand logging stack consisting of multiple channels, you may use the `stack` method:
+
+    Log::stack(['single', 'slack'])->info('Something happened!');
+
+<a name="customizing-monolog-for-channels"></a>
+## Customizing Monolog For Channels
+
+Sometimes you may need complete control over how Monolog is configured for an existing channel. For example, you may want to configure a custom Monolog `FormatterInterface` implementation for a given channel's handlers.
+
+To get started, define a `tap` array on the channel's configuration. The `tap` array should contain a list of classes that should have an opportunity to customize (or "tap" into) the Monolog instance after it is created:
+
+    'single' => [
+        'driver' => 'single',
+        'tap' => [App\Logging\CustomizeFormatter::class],
+        'path' => storage_path('logs/laravel.log'),
+        'level' => 'debug',
+    ],
+
+Once you have configured the `tap` option on your channel, you're ready to define the class that will customize your Monolog instance. This class only needs a single method: `__invoke`, which receives the Monolog instance:
+
+    <?php
+
+    namespace App\Logging;
+
+    class CustomizeFormatter
+    {
+        /**
+         * Customize the given Monolog instance.
+         *
+         * @param  \Monolog\Logger
+         * @return void
+         */
+        public function __invoke($monolog)
+        {
+            foreach ($monolog->getHandlers() as $handler) {
+                $handler->setFormatter(...);
+            }
+        }
+    }
+
+> {tip} All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
+
+<a name="creating-custom-channels"></a>
+## Creating Custom Channels
+
+If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify the `custom` driver type in your `config/logging.php` configuration file. Additionally, your configuration should include a `via` option which specifies the class that should be invoked to create the Monolog instance:
+
+    'channels' => [
+        'custom' => [
+            'driver' => 'custom',
+            'via' => App\Logging\CreateCustomLogger::class,
+        ],
+    ],
+
+Once you have configured the `custom` channel, you're ready to define the class that will create your Monolog instance. This class only needs a single method: `__invoke`, which should return the Monolog instance:
+
+    <?php
+
+    namespace App\Logging;
+
+    use Monolog\Logger;
+
+    class CreateCustomLogger
+    {
+        /**
+         * Create a custom Monolog instance.
+         *
+         * @return \Monolog\Logger
+         */
+        public function __invoke()
+        {
+            return new Logger(...);
+        }
+    }
