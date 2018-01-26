@@ -232,6 +232,16 @@ The `download` method may be used to generate a response that forces the user's 
 
 > {note} Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
 
+#### Streamed Downloads
+
+Sometimes you may wish to turn the string response of a given operation into a downloadable response without having to write the contents of the operation to disk. You may use the `streamDownload` method in this scenario:
+
+    return response()->streamDownload(function () {
+        echo GitHub::api('repo')
+                    ->contents()
+                    ->readme('laravel', 'laravel')['contents']
+    }, 'laravel-readme.md');
+
 <a name="file-responses"></a>
 ### File Responses
 

@@ -7,8 +7,8 @@
     - [Driver Prerequisites](#driver-prerequisites)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
 - [Retrieving Files](#retrieving-files)
-    - [File URLs](#file-urls)
     - [Downloading Files](#downloading-files)
+    - [File URLs](#file-urls)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
     - [File Uploads](#file-uploads)
@@ -119,6 +119,15 @@ The `exists` method may be used to determine if a file exists on the disk:
 
     $exists = Storage::disk('s3')->exists('file.jpg');
 
+<a name="downloading-files"></a>
+### Downloading Files
+
+The `download` method may be used to generate a response that forces the user's browser to download the file at the given path. The `download` method accepts a file name as the second argument to the method, which will determine the file name that is seen by the user downloading the file. Finally, you may pass an array of HTTP headers as the third argument to the method:
+
+    return Storage::download('file.jpg');
+
+    return Storage::download('file.jpg', $name, $headers);
+
 <a name="file-urls"></a>
 ### File URLs
 
@@ -148,15 +157,6 @@ If you would like to pre-define the host for files stored on a disk using the `l
         'url' => env('APP_URL').'/storage',
         'visibility' => 'public',
     ],
-
-<a name="downloading-files"></a>
-### Downloading Files
-
-The `download` method may be used to generate a response that forces the user's browser to download the file at the given path. The `download` method accepts a file name as the second argument to the method, which will determine the file name that is seen by the user downloading the file. Finally, you may pass an array of HTTP headers as the third argument to the method:
-
-    return Storage::download('file.jpg');
-
-    return Storage::download('file.jpg', $name, $headers);
 
 <a name="file-metadata"></a>
 ### File Metadata
