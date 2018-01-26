@@ -11,7 +11,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-To help you learn more of what's happening within your application, Laravel provides robust logging services that allow you to log messages and errors to files, the system error log, or even to Slack to notify your entire team.
+To help you learn more about what's happening within your application, Laravel provides robust logging services that allow you to log messages to files, the system error log, and even to Slack to notify your entire team.
 
 Under the hood, Laravel utilizes the [Monolog](https://github.com/Seldaek/monolog) library, which provides support for a variety of powerful log handlers. Laravel makes it a cinch to configure these handlers, allowing you to mix and match them to customize your application's log handling.
 
@@ -20,7 +20,7 @@ Under the hood, Laravel utilizes the [Monolog](https://github.com/Seldaek/monolo
 
 All of the configuration for your application's logging system is housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. Of course, we'll review a few common options below.
 
-By default, Laravel will use the `stack` channel when logging messages. The `stack` channel type is used to aggregate multiple log handlers into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
+By default, Laravel will use the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
 
 #### Configuring The Channel Name
 
@@ -61,11 +61,11 @@ As previously mentioned, the `stack` driver allows you to combine multiple chann
         ],
     ],
 
-Let's dissect this configuration. First, notice our `stack` channels aggregates two other channels via its `channel` option: `syslog` and `slack`. So, when logging messages, both of these channels have the opportunity log the message.
+Let's dissect this configuration. First, notice our `stack` channel aggregates two other channels via its `channels` option: `syslog` and `slack`. So, when logging messages, both of these channels will have the opportunity log the message.
 
 #### Log Levels
 
-Note the `level` configuration option present on the `syslog` and `slack` channel configurations in the example above. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info**, and **debug**.
+Take note of the `level` configuration option present on the `syslog` and `slack` channel configurations in the example above. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info**, and **debug**.
 
 So, imagine we log a message using the `debug` method:
 
@@ -78,7 +78,7 @@ Given our configuration, the `syslog` channel will write the message to the syst
 <a name="writing-log-messages"></a>
 ## Writing Log Messages
 
-You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades). As previously mentioned, the logger provides the eight logging levels defined in [RFC 5424](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**:
+You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades). As previously mentioned, the logger provides the eight logging levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**:
 
     Log::emergency($message);
     Log::alert($message);
@@ -89,7 +89,7 @@ You may write information to the logs using the `Log` [facade](/docs/{{version}}
     Log::info($message);
     Log::debug($message);
 
-So, you may call any of these methods from within your application to log a message for the corresponding level. By default, the message will be written to the default channel as configured by your `config/logging.php` configuration file:
+So, you may call any of these methods to log a message for the corresponding level. By default, the message will be written to the default log channel as configured by your `config/logging.php` configuration file:
 
     <?php
 
@@ -173,7 +173,7 @@ Once you have configured the `tap` option on your channel, you're ready to defin
 <a name="creating-custom-channels"></a>
 ## Creating Custom Channels
 
-If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify the `custom` driver type in your `config/logging.php` configuration file. Additionally, your configuration should include a `via` option which specifies the class that should be invoked to create the Monolog instance:
+If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Additionally, your configuration should include a `via` option which specifies the class that should be invoked to create the Monolog instance:
 
     'channels' => [
         'custom' => [
