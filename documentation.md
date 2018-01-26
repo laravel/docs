@@ -27,7 +27,8 @@
     - [URL Generation](/docs/{{version}}/urls)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
-    - [Errors & Logging](/docs/{{version}}/errors)
+    - [Error Handling](/docs/{{version}}/errors)
+    - [Logging](/docs/{{version}}/logging)
 - ## Frontend
     - [Blade Templates](/docs/{{version}}/blade)
     - [Localization](/docs/{{version}}/localization)
