@@ -17,6 +17,7 @@
 - [Route Model Binding](#route-model-binding)
     - [Implicit Binding](#implicit-binding)
     - [Explicit Binding](#explicit-binding)
+- [Rate Limiting](#rate-limiting)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing The Current Route](#accessing-the-current-route)
 
@@ -337,6 +338,17 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
             return App\User::where('name', $value)->first() ?? abort(404);
         });
     }
+
+<a name="rate-limiting"></a>
+## Rate Limiting
+
+Laravel includes a [middleware](/docs/{{version}}/middleware) to rate limit access to routes within your application. To get started, assign the `throttle` middleware to a route or a group of routes. The `throttle` middleware accepts two parameters that determine the maximum number of requests that can be made in a given number of minutes. For example, let's specify that an authenticated user may access the following group of routes 60 times per minute:
+
+    Route::middleware('auth:api', 'throttle:60,1')->group(function () {
+        Route::get('/user', function () {
+            //
+        });
+    });
 
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
