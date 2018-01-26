@@ -22,7 +22,7 @@ All of the configuration for your application's logging system is housed in the 
 
 By default, Laravel will use the `stack` channel when logging messages. The `stack` channel type is used to aggregate multiple log handlers into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
 
-#### Customizing The Channel Name
+#### Configuring The Channel Name
 
 By default, Monolog is instantiated with a "channel name" that matches the current environment, such as `production` or `local`. To change this value, add a `name` option to your channel's configuration:
 
@@ -31,6 +31,10 @@ By default, Monolog is instantiated with a "channel name" that matches the curre
         'name' => 'channel-name',
         'channels' => ['single', 'slack'],
     ],
+
+#### Configuring The Slack Channel
+
+The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
 
 <a name="building-log-stacks"></a>
 ### Building Log Stacks
