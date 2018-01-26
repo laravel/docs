@@ -178,6 +178,21 @@ Laravel no longer includes the ability to customize the PDO "fetch mode" from yo
     Event::listen(StatementPrepared::class, function ($event) {
         $event->statement->setFetchMode(...);
     });
+    
+#### Array Argument to `orWhere`
+
+When sending an array as first argument to `orWhere` the inner condition now uses `OR` between each array element where it previously was `AND`. Example:
+
+    $query->orWhere(['a' => 1, 'b' => 2])
+    
+used to give the following SQL conditions:
+
+    OR (a = 1 AND b = 2)
+    
+It now gives the following instead:
+
+    OR (a = 1 OR b = 2)
+    
 
 ### Eloquent
 
