@@ -13,6 +13,7 @@
     - [Updating Records](#updating-records)
     - [Removing Records](#removing-records)
     - [Pausing Indexing](#pausing-indexing)
+    - [Conditionally Searchable Model Instances](#conditionally-searchable-model-instances)
 - [Searching](#searching)
     - [Where Clauses](#where-clauses)
     - [Pagination](#pagination)
@@ -215,6 +216,16 @@ Sometimes you may need to perform a batch of Eloquent operations on a model with
     App\Order::withoutSyncingToSearch(function () {
         // Perform model actions...
     });
+
+<a name="conditionally-searchable-model-instances"></a>
+### Conditionally Searchable Model Instances
+
+Sometimes you may need to only make a model searchable under certain conditions. For example, imagine you have `App\Post` model that may be in one of two states: "draft" and "published". You may only want to allow "published" posts to be searchable. To accomplish this, you may define a `shouldBeSearchable` method on your model:
+
+    public function shouldBeSearchable()
+    {
+        return $this->isPublished();
+    }
 
 <a name="searching"></a>
 ## Searching
