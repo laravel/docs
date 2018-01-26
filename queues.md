@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
     - [Connections Vs. Queues](#connections-vs-queues)
-    - [Driver Prerequisites](#driver-prerequisites)
+    - [Driver Notes & Prerequisites](#driver-prerequisites)
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
@@ -51,7 +51,7 @@ Some applications may not need to ever push jobs onto multiple queues, instead p
     php artisan queue:work --queue=high,default
 
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+### Driver Notes & Prerequisites
 
 #### Database
 
@@ -65,6 +65,8 @@ In order to use the `database` queue driver, you will need a database table to h
 
 In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file.
 
+**Redis Cluster**
+
 If your Redis queue connection uses a Redis Cluster, your queue names must contain a [key hash tag](https://redis.io/topics/cluster-spec#keys-hash-tags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:
 
     'redis' => [
@@ -72,6 +74,20 @@ If your Redis queue connection uses a Redis Cluster, your queue names must conta
         'connection' => 'default',
         'queue' => '{default}',
         'retry_after' => 90,
+    ],
+
+**Blocking**
+
+When using the Redis queue, you may use the `block_for` configuration option to specify how long the driver should wait for a job to become available before iterating through the worker loop and re-polling the Redis database.
+
+Adjusting this value based on your queue load can be more efficient than continually polling the Redis database for new jobs. For instance, you may set the value to `5` to indicate that the driver should block for five seconds while waiting for a job to become available:
+
+    'redis' => [
+        'driver' => 'redis',
+        'connection' => 'default',
+        'queue' => 'default',
+        'retry_after' => 90,
+        'block_for' => 5,
     ],
 
 #### Other Driver Prerequisites
