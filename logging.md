@@ -61,7 +61,7 @@ As previously mentioned, the `stack` driver allows you to combine multiple chann
         ],
     ],
 
-Let's dissect this configuration. First, notice our `stack` channel aggregates two other channels via its `channels` option: `syslog` and `slack`. So, when logging messages, both of these channels will have the opportunity log the message.
+Let's dissect this configuration. First, notice our `stack` channel aggregates two other channels via its `channels` option: `syslog` and `slack`. So, when logging messages, both of these channels will have the opportunity to log the message.
 
 #### Log Levels
 
