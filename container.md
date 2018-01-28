@@ -6,6 +6,7 @@
     - [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
     - [Contextual Binding](#contextual-binding)
     - [Tagging](#tagging)
+    - [Extending](#extending)
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
@@ -175,6 +176,17 @@ Once the services have been tagged, you may easily resolve them all via the `tag
 
     $this->app->bind('ReportAggregator', function ($app) {
         return new ReportAggregator($app->tagged('reports'));
+    });
+
+<a name="extending"></a>
+### Extending
+
+It can also be useful to extend a previously defined binding. With `extend`, you can modify a binding and run additional code to decorate or configure the given service. For example, you might want to customize the PSR Logger that comes bundled with laravel to only log messages if they are `critical`. You could easily do this with `extend`.
+
+    use Psr\Log\LoggerInterface;
+
+    $this->app->extend(LoggerInterface::class, function($logger, $app) {
+        return new CriticalOnlyLogger($logger);
     });
 
 <a name="resolving"></a>
