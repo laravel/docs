@@ -350,6 +350,16 @@ Laravel includes a [middleware](/docs/{{version}}/middleware) to rate limit acce
         });
     });
 
+#### Dynamic Rate Limiting
+
+You may specify a dynamic request maximum based on an attribute of the authenticated `User` model. For example, if your `User` model contains a `rate_limit` attribute, you may pass the name of the attribute to the `throttle` middleware so that it is used to calculate the maximum request count:
+
+    Route::middleware('auth:api', 'throttle:rate_limit,1')->group(function () {
+        Route::get('/user', function () {
+            //
+        });
+    });
+
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
 
