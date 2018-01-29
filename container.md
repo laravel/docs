@@ -6,6 +6,7 @@
     - [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
     - [Contextual Binding](#contextual-binding)
     - [Tagging](#tagging)
+    - [Extending Bindings](#extending-bindings)
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
@@ -175,6 +176,15 @@ Once the services have been tagged, you may easily resolve them all via the `tag
 
     $this->app->bind('ReportAggregator', function ($app) {
         return new ReportAggregator($app->tagged('reports'));
+    });
+
+<a name="extending-bindings"></a>
+### Extending Bindings
+
+The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a Closure, which should return the modified service, as its only argument:
+
+    $this->app->extend(Service::class, function($service) {
+        return new DecoratedService($service);
     });
 
 <a name="resolving"></a>
