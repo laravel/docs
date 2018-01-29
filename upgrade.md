@@ -161,6 +161,16 @@ If you are directly referencing the `Illuminate\Console\AppNamespaceDetectorTrai
 
 ### Database
 
+#### Array Argument to `orWhere`
+
+When passing an array as first argument to the `orWhere` method, the inner conditions now use `OR` between each array element:
+
+    $query->orWhere(['a' => 1, 'b' => 2])
+
+    OR (a = 1 AND b = 2) // Prior Behavior...
+
+    OR (a = 1 OR b = 2) // New Behavior...
+
 #### Custom Connections
 
 If you were previously binding a service container binding for a `db.connection.{driver-name}` key in order to resolve a custom database connection instance, you should now use the `Illuminate\Database\Connection::resolverFor` method in the `register` method of your `AppServiceProvider`:
@@ -178,21 +188,6 @@ Laravel no longer includes the ability to customize the PDO "fetch mode" from yo
     Event::listen(StatementPrepared::class, function ($event) {
         $event->statement->setFetchMode(...);
     });
-    
-#### Array Argument to `orWhere`
-
-When sending an array as first argument to `orWhere` the inner condition now uses `OR` between each array element where it previously was `AND`. Example:
-
-    $query->orWhere(['a' => 1, 'b' => 2])
-    
-used to give the following SQL conditions:
-
-    OR (a = 1 AND b = 2)
-    
-It now gives the following instead:
-
-    OR (a = 1 OR b = 2)
-    
 
 ### Eloquent
 
@@ -525,7 +520,7 @@ The `Mail` fake has been greatly simplified for the Laravel 5.4 release. Instead
 If you are using the `{Inf}` placeholder for pluralizing your translation strings, you should update your translation strings to use the `*` character instead:
 
     {0} First Message|{1,*} Second Message
-    
+
 #### The `trans` Helpers
 
 The `trans` helper signature has been updated to remove the unnecessary `$domain` argument. The new signature is as follows:
