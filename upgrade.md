@@ -25,7 +25,7 @@ In addition, if you are using the following first-party Laravel packages, you sh
 - Scout (Upgrade To `~4.0`)
 </div>
 
-Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.5 support.
+Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.6 support.
 
 ### Symfony 4
 
