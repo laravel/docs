@@ -43,6 +43,34 @@ Passing `null` to the `Arr::wrap` method will now return an empty array.
 
 The previously deprecated `optimize` Artisan command has been removed. With recent improvements to PHP itself including the OPcache, the `optimize` command no longer providers any relevant performance benefit.
 
+### Blade
+
+#### HTML Entity Encoding
+
+In previous versions of Laravel, Blade (and the `e` helper) would not double encode HTML entities. This was not the default behavior of the underlying `htmlspecialchars` function and could lead to unexpected behavior when rendering content or passing in-line JSON content to JavaScript frameworks.
+
+In Laravel 5.6, Blade and the `e` helper will double encode special characters by default. This brings these features into alignment with the default behavior of the underlying `htmlspecialchars` PHP function. If you would like to maintain the previous behavior of preventing double encoding, you may use the `Blade::withoutDoubleEncoding` method:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\Facades\Blade;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Blade::withoutDoubleEncoding();
+        }
+    }
+
 ### Cache
 
 #### The Rate Limiter `tooManyAttempts` Method
@@ -64,6 +92,18 @@ A new `getMigrationsBatches` method has been added to the `MigrationRepositoryIn
 #### The `getDateFormat` Method
 
 This `getDateFormat` method is now `public` instead of `protected`.
+
+### Helpers
+
+#### The `e` Helper
+
+#### HTML Entity Encoding
+
+In previous versions of Laravel, Blade (and the `e` helper) would not double encode HTML entities. This was not the default behavior of the underlying `htmlspecialchars` function and could lead to unexpected behavior when rendering content or passing in-line JSON content to JavaScript frameworks.
+
+In Laravel 5.6, Blade and the `e` helper will double encode special characters by default. This brings these features into alignment with the default behavior of the underlying `htmlspecialchars` PHP function. If you would like to maintain the previous behavior of preventing double encoding, you may pass `false` as the second argument to the `e` helper:
+
+    <?php echo e($string, false); ?>
 
 ### Logging
 
