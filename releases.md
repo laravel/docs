@@ -29,6 +29,8 @@ For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and se
 
 Laravel 5.6 continues the improvements made in Laravel 5.5 by adding an improved logging system, single-server task scheduling, improvements to model serialization, dynamic rate limiting, broadcast channel classes, inclusion of the Collision package, and more. In addition, all front-end scaffolding has been upgraded to Bootstrap 4.
 
+The release of Laravel 5.6 coincides with the release of [Spark 6.0](https://spark.laravel.com), the first major upgrade to Laravel Spark since it's release. Spark 6.0 introduces per-seat pricing for Stripe and Braintree, localization, Bootstrap 4, an enhanced UI, and Stripe Elements support.
+
 > {tip} This documentation summarizes the most notable improvements to the framework; however, more thorough change logs are always available [on GitHub](https://github.com/laravel/framework/blob/5.6/CHANGELOG-5.6.md).
 
 ### Logging Improvements
@@ -56,10 +58,6 @@ To indicate that the task should run on only one server, you may use the `onOneS
                     ->fridays()
                     ->at('17:00')
                     ->onOneServer();
-
-### Model Serialization Improvements
-
-In previous releases of Laravel, queued models would not be restored with their loaded relationships intact. In Laravel 5.6, relationships that were loaded on the model when it was queued are automatically re-loaded when the job is processed by the queue.
 
 ### Dynamic Rate Limiting
 
@@ -124,6 +122,10 @@ Finally, you may place the authorization logic for your channel in the channel c
             return $user->id === $order->user_id;
         }
     }
+
+### Model Serialization Improvements
+
+In previous releases of Laravel, queued models would not be restored with their loaded relationships intact. In Laravel 5.6, relationships that were loaded on the model when it was queued are automatically re-loaded when the job is processed by the queue.
 
 ### Collision
 
