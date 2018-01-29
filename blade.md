@@ -172,6 +172,30 @@ However, instead of manually calling `json_encode`, you may use the `@json` Blad
         var app = @json($array);
     </script>
 
+#### HTML Entity Encoding
+
+By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\Facades\Blade;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Blade::withoutDoubleEncoding();
+        }
+    }
+
 <a name="blade-and-javascript-frameworks"></a>
 ### Blade & JavaScript Frameworks
 
