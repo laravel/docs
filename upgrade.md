@@ -93,11 +93,15 @@ A new `getMigrationsBatches` method has been added to the `MigrationRepositoryIn
 
 This `getDateFormat` method is now `public` instead of `protected`.
 
+### Hashing
+
+#### New Configuration File
+
+All hashing configuration is now housed in its own `config/hashing.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/develop/config/hashing.php) in your own application. Most likely, you should maintain the `bcrypt` driver as your default driver. However, `argon` is also supported.
+
 ### Helpers
 
 #### The `e` Helper
-
-#### HTML Entity Encoding
 
 In previous versions of Laravel, Blade (and the `e` helper) would not double encode HTML entities. This was not the default behavior of the underlying `htmlspecialchars` function and could lead to unexpected behavior when rendering content or passing in-line JSON content to JavaScript frameworks.
 
