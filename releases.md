@@ -124,6 +124,10 @@ Finally, you may place the authorization logic for your channel in the channel c
             return $user->id === $order->user_id;
         }
     }
+    
+### Hashing
+
+In previous releases of Laravel, Passwords were hashed using `Bcrypt` algorithm. In Laravel 5.6 Passwords can now be hashed using either `Argon2i` or `Bcrypt` algorithm.
 
 ### Model Serialization Improvements
 
