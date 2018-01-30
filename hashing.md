@@ -1,14 +1,22 @@
 # Hashing
 
 - [Introduction](#introduction)
+- [Configuration](#configuration)
 - [Basic Usage](#basic-usage)
 
 <a name="introduction"></a>
 ## Introduction
 
-The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt hashing for storing user passwords. If you are using the built-in `LoginController` and `RegisterController` classes that are included with your Laravel application, they will automatically use Bcrypt for registration and authentication.
+The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt and Argon2 hashing for storing user passwords. If you are using the built-in `LoginController` and `RegisterController` classes that are included with your Laravel application, they will use Bcrypt for registration and authentication by default.
 
 > {tip} Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases.
+
+<a name="configuration"></a>
+## Configuration
+
+The default hashing driver for your application is configured in the `config/hashing.php` configuration file. There are currently two supported drivers: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) and [Argon2](https://en.wikipedia.org/wiki/Argon2).
+
+> {note} The Argon2 driver requires PHP 7.2.0 or greater.
 
 <a name="basic-usage"></a>
 ## Basic Usage
@@ -41,11 +49,25 @@ You may hash a password by calling the `make` method on the `Hash` facade:
         }
     }
 
-The `make` method also allows you to manage the work factor of the bcrypt hashing algorithm using the `rounds` option; however, the default is acceptable for most applications:
+#### Adjusting The Bcrypt Work Factor
+
+If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default is acceptable for most applications:
 
     $hashed = Hash::make('password', [
         'rounds' => 12
     ]);
+
+#### Adjusting The Argon2 Work Factor
+
+If you are using the Argon2 algorithm, the `make` method allows you to manage the work factor of the algorithm using the `memory`, `time`, and `threads` options; however, the defaults are acceptable for most applications:
+
+    $hashed = Hash::make('password', [
+        'memory' => 1024,
+        'time' => 2,
+        'threads' => 2,
+    ]);
+
+> {tip} For more information on these options, check out the [official PHP documentation](http://php.net/manual/en/function.password-hash.php).
 
 #### Verifying A Password Against A Hash
 
