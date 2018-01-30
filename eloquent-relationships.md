@@ -698,17 +698,17 @@ When accessing the records for a model, you may wish to limit your results based
 You may also specify an operator and count to further customize the query:
 
     // Retrieve all posts that have three or more comments...
-    $posts = Post::has('comments', '>=', 3)->get();
+    $posts = App\Post::has('comments', '>=', 3)->get();
 
 Nested `has` statements may also be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment and vote:
 
     // Retrieve all posts that have at least one comment with votes...
-    $posts = Post::has('comments.votes')->get();
+    $posts = App\Post::has('comments.votes')->get();
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
     // Retrieve all posts with at least one comment containing words like foo%
-    $posts = Post::whereHas('comments', function ($query) {
+    $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
@@ -721,7 +721,7 @@ When accessing the records for a model, you may wish to limit your results based
 
 If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to put "where" conditions on your `doesntHave` queries. These methods allows you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
-    $posts = Post::whereDoesntHave('comments', function ($query) {
+    $posts = App\Post::whereDoesntHave('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
@@ -738,7 +738,7 @@ If you want to count the number of results from a relationship without actually 
 
 You may add the "counts" for multiple relations as well as add constraints to the queries:
 
-    $posts = Post::withCount(['votes', 'comments' => function ($query) {
+    $posts = App\Post::withCount(['votes', 'comments' => function ($query) {
         $query->where('content', 'like', 'foo%');
     }])->get();
 
@@ -747,7 +747,7 @@ You may add the "counts" for multiple relations as well as add constraints to th
 
 You may also alias the relationship count result, allowing multiple counts on the same relationship:
 
-    $posts = Post::withCount([
+    $posts = App\Post::withCount([
         'comments',
         'comments as pending_comments_count' => function ($query) {
             $query->where('approved', false);
