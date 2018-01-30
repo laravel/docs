@@ -1401,7 +1401,7 @@ The `request` function returns the current [request](/docs/{{version}}/requests)
 
     $request = request();
 
-    $value = request('key', $default = null);
+    $value = request('key', $default);
 
 <a name="method-rescue"></a>
 #### `rescue()` {#collection-method}
