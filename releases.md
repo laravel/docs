@@ -133,6 +133,8 @@ In previous releases of Laravel, queued models would not be restored with their 
 
 If you are building an application on PHP 7.2.0 or greater, Laravel now supports password hashing via the Argon2 algorithm. The default hash driver for your application is controlled by a new `config/hashing.php` configuration file.
 
+If you use the container to inject the hasher using `Illuminate\Contracts\Hashing\Hasher` you will need to change to `Illuminate\Hashing\HashManager` instead.
+
 ### Collision
 
 The default `laravel/laravel` application now contains a `dev` Composer dependency for the [Collision](https://github.com/nunomaduro/collision) package maintained by Nuno Maduro. This packages provides beautiful error reporting when interacting with your Laravel application on the command line:
