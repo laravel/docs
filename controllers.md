@@ -51,7 +51,7 @@ Below is an example of a basic controller class. Note that the controller extend
 
 You can define a route to this controller action like so:
 
-    Route::get('user/{id}', 'UserController@show');
+    Route::get('users/{id}', 'UserController@show');
 
 Now, when a request matches the specified route URI, the `show` method on the `UserController` class will be executed. Of course, the route parameters will also be passed to the method.
 
@@ -94,14 +94,14 @@ If you would like to define a controller that only handles a single action, you 
 
 When registering routes for single action controllers, you do not need to specify a method:
 
-    Route::get('user/{id}', 'ShowProfile');
+    Route::get('users/{id}', 'ShowProfile');
 
 <a name="controller-middleware"></a>
 ## Controller Middleware
 
 [Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
 
-    Route::get('profile', 'UserController@show')->middleware('auth');
+    Route::get('profiles', 'UserController@show')->middleware('auth');
 
 However, it is more convenient to specify middleware within your controller's constructor. Using the `middleware` method from your controller's constructor, you may easily assign middleware to the controller's action. You may even restrict the middleware to only certain methods on the controller class:
 
@@ -183,11 +183,11 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 
 When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
 
-    Route::resource('photo', 'PhotoController', ['only' => [
+    Route::resource('photos', 'PhotoController', ['only' => [
         'index', 'show'
     ]]);
 
-    Route::resource('photo', 'PhotoController', ['except' => [
+    Route::resource('photos', 'PhotoController', ['except' => [
         'create', 'store', 'update', 'destroy'
     ]]);
 
@@ -195,7 +195,7 @@ When declaring a resource route, you may specify a subset of actions the control
 
 When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
 
-    Route::apiResource('photo', 'PhotoController');
+    Route::apiResource('photos', 'PhotoController');
 
 You may register many API resource controllers at once by passing an array to the `apiResources` method:
 
@@ -209,8 +209,8 @@ You may register many API resource controllers at once by passing an array to th
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
-    Route::resource('photo', 'PhotoController', ['names' => [
-        'create' => 'photo.build'
+    Route::resource('photos', 'PhotoController', ['names' => [
+        'create' => 'photos.build'
     ]]);
 
 <a name="restful-naming-resource-route-parameters"></a>
@@ -218,13 +218,13 @@ By default, all resource controller actions have a route name; however, you can 
 
 By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. The `parameters` array should be an associative array of resource names and parameter names:
 
-    Route::resource('user', 'AdminUserController', ['parameters' => [
-        'user' => 'admin_user'
+    Route::resource('users', 'AdminUserController', ['parameters' => [
+        'users' => 'admin_user'
     ]]);
 
  The example above generates the following URIs for the resource's `show` route:
 
-    /user/{admin_user}
+    /users/{admin_user}
 
 <a name="restful-localizing-resource-uris"></a>
 ### Localizing Resource URIs
@@ -325,7 +325,7 @@ In addition to constructor injection, you may also type-hint dependencies on you
 
 If your controller method is also expecting input from a route parameter, list your route arguments after your other dependencies. For example, if your route is defined like so:
 
-    Route::put('user/{id}', 'UserController@update');
+    Route::put('users/{id}', 'UserController@update');
 
 You may still type-hint the `Illuminate\Http\Request` and access your `id` parameter by defining your controller method as follows:
 
