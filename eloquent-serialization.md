@@ -145,15 +145,15 @@ After creating the accessor, add the attribute name to the `appends` property on
         protected $appends = ['is_admin'];
     }
 
-or add properties at run-time:
-
-    $user->append("is_admin")->toArray();
-    
-or override the whole list:
-
-    $user->setAppends(["is_admin"]);
-
 Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON representations. Attributes in the `appends` array will also respect the `visible` and `hidden` settings configured on the model.
+
+#### Appending At Run Time
+
+You may instruct a single model instance to append attributes using the `append` method. Or, you may use the `setAppends` method to override the entire array of appended properties for a given model instance:
+
+    return $user->append('is_admin')->toArray();
+
+    return $user->setAppends(['is_admin'])->toArray();
 
 <a name="date-serialization"></a>
 ## Date Serialization
