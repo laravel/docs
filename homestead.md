@@ -123,6 +123,8 @@ The `folders` property of the `Homestead.yaml` file lists all of the folders you
         - map: ~/code
           to: /home/vagrant/code
 
+In this example, the `~/code` folder on your local machine will be mapped to `/home/vagrant/code` on the vagrant box.
+
 If you are only creating a few sites, this generic mapping will work just fine. However, as the number of sites continue to grow, you may begin to experience performance problems. This problem can be painfully apparent on low-end machines or projects that contain a very large number of files. If you are experiencing this issue, try mapping every project to its own Vagrant folder:
 
     folders:
@@ -158,6 +160,8 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
     sites:
         - map: homestead.test
           to: /home/vagrant/code/Laravel/public
+
+The `to:` folder should be the path *on the vagrant box* of the folder you wish to serve.
 
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
 
