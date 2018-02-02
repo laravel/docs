@@ -129,6 +129,12 @@ The `Illuminate\Log\Writer` class has been renamed to `Illuminate\Log\Logger`. I
 
 This interface has been removed since this interface was a total duplication of the `Psr\Log\LoggerInterface` interface. You should type-hint the `Psr\Log\LoggerInterface` interface instead.
 
+### Mail
+
+#### `withSwiftMessage` Callbacks
+
+In previous releases of Laravel, Swift Messages customization callbacks registered using `withSwiftMessage` were called _after_ the content was already encoded and added to the message. These callbacks are now called _before_ the content is added, which allows you to customize the encoding or other message options as needed.
+
 ### Pagination
 
 #### Bootstrap 4
