@@ -306,6 +306,8 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
         }
     }
 
+Therefore, you don't need to add a conditional check when using the `authorize` method.
+
 #### Actions That Don't Require Models
 
 As previously discussed, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the `authorize` method. The class name will be used to determine which policy to use when authorizing the action:
