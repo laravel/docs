@@ -27,9 +27,13 @@ In addition, if you are using the following first-party Laravel packages, you sh
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.6 support.
 
-### Symfony 4
+#### Symfony 4
 
 All of the underlying Symfony components used by Laravel have been upgraded to the Symfony `~4.0` release series. If you are directly interacting with Symfony components within your application, you should review the [Symfony change log](https://github.com/symfony/symfony/blob/master/UPGRADE-4.0.md).
+
+#### PHPUnit
+
+You should update the `phpunit/phpunit` dependency of your application to `~7.0`.
 
 ### Arrays
 
