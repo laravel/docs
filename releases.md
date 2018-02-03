@@ -133,6 +133,16 @@ In previous releases of Laravel, queued models would not be restored with their 
 
 If you are building an application on PHP 7.2.0 or greater, Laravel now supports password hashing via the Argon2 algorithm. The default hash driver for your application is controlled by a new `config/hashing.php` configuration file.
 
+### UUID Methods
+
+Laravel 5.6 introduces two new methods for generating UUIDs: `Str::uuid` and `Str::orderedUuid`. The `orderedUuid` method will generate a timestamp first UUID that is more easily and efficiently indexed by databases such as MySQL. Each of these methods returns a `Ramsey\Uuid\Uuid` object:
+
+    use Illuminate\Support\Str;
+
+    return (string) Str::uuid();
+
+    return (string) Str::orderedUuid();
+
 ### Collision
 
 The default `laravel/laravel` application now contains a `dev` Composer dependency for the [Collision](https://github.com/nunomaduro/collision) package maintained by Nuno Maduro. This packages provides beautiful error reporting when interacting with your Laravel application on the command line:
