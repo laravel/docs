@@ -485,3 +485,31 @@ If symbolic are not working properly on your Windows machine, you may need to ad
     config.vm.provider "virtualbox" do |v|
         v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
     end
+
+<a name="provider-specific-hyperv"></a>
+### Hyper-V
+
+#### Networking
+Take note that all of the network setup will be determined by the virtual switch you choose for the VM. 
+You will have the smoothest experience if your physical network adapter uses a typical ethernet connection and you choose the Default Virtual Switch, but a virtual switch on an external or internal network can also work with the right settings.
+Once everything is setup, you should be able to access the VM on the IP that was created for it.
+
+#### SMB Shares
+Homestead should choose SMB synced folders by default when using Hyper-V, but if you encounter trouble during mounting, these options might help:
+
+     options:
+            mount_options: ['vers=2.1', 'mfsymlinks']
+            
+The VM might have trouble mounting the folders unless a compatible SMB version is used. The `mfsymlinks` is to help make sure symbolic links work as expected.
+You can also decrease the amount of prompts if you run `vagrant up` in a command line window with admin privileges as well as add `smb_username` and `smb_password` settings.
+
+Also, if you have just one synced folder, map it to `/vagrant` to prevent an additional mapping to this path which could result in an error if `mount` has trouble adding additional folders.
+
+#### Useful Settings
+You may find some of the [Hyper-V specific settings](https://www.vagrantup.com/docs/hyperv/configuration.html) to be of use. For example, the VM name, CPUs and memory will need to be set inside the Vagrant file:
+
+    config.vm.provider "hyperv" do |h|
+       h.vmname = "My VM"
+       h.cpus = 2
+       h.memory = 2048
+    end
