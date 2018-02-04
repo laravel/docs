@@ -27,7 +27,7 @@ For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and se
 <a name="laravel-5.6"></a>
 ## Laravel 5.6
 
-Laravel 5.6 continues the improvements made in Laravel 5.5 by adding an improved logging system, single-server task scheduling, improvements to model serialization, dynamic rate limiting, broadcast channel classes, Argon2 password hashing support, inclusion of the Collision package, and more. In addition, all front-end scaffolding has been upgraded to Bootstrap 4.
+Laravel 5.6 continues the improvements made in Laravel 5.5 by adding an improved logging system, single-server task scheduling, improvements to model serialization, dynamic rate limiting, broadcast channel classes, API resource controller generation, Argon2 password hashing support, inclusion of the Collision package, and more. In addition, all front-end scaffolding has been upgraded to Bootstrap 4.
 
 All underlying Symfony components used by Laravel have been upgraded to the Symfony `~4.0` release series.
 
