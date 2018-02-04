@@ -88,6 +88,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [str_finish](#method-str-finish)
 [str_is](#method-str-is)
 [str_limit](#method-str-limit)
+[Str::orderedUuid](#method-str-ordered-uuid)
 [str_plural](#method-str-plural)
 [str_random](#method-str-random)
 [str_replace_array](#method-str-replace-array)
@@ -100,6 +101,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [title_case](#method-title-case)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
+[Str::uuid](#method-str-uuid)
 
 </div>
 
@@ -854,6 +856,15 @@ You may also pass a third argument to change the string that will be appended to
 
     // The quick brown fox (...)
 
+<a name="method-str-ordered-uuid"></a>
+#### `Str::orderedUuid()` {#collection-method}
+
+The `Str::orderedUuid` method generates a "timestamp first" UUID that may be efficiently stored in an indexed database column:
+
+    use Illuminate\Support\Str;
+
+    return (string) Str::orderedUuid();
+
 <a name="method-str-plural"></a>
 #### `str_plural()` {#collection-method}
 
@@ -983,6 +994,15 @@ The `trans_choice` function translates the given translation key with inflection
     echo trans_choice('messages.notifications', $unreadCount);
 
 If the specified translation key does not exist, the `trans_choice` function will return the given key. So, using the example above, the `trans_choice` function would return `messages.notifications` if the translation key does not exist.
+
+<a name="method-str-uuid"></a>
+#### `Str::uuid()` {#collection-method}
+
+The `Str::uuid` method generates a UUID (version 4):
+
+    use Illuminate\Support\Str;
+
+    return (string) Str::uuid();
 
 <a name="urls"></a>
 ## URLs

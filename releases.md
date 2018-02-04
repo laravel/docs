@@ -125,6 +125,12 @@ Finally, you may place the authorization logic for your channel in the channel c
         }
     }
 
+### API Controller Generation
+
+When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. To generate a resource controller that does not include these methods, you may now use the `--api` switch when executing the `make:controller` command:
+
+    php artisan make:controller API/PhotoController --api
+
 ### Model Serialization Improvements
 
 In previous releases of Laravel, queued models would not be restored with their loaded relationships intact. In Laravel 5.6, relationships that were loaded on the model when it was queued are automatically re-loaded when the job is processed by the queue.
@@ -133,11 +139,15 @@ In previous releases of Laravel, queued models would not be restored with their 
 
 If you are building an application on PHP 7.2.0 or greater, Laravel now supports password hashing via the Argon2 algorithm. The default hash driver for your application is controlled by a new `config/hashing.php` configuration file.
 
-### API Controller Generation
+### UUID Methods
 
-When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. To generate a resource controller that does not include these methods, you may now use the `--api` switch when executing the `make:controller` command:
+Laravel 5.6 introduces two new methods for generating UUIDs: `Str::uuid` and `Str::orderedUuid`. The `orderedUuid` method will generate a timestamp first UUID that is more easily and efficiently indexed by databases such as MySQL. Each of these methods returns a `Ramsey\Uuid\Uuid` object:
 
-    php artisan make:controller API/PhotoController --api
+    use Illuminate\Support\Str;
+
+    return (string) Str::uuid();
+
+    return (string) Str::orderedUuid();
 
 ### Collision
 
