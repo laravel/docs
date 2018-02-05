@@ -480,7 +480,7 @@ By default, Homestead configures the `natdnshostresolver` setting to `on`. This 
 
 #### Symbolic Links On Windows
 
-If symbolic are not working properly on your Windows machine, you may need to add the following block to your `Vagrantfile`:
+If symbolic links are not working properly on your Windows machine, you may need to add the following block to your `Vagrantfile`:
 
     config.vm.provider "virtualbox" do |v|
         v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
