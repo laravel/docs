@@ -27,7 +27,7 @@ For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and se
 <a name="laravel-5.6"></a>
 ## Laravel 5.6
 
-Laravel 5.6 continues the improvements made in Laravel 5.5 by adding an improved logging system, single-server task scheduling, improvements to model serialization, dynamic rate limiting, broadcast channel classes, API resource controller generation, Argon2 password hashing support, inclusion of the Collision package, and more. In addition, all front-end scaffolding has been upgraded to Bootstrap 4.
+Laravel 5.6 continues the improvements made in Laravel 5.5 by adding an improved logging system, single-server task scheduling, improvements to model serialization, dynamic rate limiting, broadcast channel classes, API resource controller generation, Eloquent date formatting improvements, Argon2 password hashing support, inclusion of the Collision package, and more. In addition, all front-end scaffolding has been upgraded to Bootstrap 4.
 
 All underlying Symfony components used by Laravel have been upgraded to the Symfony `~4.0` release series.
 
@@ -134,6 +134,15 @@ When declaring resource routes that will be consumed by APIs, you will commonly 
 ### Model Serialization Improvements
 
 In previous releases of Laravel, queued models would not be restored with their loaded relationships intact. In Laravel 5.6, relationships that were loaded on the model when it was queued are automatically re-loaded when the job is processed by the queue.
+
+### Eloquent Date Casting
+
+You may now individually customize the format of Eloquent date cast columns. To get started, specify the desired date format within the cast declaration. This format will be used for both storage and JSON serialization:
+
+    protected $casts = [
+        'birthday' => 'date:Y-m-d',
+        'joined_at' => 'datetime:Y-m-d H:00',
+    ];
 
 ### Argon2 Password Hashing
 
