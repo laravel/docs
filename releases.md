@@ -137,7 +137,7 @@ In previous releases of Laravel, queued models would not be restored with their 
 
 ### Eloquent Date Casting
 
-You may now individually customize the format of Eloquent date cast columns. To get started, specify the desired date format within the cast declaration. This format will be used for both storage and JSON serialization:
+You may now individually customize the format of Eloquent date cast columns. To get started, specify the desired date format within the cast declaration. Once specified, this format will be used when serializing the model to an array / JSON:
 
     protected $casts = [
         'birthday' => 'date:Y-m-d',
