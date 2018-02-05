@@ -178,6 +178,8 @@ Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` c
 
 To destroy the machine, you may use the `vagrant destroy --force` command.
 
+> {note} If you get a message that says "Check your Homestead.yaml file, the path to your private key does not exist." when you run the `vagrant up` command, you need to generate a key. Run `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"` and hit enter three times.
+
 <a name="per-project-installation"></a>
 ### Per Project Installation
 
