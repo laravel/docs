@@ -803,7 +803,7 @@ The `str_before` function returns everything before the given value in a string:
 <a name="method-str-contains"></a>
 #### `str_contains()` {#collection-method}
 
-The `str_contains` function determines if the given string contains the given value:
+The `str_contains` function determines if the given string contains the given value (case sensitive):
 
     $contains = str_contains('This is my name', 'my');
 
