@@ -1,7 +1,7 @@
 # Proteção CSRF
 
 - [Introdução](#csrf-introduction)
-- [Excluding URIs](#csrf-excluding-uris)
+- [Excluindo URIs](#csrf-excluding-uris)
 - [X-CSRF-Token](#csrf-x-csrf-token)
 - [X-XSRF-Token](#csrf-x-xsrf-token)
 
@@ -26,32 +26,33 @@ O [middleware](/docs/{{version}}/middleware) `VerifyCsrfToken`, que está adicio
 Ao criar aplicações JavaScript, é conveniente que sua biblioteca HTTP de JavaScript inclua automaticamente o Token CSRF a todas as requisições de saída. Por padrão, o arquivo `resources/assets/js/bootstrap.js` registra o valor da meta tag `csrf-token` com a biblioteca Axios HTTP. Se você não estiver usando esta biblioteca, você precisará configurar esse comportamento manualmente para sua aplicação.
 
 <a name="csrf-excluding-uris"></a>
-## Excluding URIs From CSRF Protection
+## Excluindo URIs da proteção CSRF
 
-Sometimes you may wish to exclude a set of URIs from CSRF protection. For example, if you are using [Stripe](https://stripe.com) to process payments and are utilizing their webhook system, you will need to exclude your Stripe webhook handler route from CSRF protection since Stripe will not know what CSRF token to send to your routes.
+Às vezes, você pode querer excluir um conjunto de URIs para proteção CSRF. Por exemplo, se você está usando o [Stripe](https://stripe.com) para processar pagamentos e estiver usando seu sistema de webhooks, você precisará excluir a rota do Stripe, uma vez que ele não saberá o token CSRF para enviar para suas rotas.
 
-Typically, you should place these kinds of routes outside of the `web` middleware group that the `RouteServiceProvider` applies to all routes in the `routes/web.php` file. However, you may also exclude the routes by adding their URIs to the `$except` property of the `VerifyCsrfToken` middleware:
+Normalmente, você deve colocar essas rotas fora do grupo middleware `web` que o `RouteServiceProvider` aplica para todas as rotas no arquivo `routes/web.php`. Entretanto, você pode excluir as rotas adicionando as URIs na propriedade `$except` no middleware `VerifyCsrfToken`:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Middleware;
+namespace App\Http\Middleware;
 
-    use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
-    class VerifyCsrfToken extends Middleware
-    {
-        /**
-         * The URIs that should be excluded from CSRF verification.
-         *
-         * @var array
-         */
-        protected $except = [
-            'stripe/*',
-            'http://example.com/foo/bar',
-            'http://example.com/foo/*',
-        ];
-    }
-
+class VerifyCsrfToken extends Middleware
+{
+    /**
+     * The URIs that should be excluded from CSRF verification.
+     *
+     * @var array
+     */
+     protected $except = [
+        'stripe/*',
+        'http://example.com/foo/bar',
+        'http://example.com/foo/*',
+     ];
+}
+```
 <a name="csrf-x-csrf-token"></a>
 ## X-CSRF-TOKEN
 
