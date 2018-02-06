@@ -1,6 +1,6 @@
 # Laravel Documentation
 
-[pt-BR - Português Brazil Documentation](./pt-BR)
+[pt-BR - Portuguese Brazil Documentation](./pt-BR)
 
 ## Contribution Guidelines
 
