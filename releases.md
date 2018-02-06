@@ -27,7 +27,7 @@ For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and se
 <a name="laravel-5.6"></a>
 ## Laravel 5.6
 
-Laravel 5.6 continues the improvements made in Laravel 5.5 by adding an improved logging system, single-server task scheduling, improvements to model serialization, dynamic rate limiting, broadcast channel classes, API resource controller generation, Eloquent date formatting improvements, Argon2 password hashing support, inclusion of the Collision package, and more. In addition, all front-end scaffolding has been upgraded to Bootstrap 4.
+Laravel 5.6 continues the improvements made in Laravel 5.5 by adding an improved logging system, single-server task scheduling, improvements to model serialization, dynamic rate limiting, broadcast channel classes, API resource controller generation, Eloquent date formatting improvements, Blade component aliases, Argon2 password hashing support, inclusion of the Collision package, and more. In addition, all front-end scaffolding has been upgraded to Bootstrap 4.
 
 All underlying Symfony components used by Laravel have been upgraded to the Symfony `~4.0` release series.
 
@@ -143,6 +143,24 @@ You may now individually customize the format of Eloquent date cast columns. To 
         'birthday' => 'date:Y-m-d',
         'joined_at' => 'datetime:Y-m-d H:00',
     ];
+
+### Blade Component Aliases
+
+If your Blade components are stored in a sub-directory, you may now alias them for easier access. For example, imagine a Blade component that is stored at `resources/views/components/alert.blade.php`. You may use the `component` method to alias the component from `components.alert` to `alert`:
+
+    Blade::component('components.alert', 'alert');
+
+Once the component has been aliased, you may render it using its alias:
+
+    @component('alert')
+        You are not allowed to access this resource!
+    @endcomponent
+
+Or, if the component has no additional slots, you may use the component's name as a Blade directive:
+
+    @alert
+        You are not allowed to access this resource!
+    @endalert
 
 ### Argon2 Password Hashing
 

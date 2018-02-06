@@ -131,6 +131,26 @@ Sometimes you may need to pass additional data to a component. For this reason, 
         ...
     @endcomponent
 
+#### Aliasing Components
+
+If your Blade components are stored in a sub-directory, you may wish to alias them for easier access. For example, imagine a Blade component that is stored at `resources/views/components/alert.blade.php`. You may use the `component` method to alias the component from `components.alert` to `alert`. Typically, this should be done in the `boot` method of your `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Blade;
+
+    Blade::component('components.alert', 'alert');
+
+Once the component has been aliased, you may render it using its alias:
+
+    @component('alert')
+        You are not allowed to access this resource!
+    @endcomponent
+
+Or, if the component has no additional slots, you may use the component's name as a Blade directive:
+
+    @alert
+        You are not allowed to access this resource!
+    @endalert
+
 <a name="displaying-data"></a>
 ## Displaying Data
 
