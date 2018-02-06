@@ -17,6 +17,7 @@
 - [Searching](#searching)
     - [Where Clauses](#where-clauses)
     - [Pagination](#pagination)
+    - [Soft Deleting](#soft-deleting)
 - [Custom Engines](#custom-engines)
 
 <a name="introduction"></a>
@@ -279,6 +280,23 @@ Once you have retrieved the results, you may display the results and render the 
     </div>
 
     {{ $orders->links() }}
+
+<a name="soft-deleting"></a>
+### Soft Deleting
+
+If the models you are indexing are [soft deleting](/docs/{{version}}/eloquent#soft-deleting) and you need to search your soft deleted models, set the `soft_delete` option of the `config/scout.php` configuration file to `true`:
+
+    'soft_delete' => true,
+
+When this configuration option is `true`, Scout will not remove soft deleted models from the search index. Instead, it will set a `__soft_deleted` attribute on the indexed record. Then, you may use the `withTrashed` or `onlyTrashed` methods to retrieve these records when searching:
+
+    // Include trashed records when retrieving results...
+    $orders = App\Order::withTrashed()->search('Star Trek')->get();
+
+    // Only include trashed records when retrieving results...
+    $orders = App\Order::onlyTrashed()->search('Star Trek')->get();
+
+> {tip} When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
 
 <a name="custom-engines"></a>
 ## Custom Engines
