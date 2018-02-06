@@ -185,11 +185,11 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 
 When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
 
-    Route::resource('photo', 'PhotoController', ['only' => [
+    Route::resource('photos', 'PhotoController', ['only' => [
         'index', 'show'
     ]]);
 
-    Route::resource('photo', 'PhotoController', ['except' => [
+    Route::resource('photos', 'PhotoController', ['except' => [
         'create', 'store', 'update', 'destroy'
     ]]);
 
@@ -197,7 +197,7 @@ When declaring a resource route, you may specify a subset of actions the control
 
 When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
 
-    Route::apiResource('photo', 'PhotoController');
+    Route::apiResource('photos', 'PhotoController');
 
 You may register many API resource controllers at once by passing an array to the `apiResources` method:
 
@@ -215,8 +215,8 @@ To quickly generate an API resource controller that does not include the `create
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
-    Route::resource('photo', 'PhotoController', ['names' => [
-        'create' => 'photo.build'
+    Route::resource('photos', 'PhotoController', ['names' => [
+        'create' => 'photos.build'
     ]]);
 
 <a name="restful-naming-resource-route-parameters"></a>
