@@ -812,6 +812,7 @@ You may also pass an array of values to determine if the given string contains a
     $contains = str_contains('This is my name', ['my', 'foo']);
 
     // true
+This method is case sensitive.
 
 <a name="method-str-finish"></a>
 #### `str_finish()` {#collection-method}
