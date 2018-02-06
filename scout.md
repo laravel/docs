@@ -288,7 +288,7 @@ If the models you are indexing are [soft deleting](/docs/{{version}}/eloquent#so
 
     'soft_delete' => true,
 
-When this configuration option is `true`, Scout will not remove soft deleted models from the search index. Instead, it will set a hidden `__soft_deleted` attribute on the indexed record. Then, you may use the `withTrashed` or `onlyTrashed` methods to retrieve these records when searching:
+When this configuration option is `true`, Scout will not remove soft deleted models from the search index. Instead, it will set a hidden `__soft_deleted` attribute on the indexed record. Then, you may use the `withTrashed` or `onlyTrashed` methods to retrieve soft deleted records when searching:
 
     // Include trashed records when retrieving results...
     $orders = App\Order::withTrashed()->search('Star Trek')->get();
