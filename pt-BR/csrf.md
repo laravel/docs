@@ -56,19 +56,23 @@ class VerifyCsrfToken extends Middleware
 <a name="csrf-x-csrf-token"></a>
 ## X-CSRF-TOKEN
 
-In addition to checking for the CSRF token as a POST parameter, the `VerifyCsrfToken` middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a HTML `meta` tag:
+Além de verificar o token CSRF como parâmetro na requisição POST, o middleware `VerifyCsrfToken` também verificará o cabeçalho `X-CSRF-TOKEN` da requisição. Você poderia, por exemplo, adicionar o token em uma `meta` tag no HTML:
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+```html
+<meta name="csrf-token" content="{{ csrf_token() }}">
+```
 
-Then, once you have created the `meta` tag, you can instruct a library like jQuery to automatically add the token to all request headers. This provides simple, convenient CSRF protection for your AJAX based applications:
+Uma vez criado a `meta` tag, você pode instruir uma biblioteca, como por exemplo jQuery, para adicionar automaticamente o token para todos os cabeçalhos das requisições. Isso fornece uma proteção CSRF simples e conveniente para sua aplicação.
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+```js
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+```
 
-> {tip} By default, the `resources/assets/js/bootstrap.js` file registers the value of the `csrf-token` meta tag with the Axios HTTP library. If you are not using this library, you will need to manually configure this behavior for your application.
+> Dica: Por padrão, o arquivo `resources/assets/js/bootstrap.js` registra o valor da meta tag `csrf-token` na biblioteca Axios HTTP. Se você não estiver usando esta biblioteca, você precisará configurar esse comportamento manualmente para sua aplicação.
 
 <a name="csrf-x-xsrf-token"></a>
 ## X-XSRF-TOKEN
