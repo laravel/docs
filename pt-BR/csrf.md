@@ -1,25 +1,25 @@
 # Proteção CSRF
 
-- [Introduction](#csrf-introduction)
+- [Introdução](#csrf-introduction)
 - [Excluding URIs](#csrf-excluding-uris)
 - [X-CSRF-Token](#csrf-x-csrf-token)
 - [X-XSRF-Token](#csrf-x-xsrf-token)
 
 <a name="csrf-introduction"></a>
-## Introduction
+## Introdução
 
-Laravel makes it easy to protect your application from [cross-site request forgery](https://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) attacks. Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of an authenticated user.
+O Laravel facilita a proteção da sua aplicação contra ataques [cross-site request forgery](https://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF). Os ataques CSRF são um tipo de exploração maliciosa, onde os comandos não autorizados são realizados em nome de um usuário autenticado.
 
-Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
+O Laravel gera automaticamente um token "CSRF" para cada sessão de usuário ativa, que é gerenciada pela aplicação. Este token é usado para verificar se o usuário autenticado é aquele que realmente faz as requisições na aplicação.
 
-Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that the CSRF protection middleware can validate the request. You may use the `csrf_field` helper to generate the token field:
+Sempre que você definir um formulário HTML na sua aplicação, você deve incluir um campo token CSRF oculto no formulário para que o middleware de proteção CSRF possa validar a solicitação. Você pode ajudar o _helper_ `csrf_field` para gerar o campo token:
 
     <form method="POST" action="/profile">
         {{ csrf_field() }}
         ...
     </form>
 
-The `VerifyCsrfToken` [middleware](/docs/{{version}}/middleware), which is included in the `web` middleware group, will automatically verify that the token in the request input matches the token stored in the session.
+O [middleware](/docs/{{version}}/middleware) `VerifyCsrfToken`, que está adicionado ao grupo de middleware `web`, verificará automaticamente se o token na requisição corresponde ao token armazenado na sessão.
 
 #### CSRF Tokens & JavaScript
 
