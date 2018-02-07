@@ -15,7 +15,7 @@ Laravel 5.6 requires PHP 7.1.3 or higher.
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.6.*` in your `composer.json` file.
+Update your `laravel/framework` dependency to `5.6.*` and your `fideloper/proxy` dependency to `~4.0` in your `composer.json` file.
 
 In addition, if you are using the following first-party Laravel packages, you should upgrade them to their latest release:
 
