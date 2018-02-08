@@ -45,9 +45,7 @@ Passing `null` to the `Arr::wrap` method will now return an empty array.
 
 #### The `optimize` Command
 
-The previously deprecated `optimize` Artisan command has been removed. With recent improvements to PHP itself including the OPcache, the `optimize` command no longer provides any relevant performance benefit.
-
-You should remove `php artisan optimize` from your `composer.json` scripts.
+The previously deprecated `optimize` Artisan command has been removed. With recent improvements to PHP itself including the OPcache, the `optimize` command no longer provides any relevant performance benefit. Therefore, you may remove `php artisan optimize` from the `scripts` within your `composer.json` file.
 
 ### Blade
 
