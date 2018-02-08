@@ -194,6 +194,8 @@ The `$headers` property, which was previously an array, is now a bit property th
 
 For more information on the available `$headers` values, check out the full documentation on [trusting proxies](/docs/5.6/requests#configuring-trusted-proxies).
 
+You also need to remove `config/trustedproxy.php` file.
+
 ### Validation
 
 #### The `ValidatesWhenResolved` Interface
