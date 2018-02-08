@@ -215,7 +215,7 @@ The `array_collapse` function collapses an array of arrays into a single array:
 
 The `array_divide` function returns two arrays, one containing the keys, and the other containing the values of the given array:
 
-    list($keys, $values) = array_divide(['name' => 'Desk']);
+    [$keys, $values] = array_divide(['name' => 'Desk']);
 
     // $keys: ['name']
 
