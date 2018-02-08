@@ -29,7 +29,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [Lumen](https://lumen.laravel.com)
 - [Bedrock](https://roots.io/bedrock/)
 - [CakePHP 3](https://cakephp.org)
-- [Concrete5](http://www.concrete5.org/)
+- [Concrete5](https://www.concrete5.org/)
 - [Contao](https://contao.org/en/)
 - [Craft](https://craftcms.com)
 - [Drupal](https://www.drupal.org/)
