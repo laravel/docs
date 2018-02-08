@@ -182,7 +182,7 @@ If you would like to define an entirely custom channel in which you have full co
         ],
     ],
 
-Once you have configured the `custom` channel, you're ready to define the class that will create your Monolog instance. This class only needs a single method: `__invoke`, which should return the Monolog instance:
+Once you have configured the `custom` channel, you're ready to define the class that will create your Monolog instance. This class only needs a single method: `__invoke`, which will receive your configuration and should return the Monolog instance:
 
     <?php
 
@@ -195,9 +195,10 @@ Once you have configured the `custom` channel, you're ready to define the class 
         /**
          * Create a custom Monolog instance.
          *
+         * @param  array $config
          * @return \Monolog\Logger
          */
-        public function __invoke()
+        public function __invoke($config)
         {
             return new Logger(...);
         }
