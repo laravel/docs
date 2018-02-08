@@ -195,9 +195,10 @@ Once you have configured the `custom` channel, you're ready to define the class 
         /**
          * Create a custom Monolog instance.
          *
+         * @param  array  $config
          * @return \Monolog\Logger
          */
-        public function __invoke()
+        public function __invoke(array $config)
         {
             return new Logger(...);
         }
