@@ -179,7 +179,7 @@ When returning a newly created Eloquent model directly from a route, the respons
 
 ### Trusted Proxies
 
-Due to underlying changes in the trusted proxy functionality of Symfony HttpFoundation, slight changes must be made to your application's `TrustProxies` middleware.
+Due to underlying changes in the trusted proxy functionality of Symfony HttpFoundation, slight changes must be made to your application's `App\Http\Middleware\TrustProxies` middleware.
 
 The `$headers` property, which was previously an array, is now a bit property that accepts several different values. For example, to trust all forwarded headers, you may update your `$headers` property to the following value:
 
