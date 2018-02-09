@@ -381,6 +381,8 @@ Laravel will automatically generate a reasonable index name, but you may pass a 
 
 #### Available Index Types
 
+Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s).
+
 Command  |  Description
 -------  |  -----------
 `$table->primary('id');`  |  Adds a primary key.
