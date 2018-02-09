@@ -156,6 +156,8 @@ When working with forms that contain array inputs, use "dot" notation to access 
 
     $names = $request->input('products.*.name');
 
+> {note} PHP replaces dots and spaces in input field names with underscores.
+
 #### Retrieving Input Via Dynamic Properties
 
 You may also access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
@@ -235,6 +237,8 @@ Laravel also provides a global `old` helper. If you are displaying old input wit
 All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on a `Illuminate\Http\Request` instance:
 
     $value = $request->cookie('name');
+
+> {note} PHP replaces dots and spaces in cookie names with underscores.
 
 #### Attaching Cookies To Responses
 
