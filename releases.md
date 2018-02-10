@@ -48,7 +48,7 @@ In addition, it is now easier to customize existing log channels using the loggi
 
 If your application is running on multiple servers, you may now limit a scheduled job to only execute on a single server. For instance, assume you have a scheduled task that generates a new report every Friday night. If the task scheduler is running on three worker servers, the scheduled task will run on all three servers and generate the report three times. Not good!
 
-To indicate that the task should run on only one server, you may use the `onOneServer` method when defining the scheduled task. The first server to obtain the task will secure an atomic lock on the job to prevent other servers from running the same task for that cron cycle:
+To indicate that the task should run on only one server, you may use the `onOneServer` method when defining the scheduled task. The first server to obtain the task will secure an atomic lock on the job to prevent other servers from running the same task on the same Cron cycle:
 
     $schedule->command('report:generate')
              ->fridays()
