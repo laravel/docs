@@ -69,6 +69,8 @@ When passing a multi-word model name to the `authorizeResource` method, the resu
 
 The `before` method of a policy class will not be called if the class doesn't contain a method matching the name of the ability being checked.
 
+> {note} When upgrading from 5.4 to 5.5 all remember_me cookies will be considered invalid and users will be logged out.
+
 ### Cache
 
 #### Database Driver
