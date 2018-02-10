@@ -61,6 +61,8 @@ With recent improvements to PHP op-code caching, the `optimize` Artisan command 
 
 ### Authorization
 
+> {note} When upgrading from Laravel 5.4 to 5.5, all `remember_me` cookies will be rendered invalid and users will be logged out.
+
 #### The `authorizeResource` Controller Method
 
 When passing a multi-word model name to the `authorizeResource` method, the resulting route segment will now be "snake" case, matching the behavior of resource controllers.
