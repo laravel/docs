@@ -22,6 +22,7 @@
 - [Validating Arrays](#validating-arrays)
 - [Custom Validation Rules](#custom-validation-rules)
     - [Using Rule Objects](#using-rule-objects)
+    - [Using Closures](#using-closures)
     - [Using Extensions](#using-extensions)
 
 <a name="introduction"></a>
@@ -1056,6 +1057,21 @@ Once the rule has been defined, you may attach it to a validator by passing an i
     $request->validate([
         'name' => ['required', new Uppercase],
     ]);
+
+<a name="using-closures"></a>
+### Using Closures
+
+Sometimes you might only need a custom rule once and not need a full class. In this instance you can define the rule as a closure right at the point of validation.
+
+    $validator = Validator::make($request->all(), [
+            'title' => ['required',
+                        'max:255',
+                        function($name, $value, $fail) {
+                            if ($value === 'foo') {
+                                $fail($name. ' cannot be foo');
+                            }
+                        }]
+        ]);
 
 <a name="using-extensions"></a>
 ### Using Extensions
