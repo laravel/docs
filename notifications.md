@@ -258,7 +258,7 @@ When sending notifications via the `mail` channel, the notification system will 
          */
         public function routeNotificationForMail()
         {
-            return $this->email_address;
+            return $this->attributes['email_address'];
         }
     }
 
@@ -626,7 +626,7 @@ When sending notifications via the `nexmo` channel, the notification system will
          */
         public function routeNotificationForNexmo()
         {
-            return $this->phone;
+            return $this->attributes['phone'];
         }
     }
 
@@ -802,7 +802,7 @@ To route Slack notifications to the proper location, define a `routeNotification
          */
         public function routeNotificationForSlack()
         {
-            return $this->slack_webhook_url;
+            return $this->attributes['slack_webhook_url'];
         }
     }
 
