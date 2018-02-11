@@ -1061,17 +1061,19 @@ Once the rule has been defined, you may attach it to a validator by passing an i
 <a name="using-closures"></a>
 ### Using Closures
 
-Sometimes you might only need a custom rule once and not need a full class. In this instance you can define the rule as a closure right at the point of validation.
+If you only need the functionality of a custom rule once throughout your application, you may use a Closure instead of a rule object. The Closure receives the attribute's name, the attribute's value, and a `$fail` callback that should be called if validation fails:
 
     $validator = Validator::make($request->all(), [
-            'title' => ['required',
-                        'max:255',
-                        function($name, $value, $fail) {
-                            if ($value === 'foo') {
-                                $fail($name. ' cannot be foo');
-                            }
-                        }]
-        ]);
+        'title' => [
+            'required',
+            'max:255',
+            function($attribute, $value, $fail) {
+                if ($value === 'foo') {
+                    return $fail($attribute.' is invalid.');
+                }
+            },
+        ],
+    ]);
 
 <a name="using-extensions"></a>
 ### Using Extensions
