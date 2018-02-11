@@ -558,9 +558,9 @@ Assertion  | Description
 `$browser->assertPathIs('/home')`  |  Assert the current path matches the given path.
 `$browser->assertPathIsNot('/home')`  |  Assert the current path does not match the given path.
 `$browser->assertRouteIs($name, $parameters)`  |  Assert the current URL matches the given named route's URL.
+`$browser->assertQueryStringHas($name)`  |  Assert the given query string parameter is present.
 `$browser->assertQueryStringHas($name, $value)`  |  Assert the given query string parameter is present and has a given value.
 `$browser->assertQueryStringMissing($name)`  |  Assert the given query string parameter is missing.
-`$browser->assertHasQueryStringParameter($name)`  |  Assert that the given query string parameter is present.
 `$browser->assertHasCookie($name)`  |  Assert the given cookie is present.
 `$browser->assertCookieMissing($name)`  |  Assert that the given cookie is not present.
 `$browser->assertCookieValue($name, $value)`  |  Assert a cookie has a given value.
