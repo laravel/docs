@@ -157,7 +157,7 @@ Once you have configured the `tap` option on your channel, you're ready to defin
         /**
          * Customize the given Monolog instance.
          *
-         * @param  \Monolog\Logger
+         * @param  \Monolog\Logger  $monolog
          * @return void
          */
         public function __invoke($monolog)
