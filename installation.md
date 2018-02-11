@@ -26,6 +26,8 @@ However, if you are not using Homestead, you will need to make sure your server 
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
+- Ctype PHP Extension
+- JSON PHP Extension
 </div>
 
 <a name="installing-laravel"></a>
