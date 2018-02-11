@@ -585,7 +585,7 @@ The invoice will be charged immediately against the user's credit card. The `inv
         'custom-option' => $value,
     ]);
 
-If you are using Braintree you *must* include a `description` field for the Braintree API:
+If you are using Braintree as your billing provider, you must include a `description` option when calling the `invoiceFor` method:
 
     $user->invoiceFor('One Time Fee', 500, [
         'description' => 'your invoice description here',
