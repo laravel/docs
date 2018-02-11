@@ -6,10 +6,10 @@
     - [Scheduling Queued Jobs](#scheduling-queued-jobs)
     - [Scheduling Shell Commands](#scheduling-shell-commands)
     - [Schedule Frequency Options](#schedule-frequency-options)
+    - [Timezones](#timezones)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
     - [Running Tasks On One Server](#running-tasks-on-one-server)
     - [Maintenance Mode](#maintenance-mode)
-    - [Timezones](#timezones)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
 
@@ -173,6 +173,17 @@ The `skip` method may be seen as the inverse of `when`. If the `skip` method ret
 
 When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
 
+<a name="timezones"></a>
+### Timezones
+
+Using the `timezone` method, you may specify that a scheduled task's time should be interpreted within a given timezone:
+
+    $schedule->command('report:generate')
+             ->timezone('America/New_York')
+             ->at('02:00')
+
+> {note} Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible.
+
 <a name="preventing-task-overlaps"></a>
 ### Preventing Task Overlaps
 
@@ -206,17 +217,6 @@ To indicate that the task should run on only one server, use the `onOneServer` m
 Laravel's scheduled tasks will not run when Laravel is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), since we don't want your tasks to interfere with any unfinished maintenance you may be performing on your server. However, if you would like to force a task to run even in maintenance mode, you may use the `evenInMaintenanceMode` method:
 
     $schedule->command('emails:send')->evenInMaintenanceMode();
-
-<a name="timezones"></a>
-### Timezones
-
-You have the ability to set the scheduled task to run at a specific time in a given timezone.
-
-    $schedule->command('report:generate')
-             ->timezone('America/New_York')
-             ->at('02:00')
-    
-> {note} Care needs to be taken when using scheduled tasks and timezones which have daylight savings. When the daylight saving changes occur, your scheduled command might run twice, or not at all. It is recommended to avoid timezone scheduling whenever possible, or to consider what effects a daylight saving change will have on your scheduled command.
 
 <a name="task-output"></a>
 ## Task Output
