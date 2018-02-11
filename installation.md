@@ -54,10 +54,6 @@ Once installed, the `laravel new` command will create a fresh Laravel installati
 
 Alternatively, you may also install the latest Laravel by issuing the Composer `create-project` command in your terminal:
 
-    composer create-project --prefer-dist laravel/laravel blog
-
-If you specifically require Laravel LTS version 5.5 you can use the following command:
-
     composer create-project --prefer-dist laravel/laravel blog "5.5.*"
 
 #### Local Development Server
