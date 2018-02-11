@@ -468,7 +468,7 @@ Cashier automatically handles subscription cancellation on failed charges, but i
         }
     }
 
-You should also update your `routes/web.php` file with a route to your new Cashier controller:
+Next, define a route to your Cashier controller within your `routes/web.php` file:
 
     Route::post(
         'stripe/webhook',
