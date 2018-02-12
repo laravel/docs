@@ -15,6 +15,7 @@
     - [Writing Markdown Messages](#writing-markdown-messages)
     - [Customizing The Components](#customizing-the-components)
 - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
+- [Storing Mailables](#storing-mailables)
 - [Sending Mail](#sending-mail)
     - [Queueing Mail](#queueing-mail)
 - [Mail & Local Development](#mail-and-local-development)
@@ -429,7 +430,26 @@ When designing a mailable's template, it is convenient to quickly preview the re
 
         return new App\Mail\InvoicePaid($invoice);
     });
+    
+<a name="storing-mailables"></a>
+## Storing Mailables
 
+In certain cases it's useful to be able to store the contents of an email in addition to sending the email. This example show's how this can be done by creating a new instance of a mailable outside of the send() method and pass in the mailable. To store the contents of the mailable call the object and the ->render() method. The rendor method will return the contents of the mailable.
+
+    Route::get('/mailable', function () {
+        $invoice = App\Invoice::find(1);
+        
+        //create an instance of the mailable
+        $body = new App\Mail\InvoicePaid($invoice);
+        
+        //send email and pass mailable object
+        Mail::to($request->user())->send($body);
+    
+        //save mailable content by calling the mailable ->render() method
+        $invoice->email_body = $body->render();
+        $invoice->save();
+    });
+ 
 <a name="sending-mail"></a>
 ## Sending Mail
 
