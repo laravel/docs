@@ -427,11 +427,9 @@ To better understand when you may want to use the `toOthers` method, let's imagi
             this.tasks.push(response.data);
         });
 
-However, remember that we also broadcast the task's creation. If your JavaScript application is listening for this event in order to add tasks to the task list, you will have duplicate tasks in your list: one from the end-point and one from the broadcast.
+However, remember that we also broadcast the task's creation. If your JavaScript application is listening for this event in order to add tasks to the task list, you will have duplicate tasks in your list: one from the end-point and one from the broadcast. You may solve this by using the `toOthers` method to instruct the broadcaster to not broadcast the event to the current user.
 
-You may solve this by using the `toOthers` method to instruct the broadcaster to not broadcast the event to the current user.
-
-> {note} Your event must use the `Illuminate\Broadcasting\InteractsWithSockets` trait to take advantage of `toOthers()`.
+> {note} Your event must use the `Illuminate\Broadcasting\InteractsWithSockets` trait in order to call the `toOthers` method.
 
 #### Configuration
 
