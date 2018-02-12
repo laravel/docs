@@ -206,7 +206,7 @@ If the foreign key is not explicitly specified when defining a relationship, Elo
         return $this->belongsTo(User::class);
     }
 
-Just like previous Laravel releases, this relationship will typically use `user_id` as the foreign key. However, the behavior could be different from previous releases if you are overriding the `getKeyName` method of the `User` model. For example:
+Just like previous Laravel releases, this relationship will typically use `user_id` as the foreign key. However, the behavior could be different from previous releases if you are overriding the `$primaryKey` property or `getKeyName` method of a model. For example:
 
     public function getKeyName()
     {
