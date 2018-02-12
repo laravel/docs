@@ -51,6 +51,8 @@ Horizon exposes a dashboard at `/horizon`. By default, you will only be able to 
     Horizon::auth(function ($request) {
         // return true / false;
     });
+    
+> {tip} You can place the dashboard authentication in a location that fits your project best. One common option is to place it in the `boot()` section of your `App\Providers\AppServiceProvider` file.
 
 <a name="running-horizon"></a>
 ## Running Horizon
