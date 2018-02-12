@@ -139,13 +139,13 @@ If your Blade components are stored in a sub-directory, you may wish to alias th
 
     Blade::component('components.alert', 'alert');
 
-Once the component has been aliased, you may render it using its alias:
+Once the component has been aliased, you may render it using a directive:
 
-    @component('alert')
+    @alert('alert', ['type' => 'danger'])
         You are not allowed to access this resource!
-    @endcomponent
+    @endalert
 
-Or, if the component has no additional slots, you may use the component's name as a Blade directive:
+You may omit the component parameters if it has no additional slots:
 
     @alert
         You are not allowed to access this resource!
