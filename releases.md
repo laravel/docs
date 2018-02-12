@@ -150,7 +150,7 @@ Once the component has been aliased, you may render it using a directive:
         You are not allowed to access this resource!
     @endalert
 
-You may omit the parameters of the component has no additional slots:
+You may omit the component parameters if it has no additional slots:
 
     @alert
         You are not allowed to access this resource!
