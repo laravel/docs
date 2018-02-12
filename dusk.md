@@ -35,6 +35,7 @@
     - [Travis CI](#running-tests-on-travis-ci)
     - [CircleCI](#running-tests-on-circle-ci)
     - [Codeship](#running-tests-on-codeship)
+    - [Heroku CI](#running-tests-on-heroku-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -932,3 +933,23 @@ To run Dusk tests on [Codeship](https://codeship.com), add the following command
     nohup bash -c "./vendor/laravel/dusk/bin/chromedriver-linux 2>&1 &"
     nohup bash -c "php artisan serve 2>&1 &" && sleep 5
     php artisan dusk
+
+<a name="running-tests-on-heroku-ci"></a>
+### Heroku CI
+
+To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration), add the following Google Chrome buildpack and scripts to your Heroku `app.json` file:
+
+    {
+      "environments": {
+        "test": {
+          "buildpacks": [
+            { "url": "heroku/php" },
+            { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
+          ],
+          "scripts": {
+            "test-setup": "cp .env.testing .env",
+            "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve > /dev/null 2>&1 &' && php artisan dusk"
+          }
+        }
+      }
+    }
