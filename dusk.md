@@ -947,7 +947,7 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
             { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
           ],
           "scripts": {
-            "test-setup": "touch .env",
+            "test-setup": "cp .env.testing .env",
             "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve > /dev/null 2>&1 &' && php artisan dusk"
           }
         }
