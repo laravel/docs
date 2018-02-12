@@ -431,6 +431,8 @@ However, remember that we also broadcast the task's creation. If your JavaScript
 
 You may solve this by using the `toOthers` method to instruct the broadcaster to not broadcast the event to the current user.
 
+> {note} Your event must use the `Illuminate\Broadcasting\InteractsWithSockets` trait to take advantage of `toOthers()`.
+
 #### Configuration
 
 When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using [Vue](https://vuejs.org) and [Axios](https://github.com/mzabriskie/axios), the socket ID will automatically be attached to every outgoing request as a `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID.
