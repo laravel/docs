@@ -164,7 +164,7 @@ When deploying Passport to your production servers for the first time, you will 
 <a name="token-lifetimes"></a>
 ### Token Lifetimes
 
-By default, Passport issues long-lived access tokens that expire after 1 year. If you would like to configure a shorter token lifetime, you may use the `tokensExpireIn` and `refreshTokensExpireIn` methods. These methods should be called from the `boot` method of your `AuthServiceProvider`:
+By default, Passport issues long-lived access tokens that expire after one year. If you would like to configure a longer / shorter token lifetime, you may use the `tokensExpireIn` and `refreshTokensExpireIn` methods. These methods should be called from the `boot` method of your `AuthServiceProvider`:
 
     /**
      * Register any authentication / authorization services.
