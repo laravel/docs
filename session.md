@@ -93,7 +93,7 @@ There are two primary ways of working with session data in Laravel: the global `
         }
     }
 
-When you retrieve a key from the session, you may also pass a default value as the second argument to the `get` method. This default value will be returned if the specified key does not exist in the session. If you pass a `Closure` as the default value to the `get` method and the requested key does not exist, the `Closure` will be executed and its result returned:
+When you retrieve an item from the session, you may also pass a default value as the second argument to the `get` method. This default value will be returned if the specified key does not exist in the session. If you pass a `Closure` as the default value to the `get` method and the requested key does not exist, the `Closure` will be executed and its result returned:
 
     $value = $request->session()->get('key', 'default');
 
@@ -124,15 +124,15 @@ If you would like to retrieve all the data in the session, you may use the `all`
 
     $data = $request->session()->all();
 
-#### Determining If A Key Exists In The Session
+#### Determining If An Item Exists In The Session
 
-To determine if a key is present in the session, you may use the `has` method. The `has` method returns `true` if the key is present and is not `null`:
+To determine if an item is present in the session, you may use the `has` method. The `has` method returns `true` if the item is present and is not `null`:
 
     if ($request->session()->has('users')) {
         //
     }
 
-To determine if a key is present in the session, even if its value is `null`, you may use the `exists` method. The `exists` method returns `true` if the key is present:
+To determine if an item is present in the session, even if its value is `null`, you may use the `exists` method. The `exists` method returns `true` if the item is present:
 
     if ($request->session()->exists('users')) {
         //
