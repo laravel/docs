@@ -133,7 +133,7 @@ Binding classes into the container with leading slashes is no longer supported. 
 
 The container's `make` method no longer accepts a second array of parameters. This feature typically indicates a code smell. Typically, you can always construct the object in another way that is more intuitive.
 
-If must continue to pass an array of parameters - you can switch to `makeWith()`.
+If must continue to pass an array of parameters, you may use the `makeWith` method.
 
 #### Resolving Callbacks
 
