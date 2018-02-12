@@ -365,6 +365,8 @@ The `attach` method may be used to attach a file to a `file` input element. Like
 
     $browser->attach('photo', __DIR__.'/photos/me.png');
 
+> {note} The attach function requires the `ZIP PHP Extension` on your server.
+
 <a name="using-the-keyboard"></a>
 ### Using The Keyboard
 
