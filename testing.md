@@ -18,9 +18,9 @@ An `ExampleTest.php` file is provided in both the `Feature` and `Unit` test dire
 
 When running tests via `phpunit`, Laravel will automatically set the configuration environment to `testing` because of the environment variables defined in the `phpunit.xml` file. Laravel also automatically configures the session and cache to the `array` driver while testing, meaning no session or cache data will be persisted while testing.
 
-You may also create a `.env.testing` file. This file will override the `.env` file when running PHPUnit tests or executing Artisan commands with the `--env=testing` option.
-
 You are free to define other testing environment configuration values as necessary. The `testing` environment variables may be configured in the `phpunit.xml` file, but make sure to clear your configuration cache using the `config:clear` Artisan command before running your tests!
+
+In addition, you may create a `.env.testing` file in the root of your project. This file will override the `.env` file's variables when running PHPUnit tests or executing Artisan commands with the `--env=testing` switch.
 
 <a name="creating-and-running-tests"></a>
 ## Creating & Running Tests
