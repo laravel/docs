@@ -89,7 +89,7 @@ If your service provider registers many simple bindings, you may wish to use the
          * @var array
          */
         public $singletons = [
-            DowntimeNotifier::class => PingdomDowntimeNotifier,
+            DowntimeNotifier::class => PingdomDowntimeNotifier::class,
         ];
     }
 
