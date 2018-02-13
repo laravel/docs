@@ -32,9 +32,10 @@
     - [Generating Components](#generating-components)
     - [Using Components](#using-components)
 - [Continuous Integration](#continuous-integration)
-    - [Travis CI](#running-tests-on-travis-ci)
     - [CircleCI](#running-tests-on-circle-ci)
     - [Codeship](#running-tests-on-codeship)
+    - [Heroku CI](#running-tests-on-heroku-ci)
+    - [Travis CI](#running-tests-on-travis-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -845,28 +846,6 @@ Once the component has been defined, we can easily select a date within the date
 <a name="continuous-integration"></a>
 ## Continuous Integration
 
-<a name="running-tests-on-travis-ci"></a>
-### Travis CI
-
-To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
-
-    sudo: required
-    dist: trusty
-
-    addons:
-       chrome: stable
-
-    install:
-       - cp .env.testing .env
-       - travis_retry composer install --no-interaction --prefer-dist --no-suggest
-
-    before_script:
-       - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-       - php artisan serve &
-
-    script:
-       - php artisan dusk
-
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
 
@@ -874,12 +853,12 @@ To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubun
 
 If you are using CircleCI 1.0 to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
-	dependencies:
-	  pre:
-	      - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-	      - sudo dpkg -i google-chrome.deb
-	      - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
-	      - rm google-chrome.deb
+    dependencies:
+      pre:
+          - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          - sudo dpkg -i google-chrome.deb
+          - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
+          - rm google-chrome.deb
 
     test:
         pre:
@@ -932,3 +911,45 @@ To run Dusk tests on [Codeship](https://codeship.com), add the following command
     nohup bash -c "./vendor/laravel/dusk/bin/chromedriver-linux 2>&1 &"
     nohup bash -c "php artisan serve 2>&1 &" && sleep 5
     php artisan dusk
+
+<a name="running-tests-on-heroku-ci"></a>
+### Heroku CI
+
+To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration), add the following Google Chrome buildpack and scripts to your Heroku `app.json` file:
+
+    {
+      "environments": {
+        "test": {
+          "buildpacks": [
+            { "url": "heroku/php" },
+            { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
+          ],
+          "scripts": {
+            "test-setup": "cp .env.testing .env",
+            "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve > /dev/null 2>&1 &' && php artisan dusk"
+          }
+        }
+      }
+    }
+
+<a name="running-tests-on-travis-ci"></a>
+### Travis CI
+
+To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
+
+    sudo: required
+    dist: trusty
+
+    addons:
+       chrome: stable
+
+    install:
+       - cp .env.testing .env
+       - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+
+    before_script:
+       - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+       - php artisan serve &
+
+    script:
+       - php artisan dusk
