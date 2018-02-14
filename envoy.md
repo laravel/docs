@@ -159,7 +159,6 @@ If you would like to be prompted for confirmation before running a given task on
     @endtask
 
 <a name="notifications"></a>
-<a name="hipchat-notifications"></a>
 ## Notifications
 
 <a name="slack"></a>
@@ -177,4 +176,3 @@ You may provide one of the following as the channel argument:
 - To send the notification to a channel: `#channel`
 - To send the notification to a user: `@user`
 </div>
-
