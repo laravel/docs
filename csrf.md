@@ -51,8 +51,8 @@ Typically, you should place these kinds of routes outside of the `web` middlewar
             'http://example.com/foo/*',
         ];
     }
-    
-> {tip} When running tests the CSRF Middleware is disabled.
+
+> {tip} The CSRF middleware is automatically disabled when [running tests](/docs/{{version}}/testing).
 
 <a name="csrf-x-csrf-token"></a>
 ## X-CSRF-TOKEN
