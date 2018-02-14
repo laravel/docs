@@ -43,10 +43,14 @@ To see how read / write connections should be configured, let's look at this exa
 
     'mysql' => [
         'read' => [
-            'host' => '192.168.1.1',
+            'host' => [
+                '192.168.1.1'
+            ]
         ],
         'write' => [
-            'host' => '196.168.1.2'
+            'host' => [
+                '196.168.1.2'
+            ]
         ],
         'sticky'    => true,
         'driver'    => 'mysql',
