@@ -43,8 +43,8 @@ Gates are Closures that determine if a user is authorized to perform a given act
     {
         $this->registerPolicies();
 
-        Gate::define('update-post', function ($user, $post) {
-            return $user->id == $post->user_id;
+        Gate::define('view-admin-dashboard', function ($user) {
+            return $user->is_admin;
         });
     }
 
@@ -59,7 +59,7 @@ Gates may also be defined using a `Class@method` style callback string, like con
     {
         $this->registerPolicies();
 
-        Gate::define('update-post', 'PostPolicy@update');
+        Gate::define('view-admin-dashboard', 'DashboardPolicy@view');
     }
 
 #### Resource Gates
