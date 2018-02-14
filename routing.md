@@ -374,6 +374,7 @@ You may use the `@method` Blade directive to generate the `_method` input:
 
     <form action="/foo/bar" method="POST">
         @method('PUT')
+        @csrf
     </form>
 
 <a name="accessing-the-current-route"></a>
