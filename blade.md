@@ -141,7 +141,7 @@ If your Blade components are stored in a sub-directory, you may wish to alias th
 
 Once the component has been aliased, you may render it using a directive:
 
-    @alert('alert', ['type' => 'danger'])
+    @alert(['type' => 'danger'])
         You are not allowed to access this resource!
     @endalert
 
