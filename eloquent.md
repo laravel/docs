@@ -547,7 +547,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Builder;
 
-    class AgeScope implements Scope
+    class FlightTimeScope implements Scope
     {
         /**
          * Apply the scope to a given Eloquent query builder.
@@ -558,7 +558,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
          */
         public function apply(Builder $builder, Model $model)
         {
-            $builder->where('age', '>', 200);
+            $builder->where('flight_time', '>', 200);
         }
     }
 
@@ -572,10 +572,10 @@ To assign a global scope to a model, you should override a given model's `boot` 
 
     namespace App;
 
-    use App\Scopes\AgeScope;
+    use App\Scopes\FlightTimeScope;
     use Illuminate\Database\Eloquent\Model;
 
-    class User extends Model
+    class Flight extends Model
     {
         /**
          * The "booting" method of the model.
@@ -586,13 +586,13 @@ To assign a global scope to a model, you should override a given model's `boot` 
         {
             parent::boot();
 
-            static::addGlobalScope(new AgeScope);
+            static::addGlobalScope(new FlightTimeScope);
         }
     }
 
-After adding the scope, a query to `User::all()` will produce the following SQL:
+After adding the scope, a query to `Flight::all()` will produce the following SQL:
 
-    select * from `users` where `age` > 200
+    select * from `flights` where `flight_time` > 200
 
 #### Anonymous Global Scopes
 
@@ -605,7 +605,7 @@ Eloquent also allows you to define global scopes using Closures, which is partic
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Builder;
 
-    class User extends Model
+    class Flight extends Model
     {
         /**
          * The "booting" method of the model.
@@ -616,8 +616,8 @@ Eloquent also allows you to define global scopes using Closures, which is partic
         {
             parent::boot();
 
-            static::addGlobalScope('age', function (Builder $builder) {
-                $builder->where('age', '>', 200);
+            static::addGlobalScope('flight_time', function (Builder $builder) {
+                $builder->where('flight_time', '>', 200);
             });
         }
     }
@@ -626,26 +626,26 @@ Eloquent also allows you to define global scopes using Closures, which is partic
 
 If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method. The method accepts the class name of the global scope as its only argument:
 
-    User::withoutGlobalScope(AgeScope::class)->get();
+    Flight::withoutGlobalScope(FlightTimeScope::class)->get();
     
 Or, if you defined the global scope using a Closure:
 
-    User::withoutGlobalScope('age')->get();
+    Flight::withoutGlobalScope('flight_time')->get();
 
 If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
 
     // Remove all of the global scopes...
-    User::withoutGlobalScopes()->get();
+    Flight::withoutGlobalScopes()->get();
 
     // Remove some of the global scopes...
-    User::withoutGlobalScopes([
+    Flight::withoutGlobalScopes([
         FirstScope::class, SecondScope::class
     ])->get();
 
 <a name="local-scopes"></a>
 ### Local Scopes
 
-Local scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, prefix an Eloquent model method with `scope`.
+Local scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all flights that are considered "popular". To define a scope, prefix an Eloquent model method with `scope`.
 
 Scopes should always return a query builder instance:
 
@@ -655,10 +655,10 @@ Scopes should always return a query builder instance:
 
     use Illuminate\Database\Eloquent\Model;
 
-    class User extends Model
+    class Flight extends Model
     {
         /**
-         * Scope a query to only include popular users.
+         * Scope a query to only include popular flights.
          *
          * @param \Illuminate\Database\Eloquent\Builder $query
          * @return \Illuminate\Database\Eloquent\Builder
@@ -669,7 +669,7 @@ Scopes should always return a query builder instance:
         }
 
         /**
-         * Scope a query to only include active users.
+         * Scope a query to only include active flights.
          *
          * @param \Illuminate\Database\Eloquent\Builder $query
          * @return \Illuminate\Database\Eloquent\Builder
@@ -684,7 +684,7 @@ Scopes should always return a query builder instance:
 
 Once the scope has been defined, you may call the scope methods when querying the model. However, you should not include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
 
-    $users = App\User::popular()->active()->orderBy('created_at')->get();
+    $flights = App\Flight::popular()->active()->orderBy('created_at')->get();
 
 #### Dynamic Scopes
 
@@ -696,10 +696,10 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
 
     use Illuminate\Database\Eloquent\Model;
 
-    class User extends Model
+    class Flight extends Model
     {
         /**
-         * Scope a query to only include users of a given type.
+         * Scope a query to only include flights of a given type.
          *
          * @param \Illuminate\Database\Eloquent\Builder $query
          * @param mixed $type
@@ -713,7 +713,7 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
 
 Now, you may pass the parameters when calling the scope:
 
-    $users = App\User::ofType('admin')->get();
+    $flights = App\Flights::ofType('international')->get();
 
 <a name="events"></a>
 ## Events
@@ -728,23 +728,20 @@ To get started, define a `$dispatchesEvents` property on your Eloquent model tha
 
     namespace App;
 
-    use App\Events\UserSaved;
-    use App\Events\UserDeleted;
-    use Illuminate\Notifications\Notifiable;
-    use Illuminate\Foundation\Auth\User as Authenticatable;
+    use App\Events\FlightSaved;
+    use App\Events\FlightDeleted;
+    use Illuminate\Database\Eloquent\Model;
 
-    class User extends Authenticatable
+    class Flight extends Model
     {
-        use Notifiable;
-
         /**
          * The event map for the model.
          *
          * @var array
          */
         protected $dispatchesEvents = [
-            'saved' => UserSaved::class,
-            'deleted' => UserDeleted::class,
+            'saved' => FlightSaved::class,
+            'deleted' => FlightDeleted::class,
         ];
     }
 
@@ -757,28 +754,28 @@ If you are listening for many events on a given model, you may use observers to 
 
     namespace App\Observers;
 
-    use App\User;
+    use App\Flight;
 
-    class UserObserver
+    class FlightObserver
     {
         /**
-         * Listen to the User created event.
+         * Listen to the Flight created event.
          *
-         * @param  \App\User  $user
+         * @param  \App\Flight  $flight
          * @return void
          */
-        public function created(User $user)
+        public function created(Flight $flight)
         {
             //
         }
 
         /**
-         * Listen to the User deleting event.
+         * Listen to the Flight deleting event.
          *
-         * @param  \App\User  $user
+         * @param  \App\Flight  $flight
          * @return void
          */
-        public function deleting(User $user)
+        public function deleting(Flight $flight)
         {
             //
         }
@@ -790,8 +787,8 @@ To register an observer, use the `observe` method on the model you wish to obser
 
     namespace App\Providers;
 
-    use App\User;
-    use App\Observers\UserObserver;
+    use App\Flight;
+    use App\Observers\FlightObserver;
     use Illuminate\Support\ServiceProvider;
 
     class AppServiceProvider extends ServiceProvider
@@ -803,7 +800,7 @@ To register an observer, use the `observe` method on the model you wish to obser
          */
         public function boot()
         {
-            User::observe(UserObserver::class);
+            Flight::observe(FlightObserver::class);
         }
 
         /**
