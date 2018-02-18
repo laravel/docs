@@ -95,9 +95,15 @@ If you are going to pair the Redis broadcaster with a Socket.IO server, you will
 
     <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
 
-Next, you will need to instantiate Echo with the `socket.io` connector and a `host`.
+Add the following to your NPM dependancy:
+
+    npm add socket.io-client
+
+Next, you will need to instantiate Echo with the `socket.io` connector and a `host`. 
 
     import Echo from "laravel-echo"
+
+    window.io = require('socket.io-client');
 
     window.Echo = new Echo({
         broadcaster: 'socket.io',
