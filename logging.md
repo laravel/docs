@@ -146,7 +146,8 @@ To get started, define a `tap` array on the channel's configuration. The `tap` a
         'level' => 'debug',
     ],
 
-Once you have configured the `tap` option on your channel, you're ready to define the class that will customize your Monolog instance. This class only needs a single method: `__invoke`, which receives the Monolog instance:
+Once you have configured the `tap` option on your channel, you're ready to define the class that will customize your Monolog instance. 
+This class only needs a single method: `__invoke`, which receives an `Illuminate\Log\Logger` instance, that proxies all method calls to the underlying logger, i.e., Monolog:
 
     <?php
 
@@ -157,12 +158,12 @@ Once you have configured the `tap` option on your channel, you're ready to defin
         /**
          * Customize the given Monolog instance.
          *
-         * @param  \Monolog\Logger  $monolog
+         * @param  \Illuminate\Log\Logger  $logger
          * @return void
          */
-        public function __invoke($monolog)
+        public function __invoke($logger)
         {
-            foreach ($monolog->getHandlers() as $handler) {
+            foreach ($logger->getHandlers() as $handler) {
                 $handler->setFormatter(...);
             }
         }
