@@ -541,6 +541,8 @@ The `commentable` relation on the `Comment` model will return either a `Post` or
 
 By default, Laravel will use the fully qualified class name to store the type of the related model. For instance, given the example above where a `Comment` may belong to a `Post` or a `Video`, the default `commentable_type` would be either `App\Post` or `App\Video`, respectively. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a relationship "morph map" to instruct Eloquent to use a custom name for each model instead of the class name:
 
+    use App\Post;
+    use App\Video;
     use Illuminate\Database\Eloquent\Relations\Relation;
 
     Relation::morphMap([
