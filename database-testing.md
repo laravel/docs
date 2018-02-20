@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Generating Factories](#generating-factories)
+- [Re-Seeding The Database From Tests](#reseeding-the-database-from-tests)
 - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
 - [Writing Factories](#writing-factories)
     - [Factory States](#factory-states)
@@ -41,6 +42,30 @@ The new factory will be placed in your `database/factories` directory.
 The `--model` option may be used to indicate the name of the model created by the factory. This option will pre-fill the generated factory file with the given model:
 
     php artisan make:factory PostFactory --model=Post
+
+<a name="reseeding-the-database-from-tests"></a>
+## Re-Seeding Database From Tests
+
+You may re-seed your database from a test using the `seed` method:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+
+    class ExampleTest extends TestCase
+    {
+        public function setUp() {
+            parent::setUp();
+            $this->seed();
+            $this->seed('DatabaseSeeder'); // call a specific seeder
+        }
+        // ...
+    }
+
+More information on creating seeds can be found in the [Database Seeding](/docs/{{version}}/seeding) section of the documentation.
 
 <a name="resetting-the-database-after-each-test"></a>
 ## Resetting The Database After Each Test
