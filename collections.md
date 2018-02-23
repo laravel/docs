@@ -1261,7 +1261,7 @@ You may also specify how you wish the resulting collection to be keyed:
 
     // ['prod-100' => 'Desk', 'prod-200' => 'Chair']
 
-Note that if duplicate keys exist, only the last element will be retained:
+If duplicate keys exist, the last matching element will be inserted into the plucked collection:
 
     $collection = collect([
         ['brand' => 'Tesla',  'color' => 'red'],
@@ -1273,7 +1273,7 @@ Note that if duplicate keys exist, only the last element will be retained:
     $plucked = $collection->pluck('color', 'brand');
 
     $plucked->all();
-    
+
     // ['Tesla' => 'black', 'Pagani' => 'orange']
 
 <a name="method-pop"></a>
