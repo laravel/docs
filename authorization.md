@@ -12,6 +12,7 @@
     - [Methods Without Models](#methods-without-models)
     - [Policy Filters](#policy-filters)
 - [Authorizing Actions Using Policies](#authorizing-actions-using-policies)
+    - [Via authorizeResource method](#via-authorize-resource-method)
     - [Via The User Model](#via-the-user-model)
     - [Via Middleware](#via-middleware)
     - [Via Controller Helpers](#via-controller-helpers)
@@ -233,6 +234,30 @@ If you would like to deny all authorizations for a user you should return `false
 
 <a name="authorizing-actions-using-policies"></a>
 ## Authorizing Actions Using Policies
+
+<a name="via-authorize-resource-method"></a>
+### Via authorizeResource method
+
+You can apply policy to all of the resource controller methods with `authorizeResource()` in `__construct` magic method by passing `Post` model:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Post;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
+
+    class PostController extends Controller
+    {
+        /**
+         * PostsController constructor.
+         */
+        public function __construct()
+        {
+            $this->authorizeResource(Post::class);
+        }
+    }
 
 <a name="via-the-user-model"></a>
 ### Via The User Model
