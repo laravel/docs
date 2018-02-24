@@ -44,9 +44,9 @@ Before diving into all of the options available to you when writing resources, l
 
     namespace App\Http\Resources;
 
-    use Illuminate\Http\Resources\Json\Resource;
+    use Illuminate\Http\Resources\Json\JsonResource;
 
-    class UserResource extends Resource
+    class UserResource extends JsonResource
     {
         /**
          * Transform the resource into an array.
@@ -137,9 +137,9 @@ In essence, resources are simple. They only need to transform a given model into
 
     namespace App\Http\Resources;
 
-    use Illuminate\Http\Resources\Json\Resource;
+    use Illuminate\Http\Resources\Json\JsonResource;
 
-    class UserResource extends Resource
+    class UserResource extends JsonResource
     {
         /**
          * Transform the resource into an array.
@@ -607,9 +607,9 @@ Alternatively, you may define a `withResponse` method within the resource itself
 
     namespace App\Http\Resources;
 
-    use Illuminate\Http\Resources\Json\Resource;
+    use Illuminate\Http\Resources\Json\JsonResource;
 
-    class UserResource extends Resource
+    class UserResource extends JsonResource
     {
         /**
          * Transform the resource into an array.
