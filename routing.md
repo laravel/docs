@@ -271,7 +271,7 @@ The `name` method may be used to prefix each route name in the group with a give
     Route::name('admin.')->group(function () {
         Route::get('users', function () {
             // Route assigned name "admin.users"...
-        });
+        })->name('users');
     });
 
 <a name="route-model-binding"></a>
