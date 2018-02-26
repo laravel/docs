@@ -400,11 +400,11 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
 
 #### Trusting All Proxies
 
-If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `**` to trust all proxies:
+If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:
 
     /**
      * The trusted proxies for this application.
      *
      * @var array
      */
-    protected $proxies = '**';
+    protected $proxies = '*';
