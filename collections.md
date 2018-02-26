@@ -141,6 +141,8 @@ For the remainder of this documentation, we'll discuss each method available on 
 [sort](#method-sort)
 [sortBy](#method-sortby)
 [sortByDesc](#method-sortbydesc)
+[sortKeys](#method-sortkeys)
+[sortKeysDesc](#method-sortkeysdesc)
 [splice](#method-splice)
 [split](#method-split)
 [sum](#method-sum)
@@ -1575,6 +1577,34 @@ You can also pass your own callback to determine how to sort the collection valu
 #### `sortByDesc()` {#collection-method}
 
 This method has the same signature as the [`sortBy`](#method-sortby) method, but will sort the collection in the opposite order.
+
+<a name="method-sortkeys"></a>
+#### `sortKeys()` {#collection-method}
+
+The `sortKeys` method sorts the collection by keys of the underlying associative array.
+
+    $collection = collect([
+        'firstname' => 'John',
+        'lastname' => 'Doe',
+        'id' => 22345,
+    ]);
+
+    $sorted = $collection->sortKeys();
+
+    $sorted->all();
+
+    /*
+        [
+            'firstname' => 'John',
+            'id' => 22345,
+            'lastname' => 'Doe',
+        ]
+    */
+
+<a name="method-sortkeysdesc"></a>
+#### `sortKeysDesc()` {#collection-method}
+
+This method has the same signature as the [`sortKeys`](#method-sortkeys) method, but will sort the the collection in the opposite order.
 
 <a name="method-splice"></a>
 #### `splice()` {#collection-method}
