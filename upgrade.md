@@ -15,7 +15,7 @@ Laravel 5.6 requires PHP 7.1.3 or higher.
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.6.*` and your `fideloper/proxy` dependency to `~4.0` in your `composer.json` file.
+Update your `laravel/framework` dependency to `5.6.*` in your `composer.json` file.
 
 In addition, if you are using the following first-party Laravel packages, you should upgrade them to their latest release:
 
@@ -26,6 +26,23 @@ In addition, if you are using the following first-party Laravel packages, you sh
 </div>
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.6 support.
+
+#### fideloper/proxy
+
+You should update the `fideloper/proxy` dependency to `~4.0` in your `composer.json` file.
+
+Then you should update the `$headers` variable in the `App\Http\Middleware\TrustProxies.php` to the following:
+
+    /**
+     * The headers that should be used to detect proxies.
+     *
+     * @var string
+     */
+    protected $headers = Request::HEADER_X_FORWARDED_ALL;    
+    
+If you have a `config/trustedproxy.php` file available, then should also update the `header` key to the following:
+
+    'headers' => Illuminate\Http\Request::HEADER_X_FORWARDED_ALL,        
 
 #### Symfony 4
 
