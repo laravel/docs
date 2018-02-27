@@ -21,7 +21,6 @@
     - [Local Scopes](#local-scopes)
 - [Events](#events)
     - [Observers](#observers)
-- [Traits](#traits)
 
 <a name="introduction"></a>
 ## Introduction
@@ -594,6 +593,26 @@ To assign a global scope to a model, you should override a given model's `boot` 
 After adding the scope, a query to `User::all()` will produce the following SQL:
 
     select * from `users` where `age` > 200
+    
+
+#### Applying Global Scopes in Traits
+
+If a trait used in a model needs to apply global scopes itself, you may define a custom `boot` method in the trait that that is named `boot` followed by the trait's own name to avoid overriding the parent class's `boot` method. Eloquent will execute this like a regular boot method.
+
+    <?php
+    
+    namespace App\Traits;
+    
+    use App\Scopes\AgeScope;
+    
+    trait HasAge
+    {
+        public static function bootHasAge()
+        {
+            static::addGlobalScope(new AgeScope);
+        }
+    }
+
 
 #### Anonymous Global Scopes
 
@@ -815,20 +834,5 @@ To register an observer, use the `observe` method on the model you wish to obser
         public function register()
         {
             //
-        }
-    }
-
-<a name="traits"></a>
-## Traits
-
-If a trait used in a model needs to apply scopes or listen for events, you may define a custom `boot` method in the trait that that is named `boot` followed by the trait's own name to avoid overriding the parent class's `boot` method. Eloquent will execute this like a regular boot method.
-
-    trait HasSlug
-    {
-        public static function bootHasSlug()
-        {
-            static::saving(function ($model) {
-                $model->slug = str_slug($model->name, '-');
-            });
         }
     }
