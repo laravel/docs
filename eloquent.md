@@ -593,6 +593,26 @@ To assign a global scope to a model, you should override a given model's `boot` 
 After adding the scope, a query to `User::all()` will produce the following SQL:
 
     select * from `users` where `age` > 200
+    
+
+#### Applying Global Scopes in Traits
+
+If a trait used in a model needs to apply global scopes itself, you may define a custom `boot` method in the trait that that is named `boot` followed by the trait's own name to avoid overriding the parent class's `boot` method. Eloquent will execute this like a regular boot method.
+
+    <?php
+    
+    namespace App\Traits;
+    
+    use App\Scopes\AgeScope;
+    
+    trait HasAge
+    {
+        public static function bootHasAge()
+        {
+            static::addGlobalScope(new AgeScope);
+        }
+    }
+
 
 #### Anonymous Global Scopes
 
