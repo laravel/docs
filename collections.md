@@ -1581,12 +1581,12 @@ This method has the same signature as the [`sortBy`](#method-sortby) method, but
 <a name="method-sortkeys"></a>
 #### `sortKeys()` {#collection-method}
 
-The `sortKeys` method sorts the collection by keys of the underlying associative array.
+The `sortKeys` method sorts the collection by the keys of the underlying associative array:
 
     $collection = collect([
-        'firstname' => 'John',
-        'lastname' => 'Doe',
         'id' => 22345,
+        'first' => 'John',
+        'last' => 'Doe',
     ]);
 
     $sorted = $collection->sortKeys();
@@ -1595,9 +1595,9 @@ The `sortKeys` method sorts the collection by keys of the underlying associative
 
     /*
         [
-            'firstname' => 'John',
+            'first' => 'John',
             'id' => 22345,
-            'lastname' => 'Doe',
+            'last' => 'Doe',
         ]
     */
 
