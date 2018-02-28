@@ -54,7 +54,7 @@ When using the `local` driver, all file operations are relative to the `root` di
 
 #### Composer Packages
 
-Before using the SFTP, S3 or Rackspace drivers, you will need to install the appropriate package via Composer:
+Before using the SFTP, S3, or Rackspace drivers, you will need to install the appropriate package via Composer:
 
 - SFTP: `league/flysystem-sftp ~1.0`
 - Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
@@ -87,24 +87,20 @@ Laravel's Flysystem integrations works great with FTP; however, a sample configu
 Laravel's Flysystem integrations works great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a SFTP filesystem, you may use the example configuration below:
 
     'sftp' => [
-        'driver'   => 'sftp',
-        'host'     => 'example.com',
+        'driver' => 'sftp',
+        'host' => 'example.com',
         'username' => 'your-username',
         'password' => 'your-password',
 
-        // SFTP settings for SSH key based authentication
-        // 'password' => 'encryption-password'
+        // Settings for SSH key based authentication...
         // 'privateKey' => '/path/to/privateKey',
+        // 'password' => 'encryption-password',
 
         // Optional SFTP Settings...
-        // 'port'     => 22,
-        // 'root'     => '',
-        // 'timeout'  => 30,
+        // 'port' => 22,
+        // 'root' => '',
+        // 'timeout' => 30,
     ],
-
-Encryption password have to be provided only if your private key is encrypted.
-
-> {note} SFTP storage driver is available as of Laravel 5.6.6 version.
 
 #### Rackspace Driver Configuration
 
