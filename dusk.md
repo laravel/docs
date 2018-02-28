@@ -550,49 +550,333 @@ You may assert on the state of the Vue component like so:
 <a name="available-assertions"></a>
 ## Available Assertions
 
-Dusk provides a variety of assertions that you may make against your application. All of the available assertions are documented in the table below:
+Dusk provides a variety of assertions that you may make against your application. All of the available assertions are documented in the list below:
 
-Assertion  | Description
-------------- | -------------
-`$browser->assertTitle($title)`  |  Assert the page title matches the given text.
-`$browser->assertTitleContains($title)`  |  Assert the page title contains the given text.
-`$browser->assertUrlIs($url)`  |  Assert that the current URL (without the query string) matches the given string.
-`$browser->assertPathBeginsWith($path)`  |  Assert that the current URL path begins with given path.
-`$browser->assertPathIs('/home')`  |  Assert the current path matches the given path.
-`$browser->assertPathIsNot('/home')`  |  Assert the current path does not match the given path.
-`$browser->assertRouteIs($name, $parameters)`  |  Assert the current URL matches the given named route's URL.
-`$browser->assertQueryStringHas($name)`  |  Assert the given query string parameter is present.
-`$browser->assertQueryStringHas($name, $value)`  |  Assert the given query string parameter is present and has a given value.
-`$browser->assertQueryStringMissing($name)`  |  Assert the given query string parameter is missing.
-`$browser->assertHasCookie($name)`  |  Assert the given cookie is present.
-`$browser->assertCookieMissing($name)`  |  Assert that the given cookie is not present.
-`$browser->assertCookieValue($name, $value)`  |  Assert a cookie has a given value.
-`$browser->assertPlainCookieValue($name, $value)`  |  Assert an unencrypted cookie has a given value.
-`$browser->assertSee($text)`  |  Assert the given text is present on the page.
-`$browser->assertDontSee($text)`  |  Assert the given text is not present on the page.
-`$browser->assertSeeIn($selector, $text)`  |  Assert the given text is present within the selector.
-`$browser->assertDontSeeIn($selector, $text)`  |  Assert the given text is not present within the selector.
-`$browser->assertSourceHas($code)`  |  Assert that the given source code is present on the page.
-`$browser->assertSourceMissing($code)`  |  Assert that the given source code is not present on the page.
-`$browser->assertSeeLink($linkText)`  |  Assert the given link is present on the page.
-`$browser->assertDontSeeLink($linkText)`  |  Assert the given link is not present on the page.
-`$browser->assertInputValue($field, $value)`  |  Assert the given input field has the given value.
-`$browser->assertInputValueIsNot($field, $value)`  |  Assert the given input field does not have the given value.
-`$browser->assertChecked($field)`  |  Assert the given checkbox is checked.
-`$browser->assertNotChecked($field)`  |  Assert the given checkbox is not checked.
-`$browser->assertRadioSelected($field, $value)`  |  Assert the given radio field is selected.
-`$browser->assertRadioNotSelected($field, $value)` |  Assert the given radio field is not selected.
-`$browser->assertSelected($field, $value)`  |  Assert the given dropdown has the given value selected.
-`$browser->assertNotSelected($field, $value)`  |  Assert the given dropdown does not have the given value selected.
-`$browser->assertSelectHasOptions($field, $values)`  |  Assert that the given array of values are available to be selected.
-`$browser->assertSelectMissingOptions($field, $values)`  |  Assert that the given array of values are not available to be selected.
-`$browser->assertSelectHasOption($field, $value)`  |  Assert that the given value is available to be selected on the given field.
-`$browser->assertValue($selector, $value)`  |  Assert the element matching the given selector has the given value.
-`$browser->assertVisible($selector)`  |  Assert the element matching the given selector is visible.
-`$browser->assertMissing($selector)`  |  Assert the element matching the given selector is not visible.
-`$browser->assertDialogOpened($message)`  |  Assert that a JavaScript dialog with given message has been opened.
-`$browser->assertVue($property, $value, $component)`  |  Assert that a given Vue component data property matches the given value.
-`$browser->assertVueIsNot($property, $value, $component)`  |  Assert that a given Vue component data property does not match the given value.
+<style>
+    .collection-method-list > p {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    }
+
+    .collection-method-list a {
+        display: block;
+    }
+</style>
+
+<div class="collection-method-list" markdown="1">
+[assertTitle](#assert-title)
+[assertTitleContains](#assert-title-contains)
+[assertUrlIs](#assert-url-is)
+[assertPathBeginsWith](#assert-path-begins-with)
+[assertPathIs](#assert-path-is)
+[assertPathIsNot](#assert-path-is-not)
+[assertRouteIs](#assert-route-is)
+[assertQueryStringHas](#assert-query-string-has)
+[assertQueryStringHas](#assert-query-string-has)
+[assertQueryStringMissing](#assert-query-string-missing)
+[assertHasCookie](#assert-has-cookie)
+[assertCookieMissing](#assert-cookie-missing)
+[assertCookieValue](#assert-cookie-value)
+[assertPlainCookieValue](#assert-plain-cookie-value)
+[assertSee](#assert-see)
+[assertDontSee](#assert-dont-see)
+[assertSeeIn](#assert-see-in)
+[assertDontSeeIn](#assert-dont-see-in)
+[assertSourceHas](#assert-source-has)
+[assertSourceMissing](#assert-source-missing)
+[assertSeeLink](#assert-see-link)
+[assertDontSeeLink](#assert-dont-see-link)
+[assertInputValue](#assert-input-value)
+[assertInputValueIsNot](#assert-input-value-is-not)
+[assertChecked](#assert-checked)
+[assertNotChecked](#assert-not-checked)
+[assertRadioSelected](#assert-radio-selected)
+[assertRadioNotSelected](#assert-radio-not-selected)
+[assertSelected](#assert-selected)
+[assertNotSelected](#assert-not-selected)
+[assertSelectHasOptions](#assert-select-has-options)
+[assertSelectMissingOptions](#assert-select-missing-options)
+[assertSelectHasOption](#assert-select-has-option)
+[assertValue](#assert-value)
+[assertVisible](#assert-visible)
+[assertMissing](#assert-missing)
+[assertDialogOpened](#assert-dialog-opened)
+[assertVue](#assert-vue)
+[assertVueIsNot](#assert-vue-is-not)
+</div>
+
+<a name="assert-title"></a>
+#### assertTitle
+
+Assert the page title matches the given text.
+
+    $browser->assertTitle($title);
+
+<a name="assert-title-contains"></a>
+#### assertTitleContains
+
+Assert the page title contains the given text.
+
+    $browser->assertTitleContains($title);
+
+<a name="assert-url-is"></a>
+#### assertUrlIs
+
+Assert that the current URL (without the query string) matches the given string.
+
+    $browser->assertUrlIs($url);
+
+<a name="assert-path-begins-with"></a>
+#### assertPathBeginsWith
+
+Assert that the current URL path begins with given path.
+
+    $browser->assertPathBeginsWith($path);
+
+<a name="assert-path-is"></a>
+#### assertPathIs
+
+Assert the current path matches the given path.
+
+    $browser->assertPathIs('/home');
+
+<a name="assert-path-is-not"></a>
+#### assertPathIsNot
+
+Assert the current path does not match the given path.
+
+    $browser->assertPathIsNot('/home');
+
+<a name="assert-route-is"></a>
+#### assertRouteIs
+
+Assert the current URL matches the given named route's URL.
+
+    $browser->assertRouteIs($name, $parameters);
+
+<a name="assert-query-string-has"></a>
+#### assertQueryStringHas
+
+Assert the given query string parameter is present.
+
+    $browser->assertQueryStringHas($name);
+
+<a name="assert-query-string-has"></a>
+#### assertQueryStringHas
+
+Assert the given query string parameter is present and has a given value.
+
+    $browser->assertQueryStringHas($name, $value);
+
+<a name="assert-query-string-missing"></a>
+#### assertQueryStringMissing
+
+Assert the given query string parameter is missing.
+
+    $browser->assertQueryStringMissing($name);
+
+<a name="assert-has-cookie"></a>
+#### assertHasCookie
+
+Assert the given cookie is present.
+
+    $browser->assertHasCookie($name);
+
+<a name="assert-cookie-missing"></a>
+#### assertCookieMissing
+
+Assert that the given cookie is not present.
+
+    $browser->assertCookieMissing($name);
+
+<a name="assert-cookie-value"></a>
+#### assertCookieValue
+
+Assert a cookie has a given value.
+
+    $browser->assertCookieValue($name, $value);
+
+<a name="assert-plain-cookie-value"></a>
+#### assertPlainCookieValue
+
+Assert an unencrypted cookie has a given value.
+
+    $browser->assertPlainCookieValue($name, $value);
+
+<a name="assert-see"></a>
+#### assertSee
+
+Assert the given text is present on the page.
+
+    $browser->assertSee($text);
+
+<a name="assert-dont-see"></a>
+#### assertDontSee
+
+Assert the given text is not present on the page.
+
+    $browser->assertDontSee($text);
+
+<a name="assert-see-in"></a>
+#### assertSeeIn
+
+Assert the given text is present within the selector.
+
+    $browser->assertSeeIn($selector, $text);
+
+<a name="assert-dont-see-in"></a>
+#### assertDontSeeIn
+
+Assert the given text is not present within the selector.
+
+    $browser->assertDontSeeIn($selector, $text);
+
+<a name="assert-source-has"></a>
+#### assertSourceHas
+
+Assert that the given source code is present on the page.
+
+    $browser->assertSourceHas($code);
+
+<a name="assert-source-missing"></a>
+#### assertSourceMissing
+
+Assert that the given source code is not present on the page.
+
+    $browser->assertSourceMissing($code);
+
+<a name="assert-see-link"></a>
+#### assertSeeLink
+
+Assert the given link is present on the page.
+
+    $browser->assertSeeLink($linkText);
+
+<a name="assert-dont-see-link"></a>
+#### assertDontSeeLink
+
+Assert the given link is not present on the page.
+
+    $browser->assertDontSeeLink($linkText);
+
+<a name="assert-input-value"></a>
+#### assertInputValue
+
+Assert the given input field has the given value.
+
+    $browser->assertInputValue($field, $value);
+
+<a name="assert-input-value-is-not"></a>
+#### assertInputValueIsNot
+
+Assert the given input field does not have the given value.
+
+    $browser->assertInputValueIsNot($field, $value);
+
+<a name="assert-checked"></a>
+#### assertChecked
+
+Assert the given checkbox is checked.
+
+    $browser->assertChecked($field);
+
+<a name="assert-not-checked"></a>
+#### assertNotChecked
+
+Assert the given checkbox is not checked.
+
+    $browser->assertNotChecked($field);
+
+<a name="assert-radio-selected"></a>
+#### assertRadioSelected
+
+Assert the given radio field is selected.
+
+    $browser->assertRadioSelected($field, $value);
+
+<a name="assert-radio-not-selected"></a>
+#### assertRadioNotSelected
+
+Assert the given radio field is not selected.
+
+    $browser->assertRadioNotSelected($field, $value);
+
+<a name="assert-selected"></a>
+#### assertSelected
+
+Assert the given dropdown has the given value selected.
+
+    $browser->assertSelected($field, $value);
+
+<a name="assert-not-selected"></a>
+#### assertNotSelected
+
+Assert the given dropdown does not have the given value selected.
+
+    $browser->assertNotSelected($field, $value);
+
+<a name="assert-select-has-options"></a>
+#### assertSelectHasOption
+
+Assert that the given array of values are available to be selected.
+
+    $browser->assertSelectHasOptions($field, $values);
+
+<a name="assert-select-missing-options"></a>
+#### assertSelectMissingOptions
+
+Assert that the given array of values are not available to be selected.
+
+    $browser->assertSelectMissingOptions($field, $values);
+
+<a name="assert-select-has-option"></a>
+#### assertSelectHasOption
+
+Assert that the given value is available to be selected on the given field.
+
+    $browser->assertSelectHasOption($field, $value);
+
+<a name="assert-value"></a>
+#### assertValue
+
+Assert the element matching the given selector has the given value.
+
+    $browser->assertValue($selector, $value);
+
+<a name="assert-visible"></a>
+#### assertVisible
+
+Assert the element matching the given selector is visible.
+
+    $browser->assertVisible($selector);
+
+<a name="assert-missing"></a>
+#### assertMissing
+
+Assert the element matching the given selector is not visible.
+
+    $browser->assertMissing($selector);
+
+<a name="assert-dialog-opened"></a>
+#### assertDialogOpened
+
+Assert that a JavaScript dialog with given message has been opened.
+
+    $browser->assertDialogOpened($message);
+
+<a name="assert-vue"></a>
+#### assertVue
+
+Assert that a given Vue component data property matches the given value.
+
+    $browser->assertVue($property, $value, $component);
+
+<a name="assert-vue-is-not"></a>
+#### assertVueIsNot
+
+Assert that a given Vue component data property does not match the given value.
+
+    $browser->assertVueIsNot($property, $value, $component);
 
 <a name="pages"></a>
 ## Pages
