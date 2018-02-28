@@ -869,14 +869,14 @@ Assert that a JavaScript dialog with given message has been opened:
 
 Assert that a given Vue component data property matches the given value:
 
-    $browser->assertVue($property, $value, $component);
+    $browser->assertVue($property, $value, $componentSelector = null);
 
 <a name="assert-vue-is-not"></a>
 #### assertVueIsNot
 
 Assert that a given Vue component data property does not match the given value:
 
-    $browser->assertVueIsNot($property, $value, $component);
+    $browser->assertVueIsNot($property, $value, $componentSelector = null);
 
 <a name="pages"></a>
 ## Pages
