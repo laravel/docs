@@ -608,273 +608,273 @@ Dusk provides a variety of assertions that you may make against your application
 <a name="assert-title"></a>
 #### assertTitle
 
-Assert the page title matches the given text.
+Assert the page title matches the given text:
 
     $browser->assertTitle($title);
 
 <a name="assert-title-contains"></a>
 #### assertTitleContains
 
-Assert the page title contains the given text.
+Assert the page title contains the given text:
 
     $browser->assertTitleContains($title);
 
 <a name="assert-url-is"></a>
 #### assertUrlIs
 
-Assert that the current URL (without the query string) matches the given string.
+Assert that the current URL (without the query string) matches the given string:
 
     $browser->assertUrlIs($url);
 
 <a name="assert-path-begins-with"></a>
 #### assertPathBeginsWith
 
-Assert that the current URL path begins with given path.
+Assert that the current URL path begins with given path:
 
     $browser->assertPathBeginsWith($path);
 
 <a name="assert-path-is"></a>
 #### assertPathIs
 
-Assert the current path matches the given path.
+Assert the current path matches the given path:
 
     $browser->assertPathIs('/home');
 
 <a name="assert-path-is-not"></a>
 #### assertPathIsNot
 
-Assert the current path does not match the given path.
+Assert the current path does not match the given path:
 
     $browser->assertPathIsNot('/home');
 
 <a name="assert-route-is"></a>
 #### assertRouteIs
 
-Assert the current URL matches the given named route's URL.
+Assert the current URL matches the given named route's URL:
 
     $browser->assertRouteIs($name, $parameters);
 
 <a name="assert-query-string-has"></a>
 #### assertQueryStringHas
 
-Assert the given query string parameter is present.
+Assert the given query string parameter is present:
 
     $browser->assertQueryStringHas($name);
 
 <a name="assert-query-string-has"></a>
 #### assertQueryStringHas
 
-Assert the given query string parameter is present and has a given value.
+Assert the given query string parameter is present and has a given value:
 
     $browser->assertQueryStringHas($name, $value);
 
 <a name="assert-query-string-missing"></a>
 #### assertQueryStringMissing
 
-Assert the given query string parameter is missing.
+Assert the given query string parameter is missing:
 
     $browser->assertQueryStringMissing($name);
 
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
 
-Assert the given cookie is present.
+Assert the given cookie is present:
 
     $browser->assertHasCookie($name);
 
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
-Assert that the given cookie is not present.
+Assert that the given cookie is not present:
 
     $browser->assertCookieMissing($name);
 
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
 
-Assert a cookie has a given value.
+Assert a cookie has a given value:
 
     $browser->assertCookieValue($name, $value);
 
 <a name="assert-plain-cookie-value"></a>
 #### assertPlainCookieValue
 
-Assert an unencrypted cookie has a given value.
+Assert an unencrypted cookie has a given value:
 
     $browser->assertPlainCookieValue($name, $value);
 
 <a name="assert-see"></a>
 #### assertSee
 
-Assert the given text is present on the page.
+Assert the given text is present on the page:
 
     $browser->assertSee($text);
 
 <a name="assert-dont-see"></a>
 #### assertDontSee
 
-Assert the given text is not present on the page.
+Assert the given text is not present on the page:
 
     $browser->assertDontSee($text);
 
 <a name="assert-see-in"></a>
 #### assertSeeIn
 
-Assert the given text is present within the selector.
+Assert the given text is present within the selector:
 
     $browser->assertSeeIn($selector, $text);
 
 <a name="assert-dont-see-in"></a>
 #### assertDontSeeIn
 
-Assert the given text is not present within the selector.
+Assert the given text is not present within the selector:
 
     $browser->assertDontSeeIn($selector, $text);
 
 <a name="assert-source-has"></a>
 #### assertSourceHas
 
-Assert that the given source code is present on the page.
+Assert that the given source code is present on the page:
 
     $browser->assertSourceHas($code);
 
 <a name="assert-source-missing"></a>
 #### assertSourceMissing
 
-Assert that the given source code is not present on the page.
+Assert that the given source code is not present on the page:
 
     $browser->assertSourceMissing($code);
 
 <a name="assert-see-link"></a>
 #### assertSeeLink
 
-Assert the given link is present on the page.
+Assert the given link is present on the page:
 
     $browser->assertSeeLink($linkText);
 
 <a name="assert-dont-see-link"></a>
 #### assertDontSeeLink
 
-Assert the given link is not present on the page.
+Assert the given link is not present on the page:
 
     $browser->assertDontSeeLink($linkText);
 
 <a name="assert-input-value"></a>
 #### assertInputValue
 
-Assert the given input field has the given value.
+Assert the given input field has the given value:
 
     $browser->assertInputValue($field, $value);
 
 <a name="assert-input-value-is-not"></a>
 #### assertInputValueIsNot
 
-Assert the given input field does not have the given value.
+Assert the given input field does not have the given value:
 
     $browser->assertInputValueIsNot($field, $value);
 
 <a name="assert-checked"></a>
 #### assertChecked
 
-Assert the given checkbox is checked.
+Assert the given checkbox is checked:
 
     $browser->assertChecked($field);
 
 <a name="assert-not-checked"></a>
 #### assertNotChecked
 
-Assert the given checkbox is not checked.
+Assert the given checkbox is not checked:
 
     $browser->assertNotChecked($field);
 
 <a name="assert-radio-selected"></a>
 #### assertRadioSelected
 
-Assert the given radio field is selected.
+Assert the given radio field is selected:
 
     $browser->assertRadioSelected($field, $value);
 
 <a name="assert-radio-not-selected"></a>
 #### assertRadioNotSelected
 
-Assert the given radio field is not selected.
+Assert the given radio field is not selected:
 
     $browser->assertRadioNotSelected($field, $value);
 
 <a name="assert-selected"></a>
 #### assertSelected
 
-Assert the given dropdown has the given value selected.
+Assert the given dropdown has the given value selected:
 
     $browser->assertSelected($field, $value);
 
 <a name="assert-not-selected"></a>
 #### assertNotSelected
 
-Assert the given dropdown does not have the given value selected.
+Assert the given dropdown does not have the given value selected:
 
     $browser->assertNotSelected($field, $value);
 
 <a name="assert-select-has-options"></a>
 #### assertSelectHasOption
 
-Assert that the given array of values are available to be selected.
+Assert that the given array of values are available to be selected:
 
     $browser->assertSelectHasOptions($field, $values);
 
 <a name="assert-select-missing-options"></a>
 #### assertSelectMissingOptions
 
-Assert that the given array of values are not available to be selected.
+Assert that the given array of values are not available to be selected:
 
     $browser->assertSelectMissingOptions($field, $values);
 
 <a name="assert-select-has-option"></a>
 #### assertSelectHasOption
 
-Assert that the given value is available to be selected on the given field.
+Assert that the given value is available to be selected on the given field:
 
     $browser->assertSelectHasOption($field, $value);
 
 <a name="assert-value"></a>
 #### assertValue
 
-Assert the element matching the given selector has the given value.
+Assert the element matching the given selector has the given value:
 
     $browser->assertValue($selector, $value);
 
 <a name="assert-visible"></a>
 #### assertVisible
 
-Assert the element matching the given selector is visible.
+Assert the element matching the given selector is visible:
 
     $browser->assertVisible($selector);
 
 <a name="assert-missing"></a>
 #### assertMissing
 
-Assert the element matching the given selector is not visible.
+Assert the element matching the given selector is not visible:
 
     $browser->assertMissing($selector);
 
 <a name="assert-dialog-opened"></a>
 #### assertDialogOpened
 
-Assert that a JavaScript dialog with given message has been opened.
+Assert that a JavaScript dialog with given message has been opened:
 
     $browser->assertDialogOpened($message);
 
 <a name="assert-vue"></a>
 #### assertVue
 
-Assert that a given Vue component data property matches the given value.
+Assert that a given Vue component data property matches the given value:
 
     $browser->assertVue($property, $value, $component);
 
 <a name="assert-vue-is-not"></a>
 #### assertVueIsNot
 
-Assert that a given Vue component data property does not match the given value.
+Assert that a given Vue component data property does not match the given value:
 
     $browser->assertVueIsNot($property, $value, $component);
 
