@@ -165,7 +165,7 @@ However, the easiest way to customize the pagination views is by exporting them 
 
     php artisan vendor:publish --tag=laravel-pagination
 
-This command will place the views in the `resources/views/vendor/pagination` directory. The `bootstrap-4.blade.php` file within this directory corresponds to the default pagination view. Edit this file to modify the pagination HTML.
+This command will place the views in the `resources/views/vendor/pagination` directory. The `bootstrap-4.blade.php` file within this directory corresponds to the default pagination view. You may edit this file to modify the pagination HTML.
 
 In you would like to specify a different file as the default pagination view, you may use the paginator's `defaultView` and `defaultSimpleView` methods within your `AppServiceProvider`:
 
