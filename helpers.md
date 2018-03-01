@@ -729,7 +729,7 @@ The `class_basename` returns the class name of the given class with the class' n
 <a name="method-e"></a>
 #### `e()` {#collection-method}
 
-The `e` function runs PHP's `htmlspecialchars` function with the `double_encode` option set to `false`:
+The `e` function runs PHP's `htmlspecialchars` function with the `double_encode` option set to `true` by default:
 
     echo e('<html>foo</html>');
 
