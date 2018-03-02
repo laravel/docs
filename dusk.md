@@ -816,7 +816,7 @@ Assert the given dropdown does not have the given value selected:
     $browser->assertNotSelected($field, $value);
 
 <a name="assert-select-has-options"></a>
-#### assertSelectHasOption
+#### assertSelectHasOptions
 
 Assert that the given array of values are available to be selected:
 
