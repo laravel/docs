@@ -167,7 +167,7 @@ However, the easiest way to customize the pagination views is by exporting them 
 
 This command will place the views in the `resources/views/vendor/pagination` directory. The `bootstrap-4.blade.php` file within this directory corresponds to the default pagination view. You may edit this file to modify the pagination HTML.
 
-In case you would like to designate a different file as the default pagination view, you may use the paginator's `defaultView` and `defaultSimpleView` methods within your `AppServiceProvider`:
+If you would like to designate a different file as the default pagination view, you may use the paginator's `defaultView` and `defaultSimpleView` methods within your `AppServiceProvider`:
 
     use Illuminate\Pagination\Paginator;
 
