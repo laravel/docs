@@ -487,7 +487,7 @@ The `array_where` function filters an array using the given Closure:
         return is_string($value);
     });
 
-    // [1 => 200, 3 => 400]
+    // [1 => '200', 3 => '400']
 
 <a name="method-array-wrap"></a>
 #### `array_wrap()` {#collection-method}
