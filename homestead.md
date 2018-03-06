@@ -214,7 +214,7 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
 <a name="installing-elasticsearch"></a>
 ### Installing Elasticsearch
 
-To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml` file and specify a supported version. The default installation will create a cluster named 'homestead'. You should never give Elasticsearch more than half of the operating system's memory, so make sure your Homestead machine has at least twice the Elasticsearch allocation:
+To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml` file and specify a supported version. You may specify a major version or an exact version (major.minor.patch) if you require it. The default installation will create a cluster named 'homestead'. You should never give Elasticsearch more than half of the operating system's memory, so make sure your Homestead machine has at least twice the Elasticsearch allocation:
 
     box: laravel/homestead
     ip: "192.168.10.10"
