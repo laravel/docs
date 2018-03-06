@@ -239,7 +239,7 @@ Sometimes you may wish to turn the string response of a given operation into a d
     return response()->streamDownload(function () {
         echo GitHub::api('repo')
                     ->contents()
-                    ->readme('laravel', 'laravel')['contents']
+                    ->readme('laravel', 'laravel')['contents'];
     }, 'laravel-readme.md');
 
 <a name="file-responses"></a>
