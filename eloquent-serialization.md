@@ -34,11 +34,11 @@ You may also convert entire [collections](/docs/{{version}}/eloquent-collections
 <a name="serializing-to-json"></a>
 ### Serializing To JSON
 
-To convert a model to JSON, you should use the `toJson` method. Like `toArray`, the `toJson` method is recursive, so all attributes and relations will be converted to JSON:
+To convert a model to JSON, you should use the `toJson` method. Like `toArray`, the `toJson` method is recursive, so all attributes and relations will be converted to JSON. An optional bitmask of options can be passed in as documented for PHP's [json_encode](http://php.net/manual/en/function.json-encode.php) function:
 
     $user = App\User::find(1);
 
-    return $user->toJson();
+    return $user->toJson(JSON_PRETTY_PRINT);
 
 Alternatively, you may cast a model or collection to a string, which will automatically call the `toJson` method on the model or collection:
 
