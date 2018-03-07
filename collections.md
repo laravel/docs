@@ -163,9 +163,9 @@ For the remainder of this documentation, we'll discuss each method available on 
 [whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
 [whereInStrict](#method-whereinstrict)
+[whereInstanceOf](#method-whereinstanceof)
 [whereNotIn](#method-wherenotin)
 [whereNotInStrict](#method-wherenotinstrict)
-[whereInstanceOf](#method-whereinstanceof)
 [wrap](#method-wrap)
 [zip](#method-zip)
 
@@ -2021,6 +2021,19 @@ The `whereIn` method uses "loose" comparisons when checking item values, meaning
 
 This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using "strict" comparisons.
 
+<a name="method-whereinstanceof"></a>
+#### `whereInstanceOf()` {#collection-method}
+
+The `whereInstanceOf` method filters the collection by a given class type:
+
+    $collection = collect([
+        new User,
+        new User,
+        new Post,
+    ]);
+
+    return $collection->whereInstanceOf(User::class);
+
 <a name="method-wherenotin"></a>
 #### `whereNotIn()` {#collection-method}
 
@@ -2050,23 +2063,6 @@ The `whereNotIn` method uses "loose" comparisons when checking item values, mean
 #### `whereNotInStrict()` {#collection-method}
 
 This method has the same signature as the [`whereNotIn`](#method-wherenotin) method; however, all values are compared using "strict" comparisons.
-
-<a name="method-whereinstanceof"></a>
-#### `whereInstanceOf()` {#collection-method}
-
-The `whereInstanceOf` method filters the collection by a given class type:
-
-    $collection = collect([
-        new stdClass,
-        new stdClass,
-        new Collection,
-    ]);
-
-    $filtered = $collection->whereInstanceOf(stdClass::class);
-
-    $filtered->all();
-
-    // [stdClass(), stdClass()]
 
 <a name="method-wrap"></a>
 #### `wrap()` {#collection-method}
