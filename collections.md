@@ -165,6 +165,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [whereInStrict](#method-whereinstrict)
 [whereNotIn](#method-wherenotin)
 [whereNotInStrict](#method-wherenotinstrict)
+[whereInstanceOf](#method-whereinstanceof)
 [wrap](#method-wrap)
 [zip](#method-zip)
 
@@ -2049,6 +2050,23 @@ The `whereNotIn` method uses "loose" comparisons when checking item values, mean
 #### `whereNotInStrict()` {#collection-method}
 
 This method has the same signature as the [`whereNotIn`](#method-wherenotin) method; however, all values are compared using "strict" comparisons.
+
+<a name="method-whereinstanceof"></a>
+#### `whereInstanceOf()` {#collection-method}
+
+The `whereInstanceOf` method filters the collection by a given class type:
+
+    $collection = collect([
+        new stdClass,
+        new stdClass,
+        new Collection,
+    ]);
+
+    $filtered = $collection->whereInstanceOf(stdClass::class);
+
+    $filtered->all();
+
+    // [stdClass(), stdClass()]
 
 <a name="method-wrap"></a>
 #### `wrap()` {#collection-method}
