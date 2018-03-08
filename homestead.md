@@ -61,6 +61,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Mailhog
 - Elasticsearch (Optional)
 - ngrok
+- wp-cli
 </div>
 
 <a name="installation-and-setup"></a>
