@@ -506,6 +506,29 @@ In addition to conditionally including relationship information in your resource
             }),
         ];
     }
+    
+<a name="adding-authorization-data"></a>
+### Adding Authorization Data
+
+Sometimes it's nessecary to add authorization information to the response. You can provide the policy data to resource responses to be able to conditionally display for example an edit button in your frontend only if the user is authorized.
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'rights' => [
+                'update' => policy(Post::class)->update(Auth::user(), $this->resource),
+                'delete' => policy(Post::class)->delete(Auth::user(), $this->resource),
+            ],
+        ];
+    }
 
 <a name="adding-meta-data"></a>
 ### Adding Meta Data
