@@ -91,13 +91,15 @@ When the Redis broadcaster publishes an event, it will be published on the event
 
 #### Socket.IO
 
-If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application's `head` HTML element. When the Socket.IO server is started, it will automatically expose the client JavaScript library at a standard URL. For example, if you are running the Socket.IO server on the same domain as your web application, you may access the client library like so:
+If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application. You may install it via the NPM package manager:
 
-    <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
+    npm install --save socket.io-client
 
 Next, you will need to instantiate Echo with the `socket.io` connector and a `host`.
 
     import Echo from "laravel-echo"
+    
+    window.io = require('socket.io-client');
 
     window.Echo = new Echo({
         broadcaster: 'socket.io',
