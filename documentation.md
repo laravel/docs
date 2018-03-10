@@ -3,6 +3,7 @@
     - [Upgrade Guide](/docs/{{version}}/upgrade)
     - [Contribution Guide](/docs/{{version}}/contributions)
     - [API Documentation](/api/{{version}})
+    - [Offline Documentation](/offline/{{version}})
 - ## Getting Started
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
