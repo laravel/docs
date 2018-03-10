@@ -379,6 +379,12 @@ If you would like to offer trial periods to your customers while still collectin
 
 This method will set the trial period ending date on the subscription record within the database, as well as instruct Stripe / Braintree to not begin billing the customer until after this date.
 
+To specify a specific ending date of the trial, use the `trialUntil` method, which accepts a carbon instance:
+
+    $user->newSubscription('main', 'monthly')
+                ->trialUntil(Carbon\Carbon::createFromTimestamp(1524767400))
+                ->create($stripeToken);
+
 > {note} If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
 You may determine if the user is within their trial period using either the `onTrial` method of the user instance, or the `onTrial` method of the subscription instance. The two examples below are identical:
