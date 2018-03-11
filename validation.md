@@ -787,11 +787,6 @@ A full listing of MIME types and their corresponding extensions may be found at 
 
 The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
-<a name="rule-nullable"></a>
-#### nullable
-
-The field under validation may be `null`. This is particularly useful when validating primitive such as strings and integers that can contain `null` values.
-
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
 
@@ -812,6 +807,11 @@ The field under validation must not be included in the given list of values. The
 The field under validation must not match the given regular expression.
 
 **Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+
+<a name="rule-nullable"></a>
+#### nullable
+
+The field under validation may be `null`. This is particularly useful when validating primitive such as strings and integers that can contain `null` values.
 
 <a name="rule-numeric"></a>
 #### numeric
