@@ -7,6 +7,7 @@
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
+    - [Configuring The Model ID](#configuring-the-model-id)
 - [Indexing](#indexing)
     - [Batch Import](#batch-import)
     - [Adding Records](#adding-records)
@@ -130,11 +131,11 @@ By default, the entire `toArray` form of a given model will be persisted to its 
             return $array;
         }
     }
-    
-#### Configuring id
 
-By default, Scout will use the primary key of a given model as its unique id in the search index. If you wish to customize
-it, you may override the `getScoutKey` method on the model.
+<a name="configuring-the-model-id"></a>
+### Configuring The Model ID
+
+By default, Scout will use the primary key of the model as the unique ID stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` method on the model:
 
     <?php
 
@@ -148,9 +149,9 @@ it, you may override the `getScoutKey` method on the model.
         use Searchable;
 
         /**
-         * Get the unique id to use in the search index.
+         * Get the value used to index the model.
          *
-         * @return array
+         * @return mixed
          */
         public function getScoutKey()
         {
