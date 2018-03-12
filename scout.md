@@ -130,6 +130,33 @@ By default, the entire `toArray` form of a given model will be persisted to its 
             return $array;
         }
     }
+    
+#### Configuring id
+
+By default, Scout will use the primary key of a given model as its unique id in the search index. If you wish to customize
+it, you may override the `getScoutKey` method on the model.
+
+    <?php
+
+    namespace App;
+
+    use Laravel\Scout\Searchable;
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        use Searchable;
+
+        /**
+         * Get the unique id to use in the search index.
+         *
+         * @return array
+         */
+        public function getScoutKey()
+        {
+            return $this->email;
+        }
+    }
 
 <a name="indexing"></a>
 ## Indexing
