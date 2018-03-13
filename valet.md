@@ -175,7 +175,7 @@ Let's take a look at a sample implementation of each method your custom Valet dr
 
 The `serves` method should return `true` if your driver should handle the incoming request. Otherwise, the method should return `false`. So, within this method you should attempt to determine if the given `$sitePath` contains a project of the type you are trying to serve.
 
-For example, let's pretend we are writing a `WordPressValetDriver`. Our serve method might look something like this:
+For example, let's pretend we are writing a `WordPressValetDriver`. Our `serves` method might look something like this:
 
     /**
      * Determine if the driver serves the request.
