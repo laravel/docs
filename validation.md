@@ -502,7 +502,7 @@ Below is a list of all available validation rules and their function:
 [Image (File)](#rule-image)
 [In](#rule-in)
 [In Array](#rule-in-array)
-[Integer](#rule-integer)
+[Integer or Int](#rule-integer)
 [IP Address](#rule-ip)
 [JSON](#rule-json)
 [Max](#rule-max)
@@ -733,7 +733,7 @@ The field under validation must be included in the given list of values. Since t
 The field under validation must exist in _anotherfield_'s values.
 
 <a name="rule-integer"></a>
-#### integer
+#### integer or int
 
 The field under validation must be an integer.
 
