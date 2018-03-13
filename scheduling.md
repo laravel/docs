@@ -22,7 +22,7 @@ Laravel's command scheduler allows you to fluently and expressively define your 
 
 ### Starting The Scheduler
 
-When using the scheduler, you only need to add the following Cron entry to your server. If you do not know how to add Cron entries to your server, consider using a service such as [Laravel Forge](https://forge.laravel.com) which can manage the Cron entries for you:
+When using the scheduler, you only need to add the following Cron entry to your server crontab, accessed via `crontab-e`. If you do not know how to add Cron entries to your server, consider using a service such as [Laravel Forge](https://forge.laravel.com) which can manage the Cron entries for you:
 
     * * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
 
