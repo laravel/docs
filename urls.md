@@ -5,7 +5,7 @@
     - [Generating Basic URLs](#generating-basic-urls)
     - [Accessing The Current URL](#accessing-the-current-url)
 - [URLs For Named Routes](#urls-for-named-routes)
-    - [Signed URLs]($signed-urls)
+    - [Signed URLs](#signed-urls)
 - [URLs For Controller Actions](#urls-for-controller-actions)
 - [Default Values](#default-values)
 
