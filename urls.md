@@ -5,6 +5,7 @@
     - [Generating Basic URLs](#generating-basic-urls)
     - [Accessing The Current URL](#accessing-the-current-url)
 - [URLs For Named Routes](#urls-for-named-routes)
+    - [Signed URLs]($signed-urls)
 - [URLs For Controller Actions](#urls-for-controller-actions)
 - [Default Values](#default-values)
 
@@ -65,6 +66,56 @@ To generate a URL to this route, you may use the `route` helper like so:
 You will often be generating URLs using the primary key of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's primary key:
 
     echo route('post.show', ['post' => $post]);
+
+<a name="signed-urls"></a>
+### Signed URLs
+
+Laravel allows you to easily create "signed" URLs to named routes. These URLs have a "signature" hash appended to the query string which allows Laravel to verify that the URL has not been modified since it was created. Signed URLs are especially useful for routes that are publicly accessible yet need a layer of protection against URL manipulation. For example, you might used signed URLs to implement a public "unsubscribe" link that you email to your customers. To create a signed URL to a named route, use the `signedRoute` method of the `URL` facade:
+
+    use Illuminate\Support\Facades\URL;
+
+    return URL::signedRoute('unsubscribe', ['user' => 1]);
+
+If you would like to generate a temporary signed route URL that expires, you may use the `temporarySignedRoute` method:
+
+    use Illuminate\Support\Facades\URL;
+
+    return URL::temporarySignedRoute(
+        'unsubscribe', now()->addMinutes(30), ['user' => 1]
+    );
+
+#### Verifying Signed Route Requests
+
+To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Request`:
+
+    use Illuminate\Http\Request;
+
+    Route::post('/unsubscribe/{user}', function (Request $request) {
+        if (! $request->hasValidSignature()) {
+            abort(401);
+        }
+
+        // ...
+    });
+
+Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` middleware to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
+
+    /**
+     * The application's route middleware.
+     *
+     * These middleware may be assigned to groups or used individually.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+    ];
+
+Once you have registered the middleware in your kernel, you may attach it to a route. If the incoming request does not have a valid signature, the middleware will automatically return a `401` error response:
+
+    Route::post('/unsubscribe/{user}', function (Request $request) {
+        // ...
+    })->middleware('signed');
 
 <a name="urls-for-controller-actions"></a>
 ## URLs For Controller Actions
