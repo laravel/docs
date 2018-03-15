@@ -254,7 +254,7 @@ Command  |  Description
 `$table->text('description');`  |  TEXT equivalent column.
 `$table->time('sunrise');`  |  TIME equivalent column.
 `$table->timeTz('sunrise');`  |  TIME (with timezone) equivalent column.
-`$table->timestamp('added_on');`  |  TIMESTAMP equivalent column.
+`$table->timestamp('added_on');`  |  TIMESTAMP equivalent column [read more*](#timestamp-note)
 `$table->timestampTz('added_on');`  |  TIMESTAMP (with timezone) equivalent column.
 `$table->timestamps();`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP equivalent columns.
 `$table->timestampsTz();`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP (with timezone) equivalent columns.
@@ -268,6 +268,11 @@ Command  |  Description
 `$table->unsignedTinyInteger('votes');`  |  UNSIGNED TINYINT equivalent column.
 `$table->uuid('id');`  |  UUID equivalent column.
 `$table->year('birth_year');`  |  YEAR equivalent column.
+
+<a name="timestamp-note"></a>
+#### A note about `timestamp()` fields on MySQL
+
+Some MySQL modes may add `on update CURRENT_TIMESTAMP` `extra`, if `nullable()` is not also included, leading to automatically updating timestamps. This cannot be changed by a migration later.
 
 <a name="column-modifiers"></a>
 ### Column Modifiers
