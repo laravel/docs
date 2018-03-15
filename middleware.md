@@ -223,7 +223,7 @@ Middleware parameters may be specified when defining the route by separating the
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
 
-Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage after the response has been sent to the browser. If you define a `terminate` method on your middleware, it will automatically be called after the response is sent to the browser.
+Sometimes a middleware may need to do some work after the HTTP response has been prepared to be send. For example, the "session" middleware included with Laravel writes the session data to storage after the response has been prepared to be sent to the browser. If you define a `terminate` method on your middleware, it will automatically be called after the response is prepared to be sent to the browser.
 
     <?php
 
