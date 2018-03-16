@@ -78,9 +78,11 @@ In addition to scheduling Closure calls, you may also schedule [Artisan commands
 <a name="scheduling-queued-jobs"></a>
 ### Scheduling Queued Jobs
 
-The `job` method may be used to schedule a [queued job](/docs/{{version}}/queues). This method provides a convenient way to schedule jobs without using the `call` method to manually create Closures to queue the job:
+The `job` method may be used to schedule a [queued job](/docs/{{version}}/queues). This method provides a convenient way to schedule jobs without using the `call` method to manually create Closures to queue the job. The `job` method accepts an optional second argument to specify the queue.
 
     $schedule->job(new Heartbeat)->everyFiveMinutes();
+    
+    $schedule->job(new Heartbeat, 'heartbeats')->everyFiveMinutes();
 
 <a name="scheduling-shell-commands"></a>
 ### Scheduling Shell Commands
