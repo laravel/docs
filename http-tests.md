@@ -231,6 +231,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertDontSee](#assert-dont-see)
 [assertDontSeeText](#assert-dont-see-text)
 [assertExactJson](#assert-exact-json)
+[assertForbidden](#assert-forbidden)
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
 [assertJson](#assert-json)
@@ -239,6 +240,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
+[assertNotFound](#assert-not-found)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertSee](#assert-see)
@@ -301,6 +303,13 @@ Assert that the response contains an exact match of the given JSON data:
 
     $response->assertExactJson(array $data);
 
+<a name="assert-forbidden"></a>
+#### assertForbidden
+
+Assert that the response has a forbidden status code:
+
+    $response->assertForbidden();
+
 <a name="assert-header"></a>
 #### assertHeader
 
@@ -357,6 +366,13 @@ Assert that the response has the given JSON validation errors for the given keys
 
     $response->assertJsonValidationErrors($keys);
 
+<a name="assert-not-found"></a>
+#### assertNotFound
+
+Assert that the response has a not found status code:
+
+    $response->assertNotFound();
+    
 <a name="assert-plain-cookie"></a>
 #### assertPlainCookie
 
