@@ -15,7 +15,28 @@ Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` fi
 
 #### Removing Compiled Services File
 
-If it exists, you may delete the `bootstrap/cache/compiled.php` file. It is no longer used by the framework.
+If it exists, you may delete the `bootstrap/cache/compiled.php` file. It is no longer used by the framework. 
+
+#### Update `bootstrap/autoload.php` File
+
+Now that we no longer have the `bootstrap/cache/compiled.php` file, the following snippet can be removed from `bootstrap/autoload.php`:
+
+    /*
+    |--------------------------------------------------------------------------
+    | Include The Compiled Class File
+    |--------------------------------------------------------------------------
+    |
+    | To dramatically increase your application's performance, you may use a
+    | compiled class file which contains all of the classes commonly used
+    | by a request. The Artisan "optimize" is used to create this file.
+    |
+    */
+
+    $compiledPath = __DIR__.'/cache/compiled.php';
+
+    if (file_exists($compiledPath)) {
+        require $compiledPath;
+    }
 
 #### Flushing The Cache
 
