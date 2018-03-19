@@ -430,7 +430,7 @@ As you can see, passing a `Closure` into the `where` method instructs the query 
 
     select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 
-It is recommended to always group `orWhere` calls this way in order to avoid unexpected behaviour when querying models with global scopes applied.
+> {tip} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
 
 <a name="where-exists-clauses"></a>
 ### Where Exists Clauses
