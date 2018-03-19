@@ -19,7 +19,7 @@ If it exists, you may delete the `bootstrap/cache/compiled.php` file. It is no l
 
 #### Update `bootstrap/autoload.php` File
 
-Now that we will no longer have the `bootstrap/cache/compiled.php` file, the following snippet of code is no longer needed and can be removed from `bootstrap/autoload.php`:
+Now that we no longer have the `bootstrap/cache/compiled.php` file, the following snippet can be removed from `bootstrap/autoload.php`:
 
     /*
     |--------------------------------------------------------------------------
