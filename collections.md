@@ -1605,7 +1605,7 @@ The `sortKeys` method sorts the collection by the keys of the underlying associa
 <a name="method-sortkeysdesc"></a>
 #### `sortKeysDesc()` {#collection-method}
 
-This method has the same signature as the [`sortKeys`](#method-sortkeys) method, but will sort the the collection in the opposite order.
+This method has the same signature as the [`sortKeys`](#method-sortkeys) method, but will sort the collection in the opposite order.
 
 <a name="method-splice"></a>
 #### `splice()` {#collection-method}
