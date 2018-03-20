@@ -51,6 +51,7 @@ First, add the Cashier package for Stripe to your dependencies:
 Before using Cashier, we'll also need to [prepare the database](/docs/{{version}}/migrations). We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
 
     Schema::table('users', function ($table) {
+    	$table->increments('id');
         $table->string('stripe_id')->nullable();
         $table->string('card_brand')->nullable();
         $table->string('card_last_four')->nullable();
@@ -59,7 +60,7 @@ Before using Cashier, we'll also need to [prepare the database](/docs/{{version}
 
     Schema::create('subscriptions', function ($table) {
         $table->increments('id');
-        $table->integer('user_id');
+        $table->integer('user_id')->unsigned();
         $table->string('name');
         $table->string('stripe_id');
         $table->string('stripe_plan');
@@ -67,6 +68,7 @@ Before using Cashier, we'll also need to [prepare the database](/docs/{{version}
         $table->timestamp('trial_ends_at')->nullable();
         $table->timestamp('ends_at')->nullable();
         $table->timestamps();
+        $table->foreign('user_id')->references('id')->on('users');
     });
 
 Once the migrations have been created, run the `migrate` Artisan command.
