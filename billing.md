@@ -59,7 +59,7 @@ Before using Cashier, we'll also need to [prepare the database](/docs/{{version}
 
     Schema::create('subscriptions', function ($table) {
         $table->increments('id');
-        $table->integer('user_id');
+        $table->unsignedInteger('user_id');
         $table->string('name');
         $table->string('stripe_id');
         $table->string('stripe_plan');
@@ -137,7 +137,7 @@ Before using Cashier, we'll need to [prepare the database](/docs/{{version}}/mig
 
     Schema::create('subscriptions', function ($table) {
         $table->increments('id');
-        $table->integer('user_id');
+        $table->unsignedInteger('user_id');
         $table->string('name');
         $table->string('braintree_id');
         $table->string('braintree_plan');
