@@ -348,6 +348,8 @@ If you would like to display plain, uncolored console output, use the `line` met
 
     $this->line('Display this on the screen');
 
+> {note} You may force ANSI color code output with the `--ansi` option or disable it with the `--no-ansi` option.
+
 #### Table Layouts
 
 The `table` method makes it easy to correctly format multiple rows / columns of data. Just pass in the headers and rows to the method. The width and height will be dynamically calculated based on the given data:
