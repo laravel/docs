@@ -59,7 +59,7 @@ Before using Cashier, we'll also need to [prepare the database](/docs/{{version}
 
     Schema::create('subscriptions', function ($table) {
         $table->increments('id');
-        $table->integer('user_id')->unsigned();
+        $table->unsignedInteger('user_id');
         $table->string('name');
         $table->string('stripe_id');
         $table->string('stripe_plan');
@@ -67,7 +67,6 @@ Before using Cashier, we'll also need to [prepare the database](/docs/{{version}
         $table->timestamp('trial_ends_at')->nullable();
         $table->timestamp('ends_at')->nullable();
         $table->timestamps();
-        $table->foreign('user_id')->references('id')->on('users');
     });
 
 Once the migrations have been created, run the `migrate` Artisan command.
