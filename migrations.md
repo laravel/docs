@@ -433,7 +433,7 @@ If you pass an array of columns into a method that drops indexes, the convention
 Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
 
     Schema::table('posts', function (Blueprint $table) {
-        $table->integer('user_id')->unsigned();
+        $table->unsignedInteger('user_id');
 
         $table->foreign('user_id')->references('id')->on('users');
     });
