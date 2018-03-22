@@ -98,7 +98,7 @@ To verify that an incoming request has a valid signature, you should call the `h
         }
 
         // ...
-    })->name('unsubscribe')
+    })->name('unsubscribe');
 
 Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` middleware to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
 
