@@ -92,13 +92,13 @@ To verify that an incoming request has a valid signature, you should call the `h
 
     use Illuminate\Http\Request;
 
-    Route::post('/unsubscribe/{user}', function (Request $request) {
+    Route::get('/unsubscribe/{user}', function (Request $request) {
         if (! $request->hasValidSignature()) {
             abort(401);
         }
 
         // ...
-    });
+    })->name('unsubscribe')
 
 Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` middleware to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
 
@@ -117,7 +117,7 @@ Once you have registered the middleware in your kernel, you may attach it to a r
 
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
-    })->middleware('signed');
+    })->name('unsubscribe')->middleware('signed');
 
 <a name="urls-for-controller-actions"></a>
 ## URLs For Controller Actions
