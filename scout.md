@@ -132,6 +132,8 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         }
     }
 
+> {tip} The default array will return only **visible** attributes. This can be perfect time to [review the hidden attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) of your Model to ensure the data is indexed the way you want to.
+
 <a name="configuring-the-model-id"></a>
 ### Configuring The Model ID
 
