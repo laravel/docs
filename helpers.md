@@ -841,6 +841,16 @@ The `str_is` function determines if a given string matches a given pattern. Aste
 
     // false
 
+You may also use it without asterisks to check two strings for case-sensitive equivalence:
+
+    $matches = str_is('foo', 'foo');
+
+    // true
+
+    $matches = str_is('baz', 'Baz');
+
+    // false
+
 <a name="method-str-limit"></a>
 #### `str_limit()` {#collection-method}
 
