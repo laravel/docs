@@ -210,7 +210,8 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
     {
         // The incoming request is valid...
 
-        $validatedData = $request->validated();
+        // Retrieve the validated input data...
+        $validated = $request->validated();
     }
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
