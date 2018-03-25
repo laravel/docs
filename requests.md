@@ -149,6 +149,10 @@ You may also retrieve all of the input data as an `array` using the `all` method
 
     $input = $request->all();
 
+When handling a [form request](/docs/{{version}}/validation#form-request-validation), you may retrieve only validated data as an `array` using the `validated` method:
+
+    $input = $request->validated();
+
 #### Retrieving An Input Value
 
 Using a few simple methods, you may access all of the user input from your `Illuminate\Http\Request` instance without worrying about which HTTP verb was used for the request. Regardless of the HTTP verb, the `input` method may be used to retrieve user input:
