@@ -493,16 +493,16 @@ You may push to a stack as many times as needed. To render the complete stack co
         @stack('scripts')
     </head>
 
-Using push will sometimes lead to an unexpected order of items in the stack. If you, for instance, push two scripts into a `scripts` stack, you may not expect the order that they are rendered in. To put an item in the beginning of a stack, you can use the `@prepend` directive:
+If you would like to prepend content onto the beginning of a stack, you should use the `@prepend` directive:
 
     @push('scripts')
-        this will be second
+        This will be second...
     @endpush
 
-    ...and then later
+    // Later...
 
     @prepend('scripts')
-        this will be first
+        This will be first...
     @endprepend
 
 <a name="service-injection"></a>
