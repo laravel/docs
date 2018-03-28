@@ -14,6 +14,8 @@
     - [Other Authentication Methods](#other-authentication-methods)
 - [HTTP Basic Authentication](#http-basic-authentication)
     - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
+- [Logging Out](#logging-out)
+    - [Invalidating Sessions On Other Devices](#invalidating-sessions-on-other-devices)
 - [Social Authentication](https://github.com/laravel/socialite)
 - [Adding Custom Guards](#adding-custom-guards)
 - [Adding Custom User Providers](#adding-custom-user-providers)
@@ -367,6 +369,32 @@ Next, [register the route middleware](/docs/{{version}}/middleware#registering-m
     Route::get('api/user', function () {
         // Only authenticated users may enter...
     })->middleware('auth.basic.once');
+
+<a name="logging-out"></a>
+## Logging Out
+
+To manually log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session:
+
+    use Illuminate\Support\Facades\Auth;
+
+    Auth::logout();
+
+<a name="invalidating-sessions-on-other-devices"></a>
+### Invalidating Sessions On Other Devices
+
+Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is present and un-commented in your `app/Http/Kernel.php` class' `web` middleware group:
+
+    'web' => [
+        // ...
+        \Illuminate\Session\Middleware\AuthenticateSession::class,
+        // ...
+    ],
+
+Then, you may use the `logoutOtherDevices` method on the `Auth` facade. This method requires the user to provide their current password, which your application should accept through an input form:
+
+    use Illuminate\Support\Facades\Auth;
+
+    Auth::logoutOtherDevices($password);
 
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards
