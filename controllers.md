@@ -185,13 +185,13 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 
 When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
 
-    Route::resource('photos', 'PhotoController', ['only' => [
+    Route::resource('photos', 'PhotoController')->only([
         'index', 'show'
-    ]]);
+    ]);
 
-    Route::resource('photos', 'PhotoController', ['except' => [
+    Route::resource('photos', 'PhotoController')->except([
         'create', 'store', 'update', 'destroy'
-    ]]);
+    ]);
 
 #### API Resource Routes
 
