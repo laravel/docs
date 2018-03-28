@@ -185,13 +185,13 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 
 When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
 
-    Route::resource('photos', 'PhotoController', ['only' => [
+    Route::resource('photos', 'PhotoController')->only([
         'index', 'show'
-    ]]);
+    ]);
 
-    Route::resource('photos', 'PhotoController', ['except' => [
+    Route::resource('photos', 'PhotoController')->except([
         'create', 'store', 'update', 'destroy'
-    ]]);
+    ]);
 
 #### API Resource Routes
 
@@ -215,18 +215,18 @@ To quickly generate an API resource controller that does not include the `create
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
-    Route::resource('photos', 'PhotoController', ['names' => [
+    Route::resource('photos', 'PhotoController')->names([
         'create' => 'photos.build'
-    ]]);
+    ]);
 
 <a name="restful-naming-resource-route-parameters"></a>
 ### Naming Resource Route Parameters
 
 By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. The `parameters` array should be an associative array of resource names and parameter names:
 
-    Route::resource('user', 'AdminUserController', ['parameters' => [
+    Route::resource('user', 'AdminUserController')->parameters([
         'user' => 'admin_user'
-    ]]);
+    ]);
 
  The example above generates the following URIs for the resource's `show` route:
 
