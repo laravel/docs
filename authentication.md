@@ -396,7 +396,7 @@ Then, you may use the `logoutOtherDevices` method on the `Auth` facade. This met
 
     Auth::logoutOtherDevices($password);
 
-> {note} When the `logoutOtherDevices` method is invoked, the user's other sessions will be entirely invalidated, meaning they will be "logged out" of all guards they were previously authenticated by.
+> {note} When the `logoutOtherDevices` method is invoked, the user's other sessions will be invalidated entirely, meaning they will be "logged out" of all guards they were previously authenticated by.
 
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards
