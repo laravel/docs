@@ -485,6 +485,7 @@ Below is a list of all available validation rules and their function:
 [Alpha Dash](#rule-alpha-dash)
 [Alpha Numeric](#rule-alpha-num)
 [Array](#rule-array)
+[Bail](#rule-bail)
 [Before (Date)](#rule-before)
 [Before Or Equal (Date)](#rule-before-or-equal)
 [Between](#rule-between)
@@ -579,6 +580,11 @@ The field under validation must be entirely alpha-numeric characters.
 #### array
 
 The field under validation must be a PHP `array`.
+
+<a name="rule-bail"></a>
+#### bail
+
+Stop running validation rules after the first validation failure.
 
 <a name="rule-before"></a>
 #### before:_date_
