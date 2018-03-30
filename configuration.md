@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Environment Configuration](#environment-configuration)
-    - [Special Environment Variables](#special-environment-variables)
+    - [Environment Variable Types](#environment-variable-types)
     - [Retrieving Environment Configuration](#retrieving-environment-configuration)
     - [Determining The Current Environment](#determining-the-current-environment)
 - [Accessing Configuration Values](#accessing-configuration-values)
@@ -27,10 +27,10 @@ If you are developing with a team, you may wish to continue including a `.env.ex
 
 > {tip} Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
 
-<a name="special-environment-variables"></a>
-### Special Environment Variables
+<a name="environment-variable-types"></a>
+### Environment Variable Types
 
-All variables in your `.env` files are passed as strings, so some special values have been created to allow you to return a wide range of desired values from the `env()` function.
+All variables in your `.env` files are parsed as strings, so some reserved values have been created to allow you to return a wider range of types from the `env()` function:
 
 `.env` Value  | `env()` Value
 ------------- | -------------
@@ -43,13 +43,9 @@ empty | (string) ''
 null | (null) null
 (null) | (null) null
 
-If you need to define an environment variable with multiple words, you can do so by enclosing it in double quotes.
+If you need to define an environment variable with a value that contains spaces, you may do so by enclosing the value in double quotes.
 
-```env
-APP_NAME="My Cool Application"
-```
-
-When you request this key with the `env()` function, the double quotes will be automatically removed. 
+    APP_NAME="My Application"
 
 <a name="retrieving-environment-configuration"></a>
 ### Retrieving Environment Configuration
