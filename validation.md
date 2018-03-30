@@ -1072,7 +1072,7 @@ Once the rule has been defined, you may attach it to a validator by passing an i
     use App\Rules\Uppercase;
 
     $request->validate([
-        'name' => ['required', 'string', new Uppercase, 'max:255'],
+        'name' => ['required', 'string', new Uppercase],
     ]);
 
 <a name="using-closures"></a>
