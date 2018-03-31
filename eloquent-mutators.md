@@ -83,6 +83,8 @@ To define a mutator, define a `setFooAttribute` method on your model where `Foo`
         public function setFirstNameAttribute($value)
         {
             $this->attributes['first_name'] = strtolower($value);
+            
+            return $this;
         }
     }
 
