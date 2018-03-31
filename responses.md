@@ -252,6 +252,14 @@ The `file` method may be used to display a file, such as an image or PDF, direct
     return response()->file($pathToFile, $headers);
 
 <a name="response-macros"></a>
+
+### Empty Responses
+Sometimes you may wish to return an empty response when you successfully fulfilled the request and that there is no additional content to return. You can do that using the `noContent` method:
+
+	return response()->noContent();
+
+This method accepts the HTTP status code as an argument but it defaults to 204.
+
 ## Response Macros
 
 If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `macro` method on the `Response` facade. For example, from a [service provider's](/docs/{{version}}/providers) `boot` method:
