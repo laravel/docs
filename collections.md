@@ -1377,7 +1377,7 @@ You may optionally pass an integer to `random` to specify how many items you wou
 
     // [2, 4, 5] - (retrieved randomly)
 
-However, if the Collection has fewer items than you requested, the method will fail with `InvalidArgumentException`.
+If the Collection has fewer items than requested, the method will throw an `InvalidArgumentException`.
 
 <a name="method-reduce"></a>
 #### `reduce()` {#collection-method}
