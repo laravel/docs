@@ -424,11 +424,9 @@ In this example, the `secret` key will only be returned in the final resource re
 
 The `when` method also accepts a Closure as its second argument, allowing you to calculate the resulting value only if the given condition is `true`:
 
-    'secret' => $this->when($this->isAdmin(), function () {
+    'secret' => $this->when(Auth::user()->isAdmin(), function () {
         return 'secret-value';
     }),
-
-> {tip} Remember, method calls on resources proxy down to the underlying model instance. So, in this case, the `isAdmin` method is proxying to the underlying Eloquent model that was originally given to the resource.
 
 #### Merging Conditional Attributes
 
@@ -446,7 +444,7 @@ Sometimes you may have several attributes that should only be included in the re
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            $this->mergeWhen($this->isAdmin(), [
+            $this->mergeWhen(Auth::user()->isAdmin(), [
                 'first-secret' => 'value',
                 'second-secret' => 'value',
             ]),
