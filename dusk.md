@@ -481,9 +481,9 @@ When making a path assertion such as `$browser->assertPathIs('/home')`, the asse
 
     $browser->waitForLocation('/secret');
 
-You may also wait for a route:
+You may also wait for a named route's location:
 
-    $browser->waitForRoute($name, $parameters);
+    $browser->waitForRoute($routeName, $parameters);
 
 #### Waiting for Page Reloads
 
