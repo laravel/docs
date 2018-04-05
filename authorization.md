@@ -4,7 +4,7 @@
 - [Gates](#gates)
     - [Writing Gates](#writing-gates)
     - [Authorizing Actions](#authorizing-actions-via-gates)
-    - [Intercepting All Checks](#intercepting-all-checks)
+    - [Intercepting Gate Checks](#intercepting-gate-checks)
 - [Creating Policies](#creating-policies)
     - [Generating Policies](#generating-policies)
     - [Registering Policies](#registering-policies)
@@ -106,10 +106,10 @@ If you would like to determine if a particular user is authorized to perform an 
         // The user can't update the post...
     }
 
-<a name="intercepting-all-checks"></a>
-#### Intercepting All Checks
+<a name="intercepting-gate-checks"></a>
+#### Intercepting Gate Checks
 
-Sometimes, you may wish to grant all abilities to a specific user. For this situation, use the `before` method to define a callback that is run before all other authorization checks:
+Sometimes, you may wish to grant all abilities to a specific user. You may use the `before` method to define a callback that is run before all other authorization checks:
 
     Gate::before(function ($user, $ability) {
         if ($user->isSuperAdmin()) {
