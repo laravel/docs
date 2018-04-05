@@ -70,7 +70,7 @@ You may also define multiple Gate abilities at once using the `resource` method:
 
 This is identical to manually defining the following Gate definitions:
 
-    Gate::define('posts.view', 'PostPolicy@view');
+    Gate::define('posts.show', 'PostPolicy@show');
     Gate::define('posts.create', 'PostPolicy@create');
     Gate::define('posts.update', 'PostPolicy@update');
     Gate::define('posts.delete', 'PostPolicy@delete');
