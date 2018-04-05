@@ -111,7 +111,7 @@ If you would like to determine if a particular user is authorized to perform an 
 
 Sometimes, you may wish to grant all abilities to a specific user. For this situation, use the `before` method to define a callback that is run before all other authorization checks:
 
-    $gate->before(function ($user, $ability) {
+    Gate::before(function ($user, $ability) {
         if ($user->isSuperAdmin()) {
             return true;
         }
@@ -121,7 +121,7 @@ If the `before` callback returns a non-null result that result will be considere
 
 You may use the `after` method to define a callback to be executed after every authorization check. However, you may not modify the result of the authorization check from an `after` callback:
 
-    $gate->after(function ($user, $ability, $result, $arguments) {
+    Gate::after(function ($user, $ability, $result, $arguments) {
         //
     });
 
