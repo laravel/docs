@@ -4,6 +4,7 @@
 - [Gates](#gates)
     - [Writing Gates](#writing-gates)
     - [Authorizing Actions](#authorizing-actions-via-gates)
+    - [Intercepting All Checks](#intercepting-all-checks)
 - [Creating Policies](#creating-policies)
     - [Generating Policies](#generating-policies)
     - [Registering Policies](#registering-policies)
@@ -104,6 +105,25 @@ If you would like to determine if a particular user is authorized to perform an 
     if (Gate::forUser($user)->denies('update-post', $post)) {
         // The user can't update the post...
     }
+
+<a name="intercepting-all-checks"></a>
+#### Intercepting All Checks
+
+Sometimes, you may wish to grant all abilities to a specific user. For this situation, use the `before` method to define a callback that is run before all other authorization checks:
+
+    $gate->before(function ($user, $ability) {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    });
+
+If the `before` callback returns a non-null result that result will be considered the result of the check.
+
+You may use the `after` method to define a callback to be executed after every authorization check. However, you may not modify the result of the authorization check from an `after` callback:
+
+    $gate->after(function ($user, $ability, $result, $arguments) {
+        //
+    });
 
 <a name="creating-policies"></a>
 ## Creating Policies
