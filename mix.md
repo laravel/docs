@@ -37,10 +37,11 @@ If you've ever been confused and overwhelmed about getting started with Webpack 
 
 #### Installing Node
 
-Before triggering Mix, you must first ensure that Node.js and NPM are installed on your machine.
+Before triggering Mix, you must first ensure that Node.js, NPM, and Yarn are installed on your machine.
 
     node -v
     npm -v
+    yarn -v
 
 By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install the latest version of Node and NPM using simple graphical installers from [their download page](https://nodejs.org/en/download/).
 
