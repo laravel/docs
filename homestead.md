@@ -88,7 +88,9 @@ If this command fails, make sure your Vagrant installation is up to date.
 
 #### Installing Homestead
 
-You may install Homestead by cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel projects:
+You may install Homestead by either cloning the repository or downloading and unpacking a release archive from GitHub. The former allows smoother updates. Consider using a `Homestead` folder within your "home" directory to host Homestead, as the Homestead box will serve as the host to all of your Laravel projects:
+
+If cloning the repository, follow these steps: 
 
     git clone https://github.com/laravel/homestead.git ~/Homestead
 
@@ -99,7 +101,16 @@ You should check out a tagged version of Homestead since the `master` branch may
     // Clone the desired release...
     git checkout v7.3.0
 
-Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
+If downloading an archive, follow these steps:
+
+    cd ~
+    wget https://github.com/laravel/homestead/archive/v7.3.0.zip # see above for finding the latest version
+    # or download from GitHub in your browser
+    unzip homestead-7.3.0.zip
+    mv homestead-7.3.0 Homestead
+    cd Homestead
+
+Once you have the Homestead code, by either method, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
     // Mac / Linux...
     bash init.sh
