@@ -21,7 +21,7 @@
     - [Sharing Your Environment](#sharing-your-environment)
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
-    - [Local Mail](#local-mail)
+    - [Mail](#mail)
 - [Network Interfaces](#network-interfaces)
 - [Updating Homestead](#updating-homestead)
 - [Provider Specific Settings](#provider-specific-settings)
@@ -434,10 +434,10 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 
     flip
 
-<a name="local-mail"></a>
-### Local mail
+<a name="mail"></a>
+### Mail
 
-Homestead includes the Postfix mail transfer agent listening on port `1025` by default. This allows you to specify your application to use STMP on `localhost` port `1025` and any mail sent will be handled by Postfix and caught by Mailhog. To view the email, open [http://localhost:8025](http://localhost:8025).
+Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
