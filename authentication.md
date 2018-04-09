@@ -218,7 +218,8 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
     <?php
 
     namespace App\Http\Controllers;
-
+    
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
 
     class LoginController extends Controller
@@ -226,11 +227,15 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
         /**
          * Handle an authentication attempt.
          *
+         * @param  \Illuminate\Http\Request $request
+         *
          * @return Response
          */
-        public function authenticate()
+        public function authenticate(Request $request)
         {
-            if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $credentials = $request->only('email', 'password');
+            
+            if (Auth::attempt($credentials)) {
                 // Authentication passed...
                 return redirect()->intended('dashboard');
             }
