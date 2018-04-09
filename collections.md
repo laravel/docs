@@ -389,7 +389,7 @@ If you do not want to stop executing the script, use the [`dump`](#method-dump) 
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
 
-The `diff` method compares the collection against another collection or a plain PHP `array` based on its values. This method will return the values in the original collection that are not present in the given collection:
+The `diff` method compares the collection against another collection or a plain PHP `array` based on its values. Multi-dimensional arrays (elements containing other arrays) are not supported. This method will return the values in the original collection that are not present in the given collection:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -402,7 +402,7 @@ The `diff` method compares the collection against another collection or a plain 
 <a name="method-diffassoc"></a>
 #### `diffAssoc()` {#collection-method}
 
-The `diffAssoc` method compares the collection against another collection or a plain PHP `array` based on its keys and values. This method will return the key / value pairs in the original collection that are not present in the given collection:
+The `diffAssoc` method compares the collection against another collection or a plain PHP `array` based on its keys and values. Multi-dimensional arrays (elements containing other arrays) are not supported. This method will return the key / value pairs in the original collection that are not present in the given collection:
 
     $collection = collect([
         'color' => 'orange',
