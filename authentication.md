@@ -230,7 +230,9 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
          */
         public function authenticate()
         {
-            if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $credentials = request()->only('email', 'password');
+            
+            if (Auth::attempt($credentials)) {
                 // Authentication passed...
                 return redirect()->intended('dashboard');
             }
