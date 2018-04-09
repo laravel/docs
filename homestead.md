@@ -21,6 +21,7 @@
     - [Sharing Your Environment](#sharing-your-environment)
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
+    - [Local Mail](#local-mail)
 - [Network Interfaces](#network-interfaces)
 - [Updating Homestead](#updating-homestead)
 - [Provider Specific Settings](#provider-specific-settings)
@@ -62,6 +63,8 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Elasticsearch (Optional)
 - ngrok
 - wp-cli
+- Zend Z-Ray
+- Go
 </div>
 
 <a name="installation-and-setup"></a>
