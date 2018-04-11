@@ -1107,10 +1107,10 @@ As shown above, a "date picker" is an example of a component that might exist th
          *
          * @param  \Laravel\Dusk\Browser  $browser
          * @param  int  $month
-         * @param  int  $year
+         * @param  int  $day
          * @return void
          */
-        public function selectDate($browser, $month, $year)
+        public function selectDate($browser, $month, $day)
         {
             $browser->click('@date-field')
                     ->within('@month-list', function ($browser) use ($month) {
@@ -1148,7 +1148,7 @@ Once the component has been defined, we can easily select a date within the date
             $this->browse(function (Browser $browser) {
                 $browser->visit('/')
                         ->within(new DatePicker, function ($browser) {
-                            $browser->selectDate(1, 2018);
+                            $browser->selectDate(1, 31);
                         })
                         ->assertSee('January');
             });
