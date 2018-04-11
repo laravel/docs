@@ -578,6 +578,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertQueryStringHas](#assert-query-string-has)
 [assertQueryStringHas](#assert-query-string-has)
 [assertQueryStringMissing](#assert-query-string-missing)
+[assertFragmentIs](#assert-fragment-is)
+[assertFragmentBeginsWith](#assert-fragment-begins-with)
+[assertFragmentIsNot](#assert-fragment-is-not)
 [assertHasCookie](#assert-has-cookie)
 [assertCookieMissing](#assert-cookie-missing)
 [assertCookieValue](#assert-cookie-value)
@@ -678,6 +681,27 @@ Assert the given query string parameter is present and has a given value:
 Assert the given query string parameter is missing:
 
     $browser->assertQueryStringMissing($name);
+    
+<a name="assert-fragment-is"></a>
+#### assertFragmentIs
+
+Assert the current fragment matches the given fragment:
+
+    $browser->assertFragmentIs('anchor');
+    
+<a name="assert-fragment-begins-with"></a>
+#### assertFragmentBeginsWith
+
+Assert that the current fragment begins with given fragment:
+
+    $browser->assertFragmentBeginsWith('anchor');
+    
+<a name="assert-fragment-is-not"></a>
+#### assertFragmentIsNot
+
+Assert the current fragment does not match the given fragment:
+
+    $browser->assertFragmentIsNot('anchor');
 
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
