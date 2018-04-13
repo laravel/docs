@@ -60,7 +60,7 @@ You may use the `withHeaders` method to customize the request's headers before i
             ])->json('POST', '/user', ['name' => 'Sally']);
 
             $response
-                ->assertStatus(200)
+                ->assertStatus(201)
                 ->assertJson([
                     'created' => true,
                 ]);
