@@ -403,7 +403,7 @@ You may also manually register commands by adding its class name to the `$comman
 <a name="programmatically-executing-commands"></a>
 ## Programmatically Executing Commands
 
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts the name of the command as the first argument, and an array of command parameters as the second argument. The exit code will be returned:
+Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts either the command's name or class as the first argument, and an array of command parameters as the second argument. The exit code will be returned:
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
