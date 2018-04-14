@@ -674,8 +674,6 @@ Assert the given query string parameter is present:
 
     $browser->assertQueryStringHas($name);
 
-#### assertQueryStringHas
-
 Assert the given query string parameter is present and has a given value:
 
     $browser->assertQueryStringHas($name, $value);
