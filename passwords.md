@@ -95,3 +95,13 @@ You may easily modify the notification class used to send the password reset lin
         $this->notify(new ResetPasswordNotification($token));
     }
 
+If you want to localize the default notification you can simply add your translation strings to a [JSON file](/docs/{{version}}/localization#using-translation-strings-as-keys). A German localization would go into `resources/lang/de.json` and could look like this:
+
+    {
+        "Hello!": "Hallo!",
+        "Regards": "Grüße",
+        "If you’re having trouble clicking the \":actionText\" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)": "Wenn du Probleme mit dem \":actionText\"-Button hast kopiere einfach diese Adresse in deinen Browser: [:actionURL](:actionURL)",
+        "You are receiving this email because we received a password reset request for your account.": "Du erhälst diese E-Mail weil bei uns eine Anfrage für die Rücksetzung deines Passworts eingegangen ist.",
+        "Reset Password": "Passwort zurücksetzen",
+        "If you did not request a password reset, no further action is required.": "Sollte die Anfrage nicht von dir stammen kannst du diese Mail ignorieren.",
+    }
