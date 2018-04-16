@@ -112,6 +112,36 @@ You may stop further chunks from being processed by returning `false` from the `
         return false;
     });
 
+#### Chunking By Id
+
+If within the `Closure` you plan to make changes in a column that you have also included in the query, it is possible that these changes produce unexpected results:
+
+    DB::table('users')->where('approved', 0)->chunk(100, function($users) {
+        foreach ($users as $user) {
+            DB::table('users')
+                ->where('id', $user->id)
+                ->update(['approved' => 1]);
+        }
+    });
+
+In the example above, you are filtering non approved users and then approving them. For this reason, when the query is executed again to get the next chunk, the data is already changed, so you will miss a chunk of data, losing the half of records at the end of the entire process.
+
+In these cases, you could use the `chunkById` method. This method chunks the results of a query by comparing the *id* column of the table:
+
+    DB::table('users')->where('approved', 0)->chunkById(100, function($users) {
+        foreach ($users as $user) {
+            DB::table('users')
+                ->where('id', $user->id)
+                ->update(['approved' => 1]);
+        }
+    });
+
+Of course, you can customize the name of the comparison column as a third parameter:
+
+    DB::table('users')->where('approved', 0)->chunkById(100, function($users) {
+        //
+    }, 'id_user');
+
 <a name="aggregates"></a>
 ### Aggregates
 
