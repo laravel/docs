@@ -106,6 +106,17 @@ Of course if you are using the [Blade templating engine](/docs/{{version}}/blade
 
 If the specified translation string does not exist, the `__` function will return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist.
 
+### Get the translation in controller
+
+To get the translation in controller you need import Lang:
+
+    //Import Lang previously;
+    use Lang;
+
+Call to the get method with the translation key:
+
+    Lang::get('messages.welcome');
+
 <a name="replacing-parameters-in-translation-strings"></a>
 ### Replacing Parameters In Translation Strings
 
