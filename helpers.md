@@ -1389,6 +1389,10 @@ The `optional` function accepts any argument and allows you to access properties
 
     {!! old('name', optional($user)->name) !!}
 
+    return optional(User::find($id), function ($user) {
+        return App\Post::findUser($user->id);
+    });
+
 <a name="method-policy"></a>
 #### `policy()` {#collection-method}
 
