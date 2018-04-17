@@ -576,8 +576,10 @@ Dusk provides a variety of assertions that you may make against your application
 [assertPathIsNot](#assert-path-is-not)
 [assertRouteIs](#assert-route-is)
 [assertQueryStringHas](#assert-query-string-has)
-[assertQueryStringHas](#assert-query-string-has)
 [assertQueryStringMissing](#assert-query-string-missing)
+[assertFragmentIs](#assert-fragment-is)
+[assertFragmentBeginsWith](#assert-fragment-begins-with)
+[assertFragmentIsNot](#assert-fragment-is-not)
 [assertHasCookie](#assert-has-cookie)
 [assertCookieMissing](#assert-cookie-missing)
 [assertCookieValue](#assert-cookie-value)
@@ -603,10 +605,17 @@ Dusk provides a variety of assertions that you may make against your application
 [assertSelectHasOption](#assert-select-has-option)
 [assertValue](#assert-value)
 [assertVisible](#assert-visible)
+[assertPresent](#assert-present)
 [assertMissing](#assert-missing)
 [assertDialogOpened](#assert-dialog-opened)
+[assertEnabled](#assert-enabled)
+[assertDisabled](#assert-disabled)
+[assertFocused](#assert-focused)
+[assertNotFocused](#assert-not-focused)
 [assertVue](#assert-vue)
 [assertVueIsNot](#assert-vue-is-not)
+[assertVueContains](#assert-vue-contains)
+[assertVueDoesNotContain](#assert-vue-does-not-contain)
 </div>
 
 <a name="assert-title"></a>
@@ -665,9 +674,6 @@ Assert the given query string parameter is present:
 
     $browser->assertQueryStringHas($name);
 
-<a name="assert-query-string-has"></a>
-#### assertQueryStringHas
-
 Assert the given query string parameter is present and has a given value:
 
     $browser->assertQueryStringHas($name, $value);
@@ -678,6 +684,27 @@ Assert the given query string parameter is present and has a given value:
 Assert the given query string parameter is missing:
 
     $browser->assertQueryStringMissing($name);
+    
+<a name="assert-fragment-is"></a>
+#### assertFragmentIs
+
+Assert the current fragment matches the given fragment:
+
+    $browser->assertFragmentIs('anchor');
+    
+<a name="assert-fragment-begins-with"></a>
+#### assertFragmentBeginsWith
+
+Assert that the current fragment begins with given fragment:
+
+    $browser->assertFragmentBeginsWith('anchor');
+    
+<a name="assert-fragment-is-not"></a>
+#### assertFragmentIsNot
+
+Assert the current fragment does not match the given fragment:
+
+    $browser->assertFragmentIsNot('anchor');
 
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
@@ -854,6 +881,13 @@ Assert the element matching the given selector is visible:
 
     $browser->assertVisible($selector);
 
+<a name="assert-present"></a>
+#### assertPresent
+
+Assert the element matching the given selector is present:
+
+    $browser->assertPresent($selector);
+
 <a name="assert-missing"></a>
 #### assertMissing
 
@@ -868,6 +902,34 @@ Assert that a JavaScript dialog with given message has been opened:
 
     $browser->assertDialogOpened($message);
 
+<a name="assert-enabled"></a>
+#### assertEnabled
+
+Assert that the given field is enabled:
+
+    $browser->assertEnabled($field);
+
+<a name="assert-disabled"></a>
+#### assertDisabled
+
+Assert that the given field is disabled:
+
+    $browser->assertDisabled($field);
+
+<a name="assert-focused"></a>
+#### assertFocused
+
+Assert that the given field is focused:
+
+    $browser->assertFocused($field);
+
+<a name="assert-not-focused"></a>
+#### assertNotFocused
+
+Assert that the given field is not focused:
+
+    $browser->assertNotFocused($field);
+
 <a name="assert-vue"></a>
 #### assertVue
 
@@ -881,6 +943,20 @@ Assert that a given Vue component data property matches the given value:
 Assert that a given Vue component data property does not match the given value:
 
     $browser->assertVueIsNot($property, $value, $componentSelector = null);
+
+<a name="assert-vue-contains"></a>
+#### assertVueContains
+
+Assert that a given Vue component data property is an array and contains the given value:
+
+    $browser->assertVueContains($property, $value, $componentSelector = null);
+
+<a name="assert-vue-does-not-contain"></a>
+#### assertVueDoesNotContain
+
+Assert that a given Vue component data property is an array and does not contain the given value:
+
+    $browser->assertVueDoesNotContain($property, $value, $componentSelector = null);
 
 <a name="pages"></a>
 ## Pages

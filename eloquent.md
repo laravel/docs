@@ -36,13 +36,13 @@ To get started, let's create an Eloquent model. Models typically live in the `ap
 
 The easiest way to create a model instance is using the `make:model` [Artisan command](/docs/{{version}}/artisan):
 
-    php artisan make:model User
+    php artisan make:model Flight
 
 If you would like to generate a [database migration](/docs/{{version}}/migrations) when you generate the model, you may use the `--migration` or `-m` option:
 
-    php artisan make:model User --migration
+    php artisan make:model Flight --migration
 
-    php artisan make:model User -m
+    php artisan make:model Flight -m
 
 <a name="eloquent-model-conventions"></a>
 ### Eloquent Model Conventions
@@ -627,7 +627,7 @@ Eloquent also allows you to define global scopes using Closures, which is partic
 If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method. The method accepts the class name of the global scope as its only argument:
 
     User::withoutGlobalScope(AgeScope::class)->get();
-    
+
 Or, if you defined the global scope using a Closure:
 
     User::withoutGlobalScope('age')->get();
