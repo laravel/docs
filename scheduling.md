@@ -90,7 +90,7 @@ The `job` method may be used to schedule a [queued job](/docs/{{version}}/queues
 
 The `exec` method may be used to issue a command to the operating system:
 
-    $schedule->exec('node /home/forge/script.js')->daily();
+    $schedule->exec('node /home/forge/script.sh')->daily();
 
 <a name="schedule-frequency-options"></a>
 ### Schedule Frequency Options
