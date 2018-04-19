@@ -21,7 +21,7 @@ When building an API, you may need a transformation layer that sits between your
 
 To generate a resource class, you may use the `make:resource` Artisan command. By default, resources will be placed in the `app/Http/Resources` directory of your application. Resources extend the `Illuminate\Http\Resources\Json\JsonResource` class:
 
-    php artisan make:resource UserResource
+    php artisan make:resource User
 
 #### Resource Collections
 
@@ -38,7 +38,7 @@ To create a resource collection, you should use the `--collection` flag when cre
 
 > {tip} This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources.
 
-Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` class:
+Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `User` resource class:
 
     <?php
 
@@ -46,7 +46,7 @@ Before diving into all of the options available to you when writing resources, l
 
     use Illuminate\Http\Resources\Json\JsonResource;
 
-    class UserResource extends JsonResource
+    class User extends JsonResource
     {
         /**
          * Transform the resource into an array.
@@ -69,7 +69,7 @@ Before diving into all of the options available to you when writing resources, l
 Every resource class defines a `toArray` method which returns the array of attributes that should be converted to JSON when sending the response. Notice that we can access model properties directly from the `$this` variable. This is because a resource class will automatically proxy property and method access down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller:
 
     use App\User;
-    use App\Http\Resources\UserResource;
+    use App\Http\Resources\User as UserResource;
 
     Route::get('/user', function () {
         return new UserResource(User::find(1));
@@ -80,7 +80,7 @@ Every resource class defines a `toArray` method which returns the array of attri
 If you are returning a collection of resources or a paginated response, you may use the `collection` method when creating the resource instance in your route or controller:
 
     use App\User;
-    use App\Http\Resources\UserResource;
+    use App\Http\Resources\User as UserResource;
 
     Route::get('/user', function () {
         return UserResource::collection(User::all());
@@ -139,7 +139,7 @@ In essence, resources are simple. They only need to transform a given model into
 
     use Illuminate\Http\Resources\Json\JsonResource;
 
-    class UserResource extends JsonResource
+    class User extends JsonResource
     {
         /**
          * Transform the resource into an array.
@@ -162,7 +162,7 @@ In essence, resources are simple. They only need to transform a given model into
 Once a resource has been defined, it may be returned directly from a route or controller:
 
     use App\User;
-    use App\Http\Resources\UserResource;
+    use App\Http\Resources\User as UserResource;
 
     Route::get('/user', function () {
         return new UserResource(User::find(1));
@@ -197,7 +197,7 @@ If you would like to include related resources in your response, you may add the
 While resources translate a single model into an array, resource collections translate a collection of models into an array. It is not absolutely necessary to define a resource collection class for each one of your model types since all resources provide a `collection` method to generate an "ad-hoc" resource collection on the fly:
 
     use App\User;
-    use App\Http\Resources\UserResource;
+    use App\Http\Resources\User as UserResource;
 
     Route::get('/user', function () {
         return UserResource::collection(User::all());
@@ -582,7 +582,7 @@ You may also add top-level data when constructing resource instances in your rou
 As you have already read, resources may be returned directly from routes and controllers:
 
     use App\User;
-    use App\Http\Resources\UserResource;
+    use App\Http\Resources\User as UserResource;
 
     Route::get('/user', function () {
         return new UserResource(User::find(1));
@@ -591,7 +591,7 @@ As you have already read, resources may be returned directly from routes and con
 However, sometimes you may need to customize the outgoing HTTP response before it is sent to the client. There are two ways to accomplish this. First, you may chain the `response` method onto the resource. This method will return an `Illuminate\Http\Response` instance, allowing you full control of the response's headers:
 
     use App\User;
-    use App\Http\Resources\UserResource;
+    use App\Http\Resources\User as UserResource;
 
     Route::get('/user', function () {
         return (new UserResource(User::find(1)))
@@ -607,7 +607,7 @@ Alternatively, you may define a `withResponse` method within the resource itself
 
     use Illuminate\Http\Resources\Json\JsonResource;
 
-    class UserResource extends JsonResource
+    class User extends JsonResource
     {
         /**
          * Transform the resource into an array.
