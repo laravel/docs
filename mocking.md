@@ -86,6 +86,8 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
             Event::assertNotDispatched(OrderFailedToShip::class);
         }
     }
+    
+> {note} If you are using model factories and rely on model events, for example creating a UUID during a `creating` event, make sure you call `Event::fake()` **after** your model factories.
 
 <a name="mail-fake"></a>
 ## Mail Fake
