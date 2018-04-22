@@ -15,25 +15,25 @@ Laravel 5.6 requires PHP 7.1.3 or higher.
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.6.*` and your `fideloper/proxy` dependency to `~4.0` in your `composer.json` file.
+Update your `laravel/framework` dependency to `5.6.*` and your `fideloper/proxy` dependency to `^4.0` in your `composer.json` file.
 
 In addition, if you are using the following first-party Laravel packages, you should upgrade them to their latest release:
 
 <div class="content-list" markdown="1">
-- Dusk (Upgrade To `~3.0`)
-- Passport (Upgrade To `~5.0`)
-- Scout (Upgrade To `~4.0`)
+- Dusk (Upgrade To `^3.0`)
+- Passport (Upgrade To `^5.0`)
+- Scout (Upgrade To `^4.0`)
 </div>
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.6 support.
 
 #### Symfony 4
 
-All of the underlying Symfony components used by Laravel have been upgraded to the Symfony `~4.0` release series. If you are directly interacting with Symfony components within your application, you should review the [Symfony change log](https://github.com/symfony/symfony/blob/master/UPGRADE-4.0.md).
+All of the underlying Symfony components used by Laravel have been upgraded to the Symfony `^4.0` release series. If you are directly interacting with Symfony components within your application, you should review the [Symfony change log](https://github.com/symfony/symfony/blob/master/UPGRADE-4.0.md).
 
 #### PHPUnit
 
-You should update the `phpunit/phpunit` dependency of your application to `~7.0`.
+You should update the `phpunit/phpunit` dependency of your application to `^7.0`.
 
 ### Arrays
 
