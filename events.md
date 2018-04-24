@@ -92,7 +92,7 @@ An event class is a data container which holds the information related to the ev
         /**
          * Create a new event instance.
          *
-         * @param  Order  $order
+         * @param  \App\Order  $order
          * @return void
          */
         public function __construct(Order $order)
@@ -129,7 +129,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         /**
          * Handle the event.
          *
-         * @param  OrderShipped  $event
+         * @param  \App\Events\OrderShipped  $event
          * @return void
          */
         public function handle(OrderShipped $event)
@@ -325,7 +325,7 @@ Event subscribers are classes that may subscribe to multiple events from within 
         /**
          * Register the listeners for the subscriber.
          *
-         * @param  Illuminate\Events\Dispatcher  $events
+         * @param  \Illuminate\Events\Dispatcher  $events
          */
         public function subscribe($events)
         {
