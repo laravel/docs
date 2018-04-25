@@ -235,6 +235,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
 [assertJson](#assert-json)
+[assertJsonCount](#assert-json-count)
 [assertJsonFragment](#assert-json-fragment)
 [assertJsonMissing](#assert-json-missing)
 [assertJsonMissingExact](#assert-json-missing-exact)
@@ -330,6 +331,13 @@ Assert that the given header is not present on the response:
 Assert that the response contains the given JSON data:
 
     $response->assertJson(array $data);
+
+<a name="assert-json-count"></a>
+#### assertJsonCount
+
+Assert that the response JSON has the expected count of items at the given key:
+
+    $response->assertJsonCount($count, $key = null);
 
 <a name="assert-json-fragment"></a>
 #### assertJsonFragment
