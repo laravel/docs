@@ -335,7 +335,7 @@ Assert that the response contains the given JSON data:
 <a name="assert-json-count"></a>
 #### assertJsonCount
 
-Assert that the response JSON has the expected count of items at the given key:
+Assert that the response JSON has an array with the expected number of items at the given key:
 
     $response->assertJsonCount($count, $key = null);
 
@@ -380,7 +380,7 @@ Assert that the response has the given JSON validation errors for the given keys
 Assert that the response has a not found status code:
 
     $response->assertNotFound();
-    
+
 <a name="assert-plain-cookie"></a>
 #### assertPlainCookie
 
