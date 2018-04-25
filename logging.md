@@ -5,8 +5,10 @@
     - [Building Log Stacks](#building-log-stacks)
 - [Writing Log Messages](#writing-log-messages)
     - [Writing To Specific Channels](#writing-to-specific-channels)
-- [Customizing Monolog For Channels](#customizing-monolog-for-channels)
-- [Creating Custom Channels](#creating-custom-channels)
+- [Advanced Monolog Channel Setup](#advanced-monolog-channel-setup)
+    - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
+    - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
+    - [Creating Channels Via Factories](#creating-channels-via-factories)
 
 <a name="introduction"></a>
 ## Introduction
@@ -31,6 +33,21 @@ By default, Monolog is instantiated with a "channel name" that matches the curre
         'name' => 'channel-name',
         'channels' => ['single', 'slack'],
     ],
+
+#### The Built-in Channel Drivers
+
+Name | Description
+------------- | -------------
+`stack` | A wrapper to facilitate a "multi-channel" channel
+`single` | A single file or path based logger channel (a Monolog `StreamHandler`)
+`daily` | A preconfigured `RotatingFileHandler` based Monolog driver which rotates daily
+`slack` | A `SlackWebhookHandler` based Monolog driver
+`syslog` | A `SyslogHandler` based Monolog driver
+`errorlog` | A `ErrorLogHandler` based Monolog driver
+`monolog` | A monolog factory driver where the monolog handler can be specified
+`custom` | A driver that will call a specified factory to create a logging channel
+
+(`monolog` or `custom` drivers are documented in [Advanced Channel Setup](#advanced-monolog-channel-setup).)
 
 #### Configuring The Slack Channel
 
@@ -132,8 +149,14 @@ If you would like to create an on-demand logging stack consisting of multiple ch
 
     Log::stack(['single', 'slack'])->info('Something happened!');
 
+
+<a name="advanced-monolog-channel-setup"></a>
+## Advanced Monolog Channel Setup
+
+Sometimes your use case and needs fall outside of the built-in logger configurations. In this situation, Laravel provides several facilities to have a more customized logging setup.
+
 <a name="customizing-monolog-for-channels"></a>
-## Customizing Monolog For Channels
+### Customizing Monolog For Channels
 
 Sometimes you may need complete control over how Monolog is configured for an existing channel. For example, you may want to configure a custom Monolog `FormatterInterface` implementation for a given channel's handlers.
 
@@ -170,10 +193,29 @@ Once you have configured the `tap` option on your channel, you're ready to defin
 
 > {tip} All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
 
-<a name="creating-custom-channels"></a>
-## Creating Custom Channels
+<a name="creating-monolog-handler-channels">
+### Creating Monolog Handler Channels
 
-If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Additionally, your configuration should include a `via` option which specifies the class that should be invoked to create the Monolog instance:
+Monolog has a [long list](https://github.com/Seldaek/monolog/tree/master/src/Monolog/Handler) of available handlers. In some cases, the kind of logger you wish to create is merely a Monolog driver with an instance of a specific handler.  This can be achieved with the `monolog` driver.  With this driver, use the `handler` option to specify which handler will be instantiated.  Any constructor parameters for the handler can be specified with the `with` option.  Below are two sample configurations for a SyslogUdp and NewRelic handlers:
+
+    'logentries' => [
+        'driver'  => 'monolog',
+        'handler' => Monolog\Handler\SyslogUdpHandler::class,
+        'with'    => [
+            'host' => 'my.logentries.internal.datahubhost.company.com',
+            'port' => '10000'
+        ]
+    ],
+
+    'newrelic' => [
+        'driver'  => 'monolog',
+        'handler' => Monolog\Handler\NewRelicHandler::class,
+    ],
+
+<a name="creating-channels-via-factories"></a>
+### Creating Channels Via Factories
+
+If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Your configuration should include a `via` option to point to the factory class which will be invoked to create the Monolog instance:
 
     'channels' => [
         'custom' => [
