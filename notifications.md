@@ -908,3 +908,21 @@ Once your notification channel class has been defined, you may return the class 
             // ...
         }
     }
+
+In case that your channel requires some initial configurations, you can also register the custom notificaion channel with an alias by extending the `Notification` facade like:
+
+In you `AppServiceProvider` add
+
+    public function register() {
+        ...
+         \Notification::extend('voice', function(Application $app) {
+            if ($app->isLocal()) {
+                return new VoiceChannel($demo_config);
+            } else {
+                return new VoiceChannel($real_config);
+            }
+         });
+     }
+     
+ And then, in your `Notification` class, return `['voice']` from the `via` method
+ 
