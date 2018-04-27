@@ -5,6 +5,7 @@
     - [The Public Disk](#the-public-disk)
     - [The Local Driver](#the-local-driver)
     - [Driver Prerequisites](#driver-prerequisites)
+    - [Enabling driver caching](#enabling-driver-caching)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
 - [Retrieving Files](#retrieving-files)
     - [Downloading Files](#downloading-files)
@@ -121,7 +122,7 @@ Laravel's Flysystem integrations works great with Rackspace; however, a sample c
     ],
 
 <a name="enabling-driver-caching"></a>
-## Enabling driver caching
+### Enabling driver caching
 
 When using filesystems, like S3 or any other, you do *not* want every `Storage::exists()` call, and any other call for that matter, to actually perform a connection to the remote store or even initiate local disk I/O, as this will simply kill performance and thus the loading times of your website or application.
 
