@@ -118,10 +118,10 @@ To enable cacing for a driver, simply add the caching option to it, pointing to 
         ],
     ],
 
-The above will work for all drivers available. A small explanation of the `cache` options:
+The above will work for all drivers available. A short explanation of the `cache` options:
 - `store` must be one of the cache stores you have configured, see the [Cache](cache.md) section.
 - `expire` the amount of *seconds* before the cache expires
-- `prefix` this is an important one, especially when setting up cache for *multiple* disks. Make sure this prefix is unique per disk to ensure the caches do not get mangled up and produce unwanted results!
+- `prefix` this is an important one, especially when setting up cache for *multiple* disks. Make sure this prefix is unique per disk to ensure the caches do not get mangled up and produce unwanted results! When left unset, it will default to `flysystem`.
 
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
