@@ -60,6 +60,10 @@ Before using the SFTP, S3, or Rackspace drivers, you will need to install the ap
 - Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 - Rackspace: `league/flysystem-rackspace ~1.0`
 
+An absolute must for performance is to use a cached adapter. You will need an additional package for this:
+
+- CachedAdapter: `league/flysystem-cached-adapter ~1.0`
+
 #### S3 Driver Configuration
 
 The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
@@ -115,6 +119,30 @@ Laravel's Flysystem integrations works great with Rackspace; however, a sample c
         'region'    => 'IAD',
         'url_type'  => 'publicURL',
     ],
+
+<a name="enabling-driver-caching"></a>
+## Enabling driver caching
+
+When using filesystems, like S3 or any other, you do *not* want every `Storage::exists()` call, and any other call for that matter, to actually perform a connection to the remote store or even initiate local disk I/O, as this will simply kill performance and thus the loading times of your website or application.
+
+To enable cacing for a driver, simply add the caching option to it, pointing to a cache store you have congfigured for your setup:
+
+    '[disk-name]' => [
+        'driver' => '[driver-name]',
+
+        // Your driver specific setup...
+
+        'cache' => [
+            'store' => 'memcached',
+            'expire' => 600,
+            'prefix' => '[cache-prefix]'
+        ]
+    ],
+
+The above will work for all drivers available. A small explanation of the `cache` options:
+- `store` must be one of the cache stores you have configured, see the [Cache](cache.md) section.
+- `expire` the amount of *seconds* before the cache expires
+- `prefix` this is an important one, especially when setting up cache for *multiple* disks. Make sure this prefix is unique per disk to ensure the caches do not get mangled up and produce unwanted results!
 
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
