@@ -136,8 +136,8 @@ To enable cacing for a driver, simply add the caching option to it, pointing to 
         'cache' => [
             'store' => 'memcached',
             'expire' => 600,
-            'prefix' => '[cache-prefix]'
-        ]
+            'prefix' => '[cache-prefix]',
+        ],
     ],
 
 The above will work for all drivers available. A small explanation of the `cache` options:
