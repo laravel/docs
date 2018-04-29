@@ -1227,6 +1227,14 @@ The `partition` method may be combined with the `list` PHP function to separate 
         return $i < 3;
     });
 
+    $underThree->all();
+
+    // [1, 2]
+
+    $aboveThree->all();
+
+    // [3, 4, 5, 6]
+
 <a name="method-pipe"></a>
 #### `pipe()` {#collection-method}
 
