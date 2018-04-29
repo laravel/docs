@@ -5,7 +5,7 @@
     - [The Public Disk](#the-public-disk)
     - [The Local Driver](#the-local-driver)
     - [Driver Prerequisites](#driver-prerequisites)
-    - [Enabling driver caching](#enabling-driver-caching)
+    - [Caching](#caching)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
 - [Retrieving Files](#retrieving-files)
     - [Downloading Files](#downloading-files)
@@ -121,29 +121,22 @@ Laravel's Flysystem integrations works great with Rackspace; however, a sample c
         'url_type'  => 'publicURL',
     ],
 
-<a name="enabling-driver-caching"></a>
-### Enabling driver caching
+<a name="caching"></a>
+### Caching
 
-When using filesystems, like S3 or any other, you do *not* want every `Storage::exists()` call, and any other call for that matter, to actually perform a connection to the remote store or even initiate local disk I/O, as this will simply kill performance and thus the loading times of your website or application.
+To enable caching for a given disk, you may add a `cache` directive to the disk's configuration options. The `cache` option should be an array of caching options containing the `disk` name, the `expire` time in seconds, and the cache `prefix`:
 
-To enable cacing for a driver, simply add the caching option to it, pointing to a cache store you have congfigured for your setup:
+    's3' => [
+        'driver' => 's3',
 
-    '[disk-name]' => [
-        'driver' => '[driver-name]',
-
-        // Your driver specific setup...
+        // Other Disk Options...
 
         'cache' => [
             'store' => 'memcached',
             'expire' => 600,
-            'prefix' => '[cache-prefix]',
+            'prefix' => 'cache-prefix',
         ],
     ],
-
-The above will work for all drivers available. A short explanation of the `cache` options:
-- `store` must be one of the cache stores you have configured, see the [Cache](cache.md) section.
-- `expire` the amount of *seconds* before the cache expires
-- `prefix` this is an important one, especially when setting up cache for *multiple* disks. Make sure this prefix is unique per disk to ensure the caches do not get mangled up and produce unwanted results! When left unset, it will default to `flysystem`.
 
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
