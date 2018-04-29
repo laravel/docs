@@ -46,7 +46,7 @@ Laravel Dusk provides an expressive, easy-to-use browser automation and testing 
 
 To get started, you should add the `laravel/dusk` Composer dependency to your project:
 
-    composer require --dev laravel/dusk:^2.0
+    composer require --dev laravel/dusk:"^2.0"
 
 Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. Typically, this will be done automatically via Laravel's automatic service provider registration.
 
