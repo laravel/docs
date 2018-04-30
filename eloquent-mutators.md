@@ -220,3 +220,17 @@ Once the cast is defined, you may access the `options` attribute and it will aut
     $user->options = $options;
 
     $user->save();
+
+<a name="date-casting"></a>
+### Date Casting
+
+When using the `date` or `datetime` cast type, you may specify the date's format. This format will be used when the [model is serialized to an array or JSON](/docs/{{version}}/eloquent-serialization):
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
