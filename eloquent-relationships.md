@@ -189,7 +189,7 @@ Once the relationship has been defined, we can access the collection of comments
 
 Of course, since all relationships also serve as query builders, you can add further constraints to which comments are retrieved by calling the `comments` method and continuing to chain conditions onto the query:
 
-    $comments = App\Post::find(1)->comments()->where('title', 'foo')->first();
+    $comment = App\Post::find(1)->comments()->where('title', 'foo')->first();
 
 Like the `hasOne` method, you may also override the foreign and local keys by passing additional arguments to the `hasMany` method:
 
