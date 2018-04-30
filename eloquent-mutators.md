@@ -187,6 +187,35 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
     }
 
 <a name="array-and-json-casting"></a>
+
+You can use the `date` cast type to conveniently declare the format for date columns upon access (using any valid [PHP Date format string](http://php.net/manual/en/function.date.php)). For example, let's cast the `birthday` attribute, stored in our database as a UNIX timestamp, to `Y-m-d` format:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        /**
+         * The attributes that should be cast to native types.
+         *
+         * @var array
+         */
+        protected $casts = [
+            'birthday' => 'date:Y-m-d',
+        ];
+    }
+
+Now the `birthday` attribute will always be cast to a date in `Y-m-d` format when you access it:
+
+    $user = App\User::find(1);
+
+    if ($user->birthday) {
+        //
+    }
+
 ### Array & JSON Casting
 
 The `array` cast type is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `JSON` or `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
