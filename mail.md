@@ -412,7 +412,7 @@ You may export all of the Markdown mail components to your own application for c
 
     php artisan vendor:publish --tag=laravel-mail
 
-This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain a `html` and a `markdown` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
+This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain a `html` and a `markdown` directory, each containing their respective representations of every available component. The components in the `html` directory are used to generate the HTML version of your email, and their counterparts in the `markdown` directory are used to generate the plain-text version. You are free to customize these components however you like.
 
 #### Customizing The CSS
 
