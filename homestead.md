@@ -374,7 +374,13 @@ Mailhog allows you to easily catch your outgoing email and examine it without ac
 <a name="configuring-minio"></a>
 ### Configuring Minio
 
-Minio allows you to use object storage with an Amazon S3 compatible API through port 9600 To get started you will need to make a couple of changes to your `disk` in `config/filsystems.php`. Change `url` to `endpoint` and set `use_path_style_endpoint` to `true`.
+Minio allows you to use object storage with an Amazon S3 compatible API through port 9600.
+
+To enable this, update your `Homestead.yaml`
+    
+    minio: true
+    
+Next you will need to make a couple of changes to your `disk` in `config/filsystems.php`. Change `url` to `endpoint` and set `use_path_style_endpoint` to `true`.
 
     's3' => [
         'driver'                  => 's3',
