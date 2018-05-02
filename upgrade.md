@@ -11,7 +11,7 @@
 
 ### PHP
 
-Laravel 5.5 requires PHP 7.0.0 or higher.
+Laravel 5.5 requires PHP 7.1.0 or higher.
 
 ### Updating Dependencies
 
