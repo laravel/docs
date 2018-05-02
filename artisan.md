@@ -284,7 +284,7 @@ Options may be retrieved just as easily as arguments using the `option` method. 
     // Retrieve all options...
     $options = $this->options();
 
-If the argument or option does not exist, `null` will be returned.
+If the option or argument is not required and was omitted when invoking the command, `null` will be returned. However, asking for a name that is not defined in the command's signature will throw an error.
 
 <a name="prompting-for-input"></a>
 ### Prompting For Input
