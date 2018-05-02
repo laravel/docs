@@ -1235,7 +1235,7 @@ If you are using CircleCI 1.0 to run your Dusk tests, you may use this configura
         override:
             - php artisan dusk
 
- #### CircleCI 2.0
+#### CircleCI 2.0
 
  If you are using CircleCI 2.0 to run your Dusk tests, you may add these steps to your build:
 
