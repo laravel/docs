@@ -374,30 +374,29 @@ Mailhog allows you to easily catch your outgoing email and examine it without ac
 <a name="configuring-minio"></a>
 ### Configuring Minio
 
-Minio allows you to use object storage with an Amazon S3 compatible API through port 9600.
+Minio provides an S3 compatible storage layer on your Homestead machine via port 9600. To use Minio, update your `Homestead.yaml` file with the following configuration option:
 
-To enable this, update your `Homestead.yaml`
-    
     minio: true
-    
-Next you will need to make a couple of changes to your `disk` in `config/filsystems.php`. Change `url` to `endpoint` and set `use_path_style_endpoint` to `true`.
+
+Next, you will need to adjust the S3 disk configuration in your `config/filesystems.php` configuration file. You should add the `use_path_style_endpoint` option to the disk configuration, as well as update the `url` key to `endpoint`:
 
     's3' => [
-        'driver'                  => 's3',
-        'key'                     => env('AWS_ACCESS_KEY_ID'),
-        'secret'                  => env('AWS_SECRET_ACCESS_KEY'),
-        'region'                  => env('AWS_DEFAULT_REGION'),
-        'bucket'                  => env('AWS_BUCKET'),
-        'endpoint'                => env('AWS_URL'),
+        'driver' => 's3',
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION'),
+        'bucket' => env('AWS_BUCKET'),
+        'endpoint' => env('AWS_URL'),
         'use_path_style_endpoint' => true
     ]
-Next you will need to update your `.env`:
+
+Finally, you should update your `.env` file with the proper `AWS_URL`:
 
     AWS_ACCESS_KEY_ID=homestead
     AWS_SECRET_ACCESS_KEY=secretkey
     AWS_DEFAULT_REGION=us-east-1
     AWS_URL=http://homestead:9600
-    
+
 <a name="ports"></a>
 ### Ports
 
