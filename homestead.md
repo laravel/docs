@@ -17,6 +17,7 @@
     - [Environment Variables](#environment-variables)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring Mailhog](#configuring-mailhog)
+    - [Configuring Minio](#configuring-minio)
     - [Ports](#ports)
     - [Sharing Your Environment](#sharing-your-environment)
     - [Multiple PHP Versions](#multiple-php-versions)
@@ -65,6 +66,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - wp-cli
 - Zend Z-Ray
 - Go
+- Minio
 </div>
 
 <a name="installation-and-setup"></a>
@@ -100,7 +102,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd ~/Homestead
 
     // Clone the desired release...
-    git checkout v7.4.0
+    git checkout v7.4.1
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -369,6 +371,33 @@ Mailhog allows you to easily catch your outgoing email and examine it without ac
     MAIL_PASSWORD=null
     MAIL_ENCRYPTION=null
 
+<a name="configuring-minio"></a>
+### Configuring Minio
+
+Minio allows you to use object storage with an Amazon S3 compatible API through port 9600.
+
+To enable this, update your `Homestead.yaml`
+    
+    minio: true
+    
+Next you will need to make a couple of changes to your `disk` in `config/filsystems.php`. Change `url` to `endpoint` and set `use_path_style_endpoint` to `true`.
+
+    's3' => [
+        'driver'                  => 's3',
+        'key'                     => env('AWS_ACCESS_KEY_ID'),
+        'secret'                  => env('AWS_SECRET_ACCESS_KEY'),
+        'region'                  => env('AWS_DEFAULT_REGION'),
+        'bucket'                  => env('AWS_BUCKET'),
+        'endpoint'                => env('AWS_URL'),
+        'use_path_style_endpoint' => true
+    ]
+Next you will need to update your `.env`:
+
+    AWS_ACCESS_KEY_ID=homestead
+    AWS_SECRET_ACCESS_KEY=secretkey
+    AWS_DEFAULT_REGION=us-east-1
+    AWS_URL=http://homestead:9600
+    
 <a name="ports"></a>
 ### Ports
 
@@ -381,6 +410,7 @@ By default, the following ports are forwarded to your Homestead environment:
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **PostgreSQL:** 54320 &rarr; Forwards To 5432
 - **Mailhog:** 8025 &rarr; Forwards To 8025
+- **Minio:** 9600 &rarr; Forwards To 9600
 
 #### Forwarding Additional Ports
 
