@@ -402,6 +402,7 @@ Finally, you should update your `.env` file with the proper `AWS_URL`:
 
 By default, the following ports are forwarded to your Homestead environment:
 
+<div class="content-list" markdown="1">
 - **SSH:** 2222 &rarr; Forwards To 22
 - **ngrok UI:** 4040 &rarr; Forwards To 4040
 - **HTTP:** 8000 &rarr; Forwards To 80
@@ -410,6 +411,7 @@ By default, the following ports are forwarded to your Homestead environment:
 - **PostgreSQL:** 54320 &rarr; Forwards To 5432
 - **Mailhog:** 8025 &rarr; Forwards To 8025
 - **Minio:** 9600 &rarr; Forwards To 9600
+</div>
 
 #### Forwarding Additional Ports
 
