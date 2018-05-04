@@ -108,6 +108,10 @@ You may also provide `message` and `retry` options to the `down` command. The `m
 
     php artisan down --message="Upgrading Database" --retry=60
 
+You can even allow an IP address or network to get access to the app in maintenance mode by providing the `allow` option:
+
+    php artisan down --allow=127.0.0.1 --allow=192.168.0.0/16
+
 To disable maintenance mode, use the `up` command:
 
     php artisan up
