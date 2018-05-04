@@ -388,7 +388,7 @@ The `whereYear` method may be used to compare a column's value against a specifi
 The `whereTime` method may be used to compare a column's value against a specific time:
 
     $users = DB::table('users')
-                    ->whereTime('created_at', '=', '11:20')
+                    ->whereTime('created_at', '=', '11:20:45')
                     ->get();
 
 **whereColumn**
