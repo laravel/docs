@@ -278,7 +278,7 @@ The `name` method may be used to prefix each route name in the group with a give
 ## Route Model Binding
 
 When injecting a model ID to a route or controller action, you will often query to retrieve the model that corresponds to that ID. Laravel route model binding provides a convenient way to automatically inject the model instances directly into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID. 
-Please notice, than `\Illuminate\Routing\Middleware\SubstituteBindings` middleware should be assigned to the route.
+> {note} Please notice, than `\Illuminate\Routing\Middleware\SubstituteBindings` middleware should be assigned to the route.
 
 <a name="implicit-binding"></a>
 ### Implicit Binding
