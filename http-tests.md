@@ -227,6 +227,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
+[assertCookieNotExpired](#assert-cookie-not-expired)
 [assertCookieMissing](#assert-cookie-missing)
 [assertDontSee](#assert-dont-see)
 [assertDontSeeText](#assert-dont-see-text)
@@ -275,6 +276,13 @@ Assert that the response contains the given cookie:
 Assert that the response contains the given cookie and it is expired:
 
     $response->assertCookieExpired($cookieName);
+
+<a name="assert-cookie-not-expired"></a>
+#### assertCookieNotExpired
+
+Assert that the response contains the given cookie and it is not expired:
+
+    $response->assertCookieNotExpired($cookieName);
 
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
