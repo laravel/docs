@@ -724,9 +724,9 @@ If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesn
     $posts = App\Post::whereDoesntHave('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
-    
-Querying on the absence of a nested relation expects all nested relation(s) to exist. The example below will return posts with comments from authors that aren't banned. The results will not include posts without comments.
-    
+
+You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts with comments from authors that are not banned:
+
     $posts = App\Post::whereDoesntHave('comments.author', function ($query) {
         $query->where('banned', 1);
     })->get();
