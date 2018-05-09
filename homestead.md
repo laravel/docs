@@ -43,7 +43,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 ### Included Software
 
 <div class="content-list" markdown="1">
-- Ubuntu 16.04
+- Ubuntu 18.04
 - Git
 - PHP 7.2
 - PHP 7.1
@@ -102,7 +102,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd ~/Homestead
 
     // Clone the desired release...
-    git checkout v7.4.1
+    git checkout v7.4.2
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
