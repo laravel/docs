@@ -527,7 +527,7 @@ The `validateCredentials` method should compare the given `$user` with the `$cre
 <a name="the-authenticatable-contract"></a>
 ### The Authenticatable Contract
 
-Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
+Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, the provider should return implementations of this interface from the `retrieveById`, `retrieveByToken`, and `retrieveByCredentials` methods:
 
     <?php
 
