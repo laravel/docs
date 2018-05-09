@@ -169,6 +169,10 @@ If you are installing Scout into an existing project, you may already have datab
 
     php artisan scout:import "App\Post"
 
+Scout also provides a `flush` Artisan command to erase all records from your existing search indexes:
+
+    php artisan scout:flush "App\Post"
+
 <a name="adding-records"></a>
 ### Adding Records
 
