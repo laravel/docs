@@ -178,6 +178,14 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmls
 
 > {note} Be very careful when echoing content that is supplied by users of your application. Always use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
 
+#### Default values for undefined variables
+
+Blade does not check if a variable exists before it prints it, which might lead to PHP notices like "Undefined variable a".
+
+If you cannot be sure if the variable has been defined, use [PHP's Null Coalescing Operator](http://php.net/manual/en/language.operators.comparison.php#language.operators.comparison.coalesce) to provide a default value:
+
+    {{ $variable ?? 'default' }}
+
 #### Rendering JSON
 
 Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
