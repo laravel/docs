@@ -1188,7 +1188,7 @@ You may add items to the cache by passing an array of key / value pairs to the f
 <a name="method-class-uses-recursive"></a>
 #### `class_uses_recursive()` {#collection-method}
 
-The `class_uses_recursive` function returns all traits used by a class, including traits used by any subclasses:
+The `class_uses_recursive` function returns all traits used by a class, including traits used by all of its parent classes:
 
     $traits = class_uses_recursive(App\User::class);
 
