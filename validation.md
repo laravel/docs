@@ -503,12 +503,16 @@ Below is a list of all available validation rules and their function:
 [Exists (Database)](#rule-exists)
 [File](#rule-file)
 [Filled](#rule-filled)
+[Gt](#rule-gt)
+[Gte](#rule-gte)
 [Image (File)](#rule-image)
 [In](#rule-in)
 [In Array](#rule-in-array)
 [Integer](#rule-integer)
 [IP Address](#rule-ip)
 [JSON](#rule-json)
+[Lt](#rule-lt)
+[Lte](#rule-lte)
 [Max](#rule-max)
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
@@ -902,6 +906,23 @@ The field under validation must be a string. If you would like to allow the fiel
 #### timezone
 
 The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function.
+
+<a name="rule-gt"></a>
+#### gt:_foo_
+The field under validation must be greater than _foo_ field.
+
+<a name="rule-lt"></a>
+#### lt:_foo_
+The field under validation must be less than _foo_ field.
+
+<a name="rule-gte"></a>
+#### gte:_foo_
+The field under validation must be greater than or equal _foo_ field.
+
+<a name="rule-lte"></a>
+#### lte:_foo_
+The field under validation must be less than or equal _foo_ field.
+
 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
