@@ -157,6 +157,32 @@ You may also pass any options supported by Vagrant's [Synced Folders](https://ww
               rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
               rsync__exclude: ["node_modules"]
 
+#### Copy Files or Folders after Provisioning
+
+The `copy` property of the `Homestead.yaml` file lists all of the files or folders you wish to copy to your Homestead guest machine, especially for copying those configuration files such as `~/.gitconfig` file, `~/.vimrc` file, and `~/.vim` folder stored on the host machine. You may copy as many as files or folder as need:
+
+    copy:
+        - from: ~/.gitconfig
+          to: /home/vagrant
+        - from: ~/.vimrc
+          to: /home/vagrant
+        - from: ~/.vim
+          to: /home/vagrant
+
+This example will copy `~/.gitconfig` file, `~/.vimrc` file, and the whole `~/.vim` from the host machine into the path `/home/vagrant` on the Homestead guest machine. After copying, the file system structure of the Homestead guest machine will look like as follow:
+
+    home
+    └── vagrant
+        ├── .gitconfig
+        ├── .vimrc
+        ├── .vim
+        │   ├── ...
+        │   ├── ...  
+        │   └── ...
+        └── ...
+
+Please note that, unlike with shared folders, files or folders will not be synced with those stored in host machine. For example, if you make further changes to your `~/.gitconfig` on the host machine, they will not be immediately reflected in the Homestead guest machine. You should re-run `vagrant reload --provision` to update the changes. A new copy will override those files or folders on the Homestead guest machine.
+
 #### Configuring Nginx Sites
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on:
