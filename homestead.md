@@ -239,10 +239,7 @@ To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml
 
     neo4j: true
 
-The default installation will set the database username to `homestead` and corresponding password to `secret`. To reach Neo4j browser, access `http://homestead.test:7474` via your web browser. The ports `7687` (Bolt), `7474` (HTTP), and `7473` (HTTPS) are ready to serve requests from the Neo4j client.
-
-> {tip} Check out the [Neo4j Operations Manual](https://neo4j.com/docs/operations-manual/3.3/) to learn how to customize your Neo4j. And check out the [
-Neo4j Graph Eloquent Driver for Laravel](https://github.com/Vinelab/NeoEloquent) to learn how to make Laravel work with Neo4j.
+The default installation will set the database username to `homestead` and corresponding password to `secret`. To access the Neo4j browser, visit `http://homestead.test:7474` via your web browser. The ports `7687` (Bolt), `7474` (HTTP), and `7473` (HTTPS) are ready to serve requests from the Neo4j client.
 
 <a name="aliases"></a>
 ### Aliases
