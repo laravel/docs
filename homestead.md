@@ -8,6 +8,7 @@
     - [Per Project Installation](#per-project-installation)
     - [Installing MariaDB](#installing-mariadb)
     - [Installing Elasticsearch](#installing-elasticsearch)
+    - [Installing Neo4j](#installing-neo4j)
     - [Aliases](#aliases)
 - [Daily Usage](#daily-usage)
     - [Accessing Homestead Globally](#accessing-homestead-globally)
@@ -230,6 +231,18 @@ To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml
     elasticsearch: 6
 
 > {tip} Check out the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current) to learn how to customize your configuration.
+
+<a name="installing-neo4j"></a>
+### Installing Neo4j
+
+[Neo4j](https://neo4j.com/) is a graph database management system. To install Neo4j Community Edition, update your `Homestead.yaml` file with the following configuration option:
+
+    neo4j: true
+
+The default installation will set the database username to `homestead` and corresponding password to `secret`. To reach Neo4j browser, access `http://homestead.test:7474` via your web browser. The ports `7687` (Bolt), `7474` (HTTP), and `7473` (HTTPS) are ready to serve requests from the Neo4j client.
+
+> {tip} Check out the [Neo4j Operations Manual](https://neo4j.com/docs/operations-manual/3.3/) to learn how to customize your Neo4j. And check out the [
+Neo4j Graph Eloquent Driver for Laravel](https://github.com/Vinelab/NeoEloquent) to learn how to make Laravel work with Neo4j.
 
 <a name="aliases"></a>
 ### Aliases
