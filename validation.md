@@ -503,12 +503,16 @@ Below is a list of all available validation rules and their function:
 [Exists (Database)](#rule-exists)
 [File](#rule-file)
 [Filled](#rule-filled)
+[Greater Than](#rule-gt)
+[Greater Than Or Equal](#rule-gte)
 [Image (File)](#rule-image)
 [In](#rule-in)
 [In Array](#rule-in-array)
 [Integer](#rule-integer)
 [IP Address](#rule-ip)
 [JSON](#rule-json)
+[Less Than](#rule-lt)
+[Less Than Or Equal](#rule-lte)
 [Max](#rule-max)
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
@@ -717,6 +721,16 @@ The field under validation must be a successfully uploaded file.
 
 The field under validation must not be empty when it is present.
 
+<a name="rule-gt"></a>
+#### gt:_anotherfield_
+
+The field under validation must be greater than _anotherfield_. This rule requires that _field_ under validation and _anotherfield_ are of the same type. Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
+
+<a name="rule-gte"></a>
+#### gte:_anotherfield_
+
+The field under validation must be greater than or equal _anotherfield_. This rule requires that _field_ under validation and _anotherfield_ are of the same type. Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
+
 <a name="rule-image"></a>
 #### image
 
@@ -763,6 +777,16 @@ The field under validation must be an IPv6 address.
 #### json
 
 The field under validation must be a valid JSON string.
+
+<a name="rule-lt"></a>
+#### lt:_anotherfield_
+
+The field under validation must be less than _anotherfield_. This rule requires that _field_ under validation and _anotherfield_ are of the same type. Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
+
+<a name="rule-lte"></a>
+#### lte:_anotherfield_
+
+The field under validation must be less than or equal _anotherfield_. This rule requires that _field_ under validation and _anotherfield_ are of the same type. Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
 
 <a name="rule-max"></a>
 #### max:_value_
