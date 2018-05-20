@@ -722,14 +722,14 @@ The field under validation must be a successfully uploaded file.
 The field under validation must not be empty when it is present.
 
 <a name="rule-gt"></a>
-#### gt:_anotherfield_
+#### gt:_field_
 
-The field under validation must be greater than _anotherfield_. This rule requires that _field_ under validation and _anotherfield_ are of the same type. Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
+The given _field_ must be greater than the field under validatoin. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the `size` rule.
 
 <a name="rule-gte"></a>
-#### gte:_anotherfield_
+#### gte:_field_
 
-The field under validation must be greater than or equal _anotherfield_. This rule requires that _field_ under validation and _anotherfield_ are of the same type. Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
+The given _field_ must be greater than or equal to the field under validatoin. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the `size` rule.
 
 <a name="rule-image"></a>
 #### image
@@ -779,14 +779,14 @@ The field under validation must be an IPv6 address.
 The field under validation must be a valid JSON string.
 
 <a name="rule-lt"></a>
-#### lt:_anotherfield_
+#### lt:_field_
 
-The field under validation must be less than _anotherfield_. This rule requires that _field_ under validation and _anotherfield_ are of the same type. Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
+The given _field_ must be less than the field under validatoin. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the `size` rule.
 
 <a name="rule-lte"></a>
-#### lte:_anotherfield_
+#### lte:_field_
 
-The field under validation must be less than or equal _anotherfield_. This rule requires that _field_ under validation and _anotherfield_ are of the same type. Strings, numerics, arrays, and files are evaluated in the same fashion as the size rule.
+The given _field_ must be less than or equal to the field under validatoin. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the `size` rule.
 
 <a name="rule-max"></a>
 #### max:_value_
