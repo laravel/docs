@@ -12,6 +12,7 @@
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
+- [Uninstallation](#uninstallation)
 
 <a name="introduction"></a>
 ## Introduction
@@ -275,3 +276,28 @@ Command  | Description
 `valet start` | Start the Valet daemon.
 `valet stop` | Stop the Valet daemon.
 `valet uninstall` | Uninstall the Valet daemon entirely.
+
+<a name="uninstallation"></a>
+## Uninstall Valet
+
+If you wish to uninstall Valet, the following instructions will remove Valet and all of its configuration from your system.
+
+#### Finding PHP Version
+
+Before removing Valet you'll need to determine the version of PHP installed, which can be found by running `brew list | grep php`.
+
+In the following example, if Homebrew reports PHP 7.2 is installed (e.g. `php@7.2`), replace all instances of `php70` below with `php72`:
+
+```
+valet uninstall
+sudo brew services stop nginx
+sudo brew services stop php70
+sudo brew services stop dnsmasq
+brew uninstall nginx
+brew uninstall php70
+brew uninstall dnsmasq
+rm -rf ~/.valet
+rm /usr/local/bin/valet
+```
+
+Keep in mind that PHP versions change regularly over time, so the specific version number will vary based on what Homebrew installed during Valet's initial installation.
