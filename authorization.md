@@ -176,8 +176,9 @@ Once the policy exists, it needs to be registered. The `AuthServiceProvider` inc
         public function boot()
         {
             $this->registerPolicies();
-
-            //
+            
+            // Define a gate that uses this policy
+            Gate::resource('posts', PostPolicy::class);
         }
     }
 
