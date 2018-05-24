@@ -64,7 +64,7 @@ If you are deploying your application to a server that is running Nginx, you may
 
 When deploying to production, make sure that you are optimizing Composer's class autoloader map so Composer can quickly find the proper file to load for a given class:
 
-    composer install --optimize-autoloader
+    composer install --optimize-autoloader --no-dev
 
 > {tip} In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present.
 
