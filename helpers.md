@@ -140,10 +140,12 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
 [decrypt](#method-decrypt)
+[decryptString](#method-decrypt-string)
 [dispatch](#method-dispatch)
 [dispatch_now](#method-dispatch-now)
 [dump](#method-dump)
 [encrypt](#method-encrypt)
+[encryptString](#method-encrypt-string)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
@@ -1251,6 +1253,13 @@ The `decrypt` function decrypts the given value using Laravel's [encrypter](/doc
 
     $decrypted = decrypt($encrypted_value);
 
+<a name="method-decrypt-string"></a>
+    #### `decryptString()` {#collection-method}
+
+    The `decryptString` function decrypts the given value without unserialization using Laravel's [encrypter](/docs/{{version}}/encryption):
+
+        $decrypted = decryptString($encrypted_value);
+
 <a name="method-dispatch"></a>
 #### `dispatch()` {#collection-method}
 
@@ -1282,6 +1291,13 @@ If you want to stop executing the script after dumping the variables, use the [`
 The `encrypt` function encrypts the given value using Laravel's [encrypter](/docs/{{version}}/encryption):
 
     $encrypted = encrypt($unencrypted_value);
+
+<a name="method-encrypt-string"></a>
+#### `encryptString()` {#collection-method}
+
+The `encryptString` function encrypts the given value without serialization using Laravel's [encrypter](/docs/{{version}}/encryption):
+
+    $encrypted = encryptString($unencrypted_value);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}
