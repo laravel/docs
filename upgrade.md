@@ -777,6 +777,8 @@ The `Illuminate\Foundation\Providers\ArtisanServiceProvider` should be removed f
 
 The `Illuminate\Routing\ControllerServiceProvider` should be removed from your service provider list in your `app.php` configuration file.
 
+The `Illuminate\Bus\BusServiceProvider`, `App\Providers\BusServiceProvider` and `App\Providers\ConfigServiceProvider` should be removed from your service provider list in your `app.php` configuration file. Also `app/Providers/BusServiceProvider.php` and `app/Providers/ConfigServiceProvider.php` should be deleted since those are no longer used.
+
 ### Sessions
 
 Because of changes to the authentication system, any existing sessions will be invalidated when you upgrade to Laravel 5.2.
