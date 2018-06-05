@@ -102,18 +102,6 @@ To rollback the latest migration "operation", you may use the `rollback` command
 
     php artisan migrate:rollback
 
-The `migrate:reset` command will roll back all of your application's migrations:
-
-    php artisan migrate:reset
-
-#### Rollback / Migrate In Single Command
-
-The `migrate:refresh` command will first roll back all of your database migrations, and then run the `migrate` command. This command effectively re-creates your entire database:
-
-    php artisan migrate:refresh
-
-    php artisan migrate:refresh --seed
-
 <a name="writing-migrations"></a>
 ## Writing Migrations
 
