@@ -196,14 +196,7 @@ Once you have configured the `tap` option on your channel, you're ready to defin
 
 Monolog has a variety of [available handlers](https://github.com/Seldaek/monolog/tree/master/src/Monolog/Handler). In some cases, the type of logger you wish to create is merely a Monolog driver with an instance of a specific handler.  These channels can be created using the `monolog` driver.
 
-When using the `monolog` driver, the `handler` configuration option is used to specify which handler will be instantiated:
-
-    'newrelic' => [
-        'driver'  => 'monolog',
-        'handler' => Monolog\Handler\NewRelicHandler::class,
-    ],
-
-Any constructor parameters the handler needs may be specified using the `with` configuration option:
+When using the `monolog` driver, the `handler` configuration option is used to specify which handler will be instantiated. Optionally, any constructor parameters the handler needs may be specified using the `with` configuration option:
 
     'logentries' => [
         'driver'  => 'monolog',
@@ -213,6 +206,27 @@ Any constructor parameters the handler needs may be specified using the `with` c
             'port' => '10000',
         ],
     ],
+
+#### Monolog Formatter Options
+
+Without formatter configuration options, LogManager will inject a `LineFormatter` into any newly created log handler. For the `'driver' => 'monolog'` created handlers, a formatter can be specified using the `formatter` and `formatter_with` configuration options.  If you are using a monolog handler that is capable of providing it's own formatter, use the value `'default'`.
+
+    'newrelic' => [
+        'driver'    => 'monolog',
+        'handler'   => Monolog\Handler\NewRelicHandler::class,
+        'formatter' => 'default'
+    ],
+
+Beyond letting the handler use it's own formatter with `'default'`, you may wish to specify your own formatter, optionally with it's own constructor parameters via `formatter_with`:
+
+    'browser' => [
+        'driver' => 'monolog',
+        'handler' => Monolog\Handler\BrowserConsoleHandler::class,
+        'formatter' => Monolog\Formatter\HtmlFormatter::class,
+        'formatter_with' => [
+            'dateFormat' => 'Y-m-d'
+        ]
+    ]
 
 <a name="creating-channels-via-factories"></a>
 ### Creating Channels Via Factories
