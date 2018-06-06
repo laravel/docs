@@ -18,6 +18,7 @@
     - [Invalidating Sessions On Other Devices](#invalidating-sessions-on-other-devices)
 - [Social Authentication](https://github.com/laravel/socialite)
 - [Adding Custom Guards](#adding-custom-guards)
+    - [Closure Request Guards](#closure-request-guards)
 - [Adding Custom User Providers](#adding-custom-user-providers)
     - [The User Provider Contract](#the-user-provider-contract)
     - [The Authenticatable Contract](#the-authenticatable-contract)
@@ -218,7 +219,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
     <?php
 
     namespace App\Http\Controllers;
-    
+
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
 
@@ -234,7 +235,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
         public function authenticate(Request $request)
         {
             $credentials = $request->only('email', 'password');
-            
+
             if (Auth::attempt($credentials)) {
                 // Authentication passed...
                 return redirect()->intended('dashboard');
@@ -441,6 +442,39 @@ As you can see in the example above, the callback passed to the `extend` method 
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
+        ],
+    ],
+
+<a name="closure-request-guards"></a>
+### Closure Request Guards
+
+The simplest way to implement a custom, HTTP request based authentication system is by using the `Auth::viaRequest` method. This method allows you to quickly define your authentication process using a single Closure.
+
+To get started, call the `Auth::viaRequest` method within the `boot` method of your `AuthServiceProvider`. The `viaRequest` method accepts a guard name as its first argument. This name can be any string that describes your custom guard. The second argument passed to the method should be a Closure that receives the incoming HTTP request and returns a user instance or, if authentication fails, `null`:
+
+    use App\User;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Auth;
+
+    /**
+     * Register any application authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Auth::viaRequest('custom-token', function ($request) {
+            return User::where('token', $request->token)->first();
+        });
+    }
+
+Once your custom guard has been defined, you may use this guard in the `guards` configuration of your `auth.php` configuration file:
+
+    'guards' => [
+        'api' => [
+            'driver' => 'custom-token',
         ],
     ],
 
