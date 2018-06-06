@@ -253,6 +253,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertSessionHasAll](#assert-session-has-all)
 [assertSessionHasErrors](#assert-session-has-errors)
 [assertSessionHasErrorsIn](#assert-session-has-errors-in)
+[assertSessionHasNoErrors](#assert-session-has-no-errors)
 [assertSessionMissing](#assert-session-missing)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
@@ -458,6 +459,13 @@ Assert that the session contains an error for the given field:
 Assert that the session has the given errors:
 
     $response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);
+
+<a name="assert-session-has-no-errors"></a>
+#### assertSessionHasNoErrors
+
+Assert that the session has no errors:
+
+    $response->assertSessionHasNoErrors();
 
 <a name="assert-session-missing"></a>
 #### assertSessionMissing
