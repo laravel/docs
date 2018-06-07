@@ -53,7 +53,7 @@ To see how read / write connections should be configured, let's look at this exa
         'database'  => 'database',
         'username'  => 'root',
         'password'  => '',
-        'charset' => 'utf8mb4',
+        'charset'   => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
         'prefix'    => '',
     ],
