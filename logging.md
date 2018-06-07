@@ -201,32 +201,32 @@ When using the `monolog` driver, the `handler` configuration option is used to s
     'logentries' => [
         'driver'  => 'monolog',
         'handler' => Monolog\Handler\SyslogUdpHandler::class,
-        'with'    => [
+        'with' => [
             'host' => 'my.logentries.internal.datahubhost.company.com',
             'port' => '10000',
         ],
     ],
 
-#### Monolog Formatter Options
+#### Monolog Formatters
 
-Without formatter configuration options, LogManager will inject a `LineFormatter` into any newly created log handler. For the `'driver' => 'monolog'` created handlers, a formatter can be specified using the `formatter` and `formatter_with` configuration options.  If you are using a monolog handler that is capable of providing it's own formatter, use the value `'default'`.
-
-    'newrelic' => [
-        'driver'    => 'monolog',
-        'handler'   => Monolog\Handler\NewRelicHandler::class,
-        'formatter' => 'default'
-    ],
-
-Beyond letting the handler use it's own formatter with `'default'`, you may wish to specify your own formatter, optionally with it's own constructor parameters via `formatter_with`:
+When using the `monolog` driver, the Monolog `LineFormatter` will be used as the default formatter. However, you may customize the type of formatter passed to the handler using the `formatter` and `formatter_with` configuration options:
 
     'browser' => [
         'driver' => 'monolog',
         'handler' => Monolog\Handler\BrowserConsoleHandler::class,
         'formatter' => Monolog\Formatter\HtmlFormatter::class,
         'formatter_with' => [
-            'dateFormat' => 'Y-m-d'
-        ]
-    ]
+            'dateFormat' => 'Y-m-d',
+        ],
+    ],
+
+If you are using a Monolog handler that is capable of providing its own formatter, you may set the value of the `formatter` configuration option to `default`:
+
+    'newrelic' => [
+        'driver' => 'monolog',
+        'handler' => Monolog\Handler\NewRelicHandler::class,
+        'formatter' => 'default',
+    ],
 
 <a name="creating-channels-via-factories"></a>
 ### Creating Channels Via Factories
