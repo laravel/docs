@@ -15,8 +15,8 @@
     - [Dropping Columns](#dropping-columns)
 - [Indexes](#indexes)
     - [Creating Indexes](#creating-indexes)
-    - [Dropping Indexes](#dropping-indexes)
     - [Renaming Indexes](#renaming-indexes)
+    - [Dropping Indexes](#dropping-indexes)
     - [Foreign Key Constraints](#foreign-key-constraints)
 
 <a name="introduction"></a>
@@ -410,6 +410,13 @@ Laravel uses the `utf8mb4` character set by default, which includes support for 
 
 Alternatively, you may enable the `innodb_large_prefix` option for your database. Refer to your database's documentation for instructions on how to properly enable this option.
 
+<a name="renaming-indexes"></a>
+### Renaming Indexes
+
+To rename an index, you may use the `renameIndex` method. This method accepts the current index name as its first argument and the desired name as its second argument:
+
+    $table->renameIndex('from', 'to')
+
 <a name="dropping-indexes"></a>
 ### Dropping Indexes
 
@@ -427,13 +434,6 @@ If you pass an array of columns into a method that drops indexes, the convention
     Schema::table('geo', function (Blueprint $table) {
         $table->dropIndex(['state']); // Drops index 'geo_state_index'
     });
-
-<a name="renaming-indexes"></a>
-### Renaming Indexes
-
-To rename an index, specify the existing index and then the new index name:
-
-    $table->renameIndex('from', 'to')
 
 <a name="foreign-key-constraints"></a>
 ### Foreign Key Constraints
