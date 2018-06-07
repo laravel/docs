@@ -16,6 +16,7 @@
 - [Indexes](#indexes)
     - [Creating Indexes](#creating-indexes)
     - [Dropping Indexes](#dropping-indexes)
+    - [Renaming Indexes](#renaming-indexes)
     - [Foreign Key Constraints](#foreign-key-constraints)
 
 <a name="introduction"></a>
@@ -426,6 +427,13 @@ If you pass an array of columns into a method that drops indexes, the convention
     Schema::table('geo', function (Blueprint $table) {
         $table->dropIndex(['state']); // Drops index 'geo_state_index'
     });
+
+<a name="renaming-indexes"></a>
+### Renaming Indexes
+
+To rename an index, specify the existing index and then the new index name:
+
+    $table->renameIndex('from', 'to')
 
 <a name="foreign-key-constraints"></a>
 ### Foreign Key Constraints
