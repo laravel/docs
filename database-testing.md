@@ -5,7 +5,7 @@
 - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
 - [Writing Factories](#writing-factories)
     - [Factory States](#factory-states)
-    - [After Callbacks](#after-callbacks)
+    - [Factory Callbacks](#factory-callbacks)
 - [Using Factories](#using-factories)
     - [Creating Models](#creating-models)
     - [Persisting Models](#persisting-models)
@@ -112,19 +112,27 @@ If your state requires calculation or a `$faker` instance, you may use a Closure
         ];
     });
 
-<a name="after-callbacks"></a>
-### After Callbacks
+<a name="factory-callbacks"></a>
+### Factory Callbacks
 
-After callbacks give you the ability to perform aditional actions after you've created or made a model. For example, you can create a default account for your user and grant access to it with an after callback.
+Factory callbacks are registered using the `afterMaking` and `afterCreating` methods, and allow you to perform additional tasks after making or creating a model. For example, you may use callbacks to relate additional models to the created model:
+
+    $factory->afterMaking(App\User::class, function ($user, $faker) {
+        // ...
+    });
 
     $factory->afterCreating(App\User::class, function ($user, $faker) {
         $user->accounts()->save(factory(App\Account::class)->make());
     });
 
-You can even define after callbacks for states.
+You may also define callbacks for [factory states](#factory-states):
+
+    $factory->afterMakingState(App\User::class, 'delinquent', function ($user, $faker) {
+        // ...
+    });
 
     $factory->afterCreatingState(App\User::class, 'delinquent', function ($user, $faker) {
-        // Perform actions after a deliquent state was applied...
+        // ...
     });
 
 <a name="using-factories"></a>
