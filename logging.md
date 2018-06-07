@@ -196,12 +196,12 @@ Once you have configured the `tap` option on your channel, you're ready to defin
 
 Monolog has a variety of [available handlers](https://github.com/Seldaek/monolog/tree/master/src/Monolog/Handler). In some cases, the type of logger you wish to create is merely a Monolog driver with an instance of a specific handler.  These channels can be created using the `monolog` driver.
 
-When using the `monolog` driver, the `handler` configuration option is used to specify which handler will be instantiated. Optionally, any constructor parameters the handler needs may be specified using the `with` configuration option:
+When using the `monolog` driver, the `handler` configuration option is used to specify which handler will be instantiated. Optionally, any constructor parameters the handler needs may be specified using the `handler_with` configuration option:
 
     'logentries' => [
         'driver'  => 'monolog',
         'handler' => Monolog\Handler\SyslogUdpHandler::class,
-        'with' => [
+        'handler_with' => [
             'host' => 'my.logentries.internal.datahubhost.company.com',
             'port' => '10000',
         ],
