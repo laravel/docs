@@ -22,6 +22,8 @@ All of your worker configuration is stored in a single, simple configuration fil
 
 > {note} Due to its usage of async process signals, Horizon requires PHP 7.1+.
 
+> {note} It requires `proc_open`. Make sure your server has this function enabled. For example, Google App Engine user can refer [here](https://cloud.google.com/appengine/docs/flexible/php/runtime#disabled_functions) to enable it
+
 You may use Composer to install Horizon into your Laravel project:
 
     composer require laravel/horizon
