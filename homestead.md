@@ -9,6 +9,7 @@
     - [Installing MariaDB](#installing-mariadb)
     - [Installing Elasticsearch](#installing-elasticsearch)
     - [Installing Neo4j](#installing-neo4j)
+    - [Installing MongoDB](#installing-mongodb)
     - [Aliases](#aliases)
 - [Daily Usage](#daily-usage)
     - [Accessing Homestead Globally](#accessing-homestead-globally)
@@ -241,6 +242,16 @@ To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml
 
 The default installation will set the database username to `homestead` and corresponding password to `secret`. To access the Neo4j browser, visit `http://homestead.test:7474` via your web browser. The ports `7687` (Bolt), `7474` (HTTP), and `7473` (HTTPS) are ready to serve requests from the Neo4j client.
 
+<a name="installing-mongodb"></a>
+
+### Installing MongoDB
+
+[MongoDB](https://www.mongodb.com/) is a NoSQL database. To install MongoDB Community Edition, update your `Homestead.yaml` file with the following configuration option:
+
+    mongodb: true
+
+The default installation will set the database username to `homestead` and corresponding password to `secret`.
+
 <a name="aliases"></a>
 ### Aliases
 
@@ -419,6 +430,7 @@ By default, the following ports are forwarded to your Homestead environment:
 - **HTTPS:** 44300 &rarr; Forwards To 443
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **PostgreSQL:** 54320 &rarr; Forwards To 5432
+- **MongoDB:** 27017 &rarr; Forwards To 27017
 - **Mailhog:** 8025 &rarr; Forwards To 8025
 - **Minio:** 9600 &rarr; Forwards To 9600
 </div>
