@@ -960,7 +960,13 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
 If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:
 
     'email' => Rule::unique('users')->ignore($user->id, 'user_id')
+    
+**Forcing A Unique Rule To Ignore A Given Model:**
 
+Alternatively, you can pass an existing model to the `ignore` method, behind the scenes it will automatically use the value and column name of the model's primary key.
+
+    'email' => Rule::unique('users')->ignore($user);
+    
 **Adding Additional Where Clauses:**
 
 You may also specify additional query constraints by customizing the query using the `where` method. For example, let's add a constraint that verifies the `account_id` is `1`:
