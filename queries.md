@@ -190,12 +190,12 @@ The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clau
 
 #### `havingRaw / orHavingRaw`
 
-The `havingRaw` and `orHavingRaw` methods may be used to set a raw string as the value of the `having` clause:
+The `havingRaw` and `orHavingRaw` methods may be used to set a raw string as the value of the `having` clause. These methods accept an optional array of bindings as their second argument:
 
     $orders = DB::table('orders')
                     ->select('department', DB::raw('SUM(price) as total_sales'))
                     ->groupBy('department')
-                    ->havingRaw('SUM(price) > 2500')
+                    ->havingRaw('SUM(price) > ?', [2500])
                     ->get();
 
 #### `orderByRaw`
