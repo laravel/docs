@@ -156,6 +156,9 @@ Sometimes you may have two classes that utilize the same interface, but you wish
               ->give(function () {
                   return Storage::disk('s3');
               });
+              
+> {tip} Automatic injection in a controller works only in the contructor
+
 
 <a name="tagging"></a>
 ### Tagging
