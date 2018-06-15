@@ -244,6 +244,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertLocation](#assert-location)
 [assertNotFound](#assert-not-found)
+[assertOk](#assert-ok)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertSee](#assert-see)
@@ -397,6 +398,13 @@ Assert that the response has the given URI value in the `Location` header:
 Assert that the response has a not found status code:
 
     $response->assertNotFound();
+
+<a name="assert-ok"></a>
+#### assertOk
+
+Assert that the response has a 200 status code:
+
+    $response->assertOk();
 
 <a name="assert-plain-cookie"></a>
 #### assertPlainCookie
