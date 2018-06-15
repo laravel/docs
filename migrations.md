@@ -350,8 +350,6 @@ You may drop multiple columns from a table by passing an array of column names t
 
 #### Available Command Aliases
 
-Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s).
-
 Command  |  Description
 -------  |  -----------
 `$table->dropRememberToken();`  |  Drop the `remember_token` column.
@@ -383,6 +381,8 @@ Laravel will automatically generate a reasonable index name, but you may pass a 
     $table->unique('email', 'unique_email');
 
 #### Available Index Types
+
+Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s).
 
 Command  |  Description
 -------  |  -----------
