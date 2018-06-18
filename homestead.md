@@ -501,7 +501,7 @@ To enable automatic exports simply add the following line to `Homestead.yaml`:
 
     backup: true
 
-The next time you run `vagrant destroy` Homestead will export your databases to `mysql_backup` and `postgres_backup` respectively. These folders can be found in the folder where you cloned Homestead or the root of your project if you are using the [per project installation](per-project-installation) method. 
+The next time you run `vagrant destroy` Homestead will export your databases to `mysql_backup` and `postgres_backup` respectively. These folders can be found in the folder where you cloned Homestead or the root of your project if you are using the [per project installation](#per-project-installation) method. 
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
