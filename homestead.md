@@ -25,6 +25,7 @@
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
     - [Mail](#mail)
+    - [Database Backups](#databast-backups)
 - [Network Interfaces](#network-interfaces)
 - [Updating Homestead](#updating-homestead)
 - [Provider Specific Settings](#provider-specific-settings)
@@ -104,7 +105,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd ~/Homestead
 
     // Clone the desired release...
-    git checkout v7.4.2
+    git checkout v7.8.0
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -490,6 +491,17 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 ### Mail
 
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
+
+<a name="database-backups"></a>
+### Database Backups
+
+Homestead supports automatically backing up your MySQL or MariaDB and Postgres databases specified in `Homestead.yaml`. You must be using Vagrant 2.1.0 or greater (or have the `vagrant-triggers` plugin installed).
+
+To enable automatic exports simply add the following line to `Homestead.yaml`:
+
+    backup: true
+
+The next time you run `vagrant destroy` Homestead will export your databases to `mysql_backup` and `postgres_backup` respectively. These folders can be found in the folder where you cloned Homestead or the root of your project if you are using the [per project installation](per-project-installation) method. 
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
