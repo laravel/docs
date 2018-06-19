@@ -101,7 +101,7 @@ This `getDateFormat` method is now `public` instead of `protected`.
 
 #### New Configuration File
 
-All hashing configuration is now housed in its own `config/hashing.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/develop/config/hashing.php) in your own application. Most likely, you should maintain the `bcrypt` driver as your default driver. However, `argon` is also supported.
+All hashing configuration is now housed in its own `config/hashing.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/master/config/hashing.php) in your own application. Most likely, you should maintain the `bcrypt` driver as your default driver. However, `argon` is also supported.
 
 ### Helpers
 
@@ -117,7 +117,7 @@ In Laravel 5.6, Blade and the `e` helper will double encode special characters b
 
 #### New Configuration File
 
-All logging configuration is now housed in its own `config/logging.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/develop/config/logging.php) in your own application and tweak the settings based on your application's needs.
+All logging configuration is now housed in its own `config/logging.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/master/config/logging.php) in your own application and tweak the settings based on your application's needs.
 
 The `log` and `log_level` configuration options may be removed from the `config/app.php` configuration file.
 
