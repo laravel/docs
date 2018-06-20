@@ -147,7 +147,7 @@ If you would like to delay the delivery of the notification, you may chain the `
 
 Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the `Notification::route` method, you may specify ad-hoc notification routing information before sending the notification:
 
-    Notification::route('mail', 'taylor@laravel.com')
+    Notification::route('mail', 'taylor@example.com')
                 ->route('nexmo', '5555555555')
                 ->notify(new InvoicePaid($invoice));
 
