@@ -615,6 +615,8 @@ The field under validation must be able to be cast as a boolean. Accepted input 
 
 The field under validation must have a matching field of `foo_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
 
+If you want to use another matching field format you feel free to use [`same`](#rule-same) rule.
+
 <a name="rule-date"></a>
 #### date
 
