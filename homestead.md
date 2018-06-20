@@ -15,6 +15,7 @@
     - [Accessing Homestead Globally](#accessing-homestead-globally)
     - [Connecting Via SSH](#connecting-via-ssh)
     - [Connecting To Databases](#connecting-to-databases)
+    - [Database Backups](#database-backups)
     - [Adding Additional Sites](#adding-additional-sites)
     - [Environment Variables](#environment-variables)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
@@ -25,7 +26,6 @@
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
     - [Mail](#mail)
-    - [Database Backups](#database-backups)
 - [Network Interfaces](#network-interfaces)
 - [Updating Homestead](#updating-homestead)
 - [Provider Specific Settings](#provider-specific-settings)
@@ -311,6 +311,15 @@ To connect to your MySQL or PostgreSQL database from your host machine's databas
 
 > {note} You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel database configuration file since Laravel is running _within_ the virtual machine.
 
+<a name="database-backups"></a>
+### Database Backups
+
+Homestead can automatically backup your database when your Vagrant box is destroyed. To utilize this feature, you must be using Vagrant 2.1.0 or greater. Or, if you are using an older version of Vagrant, you must install the `vagrant-triggers` plug-in. To enable automatic database backups, add the following line to your `Homestead.yaml` file:
+
+    backup: true
+
+Once configured, Homestead will export your databases to `mysql_backup` and `postgres_backup` directories when the `vagrant destroy` command is executed. These directories can be found in the folder where you cloned Homestead or in the root of your project if you are using the [per project installation](#per-project-installation) method.
+
 <a name="adding-additional-sites"></a>
 ### Adding Additional Sites
 
@@ -491,17 +500,6 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 ### Mail
 
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
-
-<a name="database-backups"></a>
-### Database Backups
-
-Homestead supports automatically backing up your MySQL or MariaDB and Postgres databases specified in `Homestead.yaml`. You must be using Vagrant 2.1.0 or greater (or have the `vagrant-triggers` plugin installed).
-
-To enable automatic exports simply add the following line to `Homestead.yaml`:
-
-    backup: true
-
-The next time you run `vagrant destroy` Homestead will export your databases to `mysql_backup` and `postgres_backup` respectively. These folders can be found in the folder where you cloned Homestead or the root of your project if you are using the [per project installation](#per-project-installation) method. 
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
