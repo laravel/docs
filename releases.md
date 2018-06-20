@@ -18,6 +18,16 @@ Paradigm shifting releases are separated by many years and represent fundamental
 
 For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
 
+| Version | Release | Bug Fixes Until | Security Fixes Until |
+| --- | --- | --- | --- |
+| 5.0 | February 4th, 2015 | August 4th, 2015 | February 4th, 2016 |
+| 5.1 (LTS) | June 9th, 2015 | June 9th, 2017 | June 9th, 2018 |
+| 5.2 | December 21st, 2015 | June 21st, 2016 | December 21st, 2016 |
+| 5.3 | August 23rd, 2016 | February 23rd, 2017 | August 23rd, 2017 |
+| 5.4 | January 24th, 2017 | July 24th, 2017 | January 24th, 2018 |
+| 5.5 (LTS) | August 30th, 2017 | August 30th, 2019 | August 30th, 2020 |
+| 5.6 | February 7th, 2018 | August 7th, 2018 | February 7th, 2019 |
+
 <a name="laravel-5.6"></a>
 ## Laravel 5.6
 
