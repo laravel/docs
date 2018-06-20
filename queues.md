@@ -49,6 +49,13 @@ Note that each connection configuration example in the `queue` configuration fil
 Some applications may not need to ever push jobs onto multiple queues, instead preferring to have one simple queue. However, pushing jobs to multiple queues can be especially useful for applications that wish to prioritize or segment how jobs are processed, since the Laravel queue worker allows you to specify which queues it should process by priority. For example, if you push jobs to a `high` queue, you may run a worker that gives them higher processing priority:
 
     php artisan queue:work --queue=high,default
+ 
+You may also a assign a queue from within a Job by using the ``` $this->queue = 'my_queue' ``` expression.
+    
+    public __construct(){
+        $this->queue = 'my_queue';
+    }
+This will allow you to dispatch the job to that queue specifically and removes the need for the ```onQueue``` method call.
 
 <a name="driver-prerequisites"></a>
 ### Driver Notes & Prerequisites
