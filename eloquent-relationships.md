@@ -456,7 +456,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 
 #### Table Structure
 
-Polymorphic relations allow a model to belong to more than one other model on a single association. For example, imagine users of your application can "comment" both posts and videos. Using polymorphic relationships, you can use a single `comments` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
+Polymorphic relations allow a model to belong to more than one other model on a single association. For example, imagine users of your application can "comment" on both posts and videos. Using polymorphic relationships, you can use a single `comments` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
 
     posts
         id - integer
@@ -555,7 +555,7 @@ You may register the `morphMap` in the `boot` function of your `AppServiceProvid
 
 #### Table Structure
 
-In addition to traditional polymorphic relations, you may also define "many-to-many" polymorphic relations. For example, a blog `Post` and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation allows you to have a single list of unique tags that are shared across blog posts and videos. First, let's examine the table structure:
+In addition to traditional polymorphic relations, you may also define "many-to-many" polymorphic relations. The difference is that, in a traditional polymorphic relation the same model can belong to more than one other model but it will be n number of different records of that model belonging to the other n number of other models respectively. Lets again consider the above example of `comments` on `posts` and `videos`, a same `comment` cannot belong to a `post` as well as a `video` at the same time. But there might be situations when you want the same one record of a model to belong to more than one other model, thats where "many-to-many" polymorphic relations are useful. For example, a `Post` and a `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation allows you to have a single list of unique tags that are shared across posts and videos thereby making it possible to relate the same `tag` to both, a `post` and a `video`. First, let's examine the table structure:
 
     posts
         id - integer
