@@ -27,6 +27,8 @@ Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.5 support.
 
+If you're using browser-kit-testing, you'll need to update the dependency to `2.*` to be compatible with phpunit `~6.0`.
+
 #### Laravel Installer
 
 > {tip} If you commonly use the Laravel installer via `laravel new`, you should update your Laravel installer package using the `composer global update` command.
