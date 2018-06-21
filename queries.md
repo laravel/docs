@@ -254,6 +254,23 @@ If you would like to use a "where" style clause on your joins, you may use the `
             })
             ->get();
 
+#### Sub Query Joins
+
+Should you need to work with a sub query instead of a table, you may use the `joinSub`, `leftJoinSub` or `rightJoinSub` methods. These provide a convenient way to use query bindings in a sub query context.
+
+Each of those methods receive two required arguments, the sub query and its alias, then offer the same signature as the `join` method. The sub query can either be raw SQL, a `Closure` or another query builder.
+
+    $postsQuery = DB::table('posts')
+                       ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at')
+                       ->where('is_published', true)
+                       ->groupBy('user_id');
+
+    DB::table('users')
+            ->joinSub($postsQuery, 'latest_published_posts', function($join) {
+                $join->on('users.id', '=', 'latest_published_posts.user_id');
+            })
+            ->get();
+
 <a name="unions"></a>
 ## Unions
 
