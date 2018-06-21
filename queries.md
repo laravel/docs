@@ -261,7 +261,7 @@ Should you need to work with a sub query instead of a table, you may use the `jo
 Each of those methods receive two required arguments, the sub query and its alias, then offer the same signature as the `join` method. The sub query can either be raw SQL, a `Closure` or another query builder.
 
     $postsQuery = DB::table('posts')
-                       ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at')
+                       ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
                        ->where('is_published', true)
                        ->groupBy('user_id');
 
