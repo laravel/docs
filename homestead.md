@@ -64,6 +64,8 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Memcached
 - Beanstalkd
 - Mailhog
+- Neo4j (Optional)
+- MongoDB (Optional)
 - Elasticsearch (Optional)
 - ngrok
 - wp-cli
