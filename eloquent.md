@@ -13,13 +13,13 @@
     - [Updates](#updates)
     - [Mass Assignment](#mass-assignment)
     - [Other Creation Methods](#other-creation-methods)
-- [Comparing Models](#comparing-models)
 - [Deleting Models](#deleting-models)
     - [Soft Deleting](#soft-deleting)
     - [Querying Soft Deleted Models](#querying-soft-deleted-models)
 - [Query Scopes](#query-scopes)
     - [Global Scopes](#global-scopes)
     - [Local Scopes](#local-scopes)
+- [Comparing Models](#comparing-models)
 - [Events](#events)
     - [Observers](#observers)
 
@@ -414,17 +414,6 @@ You may also come across situations where you want to update an existing model o
         ['price' => 99]
     );
 
-<a name="comparing-models"></a>
-## Comparing Models
-
-You may come across situations where you want to compare two objects of the same model. It can be useful to determine if both the model objects refer the same record in the database or not. Laravel provides an `is()` method to do it in a neat way:
-
-    // an example usecase
-
-    if (auth()->user()->is($post->user)) {
-        //
-    }
-
 <a name="deleting-models"></a>
 ## Deleting Models
 
@@ -726,6 +715,15 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
 Now, you may pass the parameters when calling the scope:
 
     $users = App\User::ofType('admin')->get();
+
+<a name="comparing-models"></a>
+## Comparing Models
+
+Sometimes you may need to determine if two models are the "same". The `is` method may be used to quickly verify two models have same primary key, table, and database connection:
+
+    if ($post->is($anotherPost)) {
+        //
+    }
 
 <a name="events"></a>
 ## Events
