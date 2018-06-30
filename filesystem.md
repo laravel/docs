@@ -416,7 +416,7 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
         {
             Storage::extend('dropbox', function ($app, $config) {
                 $client = new DropboxClient(
-                    $config['authorizationToken']
+                    $config['authorization_token']
                 );
 
                 return new Filesystem(new DropboxAdapter($client));
