@@ -751,7 +751,13 @@ To get started, define a `$dispatchesEvents` property on your Eloquent model tha
 <a name="observers"></a>
 ### Observers
 
-If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. Laravel does not include a default directory for observers, so you may create any directory you like to house your observer classes:
+#### Defining Observers
+
+The easiest way to create a observer instance is using the `make:observer`:
+
+    php artisan make:observer UserObserver --model=User
+
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument.
 
     <?php
 
@@ -762,7 +768,7 @@ If you are listening for many events on a given model, you may use observers to 
     class UserObserver
     {
         /**
-         * Listen to the User created event.
+         * Handle to the User "created" event.
          *
          * @param  \App\User  $user
          * @return void
@@ -773,12 +779,23 @@ If you are listening for many events on a given model, you may use observers to 
         }
 
         /**
-         * Listen to the User deleting event.
+         * Handle the User "updated" event.
          *
          * @param  \App\User  $user
          * @return void
          */
-        public function deleting(User $user)
+        public function updated(User $user)
+        {
+            //
+        }
+
+        /**
+         * Handle the User "deleted" event.
+         *
+         * @param  \App\User  $user
+         * @return void
+         */
+        public function deleted(User $user)
         {
             //
         }
