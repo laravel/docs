@@ -440,6 +440,8 @@ If you pass an array of columns into a method that drops indexes, the convention
 
 Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
 
+> {note} Local columns must have the same `signed` or `unsigned` signature as the foreign column they are indexing. Laravel's `increment` column type defaults to `unsigned`, so take care to create your local key as `unsigned` as well.
+
     Schema::table('posts', function (Blueprint $table) {
         $table->unsignedInteger('user_id');
 
