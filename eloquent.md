@@ -763,11 +763,11 @@ To get started, define a `$dispatchesEvents` property on your Eloquent model tha
 
 #### Defining Observers
 
-The easiest way to create a observer instance is using the `make:observer`:
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
     php artisan make:observer UserObserver --model=User
 
-If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument.
+This command will place the new observer in your `App/Observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
 
     <?php
 
