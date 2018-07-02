@@ -18,6 +18,7 @@
 - [Working With Error Messages](#working-with-error-messages)
     - [Custom Error Messages](#custom-error-messages)
 - [Available Validation Rules](#available-validation-rules)
+- [Upload Failures](#upload-failures)
 - [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Validating Arrays](#validating-arrays)
 - [Custom Validation Rules](#custom-validation-rules)
@@ -973,6 +974,11 @@ You may also specify additional query constraints by customizing the query using
 #### url
 
 The field under validation must be a valid URL.
+
+<a name="upload-failures"></a>
+#### Upload Failures
+
+When a file fails to upload due to e.g. size restrictions of PHP, Laravel will automatically bail validating the attribute and add a `uploaded` failure to the error bag for that attribute. This will take the format of `<attribute>.uploaded` e.g. if the attribute being validated is named "image" a `image.uploaded` error will be added to the bag.
 
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules
