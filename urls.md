@@ -126,7 +126,9 @@ The `action` function generates a URL for the given controller action. You do no
 
     $url = action('HomeController@index');
 
-You can also reference actions with a callable-like syntax.
+You may also reference actions with a "callable" array syntax:
+
+    use App\Http\Controllers\HomeController;
 
     $url = action([HomeController::class, 'index']);
 
