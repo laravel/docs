@@ -23,7 +23,7 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
-    - [Redirects](/docs/{{version}}/redirects.md)
+    - [Redirects](/docs/{{version}}/redirects)
     - [Views](/docs/{{version}}/views)
     - [URL Generation](/docs/{{version}}/urls)
     - [Session](/docs/{{version}}/session)
