@@ -46,6 +46,8 @@ The `--model` option may be used to indicate the name of the model created by th
 <a name="resetting-the-database-after-each-test"></a>
 ## Resetting The Database After Each Test
 
+> {note} Resetting the database will use migrations to make an empty database. This means that any tables not created through migrations will be deleted.
+
 It is often useful to reset your database after each test so that data from a previous test does not interfere with subsequent tests. The `RefreshDatabase` trait takes the most optimal approach to migrating your test database depending on if you are using an in-memory database or a traditional database. Use the trait on your test class and everything will be handled for you:
 
     <?php
