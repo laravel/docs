@@ -393,7 +393,7 @@ Assert that the session contains the given piece of data:
 
 Assert that the session has a given list of values:
 
-    $response->assertSessionHasAll($key, $value = null);
+    $response->assertSessionHasAll(array $data);
 
 <a name="assert-session-has-errors"></a>
 #### assertSessionHasErrors
