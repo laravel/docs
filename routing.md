@@ -170,7 +170,7 @@ Named routes allow the convenient generation of URLs or redirects for specific r
 
 You may also specify route names for controller actions:
 
-    Route::get('user/profile', 'UserController@showProfile')->name('profile');
+    Route::get('user/profile', 'UserProfileController@show')->name('profile');
 
 #### Generating URLs To Named Routes
 
