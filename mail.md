@@ -50,12 +50,12 @@ To use the SparkPost driver, first install Guzzle, then set the `driver` option 
         'secret' => 'your-sparkpost-key',
     ],
 
-Optionally, you may also define which [API endpoint](https://developers.sparkpost.com/api/#header-endpoints) to use:
+If necessary, you may also configure which [API endpoint](https://developers.sparkpost.com/api/#header-endpoints) should be used:
 
     'sparkpost' => [
         'secret' => 'your-sparkpost-key',
         'options' => [
-            'endpoint' => 'sparkpost-api', //The default is https://api.sparkpost.com/api/v1
+            'endpoint' => 'https://api.eu.sparkpost.com/api/v1',
         ]
     ],
 
