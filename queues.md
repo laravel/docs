@@ -541,6 +541,10 @@ Then, when running your [queue worker](#running-the-queue-worker), you should sp
 
     php artisan queue:work redis --tries=3
 
+When a job fails, it is retried instantly. You can specify a waiting time between the retries with the `--delay` option. This is useful when making API calls with potentially unstable connections.
+
+    php artisan queue:work redis --delay=300
+
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Cleaning Up After Failed Jobs
 
