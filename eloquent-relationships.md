@@ -734,7 +734,7 @@ You may use "dot" notation to execute a query against a nested relationship. For
 <a name="counting-related-models"></a>
 ### Counting Related Models
 
-If you want to count the number of results from a relationship without actually loading them you may use the `withCount` method, which will place a `{relation}_count` column on your resulting models. For example:
+If you want to count the number of results from a relationship without actually loading them you may use the `withCount` method, which will place a `{related_table_name}_count` column on your resulting models. For example:
 
     $posts = App\Post::withCount('comments')->get();
 
