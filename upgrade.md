@@ -53,6 +53,25 @@ The `loginPath()` method has been removed from `Illuminate\Foundation\Auth\Authe
 
 The `Illuminate\Auth\Access\UnauthorizedException` has been renamed to `Illuminate\Auth\Access\AuthorizationException`. This is unlikely to affect your application if you are not manually catching this exception.
 
+#### The `AuthorizesResources` Trait
+
+You should add the `AuthorizesResources` trait to your `app/Http/Controllers/Controller.php` file.
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Foundation\Bus\DispatchesJobs;
+    use Illuminate\Routing\Controller as BaseController;
+    use Illuminate\Foundation\Validation\ValidatesRequests;
+    use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+    use Illuminate\Foundation\Auth\Access\AuthorizesResources;
+
+    class Controller extends BaseController
+    {
+        use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
+    }
+
 ### Collections
 
 #### Eloquent Base Collections
