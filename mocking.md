@@ -220,7 +220,40 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
 <a name="storage-fake"></a>
 ## Storage Fake
 
-The `Storage` facade's `fake` method allows you to easily generate a fake disk that, combined with the file generation utilities of the `UploadedFile` class, greatly simplifies the testing of file uploads. For example:
+The `Storage` facade's `fake` method replaces the given disk with a local testing disk that, combined with the file generation utilities of the `UploadedFile` class, greatly simplifies the testing of file uploads. For example:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use Illuminate\Http\UploadedFile;
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+    class ExampleTest extends TestCase
+    {
+        public function testAvatarUpload()
+        {
+            // Pass the name of the disk that is used to store your avatar files
+            Storage::fake('avatars');
+
+            $response = $this->json('POST', '/avatar', [
+                'avatar' => UploadedFile::fake()->image('avatar.jpg')
+            ]);
+
+            // Assert the file was stored...
+            Storage::disk('avatars')->assertExists('avatar.jpg');
+
+            // Assert a file does not exist...
+            Storage::disk('avatars')->assertMissing('missing.jpg');
+        }
+    }
+
+> {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
+
+If your file upload logic is in a controller that is responsible to handle web requests and not json API calls, chances are they redirect to a route and not return a response containing the data like in the example above. Also, if you are using the `store()` method to upload and store the files, you might not know the name of the file since laravel would then use a random hash name to store it. To assert that the file exists, you will need its name. If that's the case here is a more appropriate example:
 
     <?php
 
@@ -237,20 +270,20 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
         public function testAvatarUpload()
         {
             Storage::fake('avatars');
+            
+            $file = UploadedFile::fake()->image('avatar.jpg');
 
-            $response = $this->json('POST', '/avatar', [
-                'avatar' => UploadedFile::fake()->image('avatar.jpg')
+            $this->post('/avatar', [
+                'avatar' => $file
             ]);
 
-            // Assert the file was stored...
-            Storage::disk('avatars')->assertExists('avatar.jpg');
+            // Assert a file exist
+            Storage::disk('avatars')->assertExists($file->hashName());
 
             // Assert a file does not exist...
             Storage::disk('avatars')->assertMissing('missing.jpg');
         }
     }
-
-> {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
 
 <a name="mocking-facades"></a>
 ## Facades
