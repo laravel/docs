@@ -10,6 +10,7 @@
     - [Installing MongoDB](#installing-mongodb)
     - [Installing Elasticsearch](#installing-elasticsearch)
     - [Installing Neo4j](#installing-neo4j)
+    - [Installing Minio (S3 Storage)](#installing-minio)
     - [Aliases](#aliases)
 - [Daily Usage](#daily-usage)
     - [Accessing Homestead Globally](#accessing-homestead-globally)
@@ -254,6 +255,15 @@ To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml
 
 The default Neo4j installation will set the database username to `homestead` and corresponding password to `secret`. To access the Neo4j browser, visit `http://homestead.test:7474` via your web browser. The ports `7687` (Bolt), `7474` (HTTP), and `7473` (HTTPS) are ready to serve requests from the Neo4j client.
 
+<a name="installing-minio"></a>
+### Installing Minio (S3 Storage)
+
+Minio is an open source object storage server with Amazon S3 compatible API. To install Minio, update your `Homestead.yaml` file with the following configuration option:
+
+    minio: true
+
+Minio comes installed on port 9600. You can access the control panel by visiting `http://homestead:9600/` with the `homestead` as the Access Key and `secretkey` as the Secret Key. The region to use for Minio is `us-east-1`.
+
 <a name="aliases"></a>
 ### Aliases
 
@@ -406,11 +416,9 @@ Mailhog allows you to easily catch your outgoing email and examine it without ac
 <a name="configuring-minio"></a>
 ### Configuring Minio
 
-Minio provides an S3 compatible storage layer on your Homestead machine via port 9600. To use Minio, update your `Homestead.yaml` file with the following configuration option:
+You will need to log into the control panel (http://homestead:9600) with the credentials `homestead` and `secretkey`. From there you will be able to create buckets and assign their permissions.
 
-    minio: true
-
-Next, you will need to adjust the S3 disk configuration in your `config/filesystems.php` configuration file. You should add the `use_path_style_endpoint` option to the disk configuration, as well as update the `url` key to `endpoint`:
+In order to use Minio you will need to adjust the S3 disk configuration in your `config/filesystems.php` configuration file. You will need to add the `use_path_style_endpoint` option to the disk configuration, as well as change the `url` key to `endpoint`:
 
     's3' => [
         'driver' => 's3',
@@ -422,7 +430,7 @@ Next, you will need to adjust the S3 disk configuration in your `config/filesyst
         'use_path_style_endpoint' => true
     ]
 
-Finally, you should update your `.env` file with the proper `AWS_URL`:
+Finally, update your `.env` file like so:
 
     AWS_ACCESS_KEY_ID=homestead
     AWS_SECRET_ACCESS_KEY=secretkey
