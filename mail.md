@@ -380,9 +380,9 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
 
 #### Button Component
 
-The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`. You may add as many button components to a message as you wish:
+The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:
 
-    @component('mail::button', ['url' => $url, 'color' => 'green'])
+    @component('mail::button', ['url' => $url, 'color' => 'success'])
     View Order
     @endcomponent
 
