@@ -469,7 +469,7 @@ The query above will produce the following SQL:
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7 and PostgreSQL. To query a JSON column, use the `->` operator:
+Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7, PostgreSQL, and SQL Server 2016. To query a JSON column, use the `->` operator:
 
     $users = DB::table('users')
                     ->where('options->language', 'en')
@@ -478,6 +478,18 @@ Laravel also supports querying JSON column types on databases that provide suppo
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
+                    
+You may use `whereJsonContains` to query JSON arrays:
+                    
+    $users = DB::table('users')
+                    ->whereJsonContains('options->languages', 'en')
+                    ->get();
+
+MySQL and PostgreSQL support `whereJsonContains` with multiple values:
+
+    $users = DB::table('users')
+                    ->whereJsonContains('options->languages', ['en', 'de'])
+                    ->get();                    
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit, & Offset
