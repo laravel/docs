@@ -828,7 +828,7 @@ You may not always need every column from the relationships you are retrieving. 
 
     $users = App\Book::with('author:id,name')->get();
 
-> {note} When using this feature, you should always include the `id` column in the list of columns you wish to retrieve.
+> {note} When using this feature, you should always include the foreign key column (here: `id`) in the list of columns you wish to retrieve.
 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
