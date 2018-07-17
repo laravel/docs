@@ -64,6 +64,8 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Memcached
 - Beanstalkd
 - Mailhog
+- Neo4j (Optional)
+- MongoDB (Optional)
 - Elasticsearch (Optional)
 - ngrok
 - wp-cli
@@ -105,7 +107,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd ~/Homestead
 
     // Clone the desired release...
-    git checkout v7.8.0
+    git checkout v7.12.0
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -404,11 +406,13 @@ Mailhog allows you to easily catch your outgoing email and examine it without ac
 <a name="configuring-minio"></a>
 ### Configuring Minio
 
-Minio provides an S3 compatible storage layer on your Homestead machine via port 9600. To use Minio, update your `Homestead.yaml` file with the following configuration option:
+Minio is an open source object storage server with an Amazon S3 compatible API. To install Minio, update your `Homestead.yaml` file with the following configuration option:
 
     minio: true
 
-Next, you will need to adjust the S3 disk configuration in your `config/filesystems.php` configuration file. You should add the `use_path_style_endpoint` option to the disk configuration, as well as update the `url` key to `endpoint`:
+By default, Minio is available on port 9600. You may access the Minio control panel by visiting `http://homestead:9600/`. The default access key is `homestead`, while the default secret key is `secretkey`. When accessing Minio, you should always use region `us-east-1`.
+
+In order to use Minio you will need to adjust the S3 disk configuration in your `config/filesystems.php` configuration file. You will need to add the `use_path_style_endpoint` option to the disk configuration, as well as change the `url` key to `endpoint`:
 
     's3' => [
         'driver' => 's3',
@@ -420,7 +424,7 @@ Next, you will need to adjust the S3 disk configuration in your `config/filesyst
         'use_path_style_endpoint' => true
     ]
 
-Finally, you should update your `.env` file with the proper `AWS_URL`:
+Finally, ensure your `.env` file has the following options:
 
     AWS_ACCESS_KEY_ID=homestead
     AWS_SECRET_ACCESS_KEY=secretkey

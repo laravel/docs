@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
+    - [Scoped Event Fakes](#scoped-event-fakes)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
@@ -88,6 +89,42 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
     }
 
 > {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
+
+<a name="scoped-event-fakes"></a>
+### Scoped Event Fakes
+
+If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Order;
+    use Tests\TestCase;
+    use App\Events\OrderCreated;
+    use Illuminate\Support\Facades\Event;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * Test order process.
+         */
+        public function testOrderProcess()
+        {
+            $order = Event::fakeFor(function () {
+                $order = factory(Order::class)->create();
+
+                Event::assertDispatched(OrderCreated::class);
+
+                return $order;
+            });
+
+            // Events are dispatched as normal and observers will run ...
+            $order->update([...]);
+        }
+    }
 
 <a name="mail-fake"></a>
 ## Mail Fake

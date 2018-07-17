@@ -254,6 +254,20 @@ If you would like to use a "where" style clause on your joins, you may use the `
             })
             ->get();
 
+#### Sub-Query Joins
+
+You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a sub-query. Each of these methods receive three arguments: the sub-query, its table alias, and a Closure that defines the related columns:
+
+    $latestPosts = DB::table('posts')
+                       ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
+                       ->where('is_published', true)
+                       ->groupBy('user_id');
+
+    $users = DB::table('users')
+            ->joinSub($latestPosts, 'latest_posts', function($join) {
+                $join->on('users.id', '=', 'latest_posts.user_id');
+            })->get();
+
 <a name="unions"></a>
 ## Unions
 
@@ -455,7 +469,7 @@ The query above will produce the following SQL:
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7 and PostgreSQL. To query a JSON column, use the `->` operator:
+Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7, PostgreSQL, and SQL Server 2016. To query a JSON column, use the `->` operator:
 
     $users = DB::table('users')
                     ->where('options->language', 'en')
@@ -464,6 +478,18 @@ Laravel also supports querying JSON column types on databases that provide suppo
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
+                    
+You may use `whereJsonContains` to query JSON arrays:
+                    
+    $users = DB::table('users')
+                    ->whereJsonContains('options->languages', 'en')
+                    ->get();
+
+MySQL and PostgreSQL support `whereJsonContains` with multiple values:
+
+    $users = DB::table('users')
+                    ->whereJsonContains('options->languages', ['en', 'de'])
+                    ->get();                    
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit, & Offset
@@ -531,7 +557,7 @@ Sometimes you may want clauses to apply to a query only when something else is t
     $role = $request->input('role');
 
     $users = DB::table('users')
-                    ->when($role, function ($query) use ($role) {
+                    ->when($role, function ($query, $role) {
                         return $query->where('role_id', $role);
                     })
                     ->get();
@@ -543,7 +569,7 @@ You may pass another Closure as the third parameter to the `when` method. This C
     $sortBy = null;
 
     $users = DB::table('users')
-                    ->when($sortBy, function ($query) use ($sortBy) {
+                    ->when($sortBy, function ($query, $sortBy) {
                         return $query->orderBy($sortBy);
                     }, function ($query) {
                         return $query->orderBy('name');

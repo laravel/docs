@@ -19,6 +19,7 @@
 - [Query Scopes](#query-scopes)
     - [Global Scopes](#global-scopes)
     - [Local Scopes](#local-scopes)
+- [Comparing Models](#comparing-models)
 - [Events](#events)
     - [Observers](#observers)
 
@@ -715,6 +716,15 @@ Now, you may pass the parameters when calling the scope:
 
     $users = App\User::ofType('admin')->get();
 
+<a name="comparing-models"></a>
+## Comparing Models
+
+Sometimes you may need to determine if two models are the "same". The `is` method may be used to quickly verify two models have same primary key, table, and database connection:
+
+    if ($post->is($anotherPost)) {
+        //
+    }
+
 <a name="events"></a>
 ## Events
 
@@ -751,7 +761,13 @@ To get started, define a `$dispatchesEvents` property on your Eloquent model tha
 <a name="observers"></a>
 ### Observers
 
-If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. Laravel does not include a default directory for observers, so you may create any directory you like to house your observer classes:
+#### Defining Observers
+
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+
+    php artisan make:observer UserObserver --model=User
+
+This command will place the new observer in your `App/Observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
 
     <?php
 
@@ -762,7 +778,7 @@ If you are listening for many events on a given model, you may use observers to 
     class UserObserver
     {
         /**
-         * Listen to the User created event.
+         * Handle to the User "created" event.
          *
          * @param  \App\User  $user
          * @return void
@@ -773,12 +789,23 @@ If you are listening for many events on a given model, you may use observers to 
         }
 
         /**
-         * Listen to the User deleting event.
+         * Handle the User "updated" event.
          *
          * @param  \App\User  $user
          * @return void
          */
-        public function deleting(User $user)
+        public function updated(User $user)
+        {
+            //
+        }
+
+        /**
+         * Handle the User "deleted" event.
+         *
+         * @param  \App\User  $user
+         * @return void
+         */
+        public function deleted(User $user)
         {
             //
         }

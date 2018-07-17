@@ -955,7 +955,7 @@ The `str_start` function adds a single instance of the given value to a string i
 
     // /this/string
 
-    $adjusted = str_start('/this/string/', '/');
+    $adjusted = str_start('/this/string', '/');
 
     // /this/string
 
