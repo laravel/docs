@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
-    - [Partial faking](#event-partial-faking)
+    - [Scoped Event Fakes](#scoped-event-fakes)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
@@ -90,10 +90,10 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
 
 > {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
 
-<a name="event-partial-faking"></a>
-### Partial faking
+<a name="scoped-event-fakes"></a>
+### Scoped Event Fakes
 
-If you want to prevent event listeners from being executed for only a specific part of your test, you can use the `fakeFor` method. This method will reset the original listeners after the callback. When using the `fakeFor`, assertions made after the code inside the callback:
+If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:
 
     <?php
 
@@ -114,10 +114,8 @@ If you want to prevent event listeners from being executed for only a specific p
         public function testOrderProcess()
         {
             $order = Event::fakeFor(function () {
-                // Events are faked and observers will not run ...
                 $order = factory(Order::class)->create();
 
-                // Assert an event was dispatched ...
                 Event::assertDispatched(OrderCreated::class);
 
                 return $order;
