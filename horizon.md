@@ -33,7 +33,7 @@ After installing Horizon, publish its assets using the `vendor:publish` Artisan 
 <a name="configuration"></a>
 ### Configuration
 
-After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure your worker options and each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
+After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure your worker options and each configuration option includes a description of its purpose, so be sure to thoroughly explore this file. Be sure to adjust your queue driver to `redis` in `config/queue.php` if you haven't already.
 
 #### Balance Options
 
