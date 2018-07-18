@@ -20,7 +20,7 @@ All of your worker configuration is stored in a single, simple configuration fil
 <a name="installation"></a>
 ## Installation
 
-> {note} Due to its usage of async process signals, Horizon requires PHP 7.1+.
+> {note} Due to its usage of async process signals, Horizon requires PHP 7.1+. Secondly, you should ensure that your queue driver is set to `redis` in your `queue` configuration file.
 
 You may use Composer to install Horizon into your Laravel project:
 
@@ -33,7 +33,7 @@ After installing Horizon, publish its assets using the `vendor:publish` Artisan 
 <a name="configuration"></a>
 ### Configuration
 
-After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure your worker options and each configuration option includes a description of its purpose, so be sure to thoroughly explore this file. Be sure to adjust your queue driver to `redis` in `config/queue.php` if you haven't already.
+After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure your worker options and each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
 
 #### Balance Options
 
