@@ -83,7 +83,7 @@ For example, if you'd like to use `.app` instead of `.test`, run `valet domain a
 
 #### Database
 
-If you need a database, try MySQL by running `brew install mysql` on your command line. Once MySQL has been installed, you may start it using the `brew services start mysql` command. You can then connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
+If you need a database, try MySQL by running `brew install mysql@5.7` on your command line. Once MySQL has been installed, you may start it using the `brew services start mysql` command. You can then connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
 
 <a name="upgrading"></a>
 ### Upgrading
