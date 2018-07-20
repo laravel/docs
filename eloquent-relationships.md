@@ -379,6 +379,10 @@ If you would like to define a custom model to represent the intermediate table o
         }
     }
 
+Again, by default, only the model keys will be present on the `UserRole` pivot object. If your pivot object contains extra attributes, you must specify them when defining the relationship:
+
+    return $this->belongsToMany('App\User')->withPivot('column1', 'column2')->using('App\UserRole');
+
 When defining the `UserRole` model, we will extend the `Pivot` class:
 
     <?php
