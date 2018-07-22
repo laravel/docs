@@ -92,6 +92,10 @@ If you would like to define a controller that only handles a single action, you 
         }
     }
 
+Using the `make:controller` Artisan command, we can quickly create such a controller:
+
+    php artisan make:controller ShowProfile --invokable
+
 When registering routes for single action controllers, you do not need to specify a method:
 
     Route::get('user/{id}', 'ShowProfile');
