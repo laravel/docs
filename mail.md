@@ -55,8 +55,8 @@ If necessary, you may also configure which [API endpoint](https://developers.spa
     'sparkpost' => [
         'secret' => 'your-sparkpost-key',
         'options' => [
-            'endpoint' => 'https://api.eu.sparkpost.com/api/v1',
-        ]
+            'endpoint' => 'https://api.eu.sparkpost.com/api/v1/transmissions',
+        ],
     ],
 
 #### SES Driver
