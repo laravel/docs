@@ -764,6 +764,8 @@ You may also alias the relationship count result, allowing multiple counts on th
 
     echo $posts[0]->pending_comments_count;
 
+> {note} In case of specifying columns selected for your model (using for example `select`) use `withCount` after specifying those columns. Otherwise generated query might be invalid and you might also get invalid counts of related models.
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
