@@ -261,7 +261,7 @@ Many-to-many relationships are defined by writing a method that returns the resu
     class User extends Model
     {
         /**
-         * The roles that belong to the user.
+         * The roles that the user belongs to.
          */
         public function roles()
         {
@@ -302,7 +302,7 @@ To define the inverse of a many-to-many relationship, you place another call to 
     class Role extends Model
     {
         /**
-         * The users that belong to the role.
+         * The users that role belongs to.
          */
         public function users()
         {
@@ -371,7 +371,7 @@ If you would like to define a custom model to represent the intermediate table o
     class Role extends Model
     {
         /**
-         * The users that belong to the role.
+         * The users that the role belongs to.
          */
         public function users()
         {
