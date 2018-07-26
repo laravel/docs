@@ -164,7 +164,7 @@ If you would like to verify that the given array is an **exact** match for the J
 <a name="testing-file-uploads"></a>
 ## Testing File Uploads
 
-The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be used to generate dummy files or images for testing. This, combined with the `Storage` facade's `fake` method greatly simplifies the testing of file uploads. For example, you may combine these two features to easily test an avatar upload form:
+The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be used to generate dummy files or images for testing. This, combined with the `Storage` facade's `fake` method greatly simplifies the testing of file uploads. You should pass the name of the disk that is used to store your files to the `Storage` facade's `fake` method, it replaces the given disk with a local testing disk. For example, you may combine these two features to easily test an avatar upload form:
 
     <?php
 
@@ -188,6 +188,38 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
 
             // Assert the file was stored...
             Storage::disk('avatars')->assertExists('avatar.jpg');
+
+            // Assert a file does not exist...
+            Storage::disk('avatars')->assertMissing('missing.jpg');
+        }
+    }
+
+If your file upload logic is in a controller that is responsible to handle web requests and not json API calls, chances are they redirect to a route and not return a response containing the data like in the example above. Also, if you are using the `store()` method to upload and store the files, you might not know the name of the file since laravel would then use a random hash name to store it. To assert that the file exists, you will need its name. If that's the case here is a more appropriate example:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use Illuminate\Http\UploadedFile;
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+    class ExampleTest extends TestCase
+    {
+        public function testAvatarUpload()
+        {
+            Storage::fake('avatars');
+            
+            $file = UploadedFile::fake()->image('avatar.jpg');
+
+            $this->post('/avatar', [
+                'avatar' => $file
+            ]);
+
+            // Assert a file exist
+            Storage::disk('avatars')->assertExists($file->hashName());
 
             // Assert a file does not exist...
             Storage::disk('avatars')->assertMissing('missing.jpg');
