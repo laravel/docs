@@ -581,7 +581,11 @@ You may listen for the join event via Echo's `listen` method:
 <a name="client-events"></a>
 ## Client Events
 
-Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like "typing" notifications, where you want to alert users of your application that another user is typing a message on a given screen. To broadcast client events, you may use Echo's `whisper` method:
+Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like "typing" notifications, where you want to alert users of your application that another user is typing a message on a given screen.
+
+> {tip} While using [Pusher](https://pusher.com), the option to send `Client Events` need to be enabled in the `App Settings` section of your application [dashboard](https://dashboard.pusher.com/)
+
+To broadcast client events, you may use Echo's `whisper` method:
 
     Echo.private('chat')
         .whisper('typing', {
