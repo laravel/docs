@@ -98,7 +98,7 @@ If you are going to pair the Redis broadcaster with a Socket.IO server, you will
 Next, you will need to instantiate Echo with the `socket.io` connector and a `host`.
 
     import Echo from "laravel-echo"
-    
+
     window.io = require('socket.io-client');
 
     window.Echo = new Echo({
@@ -581,9 +581,9 @@ You may listen for the join event via Echo's `listen` method:
 <a name="client-events"></a>
 ## Client Events
 
-Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like "typing" notifications, where you want to alert users of your application that another user is typing a message on a given screen.
+> {tip} When using [Pusher](https://pusher.com), you must enable the "Client Events" option in the "App Settings" section of your [application dashboard](https://dashboard.pusher.com/) in order to send client events.
 
-> {tip} While using [Pusher](https://pusher.com), the option to send `Client Events` need to be enabled in the `App Settings` section of your application [dashboard](https://dashboard.pusher.com/)
+Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like "typing" notifications, where you want to alert users of your application that another user is typing a message on a given screen.
 
 To broadcast client events, you may use Echo's `whisper` method:
 
