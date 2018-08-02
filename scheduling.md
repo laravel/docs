@@ -112,7 +112,7 @@ You can also define schedules by using an [invokable](http://php.net/manual/en/l
         }
     }
     
-Now, can pass the invokable to our scheduler to be called (daily).
+Now, you can pass the invokable to our scheduler to be called (daily).
 
     <?php
 
@@ -147,7 +147,7 @@ Now, can pass the invokable to our scheduler to be called (daily).
         }
     }
     
-You can also do more within an invokable - like you could [queue/dispatch multiple jobs](/docs/{{version}}/queues).
+You can also do more within an invokable - like you could [queue one or multiple jobs](/docs/{{version}}/queues).
 
 <a name="scheduling-artisan-commands"></a>
 ### Scheduling Artisan Commands
