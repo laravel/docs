@@ -111,7 +111,7 @@ Laravel includes a `public/.htaccess` file that is used to provide URLs without 
 
 If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this alternative:
 
-    Options +FollowSymLinks
+    Options +FollowSymLinks -Indexes
     RewriteEngine On
 
     RewriteCond %{REQUEST_FILENAME} !-d
