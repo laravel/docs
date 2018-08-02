@@ -66,7 +66,7 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
         }
     }
 
-You can also define schedules by using an [invokable](http://php.net/manual/en/language.oop5.magic.php#object.invoke) - which is a PHP class that defines the `__invoke` magic method. In this example, we schedule an invokable to be called daily (like before). Within the invokable, we will execute a database query that counts registered users. Here we have the invokable class that does just that:
+You can also define scheduled tasks by using an [invokable](http://php.net/manual/en/language.oop5.magic.php#object.invoke) - which is a php class that defines the `__invoke` magic method. In this example, we schedule an invokable to be called daily (like before). Within the invokable, we will execute a database query that counts registered users. Here we have the invokable class that does just that:
 
     <?php
 
