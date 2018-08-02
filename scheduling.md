@@ -66,10 +66,93 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
         }
     }
 
+You can also define scheduled tasks by using an [invokable](http://php.net/manual/en/language.oop5.magic.php#object.invoke) - which is a php class that defines the `__invoke` magic method. In this example, we schedule an invokable to be called daily (like before). Within the invokable, we will execute a database query that counts registered users. Here we have the invokable class that does just that:
+
+    <?php
+
+    namespace App\Invokable\Tasks;
+
+    use App\Models\User;
+
+    class CountRegisteredUsers
+    {
+        /**
+         * user eloquent model instance 
+         *
+         * @var array
+         */
+        protected $user;
+        
+        /**
+         *
+         *
+         * @param App\Models\User $user
+         */
+         
+         public function __construct(User $user = null)
+         {
+         
+            $this->user = is_null($user) ? new User() : $user;
+         
+         }
+
+        /**
+         * get the list of users registered everyday.
+         *
+         * @param  void
+         * @return void
+         */
+        public function __invoke()
+        {
+            
+            $count = $this->user->whereRaw('DATE(created_at) = CURDATE()')->count();
+            
+            echo $count;
+            
+        }
+    }
+    
+Now, you can pass the invokable to our scheduler to be called (daily).
+
+    <?php
+
+    namespace App\Console;
+
+    use App\Invokables\Tasks\CountRegisteredUsers;
+    use Illuminate\Console\Scheduling\Schedule;
+    use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
+    class Kernel extends ConsoleKernel
+    {
+        /**
+         * The Artisan commands provided by your application.
+         *
+         * @var array
+         */
+        protected $commands = [
+            //
+        ];
+
+        /**
+         * Define the application's command schedule.
+         *
+         * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+         * @return void
+         */
+        protected function schedule(Schedule $schedule)
+        {
+            $schedule->call(
+                new CountRegisteredUsers()
+            )->daily();
+        }
+    }
+    
+You can also do more within an invokable - like you could [queue one or multiple jobs](/docs/{{version}}/queues).
+
 <a name="scheduling-artisan-commands"></a>
 ### Scheduling Artisan Commands
 
-In addition to scheduling Closure calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
+In addition to scheduling Closure and/or invokable calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
 
     $schedule->command('emails:send --force')->daily();
 
