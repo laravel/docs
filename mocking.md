@@ -90,7 +90,7 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
 
 > {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
 
-> {tip} You can also call `Event::face([ MyFirstEvent::class, MySecondEvent::class ])` in order to fake only those events listed in the passed array. All other events, including the standard model events such as `created` or `updated` will still be executed, so that your Observers still work. This is handy when you use observers to fire Laravel Echo events to the API clients.
+> {tip} You can also call `Event::fake([MyFirstEvent::class, MySecondEvent::class])` in order to fake only those events listed in the passed array. All other events, including the standard model events such as `created` or `updated` will still be executed, so that your Observers still work. This is handy when you use observers to fire Laravel Echo events to the API clients.
 
 <a name="scoped-event-fakes"></a>
 ### Scoped Event Fakes
