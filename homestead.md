@@ -335,8 +335,7 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
 If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well:
 
-    192.168.10.10  homestead.test
-    192.168.10.10  another.test
+    192.168.10.10  homestead.test another.test
 
 Once the site has been added, run the `vagrant reload --provision` command from your Homestead directory.
 
