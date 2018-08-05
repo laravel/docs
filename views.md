@@ -99,6 +99,8 @@ Occasionally, you may need to share a piece of data with all views that are rend
         }
     }
 
+> {note} Don't use the `share` method if you want to share a value that is a result from a database query (as that can lead to unexpected exceptions during the framework booting process if for example the database table doesn't exist yet), instead use view composers which are described below.
+
 <a name="view-composers"></a>
 ## View Composers
 
@@ -110,6 +112,7 @@ For this example, let's register the view composers within a [service provider](
 
     namespace App\Providers;
 
+    use App\User;
     use Illuminate\Support\Facades\View;
     use Illuminate\Support\ServiceProvider;
 
@@ -129,7 +132,7 @@ For this example, let's register the view composers within a [service provider](
 
             // Using Closure based composers...
             View::composer('dashboard', function ($view) {
-                //
+                $view->with('userCount', User::count());
             });
         }
 
