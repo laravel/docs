@@ -31,7 +31,7 @@ This Cron will call the Laravel command scheduler every minute. When the `schedu
 <a name="defining-schedules"></a>
 ## Defining Schedules
 
-You may define all of your scheduled tasks in the `schedule` method of the `App\Console\Kernel` class. To get started, let's look at an example of scheduling a task. In this example, we will schedule a `Closure` to be called every day at midnight. Within the `Closure` we will execute a database query to clear a table:
+You may define all of your scheduled tasks in the `schedule` method of the `App\Console\Kernel` class. To get started, let's look at an example of scheduling a task. In this example, we will schedule a `Closure` to be called every day at midnight (you can also pass an invokable object too in place of a `Closure`). Within the `Closure` we will execute a database query to clear a table:
 
     <?php
 
