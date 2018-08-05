@@ -14,9 +14,9 @@ The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt an
 <a name="configuration"></a>
 ## Configuration
 
-The default hashing driver for your application is configured in the `config/hashing.php` configuration file. There are currently two supported drivers: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) and [Argon2](https://en.wikipedia.org/wiki/Argon2).
+The default hashing driver for your application is configured in the `config/hashing.php` configuration file. There are currently three supported drivers: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) and [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i and Argon2id variants).
 
-> {note} The Argon2 driver requires PHP 7.2.0 or greater.
+> {note} The Argon2i driver requires PHP 7.2.0 or greater while the Argon2id driver requires PHP 7.3.0 or greater.
 
 <a name="basic-usage"></a>
 ## Basic Usage
