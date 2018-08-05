@@ -25,32 +25,16 @@ To create a new middleware, use the `make:middleware` Artisan command:
 
     php artisan make:middleware CheckAge
 
-This command will place a new `CheckAge` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the `home` URI.
+This command will place a new `CheckAge` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the `home` URI:
 
     <?php
 
     namespace App\Http\Middleware;
 
     use Closure;
-    use Illuminate\Routing\Redirector;
 
     class CheckAge
     {
-        /**
-         * @var Redirector
-         */
-        private $redirector;
-
-        /**
-         * @param  Redirector $redirector
-         * @return void
-         */
-        public function __construct(Redirector $redirector)
-        {
-            // Dependencies automatically resolved by the service container...
-            $this->redirector = $redirector;
-        }
-        
         /**
          * Handle an incoming request.
          *
@@ -61,7 +45,7 @@ This command will place a new `CheckAge` class within your `app/Http/Middleware`
         public function handle($request, Closure $next)
         {
             if ($request->age <= 200) {
-                return $this->redirector->to('home');
+                return redirect('home');
             }
 
             return $next($request);
