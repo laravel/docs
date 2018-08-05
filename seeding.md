@@ -46,6 +46,8 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
         }
     }
 
+> {tip} You may type-hint any dependencies you need within the `run` method and they will be resolved via the [service container](/docs/{{version}}/container).
+
 <a name="using-model-factories"></a>
 ### Using Model Factories
 

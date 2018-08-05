@@ -216,6 +216,9 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
 
+
+> {tip} You may type-hint any dependencies you need within the `rules` method and they will be resolved via the [service container](/docs/{{version}}/container).
+
 #### Adding After Hooks To Form Requests
 
 If you would like to add an "after" hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods before the validation rules are actually evaluated:
@@ -269,6 +272,8 @@ If you plan to have authorization logic in another part of your application, ret
     {
         return true;
     }
+
+> {tip} You may type-hint any dependencies you need within the `authorize` method and they will be resolved via the [service container](/docs/{{version}}/container).
 
 <a name="customizing-the-error-messages"></a>
 ### Customizing The Error Messages
