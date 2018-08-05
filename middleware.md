@@ -32,9 +32,25 @@ This command will place a new `CheckAge` class within your `app/Http/Middleware`
     namespace App\Http\Middleware;
 
     use Closure;
+    use Illuminate\Routing\Redirector;
 
     class CheckAge
     {
+        /**
+         * @var Redirector
+         */
+        private $redirector;
+
+        /**
+         * @param  Redirector $redirector
+         * @return void
+         */
+        public function __construct(Redirector $redirector)
+        {
+            // Dependencies automatically resolved by the service container...
+            $this->redirector = $redirector;
+        }
+        
         /**
          * Handle an incoming request.
          *
@@ -45,7 +61,7 @@ This command will place a new `CheckAge` class within your `app/Http/Middleware`
         public function handle($request, Closure $next)
         {
             if ($request->age <= 200) {
-                return redirect('home');
+                return $this->redirector->to('home');
             }
 
             return $next($request);
@@ -55,6 +71,8 @@ This command will place a new `CheckAge` class within your `app/Http/Middleware`
 As you can see, if the given `age` is less than or equal to `200`, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to "pass"), call the `$next` callback with the `$request`.
 
 It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
+
+> {tip} All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor.
 
 ### Before & After Middleware
 
