@@ -15,11 +15,30 @@ Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
 
+### Application
+
+#### The `register` Method
+
+**Likelihood Of Impact: Very Low**
+
+The unused `options` argument of the `Illuminate\Foundation\Application` class' `register` method has been removed. If you are overriding this method, you should update your method's signature:
+
+    /**
+     * Register a service provider with the application.
+     *
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @param  bool   $force
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    public function register($provider, $force = false);
+
 ### Authentication
 
 #### The `Authenticate` Middleware
 
-The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middleware has been updated to accept the incoming `$request` as its first argument:
+**Likelihood Of Impact: Low**
+
+The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middleware has been updated to accept the incoming `$request` as its first argument. If you are overriding this method in your own `Authenticate` middleware, you should update your middleware's signature:
 
     /**
      * Determine if the user is logged in to any of the given guards.
@@ -32,9 +51,41 @@ The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middl
      */
     protected function authenticate($request, array $guards)
 
+#### The `ResetsPasswords` Trait
+
+**Likelihood Of Impact: Low**
+
+The protected `sendResetResponse` method of the `ResetsPasswords` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method signature:
+
+    /**
+     * Get the response for a successful password reset.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetResponse(Request $request, $response)
+
+#### The `SendsPasswordResetEmails` Trait
+
+**Likelihood Of Impact: Low**
+
+The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method signature:
+
+    /**
+     * Get the response for a successful password reset link.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetLinkResponse(Request $request, $response)
+
 ### Blade
 
 #### The `or` Operator
+
+**Likelihood Of Impact: High**
 
 The Blade "or" operator has been removed in favor of PHP's built-in `??` null coalesce operator, which has the same purpose:
 
@@ -44,9 +95,25 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` null co
     // Laravel 5.7...
     {{ $foo ?? 'default' }}
 
+### Carbon
+
+**Likelihood Of Impact: Very Low**
+
+Carbon "macros" are now handled by the Carbon library directly instead of Laravel's extension of the library. We do not expect this to break your code; however, [please make us aware of any problems you encounter](https://github.com/laravel/framework/pull/23938).
+
+### Collections
+
+#### The `split` Method
+
+**Likelihood Of Impact: Low**
+
+The `split` method [has been updated to always return the requested number of "groups"](https://github.com/laravel/framework/pull/24088), unless the total number of items in the original collection is less than the requested collection count. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of precaution.
+
 ### Database
 
 #### The `softDeletesTz` Migration Method
+
+**Likelihood Of Impact: Low**
 
 The schema table builder's `softDeletesTz` method now accepts the column name as its first argument, while the `$precision` has been moved to the second argument position:
 
@@ -59,11 +126,43 @@ The schema table builder's `softDeletesTz` method now accepts the column name as
      */
     public function softDeletesTz($column = 'deleted_at', $precision = 0)
 
+### Eloquent
+
+#### The `latest` / `oldest` Methods
+
+**Likelihood Of Impact: Low**
+
+The Eloquent query builder's `latest` and `oldest` methods have been updated to respect custom "created at" timestamp columns that may be specified on Eloquent models. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of precaution.
+
+#### The `wasChanged` Method
+
+An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of precaution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
+
 ### Filesystem
 
 #### `Filesystem` Contract Methods
 
+**Likelihood Of Impact: Low**
+
 The `readStream` and `writeStream` methods [have been added to the `Illuminate\Contracts\Filesystem\Filesystem` contract](https://github.com/laravel/framework/pull/23755). If you are implementing this interface, you should add these methods to your implementation.
+
+### Mail
+
+#### Mailable Dynamic Variable Casing
+
+**Likelihood Of Impact: Medium**
+
+Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with view dynamic variables.
+
+### Routing
+
+#### The `Route::redirect` Method
+
+**Likelihood Of Impact: High**
+
+The `Route::redirect` method now generates `302` redirects instead of `301` redirects. This brings the `Route::redirect` method into consistency with the `redirect` helper. If you would like to continue using `301` redirects, you may pass the status code as the third parameter into the `Route::redirect` method:
+
+    Route::redirect('/foo', '/bar', 301);
 
 ### Miscellaneous
 
