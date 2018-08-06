@@ -382,11 +382,11 @@ If you would like to define a custom model to represent the intermediate table o
         {
             if ($parent instanceof User) {
 
-                return \App\UserRole::fromRawAttributes($parent, $attributes, $table, $exists);
-			}
-            
-			return parent::newPivot($parent, $attributes, $table, $exists, $using);
-		}
+		return \App\UserRole::fromRawAttributes($parent, $attributes, $table, $exists);
+    	    }
+
+	    return parent::newPivot($parent, $attributes, $table, $exists, $using);
+  	}
     }
 
 When defining the `UserRole` model, we will extend the `Pivot` class:
@@ -404,8 +404,8 @@ When defining the `UserRole` model, we will extend the `Pivot` class:
         public function role()
         {
 
-			return $this->belongsTo('App\Role', 'role_id');
-		}
+		return $this->belongsTo('App\Role', 'role_id');
+	}
     }
 
 <a name="has-many-through"></a>
