@@ -54,7 +54,7 @@ After generating your command, you should fill in the `signature` and `descripti
 
 > {tip} For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example below, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
 
-Let's take a look at an example command. Note that we are able to inject any dependencies we need into the command's constructor. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies type-hinted in the constructor:
+Let's take a look at an example command. Note that we are able to inject any dependencies we need into the command's constructor or `handle` method. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies type-hinted in the constructor or `handle` method:
 
     <?php
 

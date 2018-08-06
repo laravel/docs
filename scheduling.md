@@ -66,6 +66,10 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
         }
     }
 
+In addition to scheduling using Closures, you may also using [invokable objects](http://php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
+
+    $schedule->call(new DeleteRecentUsers)->daily();
+
 <a name="scheduling-artisan-commands"></a>
 ### Scheduling Artisan Commands
 

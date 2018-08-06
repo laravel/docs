@@ -96,6 +96,10 @@ When registering routes for single action controllers, you do not need to specif
 
     Route::get('user/{id}', 'ShowProfile');
 
+You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:
+
+    php artisan make:controller ShowProfile --invokable
+
 <a name="controller-middleware"></a>
 ## Controller Middleware
 
@@ -222,15 +226,15 @@ By default, all resource controller actions have a route name; however, you can 
 <a name="restful-naming-resource-route-parameters"></a>
 ### Naming Resource Route Parameters
 
-By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. The `parameters` array should be an associative array of resource names and parameter names:
+By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by using the `parameters` method. The array passed into the `parameters` method should be an associative array of resource names and parameter names:
 
-    Route::resource('user', 'AdminUserController')->parameters([
-        'user' => 'admin_user'
+    Route::resource('users', 'AdminUserController')->parameters([
+        'users' => 'admin_user'
     ]);
 
  The example above generates the following URIs for the resource's `show` route:
 
-    /user/{admin_user}
+    /users/{admin_user}
 
 <a name="restful-localizing-resource-uris"></a>
 ### Localizing Resource URIs

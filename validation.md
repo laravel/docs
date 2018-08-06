@@ -198,6 +198,8 @@ The generated class will be placed in the `app/Http/Requests` directory. If this
         ];
     }
 
+> {tip} You may type-hint any dependencies you need within the `rules` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
+
 So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
 
     /**
@@ -269,6 +271,8 @@ If you plan to have authorization logic in another part of your application, ret
     {
         return true;
     }
+
+> {tip} You may type-hint any dependencies you need within the `authorize` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 <a name="customizing-the-error-messages"></a>
 ### Customizing The Error Messages

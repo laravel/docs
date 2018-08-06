@@ -182,12 +182,14 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
         {
             Storage::fake('avatars');
 
+            $file = UploadedFile::fake()->image('avatar.jpg');
+
             $response = $this->json('POST', '/avatar', [
-                'avatar' => UploadedFile::fake()->image('avatar.jpg')
+                'avatar' => $file,
             ]);
 
             // Assert the file was stored...
-            Storage::disk('avatars')->assertExists('avatar.jpg');
+            Storage::disk('avatars')->assertExists($file->hashName());
 
             // Assert a file does not exist...
             Storage::disk('avatars')->assertMissing('missing.jpg');

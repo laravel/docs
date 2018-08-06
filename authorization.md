@@ -60,7 +60,7 @@ Gates may also be defined using a `Class@method` style callback string, like con
     {
         $this->registerPolicies();
 
-        Gate::define('update-post', 'PostPolicy@update');
+        Gate::define('update-post', 'App\Policies\PostPolicy@update');
     }
 
 #### Resource Gates
