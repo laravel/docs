@@ -55,7 +55,7 @@ The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middl
 
 **Likelihood Of Impact: Low**
 
-The protected `sendResetResponse` method of the `ResetsPasswords` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method signature:
+The protected `sendResetResponse` method of the `ResetsPasswords` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
 
     /**
      * Get the response for a successful password reset.
@@ -70,7 +70,7 @@ The protected `sendResetResponse` method of the `ResetsPasswords` trait now acce
 
 **Likelihood Of Impact: Low**
 
-The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method signature:
+The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
 
     /**
      * Get the response for a successful password reset link.
@@ -87,7 +87,7 @@ The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` t
 
 **Likelihood Of Impact: High**
 
-The Blade "or" operator has been removed in favor of PHP's built-in `??` null coalesce operator, which has the same purpose:
+The Blade "or" operator has been removed in favor of PHP's built-in `??` "null coalesce" operator, which has the same purpose and functionality:
 
     // Laravel 5.6...
     {{ $foo or 'default' }}
@@ -99,7 +99,7 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` null co
 
 **Likelihood Of Impact: Very Low**
 
-Carbon "macros" are now handled by the Carbon library directly instead of Laravel's extension of the library. We do not expect this to break your code; however, [please make us aware of any problems you encounter](https://github.com/laravel/framework/pull/23938).
+Carbon "macros" are now handled by the Carbon library directly instead of Laravel's extension of the library. We do not expect this to break your code; however, [please make us aware of any problems you encounter related to this change](https://github.com/laravel/framework/pull/23938).
 
 ### Collections
 
@@ -107,7 +107,7 @@ Carbon "macros" are now handled by the Carbon library directly instead of Larave
 
 **Likelihood Of Impact: Low**
 
-The `split` method [has been updated to always return the requested number of "groups"](https://github.com/laravel/framework/pull/24088), unless the total number of items in the original collection is less than the requested collection count. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of precaution.
+The `split` method [has been updated to always return the requested number of "groups"](https://github.com/laravel/framework/pull/24088), unless the total number of items in the original collection is less than the requested collection count. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
 
 ### Database
 
@@ -132,13 +132,13 @@ The schema table builder's `softDeletesTz` method now accepts the column name as
 
 **Likelihood Of Impact: Low**
 
-The Eloquent query builder's `latest` and `oldest` methods have been updated to respect custom "created at" timestamp columns that may be specified on Eloquent models. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of precaution.
+The Eloquent query builder's `latest` and `oldest` methods have been updated to respect custom "created at" timestamp columns that may be specified on your Eloquent models. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
 
 #### The `wasChanged` Method
 
 **Likelihood Of Impact: Very Low**
 
-An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of precaution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
+An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
 
 ### Filesystem
 
@@ -154,17 +154,7 @@ The `readStream` and `writeStream` methods [have been added to the `Illuminate\C
 
 **Likelihood Of Impact: Medium**
 
-Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with view dynamic variables.
-
-### Routing
-
-#### The `Route::redirect` Method
-
-**Likelihood Of Impact: High**
-
-The `Route::redirect` method now generates `302` redirects instead of `301` redirects. This brings the `Route::redirect` method into consistency with the `redirect` helper. If you would like to continue using `301` redirects, you may pass the status code as the third parameter into the `Route::redirect` method:
-
-    Route::redirect('/foo', '/bar', 301);
+Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with dynamic view variables. Dynamic mailable variables are not a documented Laravel feature, so likelihood of impact to your application is low.
 
 ### Miscellaneous
 
