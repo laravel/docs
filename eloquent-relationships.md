@@ -377,6 +377,16 @@ If you would like to define a custom model to represent the intermediate table o
         {
             return $this->belongsToMany('App\User')->using('App\UserRole');
         }
+        
+        public function newPivot(Model $parent, array $attributes, $table, $exists, $using = null)
+        {
+            if ($parent instanceof User) {
+
+		return \App\UserRole::fromRawAttributes($parent, $attributes, $table, $exists);
+    	    }
+
+	    return parent::newPivot($parent, $attributes, $table, $exists, $using);
+  	}
     }
 
 When defining the `UserRole` model, we will extend the `Pivot` class:
@@ -389,7 +399,13 @@ When defining the `UserRole` model, we will extend the `Pivot` class:
 
     class UserRole extends Pivot
     {
-        //
+        protected $table = 'role_user';
+        
+        public function role()
+        {
+
+		return $this->belongsTo('App\Role', 'role_id');
+	}
     }
 
 <a name="has-many-through"></a>
