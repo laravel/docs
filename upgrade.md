@@ -136,6 +136,8 @@ The Eloquent query builder's `latest` and `oldest` methods have been updated to 
 
 #### The `wasChanged` Method
 
+**Likelihood Of Impact: Very Low**
+
 An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of precaution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
 
 ### Filesystem
