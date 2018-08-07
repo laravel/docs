@@ -8,7 +8,7 @@
 
 Laravel 5.5.42 is a security release of Laravel and is recommended as an immediate upgrade for all users. Laravel 5.5.42 also contains a breaking change to cookie encryption and serialization logic, so please read the following notes carefully when upgrading your application.
 
-> **Note:** This vulnerability may only be exploited if your application encryption key (`APP_KEY` environment variable) has been accessed by a malicious user. Typically, this is not possible. However, ex-employees that had access to the encryption key may be able to use the key to attack your applications. If you have any reason to believe your encryption key is in the hands of a malicious party, you should **always** rotate the key to a new value.
+**This vulnerability may only be exploited if your application encryption key (`APP_KEY` environment variable) has been accessed by a malicious user.** Typically, it is not possible for users of your application to gain access to this value. However, ex-employees that had access to the encryption key may be able to use the key to attack your applications. If you have any reason to believe your encryption key is in the hands of a malicious party, you should **always** rotate the key to a new value.
 
 ### Cookie Serialization
 
