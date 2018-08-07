@@ -27,7 +27,7 @@ Since this vulnerability is not able to be exploited without access to your appl
      */
     protected static $serialize = true;
 
-> **Note:** When encrypted cookie serialization is enabled, your application will be vulnerable to attack if its encryption key is accessed by a malicious party.
+> **Note:** When encrypted cookie serialization is enabled, your application will be vulnerable to attack if its encryption key is accessed by a malicious party. If you believe your key may be in the hands of a malicious party, you should rotate the key to a new value.
 
 <a name="upgrade-5.6.0"></a>
 ## Upgrading To 5.6.0 From 5.5
