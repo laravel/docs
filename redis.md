@@ -214,6 +214,8 @@ First, let's setup a channel listener using the `subscribe` method. We'll place 
             });
         }
     }
+    
+> {note} With some versions of Redis you will not be able to dispatch jobs on the same connection that you are subscribed on. You will need to either subscribe using a new redis connection or dispatch on a different connection.
 
 Now we may publish messages to the channel using the `publish` method:
 
