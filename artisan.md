@@ -29,6 +29,10 @@ Every command also includes a "help" screen which displays and describes the com
 
     php artisan help migrate
 
+To override the application environment that your command is going to be run in provide the `--env` argument:
+
+    php artisan list --env=testing
+    
 #### Laravel REPL
 
 All Laravel applications include Tinker, a REPL powered by the [PsySH](https://github.com/bobthecow/psysh) package. Tinker allows you to interact with your entire Laravel application on the command line, including the Eloquent ORM, jobs, events, and more. To enter the Tinker environment, run the `tinker` Artisan command:
