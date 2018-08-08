@@ -52,6 +52,8 @@ Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` fi
         ],
     }
 
+If you are using the `laravel/browser-kit-testing` package, you should update the package to `2.*` in your `composer.json` file.
+
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.5 support.
 
 #### Laravel Installer

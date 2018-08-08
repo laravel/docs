@@ -317,7 +317,7 @@ To register an explicit binding, use the router's `model` method to specify the 
 
 Next, define a route that contains a `{user}` parameter:
 
-    Route::get('profile/{user}', function (App\User $user) {
+    Route::get('profile/{user}', function ($user) {
         //
     });
 
