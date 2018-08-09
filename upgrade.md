@@ -29,6 +29,10 @@ Since this vulnerability is not able to be exploited without access to your appl
 
 > **Note:** When encrypted cookie serialization is enabled, your application will be vulnerable to attack if its encryption key is accessed by a malicious party. If you believe your key may be in the hands of a malicious party, you should rotate the key to a new value before enabling encrypted cookie serialization.
 
+### Passport 6.0.7
+
+Passport 6.0.7 has been released with a new `Laravel\Passport\Passport::withoutCookieSerialization()` method. Once you have disabled cookie serialization, you should call this method within your application's `AppServiceProvider`.
+
 <a name="upgrade-5.6.0"></a>
 ## Upgrading To 5.6.0 From 5.5
 
