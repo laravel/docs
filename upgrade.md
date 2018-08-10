@@ -81,6 +81,25 @@ The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` t
      */
     protected function sendResetLinkResponse(Request $request, $response)
 
+### Authorization
+
+#### The `Gate` contract
+
+**Likelihood Of Impact: Low**
+
+The `raw` method visibility was changed from `protected` to `public` and it [was added to the `Illuminate/Contracts/Auth/Access/Gate` contract](https://github.com/laravel/framework/pull/25143):
+
+    /**
+     * Get the raw result from the authorization callback.
+     *
+     * @param  string  $ability
+     * @param  array|mixed  $arguments
+     * @return mixed
+     */
+    public function raw($ability, $arguments = []);
+
+If you are implementing this interface, you should add this method to your implementation.
+
 ### Blade
 
 #### The `or` Operator
@@ -109,6 +128,46 @@ Carbon "macros" are now handled by the Carbon library directly instead of Larave
 
 The `split` method [has been updated to always return the requested number of "groups"](https://github.com/laravel/framework/pull/24088), unless the total number of items in the original collection is less than the requested collection count. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
 
+### Cookie
+
+#### `Illuminate/Contracts/Cookie/Factory` Contract Methods Signature
+
+**Likelihood Of Impact: Low**
+
+The `make` and `forever` method's signature [has been changed](https://github.com/laravel/framework/pull/23200).
+If you are implementing this interface, you should modify these method's signature in your implementation.
+
+    /**
+     * Create a new cookie instance.
+     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  int     $minutes
+     * @param  string  $path
+     * @param  string  $domain
+     * @param  bool|null    $secure
+     * @param  bool    $httpOnly
+     * @param  bool         $raw
+     * @param  string|null  $sameSite
+     * @return \Symfony\Component\HttpFoundation\Cookie
+     */
+    public function make($name, $value, $minutes = 0, $path = null, $domain = null, $secure = null, $httpOnly = true, $raw = false, $sameSite = null);
+    
+    /**
+     * Create a cookie that lasts "forever" (five years).
+     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  string  $path
+     * @param  string  $domain
+     * @param  bool|null    $secure
+     * @param  bool    $httpOnly
+     * @param  bool         $raw
+     * @param  string|null  $sameSite
+     * @return \Symfony\Component\HttpFoundation\Cookie
+     */
+    public function forever($name, $value, $path = null, $domain = null, $secure = null, $httpOnly = true, $raw = false, $sameSite = null);
+
 ### Database
 
 #### The `softDeletesTz` Migration Method
@@ -125,6 +184,67 @@ The schema table builder's `softDeletesTz` method now accepts the column name as
      * @return \Illuminate\Support\Fluent
      */
     public function softDeletesTz($column = 'deleted_at', $precision = 0)
+
+#### The `ConnectionInterface` contract
+
+**Likelihood Of Impact: Low**
+
+The `select` and `selectOne` method's signature was changed. A new parameter was added to both (`$useReadPdo = true`):
+
+    /**
+     * Run a select statement and return a single result.
+     *
+     * @param  string  $query
+     * @param  array   $bindings
+     * @param  bool  $useReadPdo
+     * @return mixed
+     */
+    public function selectOne($query, $bindings = [], $useReadPdo = true);
+    
+    /**
+     * Run a select statement against the database.
+     *
+     * @param  string  $query
+     * @param  array   $bindings
+     * @param  bool  $useReadPdo
+     * @return array
+     */
+    public function select($query, $bindings = [], $useReadPdo = true);
+
+The `cursor` method was added to the contract:
+
+    /**
+     * Run a select statement against the database and returns a generator.
+     *
+     * @param  string  $query
+     * @param  array  $bindings
+     * @param  bool  $useReadPdo
+     * @return \Generator
+     */
+    public function cursor($query, $bindings = [], $useReadPdo = true);
+    
+If you are implementing this interface, you should add this method to your implementation.
+
+#### The `SQL Server` PDO drivers order priority
+
+**Likelihood Of Impact: Low**
+
+Before 5.7 the `PDO_DBLIB` driver was used by default if it was installed on the server. Now you can choose to use the `PDO_ODBC` driver via config (example below) and if you don't want that Laravel will connect with the `PDO_SQLSRV` driver (if it's available on your server). If both of those drivers are not available Laravel will default back to using the `PDO_DBLIB` driver. This change was made because the `PDO_DBLIB` driver was deprecated both by PHP and Microsoft.
+
+`database.php` config file example for preferring the `PDO_ODBC` driver:
+
+    'sqlsrv' => [
+        // rest of the configuration...
+        'odbc' => true,
+        'odbc_datasource_name' => 'your-ODBC-DSN-goes-here',
+    ],
+    
+### Debug
+
+#### The `Illuminate\Support\Debug\Dumper` and `Illuminate\Support\Debug\HtmlDumper` classes
+
+The `Illuminate\Support\Debug\Dumper` and `Illuminate\Support\Debug\HtmlDumper` classes have been removed.
+Instead of them use the `Symfony\Component\VarDumper` component classes (`Symfony\Component\VarDumper\VarDumper` and `Symfony\Component\VarDumper\Dumper\HtmlDumper`).
 
 ### Eloquent
 
@@ -164,10 +284,17 @@ The `Route::redirect` method now returns a `302` HTTP status code redirect. The 
 
     // Return a 302 redirect...
     Route::redirect('/foo', '/bar');
+    
+    // Return a 301 redirect...
+    Route::redirect('/foo', '/bar', 301);
 
     // Return a 301 redirect...
     Route::permanentRedirect('/foo', '/bar');
 
+#### The `addRoute` Method
+
+The router's `addRoute` method visibility was changed from `protected` to `public`.
+    
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.
