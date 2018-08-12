@@ -38,6 +38,7 @@
     - [Authentication](/docs/{{version}}/authentication)
     - [API Authentication](/docs/{{version}}/passport)
     - [Authorization](/docs/{{version}}/authorization)
+    - [Email Verification](/docs/{{version}}/verification)
     - [Encryption](/docs/{{version}}/encryption)
     - [Hashing](/docs/{{version}}/hashing)
     - [Password Reset](/docs/{{version}}/passwords)
