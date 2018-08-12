@@ -65,6 +65,8 @@ A `verified` middleware has been added to the default application's HTTP kernel.
 
     'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
+> {tip} To learn more about email verification, check out the [complete documentation](/docs/{{version}}/verification).
+
 ### Guest User Gates / Policies
 
 In previous versions of Laravel, authorization gates and policies automatically returned `false` for unauthenticated visitors to your application. However, you may now allow guests to pass through authorization checks by declaring an "optional" type-hint or supplying a `null` default value for the user argument definition:
