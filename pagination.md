@@ -118,6 +118,12 @@ If you wish to append a "hash fragment" to the paginator's URLs, you may use the
 
     {{ $users->fragment('foo')->links() }}
 
+#### Adjusting The Pagination Link Window
+
+You may control how many additional links are displayed on each side of the paginator's URL "window". By default, three links are displayed on each side of the primary paginator links. However, you may control this number using the `onEachSide` method:
+
+    {{ $users->onEachSide(5)->links() }}
+
 <a name="converting-results-to-json"></a>
 ### Converting Results To JSON
 
