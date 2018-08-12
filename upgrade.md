@@ -229,6 +229,18 @@ The Eloquent query builder's `latest` and `oldest` methods have been updated to 
 
 An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
 
+### Email Verification
+
+**Likelihood Of Impact: Optional**
+
+If you choose to use Laravel's new email verification services, you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/develop/app/Http/Controllers/Auth/VerificationController.php).
+
+You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
+
+Finally, when calling the `Auth::routes` method, you should pass the `verify` option to the method:
+
+    Auth::routes(['verify' => true]);
+
 ### Filesystem
 
 #### `Filesystem` Contract Methods
