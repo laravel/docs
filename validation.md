@@ -693,7 +693,9 @@ The field under validation must exist on a given database table.
 #### Basic Usage Of Exists Rule
 
     'state' => 'exists:states'
-
+ 
+If the column parameter is not specified we will guess that the column that is being "verified" shares the given attribute's name.
+        
 #### Specifying A Custom Column Name
 
     'state' => 'exists:states,abbreviation'
