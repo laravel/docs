@@ -12,7 +12,7 @@ Laravel 5.6.30 is a security release of Laravel and is recommended as an immedia
 
 ### Cookie Serialization
 
-Laravel 5.6.30 disables all serialization / unserialization of cookie values. Since all Laravel cookies are encrypted and signed, cookie values are typically considered safe from client tampering. **However, if your application's encryption key is in the hands of a malicious party, that party could craft cookie values using the encryption key and exploit vulnerabilities inherit to PHP object serialization / unserialization, such as calling arbitary class methods within your application.**
+Laravel 5.6.30 disables all serialization / unserialization of cookie values. Since all Laravel cookies are encrypted and signed, cookie values are typically considered safe from client tampering. **However, if your application's encryption key is in the hands of a malicious party, that party could craft cookie values using the encryption key and exploit vulnerabilities inherent to PHP object serialization / unserialization, such as calling arbitary class methods within your application.**
 
 Disabling serialization on all cookie values will invalidate all of your application's sessions and users will need to log into the application again. In addition, any other encrypted cookies your application is setting will have invalid values. For this reason, you may wish to add additional logic to your application to validate that your custom cookie values match an expected list of values you expect; otherwise, you should discard them.
 
