@@ -694,6 +694,8 @@ The field under validation must exist on a given database table.
 
     'state' => 'exists:states'
 
+If the `column` option is not specified, the field name will be used.
+
 #### Specifying A Custom Column Name
 
     'state' => 'exists:states,abbreviation'
