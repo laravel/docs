@@ -7,6 +7,7 @@
     - [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
     - [Storing Items In The Cache](#storing-items-in-the-cache)
     - [Removing Items From The Cache](#removing-items-from-the-cache)
+    - [Atomic Locks](#atomic-locks)
     - [The Cache Helper](#the-cache-helper)
 - [Cache Tags](#cache-tags)
     - [Storing Tagged Cache Items](#storing-tagged-cache-items)
@@ -199,6 +200,44 @@ You may clear the entire cache using the `flush` method:
     Cache::flush();
 
 > {note} Flushing the cache does not respect the cache prefix and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
+
+<a name="atomic-locks"></a>
+### Atomic Locks
+
+> {note} To utilize this feature, your application must be using the `memcached` or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+
+Atomic locks allows for simple manipulation of distributed locks without worrying about race conditions:
+
+    if (Cache::lock('foo', 10)->get()) {
+        // Lock acquired for 10 seconds...
+        
+        Cache::lock('foo')->release();
+    }
+    
+    
+    if (Cache::lock('foo', 10)->block()) {
+        // Lock acquired after waiting.
+    }
+    
+    
+    if (Cache::lock('foo', 10)->blockFor(5)) {
+        // Lock acquired after waiting maximum of 5 seconds.
+        // LockTimeoutException thrown if not acquired.
+    }
+    
+    
+    Cache::lock('foo')->get(function () {
+        // Lock aquired indefinitely.
+        // Automatically released after callback is executed.
+    });
+    
+    
+    Cache::lock('foo', 10)->blockFor(5, function () {
+        // Lock acquired after waiting maximum of 5 seconds.
+        // Automatically released after callback is executed.
+        // LockTimeoutException thrown if not acquired.
+    });
+
 
 <a name="the-cache-helper"></a>
 ### The Cache Helper
