@@ -325,7 +325,7 @@ You can also filter the results returned by `belongsToMany` using the `wherePivo
 
 #### Defining Custom Intermediate Table Models
 
-If you would like to define a custom model to represent the intermediate table of your relationship, you may call the `using` method when defining the relationship. All custom models used to represent intermediate tables of relationships must extend the `Illuminate\Database\Eloquent\Relations\Pivot` class. For example, we may define a `Role` which uses a custom `UserRole` pivot model:
+If you would like to define a custom model to represent the intermediate table of your relationship, you may call the `using` method when defining the relationship. Many to Many relationships should extend `Illuminate\Database\Eloquent\Relations\Pivot` and Many To Many Polymorphic relationships the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` which uses a custom `UserRole` pivot model:
 
     <?php
 
