@@ -67,6 +67,18 @@ A `verified` middleware has been added to the default application's HTTP kernel.
 
 > {tip} To learn more about email verification, check out the [complete documentation](/docs/{{version}}/verification).
 
+### Notification Localization
+
+Laravel now allows you to send notifications in a locale other than the current language. When a notification is queued, it is no longer delivered using the application's default language.
+
+The `Illuminate\Notifications\Notification` class has a `locale` method to set the desired language. The application changes into this locale when the notification is being formatted. For example, in the `toMail` method you may translate the subject line and email body.
+
+    $user->notify((new InvoicePaid($invoice))->locale('es'));
+
+Localization of multiple notifiable entries may also be set through the `Notification` facade:
+
+    Notification::locale('es')->send($users, new InvoicePaid($invoice));
+
 ### Guest User Gates / Policies
 
 In previous versions of Laravel, authorization gates and policies automatically returned `false` for unauthenticated visitors to your application. However, you may now allow guests to pass through authorization checks by declaring an "optional" type-hint or supplying a `null` default value for the user argument definition:
