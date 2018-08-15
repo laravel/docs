@@ -17,6 +17,7 @@
 - [Route Model Binding](#route-model-binding)
     - [Implicit Binding](#implicit-binding)
     - [Explicit Binding](#explicit-binding)
+- [Fallback Routes](#fallback-routes)
 - [Rate Limiting](#rate-limiting)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing The Current Route](#accessing-the-current-route)
@@ -338,6 +339,17 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
             return App\User::where('name', $value)->first() ?? abort(404);
         });
     }
+
+<a name="fallback-routes"></a>
+## Fallback Routes
+
+Using the `Route::fallback()` method, we can define a route that Laravel will fallback to when no other route is matched with the request. Since we define the fallback route in `routes/web.php` file, all middleware under the web middleware group will run and thus we will have access to the sessions. Using that, we can do something like this:
+
+    Route::fallback(function(){
+        return 'Sorry '. auth()->user()->name . '! This page does not exist.';
+    });
+
+> {tip} To define a fallback route for the API endpoints you can define a similar one in the `routes/api.php` file.
 
 <a name="rate-limiting"></a>
 ## Rate Limiting
