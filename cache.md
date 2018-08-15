@@ -206,36 +206,34 @@ You may clear the entire cache using the `flush` method:
 
 > {note} To utilize this feature, your application must be using the `memcached` or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
-Atomic locks allows for simple manipulation of distributed locks without worrying about race conditions:
+Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Forge](https://forge.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:
 
     if (Cache::lock('foo', 10)->get()) {
         // Lock acquired for 10 seconds...
-        
+
         Cache::lock('foo')->release();
     }
-    
-    
-    if (Cache::lock('foo', 10)->block()) {
-        // Lock acquired after waiting.
-    }
-    
-    
-    if (Cache::lock('foo', 10)->blockFor(5)) {
-        // Lock acquired after waiting maximum of 5 seconds.
-        // LockTimeoutException thrown if not acquired.
-    }
-    
-    
+
+The `get` method also accepts a Closure. After the Closure is executed, Laravel will automatically release the lock:
+
     Cache::lock('foo')->get(function () {
-        // Lock aquired indefinitely.
-        // Automatically released after callback is executed.
+        // Lock acquired indefinitely and automatically released...
     });
-    
-    
+
+If the lock is not available at the moment you request it, you may instruct Laravel to wait until it becomes available:
+
+    if (Cache::lock('foo', 10)->block()) {
+        // Lock acquired after waiting...
+    }
+
+By default, the `block` method will wait indefinitely until the lock is available. You may use the `blockFor` method to only wait for the specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
+
+    if (Cache::lock('foo', 10)->blockFor(5)) {
+        // Lock acquired after waiting maximum of 5 seconds...
+    }
+
     Cache::lock('foo', 10)->blockFor(5, function () {
-        // Lock acquired after waiting maximum of 5 seconds.
-        // Automatically released after callback is executed.
-        // LockTimeoutException thrown if not acquired.
+        // Lock acquired after waiting maximum of 5 seconds...
     });
 
 
