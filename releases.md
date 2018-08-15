@@ -97,7 +97,7 @@ Laravel 5.7 allows you to control how many additional links are displayed on eac
 
 ### Filesystem Read / Write Streams
 
-Laravel's Flysystem integration now offers `readStream` and `writeStream` methods:
+Laravel's Filesystem integration now offers `readStream` and `writeStream` methods:
 
     Storage::disk('s3')->writeStream(
         'remote-file.zip',
