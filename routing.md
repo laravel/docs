@@ -343,7 +343,7 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
 <a name="fallback-routes"></a>
 ## Fallback Routes
 
-Using the `Route::fallback()` method, we can define a route that Laravel will fallback to when no other route is matched with the request. Since we define the fallback route in `routes/web.php` file, all middleware under the web middleware group will run and thus we will have access to the sessions. Using that, we can do something like this:
+Using the `Route::fallback()` method, we can define a route that Laravel will fallback to when no other route is matched with the request. Since we define the fallback route in the `routes/web.php` file, all middlewares under the web middleware group will run and thus we will have access to the sessions. Using that, we can do something like this:
 
     Route::fallback(function(){
         return 'Sorry '. auth()->user()->name . '! This page does not exist.';
