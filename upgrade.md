@@ -56,7 +56,7 @@ In addition, if you are using the following first-party Laravel packages, you sh
 
 <div class="content-list" markdown="1">
 - Dusk (Upgrade To `^3.0`)
-- Passport (Upgrade To `^5.0`)
+- Passport (Upgrade To `^6.0`)
 - Scout (Upgrade To `^4.0`)
 </div>
 
