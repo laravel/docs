@@ -32,7 +32,7 @@ For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and se
 <a name="laravel-5.7"></a>
 ## Laravel 5.7
 
-Laravel 5.7 continues the improvements made in Laravel 5.6 by introducing [Laravel Nova](https://nova.laravel.com), optional email verification to the authentication scaffolding, support for guest users in authorization gates and policies, Symfony `dump-server` integration, and a variety of other bug fixes and usability improvements.
+Laravel 5.7 continues the improvements made in Laravel 5.6 by introducing [Laravel Nova](https://nova.laravel.com), optional email verification to the authentication scaffolding, support for guest users in authorization gates and policies, Symfony `dump-server` integration, localizable notifications, and a variety of other bug fixes and usability improvements.
 
 ### Laravel Nova
 
@@ -67,18 +67,6 @@ A `verified` middleware has been added to the default application's HTTP kernel.
 
 > {tip} To learn more about email verification, check out the [complete documentation](/docs/{{version}}/verification).
 
-### Notification Localization
-
-Laravel now allows you to send notifications in a locale other than the current language. When a notification is queued, it is no longer delivered using the application's default language.
-
-The `Illuminate\Notifications\Notification` class has a `locale` method to set the desired language. The application changes into this locale when the notification is being formatted. For example, in the `toMail` method you may translate the subject line and email body.
-
-    $user->notify((new InvoicePaid($invoice))->locale('es'));
-
-Localization of multiple notifiable entries may also be set through the `Notification` facade:
-
-    Notification::locale('es')->send($users, new InvoicePaid($invoice));
-
 ### Guest User Gates / Policies
 
 In previous versions of Laravel, authorization gates and policies automatically returned `false` for unauthenticated visitors to your application. However, you may now allow guests to pass through authorization checks by declaring an "optional" type-hint or supplying a `null` default value for the user argument definition:
@@ -94,6 +82,18 @@ Laravel 5.7 offers integration with Symfony's `dump-server` command via [a packa
     php artisan dump-server
 
 Once the server has started, all calls to `dump` will by displayed in the `dump-server` console window instead of in your browser, allowing you to inspect the values without mangling your HTTP response output.
+
+### Notification Localization
+
+Laravel now allows you to send notifications in a locale other than the current language, and will even remember this locale if the notification is queued.
+
+To accomplish this, the `Illuminate\Notifications\Notification` class now offers a `locale` method to set the desired language. The application will change into this locale when the notification is being formatted and then revert back to the previous locale when formatting is complete:
+
+    $user->notify((new InvoicePaid($invoice))->locale('es'));
+
+Localization of multiple notifiable entries may also be achieved via the `Notification` facade:
+
+    Notification::locale('es')->send($users, new InvoicePaid($invoice));
 
 ### URL Generator & Callable Syntax
 
