@@ -276,6 +276,22 @@ The `Route::redirect` method now returns a `302` HTTP status code redirect. The 
 
 The `addRoute` method of the `Illuminate\Routing\Router` class has been changed from `protected` to `public`.
 
+### Validation
+
+#### Improved nested rules in validated data
+
+**Likelihood Of Impact: Low**
+
+Nested rules will be represented more precisely in the validated data:
+
+    $data = Validator::make(['a' => ['b' => 'x', 'c' => 'y']], ['a.b' => 'required'])->validate();
+    
+    // Laravel <5.7
+    ['a' => ['b' => 'x', 'c' => 'y']]
+    
+    // Laravel 5.7+
+    ['a' => ['b' => 'x']]
+
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.
