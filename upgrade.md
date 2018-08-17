@@ -229,6 +229,14 @@ The Eloquent query builder's `latest` and `oldest` methods have been updated to 
 
 An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
 
+#### Special float values in PostgreSQL
+
+**Likelihood Of Impact: Very Low**
+
+PostgreSQL supports the special float values `Infinity`, `-Infinity` and `NaN`. Prior to Laravel 5.7, these were cast to `0` when using Eloquent's attribute casting with the types `float`/`double`/`real`.
+
+As of Laravel 5.7, these values will be cast to the corresponding PHP constants `INF`, `-INF` and `NAN`. 
+
 ### Email Verification
 
 **Likelihood Of Impact: Optional**
