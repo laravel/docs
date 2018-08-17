@@ -261,6 +261,8 @@ Variables that are dynamically passed to mailable views [are now automatically "
 
 #### The `Route::redirect` Method
 
+**Likelihood Of Impact: High**
+
 The `Route::redirect` method now returns a `302` HTTP status code redirect. The `permanentRedirect` method has been added to allow `301` redirects.
 
     // Return a 302 redirect...
@@ -274,23 +276,32 @@ The `Route::redirect` method now returns a `302` HTTP status code redirect. The 
 
 #### The `addRoute` Method
 
+**Likelihood Of Impact: Low**
+
 The `addRoute` method of the `Illuminate\Routing\Router` class has been changed from `protected` to `public`.
 
 ### Validation
 
-#### Improved nested rules in validated data
+#### Nested Validation Data
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Medium**
 
-Nested rules will be represented more precisely in the validated data:
+In previous versions of Laravel, the `validate` method did not return the correct data for nested validation rules. This has been corrected in Laravel 5.7:
 
-    $data = Validator::make(['a' => ['b' => 'x', 'c' => 'y']], ['a.b' => 'required'])->validate();
-    
-    // Laravel <5.7
-    ['a' => ['b' => 'x', 'c' => 'y']]
-    
-    // Laravel 5.7+
-    ['a' => ['b' => 'x']]
+    $data = Validator::make([
+        'person' => [
+            'name' => 'Taylor',
+            'job' => 'Developer'
+        ]
+    ], ['person.name' => 'required'])->validate();
+
+    dump($data);
+
+    // Prior Behavior...
+    ['person' => ['name' => 'Taylor', 'job' => 'Developer']]
+
+    // New Behavior...
+    ['person' => ['name' => 'Taylor']]
 
 ### Miscellaneous
 
