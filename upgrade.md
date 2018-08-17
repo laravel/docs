@@ -32,6 +32,16 @@ The unused `options` argument of the `Illuminate\Foundation\Application` class' 
      */
     public function register($provider, $force = false);
 
+### Artisan
+
+#### Scheduled Job Connection & Queues
+
+**Likelihood Of Impact: Low**
+
+The `$schedule->job` method now respects the `queue` and `connection` properties on the job class if a connection / job is not explicitly passed into the `job` method.
+
+Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25216).
+
 ### Authentication
 
 #### The `Authenticate` Middleware
@@ -135,14 +145,6 @@ The `split` method [has been updated to always return the requested number of "g
 **Likelihood Of Impact: Very Low**
 
 The signatures of the `make` and `forever` methods of the `Illuminate/Contracts/Cookie/Factory` interface [have been changed](https://github.com/laravel/framework/pull/23200). If you are implementing this interface, you should update these methods in your implementation.
-
-### Console scheduler
-
-#### The `Job` Method
-
-**Likelihood Of Impact: Very Low**
-
-The `job` method now respects the queue and connection options if they are already set on the job if none were given to the `job` method to override them. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25216).
 
 ### Database
 
