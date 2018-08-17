@@ -343,13 +343,11 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
 <a name="fallback-routes"></a>
 ## Fallback Routes
 
-Using the `Route::fallback()` method, we can define a route that Laravel will fallback to when no other route is matched with the request. Since we define the fallback route in the `routes/web.php` file, all middlewares under the web middleware group will run and thus we will have access to the sessions. Using that, we can do something like this:
+Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` midddleware group will apply to the route. Of course, you are free to add additional middleware to this route as needed:
 
-    Route::fallback(function(){
-        return 'Sorry '. auth()->user()->name . '! This page does not exist.';
+    Route::fallback(function () {
+        //
     });
-
-> {tip} To define a fallback route for the API endpoints you can define a similar one in the `routes/api.php` file.
 
 <a name="rate-limiting"></a>
 ## Rate Limiting
