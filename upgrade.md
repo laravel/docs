@@ -321,6 +321,21 @@ In previous versions of Laravel, the `validate` method did not return the correc
     // New Behavior...
     ['person' => ['name' => 'Taylor']]
 
+#### The `Validator` Contract
+
+**Likelihood Of Impact: Low**
+
+The `validate` method [was added to the `Illuminate/Contracts/Validation/Validator` contract](https://github.com/laravel/framework/pull/25128):
+
+    /**
+     * Run the validator's rules against its data.
+     *
+     * @return array
+     */
+    public function validate();
+
+If you are implementing this interface, you should add this method to your implementation.
+
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.
