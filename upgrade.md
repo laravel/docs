@@ -27,6 +27,21 @@ Since this vulnerability is not able to be exploited without access to your appl
      */
     protected static $serialize = true;
 
+To make sure CSRF token validation still works, you will need to have the `App\Http\Middleware\VerifyCsrfToken` [middleware](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/VerifyCsrfToken.php) also reference the correct value of `EncryptCookies::$serialize`:
+
+    use App\Http\Middleware\EncryptCookies;
+    
+    // ...
+    
+    /**
+     *
+     * @return string
+     */
+    public static function serialized()
+    {
+        return EncryptCookies::serialized('XSRF-TOKEN');
+    }
+
 > **Note:** When encrypted cookie serialization is enabled, your application will be vulnerable to attack if its encryption key is accessed by a malicious party. If you believe your key may be in the hands of a malicious party, you should rotate the key to a new value before enabling encrypted cookie serialization.
 
 ### Dusk 4.0.0
