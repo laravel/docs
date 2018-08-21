@@ -190,6 +190,7 @@ Each paginator instance provides additional pagination information via the follo
 - `$results->lastItem()`
 - `$results->lastPage() (Not available when using simplePaginate)`
 - `$results->nextPageUrl()`
+- `$results->onFirstPage()`
 - `$results->perPage()`
 - `$results->previousPageUrl()`
 - `$results->total() (Not available when using simplePaginate)`
