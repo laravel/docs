@@ -194,3 +194,4 @@ Each paginator instance provides additional pagination information via the follo
 - `$results->previousPageUrl()`
 - `$results->total() (Not available when using simplePaginate)`
 - `$results->url($page)`
+- `$results->onFirstPage()`
