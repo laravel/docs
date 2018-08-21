@@ -29,6 +29,10 @@ Since this vulnerability is not able to be exploited without access to your appl
 
 To make sure CSRF token validation still works, you will need to have the `App\Http\Middleware\VerifyCsrfToken` [middleware](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/VerifyCsrfToken.php) also reference the correct value of `EncryptCookies::$serialize`:
 
+    use App\Http\Middleware\EncryptCookies;
+    
+    // ...
+    
     /**
      *
      * @return string
