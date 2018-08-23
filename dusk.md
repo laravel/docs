@@ -36,6 +36,7 @@
     - [Codeship](#running-tests-on-codeship)
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
+    - [Gitlab CI/CD](#running-tests-on-gitlab-ci-cd)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1317,3 +1318,25 @@ To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubun
 
     script:
        - php artisan dusk
+
+<a name="running-tests-on-gitlab-ci-cd"></a>
+### Gitlab 
+
+Running your Dusk tests on Gitlab's CI/CD pipelines works easiest by explicitly running the chromedriver executable as well as PHPs development server using `php artisan serve`. See the following example `.gitlab-ci.yml` file.
+
+    Tests:
+      image: chilio/laravel-dusk-ci:stable
+      stage: test
+      cache:
+        paths:
+          - vendor/
+          - node_modules/
+      script:
+        - php -v
+        - cp .env.testing .env
+        - composer install
+        - chmod +x vendor/laravel/dusk/bin/chromedriver-linux
+        - php artisan serve --env testing --port 8080 --host localhost &
+        - vendor/laravel/dusk/bin/chromedriver-linux &
+        - vendor/bin/phpunit
+        - php artisan dusk
