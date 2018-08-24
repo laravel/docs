@@ -323,7 +323,7 @@ In previous versions of Laravel, the `validate` method did not return the correc
 
 #### The `Validator` Contract
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Very Low**
 
 The `validate` method [was added to the `Illuminate/Contracts/Validation/Validator` contract](https://github.com/laravel/framework/pull/25128):
 
