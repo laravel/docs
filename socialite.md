@@ -99,7 +99,7 @@ Before redirecting the user, you may also add additional "scopes" on the request
         ->scopes(['read:user', 'public_repo'])
         ->redirect();
 
-You can overwrite all exisiting scopes using the `setScopes` method:
+You can overwrite all existing scopes using the `setScopes` method:
 
     return Socialite::driver('github')
         ->setScopes(['read:user', 'public_repo'])
