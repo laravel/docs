@@ -28,6 +28,17 @@ When using the scheduler, you only need to add the following Cron entry to your 
 
 This Cron will call the Laravel command scheduler every minute. When the `schedule:run` command is executed, Laravel will evaluate your scheduled tasks and runs the tasks that are due.
 
+#### Homestead configuration
+
+If you are using Homestead, you can start the scheduler by setting `schedule: true` in the `Homestead.yaml` file:
+```yaml
+sites:
+    - map: myproject.test
+      to: /path/to/myproject/public
+      schedule: true
+```
+Remember to re-provision the virtual machine with `vagrant reload --provision` for the changes to take affect.
+
 <a name="defining-schedules"></a>
 ## Defining Schedules
 
