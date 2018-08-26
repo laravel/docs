@@ -614,7 +614,7 @@ Of course, in addition to inserting records into the database, the query builder
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
-When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object. This operation is only supported on databases that support JSON columns:
+When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object. This operation is only supported on MySQL 5.7:
 
     DB::table('users')
                 ->where('id', 1)
