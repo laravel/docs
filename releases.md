@@ -32,7 +32,7 @@ For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and se
 <a name="laravel-5.7"></a>
 ## Laravel 5.7
 
-Laravel 5.7 continues the improvements made in Laravel 5.6 by introducing [Laravel Nova](https://nova.laravel.com), optional email verification to the authentication scaffolding, support for guest users in authorization gates and policies, Symfony `dump-server` integration, localizable notifications, and a variety of other bug fixes and usability improvements.
+Laravel 5.7 continues the improvements made in Laravel 5.6 by introducing [Laravel Nova](https://nova.laravel.com), optional email verification to the authentication scaffolding, support for guest users in authorization gates and policies, console testing improvements, Symfony `dump-server` integration, localizable notifications, and a variety of other bug fixes and usability improvements.
 
 ### Laravel Nova
 
