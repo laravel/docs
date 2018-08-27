@@ -95,6 +95,38 @@ Localization of multiple notifiable entries may also be achieved via the `Notifi
 
     Notification::locale('es')->send($users, new InvoicePaid($invoice));
 
+### Console Testing
+
+Laravel 5.7 allows you to easily "mock" user input for your console commands using the `expectsQuestion` method. In addition, you may specify the exit code and text that you expect to be output by the console command using the `assertExitCode` and `expectsOutput` methods. For example, consider the following console command:
+
+    Artisan::command('question', function () {
+        $name = $this->ask('What is your name?');
+
+        $language = $this->choice('Which language do you program in?', [
+            'PHP',
+            'Ruby',
+            'Python',
+        ]);
+
+        $this->line('Your name is '.$name.' and you program in '.$language.'.');
+    });
+
+You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, and `assertExitCode` methods:
+
+    /**
+     * Test a console command.
+     *
+     * @return void
+     */
+    public function test_console_command()
+    {
+        $this->artisan('laracon')
+             ->expectsQuestion('What is your name?', 'Taylor Otwell')
+             ->expectsQuestion('Which language do you program in?', 'PHP')
+             ->expectsOutput('Your name is Taylor Otwell and you program in PHP.')
+             ->assertExitCode(0);
+    }
+
 ### URL Generator & Callable Syntax
 
 Instead of only accepting strings, Laravel's URL generator now accepts "callable" syntax when generating URLs to controller actions:
