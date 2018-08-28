@@ -291,14 +291,17 @@ When copying a directory, the `copy` method will flatten the directory's structu
 
 Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Mix can handle this for you using the `version` method.
 
-The `version` method will automatically append a unique hash to the filenames of all compiled files, allowing for more convenient cache busting:
+The `version` method will generate unique hashes for all your compiled files and uses it when including it from your pages, allowing for more convenient cache busting:
 
     mix.js('resources/assets/js/app.js', 'public/js')
+       .sass('resources/assets/sass/app.scss', 'public/css')
        .version();
 
-After generating the versioned file, you won't know the exact file name. So, you should use Laravel's global `mix` function within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `mix` function will automatically determine the current name of the hashed file:
+To let Laravel appropriately append the hashes in loading your assets, you should use Laravel's global `mix` function within your [views](/docs/{{version}}/views).:
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+
+    <script src="{{ mix('/js/app.js') }}"></script>
 
 Because versioned files are usually unnecessary in development, you may instruct the versioning process to only run during `npm run production`:
 
@@ -307,6 +310,8 @@ Because versioned files are usually unnecessary in development, you may instruct
     if (mix.inProduction()) {
         mix.version();
     }
+
+> {tip} The current hashes of your assets is stored inside `public/mix-manifest.json`.
 
 <a name="browsersync-reloading"></a>
 ## Browsersync Reloading
