@@ -311,8 +311,6 @@ Because versioned files are usually unnecessary in development, you may instruct
         mix.version();
     }
 
-> {tip} The current hashes of your assets is stored inside `public/mix-manifest.json`.
-
 <a name="browsersync-reloading"></a>
 ## Browsersync Reloading
 
