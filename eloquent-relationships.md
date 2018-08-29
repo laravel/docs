@@ -995,6 +995,12 @@ If you do not want to detach existing IDs, you may use the `syncWithoutDetaching
 The many-to-many relationship also provides a `toggle` method which "toggles" the attachment status of the given IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:
 
     $user->roles()->toggle([1, 2, 3]);
+    
+#### Defining associations using Model Objects
+
+In addition to passing IDs to define associations, You can also pass a model object -- or a collection of model objects -- to the `attach()`, `detach()`, `sync()`, and `syncWithoutDeleting()` methods:
+
+    App\User::find("1")->roles()->attach(App\Roles::where("role_name", "like", "%_admin")->get());
 
 #### Saving Additional Data On A Pivot Table
 
