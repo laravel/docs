@@ -291,13 +291,13 @@ When copying a directory, the `copy` method will flatten the directory's structu
 
 Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Mix can handle this for you using the `version` method.
 
-The `version` method will generate unique hashes for all your compiled files and uses it when including it from your pages, allowing for more convenient cache busting:
+The `version` method will generate unique hashes for all of your compiled files and use this hash when including the file from your templates. In other words, this provides a convenient, built-in "cache busting" mechanism:
 
     mix.js('resources/assets/js/app.js', 'public/js')
        .sass('resources/assets/sass/app.scss', 'public/css')
        .version();
 
-To let Laravel appropriately append the hashes in loading your assets, you should use Laravel's global `mix` function within your [views](/docs/{{version}}/views).:
+After generating the versioned file, you should use Laravel's global `mix` function within your [views](/docs/{{version}}/views) to generate the appropriately versioned asset URL:
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 
