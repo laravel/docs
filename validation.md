@@ -963,10 +963,10 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
         ],
     ]);
 
-You can specify the custom column name as the second parameter of the `unique` method:
+You may specify the name of the column under validation using the second parameter of the `unique` method. Otherwise, the validation rule attribute name will be used as the column name:
 
     'email' => Rule::unique('users', 'email_address')
-    
+
 If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:
 
     'email' => Rule::unique('users')->ignore($user->id, 'user_id')
