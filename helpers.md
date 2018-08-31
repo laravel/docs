@@ -1392,8 +1392,11 @@ The `optional` function accepts any argument and allows you to access properties
 The `optional` function also accepts a Closure as its second argument. The Closure will be invoked if the value provided as the first argument is not null:
 
     return optional(User::find($id), function ($user) {
-        return new DummyUser;
+        return SomeApi::findUser($user->id);
     });
+
+Accessing properties or calling methods on the return value of `optional` method would depend on the return value of the callback. If it returns a primitive value or a different object instance, trying to access properties or calling methods on the object given as the first parameter to `optional` method might not work as expected.
+Also, if the first argument to the `optional` method is null, the return value of the `optional` method would be `null`. Further accessing properties and calling methods on that won't work.
 
 <a name="method-policy"></a>
 #### `policy()` {#collection-method}
