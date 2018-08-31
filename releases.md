@@ -81,7 +81,7 @@ Laravel 5.7 offers integration with Symfony's `dump-server` command via [a packa
 
     php artisan dump-server
 
-Once the server has started, all calls to `dump` will by displayed in the `dump-server` console window instead of in your browser, allowing you to inspect the values without mangling your HTTP response output.
+Once the server has started, all calls to `dump` will be displayed in the `dump-server` console window instead of in your browser, allowing you to inspect the values without mangling your HTTP response output.
 
 ### Notification Localization
 
