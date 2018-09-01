@@ -21,7 +21,7 @@ Of course, don't forget to examine any 3rd party packages consumed by your appli
 
 **Likelihood Of Impact: Very Low**
 
-The unused `options` argument of the `Illuminate\Foundation\Application` class' `register` method has been removed. If you are overriding this method, you should update your method's signature:
+The unused `options` argument of the `Illuminate\Foundation\Application` class `register` method has been removed. If you are overriding this method, you should update your method's signature:
 
     /**
      * Register a service provider with the application.
