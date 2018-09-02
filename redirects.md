@@ -22,6 +22,14 @@ Sometimes you may wish to redirect the user to their previous location, such as 
         return back()->withInput();
     });
 
+There's a route method which will work even when using `artisan route:cache`:
+
+    Route::redirect('dashboard', 'home/dashboard');
+
+By default, it sends a permanent redirect status, but you may optionally pass a 3rd parameter to override that.
+
+    Route::redirect('dashboard', 'home/dashboard', 302);
+
 <a name="redirecting-named-routes"></a>
 ## Redirecting To Named Routes
 
