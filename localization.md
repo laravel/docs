@@ -133,10 +133,6 @@ You may even create more complex pluralization rules which specify translation s
 
     'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',
 
-If you want to display the exact value that was used to evaluate the pluralizated translation strings you may use the pre-defined `:count` placeholder.
-
-    'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',
-
 After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the translation string is returned:
 
     echo trans_choice('messages.apples', 10);
@@ -146,6 +142,10 @@ You may also define place-holder attributes in pluralization strings. These plac
     'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',
 
     echo trans_choice('time.minutes_ago', 5, ['value' => 5]);
+
+If you would like to display the integer value that was passed to the `trans_choice` function, you may use the `:count` placeholder:
+
+    'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',
 
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
