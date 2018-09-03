@@ -133,6 +133,10 @@ You may even create more complex pluralization rules which specify translation s
 
     'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',
 
+If you want to display the exact value that was used to evaluate the pluralizated translation strings you may use the pre-defined `:count` placeholder.
+
+    'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',
+
 After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the translation string is returned:
 
     echo trans_choice('messages.apples', 10);
