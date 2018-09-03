@@ -1383,17 +1383,23 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an [
 <a name="method-optional"></a>
 #### `optional()` {#collection-method}
 
-The `optional` function accepts any argument and allows you to access properties or call methods on that object. If the given object is `null`, properties and methods will return `null` instead of causing an error:
+The `optional` function accepts any argument and allows you to access properties on that object. If the given object is `null`, accessing a property will return `null` instead of causing an error:
 
     return optional($user->address)->street;
 
     {!! old('name', optional($user)->name) !!}
 
-The `optional` function also accepts a Closure as its second argument. The Closure will be invoked if the value provided as the first argument is not null:
+You can also call methods on the returned object. As with property access, if the given object is `null`, calling a method will return `null` instead of causing an error:
+
+    return optional($user)->getTwitterProfile();
+
+If the method you want to call is not actually on the object itself, you can pass a Closure to `optional` as its second argument:
 
     return optional(User::find($id), function ($user) {
-        return new DummyUser;
+        return TwitterApi::findUser($user->twitter_id);
     });
+
+If the given object is not `null`, the Closure will be called and its return value will be returned as is. If the given object is actually `null`, the Closure will not be called, and `optional` will return `null` instead of causing an error.
 
 <a name="method-policy"></a>
 #### `policy()` {#collection-method}
