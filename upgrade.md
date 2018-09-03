@@ -1,240 +1,341 @@
 # Upgrade Guide
 
-- [Upgrading To 5.6.30 From 5.6](#upgrade-5.6.30)
-- [Upgrading To 5.6.0 From 5.5](#upgrade-5.6.0)
+- [Upgrading To 5.7.0 From 5.6](#upgrade-5.7.0)
 
-<a name="upgrade-5.6.30"></a>
-## Upgrading To 5.6.30 From 5.6 (Security Release)
+<a name="upgrade-5.7.0"></a>
+## Upgrading To 5.7.0 From 5.6
 
-Laravel 5.6.30 is a security release of Laravel and is recommended as an immediate upgrade for all users. Laravel 5.6.30 also contains a breaking change to cookie encryption and serialization logic, so please read the following notes carefully when upgrading your application.
-
-**This vulnerability may only be exploited if your application encryption key (`APP_KEY` environment variable) has been accessed by a malicious user.** Typically, it is not possible for users of your application to gain access to this value. However, ex-employees that had access to the encryption key may be able to use the key to attack your applications. If you have any reason to believe your encryption key is in the hands of a malicious party, you should **always** rotate the key to a new value.
-
-### Cookie Serialization
-
-Laravel 5.6.30 disables all serialization / unserialization of cookie values. Since all Laravel cookies are encrypted and signed, cookie values are typically considered safe from client tampering. **However, if your application's encryption key is in the hands of a malicious party, that party could craft cookie values using the encryption key and exploit vulnerabilities inherent to PHP object serialization / unserialization, such as calling arbitrary class methods within your application.**
-
-Disabling serialization on all cookie values will invalidate all of your application's sessions and users will need to log into the application again. In addition, any other encrypted cookies your application is setting will have invalid values. For this reason, you may wish to add additional logic to your application to validate that your custom cookie values match an expected list of values; otherwise, you should discard them.
-
-#### Configuring Cookie Serialization
-
-Since this vulnerability is not able to be exploited without access to your application's encryption key, we have chosen to provide a way to re-enable encrypted cookie serialization while you make your application compatible with these changes. To enable / disable cookie serialization, you may change the static `serialize` property of the `App\Http\Middleware\EncryptCookies` [middleware](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/EncryptCookies.php):
-
-    /**
-     * Indicates if cookies should be serialized.
-     *
-     * @var bool
-     */
-    protected static $serialize = true;
-
-> **Note:** When encrypted cookie serialization is enabled, your application will be vulnerable to attack if its encryption key is accessed by a malicious party. If you believe your key may be in the hands of a malicious party, you should rotate the key to a new value before enabling encrypted cookie serialization.
-
-### Dusk 4.0.0
-
-Dusk 4.0.0 has been released and does not serialize cookies. If you choose to enable cookie serialization, you should continue to use Dusk 3.0.0. Otherwise, you should upgrade to Dusk 4.0.0.
-
-### Passport 6.0.7
-
-Passport 6.0.7 has been released with a new `Laravel\Passport\Passport::withoutCookieSerialization()` method. Once you have disabled cookie serialization, you should call this method within your application's `AppServiceProvider`.
-
-<a name="upgrade-5.6.0"></a>
-## Upgrading To 5.6.0 From 5.5
-
-#### Estimated Upgrade Time: 10 - 30 Minutes
+#### Estimated Upgrade Time: 10 - 15 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
-### PHP
-
-Laravel 5.6 requires PHP 7.1.3 or higher.
-
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.6.*` and your `fideloper/proxy` dependency to `^4.0` in your `composer.json` file.
+Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` file.
 
-In addition, if you are using the following first-party Laravel packages, you should upgrade them to their latest release:
+Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
 
-<div class="content-list" markdown="1">
-- Dusk (Upgrade To `^3.0`)
-- Passport (Upgrade To `^6.0`)
-- Scout (Upgrade To `^4.0`)
-</div>
+### Application
 
-Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.6 support.
+#### The `register` Method
 
-#### Symfony 4
+**Likelihood Of Impact: Very Low**
 
-All of the underlying Symfony components used by Laravel have been upgraded to the Symfony `^4.0` release series. If you are directly interacting with Symfony components within your application, you should review the [Symfony change log](https://github.com/symfony/symfony/blob/master/UPGRADE-4.0.md).
+The unused `options` argument of the `Illuminate\Foundation\Application` class' `register` method has been removed. If you are overriding this method, you should update your method's signature:
 
-#### PHPUnit
-
-You should update the `phpunit/phpunit` dependency of your application to `^7.0`.
-
-### Arrays
-
-#### The `Arr::wrap` Method
-
-Passing `null` to the `Arr::wrap` method will now return an empty array.
+    /**
+     * Register a service provider with the application.
+     *
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @param  bool   $force
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    public function register($provider, $force = false);
 
 ### Artisan
 
-#### The `optimize` Command
+#### Scheduled Job Connection & Queues
 
-The previously deprecated `optimize` Artisan command has been removed. With recent improvements to PHP itself including the OPcache, the `optimize` command no longer provides any relevant performance benefit. Therefore, you may remove `php artisan optimize` from the `scripts` within your `composer.json` file.
+**Likelihood Of Impact: Low**
+
+The `$schedule->job` method now respects the `queue` and `connection` properties on the job class if a connection / job is not explicitly passed into the `job` method.
+
+Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25216).
+
+### Authentication
+
+#### The `Authenticate` Middleware
+
+**Likelihood Of Impact: Low**
+
+The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middleware has been updated to accept the incoming `$request` as its first argument. If you are overriding this method in your own `Authenticate` middleware, you should update your middleware's signature:
+
+    /**
+     * Determine if the user is logged in to any of the given guards.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $guards
+     * @return void
+     *
+     * @throws \Illuminate\Auth\AuthenticationException
+     */
+    protected function authenticate($request, array $guards)
+
+#### The `ResetsPasswords` Trait
+
+**Likelihood Of Impact: Low**
+
+The protected `sendResetResponse` method of the `ResetsPasswords` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
+
+    /**
+     * Get the response for a successful password reset.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetResponse(Request $request, $response)
+
+#### The `SendsPasswordResetEmails` Trait
+
+**Likelihood Of Impact: Low**
+
+The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
+
+    /**
+     * Get the response for a successful password reset link.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetLinkResponse(Request $request, $response)
+
+### Authorization
+
+#### The `Gate` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `raw` was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate/Contracts/Auth/Access/Gate` contract](https://github.com/laravel/framework/pull/25143):
+
+    /**
+     * Get the raw result from the authorization callback.
+     *
+     * @param  string  $ability
+     * @param  array|mixed  $arguments
+     * @return mixed
+     */
+    public function raw($ability, $arguments = []);
+
+If you are implementing this interface, you should add this method to your implementation.
 
 ### Blade
 
-#### HTML Entity Encoding
+#### The `or` Operator
 
-In previous versions of Laravel, Blade (and the `e` helper) would not double encode HTML entities. This was not the default behavior of the underlying `htmlspecialchars` function and could lead to unexpected behavior when rendering content or passing in-line JSON content to JavaScript frameworks.
+**Likelihood Of Impact: High**
 
-In Laravel 5.6, Blade and the `e` helper will double encode special characters by default. This brings these features into alignment with the default behavior of the underlying `htmlspecialchars` PHP function. If you would like to maintain the previous behavior of preventing double encoding, you may use the `Blade::withoutDoubleEncoding` method:
+The Blade "or" operator has been removed in favor of PHP's built-in `??` "null coalesce" operator, which has the same purpose and functionality:
 
-    <?php
+    // Laravel 5.6...
+    {{ $foo or 'default' }}
 
-    namespace App\Providers;
+    // Laravel 5.7...
+    {{ $foo ?? 'default' }}
 
-    use Illuminate\Support\Facades\Blade;
-    use Illuminate\Support\ServiceProvider;
+### Carbon
 
-    class AppServiceProvider extends ServiceProvider
-    {
-        /**
-         * Bootstrap any application services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            Blade::withoutDoubleEncoding();
-        }
-    }
+**Likelihood Of Impact: Very Low**
 
-### Cache
+Carbon "macros" are now handled by the Carbon library directly instead of Laravel's extension of the library. We do not expect this to break your code; however, [please make us aware of any problems you encounter related to this change](https://github.com/laravel/framework/pull/23938).
 
-#### The Rate Limiter `tooManyAttempts` Method
+### Collections
 
-The unused `$decayMinutes` parameter was removed from this method's signature. If you were overriding this method with your own implementation, you should also remove the argument from your method's signature.
+#### The `split` Method
+
+**Likelihood Of Impact: Low**
+
+The `split` method [has been updated to always return the requested number of "groups"](https://github.com/laravel/framework/pull/24088), unless the total number of items in the original collection is less than the requested collection count. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+
+### Cookie
+
+#### `Factory` Contract Method Signature
+
+**Likelihood Of Impact: Very Low**
+
+The signatures of the `make` and `forever` methods of the `Illuminate/Contracts/Cookie/Factory` interface [have been changed](https://github.com/laravel/framework/pull/23200). If you are implementing this interface, you should update these methods in your implementation.
 
 ### Database
 
-#### Index Order Of Morph Columns
+#### The `softDeletesTz` Migration Method
 
-The indexing of the columns built by the `morphs` migration method has been reversed for better performance. If you are using the `morphs` method in one of your migrations, you may receive an error when attempting to run the migration's `down` method. If the application is still in development, you may use the `migrate:fresh` command to rebuild the database from scratch. If the application is in production, you should pass an explicit index name to the `morphs` method.
+**Likelihood Of Impact: Low**
 
-#### `MigrationRepositoryInterface` Method Addition
+The schema table builder's `softDeletesTz` method now accepts the column name as its first argument, while the `$precision` has been moved to the second argument position:
 
-A new `getMigrationsBatches` method has been added to the `MigrationRepositoryInterface`. In the very unlikely event that you were defining your own implementation of this class, you should add this method to your implementation. You may view the default implementation in the framework as an example.
+    /**
+     * Add a "deleted at" timestampTz for the table.
+     *
+     * @param  string  $column
+     * @param  int  $precision
+     * @return \Illuminate\Support\Fluent
+     */
+    public function softDeletesTz($column = 'deleted_at', $precision = 0)
+
+#### The `ConnectionInterface` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `Illuminate\Contracts\Database\ConnectionInterface` contract's `select` and `selectOne` method signatures have been updated to accommodate the new `$useReadPdo` argument:
+
+    /**
+     * Run a select statement and return a single result.
+     *
+     * @param  string  $query
+     * @param  array   $bindings
+     * @param  bool  $useReadPdo
+     * @return mixed
+     */
+    public function selectOne($query, $bindings = [], $useReadPdo = true);
+
+    /**
+     * Run a select statement against the database.
+     *
+     * @param  string  $query
+     * @param  array   $bindings
+     * @param  bool  $useReadPdo
+     * @return array
+     */
+    public function select($query, $bindings = [], $useReadPdo = true);
+
+In addition, the `cursor` method was added to the contract:
+
+    /**
+     * Run a select statement against the database and returns a generator.
+     *
+     * @param  string  $query
+     * @param  array  $bindings
+     * @param  bool  $useReadPdo
+     * @return \Generator
+     */
+    public function cursor($query, $bindings = [], $useReadPdo = true);
+
+If you are implementing this interface, you should add this method to your implementation.
+
+#### SQL Server Driver Priority
+
+**Likelihood Of Impact: Low**
+
+Prior to Laravel 5.7, the `PDO_DBLIB` driver was used as the default SQL Server PDO driver. This driver is considered deprecated by Microsoft. As of Laravel 5.7, `PDO_SQLSRV` will be used as the default driver if it is available. Alternatively, you may choose to use the `PDO_ODBC` driver:
+
+    'sqlsrv' => [
+        // ...
+        'odbc' => true,
+        'odbc_datasource_name' => 'your-odbc-dsn',
+    ],
+
+If neither of these drivers are available, Laravel will use the `PDO_DBLIB` driver.
+
+### Debug
+
+#### Dumper Classes
+
+**Likelihood Of Impact: Very Low**
+
+The `Illuminate\Support\Debug\Dumper` and `Illuminate\Support\Debug\HtmlDumper` classes have been removed in favor of using Symfony's native variable dumpers: `Symfony\Component\VarDumper\VarDumper` and `Symfony\Component\VarDumper\Dumper\HtmlDumper`.
 
 ### Eloquent
 
-#### The `getDateFormat` Method
+#### The `latest` / `oldest` Methods
 
-This `getDateFormat` method is now `public` instead of `protected`.
+**Likelihood Of Impact: Low**
 
-### Hashing
+The Eloquent query builder's `latest` and `oldest` methods have been updated to respect custom "created at" timestamp columns that may be specified on your Eloquent models. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
 
-#### New Configuration File
+#### The `wasChanged` Method
 
-All hashing configuration is now housed in its own `config/hashing.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/master/config/hashing.php) in your own application. Most likely, you should maintain the `bcrypt` driver as your default driver. However, `argon` is also supported.
+**Likelihood Of Impact: Very Low**
 
-### Helpers
+An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
 
-#### The `e` Helper
+#### PostgreSQL Special Float Values
 
-In previous versions of Laravel, Blade (and the `e` helper) would not double encode HTML entities. This was not the default behavior of the underlying `htmlspecialchars` function and could lead to unexpected behavior when rendering content or passing in-line JSON content to JavaScript frameworks.
+**Likelihood Of Impact: Low**
 
-In Laravel 5.6, Blade and the `e` helper will double encode special characters by default. This brings these features into alignment with the default behavior of the underlying `htmlspecialchars` PHP function. If you would like to maintain the previous behavior of preventing double encoding, you may pass `false` as the second argument to the `e` helper:
+PostgreSQL supports the float values `Infinity`, `-Infinity` and `NaN`. Prior to Laravel 5.7, these were cast to `0` when the Eloquent casting type for the column was `float`, `double`, or `real`.
 
-    <?php echo e($string, false); ?>
+As of Laravel 5.7, these values will be cast to the corresponding PHP constants `INF`, `-INF`, and `NAN`.
 
-### Logging
+### Email Verification
 
-#### New Configuration File
+**Likelihood Of Impact: Optional**
 
-All logging configuration is now housed in its own `config/logging.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/master/config/logging.php) in your own application and tweak the settings based on your application's needs.
+If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/develop/app/Http/Controllers/Auth/VerificationController.php).
 
-The `log` and `log_level` configuration options may be removed from the `config/app.php` configuration file.
+You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
 
-#### The `configureMonologUsing` Method
+Finally, when calling the `Auth::routes` method, you should pass the `verify` option to the method:
 
-If you were using the `configureMonologUsing` method to customize the Monolog instance for your application, you should now create a `custom` Log channel. For more information on how to create custom channels, check out the [full logging documentation](/docs/5.6/logging#creating-custom-channels).
+    Auth::routes(['verify' => true]);
 
-#### The Log `Writer` Class
+### Filesystem
 
-The `Illuminate\Log\Writer` class has been renamed to `Illuminate\Log\Logger`. If you were explicitly type-hinting this class as a dependency of one of your application's classes, you should update the class reference to the new name. Or, alternatively, you should strongly consider type-hinting the standardized `Psr\Log\LoggerInterface` interface instead.
+#### `Filesystem` Contract Methods
 
-#### The `Illuminate\Contracts\Logging\Log` Interface
+**Likelihood Of Impact: Low**
 
-This interface has been removed since this interface was a total duplication of the `Psr\Log\LoggerInterface` interface. You should type-hint the `Psr\Log\LoggerInterface` interface instead.
+The `readStream` and `writeStream` methods [have been added to the `Illuminate\Contracts\Filesystem\Filesystem` contract](https://github.com/laravel/framework/pull/23755). If you are implementing this interface, you should add these methods to your implementation.
 
 ### Mail
 
-#### `withSwiftMessage` Callbacks
+#### Mailable Dynamic Variable Casing
 
-In previous releases of Laravel, Swift Messages customization callbacks registered using `withSwiftMessage` were called _after_ the content was already encoded and added to the message. These callbacks are now called _before_ the content is added, which allows you to customize the encoding or other message options as needed.
+**Likelihood Of Impact: Medium**
 
-### Pagination
-
-#### Bootstrap 4
-
-The pagination links generated by the paginator now default to Bootstrap 4. To instruct the paginator to generate Bootstrap 3 links, call the `Paginator::useBootstrapThree` method from the `boot` method of your `AppServiceProvider`:
-
-    <?php
-
-    namespace App\Providers;
-
-    use Illuminate\Pagination\Paginator;
-    use Illuminate\Support\ServiceProvider;
-
-    class AppServiceProvider extends ServiceProvider
-    {
-        /**
-         * Bootstrap any application services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            Paginator::useBootstrapThree();
-        }
-    }
-
-### Resources
-
-#### The `original` Property
-
-The `original` property of [resource responses](/docs/5.6/eloquent-resources) is now set to the original model instead of a JSON string / array. This allows for easier inspection of the response's model during testing.
+Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with dynamic view variables. Dynamic mailable variables are not a documented Laravel feature, so likelihood of impact to your application is low.
 
 ### Routing
 
-#### Returning Newly Created Models
+#### The `Route::redirect` Method
 
-When returning a newly created Eloquent model directly from a route, the response status will now automatically be set to `201` instead of `200`. If any of your application's tests were explicitly expecting a `200` response, those tests should be updated to expect `201`.
+**Likelihood Of Impact: High**
 
-### Trusted Proxies
+The `Route::redirect` method now returns a `302` HTTP status code redirect. The `permanentRedirect` method has been added to allow `301` redirects.
 
-Due to underlying changes in the trusted proxy functionality of Symfony HttpFoundation, slight changes must be made to your application's `App\Http\Middleware\TrustProxies` middleware.
+    // Return a 302 redirect...
+    Route::redirect('/foo', '/bar');
 
-The `$headers` property, which was previously an array, is now a bit property that accepts several different values. For example, to trust all forwarded headers, you may update your `$headers` property to the following value:
+    // Return a 301 redirect...
+    Route::redirect('/foo', '/bar', 301);
 
-    use Illuminate\Http\Request;
+    // Return a 301 redirect...
+    Route::permanentRedirect('/foo', '/bar');
 
-    /**
-     * The headers that should be used to detect proxies.
-     *
-     * @var int
-     */
-    protected $headers = Request::HEADER_X_FORWARDED_ALL;
+#### The `addRoute` Method
 
-For more information on the available `$headers` values, check out the full documentation on [trusting proxies](/docs/5.6/requests#configuring-trusted-proxies).
+**Likelihood Of Impact: Low**
+
+The `addRoute` method of the `Illuminate\Routing\Router` class has been changed from `protected` to `public`.
 
 ### Validation
 
-#### The `ValidatesWhenResolved` Interface
+#### Nested Validation Data
 
-The `validate` method of the `ValidatesWhenResolved` interface / trait has been renamed to `validateResolved` in order to avoid conflicts with the `$request->validate()` method.
+**Likelihood Of Impact: Medium**
+
+In previous versions of Laravel, the `validate` method did not return the correct data for nested validation rules. This has been corrected in Laravel 5.7:
+
+    $data = Validator::make([
+        'person' => [
+            'name' => 'Taylor',
+            'job' => 'Developer'
+        ]
+    ], ['person.name' => 'required'])->validate();
+
+    dump($data);
+
+    // Prior Behavior...
+    ['person' => ['name' => 'Taylor', 'job' => 'Developer']]
+
+    // New Behavior...
+    ['person' => ['name' => 'Taylor']]
+
+#### The `Validator` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `validate` method [was added to the `Illuminate/Contracts/Validation/Validator` contract](https://github.com/laravel/framework/pull/25128):
+
+    /**
+     * Run the validator's rules against its data.
+     *
+     * @return array
+     */
+    public function validate();
+
+If you are implementing this interface, you should add this method to your implementation.
 
 ### Miscellaneous
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.5...master) and choose which updates are important to you.
+We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.

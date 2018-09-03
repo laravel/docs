@@ -11,6 +11,7 @@
 - [Writing Policies](#writing-policies)
     - [Policy Methods](#policy-methods)
     - [Methods Without Models](#methods-without-models)
+    - [Guest Users](#guest-users)
     - [Policy Filters](#policy-filters)
 - [Authorizing Actions Using Policies](#authorizing-actions-using-policies)
     - [Via The User Model](#via-the-user-model)
@@ -233,6 +234,33 @@ When defining policy methods that will not receive a model instance, such as a `
     public function create(User $user)
     {
         //
+    }
+
+<a name="guest-users"></a>
+### Guest Users
+
+By default, all gates and policies automatically return `false` if the incoming HTTP request was not initiated by an authenticated user. However, you may allow these authorization checks to pass through to your gates and policies by declaring an "optional" type-hint or supplying a `null` default value for the user argument definition:
+
+    <?php
+
+    namespace App\Policies;
+
+    use App\User;
+    use App\Post;
+
+    class PostPolicy
+    {
+        /**
+         * Determine if the given post can be updated by the user.
+         *
+         * @param  \App\User  $user
+         * @param  \App\Post  $post
+         * @return bool
+         */
+        public function update(?User $user, Post $post)
+        {
+            return $user->id === $post->user_id;
+        }
     }
 
 <a name="policy-filters"></a>

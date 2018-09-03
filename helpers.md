@@ -1014,6 +1014,8 @@ The `action` function generates a URL for the given controller action. You do no
 
     $url = action('HomeController@index');
 
+    $url = action([HomeController::class, 'index']);
+
 If the method accepts route parameters, you may pass them as the second argument to the method:
 
     $url = action('UserController@profile', ['id' => 1]);
@@ -1275,6 +1277,8 @@ The `dump` function dumps the given variables:
     dump($value1, $value2, $value3, ...);
 
 If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
+
+> {tip} You may use Artisan's `dump-server` command to intercept all `dump` calls and display them in your console window instead of your browser.
 
 <a name="method-encrypt"></a>
 #### `encrypt()` {#collection-method}
