@@ -27,7 +27,7 @@ For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and se
 | 5.4 | January 24th, 2017 | July 24th, 2017 | January 24th, 2018 |
 | 5.5 (LTS) | August 30th, 2017 | August 30th, 2019 | August 30th, 2020 |
 | 5.6 | February 7th, 2018 | August 7th, 2018 | February 7th, 2019 |
-| 5.7 | August 2018 | February 2019 | August 2019 |
+| 5.7 | September 4th, 2018 | March 4th, 2019 | September 4th, 2019 |
 
 <a name="laravel-5.7"></a>
 ## Laravel 5.7
