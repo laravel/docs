@@ -17,7 +17,7 @@ Of course, don't forget to examine any 3rd party packages consumed by your appli
 
 ### Updated resources directory structure
 
-The `resources/assets` directory is removed and it's subdirectories are moved to the `resources`directory. Be sure to update your Laravel Mix configuration.
+The `resources/assets` directory is removed and its subdirectories are moved to the `resources` directory. Be sure to update your Laravel Mix configuration.
 
 ### Application
 
