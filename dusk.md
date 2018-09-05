@@ -152,6 +152,8 @@ To force Dusk to use its own environment file when running tests, create a `.env
 
 When running tests, Dusk will back-up your `.env` file and rename your Dusk environment to `.env`. Once the tests have completed, your `.env` file will be restored.
 
+> {note} If you are using Dusk-specific environment files, you should remember to add them to your `.gitignore`.
+
 <a name="creating-browsers"></a>
 ### Creating Browsers
 
