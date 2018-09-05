@@ -15,6 +15,10 @@ Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
 
+### Updated resources directory structure
+
+The `resources/assets` directory is removed and its subdirectories are moved to the `resources` directory. Be sure to update your Laravel Mix configuration.
+
 ### Application
 
 #### The `register` Method
