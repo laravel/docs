@@ -97,7 +97,7 @@ The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` t
 
 **Likelihood Of Impact: Very Low**
 
-The `raw` was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate/Contracts/Auth/Access/Gate` contract](https://github.com/laravel/framework/pull/25143):
+The `raw` was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate\Contracts\Auth\Access\Gate` contract](https://github.com/laravel/framework/pull/25143):
 
     /**
      * Get the raw result from the authorization callback.
@@ -144,7 +144,7 @@ The `split` method [has been updated to always return the requested number of "g
 
 **Likelihood Of Impact: Very Low**
 
-The signatures of the `make` and `forever` methods of the `Illuminate/Contracts/Cookie/Factory` interface [have been changed](https://github.com/laravel/framework/pull/23200). If you are implementing this interface, you should update these methods in your implementation.
+The signatures of the `make` and `forever` methods of the `Illuminate\Contracts\Cookie\Factory` interface [have been changed](https://github.com/laravel/framework/pull/23200). If you are implementing this interface, you should update these methods in your implementation.
 
 ### Database
 
@@ -325,7 +325,7 @@ In previous versions of Laravel, the `validate` method did not return the correc
 
 **Likelihood Of Impact: Very Low**
 
-The `validate` method [was added to the `Illuminate/Contracts/Validation/Validator` contract](https://github.com/laravel/framework/pull/25128):
+The `validate` method [was added to the `Illuminate\Contracts\Validation\Validator` contract](https://github.com/laravel/framework/pull/25128):
 
     /**
      * Run the validator's rules against its data.
