@@ -34,7 +34,7 @@ When using the `database` cache driver, you will need to setup a table to contai
 
     Schema::create('cache', function ($table) {
         $table->string('key')->unique();
-        $table->text('value');
+        $table->mediumText('value');
         $table->integer('expiration');
     });
 
