@@ -14,18 +14,17 @@ Many web applications requires users to verify their email addresses before usin
 
 ### Model Preparation
 
-To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract. In addition, you should use the `Illuminate\Auth\MustVerifyEmail` trait:
+To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract:
 
     <?php
 
     namespace App;
 
-    use Illuminate\Auth\MustVerifyEmail;
     use Illuminate\Notifications\Notifiable;
+    use Illuminate\Contracts\Auth\MustVerifyEmail;
     use Illuminate\Foundation\Auth\User as Authenticatable;
-    use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 
-    class User extends Authenticatable implements MustVerifyEmailContract
+    class User extends Authenticatable implements MustVerifyEmail
     {
         use MustVerifyEmail, Notifiable;
 
