@@ -11,7 +11,9 @@
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` file.
+Update your `composer.json` file :
+ - `laravel/framework` to `5.7.*`
+ - `laravel/passport` to `^7.0`
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
 
@@ -343,6 +345,7 @@ The `validate` method [was added to the `Illuminate\Contracts\Validation\Validat
     public function validate();
 
 If you are implementing this interface, you should add this method to your implementation.
+
 
 ### Miscellaneous
 
