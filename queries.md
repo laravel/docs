@@ -490,6 +490,16 @@ MySQL and PostgreSQL support `whereJsonContains` with multiple values:
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', ['en', 'de'])
                     ->get();                    
+                    
+You may use `whereJsonLength` to query JSON arrays by their length:
+                    
+    $users = DB::table('users')
+                    ->whereJsonLength('options->languages', 0)
+                    ->get();
+
+    $users = DB::table('users')
+                    ->whereJsonLength('options->languages', '>', 1)
+                    ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit, & Offset
