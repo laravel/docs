@@ -469,7 +469,7 @@ The query above will produce the following SQL:
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7, PostgreSQL, and SQL Server 2016. To query a JSON column, use the `->` operator:
+Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7, PostgreSQL, SQL Server 2016, and SQLite 3.9.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
 
     $users = DB::table('users')
                     ->where('options->language', 'en')
@@ -479,7 +479,7 @@ Laravel also supports querying JSON column types on databases that provide suppo
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
                     
-You may use `whereJsonContains` to query JSON arrays:
+You may use `whereJsonContains` to query JSON arrays (not supported on SQLite):
                     
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', 'en')
