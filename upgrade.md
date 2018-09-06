@@ -217,6 +217,14 @@ Prior to Laravel 5.7, the `PDO_DBLIB` driver was used as the default SQL Server 
 
 If neither of these drivers are available, Laravel will use the `PDO_DBLIB` driver.
 
+#### Foreign keys in SQLite
+
+**Likelihood Of Impact: Medium**
+
+SQLite does not support dropping foreign keys. Using the `dropForeign` method on a table now throws an exception. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+
+If you run your migrations on multiple types of databases, consider using `DB::getDriverName()` in your migrations to skip unsupported foreign key methods for SQLite, or override the Blueprint methods to suit your needs.
+
 ### Debug
 
 #### Dumper Classes
