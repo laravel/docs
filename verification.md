@@ -26,7 +26,7 @@ To get started, verify that your `App\User` model implements the `Illuminate\Con
 
     class User extends Authenticatable implements MustVerifyEmail
     {
-        use MustVerifyEmail, Notifiable;
+        use Notifiable;
 
         // ...
     }
