@@ -36,6 +36,7 @@
     - [Codeship](#running-tests-on-codeship)
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
+    - [GitLab CI](#running-tests-on-gitlab-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1317,3 +1318,27 @@ To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubun
 
     script:
        - php artisan dusk
+
+
+<a name="running-tests-on-gitlab-ci"></a>
+### GitLab CI
+
+To run Dusk tests on [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/), add the following to `.gitlab-ci.yml`. 
+
+	stages:
+  	  - test
+	
+	browser_test:
+	  image: laratools/ci:7.2
+	  stage: test
+	  before_script:
+	    - composer install --prefer-dist --no-interaction --no-suggest
+	    - cp .env.testing .env
+	    - nohup php artisan serve &
+	  script:
+	    - php artisan dusk
+	  artifacts:
+	    paths:
+	      - ./tests/Browser/screenshots
+	      - ./tests/Browser/console
+	    expire_in: 7 days
