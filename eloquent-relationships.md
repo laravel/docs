@@ -20,6 +20,7 @@
 - [Inserting & Updating Related Models](#inserting-and-updating-related-models)
     - [The `save` Method](#the-save-method)
     - [The `create` Method](#the-create-method)
+    - [The `push` Method](#the-push-method)
     - [Belongs To Relationships](#updating-belongs-to-relationships)
     - [Many To Many Relationships](#updating-many-to-many-relationships)
 - [Touching Parent Timestamps](#touching-parent-timestamps)
@@ -890,6 +891,18 @@ You may use the `createMany` method to create multiple related models:
         ],
     ]);
 
+<a name="the-push-method"></a>
+### The Push Method
+
+If you want to update the relationships recursively you can use the `push` method:
+
+    $post = App\Post::find(1);
+
+    $post->comments[0]->message = 'Updated message';
+    $post->comments[0]->author->name = 'New name';
+    
+    $post->push();
+    
 <a name="updating-belongs-to-relationships"></a>
 ### Belongs To Relationships
 
