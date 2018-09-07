@@ -1319,7 +1319,6 @@ To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubun
     script:
        - php artisan dusk
 
-
 <a name="running-tests-on-gitlab-ci"></a>
 ### GitLab CI
 
