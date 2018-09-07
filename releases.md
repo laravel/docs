@@ -120,7 +120,7 @@ You may test this command with the following test which utilizes the `expectsQue
      */
     public function test_console_command()
     {
-        $this->artisan('laracon')
+        $this->artisan('question')
              ->expectsQuestion('What is your name?', 'Taylor Otwell')
              ->expectsQuestion('Which language do you program in?', 'PHP')
              ->expectsOutput('Your name is Taylor Otwell and you program in PHP.')
