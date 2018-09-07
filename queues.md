@@ -428,6 +428,12 @@ The `--once` option may be used to instruct the worker to only process a single 
 
     php artisan queue:work --once
 
+#### Processing All Queued Jobs
+
+ The `--all` option may be used to instruct the worker to process all jobs and then stop gracefully. It serves the purpose of being the entrypoint of a Docker container if you wish to shutdown the container after the queue is empty.
+ 
+     php artisan queue:work --all
+ 
 #### Specifying The Connection & Queue
 
 You may also specify which queue connection the worker should utilize. The connection name passed to the `work` command should correspond to one of the connections defined in your `config/queue.php` configuration file:
