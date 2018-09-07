@@ -265,6 +265,17 @@ If you choose to use Laravel's new [email verification services](/docs/{{version
 
 You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
 
+To send the email when a user is registered you should add the following events and listeners to the [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/master/app/Providers/EventServiceProvider.php). 
+
+```php
+protected $listen = [
+    // ...
+    \Illuminate\Auth\Events\Registered::class => [
+        \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
+    ],
+];
+```
+
 Finally, when calling the `Auth::routes` method, you should pass the `verify` option to the method:
 
     Auth::routes(['verify' => true]);
