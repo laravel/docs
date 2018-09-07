@@ -250,7 +250,7 @@ The `collapse` method collapses a collection of arrays into a single, flat colle
 <a name="method-combine"></a>
 #### `combine()` {#collection-method}
 
-The `combine` method combines the keys of the collection with the values of another array or collection:
+The `combine` method combines the values of the collection, as keys, with the values of another array or collection:
 
     $collection = collect(['name', 'age']);
 
