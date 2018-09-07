@@ -1322,7 +1322,7 @@ To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubun
 <a name="running-tests-on-gitlab-ci"></a>
 ### GitLab CI
 
-To run Dusk tests on [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/), add the following to `.gitlab-ci.yml`. 
+To run Dusk tests on [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/), add the following to your `.gitlab-ci.yml` file:
 
 	stages:
   	  - test
