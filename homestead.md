@@ -431,6 +431,17 @@ Finally, ensure your `.env` file has the following options:
     AWS_DEFAULT_REGION=us-east-1
     AWS_URL=http://homestead:9600
 
+To provision buckets, you will need to add `buckets` to your configuration along with a `name` and `policy` for each. Like so:
+```yaml
+buckets:
+    - name: your-bucket
+      policy: public
+    - name: your-private-bucket
+      policy: none
+```
+
+Allowed policies include: `none`, `download`, `upload`, and `public`
+
 <a name="ports"></a>
 ### Ports
 
