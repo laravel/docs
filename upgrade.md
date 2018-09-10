@@ -99,7 +99,7 @@ The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` t
 
 **Likelihood Of Impact: Very Low**
 
-The `raw` was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate\Contracts\Auth\Access\Gate` contract](https://github.com/laravel/framework/pull/25143):
+The `raw` method was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate\Contracts\Auth\Access\Gate` contract](https://github.com/laravel/framework/pull/25143):
 
     /**
      * Get the raw result from the authorization callback.
