@@ -77,7 +77,7 @@ In previous versions of Laravel, authorization gates and policies automatically 
 
 ### Symfony Dump Server
 
-Laravel 5.7 offers integration with Symfony's `dump-server` command via [a package by Marcel Pociot](https://github.com/beyondcode/laravel-dump-server). To get started, run the `dump-server` Artisan command:
+Laravel 5.7 offers integration with Symfony's `dump-server` command via [a package by Marcel Pociot](https://github.com/beyondcode/laravel-dump-server). To get started, add the `"beyondcode/laravel-dump-server": "^1.0"` dependency to your `composer.json` file and run `composer update`. Then run the `dump-server` Artisan command:
 
     php artisan dump-server
 
