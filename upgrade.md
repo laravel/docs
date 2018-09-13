@@ -265,8 +265,8 @@ If you choose to use Laravel's new [email verification services](/docs/{{version
 
 You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
 
-Next, your user table must contain an `email_verified_at` column to store the date and time that the email address was verified.
- 
+Next, your user table must contain an `email_verified_at` column to store the date and time that the email address was verified:
+
     $table->timestamp('email_verified_at')->nullable();
 
 In order to send the email when a user is registered, you should register following events and listeners in your [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/master/app/Providers/EventServiceProvider.php) class:
