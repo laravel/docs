@@ -297,6 +297,14 @@ Finally, when calling the `Auth::routes` method, you should pass the `verify` op
 
 The `readStream` and `writeStream` methods [have been added to the `Illuminate\Contracts\Filesystem\Filesystem` contract](https://github.com/laravel/framework/pull/23755). If you are implementing this interface, you should add these methods to your implementation.
 
+### Hashing
+
+#### `Hash:check` Method
+
+**Likelihood Of Impact: Medium**
+
+The `check` method now checks if the algorithm of the hash matches the configured algorithm.
+
 ### Mail
 
 #### Mailable Dynamic Variable Casing
