@@ -261,7 +261,7 @@ As of Laravel 5.7, these values will be cast to the corresponding PHP constants 
 
 **Likelihood Of Impact: Optional**
 
-If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/develop/app/Http/Controllers/Auth/VerificationController.php).
+If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php).
 
 You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
 
