@@ -257,15 +257,7 @@ PostgreSQL supports the float values `Infinity`, `-Infinity` and `NaN`. Prior to
 
 As of Laravel 5.7, these values will be cast to the corresponding PHP constants `INF`, `-INF`, and `NAN`.
 
-### Email
-
-#### Template Theme
-
-**Likelihood Of Impact: Low**
-
-If you have customized the default theme styles used for the email templates, you will need to re-publish and make your customizations again. The previous button colors have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error' respectively.
-
-#### Verification
+### Email Verification
 
 **Likelihood Of Impact: Optional**
 
@@ -308,6 +300,12 @@ The `readStream` and `writeStream` methods [have been added to the `Illuminate\C
 **Likelihood Of Impact: Medium**
 
 Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with dynamic view variables. Dynamic mailable variables are not a documented Laravel feature, so likelihood of impact to your application is low.
+
+#### Template Theme
+
+**Likelihood Of Impact: Low**
+
+If you have customized the default theme styles used for the email templates, you will need to re-publish and make your customizations again. The previous button colors have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error' respectively.
 
 ### Routing
 
