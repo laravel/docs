@@ -307,9 +307,9 @@ Variables that are dynamically passed to mailable views [are now automatically "
 
 #### Template Theme
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Medium**
 
-If you have customized the default theme styles used for the email templates, you will need to re-publish and make your customizations again. The previous button colors have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error' respectively.
+If you have customized the default theme styles used for Markdown mailable templates, you will need to re-publish and make your customizations again. The button color classes have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error'.
 
 ### Routing
 
