@@ -257,7 +257,15 @@ PostgreSQL supports the float values `Infinity`, `-Infinity` and `NaN`. Prior to
 
 As of Laravel 5.7, these values will be cast to the corresponding PHP constants `INF`, `-INF`, and `NAN`.
 
-### Email Verification
+### Email
+
+#### Template Theme
+
+**Likelihood Of Impact: Low**
+
+If you have customized the default theme styles used for the email templates, you will need to re-publish and make your customizations again. The previous button colors have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error' respectively.
+
+#### Verification
 
 **Likelihood Of Impact: Optional**
 
