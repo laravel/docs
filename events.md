@@ -339,7 +339,6 @@ Event subscribers are classes that may subscribe to multiple events from within 
                 'App\Listeners\UserEventSubscriber@onUserLogout'
             );
         }
-
     }
 
 <a name="registering-event-subscribers"></a>
