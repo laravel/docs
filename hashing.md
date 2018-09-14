@@ -77,8 +77,6 @@ The `check` method allows you to verify that a given plain-text string correspon
         // The passwords match...
     }
 
-> {note} The supplied `$hashedPassword` has to match the algorithm you have configured.
-
 #### Checking If A Password Needs To Be Rehashed
 
 The `needsRehash` function allows you to determine if the work factor used by the hasher has changed since the password was hashed:
