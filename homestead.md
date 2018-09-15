@@ -26,6 +26,7 @@
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
     - [Mail](#mail)
+    - [Extending Homestead](#extending-homestead)
 - [Network Interfaces](#network-interfaces)
 - [Updating Homestead](#updating-homestead)
 - [Provider Specific Settings](#provider-specific-settings)
@@ -514,6 +515,13 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 ### Mail
 
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
+
+<a name="extending-homestead"></a>
+### Extending Homestead
+
+Homestead provides a way for you to extend functionality of the virtual machine via `after.sh`. In the root of your folder, you can add any shell commands you need to further configure Homestead. You can add packages, disable or enable services, etc.
+
+> If Ubuntu asks you whether to keep an original package's configuration or to overwrite with the new configuration, you should use `sudo apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install YOUR-PACKAGE` to ensure you don't override any configuration Homestead previously set.
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
