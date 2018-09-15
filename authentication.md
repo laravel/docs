@@ -182,17 +182,13 @@ Of course, if you are using [controllers](/docs/{{version}}/controllers), you ma
 
 #### Redirecting Unauthenticated Users
 
-When the `auth` middleware detects an unauthorized user, it will either return a JSON `401` response, or, if the request was not an AJAX request, redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes).
+When the `auth` middleware detects an unauthorized user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes).
 
-You may modify this behavior by defining an `unauthenticated` function in your `app/Exceptions/Handler.php` file:
+You may modify this behavior by updating the `redirectTo` function in your `app/Http/Middleware/Authenticate.php` file:
 
-    use Illuminate\Auth\AuthenticationException;
-
-    protected function unauthenticated($request, AuthenticationException $exception)
+    protected function redirectTo($request)
     {
-        return $request->expectsJson()
-                    ? response()->json(['message' => $exception->getMessage()], 401)
-                    : redirect()->guest(route('login'));
+        return route('login');
     }
 
 #### Specifying A Guard
