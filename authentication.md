@@ -182,10 +182,14 @@ Of course, if you are using [controllers](/docs/{{version}}/controllers), you ma
 
 #### Redirecting Unauthenticated Users
 
-When the `auth` middleware detects an unauthorized user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes).
+When the `auth` middleware detects an unauthorized user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior by updating the `redirectTo` function in your `app/Http/Middleware/Authenticate.php` file:
 
-You may modify this behavior by updating the `redirectTo` function in your `app/Http/Middleware/Authenticate.php` file:
-
+    /**
+     * Get the path the user should be redirected to.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
     protected function redirectTo($request)
     {
         return route('login');
