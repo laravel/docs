@@ -128,7 +128,7 @@ To publish the Passport Vue components, use the `vendor:publish` Artisan command
 
     php artisan vendor:publish --tag=passport-components
 
-The published components will be placed in your `resources/assets/js/components` directory. Once the components have been published, you should register them in your `resources/assets/js/app.js` file:
+The published components will be placed in your `resources/js/components` directory. Once the components have been published, you should register them in your `resources/js/app.js` file:
 
     Vue.component(
         'passport-clients',
