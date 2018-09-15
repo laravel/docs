@@ -380,6 +380,13 @@ The `validate` method [was added to the `Illuminate\Contracts\Validation\Validat
 
 If you are implementing this interface, you should add this method to your implementation.
 
+### Configuration
+
+#### The `QUEUE_DRIVER` environment key
+
+**Likelihood Of Impact: Very Low**
+
+The `QUEUE_DRIVER` key has been renamed to `QUEUE CONNECTION`.
 
 ### Miscellaneous
 
