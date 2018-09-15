@@ -499,7 +499,7 @@ In addition to conditionally including relationship information in your resource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'expires_at' => $this->whenPivotLoaded('role_users', function () {
+            'expires_at' => $this->whenPivotLoaded('role_user', function () {
                 return $this->pivot->expires_at;
             }),
         ];
