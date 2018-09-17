@@ -26,8 +26,8 @@
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
     - [Mail](#mail)
-    - [Extending Homestead](#extending-homestead)
 - [Network Interfaces](#network-interfaces)
+- [Extending Homestead](#extending-homestead)
 - [Updating Homestead](#updating-homestead)
 - [Provider Specific Settings](#provider-specific-settings)
     - [VirtualBox](#provider-specific-virtualbox)
@@ -516,13 +516,6 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
 
-<a name="extending-homestead"></a>
-### Extending Homestead
-
-Homestead provides a way for you to extend functionality of the virtual machine via `after.sh`. In the root of your folder, you can add any shell commands you need to further configure Homestead. You can add packages, disable or enable services, etc.
-
-> If Ubuntu asks you whether to keep an original package's configuration or to overwrite with the new configuration, you should use `sudo apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install YOUR-PACKAGE` to ensure you don't override any configuration Homestead previously set.
-
 <a name="network-interfaces"></a>
 ## Network Interfaces
 
@@ -544,6 +537,18 @@ To enable [DHCP](https://www.vagrantup.com/docs/networking/public_network.html),
     networks:
         - type: "public_network"
           bridge: "en1: Wi-Fi (AirPort)"
+
+<a name="extending-homestead"></a>
+## Extending Homestead
+
+You may extend Homestead using the `after.sh` script in the root of your Homestead directory. Within this file, you may add any shell commands that are necessary to properly configure and customize your virtual machine.
+
+When customizing Homestead, Ubuntu may ask you if you would like to keep a package's original configuration or overwrite it with a new configuration file. To avoid this, you should use the following command when installing packages to avoid overwriting any configuration previously written by Homestead:
+
+sudo apt-get -y \
+          -o Dpkg::Options::="--force-confdef" \
+          -o pkg::Options::="--force-confold" \
+          install your-package
 
 <a name="updating-homestead"></a>
 ## Updating Homestead
