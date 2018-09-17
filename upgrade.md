@@ -263,7 +263,7 @@ As of Laravel 5.7, these values will be cast to the corresponding PHP constants 
 
 If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php).
 
-You will then need to modify your `App\User` model to implement the `MustVerifyEmail` contract:
+You will also need to modify your `App\User` model to implement the `MustVerifyEmail` contract:
 
     <?php
 
@@ -280,7 +280,7 @@ You will then need to modify your `App\User` model to implement the `MustVerifyE
         // ...
     }
 
-In order to use the `verified` middleware so that only verified users can access a given route, you will need to update the `$routeMiddleware` property in your `app/Http/Kernel.php` file to include it:
+In order to use the `verified` middleware so that only verified users may access a given route, you will need to update the `$routeMiddleware` property of your `app/Http/Kernel.php` file to include the new middleware:
 
     // Within App\Http\Kernel Class...
 
