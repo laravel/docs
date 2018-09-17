@@ -263,6 +263,37 @@ As of Laravel 5.7, these values will be cast to the corresponding PHP constants 
 
 If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php).
 
+You will then need to modify your `App\User` model to implement the `MustVerifyEmail` contract:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Contracts\Auth\MustVerifyEmail;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable implements MustVerifyEmail
+    {
+        use Notifiable;
+
+        // ...
+    }
+
+In order to use the `verified` middleware so that only verified users can access a given route, you will need to update the `$routeMiddleware` property in your `app/Http/Kernel.php` file to include it:
+
+    // Within App\Http\Kernel Class...
+
+    protected $routeMiddleware = [
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+    ];
+
 You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
 
 Next, your user table must contain an `email_verified_at` column to store the date and time that the email address was verified:
