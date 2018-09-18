@@ -805,7 +805,7 @@ To route Slack notifications to the proper location, define a `routeNotification
          */
         public function routeNotificationForSlack($notification)
         {
-            return $this->slack_webhook_url;
+            return 'https://hooks.slack.com/services/...';
         }
     }
 
