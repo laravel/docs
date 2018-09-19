@@ -116,6 +116,26 @@ Once the resource collection class has been generated, you may easily define any
             ];
         }
     }
+    
+As used above, `$this->collection` is automatically populated with the results of mapping each item of the collection over its singular resource. The singular resource is assumed to be defined as start of the collection's class name, without the trailing string `Collection` – for example `UserCollection` will search for the singluar resource `User`.
+
+You can define `$this->collects` to override this default behaviour:
+
+    <?php
+
+    namespace App\Http\Resources;
+
+    use Illuminate\Http\Resources\Json\ResourceCollection;
+
+    class UserCollection extends ResourceCollection
+    {
+        public $collects = 'Member';
+        
+        public function toArray($request)
+        {
+            // ...
+        }
+    }
 
 After defining your resource collection, it may be returned from a route or controller:
 
