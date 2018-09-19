@@ -505,6 +505,25 @@ In addition to conditionally including relationship information in your resource
         ];
     }
 
+Use `whenPivotLoadedAs` for relationships with a custom accessor:
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'expires_at' => $this->whenPivotLoadedAs('accessor', 'role_user', function () {
+                return $this->accessor->expires_at;
+            }),
+        ];
+    }
+
 <a name="adding-meta-data"></a>
 ### Adding Meta Data
 
