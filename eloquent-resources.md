@@ -505,7 +505,7 @@ In addition to conditionally including relationship information in your resource
         ];
     }
 
-Use `whenPivotLoadedAs` for relationships with a custom accessor:
+If your intermediate table is using an accessor other than `pivot`, you may use the `whenPivotLoadedAs` method:
 
     /**
      * Transform the resource into an array.
@@ -518,8 +518,8 @@ Use `whenPivotLoadedAs` for relationships with a custom accessor:
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'expires_at' => $this->whenPivotLoadedAs('accessor', 'role_user', function () {
-                return $this->accessor->expires_at;
+            'expires_at' => $this->whenPivotLoadedAs('subscription', 'role_user', function () {
+                return $this->subscription->expires_at;
             }),
         ];
     }
