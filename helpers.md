@@ -460,7 +460,7 @@ You may also sort the array by the results of the given Closure:
 <a name="method-array-sort-recursive"></a>
 #### `array_sort_recursive()` {#collection-method}
 
-The `array_sort_recursive` function recursively sorts an array using the `sort` function for numeric subarrays and `ksort` for associative subarrays:
+The `array_sort_recursive` function recursively sorts an array using the `sort` function for numeric sub=arrays and `ksort` for associative sub-arrays:
 
     $array = [
         ['Roman', 'Taylor', 'Li'],
