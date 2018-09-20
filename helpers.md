@@ -472,7 +472,7 @@ The `array_sort_recursive` function recursively sorts an array using the `sort` 
 
     /*
         [
-            [JavaScript, PHP, Ruby],
+            ['JavaScript', 'PHP', 'Ruby'],
             ['one' => 1, 'three' => 3, 'two' => 2],
             ['Li', 'Roman', 'Taylor'],
         ]
