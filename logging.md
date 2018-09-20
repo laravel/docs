@@ -13,7 +13,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-To help you learn more about what's happening within your application, Laravel provides robust logging services that allow you to log messages to files, the system error log, and even to Slack to notify your entire team.
+To help you learn more about what's happening within your application, Laravel provides robust logging services that allow you to log messages to files, the system error log, and even to Slack to notify your entire team, or a particular slack channel.
 
 Under the hood, Laravel utilizes the [Monolog](https://github.com/Seldaek/monolog) library, which provides support for a variety of powerful log handlers. Laravel makes it a cinch to configure these handlers, allowing you to mix and match them to customize your application's log handling.
 
@@ -75,6 +75,7 @@ As previously mentioned, the `stack` driver allows you to combine multiple chann
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
             'level' => 'critical',
+            'channel' => 'project-internal-crm',
         ],
     ],
 
