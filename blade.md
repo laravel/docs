@@ -559,6 +559,8 @@ As you can see, we will chain the `format` method onto whatever expression is pa
 
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 
+> {note} Custom Blade directive names may only contain alphanumeric and underscore characters.
+
 > {note} After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
 
 <a name="custom-if-statements"></a>
