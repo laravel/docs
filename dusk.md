@@ -571,6 +571,12 @@ Dusk provides a variety of assertions that you may make against your application
 [assertTitle](#assert-title)
 [assertTitleContains](#assert-title-contains)
 [assertUrlIs](#assert-url-is)
+[assertSchemeIs](#assert-scheme-is)
+[assertSchemeIsNot](#assert-scheme-is-not)
+[assertHostIs](#assert-host-is)
+[assertHostIsNot](#assert-host-is-not)
+[assertPortIs](#assert-port-is)
+[assertPortIsNot](#assert-port-is-not)
 [assertPathBeginsWith](#assert-path-begins-with)
 [assertPathIs](#assert-path-is)
 [assertPathIsNot](#assert-path-is-not)
@@ -638,6 +644,48 @@ Assert the page title contains the given text:
 Assert that the current URL (without the query string) matches the given string:
 
     $browser->assertUrlIs($url);
+
+<a name="assert-scheme-is"></a>
+#### assertSchemeIs
+
+Assert the current URL scheme matches the given scheme:
+
+    $browser->assertSchemeIs($scheme);
+
+<a name="assert-scheme-is-not"></a>
+#### assertSchemeIsNot
+
+Assert the current URL scheme does not match the given scheme:
+
+    $browser->assertSchemeIsNot($scheme);
+
+<a name="assert-host-is"></a>
+#### assertHostIs
+
+Assert the current URL host matches the given host:
+
+    $browser->assertHostIs($host);
+
+<a name="assert-host-is-not"></a>
+#### assertHostIsNot
+
+Assert the current URL host does not match the given host:
+
+    $browser->assertHostIsNot($host);
+
+<a name="assert-port-is"></a>
+#### assertPortIs
+
+Assert the current URL port matches the given port:
+
+    $browser->assertPortIs($port);
+
+<a name="assert-port-is-not"></a>
+#### assertPortIsNot
+
+Assert the current URL port does not match the given port:
+
+    $browser->assertPortIsNot($port);
 
 <a name="assert-path-begins-with"></a>
 #### assertPathBeginsWith
