@@ -627,14 +627,14 @@ Dusk provides a variety of assertions that you may make against your application
 <a name="assert-title"></a>
 #### assertTitle
 
-Assert the page title matches the given text:
+Assert that the page title matches the given text:
 
     $browser->assertTitle($title);
 
 <a name="assert-title-contains"></a>
 #### assertTitleContains
 
-Assert the page title contains the given text:
+Assert that the page title contains the given text:
 
     $browser->assertTitleContains($title);
 
@@ -648,116 +648,116 @@ Assert that the current URL (without the query string) matches the given string:
 <a name="assert-scheme-is"></a>
 #### assertSchemeIs
 
-Assert the current URL scheme matches the given scheme:
+Assert that the current URL scheme matches the given scheme:
 
     $browser->assertSchemeIs($scheme);
 
 <a name="assert-scheme-is-not"></a>
 #### assertSchemeIsNot
 
-Assert the current URL scheme does not match the given scheme:
+Assert that the current URL scheme does not match the given scheme:
 
     $browser->assertSchemeIsNot($scheme);
 
 <a name="assert-host-is"></a>
 #### assertHostIs
 
-Assert the current URL host matches the given host:
+Assert that the current URL host matches the given host:
 
     $browser->assertHostIs($host);
 
 <a name="assert-host-is-not"></a>
 #### assertHostIsNot
 
-Assert the current URL host does not match the given host:
+Assert that the current URL host does not match the given host:
 
     $browser->assertHostIsNot($host);
 
 <a name="assert-port-is"></a>
 #### assertPortIs
 
-Assert the current URL port matches the given port:
+Assert that the current URL port matches the given port:
 
     $browser->assertPortIs($port);
 
 <a name="assert-port-is-not"></a>
 #### assertPortIsNot
 
-Assert the current URL port does not match the given port:
+Assert that the current URL port does not match the given port:
 
     $browser->assertPortIsNot($port);
 
 <a name="assert-path-begins-with"></a>
 #### assertPathBeginsWith
 
-Assert that the current URL path begins with given path:
+Assert that the current URL path begins with the given path:
 
     $browser->assertPathBeginsWith($path);
 
 <a name="assert-path-is"></a>
 #### assertPathIs
 
-Assert the current path matches the given path:
+Assert that the current path matches the given path:
 
     $browser->assertPathIs('/home');
 
 <a name="assert-path-is-not"></a>
 #### assertPathIsNot
 
-Assert the current path does not match the given path:
+Assert that the current path does not match the given path:
 
     $browser->assertPathIsNot('/home');
 
 <a name="assert-route-is"></a>
 #### assertRouteIs
 
-Assert the current URL matches the given named route's URL:
+Assert that the current URL matches the given named route's URL:
 
     $browser->assertRouteIs($name, $parameters);
 
 <a name="assert-query-string-has"></a>
 #### assertQueryStringHas
 
-Assert the given query string parameter is present:
+Assert that the given query string parameter is present:
 
     $browser->assertQueryStringHas($name);
 
-Assert the given query string parameter is present and has a given value:
+Assert that the given query string parameter is present and has a given value:
 
     $browser->assertQueryStringHas($name, $value);
 
 <a name="assert-query-string-missing"></a>
 #### assertQueryStringMissing
 
-Assert the given query string parameter is missing:
+Assert that the given query string parameter is missing:
 
     $browser->assertQueryStringMissing($name);
     
 <a name="assert-fragment-is"></a>
 #### assertFragmentIs
 
-Assert the current fragment matches the given fragment:
+Assert that the current fragment matches the given fragment:
 
     $browser->assertFragmentIs('anchor');
     
 <a name="assert-fragment-begins-with"></a>
 #### assertFragmentBeginsWith
 
-Assert that the current fragment begins with given fragment:
+Assert that the current fragment begins with the given fragment:
 
     $browser->assertFragmentBeginsWith('anchor');
     
 <a name="assert-fragment-is-not"></a>
 #### assertFragmentIsNot
 
-Assert the current fragment does not match the given fragment:
+Assert that the current fragment does not match the given fragment:
 
     $browser->assertFragmentIsNot('anchor');
 
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
 
-Assert the given cookie is present:
+Assert that the given cookie is present:
 
     $browser->assertHasCookie($name);
 
@@ -771,42 +771,42 @@ Assert that the given cookie is not present:
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
 
-Assert a cookie has a given value:
+Assert that a cookie has a given value:
 
     $browser->assertCookieValue($name, $value);
 
 <a name="assert-plain-cookie-value"></a>
 #### assertPlainCookieValue
 
-Assert an unencrypted cookie has a given value:
+Assert that an unencrypted cookie has a given value:
 
     $browser->assertPlainCookieValue($name, $value);
 
 <a name="assert-see"></a>
 #### assertSee
 
-Assert the given text is present on the page:
+Assert that the given text is present on the page:
 
     $browser->assertSee($text);
 
 <a name="assert-dont-see"></a>
 #### assertDontSee
 
-Assert the given text is not present on the page:
+Assert that the given text is not present on the page:
 
     $browser->assertDontSee($text);
 
 <a name="assert-see-in"></a>
 #### assertSeeIn
 
-Assert the given text is present within the selector:
+Assert that the given text is present within the selector:
 
     $browser->assertSeeIn($selector, $text);
 
 <a name="assert-dont-see-in"></a>
 #### assertDontSeeIn
 
-Assert the given text is not present within the selector:
+Assert that the given text is not present within the selector:
 
     $browser->assertDontSeeIn($selector, $text);
 
@@ -827,70 +827,70 @@ Assert that the given source code is not present on the page:
 <a name="assert-see-link"></a>
 #### assertSeeLink
 
-Assert the given link is present on the page:
+Assert that the given link is present on the page:
 
     $browser->assertSeeLink($linkText);
 
 <a name="assert-dont-see-link"></a>
 #### assertDontSeeLink
 
-Assert the given link is not present on the page:
+Assert that the given link is not present on the page:
 
     $browser->assertDontSeeLink($linkText);
 
 <a name="assert-input-value"></a>
 #### assertInputValue
 
-Assert the given input field has the given value:
+Assert that the given input field has the given value:
 
     $browser->assertInputValue($field, $value);
 
 <a name="assert-input-value-is-not"></a>
 #### assertInputValueIsNot
 
-Assert the given input field does not have the given value:
+Assert that the given input field does not have the given value:
 
     $browser->assertInputValueIsNot($field, $value);
 
 <a name="assert-checked"></a>
 #### assertChecked
 
-Assert the given checkbox is checked:
+Assert that the given checkbox is checked:
 
     $browser->assertChecked($field);
 
 <a name="assert-not-checked"></a>
 #### assertNotChecked
 
-Assert the given checkbox is not checked:
+Assert that the given checkbox is not checked:
 
     $browser->assertNotChecked($field);
 
 <a name="assert-radio-selected"></a>
 #### assertRadioSelected
 
-Assert the given radio field is selected:
+Assert that the given radio field is selected:
 
     $browser->assertRadioSelected($field, $value);
 
 <a name="assert-radio-not-selected"></a>
 #### assertRadioNotSelected
 
-Assert the given radio field is not selected:
+Assert that the given radio field is not selected:
 
     $browser->assertRadioNotSelected($field, $value);
 
 <a name="assert-selected"></a>
 #### assertSelected
 
-Assert the given dropdown has the given value selected:
+Assert that the given dropdown has the given value selected:
 
     $browser->assertSelected($field, $value);
 
 <a name="assert-not-selected"></a>
 #### assertNotSelected
 
-Assert the given dropdown does not have the given value selected:
+Assert that the given dropdown does not have the given value selected:
 
     $browser->assertNotSelected($field, $value);
 
@@ -918,35 +918,35 @@ Assert that the given value is available to be selected on the given field:
 <a name="assert-value"></a>
 #### assertValue
 
-Assert the element matching the given selector has the given value:
+Assert that the element matching the given selector has the given value:
 
     $browser->assertValue($selector, $value);
 
 <a name="assert-visible"></a>
 #### assertVisible
 
-Assert the element matching the given selector is visible:
+Assert that the element matching the given selector is visible:
 
     $browser->assertVisible($selector);
 
 <a name="assert-present"></a>
 #### assertPresent
 
-Assert the element matching the given selector is present:
+Assert that the element matching the given selector is present:
 
     $browser->assertPresent($selector);
 
 <a name="assert-missing"></a>
 #### assertMissing
 
-Assert the element matching the given selector is not visible:
+Assert that the element matching the given selector is not visible:
 
     $browser->assertMissing($selector);
 
 <a name="assert-dialog-opened"></a>
 #### assertDialogOpened
 
-Assert that a JavaScript dialog with given message has been opened:
+Assert that a JavaScript dialog with the given message has been opened:
 
     $browser->assertDialogOpened($message);
 
