@@ -678,6 +678,9 @@ protected $listen = [
 
 Passport's `actingAs` method may be used to specify the currently authenticated user as well as its scopes. The first argument given to the `actingAs` method is the user instance and the second is an array of scopes that should be granted to the user's token:
 
+    use App\User;
+    use Laravel\Passport\Passport;
+    
     public function testServerCreation()
     {
         Passport::actingAs(
