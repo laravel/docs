@@ -521,7 +521,7 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
 
 Blade allows you to define your own custom directives using the `directive` method. When the Blade compiler encounters the custom directive, it will call the provided callback with the expression that the directive contains.
 
-The following example creates a `@datetime($var)` directive which formats a given `$var`, which should be an instance of `DateTime`. Blade directive names may only contain alphanumeric characters and underscores:
+The following example creates a `@datetime($var)` directive which formats a given `$var`, which should be an instance of `DateTime`:
 
     <?php
 
