@@ -31,6 +31,12 @@ To get started, verify that your `App\User` model implements the `Illuminate\Con
         // ...
     }
 
+### Email verification notification process
+
+During the registration process an event `Illuminate\Auth\Events\Registered` is emit. Laravel come whith a listener `Illuminate\Auth\Listeners\SendEmailVerificationNotification` which is already registered in the `App\Providers\EventServiceProvider`.
+
+After implementing the `MustVerifyEmail` interface when the `Registered` event is emit the `SendEmailVerificationNotification` listener will check if the `App\User` have already use the `Illuminate\Contracts\Auth\MustVerifyEmail` trait by checking if the user create is an instance of `MustVerifyEmail` if that is the case it will call the `sendEmailVerificationNotification` method on the `user` which get the implementation of this method when it use the `Illuminate\Auth\MustVerify`  trait.
+
 <a name="verification-database"></a>
 ## Database Considerations
 
