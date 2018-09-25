@@ -422,12 +422,6 @@ Laravel includes a queue worker that will process new jobs as they are pushed on
 
 Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment).
 
-#### Processing A Single Job
-
-The `--once` option may be used to instruct the worker to only process a single job from the queue:
-
-    php artisan queue:work --once
-
 #### Specifying The Connection & Queue
 
 You may also specify which queue connection the worker should utilize. The connection name passed to the `work` command should correspond to one of the connections defined in your `config/queue.php` configuration file:
@@ -437,6 +431,18 @@ You may also specify which queue connection the worker should utilize. The conne
 You may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes only that queue:
 
     php artisan queue:work redis --queue=emails
+
+#### Processing A Single Job
+
+The `--once` option may be used to instruct the worker to only process a single job from the queue:
+
+    php artisan queue:work --once
+
+#### Processing All Queued Jobs & Then Exiting
+
+ The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when working Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
+
+     php artisan queue:work --stop-when-empty
 
 #### Resource Considerations
 

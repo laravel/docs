@@ -469,7 +469,7 @@ The query above will produce the following SQL:
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7, PostgreSQL, and SQL Server 2016. To query a JSON column, use the `->` operator:
+Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7, PostgreSQL, SQL Server 2016, and SQLite 3.9.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
 
     $users = DB::table('users')
                     ->where('options->language', 'en')
@@ -478,9 +478,9 @@ Laravel also supports querying JSON column types on databases that provide suppo
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
-                    
-You may use `whereJsonContains` to query JSON arrays:
-                    
+
+You may use `whereJsonContains` to query JSON arrays (not supported on SQLite):
+
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', 'en')
                     ->get();
@@ -489,7 +489,17 @@ MySQL and PostgreSQL support `whereJsonContains` with multiple values:
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', ['en', 'de'])
-                    ->get();                    
+                    ->get();
+
+You may use `whereJsonLength` to query JSON arrays by their length:
+
+    $users = DB::table('users')
+                    ->whereJsonLength('options->languages', 0)
+                    ->get();
+
+    $users = DB::table('users')
+                    ->whereJsonLength('options->languages', '>', 1)
+                    ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit, & Offset
@@ -614,7 +624,7 @@ Of course, in addition to inserting records into the database, the query builder
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
-When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object. This operation is only supported on databases that support JSON columns:
+When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object. This operation is only supported on MySQL 5.7+:
 
     DB::table('users')
                 ->where('id', 1)

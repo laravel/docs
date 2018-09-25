@@ -128,7 +128,7 @@ To publish the Passport Vue components, use the `vendor:publish` Artisan command
 
     php artisan vendor:publish --tag=passport-components
 
-The published components will be placed in your `resources/assets/js/components` directory. Once the components have been published, you should register them in your `resources/assets/js/app.js` file:
+The published components will be placed in your `resources/js/components` directory. Once the components have been published, you should register them in your `resources/js/app.js` file:
 
     Vue.component(
         'passport-clients',
@@ -678,6 +678,9 @@ protected $listen = [
 
 Passport's `actingAs` method may be used to specify the currently authenticated user as well as its scopes. The first argument given to the `actingAs` method is the user instance and the second is an array of scopes that should be granted to the user's token:
 
+    use App\User;
+    use Laravel\Passport\Passport;
+    
     public function testServerCreation()
     {
         Passport::actingAs(

@@ -72,6 +72,7 @@
 - ## Testing
     - [Getting Started](/docs/{{version}}/testing)
     - [HTTP Tests](/docs/{{version}}/http-tests)
+    - [Console Tests](/docs/{{version}}/console-tests)
     - [Browser Tests](/docs/{{version}}/dusk)
     - [Database](/docs/{{version}}/database-testing)
     - [Mocking](/docs/{{version}}/mocking)

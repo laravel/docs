@@ -17,6 +17,7 @@
 - [Route Model Binding](#route-model-binding)
     - [Implicit Binding](#implicit-binding)
     - [Explicit Binding](#explicit-binding)
+- [Fallback Routes](#fallback-routes)
 - [Rate Limiting](#rate-limiting)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing The Current Route](#accessing-the-current-route)
@@ -338,6 +339,15 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
             return App\User::where('name', $value)->first() ?? abort(404);
         });
     }
+
+<a name="fallback-routes"></a>
+## Fallback Routes
+
+Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` midddleware group will apply to the route. Of course, you are free to add additional middleware to this route as needed:
+
+    Route::fallback(function () {
+        //
+    });
 
 <a name="rate-limiting"></a>
 ## Rate Limiting

@@ -10,12 +10,29 @@
 <a name="introduction"></a>
 ## Introduction
 
-Many web applications requires users to verify their email addresses before using the application. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending and verifying email verification requests.
+Many web applications require users to verify their email addresses before using the application. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending and verifying email verification requests.
+
+### Model Preparation
+
+To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Contracts\Auth\MustVerifyEmail;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable implements MustVerifyEmail
+    {
+        use Notifiable;
+
+        // ...
+    }
 
 <a name="verification-database"></a>
 ## Database Considerations
-
-> {note} To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract.
 
 #### The Email Verification Column
 
@@ -42,7 +59,7 @@ Laravel includes the `Auth\VerificationController` class that contains the neces
 <a name="verification-views"></a>
 ## Views
 
-Laravel will generate all of the necessary email verification view when the `make:auth` command is executed. This views is placed in `resources/views/auth/verify.blade.php`. You are free to customize this view as needed for your application.
+Laravel will generate all of the necessary email verification views when the `make:auth` command is executed. This view is placed in `resources/views/auth/verify.blade.php`. You are free to customize this view as needed for your application.
 
 <a name="after-verifying-emails"></a>
 ## After Verifying Emails

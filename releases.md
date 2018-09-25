@@ -27,12 +27,12 @@ For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and se
 | 5.4 | January 24th, 2017 | July 24th, 2017 | January 24th, 2018 |
 | 5.5 (LTS) | August 30th, 2017 | August 30th, 2019 | August 30th, 2020 |
 | 5.6 | February 7th, 2018 | August 7th, 2018 | February 7th, 2019 |
-| 5.7 | August 2018 | February 2019 | August 2019 |
+| 5.7 | September 4th, 2018 | March 4th, 2019 | September 4th, 2019 |
 
 <a name="laravel-5.7"></a>
 ## Laravel 5.7
 
-Laravel 5.7 continues the improvements made in Laravel 5.6 by introducing [Laravel Nova](https://nova.laravel.com), optional email verification to the authentication scaffolding, support for guest users in authorization gates and policies, Symfony `dump-server` integration, and a variety of other bug fixes and usability improvements.
+Laravel 5.7 continues the improvements made in Laravel 5.6 by introducing [Laravel Nova](https://nova.laravel.com), optional email verification to the authentication scaffolding, support for guest users in authorization gates and policies, console testing improvements, Symfony `dump-server` integration, localizable notifications, and a variety of other bug fixes and usability improvements.
 
 ### Laravel Nova
 
@@ -81,7 +81,51 @@ Laravel 5.7 offers integration with Symfony's `dump-server` command via [a packa
 
     php artisan dump-server
 
-Once the server has started, all calls to `dump` will by displayed in the `dump-server` console window instead of in your browser, allowing you to inspect the values without mangling your HTTP response output.
+Once the server has started, all calls to `dump` will be displayed in the `dump-server` console window instead of in your browser, allowing you to inspect the values without mangling your HTTP response output.
+
+### Notification Localization
+
+Laravel now allows you to send notifications in a locale other than the current language, and will even remember this locale if the notification is queued.
+
+To accomplish this, the `Illuminate\Notifications\Notification` class now offers a `locale` method to set the desired language. The application will change into this locale when the notification is being formatted and then revert back to the previous locale when formatting is complete:
+
+    $user->notify((new InvoicePaid($invoice))->locale('es'));
+
+Localization of multiple notifiable entries may also be achieved via the `Notification` facade:
+
+    Notification::locale('es')->send($users, new InvoicePaid($invoice));
+
+### Console Testing
+
+Laravel 5.7 allows you to easily "mock" user input for your console commands using the `expectsQuestion` method. In addition, you may specify the exit code and text that you expect to be output by the console command using the `assertExitCode` and `expectsOutput` methods. For example, consider the following console command:
+
+    Artisan::command('question', function () {
+        $name = $this->ask('What is your name?');
+
+        $language = $this->choice('Which language do you program in?', [
+            'PHP',
+            'Ruby',
+            'Python',
+        ]);
+
+        $this->line('Your name is '.$name.' and you program in '.$language.'.');
+    });
+
+You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, and `assertExitCode` methods:
+
+    /**
+     * Test a console command.
+     *
+     * @return void
+     */
+    public function test_console_command()
+    {
+        $this->artisan('question')
+             ->expectsQuestion('What is your name?', 'Taylor Otwell')
+             ->expectsQuestion('Which language do you program in?', 'PHP')
+             ->expectsOutput('Your name is Taylor Otwell and you program in PHP.')
+             ->assertExitCode(0);
+    }
 
 ### URL Generator & Callable Syntax
 

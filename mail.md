@@ -73,6 +73,23 @@ Next, set the `driver` option in your `config/mail.php` configuration file to `s
         'region' => 'ses-region',  // e.g. us-east-1
     ],
 
+If you need to include [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-email-2010-12-01.html#sendrawemail) when executing the SES `SendRawEmail` request, you may define an `options` array within your `ses` configuration:
+
+    'ses' => [
+        'key' => 'your-ses-key',
+        'secret' => 'your-ses-secret',
+        'region' => 'ses-region',  // e.g. us-east-1
+        'options' => [
+            'ConfigurationSetName' => 'MyConfigurationSet',
+            'Tags' => [
+                [
+                    'Name' => 'foo',
+                    'Value' => 'bar',
+                ],
+            ],
+        ],
+    ],
+
 <a name="generating-mailables"></a>
 ## Generating Mailables
 

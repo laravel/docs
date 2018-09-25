@@ -27,6 +27,7 @@
     - [Web Servers](#web-servers)
     - [Mail](#mail)
 - [Network Interfaces](#network-interfaces)
+- [Extending Homestead](#extending-homestead)
 - [Updating Homestead](#updating-homestead)
 - [Provider Specific Settings](#provider-specific-settings)
     - [VirtualBox](#provider-specific-virtualbox)
@@ -38,7 +39,7 @@ Laravel strives to make the entire PHP development experience delightful, includ
 
 Laravel Homestead is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
-Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 7.2, PHP 7.1, PHP 7.0, PHP 5.6, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
+Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 7.3, PHP 7.2, PHP 7.1, PHP 7.0, PHP 5.6, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
 
 > {note} If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS. If you are using Hyper-V on a UEFI system you may additionally need to disable Hyper-V in order to access VT-x.
 
@@ -48,6 +49,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 <div class="content-list" markdown="1">
 - Ubuntu 18.04
 - Git
+- PHP 7.3
 - PHP 7.2
 - PHP 7.1
 - PHP 7.0
@@ -107,7 +109,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd ~/Homestead
 
     // Clone the desired release...
-    git checkout v7.14.2
+    git checkout v7.17.0
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -431,6 +433,16 @@ Finally, ensure your `.env` file has the following options:
     AWS_DEFAULT_REGION=us-east-1
     AWS_URL=http://homestead:9600
 
+To provision buckets, add a `buckets` directive to your Homestead configuration file:
+
+    buckets:
+        - name: your-bucket
+          policy: public
+        - name: your-private-bucket
+          policy: none
+
+Supported `policy` values include: `none`, `download`, `upload`, and `public`.
+
 <a name="ports"></a>
 ### Ports
 
@@ -477,9 +489,7 @@ After running the command, you will see an Ngrok screen appear which contains th
 <a name="multiple-php-versions"></a>
 ### Multiple PHP Versions
 
-> {note} This feature is only compatible with Nginx.
-
-Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1" and "7.2" (the default):
+Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2" and "7.3" (the default):
 
     sites:
         - map: homestead.test
@@ -492,6 +502,7 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php7.0 artisan list
     php7.1 artisan list
     php7.2 artisan list
+    php7.3 artisan list
 
 <a name="web-servers"></a>
 ### Web Servers
@@ -526,6 +537,18 @@ To enable [DHCP](https://www.vagrantup.com/docs/networking/public_network.html),
     networks:
         - type: "public_network"
           bridge: "en1: Wi-Fi (AirPort)"
+
+<a name="extending-homestead"></a>
+## Extending Homestead
+
+You may extend Homestead using the `after.sh` script in the root of your Homestead directory. Within this file, you may add any shell commands that are necessary to properly configure and customize your virtual machine.
+
+When customizing Homestead, Ubuntu may ask you if you would like to keep a package's original configuration or overwrite it with a new configuration file. To avoid this, you should use the following command when installing packages to avoid overwriting any configuration previously written by Homestead:
+
+sudo apt-get -y \
+          -o Dpkg::Options::="--force-confdef" \
+          -o pkg::Options::="--force-confold" \
+          install your-package
 
 <a name="updating-homestead"></a>
 ## Updating Homestead

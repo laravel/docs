@@ -96,7 +96,7 @@ If your service provider registers many simple bindings, you may wish to use the
 <a name="the-boot-method"></a>
 ### The Boot Method
 
-So, what if we need to register a view composer within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework:
+So, what if we need to register a [view composer](/docs/{{version}}/views#view-composers) within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework:
 
     <?php
 

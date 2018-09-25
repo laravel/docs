@@ -597,12 +597,12 @@ Stop running validation rules after the first validation failure.
 <a name="rule-before"></a>
 #### before:_date_
 
-The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
+The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
 <a name="rule-before-or-equal"></a>
 #### before\_or\_equal:_date_
 
-The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function.
+The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -1116,7 +1116,7 @@ If you only need the functionality of a custom rule once throughout your applica
             'max:255',
             function($attribute, $value, $fail) {
                 if ($value === 'foo') {
-                    return $fail($attribute.' is invalid.');
+                    $fail($attribute.' is invalid.');
                 }
             },
         ],
