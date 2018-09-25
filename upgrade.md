@@ -44,6 +44,24 @@ The `$schedule->job` method now respects the `queue` and `connection` properties
 
 Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25216).
 
+### Assets
+
+#### Asset Directory Removed
+
+**Likelihood Of Impact: None**
+
+For new Laravel 5.7 applications, the assets directory that contains the scripts and styles has been flattened into the `resources` directory. This **will not** affect existing applications and does not requires changes to your existing applications.
+
+However, if you wish to make this change, you should move all files from the `resources/assets/*` directory up one level:
+
+- From `resources/assets/js/*` to `resources/js/*`
+- From `resources/assets/scss/*` to `resources/scss/*`
+
+Then, update any reference to the old directories in your `webpack.mix.js` file:
+
+    mix.js('resources/js/app.js', 'public/js')
+       .sass('resources/sass/app.scss', 'public/css');
+
 ### Authentication
 
 #### The `Authenticate` Middleware
@@ -410,25 +428,6 @@ The `validate` method [was added to the `Illuminate\Contracts\Validation\Validat
     public function validate();
 
 If you are implementing this interface, you should add this method to your implementation.
-
-
-### Assets
-
-#### Asset Directory Removed
-
-**Likelihood Of Impact: Low**
-
-The assets directory that contains front-end styles and JavaScript has been removed in 5.7. This _does not_ affect your existing application and does not _need_ to be changed.
-
-If you wish to make this anyway, move all files from the `resources/assets/*` directory up one level:
-
-- From `resources/assets/js/*` to `resources/js/*`
-- From `resources/assets/scss/*` to `resources/scss/*`
-
-Then update any references in your `webpack.mix.js` file that referenced the old directories.
-
-    mix.js('resources/js/app.js', 'public/js')
-       .sass('resources/sass/app.scss', 'public/css');
 
 ### Miscellaneous
 
