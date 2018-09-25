@@ -412,6 +412,24 @@ The `validate` method [was added to the `Illuminate\Contracts\Validation\Validat
 If you are implementing this interface, you should add this method to your implementation.
 
 
+### Assets
+
+#### Asset Directory Removed
+
+**Likelihood Of Impact: Low**
+
+The assets directory that contains front-end styles and JavaScript has been removed in 5.7. This _does not_ affect your existing application and does not _need_ to be changed.
+
+If you wish to make this anyway, move all files from the `resources/assets/*` directory up one level:
+
+- From `resources/assets/js/*` to `resources/js/*`
+- From `resources/assets/scss/*` to `resources/scss/*`
+
+Then update any references in your `webpack.mix.js` file that referenced the old directories.
+
+    mix.js('resources/js/app.js', 'public/js')
+       .sass('resources/sass/app.scss', 'public/css');
+
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.
