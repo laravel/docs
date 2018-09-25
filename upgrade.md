@@ -15,13 +15,13 @@ Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
 
-### Facade
+### Facades
 
-#### Facade root service resolving
+#### Facade Service Resolving
 
 **Likelihood Of Impact: Low**
 
-The `getFacadeAccessor` method [can now return only the string value representing the identifier/alias of the service](https://github.com/laravel/framework/pull/25525). If you have a facade in your project or package whose `getFacadeAccessor` method returns an object, you should change it so that a string is returned.
+The `getFacadeAccessor` method may now [only return the string value representing the container identifier of the service](https://github.com/laravel/framework/pull/25525). Previously, this method may have returned an object instance.
 
 ### Routing
 
