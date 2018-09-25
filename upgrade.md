@@ -15,6 +15,14 @@ Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
 
+### Blade
+
+#### Blade Custom Directives
+
+**Likelihood Of Impact: Very Low**
+
+Creating a custom Blade directive with an invalid name will now [throw an `/InvalidArgumentException`](https://github.com/laravel/framework/pull/25766). This change is unlikely to affect any projects, because if an invalid name was used previously, it would not have rendered at all when called.
+
 ### Facades
 
 #### Facade Service Resolving
