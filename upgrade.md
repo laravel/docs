@@ -46,7 +46,7 @@ Generally, this should be considered a bug fix; however, it is listed as a break
 
 ### Assets
 
-#### Asset Directory Removed
+#### Asset Directory Flattened
 
 **Likelihood Of Impact: None**
 
