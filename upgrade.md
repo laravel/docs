@@ -35,6 +35,21 @@ The query builder will now return unquoted JSON values on MySQL/MariaDB. This ma
     
 As a result, the `->>` operator is no longer supported.
 
+#### MariaDB JSON Support 
+
+**Likelihood Of Impact: Very Low**
+
+The query builder will now support JSON queries on MariaDB. This changes the name of columns without an alias:
+
+    $user = User::select('options->language')->first();
+    dump($user->getAttributes());
+    
+    // Laravel 5.7...
+    ["`options`->'$."language"'" => "en"]
+    
+    // Laravel 5.8...
+    ["json_extract(`options`, \'$."language"\')" => "en"]
+
 ### Facades
 
 #### Facade Service Resolving
