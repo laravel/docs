@@ -15,6 +15,38 @@ Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
 
+### Database
+
+#### Unquoted MySQL JSON Values
+
+**Likelihood Of Impact: Low**
+
+The query builder will now return unquoted JSON values on MySQL/MariaDB. This makes the behavior consistent with the other databases:
+
+    $value = DB::table('users')->value('options->language');
+    
+    dump($value);
+    
+    // Laravel 5.7...
+    '"en"'
+    
+    // Laravel 5.8...
+    'en'
+
+#### MariaDB JSON Support 
+
+**Likelihood Of Impact: Very Low**
+
+The query builder will now support JSON queries on MariaDB. This changes the name of columns without an alias:
+
+    $user = User::select('options->language')->first();
+    
+    // Laravel 5.7...
+    dump($user->{'`options`->\'$."language"\''});
+    
+    // Laravel 5.8...
+    dump($user->{'json_extract(`options`, \'$."language"\')'});
+
 ### Facades
 
 #### Facade Service Resolving
