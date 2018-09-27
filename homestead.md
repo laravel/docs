@@ -405,6 +405,8 @@ Mailhog allows you to easily catch your outgoing email and examine it without ac
     MAIL_PASSWORD=null
     MAIL_ENCRYPTION=null
 
+Once Mailhog has been configured, you may access the Mailhog dashboard at `http://localhost:8025`.
+
 <a name="configuring-minio"></a>
 ### Configuring Minio
 
