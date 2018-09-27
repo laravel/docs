@@ -1223,7 +1223,7 @@ The `partition` method may be combined with the `list` PHP function to separate 
 
     $collection = collect([1, 2, 3, 4, 5, 6]);
 
-    list($underThree, $aboveThree) = $collection->partition(function ($i) {
+    list($underThree, $equalOrAboveThree) = $collection->partition(function ($i) {
         return $i < 3;
     });
 
@@ -1231,7 +1231,7 @@ The `partition` method may be combined with the `list` PHP function to separate 
 
     // [1, 2]
 
-    $aboveThree->all();
+    $equalOrAboveThree->all();
 
     // [3, 4, 5, 6]
 
