@@ -404,6 +404,8 @@ Mailhog allows you to easily catch your outgoing email and examine it without ac
     MAIL_USERNAME=null
     MAIL_PASSWORD=null
     MAIL_ENCRYPTION=null
+    
+Then navigate to `localhost:8025` to view outgoing mail.
 
 <a name="configuring-minio"></a>
 ### Configuring Minio
