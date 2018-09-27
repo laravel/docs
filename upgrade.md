@@ -144,6 +144,16 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` "null c
     // Laravel 5.7...
     {{ $foo ?? 'default' }}
 
+### Cache
+
+**Likelihood Of Impact: Very High**
+
+A new `data/` directory was added in `storage/framework/cache`. Failure to add this directory upfront will lead to errors when clearing the cache:
+
+- manually create the directory, e.g. `mkdir storage/framework/cache/data`
+- ensure [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) is updated
+- [add a .gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) within the new `data/` directory
+
 ### Carbon
 
 **Likelihood Of Impact: Very Low**
