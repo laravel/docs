@@ -148,11 +148,11 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` "null c
 
 **Likelihood Of Impact: Very High**
 
-A new `data/` directory was added in `storage/framework/cache`. Failure to add this directory upfront will lead to errors when clearing the cache:
+A new `data` directory has been added to `storage/framework/cache`. You should create this directory in your own application.
 
-- manually create the directory, e.g. `mkdir storage/framework/cache/data`
-- ensure [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) is updated
-- [add a .gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) within the new `data/` directory
+After creating the directory, ensure that the [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) file is updated.
+
+Finally, add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) file to the newly created `data` directory.
 
 ### Carbon
 
