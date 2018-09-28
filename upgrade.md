@@ -55,7 +55,7 @@ For new Laravel 5.7 applications, the assets directory that contains the scripts
 However, if you wish to make this change, you should move all files from the `resources/assets/*` directory up one level:
 
 - From `resources/assets/js/*` to `resources/js/*`
-- From `resources/assets/scss/*` to `resources/scss/*`
+- From `resources/assets/sass/*` to `resources/sass/*`
 
 Then, update any reference to the old directories in your `webpack.mix.js` file:
 
