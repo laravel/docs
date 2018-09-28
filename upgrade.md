@@ -15,6 +15,38 @@ Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
 
+### Eloquent
+
+#### `HasManyThrough` column alias
+
+**Likelihood Of Impact: Very Low**
+
+To avoid column overriding in `HasManyThrough` relationships, Eloquent now adds an alias to the `$firstKey` column:
+
+    class User extends Model
+    {
+        public function projects()
+        {
+            return $this->hasManyThrough(Project::class, Team::class, 'owner_id', 'owner_id');
+        }
+    }
+    
+    User::with('projects')->get();
+    dump($users[0]->projects[0]->getAttributes());
+    
+    // Laravel 5.7...
+    [
+      "id" => 1,       // projects.id
+      "owner_id" => 3  // teams.owner_id
+    ]
+    
+    // Laravel 5.8...
+    [
+      "id" => 1,                      // projects.id
+      "owner_id" => 2,                // projects.owner_id
+      "laravel_many_through_key" => 3 // teams.owner_id
+    ]    
+
 ### Facades
 
 #### Facade Service Resolving
