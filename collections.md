@@ -806,11 +806,19 @@ Multiple grouping criteria may be passed as an array. Each array element will be
 
 The `has` method determines if a given key exists in the collection:
 
-    $collection = collect(['account_id' => 1, 'product' => 'Desk']);
+    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
 
     $collection->has('product');
 
     // true
+
+    $collection->has(['product', 'amount']);
+
+    // true
+
+    $collection->has(['amount', 'price']);
+
+    // false
 
 <a name="method-implode"></a>
 #### `implode()` {#collection-method}
