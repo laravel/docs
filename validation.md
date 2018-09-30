@@ -757,7 +757,7 @@ The field under validation must be included in the given list of values. Since t
     ]);
 
 <a name="rule-in-array"></a>
-#### in_array:_anotherfield_
+#### in_array:_anotherfield_.*
 
 The field under validation must exist in _anotherfield_'s values.
 
