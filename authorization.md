@@ -320,7 +320,7 @@ In this example, we're passing the `can` middleware two arguments. The first is 
 
 Again, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the middleware. The class name will be used to determine which policy to use when authorizing the action:
 
-    Route::post('/post', function () {
+    Route::get('/post/create', function () {
         // The current user may create posts...
     })->middleware('can:create,App\Post');
 
