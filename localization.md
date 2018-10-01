@@ -142,6 +142,10 @@ You may also define place-holder attributes in pluralization strings. These plac
     'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',
 
     echo trans_choice('time.minutes_ago', 5, ['value' => 5]);
+    
+If you would like to display the integer value that was passed to the `trans_choice` function, you may use the `:count` placeholder:
+
+    'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',
 
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
