@@ -9,10 +9,10 @@
     - [Timezones](#timezones)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
     - [Running Tasks On One Server](#running-tasks-on-one-server)
+    - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
-- [Run in the background](#background)
 
 <a name="introduction"></a>
 ## Introduction
@@ -220,6 +220,15 @@ To indicate that the task should run on only one server, use the `onOneServer` m
                     ->at('17:00')
                     ->onOneServer();
 
+<a name="background-tasks"></a>
+### Background Tasks
+
+By default, multiple commands scheduled at the same time will execute sequentially. If you have long-running commands, this may cause subsequent commands to start much later than anticipated. If you would like to run commands in the background so that they may all run simultaneously, you may use the `runInBackground` method:
+
+    $schedule->command('analytics:report')
+             ->daily()
+             ->runInBackground();
+
 <a name="maintenance-mode"></a>
 ### Maintenance Mode
 
@@ -278,13 +287,3 @@ Using either the `pingBefore($url)` or `thenPing($url)` feature requires the Guz
 
     composer require guzzlehttp/guzzle
 
-<a name="background"></a>
-## Run in the background
-
-By default multiple commands destined to be scheduled at the same run will execute sequentially. This can significantly skew the start time of later commands if earler ones take longer.
-
-To mitigate this you can run commands in the background:
-
-    $schedule->command('analytics:report')
-             ->daily()
-             ->runInBackground();
