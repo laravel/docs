@@ -780,7 +780,7 @@ This command will place the new observer in your `App/Observers` directory. If t
     class UserObserver
     {
         /**
-         * Handle to the User "created" event.
+         * Handle the User "created" event.
          *
          * @param  \App\User  $user
          * @return void
