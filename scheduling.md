@@ -12,6 +12,7 @@
     - [Maintenance Mode](#maintenance-mode)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
+- [Run in the background](#background)
 
 <a name="introduction"></a>
 ## Introduction
@@ -276,3 +277,14 @@ Using the `pingBefore` and `thenPing` methods, the scheduler can automatically p
 Using either the `pingBefore($url)` or `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project using the Composer package manager:
 
     composer require guzzlehttp/guzzle
+
+<a name="background"></a>
+## Run in the background
+
+By default multiple commands destined to be scheduled at the same run will execute sequentially. This can significantly skew the start time of later commands if earler ones take longer.
+
+To mitigate this you can run commands in the background:
+
+    $schedule->command('analytics:report')
+             ->daily()
+             ->runInBackground();
