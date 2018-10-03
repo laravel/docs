@@ -151,11 +151,13 @@ Sometimes you may have two classes that utilize the same interface, but you wish
                   return Storage::disk('local');
               });
 
-    $this->app->when(VideoController::class)
+    $this->app->when([VideoController::class, UploadController::class])
               ->needs(Filesystem::class)
               ->give(function () {
                   return Storage::disk('s3');
               });
+              
+> {tip} You may inject the same value into multiple classes at once by passing an array into `when`.
 
 <a name="tagging"></a>
 ### Tagging
