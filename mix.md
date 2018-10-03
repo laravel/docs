@@ -1,4 +1,4 @@
-# Compiling Assets (Laravel Mix)
+# Compiling Assets (Mix)
 
 - [Introduction](#introduction)
 - [Installation & Setup](#installation)
