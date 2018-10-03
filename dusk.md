@@ -63,6 +63,10 @@ To run your tests, use the `dusk` Artisan command. The `dusk` command accepts an
 
     php artisan dusk
 
+If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
+
+    php artisan dusk:fails
+
 <a name="using-other-browsers"></a>
 ### Using Other Browsers
 
@@ -732,21 +736,21 @@ Assert that the given query string parameter is present and has a given value:
 Assert that the given query string parameter is missing:
 
     $browser->assertQueryStringMissing($name);
-    
+
 <a name="assert-fragment-is"></a>
 #### assertFragmentIs
 
 Assert that the current fragment matches the given fragment:
 
     $browser->assertFragmentIs('anchor');
-    
+
 <a name="assert-fragment-begins-with"></a>
 #### assertFragmentBeginsWith
 
 Assert that the current fragment begins with the given fragment:
 
     $browser->assertFragmentBeginsWith('anchor');
-    
+
 <a name="assert-fragment-is-not"></a>
 #### assertFragmentIsNot
 
