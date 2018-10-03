@@ -230,7 +230,6 @@ If the lock is not available at the moment you request it, you may instruct Lara
         // Lock acquired after waiting maximum of 5 seconds...
     });
 
-
 <a name="the-cache-helper"></a>
 ### The Cache Helper
 
