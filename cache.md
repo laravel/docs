@@ -220,22 +220,15 @@ The `get` method also accepts a Closure. After the Closure is executed, Laravel 
         // Lock acquired indefinitely and automatically released...
     });
 
-If the lock is not available at the moment you request it, you may instruct Laravel to wait until it becomes available:
+If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
 
-    if (Cache::lock('foo', 10)->block()) {
-        // Lock acquired after waiting...
-    }
-
-By default, the `block` method will wait indefinitely until the lock is available. You may use the `blockFor` method to only wait for the specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
-
-    if (Cache::lock('foo', 10)->blockFor(5)) {
+    if (Cache::lock('foo', 10)->block(5)) {
         // Lock acquired after waiting maximum of 5 seconds...
     }
 
-    Cache::lock('foo', 10)->blockFor(5, function () {
+    Cache::lock('foo', 10)->block(5, function () {
         // Lock acquired after waiting maximum of 5 seconds...
     });
-
 
 <a name="the-cache-helper"></a>
 ### The Cache Helper
