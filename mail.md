@@ -18,6 +18,7 @@
     - [Queueing Mail](#queueing-mail)
 - [Rendering Mailables](#rendering-mailables)
     - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
+- [Localizing Mailables](#localizing-mailables)
 - [Mail & Local Development](#mail-and-local-development)
 - [Events](#events)
 
@@ -555,6 +556,40 @@ If you have mailable classes that you want to always be queued, you may implemen
     {
         //
     }
+
+<a name="localizing-mailables"></a>
+## Localizing Mailables
+
+Laravel allows you to send mailables in a locale other than the current language, and will even remember this locale if the mail is queued.
+
+To accomplish this, the `Illuminate\Mail\Mailable` class offers a `locale` method to set the desired language. The application will change into this locale when the mailable is being formatted and then revert back to the previous locale when formatting is complete:
+
+    Mail::to($request->user())->send(
+        (new OrderShipped($order))->locale('es')
+    );
+
+### User Preferred Locales
+
+Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on one or more of your models, you may instruct Laravel to use this stored locale when sending mail:
+
+    use Illuminate\Contracts\Translation\HasLocalePreference;
+
+    class User extends Model implements HasLocalePreference
+    {
+        /**
+         * Get the user's preferred locale.
+         *
+         * @return string
+         */
+        public function preferredLocale()
+        {
+            return $this->locale;
+        }
+    }
+
+Once you have implemented the interface, Laravel will automatically use the preferred locale when sending mailables and notifications to the model. Therefore, there is no need to call the `locale` method when using this interface:
+
+    Mail::to($request->user())->send(new OrderShipped($order));
 
 <a name="mail-and-local-development"></a>
 ## Mail & Local Development
