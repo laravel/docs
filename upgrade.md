@@ -21,34 +21,19 @@ Of course, don't forget to examine any 3rd party packages consumed by your appli
 
 **Likelihood Of Impact: Low**
 
-The query builder will now return unquoted JSON values on MySQL/MariaDB. This makes the behavior consistent with the other databases:
+The query builder will now return unquoted JSON values when using MySQL and MariaDB. This behavior is consistent with the other supported databases:
 
     $value = DB::table('users')->value('options->language');
-    
+
     dump($value);
-    
+
     // Laravel 5.7...
     '"en"'
-    
+
     // Laravel 5.8...
     'en'
-    
-As a result, the `->>` operator is no longer supported.
 
-#### MariaDB JSON Support 
-
-**Likelihood Of Impact: Very Low**
-
-The query builder will now support JSON queries on MariaDB. This changes the name of columns without an alias:
-
-    $user = User::select('options->language')->first();
-    dump($user->getAttributes());
-    
-    // Laravel 5.7...
-    ["`options`->'$."language"'" => "en"]
-    
-    // Laravel 5.8...
-    ["json_extract(`options`, \'$."language"\')" => "en"]
+As a result, the `->>` operator is no longer supported or necessary.
 
 ### Facades
 
