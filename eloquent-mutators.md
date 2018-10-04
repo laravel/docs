@@ -61,7 +61,7 @@ Of course, you may also use accessors to return new, computed values from existi
         return "{$this->first_name} {$this->last_name}";
     }
 
-If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](https://laravel.com/docs/{{version}}/eloquent-serialization#appending-values-to-json).
+> {tip} If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](https://laravel.com/docs/{{version}}/eloquent-serialization#appending-values-to-json).
 
 <a name="defining-a-mutator"></a>
 ### Defining A Mutator
