@@ -112,7 +112,7 @@ You may stop further chunks from being processed by returning `false` from the `
         return false;
     });
 
-Although the `orderBy` method is required when chunking results, you can use the `chunkById` method as a shortcut:
+Since you will often be ordering chunked results by the primary key, you may use the `chunkById` method as a shortcut:
 
     DB::table('users')->chunkById(100, function ($users) {
         foreach ($users as $user) {
@@ -120,7 +120,7 @@ Although the `orderBy` method is required when chunking results, you can use the
         }
     });
 
-> {note} When updating and deleting records inside the `Closure` you have to be aware that any changes to the primary key or foreign keys affect the chunk query. This will potential result in missing records from your chunk results.
+> {note} When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
 
 <a name="aggregates"></a>
 ### Aggregates
