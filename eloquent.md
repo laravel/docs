@@ -760,7 +760,7 @@ To get started, define a `$dispatchesEvents` property on your Eloquent model tha
         ];
     }
 
-After defining and mapping your Eloquent events you can use [event listeners](https://laravel.com/docs/5.7/events#defining-listeners) to listen to them and perform related actions.
+After defining and mapping your Eloquent events, you may use [event listeners](https://laravel.com/docs/{{version}}/events#defining-listeners) to handle the events.
 
 <a name="observers"></a>
 ### Observers
