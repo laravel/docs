@@ -360,9 +360,9 @@ The `readStream` and `writeStream` methods [have been added to the `Illuminate\C
 
 #### `Hash:check` Method
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: None**
 
-The `check` method now checks if the algorithm of the hash matches the configured algorithm.
+The `check` method now **optionally** checks if the algorithm of the hash matches the configured algorithm.
 
 ### Mail
 
