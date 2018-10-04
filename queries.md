@@ -112,6 +112,16 @@ You may stop further chunks from being processed by returning `false` from the `
         return false;
     });
 
+Although the `orderBy` method is required when chunking results, you can use the `chunkById` method as a shortcut:
+
+    DB::table('users')->chunkById(100, function ($users) {
+        foreach ($users as $user) {
+            //
+        }
+    });
+
+> {note} When updating and deleting records inside the `Closure` you have to be aware that any changes to the primary key or foreign keys affect the chunk query. This will potential result in missing records from your chunk results.
+
 <a name="aggregates"></a>
 ### Aggregates
 
