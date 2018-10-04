@@ -181,7 +181,13 @@ The Eloquent `all` method will return all of the results in the model's table. S
 
 #### Refreshing Models
 
-You can refresh a model and clear any changes by using the `refresh` method. This will reset the model with its values from its database row. In addition, all loaded relationships will be refreshed as well.
+You can refresh models using the `fresh` and `refresh` methods. The `fresh` method will re-retrieve the model from the database. The existing model instance will not be affected:
+
+    $flight = App\Flight::where('number', 'FR 900')->first();
+
+    $flight = $flight->fresh();
+
+The `refresh` method will re-hydrate the existing model using fresh data from the database. In addition, all of its loaded relationships will be refreshed as well:
 
     $flight = App\Flight::where('number', 'FR 900')->first();
 
@@ -189,7 +195,7 @@ You can refresh a model and clear any changes by using the `refresh` method. Thi
 
     $flight->refresh();
 
-    $flight->number; // Will be resetted to "FR 900".
+    $flight->number; // "FR 900"
 
 <a name="collections"></a>
 ### Collections
