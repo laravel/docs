@@ -4,9 +4,6 @@
 - [Template Inheritance](#template-inheritance)
     - [Defining A Layout](#defining-a-layout)
     - [Extending A Layout](#extending-a-layout)
-- [Forms](#forms)
-    - [CSRF Field](#csrf-field)
-    - [Method Field](#method-field)
 - [Components & Slots](#components-and-slots)
 - [Displaying Data](#displaying-data)
     - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
@@ -17,6 +14,9 @@
     - [The Loop Variable](#the-loop-variable)
     - [Comments](#comments)
     - [PHP](#php)
+- [Forms](#forms)
+    - [CSRF Field](#csrf-field)
+    - [Method Field](#method-field)
 - [Including Sub-Views](#including-sub-views)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -88,29 +88,6 @@ Blade views may be returned from routes using the global `view` helper:
     Route::get('blade', function () {
         return view('child');
     });
-
-<a name="forms"></a>
-## Forms
-
-<a name="csrf-field"></a>
-### CSRF Field
-
-Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](https://laravel.com/docs/5.7/csrf) middleware can validate the request. You may use the @csrf Blade directive to generate the token field:
-
-    <form method="POST" action="/profile">
-        @csrf
-        ...
-    </form>
-
-<a name="method-field"></a>
-### Method Field
-
-If you want to custimize the HTTP method for your form request, you can use the `@method` helper which will add a hidden field containing the HTTP method that's processed by Laravel's router. You will still need to indicate the `method` attribute on the form with `POST`.
-
-    <form method="POST" action="/profile">
-        @method('PUT')
-        ...
-    </form>
 
 <a name="components-and-slots"></a>
 ## Components & Slots
@@ -455,6 +432,31 @@ In some situations, it's useful to embed PHP code into your views. You can use t
     @endphp
 
 > {tip} While Blade provides this feature, using it frequently may be a signal that you have too much logic embedded within your template.
+
+<a name="forms"></a>
+## Forms
+
+<a name="csrf-field"></a>
+### CSRF Field
+
+Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](https://laravel.com/docs/{{version}}/csrf) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
+
+    <form method="POST" action="/profile">
+        @csrf
+
+        ...
+    </form>
+
+<a name="method-field"></a>
+### Method Field
+
+Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need to add a hidden `_method` field to spoof these HTTP verbs. The `@method` Blade directive can create this field for you:
+
+    <form action="/foo/bar" method="POST">
+        @method('PUT')
+
+        ...
+    </form>
 
 <a name="including-sub-views"></a>
 ## Including Sub-Views
