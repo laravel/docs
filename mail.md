@@ -127,6 +127,14 @@ However, if your application uses the same "from" address for all of its emails,
 
     'from' => ['address' => 'example@example.com', 'name' => 'App Name'],
 
+In addition you can also provide a global "reply_to" address:
+
+    'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
+
+Besides the "from" and "reply_to" addresses you can also provide a "to" address which will override any recipient and always send emails to this address. This is primarily useful during local development in which each message should be delivered into a single mail address for inspection.
+
+    'to' => ['address' => 'example@example.com', 'name' => 'App Name'],
+
 <a name="configuring-the-view"></a>
 ### Configuring The View
 
