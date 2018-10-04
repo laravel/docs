@@ -162,8 +162,6 @@ Once you have created a model and [its associated database table](/docs/{{versio
 
     <?php
 
-    use App\Flight;
-
     $flights = App\Flight::all();
 
     foreach ($flights as $flight) {
