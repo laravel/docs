@@ -276,4 +276,4 @@ Laravel's service container implements the [PSR-11](https://github.com/php-fig/f
         //
     });
 
-If the identifier cannot be resolve an exception is thrown. The exception will be `Psr\Container\NotFoundExceptionInterface` if the identifier was never bound or a `Psr\Container\ContainerExceptionInterface` otherwise.
+If the identifier cannot be resolved an exception is thrown. The exception will be `Psr\Container\NotFoundExceptionInterface` if the identifier was never bound or a `Psr\Container\ContainerExceptionInterface` otherwise.
