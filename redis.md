@@ -111,6 +111,17 @@ In addition to the default `host`, `port`, `database`, and `password` server con
         'read_timeout' => 60,
     ],
 
+If you run your queue workers with Redis utilizing the PhpRedis extension you should wrap the queue name in braces:
+
+    'connections' => [
+        'redis' => [
+            'driver' => 'redis',
+            'connection' => 'default',
+            'queue' => '{default}',
+            'retry_after' => 90,
+        ],
+    ],
+
 <a name="interacting-with-redis"></a>
 ## Interacting With Redis
 
