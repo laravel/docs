@@ -845,9 +845,9 @@ The field under validation must not be included in the given list of values. The
 
 The field under validation must not match the given regular expression.
 
-**Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
 
-**Note:** Internally, this rule makes use of the PHP preg_match function. The pattern specified should obey the same formatting as for preg_match and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
+**Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
 
 <a name="rule-nullable"></a>
 #### nullable
@@ -869,9 +869,9 @@ The field under validation must be present in the input data but can be empty.
 
 The field under validation must match the given regular expression.
 
-**Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
 
-**Note:** Internally, this rule makes use of the PHP preg_match function. The pattern specified should obey the same formatting as for preg_match and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
+**Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
 
 <a name="rule-required"></a>
 #### required
