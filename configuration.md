@@ -5,6 +5,7 @@
     - [Environment Variable Types](#environment-variable-types)
     - [Retrieving Environment Configuration](#retrieving-environment-configuration)
     - [Determining The Current Environment](#determining-the-current-environment)
+    - [Hiding Environment Variables From Debug Pages](#hiding-environment-variables-from-debug)
 - [Accessing Configuration Values](#accessing-configuration-values)
 - [Configuration Caching](#configuration-caching)
 - [Maintenance Mode](#maintenance-mode)
@@ -74,6 +75,32 @@ You may also pass arguments to the `environment` method to check if the environm
     }
 
 > {tip} The current application environment detection can be overridden by a server-level `APP_ENV` environment variable. This can be useful when you need to share the same application for different environment configurations, so you can set up a given host to match a given environment in your server's configurations.
+
+<a name="hiding-environment-variables-from-debug"></a>
+### Hiding Environment Variables From Debug Pages
+
+When your application crashes, the debug page will show all environment variables and their contents. In some cases you might want to obscure certain variables. You can do this by editing the `config/app.php` configuration file and adding a `debug_blacklist` array that specifies the variables you want to obscure.
+
+    return [
+
+        // ...
+
+        'debug_blacklist' => [
+            '_ENV' => [
+                'APP_KEY',
+                'DB_PASSWORD',
+            ],
+            '_SERVER' => [
+                'APP_KEY',
+                'DB_PASSWORD',
+            ],
+            '_POST' => [
+                'password',
+            ],
+        ],
+    ];
+    
+> {note} Some variables are available in both, the environment and the server/request data. If you want to obscure them you need to blacklist them for `$_ENV` and `$_SERVER`.
 
 <a name="accessing-configuration-values"></a>
 ## Accessing Configuration Values
