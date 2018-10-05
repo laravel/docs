@@ -185,7 +185,7 @@ You can refresh models using the `fresh` and `refresh` methods. The `fresh` meth
 
     $flight = App\Flight::where('number', 'FR 900')->first();
 
-    $flight = $flight->fresh();
+    $freshFlight = $flight->fresh();
 
 The `refresh` method will re-hydrate the existing model using fresh data from the database. In addition, all of its loaded relationships will be refreshed as well:
 
