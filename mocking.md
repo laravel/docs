@@ -219,7 +219,7 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
 <a name="queue-fake"></a>
 ## Queue Fake
 
-As an alternative to mocking, you may use the `Queue` facade's `fake` method to prevent jobs from being queued. You may then assert that jobs were pushed to the queue and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+As an alternative to mocking, you may use the `Queue` facade's `fake` method to prevent jobs from being queued. You may then assert that jobs were pushed to the queue and even inspect the data they received or simulate executing the job. When using fakes, assertions are made after the code under test is executed:
 
     <?php
 
@@ -241,6 +241,13 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
 
             Queue::assertPushed(ShipOrder::class, function ($job) use ($order) {
                 return $job->order->id === $order->id;
+            });
+            
+            // Simulate executing the queued job
+            Queue::assertPushed(ShipOrder::class, function ($job) {
+                $job->handle();
+                $this->assertJobExecuted();
+                return true;
             });
 
             // Assert a job was pushed to a given queue...
