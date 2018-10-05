@@ -445,11 +445,11 @@ In the example above, we are retrieving the model from the database before calli
 
     App\Flight::destroy(1);
 
+    App\Flight::destroy(1, 2, 3);
+
     App\Flight::destroy([1, 2, 3]);
 
     App\Flight::destroy(collect([1, 2, 3]));
-
-    App\Flight::destroy(1, 2, 3);
 
 #### Deleting Models By Query
 
