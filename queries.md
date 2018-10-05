@@ -274,7 +274,7 @@ You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a q
                        ->groupBy('user_id');
 
     $users = DB::table('users')
-            ->joinSub($latestPosts, 'latest_posts', function($join) {
+            ->joinSub($latestPosts, 'latest_posts', function ($join) {
                 $join->on('users.id', '=', 'latest_posts.user_id');
             })->get();
 
