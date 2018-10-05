@@ -79,7 +79,9 @@ You may also pass arguments to the `environment` method to check if the environm
 <a name="hiding-environment-variables-from-debug"></a>
 ### Hiding Environment Variables From Debug Pages
 
-When your application crashes, the debug page will show all environment variables and their contents. In some cases you might want to obscure certain variables. You can do this by editing the `config/app.php` configuration file and adding a `debug_blacklist` array that specifies the variables you want to obscure.
+When an exception is uncaught and the `APP_DEBUG` environment variable is `true`, the debug page will show all environment variables and their contents. In some cases you may want to obscure certain variables. You may do this by updating the `debug_blacklist` option in your `config/app.php` configuration file.
+
+Some variables are available in both the environment variables and the server / request data. Therefore, you may need to blacklist them for both `$_ENV` and `$_SERVER`:
 
     return [
 
@@ -90,17 +92,17 @@ When your application crashes, the debug page will show all environment variable
                 'APP_KEY',
                 'DB_PASSWORD',
             ],
+
             '_SERVER' => [
                 'APP_KEY',
                 'DB_PASSWORD',
             ],
+
             '_POST' => [
                 'password',
             ],
         ],
     ];
-    
-> {note} Some variables are available in both, the environment and the server/request data. If you want to obscure them you need to blacklist them for `$_ENV` and `$_SERVER`.
 
 <a name="accessing-configuration-values"></a>
 ## Accessing Configuration Values
