@@ -183,7 +183,7 @@ Once the services have been tagged, you may easily resolve them all via the `tag
 
 The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a Closure, which should return the modified service, as its only argument:
 
-    $this->app->extend(Service::class, function($service) {
+    $this->app->extend(Service::class, function ($service) {
         return new DecoratedService($service);
     });
 

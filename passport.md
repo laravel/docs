@@ -430,7 +430,7 @@ The client credentials grant is suitable for machine-to-machine authentication. 
 
 Then attach this middleware to a route:
 
-    Route::get('/user', function(Request $request) {
+    Route::get('/user', function (Request $request) {
         ...
     })->middleware('client');
 

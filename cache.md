@@ -151,7 +151,7 @@ If the item does not exist in the cache, the `Closure` passed to the `remember` 
 
 You may use the `rememberForever` method to retrieve an item from the cache or store it forever:
 
-    $value = Cache::rememberForever('users', function() {
+    $value = Cache::rememberForever('users', function () {
         return DB::table('users')->get();
     });
 
