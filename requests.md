@@ -187,6 +187,23 @@ You may also access user input using dynamic properties on the `Illuminate\Http\
 
 When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the route parameters.
 
+#### Retrieving Input Via Helper Function
+
+You may also access user input using `request()` helper function. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
+
+    $name = request('name');
+
+When using helper function, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the route parameters.
+
+If the value for the specified field is not found, the function will return null. you can specify the third parameter, which can be any value or a Closure, to be returned in that case:
+
+    $name = request('name', 'Guest');
+
+You can also pass an array to retrieve more than one fields from the request:
+
+    $userDetails = request(['name', 'email', 'phone']);
+
+
 #### Retrieving JSON Input Values
 
 When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to dig into JSON arrays:
