@@ -151,6 +151,7 @@ Method  | Description
 `->saturdays();`  |  Limit the task to Saturday
 `->between($start, $end);`  |  Limit the task to run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
+`->environments($env);`  |  Limit the task to be only executed on a certain environment
 
 #### Between Time Constraints
 
