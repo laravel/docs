@@ -182,6 +182,14 @@ The `skip` method may be seen as the inverse of `when`. If the `skip` method ret
 
 When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
 
+#### Environment Constraints
+
+The `environments` method may be used to execute tasks only on certain environments. Only if the current environment matches the given environment or the list of environments the task will be executed.
+
+    $schedule->command('emails:send')
+                        ->daily()
+                        ->environments(['staging', 'production']);
+
 <a name="timezones"></a>
 ### Timezones
 
