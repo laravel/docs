@@ -242,6 +242,12 @@ If you provide an array of key / value pairs and an expiration time to the funct
     cache(['key' => 'value'], $minutes);
 
     cache(['key' => 'value'], now()->addSeconds(10));
+    
+Other cache functions can also be called using the cache helper by passing no arguments to the function. For example, calling the remember function:
+
+    cache()->remember('users', $minutes, function () {
+        return DB::table('users')->get();
+    });
 
 > {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing a facade](/docs/{{version}}/mocking#mocking-facades).
 
