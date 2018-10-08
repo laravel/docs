@@ -378,6 +378,14 @@ Variables that are dynamically passed to mailable views [are now automatically "
 
 If you have customized the default theme styles used for Markdown mailable templates, you will need to re-publish and make your customizations again. The button color classes have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error'.
 
+### Queue
+
+#### `QUEUE_DRIVER` Environment Variable
+
+**Likelihood Of Impact: Very Low**
+
+The `QUEUE_DRIVER` environment variable has been renamed to `QUEUE_CONNECTION`. This should not affect existing applications that you are upgrading unless you intentionally modify your `config/queue.php` configuration file to match Laravel 5.7's.
+
 ### Routing
 
 #### The `Route::redirect` Method
@@ -442,5 +450,3 @@ If you are implementing this interface, you should add this method to your imple
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.
-
-Note that the `QUEUE_DRIVER` environment variable has been renamed to `QUEUE_CONNECTION` as of Laravel 5.7. If you decide to copy over the new configuration files from the laravel/laravel repository as described above, make sure you update your `.env` file as well with this change. 
