@@ -242,8 +242,8 @@ If you provide an array of key / value pairs and an expiration time to the funct
     cache(['key' => 'value'], $minutes);
 
     cache(['key' => 'value'], now()->addSeconds(10));
-    
-Other cache functions can also be called using the cache helper by passing no arguments to the function. For example, calling the remember function:
+
+When the `cache` function is called without any arguments, it returns an instance of the `Illuminate\Contracts\Cache\Factory` implementation, allowing you to all other caching methods:
 
     cache()->remember('users', $minutes, function () {
         return DB::table('users')->get();
