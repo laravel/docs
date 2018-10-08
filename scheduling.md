@@ -151,7 +151,7 @@ Method  | Description
 `->saturdays();`  |  Limit the task to Saturday
 `->between($start, $end);`  |  Limit the task to run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
-`->environments($env);`  |  Limit the task to be only executed on a certain environment
+`->environments($env);`  |  Limit the task to specific environments
 
 #### Between Time Constraints
 
@@ -185,11 +185,11 @@ When using chained `when` methods, the scheduled command will only execute if al
 
 #### Environment Constraints
 
-The `environments` method may be used to execute tasks only on certain environments. Only if the current environment matches the given environment or the list of environments the task will be executed.
+The `environments` method may be used to execute tasks only on the given environments:
 
     $schedule->command('emails:send')
-                        ->daily()
-                        ->environments(['staging', 'production']);
+                ->daily()
+                ->environments(['staging', 'production']);
 
 <a name="timezones"></a>
 ### Timezones
