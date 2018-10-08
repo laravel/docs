@@ -465,3 +465,9 @@ You may enable or disable foreign key constraints within your migrations by usin
     Schema::enableForeignKeyConstraints();
 
     Schema::disableForeignKeyConstraints();
+
+For SQLite you need to enable foreign key constraints with every connection, for example in the `boot` method of your `AppServiceProvider` or a `setUp` method in your `TestCase`:
+
+    if (\DB::connection() instanceof \Illuminate\Database\SQLiteConnection) {
+        \Schema::enableForeignKeyConstraints();
+    }
