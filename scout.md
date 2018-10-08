@@ -20,6 +20,7 @@
     - [Pagination](#pagination)
     - [Soft Deleting](#soft-deleting)
 - [Custom Engines](#custom-engines)
+- [Builder Macros](#builder-macros)
 
 <a name="introduction"></a>
 ## Introduction
@@ -370,3 +371,38 @@ Once you have written your custom engine, you may register it with Scout using t
 Once your engine has been registered, you may specify it as your default Scout `driver` in your `config/scout.php` configuration file:
 
     'driver' => 'mysql',
+
+<a name="builder-macros"></a>
+## Builder Macros
+
+If you would like to define a custom builder method so you may extend the default Scout functionality, you may use the `macro` method on the `Laravel\Scout\Builder` class. For example, from a [service provider's](/docs/{{version}}/providers) `boot` method:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Laravel\Scout\Builder;
+    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\Facades\Response;
+
+    class ScoutMacroServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register the application's scout macros.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Builder::macro('count', function () {
+                $results = $this->engine()->search($this);
+
+                return $this->engine->getTotalCount($results);
+            });
+        }
+    }
+
+The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `Laravel\Scout\Builder` implementation:
+
+    App\Order::search('Star Trek')->count();
+
