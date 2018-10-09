@@ -334,15 +334,17 @@ When this configuration option is `true`, Scout will not remove soft deleted mod
 <a name="search-callbacks"></a>
 ### Search Callbacks
 
-If you really want to manipulate the search behavior of the engine you may use a callback as the second argument of the `search` method. This will allow you to thoroughly manipulate the search behavior.
+If you want to manipulate the search behavior of the engine you may use a callback as the second argument of the `search` method. This will allow you to thoroughly manipulate the search behavior. The below example shows you how you can use the callback to add geo locating to your search options before being passed to the Algolia search engine. Note that your engine needs to implement this behavior before you can use it.
 
-    App\Order::search('Star Trek', function ($engine, $query, $options) {
+    use AlgoliaSearch\Index;
+
+    App\Order::search('Star Trek', function (Index $algolia, string $query, array $options) {
         $options['body']['query']['bool']['filter']['geo_distance'] = [
             'distance' => '1000km',
             'location' => ['lat' => 36, 'lon' => 111],
         ];
 
-        return $engine->search($options);
+        return $algolia->search($query, $options);
     })->get();
 
 <a name="custom-engines"></a>
