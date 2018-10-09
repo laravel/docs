@@ -820,6 +820,8 @@ The `has` method determines if a given key exists in the collection:
 
     // false
 
+Use [`contains`](#method-contains) to determine whether a collection contains a given value.
+
 <a name="method-implode"></a>
 #### `implode()` {#collection-method}
 
