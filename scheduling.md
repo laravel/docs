@@ -292,7 +292,13 @@ Using the `pingBefore` and `thenPing` methods, the scheduler can automatically p
              ->pingBefore($url)
              ->thenPing($url);
 
+Using the `pingBeforeIf` and `thenPingIf` methods, the ping logic is only executed if the given condition is true.
+
+    $schedule->command('emails:send')
+             ->daily()
+             ->pingBeforeIf($condition, $url)
+             ->thenPingIf($condition, $url);
+
 Using either the `pingBefore($url)` or `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project using the Composer package manager:
 
     composer require guzzlehttp/guzzle
-
