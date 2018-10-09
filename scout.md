@@ -19,7 +19,7 @@
     - [Where Clauses](#where-clauses)
     - [Pagination](#pagination)
     - [Soft Deleting](#soft-deleting)
-    - [Customizing Engine Searches](#csutomizing-engine-searches)
+    - [Customizing Engine Searches](#customizing-engine-searches)
 - [Custom Engines](#custom-engines)
 - [Builder Macros](#builder-macros)
 
