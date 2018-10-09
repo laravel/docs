@@ -19,7 +19,7 @@
     - [Where Clauses](#where-clauses)
     - [Pagination](#pagination)
     - [Soft Deleting](#soft-deleting)
-    - [Search Callbacks](#search-callbacks)
+    - [Customizing Engine Searches](#csutomizing-engine-searches)
 - [Custom Engines](#custom-engines)
 - [Builder Macros](#builder-macros)
 
@@ -332,10 +332,10 @@ When this configuration option is `true`, Scout will not remove soft deleted mod
 
 > {tip} When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
 
-<a name="search-callbacks"></a>
-### Search Callbacks
+<a name="customizing-engine-searches"></a>
+### Customizing Engine Searches
 
-If you want to manipulate the search behavior of the engine you may use a callback as the second argument of the `search` method. This will allow you to thoroughly manipulate the search behavior. The below example shows you how you can use the callback to add geo locating to your search options before being passed to the Algolia search engine. Note that your engine needs to implement this behavior before you can use it.
+If you need to customize the search behavior of an engine you may pass a callback as the second argument to the `search` method. For example, you could use this callback to add geo-location data to your search options before the search query is passed to Algolia:
 
     use AlgoliaSearch\Index;
 
