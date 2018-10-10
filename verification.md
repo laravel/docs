@@ -20,13 +20,15 @@ To get started, verify that your `App\User` model implements the `Illuminate\Con
 
     namespace App;
 
+    use Illuminate\Auth\MustVerifyEmail;
     use Illuminate\Notifications\Notifiable;
-    use Illuminate\Contracts\Auth\MustVerifyEmail;
+    use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
     use Illuminate\Foundation\Auth\User as Authenticatable;
 
-    class User extends Authenticatable implements MustVerifyEmail
+    class User extends Authenticatable implements MustVerifyEmailContract
     {
         use Notifiable;
+        use MustVerifyEmail;
 
         // ...
     }
