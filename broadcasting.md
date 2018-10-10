@@ -52,6 +52,19 @@ Before broadcasting any events, you will first need to register the `App\Provide
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+#### Authentication
+
+When using [Laravel Echo](#installing-laravel-echo) in combination with a single page application, where your front-end code is completely separate from your Laravel app, you will need to let [Laravel Echo](#installing-laravel-echo) know which user is currently logged in. This can be as simple as defining an `Authorization` header, which will be used to authentcate presence and private channels:
+
+    window.Echo = new Echo({
+        ...
+        auth: {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }
+    });
+
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
