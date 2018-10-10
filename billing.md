@@ -10,8 +10,8 @@
     - [Checking Subscription Status](#checking-subscription-status)
     - [Changing Plans](#changing-plans)
     - [Subscription Quantity](#subscription-quantity)
-    - [Subscription Anchor Date](#subscription-anchordate)
     - [Subscription Taxes](#subscription-taxes)
+    - [Subscription Anchor Date](#subscription-anchor-date)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
     - [Resuming Subscriptions](#resuming-subscriptions)
     - [Updating Credit Cards](#updating-credit-cards)
@@ -316,20 +316,6 @@ The `noProrate` method may be used to update the subscription's quantity without
 
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
 
-<a name="subscription-anchordate"></a>
-### Subscription Anchor Date
-
-> {note} The subscription anchor date is only supported by the Stripe edition of Cashier.
-
-By default the billing cycle anchor will default to the date the subscription was created, or if a trial period is used, the trial end. 
-When you want to set a custom start date for your subscription, use the `anchorBillingCycleOn` method:
-
-    $user = User::find(1);
-    
-    $user->subscription('main')->anchorBillingCycleOn(new \DateTime('first day of next month'));
-    
-For more information on managing subscription billing cycles, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle)
-
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
 
@@ -342,6 +328,26 @@ To specify the tax percentage a user pays on a subscription, implement the `taxP
 The `taxPercentage` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates.
 
 > {note} The `taxPercentage` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
+
+<a name="subscription-anchor-date"></a>
+### Subscription Anchor Date
+
+> {note} Modifying the subscription anchor date is only supported by the Stripe edition of Cashier.
+
+By default. the billing cycle anchor will is the date the subscription was created, or if a trial period is used, the date that the trial ends. If you would like to modify the billing anchor date, you may use the `anchorBillingCycleOn` method:
+
+    use App\User;
+    use Carbon\Carbon;
+
+    $user = User::find(1);
+
+    $anchor = Carbon::parse('first day of next month');
+
+    $user->newSubscription('main', 'premium')
+                ->anchorBillingCycleOn($anchor->startOfDay())
+                ->create($stripeToken);
+
+For more information on managing subscription billing cycles, consult the [Stripe billing cycle documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle)
 
 <a name="cancelling-subscriptions"></a>
 ### Cancelling Subscriptions
