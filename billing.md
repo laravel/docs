@@ -10,6 +10,7 @@
     - [Checking Subscription Status](#checking-subscription-status)
     - [Changing Plans](#changing-plans)
     - [Subscription Quantity](#subscription-quantity)
+    - [Subscription Anchor Date](#subscription-anchordate)
     - [Subscription Taxes](#subscription-taxes)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
     - [Resuming Subscriptions](#resuming-subscriptions)
@@ -314,6 +315,20 @@ The `noProrate` method may be used to update the subscription's quantity without
     $user->subscription('main')->noProrate()->updateQuantity(10);
 
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
+
+<a name="subscription-anchordate"></a>
+### Subscription Anchor Date
+
+> {note} The subscription anchor date is only supported by the Stripe edition of Cashier.
+
+By default the billing cycle anchor will default to the date the subscription was created, or if a trial period is used, the trial end. 
+When you want to set a custom start date for your subscription, use the `anchorBillingCycleOn` method:
+
+    $user = User::find(1);
+    
+    $user->subscription('main')->anchorBillingCycleOn(new \DateTime('first day of next month'));
+    
+For more information on managing subscription billing cycles, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle)
 
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
