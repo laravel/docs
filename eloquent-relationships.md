@@ -1060,3 +1060,5 @@ Now, when you update a `Comment`, the owning `Post` will have its `updated_at` c
     $comment->text = 'Edit to this comment!';
 
     $comment->save();
+
+> {note} The touching of parent timestamps fires only their `saved` event. 
