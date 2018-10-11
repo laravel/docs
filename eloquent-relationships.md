@@ -7,6 +7,7 @@
     - [One To Many (Inverse)](#one-to-many-inverse)
     - [Many To Many](#many-to-many)
     - [Has Many Through](#has-many-through)
+    - [Has One Through](#has-one-through)
     - [Polymorphic Relations](#polymorphic-relations)
     - [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
 - [Querying Relations](#querying-relations)
@@ -412,6 +413,65 @@ Typical Eloquent foreign key conventions will be used when performing the relati
                 'user_id', // Foreign key on posts table...
                 'id', // Local key on countries table...
                 'id' // Local key on users table...
+            );
+        }
+    }
+
+<a name="has-one-through"></a>
+### Has One Through
+
+The "has-one-through" relationship acts basically the same way as the ["has-many-through"](#has-many-through) relationship works, except it's meant to link through single intermediate relations. For example, a `User` model might have many `Contract` model through an intermediate `Subscription` model. In this example, you could easily get the contract of a subscription for a given user. Let's look at the tables required to define this relationship:
+
+    users
+        id - integer
+        name - string
+
+    subscriptions
+        id - integer
+        user_id - integer
+        name - string
+
+    contracts
+        id - integer
+        subscription_id - integer
+        title - string
+
+Though `contracts` does not contain a `user_id` column, the `hasOneThrough` relation provides access to a users's contract via `$user->contract`. To perform this query, Eloquent inspects the `user_id` on the intermediate `subscriptions` table. After finding the matching subscription ID, it is used to query the `contracts` table.
+
+Now that we have examined the table structure for the relationship, let's define it on the `User` model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        /**
+         * Get the contract for the user.
+         */
+        public function contract()
+        {
+            return $this->hasOneThrough('App\Contract', 'App\Subscription');
+        }
+    }
+
+The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+
+Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
+
+    class User extends Model
+    {
+        public function contract()
+        {
+            return $this->hasOneThrough(
+                'App\Post',
+                'App\User',
+                'user_id', // Foreign key on subscriptions table...
+                'subscription_id', // Foreign key on contracts table...
+                'id', // Local key on users table...
+                'id' // Local key on subscriptions table...
             );
         }
     }
