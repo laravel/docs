@@ -18,6 +18,8 @@
 - [Subscription Trials](#subscription-trials)
     - [With Credit Card Up Front](#with-credit-card-up-front)
     - [Without Credit Card Up Front](#without-credit-card-up-front)
+- [Customers](#customers)
+    - [Creating Customers](#create-customers)
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
@@ -449,6 +451,18 @@ Once you are ready to create an actual subscription for the user, you may use th
     $user = User::find(1);
 
     $user->newSubscription('main', 'monthly')->create($stripeToken);
+
+<a name="customers"></a>
+## Customers
+
+<a name="creating-customers"></a>
+### Creating Customers
+
+Besides creating subscriptions with a token you can also directly create a customer with a card token. This is handy when you already want to add the user as a customer in your payment provider without starting a subscription.
+
+    $user->createAsStripeCustomer($stripeToken);
+
+The Braintree equivalent is the `createAsBraintreeCustomer` method.
 
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
