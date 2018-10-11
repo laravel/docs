@@ -23,7 +23,7 @@
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
-    - [Veirfying Webhook Signature](#verifying-webhook-signatures)
+    - [Veirfying Webhook Signatures](#verifying-webhook-signatures)
 - [Handling Braintree Webhooks](#handling-braintree-webhooks)
     - [Defining Webhook Event Handlers](#defining-braintree-webhook-event-handlers)
     - [Failed Subscriptions](#handling-braintree-failed-subscriptions)
@@ -545,14 +545,16 @@ That's it! Failed payments will be captured and handled by the controller. The c
 <a name="verifying-webhook-signatures"></a>
 ### Verifying Webhook Signatures
 
-To make sure your webhooks are secure you can make use of [Stripe's webhook signatures](https://stripe.com/docs/webhooks/signatures). Cashier comes with a middleware which you may add to incoming calls on your webhooks. This will make sure that all requests are valid and secure. 
+To secure your webhooks, you may use [Stripe's webhook signatures](https://stripe.com/docs/webhooks/signatures). For convenience, Cashier includes a middleware that validates the incoming Stripe webhook request is valid.
+
+To get started, ensure that the `stripe.webhook.secret` configuration value is set in your `services` configuration file. Once you have configured your webhook secret, you may attach the `VerifyWebhookSignature` middleware to the route:
+
+    use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
 
     Route::post(
         'stripe/webhook',
         '\App\Http\Controllers\WebhookController@handleWebhook'
-    )->middleware(Laravel\Cashier\Http\Middleware\VerifyWebhookSignature::class);
-
-To make sure this middleware works as expected there's too configuration settings you need to fill in. In your `services.php` file you'll need to fill in the Stripe Webhook secret and tolerance. The default tolerance of Stripe is 300 (5 minutes) and is the lifetime between which the request can be sent from Stripe and received on your application.
+    )->middleware(VerifyWebhookSignature::class);
 
 <a name="handling-braintree-webhooks"></a>
 ## Handling Braintree Webhooks
