@@ -255,6 +255,12 @@ SQLite does not support dropping foreign keys. For that reason, using the `dropF
 
 If you run your migrations on multiple types of databases, consider using `DB::getDriverName()` in your migrations to skip unsupported foreign key methods for SQLite.
 
+#### Migration Commands Output
+
+**Likelihood Of Impact: Very Low**
+
+The core migration commands have been [updated to set the output on the migrator class](https://github.com/laravel/framework/pull/24811). If you were overriding or extending the migration commands, you should remove references to `$this->migrator->getNotes()` and instead use `$this->migrator->setOutput($this->output)`.
+
 ### Debug
 
 #### Dumper Classes
