@@ -52,7 +52,7 @@ First, add the Cashier package for Stripe to your dependencies:
 Before using Cashier, we'll also need to [prepare the database](/docs/{{version}}/migrations). We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
 
     Schema::table('users', function ($table) {
-        $table->string('stripe_id')->nullable();
+        $table->string('stripe_id')->nullable()->collation('utf8mb4_bin');
         $table->string('card_brand')->nullable();
         $table->string('card_last_four')->nullable();
         $table->timestamp('trial_ends_at')->nullable();
@@ -62,7 +62,7 @@ Before using Cashier, we'll also need to [prepare the database](/docs/{{version}
         $table->increments('id');
         $table->unsignedInteger('user_id');
         $table->string('name');
-        $table->string('stripe_id');
+        $table->string('stripe_id')->collation('utf8mb4_bin');
         $table->string('stripe_plan');
         $table->integer('quantity');
         $table->timestamp('trial_ends_at')->nullable();
