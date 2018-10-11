@@ -29,6 +29,7 @@
 - [Single Charges](#single-charges)
     - [Simple Charge](#simple-charge)
     - [Charge With Invoice](#charge-with-invoice)
+    - [Refunding Charges](#refunding-charges)
 - [Invoices](#invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 
@@ -649,6 +650,13 @@ If you are using Braintree as your billing provider, you must include a `descrip
 
 
 > {note} The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
+
+<a name="single-charges"></a>
+### Refunding Charges
+
+Besides charging customers you can also refund charges. You'll need the charge's identifier for this.
+
+    $user->refund($chargeId);
 
 <a name="invoices"></a>
 ## Invoices
