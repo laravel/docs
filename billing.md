@@ -27,6 +27,8 @@
     - [Defining Webhook Event Handlers](#defining-braintree-webhook-event-handlers)
     - [Failed Subscriptions](#handling-braintree-failed-subscriptions)
 - [Single Charges](#single-charges)
+    - [Simple Charge](#simple-charge)
+    - [Charge With Invoice](#charge-with-invoice)
 - [Invoices](#invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 
@@ -595,6 +597,7 @@ That's it! Failed payments will be captured and handled by the controller. The c
 <a name="single-charges"></a>
 ## Single Charges
 
+<a name="simple-charge"></a>
 ### Simple Charge
 
 > {note} When using Stripe, the `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**. However, when using Braintree, you should pass the full dollar amount to the `charge` method:
@@ -621,6 +624,7 @@ The `charge` method will throw an exception if the charge fails. If the charge i
         //
     }
 
+<a name="charge-with-invoice"></a>
 ### Charge With Invoice
 
 Sometimes you may need to make a one-time charge but also generate an invoice for the charge so that you may offer a PDF receipt to your customer. The `invoiceFor` method lets you do just that. For example, let's invoice the customer $5.00 for a "One Time Fee":
