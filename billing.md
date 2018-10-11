@@ -458,11 +458,13 @@ Once you are ready to create an actual subscription for the user, you may use th
 <a name="creating-customers"></a>
 ### Creating Customers
 
-Besides creating subscriptions with a token you can also directly create a customer with a card token. This is handy when you already want to add the user as a customer in your payment provider without starting a subscription.
+Occasionally, you may wish to create a Stripe customer without beginning a subscription. You may accomplish this using the `createAsStripeCustomer` method:
 
     $user->createAsStripeCustomer($stripeToken);
 
-The Braintree equivalent is the `createAsBraintreeCustomer` method.
+Of course, once the customer has been created in Stripe, you may begin a subscription at a later date.
+
+> {tip} The Braintree equivalent of this method is the `createAsBraintreeCustomer` method.
 
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
