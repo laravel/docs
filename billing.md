@@ -623,7 +623,7 @@ The `charge` method accepts an array as its second argument, allowing you to pas
         'custom_option' => $value,
     ]);
 
-You could even use it to make charges without even requiring an active user. Just provide a valid payment source.
+If you need to make a charge but do not have a user instance, you may use the `charge` method as a static method:
 
     User::charge(100, ['source' => $stripeToken]);
 
