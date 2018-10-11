@@ -333,7 +333,7 @@ The `taxPercentage` method enables you to apply a tax rate on a model-by-model b
 
 #### Syncing Tax Percentages
 
-An important thing to note is that when changing the hardcoded value in `taxPercentage` the tax settings on any existing subscriptions for a user will remain the same. If you wish to update the tax value for existing subscriptions with the current `taxPercentage` value you can run the `syncTaxPercentage` on a subscription. This will set the tax percentage from the billable model.
+When changing the hard-coded value returned by the `taxPercentage` method, the tax settings on any existing subscriptions for the user will remain the same. If you wish to update the tax value for existing subscriptions with the returned `taxPercentage` value, you should call the `syncTaxPercentage` method on the user's subscription instance:
 
     $user->subscription('main')->syncTaxPercentage();
 
