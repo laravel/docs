@@ -612,7 +612,7 @@ That's it! Failed payments will be captured and handled by the controller. The c
 If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method on a billable model instance.
 
     // Stripe Accepts Charges In Cents...
-    $user->charge(100);
+    $stripeCharge = $user->charge(100);
 
     // Braintree Accepts Charges In Dollars...
     $user->charge(1);
@@ -657,12 +657,14 @@ If you are using Braintree as your billing provider, you must include a `descrip
 
 > {note} The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
 
-<a name="single-charges"></a>
+<a name="refunding-charges"></a>
 ### Refunding Charges
 
-Besides charging customers you can also refund charges. You'll need the charge's identifier for this.
+If you need to refund a Stripe charge, you may use the `refund` method. This method accepts the Stripe charge ID as its only argument:
 
-    $user->refund($chargeId);
+    $stripeCharge = $user->charge(100);
+
+    $user->refund($stripeCharge->id);
 
 <a name="invoices"></a>
 ## Invoices
