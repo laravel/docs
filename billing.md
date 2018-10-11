@@ -23,6 +23,7 @@
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
+    - [Veirfying Webhook Signature](#verifying-webhook-signatures)
 - [Handling Braintree Webhooks](#handling-braintree-webhooks)
     - [Defining Webhook Event Handlers](#defining-braintree-webhook-event-handlers)
     - [Failed Subscriptions](#handling-braintree-failed-subscriptions)
@@ -540,6 +541,18 @@ What if a customer's credit card expires? No worries - Cashier includes a Webhoo
     );
 
 That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts).
+
+<a name="verifying-webhook-signatures"></a>
+### Verifying Webhook Signatures
+
+To make sure your webhooks are secure you can make use of [Stripe's webhook signatures](https://stripe.com/docs/webhooks/signatures). Cashier comes with a middleware which you may add to incoming calls on your webhooks. This will make sure that all requests are valid and secure. 
+
+    Route::post(
+        'stripe/webhook',
+        '\App\Http\Controllers\WebhookController@handleWebhook'
+    )->middleware(Laravel\Cashier\Http\Middleware\VerifyWebhookSignature::class);
+
+To make sure this middleware works as expected there's too configuration settings you need to fill in. In your `services.php` file you'll need to fill in the Stripe Webhook secret and tolerance. The default tolerance of Stripe is 300 (5 minutes) and is the lifetime between which the request can be sent from Stripe and received on your application.
 
 <a name="handling-braintree-webhooks"></a>
 ## Handling Braintree Webhooks
