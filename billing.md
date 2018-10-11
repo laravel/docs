@@ -613,6 +613,10 @@ The `charge` method accepts an array as its second argument, allowing you to pas
         'custom_option' => $value,
     ]);
 
+You could even use it to make charges without even requiring an active user. Just provide a valid payment source.
+
+    User::charge(100, ['source' => $stripeToken]);
+
 The `charge` method will throw an exception if the charge fails. If the charge is successful, the full Stripe / Braintree response will be returned from the method:
 
     try {
