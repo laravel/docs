@@ -331,6 +331,12 @@ The `taxPercentage` method enables you to apply a tax rate on a model-by-model b
 
 > {note} The `taxPercentage` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
 
+#### Syncing Tax Percentages
+
+An important thing to note is that when changing the hardcoded value in `taxPercentage` the tax settings on any existing subscriptions for a user will remain the same. If you wish to update the tax value for existing subscriptions with the current `taxPercentage` value you can run the `syncTaxPercentage` on a subscription. This will set the tax percentage from the billable model.
+
+    $user->subscription('main')->syncTaxPercentage();
+
 <a name="subscription-anchor-date"></a>
 ### Subscription Anchor Date
 
