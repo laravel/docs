@@ -114,6 +114,9 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
     Options +FollowSymLinks -Indexes
     RewriteEngine On
 
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
