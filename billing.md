@@ -27,6 +27,9 @@
     - [Defining Webhook Event Handlers](#defining-braintree-webhook-event-handlers)
     - [Failed Subscriptions](#handling-braintree-failed-subscriptions)
 - [Single Charges](#single-charges)
+    - [Simple Charge](#simple-charge)
+    - [Charge With Invoice](#charge-with-invoice)
+    - [Refunding Charges](#refunding-charges)
 - [Invoices](#invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 
@@ -601,6 +604,7 @@ That's it! Failed payments will be captured and handled by the controller. The c
 <a name="single-charges"></a>
 ## Single Charges
 
+<a name="simple-charge"></a>
 ### Simple Charge
 
 > {note} When using Stripe, the `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**. However, when using Braintree, you should pass the full dollar amount to the `charge` method:
@@ -627,6 +631,7 @@ The `charge` method will throw an exception if the charge fails. If the charge i
         //
     }
 
+<a name="charge-with-invoice"></a>
 ### Charge With Invoice
 
 Sometimes you may need to make a one-time charge but also generate an invoice for the charge so that you may offer a PDF receipt to your customer. The `invoiceFor` method lets you do just that. For example, let's invoice the customer $5.00 for a "One Time Fee":
@@ -651,6 +656,13 @@ If you are using Braintree as your billing provider, you must include a `descrip
 
 
 > {note} The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
+
+<a name="single-charges"></a>
+### Refunding Charges
+
+Besides charging customers you can also refund charges. You'll need the charge's identifier for this.
+
+    $user->refund($chargeId);
 
 <a name="invoices"></a>
 ## Invoices
