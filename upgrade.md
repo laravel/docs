@@ -233,6 +233,12 @@ In addition, the `cursor` method was added to the contract:
 
 If you are implementing this interface, you should add this method to your implementation.
 
+#### Migration Command Output
+
+**Likelihood Of Impact: Very Low**
+
+The core migration commands have been [updated to set the output instance on the migrator class](https://github.com/laravel/framework/pull/24811). If you were overriding or extending the migration commands, you should remove references to `$this->migrator->getNotes()` and use `$this->migrator->setOutput($this->output)` instead.
+
 #### SQL Server Driver Priority
 
 **Likelihood Of Impact: Low**
@@ -254,12 +260,6 @@ If neither of these drivers are available, Laravel will use the `PDO_DBLIB` driv
 SQLite does not support dropping foreign keys. For that reason, using the `dropForeign` method on a table now throws an exception. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
 
 If you run your migrations on multiple types of databases, consider using `DB::getDriverName()` in your migrations to skip unsupported foreign key methods for SQLite.
-
-#### Migration Commands Output
-
-**Likelihood Of Impact: Very Low**
-
-The core migration commands have been [updated to set the output on the migrator class](https://github.com/laravel/framework/pull/24811). If you were overriding or extending the migration commands, you should remove references to `$this->migrator->getNotes()` and instead use `$this->migrator->setOutput($this->output)`.
 
 ### Debug
 
