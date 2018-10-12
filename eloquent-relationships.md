@@ -358,6 +358,64 @@ When defining the `UserRole` model, we will extend the `Pivot` class:
         //
     }
 
+<a name="has-one-through"></a>
+### Has One Through
+
+The "has-one-through" relationship links models through a single intermediate relation.
+For example, if each supplier has one user, and each user is associated with one user history record, then the supplier model may access the user's history _through_ the user. Let's look at the database tables necessary to define this relationship:
+
+    users
+        id - integer
+        supplier_id - integer
+
+    suppliers
+        id - integer
+
+    history
+        id - integer
+        user_id - integer
+
+Though the `history` table does not contain a `supplier_id` column, the `hasOneThrough` relation can provide access to the user's history to the supplier model. Now that we have examined the table structure for the relationship, let's define it on the `Supplier` model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Supplier extends Model
+    {
+        /**
+         * Get the user's history.
+         */
+        public function userHistory()
+        {
+            return $this->hasOneThrough('App\History', 'App\User');
+        }
+    }
+
+The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+
+Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
+
+    class Supplier extends Model
+    {
+        /**
+         * Get the user's history.
+         */
+        public function userHistory()
+        {
+            return $this->hasOneThrough(
+                'App\History',
+                'App\User',
+                'supplier_id', // Foreign key on users table...
+                'user_id', // Foreign key on history table...
+                'id', // Local key on suppliers table...
+                'id' // Local key on users table...
+            );
+        }
+    }
+
 <a name="has-many-through"></a>
 ### Has Many Through
 
@@ -412,64 +470,6 @@ Typical Eloquent foreign key conventions will be used when performing the relati
                 'country_id', // Foreign key on users table...
                 'user_id', // Foreign key on posts table...
                 'id', // Local key on countries table...
-                'id' // Local key on users table...
-            );
-        }
-    }
-
-<a name="has-one-through"></a>
-### Has One Through
-
-The "has-one-through" relationship links models through a single intermediate relation.
-For example, if each supplier has one user, and each user is associated with one user history record, then the supplier model may access the user's history _through_ the user. Let's look at the database tables necessary to define this relationship:
-
-    users
-        id - integer
-        supplier_id - integer
-
-    suppliers
-        id - integer
-
-    history
-        id - integer
-        user_id - integer
-
-Though `history` does not contain a `supplier_id` column, the `hasOneThrough` relation can provide access to the user's history to the supplier model. Now that we have examined the table structure for the relationship, let's define it on the `Supplier` model:
-
-    <?php
-
-    namespace App;
-
-    use Illuminate\Database\Eloquent\Model;
-
-    class Supplier extends Model
-    {
-        /**
-         * Get the user's history.
-         */
-        public function userHistory()
-        {
-            return $this->hasOneThrough('App\History', 'App\User');
-        }
-    }
-
-The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
-
-Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
-
-    class Supplier extends Model
-    {
-        /**
-         * Get the user's history.
-         */
-        public function userHistory()
-        {
-            return $this->hasOneThrough(
-                'App\History',
-                'App\User',
-                'supplier_id', // Foreign key on users table...
-                'user_id', // Foreign key on history table...
-                'id', // Local key on suppliers table...
                 'id' // Local key on users table...
             );
         }
