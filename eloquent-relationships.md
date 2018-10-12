@@ -732,7 +732,7 @@ Nested `has` statements may also be constructed using "dot" notation. For exampl
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
     // Retrieve all posts with at least one comment containing words like foo%
-    $posts = App\Post::whereHas('comments', function ($query) {
+    $posts = App\Post::whereHas('comments', function (Illuminate\Database\Eloquent\Builder $query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
@@ -745,13 +745,13 @@ When accessing the records for a model, you may wish to limit your results based
 
 If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to put "where" conditions on your `doesntHave` queries. These methods allows you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
-    $posts = App\Post::whereDoesntHave('comments', function ($query) {
+    $posts = App\Post::whereDoesntHave('comments', function (Illuminate\Database\Eloquent\Builder $query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
 You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts with comments from authors that are not banned:
 
-    $posts = App\Post::whereDoesntHave('comments.author', function ($query) {
+    $posts = App\Post::whereDoesntHave('comments.author', function (Illuminate\Database\Eloquent\Builder $query) {
         $query->where('banned', 1);
     })->get();
 
