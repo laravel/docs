@@ -35,6 +35,16 @@ The query builder will now return unquoted JSON values when using MySQL and Mari
 
 As a result, the `->>` operator is no longer supported or necessary.
 
+#### SQLite
+
+As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/laravel/framework/pull/25995) is `SQLite 3.7.11`. If you are using an older SQLite version, you should update it (`SQLite 3.8.8+` is recommended).
+
+### Exception handling
+
+#### The `renderHttpException` Method
+
+The `renderHttpException` method signature of the `Illuminate\Foundation\Exceptions\Handler` class [has been changed](https://github.com/laravel/framework/pull/25975). If you are overriding this method in your exception handler, you should update the method signature to match its parent.
+
 ### Facades
 
 #### Facade Service Resolving
