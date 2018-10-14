@@ -50,7 +50,7 @@ Generally, this should be considered a bug fix; however, it is listed as a break
 
 **Likelihood Of Impact: None**
 
-For new Laravel 5.7 applications, the assets directory that contains the scripts and styles has been flattened into the `resources` directory. This **will not** affect existing applications and does not requires changes to your existing applications.
+For new Laravel 5.7 applications, the assets directory that contains the scripts and styles has been flattened into the `resources` directory. This **will not** affect existing applications and does not require changes to your existing applications.
 
 However, if you wish to make this change, you should move all files from the `resources/assets/*` directory up one level:
 
