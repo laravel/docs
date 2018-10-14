@@ -37,13 +37,25 @@ As a result, the `->>` operator is no longer supported or necessary.
 
 #### SQLite
 
-As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/laravel/framework/pull/25995) is `SQLite 3.7.11`. If you are using an older SQLite version, you should update it (`SQLite 3.8.8+` is recommended).
+**Likelihood Of Impact: Medium**
 
-### Exception handling
+As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/laravel/framework/pull/25995) is SQLite 3.7.11. If you are using an older SQLite version, you should update it (SQLite 3.8.8+ is recommended).
+
+### Exception Handling
 
 #### The `renderHttpException` Method
 
-The `renderHttpException` method signature of the `Illuminate\Foundation\Exceptions\Handler` class [has been changed](https://github.com/laravel/framework/pull/25975). If you are overriding this method in your exception handler, you should update the method signature to match its parent.
+**Likelihood Of Impact: Low**
+
+The `renderHttpException` method signature of the `Illuminate\Foundation\Exceptions\Handler` class [has changed](https://github.com/laravel/framework/pull/25975). If you are overriding this method in your exception handler, you should update the method signature to match its parent:
+
+    /**
+     * Render the given HttpException.
+     *
+     * @param  \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface  $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderHttpException(HttpExceptionInterface $e);
 
 ### Facades
 
