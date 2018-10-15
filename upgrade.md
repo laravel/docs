@@ -65,6 +65,14 @@ The `renderHttpException` method signature of the `Illuminate\Foundation\Excepti
 
 The `getFacadeAccessor` method may now [only return the string value representing the container identifier of the service](https://github.com/laravel/framework/pull/25525). Previously, this method may have returned an object instance.
 
+### Asserts
+
+#### Images
+
+**Likelihood Of Impact: Low**
+
+- [Separated 401 and 403 error images.](https://github.com/laravel/laravel/pull/4814). So, you should add 401 error image to your app.
+
 ### Routing
 
 #### The `UrlGenerator` Contract
