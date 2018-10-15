@@ -33,6 +33,7 @@ Database tables are often related to one another. For example, a blog post may h
 - [One To One](#one-to-one)
 - [One To Many](#one-to-many)
 - [Many To Many](#many-to-many)
+- [Has One Through](#has-one-through)
 - [Has Many Through](#has-many-through)
 - [Polymorphic Relations](#polymorphic-relations)
 - [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
