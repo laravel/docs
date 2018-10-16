@@ -16,6 +16,12 @@ Laravel 5.5.42 disables all serialization / unserialization of cookie values. Si
 
 Disabling serialization on all cookie values will invalidate all of your application's sessions and users will need to log into the application again. In addition, any other encrypted cookies your application is setting will have invalid values. For this reason, you may wish to add additional logic to your application to validate that your custom cookie values match an expected list of values you expect; otherwise, you should discard them.
 
+This also efffected when your application uses the middleware
+
+`\Laravel\Passport\Http\Middleware\CreateFreshApiToken::class`
+
+so to preserve the old behaviour you need to set the property `$serialize = true` in `EncryptCookies` middleware
+
 #### Configuring Cookie Serialization
 
 Since this vulnerability is not able to be exploited without access to your application's encryption key, we have chosen to provide a way to re-enable encrypted cookie serialization while you make your application compatible with these changes. To enable / disable cookie serialization, you may change the static `serialize` property of the `App\Http\Middleware\EncryptCookies` [middleware](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/EncryptCookies.php):
