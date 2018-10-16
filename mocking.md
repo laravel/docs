@@ -206,6 +206,7 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
     use Tests\TestCase;
     use App\Notifications\OrderShipped;
     use Illuminate\Support\Facades\Notification;
+    use Illuminate\Notifications\AnonymousNotifiable;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
 
@@ -234,6 +235,11 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
+            
+            // Assert a notification was sent via Notification::route() method...
+            Notification::assertSentTo(
+                new AnonymousNotifiable, OrderShipped::class
+            );            
         }
     }
 
