@@ -236,7 +236,7 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
                 [$user], AnotherNotification::class
             );
             
-            // Assert a notification was sent when Notification::route() was used...
+            // Assert a notification was sent via Notification::route() method...
             Notification::assertSentTo(
                 new AnonymousNotifiable, OrderShipped::class
             );            
