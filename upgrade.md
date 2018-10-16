@@ -50,7 +50,7 @@ Generally, this should be considered a bug fix; however, it is listed as a break
 
 **Likelihood Of Impact: None**
 
-For new Laravel 5.7 applications, the assets directory that contains the scripts and styles has been flattened into the `resources` directory. This **will not** affect existing applications and does not requires changes to your existing applications.
+For new Laravel 5.7 applications, the assets directory that contains the scripts and styles has been flattened into the `resources` directory. This **will not** affect existing applications and does not require changes to your existing applications.
 
 However, if you wish to make this change, you should move all files from the `resources/assets/*` directory up one level:
 
@@ -150,9 +150,17 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` "null c
 
 A new `data` directory has been added to `storage/framework/cache`. You should create this directory in your own application.
 
-After creating the directory, ensure that the [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) file is updated.
+    mkdir -p storage/framework/cache/data;
 
-Finally, add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) file to the newly created `data` directory.
+Then add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) file to the newly created `data` directory.
+
+    cp storage/framework/cache/.gitignore storage/framework/cache/data/.gitignore
+
+Finally, ensure that the [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) file is updated as follows:
+
+    *
+    !/data
+    !.gitignore
 
 ### Carbon
 
