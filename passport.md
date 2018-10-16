@@ -690,5 +690,5 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
 
         $response = $this->post('/api/create-server');
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
