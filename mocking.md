@@ -278,6 +278,12 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
 
             // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
+          
+            // Assert a job was pushed with a specific chain...
+            Queue::assertPushedWithChain(ShipOrder::class, [
+                AnotherJob::class,
+                FinalJob::class
+            ]);
         }
     }
 
