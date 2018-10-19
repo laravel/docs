@@ -448,7 +448,7 @@ Next, to use this grant type, you need to add the `CheckClientCredentials` middl
 
 Then, attach the middleware to a route:
 
-    Route::get('/user', function (Request $request) {
+    Route::get('/orders', function (Request $request) {
         ...
     })->middleware('client');
 
