@@ -200,8 +200,8 @@ In this example, we'll attach a relation to some created models. When using the 
 
     $users = factory(App\User::class, 3)
                ->create()
-               ->each(function ($u) {
-                    $u->posts()->save(factory(App\Post::class)->make());
+               ->each(function ($user) {
+                    $user->posts()->save(factory(App\Post::class)->make());
                 });
 
 #### Relations & Attribute Closures
@@ -218,6 +218,8 @@ You may also attach relationships to models using Closure attributes in your fac
         ];
     });
 
+> {tip} You could skip `->id` and return the created Model here as long as you are using `id` as primary key.
+
 These Closures also receive the evaluated attribute array of the factory that defines them:
 
     $factory->define(App\Post::class, function ($faker) {
@@ -232,6 +234,8 @@ These Closures also receive the evaluated attribute array of the factory that de
             }
         ];
     });
+
+> {note} Closures are important. You could be tempted to skip using closures and use directly the other factory like so `'user_id' => factory(App\User::class)->create()->id`, but this will generate and persist a new unnecessary associated Model at every call.
 
 <a name="available-assertions"></a>
 ## Available Assertions
