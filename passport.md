@@ -481,6 +481,22 @@ Before your application can issue personal access tokens, you will need to creat
 
     php artisan passport:client --personal
 
+If you already have a personal access client defined you may define it by passing by calling the `personalAccessClientId` method in your `AuthServiceProvider`:
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::personalAccessClientId($personalClientId);
+    }
+
 <a name="managing-personal-access-tokens"></a>
 ### Managing Personal Access Tokens
 
