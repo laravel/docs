@@ -420,7 +420,13 @@ Once a grant has been enabled, developers may use their client ID to request an 
 <a name="client-credentials-grant-tokens"></a>
 ## Client Credentials Grant Tokens
 
-The client credentials grant is suitable for machine-to-machine authentication. For example, you might use this grant in a scheduled job which is performing maintenance tasks over an API. To use this method you first need to add new middleware to your `$routeMiddleware` in `app/Http/Kernel.php`:
+The client credentials grant is suitable for machine-to-machine authentication. For example, you might use this grant in a scheduled job which is performing maintenance tasks over an API.
+
+Before your application can issue tokens via the client credentials grant, you will need to create a client credentials grant client. You may do this using the `passport:client` command with the `--client` option.
+
+    php artisan passport:client --client
+
+To use this method you first need to add new middleware to your `$routeMiddleware` in `app/Http/Kernel.php`:
 
     use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
