@@ -651,6 +651,8 @@ When using this method of authentication, the default Laravel JavaScript scaffol
 
 > {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
 
+> {note} The `CreateFreshApiToken` middleware requires the `EncryptCookies` middleware to be placed before it in order to function properly.
+
 <a name="events"></a>
 ## Events
 
