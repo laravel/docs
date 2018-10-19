@@ -701,6 +701,22 @@ When using this method of authentication, the default Laravel JavaScript scaffol
         'X-Requested-With': 'XMLHttpRequest',
     };
 
+You can optionally set the name for this cookie to something else using the `Passport::cookie` method within the `boot` method of your `AuthServiceProvider`.
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::cookie('custom_name');
+    }
+
 > {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
 
 <a name="events"></a>
