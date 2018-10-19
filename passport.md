@@ -162,6 +162,22 @@ When deploying Passport to your production servers for the first time, you will 
 
     php artisan passport:keys
 
+You may also define a different path where these keys could be loaded from. This can be interesting if you want to save these keys outside your default Laravel installation on your production environment. You can use the `Passport::loadKeysFrom` method for this.
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::loadKeysFrom('/secret-keys/oauth');
+    }
+
 <a name="configuration"></a>
 ## Configuration
 
