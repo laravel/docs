@@ -159,7 +159,7 @@ Then, add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4
 Finally, ensure that the [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) file is updated as follows:
 
     *
-    !/data
+    !data/
     !.gitignore
 
 ### Carbon
