@@ -658,6 +658,24 @@ Once an access token authenticated request has entered your application, you may
         }
     });
 
+#### Other Scope Functionality
+
+Get all of the defined scope names. The method below will return an array with all scope names:
+
+    Laravel\Passport\Passport::scopeIds();
+
+Get all of the scopes defined for the application. These will be returned as a collection of `Laravel\Passport\Scope` objects:
+
+    Laravel\Passport\Passport::scopes();
+
+Get all of the scopes matching the given IDs. These will be returned as an array of `Laravel\Passport\Scope` objects:
+
+    Laravel\Passport\Passport::scopesFor(['place-orders', 'check-status']);
+
+Determine if the given scope has been defined:
+
+    Laravel\Passport\Passport::hasScope('place-orders');
+
 <a name="consuming-your-api-with-javascript"></a>
 ## Consuming Your API With JavaScript
 
