@@ -547,10 +547,10 @@ You may extend Homestead using the `after.sh` script in the root of your Homeste
 
 When customizing Homestead, Ubuntu may ask you if you would like to keep a package's original configuration or overwrite it with a new configuration file. To avoid this, you should use the following command when installing packages to avoid overwriting any configuration previously written by Homestead:
 
-sudo apt-get -y \
-          -o Dpkg::Options::="--force-confdef" \
-          -o pkg::Options::="--force-confold" \
-          install your-package
+    sudo apt-get -y \
+        -o Dpkg::Options::="--force-confdef" \
+        -o pkg::Options::="--force-confold" \
+        install your-package
 
 <a name="updating-homestead"></a>
 ## Updating Homestead
