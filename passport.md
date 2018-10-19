@@ -218,6 +218,8 @@ However, you will need to pair Passport's JSON API with your own frontend to pro
 
 > {tip} If you don't want to implement the entire client management frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
 
+> {note} The JSON API is guarded by the `web` and `auth` middlewares. This means that the endpoints can only be consumed by the Laravel application in which they are implemented by making use of the shipped frontend scaffolding.
+
 #### `GET /oauth/clients`
 
 This route returns all of the clients for the authenticated user. This is primarily useful for listing all of the user's clients so that they may edit or delete them:
@@ -499,6 +501,8 @@ Once you have created a personal access client, you may issue tokens for a given
 Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
 
 > {tip} If you don't want to implement the personal access token frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
+
+> {note} The JSON API is guarded by the `web` and `auth` middlewares. This means that the endpoints can only be consumed by the Laravel application in which they are implemented by making use of the shipped frontend scaffolding.
 
 #### `GET /oauth/scopes`
 
