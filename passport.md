@@ -452,6 +452,12 @@ Then, attach the middleware to a route:
         ...
     })->middleware('client');
 
+Then protect the route with specific scopes you can add a comma separated lists with the client middleware:
+
+    Route::get('/orders', function (Request $request) {
+        ...
+    })->middleware('client:check-status,your-scope');
+
 To retrieve a token using this grant type, make a request to the `oauth/token` endpoint:
 
     $guzzle = new GuzzleHttp\Client;
