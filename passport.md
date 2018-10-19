@@ -6,6 +6,7 @@
     - [Deploying Passport](#deploying-passport)
 - [Configuration](#configuration)
     - [Token Lifetimes](#token-lifetimes)
+    - [Overriding Default Models](#overriding-default-models)
 - [Issuing Access Tokens](#issuing-access-tokens)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
@@ -201,6 +202,30 @@ By default, Passport issues long-lived access tokens that expire after one year.
 
         Passport::refreshTokensExpireIn(now()->addDays(30));
     }
+
+<a name="overriding-default-models"></a>
+### Overriding Default Models
+
+If you require more functionality on the default models you may extend them and load them using the methods provided on the `Passport` class:
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::useAuthCodeModel('App\Models\Oauth\AuthCode');
+        Passport::useClientModel('App\Models\Oauth\Client');
+        Passport::usePersonalAccessClientModel('App\Models\Oauth\PersonalAccessClient');
+        Passport::useTokenModel('App\Models\Oauth\TokenModel');
+    }
+
+This allows for thorough customization and extension. You could for example use a different database connection for each model.
 
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
