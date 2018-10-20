@@ -17,6 +17,9 @@ If you are using Laravel Passport, you should update your `laravel/passport` dep
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
 
+### Updating Dev Dependencies
+Add `"beyondcode/laravel-dump-server": "^1.0",` to `require-dev` in your `composer.json`
+
 ### Application
 
 #### The `register` Method
