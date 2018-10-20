@@ -310,7 +310,7 @@ If the user approves the authorization request, they will be redirected back to 
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
-> {tip} Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by the `Passport::routes` method. There is no need to manually define this route. It also uses the default settings of the ThrottleRequests middleware.
+> {tip} Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by the `Passport::routes` method. There is no need to manually define this route. By default, this route is throttled using the settings of the `ThrottleRequests` middleware.
 
 <a name="refreshing-tokens"></a>
 ### Refreshing Tokens
@@ -680,7 +680,7 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
 
     use App\User;
     use Laravel\Passport\Passport;
-    
+
     public function testServerCreation()
     {
         Passport::actingAs(
