@@ -198,6 +198,14 @@ The simplest way to create a client is using the `passport:client` Artisan comma
 
     php artisan passport:client
 
+**Multiple Redirects**
+
+If you want to whitelist multiple redirects for your client you can add them as a comma separated list when prompted through the command:
+
+    http://example.com/callback,http://examplefoo.com/callback
+
+Make sure you encode any urls which contain commas.
+
 #### JSON API
 
 Since your users will not be able to utilize the `client` command, Passport provides a JSON API that you may use to create clients. This saves you the trouble of having to manually code controllers for creating, updating, and deleting clients.
