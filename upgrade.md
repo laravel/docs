@@ -45,7 +45,7 @@ As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/larav
 
 #### The `ExceptionHandler` Contract
 
-**Likelihood Of Impact: Very Low**
+**Likelihood Of Impact: Low**
 
 The `shouldReport` method [has been added to the `Illuminate\Contracts\Debug\ExceptionHandler` contract](https://github.com/laravel/framework/pull/26193). If you are implementing this interface, you should add this method to your implementation.
 
