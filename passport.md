@@ -40,6 +40,8 @@ Laravel already makes it easy to perform authentication via traditional login fo
 <a name="installation"></a>
 ## Installation
 
+> {note} By default, Passport makes use of an integer column to save the `user_id` associations. If your application makes use of something else to identify the user (say UUIDs) then you should overwrite the default Passport migrations as described below.
+
 To get started, install Passport via the Composer package manager:
 
     composer require laravel/passport
