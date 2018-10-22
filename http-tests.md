@@ -442,6 +442,8 @@ Assert that the given strings are contained in order within the response:
 Assert that the given string is contained within the response text:
 
     $response->assertSeeText($value);
+    
+> {note} If you escape HTML special characters in your templates (this is the default behaviour for Blade), then you will need to escape the value before testing. E.g. `$response->assertSeeText(e($value));`
 
 <a name="assert-see-text-in-order"></a>
 #### assertSeeTextInOrder
