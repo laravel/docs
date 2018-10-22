@@ -562,7 +562,7 @@ The `data_get` function also accepts a default value, which will be returned if 
 
     // 0
 
-This function also accepts wildcards which can target any key of the array or object. Along with the dot notation, this allows you to easily extract values that are located on a deeper level.
+The function also accepts wildcards using asterisks, which may target any key of the array or object:
 
     $data = [
         'product-one' => ['name' => 'Desk 1', 'price' => 100],
