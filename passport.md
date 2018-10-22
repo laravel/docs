@@ -40,8 +40,6 @@ Laravel already makes it easy to perform authentication via traditional login fo
 <a name="installation"></a>
 ## Installation
 
-> {note} By default, Passport makes use of an integer column to save the `user_id` associations. If your application makes use of something else to identify the user (say UUIDs) then you should overwrite the default Passport migrations as described below.
-
 To get started, install Passport via the Composer package manager:
 
     composer require laravel/passport
@@ -49,8 +47,6 @@ To get started, install Passport via the Composer package manager:
 The Passport service provider registers its own database migration directory with the framework, so you should migrate your database after registering the provider. The Passport migrations will create the tables your application needs to store clients and access tokens:
 
     php artisan migrate
-
-> {note} If you are not going to use Passport's default migrations, you should call the `Passport::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=passport-migrations`.
 
 Next, you should run the `passport:install` command. This command will create the encryption keys needed to generate secure access tokens. In addition, the command will create "personal access" and "password grant" clients which will be used to generate access tokens:
 
@@ -118,6 +114,12 @@ Finally, in your `config/auth.php` configuration file, you should set the `drive
             'provider' => 'users',
         ],
     ],
+
+### Migration Customization
+
+If you are not going to use Passport's default migrations, you should call the `Passport::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=passport-migrations`.
+
+By default, Passport uses an integer column to store the `user_id`. If your application uses a different column type to identify users (for example: UUIDs), you should modify the default Passport migrations after publishing them.
 
 <a name="frontend-quickstart"></a>
 ### Frontend Quickstart
