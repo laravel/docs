@@ -658,6 +658,8 @@ Typically, if you want to consume your API from your JavaScript application, you
         \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
     ],
 
+> {note} You should ensure that the `EncryptCookies` middleware is listed prior to the `CreateFreshApiToken` middleware in your middleware stack.
+
 This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. Now, you may make requests to your application's API without explicitly passing an access token:
 
     axios.get('/api/user')
@@ -672,8 +674,6 @@ When using this method of authentication, the default Laravel JavaScript scaffol
     };
 
 > {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
-
-> {note} The `CreateFreshApiToken` middleware requires the `EncryptCookies` middleware to be placed before it in order to function properly.
 
 <a name="events"></a>
 ## Events
