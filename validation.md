@@ -292,6 +292,20 @@ You may customize the error messages used by the form request by overriding the 
         ];
     }
 
+If you just want to change any attributes, simply use the `attributes` method. This method should return an array of attribute and display label pairs.
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    {
+        return [
+            'title' => 'Display Title Label',
+            'body'  => 'Display Body Label',
+        ];
+    }
+
 <a name="manually-creating-validators"></a>
 ## Manually Creating Validators
 
