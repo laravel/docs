@@ -494,9 +494,15 @@ Next, to use this grant type, you need to add the `CheckClientCredentials` middl
 
 Then, attach the middleware to a route:
 
-    Route::get('/user', function (Request $request) {
+    Route::get('/orders', function (Request $request) {
         ...
     })->middleware('client');
+
+Then protect the route with specific scopes you can add a comma separated lists with the client middleware:
+
+    Route::get('/orders', function (Request $request) {
+        ...
+    })->middleware('client:check-status,your-scope');
 
 To retrieve a token using this grant type, make a request to the `oauth/token` endpoint:
 
