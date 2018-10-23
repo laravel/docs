@@ -498,11 +498,13 @@ Then, attach the middleware to a route:
         ...
     })->middleware('client');
 
-Then protect the route with specific scopes you can add a comma separated lists with the client middleware:
+To restrict access to the route to specific scopes you may provide a comma-delimited list of the required scopes when attaching the `client` middleware to the route:
 
     Route::get('/orders', function (Request $request) {
         ...
     })->middleware('client:check-status,your-scope');
+
+### Retrieving Tokens
 
 To retrieve a token using this grant type, make a request to the `oauth/token` endpoint:
 
