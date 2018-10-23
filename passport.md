@@ -216,9 +216,9 @@ Since your users will not be able to utilize the `client` command, Passport prov
 
 However, you will need to pair Passport's JSON API with your own frontend to provide a dashboard for your users to manage their clients. Below, we'll review all of the API endpoints for managing clients. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
 
-> {tip} If you don't want to implement the entire client management frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
+The JSON API is guarded by the `web` and `auth` middlewares; therefore, it may only be called from your own application. It is not able to be called from an external source.
 
-> {note} The JSON API is guarded by the `web` and `auth` middlewares. This means that the endpoints can only be consumed by the Laravel application in which they are implemented by making use of the shipped frontend scaffolding.
+> {tip} If you don't want to implement the entire client management frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
 
 #### `GET /oauth/clients`
 
@@ -500,9 +500,9 @@ Once you have created a personal access client, you may issue tokens for a given
 
 Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
 
-> {tip} If you don't want to implement the personal access token frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
+The JSON API is guarded by the `web` and `auth` middlewares; therefore, it may only be called from your own application. It is not able to be called from an external source.
 
-> {note} The JSON API is guarded by the `web` and `auth` middlewares. This means that the endpoints can only be consumed by the Laravel application in which they are implemented by making use of the shipped frontend scaffolding.
+> {tip} If you don't want to implement the personal access token frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
 
 #### `GET /oauth/scopes`
 
