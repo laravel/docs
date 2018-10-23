@@ -83,3 +83,4 @@
     - [Passport](/docs/{{version}}/passport)
     - [Scout](/docs/{{version}}/scout)
     - [Socialite](/docs/{{version}}/socialite)
+    - [Telescope](/docs/{{version}}/telescope)
