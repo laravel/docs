@@ -163,7 +163,7 @@ When deploying Passport to your production servers for the first time, you will 
 
     php artisan passport:keys
 
-You may also define a different path where these keys could be loaded from. This can be interesting if you want to save these keys outside your default Laravel installation on your production environment. You can use the `Passport::loadKeysFrom` method for this.
+If necessary, you may define the path where Passport's keys should be loaded from. You may use the `Passport::loadKeysFrom` method to accomplish this:
 
     /**
      * Register any authentication / authorization services.
@@ -206,7 +206,12 @@ By default, Passport issues long-lived access tokens that expire after one year.
 <a name="overriding-default-models"></a>
 ### Overriding Default Models
 
-If you require more functionality on the default models you may extend them and load them using the methods provided on the `Passport` class:
+You are free to extend the models used internally by Passport. Then, you may instruct Passport to use your custom models via the `Passport` class:
+
+    use App\Models\Passport\Client;
+    use App\Models\Passport\AuthCode;
+    use App\Models\Passport\TokenModel;
+    use App\Models\Passport\PersonalAccessClient;
 
     /**
      * Register any authentication / authorization services.
@@ -219,13 +224,11 @@ If you require more functionality on the default models you may extend them and 
 
         Passport::routes();
 
-        Passport::useAuthCodeModel('App\Models\Oauth\AuthCode');
-        Passport::useClientModel('App\Models\Oauth\Client');
-        Passport::usePersonalAccessClientModel('App\Models\Oauth\PersonalAccessClient');
-        Passport::useTokenModel('App\Models\Oauth\TokenModel');
+        Passport::useClientModel(Client::class);
+        Passport::useTokenModel(TokenModel::class);
+        Passport::useAuthCodeModel(AuthCode::class);
+        Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
-
-This allows for thorough customization and extension. You could for example use a different database connection for each model.
 
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
@@ -524,7 +527,7 @@ Before your application can issue personal access tokens, you will need to creat
 
     php artisan passport:client --personal
 
-If you already have a personal access client defined you may define it by passing by calling the `personalAccessClientId` method in your `AuthServiceProvider`:
+If you have already defined a personal access client, you may instruct Passport to use it using the `personalAccessClientId` method. Typically, this method should be called from the `boot` method of your `AuthServiceProvider`:
 
     /**
      * Register any authentication / authorization services.
@@ -537,7 +540,7 @@ If you already have a personal access client defined you may define it by passin
 
         Passport::routes();
 
-        Passport::personalAccessClientId($personalClientId);
+        Passport::personalAccessClientId('client-id');
     }
 
 <a name="managing-personal-access-tokens"></a>
@@ -703,21 +706,21 @@ Once an access token authenticated request has entered your application, you may
         }
     });
 
-#### Other Scope Functionality
+#### Additional Scope Methods
 
-Get all of the defined scope names. The method below will return an array with all scope names:
+The `scopeIds` method will be return an array of all defined IDs / names:
 
     Laravel\Passport\Passport::scopeIds();
 
-Get all of the scopes defined for the application. These will be returned as a collection of `Laravel\Passport\Scope` objects:
+The `scopes` method will return an array of all defined scopes as instances of `Laravel\Passport\Scope`:
 
     Laravel\Passport\Passport::scopes();
 
-Get all of the scopes matching the given IDs. These will be returned as an array of `Laravel\Passport\Scope` objects:
+The `scopesFor` method will return an array of `Laravel\Passport\Scope` instances matching the given IDs / names:
 
     Laravel\Passport\Passport::scopesFor(['place-orders', 'check-status']);
 
-Determine if the given scope has been defined:
+You may determine if a given scope has been defined using the `hasScope` method:
 
     Laravel\Passport\Passport::hasScope('place-orders');
 
@@ -742,13 +745,9 @@ This Passport middleware will attach a `laravel_token` cookie to your outgoing r
             console.log(response.data);
         });
 
-When using this method of authentication, the default Laravel JavaScript scaffolding instructs Axios to always send the `X-CSRF-TOKEN` and `X-Requested-With` headers. However, you should be sure to include your CSRF token in a [HTML meta tag](/docs/{{version}}/csrf#csrf-x-csrf-token):
+#### Customizing The Cookie Name
 
-    window.axios.defaults.headers.common = {
-        'X-Requested-With': 'XMLHttpRequest',
-    };
-
-You can optionally set the name for this cookie to something else using the `Passport::cookie` method within the `boot` method of your `AuthServiceProvider`. You could also disable CSRF checking using the `Passport::ignoreCsrfToken` method.
+If needed, you can customize the `laravel_token` cookie's name using the `Passport::cookie` method. Typically, this method should be called from the `boot` method of your `AuthServiceProvider`:
 
     /**
      * Register any authentication / authorization services.
@@ -762,10 +761,15 @@ You can optionally set the name for this cookie to something else using the `Pas
         Passport::routes();
 
         Passport::cookie('custom_name');
-        Passport::ignoreCsrfToken();
     }
 
-> {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
+#### CSRF Protection
+
+When using this method of authentication, the default Laravel JavaScript scaffolding instructs Axios to always send the `X-CSRF-TOKEN` and `X-Requested-With` headers. However, you should be sure to include your CSRF token in a [HTML meta tag](/docs/{{version}}/csrf#csrf-x-csrf-token):
+
+    window.axios.defaults.headers.common = {
+        'X-Requested-With': 'XMLHttpRequest',
+    };
 
 <a name="events"></a>
 ## Events
