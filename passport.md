@@ -6,6 +6,7 @@
     - [Deploying Passport](#deploying-passport)
 - [Configuration](#configuration)
     - [Token Lifetimes](#token-lifetimes)
+    - [Overriding Default Models](#overriding-default-models)
 - [Issuing Access Tokens](#issuing-access-tokens)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
@@ -162,6 +163,22 @@ When deploying Passport to your production servers for the first time, you will 
 
     php artisan passport:keys
 
+You may also define a different path where these keys could be loaded from. This can be interesting if you want to save these keys outside your default Laravel installation on your production environment. You can use the `Passport::loadKeysFrom` method for this.
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::loadKeysFrom('/secret-keys/oauth');
+    }
+
 <a name="configuration"></a>
 ## Configuration
 
@@ -185,6 +202,30 @@ By default, Passport issues long-lived access tokens that expire after one year.
 
         Passport::refreshTokensExpireIn(now()->addDays(30));
     }
+
+<a name="overriding-default-models"></a>
+### Overriding Default Models
+
+If you require more functionality on the default models you may extend them and load them using the methods provided on the `Passport` class:
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::useAuthCodeModel('App\Models\Oauth\AuthCode');
+        Passport::useClientModel('App\Models\Oauth\Client');
+        Passport::usePersonalAccessClientModel('App\Models\Oauth\PersonalAccessClient');
+        Passport::useTokenModel('App\Models\Oauth\TokenModel');
+    }
+
+This allows for thorough customization and extension. You could for example use a different database connection for each model.
 
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
@@ -483,6 +524,22 @@ Before your application can issue personal access tokens, you will need to creat
 
     php artisan passport:client --personal
 
+If you already have a personal access client defined you may define it by passing by calling the `personalAccessClientId` method in your `AuthServiceProvider`:
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::personalAccessClientId($personalClientId);
+    }
+
 <a name="managing-personal-access-tokens"></a>
 ### Managing Personal Access Tokens
 
@@ -646,6 +703,24 @@ Once an access token authenticated request has entered your application, you may
         }
     });
 
+#### Other Scope Functionality
+
+Get all of the defined scope names. The method below will return an array with all scope names:
+
+    Laravel\Passport\Passport::scopeIds();
+
+Get all of the scopes defined for the application. These will be returned as a collection of `Laravel\Passport\Scope` objects:
+
+    Laravel\Passport\Passport::scopes();
+
+Get all of the scopes matching the given IDs. These will be returned as an array of `Laravel\Passport\Scope` objects:
+
+    Laravel\Passport\Passport::scopesFor(['place-orders', 'check-status']);
+
+Determine if the given scope has been defined:
+
+    Laravel\Passport\Passport::hasScope('place-orders');
+
 <a name="consuming-your-api-with-javascript"></a>
 ## Consuming Your API With JavaScript
 
@@ -672,6 +747,23 @@ When using this method of authentication, the default Laravel JavaScript scaffol
     window.axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
     };
+
+You can optionally set the name for this cookie to something else using the `Passport::cookie` method within the `boot` method of your `AuthServiceProvider`. You could also disable CSRF checking using the `Passport::ignoreCsrfToken` method.
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::cookie('custom_name');
+        Passport::ignoreCsrfToken();
+    }
 
 > {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
 
