@@ -41,7 +41,7 @@ Below is an example of a basic controller class. Note that the controller extend
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return Response
+         * @return View
          */
         public function show($id)
         {
@@ -84,7 +84,7 @@ If you would like to define a controller that only handles a single action, you 
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return Response
+         * @return View
          */
         public function __invoke($id)
         {
