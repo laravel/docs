@@ -394,6 +394,16 @@ If your application interacts with Redis, you may throttle your queued jobs by t
 
 > {tip} In the example above, the `key` may be any string that uniquely identifies the type of job you would like to rate limit. For example, you may wish to construct the key based on the class name of the job and the IDs of the Eloquent models it operates on.
 
+It is very important to add ``->block(60)`` with the amount of time being at least the same time you put for the ``->every(60)``, so you avoid timeout errors. The code with that would look like this:
+
+    Redis::throttle('key')->allow(10)->every(60)->block(60)->then(function () {
+        // Job logic...
+    }, function () {
+        // Could not obtain lock...
+
+        return $this->release(10);
+    });
+
 Alternatively, you may specify the maximum number of workers that may simultaneously process a given job. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time. For example, using the `funnel` method, you may limit jobs of a given type to only be processed by one worker at a time:
 
     Redis::funnel('key')->limit(1)->then(function () {
