@@ -306,35 +306,46 @@ When attaching files to a message, you may also specify the display name and / o
 
 #### Attaching Files from Disk
 
-If you have a file on a storage disk, you can attach it to the email using the `attachFromStorage` method.
+If you have stored a file on one of your [filesystem disks](/docs/{{version}}/filesystem), you may attach it to the email using the `attachFromStorage` method:
 
-        /**
-         * Build the message.
-         *
-         * @return $this
-         */
-         public function build()
-         {
-            return $this->view('email.orders.shipped')
-                        ->attachFromStorage('/path/to/file', 'name.pdf', [
-                            'mime' => 'application/pdf'
-                        ]);
-         }
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorage('/path/to/file');
+     }
 
-`attachFromStorageDisk` can be used if you need to specify a storage disk other than your default storage.
+If necessary, you may specify the file's attachment name and additional options using the second and third arguments to the `attachFromStorage` method:
 
-        /**
-         * Build the message.
-         *
-         * @return $this
-         */
-         public function build()
-         {
-            return $this->view('email.orders.shipped')
-                        ->attachFromStorageDisk('s3', '/path/to/file', 'name.pdf', [
-                            'mime' => 'application/pdf'
-                        ]);
-         }
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorage('/path/to/file', 'name.pdf', [
+                        'mime' => 'application/pdf'
+                    ]);
+     }
+
+The `attachFromStorageDisk` method may be used if you need to specify a storage disk other than your default disk:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorageDisk('s3', '/path/to/file');
+     }
 
 #### Raw Data Attachments
 
