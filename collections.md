@@ -1057,7 +1057,7 @@ The `mapToGroups` method groups the collection's items by the given callback. Th
     /*
         [
             'Sales' => ['John Doe', 'Jane Doe'],
-            'Marketing' => ['Johhny Doe'],
+            'Marketing' => ['Johnny Doe'],
         ]
     */
 
