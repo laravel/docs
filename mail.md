@@ -304,6 +304,38 @@ When attaching files to a message, you may also specify the display name and / o
                         ]);
         }
 
+#### Attaching Files from Disk
+
+If you have a file on a storage disk, you can attach it to the email using the `attachFromStorage` method.
+
+        /**
+         * Build the message.
+         *
+         * @return $this
+         */
+         public function build()
+         {
+            return $this->view('email.orders.shipped')
+                        ->attachFromStorage('/path/to/file', 'name.pdf', [
+                            'mime' => 'application/pdf'
+                        ]);
+         }
+
+`attachFromStorageDisk` can be used if you need to specify a storage disk other than your default storage.
+
+        /**
+         * Build the message.
+         *
+         * @return $this
+         */
+         public function build()
+         {
+            return $this->view('email.orders.shipped')
+                        ->attachFromStorageDisk('s3', '/path/to/file', 'name.pdf', [
+                            'mime' => 'application/pdf'
+                        ]);
+         }
+
 #### Raw Data Attachments
 
 The `attachData` method may be used to attach a raw string of bytes as an attachment. For example, you might use this method if you have generated a PDF in memory and want to attach it to the email without writing it to disk. The `attachData` method accepts the raw data bytes as its first argument, the name of the file as its second argument, and an array of options as its third argument:
