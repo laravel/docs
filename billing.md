@@ -51,7 +51,7 @@ Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://s
 
 First, add the Cashier package for Stripe to your dependencies:
 
-    composer require "laravel/cashier":"~7.0"
+    composer require laravel/cashier
 
 #### Database Migrations
 
