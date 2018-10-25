@@ -540,6 +540,7 @@ Below is a list of all available validation rules and their function:
 [Timezone](#rule-timezone)
 [Unique (Database)](#rule-unique)
 [URL](#rule-url)
+[UUID](#rule-uuid)
 
 </div>
 
@@ -983,6 +984,11 @@ You may also specify additional query constraints by customizing the query using
 #### url
 
 The field under validation must be a valid URL.
+
+<a name="rule-uuid"></a>
+#### uuid
+
+The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) universally unique identifier (UUID).
 
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules

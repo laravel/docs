@@ -23,7 +23,7 @@
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
-    - [Veirfying Webhook Signatures](#verifying-webhook-signatures)
+    - [Verifying Webhook Signatures](#verifying-webhook-signatures)
 - [Handling Braintree Webhooks](#handling-braintree-webhooks)
     - [Defining Webhook Event Handlers](#defining-braintree-webhook-event-handlers)
     - [Failed Subscriptions](#handling-braintree-failed-subscriptions)
@@ -51,7 +51,7 @@ Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://s
 
 First, add the Cashier package for Stripe to your dependencies:
 
-    composer require "laravel/cashier":"~7.0"
+    composer require laravel/cashier
 
 #### Database Migrations
 
@@ -488,7 +488,7 @@ Both Stripe and Braintree can notify your application of a variety of events via
 
 > {note} Once you have registered your route, be sure to configure the webhook URL in your Stripe control panel settings.
 
-By default, this controller will automatically handle cancelling subscriptions that have too many failed charges (as defined by your Stripe settings); however, as we'll soon discover, you can extend this controller to handle any webhook event you like.
+By default, this controller will automatically handle cancelling subscriptions that have too many failed charges (as defined by your Stripe settings), customer updates, custom deletions, subscription updates, and credit card changes; however, as we'll soon discover, you can extend this controller to handle any webhook event you like.
 
 #### Webhooks & CSRF Protection
 
