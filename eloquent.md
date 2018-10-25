@@ -87,6 +87,8 @@ Eloquent will also assume that each table has a primary key column named `id`. Y
 
 In addition, Eloquent assumes that the primary key is an incrementing integer value, which means that by default the primary key will be cast to an `int` automatically. If you wish to use a non-incrementing or a non-numeric primary key you must set the public `$incrementing` property on your model to `false`. If your primary key is not an integer, you should set the protected `$keyType` property on your model to `string`.
 
+If your table has no primary key, you may define protected `$primaryKey` as `null`, and public `$incrementing` as `false` to disable the primary key in your Eloquent model. Note that this is generally considered a bad practice; when possible, a primary key should be used.
+
 #### Timestamps
 
 By default, Eloquent expects `created_at` and `updated_at` columns to exist on your tables.  If you do not wish to have these columns automatically managed by Eloquent, set the `$timestamps` property on your model to `false`:
