@@ -45,7 +45,7 @@ The `auto` strategy adjusts the number of worker processes per queue based on th
 
 #### Job Trimming
 
-You may configure Horizon on how long it should persists recent and failed jobs in the `horizon.php` config file. Typically, recent jobs are kept for one hour while all failed jobs are stored for an entire week:
+The `horizon` configuration file allows you to configure how long recent and failed jobs should be persisted (in minutes). By default, recent jobs are kept for one hour while failed jobs are kept for a week:
 
     'trim' => [
         'recent' => 60,
