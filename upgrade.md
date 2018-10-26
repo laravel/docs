@@ -372,7 +372,7 @@ The `readStream` and `writeStream` methods [have been added to the `Illuminate\C
 
 ### Hashing
 
-#### `Hash:check` Method
+#### `Hash::check` Method
 
 **Likelihood Of Impact: None**
 
