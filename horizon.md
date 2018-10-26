@@ -43,6 +43,15 @@ Horizon allows you to choose from three balancing strategies: `simple`, `auto`, 
 
 The `auto` strategy adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 waiting jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until it is empty. When the `balance` option is set to `false`, the default Laravel behavior will be used, which processes queues in the order they are listed in your configuration.
 
+#### Job Trimming
+
+You may configure Horizon on how long it should persists recent and failed jobs in the `horizon.php` config file. Typically, recent jobs are kept for one hour while all failed jobs are stored for an entire week:
+
+    'trim' => [
+        'recent' => 60,
+        'failed' => 10080,
+    ],
+
 <a name="dashboard-authentication"></a>
 ### Dashboard Authentication
 
