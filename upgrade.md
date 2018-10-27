@@ -150,7 +150,7 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` "null c
 
 A new `data` directory has been added to `storage/framework/cache`. You should create this directory in your own application:
 
-    mkdir -p storage/framework/cache/data;
+    mkdir -p storage/framework/cache/data
 
 Then, add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) file to the newly created `data` directory:
 
