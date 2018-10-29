@@ -11,6 +11,7 @@
     - [Confirming Task Execution](#confirming-task-execution)
 - [Notifications](#notifications)
     - [Slack](#slack)
+    - [Discord](#discord)
 
 <a name="introduction"></a>
 ## Introduction
@@ -176,3 +177,12 @@ You may provide one of the following as the channel argument:
 - To send the notification to a channel: `#channel`
 - To send the notification to a user: `@user`
 </div>
+
+<a name="discord"></a>
+### Discord
+
+Envoy also supports sending notifications to [Discord](https://discord.com) after each task is executed. The `@discord` directive accepts a Discord hook URL and a message. You may retreive your webhook URL by creating a "Webhook" in your Server Settings and choosing which channel the webhook should post to. You should pass the entire Webhook URL into the `@discord` directive:
+
+    @finished
+        @discord('discord-webhook-url')
+    @endfinished
