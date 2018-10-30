@@ -130,6 +130,28 @@ The `raw` method was changed from `protected` to `public` visibility. In additio
 
 If you are implementing this interface, you should add this method to your implementation.
 
+#### The `Login` Event
+
+**Likelihood Of Impact: Low**
+
+The `__construct` method of `Illuminate\Auth\Events\Login` event has a new argument, `$guard`.
+
+    /**
+     * Create a new event instance.
+     *
+     * @param  string $guard
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  bool  $remember
+     * @return void
+     */
+    public function __construct($guard, $user, $remember)
+    {
+      //
+      
+If you are using `event(new Login($user, $remember))` within your application, you'll need to update. The following example applies the default framework guard to the Login event:
+
+    event(new Login(config('auth.defaults.guard'), $user, $remember))
+
 ### Blade
 
 #### The `or` Operator
