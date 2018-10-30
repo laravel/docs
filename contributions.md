@@ -76,6 +76,8 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
      * @param  \Closure|string|null  $concrete
      * @param  bool  $shared
      * @return void
+     *
+     * @throws \Exception
      */
     public function bind($abstract, $concrete = null, $shared = false)
     {
