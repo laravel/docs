@@ -132,23 +132,23 @@ If you are implementing this interface, you should add this method to your imple
 
 #### The `Login` Event
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Very Low**
 
-The `__construct` method of `Illuminate\Auth\Events\Login` event has a new argument, `$guard`.
+The `__construct` method of `Illuminate\Auth\Events\Login` event has a new `$guard` argument:
 
     /**
      * Create a new event instance.
      *
-     * @param  string $guard
+     * @param  string  $guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  bool  $remember
      * @return void
      */
     public function __construct($guard, $user, $remember)
-    {
-      //
-      
-If you are using `event(new Login($user, $remember))` within your application, you'll need to update. The following example applies the default framework guard to the Login event:
+
+If you are dispatching this event manually within your application, you'll need to pass this new argument into the event's constructor. The following example passes the default framework guard to the Login event:
+
+    use Illuminate\Auth\Events\Login;
 
     event(new Login(config('auth.defaults.guard'), $user, $remember))
 
