@@ -454,7 +454,7 @@ You may also specify the desired action for the "on delete" and "on update" prop
           ->references('id')->on('users')
           ->onDelete('cascade');
 
-To drop a foreign key, you may use the `dropForeign` method. Foreign key constraints use the same naming convention as indexes. So, we will concatenate the table name and the columns in the constraint then suffix the name with "_foreign":
+To drop a foreign key, you may use the `dropForeign` method. Foreign key constraints use the same naming convention as indexes. So, we will concatenate the table name and the columns in the constraint then suffix the name with "\_foreign":
 
     $table->dropForeign('posts_user_id_foreign');
 
@@ -468,4 +468,4 @@ You may enable or disable foreign key constraints within your migrations by usin
 
     Schema::disableForeignKeyConstraints();
 
-> {note} SQLite disables foreign key constraints by default. When using SQLite, make sure to enable foreign key support before attempting to create them in your migrations.
+> {note} SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations.

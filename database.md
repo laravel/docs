@@ -34,6 +34,15 @@ After creating a new SQLite database using a command such as `touch database/dat
     DB_CONNECTION=sqlite
     DB_DATABASE=/absolute/path/to/database.sqlite
 
+To enable foreign key constraints for your SQLite connections, you can add the `foreign_key_constraints` option to `config/database.php` like this:
+
+    'sqlite' => [
+        'driver' => 'sqlite',
+        'database' => env('DB_DATABASE', database_path('database.sqlite')),
+        'prefix' => '',
+        'foreign_key_constraints' => true,
+    ],
+
 <a name="read-and-write-connections"></a>
 ### Read & Write Connections
 
