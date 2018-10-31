@@ -479,6 +479,16 @@ When creating an Echo instance that uses the `pusher` connector, you may also sp
         encrypted: true
     });
 
+You may also instead of binding the Pusher or Socket.IO client to the window, pass the client to the config object:
+
+    const client = require('pusher-js');
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: 'your-pusher-key',
+        client: client
+    });
+
 <a name="listening-for-events"></a>
 ### Listening For Events
 
