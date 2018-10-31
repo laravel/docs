@@ -42,13 +42,13 @@ To use the Mailgun driver, first install Guzzle, then set the `driver` option in
         'domain' => 'your-mailgun-domain',
         'secret' => 'your-mailgun-key',
     ],
-    
-When you are using a different [Mailgun region](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions) than US, you should also set the corresponding endpoint:
+
+If you are not using the "US" [Mailgun region](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions), you may define your region's endpoint in the `services` configuration file:
 
     'mailgun' => [
         'domain' => 'your-mailgun-domain',
         'secret' => 'your-mailgun-key',
-        'region' => 'your-mailgun-endpoint', // e.g. api.eu.mailgun.net
+        'region' => 'api.eu.mailgun.net',
     ],
 
 #### SparkPost Driver
