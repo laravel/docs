@@ -332,6 +332,14 @@ The `Broadcast::routes` method will automatically place its routes within the `w
 
     Broadcast::routes($attributes);
 
+[Laravel Echo](#installing-laravel-echo) is by default configured with the `/broadcasting/auth` route but can configure it with your own custom endpoint:
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: 'your-pusher-key',
+        authEndpoint: '/custom/endpoint/auth'
+    });
+
 <a name="defining-authorization-callbacks"></a>
 ### Defining Authorization Callbacks
 
