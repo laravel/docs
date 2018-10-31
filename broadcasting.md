@@ -479,7 +479,9 @@ When creating an Echo instance that uses the `pusher` connector, you may also sp
         encrypted: true
     });
 
-You may also instead of binding the Pusher or Socket.IO client to the window, pass the client to the config object:
+#### Using An Existing Client Instance
+
+If you already have a Pusher or Socket.io client instance that you would like Echo to utilize, you may pass it to Echo via the `client` configuration option:
 
     const client = require('pusher-js');
 
