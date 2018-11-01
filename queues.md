@@ -195,6 +195,8 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
         }
     }
 
+> {note} The `dispatch` method depends on garbage collection to place the job on the queue. Therefore, when using Artisan `tinker` REPL in particular, you should use `Bus::dispatch` or `Queue::push` instead.
+
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
 
