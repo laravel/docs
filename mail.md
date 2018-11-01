@@ -48,7 +48,7 @@ If you are not using the "US" [Mailgun region](https://documentation.mailgun.com
     'mailgun' => [
         'domain' => 'your-mailgun-domain',
         'secret' => 'your-mailgun-key',
-        'region' => 'api.eu.mailgun.net',
+        'endpoint' => 'api.eu.mailgun.net',
     ],
 
 #### SparkPost Driver
