@@ -116,8 +116,9 @@ If you need to update records that will change the result of your chunk query, y
 
     DB::table('users')->where('active', false)->chunkById(100, function ($users) {
         foreach ($users as $user) {
-            $user->active = true;
-            $user->save();
+            DB::table('users')
+                ->where('id', $user->id)
+                ->update(['active' => true]);
         }
     });
 
