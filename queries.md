@@ -112,15 +112,16 @@ You may stop further chunks from being processed by returning `false` from the `
         return false;
     });
 
-If you need to update records that will change the result of your chunk query, you can use `chunkById` to paginate the results based on the primary key. Otherwise this could lead to records being skipped.
+If you are updating database records while chunking results, your chunk results could change in unexpected ways. So, when updating records while chunking, it is always best to use the `chunkById` method instead. This method will automatically paginate the results based on the record's primary key:
 
-    DB::table('users')->where('active', false)->chunkById(100, function ($users) {
-        foreach ($users as $user) {
-            DB::table('users')
-                ->where('id', $user->id)
-                ->update(['active' => true]);
-        }
-    });
+    DB::table('users')->where('active', false)
+        ->chunkById(100, function ($users) {
+            foreach ($users as $user) {
+                DB::table('users')
+                    ->where('id', $user->id)
+                    ->update(['active' => true]);
+            }
+        });
 
 > {note} When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
 
