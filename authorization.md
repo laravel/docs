@@ -59,21 +59,21 @@ Gates may also be defined using a `Class@method` style callback string, like con
     {
         $this->registerPolicies();
 
-        Gate::define('update-post', 'PostPolicy@update');
+        Gate::define('update-post', 'App\Policies\PostPolicy@update');
     }
 
 #### Resource Gates
 
 You may also define multiple Gate abilities at once using the `resource` method:
 
-    Gate::resource('posts', 'PostPolicy');
+    Gate::resource('posts', 'App\Policies\PostPolicy');
 
 This is identical to manually defining the following Gate definitions:
 
-    Gate::define('posts.view', 'PostPolicy@view');
-    Gate::define('posts.create', 'PostPolicy@create');
-    Gate::define('posts.update', 'PostPolicy@update');
-    Gate::define('posts.delete', 'PostPolicy@delete');
+    Gate::define('posts.view', 'App\Policies\PostPolicy@view');
+    Gate::define('posts.create', 'App\Policies\PostPolicy@create');
+    Gate::define('posts.update', 'App\Policies\PostPolicy@update');
+    Gate::define('posts.delete', 'App\Policies\PostPolicy@delete');
 
 By default, the `view`, `create`, `update`, and `delete` abilities will be defined. You may override or add to the default abilities by passing an array as a third argument to the `resource` method. The keys of the array define the names of the abilities while the values define the method names. For example, the following code will create two new Gate definitions - `posts.image` and `posts.photo`:
 
