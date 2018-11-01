@@ -877,6 +877,7 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
         // $event->channel
         // $event->notifiable
         // $event->notification
+        // $events->response
     }
 
 <a name="custom-channels"></a>
