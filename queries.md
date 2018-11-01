@@ -112,11 +112,13 @@ You may stop further chunks from being processed by returning `false` from the `
         return false;
     });
 
-Since you will often be ordering chunked results by the primary key, you may use the `chunkById` method as a shortcut:
+If you need to update records that will change the result of your chunk query, you can use `chunkById` to paginate the results based on the primary key. Otherwise this could lead to records being skipped.
 
-    DB::table('users')->chunkById(100, function ($users) {
+    DB::table('users')->where('active', false)->chunkById(100, function ($users) {
         foreach ($users as $user) {
-            //
+            DB::table('users')
+                ->where('id', $user->id)
+                ->update(['active' => true]);
         }
     });
 
