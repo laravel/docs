@@ -15,6 +15,40 @@ Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
 
+### The `Application` Contract
+
+#### The `environment` Method
+
+**Likelihood Of Impact: Low**
+
+The `environment` method signature of the `Illuminate/Contracts/Foundation/Application` class [has changed](https://github.com/laravel/framework/pull/26296). If you are implementing this contract in your application, you should update the method signature:
+
+    /**
+     * Get or check the current application environment.
+     *
+     * @param  string|array  $environments
+     * @return string|bool
+     */
+    public function environment(...$environments);
+    
+### Collections
+
+#### The `firstWhere` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `firstWhere` method signature [has changed](https://github.com/laravel/framework/pull/26261) to match the `where` method signature. If you are overriding this method, you should update the method signature to match its parent:
+
+    /**
+     * Get the first item by the given key value pair.
+     *
+     * @param  string  $key
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @return mixed
+     */
+    public function firstWhere($key, $operator = null, $value = null);
+    
 ### Database
 
 #### Unquoted MySQL JSON Values
