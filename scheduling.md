@@ -142,6 +142,7 @@ Below is a list of the additional schedule constraints:
 Method  | Description
 ------------- | -------------
 `->weekdays();`  |  Limit the task to weekdays
+`->weekends();`  |  Limit the task to weekends
 `->sundays();`  |  Limit the task to Sunday
 `->mondays();`  |  Limit the task to Monday
 `->tuesdays();`  |  Limit the task to Tuesday
