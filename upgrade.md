@@ -485,11 +485,9 @@ If you are implementing this interface, you should add this method to your imple
 
 ### Testing
 
-**Likelihood of Impact: Low**
+**Likelihood of Impact: Medium**
 
-Laravel 5.7 introduces testing tools for Artisan command tests. As a result, `InteractsWithConsole::artisan` has been updated to support expectations. By default, artisan command output is now mocked. If you were relying on the `artisan` method to run commands as part of your test setup, you should either switch to using `Artisan::call`, or specify `public $mockConsoleOutput = false` in your test classes that rely on the old behavior. Alternatively, you may specify expectations for the artisan command.
-
-You will not be affected by this change unless you run artisan commands as part of your tests.
+Laravel 5.7 introduces improved testing tools for Artisan commands. By default, Artisan command output is now mocked. If you are relying on the `artisan` method to run commands as part of your test, you should use `Artisan::call` or define `public $mockConsoleOutput = false` as a property in your test class.
 
 ### Miscellaneous
 
