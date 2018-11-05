@@ -295,6 +295,8 @@ Modifier  |  Description
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL)
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value
 `->virtualAs($expression)`  |  Create a virtual generated column (MySQL)
+`->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL)
+`->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL)
 
 <a name="modifying-columns"></a>
 ### Modifying Columns
@@ -452,7 +454,7 @@ You may also specify the desired action for the "on delete" and "on update" prop
           ->references('id')->on('users')
           ->onDelete('cascade');
 
-To drop a foreign key, you may use the `dropForeign` method. Foreign key constraints use the same naming convention as indexes. So, we will concatenate the table name and the columns in the constraint then suffix the name with "_foreign":
+To drop a foreign key, you may use the `dropForeign` method. Foreign key constraints use the same naming convention as indexes. So, we will concatenate the table name and the columns in the constraint then suffix the name with "\_foreign":
 
     $table->dropForeign('posts_user_id_foreign');
 
@@ -465,3 +467,5 @@ You may enable or disable foreign key constraints within your migrations by usin
     Schema::enableForeignKeyConstraints();
 
     Schema::disableForeignKeyConstraints();
+
+> {note} SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations.

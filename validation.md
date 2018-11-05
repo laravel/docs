@@ -540,6 +540,7 @@ Below is a list of all available validation rules and their function:
 [Timezone](#rule-timezone)
 [Unique (Database)](#rule-unique)
 [URL](#rule-url)
+[UUID](#rule-uuid)
 
 </div>
 
@@ -757,7 +758,7 @@ The field under validation must be included in the given list of values. Since t
     ]);
 
 <a name="rule-in-array"></a>
-#### in_array:_anotherfield_
+#### in_array:_anotherfield_.*
 
 The field under validation must exist in _anotherfield_'s values.
 
@@ -845,6 +846,8 @@ The field under validation must not be included in the given list of values. The
 
 The field under validation must not match the given regular expression.
 
+Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'not_regex:/^.+$/i'`.
+
 **Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
 
 <a name="rule-nullable"></a>
@@ -866,6 +869,8 @@ The field under validation must be present in the input data but can be empty.
 #### regex:_pattern_
 
 The field under validation must match the given regular expression.
+
+Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
 
 **Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
 
@@ -979,6 +984,11 @@ You may also specify additional query constraints by customizing the query using
 #### url
 
 The field under validation must be a valid URL.
+
+<a name="rule-uuid"></a>
+#### uuid
+
+The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) universally unique identifier (UUID).
 
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules
@@ -1114,7 +1124,7 @@ If you only need the functionality of a custom rule once throughout your applica
         'title' => [
             'required',
             'max:255',
-            function($attribute, $value, $fail) {
+            function ($attribute, $value, $fail) {
                 if ($value === 'foo') {
                     $fail($attribute.' is invalid.');
                 }

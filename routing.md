@@ -343,7 +343,7 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
 <a name="fallback-routes"></a>
 ## Fallback Routes
 
-Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` midddleware group will apply to the route. Of course, you are free to add additional middleware to this route as needed:
+Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. Of course, you are free to add additional middleware to this route as needed:
 
     Route::fallback(function () {
         //

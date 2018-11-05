@@ -84,6 +84,7 @@ When testing, you may need to insert a few records into your database before exe
         return [
             'name' => $faker->name,
             'email' => $faker->unique()->safeEmail,
+            'email_verified_at' => now(),
             'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
             'remember_token' => str_random(10),
         ];
@@ -200,8 +201,8 @@ In this example, we'll attach a relation to some created models. When using the 
 
     $users = factory(App\User::class, 3)
                ->create()
-               ->each(function ($u) {
-                    $u->posts()->save(factory(App\Post::class)->make());
+               ->each(function ($user) {
+                    $user->posts()->save(factory(App\Post::class)->make());
                 });
 
 #### Relations & Attribute Closures

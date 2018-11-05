@@ -1,4 +1,4 @@
-# Compiling Assets (Laravel Mix)
+# Compiling Assets (Mix)
 
 - [Introduction](#introduction)
 - [Installation & Setup](#installation)
@@ -284,7 +284,7 @@ The `copy` method may be used to copy files and directories to new locations. Th
 
 When copying a directory, the `copy` method will flatten the directory's structure. To maintain the directory's original structure, you should use the `copyDirectory` method instead:
 
-    mix.copyDirectory('assets/img', 'public/img');
+    mix.copyDirectory('resources/img', 'public/img');
 
 <a name="versioning-and-cache-busting"></a>
 ## Versioning / Cache Busting

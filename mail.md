@@ -18,6 +18,7 @@
     - [Queueing Mail](#queueing-mail)
 - [Rendering Mailables](#rendering-mailables)
     - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
+- [Localizing Mailables](#localizing-mailables)
 - [Mail & Local Development](#mail-and-local-development)
 - [Events](#events)
 
@@ -40,6 +41,14 @@ To use the Mailgun driver, first install Guzzle, then set the `driver` option in
     'mailgun' => [
         'domain' => 'your-mailgun-domain',
         'secret' => 'your-mailgun-key',
+    ],
+
+If you are not using the "US" [Mailgun region](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions), you may define your region's endpoint in the `services` configuration file:
+
+    'mailgun' => [
+        'domain' => 'your-mailgun-domain',
+        'secret' => 'your-mailgun-key',
+        'endpoint' => 'api.eu.mailgun.net',
     ],
 
 #### SparkPost Driver
@@ -125,6 +134,10 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
 However, if your application uses the same "from" address for all of its emails, it can become cumbersome to call the `from` method in each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
 
     'from' => ['address' => 'example@example.com', 'name' => 'App Name'],
+
+In addition, you may define a global "reply_to" address within your `config/mail.php` configuration file:
+
+    'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
 
 <a name="configuring-the-view"></a>
 ### Configuring The View
@@ -298,6 +311,49 @@ When attaching files to a message, you may also specify the display name and / o
                             'mime' => 'application/pdf',
                         ]);
         }
+
+#### Attaching Files from Disk
+
+If you have stored a file on one of your [filesystem disks](/docs/{{version}}/filesystem), you may attach it to the email using the `attachFromStorage` method:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorage('/path/to/file');
+     }
+
+If necessary, you may specify the file's attachment name and additional options using the second and third arguments to the `attachFromStorage` method:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorage('/path/to/file', 'name.pdf', [
+                        'mime' => 'application/pdf'
+                    ]);
+     }
+
+The `attachFromStorageDisk` method may be used if you need to specify a storage disk other than your default disk:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorageDisk('s3', '/path/to/file');
+     }
 
 #### Raw Data Attachments
 
@@ -555,6 +611,40 @@ If you have mailable classes that you want to always be queued, you may implemen
     {
         //
     }
+
+<a name="localizing-mailables"></a>
+## Localizing Mailables
+
+Laravel allows you to send mailables in a locale other than the current language, and will even remember this locale if the mail is queued.
+
+To accomplish this, the `Illuminate\Mail\Mailable` class offers a `locale` method to set the desired language. The application will change into this locale when the mailable is being formatted and then revert back to the previous locale when formatting is complete:
+
+    Mail::to($request->user())->send(
+        (new OrderShipped($order))->locale('es')
+    );
+
+### User Preferred Locales
+
+Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on one or more of your models, you may instruct Laravel to use this stored locale when sending mail:
+
+    use Illuminate\Contracts\Translation\HasLocalePreference;
+
+    class User extends Model implements HasLocalePreference
+    {
+        /**
+         * Get the user's preferred locale.
+         *
+         * @return string
+         */
+        public function preferredLocale()
+        {
+            return $this->locale;
+        }
+    }
+
+Once you have implemented the interface, Laravel will automatically use the preferred locale when sending mailables and notifications to the model. Therefore, there is no need to call the `locale` method when using this interface:
+
+    Mail::to($request->user())->send(new OrderShipped($order));
 
 <a name="mail-and-local-development"></a>
 ## Mail & Local Development

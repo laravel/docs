@@ -162,8 +162,6 @@ Once you have created a model and [its associated database table](/docs/{{versio
 
     <?php
 
-    use App\Flight;
-
     $flights = App\Flight::all();
 
     foreach ($flights as $flight) {
@@ -180,6 +178,24 @@ The Eloquent `all` method will return all of the results in the model's table. S
                    ->get();
 
 > {tip} Since Eloquent models are query builders, you should review all of the methods available on the [query builder](/docs/{{version}}/queries). You may use any of these methods in your Eloquent queries.
+
+#### Refreshing Models
+
+You can refresh models using the `fresh` and `refresh` methods. The `fresh` method will re-retrieve the model from the database. The existing model instance will not be affected:
+
+    $flight = App\Flight::where('number', 'FR 900')->first();
+
+    $freshFlight = $flight->fresh();
+
+The `refresh` method will re-hydrate the existing model using fresh data from the database. In addition, all of its loaded relationships will be refreshed as well:
+
+    $flight = App\Flight::where('number', 'FR 900')->first();
+
+    $flight->number = 'FR 456';
+
+    $flight->refresh();
+
+    $flight->number; // "FR 900"
 
 <a name="collections"></a>
 ### Collections
@@ -425,13 +441,15 @@ To delete a model, call the `delete` method on a model instance:
 
 #### Deleting An Existing Model By Key
 
-In the example above, we are retrieving the model from the database before calling the `delete` method. However, if you know the primary key of the model, you may delete the model without retrieving it. To do so, call the `destroy` method:
+In the example above, we are retrieving the model from the database before calling the `delete` method. However, if you know the primary key of the model, you may delete the model without retrieving it by calling the `destroy` method.  In addition to a single primary key as its argument, the `destroy` method will accept multiple primary keys, an array of primary keys, or a [collection](/docs/{{version}}/collections) of primary keys:
 
     App\Flight::destroy(1);
 
+    App\Flight::destroy(1, 2, 3);
+
     App\Flight::destroy([1, 2, 3]);
 
-    App\Flight::destroy(1, 2, 3);
+    App\Flight::destroy(collect([1, 2, 3]));
 
 #### Deleting Models By Query
 
@@ -467,7 +485,7 @@ In addition to actually removing records from your database, Eloquent can also "
 
 Of course, you should add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
-    Schema::table('flights', function ($table) {
+    Schema::table('flights', function (Blueprint $table) {
         $table->softDeletes();
     });
 
@@ -702,8 +720,8 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
         /**
          * Scope a query to only include users of a given type.
          *
-         * @param \Illuminate\Database\Eloquent\Builder $query
-         * @param mixed $type
+         * @param  \Illuminate\Database\Eloquent\Builder $query
+         * @param  mixed $type
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeOfType($query, $type)
@@ -728,7 +746,7 @@ Sometimes you may need to determine if two models are the "same". The `is` metho
 <a name="events"></a>
 ## Events
 
-Eloquent models fire several events, allowing you to hook into the following points in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`. Events allow you to easily execute code each time a specific model class is saved or updated in the database.
+Eloquent models fire several events, allowing you to hook into the following points in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`. Events allow you to easily execute code each time a specific model class is saved or updated in the database. Each event receives the instance of the model through its constructor.
 
 The `retrieved` event will fire when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will fire. If a model already existed in the database and the `save` method is called, the `updating` / `updated` events will fire. However, in both cases, the `saving` / `saved` events will fire.
 
@@ -760,6 +778,8 @@ To get started, define a `$dispatchesEvents` property on your Eloquent model tha
         ];
     }
 
+After defining and mapping your Eloquent events, you may use [event listeners](https://laravel.com/docs/{{version}}/events#defining-listeners) to handle the events.
+
 <a name="observers"></a>
 ### Observers
 
@@ -780,7 +800,7 @@ This command will place the new observer in your `App/Observers` directory. If t
     class UserObserver
     {
         /**
-         * Handle to the User "created" event.
+         * Handle the User "created" event.
          *
          * @param  \App\User  $user
          * @return void

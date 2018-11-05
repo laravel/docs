@@ -6,6 +6,7 @@
     - [Protecting Routes](#protecting-routes)
 - [Views](#verification-views)
 - [After Verifying Emails](#after-verifying-emails)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -67,3 +68,19 @@ Laravel will generate all of the necessary email verification views when the `ma
 After an email address is verified, the user will automatically be redirected to `/home`. You can customize the post verification redirect location by defining a `redirectTo` method or property on the `VerificationController`:
 
     protected $redirectTo = '/dashboard';
+
+<a name="events"></a>
+## Events
+
+Laravel dispatches [events](/docs/{{version}}/events) during the email verification process. You may attach listeners to these events in your `EventServiceProvider`:
+
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Illuminate\Auth\Events\Verified' => [
+            'App\Listeners\LogVerifiedUser',
+        ],
+    ];

@@ -224,7 +224,7 @@ The `chunk` method breaks the collection into multiple, smaller collections of a
 
     // [[1, 2, 3, 4], [5, 6, 7]]
 
-This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](https://getbootstrap.com/css/#grid). Imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
+This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](https://getbootstrap.com/docs/4.1/layout/grid/). Imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
 
     @foreach ($products->chunk(3) as $chunk)
         <div class="row">
@@ -806,11 +806,19 @@ Multiple grouping criteria may be passed as an array. Each array element will be
 
 The `has` method determines if a given key exists in the collection:
 
-    $collection = collect(['account_id' => 1, 'product' => 'Desk']);
+    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
 
     $collection->has('product');
 
     // true
+
+    $collection->has(['product', 'amount']);
+
+    // true
+
+    $collection->has(['amount', 'price']);
+
+    // false
 
 <a name="method-implode"></a>
 #### `implode()` {#collection-method}
@@ -1049,7 +1057,7 @@ The `mapToGroups` method groups the collection's items by the given callback. Th
     /*
         [
             'Sales' => ['John Doe', 'Jane Doe'],
-            'Marketing' => ['Johhny Doe'],
+            'Marketing' => ['Johnny Doe'],
         ]
     */
 
@@ -1223,7 +1231,7 @@ The `partition` method may be combined with the `list` PHP function to separate 
 
     $collection = collect([1, 2, 3, 4, 5, 6]);
 
-    list($underThree, $aboveThree) = $collection->partition(function ($i) {
+    list($underThree, $equalOrAboveThree) = $collection->partition(function ($i) {
         return $i < 3;
     });
 
@@ -1231,7 +1239,7 @@ The `partition` method may be combined with the `list` PHP function to separate 
 
     // [1, 2]
 
-    $aboveThree->all();
+    $equalOrAboveThree->all();
 
     // [3, 4, 5, 6]
 

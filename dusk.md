@@ -36,7 +36,6 @@
     - [Codeship](#running-tests-on-codeship)
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
-    - [GitLab CI](#running-tests-on-gitlab-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -50,8 +49,6 @@ To get started, you should add the `laravel/dusk` Composer dependency to your pr
 
     composer require --dev laravel/dusk
 
-Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. Typically, this will be done automatically via Laravel's automatic service provider registration.
-
 > {note} If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
 
 After installing the Dusk package, run the `dusk:install` Artisan command:
@@ -63,6 +60,10 @@ A `Browser` directory will be created within your `tests` directory and will con
 To run your tests, use the `dusk` Artisan command. The `dusk` command accepts any argument that is also accepted by the `phpunit` command:
 
     php artisan dusk
+
+If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
+
+    php artisan dusk:fails
 
 <a name="using-other-browsers"></a>
 ### Using Other Browsers
@@ -112,6 +113,10 @@ To generate a Dusk test, use the `dusk:make` Artisan command. The generated test
 To run your browser tests, use the `dusk` Artisan command:
 
     php artisan dusk
+
+If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
+
+    php artisan dusk:fails
 
 The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, allowing you to only run the tests for a given [group](https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group), etc:
 
@@ -733,21 +738,21 @@ Assert that the given query string parameter is present and has a given value:
 Assert that the given query string parameter is missing:
 
     $browser->assertQueryStringMissing($name);
-    
+
 <a name="assert-fragment-is"></a>
 #### assertFragmentIs
 
 Assert that the current fragment matches the given fragment:
 
     $browser->assertFragmentIs('anchor');
-    
+
 <a name="assert-fragment-begins-with"></a>
 #### assertFragmentBeginsWith
 
 Assert that the current fragment begins with the given fragment:
 
     $browser->assertFragmentBeginsWith('anchor');
-    
+
 <a name="assert-fragment-is-not"></a>
 #### assertFragmentIsNot
 
@@ -1262,31 +1267,7 @@ Once the component has been defined, we can easily select a date within the date
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
 
-#### CircleCI 1.0
-
-If you are using CircleCI 1.0 to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
-
-    dependencies:
-      pre:
-          - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          - sudo dpkg -i google-chrome.deb
-          - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
-          - rm google-chrome.deb
-
-    test:
-        pre:
-            - "./vendor/laravel/dusk/bin/chromedriver-linux":
-                background: true
-            - cp .env.testing .env
-            - "php artisan serve":
-                background: true
-
-        override:
-            - php artisan dusk
-
-#### CircleCI 2.0
-
- If you are using CircleCI 2.0 to run your Dusk tests, you may add these steps to your build:
+If you are using CircleCI to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
      version: 2
      jobs:
@@ -1348,44 +1329,26 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
 <a name="running-tests-on-travis-ci"></a>
 ### Travis CI
 
-To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
+To run your Dusk tests on [Travis CI](https://travis-ci.org), we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
 
+    language: php
     sudo: required
     dist: trusty
 
+    php:
+      - 7.2
+
     addons:
-       chrome: stable
+      chrome: stable
 
     install:
-       - cp .env.testing .env
-       - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+      - cp .env.testing .env
+      - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+      - php artisan key:generate
 
     before_script:
-       - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-       - php artisan serve &
+      - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+      - php artisan serve &
 
     script:
        - php artisan dusk
-
-<a name="running-tests-on-gitlab-ci"></a>
-### GitLab CI
-
-To run Dusk tests on [GitLab CI](https://about.gitlab.com/features/gitlab-ci-cd/), add the following to your `.gitlab-ci.yml` file:
-
-	stages:
-  	  - test
-	
-	browser_test:
-	  image: laratools/ci:7.2
-	  stage: test
-	  before_script:
-	    - composer install --prefer-dist --no-interaction --no-suggest
-	    - cp .env.testing .env
-	    - nohup php artisan serve &
-	  script:
-	    - php artisan dusk
-	  artifacts:
-	    paths:
-	      - ./tests/Browser/screenshots
-	      - ./tests/Browser/console
-	    expire_in: 7 days

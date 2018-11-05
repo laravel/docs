@@ -19,7 +19,9 @@
     - [Where Clauses](#where-clauses)
     - [Pagination](#pagination)
     - [Soft Deleting](#soft-deleting)
+    - [Customizing Engine Searches](#customizing-engine-searches)
 - [Custom Engines](#custom-engines)
+- [Builder Macros](#builder-macros)
 
 <a name="introduction"></a>
 ## Introduction
@@ -69,7 +71,7 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
 
-    composer require algolia/algoliasearch-client-php
+    composer require algolia/algoliasearch-client-php:^1.27
 
 <a name="configuration"></a>
 ## Configuration
@@ -330,6 +332,22 @@ When this configuration option is `true`, Scout will not remove soft deleted mod
 
 > {tip} When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
 
+<a name="customizing-engine-searches"></a>
+### Customizing Engine Searches
+
+If you need to customize the search behavior of an engine you may pass a callback as the second argument to the `search` method. For example, you could use this callback to add geo-location data to your search options before the search query is passed to Algolia:
+
+    use AlgoliaSearch\Index;
+
+    App\Order::search('Star Trek', function (Index $algolia, string $query, array $options) {
+        $options['body']['query']['bool']['filter']['geo_distance'] = [
+            'distance' => '1000km',
+            'location' => ['lat' => 36, 'lon' => 111],
+        ];
+
+        return $algolia->search($query, $options);
+    })->get();
+
 <a name="custom-engines"></a>
 ## Custom Engines
 
@@ -370,3 +388,37 @@ Once you have written your custom engine, you may register it with Scout using t
 Once your engine has been registered, you may specify it as your default Scout `driver` in your `config/scout.php` configuration file:
 
     'driver' => 'mysql',
+
+<a name="builder-macros"></a>
+## Builder Macros
+
+If you would like to define a custom builder method, you may use the `macro` method on the `Laravel\Scout\Builder` class. Typically, "macros" should be defined within a [service provider's](/docs/{{version}}/providers) `boot` method:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Laravel\Scout\Builder;
+    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\Facades\Response;
+
+    class ScoutMacroServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register the application's scout macros.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Builder::macro('count', function () {
+                return $this->engine->getTotalCount(
+                    $this->engine()->search($this)
+                );
+            });
+        }
+    }
+
+The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `Laravel\Scout\Builder` implementation:
+
+    App\Order::search('Star Trek')->count();

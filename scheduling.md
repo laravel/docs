@@ -9,6 +9,7 @@
     - [Timezones](#timezones)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
     - [Running Tasks On One Server](#running-tasks-on-one-server)
+    - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
@@ -66,7 +67,7 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
         }
     }
 
-In addition to scheduling using Closures, you may also using [invokable objects](http://php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
+In addition to scheduling using Closures, you may also use [invokable objects](http://php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
 
     $schedule->call(new DeleteRecentUsers)->daily();
 
@@ -141,6 +142,7 @@ Below is a list of the additional schedule constraints:
 Method  | Description
 ------------- | -------------
 `->weekdays();`  |  Limit the task to weekdays
+`->weekends();`  |  Limit the task to weekends
 `->sundays();`  |  Limit the task to Sunday
 `->mondays();`  |  Limit the task to Monday
 `->tuesdays();`  |  Limit the task to Tuesday
@@ -150,6 +152,7 @@ Method  | Description
 `->saturdays();`  |  Limit the task to Saturday
 `->between($start, $end);`  |  Limit the task to run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
+`->environments($env);`  |  Limit the task to specific environments
 
 #### Between Time Constraints
 
@@ -180,6 +183,14 @@ The `skip` method may be seen as the inverse of `when`. If the `skip` method ret
     });
 
 When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
+
+#### Environment Constraints
+
+The `environments` method may be used to execute tasks only on the given environments:
+
+    $schedule->command('emails:send')
+                ->daily()
+                ->environments(['staging', 'production']);
 
 <a name="timezones"></a>
 ### Timezones
@@ -218,6 +229,15 @@ To indicate that the task should run on only one server, use the `onOneServer` m
                     ->fridays()
                     ->at('17:00')
                     ->onOneServer();
+
+<a name="background-tasks"></a>
+### Background Tasks
+
+By default, multiple commands scheduled at the same time will execute sequentially. If you have long-running commands, this may cause subsequent commands to start much later than anticipated. If you would like to run commands in the background so that they may all run simultaneously, you may use the `runInBackground` method:
+
+    $schedule->command('analytics:report')
+             ->daily()
+             ->runInBackground();
 
 <a name="maintenance-mode"></a>
 ### Maintenance Mode
@@ -273,6 +293,13 @@ Using the `pingBefore` and `thenPing` methods, the scheduler can automatically p
              ->pingBefore($url)
              ->thenPing($url);
 
-Using either the `pingBefore($url)` or `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project using the Composer package manager:
+The `pingBeforeIf` and `thenPingIf` methods may be used to ping a given URL only if the given condition is `true`:
+
+    $schedule->command('emails:send')
+             ->daily()
+             ->pingBeforeIf($condition, $url)
+             ->thenPingIf($condition, $url);
+
+All of the ping methods require the Guzzle HTTP library. You can add Guzzle to your project using the Composer package manager:
 
     composer require guzzlehttp/guzzle

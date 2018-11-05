@@ -36,6 +36,7 @@
     - [Formatting Slack Notifications](#formatting-slack-notifications)
     - [Slack Attachments](#slack-attachments)
     - [Routing Slack Notifications](#routing-slack-notifications)
+- [Localizing Notifications](#localizing-notifications)
 - [Notification Events](#notification-events)
 - [Custom Channels](#custom-channels)
 
@@ -491,7 +492,7 @@ The `broadcast` channel broadcasts notifications using Laravel's [event broadcas
 
 #### Broadcast Queue Configuration
 
-All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to the queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
+All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
 
     return (new BroadcastMessage($data))
                     ->onConnection('sqs')
@@ -809,6 +810,42 @@ To route Slack notifications to the proper location, define a `routeNotification
         }
     }
 
+<a name="localizing-notifications"></a>
+## Localizing Notifications
+
+Laravel allows you to send notifications in a locale other than the current language, and will even remember this locale if the notification is queued.
+
+To accomplish this, the `Illuminate\Notifications\Notification` class offers a `locale` method to set the desired language. The application will change into this locale when the notification is being formatted and then revert back to the previous locale when formatting is complete:
+
+    $user->notify((new InvoicePaid($invoice))->locale('es'));
+
+Localization of multiple notifiable entries may also be achieved via the `Notification` facade:
+
+    Notification::locale('es')->send($users, new InvoicePaid($invoice));
+
+### User Preferred Locales
+
+Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on your notifiable model, you may instruct Laravel to use this stored locale when sending a notification:
+
+    use Illuminate\Contracts\Translation\HasLocalePreference;
+
+    class User extends Model implements HasLocalePreference
+    {
+        /**
+         * Get the user's preferred locale.
+         *
+         * @return string
+         */
+        public function preferredLocale()
+        {
+            return $this->locale;
+        }
+    }
+
+Once you have implemented the interface, Laravel will automatically use the preferred locale when sending notifications and mailables to the model. Therefore, there is no need to call the `locale` method when using this interface:
+
+    $user->notify(new InvoicePaid($invoice));
+
 <a name="notification-events"></a>
 ## Notification Events
 
@@ -840,6 +877,7 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
         // $event->channel
         // $event->notifiable
         // $event->notification
+        // $event->response
     }
 
 <a name="custom-channels"></a>

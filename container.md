@@ -151,7 +151,7 @@ Sometimes you may have two classes that utilize the same interface, but you wish
                   return Storage::disk('local');
               });
 
-    $this->app->when(VideoController::class)
+    $this->app->when([VideoController::class, UploadController::class])
               ->needs(Filesystem::class)
               ->give(function () {
                   return Storage::disk('s3');
@@ -183,7 +183,7 @@ Once the services have been tagged, you may easily resolve them all via the `tag
 
 The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a Closure, which should return the modified service, as its only argument:
 
-    $this->app->extend(Service::class, function($service) {
+    $this->app->extend(Service::class, function ($service) {
         return new DecoratedService($service);
     });
 
@@ -276,4 +276,4 @@ Laravel's service container implements the [PSR-11](https://github.com/php-fig/f
         //
     });
 
-> {note} Calling the `get` method will throw an exception if the identifier has not been explicitly bound into the container.
+An exception is thrown if the given identifier can't be resolved. The exception will be an instance of `Psr\Container\NotFoundExceptionInterface` if the identifier was never bound. If the identifier was bound but was unable to be resolved, an instance of `Psr\Container\ContainerExceptionInterface` will be thrown.

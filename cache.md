@@ -151,7 +151,7 @@ If the item does not exist in the cache, the `Closure` passed to the `remember` 
 
 You may use the `rememberForever` method to retrieve an item from the cache or store it forever:
 
-    $value = Cache::rememberForever('users', function() {
+    $value = Cache::rememberForever('users', function () {
         return DB::table('users')->get();
     });
 
@@ -220,22 +220,15 @@ The `get` method also accepts a Closure. After the Closure is executed, Laravel 
         // Lock acquired indefinitely and automatically released...
     });
 
-If the lock is not available at the moment you request it, you may instruct Laravel to wait until it becomes available:
+If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
 
-    if (Cache::lock('foo', 10)->block()) {
-        // Lock acquired after waiting...
-    }
-
-By default, the `block` method will wait indefinitely until the lock is available. You may use the `blockFor` method to only wait for the specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
-
-    if (Cache::lock('foo', 10)->blockFor(5)) {
+    if (Cache::lock('foo', 10)->block(5)) {
         // Lock acquired after waiting maximum of 5 seconds...
     }
 
-    Cache::lock('foo', 10)->blockFor(5, function () {
+    Cache::lock('foo', 10)->block(5, function () {
         // Lock acquired after waiting maximum of 5 seconds...
     });
-
 
 <a name="the-cache-helper"></a>
 ### The Cache Helper
@@ -249,6 +242,12 @@ If you provide an array of key / value pairs and an expiration time to the funct
     cache(['key' => 'value'], $minutes);
 
     cache(['key' => 'value'], now()->addSeconds(10));
+
+When the `cache` function is called without any arguments, it returns an instance of the `Illuminate\Contracts\Cache\Factory` implementation, allowing you to all other caching methods:
+
+    cache()->remember('users', $minutes, function () {
+        return DB::table('users')->get();
+    });
 
 > {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing a facade](/docs/{{version}}/mocking#mocking-facades).
 

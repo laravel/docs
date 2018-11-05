@@ -57,7 +57,7 @@ You may use the `table` method on the `DB` facade to begin a query. The `table` 
         }
     }
 
-The `get` method returns an `Illuminate\Support\Collection` containing the results where each result is an instance of the PHP `StdClass` object. You may access each column's value by accessing the column as a property of the object:
+The `get` method returns an `Illuminate\Support\Collection` containing the results where each result is an instance of the PHP `stdClass` object. You may access each column's value by accessing the column as a property of the object:
 
     foreach ($users as $user) {
         echo $user->name;
@@ -65,7 +65,7 @@ The `get` method returns an `Illuminate\Support\Collection` containing the resul
 
 #### Retrieving A Single Row / Column From A Table
 
-If you just need to retrieve a single row from the database table, you may use the `first` method. This method will return a single `StdClass` object:
+If you just need to retrieve a single row from the database table, you may use the `first` method. This method will return a single `stdClass` object:
 
     $user = DB::table('users')->where('name', 'John')->first();
 
@@ -111,6 +111,19 @@ You may stop further chunks from being processed by returning `false` from the `
 
         return false;
     });
+
+If you are updating database records while chunking results, your chunk results could change in unexpected ways. So, when updating records while chunking, it is always best to use the `chunkById` method instead. This method will automatically paginate the results based on the record's primary key:
+
+    DB::table('users')->where('active', false)
+        ->chunkById(100, function ($users) {
+            foreach ($users as $user) {
+                DB::table('users')
+                    ->where('id', $user->id)
+                    ->update(['active' => true]);
+            }
+        });
+
+> {note} When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
 
 <a name="aggregates"></a>
 ### Aggregates
@@ -264,7 +277,7 @@ You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a q
                        ->groupBy('user_id');
 
     $users = DB::table('users')
-            ->joinSub($latestPosts, 'latest_posts', function($join) {
+            ->joinSub($latestPosts, 'latest_posts', function ($join) {
                 $join->on('users.id', '=', 'latest_posts.user_id');
             })->get();
 

@@ -968,6 +968,8 @@ You may use the `createMany` method to create multiple related models:
         ],
     ]);
 
+You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate` and `updateOrCreate` methods to [create and update models on relationships](https://laravel.com/docs/{{version}}/eloquent#other-creation-methods).
+
 <a name="updating-belongs-to-relationships"></a>
 ### Belongs To Relationships
 

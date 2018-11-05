@@ -562,6 +562,17 @@ The `data_get` function also accepts a default value, which will be returned if 
 
     // 0
 
+The function also accepts wildcards using asterisks, which may target any key of the array or object:
+
+    $data = [
+        'product-one' => ['name' => 'Desk 1', 'price' => 100],
+        'product-two' => ['name' => 'Desk 2', 'price' => 150],
+    ];
+
+    data_get($data, '*.name');
+
+    // ['Desk 1', 'Desk 2'];
+
 <a name="method-data-set"></a>
 #### `data_set()` {#collection-method}
 

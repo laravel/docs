@@ -39,7 +39,7 @@ Laravel utilizes [Composer](https://getcomposer.org) to manage its dependencies.
 
 First, download the Laravel installer using Composer:
 
-    composer global require "laravel/installer"
+    composer global require laravel/installer
 
 Make sure to place composer's system-wide vendor bin directory in your `$PATH` so the laravel executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
 
@@ -113,6 +113,9 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 
     Options +FollowSymLinks -Indexes
     RewriteEngine On
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

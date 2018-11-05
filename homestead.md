@@ -109,7 +109,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd ~/Homestead
 
     // Clone the desired release...
-    git checkout v7.17.0
+    git checkout v7.18.0
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -405,6 +405,8 @@ Mailhog allows you to easily catch your outgoing email and examine it without ac
     MAIL_PASSWORD=null
     MAIL_ENCRYPTION=null
 
+Once Mailhog has been configured, you may access the Mailhog dashboard at `http://localhost:8025`.
+
 <a name="configuring-minio"></a>
 ### Configuring Minio
 
@@ -545,10 +547,10 @@ You may extend Homestead using the `after.sh` script in the root of your Homeste
 
 When customizing Homestead, Ubuntu may ask you if you would like to keep a package's original configuration or overwrite it with a new configuration file. To avoid this, you should use the following command when installing packages to avoid overwriting any configuration previously written by Homestead:
 
-sudo apt-get -y \
-          -o Dpkg::Options::="--force-confdef" \
-          -o pkg::Options::="--force-confold" \
-          install your-package
+    sudo apt-get -y \
+        -o Dpkg::Options::="--force-confdef" \
+        -o pkg::Options::="--force-confold" \
+        install your-package
 
 <a name="updating-homestead"></a>
 ## Updating Homestead
