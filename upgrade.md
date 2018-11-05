@@ -104,7 +104,7 @@ The `originalIsEquivalent` method of the `Illuminate\Database\Eloquent\Concerns\
 #### The `fire` Method
 
 The `fire` method (which was deprecated in Laravel 5.4) of the `Illuminate/Events/Dispatcher` class [has been removed](https://github.com/laravel/framework/pull/26392).
-Use the `dispatch` method instead.
+You should use the `dispatch` method instead.
 
 ### Exception Handling
 
