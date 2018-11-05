@@ -5,7 +5,7 @@
 <a name="upgrade-5.8.0"></a>
 ## Upgrading To 5.8.0 From 5.7
 
-#### Estimated Upgrade Time: TBD
+#### Estimated Upgrade Time: 10 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
@@ -19,7 +19,7 @@ Of course, don't forget to examine any 3rd party packages consumed by your appli
 
 #### The `environment` Method
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Very Low**
 
 The `environment` method signature of the `Illuminate/Contracts/Foundation/Application` class [has changed](https://github.com/laravel/framework/pull/26296). If you are implementing this contract in your application, you should update the method signature:
 
@@ -30,14 +30,14 @@ The `environment` method signature of the `Illuminate/Contracts/Foundation/Appli
      * @return string|bool
      */
     public function environment(...$environments);
-    
+
 ### Collections
 
 #### The `firstWhere` Method
 
 **Likelihood Of Impact: Very Low**
 
-The `firstWhere` method signature [has changed](https://github.com/laravel/framework/pull/26261) to match the `where` method signature. If you are overriding this method, you should update the method signature to match its parent:
+The `firstWhere` method signature [has changed](https://github.com/laravel/framework/pull/26261) to match the `where` method's signature. If you are overriding this method, you should update the method signature to match its parent:
 
     /**
      * Get the first item by the given key value pair.
@@ -48,7 +48,7 @@ The `firstWhere` method signature [has changed](https://github.com/laravel/frame
      * @return mixed
      */
     public function firstWhere($key, $operator = null, $value = null);
-    
+
 ### Database
 
 #### Unquoted MySQL JSON Values
