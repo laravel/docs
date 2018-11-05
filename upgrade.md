@@ -483,6 +483,14 @@ The `validate` method [was added to the `Illuminate\Contracts\Validation\Validat
 
 If you are implementing this interface, you should add this method to your implementation.
 
+### Testing
+
+**Likelihood of Impact: Low**
+
+Laravel 5.7 introduces testing tools for Artisan command tests. As a result, `InteractsWithConsole::artisan` has been updated to support expectations. By default, artisan command output is now mocked. If you were relying on the `artisan` method to run commands as part of your test setup, you should either switch to using `Artisan::call`, or specify `public $mockConsoleOutput = false` in your test classes that rely on the old behavior. Alternatively, you may specify expectations for the artisan command.
+
+You will not be affected by this change unless you run artisan commands as part of your tests.
+
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.
