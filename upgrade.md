@@ -49,6 +49,22 @@ The `firstWhere` method signature [has changed](https://github.com/laravel/frame
      */
     public function firstWhere($key, $operator = null, $value = null);
 
+### Console
+
+#### The `Kernel` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `terminate` method [has been added to the `Illuminate/Contracts/Console/Kernel` contract](https://github.com/laravel/framework/pull/26393). If you are implementing this interface, you should add this method to your implementation.
+
+### Container
+
+#### The `Container` Contract
+
+**Likelihood Of Impact: Very Low**
+
+[The `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26378) now extends the `ArrayAccess` contract. If you are implementing the `Container` interface, your implementation should now also satisfy the `ArrayAccess` contract.
+
 ### Database
 
 #### Unquoted MySQL JSON Values
@@ -74,6 +90,21 @@ As a result, the `->>` operator is no longer supported or necessary.
 **Likelihood Of Impact: Medium**
 
 As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/laravel/framework/pull/25995) is SQLite 3.7.11. If you are using an older SQLite version, you should update it (SQLite 3.8.8+ is recommended).
+
+### Eloquent
+
+#### The `originalIsEquivalent` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `originalIsEquivalent` method of the `Illuminate\Database\Eloquent\Concerns\HasAttributes` trait [has been changed](https://github.com/laravel/framework/pull/26391) from `protected` to `public`.
+
+### Events
+
+#### The `fire` Method
+
+The `fire` method (which was deprecated in Laravel 5.4) of the `Illuminate/Events/Dispatcher` class [has been removed](https://github.com/laravel/framework/pull/26392).
+Use the `dispatch` method instead.
 
 ### Exception Handling
 
