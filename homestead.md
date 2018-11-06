@@ -54,6 +54,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - PHP 7.1
 - PHP 7.0
 - PHP 5.6
+- XDebug
 - Nginx
 - Apache (Optional)
 - MySQL
@@ -65,7 +66,19 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Redis
 - Memcached
 - Beanstalkd
+- Ngrok
+- Flyway
+- Wordpress CLI
+- Laravel Envoy
+- Laravel & Lumen installer
+- Laravel Spark
+- Blackfire
 - Mailhog
+- Heroku CLI
+- Drush
+- Oh my zsh
+- .NET Core
+- Crystal (With Lucky framework)
 - Neo4j (Optional)
 - MongoDB (Optional)
 - Elasticsearch (Optional)
@@ -74,6 +87,8 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Zend Z-Ray
 - Go
 - Minio
+- Ruby & RVM
+- Rails
 </div>
 
 <a name="installation-and-setup"></a>
