@@ -160,6 +160,10 @@ For the remainder of this documentation, we'll discuss each method available on 
 [unwrap](#method-unwrap)
 [values](#method-values)
 [when](#method-when)
+[whenEmpty](#method-whenempty)
+[whenNotEmpty](#method-whennotempty)
+[unlessEmpty](#method-unlessempty)
+[unlessNotEmpty](#method-unlessnotempty)
 [where](#method-where)
 [whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
@@ -1984,6 +1988,170 @@ The `when` method will execute the given callback when the first argument given 
     // [1, 2, 3, 4]
 
 For the inverse of `when`, see the [`unless`](#method-unless) method.
+
+<a name="method-whenempty"></a>
+#### `whenEmpty()` {#collection-method}
+
+The `whenEmpty` method will execute the given callback when the first argument given to the method evaluates to `true`:
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->whenEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom']
+        
+    
+    $collection = collect();
+
+    $collection->whenEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['adam']  
+    
+    
+    $collection = collect(['michael', 'tom']);
+    
+    $collection->whenEmpty(function($collection) {
+        return $collection->push('adam');
+    }, function($collection) {
+        return $collection->push('taylor');
+    });
+
+    $collection->all();
+    
+    // ['michael', 'tom', 'taylor']
+
+For the inverse of `whenEmpty`, see the [`unlessEmpty`](#method-unlessempty) method.
+
+<a name="method-whennotempty"></a>
+#### `whenNotEmpty()` {#collection-method}
+
+The `whenNotEmpty` method will execute the given callback when the first argument given to the method evaluates to `true`:
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->whenNotEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom', 'adam']
+        
+    
+    $collection = collect();
+
+    $collection->whenNotEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // []  
+    
+    
+    $collection = collect(['michael', 'tom']);
+    
+    $collection->whenNotEmpty(function($collection) {
+        return $collection->push('adam');
+    }, function($collection) {
+        return $collection->push('taylor');
+    });
+
+    $collection->all();
+    
+    // ['michael', 'tom', 'adam']
+
+For the inverse of `whenNotEmpty`, see the [`unlessNotEmpty`](#method-unlessnotempty) method.
+
+<a name="method-unlessempty"></a>
+#### `unlessEmpty()` {#collection-method}
+
+The `unlessEmpty` method will execute the given callback when the first argument given to the method evaluates to `true`:
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->unlessEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom', 'adam']
+        
+    
+    $collection = collect();
+
+    $collection->unlessEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // []
+    
+    
+    $collection = collect(['michael', 'tom']);
+    
+    $collection->unlessEmptyEmpty(function($collection) {
+        return $collection->push('adam');
+    }, function($collection) {
+        return $collection->push('taylor');
+    });
+
+    $collection->all();
+    
+    // ['michael', 'tom', 'adam']
+
+For the inverse of `unlessEmpty`, see the [`whenEmpty`](#method-whenempty) method.
+
+<a name="method-unlessnotempty"></a>
+#### `unlessNotEmpty()` {#collection-method}
+
+The `unlessNotEmpty` method will execute the given callback when the first argument given to the method evaluates to `true`:
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->whenNotEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom']
+        
+    
+    $collection = collect();
+
+    $collection->whenNotEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['adam']
+    
+    
+    $collection = collect(['michael', 'tom']);
+    
+    $collection->whenNotEmpty(function($collection) {
+        return $collection->push('adam');
+    }, function($collection) {
+        return $collection->push('taylor');
+    });
+
+    $collection->all();
+    
+    // ['michael', 'tom', 'taylor']
+
+For the inverse of `unlessNotEmpty`, see the [`whenNotEmpty`](#method-whennotempty) method.
 
 <a name="method-where"></a>
 #### `where()` {#collection-method}
