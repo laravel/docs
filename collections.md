@@ -1455,6 +1455,8 @@ The `reverse` method reverses the order of the collection's items, preserving th
         ]
     */
 
+The returned reversed collection will preserve keys by default. If you do not wish to preserve the original keys, you can use the [`values`](#method-values) method to reindex them.
+
 <a name="method-search"></a>
 #### `search()` {#collection-method}
 
