@@ -280,7 +280,7 @@ Sometimes you may want to `vagrant up` your Homestead machine from anywhere on y
         ( cd ~/Homestead && vagrant $* )
     }
 
-Make sure to tweak the `~/Homestead` path in the function to the location of your actual Homestead installation. Once the function is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
+Make sure to tweak the `~/Homestead` path in the function to the location of your actual Homestead installation. Once the function is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system. Run this function also if your are using a porting of bash on Windows.
 
 #### Windows
 
