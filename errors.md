@@ -21,6 +21,13 @@ The `debug` option in your `config/app.php` configuration file determines how mu
 
 For local development, you should set the `APP_DEBUG` environment variable to `true`. In your production environment, this value should always be `false`. If the value is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.
 
+<a name="defining-exception"></a>
+## Defining Exception
+
+To create a new exception, use the `make:exception` Artisan command:
+
+    php artisan make:exception SomeThingNotAllowed
+
 <a name="the-exception-handler"></a>
 ## The Exception Handler
 
