@@ -15,14 +15,6 @@ Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` fi
 
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
 
-### Middlewares
-
-#### The `StartSession` middleware
-
-**Likelihood Of Impact: Very Low**
-
-The session persistance logic [has been moved from the `terminate()` method to the `handle()` method](https://github.com/laravel/framework/pull/26410). If you are overriding one or both of these methods, you should update them.
-
 ### The `Application` Contract
 
 #### The `environment` Method
@@ -151,6 +143,14 @@ The `getFacadeAccessor` method may now [only return the string value representin
 **Likelihood Of Impact: Very Low**
 
 The `previous` method [has been added to the `Illuminate\Contracts\Routing\UrlGenerator` contract](https://github.com/laravel/framework/pull/25616). If you are implementing this interface, you should add this method to your implementation.
+
+### Sessions
+
+#### The `StartSession` Middleware
+
+**Likelihood Of Impact: Very Low**
+
+The session persistence logic has been [moved from the `terminate()` method to the `handle()` method](https://github.com/laravel/framework/pull/26410). If you are overriding one or both of these methods, you should update them to reflect these changes.
 
 ### Miscellaneous
 
