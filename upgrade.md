@@ -136,6 +136,31 @@ The `renderHttpException` method signature of the `Illuminate\Foundation\Excepti
 
 The `getFacadeAccessor` method may now [only return the string value representing the container identifier of the service](https://github.com/laravel/framework/pull/25525). Previously, this method may have returned an object instance.
 
+### Requests
+
+#### The `TransformsRequest` Middleware
+
+**Likelihood Of Impact: Low**
+
+The `transform` method of the `Illuminate\Foundation\Http\Middleware\TransformsRequest` middleware now receives the "fully-qualified" request input key when the input is an array:
+
+    'employee' => [
+        'name' => 'Taylor Otwell',
+    ],
+
+    /**
+     * Transform the given value.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return mixed
+     */
+    protected function transform($key, $value)
+    {
+        dump($key); // 'employee.name' (Laravel 5.8)
+        dump($key); // 'name' (Laravel 5.7)
+    }
+
 ### Routing
 
 #### The `UrlGenerator` Contract
