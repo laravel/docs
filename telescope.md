@@ -3,7 +3,8 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Configuration](#configuration)
-    - [Dashboard Authorization](#dashboard-authorization)
+    - [Data Pruning](#data-pruning)
+- [Dashboard Authorization](#dashboard-authorization)
 
 <a name="introduction"></a>
 ## Introduction
@@ -64,8 +65,15 @@ If desired, you may disable Telescope's data collection entirely using the `enab
 
     'enabled' => env('TELESCOPE_ENABLED', true),
 
+<a name="data-pruning"></a>
+### Data Pruning
+
+Without pruning, the `telescope_entries` table can accumulate records very quickly. To mitigate this, you should schedule the `telescope:prune` Artisan command to run daily:
+
+    $schedule->command('telescope:prune')->daily();
+
 <a name="dashboard-authorization"></a>
-### Dashboard Authorization
+## Dashboard Authorization
 
 Telescope exposes a dashboard at `/telescope`. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is a `gate` method. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
 
