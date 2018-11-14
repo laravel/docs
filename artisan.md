@@ -365,6 +365,8 @@ For long running tasks, it could be helpful to show a progress indicator. Using 
     $users = App\User::all();
 
     $bar = $this->output->createProgressBar(count($users));
+    
+    $bar->start();
 
     foreach ($users as $user) {
         $this->performTask($user);
