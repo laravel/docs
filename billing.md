@@ -346,7 +346,7 @@ When changing the hard-coded value returned by the `taxPercentage` method, the t
 
 > {note} Modifying the subscription anchor date is only supported by the Stripe edition of Cashier.
 
-By default. the billing cycle anchor will is the date the subscription was created, or if a trial period is used, the date that the trial ends. If you would like to modify the billing anchor date, you may use the `anchorBillingCycleOn` method:
+By default, the billing cycle anchor is the date the subscription was created, or if a trial period is used, the date that the trial ends. If you would like to modify the billing anchor date, you may use the `anchorBillingCycleOn` method:
 
     use App\User;
     use Carbon\Carbon;
