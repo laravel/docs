@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Configuration](#configuration)
-    - [Dashboard Authentication](#dashboard-authentication)
+    - [Dashboard Authorization](#dashboard-authorization)
 - [Running Horizon](#running-horizon)
     - [Deploying Horizon](#deploying-horizon)
 - [Tags](#tags)
@@ -56,8 +56,8 @@ The `horizon` configuration file allows you to configure how long recent and fai
         'failed' => 10080,
     ],
 
-<a name="dashboard-authentication"></a>
-### Dashboard Authentication
+<a name="dashboard-authorization"></a>
+### Dashboard Authorization
 
 Horizon exposes a dashboard at `/horizon`. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/HorizonServiceProvider.php` file, there is a `gate` method. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
 
