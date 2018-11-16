@@ -72,7 +72,7 @@ Without pruning, the `telescope_entries` table can accumulate records very quick
 
     $schedule->command('telescope:prune')->daily();
 
-By default, all entries older than 24 hours will be pruned.  If you would like to alter the age before pruning, you may add an `age` option to define the age of an entry before.  The following command will prune records older than 48 hours:
+By default, all entries older than 24 hours will be pruned.  If you would like to alter the age before pruning, you may add an `age` option to define the required age of an entry.  The following command will prune records older than 48 hours:
 
     $schedule->command('telescope:prune --age=48')->daily();
 
