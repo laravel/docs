@@ -292,6 +292,23 @@ You may customize the error messages used by the form request by overriding the 
         ];
     }
 
+<a name="customizing-attributes"></a>
+### Customizing The Validation Attributes
+
+You may customize the validation attributes used by the form request by overriding the `attributes` method. This method should return an array of attribute / name pairs:
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'email' => 'email address',
+        ];
+    }
+
 <a name="manually-creating-validators"></a>
 ## Manually Creating Validators
 
