@@ -465,19 +465,27 @@ If you would like the `:attribute` portion of your validation message to be repl
 
 #### Specifying Custom Values In Language Files
 
-Sometimes you may wish the `:value` portion of your validation message to be replaced with a custom name. For example consider having the rule below
+Sometimes you may need the `:value` portion of your validation message to be replaced with a custom representation of the value. For example, consider the following rule that specifies that a credit card number is required if the `payment_type` has a value of `cc`:
 
     $request->validate([
-        'credit_card_no' => 'required_if:payment_type,cc'
+        'card_card_number' => 'required_if:payment_type,cc'
     ]);
 
-you may specify a custom name for `cc` value in the `values` array of your `resources/lang/xx/validation.php` language file:
+If this validation rule fails, it will produce the following error message:
+
+    The credit card number field is required when payment type is cc.
+
+Instead of displaying `cc` as the payment type value, you may specify a custom value representation in your `validation` language file by defining a `values` array:
 
     'values' => [
-        'credit_card_no' => [
+        'payment_type' => [
             'cc' => 'credit card'
         ],
     ],
+
+Now if the validation rule fails it will produce the following message:
+
+    The credit card number field is required when payment type is credit card.
 
 <a name="available-validation-rules"></a>
 ## Available Validation Rules
