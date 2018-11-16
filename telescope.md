@@ -28,7 +28,7 @@ After installing Telescope, publish its assets using the `telescope:install` Art
 
     php artisan telescope:install
 
-    php artisan migrate
+    php artisan telescope:migrate
 
 #### Updating Telescope
 
