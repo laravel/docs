@@ -11,6 +11,7 @@
     - [Creating Form Requests](#creating-form-requests)
     - [Authorizing Form Requests](#authorizing-form-requests)
     - [Customizing The Error Messages](#customizing-the-error-messages)
+    - [Customizing The Validation Attributes](#customizing-the-validation-attributes)
 - [Manually Creating Validators](#manually-creating-validators)
     - [Automatic Redirection](#automatic-redirection)
     - [Named Error Bags](#named-error-bags)
@@ -292,10 +293,10 @@ You may customize the error messages used by the form request by overriding the 
         ];
     }
 
-<a name="customizing-attributes"></a>
+<a name="customizing-the-validation-attributes"></a>
 ### Customizing The Validation Attributes
 
-You may customize the validation attributes used by the form request by overriding the `attributes` method. This method should return an array of attribute / name pairs:
+If you would like the `:attribute` portion of your validation message to be replaced with a custom attribute name, you may specify the custom names by overriding the `attributes` method. This method should return an array of attribute / name pairs:
 
     /**
      * Get custom attributes for validator errors.
