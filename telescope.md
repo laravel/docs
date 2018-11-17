@@ -20,6 +20,12 @@ Laravel Telescope is an elegant debug assistant for the Laravel framework. Teles
 
 > {note} Telescope requires Laravel 5.7.7+.
 
+in addition to laravel requirements you will need to make sure your server meets the following requirement:
+
+    bcmath PHP Extension
+
+
+
 You may use Composer to install Telescope into your Laravel project:
 
     composer require laravel/telescope
