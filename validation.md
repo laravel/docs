@@ -486,7 +486,7 @@ If you would like the `:attribute` portion of your validation message to be repl
 Sometimes you may need the `:value` portion of your validation message to be replaced with a custom representation of the value. For example, consider the following rule that specifies that a credit card number is required if the `payment_type` has a value of `cc`:
 
     $request->validate([
-        'card_card_number' => 'required_if:payment_type,cc'
+        'credit_card_number' => 'required_if:payment_type,cc'
     ]);
 
 If this validation rule fails, it will produce the following error message:
