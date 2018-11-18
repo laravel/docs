@@ -158,6 +158,10 @@ Using a few simple methods, you may access all of the user input from your `Illu
 You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:
 
     $name = $request->input('name', 'Sally');
+    
+You may call the `input` method without any arguments in order to retrieve all of the requested input string values as an associative array:
+
+    $input = $request->input();
 
 When working with forms that contain array inputs, use "dot" notation to access the arrays:
 
