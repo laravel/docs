@@ -67,6 +67,18 @@ You will often be generating URLs using the primary key of [Eloquent models](/do
 
     echo route('post.show', ['post' => $post]);
 
+You may also use the `route` helper in nested controllers which will need more than one parameter value. Assume the following route definition:
+
+    Route::get('/post/{post}/comment/{comment}', function () {
+        //
+    })->name('comment.show');
+
+The `route` helper is called as the following to generate a URL with multiple parameters:
+
+    echo route('comment.show', ['post' => 1, 'comment' => 3]);
+
+    // http://example.com/post/1/comment/3
+
 <a name="signed-urls"></a>
 ### Signed URLs
 
