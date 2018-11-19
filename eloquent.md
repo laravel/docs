@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Defining Models](#defining-models)
     - [Eloquent Model Conventions](#eloquent-model-conventions)
+    - [Default Attribute Values](#default-attribute-values)
 - [Retrieving Models](#retrieving-models)
     - [Collections](#collections)
     - [Chunking Results](#chunking-results)
@@ -155,16 +156,17 @@ By default, all Eloquent models will use the default database connection configu
         protected $connection = 'connection-name';
     }
 
-### Defining Default Values Of Attributes
+<a name="default-attribute-values"></a>
+### Default Attribute Values
 
-If you need to define the default values of attributes, set the `$attributes` property on your model.
+If you would like to define the default values for some of your model's attributes, you may define an `$attributes` property on your model:
 
     <?php
-    
+
     namespace App;
 
     use Illuminate\Database\Eloquent\Model;
-    
+
     class Flight extends Model
     {
         /**
@@ -173,7 +175,7 @@ If you need to define the default values of attributes, set the `$attributes` pr
          * @var array
          */
         protected $attributes = [
-            'name' => 'default-value',
+            'delayed' => false,
         ];
     }
 
