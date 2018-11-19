@@ -357,7 +357,7 @@ When defining the `UserRole` model, we will extend the `Pivot` class:
         //
     }
 
-If you want to both use an intermediate table model and retrieve intermediate table columns at the same time (for example, to avoid extra database calls), you need to supply both.  The `using` method on its own does not imply `withPivot`.  Extending our example, and assuming you want to also retrieve the `created_by` and `updated_by` columns on the `UserRole` pivot model:
+Of course, you can combine `using` and `withPivot` in order to retrieve columns from the intermediate table. For example, you may retrieve the `created_by` and `updated_by` columns from the `UserRole` pivot table by passing the column names to the `withPivot` method:
 
     <?php
 
@@ -372,7 +372,12 @@ If you want to both use an intermediate table model and retrieve intermediate ta
          */
         public function users()
         {
-            return $this->belongsToMany('App\User')->using('App\UserRole')->withPivot(['created_by', 'updated_by']);
+            return $this->belongsToMany('App\User')
+                            ->using('App\UserRole')
+                            ->withPivot([
+                                'created_by',
+                                'updated_by'
+                            ]);
         }
     }
 
