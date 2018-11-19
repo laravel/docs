@@ -155,6 +155,28 @@ By default, all Eloquent models will use the default database connection configu
         protected $connection = 'connection-name';
     }
 
+### Defining Default Values Of Attributes
+
+If you need to define the default values of attributes, set the `$attributes` property on your model.
+
+    <?php
+    
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+    
+    class Flight extends Model
+    {
+        /**
+         * The model's default values for attributes.
+         *
+         * @var array
+         */
+        protected $attributes = [
+            'name' => 'default-value',
+        ];
+    }
+
 <a name="retrieving-models"></a>
 ## Retrieving Models
 
