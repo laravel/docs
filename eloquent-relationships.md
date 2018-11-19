@@ -357,6 +357,25 @@ When defining the `UserRole` model, we will extend the `Pivot` class:
         //
     }
 
+If you want to both use an intermediate table model and retrieve intermediate table columns at the same time (for example, to avoid extra database calls), you need to supply both.  The `using` method on its own does not imply `withPivot`.  Extending our example, and assuming you want to also retrieve the `created_by` and `updated_by` columns on the `UserRole` pivot model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Role extends Model
+    {
+        /**
+         * The users that belong to the role.
+         */
+        public function users()
+        {
+            return $this->belongsToMany('App\User')->using('App\UserRole')->withPivot(['created_by', 'updated_by']);
+        }
+    }
+
 <a name="has-many-through"></a>
 ### Has Many Through
 
