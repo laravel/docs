@@ -159,6 +159,10 @@ You may pass a default value as the second argument to the `input` method. This 
 
     $name = $request->input('name', 'Sally');
 
+You may call the `input` method without any arguments in order to retrieve all of the user input values as an associative array:
+
+    $input = $request->input();
+
 When working with forms that contain array inputs, use "dot" notation to access the arrays:
 
     $name = $request->input('products.0.name');
