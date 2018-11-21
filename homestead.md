@@ -549,7 +549,7 @@ When customizing Homestead, Ubuntu may ask you if you would like to keep a packa
 
     sudo apt-get -y \
         -o Dpkg::Options::="--force-confdef" \
-        -o pkg::Options::="--force-confold" \
+        -o Dpkg::Options::="--force-confold" \
         install your-package
 
 <a name="updating-homestead"></a>
