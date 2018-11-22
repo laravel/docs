@@ -156,7 +156,7 @@ If you would like to create an on-demand logging stack consisting of multiple ch
 <a name="customizing-monolog-for-channels"></a>
 ### Customizing Monolog For Channels
 
-Sometimes you may need complete control over how Monolog is configured for an existing channel. For example, you may want to configure a custom Monolog `FormatterInterface` implementation for a given channel's handlers.
+Sometimes you may need complete control over how Monolog is configured for an existing channel. For example, you may want to configure a custom Monolog `FormatterInterface` implementation for given channel's handlers.
 
 To get started, define a `tap` array on the channel's configuration. The `tap` array should contain a list of classes that should have an opportunity to customize (or "tap" into) the Monolog instance after it is created:
 
