@@ -8,6 +8,7 @@
     - [Many To Many](#many-to-many)
     - [Has Many Through](#has-many-through)
     - [Polymorphic Relations](#polymorphic-relations)
+    - [One To One Polymorphic Relations](#one-to-one-polymorphic-relations)
     - [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
 - [Querying Relations](#querying-relations)
     - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
@@ -34,6 +35,7 @@ Database tables are often related to one another. For example, a blog post may h
 - [Many To Many](#many-to-many)
 - [Has Many Through](#has-many-through)
 - [Polymorphic Relations](#polymorphic-relations)
+- [One To One Polymorphic Relations](#one-to-one-polymorphic-relations)
 - [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
 
 <a name="defining-relationships"></a>
@@ -538,6 +540,86 @@ By default, Laravel will use the fully qualified class name to store the type of
     ]);
 
 You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
+
+<a name="one-to-one-polymorphic-relations"></a>
+### One To One Polymorphic Relations
+
+#### Table Structure
+
+Besides the traditional polymorphic relations, you may also define "one-to-one" polymorphic relations. For example, a blog `Post` and `Video` would share a polymorphic relation to a `Category` model. Using a one-to-one polymorphic relation allows you to have a single list of unique categories that are shared across blog posts and videos. First, let's examine the table structure:
+
+    posts
+        id - integer
+        name - string
+
+    videos
+        id - integer
+        name - string
+
+    categories
+        id - integer
+        name - string
+        categorizable_id - integer
+        categorizable_type - string
+
+#### Model Structure
+
+Next, let's examine the model definitions needed to build this relationship:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Category extends Model
+    {
+        /**
+         * Get all of the owning categorizable models.
+         */
+        public function categorizable()
+        {
+            return $this->morphTo();
+        }
+    }
+
+    class Post extends Model
+    {
+        /**
+         * Get the post's category.
+         */
+        public function category()
+        {
+            return $this->morphOne('App\Category', 'categorizable');
+        }
+    }
+
+    class Video extends Model
+    {
+        /**
+         * Get the video's category.
+         */
+        public function category()
+        {
+            return $this->morphOne('App\Category', 'categorizable');
+        }
+    }
+
+#### Retrieving The Relationship
+
+Once your database table and models are defined, you may access the relationships via your models. For example, to access the category for a post, we can use the `category` dynamic property:
+
+    $post = App\Post::find(1);
+
+    $category = $post->category;
+
+You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `categorizable` method on the `Category` model. So, we will access that method as a dynamic property:
+
+    $category = App\Category::find(1);
+
+    $categorizable = $category->categorizable;
+
+The `categorizable` relation on the `Category` model will return either a `Post` or `Video` instance, depending on which type of model owns the category.
 
 <a name="many-to-many-polymorphic-relations"></a>
 ### Many To Many Polymorphic Relations
