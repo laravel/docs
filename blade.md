@@ -175,7 +175,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 
 #### Displaying Unescaped Data
 
-By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
+If you do not want your data to be escaped, you may use the following syntax:
 
     Hello, {!! $name !!}.
 
