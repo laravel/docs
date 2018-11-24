@@ -344,10 +344,23 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
 ## Fallback Routes
 
 Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. Of course, you are free to add additional middleware to this route as needed:
-
+    
+    Route::group(['prefix' => 'dashboard'], function(){
+      // your routes here
+      Route::fallback('DashboardController@notFound');
+    });
+    
+    Route::fallback('HomeController@notFound');
+    
     Route::fallback(function () {
         //
     });
+
+Routes created with `Route::fallback` method will have an automatic placeholder that captures everything. This can have unintended side effects if your static assets fall under a fallback route. Anything that is rendered through the application itself will have the URL added as a previous URL, which can lead to uninteded redirects. To exclude certain URL paths from being rendered with a fallback route you can declare it yourself, exclude the paths from being a match and mark it as a fallback:
+    
+    Route::get('{placeholder}', 'HomeController@notFound')->where('placeholder', '(?!js|css|images|fonts).*')->name('not.found')->fallback();
+    
+Note that by default fallback routes are treated as any other route - they will be returning a HTTP status 200. If you wish to use it as a custom 404 handler as it has access to sessions, cookies etc be sure to retun 404 yourself with your response.
 
 <a name="rate-limiting"></a>
 ## Rate Limiting
