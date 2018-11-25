@@ -382,7 +382,7 @@ However, you may also define the maximum number of seconds a job should be allow
 
 > {note} This feature requires that your application can interact with a [Redis server](/docs/{{version}}/redis).
 
-If your application interacts with Redis, you may throttle your queued jobs by time or concurrency. This feature can be of assistance when your queued jobs are interacting with APIs that are also rate limited. For example, using the `throttle` method, you may throttle a given type of job to only run 10 times every 60 seconds. If a lock can not be obtained, you should typically release the job back onto the queue so it can be retried later:
+If your application interacts with Redis, you may throttle your queued jobs by time or concurrency. This feature can be of assistance when your queued jobs are interacting with APIs that are also rate limited. For example, using the `throttle` method, you may throttle a given type of job to only run 10 times every 60 seconds. If a lock can not be obtained, you should typically release the job back onto the queue so it can be retried later. Releasing jobs back onto the queue counts toward the number of `attemps` of a job.
 
     Redis::throttle('key')->allow(10)->every(60)->then(function () {
         // Job logic...
