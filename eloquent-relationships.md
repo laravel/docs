@@ -36,9 +36,9 @@ Database tables are often related to one another. For example, a blog post may h
 - [One To Many](#one-to-many)
 - [Many To Many](#many-to-many)
 - [Has Many Through](#has-many-through)
-- [One To One Polymorphic Relations](#one-to-one-polymorphic-relations)
-- [One To Many Polymorphic Relations](#one-to-many-polymorphic-relations)
-- [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
+- [One To One (Polymorphic)](#one-to-one-polymorphic-relations)
+- [One To Many (Polymorphic)](#one-to-many-polymorphic-relations)
+- [Many To Many (Polymorphic)](#many-to-many-polymorphic-relations)
 
 <a name="defining-relationships"></a>
 ## Defining Relationships
@@ -445,7 +445,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
     }
 
 <a name="polymorphic-relationships"></a>
-### Polymorphic Relationships
+## Polymorphic Relationships
 
 A polymorphic relationship allows the target model to belong to more than one type of model using a single association.
 
