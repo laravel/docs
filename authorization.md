@@ -375,7 +375,7 @@ When authorizing resources through a resource controller you can make use of the
         }
     }
 
-This method will add the appropriate middleware which will map to same policy methods as your controller methods. The second parameter allows you to modify the argument name for the `can` middelware that will be bound but is not required. If it's not passed it'll be derived from the model name.
+This method will add the appropriate middleware which will map to same policy methods as your controller methods. The second parameter allows you to modify the argument name for the `can` middleware that will be bound but is not required. If it's not passed it'll be derived from the model name.
 
 The subsequential policy would look as follows:
 
