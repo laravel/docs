@@ -7,10 +7,10 @@
     - [One To Many (Inverse)](#one-to-many-inverse)
     - [Many To Many](#many-to-many)
     - [Has Many Through](#has-many-through)
-- [Polymorphic Relations](#polymorphic-relations)
-    - [One To One Polymorphic Relations](#one-to-one-polymorphic-relations)
-    - [One To Many Polymorphic Relations](#one-to-many-polymorphic-relations)
-    - [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
+- [Polymorphic Relationships](#polymorphic-relationships)
+    - [One To One](#one-to-one-polymorphic-relations)
+    - [One To Many](#one-to-many-polymorphic-relations)
+    - [Many To Many](#many-to-many-polymorphic-relations)
     - [Custom Polymorphic Types](#custom-polymorphic-types)
 - [Querying Relations](#querying-relations)
     - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
@@ -444,17 +444,17 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         }
     }
 
-<a name="polymorphic-relations"></a>
-### Polymorphic Relations
+<a name="polymorphic-relationships"></a>
+### Polymorphic Relationships
 
-Polymorphic relations allow a model to belong to more than one other model on a single association. They'll allow you to define relationships in a way that gives you maximum flexibility on your models while still maintaining a clean way of defining the relations.
+A polymorphic relationship allows the target model to belong to more than one type of model using a single association.
 
 <a name="one-to-one-polymorphic-relations"></a>
-### One To One Polymorphic Relations
+### One To One (Polymorphic)
 
 #### Table Structure
 
-A one-to-one polymorphic relation is the same as the basic Eloquent one-to-one relation but when the target model could belong to more than one other model on a single association. For example, a blog `Post` and a `User` would share a polymorphic relation to a `Image` model. Using a one-to-one polymorphic relation allows you to have a single list of unique images that are used across blog posts and users. First, let's examine the table structure:
+A one-to-one polymorphic relation is similar to a simple one-to-one relation; however, the target model can belong to more than one type of model on a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a one-to-one polymorphic relation allows you to have a single list of unique images that are used for both blog posts and user accounts. First, let's examine the table structure:
 
     posts
         id - integer
@@ -470,7 +470,7 @@ A one-to-one polymorphic relation is the same as the basic Eloquent one-to-one r
         imageable_id - integer
         imageable_type - string
 
-Two important columns to note are the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the owning model. The `imageable_type` column is how the ORM determines which "type" of owning model to return when accessing the `imageable` relation.
+Take note of the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Eloquent to determine which "type" of parent model to return when accessing the `imageable` relation.
 
 #### Model Structure
 
@@ -523,7 +523,7 @@ Once your database table and models are defined, you may access the relationship
 
     $image = $post->image;
 
-You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `imageable` method on the `Image` model. So, we will access that method as a dynamic property:
+You may also retrieve the parent from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `imageable` method on the `Image` model. So, we will access that method as a dynamic property:
 
     $image = App\Image::find(1);
 
@@ -532,11 +532,11 @@ You may also retrieve the owner of a polymorphic relation from the polymorphic m
 The `imageable` relation on the `Image` model will return either a `Post` or `User` instance, depending on which type of model owns the image.
 
 <a name="one-to-many-polymorphic-relations"></a>
-### One To Many Polymorphic Relations
+### One To Many (Polymorphic)
 
 #### Table Structure
 
-A one-to-one polymorphic relation is the same as the basic Eloquent one-to-many relation but when the target model could belong to more than one other model on a single association. For example, imagine users of your application can "comment" on both posts and videos. Using polymorphic relationships, you can use a single `comments` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
+A one-to-many polymorphic relation is similar to a simple one-to-many relation; however, the target model can belong to more than one type of model on a single association. For example, imagine users of your application can "comment" on both posts and videos. Using polymorphic relationships, you may use a single `comments` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
 
     posts
         id - integer
@@ -616,7 +616,7 @@ You may also retrieve the owner of a polymorphic relation from the polymorphic m
 The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model owns the comment.
 
 <a name="many-to-many-polymorphic-relations"></a>
-### Many To Many Polymorphic Relations
+### Many To Many (Polymorphic)
 
 #### Table Structure
 
@@ -710,7 +710,7 @@ You may also retrieve the owner of a polymorphic relation from the polymorphic m
 <a name="custom-polymorphic-types"></a>
 ### Custom Polymorphic Types
 
-By default, Laravel will use the fully qualified class name to store the type of the related model. For instance, given the one-to-many example above where a `Comment` may belong to a `Post` or a `Video`, the default `commentable_type` would be either `App\Post` or `App\Video`, respectively. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a relationship "morph map" to instruct Eloquent to use a custom name for each model instead of the class name:
+By default, Laravel will use the fully qualified class name to store the type of the related model. For instance, given the one-to-many example above where a `Comment` may belong to a `Post` or a `Video`, the default `commentable_type` would be either `App\Post` or `App\Video`, respectively. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a "morph map" to instruct Eloquent to use a custom name for each model instead of the class name:
 
     use Illuminate\Database\Eloquent\Relations\Relation;
 
