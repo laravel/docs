@@ -171,6 +171,8 @@ By default, the Laravel routing component allows all characters except `/`. You 
 
 Now when you submit a search with an encoded forward slash, it'll be decoded in the `$search` parameter.
 
+> {note} Please note that using encoded forward slashes is only possible for the last route segment.
+
 <a name="named-routes"></a>
 ## Named Routes
 
