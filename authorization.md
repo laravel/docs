@@ -355,60 +355,6 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
         }
     }
 
-#### Authorizing Resource Controllers
-
-When authorizing resources through a resource controller you can make use of the `authorizeResource` method in the controller's constructor. This will allow you to fully protect the resource controller methods with a single line of code. 
-
-    <?php
-
-    namespace App\Http\Controllers;
-
-    use App\Post;
-    use Illuminate\Http\Request;
-    use App\Http\Controllers\Controller;
-
-    class PostController extends Controller
-    {
-        public function __constructor()
-        {
-            $this->authorizeResource(Post::class, 'post');
-        }
-    }
-
-This method will add the appropriate middleware which will map to same policy methods as your controller methods. The second parameter allows you to modify the argument name for the `can` middleware that will be bound but is not required. If it's not passed it'll be derived from the model name.
-
-The subsequential policy would look as follows:
-
-    <?php
-
-    namespace App\Policies;
-
-    use App\User;
-    use App\Post;
-
-    class PostPolicy
-    {
-        public function view(User $user, Post $post)
-        {
-            // ...
-        }
-
-        public function create(User $user)
-        {
-            // ...
-        }
-
-        public function update(User $user, Post $post)
-        {
-            // ...
-        }
-
-        public function delete(User $user, Post $post)
-        {
-            // ...
-        }
-    }
-
 #### Actions That Don't Require Models
 
 As previously discussed, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the `authorize` method. The class name will be used to determine which policy to use when authorizing the action:
@@ -426,6 +372,30 @@ As previously discussed, some actions like `create` may not require a model inst
 
         // The current user can create blog posts...
     }
+
+#### Authorizing Resource Controllers
+
+If you are utilizing [resource controllers](/docs/{{version}}/controllers##resource-controllers), you may make use of the `authorizeResource` method in the controller's constructor. This method will attach the appropriate `can` middleware definition to the resource controller's methods.
+
+The `authorizeResource` method accepts the model's class name as its first argument, and the name of the route / request parameter that will contain the model's ID as its second argument:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Post;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
+
+    class PostController extends Controller
+    {
+        public function __constructor()
+        {
+            $this->authorizeResource(Post::class, 'post');
+        }
+    }
+
+> {tip} You may use the `policy:make` command with the `--model` option to quickly generate a policy class for a given model: `php artisan policy:make --model=Post`.
 
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
