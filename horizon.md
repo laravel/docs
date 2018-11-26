@@ -34,9 +34,10 @@ After installing Horizon, publish its assets using the `horizon:install` Artisan
 
     php artisan horizon:install
 
-You may also want to install the `failed_jobs` table which Laravel will use to store any [failed jobs](/docs/{{version}}/queues#dealing-with-failed-jobs):
+You should also create the `failed_jobs` table which Laravel will use to store any [failed queue jobs](/docs/{{version}}/queues#dealing-with-failed-jobs):
 
     php artisan queue:failed-table
+
     php artisan migrate
 
 <a name="configuration"></a>
