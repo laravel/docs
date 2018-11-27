@@ -163,15 +163,13 @@ Once the pattern has been defined, it is automatically applied to all routes usi
 <a name="parameters-encoded-forward-slashes"></a>
 #### Encoded Forward Slashes
 
-By default, the Laravel routing component allows all characters except `/`. You must explicitly allow `/` to be part of your placeholder by specifying it with a `where` condition:
+The Laravel routing component allows all characters except `/`. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
 
     Route::get('search/{search}', function ($search) {
         return $search;
     })->where('search', '.*');
 
-Now when you submit a search with an encoded forward slash, it'll be decoded in the `$search` parameter.
-
-> {note} Please note that using encoded forward slashes is only possible for the last route segment.
+> {note} Encoded forward slashes are only supported within the last route segment.
 
 <a name="named-routes"></a>
 ## Named Routes
