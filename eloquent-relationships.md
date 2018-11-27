@@ -845,6 +845,14 @@ You may also alias the relationship count result, allowing multiple counts on th
 
     echo $posts[0]->pending_comments_count;
 
+When combining `withCount` with a `select` statement it's important to use `withCount` after the `select` call:
+
+    $query = App\Post::select(['title', 'body'])->withCount('comments');
+
+    echo $posts[0]->title;
+    echo $posts[0]->body;
+    echo $posts[0]->comments_count;
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
