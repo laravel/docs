@@ -66,7 +66,7 @@ If you had test failures the last time you ran the `dusk` command, you may save 
 
     php artisan dusk:fails
 
-> {note} It's important that the chromedriver binaries can by run so if you're experiencing issues with running Dusk make sure you make the binaries executable by running `chmod -R 0755 vendor/laravel/dusk/bin`.
+> {note} Dusk requires its `chromedriver` binaries to be executable. If you're having problems running Dusk, you can ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin`.
 
 <a name="using-other-browsers"></a>
 ### Using Other Browsers
