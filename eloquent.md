@@ -221,6 +221,34 @@ The `refresh` method will re-hydrate the existing model using fresh data from th
 
     $flight->number; // "FR 900"
 
+#### Replicating Models
+
+You can replicate models using the `replicate` method. The `replicate` method will return a new instance of an unsaved model. The existing model instance will not be affected:
+
+    $flight = App\Flight::first();
+
+    $flight->id; // 1
+    $flight->plane; // "Concorde"
+
+    $replicatedFlight = $flight->replicate();
+    $replicatedFlight->save();
+
+    $replicatedFlight->id; // 2
+    $replicatedFlight->plane; // "Concorde"
+
+You can ignore certain attributes which you don't want to replicate by passing an array of ignored attributes:
+
+    $flight = App\Flight::first();
+
+    $flight->plane; // "Concorde"
+
+    $replicatedFlight = $flight->replicate(['plane']);
+    $replicatedFlight->save();
+
+    $replicatedFlight->plane; // null
+
+> {note} When replicated models which have attributes set because of the `withCount` or `storedAs` properties, you'll have to unset these first before saving. Otherwise an exception will be thrown when the model is attempted to be saved as these attributes don't exist in your database table.
+
 <a name="collections"></a>
 ### Collections
 
