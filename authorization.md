@@ -120,11 +120,15 @@ Sometimes, you may wish to grant all abilities to a specific user. You may use t
 
 If the `before` callback returns a non-null result that result will be considered the result of the check.
 
-You may use the `after` method to define a callback to be executed after every authorization check. However, you may not modify the result of the authorization check from an `after` callback:
+You may use the `after` method to define a callback to be executed after all other authorization checks:
 
     Gate::after(function ($user, $ability, $result, $arguments) {
-        //
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
     });
+
+Similar to the `before` check, if the `after` callback returns a non-null result that result will be considered the result of the check.
 
 <a name="creating-policies"></a>
 ## Creating Policies
