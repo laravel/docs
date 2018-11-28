@@ -227,13 +227,10 @@ You can replicate models using the `replicate` method. The `replicate` method wi
 
     $flight = App\Flight::first();
 
-    $flight->id; // 1
     $flight->plane; // "Concorde"
 
     $replicatedFlight = $flight->replicate();
-    $replicatedFlight->save();
 
-    $replicatedFlight->id; // 2
     $replicatedFlight->plane; // "Concorde"
 
 You can ignore certain attributes which you don't want to replicate by passing an array of ignored attributes:
@@ -243,7 +240,6 @@ You can ignore certain attributes which you don't want to replicate by passing a
     $flight->plane; // "Concorde"
 
     $replicatedFlight = $flight->replicate(['plane']);
-    $replicatedFlight->save();
 
     $replicatedFlight->plane; // null
 
