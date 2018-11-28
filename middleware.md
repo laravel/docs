@@ -189,7 +189,7 @@ Middleware groups may be assigned to routes and controller actions using the sam
 <a name="sorting-middleware"></a>
 ### Sorting Middleware
 
-In some cases you'd want to run your middleware in a specific order. You can achieve this by ordering the middleware with the `$middlewarePriority` property of your HTTP kernel. This doesn't includes global middleware which is always run before other middlewares.
+In some cases you'd want to run your middleware in a specific order. You can achieve this by ordering the middleware with the `$middlewarePriority` property of your HTTP kernel. This doesn't include global middleware which is always run before other middleware.
 
     /**
      * The priority-sorted list of middleware.
