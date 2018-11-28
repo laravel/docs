@@ -845,7 +845,7 @@ You may also alias the relationship count result, allowing multiple counts on th
 
     echo $posts[0]->pending_comments_count;
 
-When combining `withCount` with a `select` statement it's important to use `withCount` after the `select` call:
+If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
 
     $query = App\Post::select(['title', 'body'])->withCount('comments');
 
