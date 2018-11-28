@@ -8,6 +8,7 @@
     - [Running Tests](#running-tests)
     - [Environment Handling](#environment-handling)
     - [Creating Browsers](#creating-browsers)
+    - [Browser Macros](#browser-macros)
     - [Authentication](#authentication)
     - [Database Migrations](#migrations)
 - [Interacting With Elements](#interacting-with-elements)
@@ -230,9 +231,10 @@ The `maximize` method may be used to maximize the browser window:
 
     $browser->maximize();
 
-#### Browser Macros
+<a name="browser-macros"></a>
+### Browser Macros
 
-If you would like to define a custom method that you can re-use in a variety of your tests, you may use the `macro` method on the `Browser` class. For example, from a [service provider's](/docs/{{version}}/providers) `boot` method:
+If you would like to define a custom browser method that you can re-use in a variety of your tests, you may use the `macro` method on the `Browser` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:
 
     <?php
 
@@ -258,7 +260,7 @@ If you would like to define a custom method that you can re-use in a variety of 
         }
     }
 
-The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `Browser` implementation:
+The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro as a method on a `Browser` implementation:
 
     $this->browse(function ($browser) use ($user) {
         $browser->visit('/pay')
