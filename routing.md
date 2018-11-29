@@ -77,15 +77,15 @@ Any HTML forms pointing to `POST`, `PUT`, or `DELETE` routes that are defined in
 If you are defining a route that redirects to another URI, you may use the `Route::redirect` method. This method provides a convenient shortcut so that you do not have to define a full route or controller for performing a simple redirect:
 
     Route::redirect('/here', '/there');
-    
+
 By default, `Route::redirect` returns a 302 status code. You may customize the status code using the optional third parameter:
-    
+
     Route::redirect('/here', '/there', 301);
-    
+
 or use the `Route::permananentRedirect` helper to return a 301 status code automatically:
-    
+
     Route::permanentRedirect('/here', '/there');
-    
+
 <a name="view-routes"></a>
 ### View Routes
 
