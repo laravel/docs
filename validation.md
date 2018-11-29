@@ -11,6 +11,7 @@
     - [Creating Form Requests](#creating-form-requests)
     - [Authorizing Form Requests](#authorizing-form-requests)
     - [Customizing The Error Messages](#customizing-the-error-messages)
+    - [Customizing The Validation Attributes](#customizing-the-validation-attributes)
 - [Manually Creating Validators](#manually-creating-validators)
     - [Automatic Redirection](#automatic-redirection)
     - [Named Error Bags](#named-error-bags)
@@ -292,6 +293,23 @@ You may customize the error messages used by the form request by overriding the 
         ];
     }
 
+<a name="customizing-the-validation-attributes"></a>
+### Customizing The Validation Attributes
+
+If you would like the `:attribute` portion of your validation message to be replaced with a custom attribute name, you may specify the custom names by overriding the `attributes` method. This method should return an array of attribute / name pairs:
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'email' => 'email address',
+        ];
+    }
+
 <a name="manually-creating-validators"></a>
 ## Manually Creating Validators
 
@@ -427,7 +445,7 @@ If needed, you may use custom error messages for validation instead of the defau
 
     $validator = Validator::make($input, $rules, $messages);
 
-In this example, the `:attribute` place-holder will be replaced by the actual name of the field under validation. You may also utilize other place-holders in validation messages. For example:
+In this example, the `:attribute` placeholder will be replaced by the actual name of the field under validation. You may also utilize other placeholders in validation messages. For example:
 
     $messages = [
         'same'    => 'The :attribute and :other must match.',
@@ -438,7 +456,7 @@ In this example, the `:attribute` place-holder will be replaced by the actual na
 
 #### Specifying A Custom Message For A Given Attribute
 
-Sometimes you may wish to specify a custom error messages only for a specific field. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule:
+Sometimes you may wish to specify a custom error message only for a specific field. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule:
 
     $messages = [
         'email.required' => 'We need to know your e-mail address!',
@@ -462,6 +480,30 @@ If you would like the `:attribute` portion of your validation message to be repl
     'attributes' => [
         'email' => 'email address',
     ],
+
+#### Specifying Custom Values In Language Files
+
+Sometimes you may need the `:value` portion of your validation message to be replaced with a custom representation of the value. For example, consider the following rule that specifies that a credit card number is required if the `payment_type` has a value of `cc`:
+
+    $request->validate([
+        'credit_card_number' => 'required_if:payment_type,cc'
+    ]);
+
+If this validation rule fails, it will produce the following error message:
+
+    The credit card number field is required when payment type is cc.
+
+Instead of displaying `cc` as the payment type value, you may specify a custom value representation in your `validation` language file by defining a `values` array:
+
+    'values' => [
+        'payment_type' => [
+            'cc' => 'credit card'
+        ],
+    ],
+
+Now if the validation rule fails it will produce the following message:
+
+    The credit card number field is required when payment type is credit card.
 
 <a name="available-validation-rules"></a>
 ## Available Validation Rules
@@ -536,6 +578,7 @@ Below is a list of all available validation rules and their function:
 [Required Without All](#rule-required-without-all)
 [Same](#rule-same)
 [Size](#rule-size)
+[Starts With](#rule-starts-with)
 [String](#rule-string)
 [Timezone](#rule-timezone)
 [Unique (Database)](#rule-unique)
@@ -928,6 +971,11 @@ The given _field_ must match the field under validation.
 
 The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For an array, _size_ corresponds to the `count` of the array. For files, _size_ corresponds to the file size in kilobytes.
 
+<a name="rule-starts-with"></a>
+#### starts_with:_foo_,_bar_,...
+
+The field under validation must start with one of the given values.
+
 <a name="rule-string"></a>
 #### string
 
@@ -1185,7 +1233,7 @@ You will also need to define an error message for your custom rule. You can do s
 
     // The rest of the validation error messages...
 
-When creating a custom validation rule, you may sometimes need to define custom place-holder replacements for error messages. You may do so by creating a custom Validator as described above then making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
+When creating a custom validation rule, you may sometimes need to define custom placeholder replacements for error messages. You may do so by creating a custom Validator as described above then making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
 
     /**
      * Bootstrap any application services.
@@ -1203,11 +1251,11 @@ When creating a custom validation rule, you may sometimes need to define custom 
 
 #### Implicit Extensions
 
-By default, when an attribute being validated is not present or contains an empty value as defined by the [`required`](#rule-required) rule, normal validation rules, including custom extensions, are not run. For example, the [`unique`](#rule-unique) rule will not be run against a `null` value:
+By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom extensions, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:
 
-    $rules = ['name' => 'unique'];
+    $rules = ['name' => 'unique:users,name'];
 
-    $input = ['name' => null];
+    $input = ['name' => ''];
 
     Validator::make($input, $rules)->passes(); // true
 

@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Configuration](#configuration)
-    - [Dashboard Authentication](#dashboard-authentication)
+    - [Dashboard Authorization](#dashboard-authorization)
 - [Running Horizon](#running-horizon)
     - [Deploying Horizon](#deploying-horizon)
 - [Tags](#tags)
@@ -17,6 +17,10 @@ Horizon provides a beautiful dashboard and code-driven configuration for your La
 
 All of your worker configuration is stored in a single, simple configuration file, allowing your configuration to stay in source control where your entire team can collaborate.
 
+<p align="center">
+<img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1537195039/photos/Test.png" width="600" height="481">
+</p>
+
 <a name="installation"></a>
 ## Installation
 
@@ -29,6 +33,12 @@ You may use Composer to install Horizon into your Laravel project:
 After installing Horizon, publish its assets using the `horizon:install` Artisan command:
 
     php artisan horizon:install
+
+You should also create the `failed_jobs` table which Laravel will use to store any [failed queue jobs](/docs/{{version}}/queues#dealing-with-failed-jobs):
+
+    php artisan queue:failed-table
+
+    php artisan migrate
 
 <a name="configuration"></a>
 ### Configuration
@@ -52,8 +62,8 @@ The `horizon` configuration file allows you to configure how long recent and fai
         'failed' => 10080,
     ],
 
-<a name="dashboard-authentication"></a>
-### Dashboard Authentication
+<a name="dashboard-authorization"></a>
+### Dashboard Authorization
 
 Horizon exposes a dashboard at `/horizon`. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/HorizonServiceProvider.php` file, there is a `gate` method. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
 

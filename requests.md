@@ -165,6 +165,10 @@ When working with forms that contain array inputs, use "dot" notation to access 
 
     $names = $request->input('products.*.name');
 
+You may call the `input` method without any arguments in order to retrieve all of the input values as an associative array:
+
+    $input = $request->input();
+
 #### Retrieving Input From The Query String
 
 While the `input` method retrieves values from entire request payload (including the query string), the `query` method will only retrieve values from the query string:

@@ -380,7 +380,7 @@ Embedding inline images into your emails is typically cumbersome; however, Larav
     <body>
         Here is an image:
 
-        <img src="{{ $message->embed($pathToFile) }}">
+        <img src="{{ $message->embed($pathToImage) }}">
     </body>
 
 > {note} `$message` variable is not available in markdown messages.

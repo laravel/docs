@@ -298,7 +298,7 @@ The `version` method will automatically append a unique hash to the filenames of
 
 After generating the versioned file, you won't know the exact file name. So, you should use Laravel's global `mix` function within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `mix` function will automatically determine the current name of the hashed file:
 
-    <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+    <script src="{{ mix('/js/app.js') }}"></script>
 
 Because versioned files are usually unnecessary in development, you may instruct the versioning process to only run during `npm run production`:
 

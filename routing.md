@@ -160,6 +160,17 @@ Once the pattern has been defined, it is automatically applied to all routes usi
         // Only executed if {id} is numeric...
     });
 
+<a name="parameters-encoded-forward-slashes"></a>
+#### Encoded Forward Slashes
+
+The Laravel routing component allows all characters except `/`. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
+
+    Route::get('search/{search}', function ($search) {
+        return $search;
+    })->where('search', '.*');
+
+> {note} Encoded forward slashes are only supported within the last route segment.
+
 <a name="named-routes"></a>
 ## Named Routes
 
@@ -348,6 +359,8 @@ Using the `Route::fallback` method, you may define a route that will be executed
     Route::fallback(function () {
         //
     });
+
+> {note} The fallback route should always be the last route registered by your application.
 
 <a name="rate-limiting"></a>
 ## Rate Limiting

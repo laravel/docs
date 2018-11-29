@@ -120,11 +120,15 @@ Sometimes, you may wish to grant all abilities to a specific user. You may use t
 
 If the `before` callback returns a non-null result that result will be considered the result of the check.
 
-You may use the `after` method to define a callback to be executed after every authorization check. However, you may not modify the result of the authorization check from an `after` callback:
+You may use the `after` method to define a callback to be executed after all other authorization checks:
 
     Gate::after(function ($user, $ability, $result, $arguments) {
-        //
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
     });
+
+Similar to the `before` check, if the `after` callback returns a non-null result that result will be considered the result of the check.
 
 <a name="creating-policies"></a>
 ## Creating Policies
@@ -372,6 +376,30 @@ As previously discussed, some actions like `create` may not require a model inst
 
         // The current user can create blog posts...
     }
+
+#### Authorizing Resource Controllers
+
+If you are utilizing [resource controllers](/docs/{{version}}/controllers##resource-controllers), you may make use of the `authorizeResource` method in the controller's constructor. This method will attach the appropriate `can` middleware definition to the resource controller's methods.
+
+The `authorizeResource` method accepts the model's class name as its first argument, and the name of the route / request parameter that will contain the model's ID as its second argument:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Post;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
+
+    class PostController extends Controller
+    {
+        public function __constructor()
+        {
+            $this->authorizeResource(Post::class, 'post');
+        }
+    }
+
+> {tip} You may use the `policy:make` command with the `--model` option to quickly generate a policy class for a given model: `php artisan policy:make --model=Post`.
 
 <a name="via-blade-templates"></a>
 ### Via Blade Templates

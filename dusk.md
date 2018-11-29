@@ -8,6 +8,7 @@
     - [Running Tests](#running-tests)
     - [Environment Handling](#environment-handling)
     - [Creating Browsers](#creating-browsers)
+    - [Browser Macros](#browser-macros)
     - [Authentication](#authentication)
     - [Database Migrations](#migrations)
 - [Interacting With Elements](#interacting-with-elements)
@@ -64,6 +65,8 @@ To run your tests, use the `dusk` Artisan command. The `dusk` command accepts an
 If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
 
     php artisan dusk:fails
+
+> {note} Dusk requires its `chromedriver` binaries to be executable. If you're having problems running Dusk, you can ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin`.
 
 <a name="using-other-browsers"></a>
 ### Using Other Browsers
@@ -229,6 +232,43 @@ You may use the `resize` method to adjust the size of the browser window:
 The `maximize` method may be used to maximize the browser window:
 
     $browser->maximize();
+
+<a name="browser-macros"></a>
+### Browser Macros
+
+If you would like to define a custom browser method that you can re-use in a variety of your tests, you may use the `macro` method on the `Browser` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Laravel\Dusk\Browser;
+    use Illuminate\Support\ServiceProvider;
+
+    class DuskServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register the Dusk's browser macros.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Browser::macro('scrollToElement', function ($element = null) {
+                $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
+
+                return $this;
+            });
+        }
+    }
+
+The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro as a method on a `Browser` implementation:
+
+    $this->browse(function ($browser) use ($user) {
+        $browser->visit('/pay')
+                ->scrollToElement('#credit-card-details')
+                ->assertSee('Enter Credit Card Details');
+    });
 
 <a name="authentication"></a>
 ### Authentication
@@ -1351,4 +1391,8 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), we will need to us
       - php artisan serve &
 
     script:
-       - php artisan dusk
+      - php artisan dusk
+
+In your `.env.testing` file, adjust the value of `APP_URL`:
+
+    APP_URL=http://127.0.0.1:8000

@@ -67,6 +67,16 @@ You will often be generating URLs using the primary key of [Eloquent models](/do
 
     echo route('post.show', ['post' => $post]);
 
+The `route` helper may also be used to generate URLs for routes with multiple parameters:
+
+    Route::get('/post/{post}/comment/{comment}', function () {
+        //
+    })->name('comment.show');
+
+    echo route('comment.show', ['post' => 1, 'comment' => 3]);
+
+    // http://example.com/post/1/comment/3
+
 <a name="signed-urls"></a>
 ### Signed URLs
 
