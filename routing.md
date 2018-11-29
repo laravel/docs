@@ -78,11 +78,11 @@ If you are defining a route that redirects to another URI, you may use the `Rout
 
     Route::redirect('/here', '/there');
 
-By default, `Route::redirect` returns a 302 status code. You may customize the status code using the optional third parameter:
+By default, `Route::redirect` returns a `302` status code. You may customize the status code using the optional third parameter:
 
     Route::redirect('/here', '/there', 301);
 
-or use the `Route::permananentRedirect` helper to return a 301 status code automatically:
+You may use the `Route::permananentRedirect` method to return a `301` status code:
 
     Route::permanentRedirect('/here', '/there');
 
