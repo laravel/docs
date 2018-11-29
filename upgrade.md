@@ -33,11 +33,11 @@ The `environment` method signature of the `Illuminate/Contracts/Foundation/Appli
 
 #### Added Methods
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Very Low**
 
 The `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourcePath`, `storagePath`, `resolveProvider`, `bootstrapWith`, `configurationIsCached`, `detectEnvironment`, `environmentFile`, `environmentFilePath`, `getCachedConfigPath`, `getCachedRoutesPath`, `getLocale`, `getNamespace`, `getProviders`, `hasBeenBootstrapped`, `loadDeferredProviders`, `loadEnvironmentFrom`, `routesAreCached`, `setLocale`, `shouldSkipMiddleware` and `terminate`  methods [were added to the `Illuminate/Contracts/Foundation/Application` contract](https://github.com/laravel/framework/pull/26477).
 
-If you are implementing this interface, you should add these methods to your implementation.
+In the very unlikely event you are implementing this interface, you should add these methods to your implementation.
 
 ### Collections
 
@@ -67,12 +67,6 @@ The `terminate` method [has been added to the `Illuminate/Contracts/Console/Kern
 
 ### Container
 
-**Likelihood Of Impact: Medium**
-
-#### The `makeWith` Method
-
-The `makeWith` method [has been deprecated](https://github.com/laravel/framework/pull/26644) and will be removed in Laravel `5.9`. You should use the `make` method instead.
-
 #### `ArrayAccess` Contract Added To The `Container` Contract
 
 **Likelihood Of Impact: Very Low**
@@ -83,34 +77,13 @@ The `makeWith` method [has been deprecated](https://github.com/laravel/framework
 
 **Likelihood Of Impact: Very Low**
 
-The `addContextualBinding` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26551):
-
-    /**
-     * Add a contextual binding to the container.
-     *
-     * @param  string  $concrete
-     * @param  string  $abstract
-     * @param  \Closure|string  $implementation
-     * @return void
-     */
-    public function addContextualBinding($concrete, $abstract, $implementation);
-
-If you are implementing this interface, you should add this method to your implementation.
+The `addContextualBinding` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26551). If you are implementing this interface, you should add this method to your implementation.
 
 #### The `flush` Method
 
 **Likelihood Of Impact: Very Low**
 
-The `flush` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26477):
-
-    /**
-     * Flush the container of all bindings and resolved instances.
-     *
-     * @return void
-     */
-    public function flush();
-
-If you are implementing this interface, you should add this method to your implementation.
+The `flush` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26477). If you are implementing this interface, you should add this method to your implementation.
 
 ### Database
 
@@ -241,11 +214,13 @@ The `validated` method [was added to the `Illuminate\Contracts\Validation\Valida
 
 If you are implementing this interface, you should add this method to your implementation.
 
-#### Email validation
+#### Email Validation
 
 **Likelihood Of Impact: Very Low**
 
-The email validation rule now checks if the email is [RFC5630](https://tools.ietf.org/html/rfc6530) compliant (so that the validation is consistent with the one Swift Mailer performs). The email validation rule in Laravel `5.7` was only checking if the email is [RFC822](https://tools.ietf.org/html/rfc822) compliant which means that in `5.8` emails that were previously incorrectly considered invalid will now be considered valid e.g `hej@bär.se`.  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
+The email validation rule now checks if the email is [RFC5630](https://tools.ietf.org/html/rfc6530) compliant, making the validation logic consistent with the logic used by SwiftMailer. In Laravel `5.7`, the `email` rule only verified that the email was [RFC822](https://tools.ietf.org/html/rfc822) compliant.
+
+Therefore, when using Laravel 5.8, emails that were previously incorrectly considered invalid will now be considered valid (e.g `hej@bär.se`).  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
 
 ### Miscellaneous
 
