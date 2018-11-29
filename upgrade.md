@@ -21,7 +21,7 @@ Of course, don't forget to examine any 3rd party packages consumed by your appli
 
 **Likelihood Of Impact: Very Low**
 
-The `environment` method signature of the `Illuminate/Contracts/Foundation/Application` class [has changed](https://github.com/laravel/framework/pull/26296). If you are implementing this contract in your application, you should update the method signature:
+The `environment` method signature of the `Illuminate/Contracts/Foundation/Application` contract [has changed](https://github.com/laravel/framework/pull/26296). If you are implementing this contract in your application, you should update the method signature:
 
     /**
      * Get or check the current application environment.
@@ -30,6 +30,14 @@ The `environment` method signature of the `Illuminate/Contracts/Foundation/Appli
      * @return string|bool
      */
     public function environment(...$environments);
+
+#### Added Methods
+
+**Likelihood Of Impact: Low**
+
+The `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourcePath`, `storagePath`, `resolveProvider`, `bootstrapWith`, `configurationIsCached`, `detectEnvironment`, `environmentFile`, `environmentFilePath`, `getCachedConfigPath`, `getCachedRoutesPath`, `getLocale`, `getNamespace`, `getProviders`, `hasBeenBootstrapped`, `loadDeferredProviders`, `loadEnvironmentFrom`, `routesAreCached`, `setLocale`, `shouldSkipMiddleware` and `terminate`  methods [were added to the `Illuminate/Contracts/Foundation/Application` contract](https://github.com/laravel/framework/pull/26477).
+
+If you are implementing this interface, you should add these methods to your implementation.
 
 ### Collections
 
@@ -59,11 +67,50 @@ The `terminate` method [has been added to the `Illuminate/Contracts/Console/Kern
 
 ### Container
 
-#### The `Container` Contract
+**Likelihood Of Impact: Medium**
+
+#### The `makeWith` Method
+
+The `makeWith` method [has been deprecated](https://github.com/laravel/framework/pull/26644) and will be removed in Laravel `5.9`. You should use the `make` method instead.
+
+#### `ArrayAccess` Contract Added To The `Container` Contract
 
 **Likelihood Of Impact: Very Low**
 
 [The `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26378) now extends the `ArrayAccess` contract. If you are implementing the `Container` interface, your implementation should now also satisfy the `ArrayAccess` contract.
+
+#### The `addContextualBinding` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `addContextualBinding` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26551):
+
+    /**
+     * Add a contextual binding to the container.
+     *
+     * @param  string  $concrete
+     * @param  string  $abstract
+     * @param  \Closure|string  $implementation
+     * @return void
+     */
+    public function addContextualBinding($concrete, $abstract, $implementation);
+
+If you are implementing this interface, you should add this method to your implementation.
+
+#### The `flush` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `flush` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26477):
+
+    /**
+     * Flush the container of all bindings and resolved instances.
+     *
+     * @return void
+     */
+    public function flush();
+
+If you are implementing this interface, you should add this method to your implementation.
 
 ### Database
 
@@ -176,6 +223,29 @@ The `previous` method [has been added to the `Illuminate\Contracts\Routing\UrlGe
 **Likelihood Of Impact: Very Low**
 
 The session persistence logic has been [moved from the `terminate()` method to the `handle()` method](https://github.com/laravel/framework/pull/26410). If you are overriding one or both of these methods, you should update them to reflect these changes.
+
+### Validation
+
+#### The `Validator` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `validated` method [was added to the `Illuminate\Contracts\Validation\Validator` contract](https://github.com/laravel/framework/pull/26419):
+
+    /**
+     * Get the attributes and values that were validated.
+     *
+     * @return array
+     */
+    public function validated();
+
+If you are implementing this interface, you should add this method to your implementation.
+
+#### Email validation
+
+**Likelihood Of Impact: Very Low**
+
+The email validation rule now checks if the email is [RFC5630](https://tools.ietf.org/html/rfc6530) compliant (so that the validation is consistent with the one Swift Mailer performs). The email validation rule in Laravel `5.7` was only checking if the email is [RFC822](https://tools.ietf.org/html/rfc822) compliant which means that in `5.8` emails that were previously incorrectly considered invalid will now be considered valid e.g `hej@bär.se`.  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
 
 ### Miscellaneous
 
