@@ -4,7 +4,6 @@
 - [Binding](#binding)
     - [Binding Basics](#binding-basics)
     - [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
-    - [Binding Methods](#binding-methods)
     - [Contextual Binding](#contextual-binding)
     - [Tagging](#tagging)
     - [Extending Bindings](#extending-bindings)
@@ -136,34 +135,6 @@ This statement tells the container that it should inject the `RedisEventPusher` 
         $this->pusher = $pusher;
     }
 
-<a name="binding-methods"></a>
-### Binding Methods
-
-Another way to control what's being resolved from your container is to tell the container how to resolve dependencies for class methods. For example, take the following job with a `handle` method that has some primitives in it:
-
-    use Illuminate\Bus\Queueable;
-    use Illuminate\Contracts\Queue\ShouldQueue;
-
-    class AddCollaboratorToGitHubRepo implements ShouldQueue
-    {
-        use Queueable;
-
-        public function handle($owner, $repository, $token)
-        {
-            // ...
-        }
-    }
-
-You could instruct the container to inject certain values like configuration options:
-
-    $this->app->bindMethod('App\Jobs\AddCollaboratorToGitHubRepo@handle', function ($job, $app) {
-        return $job->handle(
-            config('services.github.owner'),
-            config('services.github.repository'),
-            config('services.github.token')
-        );
-    });
-
 <a name="contextual-binding"></a>
 ### Contextual Binding
 
@@ -185,8 +156,6 @@ Sometimes you may have two classes that utilize the same interface, but you wish
               ->give(function () {
                   return Storage::disk('s3');
               });
-
-> {note} Please note that this only works when resolving constructor depenencies and not when [binding methods](#binding-methods).
 
 <a name="tagging"></a>
 ### Tagging
