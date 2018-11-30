@@ -37,13 +37,13 @@ All Laravel applications include Tinker, a REPL powered by the [PsySH](https://g
 
     php artisan tinker
 
-If you want to use one of the config options from below you'll need to publish the `tinker.php` config file:
+You can publish Tinker's configuration file using the `vendor:publish` command:
 
     php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 #### Command Whitelist
 
-Tinker works with a whitelist for running commands within its shell. By default it allows you to run the `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize` and `up` commands within your Tinker environment. If you want to add more commands to this you can add them to the `commands` array in your `tinker.php` config file:
+Tinker utilizes a white-list to determine which Artisan commands are allowed to be run within its shell. By default, you may run the `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize`, and `up` commands. If you would like to white-list more commands you may add them to the `commands` array in your `tinker.php` configuration file:
 
     'commands' => [
         // App\Console\Commands\ExampleCommand::class,
@@ -51,7 +51,7 @@ Tinker works with a whitelist for running commands within its shell. By default 
 
 #### Alias Blacklist
 
-Typically, Tinker automatically aliases classes as you require them in Tinker. However, you may wish to never alias certain classes, which you may accomplish by listing the classes in the following array in your `tinker.php` config file:
+Typically, Tinker automatically aliases classes as you require them in Tinker. However, you may wish to never alias some classes. You may accomplish this by listing the classes in the `dont_alias` array of your `tinker.php` configuration file:
 
     'dont_alias' => [
         App\User::class,
@@ -387,7 +387,7 @@ For long running tasks, it could be helpful to show a progress indicator. Using 
     $users = App\User::all();
 
     $bar = $this->output->createProgressBar(count($users));
-    
+
     $bar->start();
 
     foreach ($users as $user) {
