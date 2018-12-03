@@ -162,32 +162,9 @@ Job classes are very simple, normally containing only a `handle` method which is
 
 In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models will be gracefully serialized and unserialized when the job is processing. If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
 
-The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies. If you want to control what's being resolved from your container you can tell the container how to resolve dependencies. For example, take the following job that has some primitives in it:
+The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
 
-    use Illuminate\Bus\Queueable;
-    use Illuminate\Contracts\Queue\ShouldQueue;
-
-    class AddCollaboratorToGitHubRepo implements ShouldQueue
-    {
-        use Queueable;
-
-        public function handle($owner, $repository, $token)
-        {
-            // ...
-        }
-    }
-
-You could instruct the container to inject certain values like configuration options:
-
-    $this->app->bindMethod('App\Jobs\AddCollaboratorToGitHubRepo@handle', function ($job, $app) {
-        return $job->handle(
-            config('services.github.owner'),
-            config('services.github.repository'),
-            config('services.github.token')
-        );
-    });
-
-> {note} Please note that you cannot use [contextual binding](#contextual-binding) when binding methods.
+> {note} When injecting dependencies to the `handle` method it's not possible to use [contextual binding](#contextual-binding).
 
 > {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
 
