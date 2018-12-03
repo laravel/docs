@@ -222,14 +222,16 @@ The email validation rule now checks if the email is [RFC5630](https://tools.iet
 
 Therefore, when using Laravel 5.8, emails that were previously incorrectly considered invalid will now be considered valid (e.g `hej@bär.se`).  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
 
-### Nexmo & Slack Notification Channels
+### Notifcations
 
-**Likelihood Of Impact: Low**
+#### Nexmo / Slack Notification Channels
 
-Nexmo and Slack Notification channels were extracted to separate repositories. To use these channels in your application, add the following dependencies to your composer.json:
+**Likelihood Of Impact: Medium**
 
-    "laravel/nexmo-notification-channel": "^1.0",
-    "laravel/slack-notification-channel": "^1.0"
+The Nexmo and Slack Notification channels have been extracted into first-party packages. To use these channels in your application, require the following packages:
+
+    composer require laravel/nexmo-notification-channel
+    composer require laravel/slack-notification-channel
 
 ### Miscellaneous
 
