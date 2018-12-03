@@ -38,7 +38,7 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
 
     namespace App\Console;
 
-    use DB;
+    use Illuminate\Support\Facades\DB;
     use Illuminate\Console\Scheduling\Schedule;
     use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
