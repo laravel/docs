@@ -60,7 +60,7 @@ Laravel provides a quick way to scaffold all of the routes and views you need fo
 
 This command should be used on fresh applications and will install a layout view, registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated to handle post-login requests to your application's dashboard.
 
-> {tip} In the case where your application doesn’t need registration you can disable it bw removing the newly created `RegisterController` and passing the proper option to the routes declaration: `Auth::routes(['register' => false]);`.
+> {tip} In the case where your application doesn’t need registration you can disable it by removing the newly created `RegisterController` and passing the proper option to the routes declaration: `Auth::routes(['register' => false]);`.
 
 <a name="included-views"></a>
 ### Views
