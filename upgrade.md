@@ -222,6 +222,15 @@ The email validation rule now checks if the email is [RFC5630](https://tools.iet
 
 Therefore, when using Laravel 5.8, emails that were previously incorrectly considered invalid will now be considered valid (e.g `hej@bär.se`).  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
 
+### Nexmo & Slack Notification Channels
+
+**Likelihood Of Impact: Low**
+
+Nexmo and Slack Notification channels were extracted to separate repositories. To use these channels in your application, add the following dependencies to your composer.json:
+
+    "laravel/nexmo-notification-channel": "^1.0",
+    "laravel/slack-notification-channel": "^1.0"
+
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.7...master) and choose which updates are important to you.
