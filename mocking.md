@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
+    - [Scoped Event Fakes](#scoped-event-fakes)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
@@ -28,9 +29,8 @@ As an alternative to mocking, you may use the `Bus` facade's `fake` method to pr
     use Tests\TestCase;
     use App\Jobs\ShipOrder;
     use Illuminate\Support\Facades\Bus;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
 
     class ExampleTest extends TestCase
     {
@@ -62,9 +62,8 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
     use App\Events\OrderShipped;
     use App\Events\OrderFailedToShip;
     use Illuminate\Support\Facades\Event;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
 
     class ExampleTest extends TestCase
     {
@@ -81,7 +80,70 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
                 return $e->order->id === $order->id;
             });
 
+            // Assert an event was dispatched twice...
+            Event::assertDispatched(OrderShipped::class, 2);
+
+            // Assert an event was not dispatched...
             Event::assertNotDispatched(OrderFailedToShip::class);
+        }
+    }
+
+> {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
+
+#### Faking A Subset Of Events
+
+If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:
+
+    /**
+     * Test order process.
+     */
+    public function testOrderProcess()
+    {
+        Event::fake([
+            OrderCreated::class,
+        ]);
+
+        $order = factory(Order::class)->create();
+
+        Event::assertDispatched(OrderCreated::class);
+
+        // Other events are dispatched as normal...
+        $order->update([...]);
+    }
+
+<a name="scoped-event-fakes"></a>
+### Scoped Event Fakes
+
+If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Order;
+    use Tests\TestCase;
+    use App\Events\OrderCreated;
+    use Illuminate\Support\Facades\Event;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * Test order process.
+         */
+        public function testOrderProcess()
+        {
+            $order = Event::fakeFor(function () {
+                $order = factory(Order::class)->create();
+
+                Event::assertDispatched(OrderCreated::class);
+
+                return $order;
+            });
+
+            // Events are dispatched as normal and observers will run ...
+            $order->update([...]);
         }
     }
 
@@ -97,9 +159,8 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
     use Tests\TestCase;
     use App\Mail\OrderShipped;
     use Illuminate\Support\Facades\Mail;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
 
     class ExampleTest extends TestCase
     {
@@ -145,9 +206,9 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
     use Tests\TestCase;
     use App\Notifications\OrderShipped;
     use Illuminate\Support\Facades\Notification;
+    use Illuminate\Notifications\AnonymousNotifiable;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
 
     class ExampleTest extends TestCase
     {
@@ -174,6 +235,11 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
+            
+            // Assert a notification was sent via Notification::route() method...
+            Notification::assertSentTo(
+                new AnonymousNotifiable, OrderShipped::class
+            );            
         }
     }
 
@@ -189,9 +255,8 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
     use Tests\TestCase;
     use App\Jobs\ShipOrder;
     use Illuminate\Support\Facades\Queue;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
 
     class ExampleTest extends TestCase
     {
@@ -213,6 +278,12 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
 
             // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
+          
+            // Assert a job was pushed with a specific chain...
+            Queue::assertPushedWithChain(ShipOrder::class, [
+                AnotherJob::class,
+                FinalJob::class
+            ]);
         }
     }
 
@@ -228,9 +299,8 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
     use Tests\TestCase;
     use Illuminate\Http\UploadedFile;
     use Illuminate\Support\Facades\Storage;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
 
     class ExampleTest extends TestCase
     {
@@ -286,9 +356,8 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
 
     use Tests\TestCase;
     use Illuminate\Support\Facades\Cache;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
 
     class UserControllerTest extends TestCase
     {
@@ -305,4 +374,4 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
         }
     }
 
-> {note} You should not mock the `Request` facade. Instead, pass the input you desire into the HTTP helper methods such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, simply call the `Config::set` method in your tests.
+> {note} You should not mock the `Request` facade. Instead, pass the input you desire into the HTTP helper methods such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.

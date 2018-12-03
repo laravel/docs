@@ -15,7 +15,7 @@ Laravel makes interacting with databases extremely simple across a variety of da
 
 <div class="content-list" markdown="1">
 - MySQL
-- Postgres
+- PostgreSQL
 - SQLite
 - SQL Server
 </div>
@@ -34,18 +34,11 @@ After creating a new SQLite database using a command such as `touch database/dat
     DB_CONNECTION=sqlite
     DB_DATABASE=/absolute/path/to/database.sqlite
 
-#### SQL Server Configuration
+To enable foreign key constraints for SQLite connections, you should add the `foreign_key_constraints` option to your `config/database.php` configuration file:
 
-Laravel supports SQL Server out of the box; however, you will need to add the connection configuration for the database to your `config/database.php` configuration file:
-
-    'sqlsrv' => [
-        'driver' => 'sqlsrv',
-        'host' => env('DB_HOST', 'localhost'),
-        'database' => env('DB_DATABASE', 'forge'),
-        'username' => env('DB_USERNAME', 'forge'),
-        'password' => env('DB_PASSWORD', ''),
-        'charset' => 'utf8',
-        'prefix' => '',
+    'sqlite' => [
+        // ...
+        'foreign_key_constraints' => true,
     ],
 
 <a name="read-and-write-connections"></a>
@@ -57,23 +50,28 @@ To see how read / write connections should be configured, let's look at this exa
 
     'mysql' => [
         'read' => [
-            'host' => '192.168.1.1',
+            'host' => ['192.168.1.1'],
         ],
         'write' => [
-            'host' => '196.168.1.2'
+            'host' => ['196.168.1.2'],
         ],
+        'sticky'    => true,
         'driver'    => 'mysql',
         'database'  => 'database',
         'username'  => 'root',
         'password'  => '',
-        'charset' => 'utf8mb4',
+        'charset'   => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
         'prefix'    => '',
     ],
 
-Note that two keys have been added to the configuration array: `read` and `write`. Both of these keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
+Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
 
 You only need to place items in the `read` and `write` arrays if you wish to override the values from the main array. So, in this case, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.2` will be used for the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
+
+#### The `sticky` Option
+
+The `sticky` option is an *optional* value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the `sticky` option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.
 
 <a name="using-multiple-database-connections"></a>
 ### Using Multiple Database Connections
@@ -119,7 +117,7 @@ To run a basic query, you may use the `select` method on the `DB` facade:
 
 The first argument passed to the `select` method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
 
-The `select` method will always return an `array` of results. Each result within the array will be a PHP `StdClass` object, allowing you to access the values of the results:
+The `select` method will always return an `array` of results. Each result within the array will be a PHP `stdClass` object, allowing you to access the values of the results:
 
     foreach ($users as $user) {
         echo $user->name;
@@ -229,4 +227,4 @@ Lastly, you can commit a transaction via the `commit` method:
 
     DB::commit();
 
-> {tip} Using the `DB` facade's transaction methods also controls transactions for the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+> {tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).

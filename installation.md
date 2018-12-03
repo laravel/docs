@@ -10,7 +10,7 @@
 <a name="installation"></a>
 ## Installation
 
-> {video} Are you a visual learner? Laracasts provides a [free, thorough introduction to Laravel](http://laravelfromscratch.com) for newcomers to the framework. It's a great place to start your journey.
+> {video} Laracasts provides a [free, thorough introduction to Laravel](http://laravelfromscratch.com) for newcomers to the framework. It's a great place to start your journey.
 
 <a name="server-requirements"></a>
 ### Server Requirements
@@ -20,12 +20,15 @@ The Laravel framework has a few system requirements. Of course, all of these req
 However, if you are not using Homestead, you will need to make sure your server meets the following requirements:
 
 <div class="content-list" markdown="1">
-- PHP >= 7.0.0
+- PHP >= 7.1.3
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
+- Ctype PHP Extension
+- JSON PHP Extension
+- BCMath PHP Extension
 </div>
 
 <a name="installing-laravel"></a>
@@ -37,9 +40,14 @@ Laravel utilizes [Composer](https://getcomposer.org) to manage its dependencies.
 
 First, download the Laravel installer using Composer:
 
-    composer global require "laravel/installer"
+    composer global require laravel/installer
 
-Make sure to place the `$HOME/.composer/vendor/bin` directory (or the equivalent directory for your OS) in your $PATH so the `laravel` executable can be located by your system.
+Make sure to place composer's system-wide vendor bin directory in your `$PATH` so the laravel executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
+
+<div class="content-list" markdown="1">
+- macOS: `$HOME/.composer/vendor/bin`
+- GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin`
+</div>
 
 Once installed, the `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed:
 
@@ -104,8 +112,11 @@ Laravel includes a `public/.htaccess` file that is used to provide URLs without 
 
 If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this alternative:
 
-    Options +FollowSymLinks
+    Options +FollowSymLinks -Indexes
     RewriteEngine On
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

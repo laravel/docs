@@ -11,7 +11,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Redis](http://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](http://redis.io/topics/data-types#strings), [hashes](http://redis.io/topics/data-types#hashes), [lists](http://redis.io/topics/data-types#lists), [sets](http://redis.io/topics/data-types#sets), and [sorted sets](http://redis.io/topics/data-types#sorted-sets).
+[Redis](https://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](https://redis.io/topics/data-types#strings), [hashes](https://redis.io/topics/data-types#hashes), [lists](https://redis.io/topics/data-types#lists), [sets](https://redis.io/topics/data-types#sets), and [sorted sets](https://redis.io/topics/data-types#sorted-sets).
 
 Before using Redis with Laravel, you will need to install the `predis/predis` package via Composer:
 
@@ -79,7 +79,7 @@ By default, clusters will perform client-side sharding across your nodes, allowi
 <a name="predis"></a>
 ### Predis
 
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, simply add them to your Redis server configuration in the `config/database.php` configuration file:
+In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in the `config/database.php` configuration file:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -91,8 +91,6 @@ In addition to the default `host`, `port`, `database`, and `password` server con
 
 <a name="phpredis"></a>
 ### PhpRedis
-
-> {note} If you have the PhpRedis PHP extension installed via PECL, you will need to rename the `Redis` alias in your `config/app.php` configuration file.
 
 To utilize the PhpRedis extension, you should change the `client` option of your Redis configuration to `phpredis`. This option is found in your `config/database.php` configuration file:
 
@@ -116,14 +114,14 @@ In addition to the default `host`, `port`, `database`, and `password` server con
 <a name="interacting-with-redis"></a>
 ## Interacting With Redis
 
-You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](http://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the Redis `GET` command by calling the `get` method on the `Redis` facade:
+You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](https://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the Redis `GET` command by calling the `get` method on the `Redis` facade:
 
     <?php
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Support\Facades\Redis;
     use App\Http\Controllers\Controller;
+    use Illuminate\Support\Facades\Redis;
 
     class UserController extends Controller
     {
@@ -141,7 +139,7 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
         }
     }
 
-Of course, as mentioned above, you may call any of the Redis commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server, so simply pass the arguments the Redis command expects:
+Of course, as mentioned above, you may call any of the Redis commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server, so pass the arguments the Redis command expects:
 
     Redis::set('name', 'Taylor');
 

@@ -14,6 +14,9 @@
     - [The Loop Variable](#the-loop-variable)
     - [Comments](#comments)
     - [PHP](#php)
+- [Forms](#forms)
+    - [CSRF Field](#csrf-field)
+    - [Method Field](#method-field)
 - [Including Sub-Views](#including-sub-views)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -78,6 +81,8 @@ When defining a child view, use the Blade `@extends` directive to specify which 
 
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
+> {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
+
 Blade views may be returned from routes using the global `view` helper:
 
     Route::get('blade', function () {
@@ -101,7 +106,7 @@ The `{{ $slot }}` variable will contain the content we wish to inject into the c
         <strong>Whoops!</strong> Something went wrong!
     @endcomponent
 
-Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title". Named slots may be displayed by simply "echoing" the variable that matches their name:
+Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title". Named slots may be displayed by "echoing" the variable that matches their name:
 
     <!-- /resources/views/alert.blade.php -->
 
@@ -129,6 +134,26 @@ Sometimes you may need to pass additional data to a component. For this reason, 
         ...
     @endcomponent
 
+#### Aliasing Components
+
+If your Blade components are stored in a sub-directory, you may wish to alias them for easier access. For example, imagine a Blade component that is stored at `resources/views/components/alert.blade.php`. You may use the `component` method to alias the component from `components.alert` to `alert`. Typically, this should be done in the `boot` method of your `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Blade;
+
+    Blade::component('components.alert', 'alert');
+
+Once the component has been aliased, you may render it using a directive:
+
+    @alert(['type' => 'danger'])
+        You are not allowed to access this resource!
+    @endalert
+
+You may omit the component parameters if it has no additional slots:
+
+    @alert
+        You are not allowed to access this resource!
+    @endalert
+
 <a name="displaying-data"></a>
 ## Displaying Data
 
@@ -146,7 +171,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 
     The current UNIX timestamp is {{ time() }}.
 
-> {note} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
+> {tip} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
 #### Displaying Unescaped Data
 
@@ -155,6 +180,44 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmls
     Hello, {!! $name !!}.
 
 > {note} Be very careful when echoing content that is supplied by users of your application. Always use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
+
+#### Rendering JSON
+
+Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
+
+    <script>
+        var app = <?php echo json_encode($array); ?>;
+    </script>
+
+However, instead of manually calling `json_encode`, you may use the `@json` Blade directive:
+
+    <script>
+        var app = @json($array);
+    </script>
+
+#### HTML Entity Encoding
+
+By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\Facades\Blade;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Blade::withoutDoubleEncoding();
+        }
+    }
 
 <a name="blade-and-javascript-frameworks"></a>
 ### Blade & JavaScript Frameworks
@@ -211,7 +274,7 @@ In addition to the conditional directives already discussed, the `@isset` and `@
         // $records is "empty"...
     @endempty
 
-#### Authentication Shortcuts
+#### Authentication Directives
 
 The `@auth` and `@guest` directives may be used to quickly determine if the current user is authenticated or is a guest:
 
@@ -222,6 +285,28 @@ The `@auth` and `@guest` directives may be used to quickly determine if the curr
     @guest
         // The user is not authenticated...
     @endguest
+
+If needed, you may specify the [authentication guard](/docs/{{version}}/authentication) that should be checked when using the `@auth` and `@guest` directives:
+
+    @auth('admin')
+        // The user is authenticated...
+    @endauth
+
+    @guest('admin')
+        // The user is not authenticated...
+    @endguest
+
+#### Section Directives
+
+You may check if a section has content using the `@hasSection` directive:
+
+    @hasSection('navigation')
+        <div class="pull-right">
+            @yield('navigation')
+        </div>
+
+        <div class="clearfix"></div>
+    @endif
 
 <a name="switch-statements"></a>
 ### Switch Statements
@@ -323,7 +408,7 @@ Property  | Description
 ------------- | -------------
 `$loop->index`  |  The index of the current loop iteration (starts at 0).
 `$loop->iteration`  |  The current loop iteration (starts at 1).
-`$loop->remaining`  |  The iteration remaining in the loop.
+`$loop->remaining`  |  The iterations remaining in the loop.
 `$loop->count`  |  The total number of items in the array being iterated.
 `$loop->first`  |  Whether this is the first iteration through the loop.
 `$loop->last`  |  Whether this is the last iteration through the loop.
@@ -347,6 +432,31 @@ In some situations, it's useful to embed PHP code into your views. You can use t
     @endphp
 
 > {tip} While Blade provides this feature, using it frequently may be a signal that you have too much logic embedded within your template.
+
+<a name="forms"></a>
+## Forms
+
+<a name="csrf-field"></a>
+### CSRF Field
+
+Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](https://laravel.com/docs/{{version}}/csrf) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
+
+    <form method="POST" action="/profile">
+        @csrf
+
+        ...
+    </form>
+
+<a name="method-field"></a>
+### Method Field
+
+Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need to add a hidden `_method` field to spoof these HTTP verbs. The `@method` Blade directive can create this field for you:
+
+    <form action="/foo/bar" method="POST">
+        @method('PUT')
+
+        ...
+    </form>
 
 <a name="including-sub-views"></a>
 ## Including Sub-Views
@@ -372,6 +482,10 @@ Of course, if you attempt to `@include` a view which does not exist, Laravel wil
 If you would like to `@include` a view depending on a given boolean condition, you may use the `@includeWhen` directive:
 
     @includeWhen($boolean, 'view.name', ['some' => 'data'])
+
+To include the first view that exists from a given array of views, you may use the `includeFirst` directive:
+
+    @includeFirst(['custom.admin', 'admin'], ['some' => 'data'])
 
 > {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
@@ -406,6 +520,18 @@ You may push to a stack as many times as needed. To render the complete stack co
 
         @stack('scripts')
     </head>
+
+If you would like to prepend content onto the beginning of a stack, you should use the `@prepend` directive:
+
+    @push('scripts')
+        This will be second...
+    @endpush
+
+    // Later...
+
+    @prepend('scripts')
+        This will be first...
+    @endprepend
 
 <a name="service-injection"></a>
 ## Service Injection
@@ -486,6 +612,8 @@ Once the custom conditional has been defined, we can easily use it on our templa
 
     @env('local')
         // The application is in the local environment...
+    @elseenv('testing')
+        // The application is in the testing environment...
     @else
-        // The application is not in the local environment...
+        // The application is not in the local or testing environment...
     @endenv

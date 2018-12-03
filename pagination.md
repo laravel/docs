@@ -118,10 +118,16 @@ If you wish to append a "hash fragment" to the paginator's URLs, you may use the
 
     {{ $users->fragment('foo')->links() }}
 
+#### Adjusting The Pagination Link Window
+
+You may control how many additional links are displayed on each side of the paginator's URL "window". By default, three links are displayed on each side of the primary paginator links. However, you may control this number using the `onEachSide` method:
+
+    {{ $users->onEachSide(5)->links() }}
+
 <a name="converting-results-to-json"></a>
 ### Converting Results To JSON
 
-The Laravel paginator result classes implement the `Illuminate\Contracts\Support\Jsonable` Interface contract and expose the `toJson` method, so it's very easy to convert your pagination results to JSON. You may also convert a paginator instance to JSON by simply returning it from a route or controller action:
+The Laravel paginator result classes implement the `Illuminate\Contracts\Support\Jsonable` Interface contract and expose the `toJson` method, so it's very easy to convert your pagination results to JSON. You may also convert a paginator instance to JSON by returning it from a route or controller action:
 
     Route::get('users', function () {
         return App\User::paginate();
@@ -134,8 +140,11 @@ The JSON from the paginator will include meta information such as `total`, `curr
        "per_page": 15,
        "current_page": 1,
        "last_page": 4,
+       "first_page_url": "http://laravel.app?page=1",
+       "last_page_url": "http://laravel.app?page=4",
        "next_page_url": "http://laravel.app?page=2",
        "prev_page_url": null,
+       "path": "http://laravel.app",
        "from": 1,
        "to": 15,
        "data":[
@@ -162,7 +171,18 @@ However, the easiest way to customize the pagination views is by exporting them 
 
     php artisan vendor:publish --tag=laravel-pagination
 
-This command will place the views in the `resources/views/vendor/pagination` directory. The `default.blade.php` file within this directory corresponds to the default pagination view. Simply edit this file to modify the pagination HTML.
+This command will place the views in the `resources/views/vendor/pagination` directory. The `bootstrap-4.blade.php` file within this directory corresponds to the default pagination view. You may edit this file to modify the pagination HTML.
+
+If you would like to designate a different file as the default pagination view, you may use the paginator's `defaultView` and `defaultSimpleView` methods within your `AppServiceProvider`:
+
+    use Illuminate\Pagination\Paginator;
+
+    public function boot()
+    {
+        Paginator::defaultView('pagination::view');
+
+        Paginator::defaultSimpleView('pagination::view');
+    }
 
 <a name="paginator-instance-methods"></a>
 ## Paginator Instance Methods
@@ -176,6 +196,7 @@ Each paginator instance provides additional pagination information via the follo
 - `$results->lastItem()`
 - `$results->lastPage() (Not available when using simplePaginate)`
 - `$results->nextPageUrl()`
+- `$results->onFirstPage()`
 - `$results->perPage()`
 - `$results->previousPageUrl()`
 - `$results->total() (Not available when using simplePaginate)`

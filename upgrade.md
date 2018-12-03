@@ -1,269 +1,227 @@
 # Upgrade Guide
 
-- [Upgrading To 5.5.0 From 5.4](#upgrade-5.5.0)
+- [Upgrading To 5.8.0 From 5.7](#upgrade-5.8.0)
 
-<a name="upgrade-5.5.0"></a>
-## Upgrading To 5.5.0 From 5.4
+<a name="upgrade-5.8.0"></a>
+## Upgrading To 5.8.0 From 5.7
 
-#### Estimated Upgrade Time: 1 Hour
+#### Estimated Upgrade Time: 10 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~6.0`.
+Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` file.
 
-#### Laravel Dusk
+Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
 
-Laravel Dusk `2.0.0` has been released to provide compatibility with Laravel 5.5 and headless Chrome testing.
+### The `Application` Contract
 
-#### Pusher
+#### The `environment` Method
 
-The Pusher event broadcasting driver now requires version `~3.0` of the Pusher SDK.
+**Likelihood Of Impact: Very Low**
 
-### Artisan
+The `environment` method signature of the `Illuminate/Contracts/Foundation/Application` contract [has changed](https://github.com/laravel/framework/pull/26296). If you are implementing this contract in your application, you should update the method signature:
 
-#### The `fire` Method
+    /**
+     * Get or check the current application environment.
+     *
+     * @param  string|array  $environments
+     * @return string|bool
+     */
+    public function environment(...$environments);
 
-Any `fire` methods present on your Artisan commands should be renamed to `handle`.
+#### Added Methods
 
-### Authorization
+**Likelihood Of Impact: Very Low**
 
-#### The `authorizeResource` Controller Method
+The `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourcePath`, `storagePath`, `resolveProvider`, `bootstrapWith`, `configurationIsCached`, `detectEnvironment`, `environmentFile`, `environmentFilePath`, `getCachedConfigPath`, `getCachedRoutesPath`, `getLocale`, `getNamespace`, `getProviders`, `hasBeenBootstrapped`, `loadDeferredProviders`, `loadEnvironmentFrom`, `routesAreCached`, `setLocale`, `shouldSkipMiddleware` and `terminate`  methods [were added to the `Illuminate/Contracts/Foundation/Application` contract](https://github.com/laravel/framework/pull/26477).
 
-When passing a multi-word model name to the `authorizeResource` method, the resulting route segment will now be "snake" case, matching the behavior of resource controllers.
+In the very unlikely event you are implementing this interface, you should add these methods to your implementation.
 
-#### The `before` Policy Method
+### Collections
 
-The `before` method of a policy class will not be called if the class doesn't contain a method with name matching the name of the ability being checked.
+#### The `firstWhere` Method
 
-### Cache
+**Likelihood Of Impact: Very Low**
 
-#### Database Driver
+The `firstWhere` method signature [has changed](https://github.com/laravel/framework/pull/26261) to match the `where` method's signature. If you are overriding this method, you should update the method signature to match its parent:
 
-If you are using the database cache driver, you should run `php artisan cache:clear` when deploying your upgraded Laravel 5.5 application for the first time.
+    /**
+     * Get the first item by the given key value pair.
+     *
+     * @param  string  $key
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @return mixed
+     */
+    public function firstWhere($key, $operator = null, $value = null);
+
+### Console
+
+#### The `Kernel` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `terminate` method [has been added to the `Illuminate/Contracts/Console/Kernel` contract](https://github.com/laravel/framework/pull/26393). If you are implementing this interface, you should add this method to your implementation.
+
+### Container
+
+#### `ArrayAccess` Contract Added To The `Container` Contract
+
+**Likelihood Of Impact: Very Low**
+
+[The `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26378) now extends the `ArrayAccess` contract. If you are implementing the `Container` interface, your implementation should now also satisfy the `ArrayAccess` contract.
+
+#### The `addContextualBinding` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `addContextualBinding` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26551). If you are implementing this interface, you should add this method to your implementation.
+
+#### The `flush` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `flush` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26477). If you are implementing this interface, you should add this method to your implementation.
+
+### Database
+
+#### Unquoted MySQL JSON Values
+
+**Likelihood Of Impact: Low**
+
+The query builder will now return unquoted JSON values when using MySQL and MariaDB. This behavior is consistent with the other supported databases:
+
+    $value = DB::table('users')->value('options->language');
+
+    dump($value);
+
+    // Laravel 5.7...
+    '"en"'
+
+    // Laravel 5.8...
+    'en'
+
+As a result, the `->>` operator is no longer supported or necessary.
+
+#### SQLite
+
+**Likelihood Of Impact: Medium**
+
+As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/laravel/framework/pull/25995) is SQLite 3.7.11. If you are using an older SQLite version, you should update it (SQLite 3.8.8+ is recommended).
 
 ### Eloquent
 
-#### The `belongsToMany` Method
+#### The `originalIsEquivalent` Method
 
-If you are overriding the `belongsToMany` method on your Eloquent model, you should update your method signature to reflect the addition of new arguments:
+**Likelihood Of Impact: Very Low**
 
-    /**
-     * Define a many-to-many relationship.
-     *
-     * @param  string  $related
-     * @param  string  $table
-     * @param  string  $foreignPivotKey
-     * @param  string  $relatedPivotKey
-     * @param  string  $parentKey
-     * @param  string  $relatedKey
-     * @param  string  $relation
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function belongsToMany($related, $table = null, $foreignPivotKey = null,
-                                  $relatedPivotKey = null,$parentKey = null,
-                                  $relatedKey = null, $relation = null)
-    {
-        //
-    }
+The `originalIsEquivalent` method of the `Illuminate\Database\Eloquent\Concerns\HasAttributes` trait [has been changed](https://github.com/laravel/framework/pull/26391) from `protected` to `public`.
 
-#### Model `is` Method
+### Events
 
-If you are overriding the `is` method of your Eloquent model, you should remove the `Model` type-hint from the method. This allows the `is` method to receive `null` as an argument:
+#### The `fire` Method
 
-    /**
-     * Determine if two models have the same ID and belong to the same table.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model|null  $model
-     * @return bool
-     */
-    public function is($model)
-    {
-        //
-    }
+The `fire` method (which was deprecated in Laravel 5.4) of the `Illuminate/Events/Dispatcher` class [has been removed](https://github.com/laravel/framework/pull/26392).
+You should use the `dispatch` method instead.
 
-#### Model `$events` Property
+### Exception Handling
 
-The `$events` property on your models should be renamed to `$dispatchesEvents`. This change was made because of a high number of users needing to define an `events` relationship, which caused a conflict with the old property name.
+#### The `ExceptionHandler` Contract
 
-#### Pivot `$parent` Property
+**Likelihood Of Impact: Low**
 
-The protected `$parent` property on the `Illuminate\Database\Eloquent\Relations\Pivot` class has been renamed to `$pivotParent`.
+The `shouldReport` method [has been added to the `Illuminate\Contracts\Debug\ExceptionHandler` contract](https://github.com/laravel/framework/pull/26193). If you are implementing this interface, you should add this method to your implementation.
 
-#### Relationship `create` Methods
+#### The `renderHttpException` Method
 
-The `BelongsToMany`, `HasOneOrMany`, and `MorphOneOrMany` class' `create` methods have been modified to provide a default value for the `$attributes` argument. If you are overriding these methods, you should update your signatures to match the new definition:
+**Likelihood Of Impact: Low**
 
-    public function create(array $attributes = [])
-    {
-        //
-    }
-
-#### Soft Deleted Models
-
-When deleting a "soft deleted" model, the `exists` property on the model will remain `true`.
-
-#### `withCount` Column Formatting
-
-When using an alias, the `withCount` method will no longer automatically append `_count` onto the resulting column name. For example, in Laravel 5.4, the following query would result in a `bar_count` column being added to the query:
-
-    $users = User::withCount('foo as bar')->get();
-
-However, in Laravel 5.5, the alias will be used exactly as it is given. If you would like to append `_count` to the resulting column, you must specify that suffix when defining the alias:
-
-    $users = User::withCount('foo as bar_count')->get();
-
-### Exception Format
-
-In Laravel 5.5, all exceptions, including validation exceptions, are converted into HTTP responses by the exception handler. In addition, the default format for JSON validation errors has changed. The new format conforms to the following convention:
-
-    {
-        "message": "The given data was invalid.",
-        "errors": {
-            "field-1": [
-                "Error 1",
-                "Error 2"
-            ],
-            "field-2": [
-                "Error 1",
-                "Error 2"
-            ],
-        }
-    }
-
-However, if you would like to maintain the Laravel 5.4 JSON error format, you may add the following method to your `App\Exceptions\Handler` class:
-
-    use Illuminate\Validation\ValidationException;
+The `renderHttpException` method signature of the `Illuminate\Foundation\Exceptions\Handler` class [has changed](https://github.com/laravel/framework/pull/25975). If you are overriding this method in your exception handler, you should update the method signature to match its parent:
 
     /**
-     * Convert a validation exception into a JSON response.
+     * Render the given HttpException.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Validation\ValidationException  $exception
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface  $e
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function invalidJson($request, ValidationException $exception)
-    {
-        return response()->json($exception->errors(), $exception->status);
-    }
+    protected function renderHttpException(HttpExceptionInterface $e);
 
-#### JSON Authentication Attempts
+### Facades
 
-This change also affects the validation error formatting for authentication attempts made over JSON. In Laravel 5.5, JSON authentication failures will return the error messages following the new formatting convention described above.
+#### Facade Service Resolving
 
-#### A Note On Form Requests
+**Likelihood Of Impact: Low**
 
-If you were customizing the response format of an individual form request, you should now override the `failedValidation` method of that form request, and throw an `HttpResponseException` instance containing your custom response:
-
-    use Illuminate\Http\Exceptions\HttpResponseException;
-
-    /**
-     * Handle a failed validation attempt.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json(..., 422));
-    }
-
-### Filesystem
-
-#### The `files` Method
-
-The `files` method now returns an array of `SplFileInfo` objects, similar to the `allFiles` method. Previously, the `files` method returned an array of string path names.
-
-### Mail
-
-#### Unused Parameters
-
-The unused `$data` and `$callback` arguments were removed from the `Illuminate\Contracts\Mail\MailQueue` contract's `queue` and `later` methods:
-
-    /**
-     * Queue a new e-mail message for sending.
-     *
-     * @param  string|array|MailableContract  $view
-     * @param  string  $queue
-     * @return mixed
-     */
-    public function queue($view, $queue = null);
-
-    /**
-     * Queue a new e-mail message for sending after (n) seconds.
-     *
-     * @param  \DateTimeInterface|\DateInterval|int  $delay
-     * @param  string|array|MailableContract  $view
-     * @param  string  $queue
-     * @return mixed
-     */
-    public function later($delay, $view, $queue = null);
+The `getFacadeAccessor` method may now [only return the string value representing the container identifier of the service](https://github.com/laravel/framework/pull/25525). Previously, this method may have returned an object instance.
 
 ### Requests
 
-#### The `has` Method
+#### The `TransformsRequest` Middleware
 
-The `$request->has` method will now return `true` for empty strings and `null`. A new `$request->filled` method has been added that provides the previous behavior of the `has` method.
+**Likelihood Of Impact: Low**
 
-#### The `intersect` Method
+The `transform` method of the `Illuminate\Foundation\Http\Middleware\TransformsRequest` middleware now receives the "fully-qualified" request input key when the input is an array:
 
-The `intersect` method has been removed. You may replicate this behavior using `array_filter` on a call to `$request->only`:
+    'employee' => [
+        'name' => 'Taylor Otwell',
+    ],
 
-    return array_filter($request->only('foo'));
+    /**
+     * Transform the given value.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return mixed
+     */
+    protected function transform($key, $value)
+    {
+        dump($key); // 'employee.name' (Laravel 5.8)
+        dump($key); // 'name' (Laravel 5.7)
+    }
 
-#### The `only` Method
+### Routing
 
-The `only` method will now only return attributes that are actually present in the request payload. If you would like to preserve the old behavior of the `only` method, you may use the `all` method instead.
+#### The `UrlGenerator` Contract
 
-    return $request->all('foo');
+**Likelihood Of Impact: Very Low**
 
-#### The `request()` Helper
+The `previous` method [has been added to the `Illuminate\Contracts\Routing\UrlGenerator` contract](https://github.com/laravel/framework/pull/25616). If you are implementing this interface, you should add this method to your implementation.
 
-The `request` helper will no longer retrieve nested keys. If needed, you may use the `input` method of the request to achieve this behavior:
+### Sessions
 
-    return request()->input('filters.date');
+#### The `StartSession` Middleware
 
-### Testing
+**Likelihood Of Impact: Very Low**
 
-#### Authentication Assertions
-
-Some authentication assertions were renamed for better consistency with the rest of the framework's assertions:
-
-<div class="content-list" markdown="1">
-- `seeIsAuthenticated` was renamed to `assertAuthenticated`.
-- `dontSeeIsAuthenticated` was renamed to `assertGuest`.
-- `seeIsAuthenticatedAs` was renamed to `assertAuthenticatedAs`.
-- `seeCredentials` was renamed to `assertCredentials`.
-- `dontSeeCredentials` was renamed to `assertInvalidCredentials`.
-</div>
-
-#### Mail Fake
-
-If you are using the `Mail` fake to determine if a mailable was **queued** during a request, you should now use `Mail::assertQueued` instead of `Mail::assertSent`. This distinction allows you to specifically assert that the mail was queued for background sending and not sent during the request itself.
-
-### Translation
-
-#### The `LoaderInterface`
-
-The `Illuminate\Translation\LoaderInterface` interface has been moved to `Illuminate\Contracts\Translation\Loader`.
+The session persistence logic has been [moved from the `terminate()` method to the `handle()` method](https://github.com/laravel/framework/pull/26410). If you are overriding one or both of these methods, you should update them to reflect these changes.
 
 ### Validation
 
-#### Validator Methods
+#### The `Validator` Contract
 
-All of the validator's validation methods are now `public` instead of `protected`.
+**Likelihood Of Impact: Very Low**
 
-### Views
+The `validated` method [was added to the `Illuminate\Contracts\Validation\Validator` contract](https://github.com/laravel/framework/pull/26419):
 
-#### Dynamic "With" Variable Names
+    /**
+     * Get the attributes and values that were validated.
+     *
+     * @return array
+     */
+    public function validated();
 
-When allowing the dynamic `__call` method to share variables with a view, these variables will automatically use "camel" case. For example, given the following:
+If you are implementing this interface, you should add this method to your implementation.
 
-    return view('pool')->withMaximumVotes(100);
+#### Email Validation
 
-The `maximumVotes` variable may be accessed in the template like so:
+**Likelihood Of Impact: Very Low**
 
-    {{ $maximumVotes }}
+The email validation rule now checks if the email is [RFC5630](https://tools.ietf.org/html/rfc6530) compliant, making the validation logic consistent with the logic used by SwiftMailer. In Laravel `5.7`, the `email` rule only verified that the email was [RFC822](https://tools.ietf.org/html/rfc822) compliant.
+
+Therefore, when using Laravel 5.8, emails that were previously incorrectly considered invalid will now be considered valid (e.g `hej@bär.se`).  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
+
+### Miscellaneous
+
+We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.7...master) and choose which updates are important to you.

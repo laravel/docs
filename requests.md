@@ -165,6 +165,10 @@ When working with forms that contain array inputs, use "dot" notation to access 
 
     $names = $request->input('products.*.name');
 
+You may call the `input` method without any arguments in order to retrieve all of the input values as an associative array:
+
+    $input = $request->input();
+
 #### Retrieving Input From The Query String
 
 While the `input` method retrieves values from entire request payload (including the query string), the `query` method will only retrieve values from the query string:
@@ -205,7 +209,7 @@ If you need to retrieve a subset of the input data, you may use the `only` and `
 
     $input = $request->except('credit_card');
 
-> {tip} The `only` method returns all of the key / value pairs that you request; however, it will not return key / values pairs that are not present on the request.
+> {tip} The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
 
 #### Determining If An Input Value Is Present
 
@@ -273,6 +277,10 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
     $value = $request->cookie('name');
 
+Alternatively, you may use the `Cookie` facade to access cookie values:
+
+    $value = Cookie::get('name');
+
 #### Attaching Cookies To Responses
 
 You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and number of minutes the cookie should be considered valid to this method:
@@ -286,6 +294,12 @@ The `cookie` method also accepts a few more arguments which are used less freque
     return response('Hello World')->cookie(
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
+
+Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment to the outgoing response from your application. The `queue` method accepts a `Cookie` instance or the arguments needed to create a `Cookie` instance. These cookies will be attached to the outgoing response before it is sent to the browser:
+
+    Cookie::queue(Cookie::make('name', 'value', $minutes));
+
+    Cookie::queue('name', 'value', $minutes);
 
 #### Generating Cookie Instances
 
@@ -357,7 +371,7 @@ If you do not want a file name to be automatically generated, you may use the `s
 
 When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
 
-To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the headers that are being sent by your proxy with information about the original request:
+To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the proxy `$headers` that should be trusted:
 
     <?php
 
@@ -379,26 +393,22 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
         ];
 
         /**
-         * The current proxy header mappings.
+         * The headers that should be used to detect proxies.
          *
-         * @var array
+         * @var string
          */
-        protected $headers = [
-            Request::HEADER_FORWARDED => 'FORWARDED',
-            Request::HEADER_X_FORWARDED_FOR => 'X_FORWARDED_FOR',
-            Request::HEADER_X_FORWARDED_HOST => 'X_FORWARDED_HOST',
-            Request::HEADER_X_FORWARDED_PORT => 'X_FORWARDED_PORT',
-            Request::HEADER_X_FORWARDED_PROTO => 'X_FORWARDED_PROTO',
-        ];
+        protected $headers = Request::HEADER_X_FORWARDED_ALL;
     }
+
+> {tip} If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](http://symfony.com/doc/current/deployment/proxies.html).
 
 #### Trusting All Proxies
 
-If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `**` to trust all proxies:
+If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:
 
     /**
      * The trusted proxies for this application.
      *
      * @var array
      */
-    protected $proxies = '**';
+    protected $proxies = '*';

@@ -8,8 +8,11 @@
     - [Running Tests](#running-tests)
     - [Environment Handling](#environment-handling)
     - [Creating Browsers](#creating-browsers)
+    - [Browser Macros](#browser-macros)
     - [Authentication](#authentication)
+    - [Database Migrations](#migrations)
 - [Interacting With Elements](#interacting-with-elements)
+    - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
     - [Text, Values, & Attributes](#text-values-and-attributes)
     - [Using Forms](#using-forms)
@@ -18,6 +21,7 @@
     - [Using The Mouse](#using-the-mouse)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
+    - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
     - [Generating Pages](#generating-pages)
@@ -25,9 +29,14 @@
     - [Navigating To Pages](#navigating-to-pages)
     - [Shorthand Selectors](#shorthand-selectors)
     - [Page Methods](#page-methods)
+- [Components](#components)
+    - [Generating Components](#generating-components)
+    - [Using Components](#using-components)
 - [Continuous Integration](#continuous-integration)
-    - [Travis CI](#running-tests-on-travis-ci)
     - [CircleCI](#running-tests-on-circle-ci)
+    - [Codeship](#running-tests-on-codeship)
+    - [Heroku CI](#running-tests-on-heroku-ci)
+    - [Travis CI](#running-tests-on-travis-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -41,9 +50,7 @@ To get started, you should add the `laravel/dusk` Composer dependency to your pr
 
     composer require --dev laravel/dusk
 
-> {note} You should never install Dusk in a production environment. Otherwise, anyone may be able to gain unauthorized access to your application.
-
-Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. Typically, this will be done automatically via Laravel's automatic service provider registration.
+> {note} If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
 
 After installing the Dusk package, run the `dusk:install` Artisan command:
 
@@ -54,6 +61,12 @@ A `Browser` directory will be created within your `tests` directory and will con
 To run your tests, use the `dusk` Artisan command. The `dusk` command accepts any argument that is also accepted by the `phpunit` command:
 
     php artisan dusk
+
+If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
+
+    php artisan dusk:fails
+
+> {note} Dusk requires its `chromedriver` binaries to be executable. If you're having problems running Dusk, you can ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin`.
 
 <a name="using-other-browsers"></a>
 ### Using Other Browsers
@@ -73,7 +86,7 @@ To get started, open your `tests/DuskTestCase.php` file, which is the base Dusk 
         // static::startChromeDriver();
     }
 
-Next, you may simply modify the `driver` method to connect to the URL and port of your choice. In addition, you may modify the "desired capabilities" that should be passed to the WebDriver:
+Next, you may modify the `driver` method to connect to the URL and port of your choice. In addition, you may modify the "desired capabilities" that should be passed to the WebDriver:
 
     /**
      * Create the RemoteWebDriver instance.
@@ -103,6 +116,10 @@ To generate a Dusk test, use the `dusk:make` Artisan command. The generated test
 To run your browser tests, use the `dusk` Artisan command:
 
     php artisan dusk
+
+If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
+
+    php artisan dusk:fails
 
 The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, allowing you to only run the tests for a given [group](https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group), etc:
 
@@ -189,7 +206,7 @@ As you can see in the example above, the `browse` method accepts a callback. A b
 
 #### Creating Multiple Browsers
 
-Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, simply "ask" for more than one browser in the signature of the callback given to the `browse` method:
+Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, "ask" for more than one browser in the signature of the callback given to the `browse` method:
 
     $this->browse(function ($first, $second) {
         $first->loginAs(User::find(1))
@@ -206,6 +223,53 @@ Sometimes you may need multiple browsers in order to properly carry out a test. 
               ->assertSee('Jeffrey Way');
     });
 
+#### Resizing Browser Windows
+
+You may use the `resize` method to adjust the size of the browser window:
+
+    $browser->resize(1920, 1080);
+
+The `maximize` method may be used to maximize the browser window:
+
+    $browser->maximize();
+
+<a name="browser-macros"></a>
+### Browser Macros
+
+If you would like to define a custom browser method that you can re-use in a variety of your tests, you may use the `macro` method on the `Browser` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Laravel\Dusk\Browser;
+    use Illuminate\Support\ServiceProvider;
+
+    class DuskServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register the Dusk's browser macros.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Browser::macro('scrollToElement', function ($element = null) {
+                $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
+
+                return $this;
+            });
+        }
+    }
+
+The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro as a method on a `Browser` implementation:
+
+    $this->browse(function ($browser) use ($user) {
+        $browser->visit('/pay')
+                ->scrollToElement('#credit-card-details')
+                ->assertSee('Enter Credit Card Details');
+    });
+
 <a name="authentication"></a>
 ### Authentication
 
@@ -218,8 +282,50 @@ Often, you will be testing pages that require authentication. You can use Dusk's
 
 > {note} After using the `loginAs` method, the user session will be maintained for all tests within the file.
 
+<a name="migrations"></a>
+### Database Migrations
+
+When your test requires migrations, like the authentication example above, you should never use the `RefreshDatabase` trait. The `RefreshDatabase` trait leverages database transactions which will not be applicable across HTTP requests. Instead, use the `DatabaseMigrations` trait:
+
+    <?php
+
+    namespace Tests\Browser;
+
+    use App\User;
+    use Tests\DuskTestCase;
+    use Laravel\Dusk\Chrome;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+    class ExampleTest extends DuskTestCase
+    {
+        use DatabaseMigrations;
+    }
+
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
+
+<a name="dusk-selectors"></a>
+### Dusk Selectors
+
+Choosing good CSS selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
+
+    // HTML...
+
+    <button>Login</button>
+
+    // Test...
+
+    $browser->click('.login-page .container div > button');
+
+Dusk selectors allow you to focus on writing effective tests rather than remembering CSS selectors. To define a selector, add a `dusk` attribute to your HTML element. Then, prefix the selector with `@` to manipulate the attached element within a Dusk test:
+
+    // HTML...
+
+    <button dusk="login-button">Login</button>
+
+    // Test...
+
+    $browser->click('@login-button');
 
 <a name="clicking-links"></a>
 ### Clicking Links
@@ -266,7 +372,12 @@ Dusk provides a variety of methods for interacting with forms and input elements
 
 Note that, although the method accepts one if necessary, we are not required to pass a CSS selector into the `type` method. If a CSS selector is not provided, Dusk will search for an input field with the given `name` attribute. Finally, Dusk will attempt to find a `textarea` with the given `name` attribute.
 
-You may "clear" the value of an input using the `clear` method:
+To append text to a field without clearing its content, you may use the `append` method:
+
+    $browser->type('tags', 'foo')
+            ->append('tags', ', bar, baz');
+
+You may clear the value of an input using the `clear` method:
 
     $browser->clear('email');
 
@@ -300,6 +411,8 @@ To "select" a radio button option, you may use the `radio` method. Like many oth
 The `attach` method may be used to attach a file to a `file` input element. Like many other input related methods, a full CSS selector is not required. If an exact selector match can't be found, Dusk will search for a file input with matching `name` attribute:
 
     $browser->attach('photo', __DIR__.'/photos/me.png');
+
+> {note} The attach function requires the `Zip` PHP extension to be installed and enabled on your server.
 
 <a name="using-the-keyboard"></a>
 ### Using The Keyboard
@@ -414,6 +527,10 @@ When making a path assertion such as `$browser->assertPathIs('/home')`, the asse
 
     $browser->waitForLocation('/secret');
 
+You may also wait for a named route's location:
+
+    $browser->waitForRoute($routeName, $parameters);
+
 #### Waiting for Page Reloads
 
 If you need to make assertions after a page has been reloaded, use the `waitForReload` method:
@@ -442,49 +559,498 @@ Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. Yo
         return $something->isReady();
     }, "Something wasn't ready in time.");
 
+<a name="making-vue-assertions"></a>
+### Making Vue Assertions
+
+Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org) component data. For example, imagine your application contains the following Vue component:
+
+    // HTML...
+
+    <profile dusk="profile-component"></profile>
+
+    // Component Definition...
+
+    Vue.component('profile', {
+        template: '<div>{{ user.name }}</div>',
+
+        data: function () {
+            return {
+                user: {
+                  name: 'Taylor'
+                }
+            };
+        }
+    });
+
+You may assert on the state of the Vue component like so:
+
+    /**
+     * A basic Vue test example.
+     *
+     * @return void
+     */
+    public function testVue()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/')
+                    ->assertVue('user.name', 'Taylor', '@profile-component');
+        });
+    }
+
 <a name="available-assertions"></a>
 ## Available Assertions
 
-Dusk provides a variety of assertions that you may make against your application. All of the available assertions are documented in the table below:
+Dusk provides a variety of assertions that you may make against your application. All of the available assertions are documented in the list below:
 
-Assertion  | Description
-------------- | -------------
-`$browser->assertTitle($title)`  |  Assert the page title matches the given text.
-`$browser->assertTitleContains($title)`  |  Assert the page title contains the given text.
-`$browser->assertPathBeginsWith($path)`  |  Assert that the current URL path begins with given path.
-`$browser->assertPathIs('/home')`  |  Assert the current path matches the given path.
-`$browser->assertPathIsNot('/home')`  |  Assert the current path does not match the given path.
-`$browser->assertRouteIs($name, $parameters)`  |  Assert the current URL matches the given named route's URL.
-`$browser->assertQueryStringHas($name, $value)`  |  Assert the given query string parameter is present and has a given value.
-`$browser->assertQueryStringMissing($name)`  |  Assert the given query string parameter is missing.
-`$browser->assertHasQueryStringParameter($name)`  |  Assert that the given query string parameter is present.
-`$browser->assertHasCookie($name)`  |  Assert the given cookie is present.
-`$browser->assertCookieValue($name, $value)`  |  Assert a cookie has a given value.
-`$browser->assertPlainCookieValue($name, $value)`  |  Assert an unencrypted cookie has a given value.
-`$browser->assertSee($text)`  |  Assert the given text is present on the page.
-`$browser->assertDontSee($text)`  |  Assert the given text is not present on the page.
-`$browser->assertSeeIn($selector, $text)`  |  Assert the given text is present within the selector.
-`$browser->assertDontSeeIn($selector, $text)`  |  Assert the given text is not present within the selector.
-`$browser->assertSourceHas($code)`  |  Assert that the given source code is present on the page.
-`$browser->assertSourceMissing($code)`  |  Assert that the given source code is not present on the page.
-`$browser->assertSeeLink($linkText)`  |  Assert the given link is present on the page.
-`$browser->assertDontSeeLink($linkText)`  |  Assert the given link is not present on the page.
-`$browser->assertSeeLink($link)`  |  Determine if the given link is visible.
-`$browser->assertInputValue($field, $value)`  |  Assert the given input field has the given value.
-`$browser->assertInputValueIsNot($field, $value)`  |  Assert the given input field does not have the given value.
-`$browser->assertChecked($field)`  |  Assert the given checkbox is checked.
-`$browser->assertNotChecked($field)`  |  Assert the given checkbox is not checked.
-`$browser->assertRadioSelected($field, $value)`  |  Assert the given radio field is selected.
-`$browser->assertRadioNotSelected($field, $value)` |  Assert the given radio field is not selected.
-`$browser->assertSelected($field, $value)`  |  Assert the given dropdown has the given value selected.
-`$browser->assertNotSelected($field, $value)`  |  Assert the given dropdown does not have the given value selected.
-`$browser->assertSelectHasOptions($field, $values)`  |  Assert that the given array of values are available to be selected.
-`$browser->assertSelectMissingOptions($field, $values)`  |  Assert that the given array of values are not available to be selected.
-`$browser->assertSelectHasOption($field, $value)`  |  Assert that the given value is available to be selected on the given field.
-`$browser->assertValue($selector, $value)`  |  Assert the element matching the given selector has the given value.
-`$browser->assertVisible($selector)`  |  Assert the element matching the given selector is visible.
-`$browser->assertMissing($selector)`  |  Assert the element matching the given selector is not visible.
-`$browser->assertDialogOpened($message)`  |  Assert that a JavaScript dialog with given message has been opened.
+<style>
+    .collection-method-list > p {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    }
+
+    .collection-method-list a {
+        display: block;
+    }
+</style>
+
+<div class="collection-method-list" markdown="1">
+[assertTitle](#assert-title)
+[assertTitleContains](#assert-title-contains)
+[assertUrlIs](#assert-url-is)
+[assertSchemeIs](#assert-scheme-is)
+[assertSchemeIsNot](#assert-scheme-is-not)
+[assertHostIs](#assert-host-is)
+[assertHostIsNot](#assert-host-is-not)
+[assertPortIs](#assert-port-is)
+[assertPortIsNot](#assert-port-is-not)
+[assertPathBeginsWith](#assert-path-begins-with)
+[assertPathIs](#assert-path-is)
+[assertPathIsNot](#assert-path-is-not)
+[assertRouteIs](#assert-route-is)
+[assertQueryStringHas](#assert-query-string-has)
+[assertQueryStringMissing](#assert-query-string-missing)
+[assertFragmentIs](#assert-fragment-is)
+[assertFragmentBeginsWith](#assert-fragment-begins-with)
+[assertFragmentIsNot](#assert-fragment-is-not)
+[assertHasCookie](#assert-has-cookie)
+[assertCookieMissing](#assert-cookie-missing)
+[assertCookieValue](#assert-cookie-value)
+[assertPlainCookieValue](#assert-plain-cookie-value)
+[assertSee](#assert-see)
+[assertDontSee](#assert-dont-see)
+[assertSeeIn](#assert-see-in)
+[assertDontSeeIn](#assert-dont-see-in)
+[assertSourceHas](#assert-source-has)
+[assertSourceMissing](#assert-source-missing)
+[assertSeeLink](#assert-see-link)
+[assertDontSeeLink](#assert-dont-see-link)
+[assertInputValue](#assert-input-value)
+[assertInputValueIsNot](#assert-input-value-is-not)
+[assertChecked](#assert-checked)
+[assertNotChecked](#assert-not-checked)
+[assertRadioSelected](#assert-radio-selected)
+[assertRadioNotSelected](#assert-radio-not-selected)
+[assertSelected](#assert-selected)
+[assertNotSelected](#assert-not-selected)
+[assertSelectHasOptions](#assert-select-has-options)
+[assertSelectMissingOptions](#assert-select-missing-options)
+[assertSelectHasOption](#assert-select-has-option)
+[assertValue](#assert-value)
+[assertVisible](#assert-visible)
+[assertPresent](#assert-present)
+[assertMissing](#assert-missing)
+[assertDialogOpened](#assert-dialog-opened)
+[assertEnabled](#assert-enabled)
+[assertDisabled](#assert-disabled)
+[assertFocused](#assert-focused)
+[assertNotFocused](#assert-not-focused)
+[assertVue](#assert-vue)
+[assertVueIsNot](#assert-vue-is-not)
+[assertVueContains](#assert-vue-contains)
+[assertVueDoesNotContain](#assert-vue-does-not-contain)
+</div>
+
+<a name="assert-title"></a>
+#### assertTitle
+
+Assert that the page title matches the given text:
+
+    $browser->assertTitle($title);
+
+<a name="assert-title-contains"></a>
+#### assertTitleContains
+
+Assert that the page title contains the given text:
+
+    $browser->assertTitleContains($title);
+
+<a name="assert-url-is"></a>
+#### assertUrlIs
+
+Assert that the current URL (without the query string) matches the given string:
+
+    $browser->assertUrlIs($url);
+
+<a name="assert-scheme-is"></a>
+#### assertSchemeIs
+
+Assert that the current URL scheme matches the given scheme:
+
+    $browser->assertSchemeIs($scheme);
+
+<a name="assert-scheme-is-not"></a>
+#### assertSchemeIsNot
+
+Assert that the current URL scheme does not match the given scheme:
+
+    $browser->assertSchemeIsNot($scheme);
+
+<a name="assert-host-is"></a>
+#### assertHostIs
+
+Assert that the current URL host matches the given host:
+
+    $browser->assertHostIs($host);
+
+<a name="assert-host-is-not"></a>
+#### assertHostIsNot
+
+Assert that the current URL host does not match the given host:
+
+    $browser->assertHostIsNot($host);
+
+<a name="assert-port-is"></a>
+#### assertPortIs
+
+Assert that the current URL port matches the given port:
+
+    $browser->assertPortIs($port);
+
+<a name="assert-port-is-not"></a>
+#### assertPortIsNot
+
+Assert that the current URL port does not match the given port:
+
+    $browser->assertPortIsNot($port);
+
+<a name="assert-path-begins-with"></a>
+#### assertPathBeginsWith
+
+Assert that the current URL path begins with the given path:
+
+    $browser->assertPathBeginsWith($path);
+
+<a name="assert-path-is"></a>
+#### assertPathIs
+
+Assert that the current path matches the given path:
+
+    $browser->assertPathIs('/home');
+
+<a name="assert-path-is-not"></a>
+#### assertPathIsNot
+
+Assert that the current path does not match the given path:
+
+    $browser->assertPathIsNot('/home');
+
+<a name="assert-route-is"></a>
+#### assertRouteIs
+
+Assert that the current URL matches the given named route's URL:
+
+    $browser->assertRouteIs($name, $parameters);
+
+<a name="assert-query-string-has"></a>
+#### assertQueryStringHas
+
+Assert that the given query string parameter is present:
+
+    $browser->assertQueryStringHas($name);
+
+Assert that the given query string parameter is present and has a given value:
+
+    $browser->assertQueryStringHas($name, $value);
+
+<a name="assert-query-string-missing"></a>
+#### assertQueryStringMissing
+
+Assert that the given query string parameter is missing:
+
+    $browser->assertQueryStringMissing($name);
+
+<a name="assert-fragment-is"></a>
+#### assertFragmentIs
+
+Assert that the current fragment matches the given fragment:
+
+    $browser->assertFragmentIs('anchor');
+
+<a name="assert-fragment-begins-with"></a>
+#### assertFragmentBeginsWith
+
+Assert that the current fragment begins with the given fragment:
+
+    $browser->assertFragmentBeginsWith('anchor');
+
+<a name="assert-fragment-is-not"></a>
+#### assertFragmentIsNot
+
+Assert that the current fragment does not match the given fragment:
+
+    $browser->assertFragmentIsNot('anchor');
+
+<a name="assert-has-cookie"></a>
+#### assertHasCookie
+
+Assert that the given cookie is present:
+
+    $browser->assertHasCookie($name);
+
+<a name="assert-cookie-missing"></a>
+#### assertCookieMissing
+
+Assert that the given cookie is not present:
+
+    $browser->assertCookieMissing($name);
+
+<a name="assert-cookie-value"></a>
+#### assertCookieValue
+
+Assert that a cookie has a given value:
+
+    $browser->assertCookieValue($name, $value);
+
+<a name="assert-plain-cookie-value"></a>
+#### assertPlainCookieValue
+
+Assert that an unencrypted cookie has a given value:
+
+    $browser->assertPlainCookieValue($name, $value);
+
+<a name="assert-see"></a>
+#### assertSee
+
+Assert that the given text is present on the page:
+
+    $browser->assertSee($text);
+
+<a name="assert-dont-see"></a>
+#### assertDontSee
+
+Assert that the given text is not present on the page:
+
+    $browser->assertDontSee($text);
+
+<a name="assert-see-in"></a>
+#### assertSeeIn
+
+Assert that the given text is present within the selector:
+
+    $browser->assertSeeIn($selector, $text);
+
+<a name="assert-dont-see-in"></a>
+#### assertDontSeeIn
+
+Assert that the given text is not present within the selector:
+
+    $browser->assertDontSeeIn($selector, $text);
+
+<a name="assert-source-has"></a>
+#### assertSourceHas
+
+Assert that the given source code is present on the page:
+
+    $browser->assertSourceHas($code);
+
+<a name="assert-source-missing"></a>
+#### assertSourceMissing
+
+Assert that the given source code is not present on the page:
+
+    $browser->assertSourceMissing($code);
+
+<a name="assert-see-link"></a>
+#### assertSeeLink
+
+Assert that the given link is present on the page:
+
+    $browser->assertSeeLink($linkText);
+
+<a name="assert-dont-see-link"></a>
+#### assertDontSeeLink
+
+Assert that the given link is not present on the page:
+
+    $browser->assertDontSeeLink($linkText);
+
+<a name="assert-input-value"></a>
+#### assertInputValue
+
+Assert that the given input field has the given value:
+
+    $browser->assertInputValue($field, $value);
+
+<a name="assert-input-value-is-not"></a>
+#### assertInputValueIsNot
+
+Assert that the given input field does not have the given value:
+
+    $browser->assertInputValueIsNot($field, $value);
+
+<a name="assert-checked"></a>
+#### assertChecked
+
+Assert that the given checkbox is checked:
+
+    $browser->assertChecked($field);
+
+<a name="assert-not-checked"></a>
+#### assertNotChecked
+
+Assert that the given checkbox is not checked:
+
+    $browser->assertNotChecked($field);
+
+<a name="assert-radio-selected"></a>
+#### assertRadioSelected
+
+Assert that the given radio field is selected:
+
+    $browser->assertRadioSelected($field, $value);
+
+<a name="assert-radio-not-selected"></a>
+#### assertRadioNotSelected
+
+Assert that the given radio field is not selected:
+
+    $browser->assertRadioNotSelected($field, $value);
+
+<a name="assert-selected"></a>
+#### assertSelected
+
+Assert that the given dropdown has the given value selected:
+
+    $browser->assertSelected($field, $value);
+
+<a name="assert-not-selected"></a>
+#### assertNotSelected
+
+Assert that the given dropdown does not have the given value selected:
+
+    $browser->assertNotSelected($field, $value);
+
+<a name="assert-select-has-options"></a>
+#### assertSelectHasOptions
+
+Assert that the given array of values are available to be selected:
+
+    $browser->assertSelectHasOptions($field, $values);
+
+<a name="assert-select-missing-options"></a>
+#### assertSelectMissingOptions
+
+Assert that the given array of values are not available to be selected:
+
+    $browser->assertSelectMissingOptions($field, $values);
+
+<a name="assert-select-has-option"></a>
+#### assertSelectHasOption
+
+Assert that the given value is available to be selected on the given field:
+
+    $browser->assertSelectHasOption($field, $value);
+
+<a name="assert-value"></a>
+#### assertValue
+
+Assert that the element matching the given selector has the given value:
+
+    $browser->assertValue($selector, $value);
+
+<a name="assert-visible"></a>
+#### assertVisible
+
+Assert that the element matching the given selector is visible:
+
+    $browser->assertVisible($selector);
+
+<a name="assert-present"></a>
+#### assertPresent
+
+Assert that the element matching the given selector is present:
+
+    $browser->assertPresent($selector);
+
+<a name="assert-missing"></a>
+#### assertMissing
+
+Assert that the element matching the given selector is not visible:
+
+    $browser->assertMissing($selector);
+
+<a name="assert-dialog-opened"></a>
+#### assertDialogOpened
+
+Assert that a JavaScript dialog with the given message has been opened:
+
+    $browser->assertDialogOpened($message);
+
+<a name="assert-enabled"></a>
+#### assertEnabled
+
+Assert that the given field is enabled:
+
+    $browser->assertEnabled($field);
+
+<a name="assert-disabled"></a>
+#### assertDisabled
+
+Assert that the given field is disabled:
+
+    $browser->assertDisabled($field);
+
+<a name="assert-focused"></a>
+#### assertFocused
+
+Assert that the given field is focused:
+
+    $browser->assertFocused($field);
+
+<a name="assert-not-focused"></a>
+#### assertNotFocused
+
+Assert that the given field is not focused:
+
+    $browser->assertNotFocused($field);
+
+<a name="assert-vue"></a>
+#### assertVue
+
+Assert that a given Vue component data property matches the given value:
+
+    $browser->assertVue($property, $value, $componentSelector = null);
+
+<a name="assert-vue-is-not"></a>
+#### assertVueIsNot
+
+Assert that a given Vue component data property does not match the given value:
+
+    $browser->assertVueIsNot($property, $value, $componentSelector = null);
+
+<a name="assert-vue-contains"></a>
+#### assertVueContains
+
+Assert that a given Vue component data property is an array and contains the given value:
+
+    $browser->assertVueContains($property, $value, $componentSelector = null);
+
+<a name="assert-vue-does-not-contain"></a>
+#### assertVueDoesNotContain
+
+Assert that a given Vue component data property is an array and does not contain the given value:
+
+    $browser->assertVueDoesNotContain($property, $value, $componentSelector = null);
 
 <a name="pages"></a>
 ## Pages
@@ -624,59 +1190,124 @@ Once the method has been defined, you may use it within any test that utilizes t
             ->createPlaylist('My Playlist')
             ->assertSee('My Playlist');
 
+<a name="components"></a>
+## Components
+
+Components are similar to Dusk’s “page objects”, but are intended for pieces of UI and functionality that are re-used throughout your application, such as a navigation bar or notification window. As such, components are not bound to specific URLs.
+
+<a name="generating-components"></a>
+### Generating Components
+
+To generate a component, use the `dusk:component` Artisan command. New components are placed in the `test/Browser/Components` directory:
+
+    php artisan dusk:component DatePicker
+
+As shown above, a "date picker" is an example of a component that might exist throughout your application on a variety of pages. It can become cumbersome to manually write the browser automation logic to select a date in dozens of tests throughout your test suite. Instead, we can define a Dusk component to represent the date picker, allowing us to encapsulate that logic within the component:
+
+    <?php
+
+    namespace Tests\Browser\Components;
+
+    use Laravel\Dusk\Browser;
+    use Laravel\Dusk\Component as BaseComponent;
+
+    class DatePicker extends BaseComponent
+    {
+        /**
+         * Get the root selector for the component.
+         *
+         * @return string
+         */
+        public function selector()
+        {
+            return '.date-picker';
+        }
+
+        /**
+         * Assert that the browser page contains the component.
+         *
+         * @param  Browser  $browser
+         * @return void
+         */
+        public function assert(Browser $browser)
+        {
+            $browser->assertVisible($this->selector());
+        }
+
+        /**
+         * Get the element shortcuts for the component.
+         *
+         * @return array
+         */
+        public function elements()
+        {
+            return [
+                '@date-field' => 'input.datepicker-input',
+                '@month-list' => 'div > div.datepicker-months',
+                '@day-list' => 'div > div.datepicker-days',
+            ];
+        }
+
+        /**
+         * Select the given date.
+         *
+         * @param  \Laravel\Dusk\Browser  $browser
+         * @param  int  $month
+         * @param  int  $year
+         * @return void
+         */
+        public function selectDate($browser, $month, $year)
+        {
+            $browser->click('@date-field')
+                    ->within('@month-list', function ($browser) use ($month) {
+                        $browser->click($month);
+                    })
+                    ->within('@day-list', function ($browser) use ($day) {
+                        $browser->click($day);
+                    });
+        }
+    }
+
+<a name="using-components"></a>
+### Using Components
+
+Once the component has been defined, we can easily select a date within the date picker from any test. And, if the logic necessary to select a date changes, we only need to update the component:
+
+    <?php
+
+    namespace Tests\Browser;
+
+    use Tests\DuskTestCase;
+    use Laravel\Dusk\Browser;
+    use Tests\Browser\Components\DatePicker;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+    class ExampleTest extends DuskTestCase
+    {
+        /**
+         * A basic component test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $this->browse(function (Browser $browser) {
+                $browser->visit('/')
+                        ->within(new DatePicker, function ($browser) {
+                            $browser->selectDate(1, 2018);
+                        })
+                        ->assertSee('January');
+            });
+        }
+    }
+
 <a name="continuous-integration"></a>
 ## Continuous Integration
-
-<a name="running-tests-on-travis-ci"></a>
-### Travis CI
-
-To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
-
-    sudo: required
-    dist: trusty
-
-    addons:
-       chrome: stable
-
-    install:
-       - cp .env.testing .env
-       - travis_retry composer install --no-interaction --prefer-dist --no-suggest
-
-    before_script:
-       - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-       - php artisan serve &
-
-    script:
-       - php artisan dusk
 
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
 
-#### CircleCI 1.0
-
-If you are using CircleCI 1.0 to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
-
-	dependencies:
-	  pre:
-	      - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-	      - sudo dpkg -i google-chrome.deb
-	      - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
-	      - rm google-chrome.deb
-
-    test:
-        pre:
-            - "./vendor/laravel/dusk/bin/chromedriver-linux":
-                background: true
-            - cp .env.testing .env
-            - "php artisan serve":
-                background: true
-
-        override:
-            - php artisan dusk
-
- #### CircleCI 2.0
-
- If you are using CircleCI 2.0 to run your Dusk tests, you may add these steps to your build:
+If you are using CircleCI to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
      version: 2
      jobs:
@@ -702,3 +1333,66 @@ If you are using CircleCI 1.0 to run your Dusk tests, you may use this configura
                 - run:
                    name: Run Laravel Dusk Tests
                    command: php artisan dusk
+
+<a name="running-tests-on-codeship"></a>
+### Codeship
+
+To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. Of course, these commands are a starting point and you are free to add additional commands as needed:
+
+    phpenv local 7.1
+    cp .env.testing .env
+    composer install --no-interaction
+    nohup bash -c "./vendor/laravel/dusk/bin/chromedriver-linux 2>&1 &"
+    nohup bash -c "php artisan serve 2>&1 &" && sleep 5
+    php artisan dusk
+
+<a name="running-tests-on-heroku-ci"></a>
+### Heroku CI
+
+To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration), add the following Google Chrome buildpack and scripts to your Heroku `app.json` file:
+
+    {
+      "environments": {
+        "test": {
+          "buildpacks": [
+            { "url": "heroku/php" },
+            { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
+          ],
+          "scripts": {
+            "test-setup": "cp .env.testing .env",
+            "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve > /dev/null 2>&1 &' && php artisan dusk"
+          }
+        }
+      }
+    }
+
+<a name="running-tests-on-travis-ci"></a>
+### Travis CI
+
+To run your Dusk tests on [Travis CI](https://travis-ci.org), we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
+
+    language: php
+    sudo: required
+    dist: trusty
+
+    php:
+      - 7.2
+
+    addons:
+      chrome: stable
+
+    install:
+      - cp .env.testing .env
+      - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+      - php artisan key:generate
+
+    before_script:
+      - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+      - php artisan serve &
+
+    script:
+      - php artisan dusk
+
+In your `.env.testing` file, adjust the value of `APP_URL`:
+
+    APP_URL=http://127.0.0.1:8000

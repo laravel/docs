@@ -5,8 +5,10 @@
     - [The Public Disk](#the-public-disk)
     - [The Local Driver](#the-local-driver)
     - [Driver Prerequisites](#driver-prerequisites)
+    - [Caching](#caching)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
 - [Retrieving Files](#retrieving-files)
+    - [Downloading Files](#downloading-files)
     - [File URLs](#file-urls)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
@@ -24,7 +26,7 @@ Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flys
 <a name="configuration"></a>
 ## Configuration
 
-The filesystem configuration file is located at `config/filesystems.php`. Within this file you may configure all of your "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file. So, simply modify the configuration to reflect your storage preferences and credentials.
+The filesystem configuration file is located at `config/filesystems.php`. Within this file you may configure all of your "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file. So, modify the configuration to reflect your storage preferences and credentials.
 
 Of course, you may configure as many disks as you like, and may even have multiple disks that use the same driver.
 
@@ -53,14 +55,19 @@ When using the `local` driver, all file operations are relative to the `root` di
 
 #### Composer Packages
 
-Before using the S3 or Rackspace drivers, you will need to install the appropriate package via Composer:
+Before using the SFTP, S3, or Rackspace drivers, you will need to install the appropriate package via Composer:
 
+- SFTP: `league/flysystem-sftp ~1.0`
 - Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 - Rackspace: `league/flysystem-rackspace ~1.0`
 
+An absolute must for performance is to use a cached adapter. You will need an additional package for this:
+
+- CachedAdapter: `league/flysystem-cached-adapter ~1.0`
+
 #### S3 Driver Configuration
 
-The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials.
+The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
 
 #### FTP Driver Configuration
 
@@ -80,6 +87,26 @@ Laravel's Flysystem integrations works great with FTP; however, a sample configu
         // 'timeout'  => 30,
     ],
 
+#### SFTP Driver Configuration
+
+Laravel's Flysystem integrations works great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a SFTP filesystem, you may use the example configuration below:
+
+    'sftp' => [
+        'driver' => 'sftp',
+        'host' => 'example.com',
+        'username' => 'your-username',
+        'password' => 'your-password',
+
+        // Settings for SSH key based authentication...
+        // 'privateKey' => '/path/to/privateKey',
+        // 'password' => 'encryption-password',
+
+        // Optional SFTP Settings...
+        // 'port' => 22,
+        // 'root' => '',
+        // 'timeout' => 30,
+    ],
+
 #### Rackspace Driver Configuration
 
 Laravel's Flysystem integrations works great with Rackspace; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a Rackspace filesystem, you may use the example configuration below:
@@ -92,6 +119,23 @@ Laravel's Flysystem integrations works great with Rackspace; however, a sample c
         'endpoint'  => 'https://identity.api.rackspacecloud.com/v2.0/',
         'region'    => 'IAD',
         'url_type'  => 'publicURL',
+    ],
+
+<a name="caching"></a>
+### Caching
+
+To enable caching for a given disk, you may add a `cache` directive to the disk's configuration options. The `cache` option should be an array of caching options containing the `disk` name, the `expire` time in seconds, and the cache `prefix`:
+
+    's3' => [
+        'driver' => 's3',
+
+        // Other Disk Options...
+
+        'cache' => [
+            'store' => 'memcached',
+            'expire' => 600,
+            'prefix' => 'cache-prefix',
+        ],
     ],
 
 <a name="obtaining-disk-instances"></a>
@@ -118,23 +162,32 @@ The `exists` method may be used to determine if a file exists on the disk:
 
     $exists = Storage::disk('s3')->exists('file.jpg');
 
+<a name="downloading-files"></a>
+### Downloading Files
+
+The `download` method may be used to generate a response that forces the user's browser to download the file at the given path. The `download` method accepts a file name as the second argument to the method, which will determine the file name that is seen by the user downloading the file. Finally, you may pass an array of HTTP headers as the third argument to the method:
+
+    return Storage::download('file.jpg');
+
+    return Storage::download('file.jpg', $name, $headers);
+
 <a name="file-urls"></a>
 ### File URLs
 
-When using the `local` or `s3` drivers, you may use the `url` method to get the URL for the given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the fully qualified remote URL will be returned:
+You may use the `url` method to get the URL for the given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` or `rackspace` driver, the fully qualified remote URL will be returned:
 
     use Illuminate\Support\Facades\Storage;
 
-    $url = Storage::url('file1.jpg');
+    $url = Storage::url('file.jpg');
 
 > {note} Remember, if you are using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory.
 
 #### Temporary URLs
 
-For files stored using the `s3` driver, you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
+For files stored using the `s3` or `rackspace` driver, you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
 
     $url = Storage::temporaryUrl(
-        'file1.jpg', Carbon::now()->addMinutes(5)
+        'file.jpg', now()->addMinutes(5)
     );
 
 #### Local URL Host Customization
@@ -155,11 +208,11 @@ In addition to reading and writing files, Laravel can also provide information a
 
     use Illuminate\Support\Facades\Storage;
 
-    $size = Storage::size('file1.jpg');
+    $size = Storage::size('file.jpg');
 
 The `lastModified` method returns the UNIX timestamp of the last time the file was modified:
 
-    $time = Storage::lastModified('file1.jpg');
+    $time = Storage::lastModified('file.jpg');
 
 <a name="storing-files"></a>
 ## Storing Files
@@ -177,6 +230,7 @@ The `put` method may be used to store raw file contents on a disk. You may also 
 If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either a `Illuminate\Http\File` or `Illuminate\Http\UploadedFile` instance and will automatically stream the file to your desired location:
 
     use Illuminate\Http\File;
+    use Illuminate\Support\Facades\Storage;
 
     // Automatically generate a unique ID for file name...
     Storage::putFile('photos', new File('/path/to/photo'));
@@ -184,7 +238,7 @@ If you would like Laravel to automatically manage streaming a given file to your
     // Manually specify a file name...
     Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
 
-There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will generate a unique ID to serve as the file name. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
+There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will generate a unique ID to serve as the file name. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
 
 The `putFile` and `putFileAs` methods also accept an argument to specify the "visibility" of the stored file. This is particularly useful if you are storing the file on a cloud disk such as S3 and would like the file to be publicly accessible:
 
@@ -202,14 +256,14 @@ The `prepend` and `append` methods allow you to write to the beginning or end of
 
 The `copy` method may be used to copy an existing file to a new location on the disk, while the `move` method may be used to rename or move an existing file to a new location:
 
-    Storage::copy('old/file1.jpg', 'new/file1.jpg');
+    Storage::copy('old/file.jpg', 'new/file.jpg');
 
-    Storage::move('old/file1.jpg', 'new/file1.jpg');
+    Storage::move('old/file.jpg', 'new/file.jpg');
 
 <a name="file-uploads"></a>
 ### File Uploads
 
-In web applications, one of the most common use-cases for storing files is storing user uploaded files such as profile pictures, photos, and documents. Laravel makes it very easy to store uploaded files using the `store` method on an uploaded file instance. Simply call the `store` method with the path at which you wish to store the uploaded file:
+In web applications, one of the most common use-cases for storing files is storing user uploaded files such as profile pictures, photos, and documents. Laravel makes it very easy to store uploaded files using the `store` method on an uploaded file instance. Call the `store` method with the path at which you wish to store the uploaded file:
 
     <?php
 
@@ -234,7 +288,7 @@ In web applications, one of the most common use-cases for storing files is stori
         }
     }
 
-There are a few important things to note about this example. Note that we only specified a directory name, not a file name. By default, the `store` method will generate a unique ID to serve as the file name. The path to the file will be returned by the `store` method so you can store the path, including the generated file name, in your database.
+There are a few important things to note about this example. Note that we only specified a directory name, not a file name. By default, the `store` method will generate a unique ID to serve as the file name. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `store` method so you can store the path, including the generated file name, in your database.
 
 You may also call the `putFile` method on the `Storage` facade to perform the same file manipulation as the example above:
 
@@ -288,7 +342,13 @@ The `delete` method accepts a single filename or an array of files to remove fro
 
     Storage::delete('file.jpg');
 
-    Storage::delete(['file1.jpg', 'file2.jpg']);
+    Storage::delete(['file.jpg', 'file2.jpg']);
+
+If necessary, you may specify the disk that the file should be deleted from:
+
+    use Illuminate\Support\Facades\Storage;
+
+    Storage::disk('s3')->delete('folder_path/file_name.jpg');
 
 <a name="directories"></a>
 ## Directories
@@ -341,8 +401,8 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
 
     use Storage;
     use League\Flysystem\Filesystem;
-    use Spatie\Dropbox\Client as DropboxClient;
     use Illuminate\Support\ServiceProvider;
+    use Spatie\Dropbox\Client as DropboxClient;
     use Spatie\FlysystemDropbox\DropboxAdapter;
 
     class DropboxServiceProvider extends ServiceProvider
@@ -356,7 +416,7 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
         {
             Storage::extend('dropbox', function ($app, $config) {
                 $client = new DropboxClient(
-                    $config['authorizationToken']
+                    $config['authorization_token']
                 );
 
                 return new Filesystem(new DropboxAdapter($client));

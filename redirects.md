@@ -37,7 +37,7 @@ If your route has parameters, you may pass them as the second argument to the `r
 
 #### Populating Parameters Via Eloquent Models
 
-If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may simply pass the model itself. The ID will be extracted automatically:
+If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may pass the model itself. The ID will be extracted automatically:
 
     // For a route with the following URI: profile/{id}
 

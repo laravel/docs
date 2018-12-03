@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
     - [Connections Vs. Queues](#connections-vs-queues)
-    - [Driver Prerequisites](#driver-prerequisites)
+    - [Driver Notes & Prerequisites](#driver-prerequisites)
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
@@ -11,6 +11,7 @@
     - [Job Chaining](#job-chaining)
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
+    - [Rate Limiting](#rate-limiting)
     - [Error Handling](#error-handling)
 - [Running The Queue Worker](#running-the-queue-worker)
     - [Queue Priorities](#queue-priorities)
@@ -30,7 +31,7 @@
 
 Laravel queues provide a unified API across a variety of different queue backends, such as Beanstalk, Amazon SQS, Redis, or even a relational database. Queues allow you to defer the processing of a time consuming task, such as sending an email, until a later time. Deferring these time consuming tasks drastically speeds up web requests to your application.
 
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](https://kr.github.io/beanstalkd/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](http://redis.io),  and a synchronous driver that will execute jobs immediately (for local use). A `null` queue driver is also included which simply discards queued jobs.
+The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](https://kr.github.io/beanstalkd/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io),  and a synchronous driver that will execute jobs immediately (for local use). A `null` queue driver is also included which discards queued jobs.
 
 <a name="connections-vs-queues"></a>
 ### Connections Vs. Queues
@@ -50,7 +51,7 @@ Some applications may not need to ever push jobs onto multiple queues, instead p
     php artisan queue:work --queue=high,default
 
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+### Driver Notes & Prerequisites
 
 #### Database
 
@@ -64,6 +65,8 @@ In order to use the `database` queue driver, you will need a database table to h
 
 In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file.
 
+**Redis Cluster**
+
 If your Redis queue connection uses a Redis Cluster, your queue names must contain a [key hash tag](https://redis.io/topics/cluster-spec#keys-hash-tags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:
 
     'redis' => [
@@ -72,6 +75,22 @@ If your Redis queue connection uses a Redis Cluster, your queue names must conta
         'queue' => '{default}',
         'retry_after' => 90,
     ],
+
+**Blocking**
+
+When using the Redis queue, you may use the `block_for` configuration option to specify how long the driver should wait for a job to become available before iterating through the worker loop and re-polling the Redis database.
+
+Adjusting this value based on your queue load can be more efficient than continually polling the Redis database for new jobs. For instance, you may set the value to `5` to indicate that the driver should block for five seconds while waiting for a job to become available:
+
+    'redis' => [
+        'driver' => 'redis',
+        'connection' => 'default',
+        'queue' => 'default',
+        'retry_after' => 90,
+        'block_for' => 5,
+    ],
+
+> {note} Blocking pop is an experimental feature. There is a small chance that a queued job could be lost if the Redis server or worker crashes at the same time the job is retrieved.
 
 #### Other Driver Prerequisites
 
@@ -91,7 +110,7 @@ The following dependencies are needed for the listed queue drivers:
 
 By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command. You may generate a new queued job using the Artisan CLI:
 
-    php artisan make:job SendReminderEmail
+    php artisan make:job ProcessPodcast
 
 The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
 
@@ -185,7 +204,6 @@ If you would like to delay the execution of a queued job, you may use the `delay
 
     namespace App\Http\Controllers;
 
-    use Carbon\Carbon;
     use App\Jobs\ProcessPodcast;
     use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
@@ -203,7 +221,7 @@ If you would like to delay the execution of a queued job, you may use the `delay
             // Create podcast...
 
             ProcessPodcast::dispatch($podcast)
-                    ->delay(Carbon::now()->addMinutes(10));
+                    ->delay(now()->addMinutes(10));
         }
     }
 
@@ -218,6 +236,15 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
         new OptimizePodcast,
         new ReleasePodcast
     ])->dispatch();
+
+#### Chain Connection & Queue
+
+If you would like to specify the default connection and queue that should be used for the chained jobs, you may use the `allOnConnection` and `allOnQueue` methods. These methods specify the queue connection and queue name that should be used unless the queued job is explicitly assigned a different connection / queue:
+
+    ProcessPodcast::withChain([
+        new OptimizePodcast,
+        new ReleasePodcast
+    ])->dispatch()->allOnConnection('redis')->allOnQueue('podcasts');
 
 <a name="customizing-the-queue-and-connection"></a>
 ### Customizing The Queue & Connection
@@ -309,6 +336,23 @@ However, you may take a more granular approach by defining the maximum number of
         public $tries = 5;
     }
 
+<a name="time-based-attempts"></a>
+#### Time Based Attempts
+
+As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should timeout. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should timeout, add a `retryUntil` method to your job class:
+
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return now()->addSeconds(5);
+    }
+
+> {tip} You may also define a `retryUntil` method on your queued event listeners.
+
 #### Timeout
 
 > {note} The `timeout` feature is optimized for PHP 7.1+ and the `pcntl` PHP extension.
@@ -333,6 +377,39 @@ However, you may also define the maximum number of seconds a job should be allow
         public $timeout = 120;
     }
 
+<a name="rate-limiting"></a>
+### Rate Limiting
+
+> {note} This feature requires that your application can interact with a [Redis server](/docs/{{version}}/redis).
+
+If your application interacts with Redis, you may throttle your queued jobs by time or concurrency. This feature can be of assistance when your queued jobs are interacting with APIs that are also rate limited.
+
+For example, using the `throttle` method, you may throttle a given type of job to only run 10 times every 60 seconds. If a lock can not be obtained, you should typically release the job back onto the queue so it can be retried later:
+
+    Redis::throttle('key')->allow(10)->every(60)->then(function () {
+        // Job logic...
+    }, function () {
+        // Could not obtain lock...
+
+        return $this->release(10);
+    });
+
+> {tip} In the example above, the `key` may be any string that uniquely identifies the type of job you would like to rate limit. For example, you may wish to construct the key based on the class name of the job and the IDs of the Eloquent models it operates on.
+
+> {note}  Releasing a throttled job back onto the queue will still increment the job's total number of `attempts`.
+
+Alternatively, you may specify the maximum number of workers that may simultaneously process a given job. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time. For example, using the `funnel` method, you may limit jobs of a given type to only be processed by one worker at a time:
+
+    Redis::funnel('key')->limit(1)->then(function () {
+        // Job logic...
+    }, function () {
+        // Could not obtain lock...
+
+        return $this->release(10);
+    });
+
+> {tip} When using rate limiting, the number of attempts your job will need to run successfully can be hard to determine. Therefore, it is useful to combine rate limiting with [time based attempts](#time-based-attempts).
+
 <a name="error-handling"></a>
 ### Error Handling
 
@@ -349,12 +426,6 @@ Laravel includes a queue worker that will process new jobs as they are pushed on
 
 Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment).
 
-#### Processing A Single Job
-
-The `--once` option may be used to instruct the worker to only process a single job from the queue:
-
-    php artisan queue:work --once
-
 #### Specifying The Connection & Queue
 
 You may also specify which queue connection the worker should utilize. The connection name passed to the `work` command should correspond to one of the connections defined in your `config/queue.php` configuration file:
@@ -364,6 +435,18 @@ You may also specify which queue connection the worker should utilize. The conne
 You may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes only that queue:
 
     php artisan queue:work redis --queue=emails
+
+#### Processing A Single Job
+
+The `--once` option may be used to instruct the worker to only process a single job from the queue:
+
+    php artisan queue:work --once
+
+#### Processing All Queued Jobs & Then Exiting
+
+ The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when working Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
+
+     php artisan queue:work --stop-when-empty
 
 #### Resource Considerations
 
@@ -412,7 +495,7 @@ The `retry_after` configuration option and the `--timeout` CLI option are differ
 
 #### Worker Sleep Duration
 
-When jobs are available on the queue, the worker will keep processing jobs with no delay in between them. However, the `sleep` option determines how long the worker will "sleep" if there are no new jobs available. While sleeping, the worker will not process any new jobs - the jobs will be processed after the worker wakes up again.
+When jobs are available on the queue, the worker will keep processing jobs with no delay in between them. However, the `sleep` option determines how long (in seconds) the worker will "sleep" if there are no new jobs available. While sleeping, the worker will not process any new jobs - the jobs will be processed after the worker wakes up again.
 
     php artisan queue:work --sleep=3
 
@@ -528,7 +611,7 @@ You may define a `failed` method directly on your job class, allowing you to per
 <a name="failed-job-events"></a>
 ### Failed Job Events
 
-If you would like to register an event that will be called when a job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via email or [HipChat](https://www.hipchat.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+If you would like to register an event that will be called when a job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via email or [Stride](https://www.stride.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
 
     <?php
 

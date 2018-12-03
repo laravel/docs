@@ -13,16 +13,19 @@
     - [Namespaces](#route-group-namespaces)
     - [Sub-Domain Routing](#route-group-sub-domain-routing)
     - [Route Prefixes](#route-group-prefixes)
+    - [Route Name Prefixes](#route-group-name-prefixes)
 - [Route Model Binding](#route-model-binding)
     - [Implicit Binding](#implicit-binding)
     - [Explicit Binding](#explicit-binding)
+- [Fallback Routes](#fallback-routes)
+- [Rate Limiting](#rate-limiting)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing The Current Route](#accessing-the-current-route)
 
 <a name="basic-routing"></a>
 ## Basic Routing
 
-The most basic Laravel routes simply accept a URI and a `Closure`, providing a very simple and expressive method of defining routes:
+The most basic Laravel routes accept a URI and a `Closure`, providing a very simple and expressive method of defining routes:
 
     Route::get('foo', function () {
         return 'Hello World';
@@ -32,9 +35,9 @@ The most basic Laravel routes simply accept a URI and a `Closure`, providing a v
 
 All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by the framework. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection. The routes in `routes/api.php` are stateless and are assigned the `api` middleware group.
 
-For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://your-app.dev/user` in your browser:
+For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://your-app.test/user` in your browser:
 
-    Route::get('/user', 'UsersController@index');
+    Route::get('/user', 'UserController@index');
 
 Routes defined in the `routes/api.php` file are nested within a route group by the `RouteServiceProvider`. Within this group, the `/api` URI prefix is automatically applied so you do not need to manually apply it to every route in the file. You may modify the prefix and other route group options by modifying your `RouteServiceProvider` class.
 
@@ -64,7 +67,7 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
 Any HTML forms pointing to `POST`, `PUT`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](/docs/{{version}}/csrf):
 
     <form method="POST" action="/profile">
-        {{ csrf_field() }}
+        @csrf
         ...
     </form>
 
@@ -102,7 +105,7 @@ You may define as many route parameters as required by your route:
         //
     });
 
-Route parameters are always encased within `{}` braces and should consist of alphabetic characters, and may not contain a `-` character. Instead of using the `-` character, use an underscore (`_`) instead. Route parameters are injected into route callbacks / controllers based on their order - the names of the callback / controller arguments do not matter.
+Route parameters are always encased within `{}` braces and should consist of alphabetic characters, and may not contain a `-` character. Instead of using the `-` character, use an underscore (`_`). Route parameters are injected into route callbacks / controllers based on their order - the names of the callback / controller arguments do not matter.
 
 <a name="parameters-optional-parameters"></a>
 ### Optional Parameters
@@ -157,6 +160,17 @@ Once the pattern has been defined, it is automatically applied to all routes usi
         // Only executed if {id} is numeric...
     });
 
+<a name="parameters-encoded-forward-slashes"></a>
+#### Encoded Forward Slashes
+
+The Laravel routing component allows all characters except `/`. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
+
+    Route::get('search/{search}', function ($search) {
+        return $search;
+    })->where('search', '.*');
+
+> {note} Encoded forward slashes are only supported within the last route segment.
+
 <a name="named-routes"></a>
 ## Named Routes
 
@@ -168,7 +182,7 @@ Named routes allow the convenient generation of URLs or redirects for specific r
 
 You may also specify route names for controller actions:
 
-    Route::get('user/profile', 'UserController@showProfile')->name('profile');
+    Route::get('user/profile', 'UserProfileController@show')->name('profile');
 
 #### Generating URLs To Named Routes
 
@@ -242,7 +256,7 @@ Remember, by default, the `RouteServiceProvider` includes your route files withi
 <a name="route-group-sub-domain-routing"></a>
 ### Sub-Domain Routing
 
-Route groups may also be used to handle sub-domain routing. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified by calling the the `domain` method before defining the group:
+Route groups may also be used to handle sub-domain routing. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified by calling the `domain` method before defining the group:
 
     Route::domain('{account}.myapp.com')->group(function () {
         Route::get('user/{id}', function ($account, $id) {
@@ -259,6 +273,17 @@ The `prefix` method may be used to prefix each route in the group with a given U
         Route::get('users', function () {
             // Matches The "/admin/users" URL
         });
+    });
+
+<a name="route-group-name-prefixes"></a>
+### Route Name Prefixes
+
+The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix all of the grouped route's names with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
+
+    Route::name('admin.')->group(function () {
+        Route::get('users', function () {
+            // Route assigned name "admin.users"...
+        })->name('users');
     });
 
 <a name="route-model-binding"></a>
@@ -322,9 +347,41 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
         parent::boot();
 
         Route::bind('user', function ($value) {
-            return App\User::where('name', $value)->first();
+            return App\User::where('name', $value)->first() ?? abort(404);
         });
     }
+
+<a name="fallback-routes"></a>
+## Fallback Routes
+
+Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. Of course, you are free to add additional middleware to this route as needed:
+
+    Route::fallback(function () {
+        //
+    });
+
+> {note} The fallback route should always be the last route registered by your application.
+
+<a name="rate-limiting"></a>
+## Rate Limiting
+
+Laravel includes a [middleware](/docs/{{version}}/middleware) to rate limit access to routes within your application. To get started, assign the `throttle` middleware to a route or a group of routes. The `throttle` middleware accepts two parameters that determine the maximum number of requests that can be made in a given number of minutes. For example, let's specify that an authenticated user may access the following group of routes 60 times per minute:
+
+    Route::middleware('auth:api', 'throttle:60,1')->group(function () {
+        Route::get('/user', function () {
+            //
+        });
+    });
+
+#### Dynamic Rate Limiting
+
+You may specify a dynamic request maximum based on an attribute of the authenticated `User` model. For example, if your `User` model contains a `rate_limit` attribute, you may pass the name of the attribute to the `throttle` middleware so that it is used to calculate the maximum request count:
+
+    Route::middleware('auth:api', 'throttle:rate_limit,1')->group(function () {
+        Route::get('/user', function () {
+            //
+        });
+    });
 
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
@@ -336,9 +393,12 @@ HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining 
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
     </form>
 
-You may use the `method_field` helper to generate the `_method` input:
+You may use the `@method` Blade directive to generate the `_method` input:
 
-    {{ method_field('PUT') }}
+    <form action="/foo/bar" method="POST">
+        @method('PUT')
+        @csrf
+    </form>
 
 <a name="accessing-the-current-route"></a>
 ## Accessing The Current Route

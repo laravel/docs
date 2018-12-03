@@ -7,16 +7,21 @@
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
+    - [Configuring The Model ID](#configuring-the-model-id)
 - [Indexing](#indexing)
     - [Batch Import](#batch-import)
     - [Adding Records](#adding-records)
     - [Updating Records](#updating-records)
     - [Removing Records](#removing-records)
     - [Pausing Indexing](#pausing-indexing)
+    - [Conditionally Searchable Model Instances](#conditionally-searchable-model-instances)
 - [Searching](#searching)
     - [Where Clauses](#where-clauses)
     - [Pagination](#pagination)
+    - [Soft Deleting](#soft-deleting)
+    - [Customizing Engine Searches](#customizing-engine-searches)
 - [Custom Engines](#custom-engines)
+- [Builder Macros](#builder-macros)
 
 <a name="introduction"></a>
 ## Introduction
@@ -28,15 +33,11 @@ Currently, Scout ships with an [Algolia](https://www.algolia.com/) driver; howev
 <a name="installation"></a>
 ## Installation
 
-First, install the Scout via the Composer package manager:
+First, install Scout via the Composer package manager:
 
     composer require laravel/scout
 
-Next, you should add the `ScoutServiceProvider` to the `providers` array of your `config/app.php` configuration file:
-
-    Laravel\Scout\ScoutServiceProvider::class,
-
-After registering the Scout service provider, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `scout.php` configuration file to your `config` directory:
+After installing Scout, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `scout.php` configuration file to your `config` directory:
 
     php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 
@@ -70,7 +71,7 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
 
-    composer require algolia/algoliasearch-client-php
+    composer require algolia/algoliasearch-client-php:^1.27
 
 <a name="configuration"></a>
 ## Configuration
@@ -133,6 +134,33 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         }
     }
 
+<a name="configuring-the-model-id"></a>
+### Configuring The Model ID
+
+By default, Scout will use the primary key of the model as the unique ID stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` method on the model:
+
+    <?php
+
+    namespace App;
+
+    use Laravel\Scout\Searchable;
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        use Searchable;
+
+        /**
+         * Get the value used to index the model.
+         *
+         * @return mixed
+         */
+        public function getScoutKey()
+        {
+            return $this->email;
+        }
+    }
+
 <a name="indexing"></a>
 ## Indexing
 
@@ -142,6 +170,10 @@ By default, the entire `toArray` form of a given model will be persisted to its 
 If you are installing Scout into an existing project, you may already have database records you need to import into your search driver. Scout provides an `import` Artisan command that you may use to import all of your existing records into your search indexes:
 
     php artisan scout:import "App\Post"
+
+The `flush` command may be used to remove all of a model's records from your search indexes:
+
+    php artisan scout:flush "App\Post"
 
 <a name="adding-records"></a>
 ### Adding Records
@@ -194,7 +226,7 @@ You may also use the `searchable` method on an Eloquent query to update a collec
 <a name="removing-records"></a>
 ### Removing Records
 
-To remove a record from your index, simply `delete` the model from the database. This form of removal is even compatible with [soft deleted](/docs/{{version}}/eloquent#soft-deleting) models:
+To remove a record from your index, `delete` the model from the database. This form of removal is even compatible with [soft deleted](/docs/{{version}}/eloquent#soft-deleting) models:
 
     $order = App\Order::find(1);
 
@@ -219,6 +251,16 @@ Sometimes you may need to perform a batch of Eloquent operations on a model with
     App\Order::withoutSyncingToSearch(function () {
         // Perform model actions...
     });
+
+<a name="conditionally-searchable-model-instances"></a>
+### Conditionally Searchable Model Instances
+
+Sometimes you may need to only make a model searchable under certain conditions. For example, imagine you have `App\Post` model that may be in one of two states: "draft" and "published". You may only want to allow "published" posts to be searchable. To accomplish this, you may define a `shouldBeSearchable` method on your model:
+
+    public function shouldBeSearchable()
+    {
+        return $this->isPublished();
+    }
 
 <a name="searching"></a>
 ## Searching
@@ -273,12 +315,45 @@ Once you have retrieved the results, you may display the results and render the 
 
     {{ $orders->links() }}
 
+<a name="soft-deleting"></a>
+### Soft Deleting
+
+If your indexed models are [soft deleting](/docs/{{version}}/eloquent#soft-deleting) and you need to search your soft deleted models, set the `soft_delete` option of the `config/scout.php` configuration file to `true`:
+
+    'soft_delete' => true,
+
+When this configuration option is `true`, Scout will not remove soft deleted models from the search index. Instead, it will set a hidden `__soft_deleted` attribute on the indexed record. Then, you may use the `withTrashed` or `onlyTrashed` methods to retrieve the soft deleted records when searching:
+
+    // Include trashed records when retrieving results...
+    $orders = App\Order::withTrashed()->search('Star Trek')->get();
+
+    // Only include trashed records when retrieving results...
+    $orders = App\Order::onlyTrashed()->search('Star Trek')->get();
+
+> {tip} When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
+
+<a name="customizing-engine-searches"></a>
+### Customizing Engine Searches
+
+If you need to customize the search behavior of an engine you may pass a callback as the second argument to the `search` method. For example, you could use this callback to add geo-location data to your search options before the search query is passed to Algolia:
+
+    use AlgoliaSearch\Index;
+
+    App\Order::search('Star Trek', function (Index $algolia, string $query, array $options) {
+        $options['body']['query']['bool']['filter']['geo_distance'] = [
+            'distance' => '1000km',
+            'location' => ['lat' => 36, 'lon' => 111],
+        ];
+
+        return $algolia->search($query, $options);
+    })->get();
+
 <a name="custom-engines"></a>
 ## Custom Engines
 
 #### Writing The Engine
 
-If one of the built-in Scout search engines doesn't fit your needs, you may write your own custom engine and register it with Scout. Your engine should extend the `Laravel\Scout\Engines\Engine` abstract class. This abstract class contains five methods your custom engine must implement:
+If one of the built-in Scout search engines doesn't fit your needs, you may write your own custom engine and register it with Scout. Your engine should extend the `Laravel\Scout\Engines\Engine` abstract class. This abstract class contains seven methods your custom engine must implement:
 
     use Laravel\Scout\Builder;
 
@@ -286,7 +361,9 @@ If one of the built-in Scout search engines doesn't fit your needs, you may writ
     abstract public function delete($models);
     abstract public function search(Builder $builder);
     abstract public function paginate(Builder $builder, $perPage, $page);
+    abstract public function mapIds($results);
     abstract public function map($results, $model);
+    abstract public function getTotalCount($results);
 
 You may find it helpful to review the implementations of these methods on the `Laravel\Scout\Engines\AlgoliaEngine` class. This class will provide you with a good starting point for learning how to implement each of these methods in your own engine.
 
@@ -311,3 +388,37 @@ Once you have written your custom engine, you may register it with Scout using t
 Once your engine has been registered, you may specify it as your default Scout `driver` in your `config/scout.php` configuration file:
 
     'driver' => 'mysql',
+
+<a name="builder-macros"></a>
+## Builder Macros
+
+If you would like to define a custom builder method, you may use the `macro` method on the `Laravel\Scout\Builder` class. Typically, "macros" should be defined within a [service provider's](/docs/{{version}}/providers) `boot` method:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Laravel\Scout\Builder;
+    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\Facades\Response;
+
+    class ScoutMacroServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register the application's scout macros.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Builder::macro('count', function () {
+                return $this->engine->getTotalCount(
+                    $this->engine()->search($this)
+                );
+            });
+        }
+    }
+
+The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `Laravel\Scout\Builder` implementation:
+
+    App\Order::search('Star Trek')->count();

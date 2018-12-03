@@ -19,7 +19,7 @@ Of course, all collections also serve as iterators, allowing you to loop over th
 
 However, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:
 
-    $users = App\User::where('active', 1)->get();
+    $users = App\User::all();
 
     $names = $users->reject(function ($user) {
         return $user->active === false;
@@ -56,12 +56,17 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [chunk](/docs/{{version}}/collections#method-chunk)
 [collapse](/docs/{{version}}/collections#method-collapse)
 [combine](/docs/{{version}}/collections#method-combine)
+[concat](/docs/{{version}}/collections#method-concat)
 [contains](/docs/{{version}}/collections#method-contains)
 [containsStrict](/docs/{{version}}/collections#method-containsstrict)
 [count](/docs/{{version}}/collections#method-count)
+[crossJoin](/docs/{{version}}/collections#method-crossjoin)
+[dd](/docs/{{version}}/collections#method-dd)
 [diff](/docs/{{version}}/collections#method-diff)
 [diffKeys](/docs/{{version}}/collections#method-diffkeys)
+[dump](/docs/{{version}}/collections#method-dump)
 [each](/docs/{{version}}/collections#method-each)
+[eachSpread](/docs/{{version}}/collections#method-eachspread)
 [every](/docs/{{version}}/collections#method-every)
 [except](/docs/{{version}}/collections#method-except)
 [filter](/docs/{{version}}/collections#method-filter)
@@ -82,6 +87,9 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [keys](/docs/{{version}}/collections#method-keys)
 [last](/docs/{{version}}/collections#method-last)
 [map](/docs/{{version}}/collections#method-map)
+[mapInto](/docs/{{version}}/collections#method-mapinto)
+[mapSpread](/docs/{{version}}/collections#method-mapspread)
+[mapToGroups](/docs/{{version}}/collections#method-maptogroups)
 [mapWithKeys](/docs/{{version}}/collections#method-mapwithkeys)
 [max](/docs/{{version}}/collections#method-max)
 [median](/docs/{{version}}/collections#method-median)
@@ -90,6 +98,7 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [mode](/docs/{{version}}/collections#method-mode)
 [nth](/docs/{{version}}/collections#method-nth)
 [only](/docs/{{version}}/collections#method-only)
+[pad](/docs/{{version}}/collections#method-pad)
 [partition](/docs/{{version}}/collections#method-partition)
 [pipe](/docs/{{version}}/collections#method-pipe)
 [pluck](/docs/{{version}}/collections#method-pluck)
@@ -106,6 +115,7 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [shift](/docs/{{version}}/collections#method-shift)
 [shuffle](/docs/{{version}}/collections#method-shuffle)
 [slice](/docs/{{version}}/collections#method-slice)
+[some](/docs/{{version}}/collections#method-some)
 [sort](/docs/{{version}}/collections#method-sort)
 [sortBy](/docs/{{version}}/collections#method-sortby)
 [sortByDesc](/docs/{{version}}/collections#method-sortbydesc)
@@ -120,6 +130,7 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [union](/docs/{{version}}/collections#method-union)
 [unique](/docs/{{version}}/collections#method-unique)
 [uniqueStrict](/docs/{{version}}/collections#method-uniquestrict)
+[unless](/docs/{{version}}/collections#method-unless)
 [values](/docs/{{version}}/collections#method-values)
 [when](/docs/{{version}}/collections#method-when)
 [where](/docs/{{version}}/collections#method-where)

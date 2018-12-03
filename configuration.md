@@ -2,8 +2,10 @@
 
 - [Introduction](#introduction)
 - [Environment Configuration](#environment-configuration)
+    - [Environment Variable Types](#environment-variable-types)
     - [Retrieving Environment Configuration](#retrieving-environment-configuration)
     - [Determining The Current Environment](#determining-the-current-environment)
+    - [Hiding Environment Variables From Debug Pages](#hiding-environment-variables-from-debug)
 - [Accessing Configuration Values](#accessing-configuration-values)
 - [Configuration Caching](#configuration-caching)
 - [Maintenance Mode](#maintenance-mode)
@@ -20,11 +22,31 @@ It is often helpful to have different configuration values based on the environm
 
 To make this a cinch, Laravel utilizes the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vance Lucas. In a fresh Laravel installation, the root directory of your application will contain a `.env.example` file. If you install Laravel via Composer, this file will automatically be renamed to `.env`. Otherwise, you should rename the file manually.
 
-Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gain access to your source control repository, since any sensitive credentials would get exposed.
+Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 
-If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting place-holder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application. You may also create a `.env.testing` file. This file will override values from the `.env` file when running PHPUnit tests or executing Artisan commands with the `--env=testing` option.
+If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application. You may also create a `.env.testing` file. This file will override the `.env` file when running PHPUnit tests or executing Artisan commands with the `--env=testing` option.
 
 > {tip} Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
+
+<a name="environment-variable-types"></a>
+### Environment Variable Types
+
+All variables in your `.env` files are parsed as strings, so some reserved values have been created to allow you to return a wider range of types from the `env()` function:
+
+`.env` Value  | `env()` Value
+------------- | -------------
+true | (bool) true
+(true) | (bool) true
+false | (bool) false
+(false) | (bool) false
+empty | (string) ''
+(empty) | (string) ''
+null | (null) null
+(null) | (null) null
+
+If you need to define an environment variable with a value that contains spaces, you may do so by enclosing the value in double quotes.
+
+    APP_NAME="My Application"
 
 <a name="retrieving-environment-configuration"></a>
 ### Retrieving Environment Configuration
@@ -52,7 +74,35 @@ You may also pass arguments to the `environment` method to check if the environm
         // The environment is either local OR staging...
     }
 
-> {tip} The current application environment detection can be overriden by a server-level `APP_ENV` environment variable. This can be useful when you need to share the same application for different environment configurations, so you can set up a given host to match a given environment in your server's configurations.
+> {tip} The current application environment detection can be overridden by a server-level `APP_ENV` environment variable. This can be useful when you need to share the same application for different environment configurations, so you can set up a given host to match a given environment in your server's configurations.
+
+<a name="hiding-environment-variables-from-debug"></a>
+### Hiding Environment Variables From Debug Pages
+
+When an exception is uncaught and the `APP_DEBUG` environment variable is `true`, the debug page will show all environment variables and their contents. In some cases you may want to obscure certain variables. You may do this by updating the `debug_blacklist` option in your `config/app.php` configuration file.
+
+Some variables are available in both the environment variables and the server / request data. Therefore, you may need to blacklist them for both `$_ENV` and `$_SERVER`:
+
+    return [
+
+        // ...
+
+        'debug_blacklist' => [
+            '_ENV' => [
+                'APP_KEY',
+                'DB_PASSWORD',
+            ],
+
+            '_SERVER' => [
+                'APP_KEY',
+                'DB_PASSWORD',
+            ],
+
+            '_POST' => [
+                'password',
+            ],
+        ],
+    ];
 
 <a name="accessing-configuration-values"></a>
 ## Accessing Configuration Values
@@ -72,20 +122,24 @@ To give your application a speed boost, you should cache all of your configurati
 
 You should typically run the `php artisan config:cache` command as part of your production deployment routine. The command should not be run during local development as configuration options will frequently need to be changed during the course of your application's development.
 
-> {note} If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files.
+> {note} If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
 
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
 When your application is in maintenance mode, a custom view will be displayed for all requests into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, a `MaintenanceModeException` will be thrown with a status code of 503.
 
-To enable maintenance mode, simply execute the `down` Artisan command:
+To enable maintenance mode, execute the `down` Artisan command:
 
     php artisan down
 
 You may also provide `message` and `retry` options to the `down` command. The `message` value may be used to display or log a custom message, while the `retry` value will be set as the `Retry-After` HTTP header's value:
 
     php artisan down --message="Upgrading Database" --retry=60
+
+Even while in maintenance mode, specific IP addresses or networks may be allowed to access the application using the command's `allow` option:
+
+    php artisan down --allow=127.0.0.1 --allow=192.168.0.0/16
 
 To disable maintenance mode, use the `up` command:
 

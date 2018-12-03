@@ -6,6 +6,7 @@
     - [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
     - [Contextual Binding](#contextual-binding)
     - [Tagging](#tagging)
+    - [Extending Bindings](#extending-bindings)
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
@@ -150,7 +151,7 @@ Sometimes you may have two classes that utilize the same interface, but you wish
                   return Storage::disk('local');
               });
 
-    $this->app->when(VideoController::class)
+    $this->app->when([VideoController::class, UploadController::class])
               ->needs(Filesystem::class)
               ->give(function () {
                   return Storage::disk('s3');
@@ -177,6 +178,15 @@ Once the services have been tagged, you may easily resolve them all via the `tag
         return new ReportAggregator($app->tagged('reports'));
     });
 
+<a name="extending-bindings"></a>
+### Extending Bindings
+
+The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a Closure, which should return the modified service, as its only argument:
+
+    $this->app->extend(Service::class, function ($service) {
+        return new DecoratedService($service);
+    });
+
 <a name="resolving"></a>
 ## Resolving
 
@@ -198,7 +208,7 @@ If some of your class' dependencies are not resolvable via the container, you ma
 <a name="automatic-injection"></a>
 #### Automatic Injection
 
-Alternatively, and importantly, you may simply "type-hint" the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [queue jobs](/docs/{{version}}/queues), [middleware](/docs/{{version}}/middleware), and more. In practice, this is how most of your objects should be resolved by the container.
+Alternatively, and importantly, you may "type-hint" the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [queue jobs](/docs/{{version}}/queues), [middleware](/docs/{{version}}/middleware), and more. In practice, this is how most of your objects should be resolved by the container.
 
 For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:
 
@@ -266,4 +276,4 @@ Laravel's service container implements the [PSR-11](https://github.com/php-fig/f
         //
     });
 
-> {note} Calling the `get` method will throw an exception if the identifier has not been explicitly bound into the container.
+An exception is thrown if the given identifier can't be resolved. The exception will be an instance of `Psr\Container\NotFoundExceptionInterface` if the identifier was never bound. If the identifier was bound but was unable to be resolved, an instance of `Psr\Container\ContainerExceptionInterface` will be thrown.

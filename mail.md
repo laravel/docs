@@ -14,16 +14,18 @@
     - [Generating Markdown Mailables](#generating-markdown-mailables)
     - [Writing Markdown Messages](#writing-markdown-messages)
     - [Customizing The Components](#customizing-the-components)
-- [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
 - [Sending Mail](#sending-mail)
     - [Queueing Mail](#queueing-mail)
+- [Rendering Mailables](#rendering-mailables)
+    - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
+- [Localizing Mailables](#localizing-mailables)
 - [Mail & Local Development](#mail-and-local-development)
 - [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides a clean, simple API over the popular [SwiftMailer](http://swiftmailer.org) library with drivers for SMTP, Mailgun, SparkPost, Amazon SES, PHP's `mail` function, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
+Laravel provides a clean, simple API over the popular [SwiftMailer](https://swiftmailer.symfony.com/) library with drivers for SMTP, Mailgun, SparkPost, Amazon SES, PHP's `mail` function, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
@@ -41,12 +43,29 @@ To use the Mailgun driver, first install Guzzle, then set the `driver` option in
         'secret' => 'your-mailgun-key',
     ],
 
+If you are not using the "US" [Mailgun region](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions), you may define your region's endpoint in the `services` configuration file:
+
+    'mailgun' => [
+        'domain' => 'your-mailgun-domain',
+        'secret' => 'your-mailgun-key',
+        'endpoint' => 'api.eu.mailgun.net',
+    ],
+
 #### SparkPost Driver
 
 To use the SparkPost driver, first install Guzzle, then set the `driver` option in your `config/mail.php` configuration file to `sparkpost`. Next, verify that your `config/services.php` configuration file contains the following options:
 
     'sparkpost' => [
         'secret' => 'your-sparkpost-key',
+    ],
+
+If necessary, you may also configure which [API endpoint](https://developers.sparkpost.com/api/#header-endpoints) should be used:
+
+    'sparkpost' => [
+        'secret' => 'your-sparkpost-key',
+        'options' => [
+            'endpoint' => 'https://api.eu.sparkpost.com/api/v1/transmissions',
+        ],
     ],
 
 #### SES Driver
@@ -61,6 +80,23 @@ Next, set the `driver` option in your `config/mail.php` configuration file to `s
         'key' => 'your-ses-key',
         'secret' => 'your-ses-secret',
         'region' => 'ses-region',  // e.g. us-east-1
+    ],
+
+If you need to include [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-email-2010-12-01.html#sendrawemail) when executing the SES `SendRawEmail` request, you may define an `options` array within your `ses` configuration:
+
+    'ses' => [
+        'key' => 'your-ses-key',
+        'secret' => 'your-ses-secret',
+        'region' => 'ses-region',  // e.g. us-east-1
+        'options' => [
+            'ConfigurationSetName' => 'MyConfigurationSet',
+            'Tags' => [
+                [
+                    'Name' => 'foo',
+                    'Value' => 'bar',
+                ],
+            ],
+        ],
     ],
 
 <a name="generating-mailables"></a>
@@ -98,6 +134,10 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
 However, if your application uses the same "from" address for all of its emails, it can become cumbersome to call the `from` method in each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
 
     'from' => ['address' => 'example@example.com', 'name' => 'App Name'],
+
+In addition, you may define a global "reply_to" address within your `config/mail.php` configuration file:
+
+    'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
 
 <a name="configuring-the-view"></a>
 ### Configuring The View
@@ -272,6 +312,49 @@ When attaching files to a message, you may also specify the display name and / o
                         ]);
         }
 
+#### Attaching Files from Disk
+
+If you have stored a file on one of your [filesystem disks](/docs/{{version}}/filesystem), you may attach it to the email using the `attachFromStorage` method:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorage('/path/to/file');
+     }
+
+If necessary, you may specify the file's attachment name and additional options using the second and third arguments to the `attachFromStorage` method:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorage('/path/to/file', 'name.pdf', [
+                        'mime' => 'application/pdf'
+                    ]);
+     }
+
+The `attachFromStorageDisk` method may be used if you need to specify a storage disk other than your default disk:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorageDisk('s3', '/path/to/file');
+     }
+
 #### Raw Data Attachments
 
 The `attachData` method may be used to attach a raw string of bytes as an attachment. For example, you might use this method if you have generated a PDF in memory and want to attach it to the email without writing it to disk. The `attachData` method accepts the raw data bytes as its first argument, the name of the file as its second argument, and an array of options as its third argument:
@@ -297,7 +380,7 @@ Embedding inline images into your emails is typically cumbersome; however, Larav
     <body>
         Here is an image:
 
-        <img src="{{ $message->embed($pathToFile) }}">
+        <img src="{{ $message->embed($pathToImage) }}">
     </body>
 
 > {note} `$message` variable is not available in markdown messages.
@@ -379,9 +462,9 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
 
 #### Button Component
 
-The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`. You may add as many button components to a message as you wish:
+The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:
 
-    @component('mail::button', ['url' => $url, 'color' => 'green'])
+    @component('mail::button', ['url' => $url, 'color' => 'success'])
     View Order
     @endcomponent
 
@@ -411,24 +494,13 @@ You may export all of the Markdown mail components to your own application for c
 
     php artisan vendor:publish --tag=laravel-mail
 
-This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain a `html` and a `markdown` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
+This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain a `html` and a `markdown` directory, each containing their respective representations of every available component. The components in the `html` directory are used to generate the HTML version of your email, and their counterparts in the `markdown` directory are used to generate the plain-text version. You are free to customize these components however you like.
 
 #### Customizing The CSS
 
 After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown mail messages.
 
-> {tip} If you would like to build an entirely new theme for the Markdown components, simply write a new CSS file within the `html/themes` directory and change the `theme` option of your `mail` configuration file.
-
-<a name="previewing-mailables-in-the-browser"></a>
-## Previewing Mailables In The Browser
-
-When designing a mailable's template, it is convenient to quickly preview the rendered mailable in your browser like a typical Blade template. For this reason, Laravel allows you to return any mailable directly from a route Closure or controller. When a mailable is returned, it will be rendered and displayed in the browser, allowing you to quickly preview its design without needing to send it to an actual email address:
-
-    Route::get('/mailable', function () {
-        $invoice = App\Invoice::find(1);
-
-        return new App\Mail\InvoicePaid($invoice);
-    });
+> {tip} If you would like to build an entirely new theme for the Markdown components, write a new CSS file within the `html/themes` directory and change the `theme` option of your `mail` configuration file.
 
 <a name="sending-mail"></a>
 ## Sending Mail
@@ -471,6 +543,26 @@ Of course, you are not limited to just specifying the "to" recipients when sendi
         ->bcc($evenMoreUsers)
         ->send(new OrderShipped($order));
 
+<a name="rendering-mailables"></a>
+## Rendering Mailables
+
+Sometimes you may wish to capture the HTML content of a mailable without sending it. To accomplish this, you may call the `render` method of the mailable. This method will return the evaluated contents of the mailable as a string:
+
+    $invoice = App\Invoice::find(1);
+
+    return (new App\Mail\InvoicePaid($invoice))->render();
+
+<a name="previewing-mailables-in-the-browser"></a>
+### Previewing Mailables In The Browser
+
+When designing a mailable's template, it is convenient to quickly preview the rendered mailable in your browser like a typical Blade template. For this reason, Laravel allows you to return any mailable directly from a route Closure or controller. When a mailable is returned, it will be rendered and displayed in the browser, allowing you to quickly preview its design without needing to send it to an actual email address:
+
+    Route::get('/mailable', function () {
+        $invoice = App\Invoice::find(1);
+
+        return new App\Mail\InvoicePaid($invoice);
+    });
+
 <a name="queueing-mail"></a>
 ### Queueing Mail
 
@@ -489,7 +581,7 @@ This method will automatically take care of pushing a job onto the queue so the 
 
 If you wish to delay the delivery of a queued email message, you may use the `later` method. As its first argument, the `later` method accepts a `DateTime` instance indicating when the message should be sent:
 
-    $when = Carbon\Carbon::now()->addMinutes(10);
+    $when = now()->addMinutes(10);
 
     Mail::to($request->user())
         ->cc($moreUsers)
@@ -520,6 +612,40 @@ If you have mailable classes that you want to always be queued, you may implemen
         //
     }
 
+<a name="localizing-mailables"></a>
+## Localizing Mailables
+
+Laravel allows you to send mailables in a locale other than the current language, and will even remember this locale if the mail is queued.
+
+To accomplish this, the `Illuminate\Mail\Mailable` class offers a `locale` method to set the desired language. The application will change into this locale when the mailable is being formatted and then revert back to the previous locale when formatting is complete:
+
+    Mail::to($request->user())->send(
+        (new OrderShipped($order))->locale('es')
+    );
+
+### User Preferred Locales
+
+Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on one or more of your models, you may instruct Laravel to use this stored locale when sending mail:
+
+    use Illuminate\Contracts\Translation\HasLocalePreference;
+
+    class User extends Model implements HasLocalePreference
+    {
+        /**
+         * Get the user's preferred locale.
+         *
+         * @return string
+         */
+        public function preferredLocale()
+        {
+            return $this->locale;
+        }
+    }
+
+Once you have implemented the interface, Laravel will automatically use the preferred locale when sending mailables and notifications to the model. Therefore, there is no need to call the `locale` method when using this interface:
+
+    Mail::to($request->user())->send(new OrderShipped($order));
+
 <a name="mail-and-local-development"></a>
 ## Mail & Local Development
 
@@ -545,7 +671,7 @@ Finally, you may use a service like [Mailtrap](https://mailtrap.io) and the `smt
 <a name="events"></a>
 ## Events
 
-Laravel fires an event just before sending mail messages. Remember, this event is fired when the mail is *sent*, not when it is queued. You may register an event listener for this event in your `EventServiceProvider`:
+Laravel fires two events during the process of sending mail messages. The `MessageSending` event is fired prior to a message being sent, while the `MessageSent` event is fired after a message has been sent. Remember, these events are fired when the mail is being *sent*, not when it is queued. You may register an event listener for this event in your `EventServiceProvider`:
 
     /**
      * The event listener mappings for the application.
@@ -554,6 +680,9 @@ Laravel fires an event just before sending mail messages. Remember, this event i
      */
     protected $listen = [
         'Illuminate\Mail\Events\MessageSending' => [
+            'App\Listeners\LogSendingMessage',
+        ],
+        'Illuminate\Mail\Events\MessageSent' => [
             'App\Listeners\LogSentMessage',
         ],
     ];
