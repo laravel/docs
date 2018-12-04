@@ -5,6 +5,9 @@
     - [Configuration](#configuration)
     - [Data Pruning](#data-pruning)
 - [Dashboard Authorization](#dashboard-authorization)
+- [Filtering](#filtering)
+    - [Entries](#filtering-entries)
+    - [Batches](#filtering-batches)
 
 <a name="introduction"></a>
 ## Introduction
@@ -98,3 +101,60 @@ Telescope exposes a dashboard at `/telescope`. By default, you will only be able
             ]);
         });
     }
+
+<a name="filtering"></a>
+## Filtering
+
+<a name="filtering-entries"></a>
+### Entries
+
+Telescope allows you to record filtered entries by registering a callback via the `filter` method in your `app/Providers/TelescopeServiceProvider.php` file:
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+	public function register()
+	{
+        $this->hideSensitiveRequestDetails();
+
+        Telescope::filter(function (IncomingEntry $entry) {
+            if ($this->app->isLocal()) {
+                return true;
+            }
+
+            return $entry->isReportableException() ||
+                $entry->isFailedJob() ||
+                $entry->isScheduledTask() ||
+                $entry->hasMonitoredTag();
+        });
+	}
+
+<a name="filtering-batches"></a>
+### Batches
+
+Besides filtering at the entry level, you may also filter batches (request or console application cycles) while retaining all the associated entries with the filtered batches by using the `filterBatch` method:
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+	public function register()
+	{
+        $this->hideSensitiveRequestDetails();
+
+        Telescope::filterBatch(function ($entries) {
+            if ($this->app->isLocal()) {
+                return true;
+            }
+
+            return $entries->contains(function ($entry) {
+                return $entry->isReportableException() ||
+                    $entry->isFailedJob() ||
+                    $entry->isScheduledTask() ||
+                    $entry->hasMonitoredTag();
+                });
+        });
+	}
