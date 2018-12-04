@@ -134,7 +134,7 @@ Telescope allows you to record filtered entries by registering a callback via th
 <a name="filtering-batches"></a>
 ### Batches
 
-Besides filtering at the entry level, you may also filter batches (request or console application cycles) while retaining all the associated entries with the filtered batches by using the `filterBatch` method:
+Besides filtering at the entry level, you may also filter batches (request or console application cycles) while retaining all the entries associated with the filtered batches by using the `filterBatch` method:
 
     /**
      * Register any application services.
