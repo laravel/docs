@@ -393,13 +393,13 @@ The `authorizeResource` method accepts the model's class name as its first argum
 
     class PostController extends Controller
     {
-        public function __constructor()
+        public function __construct()
         {
             $this->authorizeResource(Post::class, 'post');
         }
     }
 
-> {tip} You may use the `policy:make` command with the `--model` option to quickly generate a policy class for a given model: `php artisan policy:make --model=Post`.
+> {tip} You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`.
 
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
