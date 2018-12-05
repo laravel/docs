@@ -39,6 +39,14 @@ The `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourceP
 
 In the very unlikely event you are implementing this interface, you should add these methods to your implementation.
 
+### Cache
+
+#### The `Repository` and `Store` Contracts
+
+**Likelihood Of Impact: Very Low**
+
+In order to be fully compliant with `PSR-16` the return values of the `put` and `forever` methods of the `Illuminate/Contracts/Cache/Repository` contract and the return values of the `put`, `putMany` and `forever` methods of the `Illuminate/Contracts/Cache/Store` contract [have been changed](https://github.com/laravel/framework/pull/26726) from `void` to `bool`.
+
 ### Collections
 
 #### The `firstWhere` Method
@@ -56,6 +64,14 @@ The `firstWhere` method signature [has changed](https://github.com/laravel/frame
      * @return mixed
      */
     public function firstWhere($key, $operator = null, $value = null);
+
+### Config
+
+#### `ArrayAccess` Contract Added To The `Repository` Contract
+
+**Likelihood Of Impact: Very Low**
+
+[The `Illuminate\Contracts\Config\Repository` contract](https://github.com/laravel/framework/pull/26747) now extends the `ArrayAccess` contract. If you are implementing the `Repository` interface, your implementation should now also satisfy the `ArrayAccess` contract.
 
 ### Console
 
@@ -123,6 +139,8 @@ The `originalIsEquivalent` method of the `Illuminate\Database\Eloquent\Concerns\
 
 #### The `fire` Method
 
+**Likelihood Of Impact: Low**
+
 The `fire` method (which was deprecated in Laravel 5.4) of the `Illuminate/Events/Dispatcher` class [has been removed](https://github.com/laravel/framework/pull/26392).
 You should use the `dispatch` method instead.
 
@@ -189,6 +207,12 @@ The `transform` method of the `Illuminate\Foundation\Http\Middleware\TransformsR
 
 The `previous` method [has been added to the `Illuminate\Contracts\Routing\UrlGenerator` contract](https://github.com/laravel/framework/pull/25616). If you are implementing this interface, you should add this method to your implementation.
 
+#### The `cachedSchema` Property Of `Illuminate/Routing/UrlGenerator`
+
+**Likelihood Of Impact: Very Low**
+
+The `$cachedSchema` property name (which has been deprecated in Laravel `5.7`) of `Illuminate/Routing/UrlGenerator` [has been changed to](https://github.com/laravel/framework/pull/26728) `$cachedScheme`.
+
 ### Sessions
 
 #### The `StartSession` Middleware
@@ -214,6 +238,24 @@ The `validated` method [was added to the `Illuminate\Contracts\Validation\Valida
 
 If you are implementing this interface, you should add this method to your implementation.
 
+#### The `ValidatesAttributes` Trait
+
+**Likelihood Of Impact: Very Low**
+
+The `parseTable`, `getQueryColumn` and `requireParameterCount` methods of the `Illuminate\Validation\Concerns\ValidatesAttributes` trait have been changed from `protected` to `public`.
+
+#### The `DatabasePresenceVerifier` Class
+
+**Likelihood Of Impact: Very Low**
+
+The `table` method of the `Illuminate\Validation\DatabasePresenceVerifier` class has been changed from `protected` to `public`.
+
+#### The `Validator` Class
+
+**Likelihood Of Impact: Very Low**
+
+The `getPresenceVerifierFor` method of the `Illuminate\Validation\Validator` class [has been changed](https://github.com/laravel/framework/pull/26717) from `protected` to `public`.
+
 #### Email Validation
 
 **Likelihood Of Impact: Very Low**
@@ -222,7 +264,7 @@ The email validation rule now checks if the email is [RFC5630](https://tools.iet
 
 Therefore, when using Laravel 5.8, emails that were previously incorrectly considered invalid will now be considered valid (e.g `hej@bär.se`).  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
 
-### Notifcations
+### Notifications
 
 #### Nexmo / Slack Notification Channels
 
