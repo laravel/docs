@@ -164,6 +164,14 @@ In this example, note that we were able to pass an [Eloquent model](/docs/{{vers
 
 The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
 
+If you would like to take total control over how the container injects dependencies into the `handle` method, you may use the container's `bindMethod` method. The `bindMethod` method accepts a callback which receives the job and the container. Within the callback, you are free to invoke the `handle` method however you wish. Typically, you should call this method from a [service provider](/docs/{{version}}/providers):
+
+    use App\Jobs\ProcessPodcast;
+
+    $this->app->bindMethod(ProcessPodcast::class.'@handle', function ($job, $app) {
+        return $job->handle($app->make(AudioProcessor::class));
+    });
+
 > {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
 
 <a name="dispatching-jobs"></a>
