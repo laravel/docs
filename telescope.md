@@ -108,7 +108,7 @@ Telescope exposes a dashboard at `/telescope`. By default, you will only be able
 <a name="filtering-entries"></a>
 ### Entries
 
-Telescope allows you to record filtered entries by registering a callback via the `filter` method in your `app/Providers/TelescopeServiceProvider.php` file:
+You may filter the data that is recorded by Telescope via the `filter` callback that is registered in your `TelescopeServiceProvider`. By default, this callback records all data in the `local` environment and exceptions, failed jobs, scheduled tasks, and data with monitored tags in all other environments:
 
     /**
      * Register any application services.
@@ -134,7 +134,9 @@ Telescope allows you to record filtered entries by registering a callback via th
 <a name="filtering-batches"></a>
 ### Batches
 
-Besides filtering at the entry level, you may also filter batches (request or console application cycles) while retaining all the entries associated with the filtered batches by using the `filterBatch` method:
+While the `filter` callback filters data for individual entries, you may use the `filterBatch` method to register a callback that filters all data for a given request or console command. If the callback returns `true`, all of the entries are recorded by Telescope:
+
+    use Illuminate\Support\Collection;
 
     /**
      * Register any application services.
@@ -145,7 +147,7 @@ Besides filtering at the entry level, you may also filter batches (request or co
 	{
         $this->hideSensitiveRequestDetails();
 
-        Telescope::filterBatch(function ($entries) {
+        Telescope::filterBatch(function (Collection $entries) {
             if ($this->app->isLocal()) {
                 return true;
             }
