@@ -129,6 +129,12 @@ As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/larav
 
 ### Eloquent
 
+#### The `loadCount` Method
+
+**Likelihood Of Impact: Low**
+
+A `loadCount` method has been added to the base `Illuminate\Database\Eloquent\Model` class. If your application also defines a `loadCount` method, it may conflict with Eloquent's definition.
+
 #### The `originalIsEquivalent` Method
 
 **Likelihood Of Impact: Very Low**
