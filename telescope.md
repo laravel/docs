@@ -14,6 +14,7 @@
     - [Dump Watcher](#dump-watcher)
     - [Event Watcher](#event-watcher)
     - [Exception Watcher](#exception-watcher)
+    - [Gate Watcher](#gate-watcher)
     - [Job Watcher](#job-watcher)
     - [Log Watcher](#log-watcher)
     - [Mail Watcher](#mail-watcher)
@@ -229,6 +230,19 @@ The event watcher records the payload, listeners, and broadcast data for any eve
 ### Exception Watcher
 
 The exception watcher records the data and stack trace for any reportable Exceptions that are thrown by your application.
+
+<a name="gate-watcher"></a>
+### Gate Watcher
+
+The gate watcher records the data and result of gate and policy checks by your application. If you would like to exclude certain abilities from being recorded by the watcher, you may specify those in the `ignore_abilities` option in your `config/telescope.php` file:
+
+    'watchers' => [
+        Watchers\GateWatcher::class => [
+            'enabled' => env('TELESCOPE_GATE_WATCHER', true),
+            'ignore_abilities' => ['viewNova'],
+        ],
+        ...
+    ],
 
 <a name="job-watcher"></a>
 ### Job Watcher
