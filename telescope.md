@@ -179,7 +179,7 @@ While the `filter` callback filters data for individual entries, you may use the
 <a name="available-watchers"></a>
 ## Available Watchers
 
-Telescope watchers gather application profile data when a request or console command is executed. You may customize the list of watchers that you would like to enable in your application within your `config/telescope.php` file:
+Telescope watchers gather application data when a request or console command is executed. You may customize the list of watchers that you would like to enable within your `config/telescope.php` configuration file:
 
     'watchers' => [
         Watchers\CacheWatcher::class => true,
@@ -187,7 +187,7 @@ Telescope watchers gather application profile data when a request or console com
         ...
     ],
 
-Some watchers also allow you to also customize certain options:
+Some watchers also allow you to provide additional customization options:
 
     'watchers' => [
         Watchers\QueryWatcher::class => [
@@ -200,12 +200,12 @@ Some watchers also allow you to also customize certain options:
 <a name="cache-watcher"></a>
 ### Cache Watcher
 
-The Cache Watcher records data when a cache key is hit, missed, updated and forgotten.
+The cache watcher records data when a cache key is hit, missed, updated and forgotten.
 
 <a name="command-watcher"></a>
 ### Command Watcher
 
-The Command Watcher records the arguments, options, exit code and output whenever an Artisan command is executed. If you would like to exclude certain commands to be recorded by the Command Watcher, you may specify the command in the `ignore` option in your `config/telescope.php` file:
+The command watcher records the arguments, options, exit code, and output whenever an Artisan command is executed. If you would like to exclude certain commands from being recorded by the watcher, you may specify the command in the `ignore` option in your `config/telescope.php` file:
 
     'watchers' => [
         Watchers\CommandWatcher::class => [
@@ -218,37 +218,37 @@ The Command Watcher records the arguments, options, exit code and output wheneve
 <a name="dump-watcher"></a>
 ### Dump Watcher
 
-The Dump Watcher records and displays your dumps in Telescope. The Telescope Dump Watcher screen must be open in a browser for the recording to occur, otherwise all dumps will be ignored by the watcher.
+The dump watcher records and displays your variable dumps in Telescope. When using Laravel, variables may be dumped using the global `dump` function. The dump watcher tab must be open in a browser for the recording to occur, otherwise the dumps will be ignored by the watcher.
 
 <a name="event-watcher"></a>
 ### Event Watcher
 
-The Event Watcher records the payload, listeners and broadcast data for any events fired by your application. The Laravel Framework events are ignored by the Event Watcher.
+The event watcher records the payload, listeners, and broadcast data for any events dispatched by your application. The Laravel framework's internal events are ignored by the Event watcher.
 
 <a name="exception-watcher"></a>
 ### Exception Watcher
 
-The Exception Watcher records the data with the stack trace for any reportable Exceptions that are thrown and logged in your application.
+The exception watcher records the data and stack trace for any reportable Exceptions that are thrown by your application.
 
 <a name="job-watcher"></a>
 ### Job Watcher
 
-The Job Watcher records the data and status of any jobs dispatched in your application.
+The job watcher records the data and status of any jobs dispatched by your application.
 
 <a name="log-watcher"></a>
 ### Log Watcher
 
-The Log Watcher records the log data for any logs fired by your application. All logs regardless of the log level will be recorded by the Log Watcher, even if the logs do not meet the log level threshold set in your configuration.
+The log watcher records the log data for any logs written by your application.
 
 <a name="mail-watcher"></a>
 ### Mail Watcher
 
-The Mail Watcher allows you to view a preview of the mails sent along with some associated data. You may also download the mail as a .eml file.
+The mail watcher allows you to view an in-browser preview of the emails along with their associated data. You may also download the email as an `.eml` file.
 
 <a name="model-watcher"></a>
 ### Model Watcher
 
-The Model Watcher records model changes whenever an Eloquent `created`, `updated`, `restored` or `deleted` event is fired. You may filter these events further via the `events` option:
+The model watcher records model changes whenever an Eloquent `created`, `updated`, `restored`, or `deleted` event is dispatched. You may specify which model events should be recorded via the watcher's `events` option:
 
     'watchers' => [
         Watchers\ModelWatcher::class => [
@@ -261,13 +261,12 @@ The Model Watcher records model changes whenever an Eloquent `created`, `updated
 <a name="notification-watcher"></a>
 ### Notification Watcher
 
-The Notification Watcher records the notification data whenever a Laravel Notification is triggered. If the notification triggers a mail and you have the Mail Watcher enabled, the mail will also be available for preview and download in the Telescope Mail Watcher screen.
+The notification watcher records all notifications sent by your application. If the notification triggers an email and you have the mail watcher enabled, the email will also be available for preview on the mail watcher screen.
 
 <a name="query-watcher"></a>
 ### Query Watcher
 
-The Query Watcher records the raw SQL, bindings and time taken by the queries fired by your application. This watcher also tags any queries slower than 100ms as `slow`. You may customize this time using the `slow` option:
-
+The query watcher records the raw SQL, bindings, and execution time for all queries that are executed by your application. The watcher also tags any queries slower than 100ms as `slow`. You may customize the slow query threshold using the watcher's `slow` option:
 
     'watchers' => [
         Watchers\QueryWatcher::class => [
@@ -280,14 +279,14 @@ The Query Watcher records the raw SQL, bindings and time taken by the queries fi
 <a name="redis-watcher"></a>
 ### Redis Watcher
 
-> {note} Redis events must be enabled for the Redis Watcher to work. You may enable Redis events by calling `Redis::enableEvents()` in the `boot` method of your `app/Providers/AppServiceProvider.php` file.
+> {note} Redis events must be enabled for the Redis watcher to function. You may enable Redis events by calling `Redis::enableEvents()` in the `boot` method of your `app/Providers/AppServiceProvider.php` file.
 
-The Redis Watcher records all Redis commands executed by your application. If you are using Redis for caching, cache commands will also be recorded by the Redis Watcher.
+The Redis watcher records all Redis commands executed by your application. If you are using Redis for caching, cache commands will also be recorded by the Redis Watcher.
 
 <a name="request-watcher"></a>
 ### Request Watcher
 
-The Request Watcher records the request, headers, session and response data associated with any requests handled by the application. You may purge your response data via the `size_limit` (in KB) option:
+The request watcher records the request, headers, session, and response data associated with any requests handled by the application. You may limit your response data via the `size_limit` (in KB) option:
 
     'watchers' => [
         Watchers\RequestWatcher::class => [
@@ -300,4 +299,4 @@ The Request Watcher records the request, headers, session and response data asso
 <a name="schedule-watcher"></a>
 ### Schedule Watcher
 
-The Schedule Watcher records the command and output data of any scheduled tasks run by your application.
+The schedule watcher records the command and output of any scheduled tasks run by your application.
