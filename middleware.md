@@ -6,6 +6,7 @@
     - [Global Middleware](#global-middleware)
     - [Assigning Middleware To Routes](#assigning-middleware-to-routes)
     - [Middleware Groups](#middleware-groups)
+    - [Sorting Middleware](sorting-middleware)
 - [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
 
@@ -184,6 +185,27 @@ Middleware groups may be assigned to routes and controller actions using the sam
     });
 
 > {tip} Out of the box, the `web` middleware group is automatically applied to your `routes/web.php` file by the `RouteServiceProvider`.
+
+<a name="sorting-middleware"></a>
+### Sorting Middleware
+
+Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In this case, you may specify your middleware priority using the `$middlewarePriority` property of your `app/Http/Kernel.php` file:
+
+    /**
+     * The priority-sorted list of middleware.
+     *
+     * This forces non-global middleware to always be in the given order.
+     *
+     * @var array
+     */
+    protected $middlewarePriority = [
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\Authenticate::class,
+        \Illuminate\Session\Middleware\AuthenticateSession::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        \Illuminate\Auth\Middleware\Authorize::class,
+    ];
 
 <a name="middleware-parameters"></a>
 ## Middleware Parameters

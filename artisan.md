@@ -1,6 +1,7 @@
 # Artisan Console
 
 - [Introduction](#introduction)
+    - [Tinker (REPL)](#tinker)
 - [Writing Commands](#writing-commands)
     - [Generating Commands](#generating-commands)
     - [Command Structure](#command-structure)
@@ -29,11 +30,32 @@ Every command also includes a "help" screen which displays and describes the com
 
     php artisan help migrate
 
-#### Laravel REPL
+<a name="tinker"></a>
+### Tinker (REPL)
 
 All Laravel applications include Tinker, a REPL powered by the [PsySH](https://github.com/bobthecow/psysh) package. Tinker allows you to interact with your entire Laravel application on the command line, including the Eloquent ORM, jobs, events, and more. To enter the Tinker environment, run the `tinker` Artisan command:
 
     php artisan tinker
+
+You can publish Tinker's configuration file using the `vendor:publish` command:
+
+    php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+
+#### Command Whitelist
+
+Tinker utilizes a white-list to determine which Artisan commands are allowed to be run within its shell. By default, you may run the `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize`, and `up` commands. If you would like to white-list more commands you may add them to the `commands` array in your `tinker.php` configuration file:
+
+    'commands' => [
+        // App\Console\Commands\ExampleCommand::class,
+    ],
+
+#### Alias Blacklist
+
+Typically, Tinker automatically aliases classes as you require them in Tinker. However, you may wish to never alias some classes. You may accomplish this by listing the classes in the `dont_alias` array of your `tinker.php` configuration file:
+
+    'dont_alias' => [
+        App\User::class,
+    ],
 
 <a name="writing-commands"></a>
 ## Writing Commands
@@ -365,7 +387,7 @@ For long running tasks, it could be helpful to show a progress indicator. Using 
     $users = App\User::all();
 
     $bar = $this->output->createProgressBar(count($users));
-    
+
     $bar->start();
 
     foreach ($users as $user) {
