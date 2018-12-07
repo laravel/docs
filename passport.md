@@ -658,11 +658,14 @@ You may define your API's scopes using the `Passport::tokensCan` method in the `
 <a name="default-scope"></a>
 ### Default Scope
 
-If a client decides to omit the scope the server still choose to set a default scope. You can achieve setting a default scope by using the `setDefaultScope`. Values need to be separated with a space or be passed as an array:
+If a client does not request any specific scopes, you may configure your Passport server to attach a default scope to the token using the `setDefaultScope` method. Typically, you should call this method from the `boot` method of your `AuthServiceProvider`:
 
     use Laravel\Passport\Passport;
 
-    Passport::setDefaultScope('place-orders check-status');
+    Passport::setDefaultScope([
+        'check-status',
+        'place-orders',
+    ]);
 
 <a name="assigning-scopes-to-tokens"></a>
 ### Assigning Scopes To Tokens
