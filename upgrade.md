@@ -422,11 +422,11 @@ If you have customized the default theme styles used for Markdown mailable templ
 
 The `QUEUE_DRIVER` environment variable has been renamed to `QUEUE_CONNECTION`. This should not affect existing applications that you are upgrading unless you intentionally modify your `config/queue.php` configuration file to match Laravel 5.7's.
 
-#### `stop-when-empty` option added to `WorkCommand`
+#### `WorkCommand` Options
 
 **Likelihood Of Impact: Very Low**
 
-`stop-when-empty` option was added to `WorkCommand`. If you extend this command, you need to add `stop-when-empty` to `$signature` property of your class.
+The `stop-when-empty` option was added to the `WorkCommand`. If you extend this command, you need to add `stop-when-empty` to `$signature` property of your class.
 
 ### Routing
 
