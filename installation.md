@@ -1,14 +1,15 @@
-# Installation
+# Install ပြုလုပ်ခြင်း
 
-- [Installation](#installation)
-    - [Server Requirements](#server-requirements)
-    - [Installing Laravel](#installing-laravel)
+
+- [Install ပြုလုပ်ခြင်း](#installation)
+    - [Server လိုအပ်ချက်များ](#server-requirements)
+    - [Laravel ကို Install ပြုလုပ်ခြင်း](#installing-laravel)
     - [Configuration](#configuration)
 - [Web Server Configuration](#web-server-configuration)
-    - [Pretty URLs](#pretty-urls)
+    - [URL လှလှလေးလိုချင်တယ်](#pretty-urls)
 
 <a name="installation"></a>
-## Installation
+## Install ပြုလုပ်ခြင်း
 
 > {video} Laracasts provides a [free, thorough introduction to Laravel](http://laravelfromscratch.com) for newcomers to the framework. It's a great place to start your journey.
 
@@ -104,7 +105,7 @@ You may also want to configure a few additional components of Laravel, such as:
 ## Web Server Configuration
 
 <a name="pretty-urls"></a>
-### Pretty URLs
+### URL လှလှလေးလိုချင်တယ်
 
 #### Apache
 
