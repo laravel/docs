@@ -43,8 +43,6 @@ Laravel က dependencies တွေကိုစီမံခန့်ခွဲဖ�
 
     composer global require laravel/installer
 
-Make sure to place composer's system-wide vendor bin directory in your `$PATH` so the laravel executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
-
 Composer ရဲ့ vendor directory ကို system-wide bin directory ဖြစ်အောင်အောက်ဖော်ပြပါ code ကို သင့်ရဲ့ PATH ဖြစ်တဲ့ `~/.bash_profile` သို့မဟုတ် `~/.bashrc` မှာကူးယူထည့်သွင်းပါ။ ထို့နောက် `source ~/.bash_profile` သို့မဟုတ် `soruce ~/.bashrc` ဆိုပြီး active လုပ်ပေးလိုက်ပါ။
 
 ```
@@ -64,26 +62,26 @@ Install လုပ်လို့ပြီးသွားပြီဆိုလျ
 
 #### Local Development Server
 
-If you have PHP installed locally and you would like to use PHP's built-in development server to serve your application, you may use the `serve` Artisan command. This command will start a development server at `http://localhost:8000`:
+သင့်စက်မှာ PHP install ပြုလုပ်ထားပြီးလျှင် PHP ရဲ့ built-in ပါတဲ့ development server ကိုအသုံးပြုပြီးတော့ သင့် application ကို serve လုပ်နိုင်ပါတယ်။ server command က development server ကို `http://localhost:8000` မှာစတင်စေမှာဖြစ်ပါတယ် - 
 
     php artisan serve
 
-Of course, more robust local development options are available via [Homestead](/docs/{{version}}/homestead) and [Valet](/docs/{{version}}/valet).
+ဒါပေါ့ပိုမိုအားကောင်းတဲ့ development options တွေဖြစ်တဲ့ [Homestead](/docs/{{version}}/homestead) နှင့် [Valet](/docs/{{version}}/valet) တို့လည်းရှိပါတယ်။
 
 <a name="configuration"></a>
 ### Configuration
 
 #### Public Directory
 
-After installing Laravel, you should configure your web server's document / web root to be the `public` directory. The `index.php` in this directory serves as the front controller for all HTTP requests entering your application.
+သင် Laravel ကို install လုပ်ပြီးတဲ့အခါမှာတော့ သင့် web server ရဲ့ document / web root ကို `public` directory ကို configure ဖို့လိုအပ်ပါ့မည်။ public directory ထဲမှာရှိတဲ့ `index.php` က သင့် application ဆီလာတဲ့ HTTP requests တွေအားလုံးရဲ့ front controller အဖြစ် serve လုပ်မှာဖြစ်ပါတယ်။
 
 #### Configuration Files
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+Laravel framework ရဲ့ configuration files တွေအားလုံးဟာ `config` directory ထဲမှာ store လုပ်ထားမှာဖြစ်ပါတယ်။ Option တစ်ခုချင်းဆီအတွက်ဘာလုပ်ရမလဲဆိုတာအားလုံးရေးထားပြီးသားဖြစ်တဲ့အတွက် options တွေနှင့်ရင်းနှီးသွားအောင် စိတ်ကြိုက် files တွေဆီသွားပြီးမွှေနှောက်ကြည့်လိုက်ပါတော့။
 
 #### Directory Permissions
 
-After installing Laravel, you may need to configure some permissions. Directories within the `storage` and the `bootstrap/cache` directories should be writable by your web server or Laravel will not run. If you are using the [Homestead](/docs/{{version}}/homestead) virtual machine, these permissions should already be set.
+Laravel ကို install လုပ်ပြီးတဲ့အခါမှာတော့ permission တစ်ချို့ configure ဖို့လိုအပ်ပါလိမ့်မယ်။ `storage` directory နှင့် `bootstrap/cache` directory တွေကို web server သို့မဟုတ် Laravel မှာ writable ဖြစ်ဖို့လိုအပ်ပါ့မယ် အဲ့လိုမဟုတ်လျှင် Laravel က Run မှာမဟုတ်ပါဘူး။ သင်က Homestead](/docs/{{version}}/homestead) virtual machine သုံးတယ်ဆိုလျှင် ထို permissions တွေကအဆင်သင့်ပြင်ဆင်ပြီးသားပါ။
 
 #### Application Key
 
@@ -127,10 +125,10 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 
 #### Nginx
 
-If you are using Nginx, the following directive in your site configuration will direct all requests to the `index.php` front controller:
+Nginx မှာဆိုရင်အောက်ကညွှန်ကြားချက်ကို လိုက်လုပ်လိုက်တာနဲ့ URL လှလှလေးတွေရပါတယ်
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-Of course, when using [Homestead](/docs/{{version}}/homestead) or [Valet](/docs/{{version}}/valet), pretty URLs will be automatically configured.
+သင်က [Homestead](/docs/{{version}}/homestead) တို့ [Valet](/docs/{{version}}/valet)တို့သုံးတာဆိုလျှင် URL လှလှလေးဖြစ်ဖို့လုပ်ပြီးသားပါ။
