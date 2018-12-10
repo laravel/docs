@@ -14,11 +14,11 @@
 > {video} Laracasts provides a [free, thorough introduction to Laravel](http://laravelfromscratch.com) for newcomers to the framework. It's a great place to start your journey.
 
 <a name="server-requirements"></a>
-### Server Requirements
+### Server လိုအပ်ချက်များ
 
-The Laravel framework has a few system requirements. Of course, all of these requirements are satisfied by the [Laravel Homestead](/docs/{{version}}/homestead) virtual machine, so it's highly recommended that you use Homestead as your local Laravel development environment.
+Laravel framework မှာ system လိုအပ်ချက်တစ်ချို့ရှိပါတယ်။ ထိုလိုအပ်ချက်များကိုဖြည့်ဆည်းပေးဖို့ Laravel မှပြုလုပ်ထားတဲ့ virtual machine [Laravel Homestead](/docs/{{version}}/homestead) တစ်ရှိပါတယ်၊ ဒါကြောင့်မလို့ သင့် Local Development အတွက် Homestead ကိုအသုံးပြုဖို့အကြံပြုထောက်ခံပါသည်။
 
-However, if you are not using Homestead, you will need to make sure your server meets the following requirements:
+သို့သော်လည်း သင်က Homestead မသုံးလိုဘူးဆိုလျှင် သင့် server ကအောက်ဖော်ပြပါ လိုအပ်ချက်များနှင့်ကိုက်ညီပါသလားဆိုတာကိုကြည့်ရမှာဖြစ်ပါတယ် -
 
 <div class="content-list" markdown="1">
 - PHP >= 7.1.3
@@ -33,9 +33,9 @@ However, if you are not using Homestead, you will need to make sure your server 
 </div>
 
 <a name="installing-laravel"></a>
-### Installing Laravel
+### Laravel အား Install ပြုလုပ်ခြင်း
 
-Laravel utilizes [Composer](https://getcomposer.org) to manage its dependencies. So, before using Laravel, make sure you have Composer installed on your machine.
+Laravel က dependencies တွေကိုစီမံခန့်ခွဲဖို့ရာအတွက် [Composer](https://getcomposer.org) ကိုအသုံးပြုပါသည်။ ထို့ကြောင့် Laravel ကိုအသုံးမပြုခင် သင့်စက်မှာ Composer အရင်ဆုံး install လုပ်ထားရပါ့မည်။
 
 #### Via Laravel Installer
 
