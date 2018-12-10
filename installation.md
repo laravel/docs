@@ -37,26 +37,28 @@ Laravel framework မှာ system လိုအပ်ချက်တစ်ချ
 
 Laravel က dependencies တွေကိုစီမံခန့်ခွဲဖို့ရာအတွက် [Composer](https://getcomposer.org) ကိုအသုံးပြုပါသည်။ ထို့ကြောင့် Laravel ကိုအသုံးမပြုခင် သင့်စက်မှာ Composer အရင်ဆုံး install လုပ်ထားရပါ့မည်။
 
-#### Via Laravel Installer
+#### Laravel Installer မှတစ်ဆင့် Install ပြုလုပ်ခြင်း
 
-First, download the Laravel installer using Composer:
+ပထမဦးစွာ အောက်ဖော်ပြပါ command အတိုင်း Composer အသုံးပြုပြီး Laravel installer ကို download လုပ်ပါ - 
 
     composer global require laravel/installer
 
 Make sure to place composer's system-wide vendor bin directory in your `$PATH` so the laravel executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
 
-<div class="content-list" markdown="1">
-- macOS: `$HOME/.composer/vendor/bin`
-- GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin`
-</div>
+Composer ရဲ့ vendor directory ကို system-wide bin directory ဖြစ်အောင်အောက်ဖော်ပြပါ code ကို သင့်ရဲ့ PATH ဖြစ်တဲ့ `~/.bash_profile` သို့မဟုတ် `~/.bashrc` မှာကူးယူထည့်သွင်းပါ။ ထို့နောက် `source ~/.bash_profile` သို့မဟုတ် `soruce ~/.bashrc` ဆိုပြီး active လုပ်ပေးလိုက်ပါ။
 
-Once installed, the `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed:
+```
+export PATH=~/.composer/vendor/bin:$PATH
+```
+
+Install လုပ်လို့ပြီးသွားပြီဆိုလျှင်၊ `laravel new` command က laravel installation အသစ်စက်စက်တစ်ခုကို သင်သတ်မှတ်တဲ့ directory မှာ install လုပ်မှာဖြစ်ပါတယ်။ ဥပမာအားဖြင့် `laravel new blog` က `blog` ဆိုတဲ့ directory ထဲမှာ Laravel ရဲ့လိုအပ်တဲ့ depencies တွေနှင့်အတူ laravel ကို install လုပ်သွားမှာဖြစ်ပါတယ် -
 
     laravel new blog
 
-#### Via Composer Create-Project
 
-Alternatively, you may also install Laravel by issuing the Composer `create-project` command in your terminal:
+#### Composer Create-Project မှတစ်ဆင့် Install ပြုလုပ်နည်း
+
+နောက်တစ်နည်းအားဖြင့် Composer ရဲ့ `create-project` command ကိုအသုံးပြုပြီးတော့ install ပြုလုပ်နိုင်ပါတယ် -
 
     composer create-project --prefer-dist laravel/laravel blog
 
