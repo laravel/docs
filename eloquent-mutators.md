@@ -99,7 +99,7 @@ In this example, the `setFirstNameAttribute` function will be called with the va
 <a name="date-mutators"></a>
 ## Date Mutators
 
-By default, Eloquent will convert the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class to provide an assortment of helpful methods. You may customize which dates are automatically mutated, and even completely disable this mutation, by overriding the `$dates` property of your model:
+By default, Eloquent will convert the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class to provide an assortment of helpful methods. You may add date attributes by setting the `$dates` property of your model:
 
     <?php
 
@@ -115,11 +115,11 @@ By default, Eloquent will convert the `created_at` and `updated_at` columns to i
          * @var array
          */
         protected $dates = [
-            'created_at',
-            'updated_at',
-            'deleted_at'
+            'seen_at',
         ];
     }
+    
+You may disable the default `created_at` and `updated_at` timestamps by setting the public `$timestamps` property of the model to `false`.
 
 When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance, and the date's value will automatically be correctly stored in your database:
 
