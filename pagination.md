@@ -179,9 +179,9 @@ If you would like to designate a different file as the default pagination view, 
 
     public function boot()
     {
-        Paginator::defaultView('pagination::view');
+        Paginator::defaultView('view-name');
 
-        Paginator::defaultSimpleView('pagination::view');
+        Paginator::defaultSimpleView('view-name');
     }
 
 <a name="paginator-instance-methods"></a>
