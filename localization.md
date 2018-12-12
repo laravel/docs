@@ -1,6 +1,6 @@
 # Localization
 
-- [Introduction](#introduction)
+- [မိတ်ဆက်](#introduction)
 - [Defining Translation Strings](#defining-translation-strings)
     - [Using Short Keys](#using-short-keys)
     - [Using Translation Strings As Keys](#using-translation-strings-as-keys)
@@ -10,9 +10,9 @@
 - [Overriding Package Language Files](#overriding-package-language-files)
 
 <a name="introduction"></a>
-## Introduction
+##  မိတ်ဆက်
 
-Laravel's localization features provide a convenient way to retrieve strings in various languages, allowing you to easily support multiple languages within your application. Language strings are stored in files within the `resources/lang` directory. Within this directory there should be a subdirectory for each language supported by the application:
+သင့်ရဲ့ Application အတွင်းမှာ ဘာသာစကားများစွာ လွယ်လွယ်ကူကူ ထည့်သွင်းလို့ရစေရန်၊ ဘာသာစကားအမျိုးမျိုးဖြင့် ရေးသားထားသော string တွေကို အလွယ်တကူ retrieve လုပ်နိုင်အောင် laravel ရဲ့ localization feature ကထောက်ပံ့ပေးထားပါတယ်။ `resources/lang` လမ်းကြောင်း အောက်မှာရှိတဲ့ file တွေထဲမှာ ဘာသာစကား စကားစုတွေကို သိမ်းဆည်းကြရပါတယ်။ ထိုလမ်းကြောင်းအောက်မှာ ကိုယ့် Application မှာထည့်သွင်းချင်တဲ့ ဘာသာစကားတစ်ခုချင်းစီအတွက် folder အသီးသီးဆောက်ပြီး ဆောက်ပြီး အသုံးပြုရမှာဖြစ်ပါတယ်။
 
     /resources
         /lang
