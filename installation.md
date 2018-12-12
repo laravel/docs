@@ -85,15 +85,15 @@ Laravel ကို install လုပ်ပြီးတဲ့အခါမှာတ
 
 #### Application Key
 
-The next thing you should do after installing Laravel is set your application key to a random string. If you installed Laravel via Composer or the Laravel installer, this key has already been set for you by the `php artisan key:generate` command.
+Laravel ကို install လုပ်ပြီးနောက်ထပ်အဓိကလုပ်သင့်တာကတော့ သင့် application key ရဲ့ random string ကို set လုပ်တာပါဘဲ။  သင်က Laravel ကို Laravel Installer ကနေ သို့မဟုတ် Composer ကနေ install လုပ်ထားတာဆိုလျှင် `php artisan key:generate` command ကိုသုံးပြီးတော့ အဲ့ဒီ့ key ကသင့်အတွက် set လုပ်ထားပြီးပါပြီ။
 
-Typically, this string should be 32 characters long. The key can be set in the `.env` environment file. If you have not renamed the `.env.example` file to `.env`, you should do that now. **If the application key is not set, your user sessions and other encrypted data will not be secure!**
+ပုံမှန်အားဖြအဲ့ key က 32 charaters ရှိပါတယ်။ `.env` ထဲမှာအဲ့ဒီ့ key ကို set လုပ်နိုင်ပါတယ်။ သင်က `.env.example` ကို `.env` အဖြစ်အမည်မပြောင်းရသေးလျှင်အခုဘဲပြောင်းသင့်ပါတယ်။ **application key က set မလုပ်ရသေးဘူးဆိုလျှင် သင့် user ရဲ့ session သို့မဟုတ် encrypted data တွေကခြုံမှာမဟုတ်ပါဘူး။**
 
-#### Additional Configuration
+#### အပိုဆောင်း Configuration များ 
 
-Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+Laravel မှာတစ်ခြား configuration ထွေထွေထူးထူးလုပ်စရာမလိုပါဘူး။ သင့်စိတ်ကြိုက် development စတင်နိုင်ပါပြီ။ သို့သော်လည်း `config/app.php` fille နှင့် ထို file ထဲက documencation ကို သင်ပြန်လည်သုံးသပ်ဖို့လိုအပ်ပါလိမ့်မယ်။ အဲ့ဒီ့ file မှာ options တွေများစွာပါဝင်ပါတယ်။ ဥပမာ `timezone` နှင့် `locale` တို့လိုသင့် Application ပေါ်မူတည်ပြီးပြောင်းနိုင်တာမျိုးတွေပေါ့။ 
 
-You may also want to configure a few additional components of Laravel, such as:
+သင့်အနေဖြင့် Laravel ၏နောက်ထပ်အစိတ်အပိုင်းများကို configure လုပ်ချင်လုပ်နိုင်ပါတယ်၊ ဥပမာ - 
 
 <div class="content-list" markdown="1">
 - [Cache](/docs/{{version}}/cache#configuration)
@@ -107,11 +107,11 @@ You may also want to configure a few additional components of Laravel, such as:
 <a name="pretty-urls"></a>
 ### URL လှလှလေးလိုချင်တယ်
 
-#### Apache
+#### Apache မှာဆို URL အောင်ဘယ်လိုလုပ်လို့ရမလဲ
 
-Laravel includes a `public/.htaccess` file that is used to provide URLs without the `index.php` front controller in the path. Before serving Laravel with Apache, be sure to enable the `mod_rewrite` module so the `.htaccess` file will be honored by the server.
+Framework ထဲက `public/.htaccess` ကို URL မှာ `index.php` မပါအောင်ဖျောက်ထားပေးမှာဖြစ်ပါတယ်။ တကယ်လို့သင့် ရဲ့ Laravel application က Apache ကိုသုံးတယ်ဆိုရင် mod_rewrite ကို enable လုပ်ဖို့မမေ့ပါနဲ့ဦး။
 
-If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this alternative:
+တကယ်လို့ `.htaccess` file က သင့် Application မှာအလုပ်မလုပ်ဘူးဆိုရင် အောက်ကတစ်ခုကိုစမ်းကြည့်လိုက်ပါ:
 
     Options +FollowSymLinks -Indexes
     RewriteEngine On
