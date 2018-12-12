@@ -1,6 +1,6 @@
 # Directory Structure
 
-- [Introduction](#introduction)
+- [မိတ်ဆက်](#introduction)
 - [The Root Directory](#the-root-directory)
     - [The `app` Directory](#the-root-app-directory)
     - [The `bootstrap` Directory](#the-bootstrap-directory)
@@ -27,15 +27,15 @@
     - [The `Rules` Directory](#the-rules-directory)
 
 <a name="introduction"></a>
-## Introduction
+## မိတ်ဆတ်
 
-The default Laravel application structure is intended to provide a great starting point for both large and small applications. Of course, you are free to organize your application however you like. Laravel imposes almost no restrictions on where any given class is located - as long as Composer can autoload the class.
+Laravel ရဲ့ application structure က application အကြီးဘဲဖြစ်ဖြစ် အသေးဘဲဖြစ်ဖြစ်လွယ်လွယ်ကူကူစနိုင်ဖို့ရည်ရွယ်ထားတာပါ။ သင့် application ကိုသင့်စိတ်ကြိုက် organize လုပ်ချင်သလိုလုပ်လို့ရပါတယ်။ Composer ကနေ Class တွေကို autoload နိုင်သမျှတော့ Laravel မှာ ဘယ် class တွေကဘယ်မှာဘဲရှိရမယ်ဆိုတာမျို့းသတ်မှတ်မထားပါဘူး။ 
 
-#### Where Is The Models Directory?
+#### Models Directory ကဘယ်မှာလဲ
 
-When getting started with Laravel, many developers are confused by the lack of a `models` directory. However, the lack of such a directory is intentional. We find the word "models" ambiguous since it means many different things to many different people. Some developers refer to an application's "model" as the totality of all of its business logic, while others refer to "models" as classes that interact with a relational database.
+Laravel ကိုအခုမှစတင်မယ့်သူတွေအတွက် Laravel မှာ `model` directory မရှိတာ နည်းနည်းရှုပ်ထွေးစေနိုင်ပါတယ်။ သို့သော်လည်း အဲ့လို directory မရှိတာကတမင်သက်သက်လုပ်ထားတာပါ။ "models" ဆိုတဲ့စကားလုံရဲ့ အဓိပါယ်အများကြီးရှိတဲ့အတွက် လူတောတော်များများကို စဝေစဝါဖြစ်စေပါတယ်။ တစ်ချို့ developers တွေက application ရဲ့ "models" ကို business logic အကုန်အဲ့မှာရှိရမယ်ဆိုပြီးရည်ညွှန်းကြပြီးတော့ တစ်ချို့ကကျတော့ relational database တွေရဲ့ အပြန်အလှန်ပြု interact လုပ်ပေးတြ့ class တွေလို့ရည်ညွှန်းကြပါတယ်။
 
-For this reason, we choose to place Eloquent models in the `app` directory by default, and allow the developer to place them somewhere else if they choose.
+အဲ့ဒီအတွက်ကြောင့် Developer တွေကိုကိုယ်ကြိုက်တဲ့နေရာမှာထားထားနိုင်အောင်လို့ Eloquent models တွေကို `app` directory ထဲမှာ default အနေဖြင့်ထားထားတာပါ။
 
 <a name="the-root-directory"></a>
 ## The Root Directory
@@ -43,22 +43,22 @@ For this reason, we choose to place Eloquent models in the `app` directory by de
 <a name="the-root-app-directory"></a>
 #### The App Directory
 
-The `app` directory, as you might expect, contains the core code of your application. We'll explore this directory in more detail soon; however, almost all of the classes in your application will be in this directory.
+`app` directory ကတော့သင်မျှော်မှန်းထားတဲ့အတိုင်းဘဲ application ရဲ့ core code တွေပါဝင်ပါတယ်။ ကျွန်တော်တို့အဲ့ဒီ့ directory ကိုခဏနေကြလျှင် explore လုပ်မှာပါ သို့သော်လည်း သင့် application ရဲ့ classes တွေအကုန်လုံးကအဲ့ဒီ့ directory ထဲမှာရှိမှာဖြစ်ပါတယ်။
 
 <a name="the-bootstrap-directory"></a>
 #### The Bootstrap Directory
 
-The `bootstrap` directory contains the `app.php` file which bootstraps the framework. This directory also houses a `cache` directory which contains framework generated files for performance optimization such as the route and services cache files.
+`bootstrap` directory ထဲမှာ `app.php` file ရှိနေမှာပါ။ အဲ့ဒီ့ `app.php` file က framework ကို bootstrap လုပ်ပေးထားတာပါ။ bootatrap direcotry ထဲမှာ `cache` directory တစ်ခုလည်းပါဝင်မှာဖြစ်ပြီးတော့ အဲ့ဒီ့ folder ထဲမှာ framework ကနေ performance optimization အတွက် generate လုပ်ပေးထားတဲ့ route နှင့် services cache files တွေရှိမှာဖြစ်ပါတယ်။
 
 <a name="the-config-directory"></a>
 #### The Config Directory
 
-The `config` directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
+`config` directory ကတော့သူ့အဓိပါယ်အတိုင်း သင့် application ရဲ့ configuration files တွေရှိမှာဖြစ်ပါတယ်။ အဲ့ထဲက files တွေကိုဖတ်ကြည့်ပြီးတော့ configuration ကရရှိချင်တဲ့ရွေးချယ်စရာ configuration options တွေနှင့်ရင်းနှီးကျွမ်းဝင်အောင်လုပ်သင့်ပါတယ်။
 
 <a name="the-database-directory"></a>
 #### The Database Directory
 
-The `database` directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
+`database` directory ကတော့သင့် application ရဲ့ database migraation ၊ model factories နှင့် seeds တွေပါဝင်မှာဖြစ်ပါတယ်။ တကယ်လို့သင်က SQLite database သုံးရင်ဒီ folder ထဲမှာ SQLite database ထားနိုင်ပါတယ်။
 
 <a name="the-public-directory"></a>
 #### The Public Directory
