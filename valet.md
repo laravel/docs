@@ -139,7 +139,7 @@ Valet install ပြီးလ ျှင်တော့ sites များကိ�
 
 သင့်စက်ထဲရှိ valet နှင့်ချိတ်ဆက်ထားသော directory များကို `valet links` command အား run ခြင်းဖြင့် ကြည့်ရှုနိုင်ပါတယ်။ ချိတ်ဆက်ထားသော project အား valet နှင့် ချိတ်ဆက်ထားခြင်းမှပယ်ဖျက်ရန် `valet unlink app-name` command အား အသုံးပြုနိုင်ပါတယ်။
 
-> {မှတ်ချက်} `valet link` command အား project တစ်ခုတည်းကို multiple (sub)domains များ serve လုပ်ရန်အတွက်လဲ သုံးနိုင်ပါတယ်။ subdomain သို့မဟုတ် အခြား domain ချိတ်ဆက်ရန် `valet link subdomain.app-name` command ကို သင့်ရဲ့ project folder directory မှာ run ရမှာဖြစ်ပါတယ်။
+> {note} `valet link` command အား project တစ်ခုတည်းကို multiple (sub)domains များ serve လုပ်ရန်အတွက်လဲ သုံးနိုင်ပါတယ်။ subdomain သို့မဟုတ် အခြား domain ချိတ်ဆက်ရန် `valet link subdomain.app-name` command ကို သင့်ရဲ့ project folder directory မှာ run ရမှာဖြစ်ပါတယ်။
 
 <a name="securing-sites"></a>
 **Securing Sites With TLS**
@@ -161,7 +161,7 @@ Site တစ်ခုကို မ ျှဝေဖို့အတွက် termin
 
 သင့် site ကို မ ျှဝေသုံးစွဲခွင့်ပြုခြင်းအား ရပ်ဆိုင်းဖို့အတွက် `Control + C` ကို နှိပ်ပြီး မ ျှဝေသုံးစွဲခြင်းအား ရပ်ဆိုင်းနိုင်ပါတယ်။
 
-> {မှတ်ချက်} `valet share` command ဟာ အခုထိတော့ `valet secure` command အသုံးပြုပြီး လုံခြုံအောင်မပြုလုပ်ထားတဲ့ site တွေအတွက်တော့ အထောက်အပံ့ပေးမှာမဟုတ်ပါဘူး။
+> {note} `valet share` command ဟာ အခုထိတော့ `valet secure` command အသုံးပြုပြီး လုံခြုံအောင်မပြုလုပ်ထားတဲ့ site တွေအတွက်တော့ အထောက်အပံ့ပေးမှာမဟုတ်ပါဘူး။
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
@@ -214,8 +214,7 @@ return $staticFilePath;
 return false;
 }
 
-> {note} The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
-> {မှတ်ချက်} ဝင်လာတဲ့ request URI က `/` မဟုတ်လို့ `serve` method ဘက်က `ture` ဆိုပြီး return ပြန်လာတဲ့အခါမှသာ `isStaticFile` method ဟာ အလုပ်လုပ်မှာဖြစ်ပါတယ်။
+> {note} ဝင်လာတဲ့ request URI က `/` မဟုတ်လို့ `serve` method ဘက်က `ture` ဆိုပြီး return ပြန်လာတဲ့အခါမှသာ `isStaticFile` method ဟာ အလုပ်လုပ်မှာဖြစ်ပါတယ်။
 
 #### The `frontControllerPath` Method
 
