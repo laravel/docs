@@ -1,28 +1,28 @@
 # Laravel Valet
 
 - [Introduction](#introduction)
-    - [Valet Or Homestead](#valet-or-homestead)
+- [Valet Or Homestead](#valet-or-homestead)
 - [Installation](#installation)
-    - [Upgrading](#upgrading)
+- [Upgrading](#upgrading)
 - [Serving Sites](#serving-sites)
-    - [The "Park" Command](#the-park-command)
-    - [The "Link" Command](#the-link-command)
-    - [Securing Sites With TLS](#securing-sites)
+- [The "Park" Command](#the-park-command)
+- [The "Link" Command](#the-link-command)
+- [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
 - [Custom Valet Drivers](#custom-valet-drivers)
-    - [Local Drivers](#local-drivers)
+- [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
 
 <a name="introduction"></a>
 ## Introduction
 
-Valet is a Laravel development environment for Mac minimalists. No Vagrant, no `/etc/hosts` file. You can even share your sites publicly using local tunnels. _Yeah, we like it too._
+Valet ဆိုသည်မှာ Mac အတွက် ရိုးရှင်းသော Laravel Development environment ဖြစ်ပါတယ်။ Vargrant အသုံးပြုရန်မလိုအပ်သလို '/etc/hosts' ဖိုင်များမလိုအပ်ပါ။ သင့်ရဲ့ site များကို local tunnel များအသုံးပြုပြီး အခြားသူများကို မ ျှဝေလို့ရပါတယ်။ ကျွန်တော်တို့လဲ နှစ်သက်ပါတယ်။
 
-Laravel Valet configures your Mac to always run [Nginx](https://www.nginx.com/) in the background when your machine starts. Then, using [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq), Valet proxies all requests on the `*.test` domain to point to sites installed on your local machine.
+Laravel Valet ဟာ သင်ရဲ့စက်ဖွင့်လိုက်တာနဲ့ [Nginx](https://www.nginx.com/) ကိုနောက်ကွယ်ကနေ အမြဲ run နေအောင် ပြုလုပ်ပေးထားပါတယ်။ ထို့နောက်မှာ [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq) ကိုအသုံးပြုပြီး သင့်ရဲ့ site များကို `*.test` domain နဲ့ ချိတ်ဆက်ပေးထားပါတယ်။
 
-In other words, a blazing fast Laravel development environment that uses roughly 7 MB of RAM. Valet isn't a complete replacement for Vagrant or Homestead, but provides a great alternative if you want flexible basics, prefer extreme speed, or are working on a machine with a limited amount of RAM.
+အခြားနည်းနဲ့ပြောရရင် Ram 7MB လောက်အသုံးပြုပြီး Laravel Developemnt environment အတွက် မြန်ဆန်အောင်ပြုလုပ်ပေးထားတာပါ။ Valet ဟာ Vagrant သို့မဟုတ် Homestead တို့ကိုအစားထိုးဖို့လောက်အထိတော့ ပြီးပြည့်စုံမှုမရှိပါဘူး။ ဒါပေမယ့် အခြေခံလိုအပ်ချက်တွေ အတွက်အသုံးပြုရတာလွယ်ကူချင်ရင်၊ speed မြန်မြန် ဒါမှမဟုတ် Ram Limit ရှိတဲ့ စက်တွေအတွက်တော့ ကောင်းမွန်တဲ့ ရွေးချယ်မှုပါ။
 
-Out of the box, Valet support includes, but is not limited to:
+အောက်ပါအရာများကတော့ Valet Support ပေးတာတွေပါ။ ဒါတွေပဲလို့ ကန့်သတ်ထားတာတော့မဟုတ်ပါဘူး။
 
 <div class="content-list" markdown="1">
 - [Laravel](https://laravel.com)
@@ -49,230 +49,233 @@ Out of the box, Valet support includes, but is not limited to:
 </div>
 
 However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).
+သင့်ရဲ့ [ကိုယ်ပိုင် drivers](#custom-valet-drivers) တွေကို အသုံးပြုပြီး Valet ကိုထပ်မံ တိုးချဲ့နိုင်ပါတယ်။
 
 <a name="valet-or-homestead"></a>
-### Valet Or Homestead
+### Valet လား Homestead
 
-As you may know, Laravel offers [Homestead](/docs/{{version}}/homestead), another local Laravel development environment. Homestead and Valet differ in regards to their intended audience and their approach to local development. Homestead offers an entire Ubuntu virtual machine with automated Nginx configuration. Homestead is a wonderful choice if you want a fully virtualized Linux development environment or are on Windows / Linux.
+အားလုံးသိကြတဲ့အတိုင်းပါပဲ, Laravel က [Homestead](/docs/{{version}}/homestead) နဲ့လဲ local Laravel development environment တည်ဆောက်လို့ရပါတယ်။ Homestead နဲ့ Valet က local development အတွက် ဦးတည်ရာရည်ရွယ်ချက်များပေါ်မူတည်ပြီး ကွဲပြားပါတယ်။ Homestead ဟာ Nginx configuration တွေကို အသင့်ပါတဲ့ Ubuntu Virtual machine တစ်ခု တည်ဆောက်ပေးပါတယ်။ သင့်ရဲ့ Window/Linux system မှာ ပြည့်စုံတဲ့ Linux development environment တစ်ခုလိုချင်တယ်ဆိုရင်တော့ Homestead ဟာ ကောင်းမွန်တဲ့ရွေးချယ်မှုပါပဲ။ 
 
-Valet only supports Mac, and requires you to install PHP and a database server directly onto your local machine. This is easily achieved by using [Homebrew](http://brew.sh/) with commands like `brew install php` and `brew install mysql`. Valet provides a blazing fast local development environment with minimal resource consumption, so it's great for developers who only require PHP / MySQL and do not need a fully virtualized development environment.
+Valet ဟာ Mac အတွက်ပဲသီးသန့်အထောက်အပံ့ပေးတာပါ။ ပြီးတော့ သင့်ရဲ့စက်ထဲကို PHP နဲ့ database server install လုပ်ဖို့လိုအပ်ပါတယ်။ ဒါတွေကို [Homebrew](http://brew.sh/) ရဲ့ commands တွေဖြစ်တဲ့ `brew install php` နဲ့ `brew install mysql` တို့ကို အသုံးပြုပြီး လွယ်ကူစွာ ထည့်သွင်းနိုင်ပါတယ်။ Valet က resource အနည်းဆုံးအသုံးပြုပြီး local development ကို အမြန်ဆန်ဆုံးဖြစ်အောင်စွမ်းဆောင်ပေးနိုင်ပါတယ်။ ဒါကြောင့်မို့ အရမ်းပြည့်စုံတဲ့ development environment မျိုးမဟုတ်ပဲ PHP/MySQL လောက်ပဲ အသုံးပြုမယ့် developer တွေအတွက် ကောင်းမွန်စေပါတယ်။ 
 
-Both Valet and Homestead are great choices for configuring your Laravel development environment. Which one you choose will depend on your personal taste and your team's needs.
+Valet နဲ့ Homestead နှစ်မျိုးလုံးဟာ သင့်ရဲ့ Laravel development environment တည်ဆောက်မှုအတွက် ကောင်းမွန်တဲ့ ရွေးချယ်မှုပါ။ သင့်နှစ်သက်ရာ ၊ သင့်ရဲ့ team လိုအပ်ချက်ပေါ်မူတည်ပြီး နှစ်သက်ရာရွေးချယ်နိုင်ပါတယ်။ 
 
 <a name="installation"></a>
-## Installation
+## Install ပြုလုပ်ခြင်း
 
-**Valet requires macOS and [Homebrew](http://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.**
+**Valet ထည့်သွင်းဖို့အတွက် macOS နဲ့ [Homebrew](http://brew.sh/) လိုအပ်ပါတယ်။ installation မပြုလုပ်ခင်မှာ သင့်ရဲ့စက်မှာ Apache သို့မဟုတ် Nginx အစရှိတဲ့ program တွေက port 80 ကိုအသုံးပြုထားခြင်း ရှိ၊မရှိ ဦးစွာစစ်ဆေးပါ။**
 
 <div class="content-list" markdown="1">
-- Install or update [Homebrew](http://brew.sh/) to the latest version using `brew update`.
-- Install PHP 7.2 using Homebrew via `brew install php@7.2`.
-- Install [Composer](https://getcomposer.org).
-- Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/vendor/bin` directory is in your system's "PATH".
-- Run the `valet install` command. This will configure and install Valet and DnsMasq, and register Valet's daemon to launch when your system starts.
+- `brew update` command ကိုအသုံးပြုပြီး [Homebrew](http://brew.sh/) နောက်ဆုံး version ရရှိစေရန် install သို့မဟုတ် update ပြုလုပ်ပါ။
+- Homebrew မှတစ်ဆင့် `brew install php@7.2` command ကို အသုံးပြုပြီး PHP 7.2 ကို install လုပ်ပါ။
+[Composer](https://getcomposer.org) install လုပ်ပါ။
+- `~/.composer/vendor/bin` directory ကို သင့် system ရဲ့ "PATH" မှာရှိအောင် ပြုလုပ်ထားပါ။ ထို့နောက် Composer မှတစ်ဆင့် `composer global require laravel/valet` command ကိုအသုံးပြုပြီး Valet ကို install လုပ်ပါ။ 
+- `valet install` command ကို Run ခြင်းဖြင့် Valet နဲ့ DnMasq ကို install ပြုလုပ်ပြီး သင့်ရဲ့ system စတင်တာနဲ့ Valet ကို အလုပ်လုပ်စေမှာဖြစ်ပါတယ်။
 </div>
 
-Once Valet is installed, try pinging any `*.test` domain on your terminal using a command such as `ping foobar.test`. If Valet is installed correctly you should see this domain responding on `127.0.0.1`.
+Valet ကို install လုပ်ပြီးလ ျှင် terminal မှာ `*.test` နဲ့ domain တစ်ခုခုကို ping ကြည့်ပါ။ ဥပမာ `ping foobar.test`။ တကယ်လို့ Valet သာ မှန်မှန်ကန်ကန် install လုပ်သွားတယ်ဆိုရင် သင့်ရဲ့ domain က `127.0.0.1` မှာ respond လုပ်မှာဖြစ်ပါတယ်။
 
-Valet will automatically start its daemon each time your machine boots. There is no need to run `valet start` or `valet install` ever again once the initial Valet installation is complete.
+Valet ဟာ သင့်ရဲ့စက် boot လုပ်တာနဲ့ သူ့ရဲ့ လုပ်ဆောင်ချက်တွေကို အလိုအလျောက် စတင်ပါတယ်။ Valet ကို တစ်ခါပြည့်စုံစွာ install လုပ်ပြီးတာနဲ့ `valet start` သို့မဟုတ် `valet install` တို့လို command တွေကို ထပ်ရိုက်စရာမလိုတော့ပါဘူး။
 
-#### Using Another Domain
+#### အခြား Domain ပြောင်းလဲအသုံးပြုခြင်း
 
-By default, Valet serves your projects using the `.test` TLD. If you'd like to use another domain, you can do so using the `valet domain tld-name` command.
+ပုံသေအားဖြင့် Valet က သင့်ရဲ့ project မှာ `.test` TLD အသုံးပြုအောင် လုပ်ဆောင်ပေးထားပါတယ်။ တကယ်လို့ သင်ဟာ အခြား domain တစ်ခုခု အသုံးပြုချင်တယ်ဆိုရင် `valet domain tld-name` command ကိုအသုံးပြုပြီး ပြောင်းလဲနိုင်ပါတယ်။
 
-For example, if you'd like to use `.app` instead of `.test`, run `valet domain app` and Valet will start serving your projects at `*.app` automatically.
+ဥပမာအားဖြင့် သင်က `.test` အစား `.app` သုံးချင်တယ်ဆိုရင် `valet domain app` command ကို run လိုက်တာနဲ့ Valet က သင့်ရဲ့ project ကို `*.app` မှာ အသုံးပြုလို့ရအောင် အလိုအလေ ျှာက်ပြောင်းလဲပေးပါတယ်။
 
 #### Database
 
-If you need a database, try MySQL by running `brew install mysql@5.7` on your command line. Once MySQL has been installed, you may start it using the `brew services start mysql@5.7` command. You can then connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
+သင်ဟာ database သုံးဖို့ လိုအပ်တယ်ဆိုရင် `brew install mysql@5.7` ကို command line မှာ run ပြီး install လုပ်နိုင်ပါတယ်။ MySQL install လုပ်ပြီးပြီဆိုရင် `brew services start mysql@5.7` command ကိုသုံးပြီး server start နိုင်ပါတယ်။ ထို့နောက် `127.0.0.1` မှာ root usernme နဲ့ password ကို အလွတ်ထားပြီး database ကို ချိတ်ဆက်နိုင်ပါတယ်။
 
 <a name="upgrading"></a>
 ### Upgrading
 
-You may update your Valet installation using the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
+Terminal မှာ `composer global update` command ကို run ပြီး valet installation ကို update လုပ်နိုင်ပါတယ်။ upgrade လုပ်ပြီးရင် `valet install` command ကို run ခြင်းအားဖြင့် Valet ဟာ လိုအပ်ရင် သင့်ရဲ့ configuration file တွေကို ဖြည့်စွက် upgrade လုပ်ပေးနိုင်ပါတယ်။
 
-#### Upgrading To Valet 2.0
+#### Valet 2.0 သို့ upgrade လုပ်ခြင်း
 
-Valet 2.0 transitions Valet's underlying web server from Caddy to Nginx. Before upgrading to this version you should run the following commands to stop and uninstall the existing Caddy daemon:
+Valet 2.0 ကိုပြောင်းတဲ့အခါမှာ Valet ဟာ အခြေခံ web server ကို Caddy မှ Nginx သို့ပြောင်းလဲခဲ့ပါတယ်။ version 2.0 ကို upgrade မလုပ်ခင်မှာ အောက်ပါ command များကို run ပြီး ရှိနှင့်ပြီးသား Canddy ကိုအသုံးပြုထားတဲ့ လုပ်ဆောင်ချက်များကို stop and uninstall ပြုလုပ်ပါ။ 
 
-    valet stop
-    valet uninstall
 
-Next, you should upgrade to the latest version of Valet. Depending on how you installed Valet, this is typically done through Git or Composer. If you installed Valet via Composer, you should use the following command to update to the latest major version:
+valet stop
+valet uninstall
 
-    composer global require laravel/valet
+ထို့နောက် Valet ရဲ့ နောက်ဆုံး version ကို upgrade လုပ်နိုင်ပါသည်။ Valet ကို install လုပ်တဲ့ပေါ်မှာ မူတည်ပြီး Git သို့မဟုတ် composer ကို အသုံးပြုသွားမှာဖြစ်ပါတယ်။ သင်ဟာ composer ကို အသုံးပြုပြီး install လုပ်မယ်ဆိုရင် အောက်ပါ command ကို အသုံးပြုပြီး composer ရဲ့ နောက်ဆုံး major version ကို ရယူနိုင်ပါတယ်။
 
-Once the fresh Valet source code has been downloaded, you should run the `install` command:
+composer global require laravel/valet
 
-    valet install
-    valet restart
+ထို့နောက် အောက်ပါ`install` command တွေကို သုံးပြီး valet ရဲ့ source code အသစ်ကို download ရယူနိုင်ပါတယ်။
 
-After upgrading, it may be necessary to re-park or re-link your sites.
+valet install
+valet restart
+
+Upgrade လုပ်ပြီးလ ျှင် သင့်ရဲ့ site များကို re-park သို့မဟုတ် re-link လုပ်ပေးရန်လိုအပ်နိုင်ပါတယ်။ 
 
 <a name="serving-sites"></a>
-## Serving Sites
+## Site များကို serving ပြုလုပ်ခြင်း
 
-Once Valet is installed, you're ready to start serving sites. Valet provides two commands to help you serve your Laravel sites: `park` and `link`.
+Valet install ပြီးလ ျှင်တော့ sites များကို စတင်ဖို့ အဆင်သင့်ဖြစ်ပါပြီ။ `park` and `link` command နှစ်ခုကို အသုံးပြုပြီး သင့်ရဲ့ Laravel site တွေကို စတင်အသုံးပြုလို့ရအောင် Valet က ဆောင်ရွက်ပေးပါတယ်။
 
 <a name="the-park-command"></a>
-**The `park` Command**
+**`park` Command အသုံးပြုခြင်း**
 
 <div class="content-list" markdown="1">
-- Create a new directory on your Mac by running something like `mkdir ~/Sites`. Next, `cd ~/Sites` and run `valet park`. This command will register your current working directory as a path that Valet should search for sites.
-- Next, create a new Laravel site within this directory: `laravel new blog`.
-- Open `http://blog.test` in your browser.
+- သင့်ရဲ့ Mac မှာ new directory အသစ်ဆောက်ပါ။ ဥပမာ `mkdir ~/Sites`။ ထို့နောက် `cd ~/Sites`။ ပြီးလ ျှင် `valet park` အား run ခြင်းဖြင့် သင့်ရဲ့ လက်ရှိ working directory ရှိ site များကို Valet လုပ်ဆောင်ချက်များ ရရှိစေမှာဖြစ်ပါတယ်။
+- ထို့နောက် Laravel site အသစ်တစ်ခုကို အထက်ပါ directory တွင် create လုပ်ပါ။ ဥပမာ `laravel new blog`။
+- သင့်ရဲ့ browser မှာ `http://blog.test` ကိုဖွင့်ပါ။
 </div>
 
-**That's all there is to it.** Now, any Laravel project you create within your "parked" directory will automatically be served using the `http://folder-name.test` convention.
+အထက်ပါလုပ်ဆောင်ချက်များ ပြီးစီးပါက သင့်ရဲ့ "parked" directory မှာရှိတဲ့ Laravel project တွေက `http://folder-name.test` လိုမျိုး အလိုအလေ ျှာက် serve လုပ်ပေးမှာဖြစ်ပါတယ်။
 
 <a name="the-link-command"></a>
-**The `link` Command**
+**`link` Command အသုံးပြုခြင်း**
 
-The `link` command may also be used to serve your Laravel sites. This command is useful if you want to serve a single site in a directory and not the entire directory.
+`link` command ကိုလဲ သင့်ရဲ့ laravel site တွေ serve လုပ်ဖို့အသုံးပြုနိုင်ပါတယ်။ အဲ့ဒီ့ command က သင်က directory တစ်ခုလုံးမဟုတ်ပဲ directory ထဲက site တစ်ခုတည်းကို serve လုပ်ချင်တဲ့အခါမှာ အသုံးဝင်ပါတယ်။
 
 <div class="content-list" markdown="1">
-- To use the command, navigate to one of your projects and run `valet link app-name` in your terminal. Valet will create a symbolic link in `~/.config/valet/Sites` which points to your current working directory.
-- After running the `link` command, you can access the site in your browser at `http://app-name.test`.
+- ဒီ command ကိုသုံးဖို့အတွက် terminal မှာ သင့်ရဲ့ သက်ဆိုင်ရာ project ကို ညွှန်းပြီး `valet link app-name` ဟုအသုံးပြုနိုင်ပါသည်။ Valet ဟာ သင့်ရဲ့ working directory ကို point ထားတဲ့ `~/.config/valet/Sites` မှာ အမှတ်အသား Link တစ်ခု အဖြစ် create လုပ်ပေးသွားမှာဖြစ်ပါတယ်။
+-`link` command ကို run ပြီးလ ျှင် သင့် browser မှာ `http://app-name.test` ဖြင့် access လုပ်လို့ရပါပြီ။
 </div>
 
-To see a listing of all of your linked directories, run the `valet links` command. You may use `valet unlink app-name` to destroy the symbolic link.
+သင့်စက်ထဲရှိ valet နှင့်ချိတ်ဆက်ထားသော directory များကို `valet links` command အား run ခြင်းဖြင့် ကြည့်ရှုနိုင်ပါတယ်။ ချိတ်ဆက်ထားသော project အား valet နှင့် ချိတ်ဆက်ထားခြင်းမှပယ်ဖျက်ရန် `valet unlink app-name` command အား အသုံးပြုနိုင်ပါတယ်။
 
-> {tip} You can use `valet link` to serve the same project from multiple (sub)domains. To add a subdomain or another domain to your project run `valet link subdomain.app-name` from the project folder.
+> {မှတ်ချက်} `valet link` command အား project တစ်ခုတည်းကို multiple (sub)domains များ serve လုပ်ရန်အတွက်လဲ သုံးနိုင်ပါတယ်။ subdomain သို့မဟုတ် အခြား domain ချိတ်ဆက်ရန် `valet link subdomain.app-name` command ကို သင့်ရဲ့ project folder directory မှာ run ရမှာဖြစ်ပါတယ်။
 
 <a name="securing-sites"></a>
 **Securing Sites With TLS**
 
-By default, Valet serves sites over plain HTTP. However, if you would like to serve a site over encrypted TLS using HTTP/2, use the `secure` command. For example, if your site is being served by Valet on the `laravel.test` domain, you should run the following command to secure it:
+ပုံသေအားဖြင့် Valet ဟာ site များကို plain HTTP ပေါ်မှာ serve လုပ်ပါတယ်။ တကယ်လို့ သင်က site တစ်ခုကို HTTP/2 အသုံးပြုထားတဲ့ encrypted TSL မှာ serve လုပ်ချင်တယ်ဆိုရင် `secure` command ကို အသုံးပြုနိုင်ပါတယ်။ ဥပမာ - သင့်ရဲ့ site ကို Valet က `laravel.test` မှာ serve လုပ်ထားတယ်ဆိုပါစို့၊ သင်ဟာ အောက်ပါ command ကို run ခြင်းဖြင့် သင့်ရဲ့ site ကို secure လုပ်နိုင်ပါတယ်။
 
-    valet secure laravel
+valet secure laravel
 
-To "unsecure" a site and revert back to serving its traffic over plain HTTP, use the `unsecure` command. Like the `secure` command, this command accepts the host name that you wish to unsecure:
+site တစ်ခုကို plain HTTP ပေါ်မှာ serve လုပ်ဖို့အတွက် "unsecure" ပြန်လုပ်ချင်တယ်ဆိုရင် `unsecure` command ကို အသုံးပြုနိုင်ပါတယ်။ ဒီ command ဟာ `secure` command ကို အသုံးပြုသလိုပဲ သင် unsecure လုပ်ချင်တဲ့ host name ကို ထည့်ပေးရမှာဖြစ်ပါတယ်။
 
-    valet unsecure laravel
+valet unsecure laravel
 
 <a name="sharing-sites"></a>
 ## Sharing Sites
 
-Valet even includes a command to share your local sites with the world. No additional software installation is required once Valet is installed.
+Valet ဟာ သင့်ရဲ့ စက်က local site တွေကိုတောင် ကမ္ဘာပေါ်မှာ မ ျှဝေလို့ရပါတယ်။ နောက်ထပ်အခြား software ထပ်ထည့်စရာမလိုပဲ valet ကိုတစ်ကြိမ်ထည့်သွင်းထားရုံနှင့် အဆိုပါလုပ်ဆောင်ချက်ကို ရရှိမှာဖြစ်ပါတယ်။
 
-To share a site, navigate to the site's directory in your terminal and run the `valet share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser. That's it.
+Site တစ်ခုကို မ ျှဝေဖို့အတွက် terminal မှာ သင့်ရဲ့ site directory ကိုညွှန်းပြီး `valet share` command ကို run ရမှာဖြစ်ပါတယ်။ သင့် site ကို မ ျှဝေသုံးစွဲနိုင်တဲ့ URL က clipboard မှာ ထည့်သွင်းသွားပြီး သင့်ရဲ့ browser မှာ paste လုပ်ပြီး ကြည့်ရှုနိုင်ဖို့ အဆင်သင့်ဖြစ်နေမှာပါ။
 
-To stop sharing your site, hit `Control + C` to cancel the process.
+သင့် site ကို မ ျှဝေသုံးစွဲခွင့်ပြုခြင်းအား ရပ်ဆိုင်းဖို့အတွက် `Control + C` ကို နှိပ်ပြီး မ ျှဝေသုံးစွဲခြင်းအား ရပ်ဆိုင်းနိုင်ပါတယ်။
 
-> {note} `valet share` does not currently support sharing sites that have been secured using the `valet secure` command.
+> {မှတ်ချက်} `valet share` command ဟာ အခုထိတော့ `valet secure` command အသုံးပြုပြီး လုံခြုံအောင်မပြုလုပ်ထားတဲ့ site တွေအတွက်တော့ အထောက်အပံ့ပေးမှာမဟုတ်ပါဘူး။
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
 
-You can write your own Valet "driver" to serve PHP applications running on another framework or CMS that is not natively supported by Valet. When you install Valet, a `~/.config/valet/Drivers` directory is created which contains a `SampleValetDriver.php` file. This file contains a sample driver implementation to demonstrate how to write a custom driver. Writing a driver only requires you to implement three methods: `serves`, `isStaticFile`, and `frontControllerPath`.
+သင်ဟာ Valet က အထောက်အပံ့မပေးသေးတဲ့ Framework သို့မဟုတ် CMS တွေအသုံးပြုထားတဲ့ PHP application တွေအတွက် သင့်ရဲ့ ကိုယ်ပိုင် Valet "driver" ကိုပြုလုပ်နိုင်ပါတယ်။ သင် valet ကို install ပြုလုပ်ချိန်မှာ `SampleValetDriver.php` file ပါဝင်တဲ့ `~/.config/valet/Drivers` directory ကို တည်ဆောက်လိုက်ပြီးဖြစ်ပါတယ်။ အဆိုပါ file မှာ ကိုယ်ပိုင် driver တစ်ခု ဘယ်လိုတည်ဆောက်ရမလဲ ဆိုတာကို ရှင်းလင်းပြသထားတဲ့ ဥပမာ driver တစ်ခုပါဝင်ပါတယ်။ သင့်အနေနဲ့ ကိုယ်ပိုင် driver တစ်ခု တည်ဆောက်ဖို့အတွက် `serves`, `isStaticFile`, နဲ့ `frontControllerPath` ဆိုတဲ့ နည်းလမ်း ၃ မျိုးပဲ လုပ်ဆောင်ရမှာပါ။
 
-All three methods receive the `$sitePath`, `$siteName`, and `$uri` values as their arguments. The `$sitePath` is the fully qualified path to the site being served on your machine, such as `/Users/Lisa/Sites/my-project`. The `$siteName` is the "host" / "site name" portion of the domain (`my-project`). The `$uri` is the incoming request URI (`/foo/bar`).
+အထက်ပါနည်းလမ်း ၃ မျိုးလုံးဟာ `$sitePath`, `$siteName`, နဲ့ `$uri` ဆိုတဲ့တန်ဖိုးတွေကို လက်ခံပါတယ်။ `$sitePath` ဆိုတာကတော့ သင့်ရဲ့ စက်မှာ serve လုပ်နေတဲ့ site ရဲ့ လမ်းကြောင်းအပြည့်အစုံပါ။ ဥပမာ - `/Users/Lisa/Sites/my-project`။ `$siteName` ဆိုတာကတော့ domain (`my-project`) ရဲ့ "host" / "site name" အပိုင်း ဖြစ်ပါတယ်။ `$uri` ကတော့ ဝင်လာမယ့် request ရဲ့ URI (`/foo/bar`) ဖြစ်ပါတယ်။
 
-Once you have completed your custom Valet driver, place it in the `~/.config/valet/Drivers` directory using the `FrameworkValetDriver.php` naming convention. For example, if you are writing a custom valet driver for WordPress, your file name should be `WordPressValetDriver.php`.
+သင်ဟာ သင့်ရဲ့ ကိုယ်ပိုင် Valet driver ကိုတည်ဆောက်ပြီးပြီဆိုရင် `FrameworkValetDriver.php` ရဲ့ အမည်ပေးချက်များကို လိုက်နာပြီး `~/.config/valet/Drivers` directory  အောက်မှာ ထည့်သွင်းပါ။
 
-Let's take a look at a sample implementation of each method your custom Valet driver should implement.
+ကိုယ်ပိုင် Valet driver အတွက် Method တစ်ခုခြင်းစီကို ဘယ်လိုတည်ဆောက်ရမလဲဆိုတာ သိဖို့အတွက် ဥပမာအနေနဲ့ တည်ဆောက်ထားတာကို ကြည့်ကြပါစို့။
 
 #### The `serves` Method
 
-The `serves` method should return `true` if your driver should handle the incoming request. Otherwise, the method should return `false`. So, within this method you should attempt to determine if the given `$sitePath` contains a project of the type you are trying to serve.
+သင့်ရဲ့ driver ဟာ ဝင်ရောက်လာတဲ့ request တွေကို ထိန်းချုပ်နိုင်တယ်ဆိုရင် `serves` method ဟာ `true` ကို return ပြန်သင့်ပါတယ်။ မဟုတ်ရင်တော့ `false` ကို return ပြန်ရမှာဖြစ်ပါတယ်။ ဒါကြောင့် method အတွင်းမှာ ပေးထားတဲ့ `$sitePath` မှာ သင် serve လုပ်ချင်တဲ့ project အမျိုးအစား ပါဝင်ခြင်းရှိမရှိ ဆုံးဖြတ်ဖို့ ကြိုးစားရမှာပါ။
 
-For example, let's pretend we are writing a `WordPressValetDriver`. Our `serves` method might look something like this:
+ဥပမာအားဖြင့် ကျွန်တော်တို့ဟာ `WordPressValetDriver` ကိုရေးသားနေတယ် ဆိုကြပါစို့။ ကျွန်တော်တို့ ရဲ့ `serves` method ဟာ အောက်ပါအတိုင်းဖြစ်ရမှာပါ :
 
-    /**
-     * Determine if the driver serves the request.
-     *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
-     * @return bool
-     */
-    public function serves($sitePath, $siteName, $uri)
-    {
-        return is_dir($sitePath.'/wp-admin');
-    }
+/**
+* Determine if the driver serves the request.
+*
+* @param  string  $sitePath
+* @param  string  $siteName
+* @param  string  $uri
+* @return bool
+*/
+public function serves($sitePath, $siteName, $uri)
+{
+return is_dir($sitePath.'/wp-admin');
+}
 
 #### The `isStaticFile` Method
 
-The `isStaticFile` should determine if the incoming request is for a file that is "static", such as an image or a stylesheet. If the file is static, the method should return the fully qualified path to the static file on disk. If the incoming request is not for a static file, the method should return `false`:
+`isStaticFile` method ဟာ image သို့မဟုတ် stylesheet လိုမျိုး "static" ဖြစ်တဲ့ file တွေ အတွက် ဝင်ရောက်လာတဲ့ request တွေအတွက် ဆုံးဖြတ်ရမှာဖြစ်ပါတယ်။ တကယ်လို့ file static ဖြစ်တယ်ဆိုရင် ဒီ method က သင့်စက်မှာရှိတဲ့ အဆိုပါ static file အတွက် မှန်ကန်ပြည့်စုံတဲ့ လမ်းကြောင်း(path) တစ်ခုကို return ပြန်ပေးမှာဖြစ်ပါတယ်။ တကယ်လို့ ဝင်လာတဲ့ request က static file မဟုတ်ဘူးဆိုရင် `false` အနေနဲ့ return ပြန်ပေးရပါမယ်: 
 
-    /**
-     * Determine if the incoming request is for a static file.
-     *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
-     * @return string|false
-     */
-    public function isStaticFile($sitePath, $siteName, $uri)
-    {
-        if (file_exists($staticFilePath = $sitePath.'/public/'.$uri)) {
-            return $staticFilePath;
-        }
+/**
+* Determine if the incoming request is for a static file.
+*
+* @param  string  $sitePath
+* @param  string  $siteName
+* @param  string  $uri
+* @return string|false
+*/
+public function isStaticFile($sitePath, $siteName, $uri)
+{
+if (file_exists($staticFilePath = $sitePath.'/public/'.$uri)) {
+return $staticFilePath;
+}
 
-        return false;
-    }
+return false;
+}
 
 > {note} The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
+> {မှတ်ချက်} ဝင်လာတဲ့ request URI က `/` မဟုတ်လို့ `serve` method ဘက်က `ture` ဆိုပြီး return ပြန်လာတဲ့အခါမှသာ `isStaticFile` method ဟာ အလုပ်လုပ်မှာဖြစ်ပါတယ်။
 
 #### The `frontControllerPath` Method
 
-The `frontControllerPath` method should return the fully qualified path to your application's "front controller", which is typically your "index.php" file or equivalent:
+`frontControllerPath` method ဟာ ပြည့်စုံမှန်ကန်တဲ့ လမ်းကြောင်း(path) ကို သင့် application ရဲ့ "front controller" ဖြစ်တဲ့ "index.php" file သို့မဟုတ် အလားတူ file တစ်ခုခုကို retun ပြန်ပေးရမှာဖြစ်ပါတယ်။ 
 
-    /**
-     * Get the fully resolved path to the application's front controller.
-     *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
-     * @return string
-     */
-    public function frontControllerPath($sitePath, $siteName, $uri)
-    {
-        return $sitePath.'/public/index.php';
-    }
+/**
+* Get the fully resolved path to the application's front controller.
+*
+* @param  string  $sitePath
+* @param  string  $siteName
+* @param  string  $uri
+* @return string
+*/
+public function frontControllerPath($sitePath, $siteName, $uri)
+{
+return $sitePath.'/public/index.php';
+}
 
 <a name="local-drivers"></a>
 ### Local Drivers
 
-If you would like to define a custom Valet driver for a single application, create a `LocalValetDriver.php` in the application's root directory. Your custom driver may extend the base `ValetDriver` class or extend an existing application specific driver such as the `LaravelValetDriver`:
+တကယ်လို့ သင်ဟာ application တစ်ခုတည်းအတွက်ပဲ သင့်ရဲ့ ကိုယ်ပိုင် Valet driver ကို အသုံးပြုချင်တယ်ဆိုရင် သင့် application ရဲ့ root directory မှာ `LocalValetDriver.php` file ကို တည်ဆောက်ပါ။ သင့်ရဲ့ ကိုယ်ပိုင် driver ဟာ အခြေခံ `ValetDriver` class ဒါမှမဟုတ် `LaravelValetDriver` လိုမျိုး ရှိနှင့်ပြီးသား တိကျတဲ့ application driver လိုမျိုးကို extend လုပ်နိုင်ပါတယ်။ 
 
-    class LocalValetDriver extends LaravelValetDriver
-    {
-        /**
-         * Determine if the driver serves the request.
-         *
-         * @param  string  $sitePath
-         * @param  string  $siteName
-         * @param  string  $uri
-         * @return bool
-         */
-        public function serves($sitePath, $siteName, $uri)
-        {
-            return true;
-        }
+class LocalValetDriver extends LaravelValetDriver
+{
+/**
+* Determine if the driver serves the request.
+*
+* @param  string  $sitePath
+* @param  string  $siteName
+* @param  string  $uri
+* @return bool
+*/
+public function serves($sitePath, $siteName, $uri)
+{
+return true;
+}
 
-        /**
-         * Get the fully resolved path to the application's front controller.
-         *
-         * @param  string  $sitePath
-         * @param  string  $siteName
-         * @param  string  $uri
-         * @return string
-         */
-        public function frontControllerPath($sitePath, $siteName, $uri)
-        {
-            return $sitePath.'/public_html/index.php';
-        }
-    }
+/**
+* Get the fully resolved path to the application's front controller.
+*
+* @param  string  $sitePath
+* @param  string  $siteName
+* @param  string  $uri
+* @return string
+*/
+public function frontControllerPath($sitePath, $siteName, $uri)
+{
+return $sitePath.'/public_html/index.php';
+}
+}
 
 <a name="other-valet-commands"></a>
 ## Other Valet Commands
 
-Command  | Description
+Command  | ရည်ရွယ်ချက်
 ------------- | -------------
-`valet forget` | Run this command from a "parked" directory to remove it from the parked directory list.
-`valet paths` | View all of your "parked" paths.
-`valet restart` | Restart the Valet daemon.
-`valet start` | Start the Valet daemon.
-`valet stop` | Stop the Valet daemon.
-`valet uninstall` | Uninstall the Valet daemon entirely.
+`valet forget` | "parked" လုပ်ထားတဲ့ directory တစ်ခုကို parked directory စာရင်းကနေပယ်ဖျက်နိုင်ဖို့ အသုံးပြုရတဲ့ command ဖြစ်ပါတယ်။
+`valet paths` | "parked" လုပ်ထားတဲ့ လမ်းကြောင်းတွေ(paths) အားလုံးကို ကြည့်နိုင်ရန်အတွက် command ဖြစ်ပါတယ်။
+`valet restart` | Valet လုပ်ဆောင်ချက်များကို Restart လုပ်ပေးမှာဖြစ်ပါတယ်။
+`valet start` | Valet လုပ်ဆောင်ချက်များကို Start လုပ်ပေးမှာဖြစ်ပါတယ်။
+`valet stop` | Valet လုပ်ဆောင်ချက်များကို Stop လုပ်ပေးမှာဖြစ်ပါတယ်။
+`valet uninstall` | Valet နှင့်တကွ လုပ်ဆောင်ချက်များကို Uninstall လုပ်ပေးမှာဖြစ်ပါတယ်။
