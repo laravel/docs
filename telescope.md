@@ -63,7 +63,7 @@ If you plan to only use Telescope to assist your local development. You may inst
 
 After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your `app` configuration file. Instead, manually register the service provider in the `register` method of your `AppServiceProvider`:
 
-    use Laravel\Telescope\TelescopeServiceProvider::class;
+    use Laravel\Telescope\TelescopeServiceProvider;
 
     /**
      * Register any application services.
