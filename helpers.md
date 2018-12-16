@@ -1349,7 +1349,7 @@ For the inverse of `filled`, see the [`blank`](#method-blank) method.
 <a name="method-info"></a>
 #### `info()` {#collection-method}
 
-The `info` function will write information to the [log](/docs/{{version}}/errors#logging):
+The `info` function will write information to the [log](/docs/{{version}}/logging):
 
     info('Some helpful information!');
 
@@ -1360,7 +1360,7 @@ An array of contextual data may also be passed to the function:
 <a name="method-logger"></a>
 #### `logger()` {#collection-method}
 
-The `logger` function can be used to write a `debug` level message to the [log](/docs/{{version}}/errors#logging):
+The `logger` function can be used to write a `debug` level message to the [log](/docs/{{version}}/logging):
 
     logger('Debug message');
 
