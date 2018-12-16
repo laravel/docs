@@ -138,17 +138,17 @@ The published components will be placed in your `resources/js/components` direct
 
     Vue.component(
         'passport-clients',
-        require('./components/passport/Clients.vue')
+        require('./components/passport/Clients.vue').default
     );
 
     Vue.component(
         'passport-authorized-clients',
-        require('./components/passport/AuthorizedClients.vue')
+        require('./components/passport/AuthorizedClients.vue').default
     );
 
     Vue.component(
         'passport-personal-access-tokens',
-        require('./components/passport/PersonalAccessTokens.vue')
+        require('./components/passport/PersonalAccessTokens.vue').default
     );
 
 After registering the components, make sure to run `npm run dev` to recompile your assets. Once you have recompiled your assets, you may drop the components into one of your application's templates to get started creating clients and personal access tokens:
