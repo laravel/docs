@@ -597,6 +597,24 @@ You may assert on the state of the Vue component like so:
         });
     }
 
+If you want to make dusk component to test your Vue component you can do it like so:
+
+     /**
+     * Dusk Vue component example.
+     *
+     * @return void
+     */
+    class ProfileComponent extends BaseComponent
+    {
+        public function selector() {
+            return '[dusk=profile-component]'; //Or any other selector that will point to root of your component
+        }
+        
+        public function testName($browser, $name) {   
+            $browser->assertVue('user.name', $name, ''); //Note third param are empty
+        }
+    }
+
 <a name="available-assertions"></a>
 ## Available Assertions
 
