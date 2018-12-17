@@ -63,19 +63,21 @@ Laravel ကိုအခုမှစတင်မယ့်သူတွေအတွ
 <a name="the-public-directory"></a>
 #### The Public Directory
 
-The `public` directory contains the `index.php` file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
+`public` directory ထဲမှာတော့ application စီလာသမျှ request တွေကိုလက်ခံပြီး autoload configure လုပ်ထားတဲ့ `index.php` file ရှိမှာဖြစ်ပါတယ်။ ဒီ `public` folder ထဲမှာတော့ သင့် application အတွက်လိုအပ်တဲ့ ဓာတ်ပုံထားတဲ့ folder၊ Javascriot နှင့် CSS ထားရှိတဲ့ folder တွေပါဝင်မှာဖြစ်ပါတယ်။
 
 <a name="the-resources-directory"></a>
 #### The Resources Directory
 
-The `resources` directory contains your views as well as your raw, un-compiled assets such as LESS, SASS, or JavaScript. This directory also houses all of your language files.
+`resoruces` directory ထဲမှာတော့ views files တွေနှင့် compile မလုပ်ရသေးတဲ့ LESS၊ SASS နှင့် JavaScript တွေရှိမှာဖြစ်ပါတယ်။ ဒီ directory ထဲမှာသင့်ရဲ့ languages files တွေအတွက် folder လည်းတည်ရှိမှာဖြစ်ပါတယ်။ 
 
 <a name="the-routes-directory"></a>
 #### The Routes Directory
 
-The `routes` directory contains all of the route definitions for your application. By default, several route files are included with Laravel: `web.php`, `api.php`, `console.php` and `channels.php`.
+`routes` directory ထဲမှာတော့သင့် application အတွက် route definitions တွေရှိမှာဖြစ်ပါတယ်။ Default အနေဖြင့် `web.php`၊ `api.php`၊ `console.php` နှင့် `channels.php` routes တွေရှိမှာဖြစ်ပါတယ်။
 
 The `web.php` file contains routes that the `RouteServiceProvider` places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API, all of your routes will most likely be defined in the `web.php` file.
+
+`web.php` file မှာ R
 
 The `api.php` file contains routes that the `RouteServiceProvider` places in the `api` middleware group, which provides rate limiting. These routes are intended to be stateless, so requests entering the application through these routes are intended to be authenticated via tokens and will not have access to session state.
 
