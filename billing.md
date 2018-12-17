@@ -470,7 +470,7 @@ Once you are ready to create an actual subscription for the user, you may use th
 
 Occasionally, you may wish to create a Stripe customer without beginning a subscription. You may accomplish this using the `createAsStripeCustomer` method:
 
-    $user->createAsStripeCustomer($stripeToken);
+    $user->createAsStripeCustomer();
 
 Of course, once the customer has been created in Stripe, you may begin a subscription at a later date.
 
@@ -489,6 +489,8 @@ Both Stripe and Braintree can notify your application of a variety of events via
 > {note} Once you have registered your route, be sure to configure the webhook URL in your Stripe control panel settings.
 
 By default, this controller will automatically handle cancelling subscriptions that have too many failed charges (as defined by your Stripe settings), customer updates, customer deletions, subscription updates, and credit card changes; however, as we'll soon discover, you can extend this controller to handle any webhook event you like.
+
+Make sure you protect incoming requests with the [Verifying Webhook Signatures](/docs/{{version}}/billing#verifying-webhook-signatures) middleware.
 
 #### Webhooks & CSRF Protection
 
@@ -512,10 +514,10 @@ Cashier automatically handles subscription cancellation on failed charges, but i
     class WebhookController extends CashierController
     {
         /**
-         * Handle a Stripe webhook.
+         * Handle invoice payment succeeded.
          *
          * @param  array  $payload
-         * @return Response
+         * @return \Symfony\Component\HttpFoundation\Response
          */
         public function handleInvoicePaymentSucceeded($payload)
         {
@@ -535,10 +537,7 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
 
 What if a customer's credit card expires? No worries - Cashier includes a Webhook controller that can easily cancel the customer's subscription for you. As noted above, all you need to do is point a route to the controller:
 
-    Route::post(
-        'stripe/webhook',
-        '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'
-    );
+    Route::post('stripe/webhook', 'WebhookController@handleWebhook');
 
 That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts).
 
@@ -547,14 +546,7 @@ That's it! Failed payments will be captured and handled by the controller. The c
 
 To secure your webhooks, you may use [Stripe's webhook signatures](https://stripe.com/docs/webhooks/signatures). For convenience, Cashier includes a middleware that validates the incoming Stripe webhook request is valid.
 
-To get started, ensure that the `stripe.webhook.secret` configuration value is set in your `services` configuration file. Once you have configured your webhook secret, you may attach the `VerifyWebhookSignature` middleware to the route:
-
-    use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
-
-    Route::post(
-        'stripe/webhook',
-        '\App\Http\Controllers\WebhookController@handleWebhook'
-    )->middleware(VerifyWebhookSignature::class);
+To enable this, ensure that the `stripe.webhook.secret` configuration value is set in your `services` configuration file.
 
 <a name="handling-braintree-webhooks"></a>
 ## Handling Braintree Webhooks
@@ -593,12 +585,12 @@ Cashier automatically handles subscription cancellation on failed charges, but i
     class WebhookController extends CashierController
     {
         /**
-         * Handle a Braintree webhook.
+         * Handle dispute opened.
          *
-         * @param  WebhookNotification  $webhook
-         * @return Response
+         * @param  \Braintree\WebhookNotification  $webhook
+         * @return \Symfony\Component\HttpFoundation\Responses
          */
-        public function handleDisputeOpened(WebhookNotification $notification)
+        public function handleDisputeOpened(WebhookNotification $webhook)
         {
             // Handle The Event
         }
@@ -657,10 +649,12 @@ Sometimes you may need to make a one-time charge but also generate an invoice fo
     // Braintree Accepts Charges In Dollars...
     $user->invoiceFor('One Time Fee', 5);
 
-The invoice will be charged immediately against the user's credit card. The `invoiceFor` method also accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe / Braintree charge creation:
+The invoice will be charged immediately against the user's credit card. The `invoiceFor` method also accepts an array as its third argument for the invoice item and an array as its fourth argument for the invoice itself, allowing you to pass any options you wish to the underlying Stripe charge creation:
 
-    $user->invoiceFor('One Time Fee', 500, [
-        'custom-option' => $value,
+    $user->invoiceFor('Stickers', 500, [
+        'quantity' => 50,
+    ], [
+        'tax_percent' => 21,
     ]);
 
 If you are using Braintree as your billing provider, you must include a `description` option when calling the `invoiceFor` method:
