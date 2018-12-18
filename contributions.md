@@ -4,6 +4,7 @@
 - [Core Development Discussion](#core-development-discussion)
 - [Which Branch?](#which-branch)
 - [Security Vulnerabilities](#security-vulnerabilities)
+- [Compiled Assets](#compiled-assets)
 - [Coding Style](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
@@ -59,6 +60,11 @@ If you are unsure if your feature qualifies as a major or minor, please ask Tayl
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Laravel, please send an email to Taylor Otwell at <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. All security vulnerabilities will be promptly addressed.
+
+<a name="compiled-assets"></a>
+## Compiled Assets
+
+If you are submitting a change that will affect a compiled file, such as most of the files in `resouces/sass` or `resources/js` of the `laravel/laravel` repository, do not also commit the compiled files. Due to their large size, they cannot realistically be reviewed by a maintainer. This could be exploited as a way to inject malicious code into Laravel. In order to defensively prevent this, all compiled files will be generated and committed by maintainers.
 
 <a name="coding-style"></a>
 ## Coding Style
