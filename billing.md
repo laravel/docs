@@ -1,6 +1,7 @@
 # Laravel Cashier
 
 - [Introduction](#introduction)
+- [Upgrade Guide](#upgrade-guide)
 - [Configuration](#configuration)
     - [Stripe](#stripe-configuration)
     - [Braintree](#braintree-configuration)
@@ -40,6 +41,11 @@
 Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) and [Braintree's](https://www.braintreepayments.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
 
 > {note} If you're only performing "one-off" charges and do not offer subscriptions, you should not use Cashier. Instead, use the Stripe and Braintree SDKs directly.
+
+<a name="upgrade-guide"></a>
+## Upgrade Guide
+
+When upgrading to a new major version of the library, it's important that you take the things mentioned in [the upgrade guide](https://github.com/laravel/cashier/blob/master/UPGRADE.md) into account.
 
 <a name="configuration"></a>
 ## Configuration
