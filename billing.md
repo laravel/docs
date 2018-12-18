@@ -1,7 +1,7 @@
 # Laravel Cashier
 
 - [Introduction](#introduction)
-- [Upgrade Guide](#upgrade-guide)
+- [Upgrading Cashier](#upgrading-cashier)
 - [Configuration](#configuration)
     - [Stripe](#stripe-configuration)
     - [Braintree](#braintree-configuration)
@@ -42,10 +42,10 @@ Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://s
 
 > {note} If you're only performing "one-off" charges and do not offer subscriptions, you should not use Cashier. Instead, use the Stripe and Braintree SDKs directly.
 
-<a name="upgrade-guide"></a>
-## Upgrade Guide
+<a name="upgrading-cashier"></a>
+## Upgrading Cashier
 
-When upgrading to a new major version of the library, it's important that you take the things mentioned in [the upgrade guide](https://github.com/laravel/cashier/blob/master/UPGRADE.md) into account.
+When upgrading to a new major version of the Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier/blob/master/UPGRADE.md).
 
 <a name="configuration"></a>
 ## Configuration
@@ -496,7 +496,7 @@ Both Stripe and Braintree can notify your application of a variety of events via
 
 By default, this controller will automatically handle cancelling subscriptions that have too many failed charges (as defined by your Stripe settings), customer updates, customer deletions, subscription updates, and credit card changes; however, as we'll soon discover, you can extend this controller to handle any webhook event you like.
 
-Make sure you protect incoming requests with the [Verifying Webhook Signatures](/docs/{{version}}/billing#verifying-webhook-signatures) middleware.
+> {note} Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/billing#verifying-webhook-signatures) middleware.
 
 #### Webhooks & CSRF Protection
 
@@ -543,16 +543,19 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
 
 What if a customer's credit card expires? No worries - Cashier includes a Webhook controller that can easily cancel the customer's subscription for you. As noted above, all you need to do is point a route to the controller:
 
-    Route::post('stripe/webhook', 'WebhookController@handleWebhook');
+    Route::post(
+        'stripe/webhook',
+        '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'
+    );
 
 That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts).
 
 <a name="verifying-webhook-signatures"></a>
 ### Verifying Webhook Signatures
 
-To secure your webhooks, you may use [Stripe's webhook signatures](https://stripe.com/docs/webhooks/signatures). For convenience, Cashier includes a middleware that validates the incoming Stripe webhook request is valid.
+To secure your webhooks, you may use [Stripe's webhook signatures](https://stripe.com/docs/webhooks/signatures). For convenience, Cashier automatically includes a middleware which validates that the incoming Stripe webhook request is valid.
 
-To enable this, ensure that the `stripe.webhook.secret` configuration value is set in your `services` configuration file.
+To enable webhook verification, ensure that the `stripe.webhook.secret` configuration value is set in your `services` configuration file. The webhook `secret` may be retrieved from your Stripe account dashboard.
 
 <a name="handling-braintree-webhooks"></a>
 ## Handling Braintree Webhooks
@@ -591,14 +594,14 @@ Cashier automatically handles subscription cancellation on failed charges, but i
     class WebhookController extends CashierController
     {
         /**
-         * Handle dispute opened.
+         * Handle a new dispute.
          *
          * @param  \Braintree\WebhookNotification  $webhook
          * @return \Symfony\Component\HttpFoundation\Responses
          */
         public function handleDisputeOpened(WebhookNotification $webhook)
         {
-            // Handle The Event
+            // Handle The Webhook...
         }
     }
 
@@ -655,7 +658,7 @@ Sometimes you may need to make a one-time charge but also generate an invoice fo
     // Braintree Accepts Charges In Dollars...
     $user->invoiceFor('One Time Fee', 5);
 
-The invoice will be charged immediately against the user's credit card. The `invoiceFor` method also accepts an array as its third argument for the invoice item and an array as its fourth argument for the invoice itself, allowing you to pass any options you wish to the underlying Stripe charge creation:
+The invoice will be charged immediately against the user's credit card. The `invoiceFor` method also accepts an array as its third argument. This array contains the billing options for the invoice item. The fourth argument accepted by the method is also an array. This final argument accepts the billing options for the invoice itself:
 
     $user->invoiceFor('Stickers', 500, [
         'quantity' => 50,
@@ -668,7 +671,6 @@ If you are using Braintree as your billing provider, you must include a `descrip
     $user->invoiceFor('One Time Fee', 500, [
         'description' => 'your invoice description here',
     ]);
-
 
 > {note} The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
 
