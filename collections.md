@@ -165,8 +165,8 @@ For the remainder of this documentation, we'll discuss each method available on 
 [whenEmpty](#method-whenempty)
 [whenNotEmpty](#method-whennotempty)
 [where](#method-where)
-[whereBetween](#method-wherebetween)
 [whereStrict](#method-wherestrict)
+[whereBetween](#method-wherebetween)
 [whereIn](#method-wherein)
 [whereInStrict](#method-whereinstrict)
 [whereInstanceOf](#method-whereinstanceof)
@@ -2006,29 +2006,29 @@ For the inverse of `when`, see the [`unless`](#method-unless) method.
 The `whenEmpty` method will execute the given callback when the collection is empty:
 
     $collection = collect(['michael', 'tom']);
-    
+
     $collection->whenEmpty(function ($collection) {
         return $collection->push('adam');
     });
-    
+
     $collection->all();
-    
+
     // ['michael', 'tom']
-    
-    
+
+
     $collection = collect();
-    
+
     $collection->whenEmpty(function ($collection) {
         return $collection->push('adam');
     });
-    
+
     $collection->all();
-    
-    // ['adam']  
-    
-    
+
+    // ['adam']
+
+
     $collection = collect(['michael', 'tom']);
-    
+
     $collection->whenEmpty(function($collection) {
         return $collection->push('adam');
     }, function($collection) {
@@ -2036,7 +2036,7 @@ The `whenEmpty` method will execute the given callback when the collection is em
     });
 
     $collection->all();
-    
+
     // ['michael', 'tom', 'taylor']
 
 For the inverse of `whenEmpty`, see the [`whenNotEmpty`](#method-whennotempty) method.
@@ -2047,37 +2047,37 @@ For the inverse of `whenEmpty`, see the [`whenNotEmpty`](#method-whennotempty) m
 The `whenNotEmpty` method will execute the given callback when the collection is not empty:
 
     $collection = collect(['michael', 'tom']);
-    
+
     $collection->whenNotEmpty(function ($collection) {
         return $collection->push('adam');
     });
-    
+
     $collection->all();
-    
+
     // ['michael', 'tom', 'adam']
-    
-    
+
+
     $collection = collect();
-    
+
     $collection->whenNotEmpty(function ($collection) {
         return $collection->push('adam');
     });
-    
+
     $collection->all();
-    
-    // []  
-    
-    
+
+    // []
+
+
     $collection = collect();
-    
+
     $collection->whenNotEmpty(function($collection) {
         return $collection->push('adam');
     }, function($collection) {
         return $collection->push('taylor');
     });
-    
+
     $collection->all();
-    
+
     // ['taylor']
 
 For the inverse of `whenNotEmpty`, see the [`whenEmpty`](#method-whenempty) method.
@@ -2107,6 +2107,11 @@ The `where` method filters the collection by a given key / value pair:
 
 The `where` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`whereStrict`](#method-wherestrict) method to filter using "strict" comparisons.
 
+<a name="method-wherestrict"></a>
+#### `whereStrict()` {#collection-method}
+
+This method has the same signature as the [`where`](#method-where) method; however, all values are compared using "strict" comparisons.
+
 <a name="method-wherebetween"></a>
 #### `whereBetween()` {#collection-method}
 
@@ -2131,11 +2136,6 @@ The `whereBetween` method filters the collection within a given range:
             ['product' => 'Door', 'price' => 100],
         ]
     */
-
-<a name="method-wherestrict"></a>
-#### `whereStrict()` {#collection-method}
-
-This method has the same signature as the [`where`](#method-where) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-wherein"></a>
 #### `whereIn()` {#collection-method}
