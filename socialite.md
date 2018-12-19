@@ -1,6 +1,7 @@
 # Laravel Socialite
 
 - [Introduction](#introduction)
+- [Upgrading Socialite](#upgrading-socialite)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Routing](#routing)
@@ -15,6 +16,11 @@
 In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, LinkedIn, Google, GitHub, GitLab and Bitbucket.
 
 > {tip} Adapters for other platforms are listed at the community driven [Socialite Providers](https://socialiteproviders.github.io/) website.
+
+<a name="upgrading-socialite"></a>
+## Upgrading Socialite
+
+When upgrading to a new major version of Socialite, it's important that you carefully review [the upgrade guide](https://github.com/laravel/socialite/blob/master/UPGRADE.md).
 
 <a name="installation"></a>
 ## Installation
