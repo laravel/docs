@@ -35,8 +35,8 @@ To get started with Socialite, use Composer to add the package to your project's
 Before using Socialite, you will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `linkedin`, `google`, `github`, `gitlab` or `bitbucket`, depending on the providers your application requires. For example:
 
     'github' => [
-        'client_id' => env('GITHUB_CLIENT_ID'),         // Your GitHub Client ID
-        'client_secret' => env('GITHUB_CLIENT_SECRET'), // Your GitHub Client Secret
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect' => 'http://your-callback-url',
     ],
 
