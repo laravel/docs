@@ -83,7 +83,7 @@ For sub-folder installs of Laravel, the `asset()` has difficulty rendering paths
 
     use Illuminate\Support\Facades\View;
 	
-	/**
+    /**
      * Bootstrap any Telescope services.
      *
      * @return void
@@ -99,7 +99,7 @@ For sub-folder installs of Laravel, the `asset()` has difficulty rendering paths
         });
 		
         parent::boot();
-	}
+    }
     
     
 
