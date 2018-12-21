@@ -511,7 +511,11 @@ If you would like to listen for events on a private channel, use the `private` m
 <a name="leaving-a-channel"></a>
 ### Leaving A Channel
 
-To leave a channel, you may call the `leave` method on your Echo instance:
+To leave a channel, you may call the `leaveOne` method on your Echo instance:
+
+    Echo.leaveOne('orders');
+
+Alternatively if you wish to leave a channel and its private & presence channels at the same time, you may call the `leave` method:
 
     Echo.leave('orders');
 
