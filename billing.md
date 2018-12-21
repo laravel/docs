@@ -22,7 +22,7 @@
     - [Creating Customers](#create-customers)
 - [Cards](#cards)
     - [Retrieving Credit Cards](#retrieving-credit-cards)
-    - [Checking Card On File](#determining-if-a-card-is-on-file)
+    - [Determining If A Card Is On File](#determining-if-a-card-is-on-file)
     - [Updating Credit Cards](#updating-credit-cards)
     - [Deleting Credit Cards](#deleting-credit-cards)
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
