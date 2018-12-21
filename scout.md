@@ -262,6 +262,20 @@ Sometimes you may need to only make a model searchable under certain conditions.
         return $this->isPublished();
     }
 
+The `shouldBeSearchable` method is only applied when manipulating models through the `save` method, queries, or relationships. Directly making models or collections searchable using the `searchable` method will override the result of the `shouldBeSearchable` method:
+
+    // Will respect "shouldBeSearchable"...
+    App\Order::where('price', '>', 100)->searchable();
+
+    $user->orders()->searchable();
+
+    $order->save();
+
+    // Will override "shouldBeSearchable"...
+    $orders->searchable();
+
+    $order->searchable();
+
 <a name="searching"></a>
 ## Searching
 

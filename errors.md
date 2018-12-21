@@ -45,7 +45,7 @@ For example, if you need to report different types of exceptions in different wa
             //
         }
 
-        return parent::report($exception);
+        parent::report($exception);
     }
 
 > {tip} Instead of making a lot of `instanceof` checks in your `report` method, consider using [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions)

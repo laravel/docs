@@ -179,7 +179,11 @@ If you need to keep your flash data around for several requests, you may use the
 
 The `forget` method will remove a piece of data from the session. If you would like to remove all data from the session, you may use the `flush` method:
 
+    // Forget a single key...
     $request->session()->forget('key');
+
+    // Forget multiple keys...
+    $request->session()->forget(['key1', 'key2']);
 
     $request->session()->flush();
 

@@ -6,7 +6,7 @@
     - [Global Middleware](#global-middleware)
     - [Assigning Middleware To Routes](#assigning-middleware-to-routes)
     - [Middleware Groups](#middleware-groups)
-    - [Sorting Middleware](sorting-middleware)
+    - [Sorting Middleware](#sorting-middleware)
 - [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
 

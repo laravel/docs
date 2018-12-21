@@ -666,7 +666,7 @@ The field under validation must have a matching field of `foo_confirmation`. For
 <a name="rule-date"></a>
 #### date
 
-The field under validation must be a valid date according to the `strtotime` PHP function.
+The field under validation must be a valid, non-relative date according to the `strtotime` PHP function.
 
 <a name="rule-date-equals"></a>
 #### date_equals:_date_
