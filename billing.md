@@ -19,7 +19,7 @@
     - [With Credit Card Up Front](#with-credit-card-up-front)
     - [Without Credit Card Up Front](#without-credit-card-up-front)
 - [Customers](#customers)
-    - [Creating Customers](#create-customers)
+    - [Creating Customers](#creating-customers)
 - [Cards](#cards)
     - [Retrieving Credit Cards](#retrieving-credit-cards)
     - [Determining If A Card Is On File](#determining-if-a-card-is-on-file)
