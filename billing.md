@@ -440,9 +440,13 @@ You sometimes may wish to delete a a single card. You may do this by first retri
         $card->delete();
     }
 
-Alternatively, you may want to delete all cards together at once.
+> {note} If you are deleting the default card, please make sure that you sync the new default card with your database by using the `updateCardFromStripe` method afterwards.
+
+Alternatively, you may want to delete all cards together at once. This method will also call the `updateCardFromStripe` method at the end so the default card details are deleted from your database:
 
     $user->deleteCards();
+
+> {note} If your user has an active subscription you might want to prevent them from deleting the last payment source.
 
 <a name="subscription-trials"></a>
 ## Subscription Trials
