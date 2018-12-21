@@ -77,6 +77,32 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
         }
     }
 
+### Sub-Folder Laravel Installs
+
+For sub-folder installs of Laravel, the `asset()` has difficulty rendering paths correctly. You will need to add the following in the `boot` method of your `app/Providers/TelescopeServiceProvider.php` file.
+
+    use Illuminate\Support\Facades\View;
+	
+	/**
+     * Bootstrap any Telescope services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        View::composer(['telescope::layout'], function ($view) {
+            $view->with('telescopeScriptVariables', [ 
+                'path' => 'YOUR-URL-STRING-HERE/' . config('telescope.path'),  
+                'timezone' => config('app.timezone'), 
+                'recording' => ! cache('telescope:pause-recording'), 
+            ]);
+        });
+		
+        parent::boot();
+	}
+    
+    
+
 <a name="configuration"></a>
 ### Configuration
 
