@@ -15,7 +15,11 @@
     - [Subscription Anchor Date](#subscription-anchor-date)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
     - [Resuming Subscriptions](#resuming-subscriptions)
+- [Cards](#cards)
+    - [Retrieving Credit Cards](#retrieving-credit-cards)
+    - [Checking Card On File](#checking-card-on-file)
     - [Updating Credit Cards](#updating-credit-cards)
+    - [Deleting Credit Cards](#deleting-credit-cards)
 - [Subscription Trials](#subscription-trials)
     - [With Credit Card Up Front](#with-credit-card-up-front)
     - [Without Credit Card Up Front](#without-credit-card-up-front)
@@ -395,12 +399,50 @@ If a user has cancelled their subscription and you wish to resume it, use the `r
 
 If the user cancels a subscription and then resumes that subscription before the subscription has fully expired, they will not be billed immediately. Instead, their subscription will be re-activated, and they will be billed on the original billing cycle.
 
+<a name="cards"></a>
+## Cards
+
+<a name="retrieving-credit-cards"></a>
+### Retrieving Credit Cards
+
+You sometimes may wish to retrieve the cards for a customer. The `cards` method on the `billable` model will return a collection of `Laravel\Cashier\Card` instances.
+
+    $cards = $user->cards();
+
+Alternatively, you may want to retrieve the customer's default card from Stripe. The `defaultCard` method will return it as a `Stripe\Card` instance:
+
+    $card = $user->defaultCard();
+
+<a name="checking-card-on-file"></a>
+### Checking Card On File
+
+You may check if a customer already has a credit card attached on their account by using the `hasCardOnFile` method:
+
+    $user->hasCardOnFile();
+
 <a name="updating-credit-cards"></a>
 ### Updating Credit Cards
 
 The `updateCard` method may be used to update a customer's credit card information. This method accepts a Stripe token and will assign the new credit card as the default billing source:
 
     $user->updateCard($stripeToken);
+
+Alternatively, you may wish to set the current default card by using the `updateCardFromStripe` method. This method will perform a lookup in Stripe to find the customer's default card and set it as the card on file.
+
+    $user->updateCardFromStripe();
+
+<a name="deleting-credit-cards"></a>
+### Deleting Credit Cards
+
+You sometimes may wish to delete a a single card. You may do this by first retrieving the customer's cards with the `cards` method. After that you may delete them individual with the `delete` method:
+
+    foreach ($user->cards() as $card) {
+        $card->delete();
+    }
+
+Alternatively, you may want to delete all cards together at once.
+
+    $user->deleteCards();
 
 <a name="subscription-trials"></a>
 ## Subscription Trials
