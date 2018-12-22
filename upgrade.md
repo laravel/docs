@@ -70,7 +70,7 @@ A new directory, `svg`, was added to the `public` directory.
 
 It contains three svg files -- 403.svg, 404.svg, and 500.svg -- which are displayed on their respective error pages.
 
-You can get the files [from this commit](https://github.com/laravel/laravel/commit/0d43633f9f13de2c392331cdef3f1d48b04781ed)
+You can get the files [from this commit](https://github.com/laravel/laravel/commit/0d43633f9f13de2c392331cdef3f1d48b04781ed).
 
 ### Authentication
 
