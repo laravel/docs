@@ -294,6 +294,8 @@ The `name` method may be used to prefix each route name in the group with a give
         })->name('users');
     });
 
+> {note} The `name` method is an alias to the the `as` method. To specify a name prefix in a route group, use the `as` attribute.
+
 <a name="route-model-binding"></a>
 ## Route Model Binding
 
