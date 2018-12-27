@@ -1346,12 +1346,6 @@ To run Dusk tests on [Codeship](https://codeship.com), add the following command
     php artisan key:generate
     nohup bash -c "php artisan serve 2>&1 &" && sleep 5
     php artisan dusk
-    
-> {tip} If you need MySQL 5.7 on Codeship, add this code to the start of your setup commands:
-> ```
-> \curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/mysql-5.7.sh | bash -s
-> mysql --defaults-file="/home/rof/mysql-5.7.17/my.cnf" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "create database development";
-> ```
 
 <a name="running-tests-on-heroku-ci"></a>
 ### Heroku CI
