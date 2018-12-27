@@ -1339,12 +1339,19 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
 
 To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. Of course, these commands are a starting point and you are free to add additional commands as needed:
 
-    phpenv local 7.1
+    phpenv local 7.2
     cp .env.testing .env
-    composer install --no-interaction
-    nohup bash -c "./vendor/laravel/dusk/bin/chromedriver-linux 2>&1 &"
-    nohup bash -c "php artisan serve 2>&1 &" && sleep 5
+    mkdir -p ./bootstrap/cache
+    composer install --no-interaction --prefer-dist
+    php artisan key:generate
     php artisan dusk
+    
+> {tip} If you need MySQL 5.7 on Codeship, add this code to the start of your setup commands:
+> ```
+> \curl -sSL https://raw.githubusercontent.com/codeship/scripts/master/packages/mysql-5.7.sh | bash -s
+> export PATH=/home/rof/mysql-5.7.17/bin:$PATH
+> mysql --defaults-file="/home/rof/mysql-5.7.17/my.cnf" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "create database development";
+> ```
 
 <a name="running-tests-on-heroku-ci"></a>
 ### Heroku CI
