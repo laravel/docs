@@ -245,6 +245,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertLocation](#assert-location)
+[assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
 [assertPlainCookie](#assert-plain-cookie)
@@ -393,6 +394,13 @@ Assert that the response has the given JSON validation errors for the given keys
 Assert that the response has the given URI value in the `Location` header:
 
     $response->assertLocation($uri);
+    
+<a name="assert-json-missing-validation-errors"></a>
+#### assertJsonMissingValidationErrors
+
+Assert that the response has no JSON validation errors for the given keys.
+
+    $response->assertJsonMissingValidationErrors($keys);
 
 <a name="assert-not-found"></a>
 #### assertNotFound
