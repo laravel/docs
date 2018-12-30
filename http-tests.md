@@ -398,7 +398,7 @@ Assert that the response has the given URI value in the `Location` header:
 <a name="assert-json-missing-validation-errors"></a>
 #### assertJsonMissingValidationErrors
 
-Assert that the response has no JSON validation errors for the given keys.
+Assert that the response has no JSON validation errors for the given keys:
 
     $response->assertJsonMissingValidationErrors($keys);
 
