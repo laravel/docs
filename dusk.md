@@ -1370,14 +1370,12 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
 <a name="running-tests-on-travis-ci"></a>
 ### Travis CI
 
-To run your Dusk tests on [Travis CI](https://travis-ci.org), we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
+To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following `.travis.yml` configuration. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
 
     language: php
-    sudo: required
-    dist: trusty
 
     php:
-      - 7.2
+      - 7.3
 
     addons:
       chrome: stable
