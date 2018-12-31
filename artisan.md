@@ -346,6 +346,14 @@ The `anticipate` method can be used to provide auto-completion for possible choi
 If you need to give the user a predefined set of choices, you may use the `choice` method. You may set the array index of the default value to be returned if no option is chosen:
 
     $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], $defaultIndex);
+    
+You can specify the number of attempts with the fourth parameter. In the following example, the program will exit after 3 invalid answers:
+
+    $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], $defaultIndex, 3);
+    
+You can accept several answers by passing the fifth parameter to `true` :
+
+    $colors = $this->choice('What are your favourite colors ?', ['Red', 'Green', 'Blue'], $defaultIndex, $attempts, true);
 
 <a name="writing-output"></a>
 ### Writing Output
