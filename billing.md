@@ -111,12 +111,6 @@ First, add the Cashier package for Braintree to your dependencies:
 
     composer require "laravel/cashier-braintree":"~2.0"
 
-#### Service Provider
-
-Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/docs/{{version}}/providers) in your `config/app.php` configuration file:
-
-    Laravel\Cashier\CashierServiceProvider::class
-
 #### Plan Credit Coupon
 
 Before using Cashier with Braintree, you will need to define a `plan-credit` discount in your Braintree control panel. This discount will be used to properly prorate subscriptions that change from yearly to monthly billing, or from monthly to yearly billing.
