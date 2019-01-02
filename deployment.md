@@ -45,7 +45,6 @@ If you are deploying your application to a server that is running Nginx, you may
         error_page 404 /index.php;
 
         location ~ \.php$ {
-            fastcgi_split_path_info ^(.+\.php)(/.+)$;
             fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;

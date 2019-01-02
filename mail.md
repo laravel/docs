@@ -617,10 +617,10 @@ If you have mailable classes that you want to always be queued, you may implemen
 
 Laravel allows you to send mailables in a locale other than the current language, and will even remember this locale if the mail is queued.
 
-To accomplish this, the `Illuminate\Mail\Mailable` class offers a `locale` method to set the desired language. The application will change into this locale when the mailable is being formatted and then revert back to the previous locale when formatting is complete:
+To accomplish this, the `Mail` facade offers a `locale` method to set the desired language. The application will change into this locale when the mailable is being formatted and then revert back to the previous locale when formatting is complete:
 
-    Mail::to($request->user())->send(
-        (new OrderShipped($order))->locale('es')
+    Mail::to($request->user())->locale('es')->send(
+        new OrderShipped($order)
     );
 
 ### User Preferred Locales

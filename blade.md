@@ -167,7 +167,6 @@ You may display the contents of the `name` variable like so:
 
     Hello, {{ $name }}.
 
-
 > {tip} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
 Of course, you are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
