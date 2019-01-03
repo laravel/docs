@@ -93,7 +93,7 @@ The `storage/app/public` directory may be used to store user-generated files, su
 <a name="the-tests-directory"></a>
 #### The Tests Directory
 
-The `tests` directory contains your automated tests. An example [PHPUnit](https://phpunit.de/) is provided out of the box. Each test class should be suffixed with the word `Test`. You may run your tests using the `phpunit` or `php vendor/bin/phpunit` commands.
+The `tests` directory contains your automated tests. An example [PHPUnit](https://phpunit.de/) test is provided out of the box. Each test class should be suffixed with the word `Test`. You may run your tests using the `phpunit` or `php vendor/bin/phpunit` commands.
 
 <a name="the-vendor-directory"></a>
 #### The Vendor Directory
