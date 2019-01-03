@@ -156,6 +156,6 @@ Laravel makes it easy to display custom error pages for various HTTP status code
 
     <h2>{{ $exception->getMessage() }}</h2>
 
-You may also publish the error pages which ship with Laravel and customize them to your liking:
+You may publish Laravel's error page templates using the `vendor:publish` Artisan command. Once the templates have been published, you may customize them to your liking:
 
     php artisan vendor:publish --tag=laravel-errors
