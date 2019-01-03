@@ -551,6 +551,16 @@ Sometimes you may wish to pause the execution of a test until a given JavaScript
     // Wait a maximum of one second for the expression to be true...
     $browser->waitUntil('App.data.servers.length > 0', 1);
 
+#### Waiting On Vue Expressions
+
+These work the same as the `waitUntil` methods above but will wait until a given Vue component's attribute has the given value at the given key or not:
+
+    // Wait until the component's key contains the given value.
+    $browser->waitUntilVueIs('user.name', 'Taylor', '@user');
+
+    // Wait until the component's key doesn't contain the given value.
+    $browser->waitUntilVueIsNot('user.name', null, '@user');
+
 #### Waiting With A Callback
 
 Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. You may use this method directly to wait for a given callback to return `true`. The `waitUsing` method accepts the maximum number of seconds to wait, the interval at which the Closure should be evaluated, the Closure, and an optional failure message:
