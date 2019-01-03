@@ -553,12 +553,12 @@ Sometimes you may wish to pause the execution of a test until a given JavaScript
 
 #### Waiting On Vue Expressions
 
-These work the same as the `waitUntil` methods above but will wait until a given Vue component's attribute has the given value at the given key or not:
+The following methods may be used to wait until a given Vue component attribute has a given value:
 
-    // Wait until the component's key contains the given value.
+    // Wait until the component attribute contains the given value...
     $browser->waitUntilVueIs('user.name', 'Taylor', '@user');
 
-    // Wait until the component's key doesn't contain the given value.
+    // Wait until the component attribute doesn't contain the given value...
     $browser->waitUntilVueIsNot('user.name', null, '@user');
 
 #### Waiting With A Callback
