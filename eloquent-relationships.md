@@ -792,6 +792,11 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
     $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
+    
+    // Retrieve all posts with at least ten comment containing words like foo%
+    $posts = App\Post::whereHas('comments', function ($query) {
+        $query->where('content', 'like', 'foo%');
+    }, '>=', 10)->get();
 
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
