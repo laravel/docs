@@ -793,7 +793,7 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
         $query->where('content', 'like', 'foo%');
     })->get();
     
-    // Retrieve all posts with at least ten comment containing words like foo%
+    // Retrieve all posts with at least ten comments containing words like foo%
     $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     }, '>=', 10)->get();
