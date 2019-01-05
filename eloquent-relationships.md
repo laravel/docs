@@ -783,17 +783,17 @@ You may also specify an operator and count to further customize the query:
 
 Nested `has` statements may also be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment and vote:
 
-    // Retrieve all posts that have at least one comment with votes...
+    // Retrieve posts that have at least one comment with votes...
     $posts = App\Post::has('comments.votes')->get();
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
-    // Retrieve all posts with at least one comment containing words like foo%
+    // Retrieve posts with at least one comment containing words like foo%
     $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
-    
-    // Retrieve all posts with at least ten comments containing words like foo%
+
+    // Retrieve posts with at least ten comments containing words like foo%
     $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     }, '>=', 10)->get();
