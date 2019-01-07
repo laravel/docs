@@ -843,17 +843,22 @@ You may also specify an operator and count to further customize the query:
 
 Nested `has` statements may also be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment and vote:
 
-    // Retrieve all posts that have at least one comment with votes...
+    // Retrieve posts that have at least one comment with votes...
     $posts = App\Post::has('comments.votes')->get();
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
     use Illuminate\Database\Eloquent\Builder;
-    
-    // Retrieve all posts with at least one comment containing words like foo%
-    $posts = App\Post::whereHas('comments', function (Builder $query) {
+
+    // Retrieve posts with at least one comment containing words like foo%...
+    $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
+
+    // Retrieve posts with at least ten comments containing words like foo%...
+    $posts = App\Post::whereHas('comments', function ($query) {
+        $query->where('content', 'like', 'foo%');
+    }, '>=', 10)->get();
 
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
@@ -865,7 +870,7 @@ When accessing the records for a model, you may wish to limit your results based
 If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to put "where" conditions on your `doesntHave` queries. These methods allows you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
     use Illuminate\Database\Eloquent\Builder;
-    
+
     $posts = App\Post::whereDoesntHave('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     })->get();
@@ -873,7 +878,7 @@ If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesn
 You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts with comments from authors that are not banned:
 
     use Illuminate\Database\Eloquent\Builder;
-    
+
     $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) {
         $query->where('banned', 1);
     })->get();

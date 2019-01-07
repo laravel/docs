@@ -82,7 +82,7 @@ By default, `Route::redirect` returns a `302` status code. You may customize the
 
     Route::redirect('/here', '/there', 301);
 
-You may use the `Route::permananentRedirect` method to return a `301` status code:
+You may use the `Route::permanentRedirect` method to return a `301` status code:
 
     Route::permanentRedirect('/here', '/there');
 
