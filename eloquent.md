@@ -486,7 +486,7 @@ Of course, you may also run a delete statement on a set of models. In this examp
 <a name="soft-deleting"></a>
 ### Soft Deleting
 
-In addition to actually removing records from your database, Eloquent can also "soft delete" models. When models are soft deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model and inserted into the database. If a model has a non-null `deleted_at` value, the model has been soft deleted. To enable soft deletes for a model, use the `Illuminate\Database\Eloquent\SoftDeletes` trait on the model and add the `deleted_at` column to your `$dates` property:
+In addition to actually removing records from your database, Eloquent can also "soft delete" models. When models are soft deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model and inserted into the database. If a model has a non-null `deleted_at` value, the model has been soft deleted. To enable soft deletes for a model, use the `Illuminate\Database\Eloquent\SoftDeletes` trait on the model:
 
     <?php
 
@@ -498,14 +498,9 @@ In addition to actually removing records from your database, Eloquent can also "
     class Flight extends Model
     {
         use SoftDeletes;
-
-        /**
-         * The attributes that should be mutated to dates.
-         *
-         * @var array
-         */
-        protected $dates = ['deleted_at'];
     }
+
+In addition, the `SoftDeletes` trait will cast the `deleted_at` attribute to a `DateTime` / `Carbon` instance for you.
 
 Of course, you should add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
