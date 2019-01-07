@@ -500,7 +500,7 @@ In addition to actually removing records from your database, Eloquent can also "
         use SoftDeletes;
     }
 
-In addition, the `SoftDeletes` trait will cast the `deleted_at` attribute to a `DateTime` / `Carbon` instance for you.
+> {tip} The `SoftDeletes` trait will automatically cast the `deleted_at` attribute to a `DateTime` / `Carbon` instance for you.
 
 Of course, you should add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
