@@ -218,6 +218,9 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
         public function testOrderShipping()
         {
             Notification::fake();
+            
+            // Assert that no notifications were sent...
+            Notification::assertNothingSent();
 
             // Perform order shipping...
 
