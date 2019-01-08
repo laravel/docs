@@ -134,6 +134,8 @@ If your package contains routes, you may load them using the `loadRoutesFrom` me
         $this->loadRoutesFrom(__DIR__.'/routes.php');
     }
 
+> {note} To enable certain features (i.e. Route Model Binding, Authentication) you must specifiy which middlewares to use, either in the route file or in each controller's \_\_construct method.
+
 <a name="migrations"></a>
 ### Migrations
 
