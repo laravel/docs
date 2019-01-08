@@ -167,6 +167,9 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
         public function testOrderShipping()
         {
             Mail::fake();
+            
+            // Assert that no mailables were sent...
+            Mail::assertNothingSent();
 
             // Perform order shipping...
 
