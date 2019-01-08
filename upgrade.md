@@ -79,6 +79,15 @@ If you would like to render unescaped content in a section, you must declare the
         {!! $content !!}
     @stop
 
+#### `or` Removed
+
+In Laravel 5.4 `or` has been removed in favor of php 7's native null coalescing operator:
+
+    {{ $name or 'Default' }} // Prior Behavior...
+
+    {{ $name ?? 'Default' }} // New Behavior...
+    
+
 ### Bootstrappers
 
 If you are manually overriding the `$bootstrappers` array on your HTTP or Console kernel, you should rename the `DetectEnvironment` entry to `LoadEnvironmentVariables` and remove `ConfigureLogging`.
