@@ -269,6 +269,9 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
         public function testOrderShipping()
         {
             Queue::fake();
+            
+            // Assert that no jobs were pushed...
+            Queue::assertNothingPushed();
 
             // Perform order shipping...
 
