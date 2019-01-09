@@ -523,7 +523,7 @@ If the collection is empty, `every` will return true:
 
     $collection->every(function($value, $key) {
         return $value > 2;
-    }
+    });
 
     // true
 
