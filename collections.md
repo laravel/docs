@@ -517,6 +517,16 @@ The `every` method may be used to verify that all elements of a collection pass 
 
     // false
 
+If the collection is empty, `every` will return true:
+
+    $collection = collect([]);
+
+    $collection->every(function($value, $key) {
+        return $value > 2;
+    }
+
+    // true
+
 <a name="method-except"></a>
 #### `except()` {#collection-method}
 
