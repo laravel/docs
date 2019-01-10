@@ -101,6 +101,18 @@ The `addContextualBinding` method [was added to the `Illuminate\Contracts\Contai
 
 The `flush` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26477). If you are implementing this interface, you should add this method to your implementation.
 
+#### The `tagged` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `tagged` method signature [has been changed](https://github.com/laravel/framework/pull/26953) and it now returns an `iterable` instead of an `array`. If you have type-hinted in your code some parameter which gets the return value of this method with `array` you'll have to modify the type-hint to `iterable`.
+
+#### The `resolve` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `resolve` method [now accepts](https://github.com/laravel/framework/pull/27066) a new boolean parameter which indicates whether events (resolving callbacks) should be raised/executed during the instantiation of an object. If you are overriding this method, you should update the method signature to match its parent.
+
 ### Database
 
 #### Unquoted MySQL JSON Values
@@ -141,6 +153,14 @@ A `loadCount` method has been added to the base `Illuminate\Database\Eloquent\Mo
 
 The `originalIsEquivalent` method of the `Illuminate\Database\Eloquent\Concerns\HasAttributes` trait [has been changed](https://github.com/laravel/framework/pull/26391) from `protected` to `public`.
 
+#### Automatic Casting Of `deleted_at` Property For Soft-Deleted Models
+
+**Likelihood Of Impact: Very Low**
+
+The `deleted_at` property [will now be automatically casted](https://github.com/laravel/framework/pull/26985) to a `Carbon` instance when your Eloquent model uses the `Illuminate\Database\Eloquent\SoftDeletes` trait. You can override this behavior by writing your custom accessor for that property or by manually adding it to the `casts` attribute:
+
+    protected $casts = ['deleted_at' => 'string'];
+
 ### Events
 
 #### The `fire` Method
@@ -179,6 +199,28 @@ The `renderHttpException` method signature of the `Illuminate\Foundation\Excepti
 **Likelihood Of Impact: Low**
 
 The `getFacadeAccessor` method may now [only return the string value representing the container identifier of the service](https://github.com/laravel/framework/pull/25525). Previously, this method may have returned an object instance.
+
+### Mail
+
+#### Method Signature Changes In The `PendingMail` Class
+
+**Likelihood Of Impact: Very Low**
+
+The `send`, `sendNow`, `queue`, `later` and `fill` methods of the `Illuminate\Mail\PendingMail` class [have been changed](https://github.com/laravel/framework/pull/26790) to accept an `Illuminate\Contracts\Mail\Mailable` instance instead of `Illuminate\Mail\Mailable`. If you are overriding some of these methods, you should update their signature to match its parent.
+
+#### Method Name Change In The `Markdown` Class
+
+**Likelihood Of Impact: Very Low**
+
+The `markdownComponentPaths` method [has been renamed](https://github.com/laravel/framework/pull/26938) to `textComponentPaths`. If you are overriding this method, you should update the method name to match its parent.
+
+### Queue
+
+#### The `Job` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `isReleased`, `hasFailed` and `markAsFailed` methods [have been added to the `Illuminate\Contracts\Queue\Job` contract](https://github.com/laravel/framework/pull/26908). If you are implementing this interface, you should add these methods to your implementation.
 
 ### Requests
 
@@ -227,6 +269,20 @@ The `$cachedSchema` property name (which has been deprecated in Laravel `5.7`) o
 
 The session persistence logic has been [moved from the `terminate()` method to the `handle()` method](https://github.com/laravel/framework/pull/26410). If you are overriding one or both of these methods, you should update them to reflect these changes.
 
+### Support
+
+#### The `array_*` And `str_*` Global Helpers Deprecation
+
+**Likelihood Of Impact: Medium**
+
+All `array_*` and `str_*` global helpers [have been deprecated](https://github.com/laravel/framework/pull/26898) and will be removed in Laravel 5.9. You should use the `Illuminate\Support\Arr` and `Illuminate\Support\Str` methods directly.
+
+#### Deferred Service Providers
+
+**Likelihood Of Impact: Medium**
+
+The `defer` boolean property on the service provider which is/was used to indicate if a provider is deferred [has been deprecated](https://github.com/laravel/framework/pull/27067). In order to mark the service provider as deferred it should implement the `Illuminate\Contracts\Support\DeferrableProvider` contract.
+
 ### Validation
 
 #### The `Validator` Contract
@@ -269,6 +325,14 @@ The `getPresenceVerifierFor` method of the `Illuminate\Validation\Validator` cla
 The email validation rule now checks if the email is [RFC5630](https://tools.ietf.org/html/rfc6530) compliant, making the validation logic consistent with the logic used by SwiftMailer. In Laravel `5.7`, the `email` rule only verified that the email was [RFC822](https://tools.ietf.org/html/rfc822) compliant.
 
 Therefore, when using Laravel 5.8, emails that were previously incorrectly considered invalid will now be considered valid (e.g `hej@bär.se`).  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
+
+### View
+
+#### The `getData` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `getData` method [was added to the `Illuminate\Contracts\View\View` contract](https://github.com/laravel/framework/pull/26754). If you are implementing this interface, you should add this method to your implementation.
 
 ### Notifications
 
