@@ -2,10 +2,27 @@
 
 - [Upgrading To 5.8.0 From 5.7](#upgrade-5.8.0)
 
+<a name="high-impact-changes"></a>
+## High Impact Changes
+
+<div class="content-list" markdown="1">
+- [Markdown File Directory Change](#markdown-file-directory-change)
+- [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
+</div>
+
+<a name="medium-impact-changes"></a>
+## Medium Impact Changes
+
+<div class="content-list" markdown="1">
+- [SQLite Version Constraints](#sqlite)
+- [Prefer String And Array Classes Over Helpers](#string-and-array-helpers)
+- [Deferred Service Providers](#deferred-service-providers)
+</div>
+
 <a name="upgrade-5.8.0"></a>
 ## Upgrading To 5.8.0 From 5.7
 
-#### Estimated Upgrade Time: 10 Minutes
+#### Estimated Upgrade Time: 10-15 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
@@ -89,29 +106,29 @@ The `terminate` method [has been added to the `Illuminate/Contracts/Console/Kern
 
 [The `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26378) now extends the `ArrayAccess` contract. If you are implementing the `Container` interface, your implementation should now also satisfy the `ArrayAccess` contract.
 
+#### The `resolve` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `resolve` method [now accepts](https://github.com/laravel/framework/pull/27066) a new boolean parameter which indicates whether events (resolving callbacks) should be raised/executed during the instantiation of an object. If you are overriding this method, you should update the method signature to match its parent.
+
 #### The `addContextualBinding` Method
 
 **Likelihood Of Impact: Very Low**
 
 The `addContextualBinding` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26551). If you are implementing this interface, you should add this method to your implementation.
 
+#### The `tagged` Method
+
+**Likelihood Of Impact: Low**
+
+The `tagged` method signature [has been changed](https://github.com/laravel/framework/pull/26953) and it now returns an `iterable` instead of an `array`. If you have type-hinted in your code some parameter which gets the return value of this method with `array`, you should modify the type-hint to `iterable`.
+
 #### The `flush` Method
 
 **Likelihood Of Impact: Very Low**
 
 The `flush` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26477). If you are implementing this interface, you should add this method to your implementation.
-
-#### The `tagged` Method
-
-**Likelihood Of Impact: Very Low**
-
-The `tagged` method signature [has been changed](https://github.com/laravel/framework/pull/26953) and it now returns an `iterable` instead of an `array`. If you have type-hinted in your code some parameter which gets the return value of this method with `array` you'll have to modify the type-hint to `iterable`.
-
-#### The `resolve` Method
-
-**Likelihood Of Impact: Very Low**
-
-The `resolve` method [now accepts](https://github.com/laravel/framework/pull/27066) a new boolean parameter which indicates whether events (resolving callbacks) should be raised/executed during the instantiation of an object. If you are overriding this method, you should update the method signature to match its parent.
 
 ### Database
 
@@ -133,6 +150,7 @@ The query builder will now return unquoted JSON values when using MySQL and Mari
 
 As a result, the `->>` operator is no longer supported or necessary.
 
+<a name="sqlite"></a>
 #### SQLite
 
 **Likelihood Of Impact: Medium**
@@ -153,9 +171,9 @@ A `loadCount` method has been added to the base `Illuminate\Database\Eloquent\Mo
 
 The `originalIsEquivalent` method of the `Illuminate\Database\Eloquent\Concerns\HasAttributes` trait [has been changed](https://github.com/laravel/framework/pull/26391) from `protected` to `public`.
 
-#### Automatic Casting Of `deleted_at` Property For Soft-Deleted Models
+#### Automatic Soft-Deleted Casting Of `deleted_at` Property
 
-**Likelihood Of Impact: Very Low**
+**Likelihood Of Impact: Low**
 
 The `deleted_at` property [will now be automatically casted](https://github.com/laravel/framework/pull/26985) to a `Carbon` instance when your Eloquent model uses the `Illuminate\Database\Eloquent\SoftDeletes` trait. You can override this behavior by writing your custom accessor for that property or by manually adding it to the `casts` attribute:
 
@@ -202,17 +220,20 @@ The `getFacadeAccessor` method may now [only return the string value representin
 
 ### Mail
 
+<a name="markdown-file-directory-change"></a>
+### Markdown File Directory Change
+
+**Likelihood Of Impact: High**
+
+If you have published Laravel's Markdown mail components using the `vendor:publish` command, you should rename the `/resources/views/vendor/mail/markdown` directory to `text`.
+
+In addition, the `markdownComponentPaths` method [has been renamed](https://github.com/laravel/framework/pull/26938) to `textComponentPaths`. If you are overriding this method, you should update the method name to match its parent.
+
 #### Method Signature Changes In The `PendingMail` Class
 
 **Likelihood Of Impact: Very Low**
 
 The `send`, `sendNow`, `queue`, `later` and `fill` methods of the `Illuminate\Mail\PendingMail` class [have been changed](https://github.com/laravel/framework/pull/26790) to accept an `Illuminate\Contracts\Mail\Mailable` instance instead of `Illuminate\Mail\Mailable`. If you are overriding some of these methods, you should update their signature to match its parent.
-
-#### Method Name Change In The `Markdown` Class
-
-**Likelihood Of Impact: Very Low**
-
-The `markdownComponentPaths` method [has been renamed](https://github.com/laravel/framework/pull/26938) to `textComponentPaths`. If you are overriding this method, you should update the method name to match its parent.
 
 ### Queue
 
@@ -271,12 +292,16 @@ The session persistence logic has been [moved from the `terminate()` method to t
 
 ### Support
 
-#### The `array_*` And `str_*` Global Helpers Deprecation
+<a name="string-and-array-helpers"></a>
+#### Prefer String And Array Classes Over Helpers
 
 **Likelihood Of Impact: Medium**
 
-All `array_*` and `str_*` global helpers [have been deprecated](https://github.com/laravel/framework/pull/26898) and will be removed in Laravel 5.9. You should use the `Illuminate\Support\Arr` and `Illuminate\Support\Str` methods directly.
+All `array_*` and `str_*` global helpers [have been deprecated](https://github.com/laravel/framework/pull/26898) and will be moved to an optional package in the future. You should use the `Illuminate\Support\Arr` and `Illuminate\Support\Str` methods directly.
 
+This impact of this change has been marked as `medium` since a future, opt-in package would prevent any breaking changes.
+
+<a name="deferred-service-providers"></a>
 #### Deferred Service Providers
 
 **Likelihood Of Impact: Medium**
@@ -336,9 +361,10 @@ The `getData` method [was added to the `Illuminate\Contracts\View\View` contract
 
 ### Notifications
 
+<a name="nexmo-slack-notification-channels"></a>
 #### Nexmo / Slack Notification Channels
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: High**
 
 The Nexmo and Slack Notification channels have been extracted into first-party packages. To use these channels in your application, require the following packages:
 
