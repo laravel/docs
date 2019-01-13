@@ -6,7 +6,7 @@
     - [Protecting Routes](#protecting-routes)
 - [Views](#verification-views)
 - [After Verifying Emails](#after-verifying-emails)
-- [Override Default Verifications Function](#override-default-verification-functions)
+- [Override Default Verification Functions](#override-default-verification-functions)
 - [Events](#events)
 
 <a name="introduction"></a>
