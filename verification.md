@@ -73,7 +73,7 @@ After an email address is verified, the user will automatically be redirected to
 <a name="override-default-verification-functions"></a>
 # Override Default Verification Functions
 
-To override the default verify functions (e.g. `verify`) you can simply add the required function to the `VerificationController`. This can be useful if you want to send an email to the administrator for example when a user verifies its email. Just create the function as follows:
+To override the default verification functions (e.g. `verify`) you can simply add the required function to the `VerificationController`. This can be useful if you want to send an email to the administrator for example when a user verifies its email. Just create the function as follows:
 
     <?php
 
