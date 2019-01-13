@@ -6,6 +6,7 @@
     - [Protecting Routes](#protecting-routes)
 - [Views](#verification-views)
 - [After Verifying Emails](#after-verifying-emails)
+- [Override Default Verification Function](#override-default-verification-functions)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -68,6 +69,39 @@ Laravel will generate all of the necessary email verification views when the `ma
 After an email address is verified, the user will automatically be redirected to `/home`. You can customize the post verification redirect location by defining a `redirectTo` method or property on the `VerificationController`:
 
     protected $redirectTo = '/dashboard';
+
+<a name="override-default-verification-functions"></a>
+# Override Default Verification Functions
+
+To override the default verify functions (e.g. `verify`) you can simply add the required function to the `VerificationController`. This can be useful if you want to send an email to the administrator for example when a user verifies its email. Just create the function as follows:
+
+    <?php
+
+    namespace App\Http\Controllers\Auth;
+
+    use Illuminate\Http\Request;
+    use Illuminate\Routing\Controller;
+    use Illuminate\Foundation\Auth\VerifiesEmails;
+    use Illuminate\Auth\Events\Verified;
+
+    class VerificationController extends Controller
+    {
+        public function verify(Request $request)
+        {
+            if ($request->route('id') == $request->user()->getKey() &&
+                $request->user()->markEmailAsVerified()) {
+                event(new Verified($request->user()));
+            }
+
+            // ...
+            
+            return redirect($this->redirectPath());
+        }
+
+        use VerifiesEmails;
+        
+        // ...
+    }
 
 <a name="events"></a>
 ## Events
