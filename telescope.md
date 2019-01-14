@@ -2,9 +2,9 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-    - [Migration Customization](#migration-customization)
     - [Configuration](#configuration)
     - [Data Pruning](#data-pruning)
+    - [Migration Customization](#migration-customization)
 - [Dashboard Authorization](#dashboard-authorization)
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
@@ -81,7 +81,7 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
 <a name="migration-customization"></a>
 ### Migration Customization
 
-If you are not going to use Telescope's default migrations, you should call the `Telescope::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=telescope-migrations`.
+If you are not going to use Telescope's default migrations, you should call the `Telescope::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using the `php artisan vendor:publish --tag=telescope-migrations` command.
 
 <a name="configuration"></a>
 ### Configuration
