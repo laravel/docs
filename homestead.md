@@ -168,7 +168,7 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
+          to: /home/vagrant/code/my-project/public
 
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
 
@@ -329,7 +329,7 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
+          to: /home/vagrant/code/my-project/public
         - map: another.test
           to: /home/vagrant/code/another/public
 
@@ -347,7 +347,7 @@ Homestead supports several types of sites which allow you to easily run projects
 
     sites:
         - map: symfony2.test
-          to: /home/vagrant/code/Symfony/web
+          to: /home/vagrant/code/my-symfony-project/web
           type: "symfony2"
 
 The available site types are: `apache`, `apigility`, `expressive`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, `symfony4`, and `zf`.
@@ -359,7 +359,7 @@ You may add additional Nginx `fastcgi_param` values to your site via the `params
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
+          to: /home/vagrant/code/my-project/public
           params:
               - key: FOO
                 value: BAR
@@ -386,7 +386,7 @@ If you would like the `schedule:run` command to be run for a Homestead site, you
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
+          to: /home/vagrant/code/my-project/public
           schedule: true
 
 The Cron job for the site will be defined in the `/etc/cron.d` folder of the virtual machine.
@@ -493,7 +493,7 @@ Homestead 6 introduced support for multiple versions of PHP on the same virtual 
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
+          to: /home/vagrant/code/my-project/public
           php: "7.1"
 
 In addition, you may use any of the supported PHP versions via the CLI:
