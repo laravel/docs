@@ -39,7 +39,7 @@ Laravel strives to make the entire PHP development experience delightful, includ
 
 Laravel Homestead is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
-Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 7.3, PHP 7.2, PHP 7.1, PHP 7.0, PHP 5.6, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
+Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 7.3, PHP 7.2, PHP 7.1, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
 
 > {note} If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS. If you are using Hyper-V on a UEFI system you may additionally need to disable Hyper-V in order to access VT-x.
 
@@ -52,8 +52,6 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - PHP 7.3
 - PHP 7.2
 - PHP 7.1
-- PHP 7.0
-- PHP 5.6
 - Nginx
 - Apache (Optional)
 - MySQL
@@ -491,17 +489,15 @@ After running the command, you will see an Ngrok screen appear which contains th
 <a name="multiple-php-versions"></a>
 ### Multiple PHP Versions
 
-Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2" and "7.3" (the default):
+Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "7.1", "7.2" and "7.3" (the default):
 
     sites:
         - map: homestead.test
           to: /home/vagrant/code/Laravel/public
-          php: "5.6"
+          php: "7.1"
 
 In addition, you may use any of the supported PHP versions via the CLI:
 
-    php5.6 artisan list
-    php7.0 artisan list
     php7.1 artisan list
     php7.2 artisan list
     php7.3 artisan list
