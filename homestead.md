@@ -551,15 +551,26 @@ When customizing Homestead, Ubuntu may ask you if you would like to keep a packa
 <a name="updating-homestead"></a>
 ## Updating Homestead
 
-You can update Homestead in two simple steps. First, you should update the Vagrant box using the `vagrant box update` command:
+You can update Homestead in a few simple steps. First, you should update the Vagrant box using the `vagrant box update` command:
 
     vagrant box update
 
-Next, you need to update the Homestead source code. If you cloned the repository you can `git pull origin master` at the location you originally cloned the repository.
+Next, you need to update the Homestead source code. If you cloned the repository you can run the following commands at the location you originally cloned the repository:
+
+    git pull origin master
+    git fetch
+    git checkout v8.0.0
+
+This pulls the latest code from the repository, as well as fetching the latest tags, and then checks out the latest tagged release, since code on the master branch may not always be stable. You can find the latest stable version on the [GitHub Release Page](https://github.com/laravel/homestead/releases).
 
 If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^7"` and update your dependencies:
 
     composer update
+
+Finally, you will need to destroy and regenerate your Homestead VM to utilize the latest Vagrant box. Run these commands in your Homestead folder:
+
+    vagrant destroy
+    vagrant up
 
 <a name="provider-specific-settings"></a>
 ## Provider Specific Settings
