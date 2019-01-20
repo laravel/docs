@@ -939,7 +939,7 @@ In this example, Eloquent will only eager load posts where the post's `title` co
         $query->orderBy('created_at', 'desc');
     }])->get();
 
-> {note} Query builder methods `limit()` and `take()` cannot be used when constraining eager loads. One database query is run to eager load a relation so the limited results will be for _all_ models, not _per_ model.
+> {note} The `limit` and `take` query builder methods may not be used when constraining eager loads.
 
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
