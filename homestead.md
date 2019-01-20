@@ -567,9 +567,10 @@ If you have installed Homestead via your project's `composer.json` file, you sho
 
     composer update
 
-Finally, you will need to destroy and regenerate your Homestead VM to utilize the latest Vagrant box. Run these commands in your Homestead folder:
+Finally, you will need to destroy and regenerate your Homestead box to utilize the latest Vagrant installation. To accomplish this, run the following commands in your Homestead directory:
 
     vagrant destroy
+
     vagrant up
 
 <a name="provider-specific-settings"></a>
