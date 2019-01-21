@@ -361,6 +361,13 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
         });
     }
 
+You may also override the `resolveRouteBinding` method on the Eloquent model:
+
+    public function resolveRouteBinding($value)
+    {
+        return $this->where('name', $value)->first() ?? abort(404);
+    }
+
 <a name="fallback-routes"></a>
 ## Fallback Routes
 
