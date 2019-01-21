@@ -246,7 +246,7 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
         new ReleasePodcast
     ])->dispatch();
 
-> {note} Deleting jobs using the `$this->delete()` method will not prevent chained jobs from being processed.
+> {note} Deleting jobs using the `$this->delete()` method will not prevent chained jobs from being processed. The chain will only stop executing if a job in the chain fails.
 
 #### Chain Connection & Queue
 
