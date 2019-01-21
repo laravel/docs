@@ -39,7 +39,7 @@ Laravel strives to make the entire PHP development experience delightful, includ
 
 Laravel Homestead is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
-Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 7.3, PHP 7.2, PHP 7.1, PHP 7.0, PHP 5.6, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
+Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 7.3, PHP 7.2, PHP 7.1, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
 
 > {note} If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS. If you are using Hyper-V on a UEFI system you may additionally need to disable Hyper-V in order to access VT-x.
 
@@ -52,8 +52,6 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - PHP 7.3
 - PHP 7.2
 - PHP 7.1
-- PHP 7.0
-- PHP 5.6
 - Nginx
 - Apache (Optional)
 - MySQL
@@ -82,7 +80,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 <a name="first-steps"></a>
 ### First Steps
 
-Before launching your Homestead environment, you must install [VirtualBox 5.2](https://www.virtualbox.org/wiki/Downloads), [VMWare](https://www.vmware.com), [Parallels](https://www.parallels.com/products/desktop/) or [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v) as well as [Vagrant](https://www.vagrantup.com/downloads.html). All of these software packages provide easy-to-use visual installers for all popular operating systems.
+Before launching your Homestead environment, you must install [VirtualBox](https://www.virtualbox.org/wiki/Downloads), [VMWare](https://www.vmware.com), [Parallels](https://www.parallels.com/products/desktop/) or [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v) as well as [Vagrant](https://www.vagrantup.com/downloads.html). All of these software packages provide easy-to-use visual installers for all popular operating systems.
 
 To use the VMware provider, you will need to purchase both VMware Fusion / Workstation and the [VMware Vagrant plug-in](https://www.vagrantup.com/vmware). Though it is not free, VMware can provide faster shared folder performance out of the box.
 
@@ -109,7 +107,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd ~/Homestead
 
     // Clone the desired release...
-    git checkout v7.19.2
+    git checkout v7.20.0
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -170,7 +168,7 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
+          to: /home/vagrant/code/my-project/public
 
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
 
@@ -331,7 +329,7 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
+          to: /home/vagrant/code/my-project/public
         - map: another.test
           to: /home/vagrant/code/another/public
 
@@ -349,7 +347,7 @@ Homestead supports several types of sites which allow you to easily run projects
 
     sites:
         - map: symfony2.test
-          to: /home/vagrant/code/Symfony/web
+          to: /home/vagrant/code/my-symfony-project/web
           type: "symfony2"
 
 The available site types are: `apache`, `apigility`, `expressive`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, `symfony4`, and `zf`.
@@ -361,7 +359,7 @@ You may add additional Nginx `fastcgi_param` values to your site via the `params
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
+          to: /home/vagrant/code/my-project/public
           params:
               - key: FOO
                 value: BAR
@@ -388,7 +386,7 @@ If you would like the `schedule:run` command to be run for a Homestead site, you
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
+          to: /home/vagrant/code/my-project/public
           schedule: true
 
 The Cron job for the site will be defined in the `/etc/cron.d` folder of the virtual machine.
@@ -491,17 +489,15 @@ After running the command, you will see an Ngrok screen appear which contains th
 <a name="multiple-php-versions"></a>
 ### Multiple PHP Versions
 
-Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2" and "7.3" (the default):
+Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "7.1", "7.2" and "7.3" (the default):
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/Laravel/public
-          php: "5.6"
+          to: /home/vagrant/code/my-project/public
+          php: "7.1"
 
 In addition, you may use any of the supported PHP versions via the CLI:
 
-    php5.6 artisan list
-    php7.0 artisan list
     php7.1 artisan list
     php7.2 artisan list
     php7.3 artisan list
@@ -555,15 +551,27 @@ When customizing Homestead, Ubuntu may ask you if you would like to keep a packa
 <a name="updating-homestead"></a>
 ## Updating Homestead
 
-You can update Homestead in two simple steps. First, you should update the Vagrant box using the `vagrant box update` command:
+You can update Homestead in a few simple steps. First, you should update the Vagrant box using the `vagrant box update` command:
 
     vagrant box update
 
-Next, you need to update the Homestead source code. If you cloned the repository you can `git pull origin master` at the location you originally cloned the repository.
+Next, you need to update the Homestead source code. If you cloned the repository you can run the following commands at the location you originally cloned the repository:
+
+    git fetch
+
+    git checkout v8.0.0
+
+These commands pull the latest Homestead code from the GitHub repository, fetches the latest tags, and then checks out the latest tagged release. You can find the latest stable release version on the [GitHub releases page](https://github.com/laravel/homestead/releases).
 
 If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^7"` and update your dependencies:
 
     composer update
+
+Finally, you will need to destroy and regenerate your Homestead box to utilize the latest Vagrant installation. To accomplish this, run the following commands in your Homestead directory:
+
+    vagrant destroy
+
+    vagrant up
 
 <a name="provider-specific-settings"></a>
 ## Provider Specific Settings

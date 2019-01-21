@@ -22,6 +22,7 @@
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
     - [Failed Job Events](#failed-job-events)
     - [Retrying Failed Jobs](#retrying-failed-jobs)
+    - [Ignoring Missing Models](#ignoring-missing-models)
 - [Job Events](#job-events)
 
 <a name="introduction"></a>
@@ -678,6 +679,20 @@ If you would like to delete a failed job, you may use the `queue:forget` command
 To delete all of your failed jobs, you may use the `queue:flush` command:
 
     php artisan queue:flush
+
+<a name="ignoring-missing-models"></a>
+### Ignoring Missing Models
+
+When injecting an Eloquent model into a job, it is automatically serialized before being placed on the queue and restored when the job is processed. However, if the model has been deleted while the job was waiting to be processed by a worker, your job may fail with a `ModelNotFoundException`.
+
+For convenience, you may choose to automatically delete jobs with missing models by setting your job's `deleteWhenMissingModels` property to `true`:
+
+    /**
+     * Delete the job if its models no longer exist.
+     *
+     * @var bool
+     */
+    public $deleteWhenMissingModels = true;
 
 <a name="job-events"></a>
 ## Job Events

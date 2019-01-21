@@ -232,12 +232,16 @@ The query builder may also be used to write join statements. To perform a basic 
                 ->select('users.*', 'contacts.phone', 'orders.price')
                 ->get();
 
-#### Left Join Clause
+#### Left Join / Right Join Clause
 
-If you would like to perform a "left join" instead of an "inner join", use the `leftJoin` method. The `leftJoin` method has the same signature as the `join` method:
+If you would like to perform a "left join" or "right join" instead of an "inner join", use the `leftJoin` or `rightJoin` methods. These methods have the same signature as the `join` method:
 
     $users = DB::table('users')
                 ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+                ->get();
+
+    $users = DB::table('users')
+                ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
                 ->get();
 
 #### Cross Join Clause

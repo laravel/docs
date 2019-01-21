@@ -993,7 +993,7 @@ You may not always need every column from the relationships you are retrieving. 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
 
-Sometimes you may wish to eager load a relationship, but also specify additional query constraints for the eager loading query. Here's an example:
+Sometimes you may wish to eager load a relationship, but also specify additional query conditions for the eager loading query. Here's an example:
 
     $users = App\User::with(['posts' => function ($query) {
         $query->where('title', 'like', '%first%');
@@ -1004,6 +1004,8 @@ In this example, Eloquent will only eager load posts where the post's `title` co
     $users = App\User::with(['posts' => function ($query) {
         $query->orderBy('created_at', 'desc');
     }])->get();
+
+> {note} The `limit` and `take` query builder methods may not be used when constraining eager loads.
 
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading

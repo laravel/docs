@@ -167,6 +167,9 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
         public function testOrderShipping()
         {
             Mail::fake();
+            
+            // Assert that no mailables were sent...
+            Mail::assertNothingSent();
 
             // Perform order shipping...
 
@@ -215,6 +218,9 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
         public function testOrderShipping()
         {
             Notification::fake();
+            
+            // Assert that no notifications were sent...
+            Notification::assertNothingSent();
 
             // Perform order shipping...
 
@@ -263,6 +269,9 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
         public function testOrderShipping()
         {
             Queue::fake();
+            
+            // Assert that no jobs were pushed...
+            Queue::assertNothingPushed();
 
             // Perform order shipping...
 
