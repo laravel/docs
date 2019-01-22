@@ -216,7 +216,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 
 <style>
     .collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-count: 2; -moz-column-count: 2; -webkit-column-count: 2;
         column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
     }
 
