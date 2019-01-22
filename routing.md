@@ -352,6 +352,11 @@ If a matching model instance is not found in the database, a 404 HTTP response w
 
 If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
 
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
     public function boot()
     {
         parent::boot();
@@ -361,8 +366,14 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
         });
     }
 
-You may also override the `resolveRouteBinding` method on the Eloquent model:
+Alternatively, you may override the `resolveRouteBinding` method on your Eloquent model. This method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
 
+    /**
+     * Retrieve the model for a bound value.
+     *
+     * @param  mixed  $value
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function resolveRouteBinding($value)
     {
         return $this->where('name', $value)->first() ?? abort(404);
