@@ -214,6 +214,8 @@ You may configure how many seconds are considered a "long wait" within your `con
 <a name="metrics"></a>
 ## Metrics
 
+> **Note:** This only work for single server, cant use on multiple servers.
+
 Horizon includes a metrics dashboard which provides information on your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes via your application's [scheduler](/docs/{{version}}/scheduling):
 
     /**
