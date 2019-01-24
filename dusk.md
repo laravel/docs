@@ -20,6 +20,7 @@
     - [Using The Keyboard](#using-the-keyboard)
     - [Using The Mouse](#using-the-mouse)
     - [Scoping Selectors](#scoping-selectors)
+    - [JavaScript Dialogs](#dialogs)
     - [Waiting For Elements](#waiting-for-elements)
     - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
@@ -464,6 +465,27 @@ Sometimes you may wish to perform several operations while scoping all of the op
         $table->assertSee('Hello World')
               ->clickLink('Delete');
     });
+
+<a name="dialogs"></a>
+### Dialogs
+
+Sometimes you may wish to check or interact with JavaScript dialogs (`alert` and `confirm`)
+
+#### Asserting a Dialog's value
+
+The `assertDialogOpened` method may be used to assert that a JavaScript dialog has been displayed, and that its message matches the given value:
+
+    $browser->assertDialogOpened('value');
+
+#### Closing a Dialog
+
+To close an opened JavaScript Dialog, clicking the OK button:
+
+    $browser->acceptDialog();
+
+To close an opened JavaScript Dialog, clicking the Cancel button (for a confirmation dialog only):
+
+    $browser->dismissDialog();
 
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements
