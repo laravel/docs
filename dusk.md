@@ -19,8 +19,8 @@
     - [Attaching Files](#attaching-files)
     - [Using The Keyboard](#using-the-keyboard)
     - [Using The Mouse](#using-the-mouse)
+    - [JavaScript Dialogs](#javascript-dialogs)
     - [Scoping Selectors](#scoping-selectors)
-    - [JavaScript Dialogs](#dialogs)
     - [Waiting For Elements](#waiting-for-elements)
     - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
@@ -456,6 +456,13 @@ Or, you may drag an element in a single direction:
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
 
+<a name="javascript-dialogs"></a>
+### JavaScript Dialogs
+
+The `assertDialogOpened` method may be used to assert that a JavaScript dialog has been displayed and that its message matches the given value:
+
+    $browser->assertDialogOpened('value');
+
 <a name="scoping-selectors"></a>
 ### Scoping Selectors
 
@@ -465,17 +472,6 @@ Sometimes you may wish to perform several operations while scoping all of the op
         $table->assertSee('Hello World')
               ->clickLink('Delete');
     });
-
-<a name="dialogs"></a>
-### Dialogs
-
-Sometimes you may wish to check or interact with JavaScript dialogs (`alert` and `confirm`)
-
-#### Asserting a Dialog's value
-
-The `assertDialogOpened` method may be used to assert that a JavaScript dialog has been displayed, and that its message matches the given value:
-
-    $browser->assertDialogOpened('value');
 
 #### Closing a Dialog
 
