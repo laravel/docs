@@ -556,7 +556,7 @@ Sometimes you may wish to pause the execution of a test until a given JavaScript
 The following methods may be used to wait until a given Vue component attribute has a given value:
 
     // Wait until the component attribute contains the given value...
-    $browser->waitUntilVueIs('user.name', 'Taylor', '@user');
+    $browser->waitUntilVue('user.name', 'Taylor', '@user');
 
     // Wait until the component attribute doesn't contain the given value...
     $browser->waitUntilVueIsNot('user.name', null, '@user');

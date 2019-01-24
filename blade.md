@@ -489,6 +489,22 @@ To include the first view that exists from a given array of views, you may use t
 
 > {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
+#### Aliasing Includes
+
+If your Blade includes are stored in a sub-directory, you may wish to alias them for easier access. For example, imagine a Blade include that is stored at `resources/views/includes/input.blade.php` with the following content:
+
+    <input type="{{ $type ?? 'text' }}">
+
+You may use the `include` method to alias the include from `includes.input` to `input`. Typically, this should be done in the `boot` method of your `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Blade;
+
+    Blade::include('include.input', 'input');
+
+Once the include has been aliased, you may render it using the alias name as the Blade directive:
+
+    @input(['type' => 'email'])
+
 <a name="rendering-views-for-collections"></a>
 ### Rendering Views For Collections
 
