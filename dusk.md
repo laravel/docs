@@ -463,16 +463,6 @@ The `assertDialogOpened` method may be used to assert that a JavaScript dialog h
 
     $browser->assertDialogOpened('value');
 
-<a name="scoping-selectors"></a>
-### Scoping Selectors
-
-Sometimes you may wish to perform several operations while scoping all of the operations within a given selector. For example, you may wish to assert that some text exists only within a table and then click a button within that table. You may use the `with` method to accomplish this. All operations performed within the callback given to the `with` method will be scoped to the original selector:
-
-    $browser->with('.table', function ($table) {
-        $table->assertSee('Hello World')
-              ->clickLink('Delete');
-    });
-
 #### Closing a Dialog
 
 To close an opened JavaScript Dialog, clicking the OK button:
@@ -482,6 +472,16 @@ To close an opened JavaScript Dialog, clicking the OK button:
 To close an opened JavaScript Dialog, clicking the Cancel button (for a confirmation dialog only):
 
     $browser->dismissDialog();
+
+<a name="scoping-selectors"></a>
+### Scoping Selectors
+
+Sometimes you may wish to perform several operations while scoping all of the operations within a given selector. For example, you may wish to assert that some text exists only within a table and then click a button within that table. You may use the `with` method to accomplish this. All operations performed within the callback given to the `with` method will be scoped to the original selector:
+
+    $browser->with('.table', function ($table) {
+        $table->assertSee('Hello World')
+              ->clickLink('Delete');
+    });
 
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements
