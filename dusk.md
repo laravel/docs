@@ -459,11 +459,13 @@ Or, you may drag an element in a single direction:
 <a name="javascript-dialogs"></a>
 ### JavaScript Dialogs
 
-The `assertDialogOpened` method may be used to assert that a JavaScript dialog has been displayed and that its message matches the given value:
+Dusk provides various methods to interact with JavaScript Dialogs:
 
+    // Assert that a dialog has been displayed and that its message matches the given value:
     $browser->assertDialogOpened('value');
 
-#### Closing a Dialog
+    // Type the given value in an open JavaScript prompt dialog:
+    $browser->typeInDialog('Hello World');
 
 To close an opened JavaScript Dialog, clicking the OK button:
 
@@ -481,7 +483,7 @@ Sometimes you may wish to perform several operations while scoping all of the op
     $browser->with('.table', function ($table) {
         $table->assertSee('Hello World')
               ->clickLink('Delete');
-    });
+    });s
 
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements
