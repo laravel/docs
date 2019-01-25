@@ -5,7 +5,9 @@
 - [The Exception Handler](#the-exception-handler)
     - [Report Method](#report-method)
     - [Render Method](#render-method)
-    - [Reportable & Renderable Exceptions](#renderable-exceptions)
+- [Self-Contained Exceptions](#self-contained-exceptions)
+    - [Self-Rendering Exceptions](#self-rendering-exceptions)
+    - [Self-Reporting Exceptions](#self-reporting-exceptions)
 - [HTTP Exceptions](#http-exceptions)
     - [Custom HTTP Error Pages](#custom-http-error-pages)
 
@@ -48,7 +50,7 @@ For example, if you need to report different types of exceptions in different wa
         parent::report($exception);
     }
 
-> {tip} Instead of making a lot of `instanceof` checks in your `report` method, consider using [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions)
+> {tip} Instead of making a lot of `instanceof` checks in your `report` method, consider using [self-reporting exceptions](/docs/{{version}}/errors#self-reporting-exceptions)
 
 #### The `report` Helper
 
@@ -103,10 +105,15 @@ The `render` method is responsible for converting a given exception into an HTTP
         return parent::render($request, $exception);
     }
 
-<a name="renderable-exceptions"></a>
-### Reportable & Renderable Exceptions
+<a name="self-contained-exceptions"></a>
+## Self-Contained Exceptions
 
-Instead of type-checking exceptions in the exception handler's `report` and `render` methods, you may define `report` and `render` methods directly on your custom exception. When these methods exist, they will be called automatically by the framework:
+Instead of type-checking exceptions in the exception handler's `report` and `render` methods, you may define `report` and `render` methods directly on your custom exception.
+
+<a name="self-rendering-exceptions"></a>
+### Self-Rendering Exceptions
+
+If present, the `render` method will be called with the incoming request and is expected to return an HTTP response:
 
     <?php
 
@@ -114,18 +121,8 @@ Instead of type-checking exceptions in the exception handler's `report` and `ren
 
     use Exception;
 
-    class RenderException extends Exception
+    class SelfRenderingException extends Exception
     {
-        /**
-         * Report the exception.
-         *
-         * @return void
-         */
-        public function report()
-        {
-            //
-        }
-
         /**
          * Render the exception into an HTTP response.
          *
@@ -135,6 +132,32 @@ Instead of type-checking exceptions in the exception handler's `report` and `ren
         public function render($request)
         {
             return response(...);
+        }
+    }
+
+<a name="self-reporting-exceptions"></a>
+### Self-Reporting Exceptions
+
+The `report` method can be type-hinted with dependencies that are resolved from the Container. For example, you might want to inject your own reporting service:
+
+    <?php
+
+    namespace App\Exceptions;
+
+    use Exception;
+    use App\Reporting\ReportsExceptions as Reporter;
+    
+    class SelfReportingException extends Exception
+    {
+        /**
+         * Report the exception.
+         *
+         * @param  \App\Reporting\ReportsExceptions  $reporter
+         * @return void
+         */
+        public function report(Reporter $reporter)
+        {
+            $reporter->send($this->getMessage());
         }
     }
 
