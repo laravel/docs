@@ -33,7 +33,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [Contao](https://contao.org/en/)
 - [Craft](https://craftcms.com)
 - [Drupal](https://www.drupal.org/)
-- [Jigsaw](http://jigsaw.tighten.co)
+- [Jigsaw](https://jigsaw.tighten.co)
 - [Joomla](https://www.joomla.org/)
 - [Katana](https://github.com/themsaid/katana)
 - [Kirby](https://getkirby.com/)
@@ -55,17 +55,17 @@ However, you may extend Valet with your own [custom drivers](#custom-valet-drive
 
 As you may know, Laravel offers [Homestead](/docs/{{version}}/homestead), another local Laravel development environment. Homestead and Valet differ in regards to their intended audience and their approach to local development. Homestead offers an entire Ubuntu virtual machine with automated Nginx configuration. Homestead is a wonderful choice if you want a fully virtualized Linux development environment or are on Windows / Linux.
 
-Valet only supports Mac, and requires you to install PHP and a database server directly onto your local machine. This is easily achieved by using [Homebrew](http://brew.sh/) with commands like `brew install php` and `brew install mysql`. Valet provides a blazing fast local development environment with minimal resource consumption, so it's great for developers who only require PHP / MySQL and do not need a fully virtualized development environment.
+Valet only supports Mac, and requires you to install PHP and a database server directly onto your local machine. This is easily achieved by using [Homebrew](https://brew.sh/) with commands like `brew install php` and `brew install mysql`. Valet provides a blazing fast local development environment with minimal resource consumption, so it's great for developers who only require PHP / MySQL and do not need a fully virtualized development environment.
 
 Both Valet and Homestead are great choices for configuring your Laravel development environment. Which one you choose will depend on your personal taste and your team's needs.
 
 <a name="installation"></a>
 ## Installation
 
-**Valet requires macOS and [Homebrew](http://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.**
+**Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.**
 
 <div class="content-list" markdown="1">
-- Install or update [Homebrew](http://brew.sh/) to the latest version using `brew update`.
+- Install or update [Homebrew](https://brew.sh/) to the latest version using `brew update`.
 - Install PHP 7.3 using Homebrew via `brew install php`.
 - Install [Composer](https://getcomposer.org).
 - Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/vendor/bin` directory is in your system's "PATH".
