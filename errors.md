@@ -138,6 +138,8 @@ Instead of type-checking exceptions in the exception handler's `report` and `ren
         }
     }
 
+> {tip} You may type-hint any required dependencies of the `report` method and they will automatically be injected into the method by Laravel's [service container](/docs/{{version}}/container).
+
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
 
