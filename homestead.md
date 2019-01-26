@@ -559,7 +559,7 @@ Next, you need to update the Homestead source code. If you cloned the repository
 
     git fetch
 
-    git checkout 8.0.0
+    git checkout v8.0.1
 
 These commands pull the latest Homestead code from the GitHub repository, fetches the latest tags, and then checks out the latest tagged release. You can find the latest stable release version on the [GitHub releases page](https://github.com/laravel/homestead/releases).
 
