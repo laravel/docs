@@ -68,6 +68,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 
 <div id="collection-method-list" markdown="1">
 
+[add](#method-add)
 [all](#method-all)
 [average](#method-average)
 [avg](#method-avg)
@@ -191,8 +192,21 @@ For the remainder of this documentation, we'll discuss each method available on 
     }
 </style>
 
+<a name="method-add"></a>
+#### `add()` {#collection-method .first-collection-method}
+
+The `add` method appends an item to the collection:
+
+    $collection = collect([1, 2, 3, 4]);
+
+    $collection->add(5);
+
+    $collection->all();
+
+    // [1, 2, 3, 4, 5]
+
 <a name="method-all"></a>
-#### `all()` {#collection-method .first-collection-method}
+#### `all()` {#collection-method}
 
 The `all` method returns the underlying array represented by the collection:
 
