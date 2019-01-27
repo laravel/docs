@@ -606,7 +606,7 @@ You may also call the `firstWhere` method with an operator:
 
     // ['name' => 'Diego', 'age' => 23]
 
-Similar to the [where](#method-where) method, you may pass one argument to get the first element that meets the where clause:
+Like the [where](#method-where) method, you may pass one argument to the `firstWhere` method. In this scenario, the `firstWhere` method will return the first item where the given item key's value is "truthy":
 
     $collection->firstWhere('age');
 
