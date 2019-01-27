@@ -590,7 +590,7 @@ You may also call the `first` method with no arguments to get the first element 
 The `firstWhere` method returns the first element in the collection with the given key / value pair:
 
     $collection = collect([
-        ['name' => 'Regena', 'age' => 12],
+        ['name' => 'Regena', 'age' => null],
         ['name' => 'Linda', 'age' => 14],
         ['name' => 'Diego', 'age' => 23],
         ['name' => 'Linda', 'age' => 84],
@@ -605,6 +605,12 @@ You may also call the `firstWhere` method with an operator:
     $collection->firstWhere('age', '>=', 18);
 
     // ['name' => 'Diego', 'age' => 23]
+
+Like the [where](#method-where) method, you may pass one argument to the `firstWhere` method. In this scenario, the `firstWhere` method will return the first item where the given item key's value is "truthy":
+
+    $collection->firstWhere('age');
+
+    // ['name' => 'Linda', 'age' => 14]
 
 <a name="method-flatmap"></a>
 #### `flatMap()` {#collection-method}
