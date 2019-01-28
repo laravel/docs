@@ -105,7 +105,7 @@ Using the `Cache` facade, you may access various cache stores via the `store` me
 
     $value = Cache::store('file')->get('foo');
 
-    Cache::store('redis')->put('bar', 'baz', 10);
+    Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutes
 
 <a name="retrieving-items-from-the-cache"></a>
 ### Retrieving Items From The Cache
@@ -143,7 +143,7 @@ The `increment` and `decrement` methods may be used to adjust the value of integ
 
 Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
 
-    $value = Cache::remember('users', $minutes, function () {
+    $value = Cache::remember('users', $seconds, function () {
         return DB::table('users')->get();
     });
 
@@ -164,11 +164,15 @@ If you need to retrieve an item from the cache and then delete the item, you may
 <a name="storing-items-in-the-cache"></a>
 ### Storing Items In The Cache
 
-You may use the `put` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you need to specify the number of minutes for which the value should be cached:
+You may use the `put` method on the `Cache` facade to store items in the cache. This will store the item indefinitely:
 
-    Cache::put('key', 'value', $minutes);
+    Cache::put('key', 'value');
 
-Instead of passing the number of minutes as an integer, you may also pass a `DateTime` instance representing the expiration time of the cached item:
+When you place an item in the cache, you may specify the number of seconds for which the value should be cached:
+
+    Cache::put('key', 'value', $seconds);
+
+Instead of passing the number of seconds as an integer, you may also pass a `DateTime` instance representing the expiration time of the cached item:
 
     $expiresAt = now()->addMinutes(10);
 
@@ -178,7 +182,7 @@ Instead of passing the number of minutes as an integer, you may also pass a `Dat
 
 The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
 
-    Cache::add('key', 'value', $minutes);
+    Cache::add('key', 'value', $seconds);
 
 #### Storing Items Forever
 
@@ -195,6 +199,12 @@ You may remove items from the cache using the `forget` method:
 
     Cache::forget('key');
 
+You may also remove items by providing a zero or negative TTL:
+
+    Cache::put('key', 'value', 0);
+
+    Cache::put('key', 'value', -5);
+
 You may clear the entire cache using the `flush` method:
 
     Cache::flush();
@@ -204,7 +214,7 @@ You may clear the entire cache using the `flush` method:
 <a name="atomic-locks"></a>
 ### Atomic Locks
 
-> {note} To utilize this feature, your application must be using the `memcached` or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb` or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Forge](https://forge.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:
 
@@ -239,13 +249,13 @@ In addition to using the `Cache` facade or [cache contract](/docs/{{version}}/co
 
 If you provide an array of key / value pairs and an expiration time to the function, it will store values in the cache for the specified duration:
 
-    cache(['key' => 'value'], $minutes);
+    cache(['key' => 'value'], $seconds);
 
-    cache(['key' => 'value'], now()->addSeconds(10));
+    cache(['key' => 'value'], now()->addMinutes(10));
 
 When the `cache` function is called without any arguments, it returns an instance of the `Illuminate\Contracts\Cache\Factory` implementation, allowing you to call other caching methods:
 
-    cache()->remember('users', $minutes, function () {
+    cache()->remember('users', $seconds, function () {
         return DB::table('users')->get();
     });
 
@@ -261,9 +271,9 @@ When the `cache` function is called without any arguments, it returns an instanc
 
 Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
 
-    Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
+    Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
 
-    Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
+    Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
 
 <a name="accessing-tagged-cache-items"></a>
 ### Accessing Tagged Cache Items
@@ -303,8 +313,8 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
     {
         public function get($key) {}
         public function many(array $keys);
-        public function put($key, $value, $minutes) {}
-        public function putMany(array $values, $minutes);
+        public function put($key, $value, $seconds) {}
+        public function putMany(array $values, $seconds);
         public function increment($key, $value = 1) {}
         public function decrement($key, $value = 1) {}
         public function forever($key, $value) {}
