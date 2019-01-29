@@ -240,14 +240,14 @@ If you would like to delay the execution of a queued job, you may use the `delay
 <a name="synchronous-dispatching"></a>
 ### Synchronous Dispatching
 
-If you would like to dispatch a job immediately (synchronously) use the `dispatchNow` method instead of `dispatch` when dispatching a job. For example, let's specify that a job should be fired inside a Controller that is awaiting for its response to return it to the user:
+If you would like to dispatch a job immediately (synchronously), you may use the `dispatchNow` method. When using this method, the job will not be queued and will be run immediately within the current process:
 
     <?php
 
     namespace App\Http\Controllers;
 
-    use App\Jobs\ProcessPodcast;
     use Illuminate\Http\Request;
+    use App\Jobs\ProcessPodcast;
     use App\Http\Controllers\Controller;
 
     class PodcastController extends Controller
