@@ -196,7 +196,6 @@ Method  |  Description
 `$results->firstItem()`  |  Get the number of the first item in the slice.
 `$results->getUrlRange($start, $end)`  |  Create a range of pagination URLs.
 `$results->hasMorePages()`  |  Determine if there are enough items to split into multiple pages.
-`$results->isValidPageNumber($page)`  |  Determine if the given value is a valid page number.
 `$results->lastItem()`  |  Get the number of the last item in the slice.
 `$results->lastPage()`  |  Get the page number of the last available page. (Not available when using simplePaginate)
 `$results->nextPageUrl()`  |  Get the URL for the next page.
