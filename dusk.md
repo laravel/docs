@@ -19,6 +19,7 @@
     - [Attaching Files](#attaching-files)
     - [Using The Keyboard](#using-the-keyboard)
     - [Using The Mouse](#using-the-mouse)
+    - [JavaScript Dialogs](#javascript-dialogs)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
     - [Making Vue Assertions](#making-vue-assertions)
@@ -455,6 +456,25 @@ Or, you may drag an element in a single direction:
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
 
+<a name="javascript-dialogs"></a>
+### JavaScript Dialogs
+
+Dusk provides various methods to interact with JavaScript Dialogs:
+
+    // Assert that a dialog has been displayed and that its message matches the given value:
+    $browser->assertDialogOpened('value');
+
+    // Type the given value in an open JavaScript prompt dialog:
+    $browser->typeInDialog('Hello World');
+
+To close an opened JavaScript Dialog, clicking the OK button:
+
+    $browser->acceptDialog();
+
+To close an opened JavaScript Dialog, clicking the Cancel button (for a confirmation dialog only):
+
+    $browser->dismissDialog();
+
 <a name="scoping-selectors"></a>
 ### Scoping Selectors
 
@@ -463,7 +483,7 @@ Sometimes you may wish to perform several operations while scoping all of the op
     $browser->with('.table', function ($table) {
         $table->assertSee('Hello World')
               ->clickLink('Delete');
-    });
+    });s
 
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements

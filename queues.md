@@ -8,6 +8,7 @@
     - [Class Structure](#class-structure)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
+    - [Synchronous Dispatching](#synchronous-dispatching)
     - [Job Chaining](#job-chaining)
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
@@ -235,6 +236,35 @@ If you would like to delay the execution of a queued job, you may use the `delay
     }
 
 > {note} The Amazon SQS queue service has a maximum delay time of 15 minutes.
+
+<a name="synchronous-dispatching"></a>
+### Synchronous Dispatching
+
+If you would like to dispatch a job immediately (synchronously), you may use the `dispatchNow` method. When using this method, the job will not be queued and will be run immediately within the current process:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Http\Request;
+    use App\Jobs\ProcessPodcast;
+    use App\Http\Controllers\Controller;
+
+    class PodcastController extends Controller
+    {
+        /**
+         * Store a new podcast.
+         *
+         * @param  Request  $request
+         * @return Response
+         */
+        public function store(Request $request)
+        {
+            // Create podcast...
+
+            ProcessPodcast::dispatchNow($podcast);
+        }
+    }
 
 <a name="job-chaining"></a>
 ### Job Chaining
