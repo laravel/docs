@@ -60,7 +60,7 @@ In the very unlikely event you are implementing this interface, you should add t
 
 ### Cache
 
-<a name="ttl-in-seconds"></a>
+<a name="cache-ttl-in-seconds"></a>
 #### TTL in seconds
 
 **Likelihood Of Impact: Very High**
@@ -77,6 +77,8 @@ If you are passing an integer to any of these methods, you should update your co
 
     // Laravel 5.7 / 5.8 - Store item for 30 seconds...
     Cache::put('foo', 'bar', now()->addSeconds(30));
+
+> {tip} This change makes the Laravel cache system fully compliant with the [PSR-16 caching library standard](https://www.php-fig.org/psr/psr-16/).
 
 #### The `Repository` and `Store` Contracts
 
