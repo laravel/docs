@@ -164,19 +164,17 @@ If you need to retrieve an item from the cache and then delete the item, you may
 <a name="storing-items-in-the-cache"></a>
 ### Storing Items In The Cache
 
-You may use the `put` method on the `Cache` facade to store items in the cache. This will store the item indefinitely:
-
-    Cache::put('key', 'value');
-
-When you place an item in the cache, you may specify the number of seconds for which the value should be cached:
+You may use the `put` method on the `Cache` facade to store items in the cache:
 
     Cache::put('key', 'value', $seconds);
 
+If the storage time is not passed to the `put` method, the item will be stored indefinitely:
+
+    Cache::put('key', 'value');
+
 Instead of passing the number of seconds as an integer, you may also pass a `DateTime` instance representing the expiration time of the cached item:
 
-    $expiresAt = now()->addMinutes(10);
-
-    Cache::put('key', 'value', $expiresAt);
+    Cache::put('key', 'value', now()->addMinutes(10));
 
 #### Store If Not Present
 
@@ -214,7 +212,7 @@ You may clear the entire cache using the `flush` method:
 <a name="atomic-locks"></a>
 ### Atomic Locks
 
-> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb` or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Forge](https://forge.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:
 
