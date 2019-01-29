@@ -4,7 +4,7 @@
 
 <a name="high-impact-changes"></a>
 ## High Impact Changes
-å
+
 <div class="content-list" markdown="1">
 - [Markdown File Directory Change](#markdown-file-directory-change)
 - [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
