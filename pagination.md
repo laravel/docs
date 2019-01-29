@@ -194,6 +194,7 @@ Method  |  Description
 `$results->count()`  |  Get the number of items for the current page.
 `$results->currentPage()`  |  Get the current page number.
 `$results->firstItem()`  |  Get the number of the first item in the slice.
+`$results->getUrlRange($start, $end)`  |  Create a range of pagination URLs.
 `$results->hasMorePages()`  |  Determine if there are enough items to split into multiple pages.
 `$results->isValidPageNumber($page)`  |  Determine if the given value is a valid page number.
 `$results->lastItem()`  |  Get the number of the last item in the slice.
