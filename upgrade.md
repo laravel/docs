@@ -8,6 +8,7 @@
 <div class="content-list" markdown="1">
 - [Markdown File Directory Change](#markdown-file-directory-change)
 - [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
+- [TTL in seconds](#ttl-in-seconds)
 </div>
 
 <a name="medium-impact-changes"></a>
@@ -17,6 +18,7 @@
 - [SQLite Version Constraints](#sqlite)
 - [Prefer String And Array Classes Over Helpers](#string-and-array-helpers)
 - [Deferred Service Providers](#deferred-service-providers)
+- [PSR-16 Conformity](#psr-16-conformity)
 </div>
 
 <a name="upgrade-5.8.0"></a>
@@ -58,11 +60,27 @@ In the very unlikely event you are implementing this interface, you should add t
 
 ### Cache
 
+<a name="ttl-in-seconds"></a>
+#### TTL in seconds
+
+**Likelihood Of Impact: High**
+
+The TTL used in the cache component and its subsequent stores was changes from minutes to seconds. These changes will allow you to define a more granular TTL for storing items. The `put`, `putMany`, `add`, `remember` and `setDefaultCacheTime` methods of the `Illuminate\Cache\Repository` class and its extended classes, as well as the `put` method of each cache store were updated with this changed behavior. See [the related PR](https://github.com/laravel/framework/pull/27276) for more info.
+
 #### The `Repository` and `Store` Contracts
 
 **Likelihood Of Impact: Very Low**
 
-In order to be fully compliant with `PSR-16` the return values of the `put` and `forever` methods of the `Illuminate/Contracts/Cache/Repository` contract and the return values of the `put`, `putMany` and `forever` methods of the `Illuminate/Contracts/Cache/Store` contract [have been changed](https://github.com/laravel/framework/pull/26726) from `void` to `bool`.
+In order to be fully compliant with `PSR-16` the return values of the `put` and `forever` methods of the `Illuminate\Contracts\Cache\Repository` contract and the return values of the `put`, `putMany` and `forever` methods of the `Illuminate\Contracts\Cache\Store` contract [have been changed](https://github.com/laravel/framework/pull/26726) from `void` to `bool`.
+
+<a name="psr-16-conformity"></a>
+#### PSR-16 Conformity
+
+**Likelihood Of Impact: Medium**
+
+In addition to the return value changes from above, the TTL argument of the `put`, `putMany` and `add` method's of the `Illuminate\Cache\Repository` class was updated to conform better with the PSR-16 spec. The new behavior provides a default of `null` so a call without specifying a TTL will result in storing the cache item forever. Additionally, storing cache items with a TTL of 0 or lower will remove items from the cache. See [the related PR](https://github.com/laravel/framework/pull/27217) for more info.
+
+The `KeyWritten` event [was also updated](https://github.com/laravel/framework/pull/27265) with these changes.
 
 ### Collections
 
