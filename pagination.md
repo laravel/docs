@@ -195,11 +195,12 @@ Method  |  Description
 `$results->currentPage()`  |  Get the current page number.
 `$results->firstItem()`  |  Get the number of the first item in the slice.
 `$results->hasMorePages()`  |  Determine if there are enough items to split into multiple pages.
+`$results->isValidPageNumber($page)`  |  Determine if the given value is a valid page number.
 `$results->lastItem()`  |  Get the number of the last item in the slice.
 `$results->lastPage()`  |  Get the page number of the last available page. (Not available when using simplePaginate)
 `$results->nextPageUrl()`  |  Get the URL for the next page.
 `$results->onFirstPage()`  |  Determine if the paginator is on the first page.
 `$results->perPage()`  |  The number of items to be shown per page.
 `$results->previousPageUrl()`  |  Get the URL for the previous page.
-`$results->total()`  |  Determine the total number of items in the data store. (Not available when using simplePaginate)`
+`$results->total()`  |  Determine the total number of items in the data store. (Not available when using simplePaginate)
 `$results->url($page)`  |  Get the URL for a given page number.
