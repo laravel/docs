@@ -8,7 +8,7 @@
 <div class="content-list" markdown="1">
 - [Markdown File Directory Change](#markdown-file-directory-change)
 - [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
-- [TTL in seconds](#ttl-in-seconds)
+- [Cache TTL In Seconds](#cache-ttl-in-seconds)
 </div>
 
 <a name="medium-impact-changes"></a>
@@ -24,7 +24,7 @@
 <a name="upgrade-5.8.0"></a>
 ## Upgrading To 5.8.0 From 5.7
 
-#### Estimated Upgrade Time: 10-15 Minutes
+#### Estimated Upgrade Time: 30 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
@@ -63,9 +63,20 @@ In the very unlikely event you are implementing this interface, you should add t
 <a name="ttl-in-seconds"></a>
 #### TTL in seconds
 
-**Likelihood Of Impact: High**
+**Likelihood Of Impact: Very High**
 
-The TTL used in the cache component and its subsequent stores was changes from minutes to seconds. These changes will allow you to define a more granular TTL for storing items. The `put`, `putMany`, `add`, `remember` and `setDefaultCacheTime` methods of the `Illuminate\Cache\Repository` class and its extended classes, as well as the `put` method of each cache store were updated with this changed behavior. See [the related PR](https://github.com/laravel/framework/pull/27276) for more info.
+In order to allow a more granular expiration time when storing items, the cache item time-to-live has changed from minutes to seconds. The `put`, `putMany`, `add`, `remember` and `setDefaultCacheTime` methods of the `Illuminate\Cache\Repository` class and its extended classes, as well as the `put` method of each cache store were updated with this changed behavior. See [the related PR](https://github.com/laravel/framework/pull/27276) for more info.
+
+If you are passing an integer to any of these methods, you should update your code to ensure you are now passing the number of seconds you wish the item to remain in the cache. Alternatively, you may pass a `DateTime` instance indicating when the item should expire:
+
+    // Laravel 5.7 - Store item for 30 minutes...
+    Cache::put('foo', 'bar', 30);
+
+    // Laravel 5.8 - Store item for 30 seconds...
+    Cache::put('foo', 'bar', 30);
+
+    // Laravel 5.7 / 5.8 - Store item for 30 seconds...
+    Cache::put('foo', 'bar', now()->addSeconds(30));
 
 #### The `Repository` and `Store` Contracts
 
