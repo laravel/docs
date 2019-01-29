@@ -6,9 +6,9 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
+- [Cache TTL In Seconds](#cache-ttl-in-seconds)
 - [Markdown File Directory Change](#markdown-file-directory-change)
 - [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
-- [Cache TTL In Seconds](#cache-ttl-in-seconds)
 </div>
 
 <a name="medium-impact-changes"></a>
