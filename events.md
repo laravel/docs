@@ -167,7 +167,7 @@ That's it! Now, when this listener is called for an event, it will be automatica
 
 #### Customizing The Queue Connection & Queue Name
 
-If you would like to customize the queue connection and queue name used by an event listener, you may define `$connection` and `$queue` properties on your listener class:
+If you would like to customize the queue connection, queue name and queue delay time used by an event listener, you may define `$connection`, `$queue` and `$delay` properties on your listener class:
 
     <?php
 
@@ -191,6 +191,13 @@ If you would like to customize the queue connection and queue name used by an ev
          * @var string|null
          */
         public $queue = 'listeners';
+        
+        /**
+         * The delay in seconds that the job should wait to be sent.
+         *
+         * @var int
+         */
+        public $delay = 60;
     }
 
 <a name="manually-accessing-the-queue"></a>
