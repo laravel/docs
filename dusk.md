@@ -483,7 +483,7 @@ Sometimes you may wish to perform several operations while scoping all of the op
     $browser->with('.table', function ($table) {
         $table->assertSee('Hello World')
               ->clickLink('Delete');
-    });s
+    });
 
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements
