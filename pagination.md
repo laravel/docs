@@ -194,6 +194,7 @@ Method  |  Description
 `$results->count()`  |  Get the number of items for the current page.
 `$results->currentPage()`  |  Get the current page number.
 `$results->firstItem()`  |  Get the result number of the first item in the results.
+`$results->getOptions()`  |  Get the paginator options.
 `$results->getUrlRange($start, $end)`  |  Create a range of pagination URLs.
 `$results->hasMorePages()`  |  Determine if there are enough items to split into multiple pages.
 `$results->lastItem()`  |  Get the result number of the last item in the results.
