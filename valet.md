@@ -88,10 +88,10 @@ If you need a database, try MySQL by running `brew install mysql@5.7` on your co
 
 #### PHP Versions
 
-You can easily switch versions within Valet by using the `valet use php@version` command. Valet will install the specified PHP version (via Brew) if the installation is not found.
+Valet allows you to easily easily switch PHP versions by using the `valet use php@version` command. Valet will install the specified PHP version (via Brew) if the installation is not found.
 
 ```
-valet use php@7.1
+valet use php@7.2
 valet use php
 ```
 
