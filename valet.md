@@ -86,6 +86,15 @@ For example, if you'd like to use `.app` instead of `.test`, run `valet domain a
 
 If you need a database, try MySQL by running `brew install mysql@5.7` on your command line. Once MySQL has been installed, you may start it using the `brew services start mysql@5.7` command. You can then connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
 
+#### PHP Versions
+
+You can easily switch versions within Valet by using the `valet use php@version` command. Valet will install the specified PHP version (via Brew) if the installation is not found.
+
+```
+valet use php@7.1
+valet use php
+```
+
 <a name="upgrading"></a>
 ### Upgrading
 
