@@ -499,7 +499,7 @@ You may use the `include` method to alias the include from `includes.input` to `
 
     use Illuminate\Support\Facades\Blade;
 
-    Blade::include('include.input', 'input');
+    Blade::include('includes.input', 'input');
 
 Once the include has been aliased, you may render it using the alias name as the Blade directive:
 
