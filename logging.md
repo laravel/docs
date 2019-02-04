@@ -53,6 +53,16 @@ Name | Description
 
 The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
 
+#### Configuring The Single and Daily Channels
+
+The `single` and `daily` channels have three optional configurations `bubble`, `permission` and `locking`.
+
+Name | Description | Default
+------------- | ------------- | -------------
+`bubble` | Whether the messages that are handled can bubble up the stack or not | `true`
+`permission` | File permissions | `644`
+`locking` | Try to lock log file before doing any writes | `false`
+
 <a name="building-log-stacks"></a>
 ### Building Log Stacks
 
