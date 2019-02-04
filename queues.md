@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
     - [Connections Vs. Queues](#connections-vs-queues)
     - [Driver Notes & Prerequisites](#driver-prerequisites)
-- [Queueing Closures](#queueing-closures)
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
@@ -15,6 +14,7 @@
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
     - [Rate Limiting](#rate-limiting)
     - [Error Handling](#error-handling)
+- [Queueing Closures](#queueing-closures)
 - [Running The Queue Worker](#running-the-queue-worker)
     - [Queue Priorities](#queue-priorities)
     - [Queue Workers & Deployment](#queue-workers-and-deployment)
@@ -104,17 +104,6 @@ The following dependencies are needed for the listed queue drivers:
 - Beanstalkd: `pda/pheanstalk ~3.0`
 - Redis: `predis/predis ~1.0`
 </div>
-
-<a name="queueing-closures"></a>
-## Queueing Closures
-
-You may push a closure onto the queue. This is very convenient for quick, simple tasks that need to be queued:
-
-    dispatch(function () {
-        // Any code here will be run by the queue worker
-    });
-
-> {note} Instead of making objects available to queued closures via the use directive, consider passing primary keys and re-pulling the associated models from within your queue job. This often avoids unexpected serialization behavior.
 
 <a name="creating-jobs"></a>
 ## Creating Jobs
@@ -467,6 +456,19 @@ Alternatively, you may specify the maximum number of workers that may simultaneo
 ### Error Handling
 
 If an exception is thrown while the job is being processed, the job will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The maximum number of attempts is defined by the `--tries` switch used on the `queue:work` Artisan command. Alternatively, the maximum number of attempts may be defined on the job class itself. More information on running the queue worker [can be found below](#running-the-queue-worker).
+
+<a name="queueing-closures"></a>
+## Queueing Closures
+
+Instead of dispatching a job class to the queue, you may also dispatch a Closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle:
+
+    $podcast = App\Podcast::find(1);
+
+    dispatch(function () use ($podcast) {
+        $podcast->publish();
+    });
+
+When dispatching Closures to the queue, the Closure's code contents is cryptographically signed so it can not be modified in transit.
 
 <a name="running-the-queue-worker"></a>
 ## Running The Queue Worker
