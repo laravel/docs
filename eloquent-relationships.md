@@ -933,6 +933,8 @@ Sometimes you may wish to eager load a relationship, but also specify additional
         $query->where('title', 'like', '%first%');
     }])->get();
 
+In this example, Eloquent will only eager load posts where the post's `title` column contains the word `first`.
+
 > {note} The `limit` and `take` query builder methods may not be used when constraining eager loads.
 
 <a name="lazy-eager-loading"></a>
