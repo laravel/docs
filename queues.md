@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Connections Vs. Queues](#connections-vs-queues)
     - [Driver Notes & Prerequisites](#driver-prerequisites)
+- [Queueing Closures](#queueing-closures)
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
@@ -103,6 +104,17 @@ The following dependencies are needed for the listed queue drivers:
 - Beanstalkd: `pda/pheanstalk ~3.0`
 - Redis: `predis/predis ~1.0`
 </div>
+
+<a name="queueing-closures"></a>
+## Queueing Closures
+
+You may push a closure onto the queue. This is very convenient for quick, simple tasks that need to be queued:
+
+    dispatch(function () {
+        // Any code here will be run by the queue worker
+    });
+
+> {note} Instead of making objects available to queued closures via the use directive, consider passing primary keys and re-pulling the associated models from within your queue job. This often avoids unexpected serialization behavior.
 
 <a name="creating-jobs"></a>
 ## Creating Jobs
