@@ -190,24 +190,28 @@ As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/larav
 
 ### Eloquent
 
-#### Model names ending with a word with an irregular plural
+#### Model Names Ending With Irregular Plural
 
 **Likelihood of Impact: Medium**
 
-As of Laravel 5.8, multi-word model names, ending in a word with an irregular plural [are now correctly pluralized](https://github.com/laravel/framework/pull/26421).
+As of Laravel 5.8, multi-word model names ending in a word with an irregular plural [are now correctly pluralized](https://github.com/laravel/framework/pull/26421).
 
-For example:
-```php
-// Laravel 5.7...
-App\Feedback.php -> feedback (correctly pluralized)
-App\UserFeedback.php -> user_feedbacks (incorrectly pluralized)
+    // Laravel 5.7...
+    App\Feedback.php -> feedback (correctly pluralized)
+    App\UserFeedback.php -> user_feedbacks (incorrectly pluralized)
 
-// Laravel 5.8
-App\Feedback.php -> feedback (correctly pluralized)
-App\UserFeedback.php -> user_feedback (correctly pluralized)
-```
+    // Laravel 5.8
+    App\Feedback.php -> feedback (correctly pluralized)
+    App\UserFeedback.php -> user_feedback (correctly pluralized)
 
-If you had a model that was incorrectly pluralized you will need to either add a new migration that renames the table to the new, correct form. Or you can define the old table name in your model using the `$table` property.
+If you have a model that was incorrectly pluralized, you may continue using the old table name by defining a `$table` property on your model:
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'user_feedbacks';
 
 #### The `loadCount` Method
 
