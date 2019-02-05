@@ -19,6 +19,7 @@
 - [Prefer String And Array Classes Over Helpers](#string-and-array-helpers)
 - [Deferred Service Providers](#deferred-service-providers)
 - [PSR-16 Conformity](#psr-16-conformity)
+- [Model Names Ending With Irregular Plurals](#model-names-ending-with-irregular-plurals)
 </div>
 
 <a name="upgrade-5.8.0"></a>
@@ -190,7 +191,8 @@ As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/larav
 
 ### Eloquent
 
-#### Model Names Ending With Irregular Plural
+<a name="model-names-ending-with-irregular-plurals"></a>
+#### Model Names Ending With Irregular Plurals
 
 **Likelihood of Impact: Medium**
 
