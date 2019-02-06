@@ -9,6 +9,7 @@
     - [Removing Items From The Cache](#removing-items-from-the-cache)
     - [Atomic Locks](#atomic-locks)
     - [The Cache Helper](#the-cache-helper)
+    - [Cache Control Path](#cache-control-path)
 - [Cache Tags](#cache-tags)
     - [Storing Tagged Cache Items](#storing-tagged-cache-items)
     - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
@@ -250,6 +251,15 @@ When the `cache` function is called without any arguments, it returns an instanc
     });
 
 > {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing a facade](/docs/{{version}}/mocking#mocking-facades).
+
+<a name="cache-control-path"></a>
+## Changing Cache Control Path
+
+You can change the control path to your cached files for services, packages, or routes by adding attributes to your `.env`:
+
+    APP_SERVICES_CACHE='/path/to/your/services/cache'
+    APP_PACKAGES_CACHE='/path/to/your/packages/cache'
+    APP_ROUTES_CACHE='/path/to/your/routes/cache'
 
 <a name="cache-tags"></a>
 ## Cache Tags
