@@ -253,7 +253,7 @@ When the `cache` function is called without any arguments, it returns an instanc
 > {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing a facade](/docs/{{version}}/mocking#mocking-facades).
 
 <a name="cache-control-path"></a>
-## Changing Cache Control Path
+## Cache Control Path
 
 You can change the control path to your cached files for services, packages, or routes by adding attributes to your `.env`:
 
