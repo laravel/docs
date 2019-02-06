@@ -293,6 +293,14 @@ You may customize the error messages used by the form request by overriding the 
         ];
     }
 
+You may also customize date relative error messages in a different language assigned within the locale `:date` attribute:
+
+    'values' => [
+        'date' => [
+            'tomorrow' => '{locale :date attribute}',
+        ],
+    ],
+
 <a name="customizing-the-validation-attributes"></a>
 ### Customizing The Validation Attributes
 
