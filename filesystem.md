@@ -436,11 +436,11 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
 
 The first argument of the `extend` method is the name of the driver and the second is a Closure that receives the `$app` and `$config` variables. The resolver Closure must return an instance of `League\Flysystem\Filesystem`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
 
-Now add the `DropboxServiceProvider` in `config/app.php` file:
+Next, register the service provider in your `config/app.php` configuration file:
     
     'providers' => [
-    // ...
+        // ...
         App\Providers\DropboxServiceProvider::class,
     ];
 
-Once you have created the service provider to register the extension, you may use the `dropbox` driver in your `config/filesystems.php` configuration file.
+Once you have created and registered the extension's service provider, you may use the `dropbox` driver in your `config/filesystems.php` configuration file.
