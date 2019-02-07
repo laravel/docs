@@ -70,7 +70,7 @@ Next, you should configure your Pusher credentials in the `config/broadcasting.p
 
 When using Pusher and [Laravel Echo](#installing-laravel-echo), you should specify `pusher` as your desired broadcaster when instantiating the Echo instance in your `resources/js/bootstrap.js` file:
 
-    import Echo from "laravel-echo";
+    import Echo from 'laravel-echo';
 
     window.Pusher = require('pusher-js');
 
@@ -97,7 +97,7 @@ If you are going to pair the Redis broadcaster with a Socket.IO server, you will
 
 Next, you will need to instantiate Echo with the `socket.io` connector and a `host`.
 
-    import Echo from "laravel-echo"
+    import Echo from 'laravel-echo'
 
     window.io = require('socket.io-client');
 
@@ -181,7 +181,7 @@ All authorization callbacks receive the currently authenticated user as their fi
 
 Next, all that remains is to listen for the event in our JavaScript application. We can do this using Laravel Echo. First, we'll use the `private` method to subscribe to the private channel. Then, we may use the `listen` method to listen for the `ShippingStatusUpdated` event. By default, all of the event's public properties will be included on the broadcast event:
 
-    Echo.private(`order.${orderId}`)
+    window.Echo.private(`order.${orderId}`)
         .listen('ShippingStatusUpdated', (e) => {
             console.log(e.update);
         });
@@ -463,7 +463,7 @@ Laravel Echo is a JavaScript library that makes it painless to subscribe to chan
 
 Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework:
 
-    import Echo from "laravel-echo"
+    import Echo from 'laravel-echo'
 
     window.Echo = new Echo({
         broadcaster: 'pusher',
@@ -496,14 +496,14 @@ If you already have a Pusher or Socket.io client instance that you would like Ec
 
 Once you have installed and instantiated Echo, you are ready to start listening for event broadcasts. First, use the `channel` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event:
 
-    Echo.channel('orders')
+    window.Echo.channel('orders')
         .listen('OrderShipped', (e) => {
             console.log(e.order.name);
         });
 
 If you would like to listen for events on a private channel, use the `private` method instead. You may continue to chain calls to the `listen` method to listen for multiple events on a single channel:
 
-    Echo.private('orders')
+    window.Echo.private('orders')
         .listen(...)
         .listen(...)
         .listen(...);
@@ -513,11 +513,11 @@ If you would like to listen for events on a private channel, use the `private` m
 
 To leave a channel, you may call the `leaveChannel` method on your Echo instance:
 
-    Echo.leaveChannel('orders');
+    window.Echo.leaveChannel('orders');
 
 If you would like to leave a channel and also its associated private and presence channels, you may call the `leave` method:
 
-    Echo.leave('orders');
+    window.Echo.leave('orders');
 
 <a name="namespaces"></a>
 ### Namespaces
@@ -532,7 +532,7 @@ You may have noticed in the examples above that we did not specify the full name
 
 Alternatively, you may prefix event classes with a `.` when subscribing to them using Echo. This will allow you to always specify the fully-qualified class name:
 
-    Echo.channel('orders')
+    window.Echo.channel('orders')
         .listen('.Namespace\\Event\\Class', (e) => {
             //
         });
@@ -560,7 +560,7 @@ The data returned by the authorization callback will be made available to the pr
 
 To join a presence channel, you may use Echo's `join` method. The `join` method will return a `PresenceChannel` implementation which, along with exposing the `listen` method, allows you to subscribe to the `here`, `joining`, and `leaving` events.
 
-    Echo.join(`chat.${roomId}`)
+    window.Echo.join(`chat.${roomId}`)
         .here((users) => {
             //
         })
@@ -596,7 +596,7 @@ Like public or private events, presence channel events may be broadcast using th
 
 You may listen for the join event via Echo's `listen` method:
 
-    Echo.join(`chat.${roomId}`)
+    window.Echo.join(`chat.${roomId}`)
         .here(...)
         .joining(...)
         .leaving(...)
@@ -613,14 +613,14 @@ Sometimes you may wish to broadcast an event to other connected clients without 
 
 To broadcast client events, you may use Echo's `whisper` method:
 
-    Echo.private('chat')
+    window.Echo.private('chat')
         .whisper('typing', {
             name: this.user.name
         });
 
 To listen for client events, you may use the `listenForWhisper` method:
 
-    Echo.private('chat')
+    window.Echo.private('chat')
         .listenForWhisper('typing', (e) => {
             console.log(e.name);
         });
@@ -632,7 +632,7 @@ By pairing event broadcasting with [notifications](/docs/{{version}}/notificatio
 
 Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:
 
-    Echo.private(`App.User.${userId}`)
+    window.Echo.private(`App.User.${userId}`)
         .notification((notification) => {
             console.log(notification.type);
         });
