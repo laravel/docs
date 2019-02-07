@@ -71,7 +71,7 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
 
-    composer require algolia/algoliasearch-client-php:^1.27
+    composer require algolia/algoliasearch-client-php:^2.2
 
 <a name="configuration"></a>
 ## Configuration
@@ -351,9 +351,9 @@ When this configuration option is `true`, Scout will not remove soft deleted mod
 
 If you need to customize the search behavior of an engine you may pass a callback as the second argument to the `search` method. For example, you could use this callback to add geo-location data to your search options before the search query is passed to Algolia:
 
-    use AlgoliaSearch\Index;
+    use Algolia\AlgoliaSearch\SearchIndex;
 
-    App\Order::search('Star Trek', function (Index $algolia, string $query, array $options) {
+    App\Order::search('Star Trek', function (SearchIndex $algolia, string $query, array $options) {
         $options['body']['query']['bool']['filter']['geo_distance'] = [
             'distance' => '1000km',
             'location' => ['lat' => 36, 'lon' => 111],
