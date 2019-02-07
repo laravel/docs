@@ -47,7 +47,7 @@ After publishing Horizon's assets, its primary configuration file will be locate
 
 #### Balance Options
 
-Horizon allows you to choose from three balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy, which is the default in the config file, splits incoming jobs evenly between processes:
+Horizon allows you to choose from three balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy, which is the configuration file's default, splits incoming jobs evenly between processes:
 
     'balance' => 'simple',
 
