@@ -461,7 +461,7 @@ Or, you may drag an element in a single direction:
 
 Dusk provides various methods to interact with JavaScript Dialogs:
 
-    // Wait for the dialog to appear:
+    // Wait for a dialog to appear:
     $browser->waitForDialog($seconds = null);
     
     // Assert that a dialog has been displayed and that its message matches the given value:
