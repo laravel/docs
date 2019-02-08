@@ -92,8 +92,6 @@ Adjusting this value based on your queue load can be more efficient than continu
         'block_for' => 5,
     ],
 
-> {note} Blocking pop is an experimental feature. There is a small chance that a queued job could be lost if the Redis server or worker crashes at the same time the job is retrieved.
-
 #### Other Driver Prerequisites
 
 The following dependencies are needed for the listed queue drivers:
