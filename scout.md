@@ -378,6 +378,7 @@ If one of the built-in Scout search engines doesn't fit your needs, you may writ
     abstract public function mapIds($results);
     abstract public function map($results, $model);
     abstract public function getTotalCount($results);
+    abstract public function flush($model);
 
 You may find it helpful to review the implementations of these methods on the `Laravel\Scout\Engines\AlgoliaEngine` class. This class will provide you with a good starting point for learning how to implement each of these methods in your own engine.
 
