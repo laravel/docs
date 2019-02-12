@@ -299,12 +299,11 @@ The `send`, `sendNow`, `queue`, `later` and `fill` methods of the `Illuminate\Ma
 
 The `isReleased`, `hasFailed` and `markAsFailed` methods [have been added to the `Illuminate\Contracts\Queue\Job` contract](https://github.com/laravel/framework/pull/26908). If you are implementing this interface, you should add these methods to your implementation.
 
-#### Blocking Pop
+#### Redis Blocking Pop
 
 **Likelihood Of Impact: Very Low**
 
-Blocking pop from a Redis queue is now safe. Previously, there was a small chance that a queued job could be lost if the Redis server or worker crashes at the same time the job is retrieved. In order to make blocking pops safe, a new Redis list with suffix `:notify` is used for each Laravel queue.
-
+Using the "blocking pop" feature of the Redis queue driver is now safe. Previously, there was a small chance that a queued job could be lost if the Redis server or worker crashed at the same time the job was retrieved. In order to make blocking pops safe, a new Redis list with suffix `:notify` is created for each Laravel queue.
 
 ### Requests
 
