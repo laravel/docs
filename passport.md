@@ -15,6 +15,7 @@
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
+    - [Customizing The Username Field](#customizing-the-username-field)
 - [Implicit Grant Tokens](#implicit-grant-tokens)
 - [Client Credentials Grant Tokens](#client-credentials-grant-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
@@ -67,25 +68,6 @@ After running this command, add the `Laravel\Passport\HasApiTokens` trait to you
     class User extends Authenticatable
     {
         use HasApiTokens, Notifiable;
-    }
-    
-In order to login with a custom credential field such as `username` instead of the default `email`, you should implement the `findForPassport` method in your `App\User`:
-
-    <?php
-
-    namespace App;
-
-    use Laravel\Passport\HasApiTokens;
-    use Illuminate\Notifications\Notifiable;
-    use Illuminate\Foundation\Auth\User as Authenticatable;
-
-    class User extends Authenticatable
-    {
-        use HasApiTokens, Notifiable;
-        
-        public function findForPassport($username) {
-            return $this->where('username', $username)->first();
-        }
     }
 
 Next, you should call the `Passport::routes` method within the `boot` method of your `AuthServiceProvider`. This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
@@ -462,6 +444,35 @@ When using the password grant or client credentials grant, you may wish to autho
             'scope' => '*',
         ],
     ]);
+
+<a name="customizing-the-username-field"></a>
+### Customizing The Username Field
+
+When authenticating using the password grant, Passport will use the `email` attribute of your model as the "username". However, you may customize this behavior by defining a `findForPassport` method on your model:
+
+    <?php
+
+    namespace App;
+
+    use Laravel\Passport\HasApiTokens;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use HasApiTokens, Notifiable;
+
+        /**
+         * Find the user instance for the given username.
+         *
+         * @param  string  $username
+         * @return \App\User
+         */
+        public function findForPassport($username)
+        {
+            return $this->where('username', $username)->first();
+        }
+    }
 
 <a name="implicit-grant-tokens"></a>
 ## Implicit Grant Tokens
