@@ -134,7 +134,7 @@ For example, take a look at this event listener:
     class CacheOrderInformation
     {
         /**
-         * The Redis database implementation.
+         * The Redis factory implementation.
          */
         protected $redis;
 
