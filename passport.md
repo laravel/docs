@@ -68,6 +68,25 @@ After running this command, add the `Laravel\Passport\HasApiTokens` trait to you
     {
         use HasApiTokens, Notifiable;
     }
+    
+In order to login with a custom credential field such as `username` instead of the default `email`, you should implement the `findForPassport` method in your `App\User`:
+
+    <?php
+
+    namespace App;
+
+    use Laravel\Passport\HasApiTokens;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use HasApiTokens, Notifiable;
+        
+        public function findForPassport($username) {
+            return $this->where('username', $username)->first();
+        }
+    }
 
 Next, you should call the `Passport::routes` method within the `boot` method of your `AuthServiceProvider`. This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
 
