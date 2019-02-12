@@ -129,7 +129,7 @@ For example, take a look at this event listener:
 
     use App\User;
     use App\Events\OrderWasPlaced;
-    use Illuminate\Contracts\Redis\Database;
+    use Illuminate\Contracts\Redis\Factory;
 
     class CacheOrderInformation
     {
@@ -141,10 +141,10 @@ For example, take a look at this event listener:
         /**
          * Create a new event handler instance.
          *
-         * @param  Database  $redis
+         * @param  Factory  $redis
          * @return void
          */
-        public function __construct(Database $redis)
+        public function __construct(Factory $redis)
         {
             $this->redis = $redis;
         }
