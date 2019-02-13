@@ -22,6 +22,12 @@
 - [Model Names Ending With Irregular Plurals](#model-names-ending-with-irregular-plurals)
 </div>
 
+<a name="optional-changes"></a>
+## Optional Changes
+<div class="content-list" markdown="1">
+- [PHPUnit 8](#phpunit-8)
+</div>
+
 <a name="upgrade-5.8.0"></a>
 ## Upgrading To 5.8.0 From 5.7
 
@@ -369,6 +375,27 @@ This impact of this change has been marked as `medium` since a future, opt-in pa
 **Likelihood Of Impact: Medium**
 
 The `defer` boolean property on the service provider which is/was used to indicate if a provider is deferred [has been deprecated](https://github.com/laravel/framework/pull/27067). In order to mark the service provider as deferred it should implement the `Illuminate\Contracts\Support\DeferrableProvider` contract.
+
+### Testing
+<a name="phpunit-8"></a>
+#### PHPUnit 8
+
+**Likelihood Of Impact: Optional**
+
+PHPUnit 8 is an optional upgrade which requires PHP >=7.2. Please read through the entire list of changes in [the PHPUnit 8 release announcement](https://phpunit.de/announcements/phpunit-8.html). You may also continue using PHPUnit 7, which requires a minimum of PHP 7.1.
+
+The `setUp` and `tearDown` methods now require the void return type in PHPUnit 8:
+```
+    public function setUp(): void
+    {
+      //
+    }
+
+    public function tearDown(): void
+    {
+      //
+    }
+```
 
 ### Validation
 
