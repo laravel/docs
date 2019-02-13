@@ -387,14 +387,7 @@ PHPUnit 8 is an optional upgrade which requires PHP >=7.2. Please read through t
 The `setUp` and `tearDown` methods now require the void return type in PHPUnit 8:
 ```
     public function setUp(): void
-    {
-      //
-    }
-
     public function tearDown(): void
-    {
-      //
-    }
 ```
 
 ### Validation
