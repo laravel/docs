@@ -100,7 +100,7 @@ The `exec` method may be used to issue a command to the operating system:
 <a name="schedule-frequency-options"></a>
 ### Schedule Frequency Options
 
-Of course, there are a variety of schedules you may assign to your task:
+There are a variety of schedules you may assign to your task:
 
 Method  | Description
 ------------- | -------------

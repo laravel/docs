@@ -230,7 +230,7 @@ For Eloquent methods like `all` and `get` which retrieve multiple results, an in
         return $flight->cancelled;
     });
 
-Of course, you may also loop over the collection like an array:
+You may also loop over the collection like an array:
 
     foreach ($flights as $flight) {
         echo $flight->name;
@@ -260,7 +260,7 @@ The `cursor` method allows you to iterate through your database records using a 
 <a name="retrieving-single-models"></a>
 ## Retrieving Single Models / Aggregates
 
-Of course, in addition to retrieving all of the records for a given table, you may also retrieve single records using `find` or `first`. Instead of returning a collection of models, these methods return a single model instance:
+In addition to retrieving all of the records for a given table, you may also retrieve single records using `find` or `first`. Instead of returning a collection of models, these methods return a single model instance:
 
     // Retrieve a model by its primary key...
     $flight = App\Flight::find(1);
@@ -391,7 +391,7 @@ If you already have a model instance, you may use the `fill` method to populate 
 
 #### Guarding Attributes
 
-While `$fillable` serves as a "white list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "black list". Of course, you should use either `$fillable` or `$guarded` - not both. In the example below, all attributes **except for `price`** will be mass assignable:
+While `$fillable` serves as a "white list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "black list". Importantly, you should use either `$fillable` or `$guarded` - not both. In the example below, all attributes **except for `price`** will be mass assignable:
 
     <?php
 
@@ -477,7 +477,7 @@ In the example above, we are retrieving the model from the database before calli
 
 #### Deleting Models By Query
 
-Of course, you may also run a delete statement on a set of models. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not fire any model events for the models that are deleted:
+You can also run a delete statement on a set of models. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not fire any model events for the models that are deleted:
 
     $deletedRows = App\Flight::where('active', 0)->delete();
 
@@ -507,7 +507,7 @@ In addition to actually removing records from your database, Eloquent can also "
         protected $dates = ['deleted_at'];
     }
 
-Of course, you should add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
+You should also add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
     Schema::table('flights', function (Blueprint $table) {
         $table->softDeletes();

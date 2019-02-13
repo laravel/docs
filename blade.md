@@ -169,7 +169,7 @@ You may display the contents of the `name` variable like so:
 
 > {tip} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
-Of course, you are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
+You are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
 
     The current UNIX timestamp is {{ time() }}.
 
@@ -475,7 +475,7 @@ Even though the included view will inherit all data available in the parent view
 
     @include('view.name', ['some' => 'data'])
 
-Of course, if you attempt to `@include` a view which does not exist, Laravel will throw an error. If you would like to include a view that may or may not be present, you should use the `@includeIf` directive:
+If you attempt to `@include` a view which does not exist, Laravel will throw an error. If you would like to include a view that may or may not be present, you should use the `@includeIf` directive:
 
     @includeIf('view.name', ['some' => 'data'])
 
