@@ -36,7 +36,7 @@ Laravel 5.7 continues the improvements made in Laravel 5.6 by introducing [Larav
 
 ### Laravel Nova
 
-[Laravel Nova](https://nova.laravel.com) is a beautiful, best-in-class administration dashboard for Laravel applications. Of course, the primary feature of Nova is the ability to administer your underlying database records using Eloquent. Additionally, Nova offers support for filters, lenses, actions, queued actions, metrics, authorization, custom tools, custom cards, custom fields, and more.
+[Laravel Nova](https://nova.laravel.com) is a beautiful, best-in-class administration dashboard for Laravel applications. The primary feature of Nova is the ability to administer your underlying database records using Eloquent. Additionally, Nova offers support for filters, lenses, actions, queued actions, metrics, authorization, custom tools, custom cards, custom fields, and more.
 
 To learn more about Laravel Nova, check out the [Nova website](https://nova.laravel.com).
 

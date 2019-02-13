@@ -20,7 +20,7 @@ Under the hood, Laravel utilizes the [Monolog](https://github.com/Seldaek/monolo
 <a name="configuration"></a>
 ## Configuration
 
-All of the configuration for your application's logging system is housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. Of course, we'll review a few common options below.
+All of the configuration for your application's logging system is housed in the `config/logging.php` configuration file. This file allows you to configure your application's log channels, so be sure to review each of the available channels and their options. We'll review a few common options below.
 
 By default, Laravel will use the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
 
@@ -48,6 +48,16 @@ Name | Description
 `custom` | A driver that calls a specified factory to create a channel
 
 > {tip} Check out the documentation on [advanced channel customization](#advanced-monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
+
+#### Configuring The Single and Daily Channels
+
+The `single` and `daily` channels have three optional configuration options: `bubble`, `permission`, and `locking`.
+
+Name | Description | Default
+------------- | ------------- | -------------
+`bubble` | Indicates if messages should bubble up to other channels after being handled | `true`
+`permission` | The log file's permissions | `644`
+`locking` | Attempt to lock the log file before writing to it | `false`
 
 #### Configuring The Slack Channel
 

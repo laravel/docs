@@ -147,7 +147,7 @@ To create a new database table, use the `create` method on the `Schema` facade. 
         $table->increments('id');
     });
 
-Of course, when creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
+When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
 
 #### Checking For Table / Column Existence
 
@@ -209,7 +209,7 @@ The `table` method on the `Schema` facade may be used to update existing tables.
 
 #### Available Column Types
 
-Of course, the schema builder contains a variety of column types that you may specify when building your tables:
+The schema builder contains a variety of column types that you may specify when building your tables:
 
 Command  |  Description
 -------  |  -----------

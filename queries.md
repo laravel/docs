@@ -134,7 +134,7 @@ The query builder also provides a variety of aggregate methods such as `count`, 
 
     $price = DB::table('orders')->max('price');
 
-Of course, you may combine these methods with other clauses:
+You may combine these methods with other clauses:
 
     $price = DB::table('orders')
                     ->where('finalized', 1)
@@ -153,7 +153,7 @@ Instead of using the `count` method to determine if any records exist that match
 
 #### Specifying A Select Clause
 
-Of course, you may not always want to select all columns from a database table. Using the `select` method, you can specify a custom `select` clause for the query:
+You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom `select` clause for the query:
 
     $users = DB::table('users')->select('name', 'email as user_email')->get();
 
@@ -224,7 +224,7 @@ The `orderByRaw` method may be used to set a raw string as the value of the `ord
 
 #### Inner Join Clause
 
-The query builder may also be used to write join statements. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. Of course, as you can see, you can join to multiple tables in a single query:
+The query builder may also be used to write join statements. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You can even join to multiple tables in a single query:
 
     $users = DB::table('users')
                 ->join('contacts', 'users.id', '=', 'contacts.user_id')
@@ -315,7 +315,7 @@ For convenience, if you want to verify that a column is equal to a given value, 
 
     $users = DB::table('users')->where('votes', 100)->get();
 
-Of course, you may use a variety of other operators when writing a `where` clause:
+You may use a variety of other operators when writing a `where` clause:
 
     $users = DB::table('users')
                     ->where('votes', '>=', 100)
@@ -632,7 +632,7 @@ If the table has an auto-incrementing id, use the `insertGetId` method to insert
 <a name="updates"></a>
 ## Updates
 
-Of course, in addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated. You may constrain the `update` query using `where` clauses:
+In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated. You may constrain the `update` query using `where` clauses:
 
     DB::table('users')
                 ->where('id', 1)

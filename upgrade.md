@@ -33,7 +33,7 @@
 
 Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` file.
 
-Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
+Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
 
 ### The `Application` Contract
 

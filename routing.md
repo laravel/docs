@@ -101,7 +101,7 @@ If your route only needs to return a view, you may use the `Route::view` method.
 <a name="required-parameters"></a>
 ### Required Parameters
 
-Of course, sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
+Sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
 
     Route::get('user/{id}', function ($id) {
         return 'User '.$id;
@@ -382,7 +382,7 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
 <a name="fallback-routes"></a>
 ## Fallback Routes
 
-Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. Of course, you are free to add additional middleware to this route as needed:
+Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. You are free to add additional middleware to this route as needed:
 
     Route::fallback(function () {
         //

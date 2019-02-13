@@ -49,7 +49,7 @@ As you can see, the original value of the column is passed to the accessor, allo
 
     $firstName = $user->first_name;
 
-Of course, you may also use accessors to return new, computed values from existing attributes:
+You may also use accessors to return new, computed values from existing attributes:
 
     /**
      * Get the user's full name.
@@ -121,7 +121,7 @@ By default, Eloquent will convert the `created_at` and `updated_at` columns to i
 
 > {tip} You may disable the default `created_at` and `updated_at` timestamps by setting the public `$timestamps` property of your model to `false`.
 
-When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database:
+When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database:
 
     $user = App\User::find(1);
 
