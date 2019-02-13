@@ -15,7 +15,7 @@ Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` fi
 
 If you are using Laravel Passport, you should update your `laravel/passport` dependency to `^7.0` in your `composer.json` file.
 
-Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
+Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
 
 ### Application
 

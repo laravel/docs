@@ -33,7 +33,7 @@ All language files return an array of keyed strings. For example:
 <a name="configuring-the-locale"></a>
 ### Configuring The Locale
 
-The default language for your application is stored in the `config/app.php` configuration file. Of course, you may modify this value to suit the needs of your application. You may also change the active language at runtime using the `setLocale` method on the `App` facade:
+The default language for your application is stored in the `config/app.php` configuration file. You may modify this value to suit the needs of your application. You may also change the active language at runtime using the `setLocale` method on the `App` facade:
 
     Route::get('welcome/{locale}', function ($locale) {
         App::setLocale($locale);
@@ -100,7 +100,7 @@ You may retrieve lines from language files using the `__` helper function. The `
 
     echo __('I love programming.');
 
-Of course if you are using the [Blade templating engine](/docs/{{version}}/blade), you may use the `{{ }}` syntax to echo the translation string or use the `@lang` directive:
+If you are using the [Blade templating engine](/docs/{{version}}/blade), you may use the `{{ }}` syntax to echo the translation string or use the `@lang` directive:
 
     {{ __('messages.welcome') }}
 
