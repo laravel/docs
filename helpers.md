@@ -1406,7 +1406,7 @@ The `optional` function accepts any argument and allows you to access properties
 
     {!! old('name', optional($user)->name) !!}
 
-The `optional` function also accepts a Closure as its second argument. The Closure will be invoked if the value provided as the first argument is not null:
+The `optional` function also accepts a Closure as its second argument. The Closure will be invoked if the value provided as the first argument is null:
 
     return optional(User::find($id), function ($user) {
         return new DummyUser;
