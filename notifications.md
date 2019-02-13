@@ -457,7 +457,7 @@ You may also use a mass-update query to mark all of the notifications as read wi
 
     $user->unreadNotifications()->update(['read_at' => now()]);
 
-Of course, you may `delete` the notifications to remove them from the table entirely:
+You may `delete` the notifications to remove them from the table entirely:
 
     $user->notifications()->delete();
 

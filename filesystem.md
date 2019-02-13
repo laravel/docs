@@ -28,7 +28,7 @@ Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flys
 
 The filesystem configuration file is located at `config/filesystems.php`. Within this file you may configure all of your "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file. So, modify the configuration to reflect your storage preferences and credentials.
 
-Of course, you may configure as many disks as you like, and may even have multiple disks that use the same driver.
+You may configure as many disks as you like, and may even have multiple disks that use the same driver.
 
 <a name="the-public-disk"></a>
 ### The Public Disk
@@ -39,7 +39,7 @@ To create the symbolic link, you may use the `storage:link` Artisan command:
 
     php artisan storage:link
 
-Of course, once a file has been stored and the symbolic link has been created, you can create a URL to the files using the `asset` helper:
+Once a file has been stored and the symbolic link has been created, you can create a URL to the files using the `asset` helper:
 
     echo asset('storage/file.txt');
 
@@ -302,7 +302,7 @@ If you would not like a file name to be automatically assigned to your stored fi
         'avatars', $request->user()->id
     );
 
-Of course, you may also use the `putFileAs` method on the `Storage` facade, which will perform the same file manipulation as the example above:
+You may also use the `putFileAs` method on the `Storage` facade, which will perform the same file manipulation as the example above:
 
     $path = Storage::putFileAs(
         'avatars', $request->file('avatar'), $request->user()->id
