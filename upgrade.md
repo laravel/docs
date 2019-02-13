@@ -412,7 +412,7 @@ The `check` method now **optionally** checks if the algorithm of the hash matche
 
 #### Mailable Dynamic Variable Casing
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: Low**
 
 Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with dynamic view variables. Dynamic mailable variables are not a documented Laravel feature, so likelihood of impact to your application is low.
 
