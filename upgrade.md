@@ -114,14 +114,6 @@ The `firstWhere` method signature [has changed](https://github.com/laravel/frame
      */
     public function firstWhere($key, $operator = null, $value = null);
 
-### Config
-
-#### `ArrayAccess` Contract Added To The `Repository` Contract
-
-**Likelihood Of Impact: Very Low**
-
-[The `Illuminate\Contracts\Config\Repository` contract](https://github.com/laravel/framework/pull/26747) now extends the `ArrayAccess` contract. If you are implementing the `Repository` interface, your implementation should now also satisfy the `ArrayAccess` contract.
-
 ### Console
 
 #### The `Kernel` Contract
