@@ -124,12 +124,6 @@ The `terminate` method [has been added to the `Illuminate/Contracts/Console/Kern
 
 ### Container
 
-#### `ArrayAccess` Contract Added To The `Container` Contract
-
-**Likelihood Of Impact: Very Low**
-
-[The `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26378) now extends the `ArrayAccess` contract. If you are implementing the `Container` interface, your implementation should now also satisfy the `ArrayAccess` contract.
-
 #### The `resolve` Method
 
 **Likelihood Of Impact: Very Low**
