@@ -33,6 +33,122 @@ However, collections are much more powerful than arrays and expose a variety of 
 <a name="available-methods"></a>
 ## Available Methods
 
+### The Eloquent Collection
+`Illuminate\Database\Eloquent\Collection` provides a superset of methods to 
+aid with managing your model collection. Methods use `Model::getKey()` for manipulating
+the collection. Most methods return a Collection of `Illuminate\Database\Eloquent\Collection`, however
+some methods return a base Collection instance. Eloquent Collection methods are as follows:
+
+#### `find($key)` {#collection-method .first-collection-method}
+
+Returns the model found within the collection with the given key.
+If `$key` is a model instance, `find` will attempt to return a model matching the primary
+key. If `$key` is an array of keys, `find` will return all models which match 
+the `$keys` using `whereIn()`.
+
+    $users = User::all();
+  
+    $users->find(1);
+
+#### `load($relations)`
+
+Eager load a set of relationships onto each model in the
+collection.
+
+    $collection->load('users.comments');
+    $collection->load('users', 'admins');
+
+#### `loadMissing($relations)`
+
+Load any missing relationships onto each model in
+the collection.
+
+    $collection->loadMissing('users.comments');
+    $collection->loadMissing('admins');
+
+#### `add($item)`
+
+Appends the supplied `$item` to the `items` property within the collection.
+
+    $result = User::find(1);
+    $result->add(User::find(2));
+     
+#### `contains($key, $operator = null, $value = null)`
+
+Provides a convenient way of checking if a `Model` instance
+is within the collection. 
+
+If all three parameters are passed, this method behaves similar to `Illuminate\Support\Collection`.
+
+If only `$key` is passed, the following occurs:
+
+If `$key` is an instance of a model, `contains`
+will compare the `$key` to each `Model` in the collection using `Model::is()`. 
+Otherwise `$key` will be compared to each `Model`'s `Model::getKey()`.
+
+    $users->contains(1);
+    // True
+    
+    $users->contains(User::find(1));
+    // True
+
+#### `modelKeys`
+
+`modelKeys` returns all primary keys found within the collection. Uses: `Model::getKey()`.
+
+    $users->modelKeys();
+    // [1,2,3,4,5]
+
+#### `fresh($with)`
+
+Loads a fresh instance of each `Model` in the collection from the database with the specified
+relationships. 
+
+    $users->fresh();
+    
+    $users->fresh('comments');
+    
+#### `getDictionary($items = null)`
+
+Return a dictionary of models key'd by the primary key. If `$items` is passed, it will attempt
+to transform them into a dictionary'd array.
+
+    $users = User::all();
+    $users->getDictionary()
+    {
+        1 => User,
+        2 => User
+    }
+    
+#### `makeVisible($attribues)`
+
+Make attributes which are typically hidden visible on each model in the collection.
+
+#### `makeHidden($attributes)`
+
+Make attributes which are typically visible hidden on each model in the collection.
+
+#### `unique($key = null, $strict = false)`
+
+Return only unique items from the collection. Unique items are determined
+by the primary key using: `Model::getKey()`.
+
+#### `only($keys)`
+
+Return only the models which contain the specified primary keys `$keys`.
+
+#### `except($keys)`
+
+Return only the models which DO NOT contain the specified primary keys `$keys`.
+
+#### `intersect($items)`
+
+Return all models from `$items` which are also within the current collection.
+
+#### `diff($items)`
+
+Return all models from `$items` which are NOT within the current collection.
+
 ### The Base Collection
 
 All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections) object; therefore, they inherit all of the powerful methods provided by the base collection class:
