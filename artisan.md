@@ -76,9 +76,7 @@ After generating your command, you should fill in the `signature` and `descripti
 
 > {tip} For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example below, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
 
-> {note} It is not reccomended to inject dependencies into the `__construct()` method, because all console commands get instantiated whenever any console command, job or test is called. Injecting into `handle()` instead is much safer and will lead to better performance.
-
-Let's take a look at an example command. Note that we are able to inject any dependencies we need into the command's constructor or `handle` method. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies type-hinted in the constructor or `handle` method:
+Let's take a look at an example command. Note that we are able to inject any dependencies we need into the command's `handle` method. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies that are type-hinted in this method's signature:
 
     <?php
 
@@ -117,6 +115,7 @@ Let's take a look at an example command. Note that we are able to inject any dep
         /**
          * Execute the console command.
          *
+         * @param  \App\DripEmailer  $drip
          * @return mixed
          */
         public function handle(DripEmailer $drip)
