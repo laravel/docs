@@ -26,6 +26,7 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
 
     <?php
 
+    use Illuminate\Support\Str;
     use Illuminate\Database\Seeder;
     use Illuminate\Support\Facades\DB;
 
@@ -39,8 +40,8 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
         public function run()
         {
             DB::table('users')->insert([
-                'name' => str_random(10),
-                'email' => str_random(10).'@gmail.com',
+                'name' => Str::random(10),
+                'email' => Str::random(10).'@gmail.com',
                 'password' => bcrypt('secret'),
             ]);
         }
