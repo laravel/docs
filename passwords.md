@@ -94,4 +94,3 @@ You may easily modify the notification class used to send the password reset lin
     {
         $this->notify(new ResetPasswordNotification($token));
     }
-
