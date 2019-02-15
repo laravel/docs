@@ -343,7 +343,7 @@ The session persistence logic has been [moved from the `terminate()` method to t
 <a name="string-and-array-helpers"></a>
 #### Prefer String And Array Classes Over Helpers
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: Low**
 
 All `array_*` and `str_*` global helpers [have been deprecated](https://github.com/laravel/framework/pull/26898) and will be moved to an optional package in the future. You should use the `Illuminate\Support\Arr` and `Illuminate\Support\Str` methods directly.
 

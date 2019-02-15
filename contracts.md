@@ -129,22 +129,22 @@ For example, take a look at this event listener:
 
     use App\User;
     use App\Events\OrderWasPlaced;
-    use Illuminate\Contracts\Redis\Database;
+    use Illuminate\Contracts\Redis\Factory;
 
     class CacheOrderInformation
     {
         /**
-         * The Redis database implementation.
+         * The Redis factory implementation.
          */
         protected $redis;
 
         /**
          * Create a new event handler instance.
          *
-         * @param  Database  $redis
+         * @param  Factory  $redis
          * @return void
          */
-        public function __construct(Database $redis)
+        public function __construct(Factory $redis)
         {
             $this->redis = $redis;
         }
