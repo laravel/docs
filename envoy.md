@@ -55,7 +55,7 @@ You can force a script to run locally by specifying the server's IP address as `
 <a name="setup"></a>
 ### Setup
 
-Sometimes, you may need to execute some PHP code before executing your Envoy tasks. You may use the ```@setup``` directive to declare variables and do other general PHP work before any of your other tasks are executed:
+Sometimes, you may need to execute some PHP code before executing your Envoy tasks. You may use the `@setup` directive to declare variables and do other general PHP work before any of your other tasks are executed:
 
     @setup
         $now = new DateTime();

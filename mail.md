@@ -285,32 +285,32 @@ Once the data has been passed to the `with` method, it will automatically be ava
 
 To add attachments to an email, use the `attach` method within the mailable class' `build` method. The `attach` method accepts the full path to the file as its first argument:
 
-        /**
-         * Build the message.
-         *
-         * @return $this
-         */
-        public function build()
-        {
-            return $this->view('emails.orders.shipped')
-                        ->attach('/path/to/file');
-        }
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('emails.orders.shipped')
+                    ->attach('/path/to/file');
+    }
 
 When attaching files to a message, you may also specify the display name and / or MIME type by passing an `array` as the second argument to the `attach` method:
 
-        /**
-         * Build the message.
-         *
-         * @return $this
-         */
-        public function build()
-        {
-            return $this->view('emails.orders.shipped')
-                        ->attach('/path/to/file', [
-                            'as' => 'name.pdf',
-                            'mime' => 'application/pdf',
-                        ]);
-        }
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('emails.orders.shipped')
+                    ->attach('/path/to/file', [
+                        'as' => 'name.pdf',
+                        'mime' => 'application/pdf',
+                    ]);
+    }
 
 #### Attaching Files from Disk
 
@@ -321,11 +321,11 @@ If you have stored a file on one of your [filesystem disks](/docs/{{version}}/fi
      *
      * @return $this
      */
-     public function build()
-     {
-        return $this->view('email.orders.shipped')
-                    ->attachFromStorage('/path/to/file');
-     }
+    public function build()
+    {
+       return $this->view('email.orders.shipped')
+                   ->attachFromStorage('/path/to/file');
+    }
 
 If necessary, you may specify the file's attachment name and additional options using the second and third arguments to the `attachFromStorage` method:
 
@@ -334,13 +334,13 @@ If necessary, you may specify the file's attachment name and additional options 
      *
      * @return $this
      */
-     public function build()
-     {
-        return $this->view('email.orders.shipped')
-                    ->attachFromStorage('/path/to/file', 'name.pdf', [
-                        'mime' => 'application/pdf'
-                    ]);
-     }
+    public function build()
+    {
+       return $this->view('email.orders.shipped')
+                   ->attachFromStorage('/path/to/file', 'name.pdf', [
+                       'mime' => 'application/pdf'
+                   ]);
+    }
 
 The `attachFromStorageDisk` method may be used if you need to specify a storage disk other than your default disk:
 
@@ -349,28 +349,28 @@ The `attachFromStorageDisk` method may be used if you need to specify a storage 
      *
      * @return $this
      */
-     public function build()
-     {
-        return $this->view('email.orders.shipped')
-                    ->attachFromStorageDisk('s3', '/path/to/file');
-     }
+    public function build()
+    {
+       return $this->view('email.orders.shipped')
+                   ->attachFromStorageDisk('s3', '/path/to/file');
+    }
 
 #### Raw Data Attachments
 
 The `attachData` method may be used to attach a raw string of bytes as an attachment. For example, you might use this method if you have generated a PDF in memory and want to attach it to the email without writing it to disk. The `attachData` method accepts the raw data bytes as its first argument, the name of the file as its second argument, and an array of options as its third argument:
 
-        /**
-         * Build the message.
-         *
-         * @return $this
-         */
-        public function build()
-        {
-            return $this->view('emails.orders.shipped')
-                        ->attachData($this->pdf, 'name.pdf', [
-                            'mime' => 'application/pdf',
-                        ]);
-        }
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('emails.orders.shipped')
+                    ->attachData($this->pdf, 'name.pdf', [
+                        'mime' => 'application/pdf',
+                    ]);
+    }
 
 <a name="inline-attachments"></a>
 ### Inline Attachments
@@ -400,20 +400,20 @@ If you already have a raw data string you wish to embed into an email template, 
 
 The `withSwiftMessage` method of the `Mailable` base class allows you to register a callback which will be invoked with the raw SwiftMailer message instance before sending the message. This gives you an opportunity to customize the message before it is delivered:
 
-        /**
-         * Build the message.
-         *
-         * @return $this
-         */
-        public function build()
-        {
-            $this->view('emails.orders.shipped');
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        $this->view('emails.orders.shipped');
 
-            $this->withSwiftMessage(function ($message) {
-                $message->getHeaders()
-                        ->addTextHeader('Custom-Header', 'HeaderValue');
-            });
-        }
+        $this->withSwiftMessage(function ($message) {
+            $message->getHeaders()
+                    ->addTextHeader('Custom-Header', 'HeaderValue');
+        });
+    }
 
 <a name="markdown-mailables"></a>
 ## Markdown Mailables

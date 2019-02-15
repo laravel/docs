@@ -185,5 +185,4 @@ To defer the loading of a provider, implement the `\Illuminate\Contracts\Support
         {
             return [Connection::class];
         }
-
     }

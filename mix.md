@@ -167,7 +167,7 @@ Because Laravel Mix is built on top of Webpack, it's important to understand a f
 By default, Laravel Mix and Webpack will find `example.png`, copy it to your `public/images` folder, and then rewrite the `url()` within your generated stylesheet. As such, your compiled CSS will be:
 
     .example {
-      background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
+        background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
     }
 
 As useful as this feature may be, it's possible that your existing folder structure is already configured in a way you like. If this is the case, you may disable `url()` rewriting like so:
