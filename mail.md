@@ -383,7 +383,7 @@ Embedding inline images into your emails is typically cumbersome; however, Larav
         <img src="{{ $message->embed($pathToImage) }}">
     </body>
 
-> {note} `$message` variable is not available in markdown messages.
+> {note} `$message` variable is not available in plain-text messages because in general you don't want to put attachments in there.
 
 #### Embedding Raw Data Attachments
 
