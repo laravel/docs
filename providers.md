@@ -191,5 +191,4 @@ To defer the loading of a provider, set the `defer` property to `true` and defin
         {
             return [Connection::class];
         }
-
     }

@@ -833,22 +833,20 @@ When using this method of authentication, the default Laravel JavaScript scaffol
 
 Passport raises events when issuing access tokens and refresh tokens. You may use these events to prune or revoke other access tokens in your database. You may attach listeners to these events in your application's `EventServiceProvider`:
 
-```php
-/**
- * The event listener mappings for the application.
- *
- * @var array
- */
-protected $listen = [
-    'Laravel\Passport\Events\AccessTokenCreated' => [
-        'App\Listeners\RevokeOldTokens',
-    ],
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Laravel\Passport\Events\AccessTokenCreated' => [
+            'App\Listeners\RevokeOldTokens',
+        ],
 
-    'Laravel\Passport\Events\RefreshTokenCreated' => [
-        'App\Listeners\PruneOldTokens',
-    ],
-];
-```
+        'Laravel\Passport\Events\RefreshTokenCreated' => [
+            'App\Listeners\PruneOldTokens',
+        ],
+    ];
 
 <a name="testing"></a>
 ## Testing
