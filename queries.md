@@ -638,6 +638,18 @@ In addition to inserting records into the database, the query builder can also u
                 ->where('id', 1)
                 ->update(['votes' => 1]);
 
+#### Update Or Insert
+
+Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs containing the columns to be updated.
+
+The `updateOrInsert` method will first attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new record will be inserted with the merged attributes of both arguments:
+
+    DB::table('users')
+        ->updateOrInsert(
+            ['email' => 'john@example.com', 'name' => 'John'],
+            ['votes' => '2']
+        );
+
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
