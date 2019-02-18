@@ -218,6 +218,12 @@ The `tagged` method signature [has been changed](https://github.com/laravel/fram
 
 The `flush` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26477). If you are implementing this interface, you should add this method to your implementation.
 
+#### The `alias` Method
+
+**Likelihood Of Impact: Very Low**
+
+Previously, the `getAlias` method would throw an exception if you attempted to alias the abstract to itself. [This logic was now moved to the `alias` method](https://github.com/laravel/framework/pull/27390) where it's now thrown upon registration. 
+
 ### Database
 
 #### Unquoted MySQL JSON Values
