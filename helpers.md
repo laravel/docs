@@ -1146,6 +1146,12 @@ The `asset` function generates a URL for an asset using the current scheme of th
 
     $url = asset('img/photo.jpg');
 
+You can force the root of the asset url by setting the `ASSET_URL` option in your `.env` file. This can be useful if you offload your assets on an external storage like `S3`:
+
+    // ASSET_URL=http://example.com/assets
+
+    $url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
+
 <a name="method-secure-asset"></a>
 #### `secure_asset()` {#collection-method}
 
