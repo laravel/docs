@@ -7,6 +7,7 @@
 
 <div class="content-list" markdown="1">
 - [Cache TTL In Seconds](#cache-ttl-in-seconds)
+- [Cache Lock Safety Improvements](#cache-lock-safety-improvements)
 - [Markdown File Directory Change](#markdown-file-directory-change)
 - [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
 </div>
@@ -97,6 +98,47 @@ If you are passing an integer to any of these methods, you should update your co
     Cache::put('foo', 'bar', now()->addSeconds(30));
 
 > {tip} This change makes the Laravel cache system fully compliant with the [PSR-16 caching library standard](https://www.php-fig.org/psr/psr-16/).
+
+<a name="cache-lock-safety-improvements"></a>
+#### Lock Safety Improvements
+
+**Likelihood Of Impact: High**
+
+In Laravel 5.7 and prior versions of Laravel, the "atomic lock" feature provided by some cache drivers could have unexpected behavior leading to the early release of locks.
+
+For example: **client A** acquires lock `foo` with a 10 second expiration. **Client A** actually takes 20 seconds to finish its task. The lock is released automatically by the cache system 10 seconds into **Client A's** processing time. **Client B** acquires lock `foo`. **Client A** finally finishes its task and releases lock `foo`, inadvertently releasing **Client B's** hold on the lock. **Client C** is now able to acquire the lock.
+
+In order to mitigate this scenario, locks are now generated with an embedded "scope token" which allows the framework to ensure that, under normal circumstances, only the proper owner of a lock can release a lock.
+
+If you are using the `Cache::lock()->get(Closure)` method of interacting with locks, no changes are required:
+
+    Cache::lock('foo', 10)->get(function () {
+        // Lock will be released safely automatically...
+    });
+
+However, if you are manually calling `Cache::lock()->release()`, you must update your code to maintain an instance of the lock. Then, after you are done performing your task, you may call the `release` method on **the same lock instance**. For example:
+
+    if ($lock = Cache::lock('foo', 10)->get()) {
+        // Perform task...
+
+        $lock->release();
+    }
+
+Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped owner token to the queued job so that the lock can be re-instantiated using that token in your job:
+
+    // Within Controller...
+    $podcast = Podcast::find(1);
+
+    if ($lock = Cache::lock('foo', 120)->get()) {
+        ProcessPodcast::dispatch($podcast, $lock->owner());
+    }
+
+    // Within ProcessPodcast Job...
+    Cache::restoreLock('foo', $this->owner)->release();
+
+If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:
+
+    Cache::lock('foo')->forceRelease();
 
 #### The `Repository` and `Store` Contracts
 
@@ -318,6 +360,16 @@ The `send`, `sendNow`, `queue`, `later` and `fill` methods of the `Illuminate\Ma
 **Likelihood Of Impact: Very Low**
 
 The `isReleased`, `hasFailed` and `markAsFailed` methods [have been added to the `Illuminate\Contracts\Queue\Job` contract](https://github.com/laravel/framework/pull/26908). If you are implementing this interface, you should add these methods to your implementation.
+
+#### The `Job::failed` & `FailingJob` Class
+
+**Likelihood Of Impact: Very Low**
+
+When a queued job failed in Laravel 5.7, the queue worker executed the `FailingJob::handle` method. In Laravel 5.8, the logic contained in the `FailingJob` class has been moved to a `fail` method directly on the job class itself. Because of this, a `fail` method has been added to the `Illuminate\Contracts\Queue\Job` contract.
+
+The base `Illuminate\Queue\Jobs\Job` class contains the implementation of `fail` and no code changes should be required by typical application code. However, if you are building custom queue driver which utilizes a job class that **does not** extend the base job class offered by Laravel, you should implement the `fail` method manually in your custom job class. You may refer to Laravel's base job class as a reference implementation.
+
+This change allows custom queue drivers to have more control over the job deletion process.
 
 #### Redis Blocking Pop
 
