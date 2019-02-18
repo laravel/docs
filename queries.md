@@ -18,7 +18,6 @@
 - [Updates](#updates)
     - [Updating JSON Columns](#updating-json-columns)
     - [Increment & Decrement](#increment-and-decrement)
-- [Other Creation Methods](#other-creation-methods)
 - [Deletes](#deletes)
 - [Pessimistic Locking](#pessimistic-locking)
 
@@ -639,6 +638,18 @@ In addition to inserting records into the database, the query builder can also u
                 ->where('id', 1)
                 ->update(['votes' => 1]);
 
+#### Update Or Insert
+
+Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs containing the columns to be updated.
+
+The `updateOrInsert` method will first attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new record will be inserted with the merged attributes of both arguments:
+
+    DB::table('users')
+        ->updateOrInsert(
+            ['email' => 'john@example.com', 'name' => 'John'],
+            ['votes' => '2']
+        );
+
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
@@ -666,23 +677,6 @@ Both of these methods accept at least one argument: the column to modify. A seco
 You may also specify additional columns to update during the operation:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
-
-<a name="other-creation-methods"></a>
-### Other Creation Methods
-
-#### `updateOrInsert`
-
-There may be a situation in which you want to update an existing record in the database or create it if none exists. The `updateOrInsert` method accepts two arguments: an array of conditions to find the record, and an array of column / value pairs containing the columns to be updated.
-
-The `updateOrInsert` method will attempt to locate a database record using the first argument. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new one will be inserted with the attributes from the first argument, merged with the values in the second argument.
-
-    // If there is a user with matching email and name, set the votes to 2.
-    // If there is no matching user, insert one
-    DB::table('users')
-        ->updateOrInsert(
-            ['email' => 'john@example.com', 'name' => 'John'],
-            ['votes' => '2']
-        );
 
 <a name="deletes"></a>
 ## Deletes
