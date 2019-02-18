@@ -31,12 +31,14 @@
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
+<a name="updating-dependencies"></a>
 ### Updating Dependencies
 
 Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` file.
 
 Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
 
+<a name="the-application-contract"></a>
 ### The `Application` Contract
 
 #### The `environment` Method
@@ -61,6 +63,7 @@ The `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourceP
 
 In the very unlikely event you are implementing this interface, you should add these methods to your implementation.
 
+<a name="authentication"></a>
 ### Authentication
 
 #### Password Reset Notification Route Parameter
@@ -77,6 +80,7 @@ When using Laravel 5.8, the token is passed to the `route` helper as an explicit
 
 Therefore, if you are defining your own `password.reset` route, you should ensure that it contains a `{token}` parameter in its URI.
 
+<a name="cache"></a>
 ### Cache
 
 <a name="cache-ttl-in-seconds"></a>
@@ -155,6 +159,7 @@ In addition to the return value changes from above, the TTL argument of the `put
 
 The `KeyWritten` event [was also updated](https://github.com/laravel/framework/pull/27265) with these changes.
 
+<a name="collections"></a>
 ### Collections
 
 #### The `firstWhere` Method
@@ -173,6 +178,7 @@ The `firstWhere` method signature [has changed](https://github.com/laravel/frame
      */
     public function firstWhere($key, $operator = null, $value = null);
 
+<a name="console"></a>
 ### Console
 
 #### The `Kernel` Contract
@@ -181,6 +187,7 @@ The `firstWhere` method signature [has changed](https://github.com/laravel/frame
 
 The `terminate` method [has been added to the `Illuminate/Contracts/Console/Kernel` contract](https://github.com/laravel/framework/pull/26393). If you are implementing this interface, you should add this method to your implementation.
 
+<a name="container"></a>
 ### Container
 
 <a name="container-generators"></a>
@@ -218,6 +225,7 @@ The `tagged` method signature [has been changed](https://github.com/laravel/fram
 
 The `flush` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26477). If you are implementing this interface, you should add this method to your implementation.
 
+<a name="database"></a>
 ### Database
 
 #### Unquoted MySQL JSON Values
@@ -245,6 +253,7 @@ As a result, the `->>` operator is no longer supported or necessary.
 
 As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/laravel/framework/pull/25995) is SQLite 3.7.11. If you are using an older SQLite version, you should update it (SQLite 3.8.8+ is recommended).
 
+<a name="eloquent"></a>
 ### Eloquent
 
 <a name="model-names-ending-with-irregular-plurals"></a>
@@ -297,6 +306,7 @@ The `deleted_at` property [will now be automatically casted](https://github.com/
 
 The `getForeignKey` and `getQualifiedForeignKey` methods of the `BelongsTo` relationship have been renamed to `getForeignKeyName` and `getQualifiedForeignKeyName` respectively, making the method names consistent with the other relationships offered by Laravel.
 
+<a name="events"></a>
 ### Events
 
 #### The `fire` Method
@@ -306,6 +316,7 @@ The `getForeignKey` and `getQualifiedForeignKey` methods of the `BelongsTo` rela
 The `fire` method (which was deprecated in Laravel 5.4) of the `Illuminate/Events/Dispatcher` class [has been removed](https://github.com/laravel/framework/pull/26392).
 You should use the `dispatch` method instead.
 
+<a name="exception-handling"></a>
 ### Exception Handling
 
 #### The `ExceptionHandler` Contract
@@ -328,6 +339,7 @@ The `renderHttpException` method signature of the `Illuminate\Foundation\Excepti
      */
     protected function renderHttpException(HttpExceptionInterface $e);
 
+<a name="facades"></a>
 ### Facades
 
 #### Facade Service Resolving
@@ -336,8 +348,10 @@ The `renderHttpException` method signature of the `Illuminate\Foundation\Excepti
 
 The `getFacadeAccessor` method may now [only return the string value representing the container identifier of the service](https://github.com/laravel/framework/pull/25525). Previously, this method may have returned an object instance.
 
+<a name="mail"></a>
 ### Mail
 
+<a name="markdown-file-directory-change"></a>
 <a name="markdown-file-directory-change"></a>
 ### Markdown File Directory Change
 
@@ -353,6 +367,7 @@ In addition, the `markdownComponentPaths` method [has been renamed](https://gith
 
 The `send`, `sendNow`, `queue`, `later` and `fill` methods of the `Illuminate\Mail\PendingMail` class [have been changed](https://github.com/laravel/framework/pull/26790) to accept an `Illuminate\Contracts\Mail\Mailable` instance instead of `Illuminate\Mail\Mailable`. If you are overriding some of these methods, you should update their signature to match its parent.
 
+<a name="queue"></a>
 ### Queue
 
 #### The `Job` Contract
@@ -377,6 +392,7 @@ This change allows custom queue drivers to have more control over the job deleti
 
 Using the "blocking pop" feature of the Redis queue driver is now safe. Previously, there was a small chance that a queued job could be lost if the Redis server or worker crashed at the same time the job was retrieved. In order to make blocking pops safe, a new Redis list with suffix `:notify` is created for each Laravel queue.
 
+<a name="requests"></a>
 ### Requests
 
 #### The `TransformsRequest` Middleware
@@ -402,6 +418,7 @@ The `transform` method of the `Illuminate\Foundation\Http\Middleware\TransformsR
         dump($key); // 'name' (Laravel 5.7)
     }
 
+<a name="routing"></a>
 ### Routing
 
 #### The `UrlGenerator` Contract
@@ -416,6 +433,7 @@ The `previous` method [has been added to the `Illuminate\Contracts\Routing\UrlGe
 
 The `$cachedSchema` property name (which has been deprecated in Laravel `5.7`) of `Illuminate/Routing/UrlGenerator` [has been changed to](https://github.com/laravel/framework/pull/26728) `$cachedScheme`.
 
+<a name="sessions"></a>
 ### Sessions
 
 #### The `StartSession` Middleware
@@ -424,6 +442,7 @@ The `$cachedSchema` property name (which has been deprecated in Laravel `5.7`) o
 
 The session persistence logic has been [moved from the `terminate()` method to the `handle()` method](https://github.com/laravel/framework/pull/26410). If you are overriding one or both of these methods, you should update them to reflect these changes.
 
+<a name="support"></a>
 ### Support
 
 <a name="string-and-array-helpers"></a>
@@ -442,6 +461,7 @@ The impact of this change has been marked as `medium` since the helpers have bee
 
 The `defer` boolean property on the service provider which is/was used to indicate if a provider is deferred [has been deprecated](https://github.com/laravel/framework/pull/27067). In order to mark the service provider as deferred it should implement the `Illuminate\Contracts\Support\DeferrableProvider` contract.
 
+<a name="testing"></a>
 ### Testing
 
 #### PHPUnit 8
@@ -455,6 +475,7 @@ When using PHPUnit 8, the `setUp` and `tearDown` methods require a void return t
     public function setUp(): void
     public function tearDown(): void
 
+<a name="validation"></a>
 ### Validation
 
 #### The `Validator` Contract
@@ -498,6 +519,7 @@ The email validation rule now checks if the email is [RFC5630](https://tools.iet
 
 Therefore, when using Laravel 5.8, emails that were previously incorrectly considered invalid will now be considered valid (e.g `hej@bär.se`).  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
 
+<a name="view"></a>
 ### View
 
 #### The `getData` Method
@@ -506,6 +528,7 @@ Therefore, when using Laravel 5.8, emails that were previously incorrectly consi
 
 The `getData` method [was added to the `Illuminate\Contracts\View\View` contract](https://github.com/laravel/framework/pull/26754). If you are implementing this interface, you should add this method to your implementation.
 
+<a name="notifications"></a>
 ### Notifications
 
 <a name="nexmo-slack-notification-channels"></a>
@@ -518,6 +541,7 @@ The Nexmo and Slack Notification channels have been extracted into first-party p
     composer require laravel/nexmo-notification-channel
     composer require laravel/slack-notification-channel
 
+<a name="miscellaneous"></a>
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.7...master) and choose which updates are important to you.
