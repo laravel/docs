@@ -59,6 +59,22 @@ The `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourceP
 
 In the very unlikely event you are implementing this interface, you should add these methods to your implementation.
 
+### Authentication
+
+#### Password Reset Notification Route Parameter
+
+**Likelihood Of Impact: Low**
+
+When a user requests a link to reset their password, Laravel generates the URL using the `route` helper to create a URL to the `password.reset` named route. When using Laravel 5.7, the token is passed to the `route` helper without an explicit name, like so:
+
+    route('password.reset', $token);
+
+When using Laravel 5.8, the token is passed to the `route` helper as an explicit parameter:
+
+    route('password.reset', ['token' => $token]);
+
+Therefore, if you are defining your own `password.reset` route, you should ensure that it contains a `{token}` parameter in its URI.
+
 ### Cache
 
 <a name="cache-ttl-in-seconds"></a>
@@ -220,6 +236,12 @@ The `originalIsEquivalent` method of the `Illuminate\Database\Eloquent\Concerns\
 The `deleted_at` property [will now be automatically casted](https://github.com/laravel/framework/pull/26985) to a `Carbon` instance when your Eloquent model uses the `Illuminate\Database\Eloquent\SoftDeletes` trait. You can override this behavior by writing your custom accessor for that property or by manually adding it to the `casts` attribute:
 
     protected $casts = ['deleted_at' => 'string'];
+
+#### BelongsTo `getForeignKey` Method
+
+**Likelihood Of Impact: Low**
+
+The `getForeignKey` and `getQualifiedForeignKey` methods of the `BelongsTo` relationship have been renamed to `getForeignKeyName` and `getQualifiedForeignKeyName` respectively, making the method names consistent with the other relationships offered by Laravel.
 
 ### Events
 
