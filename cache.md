@@ -216,10 +216,12 @@ You may clear the entire cache using the `flush` method:
 
 Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Forge](https://forge.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:
 
-    if (Cache::lock('foo', 10)->get()) {
+    use Illuminate\Support\Facades\Cache;
+
+    if ($lock = Cache::lock('foo', 10)->get()) {
         // Lock acquired for 10 seconds...
 
-        Cache::lock('foo')->release();
+        $lock->release();
     }
 
 The `get` method also accepts a Closure. After the Closure is executed, Laravel will automatically release the lock:
@@ -230,13 +232,33 @@ The `get` method also accepts a Closure. After the Closure is executed, Laravel 
 
 If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
 
-    if (Cache::lock('foo', 10)->block(5)) {
+    if ($lock = Cache::lock('foo', 10)->block(5)) {
         // Lock acquired after waiting maximum of 5 seconds...
+
+        $lock->release();
     }
 
     Cache::lock('foo', 10)->block(5, function () {
         // Lock acquired after waiting maximum of 5 seconds...
     });
+
+#### Managing Locks Across Processes
+
+Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token:
+
+    // Within Controller...
+    $podcast = Podcast::find($id);
+
+    if ($lock = Cache::lock('foo', 120)->get()) {
+        ProcessPodcast::dispatch($podcast, $lock->owner());
+    }
+
+    // Within ProcessPodcast Job...
+    Cache::restoreLock('foo', $this->owner)->release();
+
+If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:
+
+    Cache::lock('foo')->forceRelease();
 
 <a name="the-cache-helper"></a>
 ### The Cache Helper

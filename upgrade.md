@@ -124,7 +124,7 @@ However, if you are manually calling `Cache::lock()->release()`, you must update
         $lock->release();
     }
 
-Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped owner token to the queued job so that the lock can be re-instantiated using that token in your job:
+Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token:
 
     // Within Controller...
     $podcast = Podcast::find(1);
