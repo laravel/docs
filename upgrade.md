@@ -345,9 +345,9 @@ The session persistence logic has been [moved from the `terminate()` method to t
 
 **Likelihood Of Impact: Medium**
 
-All `array_*` and `str_*` global helpers [have been deprecated](https://github.com/laravel/framework/pull/26898) and will be moved to an optional package in the future. You should use the `Illuminate\Support\Arr` and `Illuminate\Support\Str` methods directly.
+All `array_*` and `str_*` global helpers [have been deprecated](https://github.com/laravel/framework/pull/26898). You should use the `Illuminate\Support\Arr` and `Illuminate\Support\Str` methods directly.
 
-The impact of this change has been marked as `medium` since a future, opt-in package would prevent any breaking changes.
+The impact of this change has been marked as `medium` since the helpers have been moved to the new [laravel/helpers](https://github.com/laravel/helpers) package which prevents any breaking changes.
 
 <a name="deferred-service-providers"></a>
 #### Deferred Service Providers
