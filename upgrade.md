@@ -26,7 +26,7 @@
 <a name="upgrade-5.8.0"></a>
 ## Upgrading To 5.8.0 From 5.7
 
-#### Estimated Upgrade Time: 30 Minutes
+#### Estimated Upgrade Time: 1 Hour
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
