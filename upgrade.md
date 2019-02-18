@@ -15,6 +15,7 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
+- [Container Generators & Tagged Services](#container-generators)
 - [SQLite Version Constraints](#sqlite)
 - [Prefer String And Array Classes Over Helpers](#string-and-array-helpers)
 - [Deferred Service Providers](#deferred-service-providers)
@@ -139,6 +140,17 @@ The `firstWhere` method signature [has changed](https://github.com/laravel/frame
 The `terminate` method [has been added to the `Illuminate/Contracts/Console/Kernel` contract](https://github.com/laravel/framework/pull/26393). If you are implementing this interface, you should add this method to your implementation.
 
 ### Container
+
+<a name="container-generators"></a>
+#### Generators & Tagged Services
+
+**Likelihood Of Impact: Medium**
+
+The container's `tagged` method now utilizes PHP generators to lazy-instantiate the services with a given tag. This provides a performance improvement if you are not utilizing every tagged service.
+
+Because of this change, the `tagged` method now returns an `iterable` instead of an `array`. If you are type-hinting the return value of this method, you should ensure that your type-hint is changed to `iterable`.
+
+In addition, it is no longer possible to directly access a tagged service by its array offset value, such as `$container->tagged('foo')[0]`.
 
 #### The `resolve` Method
 
