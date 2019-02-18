@@ -18,6 +18,7 @@
 - [Updates](#updates)
     - [Updating JSON Columns](#updating-json-columns)
     - [Increment & Decrement](#increment-and-decrement)
+- [Other Creation Methods](#other-creation-methods)
 - [Deletes](#deletes)
 - [Pessimistic Locking](#pessimistic-locking)
 
@@ -665,6 +666,23 @@ Both of these methods accept at least one argument: the column to modify. A seco
 You may also specify additional columns to update during the operation:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
+
+<a name="other-creation-methods"></a>
+### Other Creation Methods
+
+#### `updateOrInsert`
+
+There may be a situation in which you want to update an existing record in the database or create it if none exists. The `updateOrInsert` method accepts two arguments: an array of conditions to find the record, and an array of column / value pairs containing the columns to be updated.
+
+The `updateOrInsert` method will attempt to locate a database record using the first argument. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new one will be inserted with the attributes from the first argument, merged with the values in the second argument.
+
+    // If there is a user with matching email and name, set the votes to 2.
+    // If there is no matching user, insert one
+    DB::table('users')
+        ->updateOrInsert(
+            ['email' => 'john@example.com', 'name' => 'John'],
+            ['votes' => '2']
+        );
 
 <a name="deletes"></a>
 ## Deletes
