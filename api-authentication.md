@@ -34,7 +34,7 @@ Once the migration has been created, run the `migrate` Artisan command.
 <a name="generating-tokens"></a>
 ## Generating Tokens
 
-Once the `api_token` column has been added to your `users` table, you are ready to assign random API tokens to each user that registers with your application. You should assign these tokens when a `User` model is created for the user during registration. When using the [authentication scaffolding](/docs/{{version}}/authentication#authentication-quickstart) provided by the `make:auth` Artisan command, this is done in the `create` method of the `RegisterController`:
+Once the `api_token` column has been added to your `users` table, you are ready to assign random API tokens to each user that registers with your application. You should assign these tokens when a `User` model is created for the user during registration. When using the [authentication scaffolding](/docs/{{version}}/authentication#authentication-quickstart) provided by the `make:auth` Artisan command, this may be done in the `create` method of the `RegisterController`:
 
     use Illuminate\Support\Str;
     use Illuminate\Support\Facades\Hash;
