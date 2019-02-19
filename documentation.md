@@ -36,7 +36,7 @@
     - [Compiling Assets](/docs/{{version}}/mix)
 - ## Security
     - [Authentication](/docs/{{version}}/authentication)
-    - [API Authentication](/docs/{{version}}/passport)
+    - [API Authentication](/docs/{{version}}/api-authentication)
     - [Authorization](/docs/{{version}}/authorization)
     - [Email Verification](/docs/{{version}}/verification)
     - [Encryption](/docs/{{version}}/encryption)
