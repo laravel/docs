@@ -10,7 +10,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-By default, Laravel ships with a simple approach to API authentication using a random token assigned to each user of your application. In your `config/auth.php` configuration file, an `api` guard is already defined and utilizes a `token` driver. This dirver is responsible for inspecting the API token on the incoming request and verifying that it matches the user's assigned token in the database.
+By default, Laravel ships with a simple solution to API authentication via a random token assigned to each user of your application. In your `config/auth.php` configuration file, an `api` guard is already defined and utilizes a `token` driver. This driver is responsible for inspecting the API token on the incoming request and verifying that it matches the user's assigned token in the database.
 
 > **Note:** While Laravel ships with a simple, token based authentication guard, we strongly recommend you consider using [Laravel Passport](/docs/{{version}}/passport) for robust, production applications that offer API authentication.
 
