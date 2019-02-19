@@ -93,6 +93,18 @@ However, this can become cumbersome and repetitive if you are specifying the sam
         return 'America/Chicago';
     }
 
+### Artisan Call Improvements
+
+Laravel allows you to invoke Artisan via the `Artisan::call` method. In previous releases of Laravel, the command's options are passed via an array as the second argument to the method:
+
+    use Illuminate\Support\Facades\Artisan;
+
+    Artisan::call('migrate:install', ['database' => 'foo']);
+
+However, Laravel 5.8 allows you to pass the entire command, including options, as the first string argument to the method:
+
+    Artisan::call('migrate:install --database=foo');
+
 ### Blade File Mapping
 
 When compiling Blade templates, Laravel now adds a comment to the top of the compiled file which contains the path to the original Blade template.

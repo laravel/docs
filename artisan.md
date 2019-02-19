@@ -428,6 +428,10 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
         //
     });
 
+Alternatively, you may pass the entire Artisan command to the `call` method as a string:
+
+    Artisan::call('email:send 1 --queue=default');
+
 Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/{{version}}/queues). Before using this method, make sure you have configured your queue and are running a queue listener:
 
     Route::get('/foo', function () {
