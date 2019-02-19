@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Generating Resources](#generating-resources)
 - [Concept Overview](#concept-overview)
+    - [Resource Collections](#resource-collections)
 - [Writing Resources](#writing-resources)
     - [Data Wrapping](#data-wrapping)
     - [Pagination](#pagination)
@@ -75,6 +76,7 @@ Every resource class defines a `toArray` method which returns the array of attri
         return new UserResource(User::find(1));
     });
 
+<a name="resource-collections"></a>
 ### Resource Collections
 
 If you are returning a collection of resources or a paginated response, you may use the `collection` method when creating the resource instance in your route or controller:
@@ -124,6 +126,35 @@ After defining your resource collection, it may be returned from a route or cont
 
     Route::get('/users', function () {
         return new UserCollection(User::all());
+    });
+
+#### Preserving Collection Keys
+
+When returning a resource collection from a route, Laravel resets the collection's keys so that they are in simple numerical order. However, you may add a `preserveKeys` property to your resource class indicating if collection keys should be preserved:
+
+    <?php
+
+    namespace App\Http\Resources;
+
+    use Illuminate\Http\Resources\Json\JsonResource;
+
+    class User extends JsonResource
+    {
+        /**
+         * Indicates if the resource's collection keys should be preserved.
+         *
+         * @var bool
+         */
+        public $preserveKeys = true;
+    }
+
+When the `preserveKeys` property is set to `true`, collection keys will be preserved:
+
+    use App\User;
+    use App\Http\Resources\User as UserResource;
+
+    Route::get('/user', function () {
+        return UserResource::collection(User::all()->keyBy->id);
     });
 
 #### Customizing The Underlying Resource Class
