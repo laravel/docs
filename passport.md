@@ -1,4 +1,4 @@
-# API Authentication (Passport)
+# Laravel Passport
 
 - [Introduction](#introduction)
 - [Installation](#installation)
