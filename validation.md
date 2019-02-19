@@ -1016,6 +1016,10 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
         ],
     ]);
 
+Instead of passing the model key's value to the `ignore` method, you may pass the entire model instance. Laravel will automatically extract the key from the model:
+
+    Rule::unique('users')->ignore($user)
+
 If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:
 
     Rule::unique('users')->ignore($user->id, 'user_id')
