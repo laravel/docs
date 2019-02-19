@@ -162,16 +162,14 @@ When the `preserveKeys` property is set to `true`, collection keys will be prese
 
 In previous releases of Laravel, combining multiple Eloquent model scopes via an `or` query operator required the use of Closure callbacks:
 
-    // scopeFoo, scopeBar, scopeBaz methods defined on User model...
-    User::foo()->orWhere(function (Builder $query) {
-        $query->bar();
-    })->orWhere(function (Builder $query) {
-        $query->baz();
-    });
+    // scopePopular and scopeActive methods defined on the User model...
+    $users = App\User::popular()->orWhere(function (Builder $query) {
+        $query->active();
+    })->get();
 
 Laravel 5.8 introduces a "higher order" `orWhere` method that allows you to fluently chain these scopes together without the use of Closures:
 
-    User::foo()->orWhere->bar()->orWhere->baz();
+    $users = App\User::popular()->orWhere->active()->get();
 
 ### Artisan Serve Improvements
 
