@@ -47,6 +47,14 @@ Eloquent now provides support for the `hasOneThrough` relationship type. For exa
         return $this->hasOneThrough(AccountHistory::class, Account::class);
     }
 
+### Multiple Broadcast Authentication Guards
+
+In previous releases of Laravel, private and presence broadcast channels authenticated the user via your application's default authentication guard. Beginning in Laravel 5.8, you may now assign multiple guards that should authenticate the incoming request:
+
+    Broadcast::channel('channel', function() {
+        // ...
+    }, ['guards' => ['web', 'admin']])
+
 ### Mock / Spy Testing Helper Methods
 
 In order to make mocking objects more convenient, new `mock` and `spy` methods have been added to the base Laravel test case class. These methods automatically bind the mocked class into the container. For example:
