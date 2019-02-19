@@ -120,6 +120,10 @@ In order to make mocking objects more convenient, new `mock` and `spy` methods h
         $mock->shouldReceive('process')->once();
     });
 
+### Artisan Serve Improvements
+
+In previous releases of Laravel, Artisan's `serve` command would serve your application on port `8000`. If another `serve` command process was already listening on this port, an attempt to serve a second application via `serve` would fail. Beginning in Laravel 5.8, `serve` will now scan for available ports up to port `8009`, allowing you to serve multiple applications at once.
+
 ### Blade File Mapping
 
 When compiling Blade templates, Laravel now adds a comment to the top of the compiled file which contains the path to the original Blade template.
