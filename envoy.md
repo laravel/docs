@@ -1,4 +1,4 @@
-# Envoy Task Runner
+# Laravel Envoy
 
 - [Introduction](#introduction)
     - [Installation](#installation)
