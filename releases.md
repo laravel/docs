@@ -69,6 +69,10 @@ In order to make mocking objects more convenient, new `mock` and `spy` methods h
         $mock->shouldReceive('process')->once();
     });
 
+### Blade File Mapping
+
+When compiling Blade templates, Laravel now adds a comment to the top of the compiled file which contains the path to the original Blade template.
+
 ### Carbon 2.0 Support
 
 Laravel 5.8 provides support for the `~2.0` release of the Carbon date manipulation library.
