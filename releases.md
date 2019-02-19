@@ -68,3 +68,11 @@ In order to make mocking objects more convenient, new `mock` and `spy` methods h
     $this->mock(Service::class, function ($mock) {
         $mock->shouldReceive('process')->once();
     });
+
+### Carbon 2.0 Support
+
+Laravel 5.8 provides support for the `~2.0` release of the Carbon date manipulation library.
+
+### Pheanstalk 4.0 Support
+
+Laravel 5.8 provides support for the `~4.0` release of the Pheanstalk queue library. If you are using Pheanstalk library in your application, please upgrade your library to the `~4.0` release via Composer.

@@ -22,6 +22,7 @@
 - [Deferred Service Providers](#deferred-service-providers)
 - [PSR-16 Conformity](#psr-16-conformity)
 - [Model Names Ending With Irregular Plurals](#model-names-ending-with-irregular-plurals)
+- [Pheanstalk 4.0](#pheanstalk-4)
 </div>
 
 <a name="upgrade-5.8.0"></a>
@@ -369,6 +370,13 @@ The `send`, `sendNow`, `queue`, `later` and `fill` methods of the `Illuminate\Ma
 
 <a name="queue"></a>
 ### Queue
+
+<a name="pheanstalk-4"></a>
+#### Pheanstalk 4.0
+
+**Likelihood Of Impact: Medium**
+
+Laravel 5.8 provides support for the `~4.0` release of the Pheanstalk queue library. If you are using Pheanstalk library in your application, please upgrade your library to the `~4.0` release via Composer.
 
 #### The `Job` Contract
 
