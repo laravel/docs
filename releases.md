@@ -69,6 +69,10 @@ In order to make mocking objects more convenient, new `mock` and `spy` methods h
         $mock->shouldReceive('process')->once();
     });
 
+### Improved Email Validation
+
+Laravel 5.8 introduces improvements to the validator's underlying email validation logic by adopting the `egulias/email-validator` package utilized by SwiftMailer. Laravel's previous email validation logic occasionally considered valid emails, such as `example@bär.se`, to be invalid.
+
 ### Blade File Mapping
 
 When compiling Blade templates, Laravel now adds a comment to the top of the compiled file which contains the path to the original Blade template.
