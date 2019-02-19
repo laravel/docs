@@ -47,6 +47,21 @@ Eloquent now provides support for the `hasOneThrough` relationship type. For exa
         return $this->hasOneThrough(AccountHistory::class, Account::class);
     }
 
+### PSR-16 Cache Compliance
+
+In order to allow a more granular expiration time when storing items and provide compliance with the PSR-16 caching standard, the cache item time-to-live has changed from minutes to seconds. The `put`, `putMany`, `add`, `remember` and `setDefaultCacheTime` methods of the `Illuminate\Cache\Repository` class and its extended classes, as well as the `put` method of each cache store were updated with this changed behavior. See [the related PR](https://github.com/laravel/framework/pull/27276) for more info.
+
+If you are passing an integer to any of these methods, you should update your code to ensure you are now passing the number of seconds you wish the item to remain in the cache. Alternatively, you may pass a `DateTime` instance indicating when the item should expire:
+
+    // Laravel 5.7 - Store item for 30 minutes...
+    Cache::put('foo', 'bar', 30);
+
+    // Laravel 5.8 - Store item for 30 seconds...
+    Cache::put('foo', 'bar', 30);
+
+    // Laravel 5.7 / 5.8 - Store item for 30 seconds...
+    Cache::put('foo', 'bar', now()->addSeconds(30));
+
 ### Multiple Broadcast Authentication Guards
 
 In previous releases of Laravel, private and presence broadcast channels authenticated the user via your application's default authentication guard. Beginning in Laravel 5.8, you may now assign multiple guards that should authenticate the incoming request:
@@ -54,20 +69,6 @@ In previous releases of Laravel, private and presence broadcast channels authent
     Broadcast::channel('channel', function() {
         // ...
     }, ['guards' => ['web', 'admin']])
-
-### Mock / Spy Testing Helper Methods
-
-In order to make mocking objects more convenient, new `mock` and `spy` methods have been added to the base Laravel test case class. These methods automatically bind the mocked class into the container. For example:
-
-    // Laravel 5.7
-    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
-        $mock->shouldReceive('process')->once();
-    }));
-
-    // Laravel 5.8
-    $this->mock(Service::class, function ($mock) {
-        $mock->shouldReceive('process')->once();
-    });
 
 ### Improved Email Validation
 
@@ -104,6 +105,20 @@ Laravel allows you to invoke Artisan via the `Artisan::call` method. In previous
 However, Laravel 5.8 allows you to pass the entire command, including options, as the first string argument to the method:
 
     Artisan::call('migrate:install --database=foo');
+
+### Mock / Spy Testing Helper Methods
+
+In order to make mocking objects more convenient, new `mock` and `spy` methods have been added to the base Laravel test case class. These methods automatically bind the mocked class into the container. For example:
+
+    // Laravel 5.7
+    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    }));
+
+    // Laravel 5.8
+    $this->mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    });
 
 ### Blade File Mapping
 
