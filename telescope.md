@@ -137,8 +137,8 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
      *
      * @return void
      */
-	public function register()
-	{
+    public function register()
+    {
         $this->hideSensitiveRequestDetails();
 
         Telescope::filter(function (IncomingEntry $entry) {
@@ -151,7 +151,7 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
                 $entry->isScheduledTask() ||
                 $entry->hasMonitoredTag();
         });
-	}
+    }
 
 <a name="filtering-batches"></a>
 ### Batches
@@ -165,8 +165,8 @@ While the `filter` callback filters data for individual entries, you may use the
      *
      * @return void
      */
-	public function register()
-	{
+    public function register()
+    {
         $this->hideSensitiveRequestDetails();
 
         Telescope::filterBatch(function (Collection $entries) {
@@ -181,7 +181,7 @@ While the `filter` callback filters data for individual entries, you may use the
                     $entry->hasMonitoredTag();
                 });
         });
-	}
+    }
 
 <a name="available-watchers"></a>
 ## Available Watchers

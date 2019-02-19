@@ -1,4 +1,4 @@
-# Browser Tests (Laravel Dusk)
+# Laravel Dusk
 
 - [Introduction](#introduction)
 - [Installation](#installation)
