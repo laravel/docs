@@ -104,6 +104,15 @@ If you are passing an integer to any of these methods, you should update your co
 
 > {tip} This change makes the Laravel cache system fully compliant with the [PSR-16 caching library standard](https://www.php-fig.org/psr/psr-16/).
 
+<a name="psr-16-conformity"></a>
+#### PSR-16 Conformity
+
+**Likelihood Of Impact: Medium**
+
+In addition to the return value changes from above, the TTL argument of the `put`, `putMany` and `add` method's of the `Illuminate\Cache\Repository` class was updated to conform better with the PSR-16 spec. The new behavior provides a default of `null` so a call without specifying a TTL will result in storing the cache item forever. Additionally, storing cache items with a TTL of 0 or lower will remove items from the cache. See [the related PR](https://github.com/laravel/framework/pull/27217) for more info.
+
+The `KeyWritten` event [was also updated](https://github.com/laravel/framework/pull/27265) with these changes.
+
 <a name="cache-lock-safety-improvements"></a>
 #### Lock Safety Improvements
 
@@ -150,15 +159,6 @@ If you would like to release a lock without respecting its current owner, you ma
 **Likelihood Of Impact: Very Low**
 
 In order to be fully compliant with `PSR-16` the return values of the `put` and `forever` methods of the `Illuminate\Contracts\Cache\Repository` contract and the return values of the `put`, `putMany` and `forever` methods of the `Illuminate\Contracts\Cache\Store` contract [have been changed](https://github.com/laravel/framework/pull/26726) from `void` to `bool`.
-
-<a name="psr-16-conformity"></a>
-#### PSR-16 Conformity
-
-**Likelihood Of Impact: Medium**
-
-In addition to the return value changes from above, the TTL argument of the `put`, `putMany` and `add` method's of the `Illuminate\Cache\Repository` class was updated to conform better with the PSR-16 spec. The new behavior provides a default of `null` so a call without specifying a TTL will result in storing the cache item forever. Additionally, storing cache items with a TTL of 0 or lower will remove items from the cache. See [the related PR](https://github.com/laravel/framework/pull/27217) for more info.
-
-The `KeyWritten` event [was also updated](https://github.com/laravel/framework/pull/27265) with these changes.
 
 <a name="collections"></a>
 ### Collections
