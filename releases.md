@@ -158,6 +158,21 @@ When the `preserveKeys` property is set to `true`, collection keys will be prese
         return UserResource::collection(User::all()->keyBy->id);
     });
 
+### Higher Order `orWhere` Eloquent Method
+
+In previous releases of Laravel, combining multiple Eloquent model scopes via an `or` query operator required the use of Closure callbacks:
+
+    // scopeFoo, scopeBar, scopeBaz methods defined on User model...
+    User::foo()->orWhere(function (Builder $query) {
+        $query->bar();
+    })->orWhere(function (Builder $query) {
+        $query->baz();
+    });
+
+Laravel 5.8 introduces a "higher order" `orWhere` method that allows you to fluently chain these scopes together without the use of Closures:
+
+    User::foo()->orWhere->bar()->orWhere->baz();
+
 ### Artisan Serve Improvements
 
 In previous releases of Laravel, Artisan's `serve` command would serve your application on port `8000`. If another `serve` command process was already listening on this port, an attempt to serve a second application via `serve` would fail. Beginning in Laravel 5.8, `serve` will now scan for available ports up to port `8009`, allowing you to serve multiple applications at once.
