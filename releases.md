@@ -73,6 +73,26 @@ In order to make mocking objects more convenient, new `mock` and `spy` methods h
 
 Laravel 5.8 introduces improvements to the validator's underlying email validation logic by adopting the `egulias/email-validator` package utilized by SwiftMailer. Laravel's previous email validation logic occasionally considered valid emails, such as `example@bär.se`, to be invalid.
 
+### Default Scheduler Timezone
+
+Laravel allows you to customize the timezone of a scheduled task using the `timezone` method:
+
+    $schedule->command('inspire')
+             ->hourly()
+             ->timezone('America/Chicago');
+
+However, this can become cumbersome and repetitive if you are specifying the same timezone for all of your scheduled tasks. For that reason, you may now define a `scheduleTimezone` method in your `app/Console/Kernel.php` file. This method should return the default timezone that should be assigned to all scheduled tasks:
+
+    /**
+     * Get the timezone that should be used by default for scheduled events.
+     *
+     * @return \DateTimeZone|string|null
+     */
+    protected function scheduleTimezone()
+    {
+        return 'America/Chicago';
+    }
+
 ### Blade File Mapping
 
 When compiling Blade templates, Laravel now adds a comment to the top of the compiled file which contains the path to the original Blade template.
