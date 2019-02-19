@@ -266,6 +266,12 @@ The `subscribedToPlan` method may be used to determine if the user is subscribed
         //
     }
 
+The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trail period:
+
+    if ($user->subscription('main')->recurring()) {
+        //
+    }
+
 #### Cancelled Subscription Status
 
 To determine if the user was once an active subscriber, but has cancelled their subscription, you may use the `cancelled` method:
@@ -277,6 +283,12 @@ To determine if the user was once an active subscriber, but has cancelled their 
 You may also determine if a user has cancelled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
 
     if ($user->subscription('main')->onGracePeriod()) {
+        //
+    }
+
+To determine if the user has cancelled their subscription is no longer within their "grace period", you may use the `ended` method:
+
+    if ($user->subscription('main')->ended()) {
         //
     }
 
