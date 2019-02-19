@@ -186,6 +186,20 @@ Once the policy exists, it needs to be registered. The `AuthServiceProvider` inc
         }
     }
 
+#### Policy Auto-Discovery
+
+Instead of manually registering model policies, Laravel can auto-discover policies as long as the model and policy follow standard Laravel naming conventions. Specifically, the policies must be in a `Policies` directory below the directory that contains the models. So, for example, the models may be placed in the `app` directory while the policies may be placed in the `app/Policies` directory. In addition, the policy name must match the model name and have a `Policy` suffix. So, a `User` model would correspond to a `UserPolicy` class.
+
+If you would like to provide your own policy discovery logic, you may register a custom callback using the `Gate::guessPolicyNamesUsing` method. Typically, this method should be called from the `boot` method of your application's `AuthServiceProvider`:
+
+    use Illuminate\Support\Facades\Gate;
+
+    Gate::guessPolicyNamesUsing(function ($modelClass) {
+        // return policy class name...
+    });
+
+> {note} Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potential auto-discovered policies.
+
 <a name="writing-policies"></a>
 ## Writing Policies
 

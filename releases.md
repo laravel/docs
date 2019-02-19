@@ -47,6 +47,31 @@ Eloquent now provides support for the `hasOneThrough` relationship type. For exa
         return $this->hasOneThrough(AccountHistory::class, Account::class);
     }
 
+### Auto-Discovery Of Model Policies
+
+When using Laravel 5.7, each model's corresponding [authorization policy](/docs/{{version}}/authorization#creating-policies) needed to be explicitly registered in your application's `AuthServiceProvider`:
+
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected $policies = [
+        'App\User' => 'App\Policies\UserPolicy',
+    ];
+
+Laravel 5.8 introduces auto-discovery of model policies as long as the model and policy follow standard Laravel naming conventions. Specifically, the policies must be in a `Policies` directory below the directory that contains the models. So, for example, the models may be placed in the `app` directory while the policies may be placed in the `app/Policies` directory. In addition, the policy name must match the model name and have a `Policy` suffix. So, a `User` model would correspond to a `UserPolicy` class.
+
+If you would like to provide your own policy discovery logic, you may register a custom callback using the `Gate::guessPolicyNamesUsing` method. Typically, this method should be called from your application's `AuthServiceProvider`:
+
+    use Illuminate\Support\Facades\Gate;
+
+    Gate::guessPolicyNamesUsing(function ($modelClass) {
+        // return policy class name...
+    });
+
+> {note} Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potential auto-discovered policies.
+
 ### PSR-16 Cache Compliance
 
 In order to allow a more granular expiration time when storing items and provide compliance with the PSR-16 caching standard, the cache item time-to-live has changed from minutes to seconds. The `put`, `putMany`, `add`, `remember` and `setDefaultCacheTime` methods of the `Illuminate\Cache\Repository` class and its extended classes, as well as the `put` method of each cache store were updated with this changed behavior. See [the related PR](https://github.com/laravel/framework/pull/27276) for more info.
