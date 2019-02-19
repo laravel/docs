@@ -77,6 +77,10 @@ Laravel 5.8 introduces improvements to the validator's underlying email validati
 
 When compiling Blade templates, Laravel now adds a comment to the top of the compiled file which contains the path to the original Blade template.
 
+### DynamoDB Cache / Session Drivers
+
+Laravel 5.8 introduces [DynamoDB](https://aws.amazon.com/dynamodb/) cache and session drivers. DynamoDB is a serverless NoSQL database provided by Amazon Web Services. The default configuration for the `dynamodb` cache driver can be found in the Laravel 5.8 [cache configuration file](https://github.com/laravel/laravel/blob/master/config/cache.php).
+
 ### Carbon 2.0 Support
 
 Laravel 5.8 provides support for the `~2.0` release of the Carbon date manipulation library.
