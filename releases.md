@@ -95,6 +95,12 @@ In previous releases of Laravel, private and presence broadcast channels authent
         // ...
     }, ['guards' => ['web', 'admin']])
 
+### Token Guard Token Hashing
+
+Laravel's `token` guard, which provides basic API authentication, now supports storing API tokens as SHA-256 hashes. This provides improved security over storing plain-text tokens. To learn more about hashed tokens, please review the full [API authentication documentation](/docs/{{version}}/api-authentication).
+
+> **Note:** While Laravel ships with a simple, token based authentication guard, we strongly recommend you consider using [Laravel Passport](/docs/{{version}}/passport) for robust, production applications that offer API authentication.
+
 ### Improved Email Validation
 
 Laravel 5.8 introduces improvements to the validator's underlying email validation logic by adopting the `egulias/email-validator` package utilized by SwiftMailer. Laravel's previous email validation logic occasionally considered valid emails, such as `example@bär.se`, to be invalid.
