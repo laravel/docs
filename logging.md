@@ -4,7 +4,6 @@
 - [Configuration](#configuration)
     - [Building Log Stacks](#building-log-stacks)
 - [Writing Log Messages](#writing-log-messages)
-    - [Global Log Context](#sglobal-log-context)
     - [Writing To Specific Channels](#writing-to-specific-channels)
 - [Advanced Monolog Channel Customization](#advanced-monolog-channel-customization)
     - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
@@ -148,23 +147,6 @@ So, you may call any of these methods to log a message for the corresponding lev
 An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
 
     Log::info('User failed to login.', ['id' => $user->id]);
-
-<a name="global-log-context"></a>
-### Global Log Context
-
-If available, Laravel automatically adds the current user's ID and email address to every log message as contextual data. You may define your own global contextual data by overriding the `context` method of your application's `App\Exceptions\Handler` class. This information will be included in every log message written by your application:
-
-    /**
-     * Get the default context variables for logging.
-     *
-     * @return array
-     */
-    protected function context()
-    {
-        return array_merge(parent::context(), [
-            'foo' => 'bar',
-        ]);
-    }
 
 <a name="writing-to-specific-channels"></a>
 ### Writing To Specific Channels
