@@ -1081,7 +1081,7 @@ The `Str::studly` method converts the given string to `StudlyCase`:
 
     use Illuminate\Support\Str;
 
-    $converted = studly_case('foo_bar');
+    $converted = Str::studly('foo_bar');
 
     // FooBar
 
