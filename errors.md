@@ -52,7 +52,7 @@ For example, if you need to report different types of exceptions in different wa
 
 #### Global Log Context
 
-If available, Laravel automatically adds the current user's ID and email address to every exception's log message as contextual data. You may define your own global contextual data by overriding the `context` method of your application's `App\Exceptions\Handler` class. This information will be included in every exception's log message written by your application:
+If available, Laravel automatically adds the current user's ID to every exception's log message as contextual data. You may define your own global contextual data by overriding the `context` method of your application's `App\Exceptions\Handler` class. This information will be included in every exception's log message written by your application:
 
     /**
      * Get the default context variables for logging.
