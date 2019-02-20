@@ -64,7 +64,7 @@ In the examples above, API tokens are stored in your database as plain-text. If 
     'api' => [
         'driver' => 'token',
         'provider' => 'users',
-        'hash' => false,
+        'hash' => true,
     ],
 
 #### Generating Hashed Tokens
