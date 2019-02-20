@@ -4,6 +4,7 @@
 - [Configuration](#configuration)
     - [Database Migrations](#database-preparation)
 - [Generating Tokens](#generating-tokens)
+    - [Hashing Tokens](#hashing-tokens)
 - [Protecting Routes](#protecting-routes)
 - [Passing Tokens In Requests](#passing-tokens-in-requests)
 
@@ -23,7 +24,7 @@ By default, Laravel ships with a simple solution to API authentication via a ran
 Before using the `token` driver, you will need to [create a migration](/docs/{{version}}/migrations) which adds an `api_token` column to your `users` table:
 
     Schema::table('users', function ($table) {
-        $table->string('api_token', 60)->after('password')
+        $table->string('api_token', 80)->after('password')
                             ->unique()
                             ->nullable()
                             ->default(null);
@@ -54,6 +55,52 @@ Once the `api_token` column has been added to your `users` table, you are ready 
             'api_token' => Str::random(60),
         ]);
     }
+
+<a name="hashing-tokens"></a>
+### Hashing Tokens
+
+In the examples above, API tokens are stored in your database as plain-text. If you would like to hash your API tokens using SHA-256 hashing, you may set the `hash` option of your `api` guard configuration to `true`. The `api` guard is defined in your `config/auth.php` configuration file:
+
+    'api' => [
+        'driver' => 'token',
+        'provider' => 'users',
+        'hash' => false,
+    ],
+
+#### Generating Hashed Tokens
+
+When using hashed API tokens, you should not generate your API tokens during user registration. Instead, you will need to implement your own API token management page within your application. This page should allow users to initialize and refresh their API token. When a user makes a request to initialize or refresh their token, you should store a hashed copy of the token in the database, and return the plain-text copy of token to the view / frontend client for one-time display.
+
+For example, a controller method that initializes / refreshes the token for a given user and returns the plain-text token as a JSON response might look like the following:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Support\Str;
+    use Illuminate\Http\Request;
+
+    class ApiTokenController extends Controller
+    {
+        /**
+         * Update the authenticated user's API token.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @return array
+         */
+        public function update(Request $request)
+        {
+            $token = Str::random(60);
+
+            $request->user()->forceFill([
+                'api_token' => hash('sha256', $token),
+            ])->save();
+
+            return ['token' => $token];
+        }
+    }
+
+> {tip} Since the API tokens in the example above have sufficient entropy, it is impractical to create "rainbow tables" to lookup the original value of the hashed token. Therefore, slow hashing methods such as `bcrypt` are unnecessary.
 
 <a name="protecting-routes"></a>
 ## Protecting Routes
