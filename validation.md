@@ -936,7 +936,7 @@ The field under validation must be present in the input data and not empty. A fi
 
 The field under validation must be present and not empty if the _anotherfield_ field is equal to any _value_.
 
-If you want to require the field with a custom condition, you can use the `Rule::requiredIf` method to construct the rule:
+If you would like to construct a more complex condition for the `required_if` rule, you may use the `Rule::requiredIf` method. This methods accepts a boolean or a Closure. When passed a Closure, the Closure should return `true` or `false` to indicate if the field under validation is required:
 
     use Illuminate\Validation\Rule;
 
@@ -946,7 +946,7 @@ If you want to require the field with a custom condition, you can use the `Rule:
 
     Validator::make($request->all(), [
         'role_id' => Rule::requiredIf(function () use ($request) {
-            return $request->user()->is_admin && $some_other_complicated_condition;
+            return $request->user()->is_admin;
         }),
     ]);
 
