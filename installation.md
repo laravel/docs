@@ -29,6 +29,7 @@ However, if you are not using Homestead, you will need to make sure your server 
 - Ctype PHP Extension
 - JSON PHP Extension
 - BCMath PHP Extension
+- Zip PHP Extension *required by laravel/installer v2*
 </div>
 
 <a name="installing-laravel"></a>
