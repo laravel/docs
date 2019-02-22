@@ -235,7 +235,7 @@ If the lock is not available at the moment you request it, you may instruct Lara
     use Illuminate\Contracts\Cache\LockTimeoutException;
 
     try {
-        $lock = Cache::lock('foo', 10)->block(5));
+        $lock = Cache::lock('foo', 10)->block(5);
 
         // Lock acquired after waiting maximum of 5 seconds...
     } catch (LockTimeoutException $e) {
