@@ -282,7 +282,7 @@ Calling `factory(User::class, 1)->make()` or `factory(User::class, 1)->create()`
 
 #### The `newPivot` Method
 
-The `Model::newPivot` method signature has been updated to add the new `$using` argument. The new signature is as follows:
+The `Model::newPivot` method signature has been updated to add a new `$using` argument. The new signature is as follows:
 
     /**
      * Create a new pivot model instance.
