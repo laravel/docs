@@ -280,6 +280,22 @@ The `whereKey($id)` method will now add a "where" clause for the given primary k
 
 Calling `factory(User::class, 1)->make()` or `factory(User::class, 1)->create()` will now return a collection with one item. Previously, this would return a single model. This method will only return a single model if the amount is not supplied.
 
+#### The `newPivot` Method
+
+The `Model::newPivot` method signature has been updated to add a new `$using` argument. The new signature is as follows:
+
+    /**
+     * Create a new pivot model instance.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $parent
+     * @param  array  $attributes
+     * @param  string  $table
+     * @param  bool  $exists
+     * @param  string|null  $using
+     * @return \Illuminate\Database\Eloquent\Relations\Pivot
+     */
+    public function newPivot(Model $parent, array $attributes, $table, $exists, $using = null);
+
 ### Events
 
 #### Contract Changes
