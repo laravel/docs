@@ -321,7 +321,7 @@ If you are using PHP FastCGI, HTTP Basic authentication may not work correctly o
 <a name="stateless-http-basic-authentication"></a>
 ### Stateless HTTP Basic Authentication
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/{{version}}/middleware) that calls the `onceBasic` method. If no response is returned by the `onceBasic` method, the request may be passed further into the application:
+You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/{{version}}/middleware) that calls the `onceBasic` method. If no exception is thrown by the `onceBasic` method, the request may be passed further into the application:
 
     <?php
 
@@ -340,7 +340,8 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
          */
         public function handle($request, $next)
         {
-            return Auth::onceBasic() ?: $next($request);
+            Auth::onceBasic();            
+            return $next($request);
         }
 
     }
