@@ -79,7 +79,7 @@ The `Paginator` class does not need to know the total number of items in the res
 
 In other words, the `Paginator` corresponds to the `simplePaginate` method on the query builder and Eloquent, while the `LengthAwarePaginator` corresponds to the `paginate` method.
 
-> {note} When manually creating a paginator instance, you should manually "slice" the array of results you pass to the paginator. If you're unsure how to do this, check out the [array_slice](https://secure.php.net/manual/en/function.array-slice.php) PHP function.
+> {note} When manually creating a paginator instance, if the result set is expected to be small you can manually "slice" the array of results you pass to the paginator. If you're unsure how to do this, check out the [array_slice](https://secure.php.net/manual/en/function.array-slice.php) PHP function. Otherwise for a larger number of results use a LIMIT clause, or the skip and take methods for better efficiency.
 
 <a name="displaying-pagination-results"></a>
 ## Displaying Pagination Results
