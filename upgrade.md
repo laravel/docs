@@ -96,6 +96,10 @@ With recent improvements to PHP op-code caching, the `optimize` Artisan command 
 
 When passing a multi-word model name to the `authorizeResource` method, the resulting route segment will now be "snake" case, matching the behavior of resource controllers.
 
+#### The `basic` and `onceBasic` Methods
+
+`Auth::basic` and `Auth::onceBasic` now throw `\Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException` rather than returning a `Response` when authentication fails. By default, this will still result in a 401 response being sent to the client. However, if your application logic checked the return value of `Auth::basic` in order to return a custom response or implement other behavior on authentication failure, you will now need to handle the `UnauthorizedHttpException` instead, either in a `catch` block or in your application's exception handler.
+
 #### The `before` Policy Method
 
 The `before` method of a policy class will not be called if the class doesn't contain a method matching the name of the ability being checked.
