@@ -81,6 +81,12 @@ When using Laravel 5.8, the token is passed to the `route` helper as an explicit
 
 Therefore, if you are defining your own `password.reset` route, you should ensure that it contains a `{token}` parameter in its URI.
 
+#### New Default Password Length
+
+**Likelihood Of Impact: Low**
+
+The new default password length when changing or choosing a password was [changed to be at least eight characters long](https://github.com/laravel/framework/pull/25957).
+
 <a name="cache"></a>
 ### Cache
 
