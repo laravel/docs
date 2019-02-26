@@ -125,6 +125,10 @@ However, this can become cumbersome and repetitive if you are specifying the sam
         return 'America/Chicago';
     }
 
+### Intermediate Table / Pivot Model Events
+
+In previous versions of Laravel, Eloquent model events were not dispatched when attaching, detaching, or syncing custom intermediate table / "pivot" models of a many-to-many relationship. When using [custom intermediate table models](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) in Laravel 5.8, these events will now be dispatched.
+
 ### Artisan Call Improvements
 
 Laravel allows you to invoke Artisan via the `Artisan::call` method. In previous releases of Laravel, the command's options are passed via an array as the second argument to the method:
