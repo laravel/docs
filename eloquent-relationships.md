@@ -6,6 +6,7 @@
     - [One To Many](#one-to-many)
     - [One To Many (Inverse)](#one-to-many-inverse)
     - [Many To Many](#many-to-many)
+    - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
 - [Polymorphic Relationships](#polymorphic-relationships)
@@ -331,7 +332,8 @@ You can also filter the results returned by `belongsToMany` using the `wherePivo
 
     return $this->belongsToMany('App\Role')->wherePivotIn('priority', [1, 2]);
 
-#### Defining Custom Intermediate Table Models
+<a name="defining-custom-intermediate-table-models"></a>
+### Defining Custom Intermediate Table Models
 
 If you would like to define a custom model to represent the intermediate table of your relationship, you may call the `using` method when defining the relationship. Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` which uses a custom `UserRole` pivot model:
 
@@ -388,6 +390,17 @@ You can combine `using` and `withPivot` in order to retrieve columns from the in
                             ]);
         }
     }
+
+#### Custom Pivot Models And Incrementing IDs
+
+If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`.
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
 
 <a name="has-one-through"></a>
 ### Has One Through
