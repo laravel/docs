@@ -499,8 +499,8 @@ By default, Laravel 5.8 uses PHPUnit 7. However, you may optionally upgrade to P
 
 The `setUp` and `tearDown` methods now require a void return type:
 
-    public function setUp(): void
-    public function tearDown(): void
+    protected function setUp(): void
+    protected function tearDown(): void
 
 <a name="validation"></a>
 ### Validation
