@@ -22,6 +22,7 @@
 - [Deferred Service Providers](#deferred-service-providers)
 - [PSR-16 Conformity](#psr-16-conformity)
 - [Model Names Ending With Irregular Plurals](#model-names-ending-with-irregular-plurals)
+- [Custom Pivot Models With Incrementing IDs](#custom-pivot-models-with-incrementing-ids)
 - [Pheanstalk 4.0](#pheanstalk-4)
 </div>
 
@@ -286,6 +287,18 @@ If you have a model that was incorrectly pluralized, you may continue using the 
      * @var string
      */
     protected $table = 'user_feedbacks';
+
+<a name="custom-pivot-models-with-incrementing-ids"></a>
+#### Custom Pivot Models With Incrementing IDs
+
+If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`:
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
 
 #### The `loadCount` Method
 
