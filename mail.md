@@ -25,12 +25,12 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides a clean, simple API over the popular [SwiftMailer](https://swiftmailer.symfony.com/) library with drivers for SMTP, Mailgun, SparkPost, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
+Laravel provides a clean, simple API over the popular [SwiftMailer](https://swiftmailer.symfony.com/) library with drivers for SMTP, Mailgun, Postmark, SparkPost, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
-The API based drivers such as Mailgun and SparkPost are often simpler and faster than SMTP servers. If possible, you should use one of these drivers. All of the API drivers require the Guzzle HTTP library, which may be installed via the Composer package manager:
+The API based drivers such as Mailgun, SparkPost, and Postmark are often simpler and faster than SMTP servers. If possible, you should use one of these drivers. All of the API drivers require the Guzzle HTTP library, which may be installed via the Composer package manager:
 
     composer require guzzlehttp/guzzle
 
@@ -49,6 +49,14 @@ If you are not using the "US" [Mailgun region](https://documentation.mailgun.com
         'domain' => 'your-mailgun-domain',
         'secret' => 'your-mailgun-key',
         'endpoint' => 'api.eu.mailgun.net',
+    ],
+
+#### Postmark Driver
+
+To use the Postmark driver, first install Guzzle, then set the `driver` option in your `config/mail.php` configuration file to `postmark`. Next, verify that your `config/services.php` configuration file contains the following options:
+
+    'postmark' => [
+        'token' => 'your-postmark-token',
     ],
 
 #### SparkPost Driver
