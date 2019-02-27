@@ -43,7 +43,7 @@
 
 Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
 
-> {note} These are the docs for the Cashier integration with Stripe. You may find the Braintree integration docs [here](/docs/{{version}}/braintree).
+> {note} This documentation is for Cashier's Stripe integration. If you are using Braintree, please consult the [Braintree integration documentation](/docs/{{version}}/braintree).
 
 > {note} If you're only performing "one-off" charges and do not offer subscriptions, you should not use Cashier. Instead, use the Stripe SDK directly.
 
