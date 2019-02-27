@@ -359,15 +359,6 @@ The `renderHttpException` method signature of the `Illuminate\Foundation\Excepti
      */
     protected function renderHttpException(HttpExceptionInterface $e);
 
-<a name="facades"></a>
-### Facades
-
-#### Facade Service Resolving
-
-**Likelihood Of Impact: Low**
-
-The `getFacadeAccessor` method may now [only return the string value representing the container identifier of the service](https://github.com/laravel/framework/pull/25525). Previously, this method may have returned an object instance.
-
 <a name="mail"></a>
 ### Mail
 
