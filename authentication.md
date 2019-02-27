@@ -367,8 +367,7 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
          */
         public function handle($request, $next)
         {
-            Auth::onceBasic();            
-            return $next($request);
+            return Auth::onceBasic() ?: $next($request);
         }
 
     }
