@@ -75,7 +75,7 @@ In your `auth.php` configuration file, you may configure multiple password "brok
      *
      * @return PasswordBroker
      */
-    protected function broker()
+    public function broker()
     {
         return Password::broker('name');
     }
