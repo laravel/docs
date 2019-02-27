@@ -678,6 +678,8 @@ You may also specify additional columns to update during the operation:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
+> {tip} This does not work if the value of column is null, be sure to set a numeric default value for your columns.
+
 <a name="deletes"></a>
 ## Deletes
 
