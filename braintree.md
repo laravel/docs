@@ -1,4 +1,4 @@
-# Laravel Cashier Braintree
+# Laravel Cashier (Braintree)
 
 - [Introduction](#introduction)
     - [Caveats](#caveats)
