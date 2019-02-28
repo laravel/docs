@@ -482,7 +482,7 @@ The `defer` boolean property on the service provider which is/was used to indica
 <a name="testing"></a>
 ### Testing
 
-#### `setUp` And `tearDown`
+#### The `setUp` & `tearDown` Methods
 
 The `setUp` and `tearDown` methods now require a void return type:
 
