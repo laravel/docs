@@ -146,7 +146,7 @@ By default, tasks will be executed on each server serially. In other words, a ta
 
 To run a task or story that is defined in your `Envoy.blade.php` file, execute Envoy's `run` command, passing the name of the task or story you would like to execute. Envoy will run the task and display the output from the servers as the task is running:
 
-    envoy run task
+    envoy run deploy
 
 <a name="confirming-task-execution"></a>
 ### Confirming Task Execution
