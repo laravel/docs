@@ -932,7 +932,7 @@ Once your notification channel class has been defined, you may return the class 
          * Get the notification channels.
          *
          * @param  mixed  $notifiable
-         * @return array|string
+         * @return array
          */
         public function via($notifiable)
         {
