@@ -482,6 +482,17 @@ The `defer` boolean property on the service provider which is/was used to indica
 <a name="testing"></a>
 ### Testing
 
+#### The `setUp` and `tearDown` methods
+
+**Likelihood Of Impact: Medium**
+
+The `setUp` and `tearDown` methods in Laravel's `Illuminate\Foundation\Testing\TestCase` now require a void return type:
+
+    protected function setUp(): void
+    protected function tearDown(): void
+    
+If you are overriding those methods in classes that extend from `Illuminate\Foundation\Testing\TestCase` make sure to update your methods signatures.    
+
 #### PHPUnit 8
 
 **Likelihood Of Impact: Optional**
