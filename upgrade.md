@@ -482,16 +482,18 @@ The `defer` boolean property on the service provider which is/was used to indica
 <a name="testing"></a>
 ### Testing
 
-#### PHPUnit 8
-
-**Likelihood Of Impact: Optional**
-
-By default, Laravel 5.8 uses PHPUnit 7. However, you may optionally upgrade to PHPUnit 8, which requires PHP >= 7.2. In addition, please read through the entire list of changes in [the PHPUnit 8 release announcement](https://phpunit.de/announcements/phpunit-8.html).
+#### `setUp` And `tearDown`
 
 The `setUp` and `tearDown` methods now require a void return type:
 
     protected function setUp(): void
     protected function tearDown(): void
+
+#### PHPUnit 8
+
+**Likelihood Of Impact: Optional**
+
+By default, Laravel 5.8 uses PHPUnit 7. However, you may optionally upgrade to PHPUnit 8, which requires PHP >= 7.2. In addition, please read through the entire list of changes in [the PHPUnit 8 release announcement](https://phpunit.de/announcements/phpunit-8.html).
 
 <a name="validation"></a>
 ### Validation
