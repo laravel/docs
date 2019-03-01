@@ -214,7 +214,7 @@ You are free to extend the models used internally by Passport. Then, you may ins
 
     use App\Models\Passport\Client;
     use App\Models\Passport\AuthCode;
-    use App\Models\Passport\TokenModel;
+    use App\Models\Passport\Token;
     use App\Models\Passport\PersonalAccessClient;
 
     /**
@@ -229,7 +229,7 @@ You are free to extend the models used internally by Passport. Then, you may ins
         Passport::routes();
 
         Passport::useClientModel(Client::class);
-        Passport::useTokenModel(TokenModel::class);
+        Passport::useTokenModel(Token::class);
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
