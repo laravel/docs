@@ -934,6 +934,19 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
 
     // false
 
+By default the pattern `.*` will be used for wildcards, however you can customise this by passing the wildcard pattern
+as the third parameter.
+
+    use Illuminate\Support\Str;
+    
+    $matches = Str::is('foo.*.baz', 'foo.bar.bar.baz');
+    
+    // true
+    
+    $matches = Str::is('foo.*.bar', 'foo.bar.bar.baz', '[^.]*');
+    
+    // false
+
 <a name="method-str-limit"></a>
 #### `Str::limit()` {#collection-method}
 
