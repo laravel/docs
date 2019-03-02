@@ -1826,7 +1826,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
         ]
     */
 
-> {note} `toArray` also converts all of the collection's nested objects to an array. If you want to get the raw underlying array, use the [`all`](#method-all) method instead.
+> {note} `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw underlying array without converting `Arrayable` objects into arrays, use the [`all`](#method-all) method instead.
 
 <a name="method-tojson"></a>
 #### `toJson()` {#collection-method}
