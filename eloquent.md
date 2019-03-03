@@ -430,17 +430,19 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
     // Retrieve flight by name, or create it if it doesn't exist...
     $flight = App\Flight::firstOrCreate(['name' => 'Flight 10']);
 
-    // Retrieve flight by name, or create it with the name and delayed attributes...
+    // Retrieve flight by name, or create it with the name, delayed, and arrival_time attributes...
     $flight = App\Flight::firstOrCreate(
-        ['name' => 'Flight 10'], ['delayed' => 1]
+        ['name' => 'Flight 10'], 
+        ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
     // Retrieve by name, or instantiate...
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
 
-    // Retrieve by name, or instantiate with the name and delayed attributes...
+    // Retrieve by name, or instantiate with the name, delayed, and arrival_time attributes...
     $flight = App\Flight::firstOrNew(
-        ['name' => 'Flight 10'], ['delayed' => 1]
+        ['name' => 'Flight 10'], 
+        ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
 #### `updateOrCreate`
@@ -451,7 +453,7 @@ You may also come across situations where you want to update an existing model o
     // If no matching model exists, create one.
     $flight = App\Flight::updateOrCreate(
         ['departure' => 'Oakland', 'destination' => 'San Diego'],
-        ['price' => 99]
+        ['price' => 99, 'discounted' => 1]
     );
 
 <a name="deleting-models"></a>
