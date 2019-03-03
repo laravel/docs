@@ -213,8 +213,8 @@ By default, Passport issues long-lived access tokens that expire after one year.
 You are free to extend the models used internally by Passport. Then, you may instruct Passport to use your custom models via the `Passport` class:
 
     use App\Models\Passport\Client;
-    use App\Models\Passport\AuthCode;
     use App\Models\Passport\Token;
+    use App\Models\Passport\AuthCode;
     use App\Models\Passport\PersonalAccessClient;
 
     /**
@@ -228,8 +228,8 @@ You are free to extend the models used internally by Passport. Then, you may ins
 
         Passport::routes();
 
-        Passport::useClientModel(Client::class);
         Passport::useTokenModel(Token::class);
+        Passport::useClientModel(Client::class);
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
