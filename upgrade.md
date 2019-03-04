@@ -116,7 +116,7 @@ If you are passing an integer to any of these methods, you should update your co
 
 **Likelihood Of Impact: Medium**
 
-In addition to the return value changes from above, the TTL argument of the `put`, `putMany` and `add` method's of the `Illuminate\Cache\Repository` class was updated to conform better with the PSR-16 spec. The new behavior provides a default of `null` so a call without specifying a TTL will result in storing the cache item forever. Additionally, storing cache items with a TTL of 0 or lower will remove items from the cache. See [the related PR](https://github.com/laravel/framework/pull/27217) for more info.
+In addition to [the return value changes from below](#the-repository-and-store-contracts), the TTL argument of the `put`, `putMany` and `add` method's of the `Illuminate\Cache\Repository` class was updated to conform better with the PSR-16 spec. The new behavior provides a default of `null` so a call without specifying a TTL will result in storing the cache item forever. Additionally, storing cache items with a TTL of 0 or lower will remove items from the cache. See [the related PR](https://github.com/laravel/framework/pull/27217) for more info.
 
 The `KeyWritten` event [was also updated](https://github.com/laravel/framework/pull/27265) with these changes.
 
@@ -161,6 +161,7 @@ If you would like to release a lock without respecting its current owner, you ma
 
     Cache::lock('foo')->forceRelease();
 
+<a name="the-repository-and-store-contracts"></a>
 #### The `Repository` and `Store` Contracts
 
 **Likelihood Of Impact: Very Low**
