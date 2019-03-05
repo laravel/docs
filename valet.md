@@ -9,9 +9,9 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
+- [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
-- [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Other Valet Commands](#other-valet-commands)
 
 <a name="introduction"></a>
@@ -168,6 +168,17 @@ To share a site, navigate to the site's directory in your terminal and run the `
 
 To stop sharing your site, hit `Control + C` to cancel the process.
 
+<a name="site-specific-environment-variables"></a>
+## Site Specific Environment Variables
+
+Some applications using other frameworks may depend on server environment variables but do not provide a way for those variables to be configured within your project. Valet allows you to configure site specific environment variables by adding a `.valet-env.php` file within the root of your project. These variables will be added to the `$_SERVER` global array:
+
+    <?php
+
+    return [
+        'WEBSITE_NAME' => 'My Blog',
+    ];
+
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
 
@@ -271,18 +282,6 @@ If you would like to define a custom Valet driver for a single application, crea
             return $sitePath.'/public_html/index.php';
         }
     }
-
-<a name="site-specific-environment-variables"></a>
-## Site Specific Environment Variables
-Some sites or frameworks may depend on server environment variables to be set on the server configuration level and do not provide a way for those variables to be configured within your project. Valet allows you to configure site specific environment variables by adding a `.valet-env.php` file within the root of your project:
-
-    <?php
-
-    return [
-        'WEBSITE_NAME' => 'My Blog',
-    ];
-
-With the example above, Valet will add the `$_SERVER['WEBSITE_NAME']` variable to your server configuration only when that specific site is requested.
 
 <a name="other-valet-commands"></a>
 ## Other Valet Commands
