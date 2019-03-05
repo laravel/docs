@@ -218,7 +218,9 @@ Atomic locks allow for the manipulation of distributed locks without worrying ab
 
     use Illuminate\Support\Facades\Cache;
 
-    if ($lock = Cache::lock('foo', 10)->get()) {
+    $lock = Cache::lock('foo', 10);
+
+    if ($lock->get()) {
         // Lock acquired for 10 seconds...
 
         $lock->release();
@@ -234,8 +236,10 @@ If the lock is not available at the moment you request it, you may instruct Lara
 
     use Illuminate\Contracts\Cache\LockTimeoutException;
 
+    $lock = Cache::lock('foo', 10);
+
     try {
-        $lock = Cache::lock('foo', 10)->block(5);
+        $lock->block(5);
 
         // Lock acquired after waiting maximum of 5 seconds...
     } catch (LockTimeoutException $e) {
@@ -255,7 +259,9 @@ Sometimes, you may wish to acquire a lock in one process and release it in anoth
     // Within Controller...
     $podcast = Podcast::find($id);
 
-    if ($lock = Cache::lock('foo', 120)->get()) {
+    $lock = Cache::lock('foo', 120);
+
+    if ($lock = $lock->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 
