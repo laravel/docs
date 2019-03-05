@@ -11,6 +11,7 @@
 - [Sharing Sites](#sharing-sites)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
+- [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Other Valet Commands](#other-valet-commands)
 
 <a name="introduction"></a>
@@ -91,7 +92,7 @@ If you need a database, try MySQL by running `brew install mysql@5.7` on your co
 Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Brew if it is not already installed:
 
     valet use php@7.2
-    
+
     valet use php
 
 <a name="upgrading"></a>
@@ -270,6 +271,18 @@ If you would like to define a custom Valet driver for a single application, crea
             return $sitePath.'/public_html/index.php';
         }
     }
+
+<a name="site-specific-environment-variables"></a>
+## Site Specific Environment Variables
+Some sites or frameworks may depend on server environment variables to be set on the server configuration level and do not provide a way for those variables to be configured within your project. Valet allows you to configure site specific environment variables by adding a `.valet-env.php` file within the root of your project:
+
+    <?php
+
+    return [
+        'WEBSITE_NAME' => 'My Blog',
+    ];
+
+With the example above, Valet will add the `$_SERVER['WEBSITE_NAME']` variable to your server configuration only when that specific site is requested.
 
 <a name="other-valet-commands"></a>
 ## Other Valet Commands
