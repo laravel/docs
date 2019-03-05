@@ -76,9 +76,9 @@ In addition to scheduling using Closures, you may also use [invokable objects](h
 
 In addition to scheduling Closure calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
 
-    $schedule->command('emails:send --force')->daily();
+    $schedule->command('emails:send Taylor --force')->daily();
 
-    $schedule->command(EmailsCommand::class, ['--force'])->daily();
+    $schedule->command(EmailsCommand::class, ['Taylor', '--force'])->daily();
 
 <a name="scheduling-queued-jobs"></a>
 ### Scheduling Queued Jobs
