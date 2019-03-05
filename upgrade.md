@@ -480,6 +480,28 @@ The impact of this change has been marked as `medium` since the helpers have bee
 
 The `defer` boolean property on the service provider which is/was used to indicate if a provider is deferred [has been deprecated](https://github.com/laravel/framework/pull/27067). In order to mark the service provider as deferred it should implement the `Illuminate\Contracts\Support\DeferrableProvider` contract.
 
+#### Read-Only `env` Helper
+
+**Likelihood Of Impact: Low**
+
+Previously, the `env` helper could retrieve values from environment variables which were changed at runtime. In Laravel 5.8, the `env` helper treats environment variables as immutable. If you would to change an environment variable at runtime, consider using a configuration value that can be retrieved using the `config` helper:
+
+Previous behavior:
+
+    dump(env('APP_ENV')); // local
+
+    putenv('APP_ENV=staging');
+
+    dump(env('APP_ENV')); // staging
+
+New behavior:
+
+    dump(env('APP_ENV')); // local
+
+    putenv('APP_ENV=staging');
+
+    dump(env('APP_ENV')); // local
+
 <a name="testing"></a>
 ### Testing
 
