@@ -484,7 +484,7 @@ The `defer` boolean property on the service provider which is/was used to indica
 
 **Likelihood Of Impact: Low**
 
-Previously, the `env` helper could retrieve values from environment variables which were changed at runtime. In Laravel 5.8, the `env` helper treats environment variables as immutable. If you would to change an environment variable at runtime, consider using a configuration value that can be retrieved using the `config` helper:
+Previously, the `env` helper could retrieve values from environment variables which were changed at runtime. In Laravel 5.8, the `env` helper treats environment variables as immutable. If you would change an environment variable at runtime, consider using a configuration value that can be retrieved using the `config` helper:
 
 Previous behavior:
 
