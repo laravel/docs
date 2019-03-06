@@ -1270,13 +1270,6 @@ The `bcrypt` function [hashes](/docs/{{version}}/hashing) the given value using 
 
     $password = bcrypt('my-secret-password');
 
-<a name="method-broadcast"></a>
-#### `broadcast()` {#collection-method}
-
-The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners:
-
-    broadcast(new UserRegistered($user));
-
 <a name="method-blank"></a>
 #### `blank()` {#collection-method}
 
@@ -1296,6 +1289,13 @@ The `blank` function returns whether the given value is "blank":
     // false
 
 For the inverse of `blank`, see the [`filled`](#method-filled) method.
+
+<a name="method-broadcast"></a>
+#### `broadcast()` {#collection-method}
+
+The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners:
+
+    broadcast(new UserRegistered($user));
 
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
