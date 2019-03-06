@@ -502,6 +502,29 @@ New behavior:
 
     dump(env('APP_ENV')); // local
 
+#### Environment file values
+
+**Likelihood Of Impact: Low**
+
+The [phpdotenv](https://github.com/vlucas/phpdotenv) package that is used to parse .env files has had a major version upgrade, which may impact the results returned from the `env` helper Notably, the `#` character in an unquoted value will now be commented out, instead of part of the value itself.
+
+Previous behavior:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo#bar
+
+New behavior:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo
+
+The solution for this is to wrap the environment values in quotes:
+
+    ENV_VALUE="foo#bar"
+    env('ENV_VALUE'); // foo#bar
+
+There are some other uncommon cases where a descriptive error may be thrown upon loading the environment file. You can read more about these in the [phpdotenv upgrade guide](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md)
+
 <a name="testing"></a>
 ### Testing
 
