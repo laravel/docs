@@ -327,6 +327,31 @@ The `deleted_at` property [will now be automatically casted](https://github.com/
 
 The `getForeignKey` and `getQualifiedForeignKey` methods of the `BelongsTo` relationship have been renamed to `getForeignKeyName` and `getQualifiedForeignKeyName` respectively, making the method names consistent with the other relationships offered by Laravel.
 
+### Environment
+
+**Likelihood Of Impact: Low**
+
+The [phpdotenv](https://github.com/vlucas/phpdotenv) package that is used to parse `.env` files has released a new major version, which may impact the results returned from the `env` helper. Specifically, the `#` character in an unquoted value will now be considered a comment instead of part of the value:
+
+Previous behavior:
+
+    ENV_VALUE=foo#bar
+
+    env('ENV_VALUE'); // foo#bar
+
+New behavior:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo
+
+To preserve the previous behavior, you may wrap the environment values in quotes:
+
+    ENV_VALUE="foo#bar"
+
+    env('ENV_VALUE'); // foo#bar
+
+For more information, please refer to the [phpdotenv upgrade guide](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md).
+
 <a name="events"></a>
 ### Events
 
@@ -501,29 +526,6 @@ New behavior:
     putenv('APP_ENV=staging');
 
     dump(env('APP_ENV')); // local
-
-#### Environment file values
-
-**Likelihood Of Impact: Low**
-
-The [phpdotenv](https://github.com/vlucas/phpdotenv) package that is used to parse .env files has had a major version upgrade, which may impact the results returned from the `env` helper Notably, the `#` character in an unquoted value will now be commented out, instead of part of the value itself.
-
-Previous behavior:
-
-    ENV_VALUE=foo#bar
-    env('ENV_VALUE'); // foo#bar
-
-New behavior:
-
-    ENV_VALUE=foo#bar
-    env('ENV_VALUE'); // foo
-
-The solution for this is to wrap the environment values in quotes:
-
-    ENV_VALUE="foo#bar"
-    env('ENV_VALUE'); // foo#bar
-
-There are some other uncommon cases where a descriptive error may be thrown upon loading the environment file. You can read more about these in the [phpdotenv upgrade guide](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md)
 
 <a name="testing"></a>
 ### Testing
