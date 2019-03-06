@@ -74,19 +74,17 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <div class="collection-method-list" markdown="1">
 
 [\__](#method-__)
-[Str::camel](#method-camel-case)
 [class_basename](#method-class-basename)
 [e](#method-e)
-[Str::endsWith](#method-ends-with)
-[Str::kebab](#method-kebab-case)
 [preg_replace_array](#method-preg-replace-array)
-[Str::snake](#method-snake-case)
-[Str::startsWith](#method-starts-with)
 [Str::after](#method-str-after)
 [Str::before](#method-str-before)
+[Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
+[Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
 [Str::is](#method-str-is)
+[Str::kebab](#method-kebab-case)
 [Str::limit](#method-str-limit)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::plural](#method-str-plural)
@@ -96,12 +94,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::replaceLast](#method-str-replace-last)
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
+[Str::snake](#method-snake-case)
 [Str::start](#method-str-start)
+[Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
 [Str::title](#method-title-case)
+[Str::uuid](#method-str-uuid)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
-[Str::uuid](#method-str-uuid)
 
 </div>
 
@@ -111,8 +111,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 [action](#method-action)
 [asset](#method-asset)
-[secure_asset](#method-secure-asset)
 [route](#method-route)
+[secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
 [url](#method-url)
 
@@ -164,9 +164,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [retry](#method-retry)
 [session](#method-session)
 [tap](#method-tap)
-[today](#method-today)
 [throw_if](#method-throw-if)
 [throw_unless](#method-throw-unless)
+[today](#method-today)
 [trait_uses_recursive](#method-trait-uses-recursive)
 [transform](#method-transform)
 [validator](#method-validator)
@@ -779,19 +779,6 @@ The `__` function translates the given translation string or translation key usi
 
     echo __('messages.welcome');
 
-If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
-
-<a name="method-camel-case"></a>
-#### `Str::camel()` {#collection-method}
-
-The `Str::camel` method converts the given string to `camelCase`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::camel('foo_bar');
-
-    // fooBar
-
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
@@ -810,26 +797,6 @@ The `e` function runs PHP's `htmlspecialchars` function with the `double_encode`
 
     // &lt;html&gt;foo&lt;/html&gt;
 
-<a name="method-ends-with"></a>
-#### `Str::endsWith()` {#collection-method}
-
-The `Str::endsWith` method determines if the given string ends with the given value:
-
-    $result = Str::endsWith('This is my name', 'name');
-
-    // true
-
-<a name="method-kebab-case"></a>
-#### `Str::kebab()` {#collection-method}
-
-The `Str::kebab` method converts the given string to `kebab-case`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::kebab('fooBar');
-
-    // foo-bar
-
 <a name="method-preg-replace-array"></a>
 #### `preg_replace_array()` {#collection-method}
 
@@ -840,28 +807,6 @@ The `preg_replace_array` function replaces a given pattern in the string sequent
     $replaced = preg_replace_array('/:[a-z_]+/', ['8:30', '9:00'], $string);
 
     // The event will take place between 8:30 and 9:00
-
-<a name="method-snake-case"></a>
-#### `Str::snake()` {#collection-method}
-
-The `Str::snake` method converts the given string to `snake_case`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::snake('fooBar');
-
-    // foo_bar
-
-<a name="method-starts-with"></a>
-#### `Str::startsWith()` {#collection-method}
-
-The `Str::startsWith` method determines if the given string begins with the given value:
-
-    use Illuminate\Support\Str;
-
-    $result = Str::startsWith('This is my name', 'This');
-
-    // true
 
 <a name="method-str-after"></a>
 #### `Str::after()` {#collection-method}
@@ -885,6 +830,19 @@ The `Str::before` method returns everything before the given value in a string:
 
     // 'This is '
 
+If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
+
+<a name="method-camel-case"></a>
+#### `Str::camel()` {#collection-method}
+
+The `Str::camel` method converts the given string to `camelCase`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::camel('foo_bar');
+
+    // fooBar
+
 <a name="method-str-contains"></a>
 #### `Str::contains()` {#collection-method}
 
@@ -901,6 +859,15 @@ You may also pass an array of values to determine if the given string contains a
     use Illuminate\Support\Str;
 
     $contains = Str::contains('This is my name', ['my', 'foo']);
+
+    // true
+
+<a name="method-ends-with"></a>
+#### `Str::endsWith()` {#collection-method}
+
+The `Str::endsWith` method determines if the given string ends with the given value:
+
+    $result = Str::endsWith('This is my name', 'name');
 
     // true
 
@@ -933,6 +900,17 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
     $matches = Str::is('baz*', 'foobar');
 
     // false
+
+<a name="method-kebab-case"></a>
+#### `Str::kebab()` {#collection-method}
+
+The `Str::kebab` method converts the given string to `kebab-case`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::kebab('fooBar');
+
+    // foo-bar
 
 <a name="method-str-limit"></a>
 #### `Str::limit()` {#collection-method}
@@ -1059,6 +1037,17 @@ The `Str::slug` method generates a URL friendly "slug" from the given string:
 
     // laravel-5-framework
 
+<a name="method-snake-case"></a>
+#### `Str::snake()` {#collection-method}
+
+The `Str::snake` method converts the given string to `snake_case`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::snake('fooBar');
+
+    // foo_bar
+
 <a name="method-str-start"></a>
 #### `Str::start()` {#collection-method}
 
@@ -1073,6 +1062,17 @@ The `Str::start` method adds a single instance of the given value to a string if
     $adjusted = Str::start('/this/string', '/');
 
     // /this/string
+
+<a name="method-starts-with"></a>
+#### `Str::startsWith()` {#collection-method}
+
+The `Str::startsWith` method determines if the given string begins with the given value:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::startsWith('This is my name', 'This');
+
+    // true
 
 <a name="method-studly-case"></a>
 #### `Str::studly()` {#collection-method}
@@ -1096,6 +1096,15 @@ The `Str::title` method converts the given string to `Title Case`:
 
     // A Nice Title Uses The Correct Case
 
+<a name="method-str-uuid"></a>
+#### `Str::uuid()` {#collection-method}
+
+The `Str::uuid` method generates a UUID (version 4):
+
+    use Illuminate\Support\Str;
+
+    return (string) Str::uuid();
+
 <a name="method-trans"></a>
 #### `trans()` {#collection-method}
 
@@ -1113,15 +1122,6 @@ The `trans_choice` function translates the given translation key with inflection
     echo trans_choice('messages.notifications', $unreadCount);
 
 If the specified translation key does not exist, the `trans_choice` function will return the given key. So, using the example above, the `trans_choice` function would return `messages.notifications` if the translation key does not exist.
-
-<a name="method-str-uuid"></a>
-#### `Str::uuid()` {#collection-method}
-
-The `Str::uuid` method generates a UUID (version 4):
-
-    use Illuminate\Support\Str;
-
-    return (string) Str::uuid();
 
 <a name="urls"></a>
 ## URLs
@@ -1152,19 +1152,19 @@ You can configure the asset URL host by setting the `ASSET_URL` variable in your
 
     $url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
 
-<a name="method-secure-asset"></a>
-#### `secure_asset()` {#collection-method}
-
-The `secure_asset` function generates a URL for an asset using HTTPS:
-
-    $url = secure_asset('img/photo.jpg');
-
 <a name="method-route"></a>
 #### `route()` {#collection-method}
 
 The `route` function generates a URL for the given named route:
 
     $url = route('routeName');
+
+<a name="method-secure-asset"></a>
+#### `secure_asset()` {#collection-method}
+
+The `secure_asset` function generates a URL for an asset using HTTPS:
+
+    $url = secure_asset('img/photo.jpg');
 
 If the route accepts parameters, you may pass them as the second argument to the method:
 
@@ -1270,13 +1270,6 @@ The `bcrypt` function [hashes](/docs/{{version}}/hashing) the given value using 
 
     $password = bcrypt('my-secret-password');
 
-<a name="method-broadcast"></a>
-#### `broadcast()` {#collection-method}
-
-The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners:
-
-    broadcast(new UserRegistered($user));
-
 <a name="method-blank"></a>
 #### `blank()` {#collection-method}
 
@@ -1296,6 +1289,13 @@ The `blank` function returns whether the given value is "blank":
     // false
 
 For the inverse of `blank`, see the [`filled`](#method-filled) method.
+
+<a name="method-broadcast"></a>
+#### `broadcast()` {#collection-method}
+
+The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners:
+
+    broadcast(new UserRegistered($user));
 
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
@@ -1639,13 +1639,6 @@ If no Closure is passed to the `tap` function, you may call any method on the gi
         'email' => $email,
     ]);
 
-<a name="method-today"></a>
-#### `today()` {#collection-method}
-
-The `today` function creates a new `Illuminate\Support\Carbon` instance for the current date:
-
-    $today = today();
-
 <a name="method-throw-if"></a>
 #### `throw_if()` {#collection-method}
 
@@ -1671,6 +1664,13 @@ The `throw_unless` function throws the given exception if a given boolean expres
         AuthorizationException::class,
         'You are not allowed to access this page'
     );
+
+<a name="method-today"></a>
+#### `today()` {#collection-method}
+
+The `today` function creates a new `Illuminate\Support\Carbon` instance for the current date:
+
+    $today = today();
 
 <a name="method-trait-uses-recursive"></a>
 #### `trait_uses_recursive()` {#collection-method}
