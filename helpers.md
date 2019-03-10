@@ -779,6 +779,8 @@ The `__` function translates the given translation string or translation key usi
 
     echo __('messages.welcome');
 
+If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
+
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
@@ -829,8 +831,6 @@ The `Str::before` method returns everything before the given value in a string:
     $slice = Str::before('This is my name', 'my name');
 
     // 'This is '
-
-If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
 
 <a name="method-camel-case"></a>
 #### `Str::camel()` {#collection-method}
@@ -1159,13 +1159,6 @@ The `route` function generates a URL for the given named route:
 
     $url = route('routeName');
 
-<a name="method-secure-asset"></a>
-#### `secure_asset()` {#collection-method}
-
-The `secure_asset` function generates a URL for an asset using HTTPS:
-
-    $url = secure_asset('img/photo.jpg');
-
 If the route accepts parameters, you may pass them as the second argument to the method:
 
     $url = route('routeName', ['id' => 1]);
@@ -1173,6 +1166,13 @@ If the route accepts parameters, you may pass them as the second argument to the
 By default, the `route` function generates an absolute URL. If you wish to generate a relative URL, you may pass `false` as the third argument:
 
     $url = route('routeName', ['id' => 1], false);
+
+<a name="method-secure-asset"></a>
+#### `secure_asset()` {#collection-method}
+
+The `secure_asset` function generates a URL for an asset using HTTPS:
+
+    $url = secure_asset('img/photo.jpg');
 
 <a name="method-secure-url"></a>
 #### `secure_url()` {#collection-method}
