@@ -268,7 +268,7 @@ As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/larav
 <a name="model-names-ending-with-irregular-plurals"></a>
 #### Model Names Ending With Irregular Plurals
 
-**Likelihood of Impact: Medium**
+**Likelihood Of Impact: Medium**
 
 As of Laravel 5.8, multi-word model names ending in a word with an irregular plural [are now correctly pluralized](https://github.com/laravel/framework/pull/26421).
 
