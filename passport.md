@@ -761,7 +761,7 @@ Once an access token authenticated request has entered your application, you may
 
 #### Additional Scope Methods
 
-The `scopeIds` method will be return an array of all defined IDs / names:
+The `scopeIds` method will return an array of all defined IDs / names:
 
     Laravel\Passport\Passport::scopeIds();
 
