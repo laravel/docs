@@ -8,7 +8,7 @@
 <div class="content-list" markdown="1">
 - [Cache TTL In Seconds](#cache-ttl-in-seconds)
 - [Cache Lock Safety Improvements](#cache-lock-safety-improvements)
-- [Environment](#environment)
+- [Environment Variable Parsing](#environment-variable-parsing)
 - [Markdown File Directory Change](#markdown-file-directory-change)
 - [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
 </div>
@@ -328,8 +328,8 @@ The `deleted_at` property [will now be automatically casted](https://github.com/
 
 The `getForeignKey` and `getQualifiedForeignKey` methods of the `BelongsTo` relationship have been renamed to `getForeignKeyName` and `getQualifiedForeignKeyName` respectively, making the method names consistent with the other relationships offered by Laravel.
 
-<a name="#environment"></a>
-### Environment
+<a name="#environment-variable-parsing"></a>
+### Environment Variable Parsing
 
 **Likelihood Of Impact: High**
 
