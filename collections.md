@@ -341,20 +341,24 @@ The `count` method returns the total number of items in the collection:
 The `countBy` method counts the occurences of values in the collection. By default, the method counts the occurrences of every element:
 
     $collection = collect([1, 2, 2, 2, 3]);
-    
-    $collection->countBy();
-    
-    // collect([1 => 1, 2 => 3, 3 => 1])
+
+    $counted = $collection->countBy();
+
+    $counted->all();
+
+    // [1 => 1, 2 => 3, 3 => 1]
 
 However, you pass a callback to the `countBy` method to count all items by a custom value:
 
     $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
 
-    $collection->countBy(function ($email) {
+    $counted = $collection->countBy(function ($email) {
         return substr(strrchr($email, "@"), 1);
     });
 
-    // collect(['gmail.com' => 2, 'yahoo.com' => 1])
+    $counted->all();
+
+    // [1 => 1, 2 => 3, 3 => 1]
 
 <a name="method-crossjoin"></a>
 #### `crossJoin()` {#collection-method}
