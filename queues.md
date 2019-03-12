@@ -420,7 +420,7 @@ However, you may also define the maximum number of seconds a job should be allow
 <a name="rate-limiting"></a>
 ### Rate Limiting
 
-> {note} This feature requires that your application can interact with a [Redis server](/docs/{{version}}/redis).
+> {note} This feature requires that your application uses Redis as the queue driver.
 
 If your application interacts with Redis, you may throttle your queued jobs by time or concurrency. This feature can be of assistance when your queued jobs are interacting with APIs that are also rate limited.
 
