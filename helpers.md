@@ -867,6 +867,8 @@ You may also pass an array of values to determine if the given string contains a
 
 The `Str::endsWith` method determines if the given string ends with the given value:
 
+    use Illuminate\Support\Str;
+
     $result = Str::endsWith('This is my name', 'name');
 
     // true
