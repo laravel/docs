@@ -328,7 +328,7 @@ The `deleted_at` property [will now be automatically casted](https://github.com/
 
 The `getForeignKey` and `getQualifiedForeignKey` methods of the `BelongsTo` relationship have been renamed to `getForeignKeyName` and `getQualifiedForeignKeyName` respectively, making the method names consistent with the other relationships offered by Laravel.
 
-<a name="#environment-variable-parsing"></a>
+<a name="environment-variable-parsing"></a>
 ### Environment Variable Parsing
 
 **Likelihood Of Impact: High**
