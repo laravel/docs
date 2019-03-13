@@ -815,6 +815,8 @@ The `e` function runs PHP's `htmlspecialchars` function with the `double_encode`
 
 The `Str::endsWith` method determines if the given string ends with the given value:
 
+    use Illuminate\Support\Str;
+
     $result = Str::endsWith('This is my name', 'name');
 
     // true
