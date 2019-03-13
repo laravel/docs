@@ -944,7 +944,7 @@ The `isNotEmpty` method returns `true` if the collection is not empty; otherwise
 The `join` method joins the collection's values with a string:
 
     collect(['a', 'b', 'c'])->join(', '); // 'a, b, c'
-    collect(['a', 'b', 'c'])->join(', ', ' and '); // 'a, b and c'
+    collect(['a', 'b', 'c'])->join(', ', ', and '); // 'a, b, and c'
     collect(['a', 'b'])->join(', ', ' and '); // 'a and b'
     collect(['a'])->join(', ', ' and '); // 'a'
     collect([])->join(', ', ' and '); // ''
