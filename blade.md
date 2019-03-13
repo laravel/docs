@@ -439,7 +439,7 @@ In some situations, it's useful to embed PHP code into your views. You can use t
 <a name="csrf-field"></a>
 ### CSRF Field
 
-Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](https://laravel.com/docs/{{version}}/csrf) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
+Anytime you define an HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](https://laravel.com/docs/{{version}}/csrf) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
 
     <form method="POST" action="/profile">
         @csrf

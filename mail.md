@@ -170,7 +170,7 @@ Within a mailable class' `build` method, you may use the `view` method to specif
 
 #### Plain Text Emails
 
-If you would like to define a plain-text version of your email, you may use the `text` method. Like the `view` method, the `text` method accepts a template name which will be used to render the contents of the email. You are free to define both a HTML and plain-text version of your message:
+If you would like to define a plain-text version of your email, you may use the `text` method. Like the `view` method, the `text` method accepts a template name which will be used to render the contents of the email. You are free to define both an HTML and plain-text version of your message:
 
     /**
      * Build the message.
