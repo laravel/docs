@@ -195,13 +195,18 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <a name="method-array-add"></a>
 #### `Arr::add()` {#collection-method .first-collection-method}
 
-The `Arr::add` method adds a given key / value pair to an array if the given key doesn't already exist in the array:
+The `Arr::add` method adds a given key / value pair to an array if the given key doesn't already exist in the array or is set to `null`:
 
     use Illuminate\Support\Arr;
 
     $array = Arr::add(['name' => 'Desk'], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
+
+    $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
+
+    // ['name' => 'Desk', 'price' => 100]
+
 
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {#collection-method}
