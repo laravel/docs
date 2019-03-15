@@ -42,6 +42,7 @@ Name | Description
 `single` | A single file or path based logger channel (`StreamHandler`)
 `daily` | A `RotatingFileHandler` based Monolog driver which rotates daily
 `slack` | A `SlackWebhookHandler` based Monolog driver
+`papertrail` | A `SyslogUdpHandler` based Monolog driver
 `syslog` | A `SyslogHandler` based Monolog driver
 `errorlog` | A `ErrorLogHandler` based Monolog driver
 `monolog` | A Monolog factory driver that may use any supported Monolog handler
@@ -64,6 +65,11 @@ Name | Description | Default
 The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
 
 <a name="building-log-stacks"></a>
+
+#### Configuring The PaperTrail Channel
+
+The `papertrail` channel requires `url` and `port`. You can obtain these from [PaperTrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app) and can be defined in the .env file as `PAPERTRAIL_URL` & `PAPERTRAIL_PORT`.
+
 ### Building Log Stacks
 
 As previously mentioned, the `stack` driver allows you to combine multiple channels into a single log channel. To illustrate how to use log stacks, let's take a look at an example configuration that you might see in a production application:
