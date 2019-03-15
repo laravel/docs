@@ -202,6 +202,13 @@ The `Arr::add` method adds a given key / value pair to an array if the given key
     $array = Arr::add(['name' => 'Desk'], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
+    
+Or it updates the value corresponding to the given key of the array with the given value if the given key exists in the array and its corresponding value is `null`:
+
+
+    $array = array_add(['name' => 'Desk', 'price' => null], 'price', 100);
+
+    // ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {#collection-method}
