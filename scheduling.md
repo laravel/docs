@@ -7,6 +7,7 @@
     - [Scheduling Shell Commands](#scheduling-shell-commands)
     - [Schedule Frequency Options](#schedule-frequency-options)
     - [Timezones](#timezones)
+    - [Chaining Artisan Commands](#chaining-artisan-commands)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
     - [Running Tasks On One Server](#running-tasks-on-one-server)
     - [Background Tasks](#background-tasks)
@@ -214,6 +215,19 @@ If you are assigning the same timezone to all of your scheduled tasks, you may w
     }
 
 > {note} Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible.
+
+<a name="chaining-artisan-commands"></a>
+### Chaining Artisan Commands
+
+Using the `then` method, you may chain artisan commands so that they will be executed one after the other:
+
+    $schedule->command('report:generate --date=2019-01-01')
+        ->at('02:00')
+        ->then(
+            function() {
+                $this->call('report:generate', ['--date' => '2019-01-02']);
+            }
+        );
 
 <a name="preventing-task-overlaps"></a>
 ### Preventing Task Overlaps
