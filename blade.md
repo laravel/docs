@@ -195,7 +195,7 @@ However, instead of manually calling `json_encode`, you may use the `@json` Blad
         var app = @json($array);
     </script>
 
-You may also find it useful for seeding Vue components or `data-*` attributes:
+The `@json` directive is also useful for seeding Vue components or `data-*` attributes:
 
     <example-component :some-prop='@json($array)'></example-component>
 
