@@ -188,6 +188,14 @@ The `firstWhere` method signature [has changed](https://github.com/laravel/frame
      */
     public function firstWhere($key, $operator = null, $value = null);
 
+#### The `add` Method
+
+**Likelihood Of Impact: Very Low**
+
+The `add` method [has been moved](https://github.com/laravel/framework/pull/27082) from Eloquent to the base collection. If you were extending `Illuminate\Support\Collection` and the extended class has an `add` method, make sure the method signature matches its parent:
+
+    public function add($item);
+
 <a name="console"></a>
 ### Console
 
