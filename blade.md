@@ -418,6 +418,8 @@ Property  | Description
 `$loop->count`  |  The total number of items in the array being iterated.
 `$loop->first`  |  Whether this is the first iteration through the loop.
 `$loop->last`  |  Whether this is the last iteration through the loop.
+`$loop->even`  |  Whether this is an even iteration through the loop.
+`$loop->odd`  |  Whether this is an odd iteration through the loop.
 `$loop->depth`  |  The nesting level of the current loop.
 `$loop->parent`  |  When in a nested loop, the parent's loop variable.
 
