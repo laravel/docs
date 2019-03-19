@@ -28,6 +28,7 @@
     - [Belongs To Relationships](#updating-belongs-to-relationships)
     - [Many To Many Relationships](#updating-many-to-many-relationships)
 - [Touching Parent Timestamps](#touching-parent-timestamps)
+- [Case Sensitive](#case-sensitive)
 
 <a name="introduction"></a>
 ## Introduction
@@ -931,7 +932,7 @@ You may also alias the relationship count result, allowing multiple counts on th
 
 If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
 
-    $query = App\Post::select(['title', 'body'])->withCount('comments');
+    $posts = App\Post::select(['title', 'body'])->withCount('comments');
 
     echo $posts[0]->title;
     echo $posts[0]->body;
@@ -1303,3 +1304,44 @@ Now, when you update a `Comment`, the owning `Post` will have its `updated_at` c
     $comment->text = 'Edit to this comment!';
 
     $comment->save();
+
+<a name="case-sensitive"></a>
+## Case Sensitive
+
+Eloquent relationships are **case sensitive** by default when defined.
+
+Ideally it is recommended to stick with one word only for your relationships as it makes it easy to read and understand. Despite your greatest efforts, and following PSR-2, you could potentially end up in a scenario where you need to use `camelCase` for one of your relationships:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Post extends Model
+    {
+        /**
+         * Get the user who initially created that collaborative post.
+         */
+        public function mainAuthor()
+        {
+            return $this->belongsTo('App\User');
+        }
+    }
+
+When querying and using your Model, you will need to keep using the same case used to defined the relationship:
+
+    $mainAuthor = App\Post::find(1)->mainAuthor->name;
+
+This is also valid for other operations like [Querying Relations](#querying-relations) or [Eager Loading](#eager-loading):
+
+    $mainAuthor = App\Post::with('mainAuthor')->find(1)->mainAuthor->name;
+
+However, when using `toArray()` or `toJson()` on your Model, you will see those relationships normalized in `snake_case`. Here for example, they key for that relationship will become `main_author` and could be accessed like so:
+
+    $post = App\Post::with('mainAuthor')->find(1)->toArray();
+
+    $post['main_author']['name']
+
+> {note} This behaviour is driven by the `$snakeAttributes` attribute being set to `true` by default on Eloquent Models. You can avoid this by setting it to `false` directly on your Models: `public static $snakeAttributes = false;`. Only the serialization through `toArray()` and `toJson()` will be impacted by this. You will still need to use the same case used to defined your relationships for any other scenario.
+
