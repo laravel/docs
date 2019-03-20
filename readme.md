@@ -4,4 +4,4 @@ You can find the online version of the Laravel documentation at [https://laravel
 
 ## Contribution Guidelines
 
-If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 5.7 would be submitted to the `5.7` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
+If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 5.8 would be submitted to the `5.8` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
