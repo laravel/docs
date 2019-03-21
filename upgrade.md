@@ -352,6 +352,7 @@ Previous behavior:
 New behavior:
 
     ENV_VALUE=foo#bar
+
     env('ENV_VALUE'); // foo
 
 To preserve the previous behavior, you may wrap the environment values in quotes:
@@ -536,6 +537,28 @@ New behavior:
     putenv('APP_ENV=staging');
 
     dump(env('APP_ENV')); // local
+
+The phpdotenv library now also suggest not to allow any functions which are not tread-safe and because of this the `getenv` function in PHP won't return env variables anymore which were set in the `.env` file.
+
+Previous behavior (`APP_ENV` set in `.env`):
+    
+    APP_ENV=local
+
+    dump(getenv('APP_ENV')); // local
+
+    dump(env('APP_ENV')); // local
+
+New behavior:
+
+    APP_ENV=local
+
+    dump(getenv('APP_ENV')); // false
+
+    dump(env('APP_ENV')); // local
+
+When using the `.env` to define environment variables file you should always only rely on the `env` helper.
+
+For more information, please refer to the [phpdotenv upgrade guide](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md).
 
 <a name="testing"></a>
 ### Testing
