@@ -140,7 +140,7 @@ If you are using the `Cache::lock()->get(Closure)` method of interacting with lo
 
 However, if you are manually calling `Cache::lock()->release()`, you must update your code to maintain an instance of the lock. Then, after you are done performing your task, you may call the `release` method on **the same lock instance**. For example:
 
-    if ($lock = Cache::lock('foo', 10)->get()) {
+    if (($lock = Cache::lock('foo', 10))->get()) {
         // Perform task...
 
         $lock->release();
@@ -151,7 +151,7 @@ Sometimes, you may wish to acquire a lock in one process and release it in anoth
     // Within Controller...
     $podcast = Podcast::find(1);
 
-    if ($lock = Cache::lock('foo', 120)->get()) {
+    if (($lock = Cache::lock('foo', 120))->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 
