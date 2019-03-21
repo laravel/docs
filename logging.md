@@ -57,7 +57,7 @@ The `single` and `daily` channels have three optional configuration options: `bu
 Name | Description | Default
 ------------- | ------------- | -------------
 `bubble` | Indicates if messages should bubble up to other channels after being handled | `true`
-`permission` | The log file's permissions | `644`
+`permission` | The log file's permissions | `0644`
 `locking` | Attempt to lock the log file before writing to it | `false`
 
 #### Configuring The Papertrail Channel
