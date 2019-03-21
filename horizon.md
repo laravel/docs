@@ -1,6 +1,7 @@
 # Laravel Horizon
 
 - [Introduction](#introduction)
+- [Upgrading Horizon](#upgrading)
 - [Installation](#installation)
     - [Configuration](#configuration)
     - [Dashboard Authorization](#dashboard-authorization)
@@ -40,9 +41,12 @@ You should also create the `failed_jobs` table which Laravel will use to store a
 
     php artisan migrate
 
-#### Updating Horizon
+<a name="upgrading"></a>
+#### Upgrading Horizon
+    
+When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
 
-When updating Horizon, you should re-publish Horizon's assets:
+When updating to any Horizon version, you should re-publish Horizon's assets:
 
     php artisan horizon:assets
 
