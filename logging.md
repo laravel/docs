@@ -60,8 +60,6 @@ Name | Description | Default
 `permission` | The log file's permissions | `0644`
 `locking` | Attempt to lock the log file before writing to it | `false`
 
-Note that the `permission` option will be passed into PHP's chmod function, which expects octal numbers. Thus to make this work correctly you would need to use `0644` instead of simply `644`, for example. 
-
 #### Configuring The Papertrail Channel
 
 The `papertrail` channel requires the `url` and `port` configuration options. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
