@@ -40,6 +40,12 @@ You should also create the `failed_jobs` table which Laravel will use to store a
 
     php artisan migrate
 
+#### Updating Horizon
+
+When updating Horizon, you should re-publish Horizon's assets:
+
+    php artisan horizon:assets
+
 <a name="configuration"></a>
 ### Configuration
 
