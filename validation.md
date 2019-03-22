@@ -772,12 +772,12 @@ The field under validation must be a successfully uploaded file.
 The field under validation must not be empty when it is present.
 
 <a name="rule-gt"></a>
-#### gt:_field_
+#### gt:_field_ (Greater Than)
 
 The field under validation must be greater than the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the `size` rule.
 
 <a name="rule-gte"></a>
-#### gte:_field_
+#### gte:_field_ (Greater Than or Equal)
 
 The field under validation must be greater than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the `size` rule.
 
@@ -829,12 +829,12 @@ The field under validation must be an IPv6 address.
 The field under validation must be a valid JSON string.
 
 <a name="rule-lt"></a>
-#### lt:_field_
+#### lt:_field_ (Less Than)
 
 The field under validation must be less than the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the `size` rule.
 
 <a name="rule-lte"></a>
-#### lte:_field_
+#### lte:_field_ (Less Than or Equal)
 
 The field under validation must be less than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the `size` rule.
 
