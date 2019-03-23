@@ -50,9 +50,9 @@ Informal discussion regarding bugs, new features, and implementation of existing
 
 **All** bug fixes should be sent to the latest stable branch or to the [current LTS branch](/docs/{{version}}/releases#support-policy). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
-**Minor** features that are **fully backwards compatible** with the current Laravel release may be sent to the latest stable branch.
+**Minor** features that are **fully backwards compatible** with the current release may be sent to the latest stable branch.
 
-**Major** new features should always be sent to the `master` branch, which contains the upcoming Laravel release.
+**Major** new features should always be sent to the `master` branch, which contains the upcoming release.
 
 If you are unsure if your feature qualifies as a major or minor, please ask Taylor Otwell in the `#internals` channel of the [Laravel Discord server](https://discordapp.com/invite/mPZNm7A).
 
