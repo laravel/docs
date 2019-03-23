@@ -271,20 +271,13 @@ As a result, the `->>` operator is no longer supported or necessary.
 
 As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/laravel/framework/pull/25995) is SQLite 3.7.11. If you are using an older SQLite version, you should update it (SQLite 3.8.8+ is recommended).
 
-#### New ID columns are bigIncrements
+#### Migrations & `bigIncrements`
 
 **Likelihood Of Impact: None**
 
-[As of Laravel 5.8](https://github.com/laravel/framework/pull/26454), any newly generated migrations will use the `bigIncrements` method for ID columns by default, where previous versions used to use the `increments` method.
+[As of Laravel 5.8](https://github.com/laravel/framework/pull/26454), migration stubs use the `bigIncrements` method ID columns by default. Previously, ID columns were created using the `increments` method.
 
-This will not affect any existing code in your project, but you should be aware when setting up foreign keys on new migrations that both columns involved will need to be the same type; a column created with the `increments` method can not reference a column created with the  `bigIncrements` method.
-
-    Schema::create('user_feedback', function (Blueprint $table) {
-        $table->bigIncrements('id');
-        $table->integer('user_id')->unsigned();
-        $table->foreign('user_id')->references('id')->on('users');
-        $table->string('body');
-    });
+This will not affect any existing code in your project; however, be aware that foreign key columns must be of the same type. Therefore, a column created using the `increments` method can not reference a column created using the `bigIncrements` method.
 
 <a name="eloquent"></a>
 ### Eloquent
