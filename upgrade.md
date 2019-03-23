@@ -275,7 +275,7 @@ As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/larav
 
 **Likelihood Of Impact: None**
 
-[As of Laravel 5.8](https://github.com/laravel/framework/pull/26454), migration stubs use the `bigIncrements` method ID columns by default. Previously, ID columns were created using the `increments` method.
+[As of Laravel 5.8](https://github.com/laravel/framework/pull/26472), migration stubs use the `bigIncrements` method on ID columns by default. Previously, ID columns were created using the `increments` method.
 
 This will not affect any existing code in your project; however, be aware that foreign key columns must be of the same type. Therefore, a column created using the `increments` method can not reference a column created using the `bigIncrements` method.
 
