@@ -347,7 +347,7 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
             Storage::disk('photos')->assertExists('photo1.jpg');
             Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);
 
-            // Assert one or multiple files do not exist...
+            // Assert one or more files were not stored...
             Storage::disk('photos')->assertMissing('missing.jpg');
             Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
         }
