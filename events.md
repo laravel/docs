@@ -24,7 +24,7 @@ Events serve as a great way to decouple various aspects of your application, sin
 <a name="registering-events-and-listeners"></a>
 ## Registering Events & Listeners
 
-The `EventServiceProvider` included with your Laravel application provides a convenient place to register all of your application's event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). Of course, you may add as many events to this array as your application requires. For example, let's add a `OrderShipped` event:
+The `EventServiceProvider` included with your Laravel application provides a convenient place to register all of your application's event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add a `OrderShipped` event:
 
     /**
      * The event listener mappings for the application.
@@ -40,7 +40,7 @@ The `EventServiceProvider` included with your Laravel application provides a con
 <a name="generating-events-and-listeners"></a>
 ### Generating Events & Listeners
 
-Of course, manually creating the files for each event and listener is cumbersome. Instead, add listeners and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or listeners that are listed in your `EventServiceProvider`. Of course, events and listeners that already exist will be left untouched:
+Of course, manually creating the files for each event and listener is cumbersome. Instead, add listeners and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or listeners that are listed in your `EventServiceProvider`. Events and listeners that already exist will be left untouched:
 
     php artisan event:generate
 
@@ -167,7 +167,7 @@ That's it! Now, when this listener is called for an event, it will be automatica
 
 #### Customizing The Queue Connection & Queue Name
 
-If you would like to customize the queue connection and queue name used by an event listener, you may define `$connection` and `$queue` properties on your listener class:
+If you would like to customize the queue connection, queue name, or queue delay time of an event listener, you may define the `$connection`, `$queue`, or `$delay` properties on your listener class:
 
     <?php
 
@@ -191,6 +191,13 @@ If you would like to customize the queue connection and queue name used by an ev
          * @var string|null
          */
         public $queue = 'listeners';
+
+        /**
+         * The time (seconds) before the job should be processed.
+         *
+         * @var int
+         */
+        public $delay = 60;
     }
 
 <a name="manually-accessing-the-queue"></a>

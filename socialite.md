@@ -1,6 +1,7 @@
 # Laravel Socialite
 
 - [Introduction](#introduction)
+- [Upgrading Socialite](#upgrading-socialite)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Routing](#routing)
@@ -16,6 +17,11 @@ In addition to typical, form based authentication, Laravel also provides a simpl
 
 > {tip} Adapters for other platforms are listed at the community driven [Socialite Providers](https://socialiteproviders.github.io/) website.
 
+<a name="upgrading-socialite"></a>
+## Upgrading Socialite
+
+When upgrading to a new major version of Socialite, it's important that you carefully review [the upgrade guide](https://github.com/laravel/socialite/blob/master/UPGRADE.md).
+
 <a name="installation"></a>
 ## Installation
 
@@ -29,8 +35,8 @@ To get started with Socialite, use Composer to add the package to your project's
 Before using Socialite, you will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `linkedin`, `google`, `github`, `gitlab` or `bitbucket`, depending on the providers your application requires. For example:
 
     'github' => [
-        'client_id' => env('GITHUB_CLIENT_ID'),         // Your GitHub Client ID
-        'client_secret' => env('GITHUB_CLIENT_SECRET'), // Your GitHub Client Secret
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect' => 'http://your-callback-url',
     ],
 
@@ -74,7 +80,7 @@ Next, you are ready to authenticate users! You will need two routes: one for red
 
 The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider.
 
-Of course, you will need to define routes to your controller methods:
+You will need to define routes to your controller methods:
 
     Route::get('login/github', 'Auth\LoginController@redirectToProvider');
     Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');

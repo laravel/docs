@@ -457,7 +457,7 @@ You may also use a mass-update query to mark all of the notifications as read wi
 
     $user->unreadNotifications()->update(['read_at' => now()]);
 
-Of course, you may `delete` the notifications to remove them from the table entirely:
+You may `delete` the notifications to remove them from the table entirely:
 
     $user->notifications()->delete();
 
@@ -645,7 +645,7 @@ When sending notifications via the `nexmo` channel, the notification system will
 
 Before you can send notifications via Slack, you must install the notification channel via Composer:
 
-    composer require laravel/slack-notifiation-channel
+    composer require laravel/slack-notification-channel
 
 You will also need to configure an ["Incoming Webhook"](https://api.slack.com/incoming-webhooks) integration for your Slack team. This integration will provide you with a URL you may use when [routing Slack notifications](#routing-slack-notifications).
 

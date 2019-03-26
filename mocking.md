@@ -1,6 +1,7 @@
 # Mocking
 
 - [Introduction](#introduction)
+- [Mocking Objects](#mocking-objects)
 - [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
     - [Scoped Event Fakes](#scoped-event-fakes)
@@ -15,7 +16,27 @@
 
 When testing Laravel applications, you may wish to "mock" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that dispatches an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners, since the event listeners can be tested in their own test case.
 
-Laravel provides helpers for mocking events, jobs, and facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls. Of course, you are free to use [Mockery](http://docs.mockery.io/en/latest/) or PHPUnit to create your own mocks or spies.
+Laravel provides helpers for mocking events, jobs, and facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls. You can also use [Mockery](http://docs.mockery.io/en/latest/) or PHPUnit to create your own mocks or spies.
+
+<a name="mocking-objects"></a>
+## Mocking Objects
+
+When mocking an object that is going to be injected into your application via Laravel's service container, you will need to bind your mocked instance into the container as an `instance` binding. This will instruct the container to use your mocked instance of the object instead of constructing the object itself:
+
+    use Mockery;
+    use App\Service;
+
+    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    }));
+
+In order to make this more convenient, you may use the `mock` method, which is provided by Laravel's base test case class:
+
+    use App\Service;
+
+    $this->mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    });
 
 <a name="bus-fake"></a>
 ## Bus Fake
@@ -168,6 +189,9 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
         {
             Mail::fake();
 
+            // Assert that no mailables were sent...
+            Mail::assertNothingSent();
+
             // Perform order shipping...
 
             Mail::assertSent(OrderShipped::class, function ($mail) use ($order) {
@@ -216,6 +240,9 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
         {
             Notification::fake();
 
+            // Assert that no notifications were sent...
+            Notification::assertNothingSent();
+
             // Perform order shipping...
 
             Notification::assertSentTo(
@@ -235,11 +262,11 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
-            
+
             // Assert a notification was sent via Notification::route() method...
             Notification::assertSentTo(
                 new AnonymousNotifiable, OrderShipped::class
-            );            
+            );
         }
     }
 
@@ -264,6 +291,9 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
         {
             Queue::fake();
 
+            // Assert that no jobs were pushed...
+            Queue::assertNothingPushed();
+
             // Perform order shipping...
 
             Queue::assertPushed(ShipOrder::class, function ($job) use ($order) {
@@ -278,7 +308,7 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
 
             // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
-          
+
             // Assert a job was pushed with a specific chain...
             Queue::assertPushedWithChain(ShipOrder::class, [
                 AnotherJob::class,

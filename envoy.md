@@ -1,4 +1,4 @@
-# Envoy Task Runner
+# Laravel Envoy
 
 - [Introduction](#introduction)
     - [Installation](#installation)
@@ -55,7 +55,7 @@ You can force a script to run locally by specifying the server's IP address as `
 <a name="setup"></a>
 ### Setup
 
-Sometimes, you may need to execute some PHP code before executing your Envoy tasks. You may use the ```@setup``` directive to declare variables and do other general PHP work before any of your other tasks are executed:
+Sometimes, you may need to execute some PHP code before executing your Envoy tasks. You may use the `@setup` directive to declare variables and do other general PHP work before any of your other tasks are executed:
 
     @setup
         $now = new DateTime();
@@ -78,7 +78,7 @@ If needed, you may pass option values into Envoy tasks using the command line:
 
     envoy run deploy --branch=master
 
-You may access the options in your tasks via Blade's "echo" syntax. Of course, you may also use `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
+You may access the options in your tasks via Blade's "echo" syntax. You may also use `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
 
     @servers(['web' => '192.168.1.1'])
 
@@ -146,7 +146,7 @@ By default, tasks will be executed on each server serially. In other words, a ta
 
 To run a task or story that is defined in your `Envoy.blade.php` file, execute Envoy's `run` command, passing the name of the task or story you would like to execute. Envoy will run the task and display the output from the servers as the task is running:
 
-    envoy run task
+    envoy run deploy
 
 <a name="confirming-task-execution"></a>
 ### Confirming Task Execution

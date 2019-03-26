@@ -26,27 +26,27 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <div class="collection-method-list" markdown="1">
 
-[array_add](#method-array-add)
-[array_collapse](#method-array-collapse)
-[array_divide](#method-array-divide)
-[array_dot](#method-array-dot)
-[array_except](#method-array-except)
-[array_first](#method-array-first)
-[array_flatten](#method-array-flatten)
-[array_forget](#method-array-forget)
-[array_get](#method-array-get)
-[array_has](#method-array-has)
-[array_last](#method-array-last)
-[array_only](#method-array-only)
-[array_pluck](#method-array-pluck)
-[array_prepend](#method-array-prepend)
-[array_pull](#method-array-pull)
-[array_random](#method-array-random)
-[array_set](#method-array-set)
-[array_sort](#method-array-sort)
-[array_sort_recursive](#method-array-sort-recursive)
-[array_where](#method-array-where)
-[array_wrap](#method-array-wrap)
+[Arr::add](#method-array-add)
+[Arr::collapse](#method-array-collapse)
+[Arr::divide](#method-array-divide)
+[Arr::dot](#method-array-dot)
+[Arr::except](#method-array-except)
+[Arr::first](#method-array-first)
+[Arr::flatten](#method-array-flatten)
+[Arr::forget](#method-array-forget)
+[Arr::get](#method-array-get)
+[Arr::has](#method-array-has)
+[Arr::last](#method-array-last)
+[Arr::only](#method-array-only)
+[Arr::pluck](#method-array-pluck)
+[Arr::prepend](#method-array-prepend)
+[Arr::pull](#method-array-pull)
+[Arr::random](#method-array-random)
+[Arr::set](#method-array-set)
+[Arr::sort](#method-array-sort)
+[Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::where](#method-array-where)
+[Arr::wrap](#method-array-wrap)
 [data_fill](#method-data-fill)
 [data_get](#method-data-get)
 [data_set](#method-data-set)
@@ -74,34 +74,34 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <div class="collection-method-list" markdown="1">
 
 [\__](#method-__)
-[camel_case](#method-camel-case)
 [class_basename](#method-class-basename)
 [e](#method-e)
-[ends_with](#method-ends-with)
-[kebab_case](#method-kebab-case)
 [preg_replace_array](#method-preg-replace-array)
-[snake_case](#method-snake-case)
-[starts_with](#method-starts-with)
-[str_after](#method-str-after)
-[str_before](#method-str-before)
-[str_contains](#method-str-contains)
-[str_finish](#method-str-finish)
-[str_is](#method-str-is)
-[str_limit](#method-str-limit)
+[Str::after](#method-str-after)
+[Str::before](#method-str-before)
+[Str::camel](#method-camel-case)
+[Str::contains](#method-str-contains)
+[Str::endsWith](#method-ends-with)
+[Str::finish](#method-str-finish)
+[Str::is](#method-str-is)
+[Str::kebab](#method-kebab-case)
+[Str::limit](#method-str-limit)
 [Str::orderedUuid](#method-str-ordered-uuid)
-[str_plural](#method-str-plural)
-[str_random](#method-str-random)
-[str_replace_array](#method-str-replace-array)
-[str_replace_first](#method-str-replace-first)
-[str_replace_last](#method-str-replace-last)
-[str_singular](#method-str-singular)
-[str_slug](#method-str-slug)
-[str_start](#method-str-start)
-[studly_case](#method-studly-case)
-[title_case](#method-title-case)
+[Str::plural](#method-str-plural)
+[Str::random](#method-str-random)
+[Str::replaceArray](#method-str-replace-array)
+[Str::replaceFirst](#method-str-replace-first)
+[Str::replaceLast](#method-str-replace-last)
+[Str::singular](#method-str-singular)
+[Str::slug](#method-str-slug)
+[Str::snake](#method-snake-case)
+[Str::start](#method-str-start)
+[Str::startsWith](#method-starts-with)
+[Str::studly](#method-studly-case)
+[Str::title](#method-title-case)
+[Str::uuid](#method-str-uuid)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
-[Str::uuid](#method-str-uuid)
 
 </div>
 
@@ -111,8 +111,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 [action](#method-action)
 [asset](#method-asset)
-[secure_asset](#method-secure-asset)
 [route](#method-route)
+[secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
 [url](#method-url)
 
@@ -164,9 +164,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [retry](#method-retry)
 [session](#method-session)
 [tap](#method-tap)
-[today](#method-today)
 [throw_if](#method-throw-if)
 [throw_unless](#method-throw-unless)
+[today](#method-today)
 [trait_uses_recursive](#method-trait-uses-recursive)
 [transform](#method-transform)
 [validator](#method-validator)
@@ -193,64 +193,76 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 ## Arrays & Objects
 
 <a name="method-array-add"></a>
-#### `array_add()` {#collection-method .first-collection-method}
+#### `Arr::add()` {#collection-method .first-collection-method}
 
-The `array_add` function adds a given key / value pair to an array if the given key doesn't already exist in the array:
+The `Arr::add` method adds a given key / value pair to an array if the given key doesn't already exist in the array:
 
-    $array = array_add(['name' => 'Desk'], 'price', 100);
+    use Illuminate\Support\Arr;
+
+    $array = Arr::add(['name' => 'Desk'], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-collapse"></a>
-#### `array_collapse()` {#collection-method}
+#### `Arr::collapse()` {#collection-method}
 
-The `array_collapse` function collapses an array of arrays into a single array:
+The `Arr::collapse` method collapses an array of arrays into a single array:
 
-    $array = array_collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+    use Illuminate\Support\Arr;
+
+    $array = Arr::collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 <a name="method-array-divide"></a>
-#### `array_divide()` {#collection-method}
+#### `Arr::divide()` {#collection-method}
 
-The `array_divide` function returns two arrays, one containing the keys, and the other containing the values of the given array:
+The `Arr::divide` method returns two arrays, one containing the keys, and the other containing the values of the given array:
 
-    [$keys, $values] = array_divide(['name' => 'Desk']);
+    use Illuminate\Support\Arr;
+
+    [$keys, $values] = Arr::divide(['name' => 'Desk']);
 
     // $keys: ['name']
 
     // $values: ['Desk']
 
 <a name="method-array-dot"></a>
-#### `array_dot()` {#collection-method}
+#### `Arr::dot()` {#collection-method}
 
-The `array_dot` function flattens a multi-dimensional array into a single level array that uses "dot" notation to indicate depth:
+The `Arr::dot` method flattens a multi-dimensional array into a single level array that uses "dot" notation to indicate depth:
+
+    use Illuminate\Support\Arr;
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    $flattened = array_dot($array);
+    $flattened = Arr::dot($array);
 
     // ['products.desk.price' => 100]
 
 <a name="method-array-except"></a>
-#### `array_except()` {#collection-method}
+#### `Arr::except()` {#collection-method}
 
-The `array_except` function removes the given key / value pairs from an array:
+The `Arr::except` method removes the given key / value pairs from an array:
+
+    use Illuminate\Support\Arr;
 
     $array = ['name' => 'Desk', 'price' => 100];
 
-    $filtered = array_except($array, ['price']);
+    $filtered = Arr::except($array, ['price']);
 
     // ['name' => 'Desk']
 
 <a name="method-array-first"></a>
-#### `array_first()` {#collection-method}
+#### `Arr::first()` {#collection-method}
 
-The `array_first` function returns the first element of an array passing a given truth test:
+The `Arr::first` method returns the first element of an array passing a given truth test:
+
+    use Illuminate\Support\Arr;
 
     $array = [100, 200, 300];
 
-    $first = array_first($array, function ($value, $key) {
+    $first = Arr::first($array, function ($value, $key) {
         return $value >= 150;
     });
 
@@ -258,70 +270,84 @@ The `array_first` function returns the first element of an array passing a given
 
 A default value may also be passed as the third parameter to the method. This value will be returned if no value passes the truth test:
 
-    $first = array_first($array, $callback, $default);
+    use Illuminate\Support\Arr;
+
+    $first = Arr::first($array, $callback, $default);
 
 <a name="method-array-flatten"></a>
-#### `array_flatten()` {#collection-method}
+#### `Arr::flatten()` {#collection-method}
 
-The `array_flatten` function flattens a multi-dimensional array into a single level array:
+The `Arr::flatten` method flattens a multi-dimensional array into a single level array:
+
+    use Illuminate\Support\Arr;
 
     $array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
 
-    $flattened = array_flatten($array);
+    $flattened = Arr::flatten($array);
 
     // ['Joe', 'PHP', 'Ruby']
 
 <a name="method-array-forget"></a>
-#### `array_forget()` {#collection-method}
+#### `Arr::forget()` {#collection-method}
 
-The `array_forget` function removes a given key / value pair from a deeply nested array using "dot" notation:
+The `Arr::forget` method removes a given key / value pair from a deeply nested array using "dot" notation:
+
+    use Illuminate\Support\Arr;
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    array_forget($array, 'products.desk');
+    Arr::forget($array, 'products.desk');
 
     // ['products' => []]
 
 <a name="method-array-get"></a>
-#### `array_get()` {#collection-method}
+#### `Arr::get()` {#collection-method}
 
-The `array_get` function retrieves a value from a deeply nested array using "dot" notation:
+The `Arr::get` method retrieves a value from a deeply nested array using "dot" notation:
+
+    use Illuminate\Support\Arr;
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    $price = array_get($array, 'products.desk.price');
+    $price = Arr::get($array, 'products.desk.price');
 
     // 100
 
-The `array_get` function also accepts a default value, which will be returned if the specific key is not found:
+The `Arr::get` method also accepts a default value, which will be returned if the specific key is not found:
 
-    $discount = array_get($array, 'products.desk.discount', 0);
+    use Illuminate\Support\Arr;
+
+    $discount = Arr::get($array, 'products.desk.discount', 0);
 
     // 0
 
 <a name="method-array-has"></a>
-#### `array_has()` {#collection-method}
+#### `Arr::has()` {#collection-method}
 
-The `array_has` function checks whether a given item or items exists in an array using "dot" notation:
+The `Arr::has` method checks whether a given item or items exists in an array using "dot" notation:
+
+    use Illuminate\Support\Arr;
 
     $array = ['product' => ['name' => 'Desk', 'price' => 100]];
 
-    $contains = array_has($array, 'product.name');
+    $contains = Arr::has($array, 'product.name');
 
     // true
 
-    $contains = array_has($array, ['product.price', 'product.discount']);
+    $contains = Arr::has($array, ['product.price', 'product.discount']);
 
     // false
 
 <a name="method-array-last"></a>
-#### `array_last()` {#collection-method}
+#### `Arr::last()` {#collection-method}
 
-The `array_last` function returns the last element of an array passing a given truth test:
+The `Arr::last` method returns the last element of an array passing a given truth test:
+
+    use Illuminate\Support\Arr;
 
     $array = [100, 200, 300, 110];
 
-    $last = array_last($array, function ($value, $key) {
+    $last = Arr::last($array, function ($value, $key) {
         return $value >= 150;
     });
 
@@ -329,66 +355,80 @@ The `array_last` function returns the last element of an array passing a given t
 
 A default value may be passed as the third argument to the method. This value will be returned if no value passes the truth test:
 
-    $last = array_last($array, $callback, $default);
+    use Illuminate\Support\Arr;
+
+    $last = Arr::last($array, $callback, $default);
 
 <a name="method-array-only"></a>
-#### `array_only()` {#collection-method}
+#### `Arr::only()` {#collection-method}
 
-The `array_only` function returns only the specified key / value pairs from the given array:
+The `Arr::only` method returns only the specified key / value pairs from the given array:
+
+    use Illuminate\Support\Arr;
 
     $array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 
-    $slice = array_only($array, ['name', 'price']);
+    $slice = Arr::only($array, ['name', 'price']);
 
     // ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-pluck"></a>
-#### `array_pluck()` {#collection-method}
+#### `Arr::pluck()` {#collection-method}
 
-The `array_pluck` function retrieves all of the values for a given key from an array:
+The `Arr::pluck` method retrieves all of the values for a given key from an array:
+
+    use Illuminate\Support\Arr;
 
     $array = [
         ['developer' => ['id' => 1, 'name' => 'Taylor']],
         ['developer' => ['id' => 2, 'name' => 'Abigail']],
     ];
 
-    $names = array_pluck($array, 'developer.name');
+    $names = Arr::pluck($array, 'developer.name');
 
     // ['Taylor', 'Abigail']
 
 You may also specify how you wish the resulting list to be keyed:
 
-    $names = array_pluck($array, 'developer.name', 'developer.id');
+    use Illuminate\Support\Arr;
+
+    $names = Arr::pluck($array, 'developer.name', 'developer.id');
 
     // [1 => 'Taylor', 2 => 'Abigail']
 
 <a name="method-array-prepend"></a>
-#### `array_prepend()` {#collection-method}
+#### `Arr::prepend()` {#collection-method}
 
-The `array_prepend` function will push an item onto the beginning of an array:
+The `Arr::prepend` method will push an item onto the beginning of an array:
+
+    use Illuminate\Support\Arr;
 
     $array = ['one', 'two', 'three', 'four'];
 
-    $array = array_prepend($array, 'zero');
+    $array = Arr::prepend($array, 'zero');
 
     // ['zero', 'one', 'two', 'three', 'four']
 
 If needed, you may specify the key that should be used for the value:
 
+    use Illuminate\Support\Arr;
+
     $array = ['price' => 100];
 
-    $array = array_prepend($array, 'Desk', 'name');
+    $array = Arr::prepend($array, 'Desk', 'name');
 
     // ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-pull"></a>
-#### `array_pull()` {#collection-method}
+#### `Arr::pull()` {#collection-method}
 
-The `array_pull` function returns and removes a key / value pair from an array:
+The `Arr::pull` method returns and removes a key / value pair from an array:
+
+    use Illuminate\Support\Arr;
 
     $array = ['name' => 'Desk', 'price' => 100];
 
-    $name = array_pull($array, 'name');
+    $name = Arr::pull($array, 'name');
 
     // $name: Desk
 
@@ -396,48 +436,60 @@ The `array_pull` function returns and removes a key / value pair from an array:
 
 A default value may be passed as the third argument to the method. This value will be returned if the key doesn't exist:
 
-    $value = array_pull($array, $key, $default);
+    use Illuminate\Support\Arr;
+
+    $value = Arr::pull($array, $key, $default);
 
 <a name="method-array-random"></a>
-#### `array_random()` {#collection-method}
+#### `Arr::random()` {#collection-method}
 
-The `array_random` function returns a random value from an array:
+The `Arr::random` method returns a random value from an array:
+
+    use Illuminate\Support\Arr;
 
     $array = [1, 2, 3, 4, 5];
 
-    $random = array_random($array);
+    $random = Arr::random($array);
 
     // 4 - (retrieved randomly)
 
 You may also specify the number of items to return as an optional second argument. Note that providing this argument will return an array, even if only one item is desired:
 
-    $items = array_random($array, 2);
+    use Illuminate\Support\Arr;
+
+    $items = Arr::random($array, 2);
 
     // [2, 5] - (retrieved randomly)
 
 <a name="method-array-set"></a>
-#### `array_set()` {#collection-method}
+#### `Arr::set()` {#collection-method}
 
-The `array_set` function sets a value within a deeply nested array using "dot" notation:
+The `Arr::set` method sets a value within a deeply nested array using "dot" notation:
+
+    use Illuminate\Support\Arr;
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    array_set($array, 'products.desk.price', 200);
+    Arr::set($array, 'products.desk.price', 200);
 
     // ['products' => ['desk' => ['price' => 200]]]
 
 <a name="method-array-sort"></a>
-#### `array_sort()` {#collection-method}
+#### `Arr::sort()` {#collection-method}
 
-The `array_sort` function sorts an array by its values:
+The `Arr::sort` method sorts an array by its values:
+
+    use Illuminate\Support\Arr;
 
     $array = ['Desk', 'Table', 'Chair'];
 
-    $sorted = array_sort($array);
+    $sorted = Arr::sort($array);
 
     // ['Chair', 'Desk', 'Table']
 
 You may also sort the array by the results of the given Closure:
+
+    use Illuminate\Support\Arr;
 
     $array = [
         ['name' => 'Desk'],
@@ -445,7 +497,7 @@ You may also sort the array by the results of the given Closure:
         ['name' => 'Chair'],
     ];
 
-    $sorted = array_values(array_sort($array, function ($value) {
+    $sorted = array_values(Arr::sort($array, function ($value) {
         return $value['name'];
     }));
 
@@ -458,9 +510,11 @@ You may also sort the array by the results of the given Closure:
     */
 
 <a name="method-array-sort-recursive"></a>
-#### `array_sort_recursive()` {#collection-method}
+#### `Arr::sortRecursive()` {#collection-method}
 
-The `array_sort_recursive` function recursively sorts an array using the `sort` function for numeric sub=arrays and `ksort` for associative sub-arrays:
+The `Arr::sortRecursive` method recursively sorts an array using the `sort` function for numeric sub=arrays and `ksort` for associative sub-arrays:
+
+    use Illuminate\Support\Arr;
 
     $array = [
         ['Roman', 'Taylor', 'Li'],
@@ -468,7 +522,7 @@ The `array_sort_recursive` function recursively sorts an array using the `sort` 
         ['one' => 1, 'two' => 2, 'three' => 3],
     ];
 
-    $sorted = array_sort_recursive($array);
+    $sorted = Arr::sortRecursive($array);
 
     /*
         [
@@ -479,34 +533,40 @@ The `array_sort_recursive` function recursively sorts an array using the `sort` 
     */
 
 <a name="method-array-where"></a>
-#### `array_where()` {#collection-method}
+#### `Arr::where()` {#collection-method}
 
-The `array_where` function filters an array using the given Closure:
+The `Arr::where` method filters an array using the given Closure:
+
+    use Illuminate\Support\Arr;
 
     $array = [100, '200', 300, '400', 500];
 
-    $filtered = array_where($array, function ($value, $key) {
+    $filtered = Arr::where($array, function ($value, $key) {
         return is_string($value);
     });
 
     // [1 => '200', 3 => '400']
 
 <a name="method-array-wrap"></a>
-#### `array_wrap()` {#collection-method}
+#### `Arr::wrap()` {#collection-method}
 
-The `array_wrap` function wraps the given value in an array. If the given value is already an array it will not be changed:
+The `Arr::wrap` method wraps the given value in an array. If the given value is already an array it will not be changed:
+
+    use Illuminate\Support\Arr;
 
     $string = 'Laravel';
 
-    $array = array_wrap($string);
+    $array = Arr::wrap($string);
 
     // ['Laravel']
 
 If the given value is null, an empty array will be returned:
 
+    use Illuminate\Support\Arr;
+
     $nothing = null;
 
-    $array = array_wrap($nothing);
+    $array = Arr::wrap($nothing);
 
     // []
 
@@ -604,7 +664,7 @@ This function also accepts wildcards and will set values on the target according
         ]
     */
 
-By default, any existing values are overwritten. If you wish to only set a value if it doesn't exist, you may pass `false` as the third argument:
+By default, any existing values are overwritten. If you wish to only set a value if it doesn't exist, you may pass `false` as the fourth argument:
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
@@ -719,21 +779,10 @@ The `__` function translates the given translation string or translation key usi
 
     echo __('messages.welcome');
 
-If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
-
-<a name="method-camel-case"></a>
-#### `camel_case()` {#collection-method}
-
-The `camel_case` function converts the given string to `camelCase`:
-
-    $converted = camel_case('foo_bar');
-
-    // fooBar
-
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
-The `class_basename` returns the class name of the given class with the class' namespace removed:
+The `class_basename` function returns the class name of the given class with the class' namespace removed:
 
     $class = class_basename('Foo\Bar\Baz');
 
@@ -748,24 +797,6 @@ The `e` function runs PHP's `htmlspecialchars` function with the `double_encode`
 
     // &lt;html&gt;foo&lt;/html&gt;
 
-<a name="method-ends-with"></a>
-#### `ends_with()` {#collection-method}
-
-The `ends_with` function determines if the given string ends with the given value:
-
-    $result = ends_with('This is my name', 'name');
-
-    // true
-
-<a name="method-kebab-case"></a>
-#### `kebab_case()` {#collection-method}
-
-The `kebab_case` function converts the given string to `kebab-case`:
-
-    $converted = kebab_case('fooBar');
-
-    // foo-bar
-
 <a name="method-preg-replace-array"></a>
 #### `preg_replace_array()` {#collection-method}
 
@@ -777,95 +808,126 @@ The `preg_replace_array` function replaces a given pattern in the string sequent
 
     // The event will take place between 8:30 and 9:00
 
-<a name="method-snake-case"></a>
-#### `snake_case()` {#collection-method}
-
-The `snake_case` function converts the given string to `snake_case`:
-
-    $converted = snake_case('fooBar');
-
-    // foo_bar
-
-<a name="method-starts-with"></a>
-#### `starts_with()` {#collection-method}
-
-The `starts_with` function determines if the given string begins with the given value:
-
-    $result = starts_with('This is my name', 'This');
-
-    // true
-
 <a name="method-str-after"></a>
-#### `str_after()` {#collection-method}
+#### `Str::after()` {#collection-method}
 
-The `str_after` function returns everything after the given value in a string:
+The `Str::after` method returns everything after the given value in a string:
 
-    $slice = str_after('This is my name', 'This is');
+    use Illuminate\Support\Str;
+
+    $slice = Str::after('This is my name', 'This is');
 
     // ' my name'
 
 <a name="method-str-before"></a>
-#### `str_before()` {#collection-method}
+#### `Str::before()` {#collection-method}
 
-The `str_before` function returns everything before the given value in a string:
+The `Str::before` method returns everything before the given value in a string:
 
-    $slice = str_before('This is my name', 'my name');
+    use Illuminate\Support\Str;
+
+    $slice = Str::before('This is my name', 'my name');
 
     // 'This is '
 
+If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
+
+<a name="method-camel-case"></a>
+#### `Str::camel()` {#collection-method}
+
+The `Str::camel` method converts the given string to `camelCase`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::camel('foo_bar');
+
+    // fooBar
+
 <a name="method-str-contains"></a>
-#### `str_contains()` {#collection-method}
+#### `Str::contains()` {#collection-method}
 
-The `str_contains` function determines if the given string contains the given value (case sensitive):
+The `Str::contains` method determines if the given string contains the given value (case sensitive):
 
-    $contains = str_contains('This is my name', 'my');
+    use Illuminate\Support\Str;
+
+    $contains = Str::contains('This is my name', 'my');
 
     // true
 
 You may also pass an array of values to determine if the given string contains any of the values:
 
-    $contains = str_contains('This is my name', ['my', 'foo']);
+    use Illuminate\Support\Str;
+
+    $contains = Str::contains('This is my name', ['my', 'foo']);
+
+    // true
+
+<a name="method-ends-with"></a>
+#### `Str::endsWith()` {#collection-method}
+
+The `Str::endsWith` method determines if the given string ends with the given value:
+
+    $result = Str::endsWith('This is my name', 'name');
 
     // true
 
 <a name="method-str-finish"></a>
-#### `str_finish()` {#collection-method}
+#### `Str::finish()` {#collection-method}
 
-The `str_finish` function adds a single instance of the given value to a string if it does not already end with the value:
+The `Str::finish` method adds a single instance of the given value to a string if it does not already end with the value:
 
-    $adjusted = str_finish('this/string', '/');
+    use Illuminate\Support\Str;
+
+    $adjusted = Str::finish('this/string', '/');
 
     // this/string/
 
-    $adjusted = str_finish('this/string/', '/');
+    $adjusted = Str::finish('this/string/', '/');
 
     // this/string/
 
 <a name="method-str-is"></a>
-#### `str_is()` {#collection-method}
+#### `Str::is()` {#collection-method}
 
-The `str_is` function determines if a given string matches a given pattern. Asterisks may be used to indicate wildcards:
+The `Str::is` method determines if a given string matches a given pattern. Asterisks may be used to indicate wildcards:
 
-    $matches = str_is('foo*', 'foobar');
+    use Illuminate\Support\Str;
+
+    $matches = Str::is('foo*', 'foobar');
 
     // true
 
-    $matches = str_is('baz*', 'foobar');
+    $matches = Str::is('baz*', 'foobar');
 
     // false
 
+<a name="method-kebab-case"></a>
+#### `Str::kebab()` {#collection-method}
+
+The `Str::kebab` method converts the given string to `kebab-case`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::kebab('fooBar');
+
+    // foo-bar
+
 <a name="method-str-limit"></a>
-#### `str_limit()` {#collection-method}
+#### `Str::limit()` {#collection-method}
 
-The `str_limit` function truncates the given string at the specified length:
+The `Str::limit` method truncates the given string at the specified length:
 
-    $truncated = str_limit('The quick brown fox jumps over the lazy dog', 20);
+    use Illuminate\Support\Str;
+
+    $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20);
 
     // The quick brown fox...
 
 You may also pass a third argument to change the string that will be appended to the end:
 
-    $truncated = str_limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
+    use Illuminate\Support\Str;
+
+    $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
 
     // The quick brown fox (...)
 
@@ -879,116 +941,169 @@ The `Str::orderedUuid` method generates a "timestamp first" UUID that may be eff
     return (string) Str::orderedUuid();
 
 <a name="method-str-plural"></a>
-#### `str_plural()` {#collection-method}
+#### `Str::plural()` {#collection-method}
 
-The `str_plural` function converts a string to its plural form. This function currently only supports the English language:
+The `Str::plural` method converts a string to its plural form. This function currently only supports the English language:
 
-    $plural = str_plural('car');
+    use Illuminate\Support\Str;
+
+    $plural = Str::plural('car');
 
     // cars
 
-    $plural = str_plural('child');
+    $plural = Str::plural('child');
 
     // children
 
 You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
 
-    $plural = str_plural('child', 2);
+    use Illuminate\Support\Str;
+
+    $plural = Str::plural('child', 2);
 
     // children
 
-    $plural = str_plural('child', 1);
+    $plural = Str::plural('child', 1);
 
     // child
 
 <a name="method-str-random"></a>
-#### `str_random()` {#collection-method}
+#### `Str::random()` {#collection-method}
 
-The `str_random` function generates a random string of the specified length. This function uses PHP's `random_bytes` function:
+The `Str::random` method generates a random string of the specified length. This function uses PHP's `random_bytes` function:
 
-    $random = str_random(40);
+    use Illuminate\Support\Str;
+
+    $random = Str::random(40);
 
 <a name="method-str-replace-array"></a>
-#### `str_replace_array()` {#collection-method}
+#### `Str::replaceArray()` {#collection-method}
 
-The `str_replace_array` function replaces a given value in the string sequentially using an array:
+The `Str::replaceArray` method replaces a given value in the string sequentially using an array:
+
+    use Illuminate\Support\Str;
 
     $string = 'The event will take place between ? and ?';
 
-    $replaced = str_replace_array('?', ['8:30', '9:00'], $string);
+    $replaced = Str::replaceArray('?', ['8:30', '9:00'], $string);
 
     // The event will take place between 8:30 and 9:00
 
 <a name="method-str-replace-first"></a>
-#### `str_replace_first()` {#collection-method}
+#### `Str::replaceFirst()` {#collection-method}
 
-The `str_replace_first` function replaces the first occurrence of a given value in a string:
+The `Str::replaceFirst` method replaces the first occurrence of a given value in a string:
 
-    $replaced = str_replace_first('the', 'a', 'the quick brown fox jumps over the lazy dog');
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceFirst('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
     // a quick brown fox jumps over the lazy dog
 
 <a name="method-str-replace-last"></a>
-#### `str_replace_last()` {#collection-method}
+#### `Str::replaceLast()` {#collection-method}
 
-The `str_replace_last` function replaces the last occurrence of a given value in a string:
+The `Str::replaceLast` method replaces the last occurrence of a given value in a string:
 
-    $replaced = str_replace_last('the', 'a', 'the quick brown fox jumps over the lazy dog');
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceLast('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
     // the quick brown fox jumps over a lazy dog
 
 <a name="method-str-singular"></a>
-#### `str_singular()` {#collection-method}
+#### `Str::singular()` {#collection-method}
 
-The `str_singular` function converts a string to its singular form. This function currently only supports the English language:
+The `Str::singular` method converts a string to its singular form. This function currently only supports the English language:
 
-    $singular = str_singular('cars');
+    use Illuminate\Support\Str;
+
+    $singular = Str::singular('cars');
 
     // car
 
-    $singular = str_singular('children');
+    $singular = Str::singular('children');
 
     // child
 
 <a name="method-str-slug"></a>
-#### `str_slug()` {#collection-method}
+#### `Str::slug()` {#collection-method}
 
-The `str_slug` function generates a URL friendly "slug" from the given string:
+The `Str::slug` method generates a URL friendly "slug" from the given string:
 
-    $slug = str_slug('Laravel 5 Framework', '-');
+    use Illuminate\Support\Str;
+
+    $slug = Str::slug('Laravel 5 Framework', '-');
 
     // laravel-5-framework
 
+<a name="method-snake-case"></a>
+#### `Str::snake()` {#collection-method}
+
+The `Str::snake` method converts the given string to `snake_case`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::snake('fooBar');
+
+    // foo_bar
+
 <a name="method-str-start"></a>
-#### `str_start()` {#collection-method}
+#### `Str::start()` {#collection-method}
 
-The `str_start` function adds a single instance of the given value to a string if it does not already start with the value:
+The `Str::start` method adds a single instance of the given value to a string if it does not already start with the value:
 
-    $adjusted = str_start('this/string', '/');
+    use Illuminate\Support\Str;
+
+    $adjusted = Str::start('this/string', '/');
+
+    // /this/string
+
+    $adjusted = Str::start('/this/string', '/');
 
     // /this/string
 
-    $adjusted = str_start('/this/string', '/');
+<a name="method-starts-with"></a>
+#### `Str::startsWith()` {#collection-method}
 
-    // /this/string
+The `Str::startsWith` method determines if the given string begins with the given value:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::startsWith('This is my name', 'This');
+
+    // true
 
 <a name="method-studly-case"></a>
-#### `studly_case()` {#collection-method}
+#### `Str::studly()` {#collection-method}
 
-The `studly_case` function converts the given string to `StudlyCase`:
+The `Str::studly` method converts the given string to `StudlyCase`:
 
-    $converted = studly_case('foo_bar');
+    use Illuminate\Support\Str;
+
+    $converted = Str::studly('foo_bar');
 
     // FooBar
 
 <a name="method-title-case"></a>
-#### `title_case()` {#collection-method}
+#### `Str::title()` {#collection-method}
 
-The `title_case` function converts the given string to `Title Case`:
+The `Str::title` method converts the given string to `Title Case`:
 
-    $converted = title_case('a nice title uses the correct case');
+    use Illuminate\Support\Str;
+
+    $converted = Str::title('a nice title uses the correct case');
 
     // A Nice Title Uses The Correct Case
+
+<a name="method-str-uuid"></a>
+#### `Str::uuid()` {#collection-method}
+
+The `Str::uuid` method generates a UUID (version 4):
+
+    use Illuminate\Support\Str;
+
+    return (string) Str::uuid();
 
 <a name="method-trans"></a>
 #### `trans()` {#collection-method}
@@ -1007,15 +1122,6 @@ The `trans_choice` function translates the given translation key with inflection
     echo trans_choice('messages.notifications', $unreadCount);
 
 If the specified translation key does not exist, the `trans_choice` function will return the given key. So, using the example above, the `trans_choice` function would return `messages.notifications` if the translation key does not exist.
-
-<a name="method-str-uuid"></a>
-#### `Str::uuid()` {#collection-method}
-
-The `Str::uuid` method generates a UUID (version 4):
-
-    use Illuminate\Support\Str;
-
-    return (string) Str::uuid();
 
 <a name="urls"></a>
 ## URLs
@@ -1040,12 +1146,11 @@ The `asset` function generates a URL for an asset using the current scheme of th
 
     $url = asset('img/photo.jpg');
 
-<a name="method-secure-asset"></a>
-#### `secure_asset()` {#collection-method}
+You can configure the asset URL host by setting the `ASSET_URL` variable in your `.env` file. This can be useful if you host your assets on an external service like Amazon S3:
 
-The `secure_asset` function generates a URL for an asset using HTTPS:
+    // ASSET_URL=http://example.com/assets
 
-    $url = secure_asset('img/photo.jpg');
+    $url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
 
 <a name="method-route"></a>
 #### `route()` {#collection-method}
@@ -1053,6 +1158,13 @@ The `secure_asset` function generates a URL for an asset using HTTPS:
 The `route` function generates a URL for the given named route:
 
     $url = route('routeName');
+
+<a name="method-secure-asset"></a>
+#### `secure_asset()` {#collection-method}
+
+The `secure_asset` function generates a URL for an asset using HTTPS:
+
+    $url = secure_asset('img/photo.jpg');
 
 If the route accepts parameters, you may pass them as the second argument to the method:
 
@@ -1158,13 +1270,6 @@ The `bcrypt` function [hashes](/docs/{{version}}/hashing) the given value using 
 
     $password = bcrypt('my-secret-password');
 
-<a name="method-broadcast"></a>
-#### `broadcast()` {#collection-method}
-
-The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners:
-
-    broadcast(new UserRegistered($user));
-
 <a name="method-blank"></a>
 #### `blank()` {#collection-method}
 
@@ -1184,6 +1289,13 @@ The `blank` function returns whether the given value is "blank":
     // false
 
 For the inverse of `blank`, see the [`filled`](#method-filled) method.
+
+<a name="method-broadcast"></a>
+#### `broadcast()` {#collection-method}
+
+The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners:
+
+    broadcast(new UserRegistered($user));
 
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
@@ -1349,7 +1461,7 @@ For the inverse of `filled`, see the [`blank`](#method-blank) method.
 <a name="method-info"></a>
 #### `info()` {#collection-method}
 
-The `info` function will write information to the [log](/docs/{{version}}/errors#logging):
+The `info` function will write information to the [log](/docs/{{version}}/logging):
 
     info('Some helpful information!');
 
@@ -1360,7 +1472,7 @@ An array of contextual data may also be passed to the function:
 <a name="method-logger"></a>
 #### `logger()` {#collection-method}
 
-The `logger` function can be used to write a `debug` level message to the [log](/docs/{{version}}/errors#logging):
+The `logger` function can be used to write a `debug` level message to the [log](/docs/{{version}}/logging):
 
     logger('Debug message');
 
@@ -1527,13 +1639,6 @@ If no Closure is passed to the `tap` function, you may call any method on the gi
         'email' => $email,
     ]);
 
-<a name="method-today"></a>
-#### `today()` {#collection-method}
-
-The `today` function creates a new `Illuminate\Support\Carbon` instance for the current date:
-
-    $today = today();
-
 <a name="method-throw-if"></a>
 #### `throw_if()` {#collection-method}
 
@@ -1559,6 +1664,13 @@ The `throw_unless` function throws the given exception if a given boolean expres
         AuthorizationException::class,
         'You are not allowed to access this page'
     );
+
+<a name="method-today"></a>
+#### `today()` {#collection-method}
+
+The `today` function creates a new `Illuminate\Support\Carbon` instance for the current date:
+
+    $today = today();
 
 <a name="method-trait-uses-recursive"></a>
 #### `trait_uses_recursive()` {#collection-method}

@@ -45,7 +45,7 @@ First, let's assume we have the following routes defined in our `routes/web.php`
 
     Route::post('post', 'PostController@store');
 
-Of course, the `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
+The `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
 
 <a name="quick-creating-the-controller"></a>
 ### Creating The Controller
@@ -666,7 +666,7 @@ The field under validation must have a matching field of `foo_confirmation`. For
 <a name="rule-date"></a>
 #### date
 
-The field under validation must be a valid date according to the `strtotime` PHP function.
+The field under validation must be a valid, non-relative date according to the `strtotime` PHP function.
 
 <a name="rule-date-equals"></a>
 #### date_equals:_date_
@@ -936,6 +936,20 @@ The field under validation must be present in the input data and not empty. A fi
 
 The field under validation must be present and not empty if the _anotherfield_ field is equal to any _value_.
 
+If you would like to construct a more complex condition for the `required_if` rule, you may use the `Rule::requiredIf` method. This methods accepts a boolean or a Closure. When passed a Closure, the Closure should return `true` or `false` to indicate if the field under validation is required:
+
+    use Illuminate\Validation\Rule;
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::requiredIf($request->user()->is_admin),
+    ]);
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::requiredIf(function () use ($request) {
+            return $request->user()->is_admin;
+        }),
+    ]);
+
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
 
@@ -1003,7 +1017,7 @@ Occasionally, you may need to set a custom connection for database queries made 
 
 **Forcing A Unique Rule To Ignore A Given ID:**
 
-Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address.
+Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. You will probably want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address.
 
 To instruct the validator to ignore the user's ID, we'll use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit the rules:
 
@@ -1016,9 +1030,17 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
         ],
     ]);
 
+Instead of passing the model key's value to the `ignore` method, you may pass the entire model instance. Laravel will automatically extract the key from the model:
+
+    Rule::unique('users')->ignore($user)
+
 If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:
 
-    'email' => Rule::unique('users')->ignore($user->id, 'user_id')
+    Rule::unique('users')->ignore($user->id, 'user_id')
+
+By default, the `unique` rule will check the uniqueness of the column matching the name of the attribute being validated. However, you may pass a different column name as the second argument to the `unique` method:
+
+    Rule::unique('users', 'email_address')->ignore($user->id),
 
 **Adding Additional Where Clauses:**
 
@@ -1143,7 +1165,7 @@ Once the rule has been created, we are ready to define its behavior. A rule obje
         }
     }
 
-Of course, you may call the `trans` helper from your `message` method if you would like to return an error message from your translation files:
+You may call the `trans` helper from your `message` method if you would like to return an error message from your translation files:
 
     /**
      * Get the validation error message.

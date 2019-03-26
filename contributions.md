@@ -3,6 +3,7 @@
 - [Bug Reports](#bug-reports)
 - [Core Development Discussion](#core-development-discussion)
 - [Which Branch?](#which-branch)
+- [Compiled Assets](#compiled-assets)
 - [Security Vulnerabilities](#security-vulnerabilities)
 - [Coding Style](#coding-style)
     - [PHPDoc](#phpdoc)
@@ -55,6 +56,11 @@ Informal discussion regarding bugs, new features, and implementation of existing
 
 If you are unsure if your feature qualifies as a major or minor, please ask Taylor Otwell in the `#internals` channel of the [Laravel Discord server](https://discordapp.com/invite/mPZNm7A).
 
+<a name="compiled-assets"></a>
+## Compiled Assets
+
+If you are submitting a change that will affect a compiled file, such as most of the files in `resources/sass` or `resources/js` of the `laravel/laravel` repository, do not commit the compiled files. Due to their large size, they cannot realistically be reviewed by a maintainer. This could be exploited as a way to inject malicious code into Laravel. In order to defensively prevent this, all compiled files will be generated and committed by Laravel maintainers.
+
 <a name="security-vulnerabilities"></a>
 ## Security Vulnerabilities
 
@@ -77,7 +83,6 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
      * @param  \Closure|string|null  $concrete
      * @param  bool  $shared
      * @return void
-     *
      * @throws \Exception
      */
     public function bind($abstract, $concrete = null, $shared = false)

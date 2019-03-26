@@ -82,7 +82,7 @@ By default, `Route::redirect` returns a `302` status code. You may customize the
 
     Route::redirect('/here', '/there', 301);
 
-You may use the `Route::permananentRedirect` method to return a `301` status code:
+You may use the `Route::permanentRedirect` method to return a `301` status code:
 
     Route::permanentRedirect('/here', '/there');
 
@@ -101,7 +101,7 @@ If your route only needs to return a view, you may use the `Route::view` method.
 <a name="required-parameters"></a>
 ### Required Parameters
 
-Of course, sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
+Sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
 
     Route::get('user/{id}', function ($id) {
         return 'User '.$id;
@@ -235,6 +235,8 @@ If you would like to determine if the current request was routed to a given name
 
 Route groups allow you to share route attributes, such as middleware or namespaces, across a large number of routes without needing to define those attributes on each individual route. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
 
+Nested groups attempt to intelligently "merge" attributes with their parent group. Middleware and `where` conditions are merged while names, namespaces, and prefixes are appended. Namespace delimiters and slashes in URI prefixes are automatically added where appropriate.
+
 <a name="route-group-middleware"></a>
 ### Middleware
 
@@ -350,6 +352,11 @@ If a matching model instance is not found in the database, a 404 HTTP response w
 
 If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
 
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
     public function boot()
     {
         parent::boot();
@@ -359,10 +366,23 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
         });
     }
 
+Alternatively, you may override the `resolveRouteBinding` method on your Eloquent model. This method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
+
+    /**
+     * Retrieve the model for a bound value.
+     *
+     * @param  mixed  $value
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value)
+    {
+        return $this->where('name', $value)->first() ?? abort(404);
+    }
+
 <a name="fallback-routes"></a>
 ## Fallback Routes
 
-Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. Of course, you are free to add additional middleware to this route as needed:
+Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. You are free to add additional middleware to this route as needed:
 
     Route::fallback(function () {
         //

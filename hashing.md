@@ -67,7 +67,7 @@ If you are using the Argon2 algorithm, the `make` method allows you to manage th
         'threads' => 2,
     ]);
 
-> {tip} For more information on these options, check out the [official PHP documentation](http://php.net/manual/en/function.password-hash.php).
+> {tip} For more information on these options, check out the [official PHP documentation](https://secure.php.net/manual/en/function.password-hash.php).
 
 #### Verifying A Password Against A Hash
 

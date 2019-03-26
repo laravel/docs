@@ -4,6 +4,7 @@
 - [Installation](#installation)
     - [Configuration](#configuration)
     - [Data Pruning](#data-pruning)
+    - [Migration Customization](#migration-customization)
 - [Dashboard Authorization](#dashboard-authorization)
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
@@ -14,6 +15,7 @@
     - [Dump Watcher](#dump-watcher)
     - [Event Watcher](#event-watcher)
     - [Exception Watcher](#exception-watcher)
+    - [Gate Watcher](#gate-watcher)
     - [Job Watcher](#job-watcher)
     - [Log Watcher](#log-watcher)
     - [Mail Watcher](#mail-watcher)
@@ -62,7 +64,7 @@ If you plan to only use Telescope to assist your local development. You may inst
 
 After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your `app` configuration file. Instead, manually register the service provider in the `register` method of your `AppServiceProvider`:
 
-    use Laravel\Telescope\TelescopeServiceProvider::class;
+    use Laravel\Telescope\TelescopeServiceProvider;
 
     /**
      * Register any application services.
@@ -75,6 +77,11 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
             $this->app->register(TelescopeServiceProvider::class);
         }
     }
+
+<a name="migration-customization"></a>
+### Migration Customization
+
+If you are not going to use Telescope's default migrations, you should call the `Telescope::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using the `php artisan vendor:publish --tag=telescope-migrations` command.
 
 <a name="configuration"></a>
 ### Configuration
@@ -130,8 +137,8 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
      *
      * @return void
      */
-	public function register()
-	{
+    public function register()
+    {
         $this->hideSensitiveRequestDetails();
 
         Telescope::filter(function (IncomingEntry $entry) {
@@ -144,7 +151,7 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
                 $entry->isScheduledTask() ||
                 $entry->hasMonitoredTag();
         });
-	}
+    }
 
 <a name="filtering-batches"></a>
 ### Batches
@@ -158,8 +165,8 @@ While the `filter` callback filters data for individual entries, you may use the
      *
      * @return void
      */
-	public function register()
-	{
+    public function register()
+    {
         $this->hideSensitiveRequestDetails();
 
         Telescope::filterBatch(function (Collection $entries) {
@@ -174,7 +181,7 @@ While the `filter` callback filters data for individual entries, you may use the
                     $entry->hasMonitoredTag();
                 });
         });
-	}
+    }
 
 <a name="available-watchers"></a>
 ## Available Watchers
@@ -229,6 +236,19 @@ The event watcher records the payload, listeners, and broadcast data for any eve
 ### Exception Watcher
 
 The exception watcher records the data and stack trace for any reportable Exceptions that are thrown by your application.
+
+<a name="gate-watcher"></a>
+### Gate Watcher
+
+The gate watcher records the data and result of gate and policy checks by your application. If you would like to exclude certain abilities from being recorded by the watcher, you may specify those in the `ignore_abilities` option in your `config/telescope.php` file:
+
+    'watchers' => [
+        Watchers\GateWatcher::class => [
+            'enabled' => env('TELESCOPE_GATE_WATCHER', true),
+            'ignore_abilities' => ['viewNova'],
+        ],
+        ...
+    ],
 
 <a name="job-watcher"></a>
 ### Job Watcher

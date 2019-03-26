@@ -14,7 +14,7 @@ Service providers are the central place of all Laravel application bootstrapping
 
 But, what do we mean by "bootstrapped"? In general, we mean **registering** things, including registering service container bindings, event listeners, middleware, and even routes. Service providers are the central place to configure your application.
 
-If you open the `config/app.php` file included with Laravel, you will see a `providers` array. These are all of the service provider classes that will be loaded for your application. Of course, many of these are "deferred" providers, meaning they will not be loaded on every request, but only when the services they provide are actually needed.
+If you open the `config/app.php` file included with Laravel, you will see a `providers` array. These are all of the service provider classes that will be loaded for your application. Note that many of these are "deferred" providers, meaning they will not be loaded on every request, but only when the services they provide are actually needed.
 
 In this overview you will learn how to write your own service providers and register them with your Laravel application.
 
@@ -152,7 +152,7 @@ If your provider is **only** registering bindings in the [service container](/do
 
 Laravel compiles and stores a list of all of the services supplied by deferred service providers, along with the name of its service provider class. Then, only when you attempt to resolve one of these services does Laravel load the service provider.
 
-To defer the loading of a provider, set the `defer` property to `true` and define a `provides` method. The `provides` method should return the service container bindings registered by the provider:
+To defer the loading of a provider, implement the `\Illuminate\Contracts\Support\DeferrableProvider` interface and define a `provides` method. The `provides` method should return the service container bindings registered by the provider:
 
     <?php
 
@@ -160,16 +160,10 @@ To defer the loading of a provider, set the `defer` property to `true` and defin
 
     use Riak\Connection;
     use Illuminate\Support\ServiceProvider;
+    use Illuminate\Contracts\Support\DeferrableProvider;
 
-    class RiakServiceProvider extends ServiceProvider
+    class RiakServiceProvider extends ServiceProvider implements DeferrableProvider
     {
-        /**
-         * Indicates if loading of the provider is deferred.
-         *
-         * @var bool
-         */
-        protected $defer = true;
-
         /**
          * Register the service provider.
          *
@@ -191,5 +185,4 @@ To defer the loading of a provider, set the `defer` property to `true` and defin
         {
             return [Connection::class];
         }
-
     }

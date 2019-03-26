@@ -1,4 +1,4 @@
-# Browser Tests (Laravel Dusk)
+# Laravel Dusk
 
 - [Introduction](#introduction)
 - [Installation](#installation)
@@ -19,6 +19,7 @@
     - [Attaching Files](#attaching-files)
     - [Using The Keyboard](#using-the-keyboard)
     - [Using The Mouse](#using-the-mouse)
+    - [JavaScript Dialogs](#javascript-dialogs)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
     - [Making Vue Assertions](#making-vue-assertions)
@@ -455,6 +456,28 @@ Or, you may drag an element in a single direction:
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
 
+<a name="javascript-dialogs"></a>
+### JavaScript Dialogs
+
+Dusk provides various methods to interact with JavaScript Dialogs:
+
+    // Wait for a dialog to appear:
+    $browser->waitForDialog($seconds = null);
+    
+    // Assert that a dialog has been displayed and that its message matches the given value:
+    $browser->assertDialogOpened('value');
+
+    // Type the given value in an open JavaScript prompt dialog:
+    $browser->typeInDialog('Hello World');
+
+To close an opened JavaScript Dialog, clicking the OK button:
+
+    $browser->acceptDialog();
+
+To close an opened JavaScript Dialog, clicking the Cancel button (for a confirmation dialog only):
+
+    $browser->dismissDialog();
+
 <a name="scoping-selectors"></a>
 ### Scoping Selectors
 
@@ -550,6 +573,16 @@ Sometimes you may wish to pause the execution of a test until a given JavaScript
 
     // Wait a maximum of one second for the expression to be true...
     $browser->waitUntil('App.data.servers.length > 0', 1);
+
+#### Waiting On Vue Expressions
+
+The following methods may be used to wait until a given Vue component attribute has a given value:
+
+    // Wait until the component attribute contains the given value...
+    $browser->waitUntilVue('user.name', 'Taylor', '@user');
+
+    // Wait until the component attribute doesn't contain the given value...
+    $browser->waitUntilVueIsNot('user.name', null, '@user');
 
 #### Waiting With A Callback
 
@@ -1253,10 +1286,10 @@ As shown above, a "date picker" is an example of a component that might exist th
          *
          * @param  \Laravel\Dusk\Browser  $browser
          * @param  int  $month
-         * @param  int  $year
+         * @param  int  $day
          * @return void
          */
-        public function selectDate($browser, $month, $year)
+        public function selectDate($browser, $month, $day)
         {
             $browser->click('@date-field')
                     ->within('@month-list', function ($browser) use ($month) {
@@ -1309,40 +1342,41 @@ Once the component has been defined, we can easily select a date within the date
 
 If you are using CircleCI to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
-     version: 2
-     jobs:
-         build:
-             steps:
+    version: 2
+    jobs:
+        build:
+            steps:
                 - run: sudo apt-get install -y libsqlite3-dev
                 - run: cp .env.testing .env
                 - run: composer install -n --ignore-platform-reqs
                 - run: npm install
                 - run: npm run production
                 - run: vendor/bin/phpunit
-
+       
                 - run:
-                   name: Start Chrome Driver
-                   command: ./vendor/laravel/dusk/bin/chromedriver-linux
-                   background: true
-
+                    name: Start Chrome Driver
+                    command: ./vendor/laravel/dusk/bin/chromedriver-linux
+                    background: true
+       
                 - run:
-                   name: Run Laravel Server
-                   command: php artisan serve
-                   background: true
-
+                    name: Run Laravel Server
+                    command: php artisan serve
+                    background: true
+       
                 - run:
-                   name: Run Laravel Dusk Tests
-                   command: php artisan dusk
+                    name: Run Laravel Dusk Tests
+                    command: php artisan dusk
 
 <a name="running-tests-on-codeship"></a>
 ### Codeship
 
-To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. Of course, these commands are a starting point and you are free to add additional commands as needed:
+To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. These commands are just a starting point and you are free to add additional commands as needed:
 
-    phpenv local 7.1
+    phpenv local 7.2
     cp .env.testing .env
-    composer install --no-interaction
-    nohup bash -c "./vendor/laravel/dusk/bin/chromedriver-linux 2>&1 &"
+    mkdir -p ./bootstrap/cache
+    composer install --no-interaction --prefer-dist
+    php artisan key:generate
     nohup bash -c "php artisan serve 2>&1 &" && sleep 5
     php artisan dusk
 
@@ -1369,14 +1403,12 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
 <a name="running-tests-on-travis-ci"></a>
 ### Travis CI
 
-To run your Dusk tests on [Travis CI](https://travis-ci.org), we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
+To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following `.travis.yml` configuration. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
 
     language: php
-    sudo: required
-    dist: trusty
 
     php:
-      - 7.2
+      - 7.3
 
     addons:
       chrome: stable

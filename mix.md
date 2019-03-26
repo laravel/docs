@@ -30,7 +30,7 @@
     mix.js('resources/js/app.js', 'public/js')
        .sass('resources/sass/app.scss', 'public/css');
 
-If you've ever been confused and overwhelmed about getting started with Webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application. Of course, you are free to use any asset pipeline tool you wish, or even none at all.
+If you've ever been confused and overwhelmed about getting started with Webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish, or even none at all.
 
 <a name="installation"></a>
 ## Installation & Setup
@@ -101,7 +101,7 @@ If you need to override the [underlying Less plug-in options](https://github.com
 <a name="sass"></a>
 ### Sass
 
-The `sass` method allows you to compile [Sass](http://sass-lang.com/) into CSS. You may use the method like so:
+The `sass` method allows you to compile [Sass](https://sass-lang.com/) into CSS. You may use the method like so:
 
     mix.sass('resources/sass/app.scss', 'public/css');
 
@@ -134,7 +134,7 @@ You may also install additional Stylus plug-ins, such as [Rupture](https://githu
 <a name="postcss"></a>
 ### PostCSS
 
-[PostCSS](http://postcss.org/), a powerful tool for transforming your CSS, is included with Laravel Mix out of the box. By default, Mix leverages the popular [Autoprefixer](https://github.com/postcss/autoprefixer) plug-in to automatically apply all necessary CSS3 vendor prefixes. However, you're free to add any additional plug-ins that are appropriate for your application. First, install the desired plug-in through NPM and then reference it in your `webpack.mix.js` file:
+[PostCSS](https://postcss.org/), a powerful tool for transforming your CSS, is included with Laravel Mix out of the box. By default, Mix leverages the popular [Autoprefixer](https://github.com/postcss/autoprefixer) plug-in to automatically apply all necessary CSS3 vendor prefixes. However, you're free to add any additional plug-ins that are appropriate for your application. First, install the desired plug-in through NPM and then reference it in your `webpack.mix.js` file:
 
     mix.sass('resources/sass/app.scss', 'public/css')
        .options({
@@ -167,7 +167,7 @@ Because Laravel Mix is built on top of Webpack, it's important to understand a f
 By default, Laravel Mix and Webpack will find `example.png`, copy it to your `public/images` folder, and then rewrite the `url()` within your generated stylesheet. As such, your compiled CSS will be:
 
     .example {
-      background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
+        background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
     }
 
 As useful as this feature may be, it's possible that your existing folder structure is already configured in a way you like. If this is the case, you may disable `url()` rewriting like so:

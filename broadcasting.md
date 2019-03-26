@@ -70,7 +70,7 @@ Next, you should configure your Pusher credentials in the `config/broadcasting.p
 
 When using Pusher and [Laravel Echo](#installing-laravel-echo), you should specify `pusher` as your desired broadcaster when instantiating the Echo instance in your `resources/js/bootstrap.js` file:
 
-    import Echo from "laravel-echo"
+    import Echo from "laravel-echo";
 
     window.Pusher = require('pusher-js');
 
@@ -365,6 +365,14 @@ Just like HTTP routes, channel routes may also take advantage of implicit and ex
         return $user->id === $order->user_id;
     });
 
+#### Authorization Callback Authentication
+
+Private and presence broadcast channels authenticate the current user via your application's default authentication guard. If the user is not authenticated, channel authorization is automatically denied and the authorization callback is never executed. However, you may assign multiple, custom guards that should authenticate the incoming request if necessary:
+
+    Broadcast::channel('channel', function() {
+        // ...
+    }, ['guards' => ['web', 'admin']])
+
 <a name="defining-channel-classes"></a>
 ### Defining Channel Classes
 
@@ -378,7 +386,7 @@ Next, register your channel in your `routes/channels.php` file:
 
     Broadcast::channel('order.{order}', OrderChannel::class);
 
-Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization Closure. Of course, you may also take advantage of channel model binding:
+Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization Closure. You may also take advantage of channel model binding:
 
     <?php
 
@@ -511,7 +519,11 @@ If you would like to listen for events on a private channel, use the `private` m
 <a name="leaving-a-channel"></a>
 ### Leaving A Channel
 
-To leave a channel, you may call the `leave` method on your Echo instance:
+To leave a channel, you may call the `leaveChannel` method on your Echo instance:
+
+    Echo.leaveChannel('orders');
+
+If you would like to leave a channel and also its associated private and presence channels, you may call the `leave` method:
 
     Echo.leave('orders');
 

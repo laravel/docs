@@ -78,6 +78,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [contains](#method-contains)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
+[countBy](#method-countBy)
 [crossJoin](#method-crossjoin)
 [dd](#method-dd)
 [diff](#method-diff)
@@ -166,9 +167,11 @@ For the remainder of this documentation, we'll discuss each method available on 
 [whenNotEmpty](#method-whennotempty)
 [where](#method-where)
 [whereStrict](#method-wherestrict)
+[whereBetween](#method-wherebetween)
 [whereIn](#method-wherein)
 [whereInStrict](#method-whereinstrict)
 [whereInstanceOf](#method-whereinstanceof)
+[whereNotBetween](#method-wherenotbetween)
 [whereNotIn](#method-wherenotin)
 [whereNotInStrict](#method-wherenotinstrict)
 [wrap](#method-wrap)
@@ -331,6 +334,27 @@ The `count` method returns the total number of items in the collection:
     $collection->count();
 
     // 4
+
+<a name="method-countBy"></a>
+#### `countBy()` {#collection-method}
+
+The `countBy` method counts the occurences of values in the collection. By default, the method counts the occurrences of every element:
+
+    $collection = collect([1, 2, 2, 2, 3]);
+    
+    $collection->countBy();
+    
+    // collect([1 => 1, 2 => 3, 3 => 1])
+
+However, you pass a callback to the `countBy` method to count all items by a custom value:
+
+    $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
+
+    $collection->countBy(function ($email) {
+        return substr(strrchr($email, "@"), 1);
+    });
+
+    // collect(['gmail.com' => 2, 'yahoo.com' => 1])
 
 <a name="method-crossjoin"></a>
 #### `crossJoin()` {#collection-method}
@@ -515,6 +539,16 @@ The `every` method may be used to verify that all elements of a collection pass 
 
     // false
 
+If the collection is empty, `every` will return true:
+
+    $collection = collect([]);
+
+    $collection->every(function($value, $key) {
+        return $value > 2;
+    });
+
+    // true
+
 <a name="method-except"></a>
 #### `except()` {#collection-method}
 
@@ -578,7 +612,7 @@ You may also call the `first` method with no arguments to get the first element 
 The `firstWhere` method returns the first element in the collection with the given key / value pair:
 
     $collection = collect([
-        ['name' => 'Regena', 'age' => 12],
+        ['name' => 'Regena', 'age' => null],
         ['name' => 'Linda', 'age' => 14],
         ['name' => 'Diego', 'age' => 23],
         ['name' => 'Linda', 'age' => 84],
@@ -593,6 +627,12 @@ You may also call the `firstWhere` method with an operator:
     $collection->firstWhere('age', '>=', 18);
 
     // ['name' => 'Diego', 'age' => 23]
+
+Like the [where](#method-where) method, you may pass one argument to the `firstWhere` method. In this scenario, the `firstWhere` method will return the first item where the given item key's value is "truthy":
+
+    $collection->firstWhere('age');
+
+    // ['name' => 'Linda', 'age' => 14]
 
 <a name="method-flatmap"></a>
 #### `flatMap()` {#collection-method}
@@ -1025,8 +1065,8 @@ The `mapSpread` method iterates over the collection's items, passing each nested
 
     $chunks = $collection->chunk(2);
 
-    $sequence = $chunks->mapSpread(function ($odd, $even) {
-        return $odd + $even;
+    $sequence = $chunks->mapSpread(function ($even, $odd) {
+        return $even + $odd;
     });
 
     $sequence->all();
@@ -1780,7 +1820,7 @@ The static `times` method creates a new collection by invoking the callback a gi
 This method can be useful when combined with factories to create [Eloquent](/docs/{{version}}/eloquent) models:
 
     $categories = Collection::times(3, function ($number) {
-        return factory(Category::class)->create(['name' => 'Category #'.$number]);
+        return factory(Category::class)->create(['name' => "Category No. $number"]);
     });
 
     $categories->all();
@@ -1808,7 +1848,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
         ]
     */
 
-> {note} `toArray` also converts all of the collection's nested objects to an array. If you want to get the raw underlying array, use the [`all`](#method-all) method instead.
+> {note} `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw underlying array, use the [`all`](#method-all) method instead.
 
 <a name="method-tojson"></a>
 #### `toJson()` {#collection-method}
@@ -2005,29 +2045,29 @@ For the inverse of `when`, see the [`unless`](#method-unless) method.
 The `whenEmpty` method will execute the given callback when the collection is empty:
 
     $collection = collect(['michael', 'tom']);
-    
+
     $collection->whenEmpty(function ($collection) {
         return $collection->push('adam');
     });
-    
+
     $collection->all();
-    
+
     // ['michael', 'tom']
-    
-    
+
+
     $collection = collect();
-    
+
     $collection->whenEmpty(function ($collection) {
         return $collection->push('adam');
     });
-    
+
     $collection->all();
-    
-    // ['adam']  
-    
-    
+
+    // ['adam']
+
+
     $collection = collect(['michael', 'tom']);
-    
+
     $collection->whenEmpty(function($collection) {
         return $collection->push('adam');
     }, function($collection) {
@@ -2035,7 +2075,7 @@ The `whenEmpty` method will execute the given callback when the collection is em
     });
 
     $collection->all();
-    
+
     // ['michael', 'tom', 'taylor']
 
 For the inverse of `whenEmpty`, see the [`whenNotEmpty`](#method-whennotempty) method.
@@ -2046,37 +2086,37 @@ For the inverse of `whenEmpty`, see the [`whenNotEmpty`](#method-whennotempty) m
 The `whenNotEmpty` method will execute the given callback when the collection is not empty:
 
     $collection = collect(['michael', 'tom']);
-    
+
     $collection->whenNotEmpty(function ($collection) {
         return $collection->push('adam');
     });
-    
+
     $collection->all();
-    
+
     // ['michael', 'tom', 'adam']
-    
-    
+
+
     $collection = collect();
-    
+
     $collection->whenNotEmpty(function ($collection) {
         return $collection->push('adam');
     });
-    
+
     $collection->all();
-    
-    // []  
-    
-    
+
+    // []
+
+
     $collection = collect();
-    
+
     $collection->whenNotEmpty(function($collection) {
         return $collection->push('adam');
     }, function($collection) {
         return $collection->push('taylor');
     });
-    
+
     $collection->all();
-    
+
     // ['taylor']
 
 For the inverse of `whenNotEmpty`, see the [`whenEmpty`](#method-whenempty) method.
@@ -2110,6 +2150,31 @@ The `where` method uses "loose" comparisons when checking item values, meaning a
 #### `whereStrict()` {#collection-method}
 
 This method has the same signature as the [`where`](#method-where) method; however, all values are compared using "strict" comparisons.
+
+<a name="method-wherebetween"></a>
+#### `whereBetween()` {#collection-method}
+
+The `whereBetween` method filters the collection within a given range:
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 80],
+        ['product' => 'Bookcase', 'price' => 150],
+        ['product' => 'Pencil', 'price' => 30],
+        ['product' => 'Door', 'price' => 100],
+    ]);
+
+    $filtered = $collection->whereBetween('price', [100, 200]);
+
+    $filtered->all();
+
+    /*
+        [
+            ['product' => 'Desk', 'price' => 200],
+            ['product' => 'Bookcase', 'price' => 150],
+            ['product' => 'Door', 'price' => 100],
+        ]
+    */
 
 <a name="method-wherein"></a>
 #### `whereIn()` {#collection-method}
@@ -2153,6 +2218,30 @@ The `whereInstanceOf` method filters the collection by a given class type:
     ]);
 
     return $collection->whereInstanceOf(User::class);
+
+<a name="method-wherenotbetween"></a>
+#### `whereNotBetween()` {#collection-method}
+
+The `whereNotBetween` method filters the collection within a given range:
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 80],
+        ['product' => 'Bookcase', 'price' => 150],
+        ['product' => 'Pencil', 'price' => 30],
+        ['product' => 'Door', 'price' => 100],
+    ]);
+
+    $filtered = $collection->whereNotBetween('price', [100, 200]);
+
+    $filtered->all();
+
+    /*
+        [
+            ['product' => 'Chair', 'price' => 80],
+            ['product' => 'Pencil', 'price' => 30],
+        ]
+    */
 
 <a name="method-wherenotin"></a>
 #### `whereNotIn()` {#collection-method}

@@ -67,7 +67,7 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
         }
     }
 
-In addition to scheduling using Closures, you may also use [invokable objects](http://php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
+In addition to scheduling using Closures, you may also use [invokable objects](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
 
     $schedule->call(new DeleteRecentUsers)->daily();
 
@@ -76,9 +76,9 @@ In addition to scheduling using Closures, you may also use [invokable objects](h
 
 In addition to scheduling Closure calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
 
-    $schedule->command('emails:send --force')->daily();
+    $schedule->command('emails:send Taylor --force')->daily();
 
-    $schedule->command(EmailsCommand::class, ['--force'])->daily();
+    $schedule->command(EmailsCommand::class, ['Taylor', '--force'])->daily();
 
 <a name="scheduling-queued-jobs"></a>
 ### Scheduling Queued Jobs
@@ -100,7 +100,7 @@ The `exec` method may be used to issue a command to the operating system:
 <a name="schedule-frequency-options"></a>
 ### Schedule Frequency Options
 
-Of course, there are a variety of schedules you may assign to your task:
+There are a variety of schedules you may assign to your task:
 
 Method  | Description
 ------------- | -------------
@@ -200,6 +200,18 @@ Using the `timezone` method, you may specify that a scheduled task's time should
     $schedule->command('report:generate')
              ->timezone('America/New_York')
              ->at('02:00')
+
+If you are assigning the same timezone to all of your scheduled tasks, you may wish to define a `scheduleTimezone` method in your `app/Console/Kernel.php` file. This method should return the default timezone that should be assigned to all scheduled tasks:
+
+    /**
+     * Get the timezone that should be used by default for scheduled events.
+     *
+     * @return \DateTimeZone|string|null
+     */
+    protected function scheduleTimezone()
+    {
+        return 'America/Chicago';
+    }
 
 > {note} Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible.
 

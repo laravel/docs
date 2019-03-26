@@ -134,7 +134,7 @@ The query builder also provides a variety of aggregate methods such as `count`, 
 
     $price = DB::table('orders')->max('price');
 
-Of course, you may combine these methods with other clauses:
+You may combine these methods with other clauses:
 
     $price = DB::table('orders')
                     ->where('finalized', 1)
@@ -153,7 +153,7 @@ Instead of using the `count` method to determine if any records exist that match
 
 #### Specifying A Select Clause
 
-Of course, you may not always want to select all columns from a database table. Using the `select` method, you can specify a custom `select` clause for the query:
+You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom `select` clause for the query:
 
     $users = DB::table('users')->select('name', 'email as user_email')->get();
 
@@ -224,7 +224,7 @@ The `orderByRaw` method may be used to set a raw string as the value of the `ord
 
 #### Inner Join Clause
 
-The query builder may also be used to write join statements. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. Of course, as you can see, you can join to multiple tables in a single query:
+The query builder may also be used to write join statements. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You can even join to multiple tables in a single query:
 
     $users = DB::table('users')
                 ->join('contacts', 'users.id', '=', 'contacts.user_id')
@@ -232,12 +232,16 @@ The query builder may also be used to write join statements. To perform a basic 
                 ->select('users.*', 'contacts.phone', 'orders.price')
                 ->get();
 
-#### Left Join Clause
+#### Left Join / Right Join Clause
 
-If you would like to perform a "left join" instead of an "inner join", use the `leftJoin` method. The `leftJoin` method has the same signature as the `join` method:
+If you would like to perform a "left join" or "right join" instead of an "inner join", use the `leftJoin` or `rightJoin` methods. These methods have the same signature as the `join` method:
 
     $users = DB::table('users')
                 ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+                ->get();
+
+    $users = DB::table('users')
+                ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
                 ->get();
 
 #### Cross Join Clause
@@ -311,7 +315,7 @@ For convenience, if you want to verify that a column is equal to a given value, 
 
     $users = DB::table('users')->where('votes', 100)->get();
 
-Of course, you may use a variety of other operators when writing a `where` clause:
+You may use a variety of other operators when writing a `where` clause:
 
     $users = DB::table('users')
                     ->where('votes', '>=', 100)
@@ -628,11 +632,23 @@ If the table has an auto-incrementing id, use the `insertGetId` method to insert
 <a name="updates"></a>
 ## Updates
 
-Of course, in addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated. You may constrain the `update` query using `where` clauses:
+In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated. You may constrain the `update` query using `where` clauses:
 
     DB::table('users')
                 ->where('id', 1)
                 ->update(['votes' => 1]);
+
+#### Update Or Insert
+
+Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs containing the columns to be updated.
+
+The `updateOrInsert` method will first attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new record will be inserted with the merged attributes of both arguments:
+
+    DB::table('users')
+        ->updateOrInsert(
+            ['email' => 'john@example.com', 'name' => 'John'],
+            ['votes' => '2']
+        );
 
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns

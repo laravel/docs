@@ -6,6 +6,7 @@
     - [One To Many](#one-to-many)
     - [One To Many (Inverse)](#one-to-many-inverse)
     - [Many To Many](#many-to-many)
+    - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
 - [Polymorphic Relationships](#polymorphic-relationships)
@@ -160,7 +161,7 @@ Once the relationship has been defined, we can access the collection of comments
         //
     }
 
-Of course, since all relationships also serve as query builders, you can add further constraints to which comments are retrieved by calling the `comments` method and continuing to chain conditions onto the query:
+Since all relationships also serve as query builders, you can add further constraints to which comments are retrieved by calling the `comments` method and continuing to chain conditions onto the query:
 
     $comment = App\Post::find(1)->comments()->where('title', 'foo')->first();
 
@@ -250,7 +251,7 @@ Once the relationship is defined, you may access the user's roles using the `rol
         //
     }
 
-Of course, like all other relationship types, you may call the `roles` method to continue chaining query constraints onto the relationship:
+Like all other relationship types, you may call the `roles` method to continue chaining query constraints onto the relationship:
 
     $roles = App\User::find(1)->roles()->orderBy('name')->get();
 
@@ -331,7 +332,8 @@ You can also filter the results returned by `belongsToMany` using the `wherePivo
 
     return $this->belongsToMany('App\Role')->wherePivotIn('priority', [1, 2]);
 
-#### Defining Custom Intermediate Table Models
+<a name="defining-custom-intermediate-table-models"></a>
+### Defining Custom Intermediate Table Models
 
 If you would like to define a custom model to represent the intermediate table of your relationship, you may call the `using` method when defining the relationship. Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` which uses a custom `UserRole` pivot model:
 
@@ -365,7 +367,7 @@ When defining the `UserRole` model, we will extend the `Pivot` class:
         //
     }
 
-Of course, you can combine `using` and `withPivot` in order to retrieve columns from the intermediate table. For example, you may retrieve the `created_by` and `updated_by` columns from the `UserRole` pivot table by passing the column names to the `withPivot` method:
+You can combine `using` and `withPivot` in order to retrieve columns from the intermediate table. For example, you may retrieve the `created_by` and `updated_by` columns from the `UserRole` pivot table by passing the column names to the `withPivot` method:
 
     <?php
 
@@ -388,6 +390,17 @@ Of course, you can combine `using` and `withPivot` in order to retrieve columns 
                             ]);
         }
     }
+
+#### Custom Pivot Models And Incrementing IDs
+
+If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`.
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
 
 <a name="has-one-through"></a>
 ### Has One Through
@@ -843,17 +856,22 @@ You may also specify an operator and count to further customize the query:
 
 Nested `has` statements may also be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment and vote:
 
-    // Retrieve all posts that have at least one comment with votes...
+    // Retrieve posts that have at least one comment with votes...
     $posts = App\Post::has('comments.votes')->get();
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
     use Illuminate\Database\Eloquent\Builder;
-    
-    // Retrieve all posts with at least one comment containing words like foo%
-    $posts = App\Post::whereHas('comments', function (Builder $query) {
+
+    // Retrieve posts with at least one comment containing words like foo%...
+    $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
+
+    // Retrieve posts with at least ten comments containing words like foo%...
+    $posts = App\Post::whereHas('comments', function ($query) {
+        $query->where('content', 'like', 'foo%');
+    }, '>=', 10)->get();
 
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
@@ -865,7 +883,7 @@ When accessing the records for a model, you may wish to limit your results based
 If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to put "where" conditions on your `doesntHave` queries. These methods allows you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
     use Illuminate\Database\Eloquent\Builder;
-    
+
     $posts = App\Post::whereDoesntHave('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     })->get();
@@ -873,7 +891,7 @@ If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesn
 You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts with comments from authors that are not banned:
 
     use Illuminate\Database\Eloquent\Builder;
-    
+
     $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) {
         $query->where('banned', 1);
     })->get();
@@ -988,17 +1006,19 @@ You may not always need every column from the relationships you are retrieving. 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
 
-Sometimes you may wish to eager load a relationship, but also specify additional query constraints for the eager loading query. Here's an example:
+Sometimes you may wish to eager load a relationship, but also specify additional query conditions for the eager loading query. Here's an example:
 
     $users = App\User::with(['posts' => function ($query) {
         $query->where('title', 'like', '%first%');
     }])->get();
 
-In this example, Eloquent will only eager load posts where the post's `title` column contains the word `first`. Of course, you may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
+In this example, Eloquent will only eager load posts where the post's `title` column contains the word `first`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
 
     $users = App\User::with(['posts' => function ($query) {
         $query->orderBy('created_at', 'desc');
     }])->get();
+
+> {note} The `limit` and `take` query builder methods may not be used when constraining eager loads.
 
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
@@ -1028,6 +1048,39 @@ To load a relationship only when it has not already been loaded, use the `loadMi
             'author' => $book->author->name
         ];
     }
+
+#### Nested Lazy Eager Loading & `morphTo`
+
+If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `loadMorph` method.
+
+This method accepts the name of the `morphTo` relationship as its first argument, and an array of model / relationship pairs as its second argument. To help illustrate this method, let's consider the following model:
+
+    <?php
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class ActivityFeed extends Model
+    {
+        /**
+         * Get the parent of the activity feed record.
+         */
+        public function parentable()
+        {
+            return $this->morphTo();
+        }
+    }
+
+In this example, let's assume `Event`, `Photo`, and `Post` models may create `ActivityFeed` models. Additionally, let's assume that `Event` models belong to a `Calendar` model, `Photo` models are associated with `Tag` models, and `Post` models belong to an `Author` model.
+
+Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:
+
+    $activities = ActivityFeed::with('parentable')
+        ->get()
+        ->loadMorph('parentable', [
+            Event::class => ['calendar'],
+            Photo::class => ['tags'],
+            Post::class => ['author'],
+        ]);
 
 <a name="inserting-and-updating-related-models"></a>
 ## Inserting & Updating Related Models
@@ -1161,7 +1214,7 @@ When attaching a relationship to a model, you may also pass an array of addition
 
     $user->roles()->attach($roleId, ['expires' => $expires]);
 
-Of course, sometimes it may be necessary to remove a role from a user. To remove a many-to-many relationship record, use the `detach` method. The `detach` method will remove the appropriate record out of the intermediate table; however, both models will remain in the database:
+Sometimes it may be necessary to remove a role from a user. To remove a many-to-many relationship record, use the `detach` method. The `detach` method will delete the appropriate record out of the intermediate table; however, both models will remain in the database:
 
     // Detach a single role from the user...
     $user->roles()->detach($roleId);

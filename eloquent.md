@@ -230,7 +230,7 @@ For Eloquent methods like `all` and `get` which retrieve multiple results, an in
         return $flight->cancelled;
     });
 
-Of course, you may also loop over the collection like an array:
+You may also loop over the collection like an array:
 
     foreach ($flights as $flight) {
         echo $flight->name;
@@ -260,7 +260,7 @@ The `cursor` method allows you to iterate through your database records using a 
 <a name="retrieving-single-models"></a>
 ## Retrieving Single Models / Aggregates
 
-Of course, in addition to retrieving all of the records for a given table, you may also retrieve single records using `find` or `first`. Instead of returning a collection of models, these methods return a single model instance:
+In addition to retrieving all of the records for a given table, you may also retrieve single records using `find` or `first`. Instead of returning a collection of models, these methods return a single model instance:
 
     // Retrieve a model by its primary key...
     $flight = App\Flight::find(1);
@@ -391,7 +391,7 @@ If you already have a model instance, you may use the `fill` method to populate 
 
 #### Guarding Attributes
 
-While `$fillable` serves as a "white list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "black list". Of course, you should use either `$fillable` or `$guarded` - not both. In the example below, all attributes **except for `price`** will be mass assignable:
+While `$fillable` serves as a "white list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "black list". Importantly, you should use either `$fillable` or `$guarded` - not both. In the example below, all attributes **except for `price`** will be mass assignable:
 
     <?php
 
@@ -430,17 +430,19 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
     // Retrieve flight by name, or create it if it doesn't exist...
     $flight = App\Flight::firstOrCreate(['name' => 'Flight 10']);
 
-    // Retrieve flight by name, or create it with the name and delayed attributes...
+    // Retrieve flight by name, or create it with the name, delayed, and arrival_time attributes...
     $flight = App\Flight::firstOrCreate(
-        ['name' => 'Flight 10'], ['delayed' => 1]
+        ['name' => 'Flight 10'], 
+        ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
     // Retrieve by name, or instantiate...
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
 
-    // Retrieve by name, or instantiate with the name and delayed attributes...
+    // Retrieve by name, or instantiate with the name, delayed, and arrival_time attributes...
     $flight = App\Flight::firstOrNew(
-        ['name' => 'Flight 10'], ['delayed' => 1]
+        ['name' => 'Flight 10'], 
+        ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
 #### `updateOrCreate`
@@ -451,7 +453,7 @@ You may also come across situations where you want to update an existing model o
     // If no matching model exists, create one.
     $flight = App\Flight::updateOrCreate(
         ['departure' => 'Oakland', 'destination' => 'San Diego'],
-        ['price' => 99]
+        ['price' => 99, 'discounted' => 1]
     );
 
 <a name="deleting-models"></a>
@@ -477,7 +479,7 @@ In the example above, we are retrieving the model from the database before calli
 
 #### Deleting Models By Query
 
-Of course, you may also run a delete statement on a set of models. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not fire any model events for the models that are deleted:
+You can also run a delete statement on a set of models. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not fire any model events for the models that are deleted:
 
     $deletedRows = App\Flight::where('active', 0)->delete();
 
@@ -486,7 +488,7 @@ Of course, you may also run a delete statement on a set of models. In this examp
 <a name="soft-deleting"></a>
 ### Soft Deleting
 
-In addition to actually removing records from your database, Eloquent can also "soft delete" models. When models are soft deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model and inserted into the database. If a model has a non-null `deleted_at` value, the model has been soft deleted. To enable soft deletes for a model, use the `Illuminate\Database\Eloquent\SoftDeletes` trait on the model and add the `deleted_at` column to your `$dates` property:
+In addition to actually removing records from your database, Eloquent can also "soft delete" models. When models are soft deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model and inserted into the database. If a model has a non-null `deleted_at` value, the model has been soft deleted. To enable soft deletes for a model, use the `Illuminate\Database\Eloquent\SoftDeletes` trait on the model:
 
     <?php
 
@@ -498,16 +500,11 @@ In addition to actually removing records from your database, Eloquent can also "
     class Flight extends Model
     {
         use SoftDeletes;
-
-        /**
-         * The attributes that should be mutated to dates.
-         *
-         * @var array
-         */
-        protected $dates = ['deleted_at'];
     }
 
-Of course, you should add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
+> {tip} The `SoftDeletes` trait will automatically cast the `deleted_at` attribute to a `DateTime` / `Carbon` instance for you.
+
+You should also add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
     Schema::table('flights', function (Blueprint $table) {
         $table->softDeletes();
@@ -728,6 +725,16 @@ Scopes should always return a query builder instance:
 Once the scope has been defined, you may call the scope methods when querying the model. However, you should not include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
 
     $users = App\User::popular()->active()->orderBy('created_at')->get();
+
+Combining multiple Eloquent model scopes via an `or` query operator may require the use of Closure callbacks:
+
+    $users = App\User::popular()->orWhere(function (Builder $query) {
+        $query->active();
+    })->get();
+
+However, since this can be cumbersome, Laravel provides a "higher order" `orWhere` method that allows you to fluently chain these scopes together without the use of Closures:
+
+    $users = App\User::popular()->orWhere->active()->get();
 
 #### Dynamic Scopes
 

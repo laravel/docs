@@ -8,11 +8,13 @@
     - [Class Structure](#class-structure)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
+    - [Synchronous Dispatching](#synchronous-dispatching)
     - [Job Chaining](#job-chaining)
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
     - [Rate Limiting](#rate-limiting)
     - [Error Handling](#error-handling)
+- [Queueing Closures](#queueing-closures)
 - [Running The Queue Worker](#running-the-queue-worker)
     - [Queue Priorities](#queue-priorities)
     - [Queue Workers & Deployment](#queue-workers-and-deployment)
@@ -22,6 +24,7 @@
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
     - [Failed Job Events](#failed-job-events)
     - [Retrying Failed Jobs](#retrying-failed-jobs)
+    - [Ignoring Missing Models](#ignoring-missing-models)
 - [Job Events](#job-events)
 
 <a name="introduction"></a>
@@ -90,15 +93,13 @@ Adjusting this value based on your queue load can be more efficient than continu
         'block_for' => 5,
     ],
 
-> {note} Blocking pop is an experimental feature. There is a small chance that a queued job could be lost if the Redis server or worker crashes at the same time the job is retrieved.
-
 #### Other Driver Prerequisites
 
 The following dependencies are needed for the listed queue drivers:
 
 <div class="content-list" markdown="1">
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
-- Beanstalkd: `pda/pheanstalk ~3.0`
+- Beanstalkd: `pda/pheanstalk ~4.0`
 - Redis: `predis/predis ~1.0`
 </div>
 
@@ -235,6 +236,35 @@ If you would like to delay the execution of a queued job, you may use the `delay
 
 > {note} The Amazon SQS queue service has a maximum delay time of 15 minutes.
 
+<a name="synchronous-dispatching"></a>
+### Synchronous Dispatching
+
+If you would like to dispatch a job immediately (synchronously), you may use the `dispatchNow` method. When using this method, the job will not be queued and will be run immediately within the current process:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Http\Request;
+    use App\Jobs\ProcessPodcast;
+    use App\Http\Controllers\Controller;
+
+    class PodcastController extends Controller
+    {
+        /**
+         * Store a new podcast.
+         *
+         * @param  Request  $request
+         * @return Response
+         */
+        public function store(Request $request)
+        {
+            // Create podcast...
+
+            ProcessPodcast::dispatchNow($podcast);
+        }
+    }
+
 <a name="job-chaining"></a>
 ### Job Chaining
 
@@ -244,6 +274,8 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
         new OptimizePodcast,
         new ReleasePodcast
     ])->dispatch();
+
+> {note} Deleting jobs using the `$this->delete()` method will not prevent chained jobs from being processed. The chain will only stop executing if a job in the chain fails.
 
 #### Chain Connection & Queue
 
@@ -313,7 +345,7 @@ If you are working with multiple queue connections, you may specify which connec
         }
     }
 
-Of course, you may chain the `onConnection` and `onQueue` methods to specify the connection and the queue for a job:
+You may chain the `onConnection` and `onQueue` methods to specify the connection and the queue for a job:
 
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
@@ -423,6 +455,19 @@ Alternatively, you may specify the maximum number of workers that may simultaneo
 
 If an exception is thrown while the job is being processed, the job will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The maximum number of attempts is defined by the `--tries` switch used on the `queue:work` Artisan command. Alternatively, the maximum number of attempts may be defined on the job class itself. More information on running the queue worker [can be found below](#running-the-queue-worker).
 
+<a name="queueing-closures"></a>
+## Queueing Closures
+
+Instead of dispatching a job class to the queue, you may also dispatch a Closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle:
+
+    $podcast = App\Podcast::find(1);
+
+    dispatch(function () use ($podcast) {
+        $podcast->publish();
+    });
+
+When dispatching Closures to the queue, the Closure's code contents is cryptographically signed so it can not be modified in transit.
+
 <a name="running-the-queue-worker"></a>
 ## Running The Queue Worker
 
@@ -452,9 +497,9 @@ The `--once` option may be used to instruct the worker to only process a single 
 
 #### Processing All Queued Jobs & Then Exiting
 
- The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when working Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
+The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when working Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
 
-     php artisan queue:work --stop-when-empty
+    php artisan queue:work --stop-when-empty
 
 #### Resource Considerations
 
@@ -532,7 +577,7 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/worker.log
 
-In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Of course, you should change the `queue:work sqs` portion of the `command` directive to reflect your desired queue connection.
+In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `queue:work sqs` portion of the `command` directive to reflect your desired queue connection.
 
 #### Starting Supervisor
 
@@ -619,7 +664,7 @@ You may define a `failed` method directly on your job class, allowing you to per
 <a name="failed-job-events"></a>
 ### Failed Job Events
 
-If you would like to register an event that will be called when a job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via email or [Stride](https://www.stride.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+If you would like to register an event that will be called when a job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via email or [Slack](https://www.slack.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
 
     <?php
 
@@ -632,6 +677,16 @@ If you would like to register an event that will be called when a job fails, you
     class AppServiceProvider extends ServiceProvider
     {
         /**
+         * Register the service provider.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
          * Bootstrap any application services.
          *
          * @return void
@@ -643,16 +698,6 @@ If you would like to register an event that will be called when a job fails, you
                 // $event->job
                 // $event->exception
             });
-        }
-
-        /**
-         * Register the service provider.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 
@@ -678,6 +723,20 @@ If you would like to delete a failed job, you may use the `queue:forget` command
 To delete all of your failed jobs, you may use the `queue:flush` command:
 
     php artisan queue:flush
+
+<a name="ignoring-missing-models"></a>
+### Ignoring Missing Models
+
+When injecting an Eloquent model into a job, it is automatically serialized before being placed on the queue and restored when the job is processed. However, if the model has been deleted while the job was waiting to be processed by a worker, your job may fail with a `ModelNotFoundException`.
+
+For convenience, you may choose to automatically delete jobs with missing models by setting your job's `deleteWhenMissingModels` property to `true`:
+
+    /**
+     * Delete the job if its models no longer exist.
+     *
+     * @var bool
+     */
+    public $deleteWhenMissingModels = true;
 
 <a name="job-events"></a>
 ## Job Events

@@ -147,7 +147,7 @@ To create a new database table, use the `create` method on the `Schema` facade. 
         $table->increments('id');
     });
 
-Of course, when creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
+When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
 
 #### Checking For Table / Column Existence
 
@@ -209,7 +209,7 @@ The `table` method on the `Schema` facade may be used to update existing tables.
 
 #### Available Column Types
 
-Of course, the schema builder contains a variety of column types that you may specify when building your tables:
+The schema builder contains a variety of column types that you may specify when building your tables:
 
 Command  |  Description
 -------  |  -----------
@@ -287,7 +287,7 @@ Modifier  |  Description
 `->autoIncrement()`  |  Set INTEGER columns as auto-increment (primary key)
 `->charset('utf8')`  |  Specify a character set for the column (MySQL)
 `->collation('utf8_unicode_ci')`  |  Specify a collation for the column (MySQL/SQL Server)
-`->comment('my comment')`  |  Add a comment to a column (MySQL)
+`->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL)
 `->default($value)`  |  Specify a "default" value for the column
 `->first()`  |  Place the column "first" in the table (MySQL)
 `->nullable($value = true)`  |  Allows (by default) NULL values to be inserted into the column
@@ -443,7 +443,7 @@ If you pass an array of columns into a method that drops indexes, the convention
 Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
 
     Schema::table('posts', function (Blueprint $table) {
-        $table->unsignedInteger('user_id');
+        $table->unsignedBigInteger('user_id');
 
         $table->foreign('user_id')->references('id')->on('users');
     });

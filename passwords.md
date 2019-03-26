@@ -19,7 +19,7 @@ Most web applications provide a way for users to reset their forgotten passwords
 <a name="resetting-database"></a>
 ## Database Considerations
 
-To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\CanResetPassword` contract. Of course, the `App\User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Passwords\CanResetPassword` trait to include the methods needed to implement the interface.
+To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\CanResetPassword` contract. The `App\User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Passwords\CanResetPassword` trait to include the methods needed to implement the interface.
 
 #### Generating The Reset Token Table Migration
 
@@ -75,7 +75,7 @@ In your `auth.php` configuration file, you may configure multiple password "brok
      *
      * @return PasswordBroker
      */
-    protected function broker()
+    public function broker()
     {
         return Password::broker('name');
     }
@@ -94,4 +94,3 @@ You may easily modify the notification class used to send the password reset lin
     {
         $this->notify(new ResetPasswordNotification($token));
     }
-

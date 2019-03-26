@@ -1,4 +1,4 @@
-# API Authentication (Passport)
+# Laravel Passport
 
 - [Introduction](#introduction)
 - [Installation](#installation)
@@ -15,6 +15,7 @@
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
+    - [Customizing The Username Field](#customizing-the-username-field)
 - [Implicit Grant Tokens](#implicit-grant-tokens)
 - [Client Credentials Grant Tokens](#client-credentials-grant-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
@@ -25,6 +26,7 @@
     - [Passing The Access Token](#passing-the-access-token)
 - [Token Scopes](#token-scopes)
     - [Defining Scopes](#defining-scopes)
+    - [Default Scope](#default-scope)
     - [Assigning Scopes To Tokens](#assigning-scopes-to-tokens)
     - [Checking Scopes](#checking-scopes)
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
@@ -36,7 +38,7 @@
 
 Laravel already makes it easy to perform authentication via traditional login forms, but what about APIs? APIs typically use tokens to authenticate users and do not maintain session state between requests. Laravel makes API authentication a breeze using Laravel Passport, which provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
 
-> {note} This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general terminology and features of OAuth2 before continuing.
+> {note} This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
 
 <a name="installation"></a>
 ## Installation
@@ -137,18 +139,20 @@ The published components will be placed in your `resources/js/components` direct
 
     Vue.component(
         'passport-clients',
-        require('./components/passport/Clients.vue')
+        require('./components/passport/Clients.vue').default
     );
 
     Vue.component(
         'passport-authorized-clients',
-        require('./components/passport/AuthorizedClients.vue')
+        require('./components/passport/AuthorizedClients.vue').default
     );
 
     Vue.component(
         'passport-personal-access-tokens',
-        require('./components/passport/PersonalAccessTokens.vue')
+        require('./components/passport/PersonalAccessTokens.vue').default
     );
+
+> {note} Prior to Laravel v5.7.19, appending `.default` when registering components results in a console error. An explanation for this change can be found in the [Laravel Mix v4.0.0 release notes](https://github.com/JeffreyWay/laravel-mix/releases/tag/v4.0.0).
 
 After registering the components, make sure to run `npm run dev` to recompile your assets. Once you have recompiled your assets, you may drop the components into one of your application's templates to get started creating clients and personal access tokens:
 
@@ -209,8 +213,8 @@ By default, Passport issues long-lived access tokens that expire after one year.
 You are free to extend the models used internally by Passport. Then, you may instruct Passport to use your custom models via the `Passport` class:
 
     use App\Models\Passport\Client;
+    use App\Models\Passport\Token;
     use App\Models\Passport\AuthCode;
-    use App\Models\Passport\TokenModel;
     use App\Models\Passport\PersonalAccessClient;
 
     /**
@@ -224,8 +228,8 @@ You are free to extend the models used internally by Passport. Then, you may ins
 
         Passport::routes();
 
+        Passport::useTokenModel(Token::class);
         Passport::useClientModel(Client::class);
-        Passport::useTokenModel(TokenModel::class);
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
@@ -428,7 +432,7 @@ Once you have created a password grant client, you may request an access token b
 <a name="requesting-all-scopes"></a>
 ### Requesting All Scopes
 
-When using the password grant, you may wish to authorize the token for all of the scopes supported by your application. You can do this by requesting the `*` scope. If you request the `*` scope, the `can` method on the token instance will always return `true`. This scope may only be assigned to a token that is issued using the `password` grant:
+When using the password grant or client credentials grant, you may wish to authorize the token for all of the scopes supported by your application. You can do this by requesting the `*` scope. If you request the `*` scope, the `can` method on the token instance will always return `true`. This scope may only be assigned to a token that is issued using the `password` or `client_credentials` grant:
 
     $response = $http->post('http://your-app.com/oauth/token', [
         'form_params' => [
@@ -440,6 +444,35 @@ When using the password grant, you may wish to authorize the token for all of th
             'scope' => '*',
         ],
     ]);
+
+<a name="customizing-the-username-field"></a>
+### Customizing The Username Field
+
+When authenticating using the password grant, Passport will use the `email` attribute of your model as the "username". However, you may customize this behavior by defining a `findForPassport` method on your model:
+
+    <?php
+
+    namespace App;
+
+    use Laravel\Passport\HasApiTokens;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use HasApiTokens, Notifiable;
+
+        /**
+         * Find the user instance for the given username.
+         *
+         * @param  string  $username
+         * @return \App\User
+         */
+        public function findForPassport($username)
+        {
+            return $this->where('username', $username)->first();
+        }
+    }
 
 <a name="implicit-grant-tokens"></a>
 ## Implicit Grant Tokens
@@ -654,6 +687,18 @@ You may define your API's scopes using the `Passport::tokensCan` method in the `
         'check-status' => 'Check order status',
     ]);
 
+<a name="default-scope"></a>
+### Default Scope
+
+If a client does not request any specific scopes, you may configure your Passport server to attach a default scope to the token using the `setDefaultScope` method. Typically, you should call this method from the `boot` method of your `AuthServiceProvider`:
+
+    use Laravel\Passport\Passport;
+
+    Passport::setDefaultScope([
+        'check-status',
+        'place-orders',
+    ]);
+
 <a name="assigning-scopes-to-tokens"></a>
 ### Assigning Scopes To Tokens
 
@@ -788,22 +833,20 @@ When using this method of authentication, the default Laravel JavaScript scaffol
 
 Passport raises events when issuing access tokens and refresh tokens. You may use these events to prune or revoke other access tokens in your database. You may attach listeners to these events in your application's `EventServiceProvider`:
 
-```php
-/**
- * The event listener mappings for the application.
- *
- * @var array
- */
-protected $listen = [
-    'Laravel\Passport\Events\AccessTokenCreated' => [
-        'App\Listeners\RevokeOldTokens',
-    ],
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Laravel\Passport\Events\AccessTokenCreated' => [
+            'App\Listeners\RevokeOldTokens',
+        ],
 
-    'Laravel\Passport\Events\RefreshTokenCreated' => [
-        'App\Listeners\PruneOldTokens',
-    ],
-];
-```
+        'Laravel\Passport\Events\RefreshTokenCreated' => [
+            'App\Listeners\PruneOldTokens',
+        ],
+    ];
 
 <a name="testing"></a>
 ## Testing
