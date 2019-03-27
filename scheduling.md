@@ -29,6 +29,14 @@ When using the scheduler, you only need to add the following Cron entry to your 
 
 This Cron will call the Laravel command scheduler every minute. When the `schedule:run` command is executed, Laravel will evaluate your scheduled tasks and runs the tasks that are due.
 
+It isn't always ideal to modify Cron on your machine, for instance in development where you would not want all of your projects constantly running while they are not being actively worked on.
+
+Should you need to run the `schedule:run` command more frequently than once a minute, consider the community package [Fake Cron](https://github.com/alexbowers/laravel-fake-cron).
+
+    composer require alexbowers/laravel-fake-cron
+    
+With Fake Cron installed, you no longer need to add anything to your crontab, and can instead use the `php artisan cron` command to run your scheduler. In a production environment you should use Supervisor to keep the command running in event of failure.
+
 <a name="defining-schedules"></a>
 ## Defining Schedules
 
