@@ -26,6 +26,9 @@
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
     - [Mail](#mail)
+- [Debugging & Profiling](#debugging-and-profiling)
+    - [Debugging Web Requests with xdebug](#debugging-web-requests)
+    - [Debugging CLI scripts](#debugging-cli-scripts)
 - [Network Interfaces](#network-interfaces)
 - [Extending Homestead](#extending-homestead)
 - [Updating Homestead](#updating-homestead)
@@ -68,6 +71,8 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - MongoDB (Optional)
 - Elasticsearch (Optional)
 - ngrok
+- xdebug
+- xhprof / tideways / xhgui
 - wp-cli
 - Zend Z-Ray
 - Go
@@ -513,6 +518,63 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 ### Mail
 
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
+
+<a name="debugging-and-profiling"></a>
+## Debugging & Profiling
+
+<a name="debugging-web-requests"></a>
+### Debugging Web Requests with xdebug
+
+Homestead includes out-of-the-box support for step debugging with [xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect back out to your IDE to allow inspection and modification of the running code.
+
+To enable debugging, run:
+
+    $ sudo phpenmod xdebug
+    $ sudo systemctl restart php7.3-fpm # Replacing the version with whatever PHP version are using.
+
+Then, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger xdebug with an extension or [a bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
+
+Loading xdebug by itself, even when not actively debugging, can significantly slow PHP. To disable xdebug, run `sudo phpdismod xdebug` and restart the FPM service again.
+
+While xdebug is included for all PHP versions, note that early minor releases of PHP often have some incompatibilities with xdebug immediately after release. If PHP segfaults or throws Zend errors, try switching to the previous stable PHP release.
+
+<a name="debugging-cli-scripts"></a>
+### Debugging CLI scripts
+
+To debug a PHP CLI program, use the `xphp` shell alias:
+
+    $ xphp path/to/script
+
+When debugging functional tests that make requests to the web server, it is often easier to autostart debugging rather than modifying tests to pass through a custom header or cookie to trigger debugging. To force xdebug to start, modify `/etc/php/7.#/fpm/conf.d/20-xdebug.ini` (replacing the PHP version) and add:
+
+    ; If Homestead.yml contains a different subnet for the ip setting, this may be different.
+    xdebug.remote_host = 192.168.10.1
+    xdebug.remote_autostart = 1
+
+### Profiling PHP performance with xhgui
+
+[xhgui](https://www.github.com/perftools/xhgui) is a user interface for exploring the performance of your PHP programs. To enable xhgui, add `xhgui: 'true'` to your site configuration:
+
+    sites:
+        -
+            map: drupal8.test
+            to: /home/vagrant/code/web
+            type: "apache"
+            xhgui: 'true'
+
+To add xhgui to an existing site, run `vagrant provision`.
+
+To profile a web request, add `xhgui=on` as a query parameter to a request. A cookie will be set with a 1 hour expiry from the last request to make it easy to profile AJAX and POST requests from a browser. View the results by browsing to `/xhgui` on your site.
+
+To profile a CLI request, prefix the command with `XHGUI=on`:
+
+    $ XHGUI=on path/to/script
+
+Results will show up at `/xhgui` alongside any web requests.
+
+Note that the act of profiling slows down script execution, and absolute times may be as much as twice as real-world requests. Always compare percent improvements, and not absolute numbers. Also, be aware the execution time (or "Wall time") includes any time spent paused in a debugger.
+
+As performance profiles take up significant disk space, they are deleted automatically after a few days.
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
