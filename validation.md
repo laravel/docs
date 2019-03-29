@@ -1003,7 +1003,7 @@ The field under validation must be a valid timezone identifier according to the 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
-The field under validation must be unique in a given database table, meaning the value shouldn't already exist. If the `column` option is not specified, the field name will be used.
+The field under validation must not exist within the given database table. If the column option is not specified, the field name will be used.
 
 **Specifying A Custom Column Name:**
 
