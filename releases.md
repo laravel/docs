@@ -127,7 +127,7 @@ However, this can become cumbersome and repetitive if you are specifying the sam
 
 ### Intermediate Table / Pivot Model Events
 
-In previous versions of Laravel, Eloquent model events were not dispatched when attaching, detaching, or syncing custom intermediate table / "pivot" models of a many-to-many relationship. When using [custom intermediate table models](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) in Laravel 5.8, these events will now be dispatched.
+In previous versions of Laravel, Eloquent model events(e.g. saving, saved, updated, etc.) were not dispatched when attaching, detaching, or syncing custom intermediate table / "pivot" models of a many-to-many relationship. When using [custom intermediate table models](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) in Laravel 5.8, the applicable model events will now be dispatched.
 
 ### Artisan Call Improvements
 
