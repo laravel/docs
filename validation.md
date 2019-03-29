@@ -1003,9 +1003,11 @@ The field under validation must be a valid timezone identifier according to the 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
-The field under validation must not exist within the given database table. If the column option is not specified, the field name will be used.
+The field under validation must not exist within the given database table.
 
 **Specifying A Custom Column Name:**
+
+The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the field name will be used.
 
     'email' => 'unique:users,email_address'
 
