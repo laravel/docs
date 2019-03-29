@@ -68,6 +68,8 @@ Then, once you have created the `meta` tag, you can instruct a library like jQue
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    
+> {tip} This setup will affect all calls to `$.ajax` or Ajax-based derivatives such as `$.get()`. This can cause undesirable behavior since other callers (for example, plugins) may be expecting the normal default settings.
 
 > {tip} By default, the `resources/js/bootstrap.js` file registers the value of the `csrf-token` meta tag with the Axios HTTP library. If you are not using this library, you will need to manually configure this behavior for your application.
 
