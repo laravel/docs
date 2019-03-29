@@ -26,6 +26,7 @@
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
     - [Mail](#mail)
+    - [Database Snapshots](#database-snapshots)
 - [Debugging & Profiling](#debugging-and-profiling)
     - [Debugging Web Requests with xdebug](#debugging-web-requests)
     - [Debugging CLI scripts](#debugging-cli-scripts)
@@ -59,6 +60,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Apache (Optional)
 - MySQL
 - MariaDB (Optional)
+- lmm for MySQL or MariaDB database snapshots
 - Sqlite3
 - PostgreSQL
 - Composer
@@ -521,6 +523,15 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 ### Mail
 
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
+
+<a name="database-snapshots"></a>
+### Database snapshots
+
+Homestead supports freezing the state of MySQL and MariaDB databases and branching between them with [Logical MySQL Manager](https://github.com/Lullabot/lmm). For example, imagine working on a site with a multi-gigabyte database. You can import the database and take a snapshot. After doing some work and creating some test content locally, to roll back to a known-good state you can quickly restore back to the original state. Under the hood, LMM uses LVM's thin snapshot functionality with copy-on-write support. In practice, this means that changing a single row in a table will only cause the changes you made to be written to disk, saving significant time and disk space during restores.
+
+Since `lmm` interacts with LVM, it must be run as root. To see all available commands, run `sudo lmm`.
+
+Note that there is no de-duplication process between snapshots. For example, if you create a snapshot with `sudo lmm branch production-2019-03-20`, drop all tables, and re-import the source database, you will have two completely independent sets of data on disk. To conserve disk space, consider importing one database and then running updates and migrations on top of it, and be sure to delete old snapshots with `sudo lmm delete`.
 
 <a name="debugging-and-profiling"></a>
 ## Debugging & Profiling
