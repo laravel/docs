@@ -28,8 +28,8 @@
     - [Mail](#mail)
     - [Database Snapshots](#database-snapshots)
 - [Debugging & Profiling](#debugging-and-profiling)
-    - [Debugging Web Requests with xdebug](#debugging-web-requests)
-    - [Debugging CLI scripts](#debugging-cli-scripts)
+    - [Debugging Web Requests With Xdebug](#debugging-web-requests)
+    - [Debugging CLI Scripts](#debugging-cli-scripts)
 - [Network Interfaces](#network-interfaces)
 - [Extending Homestead](#extending-homestead)
 - [Updating Homestead](#updating-homestead)
@@ -74,7 +74,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Elasticsearch (Optional)
 - avahi
 - ngrok
-- xdebug
+- Xdebug
 - xhprof / tideways / xhgui
 - wp-cli
 - Zend Z-Ray
@@ -525,7 +525,7 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
 
 <a name="database-snapshots"></a>
-### Database snapshots
+### Database Snapshots
 
 Homestead supports freezing the state of MySQL and MariaDB databases and branching between them with [Logical MySQL Manager](https://github.com/Lullabot/lmm). For example, imagine working on a site with a multi-gigabyte database. You can import the database and take a snapshot. After doing some work and creating some test content locally, to roll back to a known-good state you can quickly restore back to the original state. Under the hood, LMM uses LVM's thin snapshot functionality with copy-on-write support. In practice, this means that changing a single row in a table will only cause the changes you made to be written to disk, saving significant time and disk space during restores.
 
@@ -537,20 +537,20 @@ Note that there is no de-duplication process between snapshots. For example, if 
 ## Debugging & Profiling
 
 <a name="debugging-web-requests"></a>
-### Debugging Web Requests with xdebug
+### Debugging Web Requests With Xdebug
 
-Homestead includes out-of-the-box support for step debugging with [xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect back out to your IDE to allow inspection and modification of the running code.
+Homestead includes out-of-the-box support for step debugging with [Xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect back out to your IDE to allow inspection and modification of the running code.
 
 To enable debugging, run:
 
     $ sudo phpenmod xdebug
     $ sudo systemctl restart php7.3-fpm # Replacing the version with whatever PHP version are using.
 
-Then, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger xdebug with an extension or [a bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
+Then, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [a bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
-Loading xdebug by itself, even when not actively debugging, can significantly slow PHP. To disable xdebug, run `sudo phpdismod xdebug` and restart the FPM service again.
+Loading Xdebug by itself, even when not actively debugging, can significantly slow PHP. To disable Xdebug, run `sudo phpdismod xdebug` and restart the FPM service again.
 
-While xdebug is included for all PHP versions, note that early minor releases of PHP often have some incompatibilities with xdebug immediately after release. If PHP segfaults or throws Zend errors, try switching to the previous stable PHP release.
+While Xdebug is included for all PHP versions, note that early minor releases of PHP often have some incompatibilities with Xdebug immediately after release. If PHP segfaults or throws Zend errors, try switching to the previous stable PHP release.
 
 <a name="debugging-cli-scripts"></a>
 ### Debugging CLI scripts
@@ -559,7 +559,7 @@ To debug a PHP CLI program, use the `xphp` shell alias:
 
     $ xphp path/to/script
 
-When debugging functional tests that make requests to the web server, it is often easier to autostart debugging rather than modifying tests to pass through a custom header or cookie to trigger debugging. To force xdebug to start, modify `/etc/php/7.#/fpm/conf.d/20-xdebug.ini` (replacing the PHP version) and add:
+When debugging functional tests that make requests to the web server, it is often easier to autostart debugging rather than modifying tests to pass through a custom header or cookie to trigger debugging. To force Xdebug to start, modify `/etc/php/7.#/fpm/conf.d/20-xdebug.ini` (replacing the PHP version) and add:
 
     ; If Homestead.yml contains a different subnet for the ip setting, this may be different.
     xdebug.remote_host = 192.168.10.1
