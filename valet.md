@@ -25,7 +25,14 @@ In other words, a blazing fast Laravel development environment that uses roughly
 
 Out of the box, Valet support includes, but is not limited to:
 
-<div class="content-list" markdown="1">
+<style>
+    #valet-support > ul {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        line-height: 1.9;
+    }
+</style>
+
+<div id="valet-support" markdown="1">
 - [Laravel](https://laravel.com)
 - [Lumen](https://lumen.laravel.com)
 - [Bedrock](https://roots.io/bedrock/)
