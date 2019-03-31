@@ -41,6 +41,8 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
     php artisan make:migration add_votes_to_users_table --table=users
 
+> Note: the name used for the migration must match the class name used for the miration. It would be CreateUsersTable and AddVotesToUsersTable respetively. 
+
 If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
 
 <a name="migration-structure"></a>
