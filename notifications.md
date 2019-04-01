@@ -94,12 +94,7 @@ Alternatively, you may send notifications via the `Notification` [facade](/docs/
 <a name="specifying-delivery-channels"></a>
 ### Specifying Delivery Channels
 
-Every notification class has a `via` method that determines on which channels the notification will be delivered. Out of the box, notifications may be sent on the `mail`, `database`, and `broadcast`, channels.
-
-You can use the popular Nexmo and Slack channels in your project by requiring the following first party packages:
-
-    composer require laravel/nexmo-notification-channel
-    composer require laravel/slack-notification-channel
+Every notification class has a `via` method that determines on which channels the notification will be delivered. Notifications may be sent on the `mail`, `database`, `broadcast`, `nexmo`, and `slack` channels.
 
 > {tip} If you would like to use other delivery channels such as Telegram or Pusher, check out the community driven [Laravel Notification Channels website](http://laravel-notification-channels.com).
 
