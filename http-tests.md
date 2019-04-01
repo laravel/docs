@@ -106,6 +106,20 @@ One common use of the session is for maintaining state for the authenticated use
 You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:
 
     $this->actingAs($user, 'api')
+    
+Another common use of the session is for setting a user's previous url. Laravel provides the `from` helper to make that easier.
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        public function testRedirects()
+        {
+            $this->from('/login')
+                ->post('/login', $credentials)
+                ->assertRedirect('/login');
+        }
+    }
 
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
