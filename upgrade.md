@@ -68,7 +68,7 @@ Then, update any reference to the old directories in your `webpack.mix.js` file:
 
 A new directory, `svg`, was added to the `public` directory. It contains four svg files: `403.svg`, `404.svg`, `500.svg`, and `503.svg`, which are displayed on their respective error pages.
 
-You may get the files [from GitHub](https://github.com/laravel/laravel/tree/master/public/svg).
+You may get the files [from GitHub](https://github.com/laravel/laravel/tree/5.7/public/svg).
 
 ### Authentication
 
@@ -333,7 +333,7 @@ As of Laravel 5.7, these values will be cast to the corresponding PHP constants 
 
 **Likelihood Of Impact: Optional**
 
-If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php).
+If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/5.7/app/Http/Controllers/Auth/VerificationController.php).
 
 You will also need to modify your `App\User` model to implement the `MustVerifyEmail` contract:
 
@@ -372,7 +372,7 @@ Next, your user table must contain an `email_verified_at` column to store the da
 
     $table->timestamp('email_verified_at')->nullable();
 
-In order to send the email when a user is registered, you should register following events and listeners in your [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/master/app/Providers/EventServiceProvider.php) class:
+In order to send the email when a user is registered, you should register following events and listeners in your [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/5.7/app/Providers/EventServiceProvider.php) class:
 
     use Illuminate\Auth\Events\Registered;
     use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -505,4 +505,4 @@ Laravel 5.7 introduces improved testing tools for Artisan commands. By default, 
 
 ### Miscellaneous
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.
+We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...5.7) and choose which updates are important to you.
