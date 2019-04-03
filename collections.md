@@ -2300,12 +2300,6 @@ The static `wrap` method wraps the given value in a collection when applicable:
 
     // ['John Doe']
 
-    $collection = Collection::wrap(['John Doe']);
-
-    $collection->all();
-
-    // ['John Doe']
-
     $collection = Collection::wrap(collect('John Doe'));
 
     $collection->all();
