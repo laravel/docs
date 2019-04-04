@@ -4,6 +4,7 @@
 - [Registering Events & Listeners](#registering-events-and-listeners)
     - [Generating Events & Listeners](#generating-events-and-listeners)
     - [Manually Registering Events](#manually-registering-events)
+    - [Automatic Discovery](#automatic-discovery)
 - [Defining Events](#defining-events)
 - [Defining Listeners](#defining-listeners)
 - [Queued Event Listeners](#queued-event-listeners)
@@ -70,6 +71,26 @@ You may even register listeners using the `*` as a wildcard parameter, allowing 
     Event::listen('event.*', function ($eventName, array $data) {
         //
     });
+
+<a name="automatic-discovery"></a>
+### Automatic Discovery
+
+> {note} Automatic Discovery its only available for Laravel 5.8.9 or later.
+
+Instead of registering events and listeners manually in the `EventServiceProvider` `$listen` array, you can enable Automatic Discovery which will find and register your listeners inside the `Listeners` directory with their respective events. If you already populated the array, these will be appended to the discovered list.
+
+The event discovery is disabled by default, but you can enable it by setting the `$discover` variable to `true`.
+
+    /**
+     * Should discover events and listeners automatically
+     *
+     * @var bool
+     */
+    public $discover = true;
+
+Since these files will be discovered each time your application boots, you can cache the list using the `event:cache` command. This  will keep a cache of discovered files, useful for production environments. Meanwhile, the `event:clear` command will clear the cache of events.
+
+To get a list of the discovered events and their listeners, call the `event:list` command.
 
 <a name="defining-events"></a>
 ## Defining Events
