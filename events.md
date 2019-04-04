@@ -77,9 +77,9 @@ You may even register listeners using the `*` as a wildcard parameter, allowing 
 
 > {note} Event Discovery its only available for Laravel 5.8.9 or later.
 
-Instead of registering events and listeners manually in the `EventServiceProvider` `$listen` array, you can enable Event Discovery which will find and register your listeners inside the `Listeners` directory with their respective events. If you already populated the array, these will be appended to the discovered list.
+Instead of registering events and listeners manually in the `$listen` array of the `EventServiceProvider`, you can enable automatic event discovery. When event discovery is enabled, Laravel will automatically find and register your events and listeners by scanning your application's `Listeners` directory. In addition, any explicitly defined events listed in the `EventServiceProvider` will still be registered.
 
-The event discovery is disabled by default, but you can enable it by overriding the `shouldDiscoverEvents()` method to return `true`.
+Event discovery is disabled by default, but you can enable it by overriding the `shouldDiscoverEvents` method of your application's `EventServiceProvider`:
 
     /**
      * Determine if events and listeners should be automatically discovered.
@@ -91,9 +91,23 @@ The event discovery is disabled by default, but you can enable it by overriding 
         return true;
     }
 
-Since these files will be discovered each time your application boots, you can cache the list using the `event:cache` command. This  will keep a cache of discovered files, useful for production environments. Meanwhile, the `event:clear` command will clear the cache of events.
+By default, all listeners within your application's Listeners directory will be scanned. If you would like to define additional directories to scan, you may override the `discoverEventsWithin` method in your `EventServiceProvider`:
 
-To get a list of the discovered events and their listeners, call the `event:list` command.
+    /**
+     * Get the listener directories that should be used to discover events.
+     *
+     * @return array
+     */
+    protected function discoverEventsWithin()
+    {
+        return [
+            $this->app->path('Listeners'),
+        ];
+    }
+
+In production, you likely do not want the framework to scan all of your listeners on every request. Therefore, during your deployment process, you should run the `event:cache` Artisan command to cache a manifest of all of your application's events and listeners. This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the cache.
+
+> {tip} The `event:list` command may be used to display a list of all events and listeners registered by your application.
 
 <a name="defining-events"></a>
 ## Defining Events
