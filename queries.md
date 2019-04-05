@@ -347,14 +347,14 @@ You may chain where constraints together as well as add `or` clauses to the quer
 
 #### Additional Where Clauses
 
-**whereBetween**
+**whereBetween / orWhereBetween**
 
 The `whereBetween` method verifies that a column's value is between two values:
 
     $users = DB::table('users')
                         ->whereBetween('votes', [1, 100])->get();
 
-**whereNotBetween**
+**whereNotBetween / orWhereNotBetween**
 
 The `whereNotBetween` method verifies that a column's value lies outside of two values:
 
@@ -362,7 +362,7 @@ The `whereNotBetween` method verifies that a column's value lies outside of two 
                         ->whereNotBetween('votes', [1, 100])
                         ->get();
 
-**whereIn / whereNotIn**
+**whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
 The `whereIn` method verifies that a given column's value is contained within the given array:
 
@@ -376,7 +376,7 @@ The `whereNotIn` method verifies that the given column's value is **not** contai
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
 
-**whereNull / whereNotNull**
+**whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
 The `whereNull` method verifies that the value of the given column is `NULL`:
 
@@ -422,7 +422,7 @@ The `whereTime` method may be used to compare a column's value against a specifi
                     ->whereTime('created_at', '=', '11:20:45')
                     ->get();
 
-**whereColumn**
+**whereColumn / orWhereColumn**
 
 The `whereColumn` method may be used to verify that two columns are equal:
 
