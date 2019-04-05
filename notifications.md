@@ -10,8 +10,8 @@
     - [On-Demand Notifications](#on-demand-notifications)
 - [Mail Notifications](#mail-notifications)
     - [Formatting Mail Messages](#formatting-mail-messages)
-    - [Customizing The Recipient](#customizing-the-recipient)
     - [Customizing The Sender](#customizing-the-sender)
+    - [Customizing The Recipient](#customizing-the-recipient)
     - [Customizing The Subject](#customizing-the-subject)
     - [Customizing The Templates](#customizing-the-templates)
 - [Markdown Mail Notifications](#markdown-mail-notifications)
@@ -237,6 +237,24 @@ Some notifications inform users of errors, such as a failed invoice payment. You
                     ->line('...');
     }
 
+<a name="customizing-the-sender"></a>
+### Customizing The Sender
+
+By default, the email's sender / from address is defined in the `config/mail.php` configuration file. However, you may specify the from address for a specific notification using the `from` method:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->from('test@example.com', 'Example')
+                    ->line('...');
+    }
+
 <a name="customizing-the-recipient"></a>
 ### Customizing The Recipient
 
@@ -264,25 +282,6 @@ When sending notifications via the `mail` channel, the notification system will 
             return $this->email_address;
         }
     }
-
-<a name="customizing-the-sender"></a>
-### Customizing The Sender
-
-By default, the email's sender is defined in the `config/mail.php` file. However, you may also define a sender for a specific notification:
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->from('noreply@laravel.com', 'Laravel')
-                    ->line('...');
-    }
-
 
 <a name="customizing-the-subject"></a>
 ### Customizing The Subject
