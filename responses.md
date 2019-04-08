@@ -65,20 +65,18 @@ Or, you may use the `withHeaders` method to specify an array of headers to be ad
                     'X-Header-Two' => 'Header Value',
                 ]);
 
-##### Cache Control middleware
+##### Cache Control Middleware
 
-Laravel ships with a convenient `cache.headers` middleware. It will attach your custom cache directives to the response `Cache-Control` header, as long it has been made through `GET` and `HEAD` requests and the content is not empty.
+Laravel includes a `cache.headers` middleware, which may be used to quickly set the `Cache-Control` header for a group of routes:
 
     Route::middleware('cache-control:public,max-age=2628000;etag')->group(function() {
-        
-        Route::get('privacy-policy', function () {
+        Route::get('privacy', function () {
             // ...
         });
-        
-        Route::get('terms-and-conditions', function () {
+
+        Route::get('terms', function () {
             // ...
         });
-        
     });
 
 <a name="attaching-cookies-to-responses"></a>
