@@ -126,11 +126,6 @@ The `make:policy` command will generate an empty policy class. If you would like
 
     php artisan make:policy PostPolicy --model=Post
 
-The policy name corresponds to the public method name in the policy.
-
-    Gate::allows('view', Post::class);
-
-
 > {tip} All policies are resolved via the Laravel [service container](/docs/{{version}}/container), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected.
 
 <a name="registering-policies"></a>
@@ -170,10 +165,6 @@ Once the policy exists, it needs to be registered. The `AuthServiceProvider` inc
             //
         }
     }
-
-The public methods of the policy becomes available like so
-
-    Gate::allows('view', Post::class);
 
 #### Policy Auto-Discovery
 
