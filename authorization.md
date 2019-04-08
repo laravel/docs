@@ -64,26 +64,6 @@ Gates may also be defined using a `Class@method` style callback string, like con
         Gate::define('update-post', 'App\Policies\PostPolicy@update');
     }
 
-#### Resource Gates
-
-You may also define multiple Gate abilities at once using the `resource` method:
-
-    Gate::resource('posts', 'App\Policies\PostPolicy');
-
-This is identical to manually defining the following Gate definitions:
-
-    Gate::define('posts.view', 'App\Policies\PostPolicy@view');
-    Gate::define('posts.create', 'App\Policies\PostPolicy@create');
-    Gate::define('posts.update', 'App\Policies\PostPolicy@update');
-    Gate::define('posts.delete', 'App\Policies\PostPolicy@delete');
-
-By default, the `view`, `create`, `update`, and `delete` abilities will be defined. You may override the default abilities by passing an array as a third argument to the `resource` method. The keys of the array define the names of the abilities while the values define the method names. For example, the following code will only create two new Gate definitions - `posts.image` and `posts.photo`:
-
-    Gate::resource('posts', 'PostPolicy', [
-        'image' => 'updateImage',
-        'photo' => 'updatePhoto',
-    ]);
-
 <a name="authorizing-actions-via-gates"></a>
 ### Authorizing Actions
 
@@ -146,6 +126,11 @@ The `make:policy` command will generate an empty policy class. If you would like
 
     php artisan make:policy PostPolicy --model=Post
 
+The policy name corresponds to the public method name in the policy.
+
+    Gate::allows('view', Post::class);
+
+
 > {tip} All policies are resolved via the Laravel [service container](/docs/{{version}}/container), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected.
 
 <a name="registering-policies"></a>
@@ -185,6 +170,10 @@ Once the policy exists, it needs to be registered. The `AuthServiceProvider` inc
             //
         }
     }
+
+The public methods of the policy becomes available like so
+
+    Gate::allows('view', Post::class);
 
 #### Policy Auto-Discovery
 
