@@ -75,6 +75,10 @@ If you don't even need an entire row, you may extract a single value from a reco
 
     $email = DB::table('users')->where('name', 'John')->value('email');
 
+To retrieve a single row by its ID, use the `find` method:
+
+    $user = DB::table('users')->find(3);
+
 #### Retrieving A List Of Column Values
 
 If you would like to retrieve a Collection containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a Collection of role titles:
