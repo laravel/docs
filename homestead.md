@@ -537,7 +537,14 @@ Homestead includes the Postfix mail transfer agent, which is listening on port `
 
 Homestead supports freezing the state of MySQL and MariaDB databases and branching between them with [Logical MySQL Manager](https://github.com/Lullabot/lmm). For example, imagine working on a site with a multi-gigabyte database. You can import the database and take a snapshot. After doing some work and creating some test content locally, to roll back to a known-good state you can quickly restore back to the original state. Under the hood, LMM uses LVM's thin snapshot functionality with copy-on-write support. In practice, this means that changing a single row in a table will only cause the changes you made to be written to disk, saving significant time and disk space during restores.
 
-Since `lmm` interacts with LVM, it must be run as root. To see all available commands, run `sudo lmm`.
+Since `lmm` interacts with LVM, it must be run as root. To see all available commands, run `sudo lmm` inside the vagrant box. A common workflow would be to:
+
+1. Import a database into the default `master` lmm branch.
+1. Save a snapshot of the unchanged database with `sudo lmm branch prod-YYYY-MM-DD`.
+1. Create test content and run database schema updates as needed.
+1. To undo all changes, run `sudo lmm merge prod-YYYY-MM-DD`.
+1. If working with multiple git feature branches, consider creating per-feature database branches and switching between them with `sudo lmm checkout <branch>`.
+1. To delete old branches that are no longer needed, run `sudo lmm delete <branch>`.
 
 Note that there is no de-duplication process between snapshots. For example, if you create a snapshot with `sudo lmm branch production-2019-03-20`, drop all tables, and re-import the source database, you will have two completely independent sets of data on disk. To conserve disk space, consider importing one database and then running updates and migrations on top of it, and be sure to delete old snapshots with `sudo lmm delete`.
 
