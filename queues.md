@@ -552,6 +552,8 @@ When jobs are available on the queue, the worker will keep processing jobs with 
 
     php artisan queue:work --sleep=3
 
+> {note} The `--sleep` value should always be at least several seconds shorter than the `--timeout` value (default 60 seconds if not set). This will ensure that the child queue process isn't mistakenly being marked as frozen and removed.
+
 <a name="supervisor-configuration"></a>
 ## Supervisor Configuration
 
