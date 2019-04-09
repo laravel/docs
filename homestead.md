@@ -549,7 +549,7 @@ Note that there is no de-duplication process between snapshots. For example, if 
 
 Homestead includes out-of-the-box support for step debugging with [Xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect back out to your IDE to allow inspection and modification of the running code.
 
-To enable debugging, run:
+To enable debugging, inside the vagrant box run:
 
     $ sudo phpenmod xdebug
     $ sudo systemctl restart php7.3-fpm # Replacing the version with whatever PHP version are using.
@@ -563,11 +563,11 @@ While Xdebug is included for all PHP versions, note that early minor releases of
 <a name="debugging-cli-scripts"></a>
 ### Debugging CLI scripts
 
-To debug a PHP CLI program, use the `xphp` shell alias:
+To debug a PHP CLI program, use the `xphp` shell alias inside the vagrant box:
 
     $ xphp path/to/script
 
-When debugging functional tests that make requests to the web server, it is often easier to autostart debugging rather than modifying tests to pass through a custom header or cookie to trigger debugging. To force Xdebug to start, modify `/etc/php/7.#/fpm/conf.d/20-xdebug.ini` (replacing the PHP version) and add:
+When debugging functional tests that make requests to the web server, it is often easier to autostart debugging rather than modifying tests to pass through a custom header or cookie to trigger debugging. To force Xdebug to start, modify `/etc/php/7.#/fpm/conf.d/20-xdebug.ini` (replacing the PHP version) inside the vagrant box and add:
 
     ; If Homestead.yml contains a different subnet for the ip setting, this may be different.
     xdebug.remote_host = 192.168.10.1
