@@ -75,7 +75,7 @@ If you don't even need an entire row, you may extract a single value from a reco
 
     $email = DB::table('users')->where('name', 'John')->value('email');
 
-To retrieve a single row by its ID, use the `find` method:
+To retrieve a single row by its `id` column value, use the `find` method:
 
     $user = DB::table('users')->find(3);
 
