@@ -28,6 +28,8 @@ Laravel's database query builder provides a convenient, fluent interface to crea
 
 The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
 
+> {note} PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns, etc. If you must allow the user to select certain columns to query against, always validate the column names against a white-list of allowed columns.
+
 <a name="retrieving-results"></a>
 ## Retrieving Results
 
