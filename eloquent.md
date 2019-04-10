@@ -432,7 +432,7 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
 
     // Retrieve flight by name, or create it with the name, delayed, and arrival_time attributes...
     $flight = App\Flight::firstOrCreate(
-        ['name' => 'Flight 10'], 
+        ['name' => 'Flight 10'],
         ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
@@ -441,7 +441,7 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
 
     // Retrieve by name, or instantiate with the name, delayed, and arrival_time attributes...
     $flight = App\Flight::firstOrNew(
-        ['name' => 'Flight 10'], 
+        ['name' => 'Flight 10'],
         ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
@@ -700,7 +700,7 @@ Scopes should always return a query builder instance:
         /**
          * Scope a query to only include popular users.
          *
-         * @param \Illuminate\Database\Eloquent\Builder $query
+         * @param  \Illuminate\Database\Eloquent\Builder  $query
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopePopular($query)
@@ -711,7 +711,7 @@ Scopes should always return a query builder instance:
         /**
          * Scope a query to only include active users.
          *
-         * @param \Illuminate\Database\Eloquent\Builder $query
+         * @param  \Illuminate\Database\Eloquent\Builder  $query
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeActive($query)
@@ -751,8 +751,8 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
         /**
          * Scope a query to only include users of a given type.
          *
-         * @param  \Illuminate\Database\Eloquent\Builder $query
-         * @param  mixed $type
+         * @param  \Illuminate\Database\Eloquent\Builder  $query
+         * @param  mixed  $type
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeOfType($query, $type)

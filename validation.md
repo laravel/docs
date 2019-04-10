@@ -1003,9 +1003,11 @@ The field under validation must be a valid timezone identifier according to the 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
-The field under validation must be unique in a given database table. If the `column` option is not specified, the field name will be used.
+The field under validation must not exist within the given database table.
 
 **Specifying A Custom Column Name:**
+
+The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the field name will be used.
 
     'email' => 'unique:users,email_address'
 
@@ -1029,6 +1031,8 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
             Rule::unique('users')->ignore($user->id),
         ],
     ]);
+
+> {note} You should never pass any user controlled request input into the `ignore` method. Instead, you should only pass a system generated unique ID such as an auto-incrementing ID or UUID from an Eloquent model instance. Otherwise, your application will be vulnerable to an SQL injection attack.
 
 Instead of passing the model key's value to the `ignore` method, you may pass the entire model instance. Laravel will automatically extract the key from the model:
 

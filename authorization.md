@@ -64,26 +64,6 @@ Gates may also be defined using a `Class@method` style callback string, like con
         Gate::define('update-post', 'App\Policies\PostPolicy@update');
     }
 
-#### Resource Gates
-
-You may also define multiple Gate abilities at once using the `resource` method:
-
-    Gate::resource('posts', 'App\Policies\PostPolicy');
-
-This is identical to manually defining the following Gate definitions:
-
-    Gate::define('posts.view', 'App\Policies\PostPolicy@view');
-    Gate::define('posts.create', 'App\Policies\PostPolicy@create');
-    Gate::define('posts.update', 'App\Policies\PostPolicy@update');
-    Gate::define('posts.delete', 'App\Policies\PostPolicy@delete');
-
-By default, the `view`, `create`, `update`, and `delete` abilities will be defined. You may override the default abilities by passing an array as a third argument to the `resource` method. The keys of the array define the names of the abilities while the values define the method names. For example, the following code will only create two new Gate definitions - `posts.image` and `posts.photo`:
-
-    Gate::resource('posts', 'PostPolicy', [
-        'image' => 'updateImage',
-        'photo' => 'updatePhoto',
-    ]);
-
 <a name="authorizing-actions-via-gates"></a>
 ### Authorizing Actions
 
@@ -393,7 +373,7 @@ As previously discussed, some actions like `create` may not require a model inst
 
 #### Authorizing Resource Controllers
 
-If you are utilizing [resource controllers](/docs/{{version}}/controllers##resource-controllers), you may make use of the `authorizeResource` method in the controller's constructor. This method will attach the appropriate `can` middleware definition to the resource controller's methods.
+If you are utilizing [resource controllers](/docs/{{version}}/controllers#resource-controllers), you may make use of the `authorizeResource` method in the controller's constructor. This method will attach the appropriate `can` middleware definition to the resource controller's methods.
 
 The `authorizeResource` method accepts the model's class name as its first argument, and the name of the route / request parameter that will contain the model's ID as its second argument:
 

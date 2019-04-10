@@ -4,6 +4,7 @@
 - [Registering Events & Listeners](#registering-events-and-listeners)
     - [Generating Events & Listeners](#generating-events-and-listeners)
     - [Manually Registering Events](#manually-registering-events)
+    - [Event Discovery](#event-discovery)
 - [Defining Events](#defining-events)
 - [Defining Listeners](#defining-listeners)
 - [Queued Event Listeners](#queued-event-listeners)
@@ -70,6 +71,43 @@ You may even register listeners using the `*` as a wildcard parameter, allowing 
     Event::listen('event.*', function ($eventName, array $data) {
         //
     });
+
+<a name="event-discovery"></a>
+### Event Discovery
+
+> {note} Event Discovery its only available for Laravel 5.8.9 or later.
+
+Instead of registering events and listeners manually in the `$listen` array of the `EventServiceProvider`, you can enable automatic event discovery. When event discovery is enabled, Laravel will automatically find and register your events and listeners by scanning your application's `Listeners` directory. In addition, any explicitly defined events listed in the `EventServiceProvider` will still be registered.
+
+Event discovery is disabled by default, but you can enable it by overriding the `shouldDiscoverEvents` method of your application's `EventServiceProvider`:
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents()
+    {
+        return true;
+    }
+
+By default, all listeners within your application's Listeners directory will be scanned. If you would like to define additional directories to scan, you may override the `discoverEventsWithin` method in your `EventServiceProvider`:
+
+    /**
+     * Get the listener directories that should be used to discover events.
+     *
+     * @return array
+     */
+    protected function discoverEventsWithin()
+    {
+        return [
+            $this->app->path('Listeners'),
+        ];
+    }
+
+In production, you likely do not want the framework to scan all of your listeners on every request. Therefore, during your deployment process, you should run the `event:cache` Artisan command to cache a manifest of all of your application's events and listeners. This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the cache.
+
+> {tip} The `event:list` command may be used to display a list of all events and listeners registered by your application.
 
 <a name="defining-events"></a>
 ## Defining Events
@@ -322,12 +360,12 @@ Event subscribers are classes that may subscribe to multiple events from within 
         /**
          * Handle user login events.
          */
-        public function onUserLogin($event) {}
+        public function handleUserLogin($event) {}
 
         /**
          * Handle user logout events.
          */
-        public function onUserLogout($event) {}
+        public function handleUserLogout($event) {}
 
         /**
          * Register the listeners for the subscriber.
@@ -338,12 +376,12 @@ Event subscribers are classes that may subscribe to multiple events from within 
         {
             $events->listen(
                 'Illuminate\Auth\Events\Login',
-                'App\Listeners\UserEventSubscriber@onUserLogin'
+                'App\Listeners\UserEventSubscriber@handleUserLogin'
             );
 
             $events->listen(
                 'Illuminate\Auth\Events\Logout',
-                'App\Listeners\UserEventSubscriber@onUserLogout'
+                'App\Listeners\UserEventSubscriber@handleUserLogout'
             );
         }
     }

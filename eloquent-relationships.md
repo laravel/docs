@@ -335,7 +335,7 @@ You can also filter the results returned by `belongsToMany` using the `wherePivo
 <a name="defining-custom-intermediate-table-models"></a>
 ### Defining Custom Intermediate Table Models
 
-If you would like to define a custom model to represent the intermediate table of your relationship, you may call the `using` method when defining the relationship. Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` which uses a custom `UserRole` pivot model:
+If you would like to define a custom model to represent the intermediate table of your relationship, you may call the `using` method when defining the relationship. Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` which uses a custom `RoleUser` pivot model:
 
     <?php
 
@@ -350,11 +350,11 @@ If you would like to define a custom model to represent the intermediate table o
          */
         public function users()
         {
-            return $this->belongsToMany('App\User')->using('App\UserRole');
+            return $this->belongsToMany('App\User')->using('App\RoleUser');
         }
     }
 
-When defining the `UserRole` model, we will extend the `Pivot` class:
+When defining the `RoleUser` model, we will extend the `Pivot` class:
 
     <?php
 
@@ -362,12 +362,12 @@ When defining the `UserRole` model, we will extend the `Pivot` class:
 
     use Illuminate\Database\Eloquent\Relations\Pivot;
 
-    class UserRole extends Pivot
+    class RoleUser extends Pivot
     {
         //
     }
 
-You can combine `using` and `withPivot` in order to retrieve columns from the intermediate table. For example, you may retrieve the `created_by` and `updated_by` columns from the `UserRole` pivot table by passing the column names to the `withPivot` method:
+You can combine `using` and `withPivot` in order to retrieve columns from the intermediate table. For example, you may retrieve the `created_by` and `updated_by` columns from the `RoleUser` pivot table by passing the column names to the `withPivot` method:
 
     <?php
 
@@ -383,7 +383,7 @@ You can combine `using` and `withPivot` in order to retrieve columns from the in
         public function users()
         {
             return $this->belongsToMany('App\User')
-                            ->using('App\UserRole')
+                            ->using('App\RoleUser')
                             ->withPivot([
                                 'created_by',
                                 'updated_by'
@@ -931,7 +931,7 @@ You may also alias the relationship count result, allowing multiple counts on th
 
 If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
 
-    $query = App\Post::select(['title', 'body'])->withCount('comments');
+    $posts = App\Post::select(['title', 'body'])->withCount('comments');
 
     echo $posts[0]->title;
     echo $posts[0]->body;

@@ -195,6 +195,12 @@ However, instead of manually calling `json_encode`, you may use the `@json` Blad
         var app = @json($array);
     </script>
 
+The `@json` directive is also useful for seeding Vue components or `data-*` attributes:
+
+    <example-component :some-prop='@json($array)'></example-component>
+
+> {note} Using `@json` in element attributes requires that it be surrounded by single quotes.
+
 #### HTML Entity Encoding
 
 By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
@@ -412,6 +418,8 @@ Property  | Description
 `$loop->count`  |  The total number of items in the array being iterated.
 `$loop->first`  |  Whether this is the first iteration through the loop.
 `$loop->last`  |  Whether this is the last iteration through the loop.
+`$loop->even`  |  Whether this is an even iteration through the loop.
+`$loop->odd`  |  Whether this is an odd iteration through the loop.
 `$loop->depth`  |  The nesting level of the current loop.
 `$loop->parent`  |  When in a nested loop, the parent's loop variable.
 
@@ -439,7 +447,7 @@ In some situations, it's useful to embed PHP code into your views. You can use t
 <a name="csrf-field"></a>
 ### CSRF Field
 
-Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](https://laravel.com/docs/{{version}}/csrf) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
+Anytime you define an HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](https://laravel.com/docs/{{version}}/csrf) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
 
     <form method="POST" action="/profile">
         @csrf

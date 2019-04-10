@@ -195,13 +195,18 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <a name="method-array-add"></a>
 #### `Arr::add()` {#collection-method .first-collection-method}
 
-The `Arr::add` method adds a given key / value pair to an array if the given key doesn't already exist in the array:
+The `Arr::add` method adds a given key / value pair to an array if the given key doesn't already exist in the array or is set to `null`:
 
     use Illuminate\Support\Arr;
 
     $array = Arr::add(['name' => 'Desk'], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
+
+    $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
+
+    // ['name' => 'Desk', 'price' => 100]
+
 
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {#collection-method}
@@ -779,6 +784,8 @@ The `__` function translates the given translation string or translation key usi
 
     echo __('messages.welcome');
 
+If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
+
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
@@ -830,8 +837,6 @@ The `Str::before` method returns everything before the given value in a string:
 
     // 'This is '
 
-If the specified translation string or key does not exist, the `__` function will return the given value. So, using the example above, the `__` function would return `messages.welcome` if that translation key does not exist.
-
 <a name="method-camel-case"></a>
 #### `Str::camel()` {#collection-method}
 
@@ -866,6 +871,8 @@ You may also pass an array of values to determine if the given string contains a
 #### `Str::endsWith()` {#collection-method}
 
 The `Str::endsWith` method determines if the given string ends with the given value:
+
+    use Illuminate\Support\Str;
 
     $result = Str::endsWith('This is my name', 'name');
 
@@ -1159,13 +1166,6 @@ The `route` function generates a URL for the given named route:
 
     $url = route('routeName');
 
-<a name="method-secure-asset"></a>
-#### `secure_asset()` {#collection-method}
-
-The `secure_asset` function generates a URL for an asset using HTTPS:
-
-    $url = secure_asset('img/photo.jpg');
-
 If the route accepts parameters, you may pass them as the second argument to the method:
 
     $url = route('routeName', ['id' => 1]);
@@ -1173,6 +1173,13 @@ If the route accepts parameters, you may pass them as the second argument to the
 By default, the `route` function generates an absolute URL. If you wish to generate a relative URL, you may pass `false` as the third argument:
 
     $url = route('routeName', ['id' => 1], false);
+
+<a name="method-secure-asset"></a>
+#### `secure_asset()` {#collection-method}
+
+The `secure_asset` function generates a URL for an asset using HTTPS:
+
+    $url = secure_asset('img/photo.jpg');
 
 <a name="method-secure-url"></a>
 #### `secure_url()` {#collection-method}
@@ -1306,9 +1313,9 @@ The `cache` function may be used to get values from the [cache](/docs/{{version}
 
     $value = cache('key', 'default');
 
-You may add items to the cache by passing an array of key / value pairs to the function. You should also pass the number of minutes or duration the cached value should be considered valid:
+You may add items to the cache by passing an array of key / value pairs to the function. You should also pass the number of seconds or duration the cached value should be considered valid:
 
-    cache(['key' => 'value'], 5);
+    cache(['key' => 'value'], 300);
 
     cache(['key' => 'value'], now()->addSeconds(10));
 

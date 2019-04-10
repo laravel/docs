@@ -105,6 +105,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
+[join](#method-join)
 [keyBy](#method-keyby)
 [keys](#method-keys)
 [last](#method-last)
@@ -341,20 +342,24 @@ The `count` method returns the total number of items in the collection:
 The `countBy` method counts the occurences of values in the collection. By default, the method counts the occurrences of every element:
 
     $collection = collect([1, 2, 2, 2, 3]);
-    
-    $collection->countBy();
-    
-    // collect([1 => 1, 2 => 3, 3 => 1])
+
+    $counted = $collection->countBy();
+
+    $counted->all();
+
+    // [1 => 1, 2 => 3, 3 => 1]
 
 However, you pass a callback to the `countBy` method to count all items by a custom value:
 
     $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
 
-    $collection->countBy(function ($email) {
+    $counted = $collection->countBy(function ($email) {
         return substr(strrchr($email, "@"), 1);
     });
 
-    // collect(['gmail.com' => 2, 'yahoo.com' => 1])
+    $counted->all();
+
+    // ['gmail.com' => 2, 'yahoo.com' => 1]
 
 <a name="method-crossjoin"></a>
 #### `crossJoin()` {#collection-method}
@@ -932,6 +937,17 @@ The `isNotEmpty` method returns `true` if the collection is not empty; otherwise
     collect([])->isNotEmpty();
 
     // false
+
+<a name="method-join"></a>
+#### `join()` {#collection-method}
+
+The `join` method joins the collection's values with a string:
+
+    collect(['a', 'b', 'c'])->join(', '); // 'a, b, c'
+    collect(['a', 'b', 'c'])->join(', ', ', and '); // 'a, b, and c'
+    collect(['a', 'b'])->join(', ', ' and '); // 'a and b'
+    collect(['a'])->join(', ', ' and '); // 'a'
+    collect([])->join(', ', ' and '); // ''
 
 <a name="method-keyby"></a>
 #### `keyBy()` {#collection-method}

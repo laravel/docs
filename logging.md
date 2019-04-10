@@ -42,6 +42,7 @@ Name | Description
 `single` | A single file or path based logger channel (`StreamHandler`)
 `daily` | A `RotatingFileHandler` based Monolog driver which rotates daily
 `slack` | A `SlackWebhookHandler` based Monolog driver
+`papertrail` | A `SyslogUdpHandler` based Monolog driver
 `syslog` | A `SyslogHandler` based Monolog driver
 `errorlog` | A `ErrorLogHandler` based Monolog driver
 `monolog` | A Monolog factory driver that may use any supported Monolog handler
@@ -56,8 +57,12 @@ The `single` and `daily` channels have three optional configuration options: `bu
 Name | Description | Default
 ------------- | ------------- | -------------
 `bubble` | Indicates if messages should bubble up to other channels after being handled | `true`
-`permission` | The log file's permissions | `644`
+`permission` | The log file's permissions | `0644`
 `locking` | Attempt to lock the log file before writing to it | `false`
+
+#### Configuring The Papertrail Channel
+
+The `papertrail` channel requires the `url` and `port` configuration options. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
 
 #### Configuring The Slack Channel
 

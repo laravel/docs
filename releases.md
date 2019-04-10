@@ -9,7 +9,7 @@
 
 Laravel's versioning scheme maintains the following convention: `paradigm.major.minor`. Major framework releases are released every six months (February and August), while minor releases may be released as often as every week. Minor releases should **never** contain breaking changes.
 
-When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `5.7.*`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
+When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `5.8.*`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
 
 Paradigm shifting releases are separated by many years and represent fundamental shifts in the framework's architecture and conventions. Currently, there is no paradigm shifting release under development.
 
@@ -127,7 +127,7 @@ However, this can become cumbersome and repetitive if you are specifying the sam
 
 ### Intermediate Table / Pivot Model Events
 
-In previous versions of Laravel, Eloquent model events were not dispatched when attaching, detaching, or syncing custom intermediate table / "pivot" models of a many-to-many relationship. When using [custom intermediate table models](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) in Laravel 5.8, these events will now be dispatched.
+In previous versions of Laravel, [Eloquent model events](/docs/{{version}}/eloquent#events) were not dispatched when attaching, detaching, or syncing custom intermediate table / "pivot" models of a many-to-many relationship. When using [custom intermediate table models](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) in Laravel 5.8, the applicable model events will now be dispatched.
 
 ### Artisan Call Improvements
 

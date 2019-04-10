@@ -54,6 +54,10 @@ Since models and collections are converted to JSON when cast to a string, you ca
         return App\User::all();
     });
 
+#### Relationships
+
+When an Eloquent model is converted to JSON, its loaded relationships will automatically be included as attributes on the JSON object. Also, though Eloquent relationship methods are defined using "camel case", a relationship's JSON attribute will be "snake case".
+
 <a name="hiding-attributes-from-json"></a>
 ## Hiding Attributes From JSON
 
