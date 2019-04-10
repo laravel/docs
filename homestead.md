@@ -26,6 +26,10 @@
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
     - [Mail](#mail)
+    - [Database Snapshots](#database-snapshots)
+- [Debugging & Profiling](#debugging-and-profiling)
+    - [Debugging Web Requests With Xdebug](#debugging-web-requests)
+    - [Debugging CLI Scripts](#debugging-cli-scripts)
 - [Network Interfaces](#network-interfaces)
 - [Extending Homestead](#extending-homestead)
 - [Updating Homestead](#updating-homestead)
@@ -64,6 +68,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Apache (Optional)
 - MySQL
 - MariaDB (Optional)
+- lmm for MySQL or MariaDB database snapshots
 - Sqlite3
 - PostgreSQL
 - Composer
@@ -75,7 +80,10 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Neo4j (Optional)
 - MongoDB (Optional)
 - Elasticsearch (Optional)
+- avahi
 - ngrok
+- Xdebug
+- XHProf / Tideways / XHGui
 - wp-cli
 - Zend Z-Ray
 - Go
@@ -180,9 +188,11 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
 
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
 
-#### The Hosts File
+#### Hostname Resolution
 
-You must add the "domains" for your Nginx sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
+Homestead publishes hostnames over `mDNS` for automatic host resolution. If you set `hostname: homestead` in your `Homestead.yaml` file, the host will be available at `homestead.local`. macOS, iOS, and Linux desktop distributions include `mDNS` support by default. Windows requires installing [Bonjour Print Services for Windows](https://support.apple.com/kb/DL999?viewlocale=en_US&locale=en_US). Android does not support mDNS resolution at all.
+
+Using automatic hostnames works best for "site-local" installations of Homestead. If you host multiple sites on a single Homestead instance, you may add the "domains" for your web sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
     192.168.10.10  homestead.test
 
@@ -216,7 +226,7 @@ Windows:
 
     vendor\\bin\\homestead make
 
-Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.test` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.test` or the domain of your choice.
+Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.test` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.test` or the domain of your choice if not using mDNS.
 
 <a name="installing-mariadb"></a>
 ### Installing MariaDB
@@ -521,6 +531,79 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 ### Mail
 
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
+
+<a name="database-snapshots"></a>
+### Database Snapshots
+
+Homestead supports freezing the state of MySQL and MariaDB databases and branching between them with [Logical MySQL Manager](https://github.com/Lullabot/lmm). For example, imagine working on a site with a multi-gigabyte database. You can import the database and take a snapshot. After doing some work and creating some test content locally, to roll back to a known-good state you can quickly restore back to the original state. Under the hood, LMM uses LVM's thin snapshot functionality with copy-on-write support. In practice, this means that changing a single row in a table will only cause the changes you made to be written to disk, saving significant time and disk space during restores.
+
+Since `lmm` interacts with LVM, it must be run as root. To see all available commands, run `sudo lmm` inside the vagrant box. A common workflow would be to:
+
+1. Import a database into the default `master` lmm branch.
+1. Save a snapshot of the unchanged database with `sudo lmm branch prod-YYYY-MM-DD`.
+1. Create test content and run database schema updates as needed.
+1. To undo all changes, run `sudo lmm merge prod-YYYY-MM-DD`.
+1. If working with multiple git feature branches, consider creating per-feature database branches and switching between them with `sudo lmm checkout <branch>`.
+1. To delete old branches that are no longer needed, run `sudo lmm delete <branch>`.
+
+Note that there is no de-duplication process between snapshots. For example, if you create a snapshot with `sudo lmm branch production-2019-03-20`, drop all tables, and re-import the source database, you will have two completely independent sets of data on disk. To conserve disk space, consider importing one database and then running updates and migrations on top of it, and be sure to delete old snapshots with `sudo lmm delete`.
+
+<a name="debugging-and-profiling"></a>
+## Debugging & Profiling
+
+<a name="debugging-web-requests"></a>
+### Debugging Web Requests With Xdebug
+
+Homestead includes out-of-the-box support for step debugging with [Xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect back out to your IDE to allow inspection and modification of the running code.
+
+To enable debugging, inside the vagrant box run:
+
+    $ sudo phpenmod xdebug
+    $ sudo systemctl restart php7.3-fpm # Replacing the version with whatever PHP version are using.
+
+Then, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [a bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
+
+Loading Xdebug by itself, even when not actively debugging, can significantly slow PHP. To disable Xdebug, run `sudo phpdismod xdebug` and restart the FPM service again.
+
+While Xdebug is included for all PHP versions, note that early minor releases of PHP often have some incompatibilities with Xdebug immediately after release. If PHP segfaults or throws Zend errors, try switching to the previous stable PHP release.
+
+<a name="debugging-cli-scripts"></a>
+### Debugging CLI scripts
+
+To debug a PHP CLI program, use the `xphp` shell alias inside the vagrant box:
+
+    $ xphp path/to/script
+
+When debugging functional tests that make requests to the web server, it is often easier to autostart debugging rather than modifying tests to pass through a custom header or cookie to trigger debugging. To force Xdebug to start, modify `/etc/php/7.#/fpm/conf.d/20-xdebug.ini` (replacing the PHP version) inside the vagrant box and add:
+
+    ; If Homestead.yml contains a different subnet for the ip setting, this may be different.
+    xdebug.remote_host = 192.168.10.1
+    xdebug.remote_autostart = 1
+
+### Profiling PHP Performance with XHGui
+
+[XHGui](https://www.github.com/perftools/xhgui) is a user interface for exploring the performance of your PHP programs. To enable XHGui, add `xhgui: 'true'` to your site configuration:
+
+    sites:
+        -
+            map: drupal8.test
+            to: /home/vagrant/code/web
+            type: "apache"
+            xhgui: 'true'
+
+To add XHGui to an existing site, run `vagrant provision`.
+
+To profile a web request, add `xhgui=on` as a query parameter to a request. A cookie will be set with a 1 hour expiry from the last request to make it easy to profile AJAX and POST requests from a browser. View the results by browsing to `/xhgui` on your site.
+
+To profile a CLI request, prefix the command with `XHGUI=on`:
+
+    $ XHGUI=on path/to/script
+
+Results will show up at `/xhgui` alongside any web requests.
+
+Note that the act of profiling slows down script execution, and absolute times may be as much as twice as real-world requests. Always compare percent improvements, and not absolute numbers. Also, be aware the execution time (or "Wall time") includes any time spent paused in a debugger.
+
+As performance profiles take up significant disk space, they are deleted automatically after a few days.
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
