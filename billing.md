@@ -191,7 +191,7 @@ The `subscribedToPlan` method may be used to determine if the user is subscribed
         //
     }
 
-The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trail period:
+The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trial period:
 
     if ($user->subscription('main')->recurring()) {
         //
