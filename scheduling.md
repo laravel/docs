@@ -286,7 +286,7 @@ If you only want to e-mail the output if the command fails, use the `emailOnFail
              ->daily()
              ->emailOnFailure('foo@example.com');
 
-> {note} The `emailOutputTo`, `emailOnFailure`, `sendOutputTo` and `appendOutputTo` methods are exclusive to the `command` and `exec` methods.
+> {note} The `emailOutputTo`, `emailOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods.
 
 <a name="task-hooks"></a>
 ## Task Hooks
