@@ -1356,6 +1356,17 @@ If duplicate keys exist, the last matching element will be inserted into the plu
 
     // ['Tesla' => 'black', 'Pagani' => 'orange']
 
+<a name="method-duplicates"><a>
+#### `duplicates()` {#collection-method}
+
+the `duplicates` method retrieves and returns duplicate values from the collection:
+
+    $collection = collect(['a', 'b', 'a', 'c', 'b']);
+    
+    $collection->duplicates();
+    
+    // [ 2 => 'a', 4 => 'b' ]
+    
 <a name="method-pop"></a>
 #### `pop()` {#collection-method}
 
