@@ -85,6 +85,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
 [dump](#method-dump)
+[duplicates](#method-duplicates)
 [each](#method-each)
 [eachSpread](#method-eachspread)
 [every](#method-every)
@@ -499,6 +500,17 @@ The `dump` method dumps the collection's items:
 
 If you want to stop executing the script after dumping the collection, use the [`dd`](#method-dd) method instead.
 
+<a name="method-duplicates"><a>
+#### `duplicates()` {#collection-method}
+
+the `duplicates` method retrieves and returns duplicate values from the collection:
+
+    $collection = collect(['a', 'b', 'a', 'c', 'b']);
+    
+    $collection->duplicates();
+    
+    // [ 2 => 'a', 4 => 'b' ]
+    
 <a name="method-each"></a>
 #### `each()` {#collection-method}
 
@@ -1355,17 +1367,6 @@ If duplicate keys exist, the last matching element will be inserted into the plu
     $plucked->all();
 
     // ['Tesla' => 'black', 'Pagani' => 'orange']
-
-<a name="method-duplicates"><a>
-#### `duplicates()` {#collection-method}
-
-the `duplicates` method retrieves and returns duplicate values from the collection:
-
-    $collection = collect(['a', 'b', 'a', 'c', 'b']);
-    
-    $collection->duplicates();
-    
-    // [ 2 => 'a', 4 => 'b' ]
     
 <a name="method-pop"></a>
 #### `pop()` {#collection-method}
