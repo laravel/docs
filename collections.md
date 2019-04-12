@@ -1367,7 +1367,7 @@ If duplicate keys exist, the last matching element will be inserted into the plu
     $plucked->all();
 
     // ['Tesla' => 'black', 'Pagani' => 'orange']
-    
+
 <a name="method-pop"></a>
 #### `pop()` {#collection-method}
 
