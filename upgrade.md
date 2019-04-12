@@ -18,7 +18,7 @@ Disabling serialization on all cookie values will invalidate all of your applica
 
 #### Configuring Cookie Serialization
 
-Since this vulnerability is not able to be exploited without access to your application's encryption key, we have chosen to provide a way to re-enable encrypted cookie serialization while you make your application compatible with these changes. To enable / disable cookie serialization, you may change the static `serialize` property of the `App\Http\Middleware\EncryptCookies` [middleware](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/EncryptCookies.php):
+Since this vulnerability is not able to be exploited without access to your application's encryption key, we have chosen to provide a way to re-enable encrypted cookie serialization while you make your application compatible with these changes. To enable / disable cookie serialization, you may change the static `serialize` property of the `App\Http\Middleware\EncryptCookies` [middleware](https://github.com/laravel/laravel/blob/5.6/app/Http/Middleware/EncryptCookies.php):
 
     /**
      * Indicates if cookies should be serialized.
@@ -136,7 +136,7 @@ This `getDateFormat` method is now `public` instead of `protected`.
 
 #### New Configuration File
 
-All hashing configuration is now housed in its own `config/hashing.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/master/config/hashing.php) in your own application. Most likely, you should maintain the `bcrypt` driver as your default driver. However, `argon` is also supported.
+All hashing configuration is now housed in its own `config/hashing.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/5.6/config/hashing.php) in your own application. Most likely, you should maintain the `bcrypt` driver as your default driver. However, `argon` is also supported.
 
 ### Helpers
 
@@ -152,7 +152,7 @@ In Laravel 5.6, Blade and the `e` helper will double encode special characters b
 
 #### New Configuration File
 
-All logging configuration is now housed in its own `config/logging.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/master/config/logging.php) in your own application and tweak the settings based on your application's needs.
+All logging configuration is now housed in its own `config/logging.php` configuration file. You should place a copy of the [default configuration file](https://github.com/laravel/laravel/blob/5.6/config/logging.php) in your own application and tweak the settings based on your application's needs.
 
 The `log` and `log_level` configuration options may be removed from the `config/app.php` configuration file.
 
