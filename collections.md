@@ -506,11 +506,11 @@ If you want to stop executing the script after dumping the collection, use the [
 the `duplicates` method retrieves and returns duplicate values from the collection:
 
     $collection = collect(['a', 'b', 'a', 'c', 'b']);
-    
+
     $collection->duplicates();
-    
+
     // [ 2 => 'a', 4 => 'b' ]
-    
+
 <a name="method-each"></a>
 #### `each()` {#collection-method}
 
