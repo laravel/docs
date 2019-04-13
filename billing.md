@@ -128,7 +128,7 @@ The default Cashier currency is United States Dollars (USD). You can change the 
 <a name="webhooks"></a>
 ### Webhooks
 
-To make sure Cashier properly handles all Stripe events and data is kept in sync, we recommend [setting up Cashier's webhooks](#handling-stripe-webhooks).
+To make sure Cashier properly handles all Stripe events, we strongly recommend [setting up Cashier's webhook handling](#handling-stripe-webhooks).
 
 <a name="subscriptions"></a>
 ## Subscriptions
