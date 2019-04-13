@@ -500,7 +500,7 @@ The `dump` method dumps the collection's items:
 
 If you want to stop executing the script after dumping the collection, use the [`dd`](#method-dd) method instead.
 
-<a name="method-duplicates"><a>
+<a name="method-duplicates"></a>
 #### `duplicates()` {#collection-method}
 
 the `duplicates` method retrieves and returns duplicate values from the collection:
