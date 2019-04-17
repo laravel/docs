@@ -301,3 +301,4 @@ Command  | Description
 `valet start` | Start the Valet daemon.
 `valet stop` | Stop the Valet daemon.
 `valet uninstall` | Uninstall the Valet daemon entirely.
+`valet log` | Returns a list of logs from services used within Valet for viewing.
