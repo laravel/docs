@@ -83,6 +83,10 @@ In this example, the `sidebar` section is utilizing the `@@parent` directive to 
 
 > {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
 
+The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
+
+    @yield('content', View::make('view.name'))
+
 Blade views may be returned from routes using the global `view` helper:
 
     Route::get('blade', function () {
