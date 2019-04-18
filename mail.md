@@ -399,8 +399,8 @@ The table component allows you to transform a Markdown table into an HTML table.
     @component('mail::table')
     | Laravel       | Table         | Example  |
     | ------------- |:-------------:| --------:|
-    | Col 2 is      | Centered      | $10      |
-    | Col 3 is      | Right-Aligned | $20      |
+    | Col 2 is      | Centered      |      $10 |
+    | Col 3 is      | Right-Aligned |      $20 |
     @endcomponent
 
 <a name="customizing-the-components"></a>
