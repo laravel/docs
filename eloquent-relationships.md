@@ -997,15 +997,11 @@ To eager load nested relationships, you may use "dot" syntax. For example, let's
 
 #### Eager Loading Specific Columns
 
-You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve. For "has one" relationships:
+You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve:
 
     $books = App\Book::with('author:id,name')->get();
 
-> {note} When using this feature, you should always include the `id` column in the list of columns you wish to retrieve.
-
-For "has many" relations you need specify both `id` and `foreign_key`
-
-    $books = App\Book::with('chapter:id,book_id,name')->get();
+> {note} When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
