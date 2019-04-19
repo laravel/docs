@@ -71,6 +71,12 @@ The `horizon` configuration file allows you to configure how long recent and fai
         'recent' => 60,
         'failed' => 10080,
     ],
+    
+#### Queue Workers
+
+Queue workers must be defined by environment in the configuration file. When the configuration file it published, it provides queue worker configurations for `production` and `local`.
+
+> {note} If a queue worker is not defined for your environment, jobs will not be processed.
 
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
