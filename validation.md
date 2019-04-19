@@ -156,7 +156,9 @@ So, in our example, the user will be redirected to our controller's `create` met
 
     <!-- Create Post Form -->
 
-You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly check if errors exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
+#### The `@error` Directive
+
+You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly check if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
 
     <!-- /resources/views/post/create.blade.php -->
 

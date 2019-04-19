@@ -17,6 +17,7 @@
 - [Forms](#forms)
     - [CSRF Field](#csrf-field)
     - [Method Field](#method-field)
+    - [Validation Errors](#validation-errors)
 - [Including Sub-Views](#including-sub-views)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -469,6 +470,21 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 
         ...
     </form>
+
+<a name="validation-errors"></a>
+### Validation Errors
+
+The `@error` directive may be used to quickly check if [validation error messages](/docs/{{version}}/validation#quick-displaying-the-validation-errors) exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
+
+    <!-- /resources/views/post/create.blade.php -->
+
+    <label for="title">Post Title</label>
+
+    <input type="text" class=@error('title') is-invalid @enderror">
+
+    @error('title')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
 
 <a name="including-sub-views"></a>
 ## Including Sub-Views
