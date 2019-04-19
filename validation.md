@@ -156,7 +156,7 @@ So, in our example, the user will be redirected to our controller's `create` met
 
     <!-- Create Post Form -->
 
-Additionally, you can use the `@error` blade directive to quickly check if a particular error exists. This is very handy to apply styling on invalid inputs like `.is-invalid` from Bootstrap 4, or showing the error message next to it using the `$message` variable available inside.
+You can also use the `@error` directive to quickly check if a particular error exists. This is handy to apply styling on invalid inputs like the `.is-invalid` CSS class from Bootstrap 4. To display the error, use the `$message` variable inside the directive.
 
     <!-- /resources/views/post/create.blade.php -->
     
