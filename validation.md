@@ -156,18 +156,17 @@ So, in our example, the user will be redirected to our controller's `create` met
 
     <!-- Create Post Form -->
 
-You can also use the `@error` directive to quickly check if a particular error exists. This is handy to apply styling on invalid inputs like the `.is-invalid` CSS class from Bootstrap 4. To display the error, use the `$message` variable inside the directive.
+You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly check if errors exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
 
     <!-- /resources/views/post/create.blade.php -->
-    
-    <label for="title">Post title</label>
-    <input type="text" name="title" id="title" class="form-control form-control-lg @error('title') is-invalid @enderror">
-    
+
+    <label for="title">Post Title</label>
+
+    <input type="text" class=@error('title') is-invalid @enderror">
+
     @error('title')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
-    
-    <!-- Rest of the Post Form -->
 
 <a name="a-note-on-optional-fields"></a>
 ### A Note On Optional Fields
