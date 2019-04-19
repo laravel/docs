@@ -1003,6 +1003,36 @@ You may not always need every column from the relationships you are retrieving. 
 
 > {note} When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
 
+#### Eager Loading By Default
+
+Sometimes you might want to always load a relationship when retrieving a model. For this, you can simply use the `$with` property on your model. Example:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Book extends Model
+    {
+        /**
+         * Always load the related author when retrieving a book
+         */
+        protected $with = ['author];
+        
+        /**
+         * Get the author that wrote the book.
+         */
+        public function author()
+        {
+            return $this->belongsTo('App\Author');
+        }
+    }
+   
+If you would like to temporarily "undo" the `$with` property for a single query, you can use the Eloquent `without()` method:
+
+    $booksWithoutAuthors = App\Book::without('author')->get();
+
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
 
