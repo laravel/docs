@@ -1005,7 +1005,7 @@ You may not always need every column from the relationships you are retrieving. 
 
 #### Eager Loading By Default
 
-Sometimes you might want to always load a relationship when retrieving a model. For this, you can simply use the `$with` property on your model. Example:
+Sometimes you might want to always load a relationship when retrieving a model. For this, you can use the `$with` property on your model. Example:
 
     <?php
 
