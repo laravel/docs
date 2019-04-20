@@ -1018,7 +1018,7 @@ Sometimes you might want to always load a relationship when retrieving a model. 
         /**
          * Always load the related author when retrieving a book
          */
-        protected $with = ['author];
+        protected $with = ['author'];
         
         /**
          * Get the author that wrote the book.
