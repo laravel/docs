@@ -65,9 +65,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - PHP 7.2
 - PHP 7.1
 - Nginx
-- Apache (Optional)
 - MySQL
-- MariaDB (Optional)
 - lmm for MySQL or MariaDB database snapshots
 - Sqlite3
 - PostgreSQL
@@ -77,17 +75,38 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Memcached
 - Beanstalkd
 - Mailhog
-- Neo4j (Optional)
-- MongoDB (Optional)
-- Elasticsearch (Optional)
 - avahi
 - ngrok
 - Xdebug
 - XHProf / Tideways / XHGui
 - wp-cli
-- Zend Z-Ray
-- Go
 - Minio
+</div>
+
+<a name="optional-software"></a>
+### Optional Software
+
+<style>
+    #software-list > ul {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-gap: 5em; -moz-column-gap: 5em; -webkit-column-gap: 5em;
+        line-height: 1.9;
+    }
+</style>
+
+<div id="software-list" markdown="1">
+- Apache
+- Crystal & Lucky Framework
+- Dot Net Core
+- Elasticsearch
+- Go
+- MariaDB
+- MongoDB
+- Neo4j
+- Oh My Zsh
+- Ruby & Rails
+- Webdriver & Laravel Dusk Utilities
+- Zend Z-Ray
 </div>
 
 <a name="installation-and-setup"></a>
