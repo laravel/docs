@@ -723,6 +723,10 @@ If you would like to delete a failed job, you may use the `queue:forget` command
 To delete all of your failed jobs, you may use the `queue:flush` command:
 
     php artisan queue:flush
+    
+For particular Jobs, the `$retryAfter` property accepts the number seconds to delay the failed Job before being retried.
+
+    public $retryAfter = 10;
 
 <a name="ignoring-missing-models"></a>
 ### Ignoring Missing Models
