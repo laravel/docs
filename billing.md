@@ -107,7 +107,7 @@ Next, add the `Billable` trait to your model definition. This trait provides var
 Finally, you should configure your Stripe key in your `services.php` configuration file. You can retrieve your Stripe API keys from the Stripe control panel:
 
     'stripe' => [
-        'model'  => App\User::class,
+        'model' => App\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
         'webhook' => [
