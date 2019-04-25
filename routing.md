@@ -27,9 +27,11 @@
 
 The most basic Laravel routes accept a URI and a `Closure`, providing a very simple and expressive method of defining routes:
 
-    Route::get('foo', function () {
-        return 'Hello World';
-    });
+```php
+ Route::get('foo', function () {
+   return 'Hello World';
+ });
+```
 
 #### The Default Route Files
 
@@ -45,12 +47,14 @@ Routes defined in the `routes/api.php` file are nested within a route group by t
 
 The router allows you to register routes that respond to any HTTP verb:
 
-    Route::get($uri, $callback);
-    Route::post($uri, $callback);
-    Route::put($uri, $callback);
-    Route::patch($uri, $callback);
-    Route::delete($uri, $callback);
-    Route::options($uri, $callback);
+```php
+ Route::get($uri, $callback);
+ Route::post($uri, $callback);
+ Route::put($uri, $callback);
+ Route::patch($uri, $callback);
+ Route::delete($uri, $callback);
+ Route::options($uri, $callback);
+```
 
 Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method. Or, you may even register a route that responds to all HTTP verbs using the `any` method:
 
