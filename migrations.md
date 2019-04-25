@@ -66,7 +66,7 @@ Within both of these methods you may use the Laravel schema builder to expressiv
         public function up()
         {
             Schema::create('flights', function (Blueprint $table) {
-                $table->increments('id');
+                $table->bigIncrements('id');
                 $table->string('name');
                 $table->string('airline');
                 $table->timestamps();
@@ -144,7 +144,7 @@ The `migrate:fresh` command will drop all tables from the database and then exec
 To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments. The first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object that may be used to define the new table:
 
     Schema::create('users', function (Blueprint $table) {
-        $table->increments('id');
+        $table->bigIncrements('id');
     });
 
 When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
@@ -166,7 +166,7 @@ You may easily check for the existence of a table or column using the `hasTable`
 If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
 
     Schema::connection('foo')->create('users', function (Blueprint $table) {
-        $table->increments('id');
+        $table->bigIncrements('id');
     });
 
 You may use the following commands on the schema builder to define the table's options:
