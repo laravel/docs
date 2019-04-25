@@ -401,6 +401,16 @@ Laravel includes a [middleware](/docs/{{version}}/middleware) to rate limit acce
         });
     });
 
+
+> {note} the given throttle settings apply on a domain-level globally and not on a per-route/group basis. So for example, if you have multiple routes that define throttle settings:
+
+```
+Route::get('users')->middleware('throttle:6,10');
+Route::get('posts')->middleware('throttle:10,5);
+```
+
+Whichever route loaded first will take priority and use those throttle threshold settings. You can change this behaviour by extending `Illuminate\Routing\Middleware\ThrottleRequests` and overriding the `resolveRequestSignature` method.
+
 #### Dynamic Rate Limiting
 
 You may specify a dynamic request maximum based on an attribute of the authenticated `User` model. For example, if your `User` model contains a `rate_limit` attribute, you may pass the name of the attribute to the `throttle` middleware so that it is used to calculate the maximum request count:
