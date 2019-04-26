@@ -380,7 +380,7 @@ The `makeDirectory` method will create the given directory, including any needed
 
 #### Delete A Directory
 
-Finally, the `deleteDirectory` may be used to remove a directory and all of its files:
+Finally, the `deleteDirectory` method may be used to remove a directory and all of its files:
 
     Storage::deleteDirectory($directory);
 
