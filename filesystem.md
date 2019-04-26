@@ -147,7 +147,7 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 
     Storage::put('avatars/1', $fileContents);
 
-If your applications interacts with multiple disks, you may use the `disk` method on the `Storage` facade to work with files on a particular disk:
+If your application interacts with multiple disks, you may use the `disk` method on the `Storage` facade to work with files on a particular disk:
 
     Storage::disk('s3')->put('avatars/1', $fileContents);
 
