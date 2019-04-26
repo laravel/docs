@@ -203,6 +203,7 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
     use Illuminate\Broadcasting\PresenceChannel;
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+    use App\User;
 
     class ServerCreated implements ShouldBroadcast
     {
