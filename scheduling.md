@@ -242,6 +242,14 @@ To indicate that the task should run on only one server, use the `onOneServer` m
                     ->at('17:00')
                     ->onOneServer();
 
+By default, the unique key for the atomic lock will be a generated string based on the command you're running. In case you wish to change that, call `name` after `oneOneServer`:
+
+    $schedule->command('report:generate')
+                    ->fridays()
+                    ->at('17:00')
+                    ->onOneServer()
+                    ->name('report-generate-command');
+
 <a name="background-tasks"></a>
 ### Background Tasks
 
