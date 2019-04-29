@@ -33,231 +33,103 @@ However, collections are much more powerful than arrays and expose a variety of 
 <a name="available-methods"></a>
 ## Available Methods
 
-### The Eloquent Collection
-`Illuminate\Database\Eloquent\Collection` provides a superset of methods to 
-aid with managing your model collection. Methods use `Model::getKey()` for manipulating
-the collection. Most methods return a Collection of `Illuminate\Database\Eloquent\Collection`, however
-some methods return a base Collection instance. Eloquent Collection methods are as follows:
+All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections#available-methods) object; therefore, they inherit all of the powerful methods provided by the base collection class.
 
-#### `find($key)` {#collection-method .first-collection-method}
+In addition, the `Illuminate\Database\Eloquent\Collection` class provides a superset of methods to aid with managing your model collections. Most methods return `Illuminate\Database\Eloquent\Collection` instances; however, some methods return a base `Illuminate\Support\Collection` instance.
 
-Returns the model found within the collection with the given key.
-If `$key` is a model instance, `find` will attempt to return a model matching the primary
-key. If `$key` is an array of keys, `find` will return all models which match 
-the `$keys` using `whereIn()`.
-
-    $users = User::all();
-  
-    $users->find(1);
-
-#### `load($relations)`
-
-Eager load a set of relationships onto each model in the
-collection.
-
-    $collection->load('users.comments');
-    $collection->load('users', 'admins');
-
-#### `loadMissing($relations)`
-
-Load any missing relationships onto each model in
-the collection.
-
-    $collection->loadMissing('users.comments');
-    $collection->loadMissing('admins');
-
-#### `add($item)`
-
-Appends the supplied `$item` to the `items` property within the collection.
-
-    $result = User::find(1);
-    $result->add(User::find(2));
-     
 #### `contains($key, $operator = null, $value = null)`
 
-Provides a convenient way of checking if a `Model` instance
-is within the collection. 
-
-If all three parameters are passed, this method behaves similar to `Illuminate\Support\Collection`.
-
-If only `$key` is passed, the following occurs:
-
-If `$key` is an instance of a model, `contains`
-will compare the `$key` to each `Model` in the collection using `Model::is()`. 
-Otherwise `$key` will be compared to each `Model`'s `Model::getKey()`.
+The `contains` method may be used to determine if a given model instance is contained by the collection. This method accepts a primary key or a model instance:
 
     $users->contains(1);
-    // True
     
     $users->contains(User::find(1));
-    // True
-
-#### `modelKeys`
-
-`modelKeys` returns all primary keys found within the collection. Uses: `Model::getKey()`.
-
-    $users->modelKeys();
-    // [1,2,3,4,5]
-
-#### `fresh($with)`
-
-Loads a fresh instance of each `Model` in the collection from the database with the specified
-relationships. 
-
-    $users->fresh();
-    
-    $users->fresh('comments');
-    
-#### `getDictionary($items = null)`
-
-Return a dictionary of models key'd by the primary key. If `$items` is passed, it will attempt
-to transform them into a dictionary'd array.
-
-    $users = User::all();
-    $users->getDictionary()
-    {
-        1 => User,
-        2 => User
-    }
-    
-#### `makeVisible($attribues)`
-
-Make attributes which are typically hidden visible on each model in the collection.
-
-#### `makeHidden($attributes)`
-
-Make attributes which are typically visible hidden on each model in the collection.
-
-#### `unique($key = null, $strict = false)`
-
-Return only unique items from the collection. Unique items are determined
-by the primary key using: `Model::getKey()`.
-
-#### `only($keys)`
-
-Return only the models which contain the specified primary keys `$keys`.
-
-#### `except($keys)`
-
-Return only the models which DO NOT contain the specified primary keys `$keys`.
-
-#### `intersect($items)`
-
-Return all models from `$items` which are also within the current collection.
 
 #### `diff($items)`
 
-Return all models from `$items` which are NOT within the current collection.
+The `diff` method returns all of the models that are not present in the given collection:
 
-### The Base Collection
+    use App\User;
 
-All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections) object; therefore, they inherit all of the powerful methods provided by the base collection class:
+    $users = $users->diff(User::whereIn('id', [1, 2, 3])->get());
 
-<style>
-    #collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
-    }
+#### `except($keys)`
 
-    #collection-method-list a {
-        display: block;
-    }
-</style>
+The `except` method returns all of the models that do not have the given primary keys:
 
-<div id="collection-method-list" markdown="1">
+    $users = $users->only([1, 2, 3]);
 
-[all](/docs/{{version}}/collections#method-all)
-[average](/docs/{{version}}/collections#method-average)
-[avg](/docs/{{version}}/collections#method-avg)
-[chunk](/docs/{{version}}/collections#method-chunk)
-[collapse](/docs/{{version}}/collections#method-collapse)
-[combine](/docs/{{version}}/collections#method-combine)
-[concat](/docs/{{version}}/collections#method-concat)
-[contains](/docs/{{version}}/collections#method-contains)
-[containsStrict](/docs/{{version}}/collections#method-containsstrict)
-[count](/docs/{{version}}/collections#method-count)
-[crossJoin](/docs/{{version}}/collections#method-crossjoin)
-[dd](/docs/{{version}}/collections#method-dd)
-[diff](/docs/{{version}}/collections#method-diff)
-[diffKeys](/docs/{{version}}/collections#method-diffkeys)
-[dump](/docs/{{version}}/collections#method-dump)
-[each](/docs/{{version}}/collections#method-each)
-[eachSpread](/docs/{{version}}/collections#method-eachspread)
-[every](/docs/{{version}}/collections#method-every)
-[except](/docs/{{version}}/collections#method-except)
-[filter](/docs/{{version}}/collections#method-filter)
-[first](/docs/{{version}}/collections#method-first)
-[flatMap](/docs/{{version}}/collections#method-flatmap)
-[flatten](/docs/{{version}}/collections#method-flatten)
-[flip](/docs/{{version}}/collections#method-flip)
-[forget](/docs/{{version}}/collections#method-forget)
-[forPage](/docs/{{version}}/collections#method-forpage)
-[get](/docs/{{version}}/collections#method-get)
-[groupBy](/docs/{{version}}/collections#method-groupby)
-[has](/docs/{{version}}/collections#method-has)
-[implode](/docs/{{version}}/collections#method-implode)
-[intersect](/docs/{{version}}/collections#method-intersect)
-[isEmpty](/docs/{{version}}/collections#method-isempty)
-[isNotEmpty](/docs/{{version}}/collections#method-isnotempty)
-[keyBy](/docs/{{version}}/collections#method-keyby)
-[keys](/docs/{{version}}/collections#method-keys)
-[last](/docs/{{version}}/collections#method-last)
-[map](/docs/{{version}}/collections#method-map)
-[mapInto](/docs/{{version}}/collections#method-mapinto)
-[mapSpread](/docs/{{version}}/collections#method-mapspread)
-[mapToGroups](/docs/{{version}}/collections#method-maptogroups)
-[mapWithKeys](/docs/{{version}}/collections#method-mapwithkeys)
-[max](/docs/{{version}}/collections#method-max)
-[median](/docs/{{version}}/collections#method-median)
-[merge](/docs/{{version}}/collections#method-merge)
-[min](/docs/{{version}}/collections#method-min)
-[mode](/docs/{{version}}/collections#method-mode)
-[nth](/docs/{{version}}/collections#method-nth)
-[only](/docs/{{version}}/collections#method-only)
-[pad](/docs/{{version}}/collections#method-pad)
-[partition](/docs/{{version}}/collections#method-partition)
-[pipe](/docs/{{version}}/collections#method-pipe)
-[pluck](/docs/{{version}}/collections#method-pluck)
-[pop](/docs/{{version}}/collections#method-pop)
-[prepend](/docs/{{version}}/collections#method-prepend)
-[pull](/docs/{{version}}/collections#method-pull)
-[push](/docs/{{version}}/collections#method-push)
-[put](/docs/{{version}}/collections#method-put)
-[random](/docs/{{version}}/collections#method-random)
-[reduce](/docs/{{version}}/collections#method-reduce)
-[reject](/docs/{{version}}/collections#method-reject)
-[reverse](/docs/{{version}}/collections#method-reverse)
-[search](/docs/{{version}}/collections#method-search)
-[shift](/docs/{{version}}/collections#method-shift)
-[shuffle](/docs/{{version}}/collections#method-shuffle)
-[slice](/docs/{{version}}/collections#method-slice)
-[some](/docs/{{version}}/collections#method-some)
-[sort](/docs/{{version}}/collections#method-sort)
-[sortBy](/docs/{{version}}/collections#method-sortby)
-[sortByDesc](/docs/{{version}}/collections#method-sortbydesc)
-[splice](/docs/{{version}}/collections#method-splice)
-[split](/docs/{{version}}/collections#method-split)
-[sum](/docs/{{version}}/collections#method-sum)
-[take](/docs/{{version}}/collections#method-take)
-[tap](/docs/{{version}}/collections#method-tap)
-[toArray](/docs/{{version}}/collections#method-toarray)
-[toJson](/docs/{{version}}/collections#method-tojson)
-[transform](/docs/{{version}}/collections#method-transform)
-[union](/docs/{{version}}/collections#method-union)
-[unique](/docs/{{version}}/collections#method-unique)
-[uniqueStrict](/docs/{{version}}/collections#method-uniquestrict)
-[unless](/docs/{{version}}/collections#method-unless)
-[values](/docs/{{version}}/collections#method-values)
-[when](/docs/{{version}}/collections#method-when)
-[where](/docs/{{version}}/collections#method-where)
-[whereStrict](/docs/{{version}}/collections#method-wherestrict)
-[whereIn](/docs/{{version}}/collections#method-wherein)
-[whereInStrict](/docs/{{version}}/collections#method-whereinstrict)
-[whereNotIn](/docs/{{version}}/collections#method-wherenotin)
-[whereNotInStrict](/docs/{{version}}/collections#method-wherenotinstrict)
-[zip](/docs/{{version}}/collections#method-zip)
+#### `find($key)` {#collection-method .first-collection-method}
 
-</div>
+The `find` method finds a model that has a given primary key. If `$key` is a model instance, `find` will attempt to return a model matching the primary key. If `$key` is an array of keys, `find` will return all models which match the `$keys` using `whereIn()`:
+
+    $users = User::all();
+
+    $user = $users->find(1);
+
+#### `fresh($with = [])`
+
+The `fresh` method retrieves a fresh instance of each model in the collection from the database. In addition, any specified relationships will be eager loaded:
+
+    $users = $users->fresh();
+
+    $users = $users->fresh('comments');
+
+#### `intersect($items)`
+
+The `intersect` method returns all of the models that are also present in the given collection:
+
+    use App\User;
+
+    $users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());
+
+#### `load($relations)`
+
+The `load` method eager loads the given relationships for all models in the collection:
+
+    $users->load('comments', 'posts');
+
+    $users->load('comments.author');
+
+#### `loadMissing($relations)`
+
+The `loadMissing` method eager loads the given relationships for all models in the collection if the relationships are not already loaded:
+
+    $users->loadMissing('comments', 'posts');
+
+    $users->loadMissing('comments.author');
+
+#### `modelKeys`
+
+The `modelKeys` method returns the primary keys for all models in the collection:
+
+    $users->modelKeys();
+
+    // [1, 2, 3, 4, 5]
+    
+#### `makeVisible($attributes)`
+
+The `makeVisible` method makes visible attributes that are typically "hidden" on each model in the collection:
+
+    $users = $users->makeVisible(['address', 'phone_number']);
+
+#### `makeHidden($attributes)`
+
+The `makeHidden` method hides attributes that are typically "visible" on each model in the collection:
+
+    $users = $users->makeHidden(['address', 'phone_number']);
+
+#### `only($keys)`
+
+The `only` method returns all of the models that have the given primary keys:
+
+    $users = $users->only([1, 2, 3]);
+
+#### `unique($key = null, $strict = false)`
+
+The `unique` method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed.
+
+    $users = $users->unique();
 
 <a name="custom-collections"></a>
 ## Custom Collections
