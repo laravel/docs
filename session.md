@@ -247,7 +247,17 @@ Once your driver has been implemented, you are ready to register it with the fra
     class SessionServiceProvider extends ServiceProvider
     {
         /**
-         * Perform post-registration booting of services.
+         * Register bindings in the container.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
          *
          * @return void
          */
@@ -257,16 +267,6 @@ Once your driver has been implemented, you are ready to register it with the fra
                 // Return implementation of SessionHandlerInterface...
                 return new MongoSessionHandler;
             });
-        }
-
-        /**
-         * Register bindings in the container.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 

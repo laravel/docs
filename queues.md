@@ -690,7 +690,7 @@ If you would like to register an event that will be called when a job fails, you
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register the service provider.
+         * Register any application services.
          *
          * @return void
          */
@@ -768,6 +768,16 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
     class AppServiceProvider extends ServiceProvider
     {
         /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
          * Bootstrap any application services.
          *
          * @return void
@@ -785,16 +795,6 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
                 // $event->job
                 // $event->job->payload()
             });
-        }
-
-        /**
-         * Register the service provider.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 

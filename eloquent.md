@@ -877,7 +877,7 @@ To register an observer, use the `observe` method on the model you wish to obser
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register the service provider.
+         * Register any application services.
          *
          * @return void
          */

@@ -165,7 +165,7 @@ To defer the loading of a provider, implement the `\Illuminate\Contracts\Support
     class RiakServiceProvider extends ServiceProvider implements DeferrableProvider
     {
         /**
-         * Register the service provider.
+         * Register any application services.
          *
          * @return void
          */
