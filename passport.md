@@ -480,7 +480,7 @@ When authenticating using the password grant, Passport will use the `email` attr
 <a name="customizing-the-password-validation"></a>
 ### Customizing The Password Validation
 
-When authenticating using the password grant, Passport will use the `password` attribute of your model to validate the given password. If your model does not have a `password` attribute, you can customize the validation by defining a `validateForPassportPasswordGrant` method on your model:
+When authenticating using the password grant, Passport will use the `password` attribute of your model to validate the given password. If your model does not have a `password` attribute or you wish to customize the password validation logic, you can define a `validateForPassportPasswordGrant` method on your model:
 
     <?php
 
@@ -496,7 +496,7 @@ When authenticating using the password grant, Passport will use the `password` a
         use HasApiTokens, Notifiable;
 
         /**
-        * Validate the password of the user.
+        * Validate the password of the user for the Passport password grant.
         *
         * @param  string $password
         * @return bool
