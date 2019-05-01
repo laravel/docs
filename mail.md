@@ -36,7 +36,7 @@ The API based drivers such as Mailgun, SparkPost, and Postmark are often simpler
 
 #### Mailgun Driver
 
-To use the Mailgun driver, first install Guzzle, then set the `driver` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file cogntains the following options:
+To use the Mailgun driver, first install Guzzle, then set the `driver` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file contains the following options:
 
     'mailgun' => [
         'domain' => 'your-mailgun-domain',
