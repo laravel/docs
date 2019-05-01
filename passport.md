@@ -16,6 +16,7 @@
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
     - [Customizing The Username Field](#customizing-the-username-field)
+    - [Customizing The Password Validation](#customizing-the-password-validation)
 - [Implicit Grant Tokens](#implicit-grant-tokens)
 - [Client Credentials Grant Tokens](#client-credentials-grant-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
@@ -473,6 +474,36 @@ When authenticating using the password grant, Passport will use the `email` attr
         public function findForPassport($username)
         {
             return $this->where('username', $username)->first();
+        }
+    }
+
+<a name="customizing-the-password-validation"></a>
+### Customizing The Password Validation
+
+When authenticating using the password grant, Passport will use the `password` attribute of your model to validate the given password. If your model does not have a `password` attribute, you can customize the validation by defining a `validateForPassportPasswordGrant` method on your model:
+
+    <?php
+
+    namespace App;
+
+    use Laravel\Passport\HasApiTokens;
+    use Illuminate\Support\Facades\Hash;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use HasApiTokens, Notifiable;
+
+        /**
+        * Validate the password of the user.
+        *
+        * @param  string $password
+        * @return bool
+        */
+        public function validateForPassportPasswordGrant($password)
+        {
+            return Hash::check($password, $user->password);
         }
     }
 
