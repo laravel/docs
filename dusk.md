@@ -67,7 +67,7 @@ If you had test failures the last time you ran the `dusk` command, you may save 
 
     php artisan dusk:fails
 
-If you want to install a different version than the current provided ChromeDriver than you may install that binary with the `dusk:chrome-driver` command
+If you want to install a different version than the current provided ChromeDriver, then you may install that binary with the `dusk:chrome-driver` command
 
     # Update the driver for the current OS to the latest version.
     php artisan dusk:chrome-driver
