@@ -69,13 +69,13 @@ If you had test failures the last time you ran the `dusk` command, you may save 
 
 If you want to install a different version than the current provided ChromeDriver, then you may install that binary with the `dusk:chrome-driver` command
 
-    # Update the driver for the current OS to the latest version.
+    # Install the driver for the current OS to the latest version.
     php artisan dusk:chrome-driver
 
-    # Update the driver for the current OS to a specific version.
+    # Install the driver for the current OS to a specific version.
     php artisan dusk:chrome-driver 74
 
-    # Update the driver for every OS to the latest version.
+    # Install the driver for every OS to the latest version.
     php artisan dusk:chrome-driver --all
 
 > {note} Dusk requires its `chromedriver` binaries to be executable. If you're having problems running Dusk, you can ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin`.
