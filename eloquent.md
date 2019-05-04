@@ -116,7 +116,19 @@ In addition, Eloquent assumes that the primary key is an incrementing integer va
         public $incrementing = false;
     }
 
-If your primary key is not an integer, you should set the protected `$keyType` property on your model to `string`.
+If your primary key is not an integer, you should set the protected `$keyType` property on your model to `string`:
+
+    <?php
+
+    class Flight extends Model
+    {
+        /**
+         * The "type" of the auto-incrementing ID.
+         *
+         * @var string
+         */
+        protected $keyType = 'string';
+    }
 
 #### Timestamps
 
