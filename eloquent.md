@@ -84,9 +84,51 @@ Note that we did not tell Eloquent which table to use for our `Flight` model. By
 
 #### Primary Keys
 
-Eloquent will also assume that each table has a primary key column named `id`. You may define a protected `$primaryKey` property to override this convention.
+Eloquent will also assume that each table has a primary key column named `id`. You may define a protected `$primaryKey` property to override this convention:
 
-In addition, Eloquent assumes that the primary key is an incrementing integer value, which means that by default the primary key will be cast to an `int` automatically. If you wish to use a non-incrementing or a non-numeric primary key you must set the public `$incrementing` property on your model to `false`. If your primary key is not an integer, you should set the protected `$keyType` property on your model to `string`.
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Flight extends Model
+    {
+        /**
+         * The primary key associated with the table.
+         *
+         * @var string
+         */
+        protected $primaryKey = 'flight_id';
+    }
+
+In addition, Eloquent assumes that the primary key is an incrementing integer value, which means that by default the primary key will automatically be cast to an `int`. If you wish to use a non-incrementing or a non-numeric primary key you must set the public `$incrementing` property on your model to `false`:
+
+    <?php
+
+    class Flight extends Model
+    {
+        /**
+         * Indicates if the IDs are auto-incrementing.
+         *
+         * @var bool
+         */
+        public $incrementing = false;
+    }
+
+If your primary key is not an integer, you should set the protected `$keyType` property on your model to `string`:
+
+    <?php
+
+    class Flight extends Model
+    {
+        /**
+         * The "type" of the auto-incrementing ID.
+         *
+         * @var string
+         */
+        protected $keyType = 'string';
+    }
 
 #### Timestamps
 
