@@ -82,7 +82,7 @@ If you would like to install a different version of ChromeDriver than what is in
     # Install a given version of ChromeDriver for all supported OSs...
     php artisan dusk:chrome-driver --all
 
-> {note} Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin`.
+> {note} Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin/`.
 
 <a name="using-other-browsers"></a>
 ### Using Other Browsers
