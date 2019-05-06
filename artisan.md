@@ -406,6 +406,7 @@ Because of the `load` method call in your console kernel's `commands` method, al
         $this->load(__DIR__.'/Commands');
         $this->load(__DIR__.'/MoreCommands');
 
+        // ...
     }
 
 You may also manually register commands by adding its class name to the `$commands` property of your `app/Console/Kernel.php` file. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:
