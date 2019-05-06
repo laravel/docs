@@ -303,7 +303,7 @@ If you need to log an existing user instance into your application, you may call
 
     Auth::login($user);
 
-    // Login and "remember" the given user...
+    // Login and "remember" the given user
     Auth::login($user, true);
 
 You may specify the guard instance you would like to use:
@@ -316,7 +316,7 @@ To log a user into the application by their ID, you may use the `loginUsingId` m
 
     Auth::loginUsingId(1);
 
-    // Login and "remember" the given user...
+    // Login and "remember" the given user
     Auth::loginUsingId(1, true);
 
 #### Authenticate A User Once
@@ -333,7 +333,7 @@ You may use the `once` method to log a user into the application for a single re
 [HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` [middleware](/docs/{{version}}/middleware) to your route. The `auth.basic` middleware is included with the Laravel framework, so you do not need to define it:
 
     Route::get('profile', function () {
-        // Only authenticated users may enter...
+        // Only authenticated users may enter
     })->middleware('auth.basic');
 
 Once the middleware has been attached to the route, you will automatically be prompted for credentials when accessing the route in your browser. By default, the `auth.basic` middleware will use the `email` column on the user record as the "username".
@@ -375,7 +375,7 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 Next, [register the route middleware](/docs/{{version}}/middleware#registering-middleware) and attach it to a route:
 
     Route::get('api/user', function () {
-        // Only authenticated users may enter...
+        // Only authenticated users may enter
     })->middleware('auth.basic.once');
 
 <a name="logging-out"></a>
@@ -431,7 +431,7 @@ You may define your own authentication guards using the `extend` method on the `
             $this->registerPolicies();
 
             Auth::extend('jwt', function ($app, $name, array $config) {
-                // Return an instance of Illuminate\Contracts\Auth\Guard...
+                // Return an instance of Illuminate\Contracts\Auth\Guard
 
                 return new JwtGuard(Auth::createUserProvider($config['provider']));
             });
@@ -505,7 +505,7 @@ If you are not using a traditional relational database to store your users, you 
             $this->registerPolicies();
 
             Auth::provider('riak', function ($app, array $config) {
-                // Return an instance of Illuminate\Contracts\Auth\UserProvider...
+                // Return an instance of Illuminate\Contracts\Auth\UserProvider
 
                 return new RiakUserProvider($app->make('riak.connection'));
             });

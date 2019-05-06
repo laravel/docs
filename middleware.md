@@ -112,7 +112,7 @@ If you want a middleware to run during every HTTP request to your application, l
 
 If you would like to assign middleware to specific routes, you should first assign the middleware a key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, append it to this list and assign it a key of your choosing:
 
-    // Within App\Http\Kernel Class...
+    // Within App\Http\Kernel Class
 
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
@@ -233,7 +233,7 @@ Additional middleware parameters will be passed to the middleware after the `$ne
         public function handle($request, Closure $next, $role)
         {
             if (! $request->user()->hasRole($role)) {
-                // Redirect...
+                // Redirect
             }
 
             return $next($request);
@@ -267,7 +267,7 @@ Sometimes a middleware may need to do some work after the HTTP response has been
 
         public function terminate($request, $response)
         {
-            // Store the session data...
+            // Store the session data
         }
     }
 

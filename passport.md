@@ -296,7 +296,7 @@ When a client is created, it will be issued a client ID and client secret. These
             console.log(response.data);
         })
         .catch (response => {
-            // List errors on response...
+            // List errors on response
         });
 
 #### `PUT /oauth/clients/{client-id}`
@@ -313,7 +313,7 @@ This route is used to update clients. It requires two pieces of data: the client
             console.log(response.data);
         })
         .catch (response => {
-            // List errors on response...
+            // List errors on response
         });
 
 #### `DELETE /oauth/clients/{client-id}`
@@ -622,10 +622,10 @@ Once you have created a personal access client, you may issue tokens for a given
 
     $user = App\User::find(1);
 
-    // Creating a token without scopes...
+    // Creating a token without scopes
     $token = $user->createToken('Token Name')->accessToken;
 
-    // Creating a token with scopes...
+    // Creating a token with scopes
     $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
 #### JSON API
@@ -668,7 +668,7 @@ This route creates new personal access tokens. It requires two pieces of data: t
             console.log(response.data.accessToken);
         })
         .catch (response => {
-            // List errors on response...
+            // List errors on response
         });
 
 #### `DELETE /oauth/personal-access-tokens/{token-id}`
@@ -767,7 +767,7 @@ Passport includes two middleware that may be used to verify that an incoming req
 The `scopes` middleware may be assigned to a route to verify that the incoming request's access token has *all* of the listed scopes:
 
     Route::get('/orders', function () {
-        // Access token has both "check-status" and "place-orders" scopes...
+        // Access token has both "check-status" and "place-orders" scopes
     })->middleware('scopes:check-status,place-orders');
 
 #### Check For Any Scopes
@@ -775,7 +775,7 @@ The `scopes` middleware may be assigned to a route to verify that the incoming r
 The `scope` middleware may be assigned to a route to verify that the incoming request's access token has *at least one* of the listed scopes:
 
     Route::get('/orders', function () {
-        // Access token has either "check-status" or "place-orders" scope...
+        // Access token has either "check-status" or "place-orders" scope
     })->middleware('scope:check-status,place-orders');
 
 #### Checking Scopes On A Token Instance
@@ -816,7 +816,7 @@ When building an API, it can be extremely useful to be able to consume your own 
 Typically, if you want to consume your API from your JavaScript application, you would need to manually send an access token to the application and pass it with each request to your application. However, Passport includes a middleware that can handle this for you. All you need to do is add the `CreateFreshApiToken` middleware to your `web` middleware group in your `app/Http/Kernel.php` file:
 
     'web' => [
-        // Other middleware...
+        // Other middleware
         \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
     ],
 
@@ -851,10 +851,10 @@ If needed, you can customize the `laravel_token` cookie's name using the `Passpo
 
 When using this method of authentication, the default Laravel JavaScript scaffolding instructs Axios to always send the `X-CSRF-TOKEN` and `X-Requested-With` headers. However, you should be sure to include your CSRF token in a [HTML meta tag](/docs/{{version}}/csrf#csrf-x-csrf-token):
 
-    // In your application layout...
+    // In your application layout
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    // Laravel's JavaScript scaffolding...
+    // Laravel's JavaScript scaffolding
     window.axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
     };

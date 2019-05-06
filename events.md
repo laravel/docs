@@ -172,7 +172,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
          */
         public function handle(OrderShipped $event)
         {
-            // Access the order using $event->order...
+            // Access the order using $event->order
         }
     }
 
@@ -335,7 +335,7 @@ To dispatch an event, you may pass an instance of the event to the `event` helpe
         {
             $order = Order::findOrFail($orderId);
 
-            // Order shipment logic...
+            // Order shipment logic
 
             event(new OrderShipped($order));
         }

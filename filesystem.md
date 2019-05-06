@@ -79,7 +79,7 @@ Laravel's Flysystem integrations works great with FTP; however, a sample configu
         'username' => 'your-username',
         'password' => 'your-password',
 
-        // Optional FTP Settings...
+        // Optional FTP Settings
         // 'port'     => 21,
         // 'root'     => '',
         // 'passive'  => true,
@@ -97,11 +97,11 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
         'username' => 'your-username',
         'password' => 'your-password',
 
-        // Settings for SSH key based authentication...
+        // Settings for SSH key based authentication
         // 'privateKey' => '/path/to/privateKey',
         // 'password' => 'encryption-password',
 
-        // Optional SFTP Settings...
+        // Optional SFTP Settings
         // 'port' => 22,
         // 'root' => '',
         // 'timeout' => 30,
@@ -129,7 +129,7 @@ To enable caching for a given disk, you may add a `cache` directive to the disk'
     's3' => [
         'driver' => 's3',
 
-        // Other Disk Options...
+        // Other Disk Options
 
         'cache' => [
             'store' => 'memcached',
@@ -369,7 +369,7 @@ The `directories` method returns an array of all the directories within a given 
 
     $directories = Storage::directories($directory);
 
-    // Recursive...
+    // Recursive
     $directories = Storage::allDirectories($directory);
 
 #### Create A Directory

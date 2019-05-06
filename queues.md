@@ -43,10 +43,10 @@ Before getting started with Laravel queues, it is important to understand the di
 
 Note that each connection configuration example in the `queue` configuration file contains a `queue` attribute. This is the default queue that jobs will be dispatched to when they are sent to a given connection. In other words, if you dispatch a job without explicitly defining which queue it should be dispatched to, the job will be placed on the queue that is defined in the `queue` attribute of the connection configuration:
 
-    // This job is sent to the default queue...
+    // This job is sent to the default queue
     Job::dispatch();
 
-    // This job is sent to the "emails" queue...
+    // This job is sent to the "emails" queue
     Job::dispatch()->onQueue('emails');
 
 Some applications may not need to ever push jobs onto multiple queues, instead preferring to have one simple queue. However, pushing jobs to multiple queues can be especially useful for applications that wish to prioritize or segment how jobs are processed, since the Laravel queue worker allows you to specify which queues it should process by priority. For example, if you push jobs to a `high` queue, you may run a worker that gives them higher processing priority:
@@ -157,7 +157,7 @@ Job classes are very simple, normally containing only a `handle` method which is
          */
         public function handle(AudioProcessor $processor)
         {
-            // Process uploaded podcast...
+            // Process uploaded podcast
         }
     }
 
@@ -198,7 +198,7 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
          */
         public function store(Request $request)
         {
-            // Create podcast...
+            // Create podcast
 
             ProcessPodcast::dispatch($podcast);
         }
@@ -227,7 +227,7 @@ If you would like to delay the execution of a queued job, you may use the `delay
          */
         public function store(Request $request)
         {
-            // Create podcast...
+            // Create podcast
 
             ProcessPodcast::dispatch($podcast)
                     ->delay(now()->addMinutes(10));
@@ -259,7 +259,7 @@ If you would like to dispatch a job immediately (synchronously), you may use the
          */
         public function store(Request $request)
         {
-            // Create podcast...
+            // Create podcast
 
             ProcessPodcast::dispatchNow($podcast);
         }
@@ -311,7 +311,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
          */
         public function store(Request $request)
         {
-            // Create podcast...
+            // Create podcast
 
             ProcessPodcast::dispatch($podcast)->onQueue('processing');
         }
@@ -339,7 +339,7 @@ If you are working with multiple queue connections, you may specify which connec
          */
         public function store(Request $request)
         {
-            // Create podcast...
+            // Create podcast
 
             ProcessPodcast::dispatch($podcast)->onConnection('sqs');
         }
@@ -427,9 +427,9 @@ If your application interacts with Redis, you may throttle your queued jobs by t
 For example, using the `throttle` method, you may throttle a given type of job to only run 10 times every 60 seconds. If a lock can not be obtained, you should typically release the job back onto the queue so it can be retried later:
 
     Redis::throttle('key')->allow(10)->every(60)->then(function () {
-        // Job logic...
+        // Job logic
     }, function () {
-        // Could not obtain lock...
+        // Could not obtain lock
 
         return $this->release(10);
     });
@@ -441,9 +441,9 @@ For example, using the `throttle` method, you may throttle a given type of job t
 Alternatively, you may specify the maximum number of workers that may simultaneously process a given job. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time. For example, using the `funnel` method, you may limit jobs of a given type to only be processed by one worker at a time:
 
     Redis::funnel('key')->limit(1)->then(function () {
-        // Job logic...
+        // Job logic
     }, function () {
-        // Could not obtain lock...
+        // Could not obtain lock
 
         return $this->release(10);
     });
@@ -659,7 +659,7 @@ You may define a `failed` method directly on your job class, allowing you to per
          */
         public function handle(AudioProcessor $processor)
         {
-            // Process uploaded podcast...
+            // Process uploaded podcast
         }
 
         /**
@@ -670,7 +670,7 @@ You may define a `failed` method directly on your job class, allowing you to per
          */
         public function failed(Exception $exception)
         {
-            // Send user notification of failure, etc...
+            // Send user notification of failure, etc
         }
     }
 

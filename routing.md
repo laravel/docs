@@ -165,7 +165,7 @@ If you would like a route parameter to always be constrained by a given regular 
 Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
 
     Route::get('user/{id}', function ($id) {
-        // Only executed if {id} is numeric...
+        // Only executed if {id} is numeric
     });
 
 <a name="parameters-encoded-forward-slashes"></a>
@@ -196,10 +196,10 @@ You may also specify route names for controller actions:
 
 Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the global `route` function:
 
-    // Generating URLs...
+    // Generating URLs
     $url = route('profile');
 
-    // Generating Redirects...
+    // Generating Redirects
     return redirect()->route('profile');
 
 If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the URL in their correct positions:
@@ -292,7 +292,7 @@ The `name` method may be used to prefix each route name in the group with a give
 
     Route::name('admin.')->group(function () {
         Route::get('users', function () {
-            // Route assigned name "admin.users"...
+            // Route assigned name "admin.users"
         })->name('users');
     });
 

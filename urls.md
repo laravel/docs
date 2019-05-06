@@ -33,13 +33,13 @@ The `url` helper may be used to generate arbitrary URLs for your application. Th
 
 If no path is provided to the `url` helper, a `Illuminate\Routing\UrlGenerator` instance is returned, allowing you to access information about the current URL:
 
-    // Get the current URL without the query string...
+    // Get the current URL without the query string
     echo url()->current();
 
-    // Get the current URL including the query string...
+    // Get the current URL including the query string
     echo url()->full();
 
-    // Get the full URL for the previous request...
+    // Get the full URL for the previous request
     echo url()->previous();
 
 Each of these methods may also be accessed via the `URL` [facade](/docs/{{version}}/facades):

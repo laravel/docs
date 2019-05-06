@@ -928,7 +928,7 @@ The `Str::limit` method truncates the given string at the specified length:
 
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20);
 
-    // The quick brown fox...
+    // The quick brown fox
 
 You may also pass a third argument to change the string that will be appended to the end:
 
@@ -936,7 +936,7 @@ You may also pass a third argument to change the string that will be appended to
 
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
 
-    // The quick brown fox (...)
+    // The quick brown fox ()
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {#collection-method}
@@ -1426,7 +1426,7 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 
     $env = env('APP_ENV');
 
-    // Returns 'production' if APP_ENV is not set...
+    // Returns 'production' if APP_ENV is not set
     $env = env('APP_ENV', 'production');
 
 > {note} If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return `null`.
@@ -1608,7 +1608,7 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 The `retry` function attempts to execute the given callback until the given maximum attempt threshold is met. If the callback does not throw an exception, its return value will be returned. If the callback throws an exception, it will automatically be retried. If the maximum attempt count is exceeded, the exception will be thrown:
 
     return retry(5, function () {
-        // Attempt 5 times while resting 100ms in between attempts...
+        // Attempt 5 times while resting 100ms in between attempts
     }, 100);
 
 <a name="method-session"></a>

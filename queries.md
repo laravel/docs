@@ -113,7 +113,7 @@ If you need to work with thousands of database records, consider using the `chun
 You may stop further chunks from being processed by returning `false` from the `Closure`:
 
     DB::table('users')->orderBy('id')->chunk(100, function ($users) {
-        // Process the records...
+        // Process the records
 
         return false;
     });

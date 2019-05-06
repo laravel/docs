@@ -27,10 +27,10 @@ In addition, you may create a `.env.testing` file in the root of your project. T
 
 To create a new test case, use the `make:test` Artisan command:
 
-    // Create a test in the Feature directory...
+    // Create a test in the Feature directory
     php artisan make:test UserTest
 
-    // Create a test in the Unit directory...
+    // Create a test in the Unit directory
     php artisan make:test UserTest --unit
 
 Once the test has been generated, you may define test methods as you normally would using PHPUnit. To run your tests, execute the `phpunit` command from your terminal:

@@ -927,7 +927,7 @@ Laravel ships with a handful of notification channels, but you may want to write
         {
             $message = $notification->toVoice($notifiable);
 
-            // Send notification to the $notifiable instance...
+            // Send notification to the $notifiable instance
         }
     }
 

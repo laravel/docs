@@ -79,7 +79,7 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
          */
         public function store(Request $request)
         {
-            // Validate and store the blog post...
+            // Validate and store the blog post
         }
     }
 
@@ -103,7 +103,7 @@ To get a better understanding of the `validate` method, let's jump back into the
             'body' => 'required',
         ]);
 
-        // The blog post is valid...
+        // The blog post is valid
     }
 
 As you can see, we pass the desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
@@ -225,9 +225,9 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
      */
     public function store(StoreBlogPost $request)
     {
-        // The incoming request is valid...
+        // The incoming request is valid
 
-        // Retrieve the validated input data...
+        // Retrieve the validated input data
         $validated = $request->validated();
     }
 
@@ -358,7 +358,7 @@ If you do not want to use the `validate` method on the request, you may create a
                             ->withInput();
             }
 
-            // Store the blog post...
+            // Store the blog post
         }
     }
 
@@ -1272,7 +1272,7 @@ You will also need to define an error message for your custom rule. You can do s
 
     "accepted" => "The :attribute must be accepted.",
 
-    // The rest of the validation error messages...
+    // The rest of the validation error messages
 
 When creating a custom validation rule, you may sometimes need to define custom placeholder replacements for error messages. You may do so by creating a custom Validator as described above then making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
 

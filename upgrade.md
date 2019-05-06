@@ -101,13 +101,13 @@ In order to allow a more granular expiration time when storing items, the cache 
 
 If you are passing an integer to any of these methods, you should update your code to ensure you are now passing the number of seconds you wish the item to remain in the cache. Alternatively, you may pass a `DateTime` instance indicating when the item should expire:
 
-    // Laravel 5.7 - Store item for 30 minutes...
+    // Laravel 5.7 - Store item for 30 minutes
     Cache::put('foo', 'bar', 30);
 
-    // Laravel 5.8 - Store item for 30 seconds...
+    // Laravel 5.8 - Store item for 30 seconds
     Cache::put('foo', 'bar', 30);
 
-    // Laravel 5.7 / 5.8 - Store item for 30 seconds...
+    // Laravel 5.7 / 5.8 - Store item for 30 seconds
     Cache::put('foo', 'bar', now()->addSeconds(30));
 
 > {tip} This change makes the Laravel cache system fully compliant with the [PSR-16 caching library standard](https://www.php-fig.org/psr/psr-16/).
@@ -135,27 +135,27 @@ In order to mitigate this scenario, locks are now generated with an embedded "sc
 If you are using the `Cache::lock()->get(Closure)` method of interacting with locks, no changes are required:
 
     Cache::lock('foo', 10)->get(function () {
-        // Lock will be released safely automatically...
+        // Lock will be released safely automatically
     });
 
 However, if you are manually calling `Cache::lock()->release()`, you must update your code to maintain an instance of the lock. Then, after you are done performing your task, you may call the `release` method on **the same lock instance**. For example:
 
     if (($lock = Cache::lock('foo', 10))->get()) {
-        // Perform task...
+        // Perform task
 
         $lock->release();
     }
 
 Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token:
 
-    // Within Controller...
+    // Within Controller
     $podcast = Podcast::find(1);
 
     if (($lock = Cache::lock('foo', 120))->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 
-    // Within ProcessPodcast Job...
+    // Within ProcessPodcast Job
     Cache::restoreLock('foo', $this->owner)->release();
 
 If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:
@@ -256,10 +256,10 @@ The query builder will now return unquoted JSON values when using MySQL and Mari
 
     dump($value);
 
-    // Laravel 5.7...
+    // Laravel 5.7
     '"en"'
 
-    // Laravel 5.8...
+    // Laravel 5.8
     'en'
 
 As a result, the `->>` operator is no longer supported or necessary.
@@ -289,7 +289,7 @@ This will not affect any existing code in your project; however, be aware that f
 
 As of Laravel 5.8, multi-word model names ending in a word with an irregular plural [are now correctly pluralized](https://github.com/laravel/framework/pull/26421).
 
-    // Laravel 5.7...
+    // Laravel 5.7
     App\Feedback.php -> feedback (correctly pluralized)
     App\UserFeedback.php -> user_feedbacks (incorrectly pluralized)
 

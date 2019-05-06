@@ -542,7 +542,7 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
         {
             $order = Order::findOrFail($orderId);
 
-            // Ship order...
+            // Ship order
 
             Mail::to($request->user())->send(new OrderShipped($order));
         }

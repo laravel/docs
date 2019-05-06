@@ -315,7 +315,7 @@ Because versioned files are usually unnecessary in development, you may instruct
 
     mix.browserSync('my-domain.test');
 
-    // Or...
+    // Or
 
     // https://browsersync.io/docs/options
     mix.browserSync({

@@ -67,7 +67,7 @@ If you would like to provide your own policy discovery logic, you may register a
     use Illuminate\Support\Facades\Gate;
 
     Gate::guessPolicyNamesUsing(function ($modelClass) {
-        // return policy class name...
+        // return policy class name
     });
 
 > {note} Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potential auto-discovered policies.
@@ -78,13 +78,13 @@ In order to allow a more granular expiration time when storing items and provide
 
 If you are passing an integer to any of these methods, you should update your code to ensure you are now passing the number of seconds you wish the item to remain in the cache. Alternatively, you may pass a `DateTime` instance indicating when the item should expire:
 
-    // Laravel 5.7 - Store item for 30 minutes...
+    // Laravel 5.7 - Store item for 30 minutes
     Cache::put('foo', 'bar', 30);
 
-    // Laravel 5.8 - Store item for 30 seconds...
+    // Laravel 5.8 - Store item for 30 seconds
     Cache::put('foo', 'bar', 30);
 
-    // Laravel 5.7 / 5.8 - Store item for 30 seconds...
+    // Laravel 5.7 / 5.8 - Store item for 30 seconds
     Cache::put('foo', 'bar', now()->addSeconds(30));
 
 ### Multiple Broadcast Authentication Guards
@@ -197,7 +197,7 @@ When the `preserveKeys` property is set to `true`, collection keys will be prese
 
 In previous releases of Laravel, combining multiple Eloquent model scopes via an `or` query operator required the use of Closure callbacks:
 
-    // scopePopular and scopeActive methods defined on the User model...
+    // scopePopular and scopeActive methods defined on the User model
     $users = App\User::popular()->orWhere(function (Builder $query) {
         $query->active();
     })->get();

@@ -254,11 +254,11 @@ For example, you may type-hint a repository defined by your application in a con
 The service container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
 
     $this->app->resolving(function ($object, $app) {
-        // Called when container resolves object of any type...
+        // Called when container resolves object of any type
     });
 
     $this->app->resolving(HelpSpot\API::class, function ($api, $app) {
-        // Called when container resolves objects of type "HelpSpot\API"...
+        // Called when container resolves objects of type "HelpSpot\API"
     });
 
 As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.

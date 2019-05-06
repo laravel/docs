@@ -304,10 +304,10 @@ The `cursor` method allows you to iterate through your database records using a 
 
 In addition to retrieving all of the records for a given table, you may also retrieve single records using `find` or `first`. Instead of returning a collection of models, these methods return a single model instance:
 
-    // Retrieve a model by its primary key...
+    // Retrieve a model by its primary key
     $flight = App\Flight::find(1);
 
-    // Retrieve the first model matching the query constraints...
+    // Retrieve the first model matching the query constraints
     $flight = App\Flight::where('active', 1)->first();
 
 You may also call the `find` method with an array of primary keys, which will return a collection of the matching records:
@@ -363,7 +363,7 @@ To create a new record in the database, create a new model instance, set attribu
          */
         public function store(Request $request)
         {
-            // Validate the request...
+            // Validate the request
 
             $flight = new Flight;
 
@@ -469,19 +469,19 @@ There are two other methods you may use to create models by mass assigning attri
 
 The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to call `save` manually to persist it:
 
-    // Retrieve flight by name, or create it if it doesn't exist...
+    // Retrieve flight by name, or create it if it doesn't exist
     $flight = App\Flight::firstOrCreate(['name' => 'Flight 10']);
 
-    // Retrieve flight by name, or create it with the name, delayed, and arrival_time attributes...
+    // Retrieve flight by name, or create it with the name, delayed, and arrival_time attributes
     $flight = App\Flight::firstOrCreate(
         ['name' => 'Flight 10'],
         ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
-    // Retrieve by name, or instantiate...
+    // Retrieve by name, or instantiate
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
 
-    // Retrieve by name, or instantiate with the name, delayed, and arrival_time attributes...
+    // Retrieve by name, or instantiate with the name, delayed, and arrival_time attributes
     $flight = App\Flight::firstOrNew(
         ['name' => 'Flight 10'],
         ['delayed' => 1, 'arrival_time' => '11:30']
@@ -603,10 +603,10 @@ Like the `withTrashed` method, the `restore` method may also be used on [relatio
 
 Sometimes you may need to truly remove a model from your database. To permanently remove a soft-deleted model from the database, use the `forceDelete` method:
 
-    // Force deleting a single model instance...
+    // Force deleting a single model instance
     $flight->forceDelete();
 
-    // Force deleting all related models...
+    // Force deleting all related models
     $flight->history()->forceDelete();
 
 <a name="query-scopes"></a>
@@ -716,10 +716,10 @@ Or, if you defined the global scope using a Closure:
 
 If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
 
-    // Remove all of the global scopes...
+    // Remove all of the global scopes
     User::withoutGlobalScopes()->get();
 
-    // Remove some of the global scopes...
+    // Remove some of the global scopes
     User::withoutGlobalScopes([
         FirstScope::class, SecondScope::class
     ])->get();

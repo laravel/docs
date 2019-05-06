@@ -99,10 +99,10 @@ The `is` method allows you to verify that the incoming request path matches a gi
 
 To retrieve the full URL for the incoming request you may use the `url` or `fullUrl` methods. The `url` method will return the URL without the query string, while the `fullUrl` method includes the query string:
 
-    // Without Query String...
+    // Without Query String
     $url = $request->url();
 
-    // With Query String...
+    // With Query String
     $url = $request->fullUrl();
 
 #### Retrieving The Request Method

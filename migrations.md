@@ -120,7 +120,7 @@ The `migrate:refresh` command will roll back all of your migrations and then exe
 
     php artisan migrate:refresh
 
-    // Refresh the database and run all database seeds...
+    // Refresh the database and run all database seeds
     php artisan migrate:refresh --seed
 
 You may rollback & re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will rollback & re-migrate the last five migrations:

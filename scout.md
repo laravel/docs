@@ -128,7 +128,7 @@ By default, the entire `toArray` form of a given model will be persisted to its 
         {
             $array = $this->toArray();
 
-            // Customize array...
+            // Customize array
 
             return $array;
         }
@@ -190,13 +190,13 @@ Once you have added the `Laravel\Scout\Searchable` trait to a model, all you nee
 
 If you would like to add a collection of models to your search index via an Eloquent query, you may chain the `searchable` method onto an Eloquent query. The `searchable` method will [chunk the results](/docs/{{version}}/eloquent#chunking-results) of the query and add the records to your search index. Again, if you have configured Scout to use queues, all of the chunks will be added in the background by your queue workers:
 
-    // Adding via Eloquent query...
+    // Adding via Eloquent query
     App\Order::where('price', '>', 100)->searchable();
 
-    // You may also add records via relationships...
+    // You may also add records via relationships
     $user->orders()->searchable();
 
-    // You may also add records via collections...
+    // You may also add records via collections
     $orders->searchable();
 
 The `searchable` method can be considered an "upsert" operation. In other words, if the model record is already in your index, it will be updated. If it does not exist in the search index, it will be added to the index.
@@ -208,19 +208,19 @@ To update a searchable model, you only need to update the model instance's prope
 
     $order = App\Order::find(1);
 
-    // Update the order...
+    // Update the order
 
     $order->save();
 
 You may also use the `searchable` method on an Eloquent query to update a collection of models. If the models do not exist in your search index, they will be created:
 
-    // Updating via Eloquent query...
+    // Updating via Eloquent query
     App\Order::where('price', '>', 100)->searchable();
 
-    // You may also update via relationships...
+    // You may also update via relationships
     $user->orders()->searchable();
 
-    // You may also update via collections...
+    // You may also update via collections
     $orders->searchable();
 
 <a name="removing-records"></a>
@@ -234,13 +234,13 @@ To remove a record from your index, `delete` the model from the database. This f
 
 If you do not want to retrieve the model before deleting the record, you may use the `unsearchable` method on an Eloquent query instance or collection:
 
-    // Removing via Eloquent query...
+    // Removing via Eloquent query
     App\Order::where('price', '>', 100)->unsearchable();
 
-    // You may also remove via relationships...
+    // You may also remove via relationships
     $user->orders()->unsearchable();
 
-    // You may also remove via collections...
+    // You may also remove via collections
     $orders->unsearchable();
 
 <a name="pausing-indexing"></a>
@@ -249,7 +249,7 @@ If you do not want to retrieve the model before deleting the record, you may use
 Sometimes you may need to perform a batch of Eloquent operations on a model without syncing the model data to your search index. You may do this using the `withoutSyncingToSearch` method. This method accepts a single callback which will be immediately executed. Any model operations that occur within the callback will not be synced to the model's index:
 
     App\Order::withoutSyncingToSearch(function () {
-        // Perform model actions...
+        // Perform model actions
     });
 
 <a name="conditionally-searchable-model-instances"></a>
@@ -264,14 +264,14 @@ Sometimes you may need to only make a model searchable under certain conditions.
 
 The `shouldBeSearchable` method is only applied when manipulating models through the `save` method, queries, or relationships. Directly making models or collections searchable using the `searchable` method will override the result of the `shouldBeSearchable` method:
 
-    // Will respect "shouldBeSearchable"...
+    // Will respect "shouldBeSearchable"
     App\Order::where('price', '>', 100)->searchable();
 
     $user->orders()->searchable();
 
     $order->save();
 
-    // Will override "shouldBeSearchable"...
+    // Will override "shouldBeSearchable"
     $orders->searchable();
 
     $order->searchable();
@@ -338,10 +338,10 @@ If your indexed models are [soft deleting](/docs/{{version}}/eloquent#soft-delet
 
 When this configuration option is `true`, Scout will not remove soft deleted models from the search index. Instead, it will set a hidden `__soft_deleted` attribute on the indexed record. Then, you may use the `withTrashed` or `onlyTrashed` methods to retrieve the soft deleted records when searching:
 
-    // Include trashed records when retrieving results...
+    // Include trashed records when retrieving results
     $orders = App\Order::withTrashed()->search('Star Trek')->get();
 
-    // Only include trashed records when retrieving results...
+    // Only include trashed records when retrieving results
     $orders = App\Order::onlyTrashed()->search('Star Trek')->get();
 
 > {tip} When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.

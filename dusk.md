@@ -325,21 +325,21 @@ When your test requires migrations, like the authentication example above, you s
 
 Choosing good CSS selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
 
-    // HTML...
+    // HTML
 
     <button>Login</button>
 
-    // Test...
+    // Test
 
     $browser->click('.login-page .container div > button');
 
 Dusk selectors allow you to focus on writing effective tests rather than remembering CSS selectors. To define a selector, add a `dusk` attribute to your HTML element. Then, prefix the selector with `@` to manipulate the attached element within a Dusk test:
 
-    // HTML...
+    // HTML
 
     <button dusk="login-button">Login</button>
 
-    // Test...
+    // Test
 
     $browser->click('@login-button');
 
@@ -359,10 +359,10 @@ To click a link, you may use the `clickLink` method on the browser instance. The
 
 Dusk provides several methods for interacting with the current display text, value, and attributes of elements on the page. For example, to get the "value" of an element that matches a given selector, use the `value` method:
 
-    // Retrieve the value...
+    // Retrieve the value
     $value = $browser->value('selector');
 
-    // Set the value...
+    // Set the value
     $browser->value('selector', 'value');
 
 #### Retrieving Text
@@ -518,10 +518,10 @@ If you need to pause the test for a given number of milliseconds, use the `pause
 
 The `waitFor` method may be used to pause the execution of the test until the element matching the given CSS selector is displayed on the page. By default, this will pause the test for a maximum of five seconds before throwing an exception. If necessary, you may pass a custom timeout threshold as the second argument to the method:
 
-    // Wait a maximum of five seconds for the selector...
+    // Wait a maximum of five seconds for the selector
     $browser->waitFor('.selector');
 
-    // Wait a maximum of one second for the selector...
+    // Wait a maximum of one second for the selector
     $browser->waitFor('.selector', 1);
 
 You may also wait until the given selector is missing from the page:
@@ -543,20 +543,20 @@ Occasionally, you may wish to wait for a given selector and then interact with t
 
 The `waitForText` method may be used to wait until the given text is displayed on the page:
 
-    // Wait a maximum of five seconds for the text...
+    // Wait a maximum of five seconds for the text
     $browser->waitForText('Hello World');
 
-    // Wait a maximum of one second for the text...
+    // Wait a maximum of one second for the text
     $browser->waitForText('Hello World', 1);
 
 #### Waiting For Links
 
 The `waitForLink` method may be used to wait until the given link text is displayed on the page:
 
-    // Wait a maximum of five seconds for the link...
+    // Wait a maximum of five seconds for the link
     $browser->waitForLink('Create');
 
-    // Wait a maximum of one second for the link...
+    // Wait a maximum of one second for the link
     $browser->waitForLink('Create', 1);
 
 #### Waiting On The Page Location
@@ -581,22 +581,22 @@ If you need to make assertions after a page has been reloaded, use the `waitForR
 
 Sometimes you may wish to pause the execution of a test until a given JavaScript expression evaluates to `true`. You may easily accomplish this using the `waitUntil` method. When passing an expression to this method, you do not need to include the `return` keyword or an ending semi-colon:
 
-    // Wait a maximum of five seconds for the expression to be true...
+    // Wait a maximum of five seconds for the expression to be true
     $browser->waitUntil('App.dataLoaded');
 
     $browser->waitUntil('App.data.servers.length > 0');
 
-    // Wait a maximum of one second for the expression to be true...
+    // Wait a maximum of one second for the expression to be true
     $browser->waitUntil('App.data.servers.length > 0', 1);
 
 #### Waiting On Vue Expressions
 
 The following methods may be used to wait until a given Vue component attribute has a given value:
 
-    // Wait until the component attribute contains the given value...
+    // Wait until the component attribute contains the given value
     $browser->waitUntilVue('user.name', 'Taylor', '@user');
 
-    // Wait until the component attribute doesn't contain the given value...
+    // Wait until the component attribute doesn't contain the given value
     $browser->waitUntilVueIsNot('user.name', null, '@user');
 
 #### Waiting With A Callback
@@ -612,11 +612,11 @@ Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. Yo
 
 Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org) component data. For example, imagine your application contains the following Vue component:
 
-    // HTML...
+    // HTML
 
     <profile dusk="profile-component"></profile>
 
-    // Component Definition...
+    // Component Definition
 
     Vue.component('profile', {
         template: '<div>{{ user.name }}</div>',
@@ -1213,7 +1213,7 @@ In addition to the default methods defined on pages, you may define additional m
 
     class Dashboard extends Page
     {
-        // Other page methods...
+        // Other page methods
 
         /**
          * Create a new playlist.

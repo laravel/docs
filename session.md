@@ -106,13 +106,13 @@ When you retrieve an item from the session, you may also pass a default value as
 You may also use the global `session` PHP function to retrieve and store data in the session. When the `session` helper is called with a single, string argument, it will return the value of that session key. When the helper is called with an array of key / value pairs, those values will be stored in the session:
 
     Route::get('home', function () {
-        // Retrieve a piece of data from the session...
+        // Retrieve a piece of data from the session
         $value = session('key');
 
-        // Specifying a default value...
+        // Specifying a default value
         $value = session('key', 'default');
 
-        // Store a piece of data in the session...
+        // Store a piece of data in the session
         session(['key' => 'value']);
     });
 
@@ -143,10 +143,10 @@ To determine if an item is present in the session, even if its value is `null`, 
 
 To store data in the session, you will typically use the `put` method or the `session` helper:
 
-    // Via a request instance...
+    // Via a request instance
     $request->session()->put('key', 'value');
 
-    // Via the global helper...
+    // Via the global helper
     session(['key' => 'value']);
 
 #### Pushing To Array Session Values
@@ -179,10 +179,10 @@ If you need to keep your flash data around for several requests, you may use the
 
 The `forget` method will remove a piece of data from the session. If you would like to remove all data from the session, you may use the `flush` method:
 
-    // Forget a single key...
+    // Forget a single key
     $request->session()->forget('key');
 
-    // Forget multiple keys...
+    // Forget multiple keys
     $request->session()->forget(['key1', 'key2']);
 
     $request->session()->flush();
@@ -264,7 +264,7 @@ Once your driver has been implemented, you are ready to register it with the fra
         public function boot()
         {
             Session::extend('mongo', function ($app) {
-                // Return implementation of SessionHandlerInterface...
+                // Return implementation of SessionHandlerInterface
                 return new MongoSessionHandler;
             });
         }

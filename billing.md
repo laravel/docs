@@ -178,7 +178,7 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
     public function handle($request, Closure $next)
     {
         if ($request->user() && ! $request->user()->subscribed('main')) {
-            // This user is not a paying customer...
+            // This user is not a paying customer
             return redirect('billing');
         }
 
@@ -249,12 +249,12 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
 
     $user->subscription('main')->incrementQuantity();
 
-    // Add five to the subscription's current quantity...
+    // Add five to the subscription's current quantity
     $user->subscription('main')->incrementQuantity(5);
 
     $user->subscription('main')->decrementQuantity();
 
-    // Subtract five to the subscription's current quantity...
+    // Subtract five to the subscription's current quantity
     $user->subscription('main')->decrementQuantity(5);
 
 Alternatively, you may set a specific quantity using the `updateQuantity` method:
@@ -377,7 +377,7 @@ You may determine if the user is within their trial period using either the `onT
 If you would like to offer trial periods without collecting the user's payment method information up front, you may set the `trial_ends_at` column on the user record to your desired trial ending date. This is typically done during user registration:
 
     $user = User::create([
-        // Populate other user properties...
+        // Populate other user properties
         'trial_ends_at' => now()->addDays(10),
     ]);
 
@@ -386,13 +386,13 @@ If you would like to offer trial periods without collecting the user's payment m
 Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the `User` instance will return `true` if the current date is not past the value of `trial_ends_at`:
 
     if ($user->onTrial()) {
-        // User is within their trial period...
+        // User is within their trial period
     }
 
 You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
 
     if ($user->onGenericTrial()) {
-        // User is within their "generic" trial period...
+        // User is within their "generic" trial period
     }
 
 Once you are ready to create an actual subscription for the user, you may use the `newSubscription` method as usual:
@@ -549,7 +549,7 @@ To enable webhook verification, ensure that the `stripe.webhook.secret` configur
 
 If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method on a billable model instance.
 
-    // Stripe Accepts Charges In Cents...
+    // Stripe Accepts Charges In Cents
     $stripeCharge = $user->charge(100);
 
 The `charge` method accepts an array as its second argument, allowing you to pass any options you wish to the underlying Stripe charge creation. Consult the Stripe documentation regarding the options available to you when creating charges:
@@ -571,7 +571,7 @@ The `charge` method will throw an exception if the charge fails. If the charge i
 
 Sometimes you may need to make a one-time charge but also generate an invoice for the charge so that you may offer a PDF receipt to your customer. The `invoiceFor` method lets you do just that. For example, let's invoice the customer $5.00 for a "One Time Fee":
 
-    // Stripe Accepts Charges In Cents...
+    // Stripe Accepts Charges In Cents
     $user->invoiceFor('One Time Fee', 500);
 
 The invoice will be charged immediately against the user's credit card. The `invoiceFor` method also accepts an array as its third argument. This array contains the billing options for the invoice item. The fourth argument accepted by the method is also an array. This final argument accepts the billing options for the invoice itself:
@@ -600,7 +600,7 @@ You may easily retrieve an array of a billable model's invoices using the `invoi
 
     $invoices = $user->invoices();
 
-    // Include pending invoices in the results...
+    // Include pending invoices in the results
     $invoices = $user->invoicesIncludingPending();
 
 When listing the invoices for the customer, you may use the invoice's helper methods to display the relevant invoice information. For example, you may wish to list every invoice in a table, allowing the user to easily download any of them:

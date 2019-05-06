@@ -149,12 +149,12 @@ Once you have defined your factories, you may use the global `factory` function 
     {
         $user = factory(App\User::class)->make();
 
-        // Use model in tests...
+        // Use model in tests
     }
 
 You may also create a Collection of many models or create models of a given type:
 
-    // Create three App\User instances...
+    // Create three App\User instances
     $users = factory(App\User::class, 3)->make();
 
 #### Applying States
@@ -180,13 +180,13 @@ The `create` method not only creates the model instances but also saves them to 
 
     public function testDatabase()
     {
-        // Create a single App\User instance...
+        // Create a single App\User instance
         $user = factory(App\User::class)->create();
 
-        // Create three App\User instances...
+        // Create three App\User instances
         $users = factory(App\User::class, 3)->create();
 
-        // Use model in tests...
+        // Use model in tests
     }
 
 You may override attributes on the model by passing an array to the `create` method:

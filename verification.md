@@ -54,7 +54,7 @@ Laravel includes the `Auth\VerificationController` class that contains the neces
 [Route middleware](/docs/{{version}}/middleware) can be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware, which is defined at `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition:
 
     Route::get('profile', function () {
-        // Only verified users may enter...
+        // Only verified users may enter
     })->middleware('verified');
 
 <a name="verification-views"></a>

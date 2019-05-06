@@ -132,12 +132,12 @@ For this example, let's register the view composers within a [service provider](
          */
         public function boot()
         {
-            // Using class based composers...
+            // Using class based composers
             View::composer(
                 'profile', 'App\Http\View\Composers\ProfileComposer'
             );
 
-            // Using Closure based composers...
+            // Using Closure based composers
             View::composer('dashboard', function ($view) {
                 //
             });
@@ -172,7 +172,7 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
          */
         public function __construct(UserRepository $users)
         {
-            // Dependencies automatically resolved by service container...
+            // Dependencies automatically resolved by service container
             $this->users = $users;
         }
 

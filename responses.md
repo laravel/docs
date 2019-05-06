@@ -124,7 +124,7 @@ Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class
 Sometimes you may wish to redirect the user to their previous location, such as when a submitted form is invalid. You may do so by using the global `back` helper function. Since this feature utilizes the [session](/docs/{{version}}/session), make sure the route calling the `back` function is using the `web` middleware group or has all of the session middleware applied:
 
     Route::post('user/profile', function () {
-        // Validate the request...
+        // Validate the request
 
         return back()->withInput();
     });
@@ -188,7 +188,7 @@ Sometimes you may need to redirect to a domain outside of your application. You 
 Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/session#flash-data) are usually done at the same time. Typically, this is done after successfully performing an action when you flash a success message to the session. For convenience, you may create a `RedirectResponse` instance and flash data to the session in a single, fluent method chain:
 
     Route::post('user/profile', function () {
-        // Update the user's profile...
+        // Update the user's profile
 
         return redirect('dashboard')->with('status', 'Profile updated!');
     });

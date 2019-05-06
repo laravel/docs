@@ -105,7 +105,7 @@ To utilize the PhpRedis extension, you should change the `client` option of your
 
         'client' => 'phpredis',
 
-        // Rest of Redis configuration...
+        // Rest of Redis configuration
     ],
 
 In addition to the default `host`, `port`, `database`, and `password` server configuration options, PhpRedis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout` and `timeout`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
@@ -223,7 +223,7 @@ First, let's setup a channel listener using the `subscribe` method. We'll place 
 Now we may publish messages to the channel using the `publish` method:
 
     Route::get('publish', function () {
-        // Route logic...
+        // Route logic
 
         Redis::publish('test-channel', json_encode(['foo' => 'bar']));
     });

@@ -188,10 +188,10 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
                 'avatar' => $file,
             ]);
 
-            // Assert the file was stored...
+            // Assert the file was stored
             Storage::disk('avatars')->assertExists($file->hashName());
 
-            // Assert a file does not exist...
+            // Assert a file does not exist
             Storage::disk('avatars')->assertMissing('missing.jpg');
         }
     }

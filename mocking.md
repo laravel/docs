@@ -59,13 +59,13 @@ As an alternative to mocking, you may use the `Bus` facade's `fake` method to pr
         {
             Bus::fake();
 
-            // Perform order shipping...
+            // Perform order shipping
 
             Bus::assertDispatched(ShipOrder::class, function ($job) use ($order) {
                 return $job->order->id === $order->id;
             });
 
-            // Assert a job was not dispatched...
+            // Assert a job was not dispatched
             Bus::assertNotDispatched(AnotherJob::class);
         }
     }
@@ -95,16 +95,16 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
         {
             Event::fake();
 
-            // Perform order shipping...
+            // Perform order shipping
 
             Event::assertDispatched(OrderShipped::class, function ($e) use ($order) {
                 return $e->order->id === $order->id;
             });
 
-            // Assert an event was dispatched twice...
+            // Assert an event was dispatched twice
             Event::assertDispatched(OrderShipped::class, 2);
 
-            // Assert an event was not dispatched...
+            // Assert an event was not dispatched
             Event::assertNotDispatched(OrderFailedToShip::class);
         }
     }
@@ -128,7 +128,7 @@ If you only want to fake event listeners for a specific set of events, you may p
 
         Event::assertDispatched(OrderCreated::class);
 
-        // Other events are dispatched as normal...
+        // Other events are dispatched as normal
         $order->update([...]);
     }
 
@@ -163,7 +163,7 @@ If you only want to fake event listeners for a portion of your test, you may use
                 return $order;
             });
 
-            // Events are dispatched as normal and observers will run ...
+            // Events are dispatched as normal and observers will run 
             $order->update([...]);
         }
     }
@@ -189,26 +189,26 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
         {
             Mail::fake();
 
-            // Assert that no mailables were sent...
+            // Assert that no mailables were sent
             Mail::assertNothingSent();
 
-            // Perform order shipping...
+            // Perform order shipping
 
             Mail::assertSent(OrderShipped::class, function ($mail) use ($order) {
                 return $mail->order->id === $order->id;
             });
 
-            // Assert a message was sent to the given users...
+            // Assert a message was sent to the given users
             Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
                 return $mail->hasTo($user->email) &&
                        $mail->hasCc('...') &&
                        $mail->hasBcc('...');
             });
 
-            // Assert a mailable was sent twice...
+            // Assert a mailable was sent twice
             Mail::assertSent(OrderShipped::class, 2);
 
-            // Assert a mailable was not sent...
+            // Assert a mailable was not sent
             Mail::assertNotSent(AnotherMailable::class);
         }
     }
@@ -240,10 +240,10 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
         {
             Notification::fake();
 
-            // Assert that no notifications were sent...
+            // Assert that no notifications were sent
             Notification::assertNothingSent();
 
-            // Perform order shipping...
+            // Perform order shipping
 
             Notification::assertSentTo(
                 $user,
@@ -253,17 +253,17 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
                 }
             );
 
-            // Assert a notification was sent to the given users...
+            // Assert a notification was sent to the given users
             Notification::assertSentTo(
                 [$user], OrderShipped::class
             );
 
-            // Assert a notification was not sent...
+            // Assert a notification was not sent
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
 
-            // Assert a notification was sent via Notification::route() method...
+            // Assert a notification was sent via Notification::route() method
             Notification::assertSentTo(
                 new AnonymousNotifiable, OrderShipped::class
             );
@@ -291,25 +291,25 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
         {
             Queue::fake();
 
-            // Assert that no jobs were pushed...
+            // Assert that no jobs were pushed
             Queue::assertNothingPushed();
 
-            // Perform order shipping...
+            // Perform order shipping
 
             Queue::assertPushed(ShipOrder::class, function ($job) use ($order) {
                 return $job->order->id === $order->id;
             });
 
-            // Assert a job was pushed to a given queue...
+            // Assert a job was pushed to a given queue
             Queue::assertPushedOn('queue-name', ShipOrder::class);
 
-            // Assert a job was pushed twice...
+            // Assert a job was pushed twice
             Queue::assertPushed(ShipOrder::class, 2);
 
-            // Assert a job was not pushed...
+            // Assert a job was not pushed
             Queue::assertNotPushed(AnotherJob::class);
 
-            // Assert a job was pushed with a specific chain...
+            // Assert a job was pushed with a specific chain
             Queue::assertPushedWithChain(ShipOrder::class, [
                 AnotherJob::class,
                 FinalJob::class
@@ -343,11 +343,11 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
                 UploadedFile::fake()->image('photo2.jpg')
             ]);
 
-            // Assert one or more files were stored...
+            // Assert one or more files were stored
             Storage::disk('photos')->assertExists('photo1.jpg');
             Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);
 
-            // Assert one or more files were not stored...
+            // Assert one or more files were not stored
             Storage::disk('photos')->assertMissing('missing.jpg');
             Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
         }

@@ -278,11 +278,11 @@ For convenience, Blade also provides an `@unless` directive:
 In addition to the conditional directives already discussed, the `@isset` and `@empty` directives may be used as convenient shortcuts for their respective PHP functions:
 
     @isset($records)
-        // $records is defined and is not null...
+        // $records is defined and is not null
     @endisset
 
     @empty($records)
-        // $records is "empty"...
+        // $records is "empty"
     @endempty
 
 #### Authentication Directives
@@ -290,21 +290,21 @@ In addition to the conditional directives already discussed, the `@isset` and `@
 The `@auth` and `@guest` directives may be used to quickly determine if the current user is authenticated or is a guest:
 
     @auth
-        // The user is authenticated...
+        // The user is authenticated
     @endauth
 
     @guest
-        // The user is not authenticated...
+        // The user is not authenticated
     @endguest
 
 If needed, you may specify the [authentication guard](/docs/{{version}}/authentication) that should be checked when using the `@auth` and `@guest` directives:
 
     @auth('admin')
-        // The user is authenticated...
+        // The user is authenticated
     @endauth
 
     @guest('admin')
-        // The user is not authenticated...
+        // The user is not authenticated
     @endguest
 
 #### Section Directives
@@ -571,7 +571,7 @@ If you would like to prepend content onto the beginning of a stack, you should u
         This will be second...
     @endpush
 
-    // Later...
+    // Later
 
     @prepend('scripts')
         This will be first...
@@ -655,9 +655,9 @@ Programming a custom directive is sometimes more complex than necessary when def
 Once the custom conditional has been defined, we can easily use it on our templates:
 
     @env('local')
-        // The application is in the local environment...
+        // The application is in the local environment
     @elseenv('testing')
-        // The application is in the testing environment...
+        // The application is in the testing environment
     @else
-        // The application is not in the local or testing environment...
+        // The application is not in the local or testing environment
     @endenv

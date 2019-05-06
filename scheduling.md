@@ -87,7 +87,7 @@ The `job` method may be used to schedule a [queued job](/docs/{{version}}/queues
 
     $schedule->job(new Heartbeat)->everyFiveMinutes();
 
-    // Dispatch the job to the "heartbeats" queue...
+    // Dispatch the job to the "heartbeats" queue
     $schedule->job(new Heartbeat, 'heartbeats')->everyFiveMinutes();
 
 <a name="scheduling-shell-commands"></a>
@@ -125,12 +125,12 @@ Method  | Description
 
 These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, to schedule a command to run weekly on Monday:
 
-    // Run once per week on Monday at 1 PM...
+    // Run once per week on Monday at 1 PM
     $schedule->call(function () {
         //
     })->weekly()->mondays()->at('13:00');
 
-    // Run hourly from 8 AM to 5 PM on weekdays...
+    // Run hourly from 8 AM to 5 PM on weekdays
     $schedule->command('foo')
               ->weekdays()
               ->hourly()
@@ -296,10 +296,10 @@ Using the `before` and `after` methods, you may specify code to be executed befo
     $schedule->command('emails:send')
              ->daily()
              ->before(function () {
-                 // Task is about to start...
+                 // Task is about to start
              })
              ->after(function () {
-                 // Task is complete...
+                 // Task is complete
              });
 
 The `onSuccess` and `onFailure` methods allow you to specify code to be executed if the scheduled task succeeds or fails:
@@ -307,10 +307,10 @@ The `onSuccess` and `onFailure` methods allow you to specify code to be executed
     $schedule->command('emails:send')
              ->daily()
              ->onSuccess(function () {
-                 // The task succeeded...
+                 // The task succeeded
              })
              ->onFailure(function () {
-                 // The task failed...
+                 // The task failed
              });
 
 #### Pinging URLs

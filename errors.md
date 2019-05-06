@@ -73,7 +73,7 @@ Sometimes you may need to report an exception but continue handling the current 
     public function isValid($value)
     {
         try {
-            // Validate the value...
+            // Validate the value
         } catch (Exception $e) {
             report($e);
 
