@@ -530,7 +530,7 @@ You can also run a delete statement on a set of models. In this example, we will
 <a name="soft-deleting"></a>
 ### Soft Deleting
 
-In addition to actually removing records from your database, Eloquent can also "soft delete" models. When models are soft deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model and inserted into the database. If a model has a non-null `deleted_at` value, the model has been soft deleted. To enable soft deletes for a model, use the `Illuminate\Database\Eloquent\SoftDeletes` trait on the model:
+In addition to actually removing records from your database, Eloquent can also "soft delete" models. When models are soft-deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model and inserted into the database. If a model has a non-null `deleted_at` value, the model has been soft-deleted. To enable soft deletes for a model, use the `Illuminate\Database\Eloquent\SoftDeletes` trait on the model:
 
     <?php
 
@@ -552,9 +552,9 @@ You should also add the `deleted_at` column to your database table. The Laravel 
         $table->softDeletes();
     });
 
-Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current date and time. And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
+Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current date and time. And, when querying a model that uses soft deletes, the soft-deleted models will automatically be excluded from all query results.
 
-To determine if a given model instance has been soft deleted, use the `trashed` method:
+To determine if a given model instance has been soft-deleted, use the `trashed` method:
 
     if ($flight->trashed()) {
         //
@@ -565,7 +565,7 @@ To determine if a given model instance has been soft deleted, use the `trashed` 
 
 #### Including Soft Deleted Models
 
-As noted above, soft deleted models will automatically be excluded from query results. However, you may force soft deleted models to appear in a result set using the `withTrashed` method on the query:
+As noted above, soft-deleted models will automatically be excluded from query results. However, you may force soft-deleted models to appear in a result set using the `withTrashed` method on the query:
 
     $flights = App\Flight::withTrashed()
                     ->where('account_id', 1)
@@ -577,7 +577,7 @@ The `withTrashed` method may also be used on a [relationship](/docs/{{version}}/
 
 #### Retrieving Only Soft Deleted Models
 
-The `onlyTrashed` method will retrieve **only** soft deleted models:
+The `onlyTrashed` method will retrieve **only** soft-deleted models:
 
     $flights = App\Flight::onlyTrashed()
                     ->where('airline_id', 1)
@@ -585,7 +585,7 @@ The `onlyTrashed` method will retrieve **only** soft deleted models:
 
 #### Restoring Soft Deleted Models
 
-Sometimes you may wish to "un-delete" a soft deleted model. To restore a soft deleted model into an active state, use the `restore` method on a model instance:
+Sometimes you may wish to "un-delete" a soft-deleted model. To restore a soft-deleted model into an active state, use the `restore` method on a model instance:
 
     $flight->restore();
 
@@ -601,7 +601,7 @@ Like the `withTrashed` method, the `restore` method may also be used on [relatio
 
 #### Permanently Deleting Models
 
-Sometimes you may need to truly remove a model from your database. To permanently remove a soft deleted model from the database, use the `forceDelete` method:
+Sometimes you may need to truly remove a model from your database. To permanently remove a soft-deleted model from the database, use the `forceDelete` method:
 
     // Force deleting a single model instance...
     $flight->forceDelete();

@@ -73,13 +73,13 @@ If you had test failures the last time you ran the `dusk` command, you may save 
 
 If you would like to install a different version of ChromeDriver than what is included with Laravel Dusk, you may use the `dusk:chrome-driver` command:
 
-    # Install the latest version of ChromeDriver for your OS...
+    # Install the latest version of ChromeDriver for your OS
     php artisan dusk:chrome-driver
 
-    # Install a given version of ChromeDriver for your OS...
+    # Install a given version of ChromeDriver for your OS
     php artisan dusk:chrome-driver 74
 
-    # Install a given version of ChromeDriver for all supported OSs...
+    # Install a given version of ChromeDriver for all supported OSs
     php artisan dusk:chrome-driver --all
 
 > {note} Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin/`.
@@ -441,7 +441,7 @@ You may even send a "hot key" to the primary CSS selector that contains your app
 
     $browser->keys('.app', ['{command}', 'j']);
 
-> {tip} All modifier keys are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/facebook/php-webdriver/blob/community/lib/WebDriverKeys.php).
+> {tip} All modifier keys are wrapped in `{}` characters and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/facebook/php-webdriver/blob/community/lib/WebDriverKeys.php).
 
 <a name="using-the-mouse"></a>
 ### Using The Mouse
@@ -1103,7 +1103,7 @@ Assert that a given Vue component data property is an array and does not contain
 <a name="pages"></a>
 ## Pages
 
-Sometimes, tests require several complicated actions to be performed in sequence. This can make your tests harder to read and understand. Pages allow you to define expressive actions that may then be performed on a given page using a single method. Pages also allow you to define short-cuts to common selectors for your application or a single page.
+Sometimes, tests require several complicated actions to be performed in sequence. This can make your tests harder to read and understand. Pages allow you to define expressive actions that may then be performed on a given page using a single method. Pages also allow you to define shortcuts to common selectors for your application or a single page.
 
 <a name="generating-pages"></a>
 ### Generating Pages

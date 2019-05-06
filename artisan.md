@@ -127,7 +127,7 @@ Let's take a look at an example command. Note that we are able to inject any dep
 <a name="closure-commands"></a>
 ### Closure Commands
 
-Closure based commands provide an alternative to defining console commands as classes. In the same way that route Closures are an alternative to controllers, think of command Closures as an alternative to command classes. Within the `commands` method of your `app/Console/Kernel.php` file, Laravel loads the `routes/console.php` file:
+Closure-based commands provide an alternative to defining console commands as classes. In the same way that route Closures are an alternative to controllers, think of command Closures as an alternative to command classes. Within the `commands` method of your `app/Console/Kernel.php` file, Laravel loads the `routes/console.php` file:
 
     /**
      * Register the Closure based commands for the application.
@@ -185,10 +185,10 @@ All user supplied arguments and options are wrapped in curly braces. In the foll
 
 You may also make arguments optional and define default values for arguments:
 
-    // Optional argument...
+    // Optional argument
     email:send {user?}
 
-    // Optional argument with default value...
+    // Optional argument with default value
     email:send {user=foo}
 
 <a name="options"></a>
@@ -291,10 +291,10 @@ If you need to retrieve all of the arguments as an `array`, call the `arguments`
 
 Options may be retrieved just as easily as arguments using the `option` method. To retrieve all of the options as an array, call the `options` method:
 
-    // Retrieve a specific option...
+    // Retrieve a specific option
     $queueName = $this->option('queue');
 
-    // Retrieve all options...
+    // Retrieve all options
     $options = $this->options();
 
 If the argument or option does not exist, `null` will be returned.
@@ -406,7 +406,6 @@ Because of the `load` method call in your console kernel's `commands` method, al
         $this->load(__DIR__.'/Commands');
         $this->load(__DIR__.'/MoreCommands');
 
-        // ...
     }
 
 You may also manually register commands by adding its class name to the `$commands` property of your `app/Console/Kernel.php` file. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:

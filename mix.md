@@ -30,7 +30,7 @@
     mix.js('resources/js/app.js', 'public/js')
        .sass('resources/sass/app.scss', 'public/css');
 
-If you've ever been confused and overwhelmed about getting started with Webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish, or even none at all.
+If you've ever been confused and overwhelmed about getting started with Webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish or even none at all.
 
 <a name="installation"></a>
 ## Installation & Setup
@@ -55,10 +55,10 @@ The only remaining step is to install Laravel Mix. Within a fresh installation o
 
 Mix is a configuration layer on top of [Webpack](https://webpack.js.org), so to run your Mix tasks you only need to execute one of the NPM scripts that is included with the default Laravel `package.json` file:
 
-    // Run all Mix tasks...
+    // Run all Mix tasks
     npm run dev
 
-    // Run all Mix tasks and minify output...
+    // Run all Mix tasks and minify output
     npm run production
 
 #### Watching Assets For Changes
@@ -311,7 +311,7 @@ Because versioned files are usually unnecessary in development, you may instruct
 <a name="browsersync-reloading"></a>
 ## Browsersync Reloading
 
-[BrowserSync](https://browsersync.io/) can automatically monitor your files for changes, and inject your changes into the browser without requiring a manual refresh. You may enable support by calling the `mix.browserSync()` method:
+[BrowserSync](https://browsersync.io/) can automatically monitor your files for changes and inject your changes into the browser without requiring a manual refresh. You may enable support by calling the `mix.browserSync()` method:
 
     mix.browserSync('my-domain.test');
 

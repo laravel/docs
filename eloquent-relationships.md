@@ -454,10 +454,10 @@ Typical Eloquent foreign key conventions will be used when performing the relati
             return $this->hasOneThrough(
                 'App\History',
                 'App\User',
-                'supplier_id', // Foreign key on users table...
-                'user_id', // Foreign key on history table...
-                'id', // Local key on suppliers table...
-                'id' // Local key on users table...
+                'supplier_id', // Foreign key on users table
+                'user_id', // Foreign key on history table
+                'id', // Local key on suppliers table
+                'id' // Local key on users table
             );
         }
     }
@@ -513,10 +513,10 @@ Typical Eloquent foreign key conventions will be used when performing the relati
             return $this->hasManyThrough(
                 'App\Post',
                 'App\User',
-                'country_id', // Foreign key on users table...
-                'user_id', // Foreign key on posts table...
-                'id', // Local key on countries table...
-                'id' // Local key on users table...
+                'country_id', // Foreign key on users table
+                'user_id', // Foreign key on posts table
+                'id', // Local key on countries table
+                'id' // Local key on users table
             );
         }
     }
@@ -848,29 +848,29 @@ Dynamic properties are "lazy loading", meaning they will only load their relatio
 
 When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, imagine you want to retrieve all blog posts that have at least one comment. To do so, you may pass the name of the relationship to the `has` and `orHas` methods:
 
-    // Retrieve all posts that have at least one comment...
+    // Retrieve all posts that have at least one comment
     $posts = App\Post::has('comments')->get();
 
 You may also specify an operator and count to further customize the query:
 
-    // Retrieve all posts that have three or more comments...
+    // Retrieve all posts that have three or more comments
     $posts = App\Post::has('comments', '>=', 3)->get();
 
 Nested `has` statements may also be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment and vote:
 
-    // Retrieve posts that have at least one comment with votes...
+    // Retrieve posts that have at least one comment with votes
     $posts = App\Post::has('comments.votes')->get();
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
     use Illuminate\Database\Eloquent\Builder;
 
-    // Retrieve posts with at least one comment containing words like foo%...
+    // Retrieve posts with at least one comment containing words like foo%
     $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
-    // Retrieve posts with at least ten comments containing words like foo%...
+    // Retrieve posts with at least ten comments containing words like foo%
     $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     }, '>=', 10)->get();
@@ -1032,7 +1032,7 @@ Sometimes you might want to always load some relationships when retrieving a mod
             return $this->belongsTo('App\Author');
         }
     }
-   
+
 If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:
 
     $books = App\Book::without('author')->get();
@@ -1250,10 +1250,10 @@ When attaching a relationship to a model, you may also pass an array of addition
 
 Sometimes it may be necessary to remove a role from a user. To remove a many-to-many relationship record, use the `detach` method. The `detach` method will delete the appropriate record out of the intermediate table; however, both models will remain in the database:
 
-    // Detach a single role from the user...
+    // Detach a single role from the user
     $user->roles()->detach($roleId);
 
-    // Detach all roles from the user...
+    // Detach all roles from the user
     $user->roles()->detach();
 
 For convenience, `attach` and `detach` also accept arrays of IDs as input:

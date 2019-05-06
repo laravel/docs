@@ -259,7 +259,7 @@ To specify the tax percentage a user pays on a subscription, implement the `taxP
 
 The `taxPercentage` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates.
 
-> {note} The `taxPercentage` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
+> {note} The `taxPercentage` method only applies to subscription charges. If you use Cashier to make "one-off" charges, you will need to manually specify the tax rate at that time.
 
 <a name="cancelling-subscriptions"></a>
 ### Cancelling Subscriptions
@@ -437,7 +437,7 @@ That's it! Failed payments will be captured and handled by the controller. The c
 
 > {note} You should pass the full dollar amount to the `charge` method:
 
-If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method on a billable model instance.
+If you would like to make a "one-off" charge against a subscribed customer's credit card, you may use the `charge` method on a billable model instance.
 
     $user->charge(1);
 

@@ -19,7 +19,7 @@ Laravel provides a variety of helpful tools to make it easier to test your datab
 
     public function testDatabase()
     {
-        // Make call to application...
+        // Assert database has a user
 
         $this->assertDatabaseHas('users', [
             'email' => 'sally@example.com'

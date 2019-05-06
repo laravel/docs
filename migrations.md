@@ -337,7 +337,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
 <a name="dropping-columns"></a>
 ### Dropping Columns
 
-To drop a column, use the `dropColumn` method on the Schema builder. Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library:
+To drop a column, use the `dropColumn` method on the Schema builder. Before dropping columns from an SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library:
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
@@ -349,7 +349,7 @@ You may drop multiple columns from a table by passing an array of column names t
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
+> {note} Dropping or modifying multiple columns within a single migration while using an SQLite database is not supported.
 
 #### Available Command Aliases
 

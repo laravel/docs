@@ -126,10 +126,10 @@ You may access the authenticated user via the `Auth` facade:
 
     use Illuminate\Support\Facades\Auth;
 
-    // Get the currently authenticated user...
+    // Get the currently authenticated user
     $user = Auth::user();
 
-    // Get the currently authenticated user's ID...
+    // Get the currently authenticated user's ID
     $id = Auth::id();
 
 Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods:
@@ -150,7 +150,7 @@ Alternatively, once a user is authenticated, you may access the authenticated us
          */
         public function update(Request $request)
         {
-            // $request->user() returns an instance of the authenticated user...
+            // $request->user() returns an instance of the authenticated user
         }
     }
 
@@ -161,7 +161,7 @@ To determine if the user is already logged into your application, you may use th
     use Illuminate\Support\Facades\Auth;
 
     if (Auth::check()) {
-        // The user is logged in...
+        // The user is logged in
     }
 
 > {tip} Even though it is possible to determine if a user is authenticated using the `check` method, you will typically use a middleware to verify that the user is authenticated before allowing the user access to certain routes / controllers. To learn more about this, check out the documentation on [protecting routes](/docs/{{version}}/authentication#protecting-routes).
@@ -172,7 +172,7 @@ To determine if the user is already logged into your application, you may use th
 [Route middleware](/docs/{{version}}/middleware) can be used to only allow authenticated users to access a given route. Laravel ships with an `auth` middleware, which is defined at `Illuminate\Auth\Middleware\Authenticate`. Since this middleware is already registered in your HTTP kernel, all you need to do is attach the middleware to a route definition:
 
     Route::get('profile', function () {
-        // Only authenticated users may enter...
+        // Only authenticated users may enter
     })->middleware('auth');
 
 If you are using [controllers](/docs/{{version}}/controllers), you may call the `middleware` method from the controller's constructor instead of attaching it in the route definition directly:
@@ -239,7 +239,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
             $credentials = $request->only('email', 'password');
 
             if (Auth::attempt($credentials)) {
-                // Authentication passed...
+                // Authentication passed
                 return redirect()->intended('dashboard');
             }
         }
@@ -283,7 +283,7 @@ To log users out of your application, you may use the `logout` method on the `Au
 If you would like to provide "remember me" functionality in your application, you may pass a boolean value as the second argument to the `attempt` method, which will keep the user authenticated indefinitely, or until they manually logout. Your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
 
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
-        // The user is being remembered...
+        // The user is being remembered
     }
 
 > {tip} If you are using the built-in `LoginController` that is shipped with Laravel, the proper logic to "remember" users is already implemented by the traits used by the controller.

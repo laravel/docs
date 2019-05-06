@@ -13,7 +13,7 @@
 
 By default, Laravel ships with a simple solution to API authentication via a random token assigned to each user of your application. In your `config/auth.php` configuration file, an `api` guard is already defined and utilizes a `token` driver. This driver is responsible for inspecting the API token on the incoming request and verifying that it matches the user's assigned token in the database.
 
-> **Note:** While Laravel ships with a simple, token based authentication guard, we strongly recommend you consider using [Laravel Passport](/docs/{{version}}/passport) for robust, production applications that offer API authentication.
+> **Note:** While Laravel ships with a simple, token-based authentication guard, we strongly recommend you consider using [Laravel Passport](/docs/{{version}}/passport) for robust, production applications that offer API authentication.
 
 <a name="configuration"></a>
 ## Configuration
@@ -100,7 +100,7 @@ For example, a controller method that initializes / refreshes the token for a gi
         }
     }
 
-> {tip} Since the API tokens in the example above have sufficient entropy, it is impractical to create "rainbow tables" to lookup the original value of the hashed token. Therefore, slow hashing methods such as `bcrypt` are unnecessary.
+> {tip} Since the API tokens in the example above have sufficient entropy, it is impractical to create "rainbow tables" to look up the original value of the hashed token. Therefore, slow hashing methods such as `bcrypt` are unnecessary.
 
 <a name="protecting-routes"></a>
 ## Protecting Routes

@@ -9,7 +9,7 @@
     - [Pagination](#pagination)
     - [Conditional Attributes](#conditional-attributes)
     - [Conditional Relationships](#conditional-relationships)
-    - [Adding Meta Data](#adding-meta-data)
+    - [Adding Metadata](#adding-metadata)
 - [Resource Responses](#resource-responses)
 
 <a name="introduction"></a>
@@ -88,11 +88,11 @@ If you are returning a collection of resources or a paginated response, you may 
         return UserResource::collection(User::all());
     });
 
-Note that this does not allow any addition of meta data that may need to be returned with the collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:
+Note that this does not allow any addition of metadata that may need to be returned with the collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:
 
     php artisan make:resource UserCollection
 
-Once the resource collection class has been generated, you may easily define any meta data that should be included with the response:
+Once the resource collection class has been generated, you may easily define any metadata that should be included with the response:
 
     <?php
 
@@ -256,7 +256,7 @@ While resources translate a single model into an array, resource collections tra
         return UserResource::collection(User::all());
     });
 
-However, if you need to customize the meta data returned with the collection, it will be necessary to define a resource collection:
+However, if you need to customize the metadata returned with the collection, it will be necessary to define a resource collection:
 
     <?php
 
@@ -577,10 +577,10 @@ If your intermediate table is using an accessor other than `pivot`, you may use 
         ];
     }
 
-<a name="adding-meta-data"></a>
-### Adding Meta Data
+<a name="adding-metadata"></a>
+### Adding Metadata
 
-Some JSON API standards require the addition of meta data to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or meta data about the resource itself. If you need to return additional meta data about a resource, include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:
+Some JSON API standards require the addition of metadata to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or metadata about the resource itself. If you need to return additional metadata about a resource, include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:
 
     /**
      * Transform the resource into an array.
@@ -598,11 +598,11 @@ Some JSON API standards require the addition of meta data to your resource and r
         ];
     }
 
-When returning additional meta data from your resources, you never have to worry about accidentally overriding the `links` or `meta` keys that are automatically added by Laravel when returning paginated responses. Any additional `links` you define will be merged with the links provided by the paginator.
+When returning additional metadata from your resources, you never have to worry about accidentally overriding the `links` or `meta` keys that are automatically added by Laravel when returning paginated responses. Any additional `links` you define will be merged with the links provided by the paginator.
 
-#### Top Level Meta Data
+#### Top Level Metadata
 
-Sometimes you may wish to only include certain meta data with a resource response if the resource is the outer-most resource being returned. Typically, this includes meta information about the response as a whole. To define this meta data, add a `with` method to your resource class. This method should return an array of meta data to be included with the resource response only when the resource is the outer-most resource being rendered:
+Sometimes you may wish to only include certain metadata with a resource response if the resource is the outer-most resource being returned. Typically, this includes meta-information about the response as a whole. To define this metadata, add a `with` method to your resource class. This method should return an array of metadata to be included with the resource response only when the resource is the outer-most resource being rendered:
 
     <?php
 
@@ -639,7 +639,7 @@ Sometimes you may wish to only include certain meta data with a resource respons
         }
     }
 
-#### Adding Meta Data When Constructing Resources
+#### Adding Metadata When Constructing Resources
 
 You may also add top-level data when constructing resource instances in your route or controller. The `additional` method, which is available on all resources, accepts an array of data that should be added to the resource response:
 

@@ -26,14 +26,14 @@ Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flys
 <a name="configuration"></a>
 ## Configuration
 
-The filesystem configuration file is located at `config/filesystems.php`. Within this file you may configure all of your "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file. So, modify the configuration to reflect your storage preferences and credentials.
+The filesystem configuration file is located at `config/filesystems.php`. Within this file, you may configure all of your "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver are included in the configuration file. So, modify the configuration to reflect your storage preferences and credentials.
 
 You may configure as many disks as you like, and may even have multiple disks that use the same driver.
 
 <a name="the-public-disk"></a>
 ### The Public Disk
 
-The `public` disk is intended for files that are going to be publicly accessible. By default, the `public` disk uses the `local` driver and stores these files in `storage/app/public`. To make them accessible from the web, you should create a symbolic link from `public/storage` to `storage/app/public`. This convention will keep your publicly accessible files in one directory that can be easily shared across deployments when using zero down-time deployment systems like [Envoyer](https://envoyer.io).
+The `public` disk is intended for files that are going to be publicly accessible. By default, the `public` disk uses the `local` driver and stores these files in `storage/app/public`. To make them accessible from the web, you should create a symbolic link from `public/storage` to `storage/app/public`. This convention will keep your publicly accessible files in one directory that can be easily shared across deployments when using zero downtime deployment systems like [Envoyer](https://envoyer.io).
 
 To create the symbolic link, you may use the `storage:link` Artisan command:
 
@@ -71,7 +71,7 @@ The S3 driver configuration information is located in your `config/filesystems.p
 
 #### FTP Driver Configuration
 
-Laravel's Flysystem integrations works great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a FTP filesystem, you may use the example configuration below:
+Laravel's Flysystem integrations works great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an FTP filesystem, you may use the example configuration below:
 
     'ftp' => [
         'driver'   => 'ftp',
@@ -89,7 +89,7 @@ Laravel's Flysystem integrations works great with FTP; however, a sample configu
 
 #### SFTP Driver Configuration
 
-Laravel's Flysystem integrations works great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a SFTP filesystem, you may use the example configuration below:
+Laravel's Flysystem integrations work great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an SFTP filesystem, you may use the example configuration below:
 
     'sftp' => [
         'driver' => 'sftp',
@@ -109,7 +109,7 @@ Laravel's Flysystem integrations works great with SFTP; however, a sample config
 
 #### Rackspace Driver Configuration
 
-Laravel's Flysystem integrations works great with Rackspace; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a Rackspace filesystem, you may use the example configuration below:
+Laravel's Flysystem integrations work great with Rackspace; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a Rackspace filesystem, you may use the example configuration below:
 
     'rackspace' => [
         'driver'    => 'rackspace',
@@ -184,7 +184,7 @@ You may use the `url` method to get the URL for the given file. If you are using
 
 #### Temporary URLs
 
-For files stored using the `s3` or `rackspace` driver, you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
+For files stored using the `s3` or `rackspace` driver, you may create a temporary URL to a given file using the `temporaryUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
 
     $url = Storage::temporaryUrl(
         'file.jpg', now()->addMinutes(5)
@@ -227,15 +227,15 @@ The `put` method may be used to store raw file contents on a disk. You may also 
 
 #### Automatic Streaming
 
-If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either a `Illuminate\Http\File` or `Illuminate\Http\UploadedFile` instance and will automatically stream the file to your desired location:
+If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either an `Illuminate\Http\File` or `Illuminate\Http\UploadedFile` instance and will automatically stream the file to your desired location:
 
     use Illuminate\Http\File;
     use Illuminate\Support\Facades\Storage;
 
-    // Automatically generate a unique ID for file name...
+    // Automatically generate a unique ID for file name
     Storage::putFile('photos', new File('/path/to/photo'));
 
-    // Manually specify a file name...
+    // Manually specify a file name
     Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
 
 There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will generate a unique ID to serve as the file name. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
