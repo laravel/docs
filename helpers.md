@@ -936,7 +936,7 @@ You may also pass a third argument to change the string that will be appended to
 
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
 
-    // The quick brown fox ()
+    // The quick brown fox (...)
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {#collection-method}
