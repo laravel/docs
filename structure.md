@@ -35,7 +35,7 @@ The default Laravel application structure is intended to provide a great startin
 
 When getting started with Laravel, many developers are confused by the lack of a `models` directory. However, the lack of such a directory is intentional. We find the word "models" ambiguous since it means many different things to many different people. Some developers refer to an application's "model" as the totality of all of its business logic, while others refer to "models" as classes that interact with a relational database.
 
-For this reason, we choose to place Eloquent models in the `app` directory by default, and allow the developer to place them somewhere else if they choose.
+For this reason, we choose to place Eloquent models in the `app` directory by default and allow the developer to place them somewhere else if they choose.
 
 <a name="the-root-directory"></a>
 ## The Root Directory

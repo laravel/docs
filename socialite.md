@@ -13,7 +13,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, LinkedIn, Google, GitHub, GitLab and Bitbucket.
+In addition to typical, form-based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, LinkedIn, Google, GitHub, GitLab and Bitbucket.
 
 > {tip} Adapters for other platforms are listed at the community driven [Socialite Providers](https://socialiteproviders.netlify.com/) website.
 
@@ -146,7 +146,7 @@ Once you have a user instance, you can grab a few more details about the user:
 If you already have a valid access token for a user, you can retrieve their details using the `userFromToken` method:
 
     $user = Socialite::driver('github')->userFromToken($token);
-    
+
 #### Retrieving User Details From A Token And Secret (OAuth1)
 
 If you already have a valid pair of token / secret for a user, you can retrieve their details using the `userFromTokenAndSecret` method:

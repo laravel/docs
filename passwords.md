@@ -23,14 +23,14 @@ To get started, verify that your `App\User` model implements the `Illuminate\Con
 
 #### Generating The Reset Token Table Migration
 
-Next, a table must be created to store the password reset tokens. The migration for this table is included with Laravel out of the box, and resides in the `database/migrations` directory. So, all you need to do is run your database migrations:
+Next, a table must be created to store the password reset tokens. The migration for this table is included with Laravel out of the box and resides in the `database/migrations` directory. So, all you need to do is run your database migrations:
 
     php artisan migrate
 
 <a name="resetting-routing"></a>
 ## Routing
 
-Laravel includes `Auth\ForgotPasswordController` and `Auth\ResetPasswordController` classes that contains the logic necessary to e-mail password reset links and reset user passwords. All of the routes needed to perform password resets may be generated using the `make:auth` Artisan command:
+Laravel includes `Auth\ForgotPasswordController` and `Auth\ResetPasswordController` classes that contain the logic necessary to e-mail password reset links and reset user passwords. All of the routes needed to perform password resets may be generated using the `make:auth` Artisan command:
 
     php artisan make:auth
 

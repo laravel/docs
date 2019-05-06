@@ -130,7 +130,7 @@ By default, Passport uses an integer column to store the `user_id`. If your appl
 
 > {note} In order to use the Passport Vue components, you must be using the [Vue](https://vuejs.org) JavaScript framework. These components also use the Bootstrap CSS framework. However, even if you are not using these tools, the components serve as a valuable reference for your own frontend implementation.
 
-Passport ships with a JSON API that you may use to allow your users to create clients and personal access tokens. However, it can be time consuming to code a frontend to interact with these APIs. So, Passport also includes pre-built [Vue](https://vuejs.org) components you may use as an example implementation or starting point for your own implementation.
+Passport ships with a JSON API that you may use to allow your users to create clients and personal access tokens. However, it can be time-consuming to code a frontend to interact with these APIs. So, Passport also includes pre-built [Vue](https://vuejs.org) components you may use as an example implementation or starting point for your own implementation.
 
 To publish the Passport Vue components, use the `vendor:publish` Artisan command:
 

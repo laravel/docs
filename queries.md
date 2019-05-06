@@ -537,7 +537,7 @@ The `orderBy` method allows you to sort the result of the query by a given colum
 
 #### latest / oldest
 
-The `latest` and `oldest` methods allow you to easily order results by date. By default, result will be ordered by the `created_at` column. Or, you may pass the column name that you wish to sort by:
+The `latest` and `oldest` methods allow you to easily order results by date. By default, results will be ordered by the `created_at` column. Or, you may pass the column name that you wish to sort by:
 
     $user = DB::table('users')
                     ->latest()
@@ -585,7 +585,7 @@ Alternatively, you may use the `limit` and `offset` methods:
 <a name="conditional-clauses"></a>
 ## Conditional Clauses
 
-Sometimes you may want clauses to apply to a query only when something else is true. For instance you may only want to apply a `where` statement if a given input value is present on the incoming request. You may accomplish this using the `when` method:
+Sometimes you may want clauses to apply to a query only when something else is true. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming request. You may accomplish this using the `when` method:
 
     $role = $request->input('role');
 
