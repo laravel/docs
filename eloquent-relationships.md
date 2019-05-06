@@ -391,7 +391,7 @@ You can combine `using` and `withPivot` in order to retrieve columns from the in
         }
     }
 
-> **Note:** Pivot models cannot make use of the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model.
+> **Note:** Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model.
 
 #### Custom Pivot Models And Incrementing IDs
 
