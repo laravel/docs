@@ -9,7 +9,7 @@
     - [Pagination](#pagination)
     - [Conditional Attributes](#conditional-attributes)
     - [Conditional Relationships](#conditional-relationships)
-    - [Adding Metadata](#adding-metadata)
+    - [Adding Metadata](#adding-meta-data)
 - [Resource Responses](#resource-responses)
 
 <a name="introduction"></a>
@@ -577,7 +577,7 @@ If your intermediate table is using an accessor other than `pivot`, you may use 
         ];
     }
 
-<a name="adding-metadata"></a>
+<a name="adding-meta-data"></a>
 ### Adding Metadata
 
 Some JSON API standards require the addition of metadata to your resource and resource collections responses. This often includes things like `links` to the resource or related resources, or metadata about the resource itself. If you need to return additional metadata about a resource, include it in your `toArray` method. For example, you might include `link` information when transforming a resource collection:
