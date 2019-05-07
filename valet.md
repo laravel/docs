@@ -296,7 +296,7 @@ If you would like to define a custom Valet driver for a single application, crea
 Command  | Description
 ------------- | -------------
 `valet forget` | Run this command from a "parked" directory to remove it from the parked directory list.
-`valet log` | View a list of logs which are written written by Valet's services.
+`valet log` | View a list of logs which are written by Valet's services.
 `valet paths` | View all of your "parked" paths.
 `valet restart` | Restart the Valet daemon.
 `valet start` | Start the Valet daemon.
