@@ -76,8 +76,8 @@ Before using Cashier, we'll also need to [prepare the database](/docs/{{version}
     });
 
     Schema::create('subscriptions', function ($table) {
-        $table->increments('id');
-        $table->unsignedInteger('user_id');
+        $table->bigIncrements('id');
+        $table->unsignedBigInteger('user_id');
         $table->string('name');
         $table->string('stripe_id')->collation('utf8mb4_bin');
         $table->string('stripe_plan');
