@@ -11,6 +11,7 @@
 - [Environment Variable Parsing](#environment-variable-parsing)
 - [Markdown File Directory Change](#markdown-file-directory-change)
 - [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
+- [New Default Password Length](#new-default-password-length)
 </div>
 
 <a name="medium-impact-changes"></a>
@@ -83,11 +84,14 @@ When using Laravel 5.8, the token is passed to the `route` helper as an explicit
 
 Therefore, if you are defining your own `password.reset` route, you should ensure that it contains a `{token}` parameter in its URI.
 
+<a name="new-default-password-length"></a>
 #### New Default Password Length
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: High**
 
-The required password length when choosing or resetting a password was [changed to at least eight characters](https://github.com/laravel/framework/pull/25957).
+The required password length when choosing or resetting a password was [changed to eight characters](https://github.com/laravel/framework/pull/25957). You should update any validation rules or logic within your application to match this new eight character default.
+
+If you need to preserve the previous six character length or a different length, you may extend the `Illuminate\Auth\Passwords\PasswordBroker` class and overwrite the `validatePasswordWithDefaults` method with your custom logic.
 
 <a name="cache"></a>
 ### Cache
