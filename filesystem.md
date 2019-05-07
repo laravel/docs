@@ -190,10 +190,12 @@ For files stored using the `s3` or `rackspace` driver, you may create a temporar
         'file.jpg', now()->addMinutes(5)
     );
 
-Additionally you can specify [Request Parameters](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests) to force downloads, or similar:
+If you need to specify additional [S3 request parameters](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests), you may pass the array of request parameters as the third argument to the `temporaryUrl` method:
 
     $url = Storage::temporaryUrl(
-        'file.jpg', now()->addMinutes(5), ['ResponseContentType' => 'application/octet-stream']
+        'file.jpg', 
+        now()->addMinutes(5), 
+        ['ResponseContentType' => 'application/octet-stream'],
     );
 
 #### Local URL Host Customization
