@@ -85,6 +85,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
 [dump](#method-dump)
+[duplicates](#method-duplicates)
 [each](#method-each)
 [eachSpread](#method-eachspread)
 [every](#method-every)
@@ -339,7 +340,7 @@ The `count` method returns the total number of items in the collection:
 <a name="method-countBy"></a>
 #### `countBy()` {#collection-method}
 
-The `countBy` method counts the occurences of values in the collection. By default, the method counts the occurrences of every element:
+The `countBy` method counts the occurrences of values in the collection. By default, the method counts the occurrences of every element:
 
     $collection = collect([1, 2, 2, 2, 3]);
 
@@ -498,6 +499,17 @@ The `dump` method dumps the collection's items:
     */
 
 If you want to stop executing the script after dumping the collection, use the [`dd`](#method-dd) method instead.
+
+<a name="method-duplicates"></a>
+#### `duplicates()` {#collection-method}
+
+the `duplicates` method retrieves and returns duplicate values from the collection:
+
+    $collection = collect(['a', 'b', 'a', 'c', 'b']);
+
+    $collection->duplicates();
+
+    // [ 2 => 'a', 4 => 'b' ]
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}

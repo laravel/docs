@@ -84,7 +84,7 @@ A service provider extends the `Illuminate\Support\ServiceProvider` class and co
 Typically, you will need to publish your package's configuration file to the application's own `config` directory. This will allow users of your package to easily override your default configuration options. To allow your configuration files to be published, call the `publishes` method from the `boot` method of your service provider:
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */
@@ -125,7 +125,7 @@ You may also merge your own package configuration file with the application's pu
 If your package contains routes, you may load them using the `loadRoutesFrom` method. This method will automatically determine if the application's routes are cached and will not load your routes file if the routes have already been cached:
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */
@@ -140,7 +140,7 @@ If your package contains routes, you may load them using the `loadRoutesFrom` me
 If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `loadMigrationsFrom` method to inform Laravel how to load them. The `loadMigrationsFrom` method accepts the path to your package's migrations as its only argument:
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */
@@ -157,7 +157,7 @@ Once your package's migrations have been registered, they will automatically be 
 If your package contains [translation files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named `courier`, you should add the following to your service provider's `boot` method:
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */
@@ -175,7 +175,7 @@ Package translations are referenced using the `package::file.line` syntax conven
 If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */
@@ -196,7 +196,7 @@ Now, when users of your package execute Laravel's `vendor:publish` Artisan comma
 To register your package's [views](/docs/{{version}}/views) with Laravel, you need to tell Laravel where the views are located. You may do this using the service provider's `loadViewsFrom` method. The `loadViewsFrom` method accepts two arguments: the path to your view templates and your package's name. For example, if your package's name is `courier`, you would add the following to your service provider's `boot` method:
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */
@@ -220,7 +220,7 @@ When you use the `loadViewsFrom` method, Laravel actually registers two location
 If you would like to make your views available for publishing to the application's `resources/views/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package view paths and their desired publish locations:
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */
@@ -261,7 +261,7 @@ To register your package's Artisan commands with Laravel, you may use the `comma
 Your package may have assets such as JavaScript, CSS, and images. To publish these assets to the application's `public` directory, use the service provider's `publishes` method. In this example, we will also add a `public` asset group tag, which may be used to publish groups of related assets:
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */
@@ -282,7 +282,7 @@ Now, when your package's users execute the `vendor:publish` command, your assets
 You may want to publish groups of package assets and resources separately. For instance, you might want to allow your users to publish your package's configuration files without being forced to publish your package's assets. You may do this by "tagging" them when calling the `publishes` method from a package's service provider. For example, let's use tags to define two publish groups in the `boot` method of a package service provider:
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */

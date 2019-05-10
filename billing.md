@@ -8,6 +8,7 @@
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
     - [Currency Configuration](#currency-configuration)
+    - [Webhooks](#webhooks)
 - [Subscriptions](#subscriptions)
     - [Creating Subscriptions](#creating-subscriptions)
     - [Checking Subscription Status](#checking-subscription-status)
@@ -75,8 +76,8 @@ Before using Cashier, we'll also need to [prepare the database](/docs/{{version}
     });
 
     Schema::create('subscriptions', function ($table) {
-        $table->increments('id');
-        $table->unsignedInteger('user_id');
+        $table->bigIncrements('id');
+        $table->unsignedBigInteger('user_id');
         $table->string('name');
         $table->string('stripe_id')->collation('utf8mb4_bin');
         $table->string('stripe_plan');
@@ -106,7 +107,7 @@ Next, add the `Billable` trait to your model definition. This trait provides var
 Finally, you should configure your Stripe key in your `services.php` configuration file. You can retrieve your Stripe API keys from the Stripe control panel:
 
     'stripe' => [
-        'model'  => App\User::class,
+        'model' => App\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
         'webhook' => [
@@ -123,6 +124,11 @@ The default Cashier currency is United States Dollars (USD). You can change the 
     use Laravel\Cashier\Cashier;
 
     Cashier::useCurrency('eur', '€');
+
+<a name="webhooks"></a>
+### Webhooks
+
+To make sure Cashier properly handles all Stripe events, we strongly recommend [setting up Cashier's webhook handling](#handling-stripe-webhooks).
 
 <a name="subscriptions"></a>
 ## Subscriptions
@@ -191,7 +197,7 @@ The `subscribedToPlan` method may be used to determine if the user is subscribed
         //
     }
 
-The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trail period:
+The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trial period:
 
     if ($user->subscription('main')->recurring()) {
         //

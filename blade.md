@@ -17,6 +17,7 @@
 - [Forms](#forms)
     - [CSRF Field](#csrf-field)
     - [Method Field](#method-field)
+    - [Validation Errors](#validation-errors)
 - [Including Sub-Views](#including-sub-views)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -82,6 +83,10 @@ When defining a child view, use the Blade `@extends` directive to specify which 
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
 > {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
+
+The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
+
+    @yield('content', View::make('view.name'))
 
 Blade views may be returned from routes using the global `view` helper:
 
@@ -466,6 +471,21 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
         ...
     </form>
 
+<a name="validation-errors"></a>
+### Validation Errors
+
+The `@error` directive may be used to quickly check if [validation error messages](/docs/{{version}}/validation#quick-displaying-the-validation-errors) exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
+
+    <!-- /resources/views/post/create.blade.php -->
+
+    <label for="title">Post Title</label>
+
+    <input type="text" class="@error('title') is-invalid @enderror">
+
+    @error('title')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
 <a name="including-sub-views"></a>
 ## Including Sub-Views
 
@@ -585,7 +605,17 @@ The following example creates a `@datetime($var)` directive which formats a give
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Perform post-registration booting of services.
+         * Register bindings in the container.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
          *
          * @return void
          */
@@ -594,16 +624,6 @@ The following example creates a `@datetime($var)` directive which formats a give
             Blade::directive('datetime', function ($expression) {
                 return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
             });
-        }
-
-        /**
-         * Register bindings in the container.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 
@@ -621,7 +641,7 @@ Programming a custom directive is sometimes more complex than necessary when def
     use Illuminate\Support\Facades\Blade;
 
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap any application services.
      *
      * @return void
      */

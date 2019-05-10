@@ -379,7 +379,17 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
     class CacheServiceProvider extends ServiceProvider
     {
         /**
-         * Perform post-registration booting of services.
+         * Register bindings in the container.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
          *
          * @return void
          */
@@ -388,16 +398,6 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
             Cache::extend('mongo', function ($app) {
                 return Cache::repository(new MongoStore);
             });
-        }
-
-        /**
-         * Register bindings in the container.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 

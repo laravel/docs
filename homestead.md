@@ -65,9 +65,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - PHP 7.2
 - PHP 7.1
 - Nginx
-- Apache (Optional)
 - MySQL
-- MariaDB (Optional)
 - lmm for MySQL or MariaDB database snapshots
 - Sqlite3
 - PostgreSQL
@@ -77,17 +75,38 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Memcached
 - Beanstalkd
 - Mailhog
-- Neo4j (Optional)
-- MongoDB (Optional)
-- Elasticsearch (Optional)
 - avahi
 - ngrok
 - Xdebug
 - XHProf / Tideways / XHGui
 - wp-cli
-- Zend Z-Ray
-- Go
 - Minio
+</div>
+
+<a name="optional-software"></a>
+### Optional Software
+
+<style>
+    #software-list > ul {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-gap: 5em; -moz-column-gap: 5em; -webkit-column-gap: 5em;
+        line-height: 1.9;
+    }
+</style>
+
+<div id="software-list" markdown="1">
+- Apache
+- Crystal & Lucky Framework
+- Dot Net Core
+- Elasticsearch
+- Go
+- MariaDB
+- MongoDB
+- Neo4j
+- Oh My Zsh
+- Ruby & Rails
+- Webdriver & Laravel Dusk Utilities
+- Zend Z-Ray
 </div>
 
 <a name="installation-and-setup"></a>
@@ -123,7 +142,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd ~/Homestead
 
     // Clone the desired release...
-    git checkout v8.0.1
+    git checkout v8.4.0
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -166,7 +185,7 @@ To enable [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html), you onl
           to: /home/vagrant/code
           type: "nfs"
 
-> {note} When using NFS, you should consider installing the [vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) plug-in. This plug-in will maintain the correct user / group permissions for files and directories within the Homestead box.
+> {note} When using NFS on Windows, you should consider installing the [vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) plug-in. This plug-in will maintain the correct user / group permissions for files and directories within the Homestead box.
 
 You may also pass any options supported by Vagrant's [Synced Folders](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) by listing them under the `options` key:
 
@@ -652,7 +671,7 @@ Next, you need to update the Homestead source code. If you cloned the repository
 
     git fetch
 
-    git checkout v8.0.1
+    git checkout v8.2.0
 
 These commands pull the latest Homestead code from the GitHub repository, fetches the latest tags, and then checks out the latest tagged release. You can find the latest stable release version on the [GitHub releases page](https://github.com/laravel/homestead/releases).
 
@@ -677,7 +696,7 @@ Finally, you will need to destroy and regenerate your Homestead box to utilize t
 By default, Homestead configures the `natdnshostresolver` setting to `on`. This allows Homestead to use your host operating system's DNS settings. If you would like to override this behavior, add the following lines to your `Homestead.yaml` file:
 
     provider: virtualbox
-    natdnshostresolver: off
+    natdnshostresolver: 'off'
 
 #### Symbolic Links On Windows
 

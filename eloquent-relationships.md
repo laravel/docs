@@ -391,6 +391,8 @@ You can combine `using` and `withPivot` in order to retrieve columns from the in
         }
     }
 
+> **Note:** Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model.
+
 #### Custom Pivot Models And Incrementing IDs
 
 If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`.
@@ -999,9 +1001,41 @@ To eager load nested relationships, you may use "dot" syntax. For example, let's
 
 You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve:
 
-    $users = App\Book::with('author:id,name')->get();
+    $books = App\Book::with('author:id,name')->get();
 
-> {note} When using this feature, you should always include the `id` column in the list of columns you wish to retrieve.
+> {note} When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
+
+#### Eager Loading By Default
+
+Sometimes you might want to always load some relationships when retrieving a model. To accomplish this, you may define a `$with` property on the model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Book extends Model
+    {
+        /**
+         * The relationships that should always be loaded.
+         *
+         * @var array
+         */
+        protected $with = ['author'];
+
+        /**
+         * Get the author that wrote the book.
+         */
+        public function author()
+        {
+            return $this->belongsTo('App\Author');
+        }
+    }
+   
+If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:
+
+    $books = App\Book::without('author')->get();
 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
@@ -1167,7 +1201,7 @@ When removing a `belongsTo` relationship, you may use the `dissociate` method. T
 <a name="default-models"></a>
 #### Default Models
 
-The `belongsTo` relationship allows you to define a default model that will be returned if the given relationship is `null`. This pattern is often referred to as the [Null Object pattern](https://en.wikipedia.org/wiki/Null_Object_pattern) and can help remove conditional checks in your code. In the following example, the `user` relation will return an empty `App\User` model if no `user` is attached to the post:
+The `belongsTo`, `hasOne`, `hasOneThrough`, and `morphOne` relationships allow you to define a default model that will be returned if the given relationship is `null`. This pattern is often referred to as the [Null Object pattern](https://en.wikipedia.org/wiki/Null_Object_pattern) and can help remove conditional checks in your code. In the following example, the `user` relation will return an empty `App\User` model if no `user` is attached to the post:
 
     /**
      * Get the author of the post.

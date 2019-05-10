@@ -168,6 +168,16 @@ If you would like to receive each SQL query executed by your application, you ma
     class AppServiceProvider extends ServiceProvider
     {
         /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
          * Bootstrap any application services.
          *
          * @return void
@@ -179,16 +189,6 @@ If you would like to receive each SQL query executed by your application, you ma
                 // $query->bindings
                 // $query->time
             });
-        }
-
-        /**
-         * Register the service provider.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 

@@ -156,6 +156,20 @@ So, in our example, the user will be redirected to our controller's `create` met
 
     <!-- Create Post Form -->
 
+#### The `@error` Directive
+
+You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly check if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
+
+    <!-- /resources/views/post/create.blade.php -->
+
+    <label for="title">Post Title</label>
+
+    <input type="text" class="@error('title') is-invalid @enderror">
+
+    @error('title')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
 <a name="a-note-on-optional-fields"></a>
 ### A Note On Optional Fields
 
@@ -546,6 +560,7 @@ Below is a list of all available validation rules and their function:
 [Dimensions (Image Files)](#rule-dimensions)
 [Distinct](#rule-distinct)
 [E-Mail](#rule-email)
+[Ends With](#rule-ends-with)
 [Exists (Database)](#rule-exists)
 [File](#rule-file)
 [Filled](#rule-filled)
@@ -578,6 +593,7 @@ Below is a list of all available validation rules and their function:
 [Required Without All](#rule-required-without-all)
 [Same](#rule-same)
 [Size](#rule-size)
+[Sometimes](#conditionally-adding-rules)
 [Starts With](#rule-starts-with)
 [String](#rule-string)
 [Timezone](#rule-timezone)
@@ -728,6 +744,11 @@ When working with arrays, the field under validation must not have any duplicate
 #### email
 
 The field under validation must be formatted as an e-mail address.
+
+<a name="rule-ends-with"></a>
+#### ends_with:_foo_,_bar_,...
+
+The field under validation must end with one of the given values.
 
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
@@ -1221,6 +1242,16 @@ Another method of registering custom validation rules is using the `extend` meth
     class AppServiceProvider extends ServiceProvider
     {
         /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
          * Bootstrap any application services.
          *
          * @return void
@@ -1230,16 +1261,6 @@ Another method of registering custom validation rules is using the `extend` meth
             Validator::extend('foo', function ($attribute, $value, $parameters, $validator) {
                 return $value == 'foo';
             });
-        }
-
-        /**
-         * Register the service provider.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 
