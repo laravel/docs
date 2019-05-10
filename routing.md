@@ -274,6 +274,19 @@ Route groups may also be used to handle sub-domain routing. Sub-domains may be a
         });
     });
 
+When using the exact same route path in more than once place in your app, you should define the routes that belong to a subdomain before all other routes. Take a look at the following example: by defining the subdomain routes first, we are able to use the same path `clients` in both domains.
+
+    Route::domain('{api}.myapp.com')->group(function () {
+        Route::get('clients', function ($account, $id) {
+            //
+        });
+    });
+    
+    Route::get('clients', function () {
+        // 
+    });
+
+
 <a name="route-group-prefixes"></a>
 ### Route Prefixes
 
