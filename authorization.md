@@ -98,7 +98,7 @@ Sometimes, you may wish to grant all abilities to a specific user. You may use t
         }
     });
 
-If the `before` callback returns a non-null result that result will be considered the result of the check.
+If the `before` callback returns a non-null result then that result will be considered the result of the check.
 
 You may use the `after` method to define a callback to be executed after all other authorization checks:
 
@@ -108,7 +108,7 @@ You may use the `after` method to define a callback to be executed after all oth
         }
     });
 
-Similar to the `before` check, if the `after` callback returns a non-null result that result will be considered the result of the check.
+Similar to the `before` check, if the `after` callback returns a non-null result then that result will be considered the result of the check.
 
 <a name="creating-policies"></a>
 ## Creating Policies
