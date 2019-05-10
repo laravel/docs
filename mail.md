@@ -25,12 +25,12 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides a clean, simple API over the popular [SwiftMailer](https://swiftmailer.symfony.com/) library with drivers for SMTP, Mailgun, Postmark, SparkPost, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
+Laravel provides a clean, simple API over the popular [SwiftMailer](https://swiftmailer.symfony.com/) library with drivers for SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
-The API based drivers such as Mailgun, SparkPost, and Postmark are often simpler and faster than SMTP servers. If possible, you should use one of these drivers. All of the API drivers require the Guzzle HTTP library, which may be installed via the Composer package manager:
+The API based drivers such as Mailgun and Postmark are often simpler and faster than SMTP servers. If possible, you should use one of these drivers. All of the API drivers require the Guzzle HTTP library, which may be installed via the Composer package manager:
 
     composer require guzzlehttp/guzzle
 
@@ -61,23 +61,6 @@ Next, install Guzzle and set the `driver` option in your `config/mail.php` confi
 
     'postmark' => [
         'token' => 'your-postmark-token',
-    ],
-
-#### SparkPost Driver
-
-To use the SparkPost driver, first install Guzzle, then set the `driver` option in your `config/mail.php` configuration file to `sparkpost`. Next, verify that your `config/services.php` configuration file contains the following options:
-
-    'sparkpost' => [
-        'secret' => 'your-sparkpost-key',
-    ],
-
-If necessary, you may also configure which [API endpoint](https://developers.sparkpost.com/api/#header-endpoints) should be used:
-
-    'sparkpost' => [
-        'secret' => 'your-sparkpost-key',
-        'options' => [
-            'endpoint' => 'https://api.eu.sparkpost.com/api/v1/transmissions',
-        ],
     ],
 
 #### SES Driver

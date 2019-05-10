@@ -21,7 +21,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flysystem](https://github.com/thephpleague/flysystem) PHP package by Frank de Jonge. The Laravel Flysystem integration provides simple to use drivers for working with local filesystems, Amazon S3, and Rackspace Cloud Storage. Even better, it's amazingly simple to switch between these storage options as the API remains the same for each system.
+Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flysystem](https://github.com/thephpleague/flysystem) PHP package by Frank de Jonge. The Laravel Flysystem integration provides simple to use drivers for working with local filesystems and Amazon S3. Even better, it's amazingly simple to switch between these storage options as the API remains the same for each system.
 
 <a name="configuration"></a>
 ## Configuration
@@ -55,11 +55,10 @@ When using the `local` driver, all file operations are relative to the `root` di
 
 #### Composer Packages
 
-Before using the SFTP, S3, or Rackspace drivers, you will need to install the appropriate package via Composer:
+Before using the SFTP or S3 drivers, you will need to install the appropriate package via Composer:
 
 - SFTP: `league/flysystem-sftp ~1.0`
 - Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
-- Rackspace: `league/flysystem-rackspace ~1.0`
 
 An absolute must for performance is to use a cached adapter. You will need an additional package for this:
 
@@ -105,20 +104,6 @@ Laravel's Flysystem integrations works great with SFTP; however, a sample config
         // 'port' => 22,
         // 'root' => '',
         // 'timeout' => 30,
-    ],
-
-#### Rackspace Driver Configuration
-
-Laravel's Flysystem integrations works great with Rackspace; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a Rackspace filesystem, you may use the example configuration below:
-
-    'rackspace' => [
-        'driver'    => 'rackspace',
-        'username'  => 'your-username',
-        'key'       => 'your-key',
-        'container' => 'your-container',
-        'endpoint'  => 'https://identity.api.rackspacecloud.com/v2.0/',
-        'region'    => 'IAD',
-        'url_type'  => 'publicURL',
     ],
 
 <a name="caching"></a>
@@ -174,7 +159,7 @@ The `download` method may be used to generate a response that forces the user's 
 <a name="file-urls"></a>
 ### File URLs
 
-You may use the `url` method to get the URL for the given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` or `rackspace` driver, the fully qualified remote URL will be returned:
+You may use the `url` method to get the URL for the given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the fully qualified remote URL will be returned:
 
     use Illuminate\Support\Facades\Storage;
 
@@ -184,7 +169,7 @@ You may use the `url` method to get the URL for the given file. If you are using
 
 #### Temporary URLs
 
-For files stored using the `s3` or `rackspace` driver, you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
+For files stored using the `s3` you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
 
     $url = Storage::temporaryUrl(
         'file.jpg', now()->addMinutes(5)
