@@ -480,7 +480,7 @@ The `@error` directive may be used to quickly check if [validation error message
 
     <label for="title">Post Title</label>
 
-    <input type="text" class="@error('title') is-invalid @enderror">
+    <input id="title" type="text" class="@error('title') is-invalid @enderror">
 
     @error('title')
         <div class="alert alert-danger">{{ $message }}</div>
