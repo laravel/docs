@@ -164,7 +164,7 @@ You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quic
 
     <label for="title">Post Title</label>
 
-    <input type="text" class="@error('title') is-invalid @enderror">
+    <input id="title" type="text" class="@error('title') is-invalid @enderror">
 
     @error('title')
         <div class="alert alert-danger">{{ $message }}</div>
