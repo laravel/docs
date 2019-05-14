@@ -56,7 +56,7 @@ When updating Telescope, you should re-publish Telescope's assets:
 
 ### Installing Only In Specific Environments
 
-If you plan to only use Telescope to assist your local development. You may install Telescope using the `--dev` flag:
+If you plan to only use Telescope to assist your local development, you may install Telescope using the `--dev` flag:
 
     composer require laravel/telescope --dev
 
