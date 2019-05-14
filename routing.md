@@ -58,7 +58,7 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
         //
     });
 
-    Route::any('foo', function () {
+    Route::any('/', function () {
         //
     });
 
