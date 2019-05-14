@@ -73,6 +73,10 @@ You only need to place items in the `read` and `write` arrays if you wish to ove
 
 The `sticky` option is an *optional* value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the `sticky` option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.
 
+#### The `url` Option
+
+Using Heroku or another "cloud" database provider, you may need to specify the database connection URL. The `url` option is an *optional* value that can be used to specify the URL of your database connection. You can configure the database connection URL by setting the `DATABASE_URL` value within your `.env` environment file.
+
 <a name="using-multiple-database-connections"></a>
 ### Using Multiple Database Connections
 
