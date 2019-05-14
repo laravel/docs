@@ -713,6 +713,6 @@ Alternatively, you may use the `lockForUpdate` method. A "for update" lock preve
 <a name="debugging"></a>
 ## Debugging
 
-The query builder also provides convenient method to debug your query builder. Use either `dd()` or `dump()` methods within your query builder to dump the Bindings and SQL statement:
+The query builder also provides convenient methods to debug your query builder. Use either `dd()` or `dump()` methods within your query builder to dump the Bindings and SQL statement:
 
     DB::table('users')->where('votes', '>', 100)->dd();
