@@ -933,7 +933,7 @@ You may also alias the relationship count result, allowing multiple counts on th
 
 If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
 
-    $posts = App\Post::select(['title', 'body'])->withCount('comments');
+    $posts = App\Post::select(['title', 'body'])->withCount('comments')->get();
 
     echo $posts[0]->title;
     echo $posts[0]->body;
