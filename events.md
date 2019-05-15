@@ -79,11 +79,20 @@ You may even register listeners using the `*` as a wildcard parameter, allowing 
 
 Instead of registering events and listeners manually in the `$listen` array of the `EventServiceProvider`, you can enable automatic event discovery. When event discovery is enabled, Laravel will automatically find and register your events and listeners by scanning your application's `Listeners` directory. In addition, any explicitly defined events listed in the `EventServiceProvider` will still be registered.
 
-Type-hint the event on any `handle*` method of your listener to have it registered:
+Laravel finds event listeners by scanning the listener classes using reflection. When Laravel finds any listener class method that begins with `handle`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:
 
-    class OvenListener
+    use App\Events\PodcastProcessed;
+
+    class SendPodcastProcessedNotification
     {
-        public function handleHeated(OvenHeated $event) {
+        /**
+         * Handle the given event.
+         *
+         * @param  \App\Events\PodcastProcessed
+         * @return void
+         */
+        public function handle(PodcastProcessed $event)
+        {
             //
         }
     }
