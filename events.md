@@ -75,9 +75,22 @@ You may even register listeners using the `*` as a wildcard parameter, allowing 
 <a name="event-discovery"></a>
 ### Event Discovery
 
-> {note} Event Discovery is only available for Laravel 5.8.9 or later.
+> {note} Event Discovery is available for Laravel 5.8.9 or later.
 
 Instead of registering events and listeners manually in the `$listen` array of the `EventServiceProvider`, you can enable automatic event discovery. When event discovery is enabled, Laravel will automatically find and register your events and listeners by scanning your application's `Listeners` directory. In addition, any explicitly defined events listed in the `EventServiceProvider` will still be registered.
+
+Type-hint the event to handle on any `handle*` method of your listener to have it registered:
+
+    class OvenListener
+    {
+        public function handleHeated(OvenHeated $event) {
+            //
+        }
+    
+        public function handleFinished(OvenFinished $event) {
+            //
+        }
+    }
 
 Event discovery is disabled by default, but you can enable it by overriding the `shouldDiscoverEvents` method of your application's `EventServiceProvider`:
 
