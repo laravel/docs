@@ -41,6 +41,20 @@ To enable foreign key constraints for SQLite connections, you should add the `fo
         'foreign_key_constraints' => true,
     ],
 
+#### Configuration Using URLs
+
+Typically, database connections are configured using multiple configuration values such as `host`, `database`, `username`, `password`, etc. Each of these configuration values has its own corresponding environment variable. This means that when configuring your database connection information on a production server, you need to manage several environment variables.
+
+Some managed database providers such as Heroku provide a single database "URL" that contains all of the connection information for the the database in a single string. An example database URL may look something like the following:
+
+    mysql://root:password@127.0.0.1/forge?charset=UTF-8
+
+These URLs typically follow a standard schema convention:
+
+    driver://username:password@host:port/database?options
+
+For convenience, Laravel supports these URLs as an alternative to configuring your database with multiple configuration options. If the `url` (or corresponding `DATABASE_URL` environment variable) configuration option is present, it will be used to extract the database connection and credential information.
+
 <a name="read-and-write-connections"></a>
 ### Read & Write Connections
 
@@ -72,10 +86,6 @@ You only need to place items in the `read` and `write` arrays if you wish to ove
 #### The `sticky` Option
 
 The `sticky` option is an *optional* value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the `sticky` option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.
-
-#### The `url` Option
-
-Using Heroku or another "cloud" database provider, you may need to specify the database connection URL. The `url` option is an *optional* value that can be used to specify the URL of your database connection. You can configure the database connection URL by setting the `DATABASE_URL` value within your `.env` environment file.
 
 <a name="using-multiple-database-connections"></a>
 ### Using Multiple Database Connections
