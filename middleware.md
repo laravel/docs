@@ -9,6 +9,7 @@
     - [Sorting Middleware](#sorting-middleware)
 - [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
+- [Middleware Class Reference](#middleware-class-reference)
 
 <a name="introduction"></a>
 ## Introduction
@@ -274,3 +275,40 @@ Sometimes a middleware may need to do some work after the HTTP response has been
 The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of route or global middleware in the `app/Http/Kernel.php` file.
 
 When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method.
+
+<a name="middleware-class-reference"></a>
+## Middleware Class Reference
+
+Out of the box, Laravel offers a wide range of middleware to utilise. Below you will find a list of every middleware class and its default names and groups. This is a useful tool for quickly digging into the API documentation for a given middleware. The names and groups may differ in your own application based on the configuration in the `app/Http/Kernel.php` file.
+
+Middleware Class  |  Name  |  Groups
+------------- | ------------- | -------------
+App\Http\Middleware\Authenticate  |  `auth`  |  
+App\Http\Middleware\CheckForMaintenanceMode  |  |  Global
+App\Http\Middleware\EncryptCookies  |  |  `web`
+App\Http\Middleware\RedirectIfAuthenticated  |  `guest`  |  
+App\Http\Middleware\TrimStrings  |  |  Global
+App\Http\Middleware\TrustProxies  |  |  Global
+App\Http\Middleware\VerifyCsrfToken  |  |  `web`
+[Illuminate\Http\Middleware\CheckResponseForModifications](https://laravel.com/api/{{version}}/Illuminate/Http/Middleware/CheckResponseForModifications.html)  |  
+[Illuminate\Http\Middleware\FrameGuard](https://laravel.com/api/{{version}}/Illuminate/Http/Middleware/FrameGuard.html)  |  |  
+[Illuminate\Http\Middleware\SetCacheHeaders](https://laravel.com/api/{{version}}/Illuminate/Http/Middleware/SetCacheHeaders.html)  |  `cache.headers`  |  
+[Illuminate\Auth\Middleware\Authenticate](https://laravel.com/api/{{version}}/Illuminate/Auth/Middleware/Authenticate.html)  |  |  
+[Illuminate\Auth\Middleware\AuthenticateWithBasicAuth](https://laravel.com/api/{{version}}/Illuminate/Auth/Middleware/AuthenticateWithBasicAuth.html)  |  `auth.basic`  |  
+[Illuminate\Auth\Middleware\Authorize](https://laravel.com/api/{{version}}/Illuminate/Auth/Middleware/Authorize.html)  |  `can`  |  
+[Illuminate\Auth\Middleware\EnsureEmailIsVerified](https://laravel.com/api/{{version}}/Illuminate/Auth/Middleware/EnsureEmailIsVerified.html)  |  `verified`  |  
+[Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse](https://laravel.com/api/{{version}}/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.html)  |  |  `web`
+[Illuminate\Cookie\Middleware\EncryptCookies](https://laravel.com/api/{{version}}/Illuminate/Cookie/Middleware/EncryptCookies.html)  |  |  
+[Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode](https://laravel.com/api/{{version}}/Illuminate/Foundation/Http/Middleware/CheckForMaintenanceMode.html)  |  |  
+[Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull](https://laravel.com/api/{{version}}/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.html)  |  |  Global
+[Illuminate\Foundation\Http\Middleware\TransformsRequest](https://laravel.com/api/{{version}}/Illuminate/Foundation/Http/Middleware/TransformsRequest.html)  |  |  
+[Illuminate\Foundation\Http\Middleware\TrimStrings](https://laravel.com/api/{{version}}/Illuminate/Foundation/Http/Middleware/TrimStrings.html)  |  |  
+[Illuminate\Foundation\Http\Middleware\ValidatePostSize](https://laravel.com/api/{{version}}/Illuminate/Foundation/Http/Middleware/ValidatePostSize.html)  |  |  Global
+[Illuminate\Foundation\Http\Middleware\VerifyCsrfToken](https://laravel.com/api/{{version}}/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.html)  |  |  
+[Illuminate\Routing\Middleware\SubstituteBindings](https://laravel.com/api/{{version}}/Illuminate/Routing/Middleware/SubstituteBindings.html)  |  `bindings`  |  `web`, `api`
+[Illuminate\Routing\Middleware\ThrottleRequests](https://laravel.com/api/{{version}}/Illuminate/Routing/Middleware/ThrottleRequests.html)  |  `throttle`  |  `api`
+[Illuminate\Routing\Middleware\ThrottleRequestsWithRedis](https://laravel.com/api/{{version}}/Illuminate/Routing/Middleware/ThrottleRequestsWithRedis.html)  |  |  
+[Illuminate\Routing\Middleware\ValidateSignature](https://laravel.com/api/{{version}}/Illuminate/Routing/Middleware/ValidateSignature.html)  |  `signed`  |  
+[Illuminate\Session\Middleware\AuthenticateSession](https://laravel.com/api/{{version}}/Illuminate/Session/Middleware/AuthenticateSession.html)  |  |  
+[Illuminate\Session\Middleware\StartSession](https://laravel.com/api/{{version}}/Illuminate/Session/Middleware/StartSession.html)  |  |  `web`
+[Illuminate\View\Middleware\ShareErrorsFromSession](https://laravel.com/api/{{version}}/Illuminate/View/Middleware/ShareErrorsFromSession.html)  |  |  `web`
