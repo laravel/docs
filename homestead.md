@@ -660,10 +660,7 @@ When customizing Homestead, Ubuntu may ask you if you would like to keep a packa
         -o Dpkg::Options::="--force-confold" \
         install your-package
 
-When using Homestead in a team setting you may want to change some defaults that your team may not appreciate. While you may a strictly Vim user but the rest of your team is set on Nano, `user-customizations.sh` has you covered. Create the `user-customizations.sh` file in the root of your Homestead folder (The same folder containing your `Homestead.yaml`) and make any customizations you'd like to there. Remember: `user-customizations.sh` should *not* be version controlled since they are YOUR customizations.
-
-    sudo update-alternatives --set editor /usr/bin/vim.basic
-
+When using Homestead in a team setting, you may want to tweak Homestead to better fit your personal development style. You may create a `user-customizations.sh` file in the root of your Homestead directory (The same directory containing your `Homestead.yaml`). Within this file, you may make any customization you would like; however, the `user-customizations.sh` should not be version controlled.
 
 <a name="updating-homestead"></a>
 ## Updating Homestead
