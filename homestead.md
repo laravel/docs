@@ -660,6 +660,8 @@ When customizing Homestead, Ubuntu may ask you if you would like to keep a packa
         -o Dpkg::Options::="--force-confold" \
         install your-package
 
+### User Customizations
+
 When using Homestead in a team setting, you may want to tweak Homestead to better fit your personal development style. You may create a `user-customizations.sh` file in the root of your Homestead directory (The same directory containing your `Homestead.yaml`). Within this file, you may make any customization you would like; however, the `user-customizations.sh` should not be version controlled.
 
 <a name="updating-homestead"></a>
