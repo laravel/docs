@@ -351,7 +351,7 @@ You may chain the `onConnection` and `onQueue` methods to specify the connection
                   ->onConnection('sqs')
                   ->onQueue('processing');
                   
-Another alternative is to specify the `connection` attribute on your job:
+Alternatively, you may specify the `connection` as a property on the job class:
 
     <?php
 
@@ -360,7 +360,7 @@ Another alternative is to specify the `connection` attribute on your job:
     class ProcessPodcast implements ShouldQueue
     {
         /**
-         * The connection to push the job.
+         * The queue connection that should handle the job.
          *
          * @var string
          */
