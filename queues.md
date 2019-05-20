@@ -350,6 +350,22 @@ You may chain the `onConnection` and `onQueue` methods to specify the connection
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
                   ->onQueue('processing');
+                  
+Another alternative is to specify the `connection` attribute on your job:
+
+    <?php
+
+    namespace App\Jobs;
+
+    class ProcessPodcast implements ShouldQueue
+    {
+        /**
+         * The connection to push the job.
+         *
+         * @var string
+         */
+        public $connection = 'sqs';
+    }
 
 <a name="max-job-attempts-and-timeout"></a>
 ### Specifying Max Job Attempts / Timeout Values
