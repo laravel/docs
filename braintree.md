@@ -74,7 +74,7 @@ The discount amount configured in the Braintree control panel can be any value y
 
 Before using Cashier, we'll need to [prepare the database](/docs/{{version}}/migrations). We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
 
-    Schema::table('users', function ($table) {
+    Schema::table('users', function (Blueprint $table) {
         $table->string('braintree_id')->nullable();
         $table->string('paypal_email')->nullable();
         $table->string('card_brand')->nullable();
@@ -82,7 +82,7 @@ Before using Cashier, we'll need to [prepare the database](/docs/{{version}}/mig
         $table->timestamp('trial_ends_at')->nullable();
     });
 
-    Schema::create('subscriptions', function ($table) {
+    Schema::create('subscriptions', function (Blueprint $table) {
         $table->increments('id');
         $table->unsignedInteger('user_id');
         $table->string('name');
