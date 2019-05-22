@@ -830,6 +830,8 @@ You may query the `posts` relationship and add additional constraints to the rel
 
 You are able to use any of the [query builder](/docs/{{version}}/queries) methods on the relationship, so be sure to explore the query builder documentation to learn about all of the methods that are available to you.
 
+> *Note:* An `->orWhere()` clause will be applied on the same level as the relationship's main constraint (e.g. `where user.id = 1`). If you want to avoid this, use [constraint groups](/docs/{{version}}/queries#parameter-grouping).
+
 <a name="relationship-methods-vs-dynamic-properties"></a>
 ### Relationship Methods Vs. Dynamic Properties
 
