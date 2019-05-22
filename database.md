@@ -66,11 +66,13 @@ To see how read / write connections should be configured, let's look at this exa
         'read' => [
             'host' => [
                 '192.168.1.1',
-                '196.168.1.2'
+                '196.168.1.2',
             ],
         ],
         'write' => [
-            'host' => ['196.168.1.3'],
+            'host' => [
+                '196.168.1.3',
+             ],
         ],
         'sticky'    => true,
         'driver'    => 'mysql',
@@ -84,7 +86,7 @@ To see how read / write connections should be configured, let's look at this exa
 
 Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
 
-You only need to place items in the `read` and `write` arrays if you wish to override the values from the main array. So, in this case, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.3` will be used for the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections. If you would like to add more connections to `read` and `write` just add a new one like '196.168.1.2'.
+You only need to place items in the `read` and `write` arrays if you wish to override the values from the main array. So, in this case, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.3` will be used for the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
 
 #### The `sticky` Option
 
