@@ -830,7 +830,29 @@ You may query the `posts` relationship and add additional constraints to the rel
 
 You are able to use any of the [query builder](/docs/{{version}}/queries) methods on the relationship, so be sure to explore the query builder documentation to learn about all of the methods that are available to you.
 
-> *Note:* An `->orWhere()` clause will be applied on the same level as the relationship's main constraint (e.g. `where user.id = 1`). If you want to avoid this, use [constraint groups](/docs/{{version}}/queries#parameter-grouping).
+#### Chaining `orWhere` Clauses After Relationships
+
+As demonstrated in the example above, you are free to add additional constraints to relationships when querying them. However, use caution when chaining `orWhere` clauses onto a relationship, as the `orWhere` clauses will be logically grouped at the same level as the relationship constraint:
+
+    $user->posts()
+            ->where('active', 1)
+            ->orWhere('votes', '>=', 100)
+            ->get();
+
+    // select * from posts 
+    // where user_id = ? and active = 1 or votes >= 100
+
+In most situations, you likely intend to use [constraint groups](/docs/{{version}}/queries#parameter-grouping) to logically group the conditional checks between parentheses:
+
+    $user->posts()
+            ->where(function ($query) {
+                return $query->where('active', 1)
+                             ->orWhere('votes', '>=', 100);
+            })
+            ->get();
+
+    // select * from posts 
+    // where user_id = ? and (active = 1 or votes >= 100)
 
 <a name="relationship-methods-vs-dynamic-properties"></a>
 ### Relationship Methods Vs. Dynamic Properties
