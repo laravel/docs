@@ -182,6 +182,8 @@ The `add` method will only add the item to the cache if it does not already exis
 
     Cache::add('key', 'value', $seconds);
 
+> {note} Using a duration of 0 seconds is handled differently by the underlying cache stores and does not immediately expire the stored value.
+
 #### Storing Items Forever
 
 The `forever` method may be used to store an item in the cache permanently. Since these items will not expire, they must be manually removed from the cache using the `forget` method:
@@ -197,9 +199,7 @@ You may remove items from the cache using the `forget` method:
 
     Cache::forget('key');
 
-You may also remove items by providing a zero or negative TTL:
-
-    Cache::put('key', 'value', 0);
+You may also remove items by providing a negative TTL:
 
     Cache::put('key', 'value', -5);
 
