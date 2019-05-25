@@ -591,6 +591,7 @@ Below is a list of all available validation rules and their function:
 [Required With All](#rule-required-with-all)
 [Required Without](#rule-required-without)
 [Required Without All](#rule-required-without-all)
+[Required If Accepted](#rule-required-if-accepted)
 [Same](#rule-same)
 [Size](#rule-size)
 [Sometimes](#conditionally-adding-rules)
@@ -995,6 +996,11 @@ The field under validation must be present and not empty _only when_ any of the 
 #### required_without_all:_foo_,_bar_,...
 
 The field under validation must be present and not empty _only when_ all of the other specified fields are not present.
+
+<a name="rule-required-if-accepted"></a>
+#### required_if_accepted:_anotherfield_
+
+The field under validation must be present and not empty if the _anotherfield_ field passed the accepted validation rule.
 
 <a name="rule-same"></a>
 #### same:_field_
