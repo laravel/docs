@@ -8,6 +8,7 @@
 - [Available Assertions](#available-assertions)
     - [Response Assertions](#response-assertions)
     - [Authentication Assertions](#authentication-assertions)
+- [Examining Responses](#examining-responses)
 
 <a name="introduction"></a>
 ## Introduction
@@ -493,7 +494,7 @@ Assert that the session has the given errors:
 Assert that the session has no errors:
 
     $response->assertSessionHasNoErrors();
-    
+
 <a name="assert-session-doesnt-have-errors"></a>
 #### assertSessionDoesntHaveErrors
 
@@ -562,3 +563,13 @@ Method  | Description
 `$this->assertAuthenticatedAs($user, $guard = null);`  |  Assert that the given user is authenticated.
 `$this->assertCredentials(array $credentials, $guard = null);`  |  Assert that the given credentials are valid.
 `$this->assertInvalidCredentials(array $credentials, $guard = null);`  |  Assert that the given credentials are invalid.
+
+<a name="examining-responses"></a>
+## Examining Responses
+
+It's possible to examine the response data from within your test by dumping the response content or headers.
+
+Method | Description
+------ | ----------
+`$response->dump()` | Dump the content of the response.
+`$response->dumpHeaders()` | Dump the response headers.
