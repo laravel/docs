@@ -396,7 +396,7 @@ Updates can also be performed against any number of models that match a given qu
 
 The `update` method expects an array of column and value pairs representing the columns that should be updated.
 
-> {note} When issuing a mass update via Eloquent, the `saved` and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
+> {note} When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
 
 <a name="mass-assignment"></a>
 ### Mass Assignment
