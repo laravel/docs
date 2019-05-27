@@ -2,13 +2,13 @@
 
 - [Introduction](#introduction)
     - [Customizing Request Headers](#customizing-request-headers)
+    - [Debugging Responses](#debugging-responses)
 - [Session / Authentication](#session-and-authentication)
 - [Testing JSON APIs](#testing-json-apis)
 - [Testing File Uploads](#testing-file-uploads)
 - [Available Assertions](#available-assertions)
     - [Response Assertions](#response-assertions)
     - [Authentication Assertions](#authentication-assertions)
-- [Examining Responses](#examining-responses)
 
 <a name="introduction"></a>
 ## Introduction
@@ -69,6 +69,36 @@ You may use the `withHeaders` method to customize the request's headers before i
     }
 
 > {tip} The CSRF middleware is automatically disabled when running tests.
+
+<a name="debugging-responses"></a>
+### Debugging Responses
+
+After making a test request to your application, the `dump` and `dumpHeaders` methods may be used to examine and debug the response contents:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic test example.
+         *
+         * @return void
+         */
+        public function testBasicTest()
+        {
+            $response = $this->get('/');
+
+            $response->dumpHeaders();
+
+            $response->dump();
+        }
+    }
 
 <a name="session-and-authentication"></a>
 ## Session / Authentication
@@ -563,13 +593,3 @@ Method  | Description
 `$this->assertAuthenticatedAs($user, $guard = null);`  |  Assert that the given user is authenticated.
 `$this->assertCredentials(array $credentials, $guard = null);`  |  Assert that the given credentials are valid.
 `$this->assertInvalidCredentials(array $credentials, $guard = null);`  |  Assert that the given credentials are invalid.
-
-<a name="examining-responses"></a>
-## Examining Responses
-
-It's possible to examine the response data from within your test by dumping the response content or headers.
-
-Method | Description
------- | ----------
-`$response->dump()` | Dump the content of the response.
-`$response->dumpHeaders()` | Dump the response headers.
