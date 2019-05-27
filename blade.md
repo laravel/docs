@@ -194,17 +194,15 @@ Sometimes you may pass an array to your view with the intention of rendering it 
         var app = <?php echo json_encode($array); ?>;
     </script>
 
-However, instead of manually calling `json_encode`, you may use the `@json` Blade directive:
+However, instead of manually calling `json_encode`, you may use the `@json` Blade directive. The `@json` directive accepts the same arguments as PHP's `json_encode` function:
 
     <script>
         var app = @json($array);
+
+        var app = @json($array, JSON_PRETTY_PRINT);
     </script>
 
-You can also specify the same parameters that `json_encode` accepts. The defaults are these:
-
-    @json($array, $options = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT, $depth = 512)
-    
-> {note} Avoid using complex expressions in Blade directives as the argument strings are parsed by the Blade compiler before being executed by PHP. Commas in `@json` directive will be treated as argument delimiters, even if they seem to be a part of the `$array` expression.
+> {note} You should only use the `@json` directive to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 The `@json` directive is also useful for seeding Vue components or `data-*` attributes:
 
