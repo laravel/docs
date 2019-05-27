@@ -200,6 +200,12 @@ However, instead of manually calling `json_encode`, you may use the `@json` Blad
         var app = @json($array);
     </script>
 
+You can also specify the same parameters that `json_encode` accepts. The defaults are these:
+
+    @json($array, $options = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT, $depth = 512)
+    
+> {note} Avoid using complex expressions in Blade directives as the argument strings are parsed by the Blade compiler before being executed by PHP. Commas in `@json` directive will be treated as argument delimiters, even if they seem to be a part of the `$array` expression.
+
 The `@json` directive is also useful for seeding Vue components or `data-*` attributes:
 
     <example-component :some-prop='@json($array)'></example-component>
