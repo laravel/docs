@@ -9,6 +9,8 @@
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
     - [Batches](#filtering-batches)
+- [Tagging](#tagging)
+    - [Adding custom tags](#tagging-adding)
 - [Available Watchers](#available-watchers)
     - [Cache Watcher](#cache-watcher)
     - [Command Watcher](#command-watcher)
@@ -45,7 +47,7 @@ You may use Composer to install Telescope into your Laravel project:
 After installing Telescope, publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command:
 
     php artisan telescope:install
-
+    
     php artisan migrate
 
 #### Updating Telescope
@@ -63,7 +65,7 @@ If you plan to only use Telescope to assist your local development, you may inst
 After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your `app` configuration file. Instead, manually register the service provider in the `register` method of your `AppServiceProvider`:
 
     use App\Providers\TelescopeServiceProvider;
-
+    
     /**
      * Register any application services.
      *
@@ -138,12 +140,12 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
     public function register()
     {
         $this->hideSensitiveRequestDetails();
-
+    
         Telescope::filter(function (IncomingEntry $entry) {
             if ($this->app->isLocal()) {
                 return true;
             }
-
+    
             return $entry->isReportableException() ||
                 $entry->isFailedJob() ||
                 $entry->isScheduledTask() ||
@@ -157,7 +159,7 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
 While the `filter` callback filters data for individual entries, you may use the `filterBatch` method to register a callback that filters all data for a given request or console command. If the callback returns `true`, all of the entries are recorded by Telescope:
 
     use Illuminate\Support\Collection;
-
+    
     /**
      * Register any application services.
      *
@@ -166,12 +168,12 @@ While the `filter` callback filters data for individual entries, you may use the
     public function register()
     {
         $this->hideSensitiveRequestDetails();
-
+    
         Telescope::filterBatch(function (Collection $entries) {
             if ($this->app->isLocal()) {
                 return true;
             }
-
+    
             return $entries->contains(function ($entry) {
                 return $entry->isReportableException() ||
                     $entry->isFailedJob() ||
@@ -181,7 +183,39 @@ While the `filter` callback filters data for individual entries, you may use the
         });
     }
 
+<a name="tagging"></a>
+
+## Tagging
+
+Telescope allows searching on specific tags to get a better detailed overview.
+
+<a name="tagging-adding"></a>
+
+### Adding custom tags
+
+You can add custom tags that will give you more insights via the `tags` callback that you can register in your `TelescopeServiceProvider`.
+
+Here is a small example that adds the request response status as a tags which you can search on.
+
+	/**
+	 * Register any application services.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+	    $this->hideSensitiveRequestDetails();
+			
+			Telescope::tags(function (IncomingEntry $entry) {
+					if ($entry->type === 'request') {
+							return ['status: ' . $entry->content['response_status']];
+					}
+					
+					return [];
+			})
+	}
 <a name="available-watchers"></a>
+
 ## Available Watchers
 
 Telescope watchers gather application data when a request or console command is executed. You may customize the list of watchers that you would like to enable within your `config/telescope.php` configuration file:
