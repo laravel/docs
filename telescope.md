@@ -196,7 +196,7 @@ Telescope allows searching on specific tags to get a better detailed overview.
 You can add custom tags that will give you more insights via the `tags` callback that you can register in your `TelescopeServiceProvider`.
 
 Here is a small example that adds the request response status as a tags which you can search on.
-
+    
     /**
      * Register any application services.
      *
