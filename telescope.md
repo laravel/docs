@@ -184,7 +184,6 @@ While the `filter` callback filters data for individual entries, you may use the
     }
 
 <a name="tagging"></a>
-
 ## Tagging
 
 Telescope allows searching on specific tags to get a better detailed overview.
