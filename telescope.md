@@ -185,7 +185,7 @@ While the `filter` callback filters data for individual entries, you may use the
 <a name="tagging"></a>
 ## Tagging
 
-Telescope allows you to search entries by "tag". Telescope automatically tags many entries; however, you may occasionally want to attach custom tags to entries. To accomplish this, you may use the `Telescope::tags` method, which accepts a callback that should return an array of tags. These tags will be merged with any tags Telescope automatically attaches to the entry. Typically, you should call the `tags` method within your `TelescopeServiceProvider`:
+Telescope allows you to search entries by "tag". Often, tags are Eloquent model class names or authenticated user IDs which Telescope automatically adds to entries. Occasionally, you may want to attach your own custom tags to entries. To accomplish this, you may use the `Telescope::tags` method. The `tags` method accepts a callback which should return an array of tags. The tags returned by the callback will be merged with any tags Telescope would automatically attach to the entry. You should call the `tags` method within your `TelescopeServiceProvider`:
 
     use Laravel\Telescope\Telescope;
 
