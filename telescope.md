@@ -197,23 +197,24 @@ You can add custom tags that will give you more insights via the `tags` callback
 
 Here is a small example that adds the request response status as a tags which you can search on.
 
-	/**
-	 * Register any application services.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-	    $this->hideSensitiveRequestDetails();
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->hideSensitiveRequestDetails();
 			
-			Telescope::tags(function (IncomingEntry $entry) {
-					if ($entry->type === 'request') {
-							return ['status: ' . $entry->content['response_status']];
-					}
-					
-					return [];
-			})
-	}
+        Telescope::tags(function (IncomingEntry $entry) {
+            if ($entry->type === 'request') {
+                return ['status: ' . $entry->content['response_status']];
+            }
+
+            return [];
+        });
+     }
+
 <a name="available-watchers"></a>
 
 ## Available Watchers
