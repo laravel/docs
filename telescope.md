@@ -25,6 +25,7 @@
     - [Redis Watcher](#redis-watcher)
     - [Request Watcher](#request-watcher)
     - [Schedule Watcher](#schedule-watcher)
+- [Environment Variables](#environment-variables)
 
 <a name="introduction"></a>
 ## Introduction
@@ -207,6 +208,11 @@ Some watchers also allow you to provide additional customization options:
 
 The cache watcher records data when a cache key is hit, missed, updated and forgotten.
 
+    'watchers' => [
+        Watchers\CacheWatcher::class => env('TELESCOPE_CACHE_WATCHER', true),
+        ...
+    ],
+
 <a name="command-watcher"></a>
 ### Command Watcher
 
@@ -215,7 +221,7 @@ The command watcher records the arguments, options, exit code, and output whenev
     'watchers' => [
         Watchers\CommandWatcher::class => [
             'enabled' => env('TELESCOPE_COMMAND_WATCHER', true),
-            'ignore' => ['key:generate'],
+            'ignore' => [],
         ],
         ...
     ],
@@ -225,15 +231,30 @@ The command watcher records the arguments, options, exit code, and output whenev
 
 The dump watcher records and displays your variable dumps in Telescope. When using Laravel, variables may be dumped using the global `dump` function. The dump watcher tab must be open in a browser for the recording to occur, otherwise the dumps will be ignored by the watcher.
 
+    'watchers' => [
+        Watchers\DumpWatcher::class => env('TELESCOPE_DUMP_WATCHER', true),
+        ...
+    ],
+
 <a name="event-watcher"></a>
 ### Event Watcher
 
 The event watcher records the payload, listeners, and broadcast data for any events dispatched by your application. The Laravel framework's internal events are ignored by the Event watcher.
 
+    'watchers' => [
+        Watchers\EventWatcher::class => env('TELESCOPE_EVENT_WATCHER', true),
+        ...
+    ],
+
 <a name="exception-watcher"></a>
 ### Exception Watcher
 
 The exception watcher records the data and stack trace for any reportable Exceptions that are thrown by your application.
+
+    'watchers' => [
+        Watchers\ExceptionWatcher::class => env('TELESCOPE_EXCEPTION_WATCHER', true),
+        ...
+    ],
 
 <a name="gate-watcher"></a>
 ### Gate Watcher
@@ -243,7 +264,8 @@ The gate watcher records the data and result of gate and policy checks by your a
     'watchers' => [
         Watchers\GateWatcher::class => [
             'enabled' => env('TELESCOPE_GATE_WATCHER', true),
-            'ignore_abilities' => ['viewNova'],
+            'ignore_abilities' => [],
+            'ignore_packages' => true,
         ],
         ...
     ],
@@ -253,15 +275,30 @@ The gate watcher records the data and result of gate and policy checks by your a
 
 The job watcher records the data and status of any jobs dispatched by your application.
 
+    'watchers' => [
+        Watchers\JobWatcher::class => env('TELESCOPE_JOB_WATCHER', true),
+        ...
+    ],
+
 <a name="log-watcher"></a>
 ### Log Watcher
 
 The log watcher records the log data for any logs written by your application.
 
+    'watchers' => [
+        Watchers\LogWatcher::class => env('TELESCOPE_LOG_WATCHER', true),
+        ...
+    ],
+
 <a name="mail-watcher"></a>
 ### Mail Watcher
 
 The mail watcher allows you to view an in-browser preview of the emails along with their associated data. You may also download the email as an `.eml` file.
+
+    'watchers' => [
+        Watchers\MailWatcher::class => env('TELESCOPE_MAIL_WATCHER', true),
+        ...
+    ],
 
 <a name="model-watcher"></a>
 ### Model Watcher
@@ -271,7 +308,7 @@ The model watcher records model changes whenever an Eloquent `created`, `updated
     'watchers' => [
         Watchers\ModelWatcher::class => [
             'enabled' => env('TELESCOPE_MODEL_WATCHER', true),
-            'events' => ['eloquent.created*', 'eloquent.updated*'],
+            'events' => ['eloquent.*'],
         ],
         ...
     ],
@@ -281,6 +318,11 @@ The model watcher records model changes whenever an Eloquent `created`, `updated
 
 The notification watcher records all notifications sent by your application. If the notification triggers an email and you have the mail watcher enabled, the email will also be available for preview on the mail watcher screen.
 
+    'watchers' => [
+        Watchers\NotificationWatcher::class => env('TELESCOPE_NOTIFICATION_WATCHER', true),
+        ...
+    ],
+
 <a name="query-watcher"></a>
 ### Query Watcher
 
@@ -289,7 +331,8 @@ The query watcher records the raw SQL, bindings, and execution time for all quer
     'watchers' => [
         Watchers\QueryWatcher::class => [
             'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
-            'slow' => 50,
+            'ignore_packages' => true,
+            'slow' => 100,
         ],
         ...
     ],
@@ -300,6 +343,11 @@ The query watcher records the raw SQL, bindings, and execution time for all quer
 > {note} Redis events must be enabled for the Redis watcher to function. You may enable Redis events by calling `Redis::enableEvents()` in the `boot` method of your `app/Providers/AppServiceProvider.php` file.
 
 The Redis watcher records all Redis commands executed by your application. If you are using Redis for caching, cache commands will also be recorded by the Redis Watcher.
+
+    'watchers' => [
+        Watchers\RedisWatcher::class => env('TELESCOPE_REDIS_WATCHER', true),
+        ...
+    ],
 
 <a name="request-watcher"></a>
 ### Request Watcher
@@ -318,3 +366,35 @@ The request watcher records the request, headers, session, and response data ass
 ### Schedule Watcher
 
 The schedule watcher records the command and output of any scheduled tasks run by your application.
+
+    'watchers' => [
+        Watchers\ScheduleWatcher::class => env('TELESCOPE_SCHEDULE_WATCHER', true),
+        ...
+    ],
+
+<a name="environment-variables"></a>
+## Environment Variables
+
+You can also telescope on and off via the .env file.
+
+    TELESCOPE_ENABLED=false
+    
+This also applies to all the watchers. A list is given below for convenience.
+    
+    TELESCOPE_CACHE_WATCHER=true
+    TELESCOPE_COMMAND_WATCHER=true
+    TELESCOPE_DUMP_WATCHER=true
+    TELESCOPE_EVENT_WATCHER=true
+    TELESCOPE_EXCEPTION_WATCHER=true
+    TELESCOPE_GATE_WATCHER=true
+    TELESCOPE_JOB_WATCHER=false
+    TELESCOPE_LOG_WATCHER=true
+    TELESCOPE_MAIL_WATCHER=true
+    TELESCOPE_MODEL_WATCHER=true
+    TELESCOPE_NOTIFICATION_WATCHER=true
+    TELESCOPE_QUERY_WATCHER=false
+    TELESCOPE_REDIS_WATCHER=true
+    TELESCOPE_REQUEST_WATCHER=true
+    TELESCOPE_RESPONSE_SIZE_LIMIT=64
+    TELESCOPE_SCHEDULE_WATCHER=true
+
