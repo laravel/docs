@@ -140,7 +140,7 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
     public function register()
     {
         $this->hideSensitiveRequestDetails();
-   
+
         Telescope::filter(function (IncomingEntry $entry) {
             if ($this->app->isLocal()) {
                 return true;
