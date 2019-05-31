@@ -10,7 +10,6 @@
     - [Entries](#filtering-entries)
     - [Batches](#filtering-batches)
 - [Tagging](#tagging)
-    - [Adding custom tags](#adding-custom-tags)
 - [Available Watchers](#available-watchers)
     - [Cache Watcher](#cache-watcher)
     - [Command Watcher](#command-watcher)
@@ -186,15 +185,10 @@ While the `filter` callback filters data for individual entries, you may use the
 <a name="tagging"></a>
 ## Tagging
 
-Telescope allows searching on specific tags to get a better detailed overview.
+Telescope allows you to search entries by "tag". Telescope automatically tags many entries; however, you may occasionally want to attach custom tags to entries. To accomplish this, you may use the `Telescope::tags` method, which accepts a callback that should return an array of tags. These tags will be merged with any tags Telescope automatically attaches to the entry. Typically, you should call the `tags` method within your `TelescopeServiceProvider`:
 
-<a name="adding-custom-tags"></a>
-### Adding custom tags
+    use Laravel\Telescope\Telescope;
 
-You can add custom tags that will give you more insights via the `tags` callback that you can register in your `TelescopeServiceProvider`.
-
-Here is a small example that adds the request response status as a tags which you can search on.
-    
     /**
      * Register any application services.
      *
@@ -203,10 +197,10 @@ Here is a small example that adds the request response status as a tags which yo
     public function register()
     {
         $this->hideSensitiveRequestDetails();
-			
+
         Telescope::tags(function (IncomingEntry $entry) {
             if ($entry->type === 'request') {
-                return ['status: ' . $entry->content['response_status']];
+                return ['status:'.$entry->content['response_status']];
             }
 
             return [];
