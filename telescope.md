@@ -47,7 +47,7 @@ You may use Composer to install Telescope into your Laravel project:
 After installing Telescope, publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command:
 
     php artisan telescope:install
-    
+
     php artisan migrate
 
 #### Updating Telescope
@@ -65,7 +65,7 @@ If you plan to only use Telescope to assist your local development, you may inst
 After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your `app` configuration file. Instead, manually register the service provider in the `register` method of your `AppServiceProvider`:
 
     use App\Providers\TelescopeServiceProvider;
-    
+
     /**
      * Register any application services.
      *
@@ -140,12 +140,12 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
     public function register()
     {
         $this->hideSensitiveRequestDetails();
-    
+   
         Telescope::filter(function (IncomingEntry $entry) {
             if ($this->app->isLocal()) {
                 return true;
             }
-    
+
             return $entry->isReportableException() ||
                 $entry->isFailedJob() ||
                 $entry->isScheduledTask() ||
@@ -159,7 +159,7 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
 While the `filter` callback filters data for individual entries, you may use the `filterBatch` method to register a callback that filters all data for a given request or console command. If the callback returns `true`, all of the entries are recorded by Telescope:
 
     use Illuminate\Support\Collection;
-    
+
     /**
      * Register any application services.
      *
@@ -168,12 +168,12 @@ While the `filter` callback filters data for individual entries, you may use the
     public function register()
     {
         $this->hideSensitiveRequestDetails();
-    
+
         Telescope::filterBatch(function (Collection $entries) {
             if ($this->app->isLocal()) {
                 return true;
             }
-    
+
             return $entries->contains(function ($entry) {
                 return $entry->isReportableException() ||
                     $entry->isFailedJob() ||
