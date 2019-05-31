@@ -188,7 +188,7 @@ While the `filter` callback filters data for individual entries, you may use the
 
 Telescope allows searching on specific tags to get a better detailed overview.
 
-<a name="tagging-adding"></a>
+<a name="adding-custom-tags"></a>
 ### Adding custom tags
 
 You can add custom tags that will give you more insights via the `tags` callback that you can register in your `TelescopeServiceProvider`.
