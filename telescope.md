@@ -9,6 +9,8 @@
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
     - [Batches](#filtering-batches)
+- [Tagging](#tagging)
+    - [Adding custom tags](#adding-custom-tags)
 - [Available Watchers](#available-watchers)
     - [Cache Watcher](#cache-watcher)
     - [Command Watcher](#command-watcher)
@@ -180,6 +182,36 @@ While the `filter` callback filters data for individual entries, you may use the
                 });
         });
     }
+
+<a name="tagging"></a>
+## Tagging
+
+Telescope allows searching on specific tags to get a better detailed overview.
+
+<a name="adding-custom-tags"></a>
+### Adding custom tags
+
+You can add custom tags that will give you more insights via the `tags` callback that you can register in your `TelescopeServiceProvider`.
+
+Here is a small example that adds the request response status as a tags which you can search on.
+    
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->hideSensitiveRequestDetails();
+			
+        Telescope::tags(function (IncomingEntry $entry) {
+            if ($entry->type === 'request') {
+                return ['status: ' . $entry->content['response_status']];
+            }
+
+            return [];
+        });
+     }
 
 <a name="available-watchers"></a>
 ## Available Watchers
