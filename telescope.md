@@ -215,7 +215,6 @@ Here is a small example that adds the request response status as a tags which yo
      }
 
 <a name="available-watchers"></a>
-
 ## Available Watchers
 
 Telescope watchers gather application data when a request or console command is executed. You may customize the list of watchers that you would like to enable within your `config/telescope.php` configuration file:
