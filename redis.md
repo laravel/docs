@@ -95,6 +95,25 @@ In addition to the default `host`, `port`, `database`, and `password` server con
         'database' => 0,
         'read_write_timeout' => 60,
     ],
+    
+Some option if you use sentinel:
+
+    'redis' => [
+        'client' => 'predis',
+        'sentinel' => [
+            'tcp://10.24.5.136:26379?timeout=0.100',
+            'tcp://10.24.5.137:26379?timeout=0.100',
+            'tcp://10.24.5.138:26379?timeout=0.100',
+            'options' => [
+                'replication' => 'sentinel',
+                'service' => env('REDIS_SENTINEL_SERVICE', 'mymaster'),
+                'parameters' => [
+                    'password' => env('REDIS_PASSWORD', null),
+                    'database' => 0,
+                ],
+            ],
+        ],
+    ],
 
 <a name="phpredis"></a>
 ### PhpRedis
