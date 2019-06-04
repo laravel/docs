@@ -235,7 +235,7 @@ The schema table builder's `softDeletesTz` method now accepts the column name as
 
 **Likelihood Of Impact: Very Low**
 
-The `Illuminate\Contracts\Database\ConnectionInterface` contract's `select` and `selectOne` method signatures have been updated to accommodate the new `$useReadPdo` argument:
+The `Illuminate\Database\ConnectionInterface` contract's `select` and `selectOne` method signatures have been updated to accommodate the new `$useReadPdo` argument:
 
     /**
      * Run a select statement and return a single result.
