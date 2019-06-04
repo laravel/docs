@@ -53,6 +53,8 @@ Some applications may not need to ever push jobs onto multiple queues, instead p
 
     php artisan queue:work --queue=high,default
 
+> {note} When manually pushing jobs to queue from tinker, you should use `Bus::dispatch(new TestJob())` or `Queue::push(new TestJob())`, because with `Job::dispatch()`, the first job dispatched upon opening tinker will always be lost. This is due to an implementation subtlety involving garbage collection and applies only to tinker.
+
 <a name="driver-prerequisites"></a>
 ### Driver Notes & Prerequisites
 
