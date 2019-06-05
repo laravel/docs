@@ -352,7 +352,7 @@ You will also need to modify your `App\User` model to implement the `MustVerifyE
         // ...
     }
 
-In order to use the `verified` middleware so that only verified users may access a given route, you will need to update the `$routeMiddleware` property of your `app/Http/Kernel.php` file to include the new middleware:
+In order to use the `verified` middleware so that only verified users may access a given route, you will need to update the `$routeMiddleware` property of your `app/Http/Kernel.php` file to include the new `verified` and `signed` middleware:
 
     // Within App\Http\Kernel Class...
 
@@ -366,8 +366,6 @@ In order to use the `verified` middleware so that only verified users may access
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
-
-If your application has not previously registered the `signed` middleware you will need to add it as well. It is required for handling signed URLs required by the email verification routes.
 
 You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
 
