@@ -71,6 +71,7 @@ If your service provider registers many simple bindings, you may wish to use the
     use Illuminate\Support\ServiceProvider;
     use App\Services\PingdomDowntimeNotifier;
     use App\Services\DigitalOceanServerProvider;
+    use App\Services\ServerToolsProvider;
 
     class AppServiceProvider extends ServiceProvider
     {
@@ -90,6 +91,7 @@ If your service provider registers many simple bindings, you may wish to use the
          */
         public $singletons = [
             DowntimeNotifier::class => PingdomDowntimeNotifier::class,
+            ServerToolsProvider::class => ServerToolsProvider::class
         ];
     }
 
