@@ -352,7 +352,7 @@ You will also need to modify your `App\User` model to implement the `MustVerifyE
         // ...
     }
 
-In order to use the `verified` middleware so that only verified users may access a given route, you will need to update the `$routeMiddleware` property of your `app/Http/Kernel.php` file to include the new middleware:
+In order to use the `verified` middleware so that only verified users may access a given route, you will need to update the `$routeMiddleware` property of your `app/Http/Kernel.php` file to include the new `verified` and `signed` middleware:
 
     // Within App\Http\Kernel Class...
 
@@ -363,6 +363,7 @@ In order to use the `verified` middleware so that only verified users may access
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 
