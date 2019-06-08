@@ -358,6 +358,28 @@ If you would like to customize the authorization approval screen, you may publis
 
     php artisan vendor:publish --tag=passport-views
 
+
+Under some circumstances you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may customize this behavior by defining a `skipsAuthorization` method on the client model. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately.
+
+    <?php
+
+    namespace App\Models\Passport;
+
+    use Laravel\Passport\Client as BaseClient;
+
+    class Client extends BaseClient
+    {
+        /**
+         * Determine if the client should skip the authorization prompt.
+         *
+         * @return bool
+         */
+        public function skipsAuthorization()
+        {
+            return $this->first_party;
+        }
+    }
+
 #### Converting Authorization Codes To Access Tokens
 
 If the user approves the authorization request, they will be redirected back to the consuming application. The consumer should then issue a `POST` request to your application to request an access token. The request should include the authorization code that was issued by your application when the user approved the authorization request. In this example, we'll use the Guzzle HTTP library to make the `POST` request:
