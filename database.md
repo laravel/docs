@@ -45,7 +45,7 @@ To enable foreign key constraints for SQLite connections, you should add the `fo
 
 Typically, database connections are configured using multiple configuration values such as `host`, `database`, `username`, `password`, etc. Each of these configuration values has its own corresponding environment variable. This means that when configuring your database connection information on a production server, you need to manage several environment variables.
 
-Some managed database providers such as Heroku provide a single database "URL" that contains all of the connection information for the the database in a single string. An example database URL may look something like the following:
+Some managed database providers such as Heroku provide a single database "URL" that contains all of the connection information for the database in a single string. An example database URL may look something like the following:
 
     mysql://root:password@127.0.0.1/forge?charset=UTF-8
 
