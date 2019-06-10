@@ -5,7 +5,6 @@
     - [Using Model Factories](#using-model-factories)
     - [Calling Additional Seeders](#calling-additional-seeders)
 - [Running Seeders](#running-seeders)
-    - [Forcing Seeding To Run In Production](#forcing-seeding-production)
 
 <a name="introduction"></a>
 ## Introduction
@@ -104,10 +103,10 @@ Now you may use the `db:seed` Artisan command to seed your database. By default,
 You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations. This command is useful for completely re-building your database:
 
     php artisan migrate:refresh --seed
-    
-<a name="forcing-seeding-production"></a>
-### Forcing Seeding To Run In Production
 
-Some seeding operations may cause you to alter or lose data. In order to protect you from running seeding commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:
+<a name="forcing-seeding-production"></a>
+#### Forcing Seeders To Run In Production
+
+Some seeding operations may cause you to alter or lose data. In order to protect you from running seeding commands against your production database, you will be prompted for confirmation before the seeders are executed. To force the seeders to run without a prompt, use the `--force` flag:
 
     php artisan db:seed --force
