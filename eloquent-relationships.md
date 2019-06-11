@@ -1109,9 +1109,9 @@ To load a relationship only when it has not already been loaded, use the `loadMi
 
 #### Nested Lazy Eager Loading & `morphTo`
 
-If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `loadMorph` method.
+If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `loadMorph` or `withMorph` methods.
 
-This method accepts the name of the `morphTo` relationship as its first argument, and an array of model / relationship pairs as its second argument. To help illustrate this method, let's consider the following model:
+Both methods allow you to conditionally load relations of a morphed model, depending on their concrete morph type. As an example, let's consider the following model:
 
     <?php
 
@@ -1130,7 +1130,23 @@ This method accepts the name of the `morphTo` relationship as its first argument
 
 In this example, let's assume `Event`, `Photo`, and `Post` models may create `ActivityFeed` models. Additionally, let's assume that `Event` models belong to a `Calendar` model, `Photo` models are associated with `Tag` models, and `Post` models belong to an `Author` model.
 
-Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:
+Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships.
+
+The difference between `morphWith` and `loadMorph` is that the first will be called on the query builder, while the second is called on the eloquent collection, after the data was already retrieved from the database.
+
+Here's how `morphWith` is used:
+
+     $activities = ActivityFeed::query()
+         ->with(['parentable' => function (MorphTo $morphTo) {
+             $morphTo->morphWith([
+                Event::class => ['calendar'],
+                Photo::class => ['tags'],
+                Post::class => ['author'],
+             ]);
+         }])
+         ->get();
+         
+And this is how `loadMorph` is used:
 
     $activities = ActivityFeed::with('parentable')
         ->get()
@@ -1139,6 +1155,9 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
             Photo::class => ['tags'],
             Post::class => ['author'],
         ]);
+        
+The advantage of using `morphWith` is that it can be used on nested relations.
+`loadMorph` on the other hand is useful if you're dealing with a pre-loaded collection.
 
 <a name="inserting-and-updating-related-models"></a>
 ## Inserting & Updating Related Models
