@@ -217,7 +217,7 @@ You may also determine if a user has cancelled their subscription, but are still
         //
     }
 
-To determine if the user has cancelled their subscription is no longer within their "grace period", you may use the `ended` method:
+To determine if the user has cancelled their subscription and is no longer within their "grace period", you may use the `ended` method:
 
     if ($user->subscription('main')->ended()) {
         //
