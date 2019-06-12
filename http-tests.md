@@ -423,9 +423,9 @@ Assert that the response has a given JSON structure:
 <a name="assert-json-validation-errors"></a>
 #### assertJsonValidationErrors
 
-Assert that the response has the given JSON validation errors for the given keys:
+Assert that the response has the given JSON validation errors:
 
-    $response->assertJsonValidationErrors($keys);
+    $response->assertJsonValidationErrors(array $data);
 
 <a name="assert-location"></a>
 #### assertLocation
