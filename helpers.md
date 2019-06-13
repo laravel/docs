@@ -81,6 +81,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::before](#method-str-before)
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
+[Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
 [Str::is](#method-str-is)
@@ -864,6 +865,17 @@ You may also pass an array of values to determine if the given string contains a
     use Illuminate\Support\Str;
 
     $contains = Str::contains('This is my name', ['my', 'foo']);
+
+    // true
+
+<a name="method-str-contains-all"></a>
+#### `Str::containsAll()` {#collection-method}
+
+The `Str::containsAll` method determines if the given string contains all array values:
+
+    use Illuminate\Support\Str;
+
+    $containsAll = Str::containsAll('This is my name', ['my', 'name']);
 
     // true
 
