@@ -20,6 +20,7 @@
     - [Increment & Decrement](#increment-and-decrement)
 - [Deletes](#deletes)
 - [Pessimistic Locking](#pessimistic-locking)
+- [Debugging](#debugging)
 
 <a name="introduction"></a>
 ## Introduction
@@ -707,3 +708,12 @@ The query builder also includes a few functions to help you do "pessimistic lock
 Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the rows from being modified or from being selected with another shared lock:
 
     DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
+
+<a name="debugging"></a>
+## Debugging
+
+You may use the `dd` or `dump` methods while building a query to dump the query bindings and SQL. The `dd` method will display the debug information and then stop executing the request. The `dump` method will display the debug information but allow the request to keep executing:
+
+    DB::table('users')->where('votes', '>', 100)->dd();
+
+    DB::table('users')->where('votes', '>', 100)->dump();

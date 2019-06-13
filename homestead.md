@@ -141,8 +141,8 @@ You should check out a tagged version of Homestead since the `master` branch may
 
     cd ~/Homestead
 
-    // Clone the desired release...
-    git checkout v8.4.0
+    // Checkout the stable "release" branch
+    git checkout release
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -660,6 +660,10 @@ When customizing Homestead, Ubuntu may ask you if you would like to keep a packa
         -o Dpkg::Options::="--force-confold" \
         install your-package
 
+### User Customizations
+
+When using Homestead in a team setting, you may want to tweak Homestead to better fit your personal development style. You may create a `user-customizations.sh` file in the root of your Homestead directory (The same directory containing your `Homestead.yaml`). Within this file, you may make any customization you would like; however, the `user-customizations.sh` should not be version controlled.
+
 <a name="updating-homestead"></a>
 ## Updating Homestead
 
@@ -671,7 +675,7 @@ Next, you need to update the Homestead source code. If you cloned the repository
 
     git fetch
 
-    git checkout v8.2.0
+    git pull origin release
 
 These commands pull the latest Homestead code from the GitHub repository, fetches the latest tags, and then checks out the latest tagged release. You can find the latest stable release version on the [GitHub releases page](https://github.com/laravel/homestead/releases).
 

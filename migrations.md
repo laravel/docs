@@ -355,6 +355,7 @@ You may drop multiple columns from a table by passing an array of column names t
 
 Command  |  Description
 -------  |  -----------
+`$table->dropMorphs('morphable');`  |  Drop the `morphable_id` and `morphable_type` columns.
 `$table->dropRememberToken();`  |  Drop the `remember_token` column.
 `$table->dropSoftDeletes();`  |  Drop the `deleted_at` column.
 `$table->dropSoftDeletesTz();`  |  Alias of `dropSoftDeletes()` method.

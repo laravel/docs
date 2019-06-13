@@ -164,7 +164,7 @@ You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quic
 
     <label for="title">Post Title</label>
 
-    <input type="text" class="@error('title') is-invalid @enderror">
+    <input id="title" type="text" class="@error('title') is-invalid @enderror">
 
     @error('title')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -333,9 +333,9 @@ If you do not want to use the `validate` method on the request, you may create a
 
     namespace App\Http\Controllers;
 
-    use Validator;
     use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
+    use Illuminate\Support\Facades\Validator;
 
     class PostController extends Controller
     {

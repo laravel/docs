@@ -58,7 +58,7 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
         //
     });
 
-    Route::any('foo', function () {
+    Route::any('/', function () {
         //
     });
 
@@ -273,6 +273,8 @@ Route groups may also be used to handle sub-domain routing. Sub-domains may be a
             //
         });
     });
+
+> {note} In order to ensure your sub-domain routes are reachable, you should register sub-domain routes before registering root domain routes. This will prevent root domain routes from overwriting sub-domain routes which have the same URI path.
 
 <a name="route-group-prefixes"></a>
 ### Route Prefixes
