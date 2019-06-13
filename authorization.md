@@ -373,7 +373,7 @@ As previously discussed, some actions like `create` may not require a model inst
 
 #### Authorizing Resource Controllers
 
-If you are utilizing [resource controllers](/docs/{{version}}/controllers#resource-controllers), you may make use of the `authorizeResource` method in the controller's constructor. This method will attach the appropriate `can` middleware definition to the resource controller's methods.
+If you are utilizing [resource controllers](/docs/{{version}}/controllers#resource-controllers), you may make use of the `authorizeResource` method in the controller's constructor. This method will attach the appropriate `can` middleware definitions to the resource controller's methods.
 
 The `authorizeResource` method accepts the model's class name as its first argument, and the name of the route / request parameter that will contain the model's ID as its second argument:
 
@@ -392,10 +392,10 @@ The `authorizeResource` method accepts the model's class name as its first argum
             $this->authorizeResource(Post::class, 'post');
         }
     }
-    
-Controller Methods and their respective Policy:
 
-| Controller | Policy |
+The following controller methods will be mapped to their corresponding policy method:
+
+| Controller Method | Policy Method |
 | --- | --- |
 | index | viewAny |
 | show | view |
