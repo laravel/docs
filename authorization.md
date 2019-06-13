@@ -392,6 +392,18 @@ The `authorizeResource` method accepts the model's class name as its first argum
             $this->authorizeResource(Post::class, 'post');
         }
     }
+    
+Controller Methods and their respective Policy:
+
+| Controller | Policy |
+| --- | --- |
+| index | viewAny |
+| show | view |
+| create | create |
+| store | create |
+| edit | update |
+| update | update |
+| destroy | delete |
 
 > {tip} You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`.
 
