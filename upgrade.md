@@ -226,6 +226,9 @@ The `getRelatedIds` method has been renamed to `allRelatedIds`.
 #### Has One / Many `createMany`
 
 The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
+
+#### Has One / Many `getPlainForeignKey`
+
 The `getPlainForeignKey` method has been renamed to `getForeignKeyName`.
 
 #### Related Model Connections
