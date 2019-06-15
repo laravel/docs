@@ -25,6 +25,7 @@
     - [Using Rule Objects](#using-rule-objects)
     - [Using Closures](#using-closures)
     - [Using Extensions](#using-extensions)
+    - [Implicit Extensions](#implicit-extensions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1210,6 +1211,8 @@ Once the rule has been defined, you may attach it to a validator by passing an i
         'name' => ['required', 'string', new Uppercase],
     ]);
 
+Please see about [Implicit Extensions](#implicit-extensions) for validation empty attributes.
+
 <a name="using-closures"></a>
 ### Using Closures
 
@@ -1296,7 +1299,8 @@ When creating a custom validation rule, you may sometimes need to define custom 
         });
     }
 
-#### Implicit Extensions
+<a name="implicit-extensions"></a>
+### Implicit Extensions
 
 By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom extensions, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:
 
@@ -1311,5 +1315,7 @@ For a rule to run even when an attribute is empty, the rule must imply that the 
     Validator::extendImplicit('foo', function ($attribute, $value, $parameters, $validator) {
         return $value == 'foo';
     });
+
+This also applies to rule objects. If you want to run them when an attribute is empty, you need to extend the interface `\Illuminate\Contracts\Validation\ImplicitRule`.
 
 > {note} An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
