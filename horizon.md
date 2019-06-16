@@ -43,7 +43,7 @@ You should also create the `failed_jobs` table which Laravel will use to store a
 
 <a name="upgrading"></a>
 #### Upgrading Horizon
-    
+
 When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
 
 In addition, you should re-publish Horizon's assets:
@@ -207,7 +207,7 @@ If you would like to manually define the tags for one of your queueable objects,
 <a name="notifications"></a>
 ## Notifications
 
-> **Note:** When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification driver](https://laravel.com/docs/{{version}}/notifications).
+> **Note:** When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification driver](/docs/{{version}}/notifications).
 
 If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from your application's `HorizonServiceProvider`:
 

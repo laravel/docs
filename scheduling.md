@@ -251,6 +251,8 @@ By default, multiple commands scheduled at the same time will execute sequential
              ->daily()
              ->runInBackground();
 
+> {note} The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods.
+
 <a name="maintenance-mode"></a>
 ### Maintenance Mode
 

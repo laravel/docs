@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
     - [Customizing Request Headers](#customizing-request-headers)
+    - [Debugging Responses](#debugging-responses)
 - [Session / Authentication](#session-and-authentication)
 - [Testing JSON APIs](#testing-json-apis)
 - [Testing File Uploads](#testing-file-uploads)
@@ -68,6 +69,36 @@ You may use the `withHeaders` method to customize the request's headers before i
     }
 
 > {tip} The CSRF middleware is automatically disabled when running tests.
+
+<a name="debugging-responses"></a>
+### Debugging Responses
+
+After making a test request to your application, the `dump` and `dumpHeaders` methods may be used to examine and debug the response contents:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic test example.
+         *
+         * @return void
+         */
+        public function testBasicTest()
+        {
+            $response = $this->get('/');
+
+            $response->dumpHeaders();
+
+            $response->dump();
+        }
+    }
 
 <a name="session-and-authentication"></a>
 ## Session / Authentication
@@ -392,9 +423,9 @@ Assert that the response has a given JSON structure:
 <a name="assert-json-validation-errors"></a>
 #### assertJsonValidationErrors
 
-Assert that the response has the given JSON validation errors for the given keys:
+Assert that the response has the given JSON validation errors:
 
-    $response->assertJsonValidationErrors($keys);
+    $response->assertJsonValidationErrors(array $data);
 
 <a name="assert-location"></a>
 #### assertLocation
@@ -493,7 +524,7 @@ Assert that the session has the given errors:
 Assert that the session has no errors:
 
     $response->assertSessionHasNoErrors();
-    
+
 <a name="assert-session-doesnt-have-errors"></a>
 #### assertSessionDoesntHaveErrors
 

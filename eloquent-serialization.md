@@ -25,6 +25,12 @@ To convert a model and its loaded [relationships](/docs/{{version}}/eloquent-rel
 
     return $user->toArray();
 
+To convert only a model's attributes to an array, use the `attributesToArray` method:
+
+    $user = App\User::first();
+
+    return $user->attributesToArray();
+
 You may also convert entire [collections](/docs/{{version}}/eloquent-collections) of models to arrays:
 
     $users = App\User::all();

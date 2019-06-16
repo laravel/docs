@@ -9,6 +9,7 @@
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
     - [Batches](#filtering-batches)
+- [Tagging](#tagging)
 - [Available Watchers](#available-watchers)
     - [Cache Watcher](#cache-watcher)
     - [Command Watcher](#command-watcher)
@@ -180,6 +181,31 @@ While the `filter` callback filters data for individual entries, you may use the
                 });
         });
     }
+
+<a name="tagging"></a>
+## Tagging
+
+Telescope allows you to search entries by "tag". Often, tags are Eloquent model class names or authenticated user IDs which Telescope automatically adds to entries. Occasionally, you may want to attach your own custom tags to entries. To accomplish this, you may use the `Telescope::tag` method. The `tag` method accepts a callback which should return an array of tags. The tags returned by the callback will be merged with any tags Telescope would automatically attach to the entry. You should call the `tag` method within your `TelescopeServiceProvider`:
+
+    use Laravel\Telescope\Telescope;
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->hideSensitiveRequestDetails();
+
+        Telescope::tag(function (IncomingEntry $entry) {
+            if ($entry->type === 'request') {
+                return ['status:'.$entry->content['response_status']];
+            }
+
+            return [];
+        });
+     }
 
 <a name="available-watchers"></a>
 ## Available Watchers
