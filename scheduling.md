@@ -282,13 +282,13 @@ Using the `emailOutputTo` method, you may e-mail the output to an e-mail address
              ->sendOutputTo($filePath)
              ->emailOutputTo('foo@example.com');
 
-If you only want to e-mail the output if the command fails, use the `emailOnFailure` method:
+If you only want to e-mail the output if the command fails, use the `emailOutputOnFailure` method:
 
     $schedule->command('foo')
              ->daily()
-             ->emailOnFailure('foo@example.com');
+             ->emailOutputOnFailure('foo@example.com');
 
-> {note} The `emailOutputTo`, `emailOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods.
+> {note} The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods.
 
 <a name="task-hooks"></a>
 ## Task Hooks
