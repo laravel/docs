@@ -278,6 +278,8 @@ If you would like to define a custom browser method that you can re-use in a var
         }
     }
 
+Don't forget to register the [`service provider`](/docs/{{version}}/providers#registering-providers) in the `config/app.php` configuration file.
+
 The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro as a method on a `Browser` implementation:
 
     $this->browse(function ($browser) use ($user) {
