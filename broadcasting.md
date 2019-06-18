@@ -65,7 +65,7 @@ Next, you should configure your Channels credentials in the `config/broadcasting
 
     'options' => [
         'cluster' => 'eu',
-        'encrypted' => true
+        'useTLS' => true
     ],
 
 When using Channels and [Laravel Echo](#installing-laravel-echo), you should specify `pusher` as your desired broadcaster when instantiating the Echo instance in your `resources/js/bootstrap.js` file:
@@ -479,13 +479,13 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
         key: 'your-pusher-channels-key'
     });
 
-When creating an Echo instance that uses the `pusher` connector, you may also specify a `cluster` as well as whether the connection should be encrypted:
+When creating an Echo instance that uses the `pusher` connector, you may also specify a `cluster` as well as whether the connection must be made over TLS (by default, when `forceTLS` is `false`, a non-TLS connection will be made if the page was loaded over HTTP, or as a fallback if a TLS connection fails):
 
     window.Echo = new Echo({
         broadcaster: 'pusher',
         key: 'your-pusher-channels-key',
         cluster: 'eu',
-        encrypted: true
+        forceTLS: true
     });
 
 #### Using An Existing Client Instance
