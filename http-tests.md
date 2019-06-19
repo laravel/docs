@@ -294,6 +294,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertSessionMissing](#assert-session-missing)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
+[assertUnauthorized](#assert-unauthorized)
 [assertViewHas](#assert-view-has)
 [assertViewHasAll](#assert-view-has-all)
 [assertViewIs](#assert-view-is)
@@ -552,6 +553,13 @@ Assert that the response has a given code:
 Assert that the response has a successful status code:
 
     $response->assertSuccessful();
+
+<a name="assert-unauthorized"></a>
+#### assertUnauthorized
+
+Assert that the response has an unauthorized status code:
+
+    $response->assertUnauthorized();
 
 <a name="assert-view-has"></a>
 #### assertViewHas
