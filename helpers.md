@@ -1658,7 +1658,11 @@ If no Closure is passed to the `tap` function, you may call any method on the gi
         'email' => $email,
     ]);
 
-If you prefer to call the `tap` function on an instance over calling the global helper, you can add it to your own classes by using the `\Illuminate\Support\Traits\Tappable` trait. The `tap` function of this trait only takes one argument: a Closure. The instance itself will be passed to this Closure and then be returned by the `tap` function.
+To add a `tap` method to a class, you may add the `Illuminate\Support\Traits\Tappable` trait to the class. The `tap` method of this trait accepts a Closure as its only argument. The object instance itself will be passed to the Closure and then be returned by the `tap` method:
+
+    return $user->tap(function ($user) {
+        //
+    });
 
 <a name="method-throw-if"></a>
 #### `throw_if()` {#collection-method}
