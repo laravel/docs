@@ -186,8 +186,8 @@ If necessary, you may define the path where Passport's keys should be loaded fro
 
 Additionally, you may load the keys from environment variables:
 
-    PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n<private key here>\n-----END RSA PRIVATE KEY-----"
-    PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n<public key here>\n-----END PUBLIC KEY-----\n"
+    PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\\n<private key here>\\n-----END RSA PRIVATE KEY-----"
+    PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\\n<public key here>\\n-----END PUBLIC KEY-----\\n"
 
 <a name="configuration"></a>
 ## Configuration
