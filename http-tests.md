@@ -550,14 +550,14 @@ Assert that the response has a given code:
 <a name="assert-successful"></a>
 #### assertSuccessful
 
-Assert that the response has a successful status code:
+Assert that the response has a successful (200) status code:
 
     $response->assertSuccessful();
 
 <a name="assert-unauthorized"></a>
 #### assertUnauthorized
 
-Assert that the response has an unauthorized status code:
+Assert that the response has an unauthorized (401) status code:
 
     $response->assertUnauthorized();
 
