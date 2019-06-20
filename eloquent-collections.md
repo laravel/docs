@@ -99,7 +99,7 @@ The `loadMissing` method eager loads the given relationships for all models in t
 
     $users->loadMissing('comments.author');
 
-#### `modelKeys`
+#### `modelKeys()`
 
 The `modelKeys` method returns the primary keys for all models in the collection:
 
