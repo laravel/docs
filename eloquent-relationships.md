@@ -1021,6 +1021,38 @@ To eager load nested relationships, you may use "dot" syntax. For example, let's
 
     $books = App\Book::with('author.contacts')->get();
 
+#### Nested Eager Loading `morphTo` Relationships
+
+If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `with` method in combination with the `morphTo` relationship's `morphWith` method. To help illustrate this method, let's consider the following model:
+
+    <?php
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class ActivityFeed extends Model
+    {
+        /**
+         * Get the parent of the activity feed record.
+         */
+        public function parentable()
+        {
+            return $this->morphTo();
+        }
+    }
+
+In this example, let's assume `Event`, `Photo`, and `Post` models may create `ActivityFeed` models. Additionally, let's assume that `Event` models belong to a `Calendar` model, `Photo` models are associated with `Tag` models, and `Post` models belong to an `Author` model.
+
+Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:
+
+    $activities = ActivityFeed::query()
+        ->with(['parentable' => function ($morphTo) {
+            $morphTo->morphWith([
+                Event::class => ['calendar'],
+                Photo::class => ['tags'],
+                Post::class => ['author'],
+            ]);
+        }])->get();
+
 #### Eager Loading Specific Columns
 
 You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve:
