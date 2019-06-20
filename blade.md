@@ -131,6 +131,12 @@ Now, we can inject content into the named slot using the `@slot` directive. Any 
         You are not allowed to access this resource!
     @endcomponent
 
+To use the first view that exists from a given array of views for your component, you may use the `componentFirst` directive:
+
+    @componentFirst(['custom.admin', 'admin'])
+        @slot('title', 'Forbidden')
+    @endcomponent
+
 #### Passing Additional Data To Components
 
 Sometimes you may need to pass additional data to a component. For this reason, you can pass an array of data as the second argument to the `@component` directive. All of the data will be made available to the component template as variables:
