@@ -355,7 +355,7 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
 
 #### Actions That Don't Require Models
 
-As previously discussed, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the `authorize` method. The class name will be used to determine which policy to use when authorizing the action:
+As previously discussed, some actions like `create` may not require a model instance. In these situations, you need to pass a class name to the `authorize` method. The class name will be used to determine which policy to use when authorizing the action:
 
     /**
      * Create a new blog post.
@@ -370,6 +370,8 @@ As previously discussed, some actions like `create` may not require a model inst
 
         // The current user can create blog posts...
     }
+
+If no class is given as an argument, authorize will resolve itself to use `UserPolicy` as the `User` model gets added as the sole argument.
 
 #### Authorizing Resource Controllers
 
