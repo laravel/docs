@@ -371,8 +371,6 @@ As previously discussed, some actions like `create` may not require a model inst
         // The current user can create blog posts...
     }
 
-If no class is given as an argument, authorize will resolve itself to use `UserPolicy` as the `User` model gets added as the sole argument.
-
 #### Authorizing Resource Controllers
 
 If you are utilizing [resource controllers](/docs/{{version}}/controllers#resource-controllers), you may make use of the `authorizeResource` method in the controller's constructor. This method will attach the appropriate `can` middleware definitions to the resource controller's methods.
