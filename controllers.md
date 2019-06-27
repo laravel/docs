@@ -176,6 +176,12 @@ If you are using route model binding and would like the resource controller's me
 
     php artisan make:controller PhotoController --resource --model=Photo
 
+#### Specifying The Parent Model
+
+when we have polymorphic relationships, we often have nested routes and controllers. If you want to associate your controller to two Models, a model and its parent, you may use the `--parent` option alongside with the `--model` option:
+
+    php artisan make:controller PostTagsController --model=Tag --parent=Post
+
 #### Spoofing Form Methods
 
 Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need to add a hidden `_method` field to spoof these HTTP verbs. The `@method` Blade directive can create this field for you:
