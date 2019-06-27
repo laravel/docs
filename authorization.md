@@ -397,7 +397,6 @@ The following controller methods will be mapped to their corresponding policy me
 
 | Controller Method | Policy Method |
 | --- | --- |
-| index | viewAny |
 | show | view |
 | create | create |
 | store | create |
