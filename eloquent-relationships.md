@@ -18,6 +18,7 @@
     - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
     - [Querying Relationship Existence](#querying-relationship-existence)
     - [Querying Relationship Absence](#querying-relationship-absence)
+    - [Querying Polymorphic Relationships](#querying-polymorphic-relationships)
     - [Counting Related Models](#counting-related-models)
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
@@ -921,6 +922,35 @@ You may use "dot" notation to execute a query against a nested relationship. For
     $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) {
         $query->where('banned', 1);
     })->get();
+
+<a name="querying-polymorphic-relationships"></a>
+### Querying Polymorphic Relationships
+
+For `MorphTo` relationships, you may use `whereHasMorph` and the corresponding methods:
+
+    $comments = App\Comment::whereHasMorph('commentable', ['App\Post', 'App\Video'], function ($query) {
+        $query->where('title', 'like', 'foo%');
+    })->get();
+    
+    $comments = App\Comment::doesntHaveMorph('commentable', ['App\Post', 'App\Video'])->get();    
+    
+You may use the `$type` parameter to add different constraints depending on the related model:
+
+    $comments = App\Comment::whereHasMorph('commentable', ['App\Post', 'App\Video'], function ($query, $type) {
+        $query->where('title', 'like', 'foo%');
+    
+        if ($type === 'App\Post') {
+            $query->orWhere('content', 'like', 'foo%');
+        }
+    })->get();
+    
+You may also provide `*` as a wildcard and let Laravel get the possible types from the database:
+
+    $comments = App\Comment::whereHasMorph('commentable', '*', function ($query) {
+        $query->where('title', 'like', 'foo%');
+    })->get();
+    
+Be aware that this executes an additional query.
 
 <a name="counting-related-models"></a>
 ### Counting Related Models
