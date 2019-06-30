@@ -10,7 +10,6 @@
 - [Queued Event Listeners](#queued-event-listeners)
     - [Manually Accessing The Queue](#manually-accessing-the-queue)
     - [Handling Failed Jobs](#handling-failed-jobs)
-    - [The shouldQueue Function](#the-shouldqueue-function)
 - [Dispatching Events](#dispatching-events)
 - [Event Subscribers](#event-subscribers)
     - [Writing Event Subscribers](#writing-event-subscribers)
@@ -257,6 +256,42 @@ If you would like to customize the queue connection, queue name, or queue delay 
         public $delay = 60;
     }
 
+#### Conditionally Queueing Listeners
+
+Sometimes, you may need to determine whether a listener should be queued based on some data that's only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued and executed synchronously:
+
+    <?php
+
+    namespace App\Listeners;
+
+    use App\Events\OrderPlaced;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+
+    class RewardGiftCard implements ShouldQueue
+    {
+        /**
+         * Reward a gift card to the customer.
+         *
+         * @param  \App\Events\OrderPlaced  $event
+         * @return void
+         */
+        public function handle(OrderPlaced $event)
+        {
+            //
+        }
+
+        /**
+         * Determine whether the listener should be queued.
+         *
+         * @param  \App\Events\OrderPlaced  $event
+         * @return bool
+         */
+        public function shouldQueue(OrderPlaced $event)
+        {
+            return $event->order->subtotal >= 5000;
+        }
+    }
+
 <a name="manually-accessing-the-queue"></a>
 ### Manually Accessing The Queue
 
@@ -326,43 +361,6 @@ Sometimes your queued event listeners may fail. If queued listener exceeds the m
         public function failed(OrderShipped $event, $exception)
         {
             //
-        }
-    }
-
-<a name="the-shouldqueue-function"></a>
-### The shouldQueue Function
-
-The shouldQueue function can be added to a listener to determine whether the listener should be queued and executed:
-
-    <?php
-
-    namespace App\Listeners;
-
-    use App\Events\OrderPlaced;
-    use Illuminate\Contracts\Queue\ShouldQueue;
-
-    class RewardGiftCard implements ShouldQueue
-    {
-        /**
-         * Reward a gift card to the customer.
-         *
-         * @param  OrderPlaced  $event
-         * @return void
-         */
-        public function handle(OrderPlaced $event)
-        {
-            // Reward a gift card and notify the customer.
-        }
-
-        /**
-         * Only reward a gift card if the order subtotal is at least $5000.
-         *
-         * @param  OrderPlaced  $event
-         * @return bool
-         */
-        public function shouldQueue(OrderPlaced $event)
-        {
-            return $event->order->subtotal >= 5000;
         }
     }
 
