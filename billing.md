@@ -338,6 +338,8 @@ If the user cancels a subscription and then resumes that subscription before the
 <a name="subscription-trials"></a>
 ## Subscription Trials
 
+> {note} It's important to know that, when working with trial periods, Cashier will always overwrite the default trial period of a Stripe plan when creating or swapping a subscription. 
+
 <a name="with-credit-card-up-front"></a>
 ### With Credit Card Up Front
 
