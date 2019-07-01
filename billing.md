@@ -338,8 +338,6 @@ If the user cancels a subscription and then resumes that subscription before the
 <a name="subscription-trials"></a>
 ## Subscription Trials
 
-> {note} It's important to know that, when working with trial periods, Cashier will always overwrite the default trial period of a Stripe plan when creating or swapping a subscription. 
-
 <a name="with-credit-card-up-front"></a>
 ### With Credit Card Up Front
 
@@ -351,7 +349,7 @@ If you would like to offer trial periods to your customers while still collectin
                 ->trialDays(10)
                 ->create($token);
 
-This method will set the trial period ending date on the subscription record within the database, as well as instruct Stripe to not begin billing the customer until after this date.
+This method will set the trial period ending date on the subscription record within the database, as well as instruct Stripe to not begin billing the customer until after this date. When using the `trialDays` method, Cashier will overwrite any default trial period configured for the plan in Stripe.
 
 > {note} If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
