@@ -266,7 +266,7 @@ The query builder will now return unquoted JSON values when using MySQL and Mari
     // Laravel 5.8...
     'en'
 
-As a result, the `->>` operator is no longer supported or necessary.
+As a result, the `->` operator is no longer supported or necessary.
 
 <a name="sqlite"></a>
 #### SQLite
