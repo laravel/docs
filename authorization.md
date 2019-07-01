@@ -432,6 +432,14 @@ These directives are convenient shortcuts for writing `@if` and `@unless` statem
     @unless (Auth::user()->can('update', $post))
         <!-- The Current User Can't Update The Post -->
     @endunless
+    
+It is also possible to test for multiple authorizations at the same time. For this, you can use `@canany` and `@elsecanany`: 
+    
+    @canany(['update', 'view'])
+        <!-- The Current User Has Either `update` or `view` authorizations -->
+    @elsecanany(['create', 'delete'])
+        <!-- The Current User Has Either `create` or `delete` authorizations -->
+    @endcanany
 
 #### Actions That Don't Require Models
 
