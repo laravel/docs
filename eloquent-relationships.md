@@ -405,6 +405,8 @@ If you have defined a many-to-many relationship that uses a custom pivot model, 
      */
     public $incrementing = true;
 
+> **Note:** Pivot models aren't meant to contain lots of complex relationships. Should you ever feel the need to introduce relationships on the Pivot model or make use of more complex Eloquent features, try to migrate your Pivot model to the Eloquent `Model` class.
+
 <a name="has-one-through"></a>
 ### Has One Through
 
