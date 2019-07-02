@@ -1,4 +1,4 @@
-s# Authorization
+# Authorization
 
 - [Introduction](#introduction)
 - [Gates](#gates)
