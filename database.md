@@ -5,7 +5,7 @@
     - [Read & Write Connections](#read-and-write-connections)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
 - [Running Raw SQL Queries](#running-queries)
-    - [Listening For Query Events](#listening-for-query-events)
+- [Listening For Query Events](#listening-for-query-events)
 - [Database Transactions](#database-transactions)
 
 <a name="introduction"></a>
@@ -173,7 +173,7 @@ Some database statements do not return any value. For these types of operations,
     DB::statement('drop table users');
 
 <a name="listening-for-query-events"></a>
-### Listening For Query Events
+## Listening For Query Events
 
 If you would like to receive each SQL query executed by your application, you may use the `listen` method. This method is useful for logging queries or debugging. You may register your query listener in a [service provider](/docs/{{version}}/providers):
 
