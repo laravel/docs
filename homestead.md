@@ -104,7 +104,6 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 - CouchDB
 - Crystal & Lucky Framework
 - Docker
-- Dot Net Core
 - Elasticsearch
 - Gearman
 - Go
@@ -113,6 +112,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 - MariaDB
 - MinIO
 - MongoDB
+- MySQL 8
 - Neo4j
 - Oh My Zsh
 - Open Resty
