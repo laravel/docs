@@ -262,16 +262,21 @@ Next, run the `vagrant up` command in your terminal and access your project at `
 <a name="installing-optional-features"></a>
 ### Installing Optional Features
 
-Optional software is installed using the "features" setting in your Homestead configuration file. Most features can be enabled or disabled with a boolean value. Features with support for multiple versions can be passed a version number.
+Optional software is installed using the "features" setting in your Homestead configuration file. Most features can be enabled or disabled with a boolean value, while some features allow multiple configuration options.
 
     features:
-        - blackfire: true
+        - blackfire:
+            server_id: "server_id"
+            server_token: "server_value"
+            client_id: "client_id"
+            client_token: "client_value"
         - cassandra: true
         - chronograf: true
         - couchdb: true
         - crystal: true
         - docker: true
-        - elasticsearch: 6
+        - elasticsearch:
+            version: 7
         - gearman: true
         - golang: true
         - grafana: true
