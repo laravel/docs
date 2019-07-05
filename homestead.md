@@ -6,10 +6,7 @@
     - [Configuring Homestead](#configuring-homestead)
     - [Launching The Vagrant Box](#launching-the-vagrant-box)
     - [Per Project Installation](#per-project-installation)
-    - [Installing MariaDB](#installing-mariadb)
-    - [Installing MongoDB](#installing-mongodb)
-    - [Installing Elasticsearch](#installing-elasticsearch)
-    - [Installing Neo4j](#installing-neo4j)
+    - [Installing Optional Features](#installing-optional-features)
     - [Aliases](#aliases)
 - [Daily Usage](#daily-usage)
     - [Accessing Homestead Globally](#accessing-homestead-globally)
@@ -262,47 +259,51 @@ Windows:
 
 Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.test` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.test` or the domain of your choice if you are not using automatic [hostname resolution](#hostname-resolution).
 
-<a name="installing-mariadb"></a>
-### Installing MariaDB
+<a name="installing-optional-features"></a>
+### Installing Optional Features
 
-If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option to your `Homestead.yaml` file. This option will remove MySQL and install MariaDB. MariaDB serves as a drop-in replacement for MySQL so you should still use the `mysql` database driver in your application's database configuration:
+Optional software is installed using the "features" setting in your Homestead configuration file. Most features can be enabled or disabled with a boolean value. Features with support for multiple versions can be passed a version number.
 
-    box: laravel/homestead
-    ip: "192.168.10.10"
-    memory: 2048
-    cpus: 4
-    provider: virtualbox
-    mariadb: true
+    features:
+        - blackfire: true
+        - cassandra: true
+        - chronograf: true
+        - couchdb: true
+        - crystal: true
+        - docker: true
+        - elasticsearch: 6
+        - gearman: true
+        - golang: true
+        - grafana: true
+        - influxdb: true
+        - mariadb: true
+        - minio: true
+        - mongodb: true
+        - mysql8: true
+        - neo4j: true
+        - ohmyzsh: true
+        - openresty: true
+        - pm2: true
+        - python: true
+        - rabbitmq: true
+        - solr: true
+        - webdriver: true
 
-<a name="installing-mongodb"></a>
-### Installing MongoDB
+#### MariaDB
 
-To install MongoDB Community Edition, update your `Homestead.yaml` file with the following configuration option:
+This will remove MySQL and install MariaDB. MariaDB serves as a drop-in replacement for MySQL so you should still use the `mysql` database driver in your application's database configuration.
 
-    mongodb: true
+#### MongoDB
 
 The default MongoDB installation will set the database username to `homestead` and the corresponding password to `secret`.
 
-<a name="installing-elasticsearch"></a>
-### Installing Elasticsearch
+#### Elasticsearch
 
-To install Elasticsearch, add the `elasticsearch` option to your `Homestead.yaml` file and specify a supported version, which may be a major version or an exact version number (major.minor.patch). The default installation will create a cluster named 'homestead'. You should never give Elasticsearch more than half of the operating system's memory, so make sure your Homestead machine has at least twice the Elasticsearch allocation:
-
-    box: laravel/homestead
-    ip: "192.168.10.10"
-    memory: 4096
-    cpus: 4
-    provider: virtualbox
-    elasticsearch: 6
+You may specify a supported version of Elasticsearch, which may be a major version or an exact version number (major.minor.patch). The default installation will create a cluster named 'homestead'. You should never give Elasticsearch more than half of the operating system's memory, so make sure your Homestead machine has at least twice the Elasticsearch allocation.
 
 > {tip} Check out the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current) to learn how to customize your configuration.
 
-<a name="installing-neo4j"></a>
-### Installing Neo4j
-
-[Neo4j](https://neo4j.com/) is a graph database management system. To install Neo4j Community Edition, update your `Homestead.yaml` file with the following configuration option:
-
-    neo4j: true
+#### Neo4j
 
 The default Neo4j installation will set the database username to `homestead` and corresponding password to `secret`. To access the Neo4j browser, visit `http://homestead.test:7474` via your web browser. The ports `7687` (Bolt), `7474` (HTTP), and `7473` (HTTPS) are ready to serve requests from the Neo4j client.
 
