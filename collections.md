@@ -510,25 +510,19 @@ The `duplicates` method retrieves and returns duplicate values from the collecti
 
     $collection->duplicates();
 
-    // [ 2 => 'a', 4 => 'b' ]
+    // [2 => 'a', 4 => 'b']
 
 If the collection contains arrays or objects, you can pass the key of the attributes that you wish to check for duplicate values:
 
     $employees = collect([
-        ['email' => 'johndoe@example.com', 'position' => 'developer'],
-        ['email' => 'janedoe@example.com', 'position' => 'designer'],
-        ['email' => 'jackdoe@example.com', 'position' => 'developer'],
+        ['email' => 'abigail@example.com', 'position' => 'Developer'],
+        ['email' => 'james@example.com', 'position' => 'Designer'],
+        ['email' => 'victoria@example.com', 'position' => 'Developer'],
     ])
 
     $employees->duplicates('position');
 
-    /*
-        Collection {
-            #items: array:1 [
-                2 => "developer"
-            ]
-        }
-    */
+    // [2 => 'Developer']
 
 <a name="method-duplicatesstrict"></a>
 #### `duplicatesStrict()` {#collection-method}
