@@ -1545,7 +1545,7 @@ For the inverse of the `reject` method, see the [`filter`](#method-filter) metho
 <a name="method-replace"></a>
 #### `replace()` {#collection-method}
 
-The `replace` method replaces the given array or collection with the items of original collection.
+The `replace` method replaces the given array or collection with the items of the original collection.
 If a key in the given items matches a key in the original collection,
 the given items's value will overwrite the value in the original collection.
 If a key exists in the given items, and not in the original collection, it will be created in the collection.
@@ -1562,7 +1562,7 @@ If a key only exists in the original collection, it will be left as is:
 <a name="method-replacerecursive"></a>
 #### `replaceRecursive()` {#collection-method}
 
-The `replaceRecursive` method replaces the given array or collection recursively with the items of original collection.
+The `replaceRecursive` method replaces the given array or collection recursively with the items of the original collection.
 This method works like `replace`, but it will recurse into arrays and apply the same process to the inner value.
 
     $collection = collect(['foo', 'bar', ['baz', 'bee', 'xyz']]);
