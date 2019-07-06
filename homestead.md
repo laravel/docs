@@ -293,10 +293,10 @@ Optional software is installed using the "features" setting in your Homestead co
         - rabbitmq: true
         - solr: true
         - webdriver: true
-s
+
 #### MariaDB
 
-Enabling MariaDB remove MySQL and install MariaDB. MariaDB serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration.
+Enabling MariaDB will remove MySQL and install MariaDB. MariaDB serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration.
 
 #### MongoDB
 
