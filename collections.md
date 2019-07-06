@@ -1562,8 +1562,8 @@ If a key only exists in the original collection, it will be left as is:
 <a name="method-replacerecursive"></a>
 #### `replaceRecursive()` {#collection-method}
 
-The `replaceRecursive` method recursively replaces the given array or collection with the items of original collection.
-This method works like `replace` but runs recursively.
+The `replaceRecursive` method replaces the given array or collection recursively with the items of original collection.
+This method works like `replace`, but it will recurse into arrays and apply the same process to the inner value.
 
     $collection = collect(['foo', 'bar', ['baz', 'bee', 'xyz']]);
 
