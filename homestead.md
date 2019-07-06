@@ -262,7 +262,7 @@ Next, run the `vagrant up` command in your terminal and access your project at `
 <a name="installing-optional-features"></a>
 ### Installing Optional Features
 
-Optional software is installed using the "features" setting in your Homestead configuration file. Most features can be enabled or disabled with a boolean value, while some features allow multiple configuration options.
+Optional software is installed using the "features" setting in your Homestead configuration file. Most features can be enabled or disabled with a boolean value, while some features allow multiple configuration options:
 
     features:
         - blackfire:
@@ -293,10 +293,10 @@ Optional software is installed using the "features" setting in your Homestead co
         - rabbitmq: true
         - solr: true
         - webdriver: true
-
+s
 #### MariaDB
 
-This will remove MySQL and install MariaDB. MariaDB serves as a drop-in replacement for MySQL so you should still use the `mysql` database driver in your application's database configuration.
+Enabling MariaDB remove MySQL and install MariaDB. MariaDB serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration.
 
 #### MongoDB
 
@@ -602,7 +602,7 @@ To enable debugging, run the following commands inside your Vagrant box:
     sudo phpenmod xdebug
 
     # Update this command to match your PHP version...
-    sudo systemctl restart php7.3-fpm 
+    sudo systemctl restart php7.3-fpm
 
 Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
