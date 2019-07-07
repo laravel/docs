@@ -126,7 +126,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 <a name="first-steps"></a>
 ### First Steps
 
-Before launching your Homestead environment, you must install [VirtualBox](https://www.virtualbox.org/wiki/Downloads), [VMWare](https://www.vmware.com), [Parallels](https://www.parallels.com/products/desktop/) or [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v) as well as [Vagrant](https://www.vagrantup.com/downloads.html). All of these software packages provide easy-to-use visual installers for all popular operating systems.
+Before launching your Homestead environment, you must install [VirtualBox 6.x](https://www.virtualbox.org/wiki/Downloads), [VMWare](https://www.vmware.com), [Parallels](https://www.parallels.com/products/desktop/) or [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v) as well as [Vagrant](https://www.vagrantup.com/downloads.html). All of these software packages provide easy-to-use visual installers for all popular operating systems.
 
 To use the VMware provider, you will need to purchase both VMware Fusion / Workstation and the [VMware Vagrant plug-in](https://www.vagrantup.com/vmware). Though it is not free, VMware can provide faster shared folder performance out of the box.
 
@@ -148,7 +148,7 @@ You may install Homestead by cloning the repository onto your host machine. Cons
 
     git clone https://github.com/laravel/homestead.git ~/Homestead
 
-You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [GitHub Release Page](https://github.com/laravel/homestead/releases):
+You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [GitHub Release Page](https://github.com/laravel/homestead/releases). Alternatively you may check out the `release` branch which is always updated with the latest stable release.
 
     cd ~/Homestead
 
@@ -177,10 +177,12 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary:
 
     folders:
-        - map: ~/code
-          to: /home/vagrant/code
+        - map: ~/code/project1
+          to: /home/vagrant/project1
 
-If you are only creating a few sites, this generic mapping will work just fine. However, as the number of sites continue to grow, you may begin to experience performance problems. This problem can be painfully apparent on low-end machines or projects that contain a very large number of files. If you are experiencing this issue, try mapping every project to its own Vagrant folder:
+> {note} Windows users should not use the `~/` path syntax and instead should use the full path to their project such as `C:\Users\user\Code\project1`.
+
+You should always map individual projects each as their own folder mapping instead of mapping your entire `~/code` folder. When you map a folder the virtual machine must keep track of all the I/O that happens for *every* file in the folder even if you're not working on that project. This can lead to performance issues if you have a large number of files in a folder. Virtualbox is more susceptible to this than other providers, which means it's more important to split up your folder mounts to individual projects when using the Virtualbox provider.
 
     folders:
         - map: ~/code/project1
@@ -189,11 +191,13 @@ If you are only creating a few sites, this generic mapping will work just fine. 
         - map: ~/code/project2
           to: /home/vagrant/code/project2
 
+> {note} You should never mount `.` (the current directory) when using Homestead. This causes Vagrant to not map the current folder to `/vagrant` and will break optional features and cause unexpected results while provisioning.
+
 To enable [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html), you only need to add a simple flag to your synced folder configuration:
 
     folders:
-        - map: ~/code
-          to: /home/vagrant/code
+        - map: ~/code/project1
+          to: /home/vagrant/project1
           type: "nfs"
 
 > {note} When using NFS on Windows, you should consider installing the [vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) plug-in. This plug-in will maintain the correct user / group permissions for files and directories within the Homestead box.
@@ -201,8 +205,8 @@ To enable [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html), you onl
 You may also pass any options supported by Vagrant's [Synced Folders](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) by listing them under the `options` key:
 
     folders:
-        - map: ~/code
-          to: /home/vagrant/code
+        - map: ~/code/project1
+          to: /home/vagrant/project1
           type: "rsync"
           options:
               rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
@@ -214,9 +218,11 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/my-project/public
+          to: /home/vagrant/project1/public
 
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
+
+> {note} Remember that while Homestead scripts are built as idempotent as possible, if you are experiencing issues while provisioning you should destroy the machine via `vagrant destroy && vagrant up` to rebuild from a known good state.
 
 <a name="hostname-resolution"></a>
 #### Hostname Resolution
@@ -402,9 +408,9 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/my-project/public
+          to: /home/vagrant/project1/public
         - map: another.test
-          to: /home/vagrant/code/another/public
+          to: /home/vagrant/project2/public
 
 If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well:
 
@@ -420,7 +426,7 @@ Homestead supports several types of sites which allow you to easily run projects
 
     sites:
         - map: symfony2.test
-          to: /home/vagrant/code/my-symfony-project/web
+          to: /home/vagrant/my-symfony-project/web
           type: "symfony2"
 
 The available site types are: `apache`, `apigility`, `expressive`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, `symfony4`, and `zf`.
@@ -432,7 +438,7 @@ You may add additional Nginx `fastcgi_param` values to your site via the `params
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/my-project/public
+          to: /home/vagrant/project1/public
           params:
               - key: FOO
                 value: BAR
@@ -459,7 +465,7 @@ If you would like the `schedule:run` command to be run for a Homestead site, you
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/my-project/public
+          to: /home/vagrant/project1/public
           schedule: true
 
 The Cron job for the site will be defined in the `/etc/cron.d` folder of the virtual machine.
@@ -557,7 +563,7 @@ After running the command, you will see an Ngrok screen appear which contains th
 
     share homestead.test -region=eu -subdomain=laravel
 
-> {note} Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the Internet when running the `share` command.
+> {note} Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the internet when running the `share` command.
 
 <a name="multiple-php-versions"></a>
 ### Multiple PHP Versions
@@ -566,7 +572,7 @@ Homestead 6 introduced support for multiple versions of PHP on the same virtual 
 
     sites:
         - map: homestead.test
-          to: /home/vagrant/code/my-project/public
+          to: /home/vagrant/project1/public
           php: "7.1"
 
 In addition, you may use any of the supported PHP versions via the CLI:
@@ -630,7 +636,7 @@ When debugging functional tests that make requests to the web server, it is easi
     sites:
         -
             map: your-site.test
-            to: /home/vagrant/code/web
+            to: /home/vagrant/your-site/public
             type: "apache"
             xhgui: 'true'
 
@@ -689,7 +695,7 @@ When using Homestead in a team setting, you may want to tweak Homestead to bette
 <a name="updating-homestead"></a>
 ## Updating Homestead
 
-You can update Homestead in a few simple steps. First, you should update the Vagrant box using the `vagrant box update` command:
+Before you begin updating Homestead ensure you run `vagrant destroy` to remove your current virtual machine. You can update Homestead in a few simple steps. First, you should update the Vagrant box using the `vagrant box update` command:
 
     vagrant box update
 
@@ -701,7 +707,7 @@ Next, you need to update the Homestead source code. If you cloned the repository
 
 These commands pull the latest Homestead code from the GitHub repository, fetches the latest tags, and then checks out the latest tagged release. You can find the latest stable release version on the [GitHub releases page](https://github.com/laravel/homestead/releases).
 
-If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^8"` and update your dependencies:
+If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^9"` and update your dependencies:
 
     composer update
 
