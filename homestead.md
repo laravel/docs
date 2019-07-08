@@ -148,11 +148,10 @@ You may install Homestead by cloning the repository onto your host machine. Cons
 
     git clone https://github.com/laravel/homestead.git ~/Homestead
 
-You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [GitHub Release Page](https://github.com/laravel/homestead/releases). Alternatively you may check out the `release` branch which is always updated with the latest stable release.
+You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [GitHub Release Page](https://github.com/laravel/homestead/releases). Alternatively, you may checkout the `release` branch which always contains the latest stable release:
 
     cd ~/Homestead
 
-    // Checkout the stable "release" branch
     git checkout release
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
@@ -180,9 +179,9 @@ The `folders` property of the `Homestead.yaml` file lists all of the folders you
         - map: ~/code/project1
           to: /home/vagrant/project1
 
-> {note} Windows users should not use the `~/` path syntax and instead should use the full path to their project such as `C:\Users\user\Code\project1`.
+> {note} Windows users should not use the `~/` path syntax and instead should use the full path to their project, such as `C:\Users\user\Code\project1`.
 
-You should always map individual projects each as their own folder mapping instead of mapping your entire `~/code` folder. When you map a folder the virtual machine must keep track of all the I/O that happens for *every* file in the folder even if you're not working on that project. This can lead to performance issues if you have a large number of files in a folder. Virtualbox is more susceptible to this than other providers, which means it's more important to split up your folder mounts to individual projects when using the Virtualbox provider.
+You should always map individual projects to their own folder mapping instead of mapping your entire `~/code` folder. When you map a folder the virtual machine must keep track of all disk IO for *every* file in the folder. This leads to performance issues if you have a large number of files in a folder.
 
     folders:
         - map: ~/code/project1
@@ -222,7 +221,7 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
 
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
 
-> {note} Remember that while Homestead scripts are built as idempotent as possible, if you are experiencing issues while provisioning you should destroy the machine via `vagrant destroy && vagrant up` to rebuild from a known good state.
+> {note} Homestead scripts are built to be as idempotent as possible. However, if you are experiencing issues while provisioning you should destroy and rebuild the machine via `vagrant destroy && vagrant up`.
 
 <a name="hostname-resolution"></a>
 #### Hostname Resolution
@@ -563,7 +562,7 @@ After running the command, you will see an Ngrok screen appear which contains th
 
     share homestead.test -region=eu -subdomain=laravel
 
-> {note} Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the internet when running the `share` command.
+> {note} Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the Internet when running the `share` command.
 
 <a name="multiple-php-versions"></a>
 ### Multiple PHP Versions
@@ -695,7 +694,7 @@ When using Homestead in a team setting, you may want to tweak Homestead to bette
 <a name="updating-homestead"></a>
 ## Updating Homestead
 
-Before you begin updating Homestead ensure you run `vagrant destroy` to remove your current virtual machine. You can update Homestead in a few simple steps. First, you should update the Vagrant box using the `vagrant box update` command:
+Before you begin updating Homestead ensure you run `vagrant destroy` to remove your current virtual machine. Then, you should update the Vagrant box using the `vagrant box update` command:
 
     vagrant box update
 
