@@ -799,6 +799,8 @@ By default, Laravel will use the fully qualified class name to store the type of
 
 You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
 
+> {note} When adding a "morph map" to your application, every morph `*_type` column in your database still using the fully qualified name such as `App\Post` or `App\Comment` will need to be replaced with its respective "morph map" name `posts` or `comments`. When querying, Eloquent will only use your "morph map" names like `posts` and will skip over database rows still using the fully qualified name like `App\Post`.
+
 <a name="querying-relations"></a>
 ## Querying Relations
 
