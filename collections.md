@@ -121,6 +121,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [max](#method-max)
 [median](#method-median)
 [merge](#method-merge)
+[mergeRecursive](#method-mergerecursive)
 [min](#method-min)
 [mode](#method-mode)
 [nth](#method-nth)
@@ -137,6 +138,8 @@ For the remainder of this documentation, we'll discuss each method available on 
 [random](#method-random)
 [reduce](#method-reduce)
 [reject](#method-reject)
+[replace](#method-replace)
+[replaceRecursive](#method-replacerecursive)
 [reverse](#method-reverse)
 [search](#method-search)
 [shift](#method-shift)
@@ -1236,6 +1239,19 @@ If the given items's keys are numeric, the values will be appended to the end of
 
     // ['Desk', 'Chair', 'Bookcase', 'Door']
 
+<a name="method-mergerecursive"></a>
+#### `mergeRecursive()` {#collection-method}
+
+The `mergeRecursive` method merges the given array or collection recursively with the original collection. If a string key in the given items matches a string key in the original collection, then the values for these keys are merged together into an array, and this is done recursively:
+
+    $collection = collect(['product_id' => 1, 'price' => 100]);
+
+    $merged = $collection->merge(['product_id' => 2, 'price' => 200, 'discount' => false]);
+
+    $merged->all();
+
+    // ['product_id' => [1, 2], 'price' => [100, 200], 'discount' => false]
+
 <a name="method-min"></a>
 #### `min()` {#collection-method}
 
@@ -1523,6 +1539,32 @@ The `reject` method filters the collection using the given callback. The callbac
     // [1, 2]
 
 For the inverse of the `reject` method, see the [`filter`](#method-filter) method.
+
+<a name="method-replace"></a>
+#### `replace()` {#collection-method}
+
+The `replace` method replaces the given array or collection with the items of the original collection. If a key in the given items matches a key in the original collection, the given items's value will overwrite the value in the original collection. If a key exists in the given items, and not in the original collection, it will be created in the collection. If a key only exists in the original collection, it will be left as is:
+
+    $collection = collect(['foo', 'bar', 'baz']);
+
+    $replaced = $collection->replace([1 => 'fighters', 3 => 'alt']);
+
+    $replaced->all();
+
+    // ['foo', 'fighters', 'baz', 'alt']
+
+<a name="method-replacerecursive"></a>
+#### `replaceRecursive()` {#collection-method}
+
+The `replaceRecursive` method replaces the given array or collection recursively with the items of the original collection. This method works like `replace`, but it will recurse into arrays and apply the same process to the inner value.
+
+    $collection = collect(['foo', 'bar', ['baz', 'bee', 'xyz']]);
+
+    $replaced = $collection->replaceRecursive(['zoo', 2 => [1 => 'boo']]);
+
+    $replaced->all();
+
+    // ['zoo', 'bar', ['baz', 'boo', 'xyz']]
 
 <a name="method-reverse"></a>
 #### `reverse()` {#collection-method}
