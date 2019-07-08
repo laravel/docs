@@ -1543,28 +1543,28 @@ For the inverse of the `reject` method, see the [`filter`](#method-filter) metho
 <a name="method-replace"></a>
 #### `replace()` {#collection-method}
 
-The `replace` method replaces the given array or collection with the items of the original collection. If a key in the given items matches a key in the original collection, the given items's value will overwrite the value in the original collection. If a key exists in the given items, and not in the original collection, it will be created in the collection. If a key only exists in the original collection, it will be left as is:
+The `replace` method behaves similarly to `merge`; however, in addition to overwriting matching items with string keys, the `replace` method will also overwrite items in the collection that have matching numeric keys:
 
-    $collection = collect(['foo', 'bar', 'baz']);
+    $collection = collect(['Taylor', 'Abigail', 'James']);
 
-    $replaced = $collection->replace([1 => 'fighters', 3 => 'alt']);
+    $replaced = $collection->replace([1 => 'Victoria', 3 => 'Finn']);
 
     $replaced->all();
 
-    // ['foo', 'fighters', 'baz', 'alt']
+    // ['Taylor', 'Victoria', 'James', 'Finn']
 
 <a name="method-replacerecursive"></a>
 #### `replaceRecursive()` {#collection-method}
 
-The `replaceRecursive` method replaces the given array or collection recursively with the items of the original collection. This method works like `replace`, but it will recurse into arrays and apply the same process to the inner value.
+This method works like `replace`, but it will recurse into arrays and apply the same replacement process to the inner values:
 
-    $collection = collect(['foo', 'bar', ['baz', 'bee', 'xyz']]);
+    $collection = collect(['Taylor', 'Abigail', ['James', 'Victoria', 'Finn']]);
 
-    $replaced = $collection->replaceRecursive(['zoo', 2 => [1 => 'boo']]);
+    $replaced = $collection->replaceRecursive(['Charlie', 2 => [1 => 'King']]);
 
     $replaced->all();
 
-    // ['zoo', 'bar', ['baz', 'boo', 'xyz']]
+    // ['Charlie', 'Abigail', ['James', 'King', 'Finn']]
 
 <a name="method-reverse"></a>
 #### `reverse()` {#collection-method}
