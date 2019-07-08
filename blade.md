@@ -111,6 +111,12 @@ The `{{ $slot }}` variable will contain the content we wish to inject into the c
         <strong>Whoops!</strong> Something went wrong!
     @endcomponent
 
+To instruct Laravel to load the first view that exists from a given array of possible views for the component, you may use the `componentFirst` directive:
+
+    @componentFirst(['custom.alert', 'alert'])
+        <strong>Whoops!</strong> Something went wrong!
+    @endcomponent
+
 Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title". Named slots may be displayed by "echoing" the variable that matches their name:
 
     <!-- /resources/views/alert.blade.php -->

@@ -18,6 +18,7 @@
     - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
     - [Querying Relationship Existence](#querying-relationship-existence)
     - [Querying Relationship Absence](#querying-relationship-absence)
+    - [Querying Polymorphic Relationships](#querying-polymorphic-relationships)
     - [Counting Related Models](#counting-related-models)
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
@@ -798,6 +799,8 @@ By default, Laravel will use the fully qualified class name to store the type of
 
 You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
 
+> {note} When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
+
 <a name="querying-relations"></a>
 ## Querying Relations
 
@@ -922,6 +925,44 @@ You may use "dot" notation to execute a query against a nested relationship. For
         $query->where('banned', 1);
     })->get();
 
+<a name="querying-polymorphic-relationships"></a>
+### Querying Polymorphic Relationships
+
+To query the existence of `MorphTo` relationships, you may use the `whereHasMorph` method and its corresponding methods:
+
+    $comments = App\Comment::whereHasMorph(
+        'commentable', 
+        ['App\Post', 'App\Video'], 
+        function ($query) {
+            $query->where('title', 'like', 'foo%');
+        }
+    )->get();
+
+    $comments = App\Comment::doesntHaveMorph(
+        'commentable', 
+        ['App\Post', 'App\Video']
+    )->get();    
+    
+You may use the `$type` parameter to add different constraints depending on the related model:
+
+    $comments = App\Comment::whereHasMorph(
+        'commentable', 
+        ['App\Post', 'App\Video'], 
+        function ($query, $type) {
+            $query->where('title', 'like', 'foo%');
+    
+            if ($type === 'App\Post') {
+                $query->orWhere('content', 'like', 'foo%');
+            }
+        }
+    )->get();
+    
+Instead of passing an array of possible polymorphic models, you may provide `*` as a wildcard and let Laravel retrieve all the possible polymorphic types from the database. Laravel will execute an additional query in order to perform this operation:
+
+    $comments = App\Comment::whereHasMorph('commentable', '*', function ($query) {
+        $query->where('title', 'like', 'foo%');
+    })->get();
+
 <a name="counting-related-models"></a>
 ### Counting Related Models
 
@@ -1020,6 +1061,38 @@ Sometimes you may need to eager load several different relationships in a single
 To eager load nested relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts in one Eloquent statement:
 
     $books = App\Book::with('author.contacts')->get();
+
+#### Nested Eager Loading `morphTo` Relationships
+
+If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `with` method in combination with the `morphTo` relationship's `morphWith` method. To help illustrate this method, let's consider the following model:
+
+    <?php
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class ActivityFeed extends Model
+    {
+        /**
+         * Get the parent of the activity feed record.
+         */
+        public function parentable()
+        {
+            return $this->morphTo();
+        }
+    }
+
+In this example, let's assume `Event`, `Photo`, and `Post` models may create `ActivityFeed` models. Additionally, let's assume that `Event` models belong to a `Calendar` model, `Photo` models are associated with `Tag` models, and `Post` models belong to an `Author` model.
+
+Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:
+
+    $activities = ActivityFeed::query()
+        ->with(['parentable' => function ($morphTo) {
+            $morphTo->morphWith([
+                Event::class => ['calendar'],
+                Photo::class => ['tags'],
+                Post::class => ['author'],
+            ]);
+        }])->get();
 
 #### Eager Loading Specific Columns
 

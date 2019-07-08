@@ -355,7 +355,7 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
 
 #### Actions That Don't Require Models
 
-As previously discussed, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the `authorize` method. The class name will be used to determine which policy to use when authorizing the action:
+As previously discussed, some actions like `create` may not require a model instance. In these situations, you should pass a class name to the `authorize` method. The class name will be used to determine which policy to use when authorizing the action:
 
     /**
      * Create a new blog post.
@@ -373,7 +373,7 @@ As previously discussed, some actions like `create` may not require a model inst
 
 #### Authorizing Resource Controllers
 
-If you are utilizing [resource controllers](/docs/{{version}}/controllers#resource-controllers), you may make use of the `authorizeResource` method in the controller's constructor. This method will attach the appropriate `can` middleware definition to the resource controller's methods.
+If you are utilizing [resource controllers](/docs/{{version}}/controllers#resource-controllers), you may make use of the `authorizeResource` method in the controller's constructor. This method will attach the appropriate `can` middleware definitions to the resource controller's methods.
 
 The `authorizeResource` method accepts the model's class name as its first argument, and the name of the route / request parameter that will contain the model's ID as its second argument:
 
@@ -392,6 +392,17 @@ The `authorizeResource` method accepts the model's class name as its first argum
             $this->authorizeResource(Post::class, 'post');
         }
     }
+
+The following controller methods will be mapped to their corresponding policy method:
+
+| Controller Method | Policy Method |
+| --- | --- |
+| show | view |
+| create | create |
+| store | create |
+| edit | update |
+| update | update |
+| destroy | delete |
 
 > {tip} You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`.
 
@@ -421,6 +432,14 @@ These directives are convenient shortcuts for writing `@if` and `@unless` statem
     @unless (Auth::user()->can('update', $post))
         <!-- The Current User Can't Update The Post -->
     @endunless
+
+You may also determine if a user has any authorization ability from a given list of abilities. To accomplish this, use the `@canany` directive:
+
+    @canany(['update', 'view'])
+        //
+    @elsecanany(['create', 'delete'])
+        //
+    @endcanany
 
 #### Actions That Don't Require Models
 

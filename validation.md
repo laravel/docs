@@ -25,6 +25,7 @@
     - [Using Rule Objects](#using-rule-objects)
     - [Using Closures](#using-closures)
     - [Using Extensions](#using-extensions)
+    - [Implicit Extensions](#implicit-extensions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1296,7 +1297,8 @@ When creating a custom validation rule, you may sometimes need to define custom 
         });
     }
 
-#### Implicit Extensions
+<a name="implicit-extensions"></a>
+### Implicit Extensions
 
 By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom extensions, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:
 
@@ -1313,3 +1315,7 @@ For a rule to run even when an attribute is empty, the rule must imply that the 
     });
 
 > {note} An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
+
+#### Implicit Rule Objects
+
+If you would like a rule object to run when an attribute is empty, you should implement the `Illuminate\Contracts\Validation\ImplicitRule` interface. This interface serves as a "marker interface" for the validator; therefore, it does not contain any methods you need to implement.

@@ -81,6 +81,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::before](#method-str-before)
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
+[Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
 [Str::is](#method-str-is)
@@ -867,6 +868,17 @@ You may also pass an array of values to determine if the given string contains a
 
     // true
 
+<a name="method-str-contains-all"></a>
+#### `Str::containsAll()` {#collection-method}
+
+The `Str::containsAll` method determines if the given string contains all array values:
+
+    use Illuminate\Support\Str;
+
+    $containsAll = Str::containsAll('This is my name', ['my', 'name']);
+
+    // true
+
 <a name="method-ends-with"></a>
 #### `Str::endsWith()` {#collection-method}
 
@@ -1645,6 +1657,12 @@ If no Closure is passed to the `tap` function, you may call any method on the gi
         'name' => $name,
         'email' => $email,
     ]);
+
+To add a `tap` method to a class, you may add the `Illuminate\Support\Traits\Tappable` trait to the class. The `tap` method of this trait accepts a Closure as its only argument. The object instance itself will be passed to the Closure and then be returned by the `tap` method:
+
+    return $user->tap(function ($user) {
+        //
+    });
 
 <a name="method-throw-if"></a>
 #### `throw_if()` {#collection-method}
