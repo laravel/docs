@@ -563,7 +563,7 @@ Next, let's examine the model definitions needed to build this relationship:
     class Image extends Model
     {
         /**
-         * Get all of the owning imageable models.
+         * Get the owning imageable model.
          */
         public function imageable()
         {
@@ -645,7 +645,7 @@ Next, let's examine the model definitions needed to build this relationship:
     class Comment extends Model
     {
         /**
-         * Get all of the owning commentable models.
+         * Get the owning commentable model.
          */
         public function commentable()
         {
