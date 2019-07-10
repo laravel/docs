@@ -107,7 +107,6 @@ For the remainder of this documentation, we'll discuss each method available on 
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
-[join](#method-join)
 [keyBy](#method-keyby)
 [keys](#method-keys)
 [last](#method-last)
@@ -970,17 +969,6 @@ The `isNotEmpty` method returns `true` if the collection is not empty; otherwise
     collect([])->isNotEmpty();
 
     // false
-
-<a name="method-join"></a>
-#### `join()` {#collection-method}
-
-The `join` method joins the collection's values with a string:
-
-    collect(['a', 'b', 'c'])->join(', '); // 'a, b, c'
-    collect(['a', 'b', 'c'])->join(', ', ', and '); // 'a, b, and c'
-    collect(['a', 'b'])->join(', ', ' and '); // 'a and b'
-    collect(['a'])->join(', ', ' and '); // 'a'
-    collect([])->join(', ', ' and '); // ''
 
 <a name="method-keyby"></a>
 #### `keyBy()` {#collection-method}
