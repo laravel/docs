@@ -185,10 +185,10 @@ You should always map individual projects to their own folder mapping instead of
 
     folders:
         - map: ~/code/project1
-          to: /home/vagrant/code/project1
+          to: /home/vagrant/project1
 
         - map: ~/code/project2
-          to: /home/vagrant/code/project2
+          to: /home/vagrant/project2
 
 > {note} You should never mount `.` (the current directory) when using Homestead. This causes Vagrant to not map the current folder to `/vagrant` and will break optional features and cause unexpected results while provisioning.
 
