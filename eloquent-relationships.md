@@ -847,8 +847,10 @@ As demonstrated in the example above, you are free to add additional constraints
 
 In most situations, you likely intend to use [constraint groups](/docs/{{version}}/queries#parameter-grouping) to logically group the conditional checks between parentheses:
 
+    use Illuminate\Database\Eloquent\Builder;
+
     $user->posts()
-            ->where(function ($query) {
+            ->where(function (Builder $query) {
                 return $query->where('active', 1)
                              ->orWhere('votes', '>=', 100);
             })
@@ -893,12 +895,12 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
     use Illuminate\Database\Eloquent\Builder;
 
     // Retrieve posts with at least one comment containing words like foo%...
-    $posts = App\Post::whereHas('comments', function ($query) {
+    $posts = App\Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
     // Retrieve posts with at least ten comments containing words like foo%...
-    $posts = App\Post::whereHas('comments', function ($query) {
+    $posts = App\Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     }, '>=', 10)->get();
 
@@ -930,10 +932,12 @@ You may use "dot" notation to execute a query against a nested relationship. For
 
 To query the existence of `MorphTo` relationships, you may use the `whereHasMorph` method and its corresponding methods:
 
+    use Illuminate\Database\Eloquent\Builder;
+
     $comments = App\Comment::whereHasMorph(
         'commentable', 
         ['App\Post', 'App\Video'], 
-        function ($query) {
+        function (Builder $query) {
             $query->where('title', 'like', 'foo%');
         }
     )->get();
@@ -945,10 +949,12 @@ To query the existence of `MorphTo` relationships, you may use the `whereHasMorp
     
 You may use the `$type` parameter to add different constraints depending on the related model:
 
+    use Illuminate\Database\Eloquent\Builder;
+
     $comments = App\Comment::whereHasMorph(
         'commentable', 
         ['App\Post', 'App\Video'], 
-        function ($query, $type) {
+        function (Builder $query, $type) {
             $query->where('title', 'like', 'foo%');
     
             if ($type === 'App\Post') {
@@ -959,7 +965,9 @@ You may use the `$type` parameter to add different constraints depending on the 
     
 Instead of passing an array of possible polymorphic models, you may provide `*` as a wildcard and let Laravel retrieve all the possible polymorphic types from the database. Laravel will execute an additional query in order to perform this operation:
 
-    $comments = App\Comment::whereHasMorph('commentable', '*', function ($query) {
+    use Illuminate\Database\Eloquent\Builder;
+
+    $comments = App\Comment::whereHasMorph('commentable', '*', function (Builder $query) {
         $query->where('title', 'like', 'foo%');
     })->get();
 
@@ -976,7 +984,9 @@ If you want to count the number of results from a relationship without actually 
 
 You may add the "counts" for multiple relations as well as add constraints to the queries:
 
-    $posts = App\Post::withCount(['votes', 'comments' => function ($query) {
+    use Illuminate\Database\Eloquent\Builder;
+
+    $posts = App\Post::withCount(['votes', 'comments' => function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     }])->get();
 
@@ -985,9 +995,11 @@ You may add the "counts" for multiple relations as well as add constraints to th
 
 You may also alias the relationship count result, allowing multiple counts on the same relationship:
 
+    use Illuminate\Database\Eloquent\Builder;
+
     $posts = App\Post::withCount([
         'comments',
-        'comments as pending_comments_count' => function ($query) {
+        'comments as pending_comments_count' => function (Builder $query) {
             $query->where('approved', false);
         }
     ])->get();
@@ -1085,8 +1097,10 @@ In this example, let's assume `Event`, `Photo`, and `Post` models may create `Ac
 
 Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:
 
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+
     $activities = ActivityFeed::query()
-        ->with(['parentable' => function ($morphTo) {
+        ->with(['parentable' => function (MorphTo $morphTo) {
             $morphTo->morphWith([
                 Event::class => ['calendar'],
                 Photo::class => ['tags'],
@@ -1139,13 +1153,17 @@ If you would like to remove an item from the `$with` property for a single query
 
 Sometimes you may wish to eager load a relationship, but also specify additional query conditions for the eager loading query. Here's an example:
 
-    $users = App\User::with(['posts' => function ($query) {
+    use Illuminate\Database\Eloquent\Builder;
+
+    $users = App\User::with(['posts' => function (Builder $query) {
         $query->where('title', 'like', '%first%');
     }])->get();
 
 In this example, Eloquent will only eager load posts where the post's `title` column contains the word `first`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
 
-    $users = App\User::with(['posts' => function ($query) {
+    use Illuminate\Database\Eloquent\Builder;
+
+    $users = App\User::with(['posts' => function (Builder $query) {
         $query->orderBy('created_at', 'desc');
     }])->get();
 
@@ -1164,7 +1182,9 @@ Sometimes you may need to eager load a relationship after the parent model has a
 
 If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be `Closure` instances which receive the query instance:
 
-    $books->load(['author' => function ($query) {
+    use Illuminate\Database\Eloquent\Builder;
+
+    $books->load(['author' => function (Builder $query) {
         $query->orderBy('published_date', 'asc');
     }]);
 
