@@ -32,7 +32,7 @@ Before using the `token` driver, you will need to [create a migration](/docs/{{v
 
 Once the migration has been created, run the `migrate` Artisan command.
 
-> {tip} If your user table has a different column name, be sure to include `'storage_key' => 'your-column-name'` inside the `api` configuration array in `config/auth.php` 
+> {tip} If you choose to use a different column name, be sure to update your API's `storage_key` configuration option within the `config/auth.php` configuration file.
 
 <a name="generating-tokens"></a>
 ## Generating Tokens
