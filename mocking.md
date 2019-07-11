@@ -37,8 +37,8 @@ In order to make this more convenient, you may use the `mock` method, which is p
     $this->mock(Service::class, function ($mock) {
         $mock->shouldReceive('process')->once();
     });
-    
-Similarly, if you want to spy on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around `Mockery::spy`:
+
+Similarly, if you want to spy on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method:
 
     use App\Service;
 
