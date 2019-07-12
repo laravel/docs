@@ -352,6 +352,18 @@ You may chain where constraints together as well as add `or` clauses to the quer
                         ->orWhere('name', 'John')
                         ->get();
 
+#### Dynamic Where Clauses
+
+You may simply concatenate the `where` term with a field name from a database table to add a dynamic clause to the query.
+
+    $user = DB::table('users')
+                    ->whereEmail('taylor@laravel.com')
+                    ->first();
+
+    $author = DB::table('authors')
+                    ->whereFullName('Matt Stauffer')
+                    ->first();
+
 #### Additional Where Clauses
 
 **whereBetween / orWhereBetween**
