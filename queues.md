@@ -495,11 +495,9 @@ Laravel includes a queue worker that will process new jobs as they are pushed on
 
 Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment).
 
-Alternatively, you may run the following command:
+Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker after your code is changed; however, this command is not as efficient as `queue:work`:
 
     php artisan queue:listen
-
-With the `queue:listen` command, you don't have to manually restart the worker after your code is changed. However, more server resources will be consumed.
 
 #### Specifying The Connection & Queue
 
