@@ -38,9 +38,7 @@
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` file.
-
-Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
+Run `composer require laravel/framework 5.8.* --update-with-dependencies`.
 
 <a name="the-application-contract"></a>
 ### The `Application` Contract
