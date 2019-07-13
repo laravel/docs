@@ -934,7 +934,7 @@ To query the existence of `MorphTo` relationships, you may use the `whereHasMorp
 
     use Illuminate\Database\Eloquent\Builder;
 
-    // Retrieve comments that are associated to posts or videos with a title like foo%...
+    // Retrieve comments associated to posts or videos with a title like foo%...
     $comments = App\Comment::whereHasMorph(
         'commentable', 
         ['App\Post', 'App\Video'], 
@@ -943,8 +943,7 @@ To query the existence of `MorphTo` relationships, you may use the `whereHasMorp
         }
     )->get();
 
-    // Retrieve comments that are associated to posts with a title not like foo%...
-    // The query does NOT retrieve comments that are associated to videos or other types.
+    // Retrieve comments associated to posts with a title not like foo%...
     $comments = App\Comment::whereDoesntHaveMorph(
         'commentable', 
         'App\Post', 
