@@ -413,6 +413,18 @@ You may specify a dynamic request maximum based on an attribute of the authentic
         });
     });
 
+#### Distinct Guest & Authenticated User Rate Limits
+
+You may specify a different rate limit for guests and authenticated users. Using the `|` operator, you can specify different rate limits. The first parameter is for guests, while the second is for authenticated users.
+
+    Route::middleware('throttle:10|60,1')->group(function () {
+        //
+    });
+
+    Route::middleware('throttle:10|rate_limit,1')->group(function () {
+        //
+    });
+
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
 
