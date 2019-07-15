@@ -415,11 +415,13 @@ You may specify a dynamic request maximum based on an attribute of the authentic
 
 #### Distinct Guest & Authenticated User Rate Limits
 
-You may specify a different rate limit for guests and authenticated users. Using the `|` operator, you can specify different rate limits. The first parameter is for guests, while the second is for authenticated users.
+You may specify a different rate limit for guests and authenticated users. For example you can set `10` attempts for a guest and `60` for an authenticated user:
 
     Route::middleware('throttle:10|60,1')->group(function () {
         //
     });
+
+You can also specify the attribute of the authenticated `User` model – for example `rate_limit` – that determines the maximum requests in a period:
 
     Route::middleware('throttle:10|rate_limit,1')->group(function () {
         //
