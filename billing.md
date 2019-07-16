@@ -8,6 +8,15 @@
     - [API Keys](#api-keys)
     - [Currency Configuration](#currency-configuration)
     - [Webhooks](#webhooks)
+- [Customers](#customers)
+    - [Creating Customers](#creating-customers)
+- [Payment Methods](#payment-methods)
+    - [Saving Payment Methods](#saving-payment-methods)
+    - [Retrieving Payment Methods](#retrieving-payment-methods)
+    - [Check For A Payment Method](#check-for-a-payment-method)
+    - [Updating The Default Payment Method](#updating-the-default-payment-method)
+    - [Adding Payment Methods](#updating-payment-methods)
+    - [Deleting Payment Methods](#deleting-payment-methods)
 - [Subscriptions](#subscriptions)
     - [Creating Subscriptions](#creating-subscriptions)
     - [Checking Subscription Status](#checking-subscription-status)
@@ -20,14 +29,6 @@
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)
     - [Without Payment Method Up Front](#without-payment-method-up-front)
-- [Customers](#customers)
-    - [Creating Customers](#creating-customers)
-- [Payment Methods](#payment-methods)
-    - [Retrieving Payment Methods](#retrieving-payment-methods)
-    - [Check For A Payment Method](#check-for-a-payment-method)
-    - [Updating The Default Payment Method](#updating-the-default-payment-method)
-    - [Adding Payment Methods](#updating-payment-methods)
-    - [Deleting Payment Methods](#deleting-payment-methods)
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
@@ -114,8 +115,94 @@ In addition to setting the currency you can also set a locale for formatting the
 
 > {note} In order to use other locales than the default "en" one, you'll need to make sure the `ext-intl` PHP extension is installed and configured on your server.
 
+<a name="customers"></a>
+## Customers
 
-// Todo: document retrieving payment method identifiers using Stripe.js
+<a name="creating-customers"></a>
+### Creating Customers
+
+Occasionally, you may wish to create a Stripe customer without beginning a subscription. You may accomplish this using the `createAsStripeCustomer` method:
+
+    $user->createAsStripeCustomer();
+
+Once the customer has been created in Stripe, you may begin a subscription at a later date.
+
+<a name="payment-methods"></a>
+## Payment Methods
+
+<a name="saving-payment-methods"></a>
+### Saving Payment Methods
+
+In order to create subscriptions or perform "one off" charges with Stripe, we'll need to save a new payment method with Stripe first and retrieve its identifier. The process for this differs between these two use cases so let's go over them both.
+
+#### Payment Methods For Subscriptions
+
+When saving credit cards to a customer for future use we'll need to make sure that we use the Setup Intents API to make sure we can safely use the card when starting a new subscription. Cashier includes a method to easily start a new setup intents session:
+
+    $setupIntent = $user->createSetupIntent();
+
+In order to save a card for future use, [follow this guide by Stripe](https://stripe.com/docs/payments/cards/saving-cards#saving-card-without-payment) and use the Setup Intent object from above to save a new card.
+
+When you have the `result.setupIntent.paymentMethod` we'll need to save it to the customer. You can either [add it as a new payment method](#adding-payment-methods) or [update the default payment method](#updating-the-default-payment-method). You can also immediately use the `result.setupIntent.paymentMethod` to [create a new subscription](#creating-subscriptions).
+
+#### Payment Methods For Single Charges
+
+When making single charges we'll only need to use a payment method one single time. While you could technically retrieve the default payment method from a customer (which is used for billing and invoicing) and use that to make the payment you can also opt to allow the customer to enter a one-time payment method with the Stripe.js library.
+
+A detailed example can be examined [in the Stripe docs](https://stripe.com/docs/payments/payment-intents/migration#elements). More info about the `createPaymentMethod` call can be found [here](https://stripe.com/docs/stripe-js/reference#stripe-create-payment-method). When you have the `result.paymentMethod.id`, use it to [create single charges](#simple-charge).
+
+<a name="retrieving-payment-methods"></a>
+### Retrieving Payment Methods
+
+The `paymentMethods` method on the billable model instance returns a collection of `Laravel\Cashier\PaymentMethod` instances:
+
+    $paymentMethods = $user->paymentMethods();
+
+To retrieve the default payment method, the `defaultPaymentMethod` method may be used;
+
+    $paymentMethod = $user->defaultPaymentMethod();
+
+<a name="check-for-a-payment-method"></a>
+### Check For A Payment Method
+
+You may check if a customer has a payment method attached to their account using the `hasPaymentMethod` method:
+
+    if ($user->hasPaymentMethod()) {
+        //
+    }
+
+<a name="updating-the-default-payment-method"></a>
+### Updating The Default Payment Method
+
+The `updateDefaultPaymentMethod` method may be used to update a customer's default payment method information. This method accepts a Stripe payment method identifier and will assign the new payment method as the default billing payment method:
+
+    $user->updateDefaultPaymentMethod($paymentMethod);
+
+To sync your default payment method information with the customer's default payment method information in Stripe, you may use the `updateDefaultPaymentMethodFromStripe` method:
+
+    $user->updateDefaultPaymentMethodFromStripe();
+
+> {note} The default payment method on a customer can only be used for invoicing and creating new subscriptions. Because of a limitation by Stripe, it cannot be used for single charges.
+
+<a name="adding-payment-methods"></a>
+### Adding Payment Methods
+
+To add a new payment method, you can call the `addPaymentMethod` method on the billable user:
+
+    $user->addPaymentMethod($paymentMethod);
+
+<a name="deleting-payment-methods"></a>
+### Deleting Payment Methods
+
+To delete a payment method, you can call the `delete` method on the paymentMethod instance you wish to delete:
+
+    $paymentMethod->delete();
+
+The `deletePaymentMethods` method will delete all of the payment method information stored by your application:
+
+    $user->deletePaymentMethods();
+
+> {note} If the user has an active subscription, you should consider preventing them from deleting the default payment method.
 
 <a name="subscriptions"></a>
 ## Subscriptions
@@ -131,7 +218,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
 The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `main` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Stripe.
 
-The `create` method, which accepts a Stripe payment method identifier, will begin the subscription as well as update your database with the customer ID and other relevant billing information.
+The `create` method, which accepts [a Stripe payment method identifier](#saving-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the customer ID and other relevant billing information.
 
 #### Additional User Details
 
@@ -386,74 +473,6 @@ Once you are ready to create an actual subscription for the user, you may use th
 
     $user->newSubscription('main', 'monthly')->create($paymentMethod);
 
-<a name="customers"></a>
-## Customers
-
-<a name="creating-customers"></a>
-### Creating Customers
-
-Occasionally, you may wish to create a Stripe customer without beginning a subscription. You may accomplish this using the `createAsStripeCustomer` method:
-
-    $user->createAsStripeCustomer();
-
-Once the customer has been created in Stripe, you may begin a subscription at a later date.
-
-<a name="payment-methods"></a>
-## Payment Methods
-
-<a name="retrieving-payment-methods"></a>
-### Retrieving Payment Methods
-
-The `paymentMethods` method on the billable model instance returns a collection of `Laravel\Cashier\PaymentMethod` instances:
-
-    $paymentMethods = $user->paymentMethods();
-
-To retrieve the default payment method, the `defaultPaymentMethod` method may be used;
-
-    $paymentMethod = $user->defaultPaymentMethod();
-
-<a name="check-for-a-payment-method"></a>
-### Check For A Payment Method
-
-You may check if a customer has a payment method attached to their account using the `hasPaymentMethod` method:
-
-    if ($user->hasPaymentMethod()) {
-        //
-    }
-
-<a name="updating-the-default-payment-method"></a>
-### Updating The Default Payment Method
-
-The `updateDefaultPaymentMethod` method may be used to update a customer's default payment method information. This method accepts a Stripe payment method identifier and will assign the new payment method as the default billing payment method:
-
-    $user->updateDefaultPaymentMethod($paymentMethod);
-
-To sync your default payment method information with the customer's default payment method information in Stripe, you may use the `updateDefaultPaymentMethodFromStripe` method:
-
-    $user->updateDefaultPaymentMethodFromStripe();
-
-> {note} The default payment method on a customer can only be used for invoicing and creating new subscriptions. Because of a limitation by Stripe, it cannot be used for single charges.
-
-<a name="adding-payment-methods"></a>
-### Adding Payment Methods
-
-To add a new payment method, you can call the `addPaymentMethod` method on the billable user:
-
-    $user->addPaymentMethod($paymentMethod);
-
-<a name="deleting-payment-methods"></a>
-### Deleting Payment Methods
-
-To delete a payment method, you can call the `delete` method on the paymentMethod instance you wish to delete:
-
-    $paymentMethod->delete();
-
-The `deletePaymentMethods` method will delete all of the payment method information stored by your application:
-
-    $user->deletePaymentMethods();
-
-> {note} If the user has an active subscription, you should consider preventing them from deleting the default payment method.
-
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
 
@@ -533,7 +552,7 @@ To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` env vari
 
 > {note} The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**.
 
-If you would like to make a "one off" charge against a subscribed customer's payment method, you may use the `charge` method on a billable model instance. You'll need to provide a payment method identifier as the second argument:
+If you would like to make a "one off" charge against a subscribed customer's payment method, you may use the `charge` method on a billable model instance. You'll need to [provide a payment method identifier](#saving-payment-methods) as the second argument:
 
     // Stripe Accepts Charges In Cents...
     $stripeCharge = $user->charge(100, $paymentMethod);
