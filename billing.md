@@ -39,11 +39,14 @@
     - [Refunding Charges](#refunding-charges)
 - [Invoices](#invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
+- [Strong Customer Authentication (SCA)](#strong-customer-authentication)
+    - [Handling Extra Payment Actions](#handling-extra-payment-actions)
+    - [Off-session Email Reminders](#off-session-email-reminders)
 
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs. Cashier is also ready to handle [SCA](https://stripe.com/en-be/guides/strong-customer-authentication#introduction).
+Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs. Cashier is also ready to handle [SCA](#strong-customer-authentication).
 
 > {note} Cashier makes use of a fixed Stripe API version to send requests. The latest version of Cashier makes use of the Stripe API version `2019-05-16`. Beware that we will update this version on minor releases in order to make use of new Stripe features, updates or bug fixes.
 
@@ -633,3 +636,50 @@ From within a route or controller, use the `downloadInvoice` method to generate 
             'product' => 'Your Product',
         ]);
     });
+
+<a name="strong-customer-authentication"></a>
+## Strong Customer Authentication
+
+If you have a business in Europe you should take into account Strong Customer Authentication (SCA). These regulations were imposed in September 2019 by the European Union to prevent payment fraud and require some extra setup. Luckily, Stripe and Cashier are fully ready for this and will help you tackle this with ease.
+
+We recommend you review [Stripe's guide on PSD2 and SCA](https://stripe.com/en-be/guides/strong-customer-authentication) as well as [their docs on the new SCA API's](https://stripe.com/docs/strong-customer-authentication) before continuing.
+
+<a name="handling-extra-payment-actions"></a>
+### Handling Extra Payment Actions
+
+One of the things SCA often requires is an extra verification action in order to verify a payment. When this happens, Cashier will throw an exception that informs you that this needed. You can do two things when that happens.
+
+First, you could redirect your customer to a dedicated payment page which ships with Cashier. This page is already registered with a route through its service provider. Catch the thrown `IncompletePayment` exception and redirect like in the example below:
+
+    use Laravel\Cashier\Exceptions\IncompletePayment;
+
+    try {
+        $subscription = $user->newSubscription('default', $planId)
+            ->create($paymentMethod);
+    } catch (IncompletePayment $exception) {
+        return redirect()->route(
+            'cashier.payment',
+            [$exception->payment->id, 'redirect' => route('home')]
+        );
+    }
+
+On this page, the customer will be prompted to enter their credit card info again and perform any extra actions that Stripe requires (like 3D Secure). After this is done, they'll be redirected to the page you've provided with the `redirect` parameter.
+
+Secondly, you could opt to let Stripe handle this for you. In this case, instead of redirecting to the payment page, you can [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, you should still inform the user they will receive an email with further payment confirmation instructions.
+
+Exceptions can be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method and `swap` methods may throw exceptions. The payment page provided by Cashier offers an easy transition to handling these SCA requirements. 
+
+#### Incomplete State
+
+As long as the payment wasn't verified, your subscription will remain in an `incomplete` state. This means it's not yet active until payment was fully completed with the extra action. Cashier will make automatically activate the customer's subscription through a webhook as soon as they've completed this extra action.
+
+You can check for an incomplete state on a subscription with the `incomplete` method:
+
+    $subscription->incomplete();
+
+<a name="off-session-email-reminders"></a>
+### Off-session Email Reminders
+
+Since SCA regulations require customers to occasionally verify their payment details even while their subscription is active, Cashier can send reminder emails to the customer when off-session payment confirmation is required. For example, this may occur when a subscription is renewing. Cashier's confirmation emails can be enabled by setting the `CASHIER_PAYMENT_EMAILS` environment variable to `true`. By default, these emails are disabled.
+
+> {note} One limitation of this is that emails will be sent out even when customers are on-session during a payment that requires an extra action. This is because there's no way to know for Stripe that the payment was done on- or off-session. But a customer will never be charged twice and will simply see a "Payment Successful" message if they visit the payment page again.
