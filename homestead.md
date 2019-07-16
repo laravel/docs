@@ -27,7 +27,7 @@
 - [Debugging & Profiling](#debugging-and-profiling)
     - [Debugging Web Requests With Xdebug](#debugging-web-requests)
     - [Debugging CLI Applications](#debugging-cli-applications)
-    - [Profiling Applications with Blackfire](#profiling-applications)
+    - [Profiling Applications with Blackfire](#profiling-applications-with-blackfire)
 - [Network Interfaces](#network-interfaces)
 - [Extending Homestead](#extending-homestead)
 - [Updating Homestead](#updating-homestead)
@@ -629,12 +629,12 @@ When debugging functional tests that make requests to the web server, it is easi
     xdebug.remote_host = 192.168.10.1
     xdebug.remote_autostart = 1
 
-<a name="profiling-applications"></a>
+<a name="profiling-applications-with-blackfire"></a>
 ### Profiling Applications with Blackfire
 
-[Blackfire](https://blackfire.io/docs/introduction) is a SaaS service for profiling web requests and CLI applications and writing performance assertions. It offers an interactive user interface, siplaying profile data in call-graphs and timelines. It is built for use in development, test/staging and production, with no overhead for end users. It provides performance, quality and security checks on code and `php.ini` configuration settings.
+[Blackfire](https://blackfire.io/docs/introduction) is a SaaS service for profiling web requests and CLI applications and writing performance assertions. It offers an interactive user interface which displays profile data in call-graphs and timelines. It is built for use in development, staging, and production, with no overhead for end users. It provides performance, quality, and security checks on code and `php.ini` configuration settings.
 
-The [Blackfire Player](https://blackfire.io/docs/player/index) is an Open-Source Web Crawling, Web Testing and Web Scraping application which can work jointly with Blackfire in order to script profiling scenarios.
+The [Blackfire Player](https://blackfire.io/docs/player/index) is an open-source Web Crawling, Web Testing and Web Scraping application which can work jointly with Blackfire in order to script profiling scenarios.
 
 To enable Blackfire, use the "features" setting in your Homestead configuration file:
 
@@ -645,9 +645,7 @@ To enable Blackfire, use the "features" setting in your Homestead configuration 
             client_id: "client_id"
             client_token: "client_value"
 
-Blackfire server credentials and client credentials [require a user account](https://blackfire.io/signup).
-
-Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [check the Blackfire documentation](https://blackfire.io/docs/cookbooks/index).
+Blackfire server credentials and client credentials [require a user account](https://blackfire.io/signup). Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [review the Blackfire documentation for more details](https://blackfire.io/docs/cookbooks/index).
 
 ### Profiling PHP Performance Using XHGui
 
