@@ -843,7 +843,7 @@ Instead of passing a string `key`, you may pass a callback. The callback should 
         ]
     */
 
-Multiple grouping criteria may be passed as an array. Each array element will be applied to the corresponding level within a multi-dimensional array:
+You may also pass an array to group by multiple keys:
 
     $data = new Collection([
         10 => ['user' => 1, 'skill' => 1, 'roles' => ['Role_1', 'Role_3']],
@@ -851,6 +851,27 @@ Multiple grouping criteria may be passed as an array. Each array element will be
         30 => ['user' => 3, 'skill' => 2, 'roles' => ['Role_1']],
         40 => ['user' => 4, 'skill' => 2, 'roles' => ['Role_2']],
     ]);
+    
+    $result = $data->groupBy(['roles'], $preserveKeys = true);
+    
+    /*
+    [
+        'Role_1' => [
+            10 => ['user' => 1, 'skill' => 1, 'roles' => ['Role_1', 'Role_3']],
+            20 => ['user' => 2, 'skill' => 1, 'roles' => ['Role_1', 'Role_2']],
+            30 => ['user' => 3, 'skill' => 2, 'roles' => ['Role_1']],
+        ],
+        'Role_3' => [
+            10 => ['user' => 1, 'skill' => 1, 'roles' => ['Role_1', 'Role_3']],
+        ],
+        'Role_2' => [
+            20 => ['user' => 2, 'skill' => 1, 'roles' => ['Role_1', 'Role_2']],
+            40 => ['user' => 4, 'skill' => 2, 'roles' => ['Role_2']],
+        ],
+    ];
+    */
+
+Multiple grouping criteria may be passed as an array. Each array element will be applied to the corresponding level within a multi-dimensional array:
 
     $result = $data->groupBy([
         'skill',
