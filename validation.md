@@ -830,7 +830,7 @@ The field under validation must exist in _anotherfield_'s values.
 <a name="rule-integer"></a>
 #### integer
 
-The field under validation must be an integer.
+The field under validation must be like an integer, but will not check the type.
 
 <a name="rule-ip"></a>
 #### ip
