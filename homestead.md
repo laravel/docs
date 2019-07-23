@@ -583,6 +583,14 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php7.2 artisan list
     php7.3 artisan list
 
+You may also update the default CLI version by issuing the following commands from within your Homestead virtual machine:
+
+    php56
+    php70
+    php71
+    php72
+    php73
+
 <a name="web-servers"></a>
 ### Web Servers
 
