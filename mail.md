@@ -512,7 +512,9 @@ This command will publish the Markdown mail components to the `resources/views/v
 
 After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown mail messages.
 
-> {tip} If you would like to build an entirely new theme for the Markdown components, write a new CSS file within the `html/themes` directory and change the `theme` option of your `mail` configuration file.
+If you would instead like to build an entirely new theme for the Markdown components, just write a new CSS file within the `html/themes` directory and change the `theme` option in your `mail` configuration file.
+
+You can also have multiple themes and apply them individually to a Mailable. To do that write new themes within the `html/themes` directory and set the Mailable's protected `theme` property to the name of the theme you want to use.
 
 <a name="sending-mail"></a>
 ## Sending Mail
