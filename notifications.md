@@ -410,6 +410,8 @@ After exporting the components, the `resources/views/vendor/mail/html/themes` di
 
 > {tip} If you would like to build an entirely new theme for the Markdown components, write a new CSS file within the `html/themes` directory and change the `theme` option of your `mail` configuration file.
 
+> {tip} If you have multiple themes you can choose which one to use for each Mail Notification by using the `theme()` method on the `MailMessage` object.
+
 <a name="database-notifications"></a>
 ## Database Notifications
 
