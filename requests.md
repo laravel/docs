@@ -278,6 +278,8 @@ All cookies created by the Laravel framework are encrypted and signed with an au
     $value = $request->cookie('name');
 
 Alternatively, you may use the `Cookie` facade to access cookie values:
+    
+    use Illuminate\Support\Facades\Cookie;
 
     $value = Cookie::get('name');
 
