@@ -1246,7 +1246,7 @@ The `mergeRecursive` method merges the given array or collection recursively wit
 
     $collection = collect(['product_id' => 1, 'price' => 100]);
 
-    $merged = $collection->merge(['product_id' => 2, 'price' => 200, 'discount' => false]);
+    $merged = $collection->mergeRecursive(['product_id' => 2, 'price' => 200, 'discount' => false]);
 
     $merged->all();
 

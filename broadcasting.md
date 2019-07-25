@@ -372,7 +372,7 @@ Private and presence broadcast channels authenticate the current user via your a
 
     Broadcast::channel('channel', function() {
         // ...
-    }, ['guards' => ['web', 'admin']])
+    }, ['guards' => ['web', 'admin']]);
 
 <a name="defining-channel-classes"></a>
 ### Defining Channel Classes

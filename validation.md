@@ -832,6 +832,8 @@ The field under validation must exist in _anotherfield_'s values.
 
 The field under validation must be an integer.
 
+> {note} This validation rule does not verify that the input is of the "integer" variable type, only that the input is a string or numeric value that contains an integer.
+
 <a name="rule-ip"></a>
 #### ip
 

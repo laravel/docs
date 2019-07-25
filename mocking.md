@@ -38,6 +38,14 @@ In order to make this more convenient, you may use the `mock` method, which is p
         $mock->shouldReceive('process')->once();
     });
 
+Similarly, if you want to spy on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method:
+
+    use App\Service;
+
+    $this->spy(Service::class, function ($mock) {
+        $mock->shouldHaveReceived('process');
+    });
+
 <a name="bus-fake"></a>
 ## Bus Fake
 

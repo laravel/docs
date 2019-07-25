@@ -660,7 +660,7 @@ The `updateOrInsert` method will first attempt to locate a matching database rec
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
-When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object. This operation is only supported on MySQL 5.7+:
+When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:
 
     DB::table('users')
                 ->where('id', 1)

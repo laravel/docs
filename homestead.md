@@ -27,6 +27,7 @@
 - [Debugging & Profiling](#debugging-and-profiling)
     - [Debugging Web Requests With Xdebug](#debugging-web-requests)
     - [Debugging CLI Applications](#debugging-cli-applications)
+    - [Profiling Applications with Blackfire](#profiling-applications-with-blackfire)
 - [Network Interfaces](#network-interfaces)
 - [Extending Homestead](#extending-homestead)
 - [Updating Homestead](#updating-homestead)
@@ -185,10 +186,10 @@ You should always map individual projects to their own folder mapping instead of
 
     folders:
         - map: ~/code/project1
-          to: /home/vagrant/code/project1
+          to: /home/vagrant/project1
 
         - map: ~/code/project2
-          to: /home/vagrant/code/project2
+          to: /home/vagrant/project2
 
 > {note} You should never mount `.` (the current directory) when using Homestead. This causes Vagrant to not map the current folder to `/vagrant` and will break optional features and cause unexpected results while provisioning.
 
@@ -582,6 +583,14 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php7.2 artisan list
     php7.3 artisan list
 
+You may also update the default CLI version by issuing the following commands from within your Homestead virtual machine:
+
+    php56
+    php70
+    php71
+    php72
+    php73
+
 <a name="web-servers"></a>
 ### Web Servers
 
@@ -627,6 +636,24 @@ When debugging functional tests that make requests to the web server, it is easi
     ; If Homestead.yml contains a different subnet for the IP address, this address may be different...
     xdebug.remote_host = 192.168.10.1
     xdebug.remote_autostart = 1
+
+<a name="profiling-applications-with-blackfire"></a>
+### Profiling Applications with Blackfire
+
+[Blackfire](https://blackfire.io/docs/introduction) is a SaaS service for profiling web requests and CLI applications and writing performance assertions. It offers an interactive user interface which displays profile data in call-graphs and timelines. It is built for use in development, staging, and production, with no overhead for end users. It provides performance, quality, and security checks on code and `php.ini` configuration settings.
+
+The [Blackfire Player](https://blackfire.io/docs/player/index) is an open-source Web Crawling, Web Testing and Web Scraping application which can work jointly with Blackfire in order to script profiling scenarios.
+
+To enable Blackfire, use the "features" setting in your Homestead configuration file:
+
+    features:
+        - blackfire:
+            server_id: "server_id"
+            server_token: "server_value"
+            client_id: "client_id"
+            client_token: "client_value"
+
+Blackfire server credentials and client credentials [require a user account](https://blackfire.io/signup). Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [review the Blackfire documentation for more details](https://blackfire.io/docs/cookbooks/index).
 
 ### Profiling PHP Performance Using XHGui
 
