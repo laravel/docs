@@ -1,6 +1,6 @@
 # Upgrade Guide
 
-- [Upgrading To 5.9.0 From 5.8](#upgrade-5.9.0)
+- [Upgrading To 6.0 From 5.8](#upgrade-6.0)
 
 <a name="high-impact-changes"></a>
 ## High Impact Changes
@@ -16,8 +16,8 @@
 - TODO
 </div>
 
-<a name="upgrade-5.9.0"></a>
-## Upgrading To 5.9.0 From 5.8
+<a name="upgrade-6.0"></a>
+## Upgrading To 6.0 From 5.8
 
 #### Estimated Upgrade Time: TODO
 
@@ -26,9 +26,9 @@
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.9.*` in your `composer.json` file.
+Update your `laravel/framework` dependency to `^6.0` in your `composer.json` file.
 
-Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.9 support.
+Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 6 support.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
