@@ -209,7 +209,7 @@ To get started, let's write a test that verifies we can log into our application
             $this->browse(function ($browser) use ($user) {
                 $browser->visit('/login')
                         ->type('email', $user->email)
-                        ->type('password', 'secret')
+                        ->type('password', 'password')
                         ->press('Login')
                         ->assertPathIs('/home');
             });
