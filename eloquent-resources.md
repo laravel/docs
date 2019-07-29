@@ -88,7 +88,7 @@ If you are returning a collection of resources or a paginated response, you may 
         return UserResource::collection(User::all());
     });
 
-Note that this does not allow any addition of meta data that may need to be returned with the collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:
+If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:
 
     php artisan make:resource UserCollection
 
@@ -647,6 +647,14 @@ You may also add top-level data when constructing resource instances in your rou
                     ->additional(['meta' => [
                         'key' => 'value',
                     ]]);
+
+Or with anonymous collection:
+
+    return UserResource::collection(User::all()->load('roles'))
+                    ->additional(['meta' => [
+                        'key' => 'value',
+                    ]]);
+
 
 <a name="resource-responses"></a>
 ## Resource Responses
