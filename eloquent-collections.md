@@ -109,7 +109,7 @@ The `modelKeys` method returns the primary keys for all models in the collection
     
 #### `makeVisible($attributes)`
 
-The `makeVisible` method makes visible attributes that are typically "hidden" on each model in the collection:
+The `makeVisible` method makes attributes visible that are typically "hidden" on each model in the collection:
 
     $users = $users->makeVisible(['address', 'phone_number']);
 
