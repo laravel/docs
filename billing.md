@@ -95,7 +95,7 @@ Before using Cashier, we'll need to add the `Billable` trait to your model defin
 
 Cashier assumes your Billable model will be the default `App\User` class that ships with Laravel. If you wish to change this you can update this in your `.env` file:
 
-    CASHIER_MODEL="App\User"
+    CASHIER_MODEL=App\User
 
 <a name="api-keys"></a>
 ### API Keys
