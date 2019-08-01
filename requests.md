@@ -138,7 +138,7 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
 
 By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middlewares in your application's global middleware stack. These middlewares are listed in the stack by the `App\Http\Kernel` class. These middlewares will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
 
-If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
+If you would like to disable this behavior, you may remove the two middlewares from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
 
 <a name="retrieving-input"></a>
 ## Retrieving Input
