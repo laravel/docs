@@ -53,7 +53,7 @@ Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://s
 <a name="upgrading-cashier"></a>
 ## Upgrading Cashier
 
-When upgrading to a new major version of Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier/blob/master/UPGRADE.md).
+When upgrading to a new version of Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier/blob/master/UPGRADE.md).
 
 <a name="installation"></a>
 ## Installation
@@ -70,7 +70,7 @@ If you need to overwrite the migrations that ship with the Cashier package, you 
 
     php artisan vendor:publish --tag="cashier-migrations"
 
-After this you should add the following setting to the `boot` method of your `AppServiceProvider` in order to prevent the shipped migrations from running:
+After publishing you should add the following setting to the `boot` method of your `AppServiceProvider` in order to prevent the shipped migrations from running:
 
     use Laravel\Cashier\Cashier;
 
@@ -565,8 +565,6 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
 
 What if a customer's credit card expires? No worries - Cashier's Webhook controller will cancel the customer's subscription for you. Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts).
 
-// Todo: payment action required
-
 <a name="verifying-webhook-signatures"></a>
 ### Verifying Webhook Signatures
 
@@ -709,6 +707,6 @@ Since SCA regulations require customers to occasionally verify their payment det
 
     CASHIER_PAYMENT_NOTIFICATION=Laravel\Cashier\Notifications\ConfirmPayment
 
-This also gives you an easy way to swap out the notification class with a custom one if you want to configure more notification channels.
+This also gives you an easy way to swap out the notification class with a custom one if you want to configure more notification channels. [Make sure webhooks are set up](#handling-stripe-webhooks) for this and the `invoice.payment_action_required` webhook is configured in the Stripe dashboard.
 
 > {note} One limitation of this is that notifications will be sent out even when customers are on-session during a payment that requires an extra action. This is because there's no way to know for Stripe that the payment was done on- or off-session. But a customer will never be charged twice and will simply see a "Payment Successful" message if they visit the payment page again.
