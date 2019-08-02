@@ -41,7 +41,7 @@
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
     - [Handling Extra Payment Actions](#handling-extra-payment-actions)
-    - [Off-session Email Reminders](#off-session-email-reminders)
+    - [Off-session Payment Notification](#off-session-payment-notification)
 
 <a name="introduction"></a>
 ## Introduction
@@ -300,6 +300,27 @@ To determine if the user has cancelled their subscription and is no longer withi
         //
     }
 
+<a name="incomplete-and-past-due-status"></a>
+#### Incomplete and Past Due Status
+
+If a subscription requires a secondary payment action after creating a subscription the subscription becomes "incomplete". The same thing happens when swapping a plan but then the subscription becomes "past_due". When your subscription is in either of these states it will not be active until the customer has confirmed their payment. Checking if a subscription has an incomplete payment can be done with the following method on the user or subscription:
+
+    if ($user->hasIncompletePayment()) {
+        //
+    }
+
+    if ($user->subscription('main')->hasIncompletePayment()) {
+        //
+    }
+
+When your subscription has an incomplete payment you'll need to redirect your user to the payment page so the user can confirm the payment. You can use the `latestPayment` on the `Subscription` model for this:
+
+    <a href="{{ route('cashier.payment', $subscription->latestPayment()->id) }}">
+        Please confirm your payment.
+    </a>
+
+> {note} When your subscription is in an `incomplete` state it cannot be changed until payment was confirmed. This means that the `swap` and `updateQuantity` methods will throw an exception if you attempt to use them in this state.
+
 <a name="changing-plans"></a>
 ### Changing Plans
 
@@ -316,6 +337,12 @@ If you would like to swap plans and cancel any trial period the user is currentl
     $user->subscription('main')
             ->skipTrial()
             ->swap('provider-plan-id');
+
+If you want to swap plans and also immediately invoice the user instead of waiting for the next billing cyle, you can use the `swapAndInvoice` method:
+
+    $user = App\User::find(1);
+
+    $user->subscription('main')->swapAndInvoice('provider-plan-id');
 
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
@@ -667,19 +694,21 @@ On this page, the customer will be prompted to enter their credit card info agai
 
 Secondly, you could opt to let Stripe handle this for you. In this case, instead of redirecting to the payment page, you can [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, you should still inform the user they will receive an email with further payment confirmation instructions.
 
-Exceptions can be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method and `swap` methods may throw exceptions. The payment page provided by Cashier offers an easy transition to handling these SCA requirements. 
+Exceptions can be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Susbcription` model may throw exceptions. The payment page provided by Cashier offers an easy transition to handling these SCA requirements. 
 
-#### Incomplete State
+#### Incomplete and Past Due State
 
-As long as the payment wasn't verified, your subscription will remain in an `incomplete` state. This means it's not yet active until payment was fully completed with the extra action. Cashier will make automatically activate the customer's subscription through a webhook as soon as they've completed this extra action.
+As long as the payment wasn't verified, your subscription will remain in an `incomplete` or `past_due` state. This means it's not yet active until payment was fully completed with the extra action. Cashier will make automatically activate the customer's subscription through a webhook as soon as they've completed this extra action.
 
-You can check for an incomplete state on a subscription with the `incomplete` method:
+For more info on how to handle this, check [the above section](#incomplete-and-past-due-status).
 
-    $subscription->incomplete();
+<a name="off-session-payment-notification"></a>
+### Off-session Payment Notification
 
-<a name="off-session-email-reminders"></a>
-### Off-session Email Reminders
+Since SCA regulations require customers to occasionally verify their payment details even while their subscription is active, Cashier can send a payment notification to the customer when off-session payment confirmation is required. For example, this may occur when a subscription is renewing. Cashier's payment notification can be enabled by setting the `CASHIER_PAYMENT_NOTIFICATION` environment variable to its notification class. By default, this notification is disabled.
 
-Since SCA regulations require customers to occasionally verify their payment details even while their subscription is active, Cashier can send reminder emails to the customer when off-session payment confirmation is required. For example, this may occur when a subscription is renewing. Cashier's confirmation emails can be enabled by setting the `CASHIER_PAYMENT_EMAILS` environment variable to `true`. By default, these emails are disabled.
+    CASHIER_PAYMENT_NOTIFICATION=Laravel\Cashier\Notifications\ConfirmPayment
 
-> {note} One limitation of this is that emails will be sent out even when customers are on-session during a payment that requires an extra action. This is because there's no way to know for Stripe that the payment was done on- or off-session. But a customer will never be charged twice and will simply see a "Payment Successful" message if they visit the payment page again.
+This also gives you an easy way to swap out the notification class with a custom one if you want to configure more notification channels.
+
+> {note} One limitation of this is that notifications will be sent out even when customers are on-session during a payment that requires an extra action. This is because there's no way to know for Stripe that the payment was done on- or off-session. But a customer will never be charged twice and will simply see a "Payment Successful" message if they visit the payment page again.
