@@ -70,7 +70,7 @@ If you need to overwrite the migrations that ship with the Cashier package, you 
 
     php artisan vendor:publish --tag="cashier-migrations"
 
-After publishing you should add the following setting to the `boot` method of your `AppServiceProvider` in order to prevent the shipped migrations from running:
+After publishing you should add the following setting to the `register` method of your `AppServiceProvider` in order to prevent the shipped migrations from running:
 
     use Laravel\Cashier\Cashier;
 
