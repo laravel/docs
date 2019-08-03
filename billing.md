@@ -97,6 +97,8 @@ Cashier assumes your Billable model will be the default `App\User` class that sh
 
     CASHIER_MODEL=App\User
 
+> {note} If you're using a model other than Laravel's supplied `App\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model.
+
 <a name="api-keys"></a>
 ### API Keys
 
