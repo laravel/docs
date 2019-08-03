@@ -46,11 +46,11 @@ Once a file has been stored and the symbolic link has been created, you can crea
 <a name="the-local-driver"></a>
 ### The Local Driver
 
-When using the `local` driver, all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
+When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems.php` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
     Storage::disk('local')->put('file.txt', 'Contents');
 
-The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can override the mappings in the configuration file:
+The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can override the mappings in the `filesystems.php` configuration file:
 
     'someLocalDisk' => [
         'driver'   => 'local',
