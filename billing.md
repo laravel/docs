@@ -15,7 +15,7 @@
     - [Retrieving Payment Methods](#retrieving-payment-methods)
     - [Check For A Payment Method](#check-for-a-payment-method)
     - [Updating The Default Payment Method](#updating-the-default-payment-method)
-    - [Adding Payment Methods](#updating-payment-methods)
+    - [Adding Payment Methods](#adding-payment-methods)
     - [Deleting Payment Methods](#deleting-payment-methods)
 - [Subscriptions](#subscriptions)
     - [Creating Subscriptions](#creating-subscriptions)
