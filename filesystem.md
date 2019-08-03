@@ -53,15 +53,15 @@ When using the `local` driver, all file operations are relative to the `root` di
 The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can override the mappings in the `filesystems.php` configuration file:
 
     'someLocalDisk' => [
-        'driver'   => 'local',
-        'root'     => '/your/store',
+        'driver' => 'local',
+        'root' => '/your/store',
         'permissions' => [
             'file' => [
-                'public'  => 0664,
+                'public' => 0664,
                 'private' => 0600,
             ],
-            'dir'  => [
-                'public'  => 0775,
+            'dir' => [
+                'public' => 0775,
                 'private' => 0700,
             ],
         ],
