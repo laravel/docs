@@ -46,9 +46,26 @@ Once a file has been stored and the symbolic link has been created, you can crea
 <a name="the-local-driver"></a>
 ### The Local Driver
 
-When using the `local` driver, all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
+When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems.php` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
     Storage::disk('local')->put('file.txt', 'Contents');
+
+The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can override the mappings in the `filesystems.php` configuration file:
+
+    'someLocalDisk' => [
+        'driver' => 'local',
+        'root' => '/your/store',
+        'permissions' => [
+            'file' => [
+                'public' => 0664,
+                'private' => 0600,
+            ],
+            'dir' => [
+                'public' => 0775,
+                'private' => 0700,
+            ],
+        ],
+    ],
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
@@ -74,17 +91,17 @@ The S3 driver configuration information is located in your `config/filesystems.p
 Laravel's Flysystem integrations works great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a FTP filesystem, you may use the example configuration below:
 
     'ftp' => [
-        'driver'   => 'ftp',
-        'host'     => 'ftp.example.com',
+        'driver' => 'ftp',
+        'host' => 'ftp.example.com',
         'username' => 'your-username',
         'password' => 'your-password',
 
         // Optional FTP Settings...
-        // 'port'     => 21,
-        // 'root'     => '',
-        // 'passive'  => true,
-        // 'ssl'      => true,
-        // 'timeout'  => 30,
+        // 'port' => 21,
+        // 'root' => '',
+        // 'passive' => true,
+        // 'ssl' => true,
+        // 'timeout' => 30,
     ],
 
 #### SFTP Driver Configuration
@@ -112,13 +129,13 @@ Laravel's Flysystem integrations works great with SFTP; however, a sample config
 Laravel's Flysystem integrations works great with Rackspace; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a Rackspace filesystem, you may use the example configuration below:
 
     'rackspace' => [
-        'driver'    => 'rackspace',
-        'username'  => 'your-username',
-        'key'       => 'your-key',
+        'driver' => 'rackspace',
+        'username' => 'your-username',
+        'key' => 'your-key',
         'container' => 'your-container',
-        'endpoint'  => 'https://identity.api.rackspacecloud.com/v2.0/',
-        'region'    => 'IAD',
-        'url_type'  => 'publicURL',
+        'endpoint' => 'https://identity.api.rackspacecloud.com/v2.0/',
+        'region' => 'IAD',
+        'url_type' => 'publicURL',
     ],
 
 <a name="caching"></a>
