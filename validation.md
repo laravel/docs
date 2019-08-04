@@ -806,7 +806,7 @@ The field under validation must be greater than or equal to the given _field_. T
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpeg, png, bmp, gif, or svg)
+The file under validation must be an image (jpeg, png, bmp, gif, svg, or webp)
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
@@ -831,6 +831,8 @@ The field under validation must exist in _anotherfield_'s values.
 #### integer
 
 The field under validation must be an integer.
+
+> {note} This validation rule does not verify that the input is of the "integer" variable type, only that the input is a string or numeric value that contains an integer.
 
 <a name="rule-ip"></a>
 #### ip

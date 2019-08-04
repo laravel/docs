@@ -27,6 +27,7 @@
 - [Debugging & Profiling](#debugging-and-profiling)
     - [Debugging Web Requests With Xdebug](#debugging-web-requests)
     - [Debugging CLI Applications](#debugging-cli-applications)
+    - [Profiling Applications with Blackfire](#profiling-applications-with-blackfire)
 - [Network Interfaces](#network-interfaces)
 - [Extending Homestead](#extending-homestead)
 - [Updating Homestead](#updating-homestead)
@@ -370,9 +371,7 @@ But, since you will probably need to SSH into your Homestead machine frequently,
 <a name="connecting-to-databases"></a>
 ### Connecting To Databases
 
-A `homestead` database is configured for both MySQL and PostgreSQL out of the box. For even more convenience, Laravel's `.env` file configures the framework to use this database out of the box.
-
-To connect to your MySQL or PostgreSQL database from your host machine's database client, you should connect to `127.0.0.1` and port `33060` (MySQL) or `54320` (PostgreSQL). The username and password for both databases is `homestead` / `secret`.
+A `homestead` database is configured for both MySQL and PostgreSQL out of the box. To connect to your MySQL or PostgreSQL database from your host machine's database client, you should connect to `127.0.0.1` and port `33060` (MySQL) or `54320` (PostgreSQL). The username and password for both databases is `homestead` / `secret`.
 
 > {note} You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel database configuration file since Laravel is running _within_ the virtual machine.
 
@@ -582,6 +581,14 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php7.2 artisan list
     php7.3 artisan list
 
+You may also update the default CLI version by issuing the following commands from within your Homestead virtual machine:
+
+    php56
+    php70
+    php71
+    php72
+    php73
+
 <a name="web-servers"></a>
 ### Web Servers
 
@@ -627,6 +634,24 @@ When debugging functional tests that make requests to the web server, it is easi
     ; If Homestead.yml contains a different subnet for the IP address, this address may be different...
     xdebug.remote_host = 192.168.10.1
     xdebug.remote_autostart = 1
+
+<a name="profiling-applications-with-blackfire"></a>
+### Profiling Applications with Blackfire
+
+[Blackfire](https://blackfire.io/docs/introduction) is a SaaS service for profiling web requests and CLI applications and writing performance assertions. It offers an interactive user interface which displays profile data in call-graphs and timelines. It is built for use in development, staging, and production, with no overhead for end users. It provides performance, quality, and security checks on code and `php.ini` configuration settings.
+
+The [Blackfire Player](https://blackfire.io/docs/player/index) is an open-source Web Crawling, Web Testing and Web Scraping application which can work jointly with Blackfire in order to script profiling scenarios.
+
+To enable Blackfire, use the "features" setting in your Homestead configuration file:
+
+    features:
+        - blackfire:
+            server_id: "server_id"
+            server_token: "server_value"
+            client_id: "client_id"
+            client_token: "client_value"
+
+Blackfire server credentials and client credentials [require a user account](https://blackfire.io/signup). Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [review the Blackfire documentation for more details](https://blackfire.io/docs/cookbooks/index).
 
 ### Profiling PHP Performance Using XHGui
 

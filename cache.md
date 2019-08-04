@@ -344,9 +344,9 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
     class MongoStore implements Store
     {
         public function get($key) {}
-        public function many(array $keys);
+        public function many(array $keys) {}
         public function put($key, $value, $seconds) {}
-        public function putMany(array $values, $seconds);
+        public function putMany(array $values, $seconds) {}
         public function increment($key, $value = 1) {}
         public function decrement($key, $value = 1) {}
         public function forever($key, $value) {}

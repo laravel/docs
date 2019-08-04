@@ -45,6 +45,10 @@ Gates are Closures that determine if a user is authorized to perform a given act
     {
         $this->registerPolicies();
 
+        Gate::define('edit-settings', function ($user) {
+            return $user->isAdmin;
+        });
+
         Gate::define('update-post', function ($user, $post) {
             return $user->id == $post->user_id;
         });
@@ -69,6 +73,10 @@ Gates may also be defined using a `Class@method` style callback string, like con
 
 To authorize an action using gates, you should use the `allows` or `denies` methods. Note that you are not required to pass the currently authenticated user to these methods. Laravel will automatically take care of passing the user into the gate Closure:
 
+    if (Gate::allows('edit-settings')) {
+        // The current user can edit settings
+    }
+
     if (Gate::allows('update-post', $post)) {
         // The current user can update the post...
     }
@@ -85,6 +93,16 @@ If you would like to determine if a particular user is authorized to perform an 
 
     if (Gate::forUser($user)->denies('update-post', $post)) {
         // The user can't update the post...
+    }
+
+You may authorize multiple actions at a time with the `any` or `none` methods:
+
+    if (Gate::any(['update-post', 'delete-post'], $post)) {
+        // The user can update or delete the post
+    }
+
+    if (Gate::none(['update-post', 'delete-post'], $post)) {
+        // The user cannot update or delete the post
     }
 
 <a name="intercepting-gate-checks"></a>
@@ -435,10 +453,10 @@ These directives are convenient shortcuts for writing `@if` and `@unless` statem
 
 You may also determine if a user has any authorization ability from a given list of abilities. To accomplish this, use the `@canany` directive:
 
-    @canany(['update', 'view'])
-        //
-    @elsecanany(['create', 'delete'])
-        //
+    @canany(['update', 'view', 'delete'], $post)
+        // The current user can update, view, or delete the post
+    @elsecanany(['create'], \App\Post::class)
+        // The current user can create a post
     @endcanany
 
 #### Actions That Don't Require Models

@@ -209,7 +209,7 @@ To get started, let's write a test that verifies we can log into our application
             $this->browse(function ($browser) use ($user) {
                 $browser->visit('/login')
                         ->type('email', $user->email)
-                        ->type('password', 'secret')
+                        ->type('password', 'password')
                         ->press('Login')
                         ->assertPathIs('/home');
             });
@@ -710,6 +710,8 @@ Dusk provides a variety of assertions that you may make against your application
 [assertDialogOpened](#assert-dialog-opened)
 [assertEnabled](#assert-enabled)
 [assertDisabled](#assert-disabled)
+[assertButtonEnabled](#assert-button-enabled)
+[assertButtonDisabled](#assert-button-disabled)
 [assertFocused](#assert-focused)
 [assertNotFocused](#assert-not-focused)
 [assertVue](#assert-vue)
@@ -1057,6 +1059,20 @@ Assert that the given field is enabled:
 Assert that the given field is disabled:
 
     $browser->assertDisabled($field);
+
+<a name="assert-button-enabled"></a>
+#### assertButtonEnabled
+
+Assert that the given button is enabled:
+
+    $browser->assertButtonEnabled($button);
+
+<a name="assert-button-disabled"></a>
+#### assertButtonDisabled
+
+Assert that the given button is disabled:
+
+    $browser->assertButtonDisabled($button);
 
 <a name="assert-focused"></a>
 #### assertFocused
