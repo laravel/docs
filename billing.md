@@ -97,6 +97,8 @@ Cashier assumes your Billable model will be the default `App\User` class that sh
 
     CASHIER_MODEL=App\User
 
+> {note} If you're using a model other than Laravel's supplied `App\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model.
+
 <a name="api-keys"></a>
 ### API Keys
 
@@ -146,7 +148,9 @@ When saving credit cards to a customer for future use we'll need to make sure th
 
 In order to save a card for future use, [follow this guide by Stripe](https://stripe.com/docs/payments/cards/saving-cards#saving-card-without-payment) and use the Setup Intent object from above to save a new card.
 
-When you have the `result.setupIntent.paymentMethod` we'll need to save it to the customer. You can either [add it as a new payment method](#adding-payment-methods) or [update the default payment method](#updating-the-default-payment-method). You can also immediately use the `result.setupIntent.paymentMethod` to [create a new subscription](#creating-subscriptions).
+When you have the `result.setupIntent.paymentMethod` on the client side, pass it to the server, where we'll need to save it to the customer. You can either [manually add it as a new payment method](#adding-payment-methods) or [update the default payment method](#updating-the-default-payment-method). You can also immediately use the `result.setupIntent.paymentMethod` to [create a new subscription](#creating-subscriptions).
+
+> {note} Passing a Payment Method string directly to the `create()` subscription method will also automatically save it to the user.
 
 #### Payment Methods For Single Charges
 
