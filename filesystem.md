@@ -46,11 +46,13 @@ Once a file has been stored and the symbolic link has been created, you can crea
 <a name="the-local-driver"></a>
 ### The Local Driver
 
-When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems.php` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
+When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
     Storage::disk('local')->put('file.txt', 'Contents');
 
-The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can override the mappings in the `filesystems.php` configuration file:
+#### Default Permissions
+
+The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can modify the default permissions mappings in your `filesystems` configuration file:
 
     'someLocalDisk' => [
         'driver' => 'local',
@@ -210,8 +212,8 @@ For files stored using the `s3` or `rackspace` driver, you may create a temporar
 If you need to specify additional [S3 request parameters](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests), you may pass the array of request parameters as the third argument to the `temporaryUrl` method:
 
     $url = Storage::temporaryUrl(
-        'file.jpg', 
-        now()->addMinutes(5), 
+        'file.jpg',
+        now()->addMinutes(5),
         ['ResponseContentType' => 'application/octet-stream'],
     );
 
@@ -462,7 +464,7 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
 The first argument of the `extend` method is the name of the driver and the second is a Closure that receives the `$app` and `$config` variables. The resolver Closure must return an instance of `League\Flysystem\Filesystem`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
 
 Next, register the service provider in your `config/app.php` configuration file:
-    
+
     'providers' => [
         // ...
         App\Providers\DropboxServiceProvider::class,
