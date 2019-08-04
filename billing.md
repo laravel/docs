@@ -163,7 +163,7 @@ A detailed example can be examined [in the Stripe docs](https://stripe.com/docs/
 <a name="retrieving-payment-methods"></a>
 ### Retrieving Payment Methods
 
-The `paymentMethods` method on the billable model instance returns a collection of `Laravel\Cashier\PaymentMethod` instances:
+The `paymentMethods` method on the Billable model instance returns a collection of `Laravel\Cashier\PaymentMethod` instances:
 
     $paymentMethods = $user->paymentMethods();
 
@@ -172,9 +172,9 @@ To retrieve the default payment method, the `defaultPaymentMethod` method may be
     $paymentMethod = $user->defaultPaymentMethod();
 
 <a name="check-for-a-payment-method"></a>
-### Check For A Payment Method
+### Determining If A User Has A Payment Method
 
-You may check if a customer has a payment method attached to their account using the `hasPaymentMethod` method:
+To determine if a Billable model has a payment method attached to their account, use the `hasPaymentMethod` method:
 
     if ($user->hasPaymentMethod()) {
         //
@@ -191,7 +191,7 @@ To sync your default payment method information with the customer's default paym
 
     $user->updateDefaultPaymentMethodFromStripe();
 
-> {note} The default payment method on a customer can only be used for invoicing and creating new subscriptions. Because of a limitation by Stripe, it cannot be used for single charges.
+> {note} The default payment method on a customer can only be used for invoicing and creating new subscriptions. Due to limitations from Stripe, it may not be used for single charges.
 
 <a name="adding-payment-methods"></a>
 ### Adding Payment Methods
@@ -203,15 +203,15 @@ To add a new payment method, you can call the `addPaymentMethod` method on the b
 <a name="deleting-payment-methods"></a>
 ### Deleting Payment Methods
 
-To delete a payment method, you can call the `delete` method on the paymentMethod instance you wish to delete:
+To delete a payment method, you may call the `delete` method on the `Laravel\Cashier\PaymentMethod` instance you wish to delete:
 
     $paymentMethod->delete();
 
-The `deletePaymentMethods` method will delete all of the payment method information stored by your application:
+The `deletePaymentMethods` method will delete all of the payment method information for the Billable model:
 
     $user->deletePaymentMethods();
 
-> {note} If the user has an active subscription, you should consider preventing them from deleting the default payment method.
+> {note} If a user has an active subscription, you should prevent them from deleting their default payment method.
 
 <a name="subscriptions"></a>
 ## Subscriptions
