@@ -46,9 +46,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs. Cashier is also ready to handle [SCA](#strong-customer-authentication).
+Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
 
-> {note} Cashier makes use of a fixed Stripe API version to send requests. The latest version of Cashier makes use of the Stripe API version `2019-05-16`. Beware that we will update this version on minor releases in order to make use of new Stripe features, updates or bug fixes.
+> {note} To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 10.0 utilizes Stripe API version `2019-05-16`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
 
 <a name="upgrading-cashier"></a>
 ## Upgrading Cashier
@@ -62,21 +62,23 @@ First, require the Cashier package for Stripe with Composer:
 
     composer require laravel/cashier
 
-The Cashier service provider registers its own database migration directory with the framework, so you should migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
+> {note} To ensure Cashier properly handles all Stripe events, remember to [set up Cashier's webhook handling](#handling-stripe-webhooks).
+
+#### Database Migrations
+
+The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table as well as create a new `subscriptions` table to hold all of your customer's subscriptions:
 
     php artisan migrate
 
-If you need to overwrite the migrations that ship with the Cashier package, you can publish them using the command below:
+If you need to overwrite the migrations that ship with the Cashier package, you can publish them using the `vendor:publish` Artisan command:
 
     php artisan vendor:publish --tag="cashier-migrations"
 
-After publishing you should add the following setting to the `register` method of your `AppServiceProvider` in order to prevent the shipped migrations from running:
+If you would like to prevent Cashier's migrations from running entirely, you may use the `ignoreMigrations` provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
 
     use Laravel\Cashier\Cashier;
 
     Cashier::ignoreMigrations();
-
-To make sure Cashier properly handles all Stripe events, you'll also need to [set up Cashier's webhook handling](#handling-stripe-webhooks).
 
 <a name="configuration"></a>
 ## Configuration
@@ -84,7 +86,7 @@ To make sure Cashier properly handles all Stripe events, you'll also need to [se
 <a name="billable-model"></a>
 ### Billable Model
 
-Before using Cashier, we'll need to add the `Billable` trait to your model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons, and updating payment method information:
+Before using Cashier, add the `Billable` trait to your model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons, and updating payment method information:
 
     use Laravel\Cashier\Billable;
 
@@ -93,32 +95,32 @@ Before using Cashier, we'll need to add the `Billable` trait to your model defin
         use Billable;
     }
 
-Cashier assumes your Billable model will be the default `App\User` class that ships with Laravel. If you wish to change this you can update this in your `.env` file:
+Cashier assumes your Billable model will be the `App\User` class that ships with Laravel. If you wish to change this you can specify a different model in your `.env` file:
 
     CASHIER_MODEL=App\User
 
-> {note} If you're using a model other than Laravel's supplied `App\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model.
+> {note} If you're using a model other than Laravel's supplied `App\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model's table name.
 
 <a name="api-keys"></a>
 ### API Keys
 
-Next, you should configure your Stripe key in your `.env` file. You can retrieve your Stripe API keys from the Stripe control panel. 
+Next, you should configure your Stripe key in your `.env` file. You can retrieve your Stripe API keys from the Stripe control panel.
 
-    STRIPE_KEY=
-    STRIPE_SECRET=
+    STRIPE_KEY=your-stripe-key
+    STRIPE_SECRET=your-stripe-secret
 
 <a name="currency-configuration"></a>
 ### Currency Configuration
 
-The default Cashier currency is United States Dollars (USD). You can change the default currency by setting the `CASHIER_CURRENCY` env variable:
+The default Cashier currency is United States Dollars (USD). You can change the default currency by setting the `CASHIER_CURRENCY` environment variable:
 
     CASHIER_CURRENCY=EUR
 
-In addition to setting the currency you can also set a locale for formatting the money values which are used in invoices. Cashier internally makes use of [PHP's `NumberFormatter` class](https://www.php.net/manual/en/class.numberformatter.php) to set the currency locale for a money value:
+In addition to configuring Cashier's currency, you may also specify a locale to be used when formatting money values for display on invoices. Internally, Cashier utilizes [PHP's `NumberFormatter` class](https://www.php.net/manual/en/class.numberformatter.php) to set the currency locale:
 
     CASHIER_CURRENCY_LOCALE=nl_BE
 
-> {note} In order to use other locales than the default "en" one, you'll need to make sure the `ext-intl` PHP extension is installed and configured on your server.
+> {note} In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
 
 <a name="customers"></a>
 ## Customers
@@ -136,13 +138,13 @@ Once the customer has been created in Stripe, you may begin a subscription at a 
 ## Payment Methods
 
 <a name="saving-payment-methods"></a>
-### Saving Payment Methods
+### Storing Payment Methods
 
-In order to create subscriptions or perform "one off" charges with Stripe, we'll need to save a new payment method with Stripe first and retrieve its identifier. The process for this differs between these two use cases so let's go over them both.
+In order to create subscriptions or perform "one off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
 
 #### Payment Methods For Subscriptions
 
-When saving credit cards to a customer for future use we'll need to make sure that we use the Setup Intents API to make sure we can safely use the card when starting a new subscription. Cashier includes a method to easily start a new setup intents session:
+When storing credit cards to a customer for future use we'll need to make sure that we use the Setup Intents API to make sure we can safely use the card when starting a new subscription. Cashier includes a method to easily start a new setup intents session:
 
     $setupIntent = $user->createSetupIntent();
 
@@ -696,7 +698,7 @@ On this page, the customer will be prompted to enter their credit card info agai
 
 Secondly, you could opt to let Stripe handle this for you. In this case, instead of redirecting to the payment page, you can [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, you should still inform the user they will receive an email with further payment confirmation instructions.
 
-Exceptions can be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Susbcription` model may throw exceptions. The payment page provided by Cashier offers an easy transition to handling these SCA requirements. 
+Exceptions can be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Susbcription` model may throw exceptions. The payment page provided by Cashier offers an easy transition to handling these SCA requirements.
 
 #### Incomplete and Past Due State
 
