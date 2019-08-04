@@ -514,11 +514,11 @@ Once you are ready to create an actual subscription for the user, you may use th
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
 
-Stripe can notify your application of a variety of events via webhooks. By default a route that points to Cashier's webhook controller is configured through its service provider. This controller will handle all incoming webhook requests and dispatch them to the proper controller method.
+Stripe can notify your application of a variety of events via webhooks. By default, a route that points to Cashier's webhook controller is configured through the Cashier service provider. This controller will handle all incoming webhook requests.
 
 By default, this controller will automatically handle cancelling subscriptions that have too many failed charges (as defined by your Stripe settings), customer updates, customer deletions, subscription updates, and payment method changes; however, as we'll soon discover, you can extend this controller to handle any webhook event you like.
 
-Next, make sure to configure the webhook URL in your Stripe control panel settings. The full list of all webhooks you should configure in the Stripe control panel are:
+To ensure your application can handle Stripe webhooks, be sure to configure the webhook URL in the Stripe control panel. The full list of all webhooks you should configure in the Stripe control panel are:
 
 - `customer.subscription.updated`
 - `customer.subscription.deleted`
@@ -571,14 +571,14 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
 <a name="handling-failed-subscriptions"></a>
 ### Failed Subscriptions
 
-What if a customer's credit card expires? No worries - Cashier's Webhook controller will cancel the customer's subscription for you. Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts).
+What if a customer's credit card expires? No worries - Cashier's Webhook controller will cancel the customer's subscription for you. Failed payments will automatically be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts).
 
 <a name="verifying-webhook-signatures"></a>
 ### Verifying Webhook Signatures
 
 To secure your webhooks, you may use [Stripe's webhook signatures](https://stripe.com/docs/webhooks/signatures). For convenience, Cashier automatically includes a middleware which validates that the incoming Stripe webhook request is valid.
 
-To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` env variable is set in your `.env` file. The webhook `secret` may be retrieved from your Stripe account dashboard.
+To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environment variable is set in your `.env` file. The webhook `secret` may be retrieved from your Stripe account dashboard.
 
 <a name="single-charges"></a>
 ## Single Charges
@@ -593,7 +593,7 @@ If you would like to make a "one off" charge against a subscribed customer's pay
     // Stripe Accepts Charges In Cents...
     $stripeCharge = $user->charge(100, $paymentMethod);
 
-The `charge` method accepts a an array as its third argument, allowing you to pass any options you wish to the underlying Stripe charge creation. Consult the Stripe documentation regarding the options available to you when creating charges:
+The `charge` method accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe charge creation. Consult the Stripe documentation regarding the options available to you when creating charges:
 
     $user->charge(100, $paymentMethod, [
         'custom_option' => $value,
@@ -673,22 +673,22 @@ From within a route or controller, use the `downloadInvoice` method to generate 
 <a name="strong-customer-authentication"></a>
 ## Strong Customer Authentication
 
-If you have a business in Europe you should take into account Strong Customer Authentication (SCA). These regulations were imposed in September 2019 by the European Union to prevent payment fraud and require some extra setup. Luckily, Stripe and Cashier are fully ready for this and will help you tackle this with ease.
+If your business is based in Europe you will need to abide by the Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications.
 
-We recommend you review [Stripe's guide on PSD2 and SCA](https://stripe.com/en-be/guides/strong-customer-authentication) as well as [their docs on the new SCA API's](https://stripe.com/docs/strong-customer-authentication) before continuing.
+> {note} Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/en-be/guides/strong-customer-authentication) as well as their [documentation on the new SCA API's](https://stripe.com/docs/strong-customer-authentication).
 
 <a name="handling-extra-payment-actions"></a>
-### Handling Extra Payment Actions
+### Payments Requiring Additional Confirmation
 
-One of the things SCA often requires is an extra verification action in order to verify a payment. When this happens, Cashier will throw an exception that informs you that this needed. You can do two things when that happens.
+SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw an `IncompletePayment` exception that informs you that this extra verification is needed. After catching this exception, you have two options on how to proceed.
 
-First, you could redirect your customer to a dedicated payment page which ships with Cashier. This page is already registered with a route through its service provider. Catch the thrown `IncompletePayment` exception and redirect like in the example below:
+First, you could redirect your customer to the dedicated payment confirmation page which is included with Cashier. This page already has an associated route that is registered via Cashier's service provider. So, you may catch the `IncompletePayment` exception and redirect to the payment confirmation page:
 
     use Laravel\Cashier\Exceptions\IncompletePayment;
 
     try {
         $subscription = $user->newSubscription('default', $planId)
-            ->create($paymentMethod);
+                                ->create($paymentMethod);
     } catch (IncompletePayment $exception) {
         return redirect()->route(
             'cashier.payment',
@@ -696,25 +696,25 @@ First, you could redirect your customer to a dedicated payment page which ships 
         );
     }
 
-On this page, the customer will be prompted to enter their credit card info again and perform any extra actions that Stripe requires (like 3D Secure). After this is done, they'll be redirected to the page you've provided with the `redirect` parameter.
+On the payment confirmation page, the customer will be prompted to enter their credit card info again and perform any additional actions required by Stripe, such as "3D Secure" confirmation. After confirming their payment, the user will be redirected to the URL provided by the `redirect` parameter specified above.
 
-Secondly, you could opt to let Stripe handle this for you. In this case, instead of redirecting to the payment page, you can [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, you should still inform the user they will receive an email with further payment confirmation instructions.
+Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if an `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
 
-Exceptions can be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Susbcription` model may throw exceptions. The payment page provided by Cashier offers an easy transition to handling these SCA requirements.
+Incomplete payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Susbcription` model may throw exceptions.
 
 #### Incomplete and Past Due State
 
-As long as the payment wasn't verified, your subscription will remain in an `incomplete` or `past_due` state. This means it's not yet active until payment was fully completed with the extra action. Cashier will make automatically activate the customer's subscription through a webhook as soon as they've completed this extra action.
+When a payment needs additional confirmation, the subscription will remain in an `incomplete` or `past_due` state as indicated by its `status` database column. Cashier will make automatically activate the customer's subscription via a webhook as soon as payment confirmation is complete.
 
-For more info on how to handle this, check [the above section](#incomplete-and-past-due-status).
+For more information on `incomplete` and `past_due` states, please refer to [our additional documentation](#incomplete-and-past-due-status).
 
 <a name="off-session-payment-notification"></a>
-### Off-session Payment Notification
+### Off-Session Payment Notifications
 
-Since SCA regulations require customers to occasionally verify their payment details even while their subscription is active, Cashier can send a payment notification to the customer when off-session payment confirmation is required. For example, this may occur when a subscription is renewing. Cashier's payment notification can be enabled by setting the `CASHIER_PAYMENT_NOTIFICATION` environment variable to its notification class. By default, this notification is disabled.
+Since SCA regulations require customers to occasionally verify their payment details even while their subscription is active, Cashier can send a payment notification to the customer when off-session payment confirmation is required. For example, this may occur when a subscription is renewing. Cashier's payment notification can be enabled by setting the `CASHIER_PAYMENT_NOTIFICATION` environment variable to a notification class. By default, this notification is disabled. Of course, Cashier includes a notification class you may use for this purpose, but you are free to provide your own notification class if desired:
 
     CASHIER_PAYMENT_NOTIFICATION=Laravel\Cashier\Notifications\ConfirmPayment
 
-This also gives you an easy way to swap out the notification class with a custom one if you want to configure more notification channels. [Make sure webhooks are set up](#handling-stripe-webhooks) for this and the `invoice.payment_action_required` webhook is configured in the Stripe dashboard.
+To ensure that off-session payment confirmation notifications are delivered, verify that [Stripe webhooks are configured](#handling-stripe-webhooks) for your application and the `invoice.payment_action_required` webhooks is enabled in your Stripe dashboard.
 
-> {note} One limitation of this is that notifications will be sent out even when customers are on-session during a payment that requires an extra action. This is because there's no way to know for Stripe that the payment was done on- or off-session. But a customer will never be charged twice and will simply see a "Payment Successful" message if they visit the payment page again.
+> {note} Notifications will be sent even when customers are manually making a payment that requires additional confirmation. Unfortunately, there is no way for Stripe to know that the payment was done manually or "off-session". But, a customer will simply see a "Payment Successful" message if they visit the payment page after already confirming their payment. The customer will not be allowed to accidentally confirm the same payment twice and incur an accidental second charge.
