@@ -141,7 +141,7 @@ You may also specify which guard should be used to authenticate the given user b
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
 
-Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `get`, `option`, `post`, `put`, `patch`, and `delete` methods may be used to issue requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that the expected data was returned:
+Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `get`, `post`, `put`, `patch`, `delete`, and `option` methods may be used to issue requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that the expected data was returned:
 
     <?php
 
