@@ -91,17 +91,17 @@ The S3 driver configuration information is located in your `config/filesystems.p
 Laravel's Flysystem integrations works great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a FTP filesystem, you may use the example configuration below:
 
     'ftp' => [
-        'driver'   => 'ftp',
-        'host'     => 'ftp.example.com',
+        'driver' => 'ftp',
+        'host' => 'ftp.example.com',
         'username' => 'your-username',
         'password' => 'your-password',
 
         // Optional FTP Settings...
-        // 'port'     => 21,
-        // 'root'     => '',
-        // 'passive'  => true,
-        // 'ssl'      => true,
-        // 'timeout'  => 30,
+        // 'port' => 21,
+        // 'root' => '',
+        // 'passive' => true,
+        // 'ssl' => true,
+        // 'timeout' => 30,
     ],
 
 #### SFTP Driver Configuration
@@ -129,13 +129,13 @@ Laravel's Flysystem integrations works great with SFTP; however, a sample config
 Laravel's Flysystem integrations works great with Rackspace; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a Rackspace filesystem, you may use the example configuration below:
 
     'rackspace' => [
-        'driver'    => 'rackspace',
-        'username'  => 'your-username',
-        'key'       => 'your-key',
+        'driver' => 'rackspace',
+        'username' => 'your-username',
+        'key' => 'your-key',
         'container' => 'your-container',
-        'endpoint'  => 'https://identity.api.rackspacecloud.com/v2.0/',
-        'region'    => 'IAD',
-        'url_type'  => 'publicURL',
+        'endpoint' => 'https://identity.api.rackspacecloud.com/v2.0/',
+        'region' => 'IAD',
+        'url_type' => 'publicURL',
     ],
 
 <a name="caching"></a>
