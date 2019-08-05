@@ -502,7 +502,7 @@ Assert that the session contains the given piece of data:
 <a name="assert-session-has-input"></a>
 #### assertSessionHasInput
 
-Assert that the session has a given value in the flashed input array.
+Assert that the session has a given value in the flashed input array:
 
     $response->assertSessionHasInput($key, $value = null);
 
