@@ -416,7 +416,7 @@ The `renderHttpException` method signature of the `Illuminate\Foundation\Excepti
 
 **Likelihood Of Impact: High**
 
-If you have published Laravel's Markdown mail components using the `vendor:publish` command, you should rename the `/resources/views/vendor/mail/markdown` directory to `text`.
+If you have published Laravel's Markdown mail components using the `vendor:publish` command, you should rename the `/resources/views/vendor/mail/markdown` directory to `/resources/views/vendor/mail/text`.
 
 In addition, the `markdownComponentPaths` method [has been renamed](https://github.com/laravel/framework/pull/26938) to `textComponentPaths`. If you are overriding this method, you should update the method name to match its parent.
 
