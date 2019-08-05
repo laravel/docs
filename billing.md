@@ -41,7 +41,7 @@
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
     - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
-    - [Off-session Payment Notification](#off-session-payment-notification)
+    - [Off-session Payment Notifications](#off-session-payment-notifications)
 
 <a name="introduction"></a>
 ## Introduction
@@ -708,7 +708,7 @@ When a payment needs additional confirmation, the subscription will remain in an
 
 For more information on `incomplete` and `past_due` states, please refer to [our additional documentation](#incomplete-and-past-due-status).
 
-<a name="off-session-payment-notification"></a>
+<a name="off-session-payment-notifications"></a>
 ### Off-Session Payment Notifications
 
 Since SCA regulations require customers to occasionally verify their payment details even while their subscription is active, Cashier can send a payment notification to the customer when off-session payment confirmation is required. For example, this may occur when a subscription is renewing. Cashier's payment notification can be enabled by setting the `CASHIER_PAYMENT_NOTIFICATION` environment variable to a notification class. By default, this notification is disabled. Of course, Cashier includes a notification class you may use for this purpose, but you are free to provide your own notification class if desired:
