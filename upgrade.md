@@ -30,6 +30,23 @@ Update your `laravel/framework` dependency to `^6.0` in your `composer.json` fil
 
 Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 6 support.
 
+<a name="eloquent"></a>
+### Eloquent
+
+<a name="model-names-ending-with-irregular-plurals"></a>
+#### Declaration of the primary key type
+
+**Likelihood Of Impact: Medium**
+
+Laravel now has some [performance optimizazions](https://github.com/laravel/framework/pull/28153) for integer key types. If you are using strings for the primary key, you must now declare that using the $keyType attribute. Otherwise your application may break when trying to eagerly load relations.
+
+    /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
