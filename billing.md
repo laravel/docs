@@ -13,7 +13,7 @@
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
-    - [Check For A Payment Method](#check-for-a-payment-method)
+    - [Determining If A User Has A Payment Method](#check-for-a-payment-method)
     - [Updating The Default Payment Method](#updating-the-default-payment-method)
     - [Adding Payment Methods](#adding-payment-methods)
     - [Deleting Payment Methods](#deleting-payment-methods)
@@ -40,7 +40,7 @@
 - [Invoices](#invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
-    - [Handling Extra Payment Actions](#handling-extra-payment-actions)
+    - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
     - [Off-session Payment Notification](#off-session-payment-notification)
 
 <a name="introduction"></a>
@@ -677,7 +677,7 @@ If your business is based in Europe you will need to abide by the Strong Custome
 
 > {note} Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/en-be/guides/strong-customer-authentication) as well as their [documentation on the new SCA API's](https://stripe.com/docs/strong-customer-authentication).
 
-<a name="handling-extra-payment-actions"></a>
+<a name="payments-requiring-additional-confirmation"></a>
 ### Payments Requiring Additional Confirmation
 
 SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw an `IncompletePayment` exception that informs you that this extra verification is needed. After catching this exception, you have two options on how to proceed.
