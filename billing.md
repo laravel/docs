@@ -318,7 +318,7 @@ The first argument passed to the `newSubscription` method should be the name of 
 
 The `create` method, which accepts [a Stripe payment method identifier](#storing-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the customer ID and other relevant billing information.
 
-> {note} Passing a Payment Method string directly to the `create()` subscription method will also automatically save it to the user.
+> {note} Passing a payment method identifier directly to the `create()` subscription method will also automatically add it to the user's stored payment methods.
 
 #### Additional User Details
 
