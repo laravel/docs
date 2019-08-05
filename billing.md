@@ -148,17 +148,98 @@ When storing credit cards to a customer for future use we'll need to make sure t
 
     $setupIntent = $user->createSetupIntent();
 
-In order to save a card for future use, [follow this guide by Stripe](https://stripe.com/docs/payments/cards/saving-cards#saving-card-without-payment) and use the Setup Intent object from above to save a new card.
+After you've created the Setup Intent you'll need to pass its secret to the element which will confirm the payment:
 
-When you have the `result.setupIntent.paymentMethod` on the client side, pass it to the server, where we'll need to save it to the customer. You can either [manually add it as a new payment method](#adding-payment-methods) or [update the default payment method](#updating-the-default-payment-method). You can also immediately use the `result.setupIntent.paymentMethod` to [create a new subscription](#creating-subscriptions).
+    <input id="cardholder-name" type="text">
+    <!-- placeholder for Elements -->
+    <div id="card-element"></div>
+    <button id="card-button" data-secret="<?= $intent->client_secret ?>">
+      Save Card
+    </button>
 
-> {note} Passing a Payment Method string directly to the `create()` subscription method will also automatically save it to the user.
+After that we'll need to set up the JS to retrieve the payment method id. First, make sure you put the official Stripe.js in the `head` of your site:
+
+    <script src="https://js.stripe.com/v3/"></script>
+
+Then we'll need to create a Stripe element to create the card placeholder field:
+
+    const stripe = Stripe('<your Stripe public key>');
+
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+To verify the card and retrieve the payment method id we'll need to submit it using the [`stripe.handleCardSetup`](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup) call:
+
+    const cardholderName = document.getElementById('cardholder-name');
+    const cardButton = document.getElementById('card-button');
+    const clientSecret = cardButton.dataset.secret;
+
+    cardButton.addEventListener('click', async (ev) => {
+        const { setupIntent, error } = await stripe.handleCardSetup(
+            clientSecret, cardElement, {
+                payment_method_data: {
+                    billing_details: { name: cardholderName.value }
+                }
+            }
+        );
+
+        if (error) {
+            // Display error.message in your UI.
+        } else {
+            // The setup has succeeded. Display a success message.
+        }
+    });
+
+When you have the `setupIntent.paymentMethod` on the client side, pass it to the server, where we'll need to save it to the customer. You can either [manually add it as a new payment method](#adding-payment-methods) or [update the default payment method](#updating-the-default-payment-method). You can also immediately use the `result.setupIntent.paymentMethod` to [create a new subscription](#creating-subscriptions).
+
+If you want more information about the above process you can [review this guide by Stripe](https://stripe.com/docs/payments/cards/saving-cards#saving-card-without-payment).
 
 #### Payment Methods For Single Charges
 
-When making single charges we'll only need to use a payment method one single time. While you could technically retrieve the default payment method from a customer (which is used for billing and invoicing) and use that to make the payment you can also opt to allow the customer to enter a one-time payment method with the Stripe.js library.
+When making single charges we'll only need to use a payment method one single time. Due to a limitation on Stripe's end, you cannot use the default payment method of a customer (which is used for billing and invoicing) for single charges. You must opt to allow the customer to enter a one-time payment method with the Stripe.js library. Let's see how we can set this up.
 
-A detailed example can be examined [in the Stripe docs](https://stripe.com/docs/payments/payment-intents/migration#elements). More info about the `createPaymentMethod` call can be found [here](https://stripe.com/docs/stripe-js/reference#stripe-create-payment-method). When you have the `result.paymentMethod.id`, use it to [create single charges](#simple-charge).
+We'll first need to set up some HTML to perform the payment:
+
+    <input id="cardholder-name" type="text">
+    <!-- placeholder for Elements -->
+    <div id="card-element"></div>
+    <button id="card-button">
+      Save Card
+    </button>
+
+After that we'll need to set up the JS to retrieve the payment method id. First, make sure you put the official Stripe.js in the `head` of your site:
+
+    <script src="https://js.stripe.com/v3/"></script>
+
+Then we'll need to create a Stripe element to create the card placeholder field:
+
+    const stripe = Stripe('<your Stripe public key>');
+
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+After that we'll need to use the [`stripe.createPaymentMethod`](https://stripe.com/docs/stripe-js/reference#stripe-create-payment-method) call to create the payment method within Stripe:
+
+    const cardholderName = document.getElementById('cardholder-name');
+    const cardButton = document.getElementById('card-button');
+
+    cardButton.addEventListener('click', async (ev) => {
+        const { paymentMethod, error } = await stripe.createPaymentMethod(
+            'card', cardElement, {
+                billing_details: { name: cardholderName.value }
+            }
+        );
+
+        if (error) {
+            // Display error.message in your UI.
+        } else {
+            // The setup has succeeded. Display a success message.
+        }
+    });
+
+Now that you have the `paymentMethod.id` you can pass it to the backend in whatever way you wish, being it an Ajax call, hidden field, whatever. Now you're ready to [create single charges](#simple-charge).
 
 <a name="retrieving-payment-methods"></a>
 ### Retrieving Payment Methods
@@ -230,6 +311,8 @@ To create a subscription, first retrieve an instance of your billable model, whi
 The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `main` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Stripe.
 
 The `create` method, which accepts [a Stripe payment method identifier](#storing-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the customer ID and other relevant billing information.
+
+> {note} Passing a Payment Method string directly to the `create()` subscription method will also automatically save it to the user.
 
 #### Additional User Details
 
