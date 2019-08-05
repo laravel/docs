@@ -154,7 +154,7 @@ After you've created the Setup Intent you'll need to pass its secret to the elem
     <!-- placeholder for Elements -->
     <div id="card-element"></div>
     <button id="card-button" data-secret="<?= $intent->client_secret ?>">
-      Save Card
+        Save Card
     </button>
 
 After that we'll need to set up the JS to retrieve the payment method id. First, make sure you put the official Stripe.js in the `head` of your site:
@@ -205,7 +205,7 @@ We'll first need to set up some HTML to perform the payment:
     <!-- placeholder for Elements -->
     <div id="card-element"></div>
     <button id="card-button">
-      Save Card
+        Make Payment
     </button>
 
 After that we'll need to set up the JS to retrieve the payment method id. First, make sure you put the official Stripe.js in the `head` of your site:
@@ -235,11 +235,11 @@ After that we'll need to use the [`stripe.createPaymentMethod`](https://stripe.c
         if (error) {
             // Display error.message in your UI.
         } else {
-            // The setup has succeeded. Display a success message.
+            // The setup has succeeded. Submit payment form or make an Ajax call here.
         }
     });
 
-Now that you have the `paymentMethod.id` you can pass it to the backend in whatever way you wish, being it an Ajax call, hidden field, whatever. Now you're ready to [create single charges](#simple-charge).
+Now that you have the `paymentMethod.id` you can pass it to the backend being it an Ajax call, hidden field, or whatever you wish. Now you're ready to [create single charges](#simple-charge).
 
 <a name="retrieving-payment-methods"></a>
 ### Retrieving Payment Methods
