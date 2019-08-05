@@ -144,38 +144,43 @@ In order to create subscriptions or perform "one off" charges with Stripe, you w
 
 #### Payment Methods For Subscriptions
 
-When storing credit cards to a customer for future use we'll need to make sure that we use the Setup Intents API to make sure we can safely use the card when starting a new subscription. Cashier includes a method to easily start a new setup intents session:
+When storing credit cards to a customer for future use, the Stripe Setup Intents API to must be used to securely gather the customer's payment method details. A "Setup Intent" indicates to Stripe the intention to charge a customer's payment method. Cashier's `Billable` trait includes the `createSetupIntent` to easily create a new Setup Intent. You should call this method from the route or controller that will render the form which gathers your customer's payment method details:
 
-    $setupIntent = $user->createSetupIntent();
+    return view('update-payment-method', [
+        'intent' => $user->createSetupIntent()
+    ]);
 
-After you've created the Setup Intent you'll need to pass its secret to the element which will confirm the payment:
+After you have created the Setup Intent and passed it to the view, you should attach its secret to the element that will gather the payment method. For example, consider this "update payment method" form:
 
-    <input id="cardholder-name" type="text">
-    <!-- placeholder for Elements -->
+    <input id="card-holder-name" type="text">
+
+    <!-- Stripe Elements Placeholder -->
     <div id="card-element"></div>
+
     <button id="card-button" data-secret="<?= $intent->client_secret ?>">
-        Save Card
+        Update Payment Method
     </button>
 
-After that we'll need to set up the JS to retrieve the payment method id. First, make sure you put the official Stripe.js in the `head` of your site:
+Next, the Stripe.js library may be used to attach a Stripe Element to the form and securely gather the customer's payment details:
 
     <script src="https://js.stripe.com/v3/"></script>
 
-Then we'll need to create a Stripe element to create the card placeholder field:
+    <script>
+        const stripe = Stripe('stripe-public-key');
 
-    const stripe = Stripe('<your Stripe public key>');
+        const elements = stripe.elements();
+        const cardElement = elements.create('card');
 
-    const elements = stripe.elements();
-    const cardElement = elements.create('card');
-    cardElement.mount('#card-element');
+        cardElement.mount('#card-element');
+    </script>
 
-To verify the card and retrieve the payment method id we'll need to submit it using the [`stripe.handleCardSetup`](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup) call:
+Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `handleCardSetup` method](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup):
 
-    const cardholderName = document.getElementById('cardholder-name');
+    const cardHolderName = document.getElementById('cardholder-name');
     const cardButton = document.getElementById('card-button');
     const clientSecret = cardButton.dataset.secret;
 
-    cardButton.addEventListener('click', async (ev) => {
+    cardButton.addEventListener('click', async (e) => {
         const { setupIntent, error } = await stripe.handleCardSetup(
             clientSecret, cardElement, {
                 payment_method_data: {
@@ -185,47 +190,48 @@ To verify the card and retrieve the payment method id we'll need to submit it us
         );
 
         if (error) {
-            // Display error.message in your UI.
+            // Display "error.message" to the user...
         } else {
-            // The setup has succeeded. Display a success message.
+            // The card has been verified successfully...
         }
     });
 
-When you have the `setupIntent.paymentMethod` on the client side, pass it to the server, where we'll need to save it to the customer. You can either [manually add it as a new payment method](#adding-payment-methods) or [update the default payment method](#updating-the-default-payment-method). You can also immediately use the `result.setupIntent.paymentMethod` to [create a new subscription](#creating-subscriptions).
+After the card has been verified by Stripe, you may pass the resulting `setupIntent.paymentMethod` identifier to your Laravel application, where it can be attached to the customer. The payment method can either be [added as a new payment method](#adding-payment-methods) or [used to update the default payment method](#updating-the-default-payment-method). You can also immediately use the payment method identifier to [create a new subscription](#creating-subscriptions).
 
-If you want more information about the above process you can [review this guide by Stripe](https://stripe.com/docs/payments/cards/saving-cards#saving-card-without-payment).
+> {tip} If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/cards/saving-cards#saving-card-without-payment).
 
 #### Payment Methods For Single Charges
 
-When making single charges we'll only need to use a payment method one single time. Due to a limitation on Stripe's end, you cannot use the default payment method of a customer (which is used for billing and invoicing) for single charges. You must opt to allow the customer to enter a one-time payment method with the Stripe.js library. Let's see how we can set this up.
+Of course, when making a single charge against a customer's payment method we'll only need to use a payment method identifier a single time. Due to Stripe limitations, you may not use the stored default payment method of a customer for single charges. You must allow the customer to enter their payment method details using the Stripe.js library. For example, consider the following form:
 
-We'll first need to set up some HTML to perform the payment:
+    <input id="card-holder-name" type="text">
 
-    <input id="cardholder-name" type="text">
-    <!-- placeholder for Elements -->
+    <!-- Stripe Elements Placeholder -->
     <div id="card-element"></div>
+
     <button id="card-button">
-        Make Payment
+        Process Payment
     </button>
 
-After that we'll need to set up the JS to retrieve the payment method id. First, make sure you put the official Stripe.js in the `head` of your site:
+Next, the Stripe.js library may be used to attach a Stripe Element to the form and securely gather the customer's payment details:
 
     <script src="https://js.stripe.com/v3/"></script>
 
-Then we'll need to create a Stripe element to create the card placeholder field:
+    <script>
+        const stripe = Stripe('stripe-public-key');
 
-    const stripe = Stripe('<your Stripe public key>');
+        const elements = stripe.elements();
+        const cardElement = elements.create('card');
 
-    const elements = stripe.elements();
-    const cardElement = elements.create('card');
-    cardElement.mount('#card-element');
+        cardElement.mount('#card-element');
+    </script>
 
-After that we'll need to use the [`stripe.createPaymentMethod`](https://stripe.com/docs/stripe-js/reference#stripe-create-payment-method) call to create the payment method within Stripe:
+Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `createPaymentMethod` method](https://stripe.com/docs/stripe-js/reference#stripe-create-payment-method):
 
-    const cardholderName = document.getElementById('cardholder-name');
+    const cardHolderName = document.getElementById('card-holder-name');
     const cardButton = document.getElementById('card-button');
 
-    cardButton.addEventListener('click', async (ev) => {
+    cardButton.addEventListener('click', async (e) => {
         const { paymentMethod, error } = await stripe.createPaymentMethod(
             'card', cardElement, {
                 billing_details: { name: cardholderName.value }
@@ -233,13 +239,13 @@ After that we'll need to use the [`stripe.createPaymentMethod`](https://stripe.c
         );
 
         if (error) {
-            // Display error.message in your UI.
+            // Display "error.message" to the user...
         } else {
-            // The setup has succeeded. Submit payment form or make an Ajax call here.
+            // The card has been verified successfully...
         }
     });
 
-Now that you have the `paymentMethod.id` you can pass it to the backend being it an Ajax call, hidden field, or whatever you wish. Now you're ready to [create single charges](#simple-charge).
+If the card is verified successfully, you may pass the `paymentMethod.id` to your Laravel application and process a [single charge](#simple-charge).
 
 <a name="retrieving-payment-methods"></a>
 ### Retrieving Payment Methods
