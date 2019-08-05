@@ -277,11 +277,11 @@ To sync your default payment method information with the customer's default paym
 <a name="adding-payment-methods"></a>
 ### Adding Payment Methods
 
-To add a new payment method, you can call the `addPaymentMethod` method on the billable user:
+To add a new payment method, you may call the `addPaymentMethod` method on the billable user, passing the payment method token / identifier:
 
     $user->addPaymentMethod($paymentMethod);
 
-You can retrieve the `$paymentMethod` token by following [this guide](#storing-payment-methods).
+> {tip} To learn how to retrieve payment method tokens please review the [payment method storage documentation](#storing-payment-methods).
 
 <a name="deleting-payment-methods"></a>
 ### Deleting Payment Methods
