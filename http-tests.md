@@ -286,6 +286,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
 [assertSessionHas](#assert-session-has)
+[assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
 [assertSessionHasErrors](#assert-session-has-errors)
 [assertSessionHasErrorsIn](#assert-session-has-errors-in)
@@ -497,6 +498,13 @@ Assert that the given strings are contained in order within the response text:
 Assert that the session contains the given piece of data:
 
     $response->assertSessionHas($key, $value = null);
+
+<a name="assert-session-has-input"></a>
+#### assertSessionHasInput
+
+Assert that the session has a given value in the flashed input array:
+
+    $response->assertSessionHasInput($key, $value = null);
 
 <a name="assert-session-has-all"></a>
 #### assertSessionHasAll
