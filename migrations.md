@@ -239,10 +239,12 @@ Command  |  Description
 `$table->mediumInteger('votes');`  |  MEDIUMINT equivalent column.
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent column.
 `$table->morphs('taggable');`  |  Adds `taggable_id` UNSIGNED BIGINT and `taggable_type` VARCHAR equivalent columns.
+`$table->uuidMorphs('taggable');`  |  Adds `taggable_id` CHAR(36) and `taggable_type` VARCHAR(255) UUID equivalent columns.
 `$table->multiLineString('positions');`  |  MULTILINESTRING equivalent column.
 `$table->multiPoint('positions');`  |  MULTIPOINT equivalent column.
 `$table->multiPolygon('positions');`  |  MULTIPOLYGON equivalent column.
 `$table->nullableMorphs('taggable');`  |  Adds nullable versions of `morphs()` columns.
+`$table->nullableUuidMorphs('taggable');`  |  Adds nullable versions of `uuidMorphs()` columns.
 `$table->nullableTimestamps();`  |  Alias of `timestamps()` method.
 `$table->point('position');`  |  POINT equivalent column.
 `$table->polygon('positions');`  |  POLYGON equivalent column.
