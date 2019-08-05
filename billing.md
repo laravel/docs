@@ -11,7 +11,7 @@
 - [Customers](#customers)
     - [Creating Customers](#creating-customers)
 - [Payment Methods](#payment-methods)
-    - [Saving Payment Methods](#saving-payment-methods)
+    - [Storing Payment Methods](#storing-payment-methods)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
     - [Check For A Payment Method](#check-for-a-payment-method)
     - [Updating The Default Payment Method](#updating-the-default-payment-method)
@@ -137,7 +137,7 @@ Once the customer has been created in Stripe, you may begin a subscription at a 
 <a name="payment-methods"></a>
 ## Payment Methods
 
-<a name="saving-payment-methods"></a>
+<a name="storing-payment-methods"></a>
 ### Storing Payment Methods
 
 In order to create subscriptions or perform "one off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
