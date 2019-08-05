@@ -620,7 +620,7 @@ Sometimes your queued jobs will fail. Don't worry, things don't always go as pla
 
     php artisan migrate
 
-Then, when running your [queue worker](#running-the-queue-worker), you should specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will be attempted indefinitely:
+Then, when running your [queue worker](#running-the-queue-worker), you can specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will only be attempted once:
 
     php artisan queue:work redis --tries=3
 
