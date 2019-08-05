@@ -200,6 +200,8 @@ To add a new payment method, you can call the `addPaymentMethod` method on the b
 
     $user->addPaymentMethod($paymentMethod);
 
+You can retrieve the `$paymentMethod` token by following [this guide](#storing-payment-methods).
+
 <a name="deleting-payment-methods"></a>
 ### Deleting Payment Methods
 
