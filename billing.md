@@ -227,7 +227,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
 The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `main` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Stripe.
 
-The `create` method, which accepts [a Stripe payment method identifier](#saving-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the customer ID and other relevant billing information.
+The `create` method, which accepts [a Stripe payment method identifier](#storing-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the customer ID and other relevant billing information.
 
 #### Additional User Details
 
@@ -588,7 +588,7 @@ To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environm
 
 > {note} The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**.
 
-If you would like to make a "one off" charge against a subscribed customer's payment method, you may use the `charge` method on a billable model instance. You'll need to [provide a payment method identifier](#saving-payment-methods) as the second argument:
+If you would like to make a "one off" charge against a subscribed customer's payment method, you may use the `charge` method on a billable model instance. You'll need to [provide a payment method identifier](#storing-payment-methods) as the second argument:
 
     // Stripe Accepts Charges In Cents...
     $stripeCharge = $user->charge(100, $paymentMethod);
