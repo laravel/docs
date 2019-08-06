@@ -37,7 +37,7 @@ Next, examine any 3rd party packages consumed by your application and verify you
 
 **Likelihood Of Impact: Medium**
 
-Laravel 6.0 has received [performance optimizazions](https://github.com/laravel/framework/pull/28153) for integer key types. If you are using a string as your model's primary key, you should declare the key type using the `$keyType` property on your model:
+Laravel 6.0 has received [performance optimizations](https://github.com/laravel/framework/pull/28153) for integer key types. If you are using a string as your model's primary key, you should declare the key type using the `$keyType` property on your model:
 
     /**
      * The "type" of the primary key ID.
