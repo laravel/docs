@@ -184,7 +184,7 @@ Next, the card can be verified and a secure "payment method identifier" can be r
         const { setupIntent, error } = await stripe.handleCardSetup(
             clientSecret, cardElement, {
                 payment_method_data: {
-                    billing_details: { name: cardholderName.value }
+                    billing_details: { name: cardHolderName.value }
                 }
             }
         );
@@ -234,7 +234,7 @@ Next, the card can be verified and a secure "payment method identifier" can be r
     cardButton.addEventListener('click', async (e) => {
         const { paymentMethod, error } = await stripe.createPaymentMethod(
             'card', cardElement, {
-                billing_details: { name: cardholderName.value }
+                billing_details: { name: cardHolderName.value }
             }
         );
 
