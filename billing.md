@@ -157,7 +157,7 @@ After you have created the Setup Intent and passed it to the view, you should at
     <!-- Stripe Elements Placeholder -->
     <div id="card-element"></div>
 
-    <button id="card-button" data-secret="<?= $intent->client_secret ?>">
+    <button id="card-button" data-secret="{{ $intent->client_secret }}">
         Update Payment Method
     </button>
 
@@ -184,7 +184,7 @@ Next, the card can be verified and a secure "payment method identifier" can be r
         const { setupIntent, error } = await stripe.handleCardSetup(
             clientSecret, cardElement, {
                 payment_method_data: {
-                    billing_details: { name: cardholderName.value }
+                    billing_details: { name: cardHolderName.value }
                 }
             }
         );
@@ -234,7 +234,7 @@ Next, the card can be verified and a secure "payment method identifier" can be r
     cardButton.addEventListener('click', async (e) => {
         const { paymentMethod, error } = await stripe.createPaymentMethod(
             'card', cardElement, {
-                billing_details: { name: cardholderName.value }
+                billing_details: { name: cardHolderName.value }
             }
         );
 
@@ -283,11 +283,11 @@ To sync your default payment method information with the customer's default paym
 <a name="adding-payment-methods"></a>
 ### Adding Payment Methods
 
-To add a new payment method, you may call the `addPaymentMethod` method on the billable user, passing the payment method token / identifier:
+To add a new payment method, you may call the `addPaymentMethod` method on the billable user, passing the payment method identifier:
 
     $user->addPaymentMethod($paymentMethod);
 
-> {tip} To learn how to retrieve payment method tokens please review the [payment method storage documentation](#storing-payment-methods).
+> {tip} To learn how to retrieve payment method identifiers please review the [payment method storage documentation](#storing-payment-methods).
 
 <a name="deleting-payment-methods"></a>
 ### Deleting Payment Methods
