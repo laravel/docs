@@ -157,7 +157,7 @@ After you have created the Setup Intent and passed it to the view, you should at
     <!-- Stripe Elements Placeholder -->
     <div id="card-element"></div>
 
-    <button id="card-button" data-secret="<?= $intent->client_secret ?>">
+    <button id="card-button" data-secret="{{ $intent->client_secret }}">
         Update Payment Method
     </button>
 
