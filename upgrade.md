@@ -33,12 +33,11 @@ Next, examine any 3rd party packages consumed by your application and verify you
 <a name="eloquent"></a>
 ### Eloquent
 
-<a name="model-names-ending-with-irregular-plurals"></a>
-#### Declaration of the primary key type
+#### Declaration Of Primary Key Type
 
 **Likelihood Of Impact: Medium**
 
-Laravel now has some [performance optimizazions](https://github.com/laravel/framework/pull/28153) for integer key types. If you are using strings for the primary key, you must now declare that using the $keyType attribute. Otherwise your application may break when trying to eagerly load relations.
+Laravel 6.0 has received [performance optimizazions](https://github.com/laravel/framework/pull/28153) for integer key types. If you are using a string as your model's primary key, you should declare the key type using the `$keyType` property on your model:
 
     /**
      * The "type" of the primary key ID.
