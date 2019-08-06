@@ -719,7 +719,11 @@ When using Homestead in a team setting, you may want to tweak Homestead to bette
 <a name="updating-homestead"></a>
 ## Updating Homestead
 
-Before you begin updating Homestead ensure you run `vagrant destroy` to remove your current virtual machine. Then, you should update the Vagrant box using the `vagrant box update` command:
+Before you begin updating Homestead ensure you have removed your current virtual machine by running the following command in your Homestead directory:
+
+    vagrant destroy
+
+Then, you should update the Vagrant box using the `vagrant box update` command:
 
     vagrant box update
 
@@ -735,9 +739,7 @@ If you have installed Homestead via your project's `composer.json` file, you sho
 
     composer update
 
-Finally, you will need to destroy and regenerate your Homestead box to utilize the latest Vagrant installation. To accomplish this, run the following commands in your Homestead directory:
-
-    vagrant destroy
+Finally, you will need to regenerate your Homestead box to utilize the latest Vagrant installation:
 
     vagrant up
 
