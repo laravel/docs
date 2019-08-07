@@ -176,7 +176,7 @@ Next, the Stripe.js library may be used to attach a Stripe Element to the form a
 
 Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `handleCardSetup` method](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup):
 
-    const cardHolderName = document.getElementById('cardholder-name');
+    const cardHolderName = document.getElementById('card-holder-name');
     const cardButton = document.getElementById('card-button');
     const clientSecret = cardButton.dataset.secret;
 
