@@ -351,7 +351,7 @@ The most simple way to define middleware is to use the `$middleware` array in yo
         }
     }
 
-You can also set middleware when dispatching your Job. This list will replace the ones set in the `$middleware` array, if there is any.
+You can also set middleware when dispatching your Job. This list will replace the ones set in the `$middleware` array, if there are any.
 
     ProcessPodcast::dispatch($podcast)->through(PrepareDirectory::class);
 
