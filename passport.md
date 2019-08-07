@@ -380,7 +380,7 @@ Sometimes you may wish to skip the authorization prompt, such as when authorizin
          */
         public function skipsAuthorization()
         {
-            return $this->first_party;
+            return $this->firstParty();
         }
     }
 
