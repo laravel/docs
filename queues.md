@@ -10,6 +10,7 @@
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
     - [Job Chaining](#job-chaining)
+    - [Middleware](#middleware)
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
     - [Rate Limiting](#rate-limiting)
@@ -285,6 +286,74 @@ If you would like to specify the default connection and queue that should be use
         new OptimizePodcast,
         new ReleasePodcast
     ])->dispatch()->allOnConnection('redis')->allOnQueue('podcasts');
+
+
+<a name="middleware"></a>
+### Middleware
+
+Some Jobs may need set up before being executed. You can define a middleware to pass the Job through. These can be class names, instances or Closures, and they work exactly as Routes middleware.
+
+    <?php
+
+    namespace App\Jobs\Middleware;
+    
+    use Closure;
+
+    class PrepareDirectory
+    {
+        /**
+         * Handle the command
+         *
+         * @param  mixed $commmand
+         * @param  \Closure $next
+         * @return mixed
+         */
+        public function handle($command, Closure $next)
+        {
+            // ...
+            
+            return $next($command);
+        }
+    }
+
+The most simple way to define middleware is to use the `$middleware` array in your Job class. Additionally, you can use the `middleware()` method to programatically return a list of middleware to append to the list.
+
+
+    <?php
+
+    namespace App\Jobs;
+
+    class ProcessPodcast implements ShouldQueue
+    {
+        /**
+         * Middleware to handle this job through
+         *
+         * @var array
+         */
+        protected $middleware = [
+            CheckTranscoderLoad::class,
+            PrepareDirectory::class,
+        ];
+
+        // ...
+        
+        /**
+         * Return a list of middleware to handle this Job through
+         *
+         * @return array
+         */
+        public function middleware()
+        {
+            return [
+                new DeleteOriginalPodcastFile,
+                new AdjustFilePermissions,
+            ];
+        }
+    }
+
+You can also set middleware when dispatching your Job. This list will replace the ones set in the `$middleware` array, if there is any.
+
+    ProcessPodcast::dispatch($podcast)->through(PrepareDirectory::class);
 
 <a name="customizing-the-queue-and-connection"></a>
 ### Customizing The Queue & Connection
