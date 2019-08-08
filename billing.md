@@ -176,7 +176,7 @@ Next, the Stripe.js library may be used to attach a Stripe Element to the form a
 
 Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `handleCardSetup` method](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup):
 
-    const cardHolderName = document.getElementById('cardholder-name');
+    const cardHolderName = document.getElementById('card-holder-name');
     const cardButton = document.getElementById('card-button');
     const clientSecret = cardButton.dataset.secret;
 
@@ -196,7 +196,7 @@ Next, the card can be verified and a secure "payment method identifier" can be r
         }
     });
 
-After the card has been verified by Stripe, you may pass the resulting `setupIntent.paymentMethod` identifier to your Laravel application, where it can be attached to the customer. The payment method can either be [added as a new payment method](#adding-payment-methods) or [used to update the default payment method](#updating-the-default-payment-method). You can also immediately use the payment method identifier to [create a new subscription](#creating-subscriptions).
+After the card has been verified by Stripe, you may pass the resulting `setupIntent.payment_method` identifier to your Laravel application, where it can be attached to the customer. The payment method can either be [added as a new payment method](#adding-payment-methods) or [used to update the default payment method](#updating-the-default-payment-method). You can also immediately use the payment method identifier to [create a new subscription](#creating-subscriptions).
 
 > {tip} If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/cards/saving-cards#saving-card-without-payment).
 
