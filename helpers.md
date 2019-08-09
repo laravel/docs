@@ -1128,7 +1128,7 @@ The `Str::uuid` method generates a UUID (version 4):
 <a name="method-str-words"></a>
 #### `Str::words()` {#collection-method}
 
-The `Str::words` method limits the number of words in a string.
+The `Str::words` method limits the number of words in a string:
 
     use Illuminate\Support\Str;
 
