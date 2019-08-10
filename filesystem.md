@@ -50,9 +50,9 @@ When using the `local` driver, all file operations are relative to the `root` di
 
     Storage::disk('local')->put('file.txt', 'Contents');
 
-#### Default Permissions
+#### Permissions
 
-The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can modify the default permissions mappings in your `filesystems` configuration file:
+The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can modify the permissions mappings in your `filesystems` configuration file:
 
     'local' => [
         'driver' => 'local',
