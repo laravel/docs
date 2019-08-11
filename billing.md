@@ -144,7 +144,7 @@ In order to create subscriptions or perform "one off" charges with Stripe, you w
 
 #### Payment Methods For Subscriptions
 
-When storing credit cards to a customer for future use, the Stripe Setup Intents API to must be used to securely gather the customer's payment method details. A "Setup Intent" indicates to Stripe the intention to charge a customer's payment method. Cashier's `Billable` trait includes the `createSetupIntent` to easily create a new Setup Intent. You should call this method from the route or controller that will render the form which gathers your customer's payment method details:
+When storing credit cards to a customer for future use, the Stripe Setup Intents API must be used to securely gather the customer's payment method details. A "Setup Intent" indicates to Stripe the intention to charge a customer's payment method. Cashier's `Billable` trait includes the `createSetupIntent` to easily create a new Setup Intent. You should call this method from the route or controller that will render the form which gathers your customer's payment method details:
 
     return view('update-payment-method', [
         'intent' => $user->createSetupIntent()
