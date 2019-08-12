@@ -30,7 +30,6 @@
     - [With Payment Method Up Front](#with-payment-method-up-front)
     - [Without Payment Method Up Front](#without-payment-method-up-front)
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
-    - [Testing Webhooks Locally](#testing-webhooks-locally)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
     - [Verifying Webhook Signatures](#verifying-webhook-signatures)
@@ -606,6 +605,8 @@ Once you are ready to create an actual subscription for the user, you may use th
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
 
+> {note} You can use [Laravel Valet](https://laravel.com/docs/5.8/valet)'s [`valet share`](https://laravel.com/docs/5.8/valet#sharing-sites) command to help test webhooks while developing locally.
+
 Stripe can notify your application of a variety of events via webhooks. By default, a route that points to Cashier's webhook controller is configured through the Cashier service provider. This controller will handle all incoming webhook requests.
 
 By default, this controller will automatically handle cancelling subscriptions that have too many failed charges (as defined by your Stripe settings), customer updates, customer deletions, subscription updates, and payment method changes; however, as we'll soon discover, you can extend this controller to handle any webhook event you like.
@@ -619,13 +620,6 @@ To ensure your application can handle Stripe webhooks, be sure to configure the 
 - `invoice.payment_action_required`
 
 > {note} Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/billing#verifying-webhook-signatures) middleware.
-
-<a name="testing-webhooks-locally"></a>
-#### Testing Webhooks Locally
-
-You can use a service such as [UltraHook](http://www.ultrahook.com/) to forward webhooks to your local development environment. You can also use [ngrok](https://ngrok.com/) to expose your site to the wider web using a private URL for testing.
-
-> {note} if you're using [Laravel Valet](https://laravel.com/docs/5.8/valet), you can use `ngrok` by simply using the [`valet share`](https://laravel.com/docs/5.8/valet#sharing-sites) command from the root of your laravel project.
 
 #### Webhooks & CSRF Protection
 
