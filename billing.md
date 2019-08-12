@@ -400,7 +400,7 @@ To determine if the user has cancelled their subscription and is no longer withi
 <a name="incomplete-and-past-due-status"></a>
 #### Incomplete and Past Due Status
 
-If a subscription requires a secondary payment action after creation the subscription will be marked as `incomplete`. Subscription statuses are stored in the `status` column of Cashier's `subscriptions` database table.
+If a subscription requires a secondary payment action after creation the subscription will be marked as `incomplete`. Subscription statuses are stored in the `stripe_status` column of Cashier's `subscriptions` database table.
 
 Similarly, if a secondary payment action is required when swapping plans the subscription will be marked as `past_due`. When your subscription is in either of these states it will not be active until the customer has confirmed their payment. Checking if a subscription has an incomplete payment can be done using the `hasIncompletePayment` method on the Billable model or a subscription instance:
 
