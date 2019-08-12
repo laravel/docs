@@ -404,7 +404,7 @@ If a subscription requires a secondary payment action after creation the subscri
 
 Similarly, if a secondary payment action is required when swapping plans the subscription will be marked as `past_due`. When your subscription is in either of these states it will not be active until the customer has confirmed their payment. Checking if a subscription has an incomplete payment can be done using the `hasIncompletePayment` method on the Billable model or a subscription instance:
 
-    if ($user->hasIncompletePayment()) {
+    if ($user->hasIncompletePayment('main')) {
         //
     }
 
