@@ -64,7 +64,7 @@ By default, fresh Laravel applications contain an `ExampleComponent.vue` Vue com
 
     Vue.component(
         'example-component',
-        require('./components/ExampleComponent.vue')
+        require('./components/ExampleComponent.vue').default
     );
 
 To use the component in your application, you may drop it into one of your HTML templates. For example, after running the `make:auth` Artisan command to scaffold your application's authentication and registration screens, you could drop the component into the `home.blade.php` Blade template:
