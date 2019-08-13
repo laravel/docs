@@ -335,7 +335,7 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
         'avatars', $request->file('avatar'), $request->user()->id
     );
 
-> {note} When specifying a file name or path, make sure to always normalize it before passing it through. Internally the `League\Flysystem\Util::normalizePath` method will be called to clean the path before storing so it could be that the file ends up in a different path than you specified.
+> {note} Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\Util::normalizePath` method.
 
 #### Specifying A Disk
 
