@@ -335,6 +335,8 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
         'avatars', $request->file('avatar'), $request->user()->id
     );
 
+> {note} When specifying a file name or path, make sure to always normalize it before passing it through. Internally the `League\Flysystem\Util::normalizePath` method will be called to clean the path before storing so it could be that the file ends up in a different path than you specified.
+
 #### Specifying A Disk
 
 By default, this method will use your default disk. If you would like to specify another disk, pass the disk name as the second argument to the `store` method:
