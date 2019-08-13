@@ -371,9 +371,7 @@ But, since you will probably need to SSH into your Homestead machine frequently,
 <a name="connecting-to-databases"></a>
 ### Connecting To Databases
 
-A `homestead` database is configured for both MySQL and PostgreSQL out of the box. For even more convenience, Laravel's `.env` file configures the framework to use this database out of the box.
-
-To connect to your MySQL or PostgreSQL database from your host machine's database client, you should connect to `127.0.0.1` and port `33060` (MySQL) or `54320` (PostgreSQL). The username and password for both databases is `homestead` / `secret`.
+A `homestead` database is configured for both MySQL and PostgreSQL out of the box. To connect to your MySQL or PostgreSQL database from your host machine's database client, you should connect to `127.0.0.1` and port `33060` (MySQL) or `54320` (PostgreSQL). The username and password for both databases is `homestead` / `secret`.
 
 > {note} You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel database configuration file since Laravel is running _within_ the virtual machine.
 
@@ -721,7 +719,11 @@ When using Homestead in a team setting, you may want to tweak Homestead to bette
 <a name="updating-homestead"></a>
 ## Updating Homestead
 
-Before you begin updating Homestead ensure you run `vagrant destroy` to remove your current virtual machine. Then, you should update the Vagrant box using the `vagrant box update` command:
+Before you begin updating Homestead ensure you have removed your current virtual machine by running the following command in your Homestead directory:
+
+    vagrant destroy
+
+Then, you should update the Vagrant box using the `vagrant box update` command:
 
     vagrant box update
 
@@ -737,9 +739,7 @@ If you have installed Homestead via your project's `composer.json` file, you sho
 
     composer update
 
-Finally, you will need to destroy and regenerate your Homestead box to utilize the latest Vagrant installation. To accomplish this, run the following commands in your Homestead directory:
-
-    vagrant destroy
+Finally, you will need to regenerate your Homestead box to utilize the latest Vagrant installation:
 
     vagrant up
 

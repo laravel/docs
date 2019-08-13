@@ -141,7 +141,7 @@ You may also specify which guard should be used to authenticate the given user b
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
 
-Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `get`, `post`, `put`, `patch`, and `delete` methods may be used to issue requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that the expected data was returned:
+Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `get`, `post`, `put`, `patch`, `delete`, and `option` methods may be used to issue requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that the expected data was returned:
 
     <?php
 
@@ -286,6 +286,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
 [assertSessionHas](#assert-session-has)
+[assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
 [assertSessionHasErrors](#assert-session-has-errors)
 [assertSessionHasErrorsIn](#assert-session-has-errors-in)
@@ -497,6 +498,13 @@ Assert that the given strings are contained in order within the response text:
 Assert that the session contains the given piece of data:
 
     $response->assertSessionHas($key, $value = null);
+
+<a name="assert-session-has-input"></a>
+#### assertSessionHasInput
+
+Assert that the session has a given value in the flashed input array:
+
+    $response->assertSessionHasInput($key, $value = null);
 
 <a name="assert-session-has-all"></a>
 #### assertSessionHasAll

@@ -46,9 +46,28 @@ Once a file has been stored and the symbolic link has been created, you can crea
 <a name="the-local-driver"></a>
 ### The Local Driver
 
-When using the `local` driver, all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
+When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
     Storage::disk('local')->put('file.txt', 'Contents');
+
+#### Permissions
+
+The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can modify the permissions mappings in your `filesystems` configuration file:
+
+    'local' => [
+        'driver' => 'local',
+        'root' => storage_path('app'),
+        'permissions' => [
+            'file' => [
+                'public' => 0664,
+                'private' => 0600,
+            ],
+            'dir' => [
+                'public' => 0775,
+                'private' => 0700,
+            ],
+        ],
+    ],
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
@@ -73,17 +92,17 @@ The S3 driver configuration information is located in your `config/filesystems.p
 Laravel's Flysystem integrations works great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a FTP filesystem, you may use the example configuration below:
 
     'ftp' => [
-        'driver'   => 'ftp',
-        'host'     => 'ftp.example.com',
+        'driver' => 'ftp',
+        'host' => 'ftp.example.com',
         'username' => 'your-username',
         'password' => 'your-password',
 
         // Optional FTP Settings...
-        // 'port'     => 21,
-        // 'root'     => '',
-        // 'passive'  => true,
-        // 'ssl'      => true,
-        // 'timeout'  => 30,
+        // 'port' => 21,
+        // 'root' => '',
+        // 'passive' => true,
+        // 'ssl' => true,
+        // 'timeout' => 30,
     ],
 
 #### SFTP Driver Configuration
@@ -178,8 +197,8 @@ For files stored using the `s3` you may create a temporary URL to a given file u
 If you need to specify additional [S3 request parameters](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests), you may pass the array of request parameters as the third argument to the `temporaryUrl` method:
 
     $url = Storage::temporaryUrl(
-        'file.jpg', 
-        now()->addMinutes(5), 
+        'file.jpg',
+        now()->addMinutes(5),
         ['ResponseContentType' => 'application/octet-stream'],
     );
 
@@ -300,6 +319,8 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
     $path = Storage::putFileAs(
         'avatars', $request->file('avatar'), $request->user()->id
     );
+
+> {note} Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\Util::normalizePath` method.
 
 #### Specifying A Disk
 
@@ -430,7 +451,7 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
 The first argument of the `extend` method is the name of the driver and the second is a Closure that receives the `$app` and `$config` variables. The resolver Closure must return an instance of `League\Flysystem\Filesystem`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
 
 Next, register the service provider in your `config/app.php` configuration file:
-    
+
     'providers' => [
         // ...
         App\Providers\DropboxServiceProvider::class,

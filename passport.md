@@ -184,10 +184,15 @@ If necessary, you may define the path where Passport's keys should be loaded fro
         Passport::loadKeysFrom('/secret-keys/oauth');
     }
 
-Additionally, you may load the keys from environment variables:
+Additionally, you may publish Passport's configuration file using `php artisan vendor:publish --tag=passport-config`, which will then provide the option to load the encryption keys from your environment variables:
 
-    PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\\n<private key here>\\n-----END RSA PRIVATE KEY-----"
-    PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\\n<public key here>\\n-----END PUBLIC KEY-----\\n"
+    PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
+    <private key here>
+    -----END RSA PRIVATE KEY-----"
+
+    PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
+    <public key here>
+    -----END PUBLIC KEY-----"
 
 <a name="configuration"></a>
 ## Configuration
@@ -375,7 +380,7 @@ Sometimes you may wish to skip the authorization prompt, such as when authorizin
          */
         public function skipsAuthorization()
         {
-            return $this->first_party;
+            return $this->firstParty();
         }
     }
 

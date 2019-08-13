@@ -1158,17 +1158,13 @@ If you would like to remove an item from the `$with` property for a single query
 
 Sometimes you may wish to eager load a relationship, but also specify additional query conditions for the eager loading query. Here's an example:
 
-    use Illuminate\Database\Eloquent\Builder;
-
-    $users = App\User::with(['posts' => function (Builder $query) {
+    $users = App\User::with(['posts' => function ($query) {
         $query->where('title', 'like', '%first%');
     }])->get();
 
 In this example, Eloquent will only eager load posts where the post's `title` column contains the word `first`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
 
-    use Illuminate\Database\Eloquent\Builder;
-
-    $users = App\User::with(['posts' => function (Builder $query) {
+    $users = App\User::with(['posts' => function ($query) {
         $query->orderBy('created_at', 'desc');
     }])->get();
 
@@ -1187,9 +1183,7 @@ Sometimes you may need to eager load a relationship after the parent model has a
 
 If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be `Closure` instances which receive the query instance:
 
-    use Illuminate\Database\Eloquent\Builder;
-
-    $books->load(['author' => function (Builder $query) {
+    $books->load(['author' => function ($query) {
         $query->orderBy('published_date', 'asc');
     }]);
 
@@ -1350,7 +1344,7 @@ To populate the default model with attributes, you may pass an array or Closure 
      */
     public function user()
     {
-        return $this->belongsTo('App\User')->withDefault(function ($user) {
+        return $this->belongsTo('App\User')->withDefault(function ($user, $post) {
             $user->name = 'Guest Author';
         });
     }
