@@ -7,7 +7,6 @@
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
     - [Currency Configuration](#currency-configuration)
-    - [Webhooks](#webhooks)
 - [Customers](#customers)
     - [Creating Customers](#creating-customers)
 - [Payment Methods](#payment-methods)
