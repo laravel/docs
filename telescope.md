@@ -251,6 +251,8 @@ The command watcher records the arguments, options, exit code, and output whenev
 
 The dump watcher records and displays your variable dumps in Telescope. When using Laravel, variables may be dumped using the global `dump` function. The dump watcher tab must be open in a browser for the recording to occur, otherwise the dumps will be ignored by the watcher.
 
+> Note: The cache is used to detect the watcher tab, so a persistent cache (eg. not `array`) is required.
+
 <a name="event-watcher"></a>
 ### Event Watcher
 
