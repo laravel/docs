@@ -394,7 +394,10 @@ If the user approves the authorization request, they will be redirected back to 
     Route::get('/callback', function (Request $request) {
         $state = $request->session()->pull('state');
 
-        throw_unless(strlen($state) > 0 && $state === $request->state, InvalidArgumentException::class);
+        throw_unless(
+            strlen($state) > 0 && $state === $request->state,
+            InvalidArgumentException::class
+        );
 
         $http = new GuzzleHttp\Client;
 
