@@ -744,7 +744,19 @@ When working with arrays, the field under validation must not have any duplicate
 <a name="rule-email"></a>
 #### email
 
-The field under validation must be formatted as an e-mail address.
+The field under validation must be formatted as an e-mail address. Under the hood the rule makes use of the [`egulias/email-validator`](https://github.com/egulias/EmailValidator) package for validating the email address. By default the `RFCValidation` is applied but you can apply other or multiple validation rules:
+
+    'email' => 'email:rfc,dns'
+
+This will apply the `RFCValidation` and `DNSCheckValidation` validations. Here's a full list of validations you can apply:
+
+- `rfc`: `RFCValidation`
+- `strict`: `NoRFCWarningsValidation`
+- `dns`: `DNSCheckValidation`
+- `spoof`: `SpoofCheckValidation`
+- `filter`: `FilterEmailValidation`
+
+The `filter` validation ships with Laravel and is the pre-5.8 behavior. It uses PHP's `filter_var` function under the hood.
 
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...
