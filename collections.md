@@ -87,7 +87,7 @@ These methods return all or part of the collection in different ways.
 * [except](#method-except)
 * [filter](#method-filter)
 * [first](#method-first)
-* [firstWhere](#method-first-where)
+* [firstWhere](#method-firstwhere)
 * [forPage](#method-forpage)
 * [get](#method-get)
 * [keys](#method-keys)
@@ -204,7 +204,7 @@ These methods returns the result of a calculation or callback over the collectio
 * [average](#method-average)
 * [avg](#method-avg)
 * [count](#method-count)
-* [countBy](#method-count-by)
+* [countBy](#method-countby)
 * [macro](#method-macro)
 * [max](#method-max)
 * [median](#method-median)
@@ -384,7 +384,7 @@ The `count` method returns the total number of items in the collection:
 
     // 4
 
-<a name="method-countBy"></a>
+<a name="method-countby"></a>
 #### `countBy()` {#collection-method}
 
 The `countBy` method counts the occurrences of values in the collection. By default, the method counts the occurrences of every element:
@@ -687,7 +687,7 @@ You may also call the `first` method with no arguments to get the first element 
 
     // 1
 
-<a name="method-first-where"></a>
+<a name="method-firstwhere"></a>
 #### `firstWhere()` {#collection-method}
 
 The `firstWhere` method returns the first element in the collection with the given key / value pair:
