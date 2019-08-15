@@ -485,7 +485,7 @@ Once Mailhog has been configured, you may access the Mailhog dashboard at `http:
 <a name="configuring-minio"></a>
 ### Configuring Minio
 
-Minio is an open source object storage server with an Amazon S3 compatible API. To install Minio, update your `Homestead.yaml` file with the following configuration option:
+Minio is an open source object storage server with an Amazon S3 compatible API. To install Minio, update your `Homestead.yaml` file with the following configuration option in the [features](#installing-optional-features) section:
 
     minio: true
 
