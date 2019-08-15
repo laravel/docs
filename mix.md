@@ -189,7 +189,13 @@ With this addition to your `webpack.mix.js` file, Mix will no longer match any `
 Though disabled by default, source maps may be activated by calling the `mix.sourceMaps()` method in your `webpack.mix.js` file. Though it comes with a compile/performance cost, this will provide extra debugging information to your browser's developer tools when using compiled assets.
 
     mix.js('resources/js/app.js', 'public/js')
-       .sourceMaps(true, 'source-map');
+       .sourceMaps();
+
+Webpack offers a variety of [source mapping styles](https://webpack.js.org/configuration/devtool/#devtool). By default, the source mapping style is set to `eval-source-map`, which provides a fast rebuild time. If you want to change the style, you may do so as follows:
+
+    let productionToo = true;
+    mix.js('resources/js/app.js', 'public/js')
+       .sourceMaps(productionToo, 'source-map');
 
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
