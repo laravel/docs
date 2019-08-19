@@ -6,14 +6,21 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
-- TODO
+- [Authorized Resources & `viewAny`](#authorized-resources)
+- [String & Array Helpers](#helpers)
 </div>
 
 <a name="medium-impact-changes"></a>
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
-- TODO
+- [Eloquent Arrayable & `toArray`](#eloquent-to-array)
+- [Eloquent `BelongsTo::update` Method](#belongs-to-update)
+- [Eloquent Primary Key Types](#eloquent-primary-key-type)
+- [The `Input` Facade](#the-input-facade)
+- [The `Lang::trans` and `Lang::transChoice` Methods](#trans-and-trans-choice)
+- [Resend Email Verification Route](#email-verification-route)
+- [The `Lang::getFromJson` Method](#get-from-json)
 </div>
 
 <a name="upgrade-6.0"></a>
@@ -30,9 +37,94 @@ Update your `laravel/framework` dependency to `^6.0` in your `composer.json` fil
 
 Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 6 support.
 
+### Authorization
+
+<a name="authorized-resources"></a>
+#### Authorized Resources & `viewAny`
+
+**Likelihood Of Impact: High**
+
+Authorization policies attached to controllers using the `authorizeResource` method should now define a `viewAny` method, which will be called when a user accesses the controller's `index` method. Otherwise, calls to the `index` method of the controller will be rejected as unauthorized.
+
+#### Authorization Responses
+
+**Likelihood Of Impact: Low**
+
+The constructor signature of the `Illuminate\Auth\Access\Response` class has changed. You should update your code accordingly. If you are not constructing authorization responses manually and are only using the `allow` and `deny` instance methods within your policies, no change is required:
+
+    /**
+     * Create a new response.
+     *
+     * @param  bool  $allowed
+     * @param  string  $message
+     * @param  mixed  $code
+     * @return void
+     */
+    public function __construct($allowed, $message = '', $code = null)
+
+#### The `Illuminate\Contracts\Auth\Access\Gate` Contract
+
+**Likelihood Of Impact: Low**
+
+The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect` method. If you are implementing this interface manually, you should add this method to your implementation.
+
+### Database
+
+#### The Capsule `table` Method
+
+> {note} This change only applies to non-Laravel applications that are using `illuminate/database` as a dependency.
+
+The signature of the `Illuminate\Database\Capsule\Manager` class' `table` method has 
+updated to accept a table alias as its second argument. If you are using `illuminate/database` outside of a Laravel application, you should update any calls to this method accordingly:
+
+    /**
+     * Get a fluent query builder instance.
+     *
+     * @param  \Closure|\Illuminate\Database\Query\Builder|string  $table
+     * @param  string|null  $as
+     * @param  string|null  $connection
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public static function table($table, $as = null, $connection = null)
+
+#### The `cursor` Method
+
+**Likelihood Of Impact: Low**
+
+The `cursor` method now returns an instance of `Illuminate\Support\LazyCollection` instead of a `Generator` The `LazyCollection` may be iterated just like a generator:
+
+    $user = App\User::cursor();
+
+    foreach ($users as $user) {
+        //
+    }
+
 <a name="eloquent"></a>
 ### Eloquent
 
+<a name="belongs-to-update"></a>
+#### The `BelongsTo::update` Method
+
+**Likelihood Of Impact: Medium**
+
+For consistency, the `update` method of the `BelongsTo` relationship now functions as an ad-hoc update query, meaning it does not provide mass assignment protection or fire Eloquent events. This makes the relationship consistent with the `update` methods on all other types of relationships.
+
+If you would like to update a model attached via a `BelongsTo` relationship and receive mass assignment update protection and events, you should call the `update` method on the model itself:
+
+    // Ad-hoc query... no mass assignment protection or events...
+    $post->user()->update(['foo' => 'bar']);
+
+    // Model update... provides mass assignment protection and events...
+    $post->user->update(['foo' => 'bar']);
+
+<a name="eloquent-to-array"></a>
+#### Arrayable & `toArray`
+
+**Likelihood Of Impact: Medium**
+
+The Eloquent model's `toArray` method will now cast any attributes that implement `Illuminate\Contracts\Support\Arrayable` to an array.
+
+<a name="eloquent-primary-key-type"></a>
 #### Declaration Of Primary Key Type
 
 **Likelihood Of Impact: Medium**
@@ -45,6 +137,109 @@ Laravel 6.0 has received [performance optimizations](https://github.com/laravel/
      * @var string
      */
     protected $keyType = 'string';
+
+### Email Verification
+
+<a name="email-verification-route"></a>
+#### Resend Verification Route HTTP Method
+
+**Likelihood Of Impact: Medium**
+
+To prevent possible CSRF attacks, the `email/resend` route registered by the router when using Laravel's built-in email verification has been updated from a `GET` route to a `POST` route. Therefore, you will need to update your frontend to send the proper request type to this route. For example, if you are using the built-in email verification template scaffolding:
+
+    {{ __('Before proceeding, please check your email for a verification link.') }}
+    {{ __('If you did not receive the email') }},
+
+    <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+        @csrf
+
+        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
+            {{ __('click here to request another') }}
+        </button>.
+    </form>
+
+#### The `MustVerifyEmail` Contract
+
+**Likelihood Of Impact: Low**
+
+A new `getEmailForVerification` method has been added to the `Illuminate\Contracts\Auth\MustVerifyEmail` contract. If you are manually implementing this contract, you should implement this method. This method should return the object's associated email address. If you're `App\User` model is using the `Illuminate\Auth\MustVerifyEmail` trait, no changes are required, as this trait implements this method for you.
+
+<a name="helpers"></a>
+### Helpers
+
+#### String & Array Helpers Package
+
+**Likelihood Of Impact: High**
+
+All `str_` and `array_` helpers have been moved to the new `laravel/helpers` Composer package and removed from the framework. If desired, you may update all calls to these helpers to use the `Illuminate\Support\Str` and `Illuminate\Support\Arr` classes. Alternatively, you can add the new `laravel/helpers` package to your application to continue using these helpers:
+
+    composer require laravel/helpers
+
+### Localization
+
+<a name="trans-and-trans-choice"></a>
+#### The `Lang::trans` & `Lang::transChoice` Methods
+
+**Likelihood Of Impact: Medium**
+
+The `Lang::trans` and `Lang::transChoice` methods of the translator have been renamed to `Lang::get` and `Lang::choice`.
+
+In addition, if you are manually implementing the `Illuminate\Contracts\Translation\Translator` contract, you should update your implementation's `trans` and `transChoice` methods to `get` and `choice`.
+
+<a name="get-from-json"></a>
+#### The `Lang::getFromJson` Method
+
+**Likelihood Of Impact: Medium**
+
+The `Lang::get` and `Lang::getFromJson` methods have been consolidated. Calls to the `Lang::getFromJson` method should be updated to call `Lang::get`.
+
+### Mail
+
+#### Mandrill & SparkPost Drivers Removed
+
+The `mandrill` and `sparkpost` mail drivers have been removed. If you would like to continue using either of these drivers, we encourage you to adopt a community maintained package of your choice that provides the driver.
+
+### Queues
+
+#### Queue Retry Limit
+
+In previous releases of Laravel, the `php artisan queue:work` command would retry jobs indefinitely. Beginning with Laravel 6.0, this command will now try a job one time by default. If you would like to force jobs to be tried indefinitely, you may pass `0` to the `--tries` option:
+
+    php artisan queue:work --tries=0
+
+In addition, please ensure your application's database contains a `failed_jobs` table. You can generate a migration for this table using the `queue:failed-table` Artisan command:
+
+    php artisan queue:failed-table
+
+### Requests
+
+<a name="the-input-facade"></a>
+#### The `Input` Facade
+
+**Likelihood Of Impact: Medium**
+
+The `Input` facade, which was primarily a duplicate of the `Request` facade, has been removed. If you are using the `Input::get` method, you should now call the `Request::input` method. All other calls to the `Input` facade may simply be updated to use the `Request` facade.
+
+### Scheduling
+
+#### The `between` Method
+
+**Likelihood Of Impact: Low**
+
+In previous releases of Laravel, the scheduler's `between` method exhibited confusing behavior across date boundaries. For example:
+
+    $schedule->command('list')->between('23:00', '4:00');
+
+For most users, the expected behavior of this method would be to run the `list` command every minute for all minutes between 23:00 and 4:00. However, in previous releases of Laravel, the scheduler ran the `list` command every minute between 4:00 and 23:00, essentially swapping the time thresholds. In Laravel 6.0, this behavior has been corrected.
+
+### Storage
+
+<a name="rackspace-storage-driver"></a>
+#### Rackspace Storage Driver Removed
+
+**Likelihood Of Impact: Low**
+
+The `rackspace` storage driver has been removed. If you would like to continue using Rackspace as a storage provider, we encourage you to adopt a community maintained package of your choice that provides this driver.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
