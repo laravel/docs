@@ -14,6 +14,8 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
+- [Authentication `RegisterController`](#the-register-controller)
+- [Database `Capsule::table` Method](#capsule-table)
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
 - [Eloquent `BelongsTo::update` Method](#belongs-to-update)
 - [Eloquent Primary Key Types](#eloquent-primary-key-type)
@@ -26,7 +28,7 @@
 <a name="upgrade-6.0"></a>
 ## Upgrading To 6.0 From 5.8
 
-#### Estimated Upgrade Time: TODO
+#### Estimated Upgrade Time: One Hour
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
@@ -45,6 +47,13 @@ Next, examine any 3rd party packages consumed by your application and verify you
 **Likelihood Of Impact: High**
 
 Authorization policies attached to controllers using the `authorizeResource` method should now define a `viewAny` method, which will be called when a user accesses the controller's `index` method. Otherwise, calls to the `index` method of the controller will be rejected as unauthorized.
+
+<a name="the-register-controller"></a>
+#### The `RegisterController` Controller
+
+**Likelihood Of Impact: Medium**
+
+If you are overriding the `register` or `registered` methods of Laravel's built-in `RegisterController`, you should ensure that you are calling `parent::register` and `parent::registered` from within your respective methods. The dispatching of the `Illuminate\Auth\Events\Registered` event and the logging in of the newly registered user has been moved to the `registered` method, so if you are overriding this method and not calling the parent method, the user registration process will fail.
 
 #### Authorization Responses
 
@@ -70,7 +79,10 @@ The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect
 
 ### Database
 
+<a name="capsule-table"></a>
 #### The Capsule `table` Method
+
+**Likelihood Of Impact: Medium**
 
 > {note} This change only applies to non-Laravel applications that are using `illuminate/database` as a dependency.
 
@@ -198,6 +210,14 @@ The `Lang::get` and `Lang::getFromJson` methods have been consolidated. Calls to
 #### Mandrill & SparkPost Drivers Removed
 
 The `mandrill` and `sparkpost` mail drivers have been removed. If you would like to continue using either of these drivers, we encourage you to adopt a community maintained package of your choice that provides the driver.
+
+### Password Reset
+
+#### Password Validation
+
+**Likelihood Of Impact: Low**
+
+The `PasswordBroker` no longer restricts or validates passwords. Password validation was already being handled by the `ResetPasswordController` class, making the broker's validations redundant and impossible to customize. If you are manually using the `PasswordBroker` (or `Password` facade) outside of the built-in `ResetPasswordController`, you should validate all passwords before passing them to the broker.
 
 ### Queues
 
