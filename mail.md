@@ -183,6 +183,8 @@ If you would like to define a plain-text version of your email, you may use the 
                     ->text('emails.orders.shipped_plain');
     }
 
+This is __not necessary__ with markdown emails, as markdown will render plain-text emails for you.
+
 <a name="view-data"></a>
 ### View Data
 
