@@ -77,6 +77,14 @@ The constructor signature of the `Illuminate\Auth\Access\Response` class has cha
 
 The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect` method. If you are implementing this interface manually, you should add this method to your implementation.
 
+### Configuration
+
+#### The `AWS_REGION` Environment Variable
+
+**Likelihood Of Impact: Optional**
+
+If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update all occurrences of `AWS_REGION` with your `config` directory to `AWS_DEFAULT_REGION`. In addition, you should update this environment variable's name in your `.env` file.
+
 ### Database
 
 <a name="capsule-table"></a>
