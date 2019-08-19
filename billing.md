@@ -7,7 +7,6 @@
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
     - [Currency Configuration](#currency-configuration)
-    - [Webhooks](#webhooks)
 - [Customers](#customers)
     - [Creating Customers](#creating-customers)
 - [Payment Methods](#payment-methods)
@@ -808,6 +807,6 @@ Since SCA regulations require customers to occasionally verify their payment det
 
     CASHIER_PAYMENT_NOTIFICATION=Laravel\Cashier\Notifications\ConfirmPayment
 
-To ensure that off-session payment confirmation notifications are delivered, verify that [Stripe webhooks are configured](#handling-stripe-webhooks) for your application and the `invoice.payment_action_required` webhook is enabled in your Stripe dashboard.
+To ensure that off-session payment confirmation notifications are delivered, verify that [Stripe webhooks are configured](#handling-stripe-webhooks) for your application and the `invoice.payment_action_required` webhook is enabled in your Stripe dashboard. In addition, your `Billable` model should also use Laravel's `Illuminate\Notifications\Notifiable` trait.
 
 > {note} Notifications will be sent even when customers are manually making a payment that requires additional confirmation. Unfortunately, there is no way for Stripe to know that the payment was done manually or "off-session". But, a customer will simply see a "Payment Successful" message if they visit the payment page after already confirming their payment. The customer will not be allowed to accidentally confirm the same payment twice and incur an accidental second charge.
