@@ -19,10 +19,10 @@
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
 - [Eloquent `BelongsTo::update` Method](#belongs-to-update)
 - [Eloquent Primary Key Types](#eloquent-primary-key-type)
-- [The `Input` Facade](#the-input-facade)
-- [The `Lang::trans` and `Lang::transChoice` Methods](#trans-and-trans-choice)
+- [Localization `Lang::trans` and `Lang::transChoice` Methods](#trans-and-trans-choice)
+- [Localization `Lang::getFromJson` Method](#get-from-json)
 - [Resend Email Verification Route](#email-verification-route)
-- [The `Lang::getFromJson` Method](#get-from-json)
+- [The `Input` Facade](#the-input-facade)
 </div>
 
 <a name="upgrade-6.0"></a>
