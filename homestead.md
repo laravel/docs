@@ -723,10 +723,6 @@ Before you begin updating Homestead ensure you have removed your current virtual
 
     vagrant destroy
 
-Then, you should update the Vagrant box using the `vagrant box update` command:
-
-    vagrant box update
-
 Next, you need to update the Homestead source code. If you cloned the repository you can run the following commands at the location you originally cloned the repository:
 
     git fetch
@@ -738,6 +734,10 @@ These commands pull the latest Homestead code from the GitHub repository, fetche
 If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^9"` and update your dependencies:
 
     composer update
+
+Then, you should update the Vagrant box using the `vagrant box update` command:
+
+    vagrant box update
 
 Finally, you will need to regenerate your Homestead box to utilize the latest Vagrant installation:
 
