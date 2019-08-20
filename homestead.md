@@ -609,12 +609,7 @@ Homestead includes the Postfix mail transfer agent, which is listening on port `
 
 Homestead includes support for step debugging using [Xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect to your IDE to allow inspection and modification of the running code.
 
-To enable debugging, run the following commands inside your Vagrant box:
-
-    sudo phpenmod xdebug
-
-    # Update this command to match your PHP version...
-    sudo systemctl restart php7.3-fpm
+By default Xdebug is already running and ready to accept connections. If you need to enable Xdebug on the CLI simply run `sudo phpenmod xdebug`.
 
 Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
