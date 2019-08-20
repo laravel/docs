@@ -143,7 +143,7 @@ Once VirtualBox / VMware and Vagrant have been installed, you should add the `la
 
 If this command fails, make sure your Vagrant installation is up to date.
 
-> {note} Periodically Homestead will issue Alpha or Beta boxes for testing. These versions *will* interfere with the `vagrant box add` command. If you are having issues running this command you can safely skip this for now and the correct base box will be downloaded the first time you run `vagrant up`.
+> {note} Homestead periodically issues "alpha" / "beta" boxes for testing, which may interfere with the `vagrant box add` command. If you are having issues running `vagrant box add`, you may run the `vagrant up` command and the correct box will be downloaded when Vagrant attempts to start the virtual machine.
 
 #### Installing Homestead
 
