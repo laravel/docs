@@ -35,9 +35,13 @@ The Laravel framework (`laravel/framework`) package now follows the [semantic ve
 
 ### Laravel Vapor Compatibility
 
+_Laravel Vapor was built by [Taylor Otwell](https://github.com/taylorotwell)_.
+
 Laravel 6.0 provides compatibility with [Laravel Vapor](https://vapor.laravel.com), an auto-scaling serverless deployment platform for Laravel. Vapor abstracts the complexity of managing Laravel applications on AWS Lambda, as well as interfacing those applications with SQS queues, databases, Redis clusters, networks, CloudFront CDN, and more.
 
 ### Improved Authorization Responses
+
+_Improved authorization responses were implemented by [Gary Green](https://github.com/garygreen)_.
 
 In previous releases of Laravel, it was difficult to retrieve and expose custom authorization messages to end users. This made it difficult to explain to end-users exactly why a particular request was denied. In Laravel 6.0, this is now much easier using authorization response messages and the new `Gate::inspect` method. For example, given the following policy method:
 
@@ -68,6 +72,8 @@ The authorization policy's response and message may be easily retrieved using th
 In addition, these custom messages will automatically be returned to your frontend when using helper methods such as `$this->authorize` or `Gate::authorize` from your routes or controllers.
 
 ### Job Middleware
+
+_Job middleware were implemented by [Taylor Otwell](https://github.com/taylorotwell)_.
 
 Job middleware allow you wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, in previous releases of Laravel, you may have wrapped the logic of a job's `handle` method within a rate-limited callback:
 
@@ -138,6 +144,8 @@ After creating middleware, they may be attached to a job by returning them from 
 
 ### Lazy Collections
 
+_Lazy collections were implemented by [Joseph Silber](https://github.com/JosephSilber)_.
+
 Many developers already enjoy Laravel's powerful [Collection methods](https://laravel.com/docs/collections). To supplement the already powerful `Collection` class, Laravel 6.0 introduces a `LazyCollection`, which leverages PHP's [generators](https://www.php.net/manual/en/language.generators.overview.php) to allow you to work with very large datasets while keeping memory usage low.
 
 For example, imagine your application needs to process a multi-gigabyte log file while taking advantage of Laravel's collection methods to parse the logs. Instead of reading the entire file into memory at once, lazy collections may be used to keep only a small part of the file in memory at a given time:
@@ -176,5 +184,27 @@ However, beginning in Laravel 6.0, the query builder's `cursor` method has been 
         echo $user->id;
     }
 
+### Eloquent Subquery Enhancements
 
+_Eloquent subquery enhancements were implemented by [Jonathan Reinink](https://github.com/reinink)_.
 
+Laravel 6.0 introduces several new enhancements and improvements to database subquery support. For example, let's imagine that we have a table of flight `destinations` and a table of `flights` to destinations. The `flights` table contains an `arrived_at` column which indicates when the flight arrived at the destination.
+
+Using the new subquery select functionality in Laravel 6.0, we can select all of the `destinations` and the name of the flight that most recently arrived at that destination using a single query:
+
+    return Destination::addSelect(['last_flight' => Flight::select('name')
+        ->whereColumn('destination_id', 'destinations.id')
+        ->orderBy('arrived_at', 'desc')
+        ->latest()
+        ->limit(1)
+    ])->get();
+
+In addition, we can use new subquery features added to the query builder's `orderBy` function to sort all destinations based on when the last flight arrived at that destination. Again, this may be done while executing a single query against the database:
+
+    return Destination::orderByDesc(
+        Flight::select('arrived_at')
+            ->whereColumn('destination_id', 'destinations.id')
+            ->orderBy('arrived_at', 'desc')
+            ->latest()
+            ->limit(1)
+    )->get();
