@@ -22,6 +22,7 @@
 - [Eloquent Primary Key Types](#eloquent-primary-key-type)
 - [Localization `Lang::trans` and `Lang::transChoice` Methods](#trans-and-trans-choice)
 - [Localization `Lang::getFromJson` Method](#get-from-json)
+- [PHP 7.1 support dropped](#php-7.1-support-dropped)
 - [Resend Email Verification Route](#email-verification-route)
 - [The `Input` Facade](#the-input-facade)
 </div>
@@ -228,6 +229,15 @@ The `Lang::get` and `Lang::getFromJson` methods have been consolidated. Calls to
 #### Mandrill & SparkPost Drivers Removed
 
 The `mandrill` and `sparkpost` mail drivers have been removed. If you would like to continue using either of these drivers, we encourage you to adopt a community maintained package of your choice that provides the driver.
+
+### PHP
+
+<a name="php-7.1-support-dropped"></a>
+#### PHP 7.1 support dropped
+
+**Likelihood Of Impact: Medium**
+
+PHP 7.1 is nearing EOL in December so official support for it [is dropped in this release](https://github.com/laravel/framework/pull/27502). You should upgrade to a maintained and secured version of PHP as soon as possible.
 
 ### Password Reset
 
