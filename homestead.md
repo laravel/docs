@@ -80,7 +80,6 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 - Xdebug
 - XHProf / Tideways / XHGui
 - wp-cli
-- Minio
 </div>
 
 <a name="optional-software"></a>
