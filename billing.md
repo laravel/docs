@@ -47,7 +47,7 @@
 
 Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
 
-> {note} To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 10.0 utilizes Stripe API version `2019-05-16`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
+> {note} To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 10.0 utilizes Stripe API version `2019-08-14`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
 
 <a name="upgrading-cashier"></a>
 ## Upgrading Cashier
