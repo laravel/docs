@@ -143,6 +143,8 @@ Once VirtualBox / VMware and Vagrant have been installed, you should add the `la
 
 If this command fails, make sure your Vagrant installation is up to date.
 
+> Periodically Homestead will issue Alpha or Beta boxes for testing. These versions *will* interfere with the `vagrant box add` command. If you are having issues running this command you can safely skip this for now and the correct base box will be downloaded the first time you run `vagrant up`.
+
 #### Installing Homestead
 
 You may install Homestead by cloning the repository onto your host machine. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel projects:
