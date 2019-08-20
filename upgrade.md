@@ -15,6 +15,7 @@
 
 <div class="content-list" markdown="1">
 - [Authentication `RegisterController`](#the-register-controller)
+- [Carbon v1 support dropped](#carbon-v1-support-dropped)
 - [Database `Capsule::table` Method](#capsule-table)
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
 - [Eloquent `BelongsTo::update` Method](#belongs-to-update)
@@ -76,6 +77,15 @@ The constructor signature of the `Illuminate\Auth\Access\Response` class has cha
 **Likelihood Of Impact: Low**
 
 The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect` method. If you are implementing this interface manually, you should add this method to your implementation.
+
+### Carbon
+
+<a name="carbon-v1-support-dropped"></a>
+#### Carbon v1 support dropped
+
+**Likelihood Of Impact: Medium**
+
+Support for Carbon v1 [has been official dropped](https://github.com/laravel/framework/pull/28683) as Carbon v1 nears end of life. You should upgrade to v2.
 
 ### Configuration
 
