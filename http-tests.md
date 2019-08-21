@@ -40,6 +40,7 @@ Laravel provides a very fluent API for making HTTP requests to your application 
 
 The `get` method makes a `GET` request into the application, while the `assertStatus` method asserts that the returned response should have the given HTTP status code. In addition to this simple assertion, Laravel also contains a variety of assertions for inspecting the response headers, content, JSON structure, and more.
 
+**Note:** You can only call a route once per test.
 <a name="customizing-request-headers"></a>
 ### Customizing Request Headers
 
