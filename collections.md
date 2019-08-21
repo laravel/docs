@@ -5,6 +5,8 @@
     - [Extending Collections](#extending-collections)
 - [Available Methods](#available-methods)
 - [Higher Order Messages](#higher-order-messages)
+- [Lazy Collections](#lazy-collections)
+    - [Introduction](#lazy-collection-introduction)
 
 <a name="introduction"></a>
 ## Introduction
@@ -2413,3 +2415,61 @@ Likewise, we can use the `sum` higher order message to gather the total number o
     $users = User::where('group', 'Development')->get();
 
     return $users->sum->votes;
+
+<a name="lazy-collections"></a>
+## Lazy Collections
+
+<a name="lazy-collection-introduction"></a>
+### Introduction
+
+> {note} Before learning more about Laravel's lazy collections, take some time to familiarize yourself with [PHP generators](https://www.php.net/manual/en/language.generators.overview.php).
+
+To supplement the already powerful `Collection` class, the `LazyCollection` class leverages PHP's [generators](https://www.php.net/manual/en/language.generators.overview.php) to allow you to work with very large datasets while keeping memory usage low.
+
+For example, imagine your application needs to process a multi-gigabyte log file while taking advantage of Laravel's collection methods to parse the logs. Instead of reading the entire file into memory at once, lazy collections may be used to keep only a small part of the file in memory at a given time:
+
+    use App\LogEntry;
+    use Illuminate\Support\LazyCollection;
+
+    LazyCollection::make(function () {
+        $handle = fopen('log.txt', 'r');
+
+        while (($line = fgets($handle)) !== false) {
+            yield $line;
+        }
+    })->chunk(4)->map(function ($lines) {
+        return LogEntry::fromLines($lines);
+    })->each(function (LogEntry $logEntry) {
+        // Process the log entry...
+    });
+
+Or, imagine you need to iterate through 10,000 Eloquent models. When using traditional Laravel collections, all 10,000 Eloquent models must be loaded into memory at the same time:
+
+    $users = App\User::all()->filter(function ($user) {
+        return $user->id > 500;
+    });
+
+However, the query builder's `cursor` method returns a `LazyCollection` instance. This allows you to still only run a single query against the database but also only keep one Eloquent model loaded in memory at a time. In this example, the `filter` callback is not executed until we actually iterate over each user individually, allowing for a drastic reduction in memory usage:
+
+    $users = App\User::cursor()->filter(function ($user) {
+        return $user->id > 500;
+    });
+
+    foreach ($users as $user) {
+        echo $user->id;
+    }
+
+<a name="creating-lazy-collections"></a>
+### Creating Lazy Collections
+
+To create a lazy collection instance, you should pass a PHP generator function to the collection's `make` method:
+
+    use Illuminate\Support\LazyCollection;
+
+    LazyCollection::make(function () {
+        $handle = fopen('log.txt', 'r');
+
+        while (($line = fgets($handle)) !== false) {
+            yield $line;
+        }
+    })l
