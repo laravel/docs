@@ -106,24 +106,24 @@ In Laravel 6.0, this logic may be extracted into a job middleware, allowing you 
     class RateLimited
     {
         /**
-         * Process the command.
+         * Process the queued job.
          *
-         * @param  mixed  $command
+         * @param  mixed  $job
          * @param  callable  $next
          * @return mixed
          */
-        public function handle($command, $next)
+        public function handle($job, $next)
         {
             Redis::throttle('key')
                     ->block(0)->allow(1)->every(5)
-                    ->then(function () use ($command, $next) {
+                    ->then(function () use ($job, $next) {
                         // Lock obtained...
 
-                        $next($command);
-                    }, function () use ($command) {
+                        $next($job);
+                    }, function () use ($job) {
                         // Could not obtain lock...
 
-                        $command->release(5);
+                        $job->release(5);
                     });
         }
     }

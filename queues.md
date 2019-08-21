@@ -6,6 +6,7 @@
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
+    - [Job Middleware](#job-middleware)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
@@ -174,6 +175,80 @@ If you would like to take total control over how the container injects dependenc
     });
 
 > {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
+
+<a name="job-middleware"></a>
+### Job Middleware
+
+Job middleware allow you wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        Redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
+            info('Lock obtained...');
+
+            // Handle job...
+        }, function () {
+            // Could not obtain lock...
+
+            return $this->release(5);
+        });
+    }
+
+While this code is valid, the structure of the `handle` method becomes noisy since it is cluttered with Redis rate limiting logic. In addition, this rate limiting logic must be duplicated for any other jobs that we want to rate limit. 
+
+Instead of rate limiting in the handle method, we could define a job middleware that handles rate limiting. Laravel does not have a default location for job middleware, so you are welcome to place job middleware anywhere in your application. In this example, we will place the middleware in a `app/Jobs/Middleware` directory:
+
+    <?php
+
+    namespace App\Jobs\Middleware;
+
+    use Illuminate\Support\Facades\Redis;
+
+    class RateLimited
+    {
+        /**
+         * Process the queued job.
+         *
+         * @param  mixed  $job
+         * @param  callable  $next
+         * @return mixed
+         */
+        public function handle($job, $next)
+        {
+            Redis::throttle('key')
+                    ->block(0)->allow(1)->every(5)
+                    ->then(function () use ($job, $next) {
+                        // Lock obtained...
+
+                        $next($job);
+                    }, function () use ($job) {
+                        // Could not obtain lock...
+
+                        $job->release(5);
+                    });
+        }
+    }
+
+As you can see, like [route middleware](/docs/{{version}}/middleware), job middleware receive the job being processed and a callback that should be invoked to continue processing the job. 
+
+After creating job middleware, they may be attached to a job by returning them from the job's `middleware` method. This method does not exist on jobs scaffolded by the `make:job` Artisan command, so you will need to add it to your own job class definition:
+
+    use App\Jobs\Middleware\RateLimited;
+
+    /**
+     * Get the middlewarwe the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [new RateLimited];
+    }
 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
