@@ -109,6 +109,8 @@ To get a better understanding of the `validate` method, let's jump back into the
 
 As you can see, we pass the desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
 
+> {tip} Instead of writting rules delimited by a `|`, you can use the `array` syntax : `'title' => ['required', 'unique:posts', 'max:255']`. This is often useful when you have many or complex rules.
+
 #### Stopping On First Validation Failure
 
 Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
