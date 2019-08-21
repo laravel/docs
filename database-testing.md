@@ -173,7 +173,7 @@ If you would like to override some of the default values of your models, you may
         'name' => 'Abigail',
     ]);
 
-> {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when using a factory.
+> {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories.
 
 <a name="persisting-models"></a>
 ### Persisting Models
