@@ -15,14 +15,14 @@
 
 <div class="content-list" markdown="1">
 - [Authentication `RegisterController`](#the-register-controller)
-- [Carbon v1 support dropped](#carbon-v1-support-dropped)
+- [Carbon 1.x No Longer Supported](#carbon-support)
 - [Database `Capsule::table` Method](#capsule-table)
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
 - [Eloquent `BelongsTo::update` Method](#belongs-to-update)
 - [Eloquent Primary Key Types](#eloquent-primary-key-type)
 - [Localization `Lang::trans` and `Lang::transChoice` Methods](#trans-and-trans-choice)
 - [Localization `Lang::getFromJson` Method](#get-from-json)
-- [PHP 7.1 support dropped](#php-7.1-support-dropped)
+- [Queue Retry Limit](#queue-retry-limit)
 - [Resend Email Verification Route](#email-verification-route)
 - [The `Input` Facade](#the-input-facade)
 </div>
@@ -33,6 +33,12 @@
 #### Estimated Upgrade Time: One Hour
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+
+### PHP 7.2 Required
+
+**Likelihood Of Impact: Medium**
+
+PHP 7.1 will no longer be actively maintained as of December 2019. Therefore, Laravel 6.0 requires PHP 7.2 or greater.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
@@ -81,12 +87,12 @@ The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect
 
 ### Carbon
 
-<a name="carbon-v1-support-dropped"></a>
-#### Carbon v1 support dropped
+<a name="carbon-support"></a>
+#### Carbon 1.x No Longer Supported
 
 **Likelihood Of Impact: Medium**
 
-Support for Carbon v1 [has been official dropped](https://github.com/laravel/framework/pull/28683) as Carbon v1 nears end of life. You should upgrade to v2.
+Carbon 1.x [is no longer supported](https://github.com/laravel/framework/pull/28683) since it is nearing its maintenance end of life. Please upgrade your application to Carbon 2.0.
 
 ### Configuration
 
@@ -230,15 +236,6 @@ The `Lang::get` and `Lang::getFromJson` methods have been consolidated. Calls to
 
 The `mandrill` and `sparkpost` mail drivers have been removed. If you would like to continue using either of these drivers, we encourage you to adopt a community maintained package of your choice that provides the driver.
 
-### PHP
-
-<a name="php-7.1-support-dropped"></a>
-#### PHP 7.1 support dropped
-
-**Likelihood Of Impact: Medium**
-
-PHP 7.1 is nearing EOL in December so official support for it [is dropped in this release](https://github.com/laravel/framework/pull/27502). You should upgrade to a maintained and secured version of PHP as soon as possible.
-
 ### Password Reset
 
 #### Password Validation
@@ -249,7 +246,10 @@ The `PasswordBroker` no longer restricts or validates passwords. Password valida
 
 ### Queues
 
+<a name="queue-retry-limit"></a>
 #### Queue Retry Limit
+
+**Likelihood Of Impact: Medium**
 
 In previous releases of Laravel, the `php artisan queue:work` command would retry jobs indefinitely. Beginning with Laravel 6.0, this command will now try a job one time by default. If you would like to force jobs to be tried indefinitely, you may pass `0` to the `--tries` option:
 
