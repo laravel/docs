@@ -7,6 +7,7 @@
 - [Retrieving Models](#retrieving-models)
     - [Collections](#collections)
     - [Chunking Results](#chunking-results)
+    - [Advanced Subqueries](#advanced-subqueries)
 - [Retrieving Single Models / Aggregates](#retrieving-single-models)
     - [Retrieving Aggregates](#retrieving-aggregates)
 - [Inserting & Updating Models](#inserting-and-updating-models)
@@ -308,6 +309,37 @@ The `cursor` returns an `Illuminate\Support\LazyCollection` instance. [Lazy coll
     foreach ($users as $user) {
         echo $user->id;
     }
+
+<a name="advanced-subqueries"></a>
+### Advanced Subqueries
+
+#### Subquery Selects
+
+Eloquent also offers advanced subquery support, which allows you to pull information from related tables in a single query. For example, let's imagine that we have a table of flight `destinations` and a table of `flights` to destinations. The `flights` table contains an `arrived_at` column which indicates when the flight arrived at the destination.
+
+Using the subquery functionality available to the `select` and `addSelect` methods, we can select all of the `destinations` and the name of the flight that most recently arrived at that destination using a single query:
+
+    use App\Flight;
+    use App\Destination;
+
+    return Destination::addSelect(['last_flight' => Flight::select('name')
+        ->whereColumn('destination_id', 'destinations.id')
+        ->orderBy('arrived_at', 'desc')
+        ->latest()
+        ->limit(1)
+    ])->get();
+
+#### Subquery Ordering
+
+In addition, the query builder's `orderBy` function supports subqueries. We may this functionality to sort all destinations based on when the last flight arrived at that destination. Again, this may be done while executing a single query against the database:
+
+    return Destination::orderByDesc(
+        Flight::select('arrived_at')
+            ->whereColumn('destination_id', 'destinations.id')
+            ->orderBy('arrived_at', 'desc')
+            ->latest()
+            ->limit(1)
+    )->get();
 
 <a name="retrieving-single-models"></a>
 ## Retrieving Single Models / Aggregates
