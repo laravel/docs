@@ -60,7 +60,13 @@ Laravel includes the `Auth\VerificationController` class that contains the neces
 <a name="verification-views"></a>
 ## Views
 
-Laravel will generate all of the necessary email verification views when the `make:auth` command is executed. This view is placed in `resources/views/auth/verify.blade.php`. You are free to customize this view as needed for your application.
+To generate all of the necessary view for email verification, you may use the `laravel/ui` Composer package:
+
+    composer require laravel/ui
+
+    php artisan ui vue --auth
+
+The email verification view is placed in `resources/views/auth/verify.blade.php`. You are free to customize this view as needed for your application.
 
 <a name="after-verifying-emails"></a>
 ## After Verifying Emails
