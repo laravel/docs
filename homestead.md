@@ -80,7 +80,6 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 - Xdebug
 - XHProf / Tideways / XHGui
 - wp-cli
-- Minio
 </div>
 
 <a name="optional-software"></a>
@@ -142,6 +141,8 @@ Once VirtualBox / VMware and Vagrant have been installed, you should add the `la
     vagrant box add laravel/homestead
 
 If this command fails, make sure your Vagrant installation is up to date.
+
+> {note} Homestead periodically issues "alpha" / "beta" boxes for testing, which may interfere with the `vagrant box add` command. If you are having issues running `vagrant box add`, you may run the `vagrant up` command and the correct box will be downloaded when Vagrant attempts to start the virtual machine.
 
 #### Installing Homestead
 
@@ -607,16 +608,9 @@ Homestead includes the Postfix mail transfer agent, which is listening on port `
 <a name="debugging-web-requests"></a>
 ### Debugging Web Requests With Xdebug
 
-Homestead includes support for step debugging using [Xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect to your IDE to allow inspection and modification of the running code.
+Homestead includes support for step debugging using [Xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect to your IDE to allow inspection and modification of the running code. 
 
-To enable debugging, run the following commands inside your Vagrant box:
-
-    sudo phpenmod xdebug
-
-    # Update this command to match your PHP version...
-    sudo systemctl restart php7.3-fpm
-
-Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
+By default Xdebug is already running and ready to accept connections. If you need to enable Xdebug on the CLI run the `sudo phpenmod xdebug` command within your Vagrant box. Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
 > {note} Xdebug causes PHP to run significantly slower. To disable Xdebug, run `sudo phpdismod xdebug` within your Vagrant box and restart the FPM service.
 
@@ -723,10 +717,6 @@ Before you begin updating Homestead ensure you have removed your current virtual
 
     vagrant destroy
 
-Then, you should update the Vagrant box using the `vagrant box update` command:
-
-    vagrant box update
-
 Next, you need to update the Homestead source code. If you cloned the repository you can run the following commands at the location you originally cloned the repository:
 
     git fetch
@@ -738,6 +728,10 @@ These commands pull the latest Homestead code from the GitHub repository, fetche
 If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^9"` and update your dependencies:
 
     composer update
+
+Then, you should update the Vagrant box using the `vagrant box update` command:
+
+    vagrant box update
 
 Finally, you will need to regenerate your Homestead box to utilize the latest Vagrant installation:
 
