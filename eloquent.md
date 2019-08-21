@@ -299,6 +299,16 @@ The `cursor` method allows you to iterate through your database records using a 
         //
     }
 
+The `cursor` returns an `Illuminate\Support\LazyCollection` instance. [Lazy collections](/docs/{{version}}/collections#lazy-collections) allow you to use many of collection methods available on typical Laravel collections while only loading a single model into memory at a time:
+
+    $users = App\User::cursor()->filter(function ($user) {
+        return $user->id > 500;
+    });
+
+    foreach ($users as $user) {
+        echo $user->id;
+    }
+
 <a name="retrieving-single-models"></a>
 ## Retrieving Single Models / Aggregates
 
