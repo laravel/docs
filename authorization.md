@@ -581,8 +581,6 @@ When authorizing actions using policies, you may pass an array as the second arg
                $category->group > 3;
     }
 
-
-
 When attempting to determine if the authenticated user can update a given post, we can invoke this policy method like so:
 
     /**
