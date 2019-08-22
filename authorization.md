@@ -20,6 +20,7 @@
     - [Via Middleware](#via-middleware)
     - [Via Controller Helpers](#via-controller-helpers)
     - [Via Blade Templates](#via-blade-templates)
+    - [Supplying Additional Context](#supplying-additional-context)
 
 <a name="introduction"></a>
 ## Introduction
@@ -114,6 +115,18 @@ If you would like to attempt to authorize an action and automatically throw an `
     Gate::authorize('update-post', $post);
 
     // The action is authorized...
+
+#### Supplying Additional Context 
+
+The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, `none`, `authorize`, `can`, `cannot`) and the authorization [Blade directives](#via-blade-templates) (`@can`, `@cannot`, `@canany`) can receive an array as the second argument. These array elements are passed as parameters to gate, and can be used for additional context when making authorization decisions:
+
+    Gate::define('create-post', function ($user, $category, $extraFlag) {
+        return $category->group > 3 && $extraFlag === true;
+    });
+
+    if (Gate::check('create-post', [$category, $extraFlag])) {
+        // The user can create the post...
+    }
 
 <a name="gate-responses"></a>
 ### Gate Responses
@@ -549,30 +562,40 @@ Like most of the other authorization methods, you may pass a class name to the `
         <!-- The Current User Can't Create Posts -->
     @endcannot
 
-### Supplying Additional Context 
+<a name="supplying-additional-context"></a>
+### Supplying Additional Context
 
-The Gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, `none`, `authorize`, `can`, `cannot`) and View directives (`@can`, `@cannot`, `@canany`) can receive an array as the second argument. These array elements are passed as parameters to the underlying Gate/Policy, and can be used for additional context when making authorization decisions. For example, see `$category` and `$specialFlag` in the following:
+When authorizing actions using policies, you may pass an array as the second argument to the various authorization functions and helpers. The first element in the array will be used to determine which policy should be invoked, while the rest of the array elements are passed as parameters to the policy method and can be used for additional context when making authorization decisions. For example, consider the following `PostPolicy` method definition which contains an additional `$category` parameter:
 
-    /* Gate Example */
-    
-    // AuthServiceProvider:
-    Gate::define('create-post', function ($user, $category, $specialFlag) {
-        return $category->group > 3 && $specialFlag === true;
-    });
-
-    // in your application:
-    if (Gate::check('create-post', [$category, $specialFlag])) {
-        // The user can create the post if the category and setting satisfy the defined rules.
+    /**
+     * Determine if the given post can be updated by the user.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Post  $post
+     * @param  int  $category
+     * @return bool
+     */
+    public function update(User $user, Post $post, int $category)
+    {
+        return $user->id === $post->user_id && 
+               $category->group > 3;
     }
 
 
-    /* Policy Example */
 
-    class PostPolicy {
-        public function createPost(User $user, Category $category, bool $specialFlag) {
-            return $category->group > 3 && $specialFlag === true;
-        }
+When attempting to determine if the authenticated user can update a given post, we can invoke this policy method like so:
+
+    /**
+     * Update the given blog post.
+     *
+     * @param  Request  $request
+     * @param  Post  $post
+     * @return Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function update(Request $request, Post $post)
+    {
+        $this->authorize('update', [$post, $request->input('category')]);
+
+        // The current user can update the blog post...
     }
-
-    // in your application:
-    $user->can('createPost', [$category, true]);
