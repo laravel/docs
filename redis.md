@@ -15,11 +15,11 @@
 
 Before using Redis with Laravel, we encorage you to install and use the [PhpRedis](https://github.com/phpredis/phpredis) PHP extension via PECL. The extension is more complex to install but may yield better performance for applications that make heavy use of Redis.
 
-*Deprecated note: Maintenance of Predis has been abandoned by the original package and will be removed from Laravel in 7.0.*
 Alternatively, you can install the `predis/predis` package via Composer:
 
     composer require predis/predis
 
+> {note} Maintenance of Predis has been abandoned by the original author of the package and will be removed from Laravel in the 7.0 release.
 
 <a name="configuration"></a>
 ### Configuration
@@ -88,7 +88,15 @@ By default, clusters will perform client-side sharding across your nodes, allowi
 <a name="predis"></a>
 ### Predis
 
-*Deprecated note: Maintenance of Predis has been abandoned by the original package and will be removed from Laravel in 7.0*
+To utilize the Predis extension, you should change the `REDIS_CLIENT` environment variable from `phpredis` to `predis`:
+
+    'redis' => [
+
+        'client' => env('REDIS_CLIENT', 'predis'),
+
+        // Rest of Redis configuration...
+    ],
+
 In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in the `config/database.php` configuration file:
 
     'default' => [
@@ -98,8 +106,6 @@ In addition to the default `host`, `port`, `database`, and `password` server con
         'database' => 0,
         'read_write_timeout' => 60,
     ],
-
-To utilize the Predis extension, you should change the `REDIS_CLIENT` env from `phpredis` to `predis`.
 
 <a name="phpredis"></a>
 ### PhpRedis
