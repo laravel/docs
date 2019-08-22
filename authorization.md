@@ -548,3 +548,31 @@ Like most of the other authorization methods, you may pass a class name to the `
     @cannot('create', App\Post::class)
         <!-- The Current User Can't Create Posts -->
     @endcannot
+
+### Supplying Additional Context 
+
+The Gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, `none`, `authorize`, `can`, `cannot`) and View directives (`@can`, `@cannot`, `@canany`) can receive an array as the second argument. These array elements are passed as parameters to the underlying Gate/Policy, and can be used for additional context when making authorization decisions. For example, see `$category` and `$specialFlag` in the following:
+
+    /* Gate Example */
+    
+    // AuthServiceProvider:
+    Gate::define('create-post', function ($user, $category, $specialFlag) {
+        return $category->group > 3 && $specialFlag === true;
+    });
+
+    // in your application:
+    if (Gate::check('create-post', [$category, $specialFlag])) {
+        // The user can create the post if the category and setting satisfy the defined rules.
+    }
+
+
+    /* Policy Example */
+
+    class PostPolicy {
+        public function createPost(User $user, Category $category, bool $specialFlag) {
+            return $category->group > 3 && $specialFlag === true;
+        }
+    }
+
+    // in your application:
+    $user->can('createPost', [$category, true]);
