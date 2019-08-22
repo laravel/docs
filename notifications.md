@@ -660,7 +660,7 @@ If you would like to send some notifications from a phone number that is differe
 <a name="routing-sms-notifications"></a>
 ### Routing SMS Notifications
 
-When sending notifications via the `nexmo` channel, the notification system will automatically look for a `phone_number` attribute on the notifiable entity. If you would like to customize the phone number the notification is delivered to, define a `routeNotificationForNexmo` method on the entity:
+To route Nexmo notifications to the proper phone number, define a `routeNotificationForNexmo` method on your notifiable entity:
 
     <?php
 
@@ -681,7 +681,7 @@ When sending notifications via the `nexmo` channel, the notification system will
          */
         public function routeNotificationForNexmo($notification)
         {
-            return $this->phone;
+            return $this->phone_number;
         }
     }
 
