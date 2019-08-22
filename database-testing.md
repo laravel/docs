@@ -210,9 +210,9 @@ In this example, we'll attach a relation to some created models. When using the 
                 
 You may use the `createMany` method to create multiple related models:
 
-    $user->posts()->createMany(factory(App\Post::class, 3)->make()->toArray());
-
-
+    $user->posts()->createMany(
+        factory(App\Post::class, 3)->make()->toArray()
+    );
 
 #### Relations & Attribute Closures
 
