@@ -244,7 +244,7 @@ The `mandrill` and `sparkpost` mail drivers have been removed. If you would like
 
 **Likelihood Of Impact: Low**
 
-A lingering part of the Nexmo notification channel was removed from the core of the framework. If you're relying on routing Nexmo notifications you should manually implement the `routeNotificationForNexmo` method on your notifiable entity [as described in the docs](/docs/{{version}}/notifications#routing-sms-notifications).
+A lingering part of the Nexmo notification channel was removed from the core of the framework. If you're relying on routing Nexmo notifications you should manually implement the `routeNotificationForNexmo` method on your notifiable entity [as described in the documentation](/docs/{{version}}/notifications#routing-sms-notifications).
 
 ### Password Reset
 
