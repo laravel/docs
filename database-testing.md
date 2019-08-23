@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Generating Factories](#generating-factories)
 - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
+- [Seeding test data](#seeding-test-data)
 - [Writing Factories](#writing-factories)
     - [Factory States](#factory-states)
     - [Factory Callbacks](#factory-callbacks)
@@ -68,6 +69,37 @@ It is often useful to reset your database after each test so that data from a pr
         public function testBasicExample()
         {
             $response = $this->get('/');
+
+            // ...
+        }
+    }
+
+<a name="seeding-test-data"></a>
+## Seeding test data
+
+You may call the `seed` method to seed your database with test data for your test cases.
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use OrderStatusesTableSeeder;
+
+    class ExampleTest extends TestCase
+    {
+        use RefreshDatabase;
+
+        /**
+         * Test creating a new order.
+         *
+         * @return void
+         */
+        public function testCreatingANewOrder()
+        {
+            $this->seed(OrderStatusesTableSeeder::class);
 
             // ...
         }
