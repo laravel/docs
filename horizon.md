@@ -65,6 +65,15 @@ Horizon allows you to choose from three balancing strategies: `simple`, `auto`, 
 
 The `auto` strategy adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 waiting jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until it is empty. When the `balance` option is set to `false`, the default Laravel behavior will be used, which processes queues in the order they are listed in your configuration.
 
+#### Min/Max processes Options
+
+Horizon allows you to set the min and max processes:
+
+    'minProcesses' => 1,
+    'maxProcesses' => 5,
+
+The `min` strategy is the minimum number of worker processes per queue. The `max` strategy is the maximum number of worker processes per queue. The queue will now autoscale up to the maximum of processes.
+
 #### Job Trimming
 
 The `horizon` configuration file allows you to configure how long recent and failed jobs should be persisted (in minutes). By default, recent jobs are kept for one hour while failed jobs are kept for a week:
