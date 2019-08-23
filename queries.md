@@ -628,7 +628,7 @@ You may even insert several records into the table with a single call to `insert
 
 #### Insert Or Ignore
 
-You may use `insertOrIgnore` to allow duplicate entry to fail silently. In this case, the table `users` already has a record with unique `id` 1. The `insertOrIgnore` method will ignore duplicate entries and only insert entries that does not violate the integrity constraint. 
+You may use `insertOrIgnore` to allow duplicate entry to fail silently. In this case, the table `users` already has a record with the unique `id` 1. The `insertOrIgnore` method will ignore duplicate entries and only insert entries that do not violate the integrity constraint. 
 
     DB::table('users')->insertOrIgnore([
         ['id' => 1, 'email' => 'taylor@example.com'],
