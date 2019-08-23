@@ -234,7 +234,17 @@ The `Lang::get` and `Lang::getFromJson` methods have been consolidated. Calls to
 
 #### Mandrill & SparkPost Drivers Removed
 
+**Likelihood Of Impact: Low**
+
 The `mandrill` and `sparkpost` mail drivers have been removed. If you would like to continue using either of these drivers, we encourage you to adopt a community maintained package of your choice that provides the driver.
+
+### Notifications
+
+#### Nexmo Routing Removed
+
+**Likelihood Of Impact: Low**
+
+A lingering part of the Nexmo notification channel was removed from the core of the framework. If you're relying on routing Nexmo notifications you should manually implement the `routeNotificationForNexmo` method on your notifiable entity [as described in the docs](/docs/{{version}}/notifications#routing-sms-notifications).
 
 ### Password Reset
 
