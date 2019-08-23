@@ -67,12 +67,10 @@ The `auto` strategy adjusts the number of worker processes per queue based on th
 
 #### Min/Max processes Options
 
-Horizon allows you to set the min and max processes:
+The `horizon` configuration file allows you to configure the max and min processes. The queue will now autoscale up to the maximum of processes.
 
     'minProcesses' => 1,
     'maxProcesses' => 5,
-
-The `min` strategy is the minimum number of worker processes per queue. The `max` strategy is the maximum number of worker processes per queue. The queue will now autoscale up to the maximum of processes.
 
 #### Job Trimming
 
