@@ -626,15 +626,12 @@ You may even insert several records into the table with a single call to `insert
         ['email' => 'dayle@example.com', 'votes' => 0]
     ]);
 
-#### Insert Or Ignore
-
-You may use `insertOrIgnore` to allow duplicate entry to fail silently. In this case, the table `users` already has a record with the unique `id` 1. The `insertOrIgnore` method will ignore duplicate entries and only insert entries that do not violate the integrity constraint. 
+The `insertOrIgnore` method will ignore duplicate record errors while inserting records into the database:
 
     DB::table('users')->insertOrIgnore([
         ['id' => 1, 'email' => 'taylor@example.com'],
         ['id' => 2, 'email' => 'dayle@example.com']
     ]);
-
 
 #### Auto-Incrementing IDs
 
