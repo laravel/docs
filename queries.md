@@ -626,6 +626,13 @@ You may even insert several records into the table with a single call to `insert
         ['email' => 'dayle@example.com', 'votes' => 0]
     ]);
 
+The `insertOrIgnore` method will ignore duplicate record errors while inserting records into the database:
+
+    DB::table('users')->insertOrIgnore([
+        ['id' => 1, 'email' => 'taylor@example.com'],
+        ['id' => 2, 'email' => 'dayle@example.com']
+    ]);
+
 #### Auto-Incrementing IDs
 
 If the table has an auto-incrementing id, use the `insertGetId` method to insert a record and then retrieve the ID:
