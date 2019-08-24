@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
 - [Generating Factories](#generating-factories)
 - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
-- [Seeding test data](#seeding-test-data)
 - [Writing Factories](#writing-factories)
     - [Factory States](#factory-states)
     - [Factory Callbacks](#factory-callbacks)
@@ -11,6 +10,7 @@
     - [Creating Models](#creating-models)
     - [Persisting Models](#persisting-models)
     - [Relationships](#relationships)
+- [Using Seeds](#using-seeds)
 - [Available Assertions](#available-assertions)
 
 <a name="introduction"></a>
@@ -69,37 +69,6 @@ It is often useful to reset your database after each test so that data from a pr
         public function testBasicExample()
         {
             $response = $this->get('/');
-
-            // ...
-        }
-    }
-
-<a name="seeding-test-data"></a>
-## Seeding test data
-
-You may call the `seed` method to seed your database with test data for your test cases.
-
-    <?php
-
-    namespace Tests\Feature;
-
-    use Tests\TestCase;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use OrderStatusesTableSeeder;
-
-    class ExampleTest extends TestCase
-    {
-        use RefreshDatabase;
-
-        /**
-         * Test creating a new order.
-         *
-         * @return void
-         */
-        public function testCreatingANewOrder()
-        {
-            $this->seed(OrderStatusesTableSeeder::class);
 
             // ...
         }
@@ -274,6 +243,41 @@ These Closures also receive the evaluated attribute array of the factory that de
             }
         ];
     });
+
+<a name="using-seeds"></a>
+## Using Seeds
+
+If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a test, you may use the `seed` method. By default, the `seed` method will return the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use OrderStatusesTableSeeder;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+    class ExampleTest extends TestCase
+    {
+        use RefreshDatabase;
+
+        /**
+         * Test creating a new order.
+         *
+         * @return void
+         */
+        public function testCreatingANewOrder()
+        {
+            // Run the DatabaseSeeder...
+            $this->seed();
+
+            // Run a single seeder...
+            $this->seed(OrderStatusesTableSeeder::class);
+
+            // ...
+        }
+    }
 
 <a name="available-assertions"></a>
 ## Available Assertions
