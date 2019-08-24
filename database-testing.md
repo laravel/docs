@@ -10,6 +10,7 @@
     - [Creating Models](#creating-models)
     - [Persisting Models](#persisting-models)
     - [Relationships](#relationships)
+- [Using Seeds](#using-seeds)
 - [Available Assertions](#available-assertions)
 
 <a name="introduction"></a>
@@ -242,6 +243,41 @@ These Closures also receive the evaluated attribute array of the factory that de
             }
         ];
     });
+
+<a name="using-seeds"></a>
+## Using Seeds
+
+If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a test, you may use the `seed` method. By default, the `seed` method will return the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use OrderStatusesTableSeeder;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+    class ExampleTest extends TestCase
+    {
+        use RefreshDatabase;
+
+        /**
+         * Test creating a new order.
+         *
+         * @return void
+         */
+        public function testCreatingANewOrder()
+        {
+            // Run the DatabaseSeeder...
+            $this->seed();
+
+            // Run a single seeder...
+            $this->seed(OrderStatusesTableSeeder::class);
+
+            // ...
+        }
+    }
 
 <a name="available-assertions"></a>
 ## Available Assertions
