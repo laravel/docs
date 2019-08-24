@@ -115,6 +115,26 @@ If your state requires calculation or a `$faker` instance, you may use a Closure
         ];
     });
 
+#### Important note when you are calling another factory in state
+
+If you need to call another factory inside a state you need to use a closure instead of using an error. For example:
+
+$factory->state(User::class, 'ben', [
+    'name' => 'Ben',
+    'country_id' => factory(Country::class)->state('usa')->create()->id,
+]);
+
+In the above example, the `Country` object would have been defined when the factory is defined, which will cause infinite recursion.
+
+Therefore it order to have refer to another factory inside a state you would need to provide it through a closure like the following:
+
+$factory->state(User::class, 'ben', function($faker) {
+    return [
+        'name' => 'Ben',
+        'country_id' => factory(Country::class)->state('usa')->create()->id,
+    ];
+});
+
 <a name="factory-callbacks"></a>
 ### Factory Callbacks
 
@@ -208,7 +228,7 @@ In this example, we'll attach a relation to some created models. When using the 
                ->each(function ($user) {
                     $user->posts()->save(factory(App\Post::class)->make());
                 });
-                
+
 You may use the `createMany` method to create multiple related models:
 
     $user->posts()->createMany(
