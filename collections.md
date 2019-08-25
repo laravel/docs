@@ -142,6 +142,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [replaceRecursive](#method-replacerecursive)
 [reverse](#method-reverse)
 [search](#method-search)
+[searchLast](#method-searchlast)
 [shift](#method-shift)
 [shuffle](#method-shuffle)
 [slice](#method-slice)
@@ -1590,7 +1591,7 @@ The `reverse` method reverses the order of the collection's items, preserving th
 <a name="method-search"></a>
 #### `search()` {#collection-method}
 
-The `search` method searches the collection for the given value and returns its key if found. If the item is not found, `false` is returned.
+The `search` method searches the collection for the given value and returns key of its first occurrence if found. If the item is not found, `false` is returned.
 
     $collection = collect([2, 4, 6, 8]);
 
@@ -1611,6 +1612,31 @@ Alternatively, you may pass in your own callback to search for the first item th
     });
 
     // 2
+
+<a name="method-searchlast"></a>
+#### `searchLast()` {#collection-method}
+
+The `searchLast` method is same as the [`search`](#method-search) method except it returns the key of the last occurrence of the given value if found. If the item is not found, `false` is returned.
+
+    $collection = collect([2, 4, 8, 2, 8]);
+
+    $collection->searchLast(2);
+
+    // 3
+
+To use "strict" comparison, pass `true` as the second argument to the method:
+
+    $collection->searchLast('2', true);
+
+    // false
+
+Alternatively, you may pass in your own callback to search for the last item that passes your truth test:
+
+    $collection->searchLast(function ($item, $key) {
+        return $item > 5;
+    });
+
+    // 4
 
 <a name="method-shift"></a>
 #### `shift()` {#collection-method}
