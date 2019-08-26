@@ -79,6 +79,7 @@ The constructor signature of the `Illuminate\Auth\Access\Response` class has cha
      */
     public function __construct($allowed, $message = '', $code = null)
 
+<a name="auth-access-gate-contract"></a>
 #### The `Illuminate\Contracts\Auth\Access\Gate` Contract
 
 **Likelihood Of Impact: Low**
@@ -195,6 +196,7 @@ To prevent possible CSRF attacks, the `email/resend` route registered by the rou
         </button>.
     </form>
 
+<a name="mustverifyemail-contract"></a>
 #### The `MustVerifyEmail` Contract
 
 **Likelihood Of Impact: Low**
