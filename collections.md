@@ -2234,6 +2234,25 @@ The `where` method filters the collection by a given key / value pair:
 
 The `where` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`whereStrict`](#method-wherestrict) method to filter using "strict" comparisons.
 
+Optionally, you may pass a comparison operator as the second parameter.
+
+    $collection = collect([
+        ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],
+        ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],
+        ['name' => 'Sue', 'deleted_at' => null],
+    ]);
+
+    $filtered = $collection->where('deleted_at', '!=', null);
+
+    $filtered->all();
+
+    /*
+        [
+            ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],
+            ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],
+        ]
+    */
+
 <a name="method-wherestrict"></a>
 #### `whereStrict()` {#collection-method}
 
