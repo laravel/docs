@@ -496,6 +496,18 @@ The `@error` directive may be used to quickly check if [validation error message
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
+You may also optionally pass [the name of a specific error bag](/docs/{{version}}/validation#named-error-bags) as the second parameter of the `@error` directive to retrieve validation error messages on pages containing multiple forms:
+
+    <!-- /resources/views/auth.blade.php -->
+    
+    <label for="email">Email address</label>
+
+    <input id="email" type="email" class="@error('email', 'login') is-invalid @enderror">
+
+    @error('email', 'login')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
 <a name="including-sub-views"></a>
 ## Including Sub-Views
 
