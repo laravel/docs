@@ -100,7 +100,7 @@ Carbon 1.x [is no longer supported](https://github.com/laravel/framework/pull/28
 
 **Likelihood Of Impact: Optional**
 
-If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update all occurrences of `AWS_REGION` with your `config` directory to `AWS_DEFAULT_REGION`. In addition, you should update this environment variable's name in your `.env` file.
+If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update all occurrences of `AWS_REGION` within your `config` directory to `AWS_DEFAULT_REGION`. In addition, you should update this environment variable's name in your `.env` file.
 
 ### Database
 
