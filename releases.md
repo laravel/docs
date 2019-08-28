@@ -195,7 +195,6 @@ Using the new subquery select functionality in Laravel 6.0, we can select all of
     return Destination::addSelect(['last_flight' => Flight::select('name')
         ->whereColumn('destination_id', 'destinations.id')
         ->orderBy('arrived_at', 'desc')
-        ->latest()
         ->limit(1)
     ])->get();
 
@@ -205,7 +204,6 @@ In addition, we can use new subquery features added to the query builder's `orde
         Flight::select('arrived_at')
             ->whereColumn('destination_id', 'destinations.id')
             ->orderBy('arrived_at', 'desc')
-            ->latest()
             ->limit(1)
     )->get();
 
