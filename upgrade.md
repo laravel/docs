@@ -130,7 +130,7 @@ updated to accept a table alias as its second argument. If you are using `illumi
 
 The `cursor` method now returns an instance of `Illuminate\Support\LazyCollection` instead of a `Generator` The `LazyCollection` may be iterated just like a generator:
 
-    $user = App\User::cursor();
+    $users = App\User::cursor();
 
     foreach ($users as $user) {
         //
