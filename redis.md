@@ -17,6 +17,8 @@ Before using Redis with Laravel, you will need to install the `predis/predis` pa
 
     composer require predis/predis
 
+> {note} Maintenance of Predis has been abandoned by the original author of the package and will be removed from Laravel in the 7.0 release.
+
 Alternatively, you may install the [PhpRedis](https://github.com/phpredis/phpredis) PHP extension via PECL. The extension is more complex to install but may yield better performance for applications that make heavy use of Redis.
 
 <a name="configuration"></a>
