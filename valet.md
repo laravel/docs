@@ -301,4 +301,5 @@ Command  | Description
 `valet restart` | Restart the Valet daemon.
 `valet start` | Start the Valet daemon.
 `valet stop` | Stop the Valet daemon.
+`valet trust` | Add sudoers files for Brew and Valet to allow Valet commands to be run without prompting for passwords.
 `valet uninstall` | Uninstall the Valet daemon.
