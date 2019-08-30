@@ -239,9 +239,9 @@ Once you have created a model and [its associated database table](/docs/{{versio
 The Eloquent `all` method will return all of the results in the model's table. Since each Eloquent model serves as a [query builder](/docs/{{version}}/queries), you may also add constraints to queries, and then use the `get` method to retrieve the results:
 
     $flights = App\Flight::where('active', 1)
-                   ->orderBy('name', 'desc')
-                   ->take(10)
-                   ->get();
+                         ->orderBy('name', 'desc')
+                         ->take(10)
+                         ->get();
 
 > {tip} Since Eloquent models are query builders, you should review all of the methods available on the [query builder](/docs/{{version}}/queries). You may use any of these methods in your Eloquent queries.
 
@@ -568,8 +568,8 @@ To determine if a given model instance has been soft deleted, use the `trashed` 
 As noted above, soft deleted models will automatically be excluded from query results. However, you may force soft deleted models to appear in a result set using the `withTrashed` method on the query:
 
     $flights = App\Flight::withTrashed()
-                    ->where('account_id', 1)
-                    ->get();
+                         ->where('account_id', 1)
+                         ->get();
 
 The `withTrashed` method may also be used on a [relationship](/docs/{{version}}/eloquent-relationships) query:
 
@@ -580,8 +580,8 @@ The `withTrashed` method may also be used on a [relationship](/docs/{{version}}/
 The `onlyTrashed` method will retrieve **only** soft deleted models:
 
     $flights = App\Flight::onlyTrashed()
-                    ->where('airline_id', 1)
-                    ->get();
+                         ->where('airline_id', 1)
+                         ->get();
 
 #### Restoring Soft Deleted Models
 
@@ -592,8 +592,8 @@ Sometimes you may wish to "un-delete" a soft deleted model. To restore a soft de
 You may also use the `restore` method in a query to quickly restore multiple models. Again, like other "mass" operations, this will not fire any model events for the models that are restored:
 
     App\Flight::withTrashed()
-            ->where('airline_id', 1)
-            ->restore();
+              ->where('airline_id', 1)
+              ->restore();
 
 Like the `withTrashed` method, the `restore` method may also be used on [relationships](/docs/{{version}}/eloquent-relationships):
 

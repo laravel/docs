@@ -504,8 +504,8 @@ By default, the billing cycle anchor is the date the subscription was created, o
     $anchor = Carbon::parse('first day of next month');
 
     $user->newSubscription('main', 'premium')
-                ->anchorBillingCycleOn($anchor->startOfDay())
-                ->create($paymentMethod);
+         ->anchorBillingCycleOn($anchor->startOfDay())
+         ->create($paymentMethod);
 
 For more information on managing subscription billing cycles, consult the [Stripe billing cycle documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle)
 
@@ -548,8 +548,8 @@ If you would like to offer trial periods to your customers while still collectin
     $user = User::find(1);
 
     $user->newSubscription('main', 'monthly')
-                ->trialDays(10)
-                ->create($paymentMethod);
+         ->trialDays(10)
+         ->create($paymentMethod);
 
 This method will set the trial period ending date on the subscription record within the database, as well as instruct Stripe to not begin billing the customer until after this date. When using the `trialDays` method, Cashier will overwrite any default trial period configured for the plan in Stripe.
 
@@ -560,8 +560,8 @@ The `trialUntil` method allows you to provide a `DateTime` instance to specify w
     use Carbon\Carbon;
 
     $user->newSubscription('main', 'monthly')
-                ->trialUntil(Carbon::now()->addDays(10))
-                ->create($paymentMethod);
+         ->trialUntil(Carbon::now()->addDays(10))
+         ->create($paymentMethod);
 
 You may determine if the user is within their trial period using either the `onTrial` method of the user instance, or the `onTrial` method of the subscription instance. The two examples below are identical:
 
@@ -782,7 +782,7 @@ First, you could redirect your customer to the dedicated payment confirmation pa
 
     try {
         $subscription = $user->newSubscription('default', $planId)
-                                ->create($paymentMethod);
+                             ->create($paymentMethod);
     } catch (IncompletePayment $exception) {
         return redirect()->route(
             'cashier.payment',

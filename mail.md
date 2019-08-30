@@ -607,8 +607,8 @@ If you wish to delay the delivery of a queued email message, you may use the `la
 Since all mailable classes generated using the `make:mail` command make use of the `Illuminate\Bus\Queueable` trait, you may call the `onQueue` and `onConnection` methods on any mailable class instance, allowing you to specify the connection and queue name for the message:
 
     $message = (new OrderShipped($order))
-                    ->onConnection('sqs')
-                    ->onQueue('emails');
+        ->onConnection('sqs')
+        ->onQueue('emails');
 
     Mail::to($request->user())
         ->cc($moreUsers)

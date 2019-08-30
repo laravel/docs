@@ -24,10 +24,11 @@ By default, Laravel ships with a simple solution to API authentication via a ran
 Before using the `token` driver, you will need to [create a migration](/docs/{{version}}/migrations) which adds an `api_token` column to your `users` table:
 
     Schema::table('users', function ($table) {
-        $table->string('api_token', 80)->after('password')
-                            ->unique()
-                            ->nullable()
-                            ->default(null);
+        $table->string('api_token', 80)
+              ->after('password')
+              ->unique()
+              ->nullable()
+              ->default(null);
     });
 
 Once the migration has been created, run the `migrate` Artisan command.

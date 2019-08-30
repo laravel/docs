@@ -43,7 +43,7 @@ Returning a full `Response` instance allows you to customize the response's HTTP
 
     Route::get('home', function () {
         return response('Hello World', 200)
-                      ->header('Content-Type', 'text/plain');
+            ->header('Content-Type', 'text/plain');
     });
 
 <a name="attaching-headers-to-responses"></a>
@@ -52,18 +52,18 @@ Returning a full `Response` instance allows you to customize the response's HTTP
 Keep in mind that most response methods are chainable, allowing for the fluent construction of response instances. For example, you may use the `header` method to add a series of headers to the response before sending it back to the user:
 
     return response($content)
-                ->header('Content-Type', $type)
-                ->header('X-Header-One', 'Header Value')
-                ->header('X-Header-Two', 'Header Value');
+        ->header('Content-Type', $type)
+        ->header('X-Header-One', 'Header Value')
+        ->header('X-Header-Two', 'Header Value');
 
 Or, you may use the `withHeaders` method to specify an array of headers to be added to the response:
 
     return response($content)
-                ->withHeaders([
-                    'Content-Type' => $type,
-                    'X-Header-One' => 'Header Value',
-                    'X-Header-Two' => 'Header Value',
-                ]);
+        ->withHeaders([
+            'Content-Type' => $type,
+            'X-Header-One' => 'Header Value',
+            'X-Header-Two' => 'Header Value',
+        ]);
 
 ##### Cache Control Middleware
 
@@ -85,8 +85,8 @@ Laravel includes a `cache.headers` middleware, which may be used to quickly set 
 The `cookie` method on response instances allows you to easily attach cookies to the response. For example, you may use the `cookie` method to generate a cookie and fluently attach it to the response instance like so:
 
     return response($content)
-                    ->header('Content-Type', $type)
-                    ->cookie('name', 'value', $minutes);
+        ->header('Content-Type', $type)
+        ->cookie('name', 'value', $minutes);
 
 The `cookie` method also accepts a few more arguments which are used less frequently. Generally, these arguments have the same purpose and meaning as the arguments that would be given to PHP's native [setcookie](https://secure.php.net/manual/en/function.setcookie.php) method:
 
@@ -212,8 +212,8 @@ The `response` helper may be used to generate other types of response instances.
 If you need control over the response's status and headers but also need to return a [view](/docs/{{version}}/views) as the response's content, you should use the `view` method:
 
     return response()
-                ->view('hello', $data, 200)
-                ->header('Content-Type', $type);
+        ->view('hello', $data, 200)
+        ->header('Content-Type', $type);
 
 Of course, if you do not need to pass a custom HTTP status code or custom headers, you should use the global `view` helper function.
 
@@ -230,8 +230,8 @@ The `json` method will automatically set the `Content-Type` header to `applicati
 If you would like to create a JSONP response, you may use the `json` method in combination with the `withCallback` method:
 
     return response()
-                ->json(['name' => 'Abigail', 'state' => 'CA'])
-                ->withCallback($request->input('callback'));
+        ->json(['name' => 'Abigail', 'state' => 'CA'])
+        ->withCallback($request->input('callback'));
 
 <a name="file-downloads"></a>
 ### File Downloads
@@ -252,8 +252,8 @@ Sometimes you may wish to turn the string response of a given operation into a d
 
     return response()->streamDownload(function () {
         echo GitHub::api('repo')
-                    ->contents()
-                    ->readme('laravel', 'laravel')['contents'];
+                   ->contents()
+                   ->readme('laravel', 'laravel')['contents'];
     }, 'laravel-readme.md');
 
 <a name="file-responses"></a>

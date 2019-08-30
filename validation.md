@@ -355,8 +355,8 @@ If you do not want to use the `validate` method on the request, you may create a
 
             if ($validator->fails()) {
                 return redirect('post/create')
-                            ->withErrors($validator)
-                            ->withInput();
+                    ->withErrors($validator)
+                    ->withInput();
             }
 
             // Store the blog post...
@@ -383,7 +383,7 @@ If you would like to create a validator instance manually but still take advanta
 If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors, allowing you to retrieve the error messages for a specific form. Pass a name as the second argument to `withErrors`:
 
     return redirect('register')
-                ->withErrors($validator, 'login');
+        ->withErrors($validator, 'login');
 
 You may then access the named `MessageBag` instance from the `$errors` variable:
 
