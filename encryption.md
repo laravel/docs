@@ -43,7 +43,7 @@ You may encrypt a value using the `encrypt` helper. All encrypted values are enc
             $user = User::findOrFail($id);
 
             $user->fill([
-                'secret' => encrypt($request->secret)
+                'secret' => encrypt($request->secret),
             ])->save();
         }
     }

@@ -135,7 +135,7 @@ Occasionally, when casting models to an array or JSON, you may wish to add attri
          */
         public function getIsAdminAttribute()
         {
-            return $this->attributes['admin'] == 'yes';
+            return $this->attributes['admin'] === 'yes';
         }
     }
 

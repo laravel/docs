@@ -350,7 +350,7 @@ You may chain the `onConnection` and `onQueue` methods to specify the connection
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
                   ->onQueue('processing');
-                  
+
 Alternatively, you may specify the `connection` as a property on the job class:
 
     <?php

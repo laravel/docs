@@ -453,7 +453,7 @@ The `diffAssoc` method compares the collection against another collection or a p
         'color' => 'yellow',
         'type' => 'fruit',
         'remain' => 3,
-        'used' => 6
+        'used' => 6,
     ]);
 
     $diff->all();
