@@ -108,6 +108,10 @@ To utilize the PhpRedis extension, you should change the `client` option of your
         // Rest of Redis configuration...
     ],
 
+Change the `Redis` Facade alias in your `app.php` configuration for something else, like `RedisManager`, to avoid conflicts with the `Redis` class registered by the PhpRedis extension.
+
+    `RedisManager` => Illuminate\Support\Facades\Redis::class,
+
 In addition to the default `host`, `port`, `database`, and `password` server configuration options, PhpRedis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout` and `timeout`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
 
     'default' => [
