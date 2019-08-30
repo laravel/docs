@@ -22,7 +22,7 @@ For LTS releases, such as Laravel 6.0, bug fixes are provided for 2 years and se
 | 5.6 | February 7th, 2018 | August 7th, 2018 | February 7th, 2019 |
 | 5.7 | September 4th, 2018 | March 4th, 2019 | September 4th, 2019 |
 | 5.8 | February 26th, 2019 | August 26th, 2019 | February 26th, 2020 |
-| 6.0 (LTS) | September 3rd , 2019 | September 3rd, 2021 | September 3rd, 2022 |
+| 6.0 (LTS) | September 3rd, 2019 | September 3rd, 2021 | September 3rd, 2022 |
 
 <a name="laravel-6.0"></a>
 ## Laravel 6.0
