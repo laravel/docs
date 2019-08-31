@@ -233,6 +233,14 @@ You may assign default values to options by specifying the default value after t
 To assign a shortcut when defining an option, you may specify it before the option name and use a | delimiter to separate the shortcut from the full option name:
 
     email:send {user} {--Q|queue}
+    
+You may also pass a value for the option shortcut:
+
+    email:send {user} {--Q|queue=}
+
+In this example, the user may pass a value for the shortcut like so:
+
+    php artisan email:send 1 -Q default
 
 <a name="input-arrays"></a>
 ### Input Arrays
