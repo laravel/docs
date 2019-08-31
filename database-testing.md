@@ -23,7 +23,7 @@ Laravel provides a variety of helpful tools to make it easier to test your datab
         // Make call to application...
 
         $this->assertDatabaseHas('users', [
-            'email' => 'sally@example.com'
+            'email' => 'sally@example.com',
         ]);
     }
 
@@ -225,7 +225,7 @@ You may also attach relationships to models using Closure attributes in your fac
             'content' => $faker->paragraph,
             'user_id' => function () {
                 return factory(App\User::class)->create()->id;
-            }
+            },
         ];
     });
 
@@ -240,7 +240,7 @@ These Closures also receive the evaluated attribute array of the factory that de
             },
             'user_type' => function (array $post) {
                 return App\User::find($post['user_id'])->type;
-            }
+            },
         ];
     });
 

@@ -68,7 +68,7 @@ First, let's review some code that is tightly coupled to a cache implementation.
          */
         public function find($id)
         {
-            if ($this->cache->has($id))    {
+            if ($this->cache->has($id)) {
                 //
             }
         }
