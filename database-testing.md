@@ -204,11 +204,11 @@ You may override attributes on the model by passing an array to the `create` met
 In this example, we'll attach a relation to some created models. When using the `create` method to create multiple models, an Eloquent [collection instance](/docs/{{version}}/eloquent-collections) is returned, allowing you to use any of the convenient functions provided by the collection, such as `each`:
 
     $users = factory(App\User::class, 3)
-               ->create()
-               ->each(function ($user) {
-                    $user->posts()->save(factory(App\Post::class)->make());
-                });
-                
+        ->create()
+        ->each(function ($user) {
+            $user->posts()->save(factory(App\Post::class)->make());
+        });
+
 You may use the `createMany` method to create multiple related models:
 
     $user->posts()->createMany(

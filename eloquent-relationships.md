@@ -314,8 +314,8 @@ As noted earlier, attributes from the intermediate table may be accessed on mode
 For example, if your application contains users that may subscribe to podcasts, you probably have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table accessor to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship:
 
     return $this->belongsToMany('App\Podcast')
-                    ->as('subscription')
-                    ->withTimestamps();
+                ->as('subscription')
+                ->withTimestamps();
 
 Once this is done, you may access the intermediate table data using the customized name:
 
@@ -384,11 +384,11 @@ You can combine `using` and `withPivot` in order to retrieve columns from the in
         public function users()
         {
             return $this->belongsToMany('App\User')
-                            ->using('App\RoleUser')
-                            ->withPivot([
-                                'created_by',
-                                'updated_by'
-                            ]);
+                        ->using('App\RoleUser')
+                        ->withPivot([
+                          'created_by',
+                          'updated_by',
+                      ]);
         }
     }
 
@@ -838,9 +838,9 @@ You are able to use any of the [query builder](/docs/{{version}}/queries) method
 As demonstrated in the example above, you are free to add additional constraints to relationships when querying them. However, use caution when chaining `orWhere` clauses onto a relationship, as the `orWhere` clauses will be logically grouped at the same level as the relationship constraint:
 
     $user->posts()
-            ->where('active', 1)
-            ->orWhere('votes', '>=', 100)
-            ->get();
+         ->where('active', 1)
+         ->orWhere('votes', '>=', 100)
+         ->get();
 
     // select * from posts 
     // where user_id = ? and active = 1 or votes >= 100
@@ -850,11 +850,11 @@ In most situations, you likely intend to use [constraint groups](/docs/{{version
     use Illuminate\Database\Eloquent\Builder;
 
     $user->posts()
-            ->where(function (Builder $query) {
-                return $query->where('active', 1)
-                             ->orWhere('votes', '>=', 100);
-            })
-            ->get();
+         ->where(function (Builder $query) {
+             return $query->where('active', 1)
+                          ->orWhere('votes', '>=', 100);
+         })
+         ->get();
 
     // select * from posts 
     // where user_id = ? and (active = 1 or votes >= 100)

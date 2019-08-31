@@ -132,10 +132,10 @@ These methods may be combined with additional constraints to create even more fi
 
     // Run hourly from 8 AM to 5 PM on weekdays...
     $schedule->command('foo')
-              ->weekdays()
-              ->hourly()
-              ->timezone('America/Chicago')
-              ->between('8:00', '17:00');
+             ->weekdays()
+             ->hourly()
+             ->timezone('America/Chicago')
+             ->between('8:00', '17:00');
 
 Below is a list of the additional schedule constraints:
 
@@ -159,14 +159,14 @@ Method  | Description
 The `between` method may be used to limit the execution of a task based on the time of day:
 
     $schedule->command('reminders:send')
-                        ->hourly()
-                        ->between('7:00', '22:00');
+             ->hourly()
+             ->between('7:00', '22:00');
 
 Similarly, the `unlessBetween` method can be used to exclude the execution of a task for a period of time:
 
     $schedule->command('reminders:send')
-                        ->hourly()
-                        ->unlessBetween('23:00', '4:00');
+             ->hourly()
+             ->unlessBetween('23:00', '4:00');
 
 #### Truth Test Constraints
 
@@ -189,8 +189,8 @@ When using chained `when` methods, the scheduled command will only execute if al
 The `environments` method may be used to execute tasks only on the given environments:
 
     $schedule->command('emails:send')
-                ->daily()
-                ->environments(['staging', 'production']);
+             ->daily()
+             ->environments(['staging', 'production']);
 
 <a name="timezones"></a>
 ### Timezones
@@ -238,9 +238,9 @@ If your application is running on multiple servers, you may limit a scheduled jo
 To indicate that the task should run on only one server, use the `onOneServer` method when defining the scheduled task. The first server to obtain the task will secure an atomic lock on the job to prevent other servers from running the same task at the same time:
 
     $schedule->command('report:generate')
-                    ->fridays()
-                    ->at('17:00')
-                    ->onOneServer();
+             ->fridays()
+             ->at('17:00')
+             ->onOneServer();
 
 <a name="background-tasks"></a>
 ### Background Tasks

@@ -405,9 +405,9 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
         public function testGetIndex()
         {
             Cache::shouldReceive('get')
-                        ->once()
-                        ->with('key')
-                        ->andReturn('value');
+                 ->once()
+                 ->with('key')
+                 ->andReturn('value');
 
             $response = $this->get('/users');
 

@@ -115,16 +115,16 @@ In Laravel 6.0, this logic may be extracted into a job middleware, allowing you 
         public function handle($job, $next)
         {
             Redis::throttle('key')
-                    ->block(0)->allow(1)->every(5)
-                    ->then(function () use ($job, $next) {
-                        // Lock obtained...
+                  ->block(0)->allow(1)->every(5)
+                  ->then(function () use ($job, $next) {
+                      // Lock obtained...
 
-                        $next($job);
-                    }, function () use ($job) {
-                        // Could not obtain lock...
+                      $next($job);
+                  }, function () use ($job) {
+                      // Could not obtain lock...
 
-                        $job->release(5);
-                    });
+                      $job->release(5);
+                  });
         }
     }
 
@@ -202,9 +202,9 @@ In addition, we can use new subquery features added to the query builder's `orde
 
     return Destination::orderByDesc(
         Flight::select('arrived_at')
-            ->whereColumn('destination_id', 'destinations.id')
-            ->orderBy('arrived_at', 'desc')
-            ->limit(1)
+              ->whereColumn('destination_id', 'destinations.id')
+              ->orderBy('arrived_at', 'desc')
+              ->limit(1)
     )->get();
 
 ### Laravel UI 

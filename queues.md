@@ -221,20 +221,20 @@ Instead of rate limiting in the handle method, we could define a job middleware 
         public function handle($job, $next)
         {
             Redis::throttle('key')
-                    ->block(0)->allow(1)->every(5)
-                    ->then(function () use ($job, $next) {
-                        // Lock obtained...
+                 ->block(0)->allow(1)->every(5)
+                 ->then(function () use ($job, $next) {
+                     // Lock obtained...
 
-                        $next($job);
-                    }, function () use ($job) {
-                        // Could not obtain lock...
+                     $next($job);
+                 }, function () use ($job) {
+                     // Could not obtain lock...
 
-                        $job->release(5);
-                    });
+                     $job->release(5);
+                 });
         }
     }
 
-As you can see, like [route middleware](/docs/{{version}}/middleware), job middleware receive the job being processed and a callback that should be invoked to continue processing the job. 
+As you can see, like [route middleware](/docs/{{version}}/middleware), job middleware receive the job being processed and a callback that should be invoked to continue processing the job.
 
 After creating job middleware, they may be attached to a job by returning them from the job's `middleware` method. This method does not exist on jobs scaffolded by the `make:job` Artisan command, so you will need to add it to your own job class definition:
 
@@ -305,7 +305,7 @@ If you would like to delay the execution of a queued job, you may use the `delay
             // Create podcast...
 
             ProcessPodcast::dispatch($podcast)
-                    ->delay(now()->addMinutes(10));
+                          ->delay(now()->addMinutes(10));
         }
     }
 
