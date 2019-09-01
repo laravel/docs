@@ -115,7 +115,7 @@ Next, you should configure your Stripe key in your `.env` file. You can retrieve
 
 The default Cashier currency is United States Dollars (USD). You can change the default currency by setting the `CASHIER_CURRENCY` environment variable:
 
-    CASHIER_CURRENCY=EUR
+    CASHIER_CURRENCY=eur
 
 In addition to configuring Cashier's currency, you may also specify a locale to be used when formatting money values for display on invoices. Internally, Cashier utilizes [PHP's `NumberFormatter` class](https://www.php.net/manual/en/class.numberformatter.php) to set the currency locale:
 
