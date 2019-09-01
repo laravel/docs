@@ -19,7 +19,7 @@ Alternatively, you can install the `predis/predis` package via Composer:
 
     composer require predis/predis
 
-> {note} Maintenance of Predis has been abandoned by the original author of the package and will be removed from Laravel in the 7.0 release.
+> {note} Predis has been abandoned by the package's original author and may be removed from Laravel in a future release.
 
 <a name="configuration"></a>
 ### Configuration
