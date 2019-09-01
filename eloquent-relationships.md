@@ -842,7 +842,7 @@ As demonstrated in the example above, you are free to add additional constraints
             ->orWhere('votes', '>=', 100)
             ->get();
 
-    // select * from posts 
+    // select * from posts
     // where user_id = ? and active = 1 or votes >= 100
 
 In most situations, you likely intend to use [constraint groups](/docs/{{version}}/queries#parameter-grouping) to logically group the conditional checks between parentheses:
@@ -856,7 +856,7 @@ In most situations, you likely intend to use [constraint groups](/docs/{{version
             })
             ->get();
 
-    // select * from posts 
+    // select * from posts
     // where user_id = ? and (active = 1 or votes >= 100)
 
 <a name="relationship-methods-vs-dynamic-properties"></a>
@@ -936,8 +936,8 @@ To query the existence of `MorphTo` relationships, you may use the `whereHasMorp
 
     // Retrieve comments associated to posts or videos with a title like foo%...
     $comments = App\Comment::whereHasMorph(
-        'commentable', 
-        ['App\Post', 'App\Video'], 
+        'commentable',
+        ['App\Post', 'App\Video'],
         function (Builder $query) {
             $query->where('title', 'like', 'foo%');
         }
@@ -945,29 +945,29 @@ To query the existence of `MorphTo` relationships, you may use the `whereHasMorp
 
     // Retrieve comments associated to posts with a title not like foo%...
     $comments = App\Comment::whereDoesntHaveMorph(
-        'commentable', 
-        'App\Post', 
+        'commentable',
+        'App\Post',
         function (Builder $query) {
             $query->where('title', 'like', 'foo%');
         }
-    )->get();    
-    
+    )->get();
+
 You may use the `$type` parameter to add different constraints depending on the related model:
 
     use Illuminate\Database\Eloquent\Builder;
 
     $comments = App\Comment::whereHasMorph(
-        'commentable', 
-        ['App\Post', 'App\Video'], 
+        'commentable',
+        ['App\Post', 'App\Video'],
         function (Builder $query, $type) {
             $query->where('title', 'like', 'foo%');
-    
+
             if ($type === 'App\Post') {
                 $query->orWhere('content', 'like', 'foo%');
             }
         }
     )->get();
-    
+
 Instead of passing an array of possible polymorphic models, you may provide `*` as a wildcard and let Laravel retrieve all the possible polymorphic types from the database. Laravel will execute an additional query in order to perform this operation:
 
     use Illuminate\Database\Eloquent\Builder;
@@ -1006,7 +1006,7 @@ You may also alias the relationship count result, allowing multiple counts on th
         'comments',
         'comments as pending_comments_count' => function (Builder $query) {
             $query->where('approved', false);
-        }
+        },
     ])->get();
 
     echo $posts[0]->comments_count;
@@ -1148,7 +1148,7 @@ Sometimes you might want to always load some relationships when retrieving a mod
             return $this->belongsTo('App\Author');
         }
     }
-   
+
 If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:
 
     $books = App\Book::without('author')->get();
@@ -1195,7 +1195,7 @@ To load a relationship only when it has not already been loaded, use the `loadMi
 
         return [
             'name' => $book->name,
-            'author' => $book->author->name
+            'author' => $book->author->name,
         ];
     }
 
@@ -1380,7 +1380,7 @@ For convenience, `attach` and `detach` also accept arrays of IDs as input:
 
     $user->roles()->attach([
         1 => ['expires' => $expires],
-        2 => ['expires' => $expires]
+        2 => ['expires' => $expires],
     ]);
 
 #### Syncing Associations

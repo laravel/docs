@@ -207,7 +207,7 @@ In addition, we can use new subquery features added to the query builder's `orde
             ->limit(1)
     )->get();
 
-### Laravel UI 
+### Laravel UI
 
 The frontend scaffolding typically provided with previous releases of Laravel has been extracted into a `laravel/ui` Composer package. This allows the first-party UI scaffolding to be developed and versioned separately from the primary framework. As a result of this change, no Bootstrap or Vue code is present in default framework scaffolding, and the `make:auth` command has been extracted from the framework as well.
 
