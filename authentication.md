@@ -70,7 +70,13 @@ This command should be used on fresh applications and will install a layout view
 As mentioned in the previous section, the `laravel/ui` package's `php artisan ui vue --auth` command will create all of the views you need for authentication and place them in the `resources/views/auth` directory.
 
 The `ui` command will also create a `resources/views/layouts` directory containing a base layout for your application. All of these views use the Bootstrap CSS framework, but you are free to customize them however you wish.
-
+If you do not compile your assets then you can manually download bootstrap.css and place in your public/css directory.
+And in views/layouts/app.blade.php replace:
+```ruby
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+with
+<link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+```
 <a name="included-authenticating"></a>
 ### Authenticating
 
