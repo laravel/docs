@@ -355,12 +355,12 @@ Like all other mail notifications, notifications that use Markdown templates sho
 
 Markdown mail notifications use a combination of Blade components and Markdown syntax which allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
 
-    @component('mail::message')
+    @component ('mail::message')
     # Invoice Paid
 
     Your invoice has been paid!
 
-    @component('mail::button', ['url' => $url])
+    @component ('mail::button', ['url' => $url])
     View Invoice
     @endcomponent
 
@@ -372,7 +372,7 @@ Markdown mail notifications use a combination of Blade components and Markdown s
 
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`. You may add as many button components to a notification as you wish:
 
-    @component('mail::button', ['url' => $url, 'color' => 'green'])
+    @component ('mail::button', ['url' => $url, 'color' => 'green'])
     View Invoice
     @endcomponent
 
@@ -380,7 +380,7 @@ The button component renders a centered button link. The component accepts two a
 
 The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the notification. This allows you to draw attention to a given block of text:
 
-    @component('mail::panel')
+    @component ('mail::panel')
     This is the panel content.
     @endcomponent
 
@@ -388,7 +388,7 @@ The panel component renders the given block of text in a panel that has a slight
 
 The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
 
-    @component('mail::table')
+    @component ('mail::table')
     | Laravel       | Table         | Example  |
     | ------------- |:-------------:| --------:|
     | Col 2 is      | Centered      | $10      |

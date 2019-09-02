@@ -442,7 +442,7 @@ HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining 
 You may use the `@method` Blade directive to generate the `_method` input:
 
     <form action="/foo/bar" method="POST">
-        @method('PUT')
+        @method ('PUT')
         @csrf
     </form>
 

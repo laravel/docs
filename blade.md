@@ -42,15 +42,15 @@ Two of the primary benefits of using Blade are _template inheritance_ and _secti
 
     <html>
         <head>
-            <title>App Name - @yield('title')</title>
+            <title>App Name - @yield ('title')</title>
         </head>
         <body>
-            @section('sidebar')
+            @section ('sidebar')
                 This is the master sidebar.
             @show
 
             <div class="container">
-                @yield('content')
+                @yield ('content')
             </div>
         </body>
     </html>
@@ -66,17 +66,17 @@ When defining a child view, use the Blade `@extends` directive to specify which 
 
     <!-- Stored in resources/views/child.blade.php -->
 
-    @extends('layouts.app')
+    @extends ('layouts.app')
 
-    @section('title', 'Page Title')
+    @section ('title', 'Page Title')
 
-    @section('sidebar')
+    @section ('sidebar')
         @@parent
 
         <p>This is appended to the master sidebar.</p>
     @endsection
 
-    @section('content')
+    @section ('content')
         <p>This is my body content.</p>
     @endsection
 
@@ -86,7 +86,7 @@ In this example, the `sidebar` section is utilizing the `@@parent` directive to 
 
 The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
 
-    @yield('content', View::make('view.name'))
+    @yield ('content', View::make('view.name'))
 
 Blade views may be returned from routes using the global `view` helper:
 
@@ -107,7 +107,7 @@ Components and slots provide similar benefits to sections and layouts; however, 
 
 The `{{ $slot }}` variable will contain the content we wish to inject into the component. Now, to construct this component, we can use the `@component` Blade directive:
 
-    @component('alert')
+    @component ('alert')
         <strong>Whoops!</strong> Something went wrong!
     @endcomponent
 
@@ -129,8 +129,8 @@ Sometimes it is helpful to define multiple slots for a component. Let's modify o
 
 Now, we can inject content into the named slot using the `@slot` directive. Any content not within a `@slot` directive will be passed to the component in the `$slot` variable:
 
-    @component('alert')
-        @slot('title')
+    @component ('alert')
+        @slot ('title')
             Forbidden
         @endslot
 
@@ -141,7 +141,7 @@ Now, we can inject content into the named slot using the `@slot` directive. Any 
 
 Sometimes you may need to pass additional data to a component. For this reason, you can pass an array of data as the second argument to the `@component` directive. All of the data will be made available to the component template as variables:
 
-    @component('alert', ['foo' => 'bar'])
+    @component ('alert', ['foo' => 'bar'])
         ...
     @endcomponent
 
@@ -155,7 +155,7 @@ If your Blade components are stored in a sub-directory, you may wish to alias th
 
 Once the component has been aliased, you may render it using a directive:
 
-    @alert(['type' => 'danger'])
+    @alert (['type' => 'danger'])
         You are not allowed to access this resource!
     @endalert
 
@@ -203,16 +203,16 @@ Sometimes you may pass an array to your view with the intention of rendering it 
 However, instead of manually calling `json_encode`, you may use the `@json` Blade directive. The `@json` directive accepts the same arguments as PHP's `json_encode` function:
 
     <script>
-        var app = @json($array);
+        var app = @json ($array);
 
-        var app = @json($array, JSON_PRETTY_PRINT);
+        var app = @json ($array, JSON_PRETTY_PRINT);
     </script>
 
 > {note} You should only use the `@json` directive to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 The `@json` directive is also useful for seeding Vue components or `data-*` attributes:
 
-    <example-component :some-prop='@json($array)'></example-component>
+    <example-component :some-prop='@json ($array)'></example-component>
 
 > {note} Using `@json` in element attributes requires that it be surrounded by single quotes.
 
@@ -287,11 +287,11 @@ For convenience, Blade also provides an `@unless` directive:
 
 In addition to the conditional directives already discussed, the `@isset` and `@empty` directives may be used as convenient shortcuts for their respective PHP functions:
 
-    @isset($records)
+    @isset ($records)
         // $records is defined and is not null...
     @endisset
 
-    @empty($records)
+    @empty ($records)
         // $records is "empty"...
     @endempty
 
@@ -309,11 +309,11 @@ The `@auth` and `@guest` directives may be used to quickly determine if the curr
 
 If needed, you may specify the [authentication guard](/docs/{{version}}/authentication) that should be checked when using the `@auth` and `@guest` directives:
 
-    @auth('admin')
+    @auth ('admin')
         // The user is authenticated...
     @endauth
 
-    @guest('admin')
+    @guest ('admin')
         // The user is not authenticated...
     @endguest
 
@@ -323,7 +323,7 @@ You may check if a section has content using the `@hasSection` directive:
 
     @hasSection('navigation')
         <div class="pull-right">
-            @yield('navigation')
+            @yield ('navigation')
         </div>
 
         <div class="clearfix"></div>
@@ -334,12 +334,12 @@ You may check if a section has content using the `@hasSection` directive:
 
 Switch statements can be constructed using the `@switch`, `@case`, `@break`, `@default` and `@endswitch` directives:
 
-    @switch($i)
-        @case(1)
+    @switch ($i)
+        @case (1)
             First case...
             @break
 
-        @case(2)
+        @case (2)
             Second case...
             @break
 
@@ -389,11 +389,11 @@ When using loops you may also end the loop or skip the current iteration:
 You may also include the condition with the directive declaration in one line:
 
     @foreach ($users as $user)
-        @continue($user->type == 1)
+        @continue ($user->type == 1)
 
         <li>{{ $user->name }}</li>
 
-        @break($user->number == 5)
+        @break ($user->number == 5)
     @endforeach
 
 <a name="the-loop-variable"></a>
@@ -476,7 +476,7 @@ Anytime you define an HTML form in your application, you should include a hidden
 Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need to add a hidden `_method` field to spoof these HTTP verbs. The `@method` Blade directive can create this field for you:
 
     <form action="/foo/bar" method="POST">
-        @method('PUT')
+        @method ('PUT')
 
         ...
     </form>
@@ -490,9 +490,9 @@ The `@error` directive may be used to quickly check if [validation error message
 
     <label for="title">Post Title</label>
 
-    <input id="title" type="text" class="@error('title') is-invalid @enderror">
+    <input id="title" type="text" class="@error ('title') is-invalid @enderror">
 
-    @error('title')
+    @error ('title')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
@@ -502,9 +502,9 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
 
     <label for="email">Email address</label>
 
-    <input id="email" type="email" class="@error('email', 'login') is-invalid @enderror">
+    <input id="email" type="email" class="@error ('email', 'login') is-invalid @enderror">
 
-    @error('email', 'login')
+    @error ('email', 'login')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
@@ -514,7 +514,7 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
 Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
 
     <div>
-        @include('shared.errors')
+        @include ('shared.errors')
 
         <form>
             <!-- Form Contents -->
@@ -523,7 +523,7 @@ Blade's `@include` directive allows you to include a Blade view from within anot
 
 Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
 
-    @include('view.name', ['some' => 'data'])
+    @include ('view.name', ['some' => 'data'])
 
 If you attempt to `@include` a view which does not exist, Laravel will throw an error. If you would like to include a view that may or may not be present, you should use the `@includeIf` directive:
 
@@ -553,20 +553,20 @@ You may use the `include` method to alias the include from `includes.input` to `
 
 Once the include has been aliased, you may render it using the alias name as the Blade directive:
 
-    @input(['type' => 'email'])
+    @input (['type' => 'email'])
 
 <a name="rendering-views-for-collections"></a>
 ### Rendering Views For Collections
 
 You may combine loops and includes into one line with Blade's `@each` directive:
 
-    @each('view.name', $jobs, 'job')
+    @each ('view.name', $jobs, 'job')
 
 The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial. The key for the current iteration will be available as the `key` variable within your view partial.
 
 You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
 
-    @each('view.name', $jobs, 'job', 'view.empty')
+    @each ('view.name', $jobs, 'job', 'view.empty')
 
 > {note} Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use `@foreach` and `@include` instead.
 
@@ -575,7 +575,7 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
 
 Blade allows you to push to named stacks which can be rendered somewhere else in another view or layout. This can be particularly useful for specifying any JavaScript libraries required by your child views:
 
-    @push('scripts')
+    @push ('scripts')
         <script src="/example.js"></script>
     @endpush
 
@@ -584,12 +584,12 @@ You may push to a stack as many times as needed. To render the complete stack co
     <head>
         <!-- Head Contents -->
 
-        @stack('scripts')
+        @stack ('scripts')
     </head>
 
 If you would like to prepend content onto the beginning of a stack, you should use the `@prepend` directive:
 
-    @push('scripts')
+    @push ('scripts')
         This will be second...
     @endpush
 
@@ -604,7 +604,7 @@ If you would like to prepend content onto the beginning of a stack, you should u
 
 The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class or interface name of the service you wish to resolve:
 
-    @inject('metrics', 'App\Services\MetricsService')
+    @inject ('metrics', 'App\Services\MetricsService')
 
     <div>
         Monthly Revenue: {{ $metrics->monthlyRevenue() }}.
@@ -615,7 +615,7 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
 
 Blade allows you to define your own custom directives using the `directive` method. When the Blade compiler encounters the custom directive, it will call the provided callback with the expression that the directive contains.
 
-The following example creates a `@datetime($var)` directive which formats a given `$var`, which should be an instance of `DateTime`:
+The following example creates a `@datetime ($var)` directive which formats a given `$var`, which should be an instance of `DateTime`:
 
     <?php
 
@@ -676,9 +676,9 @@ Programming a custom directive is sometimes more complex than necessary when def
 
 Once the custom conditional has been defined, we can easily use it on our templates:
 
-    @env('local')
+    @env ('local')
         // The application is in the local environment...
-    @elseenv('testing')
+    @elseenv ('testing')
         // The application is in the testing environment...
     @else
         // The application is not in the local or testing environment...

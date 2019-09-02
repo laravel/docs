@@ -104,7 +104,7 @@ If you are using the [Blade templating engine](/docs/{{version}}/blade), you may
 
     {{ __('messages.welcome') }}
 
-    @lang('messages.welcome')
+    @lang ('messages.welcome')
 
 If the specified translation string does not exist, the `__` function will return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist.
 

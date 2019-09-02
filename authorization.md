@@ -520,15 +520,15 @@ The following controller methods will be mapped to their corresponding policy me
 
 When writing Blade templates, you may wish to display a portion of the page only if the user is authorized to perform a given action. For example, you may wish to show an update form for a blog post only if the user can actually update the post. In this situation, you may use the `@can` and `@cannot` family of directives:
 
-    @can('update', $post)
+    @can ('update', $post)
         <!-- The Current User Can Update The Post -->
-    @elsecan('create', App\Post::class)
+    @elsecan ('create', App\Post::class)
         <!-- The Current User Can Create New Post -->
     @endcan
 
-    @cannot('update', $post)
+    @cannot ('update', $post)
         <!-- The Current User Can't Update The Post -->
-    @elsecannot('create', App\Post::class)
+    @elsecannot ('create', App\Post::class)
         <!-- The Current User Can't Create New Post -->
     @endcannot
 
@@ -544,9 +544,9 @@ These directives are convenient shortcuts for writing `@if` and `@unless` statem
 
 You may also determine if a user has any authorization ability from a given list of abilities. To accomplish this, use the `@canany` directive:
 
-    @canany(['update', 'view', 'delete'], $post)
+    @canany (['update', 'view', 'delete'], $post)
         // The current user can update, view, or delete the post
-    @elsecanany(['create'], \App\Post::class)
+    @elsecanany (['create'], \App\Post::class)
         // The current user can create a post
     @endcanany
 
@@ -554,11 +554,11 @@ You may also determine if a user has any authorization ability from a given list
 
 Like most of the other authorization methods, you may pass a class name to the `@can` and `@cannot` directives if the action does not require a model instance:
 
-    @can('create', App\Post::class)
+    @can ('create', App\Post::class)
         <!-- The Current User Can Create Posts -->
     @endcan
 
-    @cannot('create', App\Post::class)
+    @cannot ('create', App\Post::class)
         <!-- The Current User Can't Create Posts -->
     @endcannot
 

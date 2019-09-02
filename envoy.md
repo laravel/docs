@@ -40,9 +40,9 @@ You may also use Composer to keep your Envoy installation up to date. Issuing th
 
 All of your Envoy tasks should be defined in an `Envoy.blade.php` file in the root of your project. Here's an example to get you started:
 
-    @servers(['web' => ['user@192.168.1.1']])
+    @servers (['web' => ['user@192.168.1.1']])
 
-    @task('foo', ['on' => 'web'])
+    @task ('foo', ['on' => 'web'])
         ls -la
     @endtask
 
@@ -50,7 +50,7 @@ As you can see, an array of `@servers` is defined at the top of the file, allowi
 
 You can force a script to run locally by specifying the server's IP address as `127.0.0.1`:
 
-    @servers(['localhost' => '127.0.0.1'])
+    @servers (['localhost' => '127.0.0.1'])
 
 <a name="setup"></a>
 ### Setup
@@ -65,9 +65,9 @@ Sometimes, you may need to execute some PHP code before executing your Envoy tas
 
 If you need to require other PHP files before your task is executed, you may use the `@include` directive at the top of your `Envoy.blade.php` file:
 
-    @include('vendor/autoload.php')
+    @include ('vendor/autoload.php')
 
-    @task('foo')
+    @task ('foo')
         # ...
     @endtask
 
@@ -80,9 +80,9 @@ If needed, you may pass option values into Envoy tasks using the command line:
 
 You may access the options in your tasks via Blade's "echo" syntax. You may also use `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
 
-    @servers(['web' => '192.168.1.1'])
+    @servers (['web' => '192.168.1.1'])
 
-    @task('deploy', ['on' => 'web'])
+    @task ('deploy', ['on' => 'web'])
         cd site
 
         @if ($branch)
@@ -97,18 +97,18 @@ You may access the options in your tasks via Blade's "echo" syntax. You may also
 
 Stories group a set of tasks under a single, convenient name, allowing you to group small, focused tasks into large tasks. For instance, a `deploy` story may run the `git` and `composer` tasks by listing the task names within its definition:
 
-    @servers(['web' => '192.168.1.1'])
+    @servers (['web' => '192.168.1.1'])
 
-    @story('deploy')
+    @story ('deploy')
         git
         composer
     @endstory
 
-    @task('git')
+    @task ('git')
         git pull origin master
     @endtask
 
-    @task('composer')
+    @task ('composer')
         composer install
     @endtask
 
@@ -121,9 +121,9 @@ Once the story has been written, you may run it just like a typical task:
 
 Envoy allows you to easily run a task across multiple servers. First, add additional servers to your `@servers` declaration. Each server should be assigned a unique name. Once you have defined your additional servers, list each of the servers in the task's `on` array:
 
-    @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
+    @servers (['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
-    @task('deploy', ['on' => ['web-1', 'web-2']])
+    @task ('deploy', ['on' => ['web-1', 'web-2']])
         cd site
         git pull origin {{ $branch }}
         php artisan migrate
@@ -133,9 +133,9 @@ Envoy allows you to easily run a task across multiple servers. First, add additi
 
 By default, tasks will be executed on each server serially. In other words, a task will finish running on the first server before proceeding to execute on the second server. If you would like to run a task across multiple servers in parallel, add the `parallel` option to your task declaration:
 
-    @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
+    @servers (['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
-    @task('deploy', ['on' => ['web-1', 'web-2'], 'parallel' => true])
+    @task ('deploy', ['on' => ['web-1', 'web-2'], 'parallel' => true])
         cd site
         git pull origin {{ $branch }}
         php artisan migrate
@@ -153,7 +153,7 @@ To run a task or story that is defined in your `Envoy.blade.php` file, execute E
 
 If you would like to be prompted for confirmation before running a given task on your servers, you should add the `confirm` directive to your task declaration. This option is particularly useful for destructive operations:
 
-    @task('deploy', ['on' => 'web', 'confirm' => true])
+    @task ('deploy', ['on' => 'web', 'confirm' => true])
         cd site
         git pull origin {{ $branch }}
         php artisan migrate
@@ -168,7 +168,7 @@ If you would like to be prompted for confirmation before running a given task on
 Envoy also supports sending notifications to [Slack](https://slack.com) after each task is executed. The `@slack` directive accepts a Slack hook URL and a channel name. You may retrieve your webhook URL by creating an "Incoming WebHooks" integration in your Slack control panel. You should pass the entire webhook URL into the `@slack` directive:
 
     @finished
-        @slack('webhook-url', '#bots')
+        @slack ('webhook-url', '#bots')
     @endfinished
 
 You may provide one of the following as the channel argument:
@@ -184,5 +184,5 @@ You may provide one of the following as the channel argument:
 Envoy also supports sending notifications to [Discord](https://discord.com) after each task is executed. The `@discord` directive accepts a Discord hook URL and a message. You may retrieve your webhook URL by creating a "Webhook" in your Server Settings and choosing which channel the webhook should post to. You should pass the entire Webhook URL into the `@discord` directive:
 
     @finished
-        @discord('discord-webhook-url')
+        @discord ('discord-webhook-url')
     @endfinished

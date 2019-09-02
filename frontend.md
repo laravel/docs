@@ -77,9 +77,9 @@ When using the `laravel/ui` package to scaffold your frontend, an `ExampleCompon
 
 To use the component in your application, you may drop it into one of your HTML templates. For example, after running the `php artisan ui vue --auth` Artisan command to scaffold your application's authentication and registration screens, you could drop the component into the `home.blade.php` Blade template:
 
-    @extends('layouts.app')
+    @extends ('layouts.app')
 
-    @section('content')
+    @section ('content')
         <example-component></example-component>
     @endsection
 
