@@ -457,13 +457,13 @@ The `whereColumn` method can also be passed an array of multiple conditions. The
 
 Sometimes you may need to create more advanced where clauses such as "where exists" clauses or nested parameter groupings. The Laravel query builder can handle these as well. To get started, let's look at an example of grouping constraints within parenthesis:
 
-    DB::table('users')
-                ->where('name', '=', 'John')
-                ->where(function ($query) {
-                    $query->where('votes', '>', 100)
-                          ->orWhere('title', '=', 'Admin');
-                })
-                ->get();
+    $users = DB::table('users')
+               ->where('name', '=', 'John')
+               ->where(function ($query) {
+                   $query->where('votes', '>', 100)
+                         ->orWhere('title', '=', 'Admin');
+               })
+               ->get();
 
 As you can see, passing a `Closure` into the `where` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
 
@@ -476,13 +476,13 @@ As you can see, passing a `Closure` into the `where` method instructs the query 
 
 The `whereExists` method allows you to write `where exists` SQL clauses. The `whereExists` method accepts a `Closure` argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
 
-    DB::table('users')
-                ->whereExists(function ($query) {
-                    $query->select(DB::raw(1))
-                          ->from('orders')
-                          ->whereRaw('orders.user_id = users.id');
-                })
-                ->get();
+    $users = DB::table('users')
+               ->whereExists(function ($query) {
+                   $query->select(DB::raw(1))
+                         ->from('orders')
+                         ->whereRaw('orders.user_id = users.id');
+               })
+               ->get();
 
 The query above will produce the following SQL:
 
