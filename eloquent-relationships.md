@@ -387,7 +387,7 @@ You can combine `using` and `withPivot` in order to retrieve columns from the in
                             ->using('App\RoleUser')
                             ->withPivot([
                                 'created_by',
-                                'updated_by'
+                                'updated_by',
                             ]);
         }
     }
