@@ -359,7 +359,8 @@ You may chain where constraints together as well as add `or` clauses to the quer
 The `whereBetween` method verifies that a column's value is between two values:
 
     $users = DB::table('users')
-                        ->whereBetween('votes', [1, 100])->get();
+               ->whereBetween('votes', [1, 100])
+               ->get();
 
 **whereNotBetween / orWhereNotBetween**
 
@@ -448,7 +449,7 @@ The `whereColumn` method can also be passed an array of multiple conditions. The
     $users = DB::table('users')
                     ->whereColumn([
                         ['first_name', '=', 'last_name'],
-                        ['updated_at', '>', 'created_at']
+                        ['updated_at', '>', 'created_at'],
                     ])->get();
 
 <a name="parameter-grouping"></a>
