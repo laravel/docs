@@ -649,9 +649,9 @@ If the table has an auto-incrementing id, use the `insertGetId` method to insert
 
 In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated. You may constrain the `update` query using `where` clauses:
 
-    DB::table('users')
-                ->where('id', 1)
-                ->update(['votes' => 1]);
+    $affected = DB::table('users')
+                  ->where('id', 1)
+                  ->update(['votes' => 1]);
 
 #### Update Or Insert
 
@@ -670,9 +670,9 @@ The `updateOrInsert` method will first attempt to locate a matching database rec
 
 When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:
 
-    DB::table('users')
-                ->where('id', 1)
-                ->update(['options->enabled' => true]);
+    $affected = DB::table('users')
+                  ->where('id', 1)
+                  ->update(['options->enabled' => true]);
 
 <a name="increment-and-decrement"></a>
 ### Increment & Decrement
