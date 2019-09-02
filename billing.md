@@ -741,7 +741,7 @@ You may easily retrieve an array of a billable model's invoices using the `invoi
 When listing the invoices for the customer, you may use the invoice's helper methods to display the relevant invoice information. For example, you may wish to list every invoice in a table, allowing the user to easily download any of them:
 
     <table>
-        @foreach ($invoices as $invoice)
+        @foreach($invoices as $invoice)
             <tr>
                 <td>{{ $invoice->date()->toFormattedDateString() }}</td>
                 <td>{{ $invoice->total() }}</td>

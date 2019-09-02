@@ -534,11 +534,11 @@ When writing Blade templates, you may wish to display a portion of the page only
 
 These directives are convenient shortcuts for writing `@if` and `@unless` statements. The `@can` and `@cannot` statements above respectively translate to the following statements:
 
-    @if (Auth::user()->can('update', $post))
+    @if(Auth::user()->can('update', $post))
         <!-- The Current User Can Update The Post -->
     @endif
 
-    @unless (Auth::user()->can('update', $post))
+    @unless(Auth::user()->can('update', $post))
         <!-- The Current User Can't Update The Post -->
     @endunless
 

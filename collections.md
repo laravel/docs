@@ -244,9 +244,9 @@ The `chunk` method breaks the collection into multiple, smaller collections of a
 
 This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](https://getbootstrap.com/docs/4.1/layout/grid/). Imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
 
-    @foreach ($products->chunk(3) as $chunk)
+    @foreach($products->chunk(3) as $chunk)
         <div class="row">
-            @foreach ($chunk as $product)
+            @foreach($chunk as $product)
                 <div class="col-xs-4">{{ $product->name }}</div>
             @endforeach
         </div>

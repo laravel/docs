@@ -87,7 +87,7 @@ In other words, the `Paginator` corresponds to the `simplePaginate` method on th
 When calling the `paginate` method, you will receive an instance of `Illuminate\Pagination\LengthAwarePaginator`. When calling the `simplePaginate` method, you will receive an instance of `Illuminate\Pagination\Paginator`. These objects provide several methods that describe the result set. In addition to these helpers methods, the paginator instances are iterators and may be looped as an array. So, once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/blade):
 
     <div class="container">
-        @foreach ($users as $user)
+        @foreach($users as $user)
             {{ $user->name }}
         @endforeach
     </div>

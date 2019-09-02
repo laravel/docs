@@ -81,7 +81,7 @@ Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/se
 
 After the user is redirected, you may display the flashed message from the [session](/docs/{{version}}/session). For example, using [Blade syntax](/docs/{{version}}/blade):
 
-    @if (session('status'))
+    @if(session('status'))
         <div class="alert alert-success">
             {{ session('status') }}
         </div>

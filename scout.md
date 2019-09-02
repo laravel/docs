@@ -322,7 +322,7 @@ You may specify how many models to retrieve per page by passing the amount as th
 Once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/blade) just as if you had paginated a traditional Eloquent query:
 
     <div class="container">
-        @foreach ($orders as $order)
+        @foreach($orders as $order)
             {{ $order->price }}
         @endforeach
     </div>

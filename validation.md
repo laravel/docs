@@ -152,10 +152,10 @@ So, in our example, the user will be redirected to our controller's `create` met
 
     <h1>Create Post</h1>
 
-    @if ($errors->any())
+    @if($errors->any())
         <div class="alert alert-danger">
             <ul>
-                @foreach ($errors->all() as $error)
+                @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>

@@ -85,7 +85,7 @@ You may access the options in your tasks via Blade's "echo" syntax. You may also
     @task('deploy', ['on' => 'web'])
         cd site
 
-        @if ($branch)
+        @if($branch)
             git pull origin {{ $branch }}
         @endif
 

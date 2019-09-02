@@ -271,9 +271,9 @@ In addition to template inheritance and displaying data, Blade also provides con
 
 You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@endif` directives. These directives function identically to their PHP counterparts:
 
-    @if (count($records) === 1)
+    @if(count($records) === 1)
         I have one record!
-    @elseif (count($records) > 1)
+    @elseif(count($records) > 1)
         I have multiple records!
     @else
         I don't have any records!
@@ -281,7 +281,7 @@ You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@end
 
 For convenience, Blade also provides an `@unless` directive:
 
-    @unless (Auth::check())
+    @unless(Auth::check())
         You are not signed in.
     @endunless
 
@@ -352,21 +352,21 @@ Switch statements can be constructed using the `@switch`, `@case`, `@break`, `@d
 
 In addition to conditional statements, Blade provides simple directives for working with PHP's loop structures. Again, each of these directives functions identically to their PHP counterparts:
 
-    @for ($i = 0; $i < 10; $i++)
+    @for($i = 0; $i < 10; $i++)
         The current value is {{ $i }}
     @endfor
 
-    @foreach ($users as $user)
+    @foreach($users as $user)
         <p>This is user {{ $user->id }}</p>
     @endforeach
 
-    @forelse ($users as $user)
+    @forelse($users as $user)
         <li>{{ $user->name }}</li>
     @empty
         <p>No users</p>
     @endforelse
 
-    @while (true)
+    @while(true)
         <p>I'm looping forever.</p>
     @endwhile
 
@@ -374,21 +374,21 @@ In addition to conditional statements, Blade provides simple directives for work
 
 When using loops you may also end the loop or skip the current iteration:
 
-    @foreach ($users as $user)
-        @if ($user->type == 1)
+    @foreach($users as $user)
+        @if($user->type == 1)
             @continue
         @endif
 
         <li>{{ $user->name }}</li>
 
-        @if ($user->number == 5)
+        @if($user->number == 5)
             @break
         @endif
     @endforeach
 
 You may also include the condition with the directive declaration in one line:
 
-    @foreach ($users as $user)
+    @foreach($users as $user)
         @continue($user->type == 1)
 
         <li>{{ $user->name }}</li>
@@ -401,12 +401,12 @@ You may also include the condition with the directive declaration in one line:
 
 When looping, a `$loop` variable will be available inside of your loop. This variable provides access to some useful bits of information such as the current loop index and whether this is the first or last iteration through the loop:
 
-    @foreach ($users as $user)
-        @if ($loop->first)
+    @foreach($users as $user)
+        @if($loop->first)
             This is the first iteration.
         @endif
 
-        @if ($loop->last)
+        @if($loop->last)
             This is the last iteration.
         @endif
 
@@ -415,9 +415,9 @@ When looping, a `$loop` variable will be available inside of your loop. This var
 
 If you are in a nested loop, you may access the parent loop's `$loop` variable via the `parent` property:
 
-    @foreach ($users as $user)
-        @foreach ($user->posts as $post)
-            @if ($loop->parent->first)
+    @foreach($users as $user)
+        @foreach($user->posts as $post)
+            @if($loop->parent->first)
                 This is first iteration of the parent loop.
             @endif
         @endforeach
