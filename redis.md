@@ -133,6 +133,10 @@ In addition to the default `host`, `port`, `database`, and `password` server con
         'read_timeout' => 60,
     ],
 
+#### The Redis Facade
+
+To avoid class naming collisions with the Redis PHP extension itself, you will need to delete or rename the `Illuminate\Support\Facades\Redis` facade alias from your `app` configuration file's `aliases` array. Generally, you should remove this alias entirely and only reference the facade by its fully qualified class name while using the Redis PHP extension.
+
 <a name="interacting-with-redis"></a>
 ## Interacting With Redis
 
