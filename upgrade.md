@@ -301,6 +301,22 @@ For most users, the expected behavior of this method would be to run the `list` 
 
 The `rackspace` storage driver has been removed. If you would like to continue using Rackspace as a storage provider, we encourage you to adopt a community maintained package of your choice that provides this driver.
 
+### URL Generation
+
+#### Route URL Generation & Extra Parameters
+
+In previous releases of Laravel, passing associative array parameters to the `route` helper or `URL::route` method would occasionally use these parameters as URI values when generating URLs for routes with optional parameters, even if the parameter value had no matching key within the route path. Beginning in Laravel 6.0, these values will be attached to the query string instead. For example, consider the following route:
+
+    Route::get('/profile/{location?}', function ($location = null) {
+        //
+    })->name('profile');
+
+    // Laravel 5.8: http://example.com/profile/active
+    echo route('profile', ['status' => 'active']);
+
+    // Laravel 6.0: http://example.com/profile?status=active
+    echo route('profile', ['status' => 'active']);    
+
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
