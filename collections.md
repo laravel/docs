@@ -148,6 +148,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [search](#method-search)
 [shift](#method-shift)
 [shuffle](#method-shuffle)
+[skip](#method-skip)
 [slice](#method-slice)
 [some](#method-some)
 [sort](#method-sort)
@@ -1644,6 +1645,19 @@ The `shuffle` method randomly shuffles the items in the collection:
 
     // [3, 2, 5, 1, 4] - (generated randomly)
 
+<a name="method-skip"></a>
+#### `skip()` {#collection-method}
+
+The `skip` method returns a new collection, without the first given amount of items:
+
+    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+    $collection = $collection->skip(4);
+
+    $collection->all();
+
+    // [5, 6, 7, 8, 9, 10]
+
 <a name="method-slice"></a>
 #### `slice()` {#collection-method}
 
@@ -2571,6 +2585,7 @@ Almost all methods available on the `Collection` class are also available on the
 [reverse](#method-reverse)
 [search](#method-search)
 [shuffle](#method-shuffle)
+[skip](#method-skip)
 [slice](#method-slice)
 [some](#method-some)
 [sort](#method-sort)
