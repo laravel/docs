@@ -2647,6 +2647,8 @@ While the `each` method calls the given callback for each item in the collection
         dump($value);
     });
 
+    // Nothing has been dumped so far...
+
     $array = $lazyCollection->take(3)->all();
 
     // 1
