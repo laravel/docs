@@ -39,6 +39,10 @@ _Laravel Vapor was built by [Taylor Otwell](https://github.com/taylorotwell)_.
 
 Laravel 6.0 provides compatibility with [Laravel Vapor](https://vapor.laravel.com), an auto-scaling serverless deployment platform for Laravel. Vapor abstracts the complexity of managing Laravel applications on AWS Lambda, as well as interfacing those applications with SQS queues, databases, Redis clusters, networks, CloudFront CDN, and more.
 
+### Improved Exceptions Via Ignition
+
+Laravel 6.0 ships with [Ignition](https://github.com/facade/ignition), a new open source exception detail page created by Freek Van der Herten and Marcel Pociot. Ignition offers many benefits over previous releases, such as improved Blade error file and line number handling, runnable solutions for common problems, code editing, exception sharing, and an improved UX.
+
 ### Improved Authorization Responses
 
 _Improved authorization responses were implemented by [Gary Green](https://github.com/garygreen)_.
