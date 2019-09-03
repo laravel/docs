@@ -77,6 +77,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [avg](#method-avg)
 [chunk](#method-chunk)
 [collapse](#method-collapse)
+[collect](#method-collect)
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
@@ -277,6 +278,39 @@ The `combine` method combines the values of the collection, as keys, with the va
     $combined->all();
 
     // ['name' => 'George', 'age' => 29]
+
+<a name="method-collect"></a>
+#### `collect()` {#collection-method}
+
+The `collect` method returns a new `Collection` instance with the items in this collection:
+
+    $collectionA = collect([1, 2, 3]);
+
+    $collectionB = $collectionA->collect();
+
+    $collectionB->all();
+
+    // [1, 2, 3]
+
+The `collect` method is mostly useful on [lazy collections](#lazy-collections), to convert it into a standard `Collection` instance:
+
+    $lazyCollection = LazyCollection::make(function () {
+        yield 1;
+        yield 2;
+        yield 3;
+    });
+
+    $collection = $lazyCollection->collect();
+
+    get_class($collection);
+
+    // 'Illuminate\Support\Collection'
+
+    $collection->all();
+
+    // [1, 2, 3]
+
+> {tip} The `collect` method is especially useful when you have an instance of `Enumerable`, and need a non-lazy collection. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.
 
 <a name="method-concat"></a>
 #### `concat()` {#collection-method}
@@ -2507,6 +2541,7 @@ Almost all methods available on the `Collection` class are also available on the
 [avg](#method-avg)
 [chunk](#method-chunk)
 [collapse](#method-collapse)
+[collect](#method-collect)
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
@@ -2616,27 +2651,6 @@ Almost all methods available on the `Collection` class are also available on the
 ### Lazy Collection Methods
 
 In addition to the methods defined in the `Enumerable` contract, the `LazyCollection` class contains the following methods:
- 
-<a name="method-collect"></a>
-#### `collect()` {#collection-method}
-
-The `collect` method converts the `LazyCollection` into a regular `Collection`:
-
-    $lazyCollection = LazyCollection::make(function () {
-        yield 1;
-        yield 2;
-        yield 3;
-    });
-
-    $collection = $lazyCollection->collect();
-
-    get_class($collection);
-
-    // 'Illuminate\Support\Collection'
-
-    $collection->all();
-
-    // [1, 2, 3]
 
 <a name="method-tapEach"></a>
 #### `tapEach()` {#collection-method}
