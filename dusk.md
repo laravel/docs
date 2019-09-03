@@ -1470,19 +1470,19 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
         runs-on: ubuntu-latest
         steps:
           - uses: actions/checkout@v1
-          - name: Prepare the environment
+          - name: Prepare The Environment
             run: cp .env.example .env
-          - name: Install Composer dependencies
+          - name: Install Composer Dependencies
             run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-          - name: Install Composer dependencies
+          - name: Generate Application Key
             run: php artisan key:generate
-          - name: Upgrade chrome driver
+          - name: Upgrade Chrome Driver
             run: php artisan dusk:chrome-driver
           - name: Start Chrome Driver
             run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
           - name: Run Laravel Server
             run: php artisan serve > /dev/null 2>&1 &
-          - name: Run dusk tests
+          - name: Run Dusk Tests
             run: php artisan dusk
 
 
