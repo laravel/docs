@@ -282,7 +282,7 @@ The `combine` method combines the values of the collection, as keys, with the va
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
 
-The `collect` method returns a new `Collection` instance with the items in this collection:
+The `collect` method returns a new `Collection` instance with the items currently in the collection:
 
     $collectionA = collect([1, 2, 3]);
 
@@ -292,7 +292,7 @@ The `collect` method returns a new `Collection` instance with the items in this 
 
     // [1, 2, 3]
 
-The `collect` method is mostly useful on [lazy collections](#lazy-collections), to convert it into a standard `Collection` instance:
+The `collect` method is primarily useful for converting [lazy collections](#lazy-collections) into standard `Collection` instances:
 
     $lazyCollection = LazyCollection::make(function () {
         yield 1;
@@ -310,7 +310,7 @@ The `collect` method is mostly useful on [lazy collections](#lazy-collections), 
 
     // [1, 2, 3]
 
-> {tip} The `collect` method is especially useful when you have an instance of `Enumerable`, and need a non-lazy collection. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.
+> {tip} The `collect` method is especially useful when you have an instance of `Enumerable` and need a non-lazy collection instance. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.
 
 <a name="method-concat"></a>
 #### `concat()` {#collection-method}
