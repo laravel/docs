@@ -636,6 +636,9 @@ To accomplish this, the `Mail` facade offers a `locale` method to set the desire
     Mail::to($request->user())->locale('es')->send(
         new OrderShipped($order)
     );
+    
+> {tip} The `locale` method will translate the text of the blade file and the text generated in the mailable's build() method. It does not translate the text generated in the constructor.
+
 
 ### User Preferred Locales
 
