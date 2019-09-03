@@ -10,8 +10,6 @@
 <a name="installation"></a>
 ## Installation
 
-> {video} Laracasts provides a [free, thorough introduction to Laravel](http://laravelfromscratch.com) for newcomers to the framework. It's a great place to start your journey.
-
 <a name="server-requirements"></a>
 ### Server Requirements
 
