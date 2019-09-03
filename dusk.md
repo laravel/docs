@@ -39,6 +39,7 @@
     - [Codeship](#running-tests-on-codeship)
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
+    - [GitHub Actions](#running-tests-on-github-actions)    
 
 <a name="introduction"></a>
 ## Introduction
@@ -1453,6 +1454,35 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
 
     script:
       - php artisan dusk
+      
+<a name="running-tests-on-github-actions"></a>
+### GitHub Actions
+
+If you are using [Github Actions](https://github.com/features/actions) to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
+
+    name: CI
+    on: [push]
+    jobs:
+
+      dusk-php:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v1
+          - name: Prepare The Environment
+            run: cp .env.example .env
+          - name: Install Composer Dependencies
+            run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          - name: Generate Application Key
+            run: php artisan key:generate
+          - name: Upgrade Chrome Driver
+            run: php artisan dusk:chrome-driver
+          - name: Start Chrome Driver
+            run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+          - name: Run Laravel Server
+            run: php artisan serve > /dev/null 2>&1 &
+          - name: Run Dusk Tests
+            run: php artisan dusk
+
 
 In your `.env.testing` file, adjust the value of `APP_URL`:
 
