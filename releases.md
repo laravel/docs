@@ -79,7 +79,7 @@ In addition, these custom messages will automatically be returned to your fronte
 
 _Job middleware were implemented by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-Job middleware allow you wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, in previous releases of Laravel, you may have wrapped the logic of a job's `handle` method within a rate-limited callback:
+Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, in previous releases of Laravel, you may have wrapped the logic of a job's `handle` method within a rate-limited callback:
 
     /**
      * Execute the job.
