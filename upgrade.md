@@ -219,6 +219,8 @@ All `str_` and `array_` helpers have been moved to the new `laravel/helpers` Com
 <a name="trans-and-trans-choice"></a>
 #### The `Lang::trans` & `Lang::transChoice` Methods
 
+> {note} You should run `php artisan view:clear` to avoid Blade errors related to the removal of `Lang::transChoice`, `Lang::trans` and `Lang::getFromJson`.
+
 **Likelihood Of Impact: Medium**
 
 The `Lang::trans` and `Lang::transChoice` methods of the translator have been renamed to `Lang::get` and `Lang::choice`.
