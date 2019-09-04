@@ -232,6 +232,8 @@ In addition, if you are manually implementing the `Illuminate\Contracts\Translat
 
 The `Lang::get` and `Lang::getFromJson` methods have been consolidated. Calls to the `Lang::getFromJson` method should be updated to call `Lang::get`.
 
+> {note} You should run the `php artisan view:clear` Artisan command to avoid Blade errors related to the removal of `Lang::transChoice`, `Lang::trans`, and `Lang::getFromJson`.
+
 ### Mail
 
 #### Mandrill & SparkPost Drivers Removed
