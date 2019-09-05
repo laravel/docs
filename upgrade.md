@@ -109,7 +109,7 @@ If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should up
 
 **Likelihood Of Impact: Medium**
 
-The default Redis client has changed from `predis` to `phpredis`. In order to keep using `predis`, ensure `redis.client` is set in your `config/database.php`.
+The default Redis client has changed from `predis` to `phpredis`. In order to keep using `predis`, ensure the `redis.client` configuration option is set to `predis` in your `config/database.php` configuration file.
 
 ### Database
 
