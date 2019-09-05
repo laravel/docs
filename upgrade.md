@@ -16,6 +16,7 @@
 <div class="content-list" markdown="1">
 - [Authentication `RegisterController`](#the-register-controller)
 - [Carbon 1.x No Longer Supported](#carbon-support)
+- [Redis Default Client](#redis-default-client)
 - [Database `Capsule::table` Method](#capsule-table)
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
 - [Eloquent `BelongsTo::update` Method](#belongs-to-update)
@@ -102,6 +103,13 @@ Carbon 1.x [is no longer supported](https://github.com/laravel/framework/pull/28
 **Likelihood Of Impact: Optional**
 
 If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update all occurrences of `AWS_REGION` within your `config` directory to `AWS_DEFAULT_REGION`. In addition, you should update this environment variable's name in your `.env` file.
+
+<a name="redis-default-client"></a>
+#### Redis Default Client
+
+**Likelihood Of Impact: Medium**
+
+The default Redis client has changed from `predis` to `phpredis`. In order to keep using `predis`, ensure `redis.client` is set in your `config/database.php`.
 
 ### Database
 
