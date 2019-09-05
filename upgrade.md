@@ -17,6 +17,7 @@
 - [Carbon 1.x No Longer Supported](#carbon-support)
 - [Redis Default Client](#redis-default-client)
 - [Database `Capsule::table` Method](#capsule-table)
+- [Database `DB::transaction` Method](#db-transaction)
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
 - [Eloquent `BelongsTo::update` Method](#belongs-to-update)
 - [Eloquent Primary Key Types](#eloquent-primary-key-type)
@@ -136,6 +137,13 @@ The `cursor` method now returns an instance of `Illuminate\Support\LazyCollectio
     foreach ($users as $user) {
         //
     }
+
+<a name="db-transaction"></a>
+#### The `DB::transaction` Method
+
+**Likelihood Of Impact: Medium**
+
+In addition to deadlocked transactions, the `DB::transaction` method now automatically retries transactions which encounter serialization failures. Such failures occur only when using `REPEATABLE READ` or `SERIALIZABLE` (or equivalent) transaction isolation levels. In previous versions of Laravel, a serialization failure would result in a `QueryException` being thrown with a code of `40001`.
 
 <a name="eloquent"></a>
 ### Eloquent
