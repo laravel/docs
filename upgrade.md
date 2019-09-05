@@ -103,6 +103,12 @@ Carbon 1.x [is no longer supported](https://github.com/laravel/framework/pull/28
 
 If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update all occurrences of `AWS_REGION` within your `config` directory to `AWS_DEFAULT_REGION`. In addition, you should update this environment variable's name in your `.env` file.
 
+#### The `REDIS_CLIENT` Evironment Variable
+
+**Likelihood Of Impact: Medium**
+
+The default Redis client has changed from `predis` to `phpredis`. PhpRedis is a PHP extension that has to be installed on your server. If you want to continue using `predis`, add or update the `REDIS_CLIENT` environment variable to your `.env` file.
+
 ### Database
 
 <a name="capsule-table"></a>
