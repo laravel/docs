@@ -14,7 +14,6 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
-- [Authentication `RegisterController`](#the-register-controller)
 - [Carbon 1.x No Longer Supported](#carbon-support)
 - [Redis Default Client](#redis-default-client)
 - [Database `Capsule::table` Method](#capsule-table)
@@ -56,13 +55,6 @@ Next, examine any 3rd party packages consumed by your application and verify you
 **Likelihood Of Impact: High**
 
 Authorization policies attached to controllers using the `authorizeResource` method should now define a `viewAny` method, which will be called when a user accesses the controller's `index` method. Otherwise, calls to the `index` method of the controller will be rejected as unauthorized.
-
-<a name="the-register-controller"></a>
-#### The `RegisterController` Controller
-
-**Likelihood Of Impact: Medium**
-
-If you are overriding the `register` or `registered` methods of Laravel's built-in `RegisterController`, you should ensure that you are calling `parent::register` and `parent::registered` from within your respective methods. The dispatching of the `Illuminate\Auth\Events\Registered` event and the logging in of the newly registered user has been moved to the `registered` method, so if you are overriding this method and not calling the parent method, the user registration process will fail.
 
 #### Authorization Responses
 
