@@ -79,7 +79,7 @@ When using the Algolia driver, you should configure your Algolia `id` and `secre
 <a name="configuring-model-indexes"></a>
 ### Configuring Model Indexes
 
-Each Eloquent model is synced with a given search "index", which contains all of the searchable records for that model. In other words, you can think of each index like a MySQL table. By default, each model will be persisted to an index matching the model's typical "table" name. Typically, this is the plural form of the model name; however, you are free to customize the model's index by overriding the `searchableAs` method on the model:
+Each Eloquent model is synced with a given search "index," which contains all of the searchable records for that model. In other words, you can think of each index like a MySQL table. By default, each model will be persisted to an index matching the model's typical "table" name. Typically, this is the plural form of the model name; however, you are free to customize the model's index by overriding the `searchableAs` method on the model:
 
     <?php
 
@@ -255,7 +255,7 @@ Sometimes you may need to perform a batch of Eloquent operations on a model with
 <a name="conditionally-searchable-model-instances"></a>
 ### Conditionally Searchable Model Instances
 
-Sometimes you may need to only make a model searchable under certain conditions. For example, imagine you have `App\Post` model that may be in one of two states: "draft" and "published". You may only want to allow "published" posts to be searchable. To accomplish this, you may define a `shouldBeSearchable` method on your model:
+Sometimes you may need to only make a model searchable under certain conditions. For example, imagine you have `App\Post` model that may be in one of two states: "draft" and "published" You may only want to allow "published" posts to be searchable. To accomplish this, you may define a `shouldBeSearchable` method on your model:
 
     public function shouldBeSearchable()
     {

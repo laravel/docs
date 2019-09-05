@@ -276,7 +276,7 @@ Command  |  Description
 <a name="column-modifiers"></a>
 ### Column Modifiers
 
-In addition to the column types listed above, there are several column "modifiers" you may use while adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
+In addition to the column types listed above, there are several column "modifiers" you may use while adding a column to a database table. For example, to make the column "nullable," you may use the `nullable` method:
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('email')->nullable();

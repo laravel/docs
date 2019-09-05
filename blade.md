@@ -62,7 +62,7 @@ Now that we have defined a layout for our application, let's define a child page
 <a name="extending-a-layout"></a>
 ### Extending A Layout
 
-When defining a child view, use the Blade `@extends` directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
+When defining a child view, use the Blade `@extends` directive to specify which layout the child view should "inherit." Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
     <!-- Stored in resources/views/child.blade.php -->
 
@@ -117,7 +117,7 @@ To instruct Laravel to load the first view that exists from a given array of pos
         <strong>Whoops!</strong> Something went wrong!
     @endcomponent
 
-Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title". Named slots may be displayed by "echoing" the variable that matches their name:
+Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title." Named slots may be displayed by "echoing" the variable that matches their name:
 
     <!-- /resources/views/alert.blade.php -->
 

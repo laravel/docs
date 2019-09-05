@@ -110,7 +110,7 @@ Horizon exposes a dashboard at `/horizon`. By default, you will only be able to 
         });
     }
 
-> {note} Remember that Laravel injects the *authenticated* user to the Gate automatically. If your app is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function ($user)` above to `function ($user = null)` to force Laravel to not require authentication.
+> {note} Remember that Laravel injects the *authenticated* user to the Gate automatically. If your app is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login" Therefore, you will need to change `function ($user)` above to `function ($user = null)` to force Laravel to not require authentication.
 
 <a name="running-horizon"></a>
 ## Running Horizon

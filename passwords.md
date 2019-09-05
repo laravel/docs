@@ -63,7 +63,7 @@ After a password is reset, the user will automatically be logged into the applic
 
 #### Authentication Guard Customization
 
-In your `auth.php` configuration file, you may configure multiple "guards", which may be used to define authentication behavior for multiple user tables. You can customize the included `ResetPasswordController` to use the guard of your choice by overriding the `guard` method on the controller. This method should return a guard instance:
+In your `auth.php` configuration file, you may configure multiple "guards," which may be used to define authentication behavior for multiple user tables. You can customize the included `ResetPasswordController` to use the guard of your choice by overriding the `guard` method on the controller. This method should return a guard instance:
 
     use Illuminate\Support\Facades\Auth;
 
@@ -79,7 +79,7 @@ In your `auth.php` configuration file, you may configure multiple "guards", whic
 
 #### Password Broker Customization
 
-In your `auth.php` configuration file, you may configure multiple password "brokers", which may be used to reset passwords on multiple user tables. You can customize the included `ForgotPasswordController` and `ResetPasswordController` to use the broker of your choice by overriding the `broker` method:
+In your `auth.php` configuration file, you may configure multiple password "brokers," which may be used to reset passwords on multiple user tables. You can customize the included `ForgotPasswordController` and `ResetPasswordController` to use the broker of your choice by overriding the `broker` method:
 
     use Illuminate\Support\Facades\Password;
 

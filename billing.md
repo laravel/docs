@@ -45,7 +45,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
+Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities," cancellation grace periods, and even generate invoice PDFs.
 
 > {note} To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 10.1 utilizes Stripe API version `2019-08-14`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
 
@@ -392,7 +392,7 @@ You may also determine if a user has cancelled their subscription, but are still
         //
     }
 
-To determine if the user has cancelled their subscription and is no longer within their "grace period", you may use the `ended` method:
+To determine if the user has cancelled their subscription and is no longer within their "grace period," you may use the `ended` method:
 
     if ($user->subscription('main')->ended()) {
         //
@@ -447,7 +447,7 @@ If you would like to swap plans and immediately invoice the user instead of wait
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
 
-Sometimes subscriptions are affected by "quantity". For example, your application might charge $10 per month **per user** on an account. To easily increment or decrement your subscription quantity, use the `incrementQuantity` and `decrementQuantity` methods:
+Sometimes subscriptions are affected by "quantity." For example, your application might charge $10 per month **per user** on an account. To easily increment or decrement your subscription quantity, use the `incrementQuantity` and `decrementQuantity` methods:
 
     $user = User::find(1);
 
@@ -585,7 +585,7 @@ If you would like to offer trial periods without collecting the user's payment m
 
 > {note} Be sure to add a [date mutator](/docs/{{version}}/eloquent-mutators#date-mutators) for `trial_ends_at` to your model definition.
 
-Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the `User` instance will return `true` if the current date is not past the value of `trial_ends_at`:
+Cashier refers to this type of trial as a "generic trial," since it is not attached to any existing subscription. The `onTrial` method on the `User` instance will return `true` if the current date is not past the value of `trial_ends_at`:
 
     if ($user->onTrial()) {
         // User is within their trial period...
@@ -811,4 +811,4 @@ Since SCA regulations require customers to occasionally verify their payment det
 
 To ensure that off-session payment confirmation notifications are delivered, verify that [Stripe webhooks are configured](#handling-stripe-webhooks) for your application and the `invoice.payment_action_required` webhook is enabled in your Stripe dashboard. In addition, your `Billable` model should also use Laravel's `Illuminate\Notifications\Notifiable` trait.
 
-> {note} Notifications will be sent even when customers are manually making a payment that requires additional confirmation. Unfortunately, there is no way for Stripe to know that the payment was done manually or "off-session". But, a customer will simply see a "Payment Successful" message if they visit the payment page after already confirming their payment. The customer will not be allowed to accidentally confirm the same payment twice and incur an accidental second charge.
+> {note} Notifications will be sent even when customers are manually making a payment that requires additional confirmation. Unfortunately, there is no way for Stripe to know that the payment was done manually or "off-session." But, a customer will simply see a "Payment Successful" message if they visit the payment page after already confirming their payment. The customer will not be allowed to accidentally confirm the same payment twice and incur an accidental second charge.

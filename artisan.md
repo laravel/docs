@@ -194,7 +194,7 @@ You may also make arguments optional and define default values for arguments:
 <a name="options"></a>
 ### Options
 
-Options, like arguments, are another form of user input. Options are prefixed by two hyphens (`--`) when they are specified on the command line. There are two types of options: those that receive a value and those that don't. Options that don't receive a value serve as a boolean "switch". Let's take a look at an example of this type of option:
+Options, like arguments, are another form of user input. Options are prefixed by two hyphens (`--`) when they are specified on the command line. There are two types of options: those that receive a value and those that don't. Options that don't receive a value serve as a boolean "switch." Let's take a look at an example of this type of option:
 
     /**
      * The name and signature of the console command.

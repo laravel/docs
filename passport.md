@@ -255,7 +255,7 @@ Using OAuth2 with authorization codes is how most developers are familiar with O
 <a name="managing-clients"></a>
 ### Managing Clients
 
-First, developers building applications that need to interact with your application's API will need to register their application with yours by creating a "client". Typically, this consists of providing the name of their application and a URL that your application can redirect to after users approve their request for authorization.
+First, developers building applications that need to interact with your application's API will need to register their application with yours by creating a "client" Typically, this consists of providing the name of their application and a URL that your application can redirect to after users approve their request for authorization.
 
 #### The `passport:client` Command
 
@@ -492,7 +492,7 @@ When using the password grant or client credentials grant, you may wish to autho
 <a name="customizing-the-username-field"></a>
 ### Customizing The Username Field
 
-When authenticating using the password grant, Passport will use the `email` attribute of your model as the "username". However, you may customize this behavior by defining a `findForPassport` method on your model:
+When authenticating using the password grant, Passport will use the `email` attribute of your model as the "username" However, you may customize this behavior by defining a `findForPassport` method on your model:
 
     <?php
 

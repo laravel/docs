@@ -231,7 +231,7 @@ The `orderByRaw` method may be used to set a raw string as the value of the `ord
 
 #### Inner Join Clause
 
-The query builder may also be used to write join statements. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You can even join to multiple tables in a single query:
+The query builder may also be used to write join statements. To perform a basic "inner join," you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You can even join to multiple tables in a single query:
 
     $users = DB::table('users')
                 ->join('contacts', 'users.id', '=', 'contacts.user_id')
@@ -241,7 +241,7 @@ The query builder may also be used to write join statements. To perform a basic 
 
 #### Left Join / Right Join Clause
 
-If you would like to perform a "left join" or "right join" instead of an "inner join", use the `leftJoin` or `rightJoin` methods. These methods have the same signature as the `join` method:
+If you would like to perform a "left join" or "right join" instead of an "inner join," use the `leftJoin` or `rightJoin` methods. These methods have the same signature as the `join` method:
 
     $users = DB::table('users')
                 ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
@@ -642,7 +642,7 @@ If the table has an auto-incrementing id, use the `insertGetId` method to insert
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-> {note} When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the column name as the second parameter to the `insertGetId` method.
+> {note} When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence," you may pass the column name as the second parameter to the `insertGetId` method.
 
 <a name="updates"></a>
 ## Updates
@@ -709,7 +709,7 @@ If you wish to truncate the entire table, which will remove all rows and reset t
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
 
-The query builder also includes a few functions to help you do "pessimistic locking" on your `select` statements. To run the statement with a "shared lock", you may use the `sharedLock` method on a query. A shared lock prevents the selected rows from being modified until your transaction commits:
+The query builder also includes a few functions to help you do "pessimistic locking" on your `select` statements. To run the statement with a "shared lock," you may use the `sharedLock` method on a query. A shared lock prevents the selected rows from being modified until your transaction commits:
 
     DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 

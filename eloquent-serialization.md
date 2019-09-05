@@ -62,7 +62,7 @@ Since models and collections are converted to JSON when cast to a string, you ca
 
 #### Relationships
 
-When an Eloquent model is converted to JSON, its loaded relationships will automatically be included as attributes on the JSON object. Also, though Eloquent relationship methods are defined using "camel case", a relationship's JSON attribute will be "snake case".
+When an Eloquent model is converted to JSON, its loaded relationships will automatically be included as attributes on the JSON object. Also, though Eloquent relationship methods are defined using "camel case," a relationship's JSON attribute will be "snake case."
 
 <a name="hiding-attributes-from-json"></a>
 ## Hiding Attributes From JSON
@@ -139,7 +139,7 @@ Occasionally, when casting models to an array or JSON, you may wish to add attri
         }
     }
 
-After creating the accessor, add the attribute name to the `appends` property on the model. Note that attribute names are typically referenced in "snake case", even though the accessor is defined using "camel case":
+After creating the accessor, add the attribute name to the `appends` property on the model. Note that attribute names are typically referenced in "snake case," even though the accessor is defined using "camel case":
 
     <?php
 

@@ -453,7 +453,7 @@ Paginated responses always contain `meta` and `links` keys with information abou
 <a name="conditional-attributes"></a>
 ### Conditional Attributes
 
-Sometimes you may wish to only include an attribute in a resource response if a given condition is met. For example, you may wish to only include a value if the current user is an "administrator". Laravel provides a variety of helper methods to assist you in this situation. The `when` method may be used to conditionally add an attribute to a resource response:
+Sometimes you may wish to only include an attribute in a resource response if a given condition is met. For example, you may wish to only include a value if the current user is an "administrator." Laravel provides a variety of helper methods to assist you in this situation. The `when` method may be used to conditionally add an attribute to a resource response:
 
     /**
      * Transform the resource into an array.

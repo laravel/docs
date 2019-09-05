@@ -160,7 +160,7 @@ Sometimes you may need to send a notification to someone who is not stored as a 
 <a name="formatting-mail-messages"></a>
 ### Formatting Mail Messages
 
-If a notification supports being sent as an email, you should define a `toMail` method on the notification class. This method will receive a `$notifiable` entity and should return a `Illuminate\Notifications\Messages\MailMessage` instance. Mail messages may contain lines of text as well as a "call to action". Let's take a look at an example `toMail` method:
+If a notification supports being sent as an email, you should define a `toMail` method on the notification class. This method will receive a `$notifiable` entity and should return a `Illuminate\Notifications\Messages\MailMessage` instance. Mail messages may contain lines of text as well as a "call to action" Let's take a look at an example `toMail` method:
 
     /**
      * Get the mail representation of the notification.
@@ -287,7 +287,7 @@ When sending notifications via the `mail` channel, the notification system will 
 <a name="customizing-the-subject"></a>
 ### Customizing The Subject
 
-By default, the email's subject is the class name of the notification formatted to "title case". So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If you would like to specify an explicit subject for the message, you may call the `subject` method when building your message:
+By default, the email's subject is the class name of the notification formatted to "title case" So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If you would like to specify an explicit subject for the message, you may call the `subject` method when building your message:
 
     /**
      * Get the mail representation of the notification.

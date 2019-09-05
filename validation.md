@@ -202,7 +202,7 @@ In this example, we used a traditional form to send data to the application. How
 <a name="creating-form-requests"></a>
 ### Creating Form Requests
 
-For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that contain validation logic. To create a form request class, use the `make:request` Artisan CLI command:
+For more complex validation scenarios, you may wish to create a "form request" Form requests are custom request classes that contain validation logic. To create a form request class, use the `make:request` Artisan CLI command:
 
     php artisan make:request StoreBlogPost
 

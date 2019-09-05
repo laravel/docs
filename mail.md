@@ -111,7 +111,7 @@ All of a mailable class' configuration is done in the `build` method. Within thi
 
 #### Using The `from` Method
 
-First, let's explore configuring the sender of the email. Or, in other words, who the email is going to be "from". There are two ways to configure the sender. First, you may use the `from` method within your mailable class' `build` method:
+First, let's explore configuring the sender of the email. Or, in other words, who the email is going to be "from" There are two ways to configure the sender. First, you may use the `from` method within your mailable class' `build` method:
 
     /**
      * Build the message.
@@ -533,7 +533,7 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
         }
     }
 
-You are not limited to just specifying the "to" recipients when sending a message. You are free to set "to", "cc", and "bcc" recipients all within a single, chained method call:
+You are not limited to just specifying the "to" recipients when sending a message. You are free to set "to," "cc," and "bcc" recipients all within a single, chained method call:
 
     Mail::to($request->user())
         ->cc($moreUsers)

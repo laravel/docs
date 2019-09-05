@@ -65,7 +65,7 @@ Now, let's look at an example `Flight` model, which we will use to retrieve and 
 
 #### Table Names
 
-Note that we did not tell Eloquent which table to use for our `Flight` model. By convention, the "snake case", plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `Flight` model stores records in the `flights` table. You may specify a custom table by defining a `table` property on your model:
+Note that we did not tell Eloquent which table to use for our `Flight` model. By convention, the "snake case," plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `Flight` model stores records in the `flights` table. You may specify a custom table by defining a `table` property on your model:
 
     <?php
 
@@ -290,7 +290,7 @@ If you need to process thousands of Eloquent records, use the `chunk` command. T
         }
     });
 
-The first argument passed to the method is the number of records you wish to receive per "chunk". The Closure passed as the second argument will be called for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the Closure.
+The first argument passed to the method is the number of records you wish to receive per "chunk" The Closure passed as the second argument will be called for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the Closure.
 
 #### Using Cursors
 
@@ -475,7 +475,7 @@ If you already have a model instance, you may use the `fill` method to populate 
 
 #### Guarding Attributes
 
-While `$fillable` serves as a "white list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "black list". Importantly, you should use either `$fillable` or `$guarded` - not both. In the example below, all attributes **except for `price`** will be mass assignable:
+While `$fillable` serves as a "white list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "black list" Importantly, you should use either `$fillable` or `$guarded` - not both. In the example below, all attributes **except for `price`** will be mass assignable:
 
     <?php
 
@@ -769,7 +769,7 @@ If you would like to remove several or even all of the global scopes, you may us
 <a name="local-scopes"></a>
 ### Local Scopes
 
-Local scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, prefix an Eloquent model method with `scope`.
+Local scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular" To define a scope, prefix an Eloquent model method with `scope`.
 
 Scopes should always return a query builder instance:
 
@@ -852,7 +852,7 @@ Now, you may pass the parameters when calling the scope:
 <a name="comparing-models"></a>
 ## Comparing Models
 
-Sometimes you may need to determine if two models are the "same". The `is` method may be used to quickly verify two models have same primary key, table, and database connection:
+Sometimes you may need to determine if two models are the "same" The `is` method may be used to quickly verify two models have same primary key, table, and database connection:
 
     if ($post->is($anotherPost)) {
         //

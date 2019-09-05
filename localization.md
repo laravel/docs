@@ -41,7 +41,7 @@ The default language for your application is stored in the `config/app.php` conf
         //
     });
 
-You may configure a "fallback language", which will be used when the active language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:
+You may configure a "fallback language," which will be used when the active language does not contain a given translation string. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:
 
     'fallback_locale' => 'en',
 
@@ -137,7 +137,7 @@ You may even create more complex pluralization rules which specify translation s
 
     'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',
 
-After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the translation string is returned:
+After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given "count" In this example, since the count is greater than one, the plural form of the translation string is returned:
 
     echo trans_choice('messages.apples', 10);
 

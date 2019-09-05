@@ -55,7 +55,7 @@ All of the variables listed in this file will be loaded into the `$_ENV` PHP sup
 
     'debug' => env('APP_DEBUG', false),
 
-The second value passed to the `env` function is the "default value". This value will be used if no environment variable exists for the given key.
+The second value passed to the `env` function is the "default value." This value will be used if no environment variable exists for the given key.
 
 <a name="determining-the-current-environment"></a>
 ### Determining The Current Environment
