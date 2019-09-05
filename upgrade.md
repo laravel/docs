@@ -14,7 +14,6 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
-- [Authentication `RegisterController`](#the-register-controller)
 - [Carbon 1.x No Longer Supported](#carbon-support)
 - [Database `Capsule::table` Method](#capsule-table)
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
@@ -55,13 +54,6 @@ Next, examine any 3rd party packages consumed by your application and verify you
 **Likelihood Of Impact: High**
 
 Authorization policies attached to controllers using the `authorizeResource` method should now define a `viewAny` method, which will be called when a user accesses the controller's `index` method. Otherwise, calls to the `index` method of the controller will be rejected as unauthorized.
-
-<a name="the-register-controller"></a>
-#### The `RegisterController` Controller
-
-**Likelihood Of Impact: Medium**
-
-If you are overriding the `register` or `registered` methods of Laravel's built-in `RegisterController`, you should ensure that you are calling `parent::register` and `parent::registered` from within your respective methods. The dispatching of the `Illuminate\Auth\Events\Registered` event and the logging in of the newly registered user has been moved to the `registered` method, so if you are overriding this method and not calling the parent method, the user registration process will fail.
 
 #### Authorization Responses
 
@@ -112,7 +104,7 @@ If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should up
 
 > {note} This change only applies to non-Laravel applications that are using `illuminate/database` as a dependency.
 
-The signature of the `Illuminate\Database\Capsule\Manager` class' `table` method has 
+The signature of the `Illuminate\Database\Capsule\Manager` class' `table` method has
 updated to accept a table alias as its second argument. If you are using `illuminate/database` outside of a Laravel application, you should update any calls to this method accordingly:
 
     /**
@@ -317,9 +309,13 @@ In previous releases of Laravel, passing associative array parameters to the `ro
     echo route('profile', ['status' => 'active']);
 
     // Laravel 6.0: http://example.com/profile?status=active
-    echo route('profile', ['status' => 'active']);    
+    echo route('profile', ['status' => 'active']);
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.8...master) and choose which updates are important to you.
+
+#### The `RegisterController` Controller
+
+A previous version of this upgrade guide suggested that if you are overriding the `register` or `registered` methods of Laravel's built-in `RegisterController` and `RegistersUsers` trait, you should call `parent::register` and `parent::registered` from within your those methods to benefit from the trait's functionality. In fact, doing so will cause a `BadMethodCallException` to be thrown. The changes to the `RegistersUsers` trait have since been reverted, so you should likewise revert any changes you made to the `register` and `registered` methods and ensure that you are not calling `parent::register` and `parent::registered`.
