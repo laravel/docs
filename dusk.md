@@ -1396,6 +1396,10 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
                 - run:
                     name: Run Laravel Dusk Tests
                     command: php artisan dusk
+                    
+                - store_artifacts:
+                    path: tests/Browser/screenshots
+
 
 <a name="running-tests-on-codeship"></a>
 ### Codeship
