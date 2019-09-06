@@ -325,7 +325,6 @@ Using the subquery functionality available to the `select` and `addSelect` metho
     return Destination::addSelect(['last_flight' => Flight::select('name')
         ->whereColumn('destination_id', 'destinations.id')
         ->orderBy('arrived_at', 'desc')
-        ->latest()
         ->limit(1)
     ])->get();
 
@@ -337,7 +336,6 @@ In addition, the query builder's `orderBy` function supports subqueries. We may 
         Flight::select('arrived_at')
             ->whereColumn('destination_id', 'destinations.id')
             ->orderBy('arrived_at', 'desc')
-            ->latest()
             ->limit(1)
     )->get();
 
