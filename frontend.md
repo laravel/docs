@@ -103,16 +103,14 @@ If you prefer to use React to build your JavaScript application, Laravel makes i
 <a name="adding-presets"></a>
 ### Adding Presets
 
-Presets are "macroable", which allows you to add additional methods to the `UiCommand` class at run time. For example, the following code adds a `nextjs` method to the `UiCommand` class:
+Presets are "macroable", which allows you to add additional methods to the `UiCommand` class at runtime. For example, the following code adds a `nextjs` method to the `UiCommand` class. Typically, you should declare preset macros in a [service provider](/docs/{{version}}/providers):
 
     use Laravel\Ui\UiCommand;
 
     UiCommand::macro('nextjs', function (UiCommand $command) {
-        // Scaffold anything you want here.
+        // Scaffold your frontend...
     });
 
-Then call the new preset with the ui command:
+Then, you may call the new preset via the `ui` command:
 
     php artisan ui nextjs
-
-Typically, you should declare preset macros in a [service provider](/docs/{{version}}/providers).
