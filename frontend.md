@@ -5,6 +5,7 @@
 - [Writing JavaScript](#writing-javascript)
     - [Writing Vue Components](#writing-vue-components)
     - [Using React](#using-react)
+- [Adding Presets](#adding-presets)
 
 <a name="introduction"></a>
 ## Introduction
@@ -98,3 +99,20 @@ If you prefer to use React to build your JavaScript application, Laravel makes i
 
     // Generate login / registration scaffolding...
     php artisan ui react --auth
+
+<a name="adding-presets"></a>
+### Adding Presets
+
+Presets are "macroable", which allows you to add additional methods to the `UiCommand` class at run time. For example, the following code adds a `nextjs` method to the `UiCommand` class:
+
+    use Laravel\Ui\UiCommand;
+
+    UiCommand::macro('nextjs', function (UiCommand $command) {
+        // Scaffold anything you want here.
+    });
+
+Then call the new preset with the ui command:
+
+    php artisan ui nextjs
+
+Typically, you should declare preset macros in a [service provider](/docs/{{version}}/providers).
