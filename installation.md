@@ -29,6 +29,8 @@ However, if you are not using Homestead, you will need to make sure your server 
 - XML PHP Extension
 </div>
 
+> {note} Installing Laravel in a subdirectory is not supported.
+
 <a name="installing-laravel"></a>
 ### Installing Laravel
 
