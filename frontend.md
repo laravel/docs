@@ -25,6 +25,9 @@ Once the `laravel/ui` package has been installed, you may install the frontend s
     php artisan ui vue --auth
     php artisan ui react --auth
 
+Note: If using a Windows system, npm will to create symlinks on an NTFS file system, which doesn't have that feature. Using `npm install --no-bin-links` will work.
+
+
 #### CSS
 
 [Laravel Mix](/docs/{{version}}/mix) provides a clean, expressive API over compiling SASS or Less, which are extensions of plain CSS that add variables, mixins, and other powerful features that make working with CSS much more enjoyable. In this document, we will briefly discuss CSS compilation in general; however, you should consult the full [Laravel Mix documentation](/docs/{{version}}/mix) for more information on compiling SASS or Less.
