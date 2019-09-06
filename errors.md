@@ -145,7 +145,7 @@ Instead of type-checking exceptions in the exception handler's `report` and `ren
         /**
          * Render the exception into an HTTP response.
          *
-         * @param  \Illuminate\Http\Request
+         * @param  \Illuminate\Http\Request  $request
          * @return \Illuminate\Http\Response
          */
         public function render($request)
