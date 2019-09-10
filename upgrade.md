@@ -25,7 +25,6 @@
 - [Queue Retry Limit](#queue-retry-limit)
 - [Resend Email Verification Route](#email-verification-route)
 - [The `Input` Facade](#the-input-facade)
-- [FormRequest `validationData` Method](#the-validationData-method)
 </div>
 
 <a name="upgrade-6.0"></a>
@@ -283,24 +282,6 @@ In addition, please ensure your application's database contains a `failed_jobs` 
 
 The `Input` facade, which was primarily a duplicate of the `Request` facade, has been removed. If you are using the `Input::get` method, you should now call the `Request::input` method. All other calls to the `Input` facade may simply be updated to use the `Request` facade.
 
-
-<a name="the-validationData-method"></a>
-#### FormRequest `validationData` method
-
-**Likelihood Of Impact: Low**
-
-The validationData method was changed from protected to public visibility. If you are overriding this method in your implemention, you should update the visibility to public. [It was added by the commit](https://github.com/laravel/framework/commit/e47e91417ab22e6af001db1dcbe75b87db218c1d):
-
-    /**
-     * Get data to be validated from the request.
-     *
-     * @return array
-     */
-    public function validationData()
-    {
-        return $this->all();
-    }
-
 ### Scheduling
 
 #### The `between` Method
@@ -337,6 +318,14 @@ In previous releases of Laravel, passing associative array parameters to the `ro
 
     // Laravel 6.0: http://example.com/profile?status=active
     echo route('profile', ['status' => 'active']);    
+
+### Validation
+
+#### FormRequest `validationData` Method
+
+**Likelihood Of Impact: Low**
+
+The form request's `validationData` method was changed from `protected` to `public`. If you are overriding this method in your implementation, you should update the visibility to `public`.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
