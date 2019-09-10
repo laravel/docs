@@ -2,7 +2,7 @@
     - [Release Notes](/docs/{{version}}/releases)
     - [Upgrade Guide](/docs/{{version}}/upgrade)
     - [Contribution Guide](/docs/{{version}}/contributions)
-    - [API Documentation](/api/{{version}})
+    - [API Documentation](/api/6.x)
 - ## Getting Started
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
