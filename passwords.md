@@ -32,7 +32,7 @@ Next, a table must be created to store the password reset tokens. The migration 
 
 Laravel includes `Auth\ForgotPasswordController` and `Auth\ResetPasswordController` classes that contains the logic necessary to e-mail password reset links and reset user passwords. All of the routes needed to perform password resets may be generated using the `laravel/ui` Composer package:
 
-    composer require laravel/ui
+    composer require laravel/ui --dev
 
     php artisan ui vue --auth
 
@@ -41,7 +41,7 @@ Laravel includes `Auth\ForgotPasswordController` and `Auth\ResetPasswordControll
 
 To generate all of the necessary view for resetting passwords, you may use the `laravel/ui` Composer package:
 
-    composer require laravel/ui
+    composer require laravel/ui --dev
 
     php artisan ui vue --auth
 
