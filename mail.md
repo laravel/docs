@@ -508,11 +508,11 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
 
     namespace App\Http\Controllers;
 
-    use App\Order;
+    use App\Http\Controllers\Controller;
     use App\Mail\OrderShipped;
+    use App\Order;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Mail;
-    use App\Http\Controllers\Controller;
 
     class OrderController extends Controller
     {

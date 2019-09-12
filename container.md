@@ -24,9 +24,9 @@ Let's look at a simple example:
 
     namespace App\Http\Controllers;
 
-    use App\User;
-    use App\Repositories\UserRepository;
     use App\Http\Controllers\Controller;
+    use App\Repositories\UserRepository;
+    use App\User;
 
     class UserController extends Controller
     {
@@ -140,10 +140,10 @@ This statement tells the container that it should inject the `RedisEventPusher` 
 
 Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, two controllers may depend on different implementations of the `Illuminate\Contracts\Filesystem\Filesystem` [contract](/docs/{{version}}/contracts). Laravel provides a simple, fluent interface for defining this behavior:
 
-    use Illuminate\Support\Facades\Storage;
     use App\Http\Controllers\PhotoController;
     use App\Http\Controllers\VideoController;
     use Illuminate\Contracts\Filesystem\Filesystem;
+    use Illuminate\Support\Facades\Storage;
 
     $this->app->when(PhotoController::class)
               ->needs(Filesystem::class)

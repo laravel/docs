@@ -64,7 +64,7 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
 
 #### Redis
 
-Before using a Redis cache with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer .
+Before using a Redis cache with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer.
 
 For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
 

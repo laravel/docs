@@ -26,9 +26,9 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
 
     <?php
 
-    use Illuminate\Support\Str;
     use Illuminate\Database\Seeder;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Str;
 
     class DatabaseSeeder extends Seeder
     {

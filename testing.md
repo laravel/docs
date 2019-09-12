@@ -39,8 +39,8 @@ Once the test has been generated, you may define test methods as you normally wo
 
     namespace Tests\Unit;
 
-    use Tests\TestCase;
     use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {

@@ -319,8 +319,8 @@ Eloquent also offers advanced subquery support, which allows you to pull informa
 
 Using the subquery functionality available to the `select` and `addSelect` methods, we can select all of the `destinations` and the name of the flight that most recently arrived at that destination using a single query:
 
-    use App\Flight;
     use App\Destination;
+    use App\Flight;
 
     return Destination::addSelect(['last_flight' => Flight::select('name')
         ->whereColumn('destination_id', 'destinations.id')
@@ -389,9 +389,9 @@ To create a new record in the database, create a new model instance, set attribu
 
     namespace App\Http\Controllers;
 
+    use App\Http\Controllers\Controller;
     use App\Flight;
     use Illuminate\Http\Request;
-    use App\Http\Controllers\Controller;
 
     class FlightController extends Controller
     {
@@ -665,9 +665,9 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
 
     namespace App\Scopes;
 
-    use Illuminate\Database\Eloquent\Scope;
-    use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Scope;
 
     class AgeScope implements Scope
     {
@@ -724,8 +724,8 @@ Eloquent also allows you to define global scopes using Closures, which is partic
 
     namespace App;
 
-    use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
     {
@@ -871,9 +871,8 @@ To get started, define a `$dispatchesEvents` property on your Eloquent model tha
 
     namespace App;
 
-    use App\Events\UserSaved;
     use App\Events\UserDeleted;
-    use Illuminate\Notifications\Notifiable;
+    use App\Events\UserSaved;
     use Illuminate\Foundation\Auth\User as Authenticatable;
 
     class User extends Authenticatable
@@ -952,8 +951,8 @@ To register an observer, use the `observe` method on the model you wish to obser
 
     namespace App\Providers;
 
-    use App\User;
     use App\Observers\UserObserver;
+    use App\User;
     use Illuminate\Support\ServiceProvider;
 
     class AppServiceProvider extends ServiceProvider

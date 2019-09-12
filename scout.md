@@ -47,8 +47,8 @@ Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to
 
     namespace App;
 
-    use Laravel\Scout\Searchable;
     use Illuminate\Database\Eloquent\Model;
+    use Laravel\Scout\Searchable;
 
     class Post extends Model
     {
@@ -85,8 +85,8 @@ Each Eloquent model is synced with a given search "index", which contains all of
 
     namespace App;
 
-    use Laravel\Scout\Searchable;
     use Illuminate\Database\Eloquent\Model;
+    use Laravel\Scout\Searchable;
 
     class Post extends Model
     {
@@ -112,8 +112,8 @@ By default, the entire `toArray` form of a given model will be persisted to its 
 
     namespace App;
 
-    use Laravel\Scout\Searchable;
     use Illuminate\Database\Eloquent\Model;
+    use Laravel\Scout\Searchable;
 
     class Post extends Model
     {
@@ -143,8 +143,8 @@ By default, Scout will use the primary key of the model as the unique ID stored 
 
     namespace App;
 
-    use Laravel\Scout\Searchable;
     use Illuminate\Database\Eloquent\Model;
+    use Laravel\Scout\Searchable;
 
     class User extends Model
     {
@@ -413,9 +413,9 @@ If you would like to define a custom builder method, you may use the `macro` met
 
     namespace App\Providers;
 
-    use Laravel\Scout\Builder;
-    use Illuminate\Support\ServiceProvider;
     use Illuminate\Support\Facades\Response;
+    use Illuminate\Support\ServiceProvider;
+    use Laravel\Scout\Builder;
 
     class ScoutMacroServiceProvider extends ServiceProvider
     {

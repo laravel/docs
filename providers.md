@@ -38,8 +38,8 @@ Let's take a look at a basic service provider. Within any of your service provid
 
     namespace App\Providers;
 
-    use Riak\Connection;
     use Illuminate\Support\ServiceProvider;
+    use Riak\Connection;
 
     class RiakServiceProvider extends ServiceProvider
     {
@@ -66,12 +66,12 @@ If your service provider registers many simple bindings, you may wish to use the
 
     namespace App\Providers;
 
-    use App\Contracts\ServerProvider;
     use App\Contracts\DowntimeNotifier;
+    use App\Contracts\ServerProvider;
+    use App\Services\DigitalOceanServerProvider;
+    use App\Services\PingdomDowntimeNotifier;
     use App\Services\ServerToolsProvider;
     use Illuminate\Support\ServiceProvider;
-    use App\Services\PingdomDowntimeNotifier;
-    use App\Services\DigitalOceanServerProvider;
 
     class AppServiceProvider extends ServiceProvider
     {
@@ -160,9 +160,9 @@ To defer the loading of a provider, implement the `\Illuminate\Contracts\Support
 
     namespace App\Providers;
 
-    use Riak\Connection;
-    use Illuminate\Support\ServiceProvider;
     use Illuminate\Contracts\Support\DeferrableProvider;
+    use Illuminate\Support\ServiceProvider;
+    use Riak\Connection;
 
     class RiakServiceProvider extends ServiceProvider implements DeferrableProvider
     {

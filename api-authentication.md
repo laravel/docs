@@ -39,8 +39,8 @@ Once the migration has been created, run the `migrate` Artisan command.
 
 Once the `api_token` column has been added to your `users` table, you are ready to assign random API tokens to each user that registers with your application. You should assign these tokens when a `User` model is created for the user during registration. When using the [authentication scaffolding](/docs/{{version}}/authentication#authentication-quickstart) provided by the `laravel/ui` Composer package, this may be done in the `create` method of the `RegisterController`:
 
-    use Illuminate\Support\Str;
     use Illuminate\Support\Facades\Hash;
+    use Illuminate\Support\Str;
 
     /**
      * Create a new user instance after a valid registration.
@@ -79,8 +79,8 @@ For example, a controller method that initializes / refreshes the token for a gi
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Support\Str;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Str;
 
     class ApiTokenController extends Controller
     {

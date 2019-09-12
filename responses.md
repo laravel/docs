@@ -274,8 +274,8 @@ If you would like to define a custom response that you can re-use in a variety o
 
     namespace App\Providers;
 
-    use Illuminate\Support\ServiceProvider;
     use Illuminate\Support\Facades\Response;
+    use Illuminate\Support\ServiceProvider;
 
     class ResponseMacroServiceProvider extends ServiceProvider
     {
