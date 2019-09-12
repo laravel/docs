@@ -101,7 +101,7 @@ If you prefer to use React to build your JavaScript application, Laravel makes i
     php artisan ui react --auth
 
 <a name="adding-presets"></a>
-### Adding Presets
+## Adding Presets
 
 Presets are "macroable", which allows you to add additional methods to the `UiCommand` class at runtime. For example, the following code adds a `nextjs` method to the `UiCommand` class. Typically, you should declare preset macros in a [service provider](/docs/{{version}}/providers):
 

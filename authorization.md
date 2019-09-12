@@ -133,8 +133,8 @@ The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, 
 
 So far, we have only examined gates that return simple boolean values. However, sometimes you may wish to return a more detail response, including an error message. To do so, you may return a `Illuminate\Auth\Access\Response` from your gate:
 
-    use Illuminate\Support\Facades\Gate;
     use Illuminate\Auth\Access\Response;
+    use Illuminate\Support\Facades\Gate;
 
     Gate::define('edit-settings', function ($user) {
         return $user->isAdmin
@@ -208,10 +208,10 @@ Once the policy exists, it needs to be registered. The `AuthServiceProvider` inc
 
     namespace App\Providers;
 
-    use App\Post;
     use App\Policies\PostPolicy;
-    use Illuminate\Support\Facades\Gate;
+    use App\Post;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+    use Illuminate\Support\Facades\Gate;
 
     class AuthServiceProvider extends ServiceProvider
     {
@@ -265,8 +265,8 @@ The `update` method will receive a `User` and a `Post` instance as its arguments
 
     namespace App\Policies;
 
-    use App\User;
     use App\Post;
+    use App\User;
 
     class PostPolicy
     {
@@ -351,8 +351,8 @@ By default, all gates and policies automatically return `false` if the incoming 
 
     namespace App\Policies;
 
-    use App\User;
     use App\Post;
+    use App\User;
 
     class PostPolicy
     {
@@ -439,9 +439,9 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
 
     namespace App\Http\Controllers;
 
+    use App\Http\Controllers\Controller;
     use App\Post;
     use Illuminate\Http\Request;
-    use App\Http\Controllers\Controller;
 
     class PostController extends Controller
     {
@@ -489,9 +489,9 @@ The `authorizeResource` method accepts the model's class name as its first argum
 
     namespace App\Http\Controllers;
 
+    use App\Http\Controllers\Controller;
     use App\Post;
     use Illuminate\Http\Request;
-    use App\Http\Controllers\Controller;
 
     class PostController extends Controller
     {

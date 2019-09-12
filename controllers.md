@@ -32,8 +32,8 @@ Below is an example of a basic controller class. Note that the controller extend
 
     namespace App\Http\Controllers;
 
-    use App\User;
     use App\Http\Controllers\Controller;
+    use App\User;
 
     class UserController extends Controller
     {
@@ -75,8 +75,8 @@ If you would like to define a controller that only handles a single action, you 
 
     namespace App\Http\Controllers;
 
-    use App\User;
     use App\Http\Controllers\Controller;
+    use App\User;
 
     class ShowProfile extends Controller
     {

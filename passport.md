@@ -62,9 +62,9 @@ After running this command, add the `Laravel\Passport\HasApiTokens` trait to you
 
     namespace App;
 
-    use Laravel\Passport\HasApiTokens;
-    use Illuminate\Notifications\Notifiable;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
+    use Laravel\Passport\HasApiTokens;
 
     class User extends Authenticatable
     {
@@ -77,9 +77,9 @@ Next, you should call the `Passport::routes` method within the `boot` method of 
 
     namespace App\Providers;
 
-    use Laravel\Passport\Passport;
-    use Illuminate\Support\Facades\Gate;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+    use Illuminate\Support\Facades\Gate;
+    use Laravel\Passport\Passport;
 
     class AuthServiceProvider extends ServiceProvider
     {
@@ -225,10 +225,10 @@ By default, Passport issues long-lived access tokens that expire after one year.
 
 You are free to extend the models used internally by Passport. Then, you may instruct Passport to use your custom models via the `Passport` class:
 
-    use App\Models\Passport\Client;
-    use App\Models\Passport\Token;
     use App\Models\Passport\AuthCode;
+    use App\Models\Passport\Client;
     use App\Models\Passport\PersonalAccessClient;
+    use App\Models\Passport\Token;
 
     /**
      * Register any authentication / authorization services.
@@ -498,9 +498,9 @@ When authenticating using the password grant, Passport will use the `email` attr
 
     namespace App;
 
-    use Laravel\Passport\HasApiTokens;
-    use Illuminate\Notifications\Notifiable;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
+    use Laravel\Passport\HasApiTokens;
 
     class User extends Authenticatable
     {
@@ -527,10 +527,10 @@ When authenticating using the password grant, Passport will use the `password` a
 
     namespace App;
 
-    use Laravel\Passport\HasApiTokens;
-    use Illuminate\Support\Facades\Hash;
-    use Illuminate\Notifications\Notifiable;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Support\Facades\Hash;
+    use Laravel\Passport\HasApiTokens;
 
     class User extends Authenticatable
     {

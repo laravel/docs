@@ -116,8 +116,8 @@ To run a basic query, you may use the `select` method on the `DB` facade:
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Support\Facades\DB;
     use App\Http\Controllers\Controller;
+    use Illuminate\Support\Facades\DB;
 
     class UserController extends Controller
     {

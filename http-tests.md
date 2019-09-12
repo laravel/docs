@@ -19,9 +19,9 @@ Laravel provides a very fluent API for making HTTP requests to your application 
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -79,9 +79,9 @@ After making a test request to your application, the `dump` and `dumpHeaders` me
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -201,11 +201,11 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
-    use Illuminate\Http\UploadedFile;
-    use Illuminate\Support\Facades\Storage;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Http\UploadedFile;
+    use Illuminate\Support\Facades\Storage;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {

@@ -203,9 +203,9 @@ When the real-time facade is used, the publisher implementation will be resolved
     namespace Tests\Feature;
 
     use App\Podcast;
-    use Tests\TestCase;
     use Facades\App\Contracts\Publisher;
     use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Tests\TestCase;
 
     class PodcastTest extends TestCase
     {

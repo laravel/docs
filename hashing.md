@@ -27,9 +27,9 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 
     namespace App\Http\Controllers;
 
+    use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
-    use App\Http\Controllers\Controller;
 
     class UpdatePasswordController extends Controller
     {

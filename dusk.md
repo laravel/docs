@@ -188,9 +188,9 @@ To get started, let's write a test that verifies we can log into our application
     namespace Tests\Browser;
 
     use App\User;
-    use Tests\DuskTestCase;
-    use Laravel\Dusk\Chrome;
     use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Laravel\Dusk\Chrome;
+    use Tests\DuskTestCase;
 
     class ExampleTest extends DuskTestCase
     {
@@ -257,8 +257,8 @@ If you would like to define a custom browser method that you can re-use in a var
 
     namespace App\Providers;
 
-    use Laravel\Dusk\Browser;
     use Illuminate\Support\ServiceProvider;
+    use Laravel\Dusk\Browser;
 
     class DuskServiceProvider extends ServiceProvider
     {
@@ -307,9 +307,9 @@ When your test requires migrations, like the authentication example above, you s
     namespace Tests\Browser;
 
     use App\User;
-    use Tests\DuskTestCase;
-    use Laravel\Dusk\Chrome;
     use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Laravel\Dusk\Chrome;
+    use Tests\DuskTestCase;
 
     class ExampleTest extends DuskTestCase
     {
@@ -1340,10 +1340,10 @@ Once the component has been defined, we can easily select a date within the date
 
     namespace Tests\Browser;
 
-    use Tests\DuskTestCase;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
     use Laravel\Dusk\Browser;
     use Tests\Browser\Components\DatePicker;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Tests\DuskTestCase;
 
     class ExampleTest extends DuskTestCase
     {

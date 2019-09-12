@@ -70,8 +70,8 @@ Notifications may be sent in two ways: using the `notify` method of the `Notifia
 
     namespace App;
 
-    use Illuminate\Notifications\Notifiable;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
 
     class User extends Authenticatable
     {
@@ -125,8 +125,8 @@ Sending notifications can take time, especially if the channel needs an external
     namespace App\Notifications;
 
     use Illuminate\Bus\Queueable;
-    use Illuminate\Notifications\Notification;
     use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Notifications\Notification;
 
     class InvoicePaid extends Notification implements ShouldQueue
     {
@@ -265,8 +265,8 @@ When sending notifications via the `mail` channel, the notification system will 
 
     namespace App;
 
-    use Illuminate\Notifications\Notifiable;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
 
     class User extends Authenticatable
     {
@@ -566,9 +566,9 @@ If you would like to customize which channels a notifiable entity receives its b
 
     namespace App;
 
-    use Illuminate\Notifications\Notifiable;
     use Illuminate\Broadcasting\PrivateChannel;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
 
     class User extends Authenticatable
     {
@@ -666,8 +666,8 @@ To route Nexmo notifications to the proper phone number, define a `routeNotifica
 
     namespace App;
 
-    use Illuminate\Notifications\Notifiable;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
 
     class User extends Authenticatable
     {
@@ -843,8 +843,8 @@ To route Slack notifications to the proper location, define a `routeNotification
 
     namespace App;
 
-    use Illuminate\Notifications\Notifiable;
     use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
 
     class User extends Authenticatable
     {
@@ -966,11 +966,11 @@ Once your notification channel class has been defined, you may return the class 
 
     namespace App\Notifications;
 
-    use Illuminate\Bus\Queueable;
-    use App\Channels\VoiceChannel;
     use App\Channels\Messages\VoiceMessage;
-    use Illuminate\Notifications\Notification;
+    use App\Channels\VoiceChannel;
+    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Notifications\Notification;
 
     class InvoicePaid extends Notification
     {

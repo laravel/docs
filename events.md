@@ -302,8 +302,8 @@ If you need to manually access the listener's underlying queue job's `delete` an
     namespace App\Listeners;
 
     use App\Events\OrderShipped;
-    use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Queue\InteractsWithQueue;
 
     class SendShipmentNotification implements ShouldQueue
     {
@@ -333,8 +333,8 @@ Sometimes your queued event listeners may fail. If queued listener exceeds the m
     namespace App\Listeners;
 
     use App\Events\OrderShipped;
-    use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Queue\InteractsWithQueue;
 
     class SendShipmentNotification implements ShouldQueue
     {
@@ -373,9 +373,9 @@ To dispatch an event, you may pass an instance of the event to the `event` helpe
 
     namespace App\Http\Controllers;
 
-    use App\Order;
     use App\Events\OrderShipped;
     use App\Http\Controllers\Controller;
+    use App\Order;
 
     class OrderController extends Controller
     {
