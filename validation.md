@@ -1089,7 +1089,15 @@ If your table uses a primary key column name other than `id`, you may specify th
 
 By default, the `unique` rule will check the uniqueness of the column matching the name of the attribute being validated. However, you may pass a different column name as the second argument to the `unique` method:
 
-    Rule::unique('users', 'email_address')->ignore($user->id),
+    Rule::unique('users', 'email_address')->ignore($user->id)
+
+You may also use the string syntax to ignore a given ID:
+
+    'email' => 'unique:users,email,' . $user->id
+
+If you need to use another column to ignore, just pass the column name as the last argument to expression:
+
+    'email' => 'unique:users,email,' . $user->id . ',user_id'
 
 **Adding Additional Where Clauses:**
 
