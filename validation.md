@@ -1095,7 +1095,7 @@ You may also use the string syntax to ignore a given ID:
 
     'email' => 'unique:users,email,' . $user->id
 
-If you need to ignore by a column different than `id`, you may specify the name of the column name at the expression:
+If you need to ignore by a column different than `id`, you may specify the name of the column at the expression:
 
     'email' => 'unique:users,email,' . $user->id . ',user_id'
 
