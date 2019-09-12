@@ -29,8 +29,8 @@ In this example, the only argument passed to the `paginate` method is the number
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Support\Facades\DB;
     use App\Http\Controllers\Controller;
+    use Illuminate\Support\Facades\DB;
 
     class UserController extends Controller
     {

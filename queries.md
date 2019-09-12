@@ -42,8 +42,8 @@ You may use the `table` method on the `DB` facade to begin a query. The `table` 
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Support\Facades\DB;
     use App\Http\Controllers\Controller;
+    use Illuminate\Support\Facades\DB;
 
     class UserController extends Controller
     {

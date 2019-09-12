@@ -127,8 +127,8 @@ For example, take a look at this event listener:
 
     namespace App\Listeners;
 
-    use App\User;
     use App\Events\OrderWasPlaced;
+    use App\User;
     use Illuminate\Contracts\Redis\Factory;
 
     class CacheOrderInformation

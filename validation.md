@@ -57,8 +57,8 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
+    use Illuminate\Http\Request;
 
     class PostController extends Controller
     {
@@ -341,8 +341,8 @@ If you do not want to use the `validate` method on the request, you may create a
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Validator;
 
     class PostController extends Controller

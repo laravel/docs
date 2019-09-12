@@ -23,8 +23,8 @@ Laravel provides helpers for mocking events, jobs, and facades out of the box. T
 
 When mocking an object that is going to be injected into your application via Laravel's service container, you will need to bind your mocked instance into the container as an `instance` binding. This will instruct the container to use your mocked instance of the object instead of constructing the object itself:
 
-    use Mockery;
     use App\Service;
+    use Mockery;
 
     $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
         $mock->shouldReceive('process')->once();
@@ -55,11 +55,11 @@ As an alternative to mocking, you may use the `Bus` facade's `fake` method to pr
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
     use App\Jobs\ShipOrder;
-    use Illuminate\Support\Facades\Bus;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Support\Facades\Bus;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -87,12 +87,12 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
-    use App\Events\OrderShipped;
     use App\Events\OrderFailedToShip;
-    use Illuminate\Support\Facades\Event;
+    use App\Events\OrderShipped;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Support\Facades\Event;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -149,12 +149,12 @@ If you only want to fake event listeners for a portion of your test, you may use
 
     namespace Tests\Feature;
 
-    use App\Order;
-    use Tests\TestCase;
     use App\Events\OrderCreated;
-    use Illuminate\Support\Facades\Event;
+    use App\Order;
     use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Support\Facades\Event;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -185,11 +185,11 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
     use App\Mail\OrderShipped;
-    use Illuminate\Support\Facades\Mail;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Support\Facades\Mail;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -235,12 +235,12 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
     use App\Notifications\OrderShipped;
-    use Illuminate\Support\Facades\Notification;
-    use Illuminate\Notifications\AnonymousNotifiable;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Notifications\AnonymousNotifiable;
+    use Illuminate\Support\Facades\Notification;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -287,11 +287,11 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
     use App\Jobs\ShipOrder;
-    use Illuminate\Support\Facades\Queue;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Support\Facades\Queue;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -334,11 +334,11 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
-    use Illuminate\Http\UploadedFile;
-    use Illuminate\Support\Facades\Storage;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Http\UploadedFile;
+    use Illuminate\Support\Facades\Storage;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -395,10 +395,10 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
 
     namespace Tests\Feature;
 
-    use Tests\TestCase;
-    use Illuminate\Support\Facades\Cache;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Support\Facades\Cache;
+    use Tests\TestCase;
 
     class UserControllerTest extends TestCase
     {

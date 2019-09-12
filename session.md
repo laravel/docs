@@ -73,8 +73,8 @@ There are two primary ways of working with session data in Laravel: the global `
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
+    use Illuminate\Http\Request;
 
     class UserController extends Controller
     {

@@ -137,11 +137,11 @@ When a user is viewing one of their orders, we don't want them to have to refres
     namespace App\Events;
 
     use Illuminate\Broadcasting\Channel;
-    use Illuminate\Queue\SerializesModels;
-    use Illuminate\Broadcasting\PrivateChannel;
-    use Illuminate\Broadcasting\PresenceChannel;
     use Illuminate\Broadcasting\InteractsWithSockets;
+    use Illuminate\Broadcasting\PresenceChannel;
+    use Illuminate\Broadcasting\PrivateChannel;
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+    use Illuminate\Queue\SerializesModels;
 
     class ShippingStatusUpdated implements ShouldBroadcast
     {
@@ -199,11 +199,11 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
 
     use App\User;
     use Illuminate\Broadcasting\Channel;
-    use Illuminate\Queue\SerializesModels;
-    use Illuminate\Broadcasting\PrivateChannel;
-    use Illuminate\Broadcasting\PresenceChannel;
     use Illuminate\Broadcasting\InteractsWithSockets;
+    use Illuminate\Broadcasting\PresenceChannel;
+    use Illuminate\Broadcasting\PrivateChannel;
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+    use Illuminate\Queue\SerializesModels;
 
     class ServerCreated implements ShouldBroadcast
     {
@@ -393,8 +393,8 @@ Finally, you may place the authorization logic for your channel in the channel c
 
     namespace App\Broadcasting;
 
-    use App\User;
     use App\Order;
+    use App\User;
 
     class OrderChannel
     {

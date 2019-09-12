@@ -418,8 +418,8 @@ You may define your own authentication guards using the `extend` method on the `
     namespace App\Providers;
 
     use App\Services\Auth\JwtGuard;
-    use Illuminate\Support\Facades\Auth;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+    use Illuminate\Support\Facades\Auth;
 
     class AuthServiceProvider extends ServiceProvider
     {
@@ -491,9 +491,9 @@ If you are not using a traditional relational database to store your users, you 
 
     namespace App\Providers;
 
-    use Illuminate\Support\Facades\Auth;
     use App\Extensions\RiakUserProvider;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+    use Illuminate\Support\Facades\Auth;
 
     class AuthServiceProvider extends ServiceProvider
     {
@@ -542,14 +542,13 @@ Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 
     namespace Illuminate\Contracts\Auth;
 
-    interface UserProvider {
-
+    interface UserProvider
+    {
         public function retrieveById($identifier);
         public function retrieveByToken($identifier, $token);
         public function updateRememberToken(Authenticatable $user, $token);
         public function retrieveByCredentials(array $credentials);
         public function validateCredentials(Authenticatable $user, array $credentials);
-
     }
 
 The `retrieveById` function typically receives a key representing the user, such as an auto-incrementing ID from a MySQL database. The `Authenticatable` implementation matching the ID should be retrieved and returned by the method.
@@ -571,15 +570,14 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
 
     namespace Illuminate\Contracts\Auth;
 
-    interface Authenticatable {
-
+    interface Authenticatable
+    {
         public function getAuthIdentifierName();
         public function getAuthIdentifier();
         public function getAuthPassword();
         public function getRememberToken();
         public function setRememberToken($value);
         public function getRememberTokenName();
-
     }
 
 This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" field of the user and the `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
