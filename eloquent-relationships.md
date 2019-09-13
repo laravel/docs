@@ -1021,6 +1021,18 @@ If you're combining `withCount` with a `select` statement, ensure that you call 
     echo $posts[0]->body;
     echo $posts[0]->comments_count;
 
+In addition, you can eager load a relationship count after the parent model has already been retrieved by the `loadCount` method:
+
+    $book = App\Book::first();
+
+    $book->loadCount('genres');
+
+If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be `Closure` instances which receive the query instance:
+
+    $book->loadCount(['reviews' => function ($query) {
+        $query->where('rating', 5);
+    }])
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
