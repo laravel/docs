@@ -227,7 +227,7 @@ The `json` method will automatically set the `Content-Type` header to `applicati
         'state' => 'CA'
     ]);
 
-If you would like to create a JSONP response, you may use the `json` method in combination with the `withCallback` method:
+If you would like to create a JSON response, you may use the `json` method in combination with the `withCallback` method:
 
     return response()
                 ->json(['name' => 'Abigail', 'state' => 'CA'])
