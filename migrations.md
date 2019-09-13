@@ -303,9 +303,7 @@ Modifier  |  Description
 
 #### Default Expressions
 
-The `default` modifier can take either a value or an `\Illuminate\Database\Query\Expression`. Using an `Expression` will prevent wrapping the value in quotes and allow you to use database specific functions.
-
-One place this is particularly useful is assigning default values to JSON columns:
+The `default` modifier accepts a value or an `\Illuminate\Database\Query\Expression` instance. Using an `Expression` instance will prevent wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is assigning default values to JSON columns:
 
     <?php
 
