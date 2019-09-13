@@ -206,3 +206,5 @@ Method  |  Description
 `$results->previousPageUrl()`  |  Get the URL for the previous page.
 `$results->total()`  |  Determine the total number of matching items in the data store. (Not available when using `simplePaginate`).
 `$results->url($page)`  |  Get the URL for a given page number.
+`$results->getPageName()`  |  Get the query string variable used to store the page.
+`$results->setPageName($name)`  |  Set the query string variable used to store the page.
