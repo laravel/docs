@@ -307,31 +307,29 @@ The `default` modifier can take either a value or an `\Illuminate\Database\Query
 
 One place this is particularly useful is assigning default values to JSON columns:
 
-```php
-<?php
+    <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Query\Expression;
-use Illuminate\Database\Migrations\Migration;
+    use Illuminate\Support\Facades\Schema;
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Database\Migrations\Migration;
 
-class CreateFlightsTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    class CreateFlightsTable extends Migration
     {
-        Schema::create('flights', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->json('movies')->default(new Expression('(JSON_ARRAY())'));
-            $table->timestamps();
-        });
+        /**
+         * Run the migrations.
+         *
+         * @return void
+         */
+        public function up()
+        {
+            Schema::create('flights', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->json('movies')->default(new Expression('(JSON_ARRAY())'));
+                $table->timestamps();
+            });
+        }
     }
-}
-```
 
 > {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to the appropriate documentation for compatibility. Also note that using database specific functions may tightly couple you to a specific driver.
 
