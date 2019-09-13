@@ -44,7 +44,7 @@ First, download the Laravel installer using Composer:
 Make sure to place Composer's system-wide vendor bin directory in your `$PATH` so the laravel executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
 
 <div class="content-list" markdown="1">
-- macOS and GNU / Linux Distributions: `$HOME/.composer/vendor/bin`
+- macOS and GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin`
 - Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
 </div>
 
