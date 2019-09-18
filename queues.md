@@ -93,6 +93,8 @@ Adjusting this value based on your queue load can be more efficient than continu
         'retry_after' => 90,
         'block_for' => 5,
     ],
+    
+> {note} Using a value of `0` for `block_for` will cause the queue workers to block indefinitely until the next job gets released. This will also prevent signals like `SIGTERM` sent to the queue workers from being handled until the next job has been fetched and processed.
 
 #### Other Driver Prerequisites
 
