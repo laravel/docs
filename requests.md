@@ -227,7 +227,7 @@ When given an array, the `has` method will determine if all of the specified val
 
 The `hasAny` method returns `true` if any of the specified values are present:
 
-    if($request->hasAny(['name', 'email'])) {
+    if ($request->hasAny(['name', 'email'])) {
         //
     }
 
