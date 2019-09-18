@@ -94,7 +94,7 @@ Adjusting this value based on your queue load can be more efficient than continu
         'block_for' => 5,
     ],
     
-> {note} Using a value of `0` for `block_for` will cause the queue workers to block indefinitely until the next job gets released. This will also prevent signals like `SIGTERM` sent to the queue workers from being handled until the next job has been fetched and processed.
+> {note} Setting `block_for` to `0` will cause queue workers to block indefinitely until a job is available. This will also prevent signals such as `SIGTERM` from being handled until the next job has been processed.
 
 #### Other Driver Prerequisites
 
