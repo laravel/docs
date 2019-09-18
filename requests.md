@@ -225,6 +225,12 @@ When given an array, the `has` method will determine if all of the specified val
         //
     }
 
+The `hasAny` method returns `true` if any of the specified values are present:
+
+    if ($request->hasAny(['name', 'email'])) {
+        //
+    }
+
 If you would like to determine if a value is present on the request and is not empty, you may use the `filled` method:
 
     if ($request->filled('name')) {
