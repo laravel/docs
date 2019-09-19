@@ -936,3 +936,20 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
 
         $response->assertStatus(201);
     }
+
+Passport's `actingAsClient` method may be used to specify the currently authenticated client as well as its scopes. The first argument given to the `actingAsClient` method is the client instance and the second is an array of scopes that should be granted to the client's token:
+
+    use Laravel\Passport\Client;
+    use Laravel\Passport\Passport;
+
+    public function testGetOrders()
+    {
+        Passport::actingAsClient(
+            factory(Client::class)->create(),
+            ['check-status']
+        );
+
+        $response = $this->get('/api/orders');
+
+        $response->assertStatus(200);
+    }
