@@ -275,6 +275,15 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
             Notification::assertSentTo(
                 new AnonymousNotifiable, OrderShipped::class
             );
+            
+            // Assert that a notifcation sent via the Notification::route() method was sent to the correct user...
+            Notification::assertSentTo(
+                new AnonymousNotifiable,
+                OrderShipped::class,
+                function ($notification, $channels, $notifiable) use ($user) {
+                    return $notifiable->routes['mail'] === $user->email;
+                }
+            );
         }
     }
 
