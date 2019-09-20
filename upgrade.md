@@ -307,9 +307,9 @@ The `rackspace` storage driver has been removed. If you would like to continue u
 
 #### Route URL Generation & Extra Parameters
 
-In previous releases of Laravel, passing associative array parameters to the `route` helper or `URL::route` method would occasionally use these parameters as URI values when generating URLs for routes with optional parameters, even if the parameter value had no matching key within the route path. Beginning in Laravel 6.0, these values will be attached to the query string instead. For example, consider the following route:
+In previous releases of Laravel, passing associative array parameters to the `route` helper or `URL::route` method would occasionally use these parameters as URI values when generating URLs for routes, even if the parameter value had no matching key within the route path. Beginning in Laravel 6.0, these values will be attached to the query string instead. For example, consider the following route:
 
-    Route::get('/profile/{location?}', function ($location = null) {
+    Route::get('/profile/{location}', function ($location = null) {
         //
     })->name('profile');
 
