@@ -144,7 +144,7 @@ Supervisor is a process monitor for the Linux operating system, and will automat
 
 #### Configuring Supervisor
 
-Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors a `horizon` process:
+Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `horizon.conf` file that starts and monitors a `horizon` process:
 
     [program:horizon]
     process_name=%(program_name)s
@@ -163,7 +163,7 @@ Once the configuration file has been created, you may update the Supervisor conf
 
     sudo supervisorctl update
 
-    sudo supervisorctl start laravel-worker:*
+    sudo supervisorctl start horizon
 
 For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
 
