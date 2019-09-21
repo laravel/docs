@@ -14,6 +14,7 @@
 - [Password Grant Tokens](#password-grant-tokens)
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
+    - [Revoking Tokens](#revoking-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
     - [Customizing The Username Field](#customizing-the-username-field)
     - [Customizing The Password Validation](#customizing-the-password-validation)
@@ -472,6 +473,13 @@ Once you have created a password grant client, you may request an access token b
     return json_decode((string) $response->getBody(), true);
 
 > {tip} Remember, access tokens are long-lived by default. However, you are free to [configure your maximum access token lifetime](#configuration) if needed.
+
+<a name="revoking-password-grant-tokens"></a>
+### Revoking Tokens
+
+To revoke access tokens given to your end users, remove the token from the authenticated user:
+
+    auth()->user()->token()->revoke();
 
 <a name="requesting-all-scopes"></a>
 ### Requesting All Scopes
