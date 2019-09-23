@@ -110,7 +110,7 @@ Laravel 可以很容易的幫已命名路由產生「署名」的 URL。這些 U
         // ...
     })->name('unsubscribe');
 
-另外，你可以新增 `Illuminate\Routing\Middleware\ValidateSignature` middleware to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
+另外，你可以在路由內新增 `Illuminate\Routing\Middleware\ValidateSignature` 中介層。如果沒有這個中介層，你應該要在 HTTP kernel 裡面的 `routeMiddleware` 陣列註冊：
 
     /**
      * The application's route middleware.
@@ -123,7 +123,7 @@ Laravel 可以很容易的幫已命名路由產生「署名」的 URL。這些 U
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
     ];
 
-Once you have registered the middleware in your kernel, you may attach it to a route. If the incoming request does not have a valid signature, the middleware will automatically return a `403` error response:
+註冊好了之後，就可以在路由裡面連接這個中介層。如果請求沒有合法的千張，那麼中介層就會自動回傳一個 `403` 錯誤回應：
 
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
@@ -136,7 +136,7 @@ Once you have registered the middleware in your kernel, you may attach it to a r
 
     $url = action('HomeController@index');
 
-你也可以使用「callable」陣列參數來給定行為：
+你也可以使用陣列參數來給定行為：
 
     use App\Http\Controllers\HomeController;
 
