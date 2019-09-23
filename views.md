@@ -1,12 +1,12 @@
-# Views
+# 視圖
 
-- [Creating Views](#creating-views)
+- [建立視圖](#creating-views)
 - [Passing Data To Views](#passing-data-to-views)
     - [Sharing Data With All Views](#sharing-data-with-all-views)
 - [View Composers](#view-composers)
 
 <a name="creating-views"></a>
-## Creating Views
+## 建立視圖
 
 > {tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
 
