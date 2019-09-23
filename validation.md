@@ -164,9 +164,9 @@ So, in our example, the user will be redirected to our controller's `create` met
 
     <!-- Create Post Form -->
 
-#### The `@error` Directive
+#### `@error` 指示
 
-You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly check if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
+You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly check if validation error messages exist for a given attribute. Within an `@error` 指示，you may echo the `$message` variable to display the error message:
 
     <!-- /resources/views/post/create.blade.php -->
 
@@ -179,9 +179,9 @@ You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quic
     @enderror
 
 <a name="a-note-on-optional-fields"></a>
-### A Note On Optional Fields
+### 關於可選欄位的說明
 
-By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the stack by the `App\Http\Kernel` class. Because of this, you will often need to mark your "optional" request fields as `nullable` if you do not want the validator to consider `null` values as invalid. For example:
+Laravel 預設會在全域的中介層堆疊中加入 `TrimStrings` 和 `ConvertEmptyStringsToNull` 中介層。`App\Http\Kernel` 類別中列出了堆疊內的中介層。因此，如果你不想讓驗證器認為 `null` 值無效，你通常會需要把「可選」的請求欄位標註為 `nullable`。例如：
 
     $request->validate([
         'title' => 'required|unique:posts|max:255',
@@ -189,27 +189,27 @@ By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` m
         'publish_at' => 'nullable|date',
     ]);
 
-In this example, we are specifying that the `publish_at` field may be either `null` or a valid date representation. If the `nullable` modifier is not added to the rule definition, the validator would consider `null` an invalid date.
+在這個範例中，我們指定 `publish_at` 欄位可以為 `null` 或一個有效的日期表示。如果沒有把 `nullable` 修飾字加到規則定義中，驗證器會認為 `null` 是無效的日期。
 
 <a name="quick-ajax-requests-and-validation"></a>
-#### AJAX Requests & Validation
+#### AJAX 請求和驗證
 
-In this example, we used a traditional form to send data to the application. However, many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
+在這個範例中，我們使用傳統的表單來發送資料給應用程式。然而，許多應用程式是利用 AJAX 請求。在 AJAX 請求時使用 `validate` 方法，Laravel 不會產生重導回應。而是會產生一個包含所有驗證錯誤的 JSON 回應。此 JSON 回應會包含 422 HTTP 狀態碼。
 
 <a name="form-request-validation"></a>
-## Form Request Validation
+## 表單請求驗證
 
 <a name="creating-form-requests"></a>
-### Creating Form Requests
+### 建立表單請求
 
-For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that contain validation logic. To create a form request class, use the `make:request` Artisan CLI command:
+在更複雜的驗證情境中，你可能會想建立一個「表單請求」。表單請求是一種自訂的請求類別，其中包含驗證邏輯。使用 Artisan 命令列指令 `make:request` 來建立一個表單請求類別：
 
     php artisan make:request StoreBlogPost
 
-The generated class will be placed in the `app/Http/Requests` directory. If this directory does not exist, it will be created when you run the `make:request` command. Let's add a few validation rules to the `rules` method:
+新產生的類別檔會放在 `app/Http/Requests` 目錄下。如果目錄不存在，會在執行 `make:request` 時建立。讓我們加入一些驗證規則到 `rules` 方法中：
 
     /**
-     * Get the validation rules that apply to the request.
+     * 取得適用於請求的驗證規則
      *
      * @return array
      */
@@ -223,25 +223,25 @@ The generated class will be placed in the `app/Http/Requests` directory. If this
 
 > {tip} You may type-hint any dependencies you need within the `rules` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
-So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
+那驗證的規則會如何執行呢？只需要在控制器方法中，為請求加上型別提示。傳入的表單請求會在控制器方法被呼叫前進行驗證，也就是說不會因為驗證邏輯而把控制器弄得一團亂：
 
     /**
-     * Store the incoming blog post.
+     * 儲存傳入的部落格文章。
      *
      * @param  StoreBlogPost  $request
      * @return Response
      */
     public function store(StoreBlogPost $request)
     {
-        // The incoming request is valid...
+        // 有效的傳入請求⋯
 
-        // Retrieve the validated input data...
+        // 取得驗證過的輸入資料⋯
         $validated = $request->validated();
     }
 
-If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
+如果驗證失敗，會產生一個重導回應把使用者導回先前的位置。這些錯誤會被快閃至 session，讓錯誤都可以被顯示。如果是 AJAX 請求，則會傳回包含 422 狀態碼及驗證錯誤的 JSON 資料的 HTTP 回應。
 
-#### Adding After Hooks To Form Requests
+#### 為表單請求加上驗證後的掛勾
 
 If you would like to add an "after" hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods before the validation rules are actually evaluated:
 
