@@ -201,7 +201,7 @@
         'App\Http\View\Composers\MyViewComposer'
     );
 
-The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
+視圖的 `composer` 方法也可以接受 `*` 作為萬用字元，允許你對所有視圖附加 composer：
 
     View::composer('*', function ($view) {
         //
