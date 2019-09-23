@@ -1,26 +1,26 @@
-# URL Generation
+# # URL 產生
 
-- [Introduction](#introduction)
-- [The Basics](#the-basics)
-    - [Generating Basic URLs](#generating-basic-urls)
-    - [Accessing The Current URL](#accessing-the-current-url)
-- [URLs For Named Routes](#urls-for-named-routes)
+- [介紹](#introduction)
+- [基本用法](#the-basics)
+    - [產生基本的 URL](#generating-basic-urls)
+    - [存取當前的 URL](#accessing-the-current-url)
+- [已命名路由的 URL](#urls-for-named-routes)
     - [Signed URLs](#signed-urls)
-- [URLs For Controller Actions](#urls-for-controller-actions)
-- [Default Values](#default-values)
+- [控制器行為的 URL](#urls-for-controller-actions)
+- [預設值](#default-values)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-Laravel provides several helpers to assist you in generating URLs for your application. These are mainly helpful when building links in your templates and API responses, or when generating redirect responses to another part of your application.
+Laravel 提供幾個輔助函式來協助你產生 URL。當然，這些有助於在模板和 API 回應中建構連結，或產生重導回應到應用程式的另一個部分的時候。
 
 <a name="the-basics"></a>
-## The Basics
+## 基本用法
 
 <a name="generating-basic-urls"></a>
-### Generating Basic URLs
+### 產生基本的 URL
 
-The `url` helper may be used to generate arbitrary URLs for your application. The generated URL will automatically use the scheme (HTTP or HTTPS) and host from the current request:
+`url` 輔助函式可被用於應用程式的任何一個 URL。被產生的 URL 會自動使用當前請求所用的傳輸協定（HTTP 或 HTTPS）和主機：
 
     $post = App\Post::find(1);
 
@@ -29,41 +29,41 @@ The `url` helper may be used to generate arbitrary URLs for your application. Th
     // http://example.com/posts/1
 
 <a name="accessing-the-current-url"></a>
-### Accessing The Current URL
+### 存取當前的 URL
 
-If no path is provided to the `url` helper, a `Illuminate\Routing\UrlGenerator` instance is returned, allowing you to access information about the current URL:
+如果不提供路徑到 `url` 輔助函式，會回傳 `Illuminate\Routing\UrlGenerator` 實例，這可以讓你去存取關於目前 URL 的資訊：
 
-    // Get the current URL without the query string...
+    // 未使用查詢字串來取得當前 URL...
     echo url()->current();
 
-    // Get the current URL including the query string...
+    // 使用查詢字串來取得當前 URL...
     echo url()->full();
 
-    // Get the full URL for the previous request...
+    // 取得上一個請求的完整 URL...
     echo url()->previous();
 
-Each of these methods may also be accessed via the `URL` [facade](/docs/{{version}}/facades):
+上面這些方法都可以透過 `URL` [facade](/docs/{{version}}/facades) 來存取：
 
     use Illuminate\Support\Facades\URL;
 
     echo URL::current();
 
 <a name="urls-for-named-routes"></a>
-## URLs For Named Routes
+## 已命名路由的 URL
 
-The `route` helper may be used to generate URLs to named routes. Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your `route` function calls. For example, imagine your application contains a route defined like the following:
+`route` 輔助函式可被用於產生 URL 到被命名的路由。已命名的路由可以讓你產生 URL，還不會影響到實際在路由上定義的 URL。因此，如果該路由的 URL 有被異動，就不用再去修改你的 `route` 函式呼叫。例如，設想你的應用程式有一個像是下面範例所定義的路由：
 
     Route::get('/post/{post}', function () {
         //
     })->name('post.show');
 
-To generate a URL to this route, you may use the `route` helper like so:
+要產生 URL 到這個路由，你可以使用 `route` 輔助函式，就像是：
 
     echo route('post.show', ['post' => 1]);
 
     // http://example.com/post/1
 
-You will often be generating URLs using the primary key of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's primary key:
+你通常會使用 [Eloquent 模型](/docs/{{version}}/eloquent) 的主鍵來產生 URL。出於這個緣故，你可以將 Eloquent 模型作為參數值來傳入。`route` 輔助函式會自動的取出模型的主鍵：
 
     echo route('post.show', ['post' => $post]);
 
@@ -130,32 +130,32 @@ Once you have registered the middleware in your kernel, you may attach it to a r
     })->name('unsubscribe')->middleware('signed');
 
 <a name="urls-for-controller-actions"></a>
-## URLs For Controller Actions
+## 控制器行為的 URL
 
-The `action` function generates a URL for the given controller action. You do not need to pass the full namespace of the controller. Instead, pass the controller class name relative to the `App\Http\Controllers` namespace:
+`action` 函式為給定控制器行為來產生一組 URL。你不需要再傳入控制器的完整命名空間。反而是傳入相對於 `App\Http\Controllers` 命名空間的控制器類別名稱的相對路徑：
 
     $url = action('HomeController@index');
 
-You may also reference actions with a "callable" array syntax:
+你也可以使用「callable」陣列參數來給定行為：
 
     use App\Http\Controllers\HomeController;
 
     $url = action([HomeController::class, 'index']);
 
-If the controller method accepts route parameters, you may pass them as the second argument to the function:
+如果控制器方法接受路由參數，你可以將他們作為第二個參數來傳入該函式：
 
     $url = action('UserController@profile', ['id' => 1]);
 
 <a name="default-values"></a>
-## Default Values
+## 預設值
 
-For some applications, you may wish to specify request-wide default values for certain URL parameters. For example, imagine many of your routes define a `{locale}` parameter:
+因為某些應用程式的關係，你可能希望為某些 URL 參數指定請求範圍的預設值。例如，設想你的許多路由定義了 `{locale}` 參數：
 
     Route::get('/{locale}/posts', function () {
         //
     })->name('post.index');
 
-It is cumbersome to always pass the `locale` every time you call the `route` helper. So, you may use the `URL::defaults` method to define a default value for this parameter that will always be applied during the current request. You may wish to call this method from a [route middleware](/docs/{{version}}/middleware#assigning-middleware-to-routes) so that you have access to the current request:
+如果每次呼叫 `route` 輔助函式都要傳入 `locale`，會使開發變得很繁瑣。所以，你可以使用 `URL::defaults` 方法來定義這個參數的預設值，使該參數總是在當前請求期間被應用。你可能希望從[路由中介層](/docs/{{version}}/middleware#assigning-middleware-to-routes)中呼叫這個方法，這樣就可以存取當前的請求：
 
     <?php
 
@@ -174,4 +174,4 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
         }
     }
 
-Once the default value for the `locale` parameter has been set, you are no longer required to pass its value when generating URLs via the `route` helper.
+一旦 `locale` 參數的預設值被設定，你就不需要在透過 `route` 輔助函式來產生 URL 時傳入它的值了。
