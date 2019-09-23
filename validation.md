@@ -1,55 +1,55 @@
-# Validation
+# 驗證
 
-- [Introduction](#introduction)
-- [Validation Quickstart](#validation-quickstart)
-    - [Defining The Routes](#quick-defining-the-routes)
-    - [Creating The Controller](#quick-creating-the-controller)
-    - [Writing The Validation Logic](#quick-writing-the-validation-logic)
-    - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
-    - [A Note On Optional Fields](#a-note-on-optional-fields)
-- [Form Request Validation](#form-request-validation)
-    - [Creating Form Requests](#creating-form-requests)
-    - [Authorizing Form Requests](#authorizing-form-requests)
-    - [Customizing The Error Messages](#customizing-the-error-messages)
-    - [Customizing The Validation Attributes](#customizing-the-validation-attributes)
-- [Manually Creating Validators](#manually-creating-validators)
-    - [Automatic Redirection](#automatic-redirection)
-    - [Named Error Bags](#named-error-bags)
-    - [After Validation Hook](#after-validation-hook)
-- [Working With Error Messages](#working-with-error-messages)
-    - [Custom Error Messages](#custom-error-messages)
-- [Available Validation Rules](#available-validation-rules)
-- [Conditionally Adding Rules](#conditionally-adding-rules)
-- [Validating Arrays](#validating-arrays)
-- [Custom Validation Rules](#custom-validation-rules)
-    - [Using Rule Objects](#using-rule-objects)
+- [介紹](#introduction)
+- [驗證快速上手](#validation-quickstart)
+    - [定義路由](#quick-defining-the-routes)
+    - [建立控制器](#quick-creating-the-controller)
+    - [撰寫驗證邏輯](#quick-writing-the-validation-logic)
+    - [顯示驗證錯誤](#quick-displaying-the-validation-errors)
+    - [關於可選欄位的說明](#a-note-on-optional-fields)
+- [表單請求驗證](#form-request-validation)
+    - [建立表單請求](#creating-form-requests)
+    - [授權表單請求](#authorizing-form-requests)
+    - [自訂錯誤訊息](#customizing-the-error-messages)
+    - [自訂驗證參數](#customizing-the-validation-attributes)
+- [手動建立驗證器](#manually-creating-validators)
+    - [自動重導](#automatic-redirection)
+    - [命名錯誤清單](#named-error-bags)
+    - [驗證後的掛勾](#after-validation-hook)
+- [處理錯誤訊息](#working-with-error-messages)
+    - [自訂錯誤訊息](#custom-error-messages)
+- [可用的驗證規則](#available-validation-rules)
+- [依條件增加規則](#conditionally-adding-rules)
+- [驗證陣列](#validating-arrays)
+- [自訂驗證規則](#custom-validation-rules)
+    - [使用規則物件](#using-rule-objects)
     - [Using Closures](#using-closures)
-    - [Using Extensions](#using-extensions)
+    - [使用擴充功能](#using-extensions)
     - [Implicit Extensions](#implicit-extensions)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-Laravel provides several different approaches to validate your application's incoming data. By default, Laravel's base controller class uses a `ValidatesRequests` trait which provides a convenient method to validate incoming HTTP request with a variety of powerful validation rules.
+Laravel 提供多種方法來驗證應用程式傳入的資料。預設情況下，Laravel 的基底控制器利用 `ValidatesRequests` trait 提供的一個便利的方法和各種強大的驗證規則來驗證傳入的 HTTP 請求。
 
 <a name="validation-quickstart"></a>
-## Validation Quickstart
+## 驗證快速上手
 
-To learn about Laravel's powerful validation features, let's look at a complete example of validating a form and displaying the error messages back to the user.
+要了解 Laravel 強大的驗證特性，讓我們來看一個驗證表單並顯示錯誤訊息給使用者的完整範例。
 
 <a name="quick-defining-the-routes"></a>
-### Defining The Routes
+### 定義路由
 
-First, let's assume we have the following routes defined in our `routes/web.php` file:
+首先，假設我們在 `routes/web.php` 檔案中定義了下列的路由：
 
     Route::get('post/create', 'PostController@create');
 
     Route::post('post', 'PostController@store');
 
-The `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
+`GET` 路由會顯示讓使用者新增部落格文章的表單，而 `POST` 路由會儲存部落格新文章到資料庫。
 
 <a name="quick-creating-the-controller"></a>
-### Creating The Controller
+### 建立控制器
 
 Next, let's take a look at a simple controller that handles these routes. We'll leave the `store` method empty for now:
 
@@ -63,7 +63,7 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
     class PostController extends Controller
     {
         /**
-         * Show the form to create a new blog post.
+         * 顯示建立部落格新文章的表單。
          *
          * @return Response
          */
@@ -73,26 +73,26 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
         }
 
         /**
-         * Store a new blog post.
+         * 儲存一篇部落格新文章。
          *
          * @param  Request  $request
          * @return Response
          */
         public function store(Request $request)
         {
-            // Validate and store the blog post...
+            // 驗證並儲存部落格文章...
         }
     }
 
 <a name="quick-writing-the-validation-logic"></a>
-### Writing The Validation Logic
+### 撰寫驗證邏輯
 
-Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an exception will be thrown and the proper error response will automatically be sent back to the user. In the case of a traditional HTTP request, a redirect response will be generated, while a JSON response will be sent for AJAX requests.
+現在我們可以把驗證部落格新文章的邏輯寫進 `store` 方法中了。我們會使用 `Illuminate\Http\Request` 物件提供的 `validate` 方法來實現驗證。如果通過驗證規則，程式會繼續正常執行；如果驗證失敗，會拋出一個例外並把適當的錯誤訊息回傳給使用者。在傳統的 HTTP 請求中，會產生一個重導回應，對於 AJAX 請求則發送 JSON 回應。
 
-To get a better understanding of the `validate` method, let's jump back into the `store` method:
+為了更理解 `validate` 方法，我們先回到 `store` 方法中：
 
     /**
-     * Store a new blog post.
+     * 儲存一篇部落格新文章。
      *
      * @param  Request  $request
      * @return Response
@@ -104,32 +104,32 @@ To get a better understanding of the `validate` method, let's jump back into the
             'body' => 'required',
         ]);
 
-        // The blog post is valid...
+        // 部落格文章通過驗證⋯
     }
 
-As you can see, we pass the desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
+如你所見，我們單純的把所需的驗證規則傳進 `validate` 方法中。再次提醒，如果驗證失敗，會自動產生適當的回應。如果驗證通過，控制器會繼續正常執行。
 
-Alternatively, validation rules may be specified as arrays of rules instead of a single `|` delimited string:
+另外，驗證規則除了用 `|` 分隔開的字串之外，也可以用陣列傳入：
 
     $validatedData = $request->validate([
         'title' => ['required', 'unique:posts', 'max:255'],
         'body' => ['required'],
     ]);
 
-#### Stopping On First Validation Failure
+#### 在首次驗證失敗時停止驗證
 
-Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
+有時候你會希望在一個屬性首次驗證失敗時，停止此屬性的其他驗證規則。把 `bail` 規則指派到屬性中來達成目的：
 
     $request->validate([
         'title' => 'bail|required|unique:posts|max:255',
         'body' => 'required',
     ]);
 
-In this example, if the `unique` rule on the `title` attribute fails, the `max` rule will not be checked. Rules will be validated in the order they are assigned.
+在這個範例中，如果 `title` 屬性的 `unique` 規則驗證失敗，就不會檢查 `max` 規則。驗證的順序會依照規則指派的順序。
 
-#### A Note On Nested Attributes
+#### 關於巢狀屬性的提醒
 
-If your HTTP request contains "nested" parameters, you may specify them in your validation rules using "dot" syntax:
+如果 HTTP 請求包含了「巢狀」參數，可以在驗證規則中使用「點」語法來指定屬性：
 
     $request->validate([
         'title' => 'required|unique:posts|max:255',
@@ -138,7 +138,7 @@ If your HTTP request contains "nested" parameters, you may specify them in your 
     ]);
 
 <a name="quick-displaying-the-validation-errors"></a>
-### Displaying The Validation Errors
+### 顯示驗證錯誤
 
 So, what if the incoming request parameters do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors will automatically be [flashed to the session](/docs/{{version}}/session#flash-data).
 
