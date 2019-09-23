@@ -44,11 +44,11 @@
 
 #### 建立第一個可用視圖
 
-Using the `first` method, you may create the first view that exists in a given array of views. This is useful if your application or package allows views to be customized or overwritten:
+使用 `first` 函式，你可以從一個視圖的陣列內選擇第一個存在的視圖來建立畫面。如果你的應用或套件允許客製化或者覆寫視圖的話，這會很有用：
 
     return view()->first(['custom.admin', 'admin'], $data);
 
-You may also call this method via the `View` [facade](/docs/{{version}}/facades):
+你也可以透過 `View` [facade](/docs/{{version}}/facades) 來呼叫這個函式：
 
     use Illuminate\Support\Facades\View;
 
@@ -79,7 +79,7 @@ You may also call this method via the `View` [facade](/docs/{{version}}/facades)
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register any application services.
+         * 啟動任何應用程式的服務。
          *
          * @return void
          */
@@ -89,7 +89,7 @@ You may also call this method via the `View` [facade](/docs/{{version}}/facades)
         }
 
         /**
-         * Bootstrap any application services.
+         * 註冊服務提供者。
          *
          * @return void
          */
