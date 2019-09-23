@@ -67,7 +67,7 @@ Laravel 提供幾個輔助函式來協助你產生 URL。當然，這些有助�
 
     echo route('post.show', ['post' => $post]);
 
-The `route` helper may also be used to generate URLs for routes with multiple parameters:
+`route` 輔助函式也可以用來產生多個參數的網址：
 
     Route::get('/post/{post}/comment/{comment}', function () {
         //
@@ -78,17 +78,17 @@ The `route` helper may also be used to generate URLs for routes with multiple pa
     // http://example.com/post/1/comment/3
 
 <a name="signed-urls"></a>
-### Signed URLs
+### 署名 URL
 
-Laravel allows you to easily create "signed" URLs to named routes. These URLs have a "signature" hash appended to the query string which allows Laravel to verify that the URL has not been modified since it was created. Signed URLs are especially useful for routes that are publicly accessible yet need a layer of protection against URL manipulation.
+Laravel 可以很容易的幫已命名路由產生「署名」的 URL。這些 URL 後面會加上一個「簽名」的雜湊，讓 Laravel 知道這個 URL 沒有被修改過。署名 URL 對可以公開存取，但是又需要一層保護，避免有人修改的情境下特別有用。
 
-For example, you might use signed URLs to implement a public "unsubscribe" link that is emailed to your customers. To create a signed URL to a named route, use the `signedRoute` method of the `URL` facade:
+舉例來說，如果你用 email 寄「取消訂閱」的網址到客戶的信箱，你可能就會希望使用署名 URL。要幫已命名路由建立署名 URL，用 `URL` facade 的`signedRoute` 函式：
 
     use Illuminate\Support\Facades\URL;
 
     return URL::signedRoute('unsubscribe', ['user' => 1]);
-
-If you would like to generate a temporary signed route URL that expires, you may use the `temporarySignedRoute` method:
+    
+如果你想建立會過期的暫時性署名 URL，你可以用 `temporarySignedRoute` 函式：
 
     use Illuminate\Support\Facades\URL;
 
@@ -96,9 +96,9 @@ If you would like to generate a temporary signed route URL that expires, you may
         'unsubscribe', now()->addMinutes(30), ['user' => 1]
     );
 
-#### Validating Signed Route Requests
+#### 驗證署名路由的請求
 
-To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Request`:
+要驗證請求是否有正確的署名，你可以對傳輸進來的 `Request` 呼叫 `hasValidSignature` 函式進行驗證：
 
     use Illuminate\Http\Request;
 
@@ -110,7 +110,7 @@ To verify that an incoming request has a valid signature, you should call the `h
         // ...
     })->name('unsubscribe');
 
-Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` middleware to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
+另外，你可以新增 `Illuminate\Routing\Middleware\ValidateSignature` middleware to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
 
     /**
      * The application's route middleware.
@@ -174,4 +174,4 @@ Once you have registered the middleware in your kernel, you may attach it to a r
         }
     }
 
-一旦 `locale` 參數的預設值被設定，你就不需要在透過 `route` 輔助函式來產生 URL 時傳入它的值了。
+一旦 `locale` 參數的預設值被設定，你就不需要再透過 `route` 輔助函式來產生 URL 時傳入它的值了。
