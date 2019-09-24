@@ -1,29 +1,29 @@
 # Laravel Valet
 
-- [Introduction](#introduction)
-    - [Valet Or Homestead](#valet-or-homestead)
-- [Installation](#installation)
-    - [Upgrading](#upgrading)
-- [Serving Sites](#serving-sites)
-    - [The "Park" Command](#the-park-command)
-    - [The "Link" Command](#the-link-command)
-    - [Securing Sites With TLS](#securing-sites)
-- [Sharing Sites](#sharing-sites)
+- [介紹](#introduction)
+    - [Valet 與 Homestead](#valet-or-homestead)
+- [安裝](#installation)
+    - [升級](#upgrading)
+- [啟動專案](#serving-sites)
+    - [「Park」指令](#the-park-command)
+    - [「Link」指令](#the-link-command)
+    - [使用 TLS 保護](#securing-sites)
+- [共享網站](#sharing-sites)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
-- [Custom Valet Drivers](#custom-valet-drivers)
-    - [Local Drivers](#local-drivers)
-- [Other Valet Commands](#other-valet-commands)
+- [自訂 Valet 驅動](#custom-valet-drivers)
+    - [本機驅動](#local-drivers)
+- [其它 Valet 指令](#other-valet-commands)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-Valet is a Laravel development environment for Mac minimalists. No Vagrant, no `/etc/hosts` file. You can even share your sites publicly using local tunnels. _Yeah, we like it too._
+Valet 是專屬於 MacOS 的 Laravel 開發環境。既不用 Vagrant，也不用 `/etc/hosts` 檔案，就能夠使用本機終端機來公開並共享你的網站。_沒錯！我們也很喜歡。_
 
-Laravel Valet configures your Mac to always run [Nginx](https://www.nginx.com/) in the background when your machine starts. Then, using [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq), Valet proxies all requests on the `*.test` domain to point to sites installed on your local machine.
+Laravel Valet 設定 MacOS 在啟動伺服器時會在背景執行 [Nginx](https://www.nginx.com/)。然後，使用 [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq)，Valet 會將所有本機伺服器上安裝的專案全都代理到 `*.test` 網域上。
 
-In other words, a blazing fast Laravel development environment that uses roughly 7 MB of RAM. Valet isn't a complete replacement for Vagrant or Homestead, but provides a great alternative if you want flexible basics, prefer extreme speed, or are working on a machine with a limited amount of RAM.
+換句話說，這個極快的 Laravel 開發環境只會用到 7 MB 的記憶體。Valet 並非能完全取代 Vagrant 或 Homestead，但如果你想要靈活、極快、或更輕盈的開發環境，這會是一個很好的選擇。
 
-Out of the box, Valet support includes, but is not limited to:
+Valet 預設就支援以下這些內容，當然，實際支援的內容還有更多：
 
 <style>
     #valet-support > ul {
@@ -56,19 +56,19 @@ Out of the box, Valet support includes, but is not limited to:
 - [Zend](https://framework.zend.com)
 </div>
 
-However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).
+對了，你可以使用[自訂驅動](#custom-valet-drivers)來擴展 Valet。
 
 <a name="valet-or-homestead"></a>
-### Valet Or Homestead
+### Valet 與 Homestead
 
-As you may know, Laravel offers [Homestead](/docs/{{version}}/homestead), another local Laravel development environment. Homestead and Valet differ in regards to their intended audience and their approach to local development. Homestead offers an entire Ubuntu virtual machine with automated Nginx configuration. Homestead is a wonderful choice if you want a fully virtualized Linux development environment or are on Windows / Linux.
+就如你所知的那樣，Laravel 提供了另一個開發環境，也就是 [Homestead](/docs/{{version}}/homestead)。Homestead 和 Valet 不同的地方在於他們主要客群想使用什麼方式來建立開發環境。Homestead 提供一個完整的 Ubuntu 虛擬機，並自動化 Nginx 設定。如果你想要完全虛擬化的 Linux  開發環境或者在 Windows / Linux 系統環境上開發，Homestead 會是一個很好的選擇。
 
-Valet only supports Mac, and requires you to install PHP and a database server directly onto your local machine. This is easily achieved by using [Homebrew](https://brew.sh/) with commands like `brew install php` and `brew install mysql`. Valet provides a blazing fast local development environment with minimal resource consumption, so it's great for developers who only require PHP / MySQL and do not need a fully virtualized development environment.
+Valet 只支援 MacOS，並且會要求你在本機環境上直接安裝 PHP 和資料庫伺服器。你可以使用 [Homebrew](http://brew.sh/) 的 `brew install php72` 和 `brew install mysql` 指令來輕鬆的安裝。Valet 提供了一個極快的本機開發環境，且只會佔用到極小的資源，所以這對於只會用到 PHP 和 MySQL 而不需要完整的虛擬開發環境的開發者而言真的很好！
 
-Both Valet and Homestead are great choices for configuring your Laravel development environment. Which one you choose will depend on your personal taste and your team's needs.
+不論是 Valet 還是 Homestead 都是設定 Laravel 開發環境的最佳選項。請根據你與團隊的喜好與需求來做選擇。
 
 <a name="installation"></a>
-## Installation
+## 安裝
 
 **Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.**
 
@@ -142,7 +142,7 @@ Once Valet is installed, you're ready to start serving sites. Valet provides two
 **That's all there is to it.** Now, any Laravel project you create within your "parked" directory will automatically be served using the `http://folder-name.test` convention.
 
 <a name="the-link-command"></a>
-**The `link` Command**
+**`link` 指令**
 
 The `link` command may also be used to serve your Laravel sites. This command is useful if you want to serve a single site in a directory and not the entire directory.
 
@@ -156,24 +156,24 @@ To see a listing of all of your linked directories, run the `valet links` comman
 > {tip} You can use `valet link` to serve the same project from multiple (sub)domains. To add a subdomain or another domain to your project run `valet link subdomain.app-name` from the project folder.
 
 <a name="securing-sites"></a>
-**Securing Sites With TLS**
+**使用 TLS 保護**
 
-By default, Valet serves sites over plain HTTP. However, if you would like to serve a site over encrypted TLS using HTTP/2, use the `secure` command. For example, if your site is being served by Valet on the `laravel.test` domain, you should run the following command to secure it:
+預設的 Valet 只會啟動未加密的 HTTP。然而，如果你想要使用 HTTP/2 的加密 TLS 來啟動專案，請使用 `secure` 指令。例如，如果你的專案被啟動在 Valet 上的 `laravel.test` 網域，你你應該執行以下指令來保護它：
 
     valet secure laravel
 
-To "unsecure" a site and revert back to serving its traffic over plain HTTP, use the `unsecure` command. Like the `secure` command, this command accepts the host name that you wish to unsecure:
+若要「解除」專案的安全協定，並恢復到未加密的 HTTP，請使用 `unsecure` 指令。就像使用 `secure` 指令一樣，這個指令接受你想要解除的主機名稱：
 
     valet unsecure laravel
 
 <a name="sharing-sites"></a>
-## Sharing Sites
+## 共享專案
 
-Valet even includes a command to share your local sites with the world. No additional software installation is required once Valet is installed.
+Valet 甚至包括與世界分享你的本機網站的指令。一旦安裝了 Valet，就不需要安裝額外的軟體。
 
-To share a site, navigate to the site's directory in your terminal and run the `valet share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser. That's it.
+若要共享專案，請導航到終端機中的專案目錄，並執行 `valet share` 指令。會將可被公開存取的 URL 放入剪貼簿中，並準備貼到瀏覽器。就這樣。
 
-To stop sharing your site, hit `Control + C` to cancel the process.
+若要停止共享專案，請點擊 `Control + C` 來終止共享。
 
 <a name="site-specific-environment-variables"></a>
 ## Site Specific Environment Variables
@@ -187,24 +187,24 @@ Some applications using other frameworks may depend on server environment variab
     ];
 
 <a name="custom-valet-drivers"></a>
-## Custom Valet Drivers
+## 自訂 Valet 驅動
 
-You can write your own Valet "driver" to serve PHP applications running on another framework or CMS that is not natively supported by Valet. When you install Valet, a `~/.config/valet/Drivers` directory is created which contains a `SampleValetDriver.php` file. This file contains a sample driver implementation to demonstrate how to write a custom driver. Writing a driver only requires you to implement three methods: `serves`, `isStaticFile`, and `frontControllerPath`.
+你能夠撰寫屬於自己的 Valet「驅動」來啟動 Valet 不支援的其他框架或 CMS 的 PHP 應用程式。當你安裝 Valet 的時候，會建立一個包含 `SampleValetDriver.php`  檔案的 `~/.valet/Drivers` 目錄。這個檔案包含一個簡易的驅動實作來示範如何撰寫自訂驅動。撰寫一個驅動只需要你實作三種方法：`serves`、`isStaticFile` 和 `frontControllerPath`。
 
-All three methods receive the `$sitePath`, `$siteName`, and `$uri` values as their arguments. The `$sitePath` is the fully qualified path to the site being served on your machine, such as `/Users/Lisa/Sites/my-project`. The `$siteName` is the "host" / "site name" portion of the domain (`my-project`). The `$uri` is the incoming request URI (`/foo/bar`).
+這三種方法都接受 `$sitePath`、`$siteName` 和 `$uri` 的值作為它們的參數。`$sitePath` 會是在本機上的專案完整路徑，像是 `/Users/Lisa/Sites/my-project`。`$siteName` 會是網域（`my-project`）的「主機」或專案名稱的部分。`$uri` 則是傳入請求的 URI (`/foo/bar`)。
 
-Once you have completed your custom Valet driver, place it in the `~/.config/valet/Drivers` directory using the `FrameworkValetDriver.php` naming convention. For example, if you are writing a custom valet driver for WordPress, your file name should be `WordPressValetDriver.php`.
+你一旦完成了自訂 Valet 驅動，請使用 `FrameworkValetDriver.php` 慣例命名方式將它放置於 `~/.valet/Drivers` 目錄中。例如，如果你正在為 WordPress 撰寫自訂的 Valet 驅動，你的檔名應該會是 `WordPressValetDriver.php`。
 
-Let's take a look at a sample implementation of each method your custom Valet driver should implement.
+讓我們來看看自訂 Valet 驅動應該實作的每種方法的簡單實作。
 
-#### The `serves` Method
+#### `serves` 方法
 
-The `serves` method should return `true` if your driver should handle the incoming request. Otherwise, the method should return `false`. So, within this method you should attempt to determine if the given `$sitePath` contains a project of the type you are trying to serve.
+如果你的驅動會去處理傳入請求，`serves` 方法會回傳 `true`。反之，該方法則回傳 `false`。因此，在這個方法中，你應該嘗試確認給定的 `$sitePath` 是否有你想要啟動的類型專案。
 
-For example, let's pretend we are writing a `WordPressValetDriver`. Our `serves` method might look something like this:
+例如，讓我們假設正在撰寫 `WordPressValetDriver`。我們的 `serve` 方法看起來會像是這樣：
 
     /**
-     * Determine if the driver serves the request.
+     * 檢查是否需要該驅動。
      *
      * @param  string  $sitePath
      * @param  string  $siteName
@@ -216,9 +216,9 @@ For example, let's pretend we are writing a `WordPressValetDriver`. Our `serves`
         return is_dir($sitePath.'/wp-admin');
     }
 
-#### The `isStaticFile` Method
+#### `isStaticFile` 方法
 
-The `isStaticFile` should determine if the incoming request is for a file that is "static", such as an image or a stylesheet. If the file is static, the method should return the fully qualified path to the static file on disk. If the incoming request is not for a static file, the method should return `false`:
+`isStaticFile` 會去檢查傳入的請求是不是「靜態」檔案，像是圖像或樣式表。如果該檔案為靜態，該方法會回傳硬碟上的靜態檔案的完整路徑。如果傳入請求不是靜態檔案，該方法會回傳 `false`：
 
     /**
      * Determine if the incoming request is for a static file.
@@ -237,11 +237,11 @@ The `isStaticFile` should determine if the incoming request is for a file that i
         return false;
     }
 
-> {note} The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
+> {note} `isStaticFile` 方法只會在 `serves` 方法回傳 `true` 的時候傳入請求，並且該請求的 URL 不是 `/` 時呼叫該方法。
 
-#### The `frontControllerPath` Method
+#### `frontControllerPath` 方法
 
-The `frontControllerPath` method should return the fully qualified path to your application's "front controller", which is typically your "index.php" file or equivalent:
+`frontControllerPath` 方法會回傳符合條件的完整路徑到應用程式的「前端控制器」，這通常是你的「index.php」或相同性質的檔案：
 
     /**
      * Get the fully resolved path to the application's front controller.
@@ -257,9 +257,9 @@ The `frontControllerPath` method should return the fully qualified path to your 
     }
 
 <a name="local-drivers"></a>
-### Local Drivers
+### 本機驅動
 
-If you would like to define a custom Valet driver for a single application, create a `LocalValetDriver.php` in the application's root directory. Your custom driver may extend the base `ValetDriver` class or extend an existing application specific driver such as the `LaravelValetDriver`:
+如果你想要為專為一個應用程式定義一個自訂的 Valet 驅動，請在應用程式的根目錄中建立  `LocalValetDriver.php`。你自訂的驅動會去繼承底層的 `ValetDriver` 類別或指定繼承現有的驅動，像是 `LaravelValetDriver`：
 
     class LocalValetDriver extends LaravelValetDriver
     {
@@ -291,15 +291,15 @@ If you would like to define a custom Valet driver for a single application, crea
     }
 
 <a name="other-valet-commands"></a>
-## Other Valet Commands
+## 其它 Valet 指令
 
-Command  | Description
+指令  | 說明
 ------------- | -------------
-`valet forget` | Run this command from a "parked" directory to remove it from the parked directory list.
+`valet forget` | 從被「Park」標記的目錄中執行這個指令，可以移除對它的標記。
 `valet log` | View a list of logs which are written by Valet's services.
-`valet paths` | View all of your "parked" paths.
-`valet restart` | Restart the Valet daemon.
-`valet start` | Start the Valet daemon.
-`valet stop` | Stop the Valet daemon.
+`valet paths` | 查看所有被「Park」標記的路徑。
+`valet restart` | 重新啟動 Valet 的守護行程。
+`valet start` | 啟動 Valet 的守護行程。
+`valet stop` | 暫停 Valet 的守護行程。
 `valet trust` | Add sudoers files for Brew and Valet to allow Valet commands to be run without prompting for passwords.
-`valet uninstall` | Uninstall the Valet daemon.
+`valet uninstall` | 完整的移除 Valet 守護行程。
