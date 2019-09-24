@@ -789,11 +789,11 @@ If the `column` option is not specified, the field name will be used.
 
     'state' => 'exists:states,abbreviation'
 
-Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name using "dot" syntax:
+有時候，你可能會指定 `exists` 查詢使用特定的資料庫連線。可以用「點」語法在資料表名稱前加上連線名稱來達成：
 
     'email' => 'exists:connection.staff,email'
 
-If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:
+如果想要客制驗證規則執行的查詢，可以用 `Rule` 類別來流暢地定義規則。在這個範例中，我們也會以陣列來表示驗證規則，而不是用 `|` 字元來分割：
 
     use Illuminate\Validation\Rule;
 
@@ -809,12 +809,12 @@ If you would like to customize the query executed by the validation rule, you ma
 <a name="rule-file"></a>
 #### file
 
-The field under validation must be a successfully uploaded file.
+驗證欄位必須是一個成功上傳的檔案。
 
 <a name="rule-filled"></a>
 #### filled
 
-The field under validation must not be empty when it is present.
+當驗證欄位存在時，不可以為空值。
 
 <a name="rule-gt"></a>
 #### gt:_field_
@@ -829,12 +829,12 @@ The field under validation must be greater than or equal to the given _field_. T
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpeg, png, bmp, gif, svg, or webp)
+驗證欄位檔案必須為圖片格式（ jpeg、png、bmp、gif、svg 或 webp）。
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
 
-The field under validation must be included in the given list of values. Since this rule often requires you to `implode` an array, the `Rule::in` method may be used to fluently construct the rule:
+驗證欄位必須包含在給定的列表中。由於這個規則經常需要你 `implode` 一個陣列，`Rule::in` 方法可以用來流暢地建構規則：
 
     use Illuminate\Validation\Rule;
 
@@ -848,32 +848,32 @@ The field under validation must be included in the given list of values. Since t
 <a name="rule-in-array"></a>
 #### in_array:_anotherfield_.*
 
-The field under validation must exist in _anotherfield_'s values.
+驗證欄位的值必須在 _anotherfield_ 陣列中存在。
 
 <a name="rule-integer"></a>
 #### integer
 
-The field under validation must be an integer.
+驗證欄位必須是一個整數。
 
 > {note} This validation rule does not verify that the input is of the "integer" variable type, only that the input is a string or numeric value that contains an integer.
 
 <a name="rule-ip"></a>
 #### ip
 
-The field under validation must be an IP address.
+驗證欄位必須符合一個 IP 位址的格式。
 
 #### ipv4
 
-The field under validation must be an IPv4 address.
+驗證欄位必須符合一個 IPv4 位址的格式。
 
 #### ipv6
 
-The field under validation must be an IPv6 address.
+驗證欄位必須符合一個 IPv6 位址的格式。
 
 <a name="rule-json"></a>
 #### json
 
-The field under validation must be a valid JSON string.
+驗證欄位必須是一個有效的 JSON 字串。
 
 <a name="rule-lt"></a>
 #### lt:_field_
@@ -888,21 +888,21 @@ The field under validation must be less than or equal to the given _field_. The 
 <a name="rule-max"></a>
 #### max:_value_
 
-The field under validation must be less than or equal to a maximum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+驗證欄位值的大小是否小於或等於 _value_。字串、數值和檔案大小的計算方式和 [`size`](#rule-size) 規則相同。
 
 <a name="rule-mimetypes"></a>
 #### mimetypes:_text/plain_,...
 
-The file under validation must match one of the given MIME types:
+驗證檔案必須符合給定的 MIME 類型之一。
 
     'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
 
-To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client provided MIME type.
+為了判斷上傳檔案的 MIME 類型，檔案的內容會被讀取，框架會嘗試猜測 MIME 類型，這可能與客戶端提供的 MIME 類型不同。
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
 
-The file under validation must have a MIME type corresponding to one of the listed extensions.
+驗證檔案的 MIME 類型必須符合清單裡的副檔名之一。
 
 #### Basic Usage Of MIME Rule
 
