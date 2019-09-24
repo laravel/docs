@@ -1434,8 +1434,6 @@ The `dump` function dumps the given variables:
 
 If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
 
-> {tip} You may use Artisan's `dump-server` command to intercept all `dump` calls and display them in your console window instead of your browser.
-
 <a name="method-encrypt"></a>
 #### `encrypt()` {#collection-method}
 
