@@ -26,6 +26,7 @@
 - [Model Names Ending With Irregular Plurals](#model-names-ending-with-irregular-plurals)
 - [Custom Pivot Models With Incrementing IDs](#custom-pivot-models-with-incrementing-ids)
 - [Pheanstalk 4.0](#pheanstalk-4)
+- [Carbon 2.0](#carbon-2.0)
 </div>
 
 <a name="upgrade-5.8.0"></a>
@@ -630,6 +631,19 @@ The Nexmo and Slack Notification channels have been extracted into first-party p
 
     composer require laravel/nexmo-notification-channel
     composer require laravel/slack-notification-channel
+
+<a name="#carbon-2.0"></a>
+### Carbon 2.0
+
+**Likelihood Of Impact: Medium**
+
+Laravel now require Carbon minimum version "1.26.3" OR "2.0", which mean it will try to upgrade to Carbon 2.0 if no compatibility issues with any other packages are detected.
+
+You can find all breaking changes in [the migration guide to Carbon 2.0](https://carbon.nesbot.com/docs/#api-carbon-2).
+
+If needed, you can lock Carbon version to 1.26.3 by running :
+
+    composer require nesbot/carbon:^1.26.3 
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
