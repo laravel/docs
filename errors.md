@@ -27,14 +27,14 @@ For local development, you should set the `APP_DEBUG` environment variable to `t
 <a name="report-method"></a>
 ### The Report Method
 
-All exceptions are handled by the `App\Exceptions\Handler` class. This class contains two methods: `report` and `render`. We'll examine each of these methods in detail. The `report` method is used to log exceptions or send them to an external service like [Bugsnag](https://bugsnag.com) or [Sentry](https://github.com/getsentry/sentry-laravel). By default, the `report` method passes the exception to the base class where the exception is logged. However, you are free to log exceptions however you wish.
+All exceptions are handled by the `App\Exceptions\Handler` class. This class contains two methods: `report` and `render`. We'll examine each of these methods in detail. The `report` method is used to log exceptions or send them to an external service like [Flare](https://flareapp.io), [Bugsnag](https://bugsnag.com) or [Sentry](https://github.com/getsentry/sentry-laravel). By default, the `report` method passes the exception to the base class where the exception is logged. However, you are free to log exceptions however you wish.
 
 For example, if you need to report different types of exceptions in different ways, you may use the PHP `instanceof` comparison operator:
 
     /**
      * Report or log an exception.
      *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+     * This is a great spot to send exceptions to Flare, Sentry, Bugsnag, etc.
      *
      * @param  \Exception  $exception
      * @return void
