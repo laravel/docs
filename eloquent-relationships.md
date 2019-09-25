@@ -287,6 +287,31 @@ To define the inverse of a many-to-many relationship, you place another call to 
 
 As you can see, the relationship is defined exactly the same as its `User` counterpart, with the exception of referencing the `App\User` model. Since we're reusing the `belongsToMany` method, all of the usual table and key customization options are available when defining the inverse of many-to-many relationships.
 
+#### Pivot Tables: What are they?
+
+A pivot table is used for many to many relationships. Imagine that you have a User model and that users can be in different Departments. If each user can be apart of numerous departments, then it's not practical to store the list of Departments a user is part of in one database column, neither is it practical to store the list of a department's users in one column either.
+
+That's where pivot tables come in handy, you can setup a relationship between a User and a Department as a belongsToMany on either (or both) models.
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Department extends Model
+    {
+        /**
+         * The users that belong to the department.
+         */
+        public function users()
+        {
+            return $this->belongsToMany('App\User');
+        }
+    }
+
+
+
 #### Retrieving Intermediate Table Columns
 
 As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` object has many `Role` objects that it is related to. After accessing this relationship, we may access the intermediate table using the `pivot` attribute on the models:
