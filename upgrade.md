@@ -174,6 +174,13 @@ If you would like to release a lock without respecting its current owner, you ma
 
 In order to be fully compliant with `PSR-16` the return values of the `put` and `forever` methods of the `Illuminate\Contracts\Cache\Repository` contract and the return values of the `put`, `putMany` and `forever` methods of the `Illuminate\Contracts\Cache\Store` contract [have been changed](https://github.com/laravel/framework/pull/26726) from `void` to `bool`.
 
+<a name="#carbon-2.0"></a>
+### Carbon 2.0
+
+**Likelihood Of Impact: Medium**
+
+Laravel now supports both Carbon 1 and Carbon 2; therefore, Composer will try to upgrade to Carbon 2.0 if no other compatibility issues with any other packages are detected. Please review the [migration guide for Carbon 2.0](https://carbon.nesbot.com/docs/#api-carbon-2).
+
 <a name="collections"></a>
 ### Collections
 
@@ -631,19 +638,6 @@ The Nexmo and Slack Notification channels have been extracted into first-party p
 
     composer require laravel/nexmo-notification-channel
     composer require laravel/slack-notification-channel
-
-<a name="#carbon-2.0"></a>
-### Carbon 2.0
-
-**Likelihood Of Impact: Medium**
-
-Laravel now require Carbon minimum version "1.26.3" OR "2.0", which mean it will try to upgrade to Carbon 2.0 if no compatibility issues with any other packages are detected.
-
-You can find all breaking changes in [the migration guide to Carbon 2.0](https://carbon.nesbot.com/docs/#api-carbon-2).
-
-If needed, you can lock Carbon version to 1.26.3 by running :
-
-    composer require nesbot/carbon:^1.26.3 
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
