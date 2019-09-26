@@ -155,9 +155,6 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
         public function testBasicExample()
         {
             $response = $this->postJson('/user', ['name' => 'Sally']);
-            
-            // Which is a shorthand for:
-            // $response = $this->json('POST', '/user', ['name' => 'Sally']);
 
             $response
                 ->assertStatus(201)
