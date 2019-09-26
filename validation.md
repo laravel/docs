@@ -958,23 +958,23 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-regex"></a>
 #### regex:_pattern_
 
-The field under validation must match the given regular expression.
+驗證欄位值符合給定的正規表示式。
 
 Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
 
-**Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+**注意：**當使用 `regex` 規則時，你可能得使用陣列而不是 `|` 分隔符號來指定規則，特別是當正規表示式含有 `|` 字元時。
 
 <a name="rule-required"></a>
 #### required
 
-The field under validation must be present in the input data and not empty. A field is considered "empty" if one of the following conditions are true:
+驗證欄位必須有值且不為空值。欄位符合下方任一條件時為「空值」：
 
 <div class="content-list" markdown="1">
 
-- The value is `null`.
-- The value is an empty string.
-- The value is an empty array or empty `Countable` object.
-- The value is an uploaded file with no path.
+- 該值為 `null`。
+- 該值為空字串。
+- 該值為空陣列或空的 `Countable` 物件。
+- 該值為沒有路徑的上傳檔案。
 
 </div>
 
@@ -1000,32 +1000,32 @@ If you would like to construct a more complex condition for the `required_if` ru
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
 
-The field under validation must be present and not empty unless the _anotherfield_ field is equal to any _value_.
+如果指定的_其它欄位（ anotherfield ）_等於任何一個 _value_ 時，此欄位必須有值且不為空值。
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only if_ any of the other specified fields are present.
+如果指定的_任一_欄位有值，則此欄位必須有值且不為空值。
 
 <a name="rule-required-with-all"></a>
 #### required_with_all:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only if_ all of the other specified fields are present.
+如果指定的_所有_欄位都有值，則此欄位必須有值且不為空值。
 
 <a name="rule-required-without"></a>
 #### required_without:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only when_ any of the other specified fields are not present.
+如果_任一_指定的欄位不存在時，則此欄位必須有值且不為空值。
 
 <a name="rule-required-without-all"></a>
 #### required_without_all:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only when_ all of the other specified fields are not present.
+如果_所有_指定的欄位不存在時，則此欄位必須有值且不為空值。
 
 <a name="rule-same"></a>
 #### same:_field_
 
-The given _field_ must match the field under validation.
+驗證欄位值和指定的_欄位（ field ）_值相同。
 
 <a name="rule-size"></a>
 #### size:_value_
