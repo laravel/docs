@@ -904,18 +904,18 @@ The field under validation must be less than or equal to the given _field_. The 
 
 驗證檔案的 MIME 類型必須符合清單裡的副檔名之一。
 
-#### Basic Usage Of MIME Rule
+#### MIME 規則基本用法
 
     'photo' => 'mimes:jpeg,bmp,png'
 
-Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
+即便只需要指定副檔名，但此規則實際上透過讀取檔案內容，並猜測 MIME 類型來驗證。
 
-A full listing of MIME types and their corresponding extensions may be found at the following location: [https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+完整的 MIME 類型及對應的副檔名清單可以在下方連結找到：[https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
 <a name="rule-min"></a>
 #### min:_value_
 
-The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+驗證欄位值的大小是否小於或等於 _value_。字串、數值或是檔案大小的計算方式和 [`size`](#rule-size) 規則相同。
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
@@ -943,17 +943,17 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-nullable"></a>
 #### nullable
 
-The field under validation may be `null`. This is particularly useful when validating primitive such as strings and integers that can contain `null` values.
+驗證欄位值可以為 `null`。在驗證可能含有 `null` 值的基本型別（如字串或整數）時特別有用。
 
 <a name="rule-numeric"></a>
 #### numeric
 
-The field under validation must be numeric.
+驗證欄位值是否為數值。
 
 <a name="rule-present"></a>
 #### present
 
-The field under validation must be present in the input data but can be empty.
+驗證欄位一定要有值，但可為空值。
 
 <a name="rule-regex"></a>
 #### regex:_pattern_
