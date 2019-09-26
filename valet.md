@@ -70,21 +70,21 @@ Valet 只支援 MacOS，並且會要求你在本機環境上直接安裝 PHP 和
 <a name="installation"></a>
 ## 安裝
 
-**Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.**
+**Valet 的基本要求是 macOS 系統並安裝 [Homebrew](http://brew.sh/)。在安裝之前，你應該確認沒有像是 Apache 或 Nginx 的程式有占用到本機的 80 Port**
 
 <div class="content-list" markdown="1">
-- Install or update [Homebrew](https://brew.sh/) to the latest version using `brew update`.
-- Install PHP 7.3 using Homebrew via `brew install php`.
-- Install [Composer](https://getcomposer.org).
-- Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/vendor/bin` directory is in your system's "PATH".
-- Run the `valet install` command. This will configure and install Valet and DnsMasq, and register Valet's daemon to launch when your system starts.
+- 使用 `brew update` 來安裝或更新 [Homebrew](http://brew.sh/) 的最新的版本。
+- 使用 Homebrew 的 `brew install php` 指令來安裝 PHP 7.3
+- 安裝 [Composer](https://getcomposer.org).
+- 使用 Composer 的 `composer global require laravel/valet` 指令來安裝 Valet。並確認 `~/.composer/vendor/bin` 目錄有在你系統的 「PATH」。
+- 執行 `valet install` 指令。這指令會為你設定並安裝 Valet 和 DnsMasq，並於系統啟動時自動註冊守護行程。
 </div>
 
-Once Valet is installed, try pinging any `*.test` domain on your terminal using a command such as `ping foobar.test`. If Valet is installed correctly you should see this domain responding on `127.0.0.1`.
+Valet 一旦安裝好了，就可以在終端機上使用像是 `ping foobar.test` 指令來測試任何 `*.test` 網域的連線狀態。如果有成功安裝 Valet ，你應該會看到這個網域回應 `127.0.0.1`。
 
-Valet will automatically start its daemon each time your machine boots. There is no need to run `valet start` or `valet install` ever again once the initial Valet installation is complete.
+Valet 會在每次被啟動時自動開啟他的守護行程。一旦完成了第一次的 Valet 安裝，就不需要再執行 `valet start` 或 `valet install` 指令了。
 
-#### Using Another Domain
+#### 使用其它的網域
 
 By default, Valet serves your projects using the `.test` TLD. If you'd like to use another domain, you can do so using the `valet tld tld-name` command.
 
@@ -221,7 +221,7 @@ Some applications using other frameworks may depend on server environment variab
 `isStaticFile` 會去檢查傳入的請求是不是「靜態」檔案，像是圖像或樣式表。如果該檔案為靜態，該方法會回傳硬碟上的靜態檔案的完整路徑。如果傳入請求不是靜態檔案，該方法會回傳 `false`：
 
     /**
-     * Determine if the incoming request is for a static file.
+     * 檢查傳入的請求是否為靜態檔案。
      *
      * @param  string  $sitePath
      * @param  string  $siteName
@@ -244,7 +244,7 @@ Some applications using other frameworks may depend on server environment variab
 `frontControllerPath` 方法會回傳符合條件的完整路徑到應用程式的「前端控制器」，這通常是你的「index.php」或相同性質的檔案：
 
     /**
-     * Get the fully resolved path to the application's front controller.
+     * 取得符合條件的完整路徑到應用程式的前端控制器。
      *
      * @param  string  $sitePath
      * @param  string  $siteName
@@ -264,7 +264,7 @@ Some applications using other frameworks may depend on server environment variab
     class LocalValetDriver extends LaravelValetDriver
     {
         /**
-         * Determine if the driver serves the request.
+         * 檢查該驅動是否有被需要。
          *
          * @param  string  $sitePath
          * @param  string  $siteName
@@ -277,7 +277,7 @@ Some applications using other frameworks may depend on server environment variab
         }
 
         /**
-         * Get the fully resolved path to the application's front controller.
+         * 取得應用程式的前端控制器完整路徑。
          *
          * @param  string  $sitePath
          * @param  string  $siteName
