@@ -86,15 +86,16 @@ Valet 會在每次被啟動時自動開啟他的守護行程。一旦完成了�
 
 #### 使用其它的網域
 
-By default, Valet serves your projects using the `.test` TLD. If you'd like to use another domain, you can do so using the `valet tld tld-name` command.
+預設的 Valet 能為你的專案來使用 `.test` TLD。如果你不滿意這個網域，你能使用 `valet domain tld-name` 指令來使用想要的其它網域。
 
-For example, if you'd like to use `.app` instead of `.test`, run `valet tld app` and Valet will start serving your projects at `*.app` automatically.
+例如，如果你想要使用 `.app` 網域，而不是 `.test`。請執行 `valet domain app`，Valet 會自動在 `*.app` 網域來開始你的專案。
 
-#### Database
+#### 資料庫
 
-If you need a database, try MySQL by running `brew install mysql@5.7` on your command line. Once MySQL has been installed, you may start it using the `brew services start mysql@5.7` command. You can then connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
+如果你需要一個資料庫，請你在指令列上執行 `brew install mysql@5.7` 來安裝 MySQL。MySQL 一旦安裝好了，你就能使用 `brew services start mysql@5.7` 指令來啟動 MySQL。接著，你能使用 `root` 帳號與空字串的密碼來連線 `127.0.0.1` 的資料庫。
 
-#### PHP Versions
+#### PHP 版本
+
 
 Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Brew if it is not already installed:
 
@@ -103,57 +104,57 @@ Valet allows you to switch PHP versions using the `valet use php@version` comman
     valet use php
 
 <a name="upgrading"></a>
-### Upgrading
+### 升級
 
-You may update your Valet installation using the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
+你可以在終端機中使用 `composer global update` 來更新 Valet 安裝。在升級之後，最好執行一下 `valet install` 指令，讓 Valet 能夠針對設定檔來做額外的升級。
 
-#### Upgrading To Valet 2.0
+#### 升級到 Valet 2.0
 
-Valet 2.0 transitions Valet's underlying web server from Caddy to Nginx. Before upgrading to this version you should run the following commands to stop and uninstall the existing Caddy daemon:
+Valet 2.0 將 Valet 的底層網頁伺服器從 Caddy 移植到 Nginx。在升級到這個版本前，你應該執行下列指令來停止並移除現有的 Caddy 守護行程：
 
     valet stop
     valet uninstall
 
-Next, you should upgrade to the latest version of Valet. Depending on how you installed Valet, this is typically done through Git or Composer. If you installed Valet via Composer, you should use the following command to update to the latest major version:
+接著，你開始將 Valet 升級到最後版本。請依據你擅長的 Valet 安裝方式來升級，通常是使用 Git 或 Composer。如果你透過 Composer 來安裝 Valet，你應該使用以下指令來更新主要版本到最新版：
 
     composer global require laravel/valet
 
-Once the fresh Valet source code has been downloaded, you should run the `install` command:
+一旦下載完最新的 Valet 原始碼，你就能執行 `install` 指令：
 
     valet install
     valet restart
 
-After upgrading, it may be necessary to re-park or re-link your sites.
+在升級之後，可能會需要重新放置或連結你的專案。
 
 <a name="serving-sites"></a>
-## Serving Sites
+## 啟動專案
 
-Once Valet is installed, you're ready to start serving sites. Valet provides two commands to help you serve your Laravel sites: `park` and `link`.
+Valet 一旦安裝好了，你可以開始準備啟動專案。Valet 提供兩種指令來協助你啟動 Laravel 專案：`park` 和 `link`。
 
 <a name="the-park-command"></a>
-**The `park` Command**
+**`park` 指令**
 
 <div class="content-list" markdown="1">
-- Create a new directory on your Mac by running something like `mkdir ~/Sites`. Next, `cd ~/Sites` and run `valet park`. This command will register your current working directory as a path that Valet should search for sites.
-- Next, create a new Laravel site within this directory: `laravel new blog`.
-- Open `http://blog.test` in your browser.
+- 請先執行像是 `mkdir ~/Sites` 指令在你的 MacOS 上建立一個新的目錄。接著依序執行 `cd ~/Sites` 和 `valet park` 指令。這個指令會將當前執行目錄註冊為 Valet 搜尋專案所用的路徑。
+- 接下來，在這個目錄中建立一個新的 Laravel 專案：`laravel new blog`。
+- 在你的瀏覽器上開啟 `http://blog.test` 。
 </div>
 
-**That's all there is to it.** Now, any Laravel project you create within your "parked" directory will automatically be served using the `http://folder-name.test` convention.
+**就只有這些步驟！**現在任何在被「Park」標記的目錄中的 Laravel 專案會自動使用 `http://folder-name.test` 慣例來啟動。
 
 <a name="the-link-command"></a>
 **`link` 指令**
 
-The `link` command may also be used to serve your Laravel sites. This command is useful if you want to serve a single site in a directory and not the entire directory.
+`link` 指令也可以被用於啟動你的 Laravel 專案。這個指令有助於只啟動目錄中一個專案，而不是整個目錄。
 
 <div class="content-list" markdown="1">
-- To use the command, navigate to one of your projects and run `valet link app-name` in your terminal. Valet will create a symbolic link in `~/.config/valet/Sites` which points to your current working directory.
-- After running the `link` command, you can access the site in your browser at `http://app-name.test`.
+- 要使用該指令，請導航到其中一個專案，並在終端機中執行 `valet link app-name` 指令。Valet 會在 `~/.valet/Sites` 中建立一個指向當前專案目錄的符號連結。
+- 執行 `link` 指令後，你就能在瀏覽器的 `http://app-name.test` 連結來存取該專案。
 </div>
 
-To see a listing of all of your linked directories, run the `valet links` command. You may use `valet unlink app-name` to destroy the symbolic link.
+若要查詢所有已連結目錄的清單，請執行 `valet links` 指令。你可以使用 `valet unlink app-name` 指令來取消某個連結符號。
 
-> {tip} You can use `valet link` to serve the same project from multiple (sub)domains. To add a subdomain or another domain to your project run `valet link subdomain.app-name` from the project folder.
+> {tip} 你能從多個（子）網域中使用 `valet link` 來啟動想同的專案。若要將子網域或另一個網域新增到專案中，請從專案資料夾中執行 `valet link subdomain.app-name` 指令。
 
 <a name="securing-sites"></a>
 **使用 TLS 保護**
