@@ -1030,7 +1030,7 @@ If you would like to construct a more complex condition for the `required_if` ru
 <a name="rule-size"></a>
 #### size:_value_
 
-The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For an array, _size_ corresponds to the `count` of the array. For files, _size_ corresponds to the file size in kilobytes.
+驗證欄位值的大小需符合給定 _value_ 值。對於字串來說，_value_ 為字元數。對於數字來說，_value_ 為指定的整數值。對陣列來說，_size_ 對應陣列的 `count`。對檔案來說，_size_ 對應到的是檔案大小（單位 kb ）。
 
 <a name="rule-starts-with"></a>
 #### starts_with:_foo_,_bar_,...
@@ -1040,35 +1040,35 @@ The field under validation must start with one of the given values.
 <a name="rule-string"></a>
 #### string
 
-The field under validation must be a string. If you would like to allow the field to also be `null`, you should assign the `nullable` rule to the field.
+驗證欄位值的型別是否為字串。如果想允許欄位可為 `null`，可以指定 `nullable` 規則給欄位。
 
 <a name="rule-timezone"></a>
 #### timezone
 
-The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function.
+驗證欄位值是否為有效的時區，會根據 PHP 的 `timezone_identifiers_list` 函式來判斷。
 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
 The field under validation must not exist within the given database table.
 
-**Specifying A Custom Column Name:**
+**指定自訂的欄位名稱：**
 
-The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the field name will be used.
+在給定的資料表，驗證欄位中必須是唯一的。如果沒有指定 `column`，將會使用欄位本身的名稱。
 
     'email' => 'unique:users,email_address'
 
-**Custom Database Connection**
+**自訂資料庫連線**
 
-Occasionally, you may need to set a custom connection for database queries made by the Validator. As seen above, setting `unique:users` as a validation rule will use the default database connection to query the database. To override this, specify the connection and the table name using "dot" syntax:
+有時候你可能需要驗證器透過自訂的連線來對資料庫進行查詢。如上面所示，設定 `unique:users` 作為驗證規則，會透過預設資料庫連線來做資料庫查詢。如果要覆寫，用「.」語法來指定連線跟資料表名稱：
 
     'email' => 'unique:connection.users,email_address'
 
-**Forcing A Unique Rule To Ignore A Given ID:**
+**強迫 Unique 規則忽略特定 ID：**
 
-Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. You will probably want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address.
+有時候會希望在驗證欄位的時候忽略給定的 ID。例如，在「更新個人資料」時包含使用者名稱、信箱和所在區域。當然，你會想要驗證 e-mail 是否為唯一的。但如果使用者只更改名稱欄位而沒有異動 e-mail 欄位，不應該拋出驗證錯誤，因為使用者已經是這個 e-mail 的擁有者。
 
-To instruct the validator to ignore the user's ID, we'll use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit the rules:
+我們會用 `Rule` 類別來流暢地定義規則，來指示驗證器忽略使用者 ID。在這個範例中，我們同時也使用陣列而不是 `|` 字元來分隔規則：
 
     use Illuminate\Validation\Rule;
 
@@ -1085,7 +1085,7 @@ Instead of passing the model key's value to the `ignore` method, you may pass th
 
     Rule::unique('users')->ignore($user)
 
-If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:
+如果資料表使用的主鍵名稱不是 `id`，可以呼叫 `ignore` 方法來指定主鍵欄位名稱：
 
     Rule::unique('users')->ignore($user->id, 'user_id')
 
@@ -1093,9 +1093,9 @@ By default, the `unique` rule will check the uniqueness of the column matching t
 
     Rule::unique('users', 'email_address')->ignore($user->id),
 
-**Adding Additional Where Clauses:**
+**增加額外的 Where 語句：**
 
-You may also specify additional query constraints by customizing the query using the `where` method. For example, let's add a constraint that verifies the `account_id` is `1`:
+也可以使用 `where` 方法增加額外的限制來自訂查詢。例如，加上一個限制 `account_id` 為 `1` 的限制：
 
     'email' => Rule::unique('users')->where(function ($query) {
         return $query->where('account_id', 1);
@@ -1104,7 +1104,7 @@ You may also specify additional query constraints by customizing the query using
 <a name="rule-url"></a>
 #### url
 
-The field under validation must be a valid URL.
+驗證欄位值必須符合 URL 格式。
 
 <a name="rule-uuid"></a>
 #### uuid
@@ -1112,36 +1112,36 @@ The field under validation must be a valid URL.
 The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) universally unique identifier (UUID).
 
 <a name="conditionally-adding-rules"></a>
-## Conditionally Adding Rules
+## 依條件增加規則
 
 #### Validating When Present
 
-In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
+在某些情況下，你可能只想在輸入資料中有此欄位時才進行驗證。只要增加 `sometimes` 規則到進規則清單中，就可以快速達成：
 
     $v = Validator::make($data, [
         'email' => 'sometimes|required|email',
     ]);
 
-In the example above, the `email` field will only be validated if it is present in the `$data` array.
+在上面的範例中，`email` 欄位的驗證，只會在 `$data` 陣列有此欄位才會進行。
 
 > {tip} If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields)
 
-#### Complex Conditional Validation
+#### 複雜的條件驗證
 
-Sometimes you may wish to add validation rules based on more complex conditional logic. For example, you may wish to require a given field only if another field has a greater value than 100. Or, you may need two fields to have a given value only when another field is present. Adding these validation rules doesn't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
+有時候你可能希望以更複雜的條件邏輯來增加驗證規則。例如，你可以希望某個欄位，在另一個欄位的值超過 100 時才為必填。或者當某個指定欄位有值時，另外兩個欄位要符合特定值。增加這樣的驗證條件並不痛苦。首先，利用你熟悉的 _static rules_ 建立一個 `Validator` 實例：
 
     $v = Validator::make($data, [
         'email' => 'required|email',
         'games' => 'required|numeric',
     ]);
 
-Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game resale shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
+假設我們的網頁應用程式是專為遊戲收藏家所設計。如果遊戲收藏家收藏超過一百款遊戲，我們希望他們說明為什麼他們擁有這麼多遊戲。像是，可能他們經營一家二手遊戲商店，或是他們可能只是愛收集。為了在特定條件下加入此驗證需求，我們可以在 `Validator` 實例使用 `sometimes` 方法。
 
     $v->sometimes('reason', 'required|max:500', function ($input) {
         return $input->games >= 100;
     });
 
-The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
+傳入 `sometimes` 方法的第一個參數，是我們要依條件驗證的欄位名稱。第二個參數是我們想加入的驗證規則。如果第三個參數傳入的`閉包`回傳 `true`，此規則就會被加入。這個方法可以輕鬆的建立複雜的條件驗證。甚至可以一次對多個欄位增加條件式驗證：
 
     $v->sometimes(['reason', 'cost'], 'required', function ($input) {
         return $input->games >= 100;
@@ -1150,40 +1150,40 @@ The first argument passed to the `sometimes` method is the name of the field we 
 > {tip} The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files.
 
 <a name="validating-arrays"></a>
-## Validating Arrays
+## 驗證陣列
 
-Validating array based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
+驗證陣列類型的表單輸入欄位並不難。可以使用「點符號」來驗證陣列中的屬性。比如說，如果傳入的 HTTP 請求包含 `photos[profile]` 欄位，可以這樣驗證：
 
     $validator = Validator::make($request->all(), [
         'photos.profile' => 'required|image',
     ]);
 
-You may also validate each element of an array. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
+也可以驗證陣列中的每個元素。比如這樣做可以驗證給定的陣列輸入欄位中的 e-mail 都是唯一的。
 
     $validator = Validator::make($request->all(), [
         'person.*.email' => 'email|unique:users',
         'person.*.first_name' => 'required_with:person.*.last_name',
     ]);
 
-Likewise, you may use the `*` character when specifying your validation messages in your language files, making it a breeze to use a single validation message for array based fields:
+同樣也可以在語系檔中用 `*` 字元來來定義驗證訊息，輕鬆的讓陣列欄位利用單個驗證訊息。
 
     'custom' => [
         'person.*.email' => [
-            'unique' => 'Each person must have a unique e-mail address',
+            'unique' => '每個人都要有唯一的 e-mail 位址',
         ]
     ],
 
 <a name="custom-validation-rules"></a>
-## Custom Validation Rules
+## 自訂驗證規則
 
 <a name="using-rule-objects"></a>
-### Using Rule Objects
+### 使用規則物件
 
-Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you may use the `make:rule` Artisan command. Let's use this command to generate a rule that verifies a string is uppercase. Laravel will place the new rule in the `app/Rules` directory:
+Laravel 提供多種有用的驗證規則；但你可能想要定義一些自己的規則。一種註冊自訂驗證規則的方式是使用規則物件。使用 `make:rule` Artisan 指令來產生新的規則物件。讓我們用這個指令來產生一個驗證字串是否為大寫的規則。Laravel 會把新的規則放在 `app/Rules` 目錄下：
 
     php artisan make:rule Uppercase
 
-Once the rule has been created, we are ready to define its behavior. A rule object contains two methods: `passes` and `message`. The `passes` method receives the attribute value and name, and should return `true` or `false` depending on whether the attribute value is valid or not. The `message` method should return the validation error message that should be used when validation fails:
+規則被建立後，我們就可以來定義它的行為。一個規則物件包含兩個方法：`passes` 和 `message`。`passes` 方法接收屬性值和名稱，並根據屬性值是否合法來回傳 `true` 或 `false`。`message` 方法應該回傳驗證失敗時使用的驗證錯誤訊息。
 
     <?php
 
@@ -1194,7 +1194,7 @@ Once the rule has been created, we are ready to define its behavior. A rule obje
     class Uppercase implements Rule
     {
         /**
-         * Determine if the validation rule passes.
+         * 判斷驗證規則是否通過。
          *
          * @param  string  $attribute
          * @param  mixed  $value
@@ -1206,7 +1206,7 @@ Once the rule has been created, we are ready to define its behavior. A rule obje
         }
 
         /**
-         * Get the validation error message.
+         * 取得驗證錯誤訊息。
          *
          * @return string
          */
@@ -1216,7 +1216,7 @@ Once the rule has been created, we are ready to define its behavior. A rule obje
         }
     }
 
-You may call the `trans` helper from your `message` method if you would like to return an error message from your translation files:
+如果想要從翻譯檔中取回錯誤訊息，也可以在 `message` 方法中呼叫 `trans` 輔助函式。
 
     /**
      * Get the validation error message.
@@ -1228,7 +1228,7 @@ You may call the `trans` helper from your `message` method if you would like to 
         return trans('validation.uppercase');
     }
 
-Once the rule has been defined, you may attach it to a validator by passing an instance of the rule object with your other validation rules:
+定義好規則後，可以藉由傳遞規則物件實例來附加到其他的驗證規則中：
 
     use App\Rules\Uppercase;
 
@@ -1254,9 +1254,9 @@ If you only need the functionality of a custom rule once throughout your applica
     ]);
 
 <a name="using-extensions"></a>
-### Using Extensions
+### 使用擴充功能
 
-Another method of registering custom validation rules is using the `extend` method on the `Validator` [facade](/docs/{{version}}/facades). Let's use this method within a [service provider](/docs/{{version}}/providers) to register a custom validation rule:
+另一種註冊自訂驗證規則的方法是使用 `Validator` [facade](/docs/{{version}}/facades) 的 `extend` 方法。讓我們在[服務提供者](/docs/{{version}}/providers)中使用這個方法來自訂註冊的驗證規則：
 
     <?php
 
@@ -1268,7 +1268,7 @@ Another method of registering custom validation rules is using the `extend` meth
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register any application services.
+         * 註冊服務提供者。
          *
          * @return void
          */
@@ -1278,7 +1278,7 @@ Another method of registering custom validation rules is using the `extend` meth
         }
 
         /**
-         * Bootstrap any application services.
+         * 啟動所有應用程式服務。
          *
          * @return void
          */
@@ -1289,27 +1289,26 @@ Another method of registering custom validation rules is using the `extend` meth
             });
         }
     }
+自訂的驗證閉包接收四個參數：要被驗證的屬性名稱 `$attribute`，屬性的值 `$value`，傳入驗證規則的參數陣列 `$parameters`，及 `Validator `實例。
 
-The custom validator Closure receives four arguments: the name of the `$attribute` being validated, the `$value` of the attribute, an array of `$parameters` passed to the rule, and the `Validator` instance.
-
-You may also pass a class and method to the `extend` method instead of a Closure:
+除了使用閉包，你也可以傳入類別和方法到 `extend` 方法中：
 
     Validator::extend('foo', 'FooValidator@validate');
 
-#### Defining The Error Message
+#### 定義錯誤訊息
 
-You will also need to define an error message for your custom rule. You can do so either using an inline custom message array or by adding an entry in the validation language file. This message should be placed in the first level of the array, not within the `custom` array, which is only for attribute-specific error messages:
+在自訂規則中也需要定義錯誤訊息。可以使用行內的自訂訊息陣列或在驗證語系檔中加入加入一個條目。這個訊息應該被放在陣列的第一層，而不是放在對應特定屬性錯誤訊息的 `custom` 陣列：
 
-    "foo" => "Your input was invalid!",
+    "foo" => "你的輸入無效！",
 
-    "accepted" => "The :attribute must be accepted.",
+    "accepted" => ":attribute 必須被接受。",
 
-    // The rest of the validation error messages...
+    // 其餘的驗證錯誤訊息...
 
-When creating a custom validation rule, you may sometimes need to define custom placeholder replacements for error messages. You may do so by creating a custom Validator as described above then making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
+在建立自訂的驗證規則時，你可能需要幫錯誤訊息定義自訂的佔位符。用如上所述的方式建立自訂的驗證器後，呼叫 `Validator` facade 的 `replacer` 方法。可以在[服務提供者](/docs/{{version}}/providers)中的 `boot` 方法來做這些事：
 
     /**
-     * Bootstrap any application services.
+     * 啟動所有應用程式服務。
      *
      * @return void
      */
@@ -1323,9 +1322,9 @@ When creating a custom validation rule, you may sometimes need to define custom 
     }
 
 <a name="implicit-extensions"></a>
-### Implicit Extensions
+### 隱式擴充功能
 
-By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom extensions, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:
+預設情況下，當被驗證的屬性，如同 [`required`](#rule-required) 規則定義，不存在或包含空值，則一般的驗證規則，包含自定擴充功能，都不會被執行。例如，[`unique`](#rule-unique) 規則在值為空字串時將不被執行：
 
     $rules = ['name' => 'unique:users,name'];
 
@@ -1333,13 +1332,13 @@ By default, when an attribute being validated is not present or contains an empt
 
     Validator::make($input, $rules)->passes(); // true
 
-For a rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create such an "implicit" extension, use the `Validator::extendImplicit()` method:
+若要當屬性為空時依然執行該規則，那麼該規則必須暗示屬性為必填。要建立這樣的一個「隱式」擴充功能，使用 `Validator::extendImplicit()` 方法：
 
     Validator::extendImplicit('foo', function ($attribute, $value, $parameters, $validator) {
         return $value == 'foo';
     });
 
-> {note} An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
+> {note} 一個「隱式」擴充功能只會_暗示_該屬性為必填。你可以決定它實際會讓缺失或空的屬性失效。
 
 #### Implicit Rule Objects
 
