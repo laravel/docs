@@ -192,6 +192,30 @@ If you would like to verify that the given array is an **exact** match for the J
         }
     }
 
+<a name="verifying-json-paths"></a>
+### Verifying JSON Paths
+
+If you would like to verify that the JSON response contains the given data at the specified path, you should use the `assertJsonPath` method:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $response = $this->json('POST', '/user', ['name' => 'Sally']);
+
+            $response
+                ->assertStatus(201)
+                ->assertJsonPath('team.owner.name', 'foo')
+        }
+    }
+
 <a name="testing-file-uploads"></a>
 ## Testing File Uploads
 
@@ -274,6 +298,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertJsonMissing](#assert-json-missing)
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
+[assertJsonPath](#assert-json-path)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertLocation](#assert-location)
@@ -414,6 +439,13 @@ Assert that the response does not contain the exact JSON fragment:
 Assert that the response has no JSON validation errors for the given keys:
 
     $response->assertJsonMissingValidationErrors($keys);
+
+<a name="assert-json-path"></a>
+#### assertJsonPath
+
+Assert that the response contains the given data at the specified path:
+
+    $response->assertJsonPath($path, array $data);
 
 <a name="assert-json-structure"></a>
 #### assertJsonStructure
