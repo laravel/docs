@@ -71,6 +71,18 @@ If you need to require other PHP files before your task is executed, you may use
         # ...
     @endtask
 
+You can also import other Envoy files so their stories and tasks are added to yours. You may use the `@import` directive at the top of your `Envoy.blade.php` file:
+
+    @import('package/Envoy.blade.php')
+
+And the `package/Envoy.php` might contain:
+
+    @task('foo')
+        # ...
+    @endtask
+
+Which you then may run with `envoy run foo`.
+
 <a name="variables"></a>
 ### Variables
 
