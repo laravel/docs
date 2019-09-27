@@ -192,6 +192,30 @@ If you would like to verify that the given array is an **exact** match for the J
         }
     }
 
+<a name="verifying-json-paths"></a>
+### Verifying JSON Paths
+
+If you would like to verify that the JSON response contains the given data at the specified path, you should use the `assertJsonPath` method:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $response = $this->json('POST', '/user', ['name' => 'Sally']);
+
+            $response
+                ->assertStatus(201)
+                ->assertJsonPath('user.team.name', 'foo')
+        }
+    }
+
 <a name="testing-file-uploads"></a>
 ## Testing File Uploads
 
