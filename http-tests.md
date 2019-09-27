@@ -195,7 +195,7 @@ If you would like to verify that the given array is an **exact** match for the J
 <a name="verifying-json-paths"></a>
 ### Verifying JSON Paths
 
-If you would like to verify that the JSON response contains the given data at the specified path, you should use the `assertJsonPath` method:
+If you would like to verify that the JSON response contains some given data at a specified path, you should use the `assertJsonPath` method:
 
     <?php
 
