@@ -1,57 +1,57 @@
-# Directory Structure
+# 目錄結構
 
-- [Introduction](#introduction)
-- [The Root Directory](#the-root-directory)
-    - [The `app` Directory](#the-root-app-directory)
-    - [The `bootstrap` Directory](#the-bootstrap-directory)
-    - [The `config` Directory](#the-config-directory)
-    - [The `database` Directory](#the-database-directory)
-    - [The `public` Directory](#the-public-directory)
-    - [The `resources` Directory](#the-resources-directory)
-    - [The `routes` Directory](#the-routes-directory)
-    - [The `storage` Directory](#the-storage-directory)
-    - [The `tests` Directory](#the-tests-directory)
-    - [The `vendor` Directory](#the-vendor-directory)
-- [The App Directory](#the-app-directory)
+- [介紹](#introduction)
+- [根目錄](#the-root-directory)
+    - [`app` 目錄](#the-root-app-directory)
+    - [`bootstrap` 目錄](#the-bootstrap-directory)
+    - [`config` 目錄](#the-config-directory)
+    - [`database` 目錄](#the-database-directory)
+    - [`public` 目錄](#the-public-directory)
+    - [`resources` 目錄](#the-resources-directory)
+    - [`routes` 目錄](#the-routes-directory)
+    - [`storage` 目錄](#the-storage-directory)
+    - [`tests` 目錄](#the-tests-directory)
+    - [`vendor` 目錄](#the-vendor-directory)
+- [App 目錄](#the-app-directory)
     - [The `Broadcasting` Directory](#the-broadcasting-directory)
-    - [The `Console` Directory](#the-console-directory)
-    - [The `Events` Directory](#the-events-directory)
-    - [The `Exceptions` Directory](#the-exceptions-directory)
-    - [The `Http` Directory](#the-http-directory)
-    - [The `Jobs` Directory](#the-jobs-directory)
-    - [The `Listeners` Directory](#the-listeners-directory)
-    - [The `Mail` Directory](#the-mail-directory)
-    - [The `Notifications` Directory](#the-notifications-directory)
-    - [The `Policies` Directory](#the-policies-directory)
-    - [The `Providers` Directory](#the-providers-directory)
-    - [The `Rules` Directory](#the-rules-directory)
+    - [`Console` 目錄](#the-console-directory)
+    - [`Events` 目錄](#the-events-directory)
+    - [`Exceptions` 目錄](#the-exceptions-directory)
+    - [`Http` 目錄](#the-http-directory)
+    - [`Jobs` 目錄](#the-jobs-directory)
+    - [`Listeners` 目錄](#the-listeners-directory)
+    - [`Mail` 目錄](#the-mail-directory)
+    - [`Notifications` 目錄](#the-notifications-directory)
+    - [`Policies` 目錄](#the-policies-directory)
+    - [`Providers` 目錄](#the-providers-directory)
+    - [`Rules` 目錄](#the-rules-directory)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-The default Laravel application structure is intended to provide a great starting point for both large and small applications. But you are free to organize your application however you like. Laravel imposes almost no restrictions on where any given class is located - as long as Composer can autoload the class.
+Laravel 預設的應用程式結構主旨是為大型或小型應用程式提供一個好的起始點。當然，你可以自由的依據你的喜好來規劃應用程式。Laravel 幾乎不會去不限制任何給定類別的位置，前提是 Composer 要能夠自動載入這個類別。
 
-#### Where Is The Models Directory?
+#### 模型目錄在哪裡?
 
-When getting started with Laravel, many developers are confused by the lack of a `models` directory. However, the lack of such a directory is intentional. We find the word "models" ambiguous since it means many different things to many different people. Some developers refer to an application's "model" as the totality of all of its business logic, while others refer to "models" as classes that interact with a relational database.
+許多開發者在剛開始接觸 Laravel 時會對於沒有 `models` 目錄感到疑惑。然而，這是刻意要廢除這個目錄的。我們發現「模型」的文字定位非常模糊，因為對於許多不同的人眼裡會是許多不同的事物。有些開發者會把應用程式的「模型」當作商業邏輯的總和，而其他則把「模型」作為與關聯資料庫交換資料的類別。
 
-For this reason, we choose to place Eloquent models in the `app` directory by default, and allow the developer to place them somewhere else if they choose.
+出於這個原因，我們選擇將 Eloquent 模型預設放在 `app` 目錄中，並可以讓開發者將它們放到其他地方。
 
 <a name="the-root-directory"></a>
-## The Root Directory
+## 根目錄
 
 <a name="the-root-app-directory"></a>
-#### The App Directory
+#### App 目錄
 
-The `app` directory contains the core code of your application. We'll explore this directory in more detail soon; however, almost all of the classes in your application will be in this directory.
+`app` 目錄，正如你預期的那樣，放置應用程式的核心程式碼。我們會深入探討這個目錄。然而，幾乎所有應用程式中的類別都會放在這個目錄。
 
 <a name="the-bootstrap-directory"></a>
-#### The Bootstrap Directory
+#### Bootstrap 目錄
 
-The `bootstrap` directory contains the `app.php` file which bootstraps the framework. This directory also houses a `cache` directory which contains framework generated files for performance optimization such as the route and services cache files.
+`bootstrap` 目錄放置啟動框架的 `app.php` 檔案。這個目錄也放置一個 `cache` 目錄，其中包含框架為效能最佳化所產生的檔案，像是路由和服務快取的檔案。
 
 <a name="the-config-directory"></a>
-#### The Config Directory
+#### Config 目錄
 
 The `config` directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
 
