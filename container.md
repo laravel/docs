@@ -142,6 +142,7 @@ Sometimes you may have two classes that utilize the same interface, but you wish
 
     use App\Http\Controllers\PhotoController;
     use App\Http\Controllers\VideoController;
+    use App\Http\Controllers\UploadController;
     use Illuminate\Contracts\Filesystem\Filesystem;
     use Illuminate\Support\Facades\Storage;
 
