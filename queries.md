@@ -397,6 +397,8 @@ The `whereNotNull` method verifies that the column's value is not `NULL`:
     $users = DB::table('users')
                         ->whereNotNull('updated_at')
                         ->get();
+                        
+You can pass array of column names to these methods so they verify all columns are `NULL` / not `NULL`. 
 
 **whereDate / whereMonth / whereDay / whereYear / whereTime**
 
