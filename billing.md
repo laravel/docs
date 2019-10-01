@@ -127,7 +127,7 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
 <a name="logging"></a>
 #### Logging
 
-Cashier gives you the ability to set a custom logger for all Stripe related exceptions. You can set a log channel using the `CASHIER_LOGGER` environment variable:
+Cashier allows you to specify the log channel to be used when logging all Stripe related exceptions. You may specify the log channel using the `CASHIER_LOGGER` environment variable:
 
     CASHIER_LOGGER=default
 
