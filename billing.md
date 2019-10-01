@@ -123,6 +123,12 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
 
 > {note} In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
 
+#### Logging
+
+Cashier gives you the ability to set a custom logger for all Stripe related exceptions. You can set a log channel using the `CASHIER_LOGGER` environment variable:
+
+    CASHIER_LOGGER=default
+
 <a name="customers"></a>
 ## Customers
 
