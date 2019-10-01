@@ -403,7 +403,7 @@ Assert that the given header is not present on the response:
 
 Assert that the response contains the given JSON data:
 
-    $response->assertJson(array $data);
+    $response->assertJson(array $data, $strict = false);
 
 <a name="assert-json-count"></a>
 #### assertJsonCount
