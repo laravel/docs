@@ -765,7 +765,7 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 - `filter`: `FilterEmailValidation`
 </div>
 
-The `filter` validator, which uses PHP's `filter_var` function under the hood, ships with Laravel and is Laravel's pre-5.8 behavior.
+The `filter` validator, which uses PHP's `filter_var` function under the hood, ships with Laravel and is Laravel's pre-5.8 behavior. The `dns` and `spoof` validators require the PHP Internationalization extension to be installed. On a Linux system you can usually just install the `php-intl` package.
 
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...
