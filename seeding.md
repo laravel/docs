@@ -100,9 +100,9 @@ Now you may use the `db:seed` Artisan command to seed your database. By default,
 
     php artisan db:seed --class=UsersTableSeeder
 
-You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations. This command is useful for completely re-building your database:
+You may also seed your database using the `migrate:fresh` command, which will drop all tables and re-run all of your migrations. This command is useful for completely re-building your database:
 
-    php artisan migrate:refresh --seed
+    php artisan migrate:fresh --seed
 
 <a name="forcing-seeding-production"></a>
 #### Forcing Seeders To Run In Production
