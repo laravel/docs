@@ -31,6 +31,7 @@
 - [SMS Notifications](#sms-notifications)
     - [Prerequisites](#sms-prerequisites)
     - [Formatting SMS Notifications](#formatting-sms-notifications)
+    - [Formatting Shortcode Notifications](#formatting-shortcode-notifications)
     - [Customizing The "From" Number](#customizing-the-from-number)
     - [Routing SMS Notifications](#routing-sms-notifications)
 - [Slack Notifications](#slack-notifications)
@@ -620,6 +621,27 @@ If a notification supports being sent as an SMS, you should define a `toNexmo` m
     {
         return (new NexmoMessage)
                     ->content('Your SMS message content');
+    }
+
+<a name="formatting-shortcode-notifications"></a>
+### Formatting Shortcode Notifications
+
+Laravel also supports sending shortcode notifications which are pre-defined templates in your Nexmo account. You can indicate the type of notication - `alert`, `2fa`, or `marketing` as well as the custom values that will populate the template. Much like [routing SMS Notifications](#routing-sms-notifications) you should also implement `routeNotificationForShortcode` on your notifiable model.
+
+    /**
+     * Get the Nexmo / Shortcode representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toShortcode($notifiable)
+    {
+        return [
+            'type' => 'alert',
+            'custom' => [
+                'code' => 'ABC123',
+            ];
+        ];
     }
 
 #### Unicode Content
