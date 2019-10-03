@@ -1,16 +1,17 @@
-# Console Tests
+# 主控台測試
 
-- [Introduction](#introduction)
-- [Expecting Input / Output](#expecting-input-and-output)
+- [前言](#前言)
+- [期望輸入/輸出](#%e6%9c%9f%e6%9c%9b%e8%bc%b8%e5%85%a5%2f%e8%bc%b8%e5%87%ba)
 
-## Introduction
+## 前言
 
-In addition to simplifying HTTP testing, Laravel provides a simple API for testing console applications that ask for user input.
+除了簡化HTTP測試之外，Laravel還提供了一個簡單的API，用於測試使用者請求輸入主控台應用。
 
-<a name="expecting-input-and-output"></a>
-## Expecting Input / Output
+<span id="期望輸入/輸出"></span>
 
-Laravel allows you to easily "mock" user input for your console commands using the `expectsQuestion` method. In addition, you may specify the exit code and text that you expect to be output by the console command using the `assertExitCode` and `expectsOutput` methods. For example, consider the following console command:
+## 期望輸入/輸出
+
+Laravel允許您使用 `expectsQuestion` 方法輕鬆地 "模擬" 使用者輸入控制台命令。 此外，您可以使用 `assertExitCode` 及 `expectsOutput` 方法指定主控台命令希望輸出的退出指令和文字。 請參考以下的主控台命令範例：
 
     Artisan::command('question', function () {
         $name = $this->ask('What is your name?');
@@ -24,7 +25,7 @@ Laravel allows you to easily "mock" user input for your console commands using t
         $this->line('Your name is '.$name.' and you program in '.$language.'.');
     });
 
-You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, and `assertExitCode` methods:
+您可以利用 `expectsQuestion`、`expectsOutput` 及 `assertExitCode` 的測試方法來測試命令：
 
     /**
      * Test a console command.
