@@ -1,26 +1,26 @@
-# Artisan Console
+# Artisan 指令列
 
-- [Introduction](#introduction)
+- [介紹](#introduction)
     - [Tinker (REPL)](#tinker)
-- [Writing Commands](#writing-commands)
-    - [Generating Commands](#generating-commands)
-    - [Command Structure](#command-structure)
-    - [Closure Commands](#closure-commands)
-- [Defining Input Expectations](#defining-input-expectations)
-    - [Arguments](#arguments)
-    - [Options](#options)
-    - [Input Arrays](#input-arrays)
-    - [Input Descriptions](#input-descriptions)
-- [Command I/O](#command-io)
-    - [Retrieving Input](#retrieving-input)
-    - [Prompting For Input](#prompting-for-input)
-    - [Writing Output](#writing-output)
-- [Registering Commands](#registering-commands)
-- [Programmatically Executing Commands](#programmatically-executing-commands)
-    - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
+- [撰寫指令](#writing-commands)
+    - [產生指令](#generating-commands)
+    - [指令結構](#command-structure)
+    - [閉包指令](#closure-commands)
+- [定義預期的輸入](#defining-input-expectations)
+    - [參數](#arguments)
+    - [選項](#options)
+    - [輸入陣列](#input-arrays)
+    - [輸入說明](#input-descriptions)
+- [指令 I/O](#command-io)
+    - [取得輸入](#retrieving-input)
+    - [互動式輸入](#prompting-for-input)
+    - [自訂輸出](#writing-output)
+- [註冊指令](#registering-commands)
+- [使用程式碼呼叫指令](#programmatically-executing-commands)
+    - [在指令中呼叫其他指令](#calling-commands-from-other-commands)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
 Artisan is the command-line interface included with Laravel. It provides a number of helpful commands that can assist you while you build your application. To view a list of all available Artisan commands, you may use the `list` command:
 
