@@ -76,7 +76,7 @@ Typically, Tinker automatically aliases classes as you require them in Tinker. H
 
 > {tip} 為了讓程式碼更有效的複用，最好讓終端指令的程式碼保持輕量化，並讓它們緩載到應用程式服務的任務完成。在下列範例中，請注意！我們注入了一個服務類別來完成發送信件的「重任」。
 
-Let's take a look at an example command. Note that we are able to inject any dependencies we need into the command's `handle` method. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies that are type-hinted in this method's signature:
+讓我們看一個例子。請注意，我們可以在建構子中注入任何需要的依賴，Laravel 的[服務容器](/docs/{{version}}/container)將會自動注入任何型別提示的依賴到建構子中：
 
     <?php
 
@@ -127,10 +127,10 @@ Let's take a look at an example command. Note that we are able to inject any dep
 <a name="closure-commands"></a>
 ### 閉包指令
 
-Closure based commands provide an alternative to defining console commands as classes. In the same way that route Closures are an alternative to controllers, think of command Closures as an alternative to command classes. Within the `commands` method of your `app/Console/Kernel.php` file, Laravel loads the `routes/console.php` file:
+基於閉包的指令提供了有別於使用類別定義終端指令的方法。簡單的說，路由閉包是另一種撰寫指令的方式。在 `app/Console/Kernel.php` 檔案的 `commands` 這個方法中，Laravel 會載入 `routes/console.php` 這個檔案：
 
     /**
-     * Register the Closure based commands for the application.
+     * 為應用程式註冊基於閉包的指令
      *
      * @return void
      */
@@ -138,18 +138,18 @@ Closure based commands provide an alternative to defining console commands as cl
     {
         require base_path('routes/console.php');
     }
-
-Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your Closure based routes using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a Closure which receives the commands arguments and options:
+    
+即使這個檔案沒有定義 HTTP 路由，它仍可以透過路由終端定義到應用程式中。在這個檔案中，你可以使用 `Artisan::command` 這個方法定義所有基於閉包的路由。`command` 方法可以接受兩個參數：其一是[指令命名](#defining-input-expectations)，另一個取得指令參數與選項的閉包：
 
     Artisan::command('build {project}', function ($project) {
         $this->info("Building {$project}!");
     });
 
-The Closure is bound to the underlying command instance, so you have full access to all of the helper methods you would typically be able to access on a full command class.
+因為閉包綁定最底層的指令實例，所以你完全可以使用指令類別的所有輔助方法
 
-#### Type-Hinting Dependencies
+#### 型別提示
 
-In addition to receiving your command's arguments and options, command Closures may also type-hint additional dependencies that you would like resolved out of the [service container](/docs/{{version}}/container):
+除了接收指令參數與選項外，指令閉包還可以使用型別提示從[服務容器](/docs/{{version}}/container)中注入所需的任何依賴：
 
     use App\DripEmailer;
     use App\User;
@@ -158,7 +158,7 @@ In addition to receiving your command's arguments and options, command Closures 
         $drip->send(User::find($user));
     });
 
-#### Closure Command Descriptions
+#### 撰寫閉包指令的描述
 
 When defining a Closure based command, you may use the `describe` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
 
