@@ -141,6 +141,8 @@ Once Valet is installed, you're ready to start serving sites. Valet provides two
 
 **That's all there is to it.** Now, any Laravel project you create within your "parked" directory will automatically be served using the `http://folder-name.test` convention.
 
+To see a listing of all of your parked directories sites, run the `valet parked` command.
+
 <a name="the-link-command"></a>
 **The `link` Command**
 
