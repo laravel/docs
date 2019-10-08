@@ -214,7 +214,7 @@ Laravel ships with a `password.confirm` middleware that allows you to protect ro
 
     Route::get('settings/security', function () {
         // Users need to confirm their password before continuing...
-    })->middleware('password.confirm');
+    })->middleware(['auth', 'password.confirm']);
 
 <a name="login-throttling"></a>
 ### Login Throttling
