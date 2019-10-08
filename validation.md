@@ -590,6 +590,7 @@ Below is a list of all available validation rules and their function:
 [Not Regex](#rule-not-regex)
 [Nullable](#rule-nullable)
 [Numeric](#rule-numeric)
+[Password](#rule-password)
 [Present](#rule-present)
 [Regular Expression](#rule-regex)
 [Required](#rule-required)
@@ -947,6 +948,13 @@ The field under validation may be `null`. This is particularly useful when valid
 #### numeric
 
 The field under validation must be numeric.
+
+<a name="rule-password"></a>
+#### password
+
+The field under validation must match the current logged in user's password. You can also pass a specific guard as the first parameter:
+
+    'password' => 'password:api'
 
 <a name="rule-present"></a>
 #### present
