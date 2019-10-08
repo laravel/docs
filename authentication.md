@@ -208,6 +208,14 @@ When attaching the `auth` middleware to a route, you may also specify which guar
         $this->middleware('auth:api');
     }
 
+#### Confirming Password
+
+Laravel ships with a `password.confirm` middleware that allows you to protect routes with password confirmation. Adding the `password.confirm` middleware will first redirect users to a screen where they need to enter their password before they can continue. After they've successfully entered their password, they're redirected to the route they tried to access and their session is remembered for a default of three hours. This value can be changed with the `auth.password_timeout` config value.
+
+    Route::get('settings/security', function () {
+        // Users need to confirm their password before continuing...
+    })->middleware('password.confirm');
+
 <a name="login-throttling"></a>
 ### Login Throttling
 
