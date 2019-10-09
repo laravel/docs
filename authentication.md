@@ -222,6 +222,8 @@ To accomplish this, Laravel provides a `password.confirm` middleware. Attaching 
 
 After the user has successfully confirmed their password, the user redirected to the route they originally tried to access. By default, after confirming their password, the user will not have to confirm their password again for three hours. You are free to customize the length of time before the user must re-confirm their password using the `auth.password_timeout` configuration option.
 
+> {note} The `password.confirm` middleware can only be applied to `GET` routes.
+
 <a name="login-throttling"></a>
 ### Login Throttling
 
