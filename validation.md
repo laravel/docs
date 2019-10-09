@@ -952,7 +952,7 @@ The field under validation must be numeric.
 <a name="rule-password"></a>
 #### password
 
-The field under validation must match the current logged in user's password. You can also pass a specific guard as the first parameter:
+The field under validation must match the authenticated user's password. You may specify an authentication guard using the rule's first parameter:
 
     'password' => 'password:api'
 
