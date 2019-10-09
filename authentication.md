@@ -8,6 +8,7 @@
     - [Authenticating](#included-authenticating)
     - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
     - [Protecting Routes](#protecting-routes)
+    - [Password Confirmation](#password-confirmation)
     - [Login Throttling](#login-throttling)
 - [Manually Authenticating Users](#authenticating-users)
     - [Remembering Users](#remembering-users)
@@ -208,13 +209,18 @@ When attaching the `auth` middleware to a route, you may also specify which guar
         $this->middleware('auth:api');
     }
 
-#### Confirming Password
+<a name="password-confirmation"></a>
+### Password Confirmation
 
-Laravel ships with a `password.confirm` middleware that allows you to protect routes with password confirmation. Adding the `password.confirm` middleware will first redirect users to a screen where they need to enter their password before they can continue. After they've successfully entered their password, they're redirected to the route they tried to access and their session is remembered for a default of three hours. This value can be changed with the `auth.password_timeout` config value.
+Sometimes, you may wish to require the user to confirm their password before accessing a specific area of your application. For example, you may require this before the user modifies any billing settings within the application.
 
-    Route::get('settings/security', function () {
-        // Users need to confirm their password before continuing...
+To accomplish this, Laravel provides a `password.confirm` middleware. Attaching the `password.confirm` middleware to a route will redirect users to a screen where they need to confirm their password before they can continue:
+
+    Route::get('/settings/security', function () {
+        // Users must confirm their password before continuing...
     })->middleware(['auth', 'password.confirm']);
+
+After the user has successfully confirmed their password, the user redirected to the route they originally tried to access. By default, after confirming their password, the user will not have to confirm their password again for three hours. You are free to customize the length of time before the user must re-confirm their password using the `auth.password_timeout` configuration option.
 
 <a name="login-throttling"></a>
 ### Login Throttling
