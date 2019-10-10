@@ -595,7 +595,7 @@ Sending SMS notifications in Laravel is powered by [Nexmo](https://www.nexmo.com
 
     composer require laravel/nexmo-notification-channel
 
-This will also install the [`nexmo/laravel`](https://github.com/Nexmo/nexmo-laravel) package. This package ships with [its own config file](https://github.com/Nexmo/nexmo-laravel/blob/master/config/nexmo.php). You can use the `NEXMO_KEY` and `NEXMO_SECRET` environment variables to set your Nexmo public and secret key.
+This will also install the [`nexmo/laravel`](https://github.com/Nexmo/nexmo-laravel) package. This package includes [its own configuration file](https://github.com/Nexmo/nexmo-laravel/blob/master/config/nexmo.php). You can use the `NEXMO_KEY` and `NEXMO_SECRET` environment variables to set your Nexmo public and secret key.
 
 Next, you will need to add a configuration option to your `config/services.php` configuration file. You may copy the example configuration below to get started:
 
