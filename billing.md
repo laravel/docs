@@ -380,7 +380,7 @@ The `subscribedToPlan` method may be used to determine if the user is subscribed
         //
     }
     
-We can also determine if the user's `main` subscription is actively subscribed to the `monthly` or the `yearly` plan:
+By passing an array to the `subscribedToPlan` method, you may determine if the user's `main` subscription is actively subscribed to the `monthly` or the `yearly` plan:
 
     if ($user->subscribedToPlan(['monthly', 'yearly'], 'main')) {
         //
