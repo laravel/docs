@@ -12,7 +12,7 @@ Laravel 透過 `Hash` [facade](/docs/{{version}}/facades) 提供安全的 Bcrypt
 
 ## 設定
 
-您的應用程式預設的雜湊方法被設定在 `config/hashing.php` 檔案。目前支援三種方法: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) 、 [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i 與 Argon2id 的變種表示)。
+您可以在 `config/hashing.php` 檔案中，為您的應用程式設置預設的雜湊驅動。目前支援三種驅動: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) 、 [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i 與 Argon2id 的變種表示)。
 
 > {note} Argon2i 需要 PHP 7.2.0 或更高的版本、Argon2id 需要 PHP 7.3.0 或更高的版本。
 
@@ -48,7 +48,7 @@ Laravel 透過 `Hash` [facade](/docs/{{version}}/facades) 提供安全的 Bcrypt
 
 #### 調整 Bcrypt 的加密係數
 
-如果您使用的是 Bcrypt 演算法，`make` 方法允許你透過 `rounds` 選項來設置加密係數。但對大多數應用程式來說使用預設值是可接受的：
+如果您使用的是 Bcrypt 演算法，`make` 方法允許你透過 `rounds` 選項來設置加密係數。然而，對大部分的應用程式來說使用預設值就足夠了：
 
     $hashed = Hash::make('password', [
         'rounds' => 12
@@ -56,7 +56,7 @@ Laravel 透過 `Hash` [facade](/docs/{{version}}/facades) 提供安全的 Bcrypt
 
 #### 調整 Argon2 的加密係數
 
-如果您使用的是 Bcrypt 演算法，`make` 方法允許你透過 `memory`、`time` 及 `threads` 選項來設置加密係數。但對大多數應用程式來說使用預設值是可接受的：
+如果您使用的是 Bcrypt 演算法，`make` 方法允許你透過 `memory`、`time` 及 `threads` 選項來設置加密係數。然而，對大部分的應用程式來說使用預設值就足夠了：
 
     $hashed = Hash::make('password', [
         'memory' => 1024,
