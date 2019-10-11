@@ -1595,7 +1595,7 @@ The `replace` method behaves similarly to `merge`; however, in addition to overw
 <a name="method-replacerecursive"></a>
 #### `replaceRecursive()` {#collection-method}
 
-This method works like `replace`, but it will recurse into arrays and apply the same replacement process to the inner values:
+This method works like `replace`, but it will recur into arrays and apply the same replacement process to the inner values:
 
     $collection = collect(['Taylor', 'Abigail', ['James', 'Victoria', 'Finn']]);
 
