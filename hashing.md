@@ -12,7 +12,7 @@ Laravel 透過 `Hash` [facade](/docs/{{version}}/facades) 提供安全的 Bcrypt
 
 ## 設定
 
-您的應用程式預設的雜湊方法被設定在 `config/hashing.php` 檔案。目前支援三種方法: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) 、 [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i 與 Argon2id 的變種).
+您的應用程式預設的雜湊方法被設定在 `config/hashing.php` 檔案。目前支援三種方法: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) 、 [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i 與 Argon2id 的變種表示)。
 
 > {note} Argon2i 需要 PHP 7.2.0 或更高的版本、Argon2id 需要 PHP 7.3.0 或更高的版本。
 
