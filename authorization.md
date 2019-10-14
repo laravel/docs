@@ -116,7 +116,7 @@ If you would like to attempt to authorize an action and automatically throw an `
 
     // The action is authorized...
 
-#### Supplying Additional Context 
+#### Supplying Additional Context
 
 The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, `none`, `authorize`, `can`, `cannot`) and the authorization [Blade directives](#via-blade-templates) (`@can`, `@cannot`, `@canany`) can receive an array as the second argument. These array elements are passed as parameters to gate, and can be used for additional context when making authorization decisions:
 
@@ -142,7 +142,7 @@ So far, we have only examined gates that return simple boolean values. However, 
                     : Response::deny('You must be a super administrator.');
     });
 
-When returning an authorization response from your gate, the `Gate::allows` method will still return a simple boolean value; however, you may use use the `Gate::inspect` method to get the full authorization response returned by the gate:
+When returning an authorization response from your gate, the `Gate::allows` method will still return a simple boolean value; however, you may use the `Gate::inspect` method to get the full authorization response returned by the gate:
 
     $response = Gate::inspect('edit-settings', $post);
 
@@ -308,7 +308,7 @@ So far, we have only examined policy methods that return simple boolean values. 
                     : Response::deny('You do not own this post.');
     }
 
-When returning an authorization response from your policy, the `Gate::allows` method will still return a simple boolean value; however, you may use use the `Gate::inspect` method to get the full authorization response returned by the gate:
+When returning an authorization response from your policy, the `Gate::allows` method will still return a simple boolean value; however, you may use the `Gate::inspect` method to get the full authorization response returned by the gate:
 
     $response = Gate::inspect('update', $post);
 
@@ -577,7 +577,7 @@ When authorizing actions using policies, you may pass an array as the second arg
      */
     public function update(User $user, Post $post, int $category)
     {
-        return $user->id === $post->user_id && 
+        return $user->id === $post->user_id &&
                $category > 3;
     }
 
