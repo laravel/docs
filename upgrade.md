@@ -6,7 +6,7 @@
 ## 高度影響改變
 
 <div class="content-list" markdown="1">
-- [Authorized Resources & `viewAny`](#authorized-resources)
+- [認證資源和 `viewAny`](#authorized-resources)
 - [String & Array Helpers](#helpers)
 </div>
 
@@ -32,6 +32,8 @@
 
 #### 預計升級所花時間：一小時
 
+> {note} 這裏我們努力紀錄所有可能造成破壞的改變。因為有的改變可能在比較 attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
 ### 必須使用 PHP 7.2
@@ -41,7 +43,7 @@
 PHP 7.1 在 2019 年 12 月過後就不再支援了。所以，Laravel 6.0 的語言版本設置在 PHP 7.2 以上。
 
 <a name="updating-dependencies"></a>
-### Updating Dependencies
+### 升級依賴專案
 
 Update your `laravel/framework` dependency to `^6.0` in your `composer.json` file.
 
@@ -50,7 +52,7 @@ Next, examine any 3rd party packages consumed by your application and verify you
 ### Authorization
 
 <a name="authorized-resources"></a>
-#### Authorized Resources & `viewAny`
+#### 認證資源和 `viewAny`
 
 **可能造成影響：高度**
 
@@ -282,7 +284,7 @@ In addition, please ensure your application's database contains a `failed_jobs` 
 
 The `Input` facade, which was primarily a duplicate of the `Request` facade, has been removed. If you are using the `Input::get` method, you should now call the `Request::input` method. All other calls to the `Input` facade may simply be updated to use the `Request` facade.
 
-### Scheduling
+### 排程
 
 #### The `between` Method
 
