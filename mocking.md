@@ -43,7 +43,7 @@ You may use the `partialMock` method if you only need to mock several methods of
     use App\Service;
 
     $this->partialMock(Service::class, function ($mock) {
-       $mock->shouldReceive('process')->once();
+        $mock->shouldReceive('process')->once();
     });
 
 Similarly, if you want to spy on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method:
