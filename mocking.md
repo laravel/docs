@@ -38,8 +38,8 @@ In order to make this more convenient, you may use the `mock` method, which is p
         $mock->shouldReceive('process')->once();
     });
 
-You may use the `partialMock` method if you only need to mock several methods of an object and leaving the remainder frees to respond to calls normally. 
-   
+You may use the `partialMock` method when you only need to mock a few methods of an object. The methods that are not mocked will be executed normally when called:
+
     use App\Service;
 
     $this->partialMock(Service::class, function ($mock) {
