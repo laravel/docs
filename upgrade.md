@@ -1,9 +1,9 @@
-# Upgrade Guide
+# 升級指引
 
-- [Upgrading To 6.0 From 5.8](#upgrade-6.0)
+- [從 5.8 升級到 6.0](#upgrade-6.0)
 
 <a name="high-impact-changes"></a>
-## High Impact Changes
+## 高度影響改變
 
 <div class="content-list" markdown="1">
 - [Authorized Resources & `viewAny`](#authorized-resources)
@@ -11,15 +11,15 @@
 </div>
 
 <a name="medium-impact-changes"></a>
-## Medium Impact Changes
+## 中度影響改變
 
 <div class="content-list" markdown="1">
-- [Carbon 1.x No Longer Supported](#carbon-support)
+- [不支援 Carbon 1.x](#carbon-support)
 - [Redis Default Client](#redis-default-client)
-- [Database `Capsule::table` Method](#capsule-table)
+- [資料庫 `Capsule::table` 方法](#capsule-table)
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
 - [Eloquent `BelongsTo::update` Method](#belongs-to-update)
-- [Eloquent Primary Key Types](#eloquent-primary-key-type)
+- [Eloquent 主鍵型態](#eloquent-primary-key-type)
 - [Localization `Lang::trans` and `Lang::transChoice` Methods](#trans-and-trans-choice)
 - [Localization `Lang::getFromJson` Method](#get-from-json)
 - [Queue Retry Limit](#queue-retry-limit)
@@ -28,17 +28,17 @@
 </div>
 
 <a name="upgrade-6.0"></a>
-## Upgrading To 6.0 From 5.8
+## 從 5.8 升級到 6.0
 
-#### Estimated Upgrade Time: One Hour
+#### 預計升級所花時間：一小時
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
-### PHP 7.2 Required
+### 必須使用 PHP 7.2
 
-**Likelihood Of Impact: Medium**
+**可能造成影響：中度**
 
-PHP 7.1 will no longer be actively maintained as of December 2019. Therefore, Laravel 6.0 requires PHP 7.2 or greater.
+PHP 7.1 在 2019 年 12 月過後就不再支援了。所以，Laravel 6.0 的語言版本設置在 PHP 7.2 以上。
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
@@ -52,13 +52,13 @@ Next, examine any 3rd party packages consumed by your application and verify you
 <a name="authorized-resources"></a>
 #### Authorized Resources & `viewAny`
 
-**Likelihood Of Impact: High**
+**可能造成影響：高度**
 
 Authorization policies attached to controllers using the `authorizeResource` method should now define a `viewAny` method, which will be called when a user accesses the controller's `index` method. Otherwise, calls to the `index` method of the controller will be rejected as unauthorized.
 
 #### Authorization Responses
 
-**Likelihood Of Impact: Low**
+**可能造成影響：低度**
 
 The constructor signature of the `Illuminate\Auth\Access\Response` class has changed. You should update your code accordingly. If you are not constructing authorization responses manually and are only using the `allow` and `deny` instance methods within your policies, no change is required:
 
@@ -75,20 +75,20 @@ The constructor signature of the `Illuminate\Auth\Access\Response` class has cha
 <a name="auth-access-gate-contract"></a>
 #### The `Illuminate\Contracts\Auth\Access\Gate` Contract
 
-**Likelihood Of Impact: Low**
+**可能造成影響：低度**
 
 The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect` method. If you are implementing this interface manually, you should add this method to your implementation.
 
 ### Carbon
 
 <a name="carbon-support"></a>
-#### Carbon 1.x No Longer Supported
+#### 不支援 Carbon 1.x
 
-**Likelihood Of Impact: Medium**
+**可能造成影響：中度**
 
 Carbon 1.x [is no longer supported](https://github.com/laravel/framework/pull/28683) since it is nearing its maintenance end of life. Please upgrade your application to Carbon 2.0.
 
-### Configuration
+### 設置
 
 #### The `AWS_REGION` Environment Variable
 
