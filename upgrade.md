@@ -79,6 +79,22 @@ The constructor signature of the `Illuminate\Auth\Access\Response` class has cha
 
 The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect` method. If you are implementing this interface manually, you should add this method to your implementation.
 
+#### The `Illuminate\Auth\Access\HandlesAuthorization` Trait
+
+**Likelihood Of Impact: Low**
+
+The `Illuminate\Auth\Access\HandlesAuthorization` trait's method `deny()` has been updated to return `\Illuminate\Auth\Access\Response`. Previously it would throw an exception. 
+You may need to update your policy classes to add a `return` statement like:
+
+    public function update(User $user, Post $post)
+    {
+        if($user->role !== 'editor') {
+            return $this->deny("You must be an editor to edit a post.")
+        }
+        
+        return $user->id === $post->user_id;
+    }
+    
 ### Carbon
 
 <a name="carbon-support"></a>
