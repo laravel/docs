@@ -32,9 +32,7 @@
 
 #### 預計升級所花時間：一小時
 
-> {note} 這裏我們努力紀錄所有可能造成破壞的改變。因為有的改變可能在比較 attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
-
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {note} 這裏我們努力紀錄所有可能造成破壞的改變。因為有的改變可能在框架內比較少用到的位置，所以針對你的應用程式，只有部分的修改會造成影響。
 
 ### 必須使用 PHP 7.2
 
@@ -45,11 +43,11 @@ PHP 7.1 在 2019 年 12 月過後就不再支援了。所以，Laravel 6.0 的�
 <a name="updating-dependencies"></a>
 ### 升級依賴專案
 
-Update your `laravel/framework` dependency to `^6.0` in your `composer.json` file.
+在你的 `composer.json` 裡面，將 `laravel/framework` 的依賴版本改成 `^6.0`。
 
 Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 6 support.
 
-### Authorization
+### 認證
 
 <a name="authorized-resources"></a>
 #### 認證資源和 `viewAny`
@@ -88,7 +86,9 @@ The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect
 
 **可能造成影響：中度**
 
-Carbon 1.x [is no longer supported](https://github.com/laravel/framework/pull/28683) since it is nearing its maintenance end of life. Please upgrade your application to Carbon 2.0.
+因為維護時間快要完結了， Laravel [已經不再支援](https://github.com/laravel/framework/pull/28683) Carbon 1.x 。
+
+所以，請將你的應用程式升級到 Carbon 2.0。
 
 ### 設置
 
