@@ -8,7 +8,7 @@
 
 Laravel 透過 `Hash` [facade](/docs/{{version}}/facades) 提供安全的 Bcrypt 與 Argon2 雜湊來保存使用者密碼。如果你在目前的應用當中使用內建的 `LoginController` 與 `RegisterController` 類別，它將預設使用 Bcrypt 加密進行註冊跟驗證。
 
-> {tip} 由於 Bcrypt 的 "加密係數（word fator）" 可以任意調整，使它成為最好的加密選擇。這代表每一次加密的時間可以隨著硬體設備的升級而加長。
+> {tip} 由於 Bcrypt 的 "加密係數（word factor）" 可以任意調整，使它成為最好的加密選擇。這代表每一次加密的時間可以隨著硬體設備的升級而加長。
 
 ## 設定
 
