@@ -19,6 +19,7 @@
     - [Updating JSON Columns](#updating-json-columns)
     - [Increment & Decrement](#increment-and-decrement)
 - [Deletes](#deletes)
+- [Scopes](#scopes)
 - [Pessimistic Locking](#pessimistic-locking)
 - [Debugging](#debugging)
 
@@ -705,6 +706,23 @@ The query builder may also be used to delete records from the table via the `del
 If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to zero, you may use the `truncate` method:
 
     DB::table('users')->truncate();
+
+<a name="scopes"></a>
+## Scopes
+
+The query builder may also delegate the responsibility of applying any clause to a callable with the `apply` method.
+
+    $users = DB::table('users')->apply(function ($builder) {
+        $builder->groupBy('company_id');
+    })->get();
+
+It is also possible to run multiple scopes at once:
+
+    $scopes = [new AgeRestrictionScope, TicketPurchasedScope];
+    
+    $users = DB::table('users')->apply($scopes)->get();
+
+In this example, `AgeRestrictionScope` and `TicketPurchasedScope` have to be invocable classes and implement `__invoke($builder)`.
 
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
