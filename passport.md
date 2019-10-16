@@ -537,11 +537,11 @@ When authenticating using the password grant, Passport will use the `password` a
         use HasApiTokens, Notifiable;
 
         /**
-        * Validate the password of the user for the Passport password grant.
-        *
-        * @param  string $password
-        * @return bool
-        */
+         * Validate the password of the user for the Passport password grant.
+         *
+         * @param  string $password
+         * @return bool
+         */
         public function validateForPassportPasswordGrant($password)
         {
             return Hash::check($password, $this->password);
