@@ -1060,13 +1060,18 @@ The `Str::slug` method generates a URL friendly "slug" from the given string:
 <a name="method-snake-case"></a>
 #### `Str::snake()` {#collection-method}
 
-The `Str::snake` method converts the given string to `snake_case`:
+The `Str::snake` method converts the given string to `snake_case`, or to
+something else, depending on the input string:
 
     use Illuminate\Support\Str;
 
     $converted = Str::snake('fooBar');
 
     // foo_bar
+
+    $converted = Str::snake('foo-Bar');
+
+    // foo-_bar
 
 <a name="method-str-start"></a>
 #### `Str::start()` {#collection-method}
