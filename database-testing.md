@@ -227,7 +227,7 @@ You may also attach relationships to models in your factory definitions. For exa
         ];
     });
 
-If the relationship depends on the facotry that defines them you may use a callback that accepts the evaluated attribute array:
+If the relationship depends on the factory that defines it you may use a callback that accepts the evaluated attribute array:
 
     $factory->define(App\Post::class, function ($faker) {
         return [
