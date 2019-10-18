@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-    - [Database Migrations](#database-migrations)
+    - [Database Migrations](#database-preparation)
 - [Generating Tokens](#generating-tokens)
     - [Hashing Tokens](#hashing-tokens)
 - [Protecting Routes](#protecting-routes)
@@ -18,7 +18,7 @@ By default, Laravel ships with a simple solution to API authentication via a ran
 <a name="configuration"></a>
 ## Configuration
 
-<a name="database-migrations"></a>
+<a name="database-preparation"></a>
 ### Database Migrations
 
 Before using the `token` driver, you will need to [create a migration](/docs/{{version}}/migrations) which adds an `api_token` column to your `users` table:
