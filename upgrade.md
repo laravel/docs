@@ -271,6 +271,19 @@ In addition, the `cursor` method was added to the contract:
 
 If you are implementing this interface, you should add this method to your implementation.
 
+#### The `whereDate` Method
+
+**Likelihood Of Impact: Low**
+
+The query builder's `whereDate` method now converts `DateTime` instances to `Y-m-d` format:
+
+    // previous behaviour - SELECT * FROM `table` WHERE `created_at` > '2018-08-01 13:00:00'
+    $query->whereDate('created_at', '>', Carbon::parse('2018-08-01 13:00:00'));
+    
+    // current behaviour - SELECT * FROM `table` WHERE `created_at` > '2018-08-01'
+    $query->whereDate('created_at', '>', Carbon::parse('2018-08-01 13:00:00'));
+     
+
 #### Migration Command Output
 
 **Likelihood Of Impact: Very Low**
