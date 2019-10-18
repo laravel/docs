@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-    - [Database Migrations](#database-preparation)
+    - [Database Preparation](#database-preparation)
 - [Generating Tokens](#generating-tokens)
     - [Hashing Tokens](#hashing-tokens)
 - [Protecting Routes](#protecting-routes)
