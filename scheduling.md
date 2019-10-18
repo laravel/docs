@@ -201,17 +201,9 @@ Using the `timezone` method, you may specify that a scheduled task's time should
              ->timezone('America/New_York')
              ->at('02:00')
 
-If you are assigning the same timezone to all of your scheduled tasks, you may wish to define a `scheduleTimezone` method in your `app/Console/Kernel.php` file. This method should return the default timezone that should be assigned to all scheduled tasks:
-
-    /**
-     * Get the timezone that should be used by default for scheduled events.
-     *
-     * @return \DateTimeZone|string|null
-     */
-    protected function scheduleTimezone()
-    {
-        return 'America/Chicago';
-    }
+If you are assigning the same timezone to all of your scheduled tasks, you may wish to add a `schedule_timezone` value in your `config/app.php` file. This key value pair should return the default timezone that should be assigned to all scheduled tasks:
+    
+    'schedule_timezone' => 'America/Chicago',
 
 > {note} Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible.
 
