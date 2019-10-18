@@ -28,7 +28,7 @@
 [Laravel Mix](https://github.com/JeffreyWay/laravel-mix) provides a fluent API for defining Webpack build steps for your Laravel application using several common CSS and JavaScript pre-processors. Through simple method chaining, you can fluently define your asset pipeline. For example:
 
     mix.js('resources/js/app.js', 'public/js')
-       .sass('resources/sass/app.scss', 'public/css');
+        .sass('resources/sass/app.scss', 'public/css');
 
 If you've ever been confused and overwhelmed about getting started with Webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish, or even none at all.
 
@@ -86,7 +86,7 @@ The `less` method may be used to compile [Less](http://lesscss.org/) into CSS. L
 Multiple calls to the `less` method may be used to compile multiple files:
 
     mix.less('resources/less/app.less', 'public/css')
-       .less('resources/less/admin.less', 'public/css');
+        .less('resources/less/admin.less', 'public/css');
 
 If you wish to customize the file name of the compiled CSS, you may pass a full file path as the second argument to the `less` method:
 
@@ -108,7 +108,7 @@ The `sass` method allows you to compile [Sass](https://sass-lang.com/) into CSS.
 Again, like the `less` method, you may compile multiple Sass files into their own respective CSS files and even customize the output directory of the resulting CSS:
 
     mix.sass('resources/sass/app.sass', 'public/css')
-       .sass('resources/sass/admin.sass', 'public/css/admin');
+        .sass('resources/sass/admin.sass', 'public/css/admin');
 
 Additional [Node-Sass plug-in options](https://github.com/sass/node-sass#options) may be provided as the third argument:
 
@@ -137,11 +137,11 @@ You may also install additional Stylus plug-ins, such as [Rupture](https://githu
 [PostCSS](https://postcss.org/), a powerful tool for transforming your CSS, is included with Laravel Mix out of the box. By default, Mix leverages the popular [Autoprefixer](https://github.com/postcss/autoprefixer) plug-in to automatically apply all necessary CSS3 vendor prefixes. However, you're free to add any additional plug-ins that are appropriate for your application. First, install the desired plug-in through NPM and then reference it in your `webpack.mix.js` file:
 
     mix.sass('resources/sass/app.scss', 'public/css')
-       .options({
+        .options({
             postCss: [
                 require('postcss-css-variables')()
             ]
-       });
+        });
 
 <a name="plain-css"></a>
 ### Plain CSS
@@ -173,9 +173,9 @@ By default, Laravel Mix and Webpack will find `example.png`, copy it to your `pu
 As useful as this feature may be, it's possible that your existing folder structure is already configured in a way you like. If this is the case, you may disable `url()` rewriting like so:
 
     mix.sass('resources/app/app.scss', 'public/css')
-       .options({
-          processCssUrls: false
-       });
+        .options({
+            processCssUrls: false
+        });
 
 With this addition to your `webpack.mix.js` file, Mix will no longer match any `url()` or copy assets to your public directory. In other words, the compiled CSS will look just like how you originally typed it:
 
@@ -189,7 +189,7 @@ With this addition to your `webpack.mix.js` file, Mix will no longer match any `
 Though disabled by default, source maps may be activated by calling the `mix.sourceMaps()` method in your `webpack.mix.js` file. Though it comes with a compile/performance cost, this will provide extra debugging information to your browser's developer tools when using compiled assets.
 
     mix.js('resources/js/app.js', 'public/js')
-       .sourceMaps();
+        .sourceMaps();
 
 #### Style Of Source Mapping
 
@@ -198,7 +198,7 @@ Webpack offers a variety of [source mapping styles](https://webpack.js.org/confi
     let productionSourceMaps = false;
 
     mix.js('resources/js/app.js', 'public/js')
-       .sourceMaps(productionSourceMaps, 'source-map');
+        .sourceMaps(productionSourceMaps, 'source-map');
 
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
@@ -224,7 +224,7 @@ One potential downside to bundling all application-specific JavaScript with your
 If you intend to make frequent updates to your application's JavaScript, you should consider extracting all of your vendor libraries into their own file. This way, a change to your application code will not affect the caching of your large `vendor.js` file. Mix's `extract` method makes this a breeze:
 
     mix.js('resources/js/app.js', 'public/js')
-       .extract(['vue'])
+        .extract(['vue'])
 
 The `extract` method accepts an array of all libraries or modules that you wish to extract into a `vendor.js` file. Using the above snippet as an example, Mix will generate the following files:
 
@@ -303,7 +303,7 @@ Many developers suffix their compiled assets with a timestamp or unique token to
 The `version` method will automatically append a unique hash to the filenames of all compiled files, allowing for more convenient cache busting:
 
     mix.js('resources/js/app.js', 'public/js')
-       .version();
+        .version();
 
 After generating the versioned file, you won't know the exact file name. So, you should use Laravel's global `mix` function within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `mix` function will automatically determine the current name of the hashed file:
 
