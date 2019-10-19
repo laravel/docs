@@ -58,6 +58,8 @@ Once the `api_token` column has been added to your `users` table, you are ready 
         ]);
     }
 
+> {tip} Add the `api_token` to the fillable attributes of the `User` model to avoid having `null` API tokens after registration.
+
 <a name="hashing-tokens"></a>
 ### Hashing Tokens
 
