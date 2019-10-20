@@ -673,7 +673,7 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
 
     Route::post(
         'stripe/webhook',
-        '\App\Http\Controllers\WebhookController@handleWebhook'
+        '\App\Http\Controllers\WebhookController@handleInvoicePaymentSucceeded'
     );
 
 <a name="handling-failed-subscriptions"></a>
