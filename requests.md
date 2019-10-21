@@ -237,9 +237,9 @@ If you would like to determine if a value is present on the request and is not e
         //
     }
 
-To check if the given key is absent from the request, you may use the `missing` method:
+To determine if a given key is absent from the request, you may use the `missing` method:
 
-    if ($request->missing('foo') {
+    if ($request->missing('name') {
         //
     }
 
