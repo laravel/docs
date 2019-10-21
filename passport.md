@@ -539,7 +539,7 @@ When authenticating using the password grant, Passport will use the `password` a
         /**
          * Validate the password of the user for the Passport password grant.
          *
-         * @param  string $password
+         * @param  string  $password
          * @return bool
          */
         public function validateForPassportPasswordGrant($password)
