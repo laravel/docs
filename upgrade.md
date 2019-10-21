@@ -334,6 +334,16 @@ In previous releases of Laravel, passing associative array parameters to the `ro
     // Laravel 6.0: http://example.com/profile?status=active
     echo route('profile', ['status' => 'active']);    
 
+The `action` helper and `URL::action` method are also affected by this change:
+
+    Route::get('/profile/{id}', 'ProfileController@show');
+
+    // Laravel 5.8: http://example.com/profile/1
+    echo action('ProfileController@show', ['profile' => 1]);
+
+    // Laravel 6.0: http://example.com/profile?profile=1
+    echo action('ProfileController@show', ['profile' => 1]);   
+
 ### Validation
 
 #### FormRequest `validationData` Method
