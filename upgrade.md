@@ -341,7 +341,7 @@ The `action` helper and `URL::action` method are also affected by this change:
     // Laravel 5.8: http://example.com/profile/1
     echo action('ProfileController@show', ['profile' => 1]);
 
-    // Laravel 6.0: http://example.com/profile?id=1
+    // Laravel 6.0: http://example.com/profile?profile=1
     echo action('ProfileController@show', ['profile' => 1]);   
 
 ### Validation
