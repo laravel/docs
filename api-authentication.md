@@ -50,7 +50,7 @@ Once the `api_token` column has been added to your `users` table, you are ready 
      */
     protected function create(array $data)
     {
-        return User::create([
+        return User::forceCreate([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
