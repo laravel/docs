@@ -19,10 +19,12 @@ The Bootstrap and Vue scaffolding provided by Laravel is located in the `laravel
 Once the `laravel/ui` package has been installed, you may install the frontend scaffolding using the `ui` Artisan command:
 
     // Generate basic scaffolding...
+    php artisan ui bootstrap
     php artisan ui vue
     php artisan ui react
 
     // Generate login / registration scaffolding...
+    php artisan ui bootstrap --auth
     php artisan ui vue --auth
     php artisan ui react --auth
 
