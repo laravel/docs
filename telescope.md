@@ -30,14 +30,14 @@
 <a name="introduction"></a>
 ## 簡介
 
-Laravel Telescope 是 Laravel 框架一個優雅的除錯工具。Telescope provides insight into the requests coming into your application, exceptions, log entries, database queries, queued jobs, mail, notifications, cache operations, scheduled tasks, variable dumps and more. Telescope makes a wonderful companion to your local Laravel development environment.
+Laravel Telescope 是 Laravel 框架一個優雅的除錯工具。Telescope provides insight into the requests coming into your application, exceptions, log entries, database queries, queued jobs, mail, notifications, cache operations, scheduled tasks, variable dumps and more. Telescope 在本地環境進行開發 Laravel 專案時，會是你的完美搭檔。
 
 <p align="center">
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1539110860/Screen_Shot_2018-10-09_at_1.47.23_PM.png" width="600">
 </p>
 
 <a name="installation"></a>
-## Installation
+## 安裝
 
 You may use Composer to install Telescope into your Laravel project:
 
@@ -49,9 +49,9 @@ After installing Telescope, publish its assets using the `telescope:install` Art
 
     php artisan migrate
 
-#### Updating Telescope
+#### 更新 Telescope
 
-When updating Telescope, you should re-publish Telescope's assets:
+要更新 Telescope 時，你需要重新發布 Telescope 相關的資產：
 
     php artisan telescope:publish
 
@@ -81,7 +81,7 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
 If you are not going to use Telescope's default migrations, you should call the `Telescope::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using the `php artisan vendor:publish --tag=telescope-migrations` command.
 
 <a name="configuration"></a>
-### Configuration
+### 設置
 
 After publishing Telescope's assets, its primary configuration file will be located at `config/telescope.php`. This configuration file allows you to configure your watcher options and each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
 
