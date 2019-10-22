@@ -298,6 +298,8 @@ The `name` method may be used to prefix each route name in the group with a give
         })->name('users');
     });
 
+When using the array as a first parameter to the `Route::group` method, the key must be `as` and not `name`.
+
 <a name="route-model-binding"></a>
 ## Route Model Binding
 
