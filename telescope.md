@@ -39,11 +39,11 @@ Laravel Telescope 是 Laravel 框架一個優雅的除錯工具。Telescope prov
 <a name="installation"></a>
 ## 安裝
 
-You may use Composer to install Telescope into your Laravel project:
+你可以用 Composer 在你的 Laravel 專案內安裝 Telescope：
 
     composer require laravel/telescope
 
-After installing Telescope, publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command:
+安裝 Telescope 之後，publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command:
 
     php artisan telescope:install
 
