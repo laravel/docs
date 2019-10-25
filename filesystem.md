@@ -39,6 +39,8 @@ To create the symbolic link, you may use the `storage:link` Artisan command:
 
     php artisan storage:link
 
+> {note} If you are using the [Homestead virtual machine](/docs/{{version}}/homestead), you should run this command from within your virtual machine.
+
 Once a file has been stored and the symbolic link has been created, you can create a URL to the files using the `asset` helper:
 
     echo asset('storage/file.txt');
