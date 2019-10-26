@@ -34,7 +34,7 @@ After creating a new SQLite database using a command such as `touch database/dat
     DB_CONNECTION=sqlite
     DB_DATABASE=/absolute/path/to/database.sqlite
 
-To enable foreign key constraints for SQLite connections, you should add the `DB_FOREIGN_KEYS` environment variable:
+To enable foreign key constraints for SQLite connections, you should set the `DB_FOREIGN_KEYS` environment variable to `true`:
 
     DB_FOREIGN_KEYS=true
 
