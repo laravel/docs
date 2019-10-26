@@ -556,16 +556,16 @@ Assert that the session has a given list of values:
 <a name="assert-session-has-errors"></a>
 #### assertSessionHasErrors
 
-Assert that the session contains an error for the given `$fields`. If `$fields` is an associative array, assert that the session contains a specific error message (value) for each field (key):
+Assert that the session contains an error for the given `$keys`. If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key):
 
-    $response->assertSessionHasErrors(array $fields, $format = null, $errorBag = 'default');
+    $response->assertSessionHasErrors(array $keys, $format = null, $errorBag = 'default');
 
 <a name="assert-session-has-errors-in"></a>
 #### assertSessionHasErrorsIn
 
-Assert that the session contains an error for the given `$fields`, within a specific error bag. If `$fields` is an associative array, assert that the session contains a specific error message (value) for each field (key), within a specific error bag:
+Assert that the session contains an error for the given `$keys`, within a specific error bag. If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key), within the error bag:
 
-    $response->assertSessionHasErrorsIn($errorBag, $fields = [], $format = null);
+    $response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);
 
 <a name="assert-session-has-no-errors"></a>
 #### assertSessionHasNoErrors
