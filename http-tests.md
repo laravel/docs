@@ -361,7 +361,7 @@ Assert that the response does not contains the given cookie:
 <a name="assert-created"></a>
 #### assertCreated
 
-Assert that the response has an created (201) status code:
+Assert that the response has a 201 status code:
 
     $response->assertCreated();
 
