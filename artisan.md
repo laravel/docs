@@ -5,7 +5,7 @@
 - [Writing Commands](#writing-commands)
     - [Generating Commands](#generating-commands)
     - [Command Structure](#command-structure)
-    - [Commands](#closure-commands)
+    - [Closure Commands](#closure-commands)
 - [Defining Input Expectations](#defining-input-expectations)
     - [Arguments](#arguments)
     - [Options](#options)
@@ -331,11 +331,11 @@ If you need to ask the user for a simple confirmation, you may use the `confirm`
 The `anticipate` method can be used to provide auto-completion for possible choices. The user can still choose any answer, regardless of the auto-completion hints:
 
     $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
-    
-Alternatively, you may pass a closure instead of an array as the second parameter. This closure will be called each time the user types a character into the input. It should accept a string parameter containing the user's input so far, and return an array of options for autocompletion. This is useful when you need to generate the autocompletion options dynamically based on the user's input, rather than upfront.
+
+Alternatively, you may pass a Closure as the second argument to the `anticipate` method. The Closure will be called each time the user types an input character. The Closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
 
     $name = $this->anticipate('What is your name?', function ($input) {
-        return $this->externalService->getFilteredNames($input)->toArray();
+        // Return auto-completion options...
     });
 
 #### Multiple Choice Questions
