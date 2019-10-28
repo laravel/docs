@@ -43,7 +43,7 @@ Laravel Telescope 是 Laravel 框架一個優雅的除錯工具。Telescope prov
 
     composer require laravel/telescope
 
-安裝 Telescope 之後，publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command:
+安裝 Telescope 之後，用 `telescope:install` Artisan 指令來安裝。安裝之後，你還應該運行一次 `migrate` 指令：
 
     php artisan telescope:install
 
@@ -55,13 +55,13 @@ Laravel Telescope 是 Laravel 框架一個優雅的除錯工具。Telescope prov
 
     php artisan telescope:publish
 
-### Installing Only In Specific Environments
+### 只安裝在特定環境內
 
-If you plan to only use Telescope to assist your local development, you may install Telescope using the `--dev` flag:
+如果你只希望在本地開發時使用 Telescope 協助，你應該在安裝時加上 `--dev` flag：
 
     composer require laravel/telescope --dev
 
-After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your `app` configuration file. Instead, manually register the service provider in the `register` method of your `AppServiceProvider`:
+跑完 `telescope:install` 之後，你還應該從 `app` 的設置檔裡面移除對 `TelescopeServiceProvider` 的註冊，然後手動註冊，並加上針對環境的檢查：
 
     /**
      * Register any application services.
@@ -76,9 +76,11 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
     }
 
 <a name="migration-customization"></a>
-### Migration Customization
+### 客製化資料庫遷移
 
-If you are not going to use Telescope's default migrations, you should call the `Telescope::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using the `php artisan vendor:publish --tag=telescope-migrations` command.
+如果你不希望使用 Telescope 預設的資料庫遷移內容，那麼在 `AppServiceProvider` 使用 `register` 函式註冊服務時，應該呼叫 `Telescope::ignoreMigrations` 函式。
+
+You may export the default migrations using the `php artisan vendor:publish --tag=telescope-migrations` command.
 
 <a name="configuration"></a>
 ### 設置
