@@ -1,6 +1,7 @@
 # Laravel Passport
 
 - [Introduction](#introduction)
+- [Upgrading Horizon](#upgrading)
 - [Installation](#installation)
     - [Frontend Quickstart](#frontend-quickstart)
     - [Deploying Passport](#deploying-passport)
@@ -40,6 +41,11 @@
 Laravel already makes it easy to perform authentication via traditional login forms, but what about APIs? APIs typically use tokens to authenticate users and do not maintain session state between requests. Laravel makes API authentication a breeze using Laravel Passport, which provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
 
 > {note} This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
+
+<a name="upgrading"></a>
+#### Upgrading Passport
+
+When upgrading to a new major version of Passport, it's important that you carefully review [the upgrade guide](https://github.com/laravel/passport/blob/master/UPGRADE.md).
 
 <a name="installation"></a>
 ## Installation

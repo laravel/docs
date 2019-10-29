@@ -22,6 +22,15 @@ All of your worker configuration is stored in a single, simple configuration fil
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1537195039/photos/Test.png" width="600" height="481">
 </p>
 
+<a name="upgrading"></a>
+#### Upgrading Horizon
+
+When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
+
+In addition, you should re-publish Horizon's assets:
+
+    php artisan horizon:assets
+
 <a name="installation"></a>
 ## Installation
 
@@ -40,15 +49,6 @@ You should also create the `failed_jobs` table which Laravel will use to store a
     php artisan queue:failed-table
 
     php artisan migrate
-
-<a name="upgrading"></a>
-#### Upgrading Horizon
-
-When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
-
-In addition, you should re-publish Horizon's assets:
-
-    php artisan horizon:assets
 
 <a name="configuration"></a>
 ### Configuration
