@@ -7,6 +7,7 @@
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
     - [Currency Configuration](#currency-configuration)
+    - [Logging](#logging)
 - [Customers](#customers)
     - [Creating Customers](#creating-customers)
 - [Payment Methods](#payment-methods)
@@ -47,12 +48,12 @@
 
 Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
 
-> {note} To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 10.1 utilizes Stripe API version `2019-08-14`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
-
 <a name="upgrading-cashier"></a>
 ## Upgrading Cashier
 
 When upgrading to a new version of Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier/blob/master/UPGRADE.md).
+
+> {note} To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 10.1 utilizes Stripe API version `2019-08-14`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
 
 <a name="installation"></a>
 ## Installation
@@ -122,6 +123,13 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
     CASHIER_CURRENCY_LOCALE=nl_BE
 
 > {note} In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
+
+<a name="logging"></a>
+#### Logging
+
+Cashier allows you to specify the log channel to be used when logging all Stripe related exceptions. You may specify the log channel using the `CASHIER_LOGGER` environment variable:
+
+    CASHIER_LOGGER=default
 
 <a name="customers"></a>
 ## Customers
@@ -369,6 +377,12 @@ If you would like to determine if a user is still within their trial period, you
 The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Stripe plan ID. In this example, we will determine if the user's `main` subscription is actively subscribed to the `monthly` plan:
 
     if ($user->subscribedToPlan('monthly', 'main')) {
+        //
+    }
+    
+By passing an array to the `subscribedToPlan` method, you may determine if the user's `main` subscription is actively subscribed to the `monthly` or the `yearly` plan:
+
+    if ($user->subscribedToPlan(['monthly', 'yearly'], 'main')) {
         //
     }
 
@@ -794,7 +808,7 @@ On the payment confirmation page, the customer will be prompted to enter their c
 
 Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if an `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
 
-Incomplete payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Susbcription` model may throw exceptions.
+Incomplete payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Subscription` model may throw exceptions.
 
 #### Incomplete and Past Due State
 

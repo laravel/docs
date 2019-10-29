@@ -1595,7 +1595,7 @@ The `replace` method behaves similarly to `merge`; however, in addition to overw
 <a name="method-replacerecursive"></a>
 #### `replaceRecursive()` {#collection-method}
 
-This method works like `replace`, but it will recurse into arrays and apply the same replacement process to the inner values:
+This method works like `replace`, but it will recur into arrays and apply the same replacement process to the inner values:
 
     $collection = collect(['Taylor', 'Abigail', ['James', 'Victoria', 'Finn']]);
 
@@ -2660,7 +2660,7 @@ Almost all methods available on the `Collection` class are also available on the
 
 </div>
 
-> {note} Methods that mutate the collection (such as `shift`, `pop`, `prepend` etc.) are are _not_ available on the `LazyCollection` class.
+> {note} Methods that mutate the collection (such as `shift`, `pop`, `prepend` etc.) are _not_ available on the `LazyCollection` class.
 
 <a name="lazy-collection-methods"></a>
 ### Lazy Collection Methods

@@ -27,14 +27,14 @@
 <a name="report-method"></a>
 ### Report 方法
 
-`App\Exceptions\Handler` 類別會幫你處理所有例外。這個類別會有兩個方法：`report` 和 `render`。我們將詳細的討論這些方法。`report` 方法用於記錄例外或發送它們到外部服務，像是 [Bugsnag](https://bugsnag.com) 或 [Sentry](https://github.com/getsentry/sentry-laravel)。預設的 `report` 方法只是將例外傳給記錄例外的基礎類別。不過，你可以自由的記錄例外。
+`App\Exceptions\Handler` 類別會幫你處理所有例外。這個類別會有兩個方法：`report` 和 `render`。我們將詳細的討論這些方法。`report` 方法用於記錄例外或發送它們到外部服務，像是 [Flare](https://flareapp.io)，[Bugsnag](https://bugsnag.com) 或 [Sentry](https://github.com/getsentry/sentry-laravel)。預設的 `report` 方法只是將例外傳給記錄例外的基礎類別。不過，你可以自由的記錄例外。
 
 例如，如果你需要以不同的方式回報不同類型的例外，你可以使用 `instanceof` 類型運算子：
 
     /**
      * 回報或記錄一個例外。
      *
-     * 這是向 Sentry，Bugsnag 等發送例外的好地方。
+     * 這是向 Flare，Sentry，Bugsnag 等發送例外的好地方。
      *
      * @param  \Exception  $exception
      * @return void

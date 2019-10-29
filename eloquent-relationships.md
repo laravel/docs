@@ -1195,7 +1195,7 @@ Sometimes you may need to eager load a relationship after the parent model has a
 
 If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be `Closure` instances which receive the query instance:
 
-    $books->load(['author' => function ($query) {
+    $author->load(['books' => function ($query) {
         $query->orderBy('published_date', 'asc');
     }]);
 

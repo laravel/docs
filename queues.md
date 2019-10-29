@@ -243,7 +243,7 @@ After creating job middleware, they may be attached to a job by returning them f
     use App\Jobs\Middleware\RateLimited;
 
     /**
-     * Get the middlewarwe the job should pass through.
+     * Get the middleware the job should pass through.
      *
      * @return array
      */

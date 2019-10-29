@@ -332,6 +332,12 @@ The `anticipate` method can be used to provide auto-completion for possible choi
 
     $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 
+Alternatively, you may pass a Closure as the second argument to the `anticipate` method. The Closure will be called each time the user types an input character. The Closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
+
+    $name = $this->anticipate('What is your name?', function ($input) {
+        // Return auto-completion options...
+    });
+
 #### Multiple Choice Questions
 
 If you need to give the user a predefined set of choices, you may use the `choice` method. You may set the array index of the default value to be returned if no option is chosen:

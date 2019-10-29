@@ -376,7 +376,7 @@ If one of the built-in Scout search engines doesn't fit your needs, you may writ
     abstract public function search(Builder $builder);
     abstract public function paginate(Builder $builder, $perPage, $page);
     abstract public function mapIds($results);
-    abstract public function map($results, $model);
+    abstract public function map(Builder $builder, $results, $model);
     abstract public function getTotalCount($results);
     abstract public function flush($model);
 

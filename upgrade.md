@@ -72,13 +72,28 @@ The constructor signature of the `Illuminate\Auth\Access\Response` class has cha
      */
     public function __construct($allowed, $message = '', $code = null)
 
+#### Returning "Deny" Responses
+
+**Likelihood Of Impact: Low**
+
+In previous releases of Laravel, you did not need to return the value of the `deny` method from your policy methods since an exception was thrown immediately. However, in accordance with the Laravel documentation, you must now return the value of the `deny` method from your policies:
+
+    public function update(User $user, Post $post)
+    {
+        if (! $user->role->isEditor()) {
+            return $this->deny("You must be an editor to edit this post.")
+        }
+
+        return $user->id === $post->user_id;
+    }
+
 <a name="auth-access-gate-contract"></a>
 #### The `Illuminate\Contracts\Auth\Access\Gate` Contract
 
 **可能造成影響：低度**
 
 The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect` method. If you are implementing this interface manually, you should add this method to your implementation.
-
+    
 ### Carbon
 
 <a name="carbon-support"></a>
@@ -320,6 +335,16 @@ In previous releases of Laravel, passing associative array parameters to the `ro
 
     // Laravel 6.0: http://example.com/profile?status=active
     echo route('profile', ['status' => 'active']);    
+
+The `action` helper and `URL::action` method are also affected by this change:
+
+    Route::get('/profile/{id}', 'ProfileController@show');
+
+    // Laravel 5.8: http://example.com/profile/1
+    echo action('ProfileController@show', ['profile' => 1]);
+
+    // Laravel 6.0: http://example.com/profile?profile=1
+    echo action('ProfileController@show', ['profile' => 1]);   
 
 ### Validation
 

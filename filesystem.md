@@ -229,7 +229,7 @@ The `lastModified` method returns the UNIX timestamp of the last time the file w
 <a name="storing-files"></a>
 ## Storing Files
 
-The `put` method may be used to store raw file contents on a disk. You may also pass a PHP `resource` to the `put` method, which will use Flysystem's underlying stream support. Using streams is greatly recommended when dealing with large files:
+The `put` method may be used to store raw file contents on a disk. You may also pass a PHP `resource` to the `put` method, which will use Flysystem's underlying stream support. Remember, all file paths should be specified relative to the "root" location configured for the disk:
 
     use Illuminate\Support\Facades\Storage;
 
