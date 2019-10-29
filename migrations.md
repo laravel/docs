@@ -301,6 +301,36 @@ Modifier  |  Description
 `->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL)
 `->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL)
 
+#### Default Expressions
+
+The `default` modifier accepts a value or an `\Illuminate\Database\Query\Expression` instance. Using an `Expression` instance will prevent wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is assigning default values to JSON columns:
+
+    <?php
+
+    use Illuminate\Support\Facades\Schema;
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Database\Query\Expression;
+    use Illuminate\Database\Migrations\Migration;
+
+    class CreateFlightsTable extends Migration
+    {
+        /**
+         * Run the migrations.
+         *
+         * @return void
+         */
+        public function up()
+        {
+            Schema::create('flights', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->json('movies')->default(new Expression('(JSON_ARRAY())'));
+                $table->timestamps();
+            });
+        }
+    }
+
+> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to the appropriate documentation for compatibility. Also note that using database specific functions may tightly couple you to a specific driver.
+
 <a name="modifying-columns"></a>
 ### Modifying Columns
 

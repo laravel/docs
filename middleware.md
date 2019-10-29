@@ -183,6 +183,10 @@ Middleware groups may be assigned to routes and controller actions using the sam
     Route::group(['middleware' => ['web']], function () {
         //
     });
+    
+    Route::middleware(['web', 'subscribed'])->group(function () { 
+        //
+    });
 
 > {tip} Out of the box, the `web` middleware group is automatically applied to your `routes/web.php` file by the `RouteServiceProvider`.
 

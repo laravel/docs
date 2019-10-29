@@ -14,10 +14,10 @@
 Laravel makes interacting with databases extremely simple across a variety of database backends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four databases:
 
 <div class="content-list" markdown="1">
-- MySQL
-- PostgreSQL
-- SQLite
-- SQL Server
+- MySQL 5.6+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
+- PostgreSQL 9.4+ ([Version Policy](https://www.postgresql.org/support/versioning/))
+- SQLite 3.8.8+
+- SQL Server 2017+ ([Version Policy](https://support.microsoft.com/en-us/lifecycle/search))
 </div>
 
 <a name="configuration"></a>
@@ -34,12 +34,9 @@ After creating a new SQLite database using a command such as `touch database/dat
     DB_CONNECTION=sqlite
     DB_DATABASE=/absolute/path/to/database.sqlite
 
-To enable foreign key constraints for SQLite connections, you should add the `foreign_key_constraints` option to your `config/database.php` configuration file:
+To enable foreign key constraints for SQLite connections, you should set the `DB_FOREIGN_KEYS` environment variable to `true`:
 
-    'sqlite' => [
-        // ...
-        'foreign_key_constraints' => true,
-    ],
+    DB_FOREIGN_KEYS=true
 
 #### Configuration Using URLs
 

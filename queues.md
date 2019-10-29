@@ -93,6 +93,8 @@ Adjusting this value based on your queue load can be more efficient than continu
         'retry_after' => 90,
         'block_for' => 5,
     ],
+    
+> {note} Setting `block_for` to `0` will cause queue workers to block indefinitely until a job is available. This will also prevent signals such as `SIGTERM` from being handled until the next job has been processed.
 
 #### Other Driver Prerequisites
 
@@ -241,7 +243,7 @@ After creating job middleware, they may be attached to a job by returning them f
     use App\Jobs\Middleware\RateLimited;
 
     /**
-     * Get the middlewarwe the job should pass through.
+     * Get the middleware the job should pass through.
      *
      * @return array
      */

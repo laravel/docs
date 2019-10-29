@@ -39,7 +39,7 @@
     - [Codeship](#running-tests-on-codeship)
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
-    - [GitHub Actions](#running-tests-on-github-actions)    
+    - [GitHub Actions](#running-tests-on-github-actions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -477,7 +477,7 @@ Dusk provides various methods to interact with JavaScript Dialogs:
 
     // Wait for a dialog to appear:
     $browser->waitForDialog($seconds = null);
-    
+
     // Assert that a dialog has been displayed and that its message matches the given value:
     $browser->assertDialogOpened('value');
 
@@ -1306,6 +1306,7 @@ As shown above, a "date picker" is an example of a component that might exist th
         {
             return [
                 '@date-field' => 'input.datepicker-input',
+                '@year-list' => 'div > div.datepicker-years',
                 '@month-list' => 'div > div.datepicker-months',
                 '@day-list' => 'div > div.datepicker-days',
             ];
@@ -1315,13 +1316,17 @@ As shown above, a "date picker" is an example of a component that might exist th
          * Select the given date.
          *
          * @param  \Laravel\Dusk\Browser  $browser
+         * @param  int  $year
          * @param  int  $month
          * @param  int  $day
          * @return void
          */
-        public function selectDate($browser, $month, $day)
+        public function selectDate($browser, $year, $month, $day)
         {
             $browser->click('@date-field')
+                    ->within('@year-list', function ($browser) use ($year) {
+                        $browser->click($year);
+                    });
                     ->within('@month-list', function ($browser) use ($month) {
                         $browser->click($month);
                     })
@@ -1357,7 +1362,7 @@ Once the component has been defined, we can easily select a date within the date
             $this->browse(function (Browser $browser) {
                 $browser->visit('/')
                         ->within(new DatePicker, function ($browser) {
-                            $browser->selectDate(1, 2018);
+                            $browser->selectDate(2019, 1, 30);
                         })
                         ->assertSee('January');
             });
@@ -1382,21 +1387,21 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
                 - run: npm install
                 - run: npm run production
                 - run: vendor/bin/phpunit
-       
+
                 - run:
                     name: Start Chrome Driver
                     command: ./vendor/laravel/dusk/bin/chromedriver-linux
                     background: true
-       
+
                 - run:
                     name: Run Laravel Server
                     command: php artisan serve
                     background: true
-       
+
                 - run:
                     name: Run Laravel Dusk Tests
                     command: php artisan dusk
-                    
+
                 - store_artifacts:
                     path: tests/Browser/screenshots
 
@@ -1458,7 +1463,7 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
 
     script:
       - php artisan dusk
-      
+
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
@@ -1474,6 +1479,8 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
           - uses: actions/checkout@v1
           - name: Prepare The Environment
             run: cp .env.example .env
+          - name: Create Database
+            run: mysql --user="root" --password="root" -e "CREATE DATABASE my-database character set UTF8mb4 collate utf8mb4_bin;"
           - name: Install Composer Dependencies
             run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
           - name: Generate Application Key
