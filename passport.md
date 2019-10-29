@@ -1,7 +1,7 @@
 # Laravel Passport
 
 - [Introduction](#introduction)
-- [Upgrading Horizon](#upgrading)
+- [Upgrading Passport](#upgrading)
 - [Installation](#installation)
     - [Frontend Quickstart](#frontend-quickstart)
     - [Deploying Passport](#deploying-passport)
