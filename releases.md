@@ -2,7 +2,7 @@
 
 - [Versioning Scheme](#versioning-scheme)
 - [Support Policy](#support-policy)
-- [Laravel 6.0](#laravel-6.0)
+- [Laravel 6](#laravel-6)
 
 <a name="versioning-scheme"></a>
 ## Versioning Scheme
@@ -14,7 +14,7 @@ When referencing the Laravel framework or its components from your application o
 <a name="support-policy"></a>
 ## Support Policy
 
-For LTS releases, such as Laravel 6.0, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year. For all additional libraries, including Lumen, only the latest release receives bug fixes.
+For LTS releases, such as Laravel 6, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
 
 | Version | Release | Bug Fixes Until | Security Fixes Until |
 | --- | --- | --- | --- |
@@ -22,12 +22,12 @@ For LTS releases, such as Laravel 6.0, bug fixes are provided for 2 years and se
 | 5.6 | February 7th, 2018 | August 7th, 2018 | February 7th, 2019 |
 | 5.7 | September 4th, 2018 | March 4th, 2019 | September 4th, 2019 |
 | 5.8 | February 26th, 2019 | August 26th, 2019 | February 26th, 2020 |
-| 6.0 (LTS) | September 3rd, 2019 | September 3rd, 2021 | September 3rd, 2022 |
+| 6 (LTS) | September 3rd, 2019 | September 3rd, 2021 | September 3rd, 2022 |
 
-<a name="laravel-6.0"></a>
-## Laravel 6.0
+<a name="laravel-6"></a>
+## Laravel 6
 
-Laravel 6.0 (LTS) continues the improvements made in Laravel 5.8 by introducing semantic versioning, compatibility with [Laravel Vapor](https://vapor.laravel.com), improved authorization responses, job middleware, lazy collections, sub-query improvements, the extraction of frontend scaffolding to the `laravel/ui` Composer package, and a variety of other bug fixes and usability improvements.
+Laravel 6 (LTS) continues the improvements made in Laravel 5.8 by introducing semantic versioning, compatibility with [Laravel Vapor](https://vapor.laravel.com), improved authorization responses, job middleware, lazy collections, sub-query improvements, the extraction of frontend scaffolding to the `laravel/ui` Composer package, and a variety of other bug fixes and usability improvements.
 
 ### Semantic Versioning
 
@@ -37,17 +37,17 @@ The Laravel framework (`laravel/framework`) package now follows the [semantic ve
 
 _Laravel Vapor was built by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-Laravel 6.0 provides compatibility with [Laravel Vapor](https://vapor.laravel.com), an auto-scaling serverless deployment platform for Laravel. Vapor abstracts the complexity of managing Laravel applications on AWS Lambda, as well as interfacing those applications with SQS queues, databases, Redis clusters, networks, CloudFront CDN, and more.
+Laravel 6 provides compatibility with [Laravel Vapor](https://vapor.laravel.com), an auto-scaling serverless deployment platform for Laravel. Vapor abstracts the complexity of managing Laravel applications on AWS Lambda, as well as interfacing those applications with SQS queues, databases, Redis clusters, networks, CloudFront CDN, and more.
 
 ### Improved Exceptions Via Ignition
 
-Laravel 6.0 ships with [Ignition](https://github.com/facade/ignition), a new open source exception detail page created by Freek Van der Herten and Marcel Pociot. Ignition offers many benefits over previous releases, such as improved Blade error file and line number handling, runnable solutions for common problems, code editing, exception sharing, and an improved UX.
+Laravel 6 ships with [Ignition](https://github.com/facade/ignition), a new open source exception detail page created by Freek Van der Herten and Marcel Pociot. Ignition offers many benefits over previous releases, such as improved Blade error file and line number handling, runnable solutions for common problems, code editing, exception sharing, and an improved UX.
 
 ### Improved Authorization Responses
 
 _Improved authorization responses were implemented by [Gary Green](https://github.com/garygreen)_.
 
-In previous releases of Laravel, it was difficult to retrieve and expose custom authorization messages to end users. This made it difficult to explain to end-users exactly why a particular request was denied. In Laravel 6.0, this is now much easier using authorization response messages and the new `Gate::inspect` method. For example, given the following policy method:
+In previous releases of Laravel, it was difficult to retrieve and expose custom authorization messages to end users. This made it difficult to explain to end-users exactly why a particular request was denied. In Laravel 6, this is now much easier using authorization response messages and the new `Gate::inspect` method. For example, given the following policy method:
 
     /**
      * Determine if the user can view the given flight.
@@ -99,7 +99,7 @@ Job middleware allow you to wrap custom logic around the execution of queued job
         });
     }
 
-In Laravel 6.0, this logic may be extracted into a job middleware, allowing you to keep your job's `handle` method free of any rate limiting responsibilities:
+In Laravel 6, this logic may be extracted into a job middleware, allowing you to keep your job's `handle` method free of any rate limiting responsibilities:
 
     <?php
 
@@ -150,7 +150,7 @@ After creating middleware, they may be attached to a job by returning them from 
 
 _Lazy collections were implemented by [Joseph Silber](https://github.com/JosephSilber)_.
 
-Many developers already enjoy Laravel's powerful [Collection methods](https://laravel.com/docs/collections). To supplement the already powerful `Collection` class, Laravel 6.0 introduces a `LazyCollection`, which leverages PHP's [generators](https://www.php.net/manual/en/language.generators.overview.php) to allow you to work with very large datasets while keeping memory usage low.
+Many developers already enjoy Laravel's powerful [Collection methods](https://laravel.com/docs/collections). To supplement the already powerful `Collection` class, Laravel 6 introduces a `LazyCollection`, which leverages PHP's [generators](https://www.php.net/manual/en/language.generators.overview.php) to allow you to work with very large datasets while keeping memory usage low.
 
 For example, imagine your application needs to process a multi-gigabyte log file while taking advantage of Laravel's collection methods to parse the logs. Instead of reading the entire file into memory at once, lazy collections may be used to keep only a small part of the file in memory at a given time:
 
@@ -178,7 +178,7 @@ Or, imagine you need to iterate through 10,000 Eloquent models. When using tradi
         return $user->id > 500;
     });
 
-However, beginning in Laravel 6.0, the query builder's `cursor` method has been updated to return a `LazyCollection` instance. This allows you to still only run a single query against the database but also only keep one Eloquent model loaded in memory at a time. In this example, the `filter` callback is not executed until we actually iterate over each user individually, allowing for a drastic reduction in memory usage:
+However, beginning in Laravel 6, the query builder's `cursor` method has been updated to return a `LazyCollection` instance. This allows you to still only run a single query against the database but also only keep one Eloquent model loaded in memory at a time. In this example, the `filter` callback is not executed until we actually iterate over each user individually, allowing for a drastic reduction in memory usage:
 
     $users = App\User::cursor()->filter(function ($user) {
         return $user->id > 500;
@@ -192,9 +192,9 @@ However, beginning in Laravel 6.0, the query builder's `cursor` method has been 
 
 _Eloquent subquery enhancements were implemented by [Jonathan Reinink](https://github.com/reinink)_.
 
-Laravel 6.0 introduces several new enhancements and improvements to database subquery support. For example, let's imagine that we have a table of flight `destinations` and a table of `flights` to destinations. The `flights` table contains an `arrived_at` column which indicates when the flight arrived at the destination.
+Laravel 6 introduces several new enhancements and improvements to database subquery support. For example, let's imagine that we have a table of flight `destinations` and a table of `flights` to destinations. The `flights` table contains an `arrived_at` column which indicates when the flight arrived at the destination.
 
-Using the new subquery select functionality in Laravel 6.0, we can select all of the `destinations` and the name of the flight that most recently arrived at that destination using a single query:
+Using the new subquery select functionality in Laravel 6, we can select all of the `destinations` and the name of the flight that most recently arrived at that destination using a single query:
 
     return Destination::addSelect(['last_flight' => Flight::select('name')
         ->whereColumn('destination_id', 'destinations.id')

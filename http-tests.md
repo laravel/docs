@@ -141,7 +141,7 @@ You may also specify which guard should be used to authenticate the given user b
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
 
-Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `get`, `post`, `put`, `patch`, `delete`, and `option` methods may be used to issue requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that the expected data was returned:
+Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `getJson`, `postJson`, `putJson`, `patchJson`, `deleteJson`, and `optionsJson` methods may be used to issue JSON requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that the expected data was returned:
 
     <?php
 
@@ -154,7 +154,7 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
          */
         public function testBasicExample()
         {
-            $response = $this->json('POST', '/user', ['name' => 'Sally']);
+            $response = $this->postJson('/user', ['name' => 'Sally']);
 
             $response
                 ->assertStatus(201)
@@ -189,6 +189,30 @@ If you would like to verify that the given array is an **exact** match for the J
                 ->assertExactJson([
                     'created' => true,
                 ]);
+        }
+    }
+
+<a name="verifying-json-paths"></a>
+### Verifying JSON Paths
+
+If you would like to verify that the JSON response contains some given data at a specified path, you should use the `assertJsonPath` method:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $response = $this->json('POST', '/user', ['name' => 'Sally']);
+
+            $response
+                ->assertStatus(201)
+                ->assertJsonPath('team.owner.name', 'foo')
         }
     }
 
@@ -262,6 +286,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertCookieExpired](#assert-cookie-expired)
 [assertCookieNotExpired](#assert-cookie-not-expired)
 [assertCookieMissing](#assert-cookie-missing)
+[assertCreated](#assert-created)
 [assertDontSee](#assert-dont-see)
 [assertDontSeeText](#assert-dont-see-text)
 [assertExactJson](#assert-exact-json)
@@ -274,9 +299,11 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertJsonMissing](#assert-json-missing)
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
+[assertJsonPath](#assert-json-path)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertLocation](#assert-location)
+[assertNoContent](#assert-no-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
 [assertPlainCookie](#assert-plain-cookie)
@@ -331,6 +358,13 @@ Assert that the response does not contains the given cookie:
 
     $response->assertCookieMissing($cookieName);
 
+<a name="assert-created"></a>
+#### assertCreated
+
+Assert that the response has a 201 status code:
+
+    $response->assertCreated();
+
 <a name="assert-dont-see"></a>
 #### assertDontSee
 
@@ -378,7 +412,7 @@ Assert that the given header is not present on the response:
 
 Assert that the response contains the given JSON data:
 
-    $response->assertJson(array $data);
+    $response->assertJson(array $data, $strict = false);
 
 <a name="assert-json-count"></a>
 #### assertJsonCount
@@ -415,6 +449,13 @@ Assert that the response has no JSON validation errors for the given keys:
 
     $response->assertJsonMissingValidationErrors($keys);
 
+<a name="assert-json-path"></a>
+#### assertJsonPath
+
+Assert that the response contains the given data at the specified path:
+
+    $response->assertJsonPath($path, array $data, $strict = false);
+
 <a name="assert-json-structure"></a>
 #### assertJsonStructure
 
@@ -435,6 +476,13 @@ Assert that the response has the given JSON validation errors:
 Assert that the response has the given URI value in the `Location` header:
 
     $response->assertLocation($uri);
+
+<a name="assert-no-content"></a>
+#### assertNoContent
+
+Assert that the response has the given status code and no content.
+
+    $response->assertNoContent($status = 204);
 
 <a name="assert-not-found"></a>
 #### assertNotFound
@@ -516,14 +564,14 @@ Assert that the session has a given list of values:
 <a name="assert-session-has-errors"></a>
 #### assertSessionHasErrors
 
-Assert that the session contains an error for the given field:
+Assert that the session contains an error for the given `$keys`. If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key):
 
     $response->assertSessionHasErrors(array $keys, $format = null, $errorBag = 'default');
 
 <a name="assert-session-has-errors-in"></a>
 #### assertSessionHasErrorsIn
 
-Assert that the session has the given errors:
+Assert that the session contains an error for the given `$keys`, within a specific error bag. If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key), within the error bag:
 
     $response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);
 

@@ -71,6 +71,10 @@ If you need to require other PHP files before your task is executed, you may use
         # ...
     @endtask
 
+You may also import other Envoy files so their stories and tasks are added to yours. After they have been imported, you may execute the tasks in those files as if they were defined in your own. You should use the `@import` directive at the top of your `Envoy.blade.php` file:
+
+    @import('package/Envoy.blade.php')
+
 <a name="variables"></a>
 ### Variables
 
@@ -178,6 +182,16 @@ You may provide one of the following as the channel argument:
 - To send the notification to a user: `@user`
 </div>
 
+In addition you can also send Slack updates for specific tasks so you get the context of which task was run. You can do this by adding the `@slack` directive inside the `@task` directive:
+
+    @task('deploy', ['on' => 'web', 'confirm' => true])
+        cd site
+        git pull origin {{ $branch }}
+        php artisan migrate
+
+        @slack('webhook-url', '#deployments')
+    @endtask
+
 <a name="discord"></a>
 ### Discord
 
@@ -186,3 +200,13 @@ Envoy also supports sending notifications to [Discord](https://discord.com) afte
     @finished
         @discord('discord-webhook-url')
     @endfinished
+
+In addition you can also send Discord updates for specific tasks so you get the context of which task was run. You can do this by adding the `@discord` directive inside the `@task` directive:
+
+    @task('deploy', ['on' => 'web', 'confirm' => true])
+        cd site
+        git pull origin {{ $branch }}
+        php artisan migrate
+
+        @discord('discord-webhook-url')
+    @endtask

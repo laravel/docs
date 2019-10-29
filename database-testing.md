@@ -208,7 +208,7 @@ In this example, we'll attach a relation to some created models. When using the 
                ->each(function ($user) {
                     $user->posts()->save(factory(App\Post::class)->make());
                 });
-                
+
 You may use the `createMany` method to create multiple related models:
 
     $user->posts()->createMany(
@@ -217,27 +217,23 @@ You may use the `createMany` method to create multiple related models:
 
 #### Relations & Attribute Closures
 
-You may also attach relationships to models using Closure attributes in your factory definitions. For example, if you would like to create a new `User` instance when creating a `Post`, you may do the following:
+You may also attach relationships to models in your factory definitions. For example, if you would like to create a new `User` instance when creating a `Post`, you may do the following:
 
     $factory->define(App\Post::class, function ($faker) {
         return [
             'title' => $faker->title,
             'content' => $faker->paragraph,
-            'user_id' => function () {
-                return factory(App\User::class)->create()->id;
-            },
+            'user_id' => factory(App\User::class),
         ];
     });
 
-These Closures also receive the evaluated attribute array of the factory that defines them:
+If the relationship depends on the factory that defines it you may provide a callback which accepts the evaluated attribute array:
 
     $factory->define(App\Post::class, function ($faker) {
         return [
             'title' => $faker->title,
             'content' => $faker->paragraph,
-            'user_id' => function () {
-                return factory(App\User::class)->create()->id;
-            },
+            'user_id' => factory(App\User::class),
             'user_type' => function (array $post) {
                 return App\User::find($post['user_id'])->type;
             },

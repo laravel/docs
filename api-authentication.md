@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-    - [Database Migrations](#database-preparation)
+    - [Database Preparation](#database-preparation)
 - [Generating Tokens](#generating-tokens)
     - [Hashing Tokens](#hashing-tokens)
 - [Protecting Routes](#protecting-routes)
@@ -50,11 +50,11 @@ Once the `api_token` column has been added to your `users` table, you are ready 
      */
     protected function create(array $data)
     {
-        return User::create([
+        return User::forceCreate([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'api_token' => Str::random(60),
+            'api_token' => Str::random(80),
         ]);
     }
 
@@ -92,7 +92,7 @@ For example, a controller method that initializes / refreshes the token for a gi
          */
         public function update(Request $request)
         {
-            $token = Str::random(60);
+            $token = Str::random(80);
 
             $request->user()->forceFill([
                 'api_token' => hash('sha256', $token),

@@ -38,6 +38,14 @@ In order to make this more convenient, you may use the `mock` method, which is p
         $mock->shouldReceive('process')->once();
     });
 
+You may use the `partialMock` method when you only need to mock a few methods of an object. The methods that are not mocked will be executed normally when called:
+
+    use App\Service;
+
+    $this->partialMock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    });
+
 Similarly, if you want to spy on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method:
 
     use App\Service;
@@ -274,6 +282,15 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
             // Assert a notification was sent via Notification::route() method...
             Notification::assertSentTo(
                 new AnonymousNotifiable, OrderShipped::class
+            );
+            
+            // Assert Notification::route() method sent notification to the correct user...
+            Notification::assertSentTo(
+                new AnonymousNotifiable,
+                OrderShipped::class,
+                function ($notification, $channels, $notifiable) use ($user) {
+                    return $notifiable->routes['mail'] === $user->email;
+                }
             );
         }
     }

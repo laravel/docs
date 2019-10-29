@@ -22,6 +22,15 @@ All of your worker configuration is stored in a single, simple configuration fil
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1537195039/photos/Test.png" width="600" height="481">
 </p>
 
+<a name="upgrading"></a>
+#### Upgrading Horizon
+
+When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
+
+In addition, you should re-publish Horizon's assets:
+
+    php artisan horizon:assets
+
 <a name="installation"></a>
 ## Installation
 
@@ -40,15 +49,6 @@ You should also create the `failed_jobs` table which Laravel will use to store a
     php artisan queue:failed-table
 
     php artisan migrate
-
-<a name="upgrading"></a>
-#### Upgrading Horizon
-
-When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
-
-In addition, you should re-publish Horizon's assets:
-
-    php artisan horizon:assets
 
 <a name="configuration"></a>
 ### Configuration
@@ -134,9 +134,17 @@ You may gracefully terminate the master Horizon process on your machine using th
 
 If you are deploying Horizon to a live server, you should configure a process monitor to monitor the `php artisan horizon` command and restart it if it quits unexpectedly. When deploying fresh code to your server, you will need to instruct the master Horizon process to terminate so it can be restarted by your process monitor and receive your code changes.
 
+#### Installing Supervisor
+
+Supervisor is a process monitor for the Linux operating system, and will automatically restart your `horizon` process if it fails. To install Supervisor on Ubuntu, you may use the following command:
+
+    sudo apt-get install supervisor
+
+> {tip} If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
+
 #### Supervisor Configuration
 
-If you are using the Supervisor process monitor to manage your `horizon` process, the following configuration file should suffice:
+Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `horizon.conf` file that starts and monitors a `horizon` process:
 
     [program:horizon]
     process_name=%(program_name)s
@@ -147,7 +155,17 @@ If you are using the Supervisor process monitor to manage your `horizon` process
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/horizon.log
 
-> {tip} If you are uncomfortable managing your own servers, consider using [Laravel Forge](https://forge.laravel.com). Forge provisions PHP 7+ servers with everything you need to run modern, robust Laravel applications with Horizon.
+#### Starting Supervisor
+
+Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
+
+    sudo supervisorctl reread
+
+    sudo supervisorctl update
+
+    sudo supervisorctl start horizon
+
+For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
 
 <a name="tags"></a>
 ## Tags
