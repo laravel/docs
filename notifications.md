@@ -772,7 +772,7 @@ You may also use an image as your logo instead of an emoji:
     {
         return (new SlackMessage)
                     ->from('Laravel')
-                    ->image('https://laravel.com/favicon.png')
+                    ->image('https://laravel.com/img/favicon/favicon.ico')
                     ->content('This will display the Laravel logo next to the message');
     }
 
