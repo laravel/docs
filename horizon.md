@@ -23,7 +23,7 @@ All of your worker configuration is stored in a single, simple configuration fil
 </p>
 
 <a name="upgrading"></a>
-#### Upgrading Horizon
+## Upgrading Horizon
 
 When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
 
