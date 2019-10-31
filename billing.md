@@ -433,6 +433,12 @@ When a subscription has an incomplete payment, you should direct the user to Cas
         Please confirm your payment.
     </a>
 
+If you would like the subscription to still be marked as active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
+
+    use Laravel\Cashier\Cashier;
+
+    Cashier::keepPastDueSubscriptionsActive();
+
 > {note} When a subscription is in an `incomplete` state it cannot be changed until the payment is confirmed. Therefore, the `swap` and `updateQuantity` methods will throw an exception when the subscription is in an `incomplete` state.
 
 <a name="changing-plans"></a>
