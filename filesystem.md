@@ -422,7 +422,7 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
     class DropboxServiceProvider extends ServiceProvider
     {
         /**
-         * Register bindings in the container.
+         * Register any application services.
          *
          * @return void
          */

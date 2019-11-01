@@ -627,7 +627,7 @@ The following example creates a `@datetime($var)` directive which formats a give
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register bindings in the container.
+         * Register any application services.
          *
          * @return void
          */

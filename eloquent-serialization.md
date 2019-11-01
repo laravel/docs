@@ -193,7 +193,7 @@ Laravel extends the [Carbon](https://github.com/briannesbitt/Carbon) date librar
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register bindings in the container.
+         * Register any application services.
          *
          * @return void
          */

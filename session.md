@@ -247,7 +247,7 @@ Once your driver has been implemented, you are ready to register it with the fra
     class SessionServiceProvider extends ServiceProvider
     {
         /**
-         * Register bindings in the container.
+         * Register any application services.
          *
          * @return void
          */
