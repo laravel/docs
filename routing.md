@@ -364,7 +364,7 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
         parent::boot();
 
         Route::bind('user', function ($value) {
-            return App\User::where('name', $value)->first() ?? abort(404);
+            return App\User::where('name', $value)->firstOrFail();
         });
     }
 
@@ -378,7 +378,7 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
      */
     public function resolveRouteBinding($value)
     {
-        return $this->where('name', $value)->first() ?? abort(404);
+        return $this->where('name', $value)->firstOrFail();
     }
 
 <a name="fallback-routes"></a>
