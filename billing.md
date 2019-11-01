@@ -267,7 +267,7 @@ To retrieve the default payment method, the `defaultPaymentMethod` method may be
 
     $paymentMethod = $user->defaultPaymentMethod();
 
-You can also retrieve a specific payment method, owned by the Billable model with the `findPaymentMethod` method:
+You can also retrieve a specific payment method that is owned by the Billable model using the `findPaymentMethod` method:
 
     $paymentMethod = $user->findPaymentMethod($paymentMethodId);
 
