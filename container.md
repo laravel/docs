@@ -188,6 +188,14 @@ The `extend` method allows the modification of resolved services. For example, w
         return new DecoratedService($service);
     });
 
+The closure passed to the `extend` method also receives the container instance; therefore, if you need the container instance in your extender function, simply add it as the second argument:
+
+    $this->app->extend(Service::class, function ($service, $app) {
+        $dependency = $app->make(SomeDependency::class);
+        return new DecoratedService($service, $dependency);
+    });
+
+
 <a name="resolving"></a>
 ## Resolving
 
