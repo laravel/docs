@@ -299,7 +299,7 @@ So far, we have only examined policy methods that return simple boolean values. 
      *
      * @param  \App\User  $user
      * @param  \App\Post  $post
-     * @return bool
+     * @return Response   $response
      */
     public function update(User $user, Post $post)
     {
