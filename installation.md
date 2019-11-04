@@ -28,6 +28,7 @@ However, if you are not using Homestead, you will need to make sure your server 
 - PDO PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
+- Sessions PHP Extension
 - DOM PHP Extension
 - XMLWriter PHP Extension
 </div>
