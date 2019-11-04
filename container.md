@@ -182,19 +182,11 @@ Once the services have been tagged, you may easily resolve them all via the `tag
 <a name="extending-bindings"></a>
 ### Extending Bindings
 
-The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a Closure, which should return the modified service, as its only argument:
-
-    $this->app->extend(Service::class, function ($service) {
-        return new DecoratedService($service);
-    });
-
-The closure passed to the `extend` method also receives the container instance; therefore, if you need the container instance in your extender function, simply add it as the second argument:
+The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a Closure, which should return the modified service, as its only argument. The Closure receives the service being resolved and the container instance:
 
     $this->app->extend(Service::class, function ($service, $app) {
-        $dependency = $app->make(SomeDependency::class);
-        return new DecoratedService($service, $dependency);
+        return new DecoratedService($service);
     });
-
 
 <a name="resolving"></a>
 ## Resolving
