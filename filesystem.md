@@ -349,7 +349,7 @@ If the file has already been stored, its visibility can be retrieved and set via
 
     $visibility = Storage::getVisibility('file.jpg');
 
-    Storage::setVisibility('file.jpg', 'public')
+    Storage::setVisibility('file.jpg', 'public');
 
 <a name="deleting-files"></a>
 ## Deleting Files
