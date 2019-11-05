@@ -694,7 +694,7 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
         '\App\Http\Controllers\WebhookController@handleWebhook'
     );
 
-In addition, Cashier will emit a `Laravel\Cashier\Events\WebhookReceived` event when a webhook first comes in, and a `Laravel\Cashier\Events\WebhookWebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Stripe webhook. You can listen for these events and handle any extra actions you need to make.
+Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Cashier\Events\WebhookWebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Stripe webhook.
 
 <a name="handling-failed-subscriptions"></a>
 ### Failed Subscriptions
