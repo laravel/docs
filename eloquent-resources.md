@@ -324,7 +324,7 @@ If you would like to disable the wrapping of the outer-most resource, you may us
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register bindings in the container.
+         * Register any application services.
          *
          * @return void
          */

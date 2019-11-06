@@ -43,7 +43,7 @@ Laravel already makes it easy to perform authentication via traditional login fo
 > {note} This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
 
 <a name="upgrading"></a>
-#### Upgrading Passport
+## Upgrading Passport
 
 When upgrading to a new major version of Passport, it's important that you carefully review [the upgrade guide](https://github.com/laravel/passport/blob/master/UPGRADE.md).
 

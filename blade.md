@@ -627,7 +627,7 @@ The following example creates a `@datetime($var)` directive which formats a give
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register bindings in the container.
+         * Register any application services.
          *
          * @return void
          */
@@ -682,4 +682,8 @@ Once the custom conditional has been defined, we can easily use it on our templa
         // The application is in the testing environment...
     @else
         // The application is not in the local or testing environment...
+    @endenv
+
+    @unlessenv('production')
+        // The application is not in the production environment...
     @endenv
