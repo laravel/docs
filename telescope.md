@@ -261,9 +261,12 @@ The command watcher records the arguments, options, exit code, and output whenev
     ],
 
 <a name="dump-watcher"></a>
-### Dump 監視者
+### dump 監視者
 
-The dump watcher records and displays your variable dumps in Telescope. When using Laravel, variables may be dumped using the global `dump` function. The dump watcher tab must be open in a browser for the recording to occur, otherwise the dumps will be ignored by the watcher.
+Telescope 的 dump 監視者紀錄並顯示所有的變數 dump 內容。
+
+在 Laravel 專案內，變數可能會透過 `dump` 函式做顯示。
+When using Laravel, variables may be dumped using the global `dump` function. The dump watcher tab must be open in a browser for the recording to occur, otherwise the dumps will be ignored by the watcher.
 
 <a name="event-watcher"></a>
 ### 事件監視者
