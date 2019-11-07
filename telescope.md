@@ -139,9 +139,9 @@ Telescope 會在 `/telescope` 這個網址裡面顯示儀表板。
 <a name="filtering-entries"></a>
 ### 條目
 
-你可以透過在 `TelescopeServiceProvider` 上面登記的 `filter` 來過濾紀錄在 Telescope 上面的資料。
+你可以透過改變 `TelescopeServiceProvider` 上面 `filter` 函式參數裡的回呼函式 ，來過濾紀錄在 Telescope 上面的資料。
 
-預設上，this callback 紀錄 `local` 環境的所有資料，包含例外，失敗工作，排程任務，還有其他環境裡面有監視標籤的資料：
+預設上，這個回呼函式紀錄 `local` 環境的所有資料，包含例外，失敗工作，排程任務，還有其他環境裡面有監視標籤的資料：
 
     /**
      * Register any application services.
