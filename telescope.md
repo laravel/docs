@@ -199,7 +199,7 @@ While the `filter` callback filters data for individual entries, you may use the
 
 Telescope 允許你根據標籤搜尋條目。
 
-Telescope allows you to search entries by "tag". Often, tags are Eloquent model class names or authenticated user IDs which Telescope automatically adds to entries. Occasionally, you may want to attach your own custom tags to entries. To accomplish this, you may use the `Telescope::tag` method. The `tag` method accepts a callback which should return an array of tags. The tags returned by the callback will be merged with any tags Telescope would automatically attach to the entry. You should call the `tag` method within your `TelescopeServiceProvider`:
+Often, tags are Eloquent model class names or authenticated user IDs which Telescope automatically adds to entries. Occasionally, you may want to attach your own custom tags to entries. To accomplish this, you may use the `Telescope::tag` method. The `tag` method accepts a callback which should return an array of tags. The tags returned by the callback will be merged with any tags Telescope would automatically attach to the entry. You should call the `tag` method within your `TelescopeServiceProvider`:
 
     use Laravel\Telescope\Telescope;
 
@@ -224,7 +224,7 @@ Telescope allows you to search entries by "tag". Often, tags are Eloquent model 
 <a name="available-watchers"></a>
 ## 可用的監視者
 
-Telescope 監視者 gather application data when a request or console command is executed. You may customize the list of watchers that you would like to enable within your `config/telescope.php` configuration file:
+當執行請求或者呼叫指令時，Telescope 監視者會收集相關資訊。 You may customize the list of watchers that you would like to enable within your `config/telescope.php` configuration file:
 
     'watchers' => [
         Watchers\CacheWatcher::class => true,
