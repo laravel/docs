@@ -716,7 +716,7 @@ The field under validation must be _numeric_ and must have an exact length of _v
 <a name="rule-digits-between"></a>
 #### digits_between:_min_,_max_
 
-The field under validation must have a length between the given _min_ and _max_.
+The field under validation must be _numeric_ and must have a length between the given _min_ and _max_.
 
 <a name="rule-dimensions"></a>
 #### dimensions
