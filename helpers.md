@@ -78,7 +78,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [e](#method-e)
 [preg_replace_array](#method-preg-replace-array)
 [Str::after](#method-str-after)
+[Str::afterLast](#method-str-after-last)
 [Str::before](#method-str-before)
+[Str::beforeLast](#method-str-before-last)
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
@@ -828,6 +830,17 @@ The `Str::after` method returns everything after the given value in a string:
 
     // ' my name'
 
+<a name="method-str-after-last"></a>
+#### `Str::afterLast()` {#collection-method}
+
+The `Str::afterLast` method returns everything after the last occurrence of the given value in a string:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::afterLast('App\Http\Controllers\Controller', '\\');
+
+    // 'Controller'
+
 <a name="method-str-before"></a>
 #### `Str::before()` {#collection-method}
 
@@ -838,6 +851,17 @@ The `Str::before` method returns everything before the given value in a string:
     $slice = Str::before('This is my name', 'my name');
 
     // 'This is '
+
+<a name="method-str-before-last"></a>
+#### `Str::beforeLast()` {#collection-method}
+
+The `Str::beforeLast` method returns everything before the last occurrence of the given value in a string:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::beforeLast('This is my name', 'is');
+
+    // 'This '
 
 <a name="method-camel-case"></a>
 #### `Str::camel()` {#collection-method}
