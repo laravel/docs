@@ -870,7 +870,7 @@ Typically, if you want to consume your API from your JavaScript application, you
         \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
     ],
 
-> {note} You should ensure that the `EncryptCookies` middleware is the last middleware listed in your middleware stack.
+> {note} You should ensure that the `CreateFreshApiToken` middleware is the last middleware listed in your middleware stack.
 
 This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. Now, you may make requests to your application's API without explicitly passing an access token:
 
