@@ -866,11 +866,11 @@ When building an API, it can be extremely useful to be able to consume your own 
 Typically, if you want to consume your API from your JavaScript application, you would need to manually send an access token to the application and pass it with each request to your application. However, Passport includes a middleware that can handle this for you. All you need to do is add the `CreateFreshApiToken` middleware to your `web` middleware group in your `app/Http/Kernel.php` file:
 
     'web' => [
-        // Other middleware...
+        // All other middleware...
         \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
     ],
 
-> {note} You should ensure that the `EncryptCookies` middleware is listed prior to the `CreateFreshApiToken` middleware in your middleware stack.
+> {note} The `CreateFreshApiToken` needs to be the very last middleware in your stack, as it will otherwise drop your request parameters and make them unavailable for any subsequent middleware. The best way to ensure the order of execution going forward is to also add it as the final entry of the `protected $middlewarePriority` array at the end of your `app/Http/Kernel.php` file.
 
 This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. Now, you may make requests to your application's API without explicitly passing an access token:
 
