@@ -2687,16 +2687,16 @@ While the `each` method calls the given callback for each item in the collection
 <a name="method-remember"></a>
 #### `remember()` {#collection-method}
 
-The `remember` method returns a new lazy collection that will remember any values that are enumerated and will not pull it again from the source when it's enumerated again:
-    
+The `remember` method returns a new lazy collection that will remember any values that have already been enumerated and will not retrieve them again when the collection is enumerated again:
+
     $users = User::cursor()->remember();
 
-    // No query has been executed yet.
+    // No query has been executed yet...
 
     $users->take(5)->all();
 
-    // The query has been executed, and the first 5 users have been streamed from the database.
+    // The query has been executed and the first 5 users have been hydrated from the database...
 
     $users->take(20)->all();
 
-    // The first 5 users came from the cache. The rest continued the stream from the database.
+    // First 5 users come from the collection's cache... The rest are hydrated from the database...
