@@ -214,8 +214,6 @@ To quickly generate an API resource controller that does not include the `create
 
     php artisan make:controller API/PhotoController --api
 
-<a name="restful-naming-resource-routes"></a>
-
 ### Nested Resources
 
 Sometimes you may need to define routes to a "nested" resource. For example, a photo resource may have multiple "comments" that may be attached to the photo. To "nest" resource controllers, use "dot" notation in your route declaration:
@@ -224,6 +222,7 @@ Sometimes you may need to define routes to a "nested" resource. For example, a p
 
 This route will register a "nested" resource that may be accessed with URLs like the following: photos/{photos}/comments/{comments}.
 
+<a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
