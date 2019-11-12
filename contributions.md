@@ -8,6 +8,7 @@
 - [Coding Style](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
+- [Code of Conduct](#code-of-conduct)
 
 <a name="bug-reports"></a>
 ## Bug Reports
@@ -94,3 +95,13 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
 ### StyleCI
 
 Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
+
+<a name="code-of-conduct"></a>
+## Code of Conduct
+
+The Laravel code of conduct is derived from the Ruby code of conduct. Any violations of the code of conduct may be reported to Taylor Otwell (taylor@laravel.com).
+
+- Participants will be tolerant of opposing views
+- Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks
+- When interpreting the words and actions of others, participants should always assume good intentions
+- Behavior which can be reasonably considered harassment will not be tolerated
