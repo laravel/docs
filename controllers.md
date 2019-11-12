@@ -8,6 +8,7 @@
 - [Controller Middleware](#controller-middleware)
 - [Resource Controllers](#resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
+    - [Nested Resources](#restful-nested-resources)
     - [Naming Resource Routes](#restful-naming-resource-routes)
     - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
     - [Localizing Resource URIs](#restful-localizing-resource-uris)
@@ -214,6 +215,7 @@ To quickly generate an API resource controller that does not include the `create
 
     php artisan make:controller API/PhotoController --api
 
+<a name="restful-nested-resources"></a>
 ### Nested Resources
 
 Sometimes you may need to define routes to a "nested" resource. For example, a photo resource may have multiple "comments" that may be attached to the photo. To "nest" resource controllers, use "dot" notation in your route declaration:
