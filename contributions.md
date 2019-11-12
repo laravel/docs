@@ -41,7 +41,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 <a name="support-questions"></a>
 ## Support Questions
 
-When asking for help or support with the Laravel core framework or one of its first-party libraries, the issue trackers on Github aren't the best place to do so. Since maintainers need to focus on making sure bugs get fixed and new features can developed, a better place to ask these questions is on one of the channels below:
+When asking for help or support with the Laravel core framework or one of its first-party libraries, the issue trackers on Github aren't the best place to do so. Since maintainers need to focus on making sure bugs get fixed and new features are developed, a better place to ask these questions is on one of the channels below:
 
 <div class="content-list" markdown="1">
 - [Laracasts Forums](https://laracasts.com/discuss)
