@@ -1,6 +1,7 @@
 # Contribution Guide
 
 - [Bug Reports](#bug-reports)
+- [Support Questions](#support-questions)
 - [Core Development Discussion](#core-development-discussion)
 - [Which Branch?](#which-branch)
 - [Compiled Assets](#compiled-assets)
@@ -35,6 +36,20 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Website](https://github.com/laravel/laravel.com-next)
+</div>
+
+<a name="support-questions"></a>
+## Support Questions
+
+Laravel's GitHub issue trackers are not intended to provide Laravel help or support. Instead, use one of the following channels:
+
+<div class="content-list" markdown="1">
+- [Laracasts Forums](https://laracasts.com/discuss)
+- [Laravel.io Forums](https://laravel.io/forum)
+- [StackOverflow](https://stackoverflow.com/questions/tagged/laravel)
+- [Discord](https://discordapp.com/invite/KxwQuKb)
+- [Larachat](https://larachat.co)
+- [IRC](https://webchat.freenode.net/?nick=artisan&channels=%23laravel&prompt=1)
 </div>
 
 <a name="core-development-discussion"></a>
