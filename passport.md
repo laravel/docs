@@ -229,7 +229,7 @@ By default, Passport issues long-lived access tokens that expire after one year.
 <a name="overriding-default-models"></a>
 ### Overriding Default Models
 
-You are free to **extend** the models used internally by Passport:
+You are free to extend the models used internally by Passport:
 
     use App\Models\Passport\Client as PassportClient;
 
