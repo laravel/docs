@@ -103,7 +103,7 @@ The following dependencies are needed for the listed queue drivers:
 <div class="content-list" markdown="1">
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~4.0`
-- Redis: `predis/predis ~1.0`
+- Redis: `predis/predis ~1.0` or phpredis PHP extension
 </div>
 
 <a name="creating-jobs"></a>
