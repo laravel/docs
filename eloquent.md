@@ -724,6 +724,27 @@ If you would like to remove several or even all of the global scopes, you may us
         FirstScope::class, SecondScope::class
     ])->get();
 
+It is also possible to remove a global scope from a relationship:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Post extends Model
+    {
+        /**
+         * Get the creator of the post.
+         *
+         * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+         */
+        public function creator()
+        {
+            return $this->belongsTo(User::class)->withoutGlobalScopes();
+        }
+    }    
+
 <a name="local-scopes"></a>
 ### Local Scopes
 
