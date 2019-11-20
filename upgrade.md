@@ -222,11 +222,9 @@ A new `getEmailForVerification` method has been added to the `Illuminate\Contrac
 <a name="email-verification-route-change"></a>
 #### Email Verification Route Change
 
-**Likelihood Of Impact: High**
+**Likelihood Of Impact: Medium**
 
-The route path for verifying emails has changed in 6.x from: `/email/verify/{id}` to `/email/verify/{id}/{hash}`
-
-This means that any verification emails that were sent out prior to upgrading to 6.x will no longer be valid and will go to a 404 page.
+The route path for verifying emails has changed from `/email/verify/{id}` to `/email/verify/{id}/{hash}`. Any email verification emails that were sent prior to upgrading to Laravel 6.x will not longer be valid and will display a 404 page. If you wish, you may define a route matching the old verification URL path and display an informative message for your users that asks them to re-verify their email address.
 
 <a name="helpers"></a>
 ### Helpers
