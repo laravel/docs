@@ -24,6 +24,7 @@
 - [Localization `Lang::getFromJson` Method](#get-from-json)
 - [Queue Retry Limit](#queue-retry-limit)
 - [Resend Email Verification Route](#email-verification-route)
+- [Email Verification Route Change](#email-verification-route-change)
 - [The `Input` Facade](#the-input-facade)
 </div>
 
@@ -217,6 +218,15 @@ To prevent possible CSRF attacks, the `email/resend` route registered by the rou
 **Likelihood Of Impact: Low**
 
 A new `getEmailForVerification` method has been added to the `Illuminate\Contracts\Auth\MustVerifyEmail` contract. If you are manually implementing this contract, you should implement this method. This method should return the object's associated email address. If your `App\User` model is using the `Illuminate\Auth\MustVerifyEmail` trait, no changes are required, as this trait implements this method for you.
+
+<a name="email-verification-route-change"></a>
+#### Email Verification Route Change
+
+**Likelihood Of Impact: High**
+
+The route path for verifying emails has changed in 6.x from: `/email/verify/{id}` to `/email/verify/{id}/{hash}`
+
+This means that any verification emails that were sent out prior to upgrading to 6.x will no longer be valid and will go to a 404 page.
 
 <a name="helpers"></a>
 ### Helpers
