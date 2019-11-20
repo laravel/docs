@@ -24,6 +24,7 @@
 - [Localization `Lang::getFromJson` Method](#get-from-json)
 - [Queue Retry Limit](#queue-retry-limit)
 - [Resend Email Verification Route](#email-verification-route)
+- [Email Verification Route Change](#email-verification-route-change)
 - [The `Input` Facade](#the-input-facade)
 </div>
 
@@ -217,6 +218,13 @@ To prevent possible CSRF attacks, the `email/resend` route registered by the rou
 **Likelihood Of Impact: Low**
 
 A new `getEmailForVerification` method has been added to the `Illuminate\Contracts\Auth\MustVerifyEmail` contract. If you are manually implementing this contract, you should implement this method. This method should return the object's associated email address. If your `App\User` model is using the `Illuminate\Auth\MustVerifyEmail` trait, no changes are required, as this trait implements this method for you.
+
+<a name="email-verification-route-change"></a>
+#### Email Verification Route Change
+
+**Likelihood Of Impact: Medium**
+
+The route path for verifying emails has changed from `/email/verify/{id}` to `/email/verify/{id}/{hash}`. Any email verification emails that were sent prior to upgrading to Laravel 6.x will not longer be valid and will display a 404 page. If you wish, you may define a route matching the old verification URL path and display an informative message for your users that asks them to re-verify their email address.
 
 <a name="helpers"></a>
 ### Helpers
