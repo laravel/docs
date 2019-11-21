@@ -1372,6 +1372,10 @@ Once the component has been defined, we can easily select a date within the date
 <a name="continuous-integration"></a>
 ## Continuous Integration
 
+Before adding a CI file, make sure that in your `.env.testing` file, you adjust the value of `APP_URL` to:
+
+    APP_URL=http://127.0.0.1:8000
+
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
 
@@ -1468,11 +1472,6 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
     script:
       - php artisan dusk
 
-
-In your `.env.testing` file, adjust the value of `APP_URL`:
-
-    APP_URL=http://127.0.0.1:8000
-
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
@@ -1502,8 +1501,3 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
             run: php artisan serve > /dev/null 2>&1 &
           - name: Run Dusk Tests
             run: php artisan dusk
-
-
-In your `.env.testing` file, adjust the value of `APP_URL`:
-
-    APP_URL=http://127.0.0.1:8000
