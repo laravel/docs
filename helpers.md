@@ -351,13 +351,9 @@ The `Arr::has` method checks whether a given item or items exists in an array us
 <a name="method-array-isassoc"></a>
 #### `Arr::isAssoc()` {#collection-method}
 
-The `Arr::isAssoc` returns `true` if the given array is an associative array.
-
-An array is "associative" if it doesn't have sequential numerical keys beginning with zero.
+The `Arr::isAssoc` returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
 
     use Illuminate\Support\Arr;
-
-    $array = ;
 
     $isAssoc = Arr::isAssoc(['product' => ['name' => 'Desk', 'price' => 100]]);
 
