@@ -1456,6 +1456,7 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
       - cp .env.testing .env
       - travis_retry composer install --no-interaction --prefer-dist --no-suggest
       - php artisan key:generate
+      - php artisan dusk:chrome-driver
 
     before_script:
       - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
