@@ -209,6 +209,14 @@ If the named route defines parameters, you may pass the parameters as the second
     })->name('profile');
 
     $url = route('profile', ['id' => 1]);
+    
+If you pass additionnal parameters as the second argument, they will be automatically transposed as a query string
+    
+    Route::get('user/{id}/profile', function ($id) {
+        //
+    })->name('profile');
+    
+    $url = route('profile', ['id' => 1, 'an_additionnal_parameter' => 'value']); //user/1/profile?an_additionnal_parameter=value
 
 #### Inspecting The Current Route
 
