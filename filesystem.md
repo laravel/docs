@@ -190,6 +190,14 @@ You may use the `url` method to get the URL for the given file. If you are using
 
 > {note} Remember, if you are using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory.
 
+#### Local Path
+
+If you would get the full path url:
+
+    use Illuminate\Support\Facades\Storage;
+
+    $url = Storage::path('file.jpg');
+
 #### Temporary URLs
 
 For files stored using the `s3` you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
