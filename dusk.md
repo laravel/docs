@@ -1384,6 +1384,8 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
                 - run: sudo apt-get install -y libsqlite3-dev
                 - run: cp .env.testing .env
                 - run: composer install -n --ignore-platform-reqs
+                - run: php artisan key:generate
+                - run: php artisan dusk:chrome-driver
                 - run: npm install
                 - run: npm run production
                 - run: vendor/bin/phpunit
@@ -1416,6 +1418,7 @@ To run Dusk tests on [Codeship](https://codeship.com), add the following command
     mkdir -p ./bootstrap/cache
     composer install --no-interaction --prefer-dist
     php artisan key:generate
+    php artisan dusk:chrome-driver
     nohup bash -c "php artisan serve 2>&1 &" && sleep 5
     php artisan dusk
 
@@ -1464,6 +1467,11 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
 
     script:
       - php artisan dusk
+
+
+In your `.env.testing` file, adjust the value of `APP_URL`:
+
+    APP_URL=http://127.0.0.1:8000
 
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
