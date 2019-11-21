@@ -143,7 +143,7 @@ The `increment` and `decrement` methods may be used to adjust the value of integ
 
 Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
 
-    $value = Cache::remember('users', $seconds, function () {
+    $value = Cache::remember('users', $minutes, function () {
         return DB::table('users')->get();
     });
 
@@ -166,13 +166,13 @@ If you need to retrieve an item from the cache and then delete the item, you may
 
 You may use the `put` method on the `Cache` facade to store items in the cache:
 
-    Cache::put('key', 'value', $seconds);
+    Cache::put('key', 'value', $minutes);
 
 If the storage time is not passed to the `put` method, the item will be stored indefinitely:
 
     Cache::put('key', 'value');
 
-Instead of passing the number of seconds as an integer, you may also pass a `DateTime` instance representing the expiration time of the cached item:
+Instead of passing the number of minutes as an integer, you may also pass a `DateTime` instance representing the expiration time of the cached item:
 
     Cache::put('key', 'value', now()->addMinutes(10));
 
@@ -180,7 +180,7 @@ Instead of passing the number of seconds as an integer, you may also pass a `Dat
 
 The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
 
-    Cache::add('key', 'value', $seconds);
+    Cache::add('key', 'value', $minutes);
 
 #### Storing Items Forever
 
@@ -281,13 +281,13 @@ In addition to using the `Cache` facade or [cache contract](/docs/{{version}}/co
 
 If you provide an array of key / value pairs and an expiration time to the function, it will store values in the cache for the specified duration:
 
-    cache(['key' => 'value'], $seconds);
+    cache(['key' => 'value'], $minutes);
 
     cache(['key' => 'value'], now()->addMinutes(10));
 
 When the `cache` function is called without any arguments, it returns an instance of the `Illuminate\Contracts\Cache\Factory` implementation, allowing you to call other caching methods:
 
-    cache()->remember('users', $seconds, function () {
+    cache()->remember('users', $minutes, function () {
         return DB::table('users')->get();
     });
 
@@ -303,9 +303,9 @@ When the `cache` function is called without any arguments, it returns an instanc
 
 Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
 
-    Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
+    Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
 
-    Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
+    Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
 
 <a name="accessing-tagged-cache-items"></a>
 ### Accessing Tagged Cache Items
@@ -345,8 +345,8 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
     {
         public function get($key) {}
         public function many(array $keys) {}
-        public function put($key, $value, $seconds) {}
-        public function putMany(array $values, $seconds) {}
+        public function put($key, $value, $minutes) {}
+        public function putMany(array $values, $minutes) {}
         public function increment($key, $value = 1) {}
         public function decrement($key, $value = 1) {}
         public function forever($key, $value) {}
