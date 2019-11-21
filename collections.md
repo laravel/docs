@@ -1441,6 +1441,33 @@ If duplicate keys exist, the last matching element will be inserted into the plu
 
     // ['Tesla' => 'black', 'Pagani' => 'orange']
 
+You may also use dot notation with wildcard to pluck values for nested keys:
+
+    $collection = collect([
+        [
+            'title' => 'Learn Laravel',
+            'tags' => [['name' => 'Laravel'], ['name' => 'PHP']],
+        ],
+        [
+            'title' => 'Testing Your Laravel Application',
+            'tags' => [['name' => 'Laravel'], ['name' => 'PHP'], ['name' => 'Testing']],
+        ],
+        [
+            'title' => 'Testing Vue',
+            'tags' => [['name' => 'Vue'], ['name' => 'JavaScript'], ['name' => 'Testing']],
+        ],
+    ]);
+
+    $plucked = $collection->pluck('tags.*.name');
+
+    $plucked->all();
+
+    // [
+    //    ["Laravel", "PHP"],
+    //    ["Laravel", "PHP", "Testing"],
+    //    ["Vue", "JavaScript", "Testing"],
+    // ]
+
 <a name="method-pop"></a>
 #### `pop()` {#collection-method}
 
