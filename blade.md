@@ -115,7 +115,7 @@ To instruct Laravel to load the first view that exists from a given array of pos
 
     @componentFirst(['custom.alert', 'alert'])
         <strong>Whoops!</strong> Something went wrong!
-    @endcomponent
+    @endcomponentfirst
 
 Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title". Named slots may be displayed by "echoing" the variable that matches their name:
 
