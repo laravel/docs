@@ -289,7 +289,7 @@ Method  | Description
 
 For convenience, you may pass a model to the `assertDeleted` and `assertSoftDeleted` helpers to assert the record was deleted or soft deleted, respectively, from the database based on the model's primary key.
 
-For example, if you are using a model factory in your test, you may pass this model to one of these helpers to test your application properly deleted the record from the database.
+For example, if you are using a model factory in your test, you may pass this model to one of these helpers to test your application properly deleted the record from the database:
 
   public function testDatabase()
   {
