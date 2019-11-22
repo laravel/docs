@@ -1372,9 +1372,7 @@ Once the component has been defined, we can easily select a date within the date
 <a name="continuous-integration"></a>
 ## Continuous Integration
 
-Before adding a CI file, make sure that in your `.env.testing` file, you adjust the value of `APP_URL` to:
-
-    APP_URL=http://127.0.0.1:8000
+> {note} Before adding a continous integration configuration file, ensure that your `.env.testing` file contains an `APP_URL` entry with a value of `http://127.0.0.1:8000`.
 
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
