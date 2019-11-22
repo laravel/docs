@@ -805,6 +805,12 @@ If you would like to customize the query executed by the validation rule, you ma
         ],
     ]);
 
+#### Using The Model As Table Name
+
+    'user_id' => 'exists:'.User::class.',id'
+
+You may also use the model class instead of a string with the table name.
+
 <a name="rule-file"></a>
 #### file
 
@@ -1106,6 +1112,12 @@ You may also specify additional query constraints by customizing the query using
     'email' => Rule::unique('users')->where(function ($query) {
         return $query->where('account_id', 1);
     })
+
+**Using Model As Table Name**
+
+You may also use the model class instead of a string with the table name:
+
+    'user_id' => 'unique:'.User::class.',id'
 
 <a name="rule-url"></a>
 #### url
