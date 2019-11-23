@@ -931,6 +931,19 @@ The `Str::endsWith` method determines if the given string ends with the given va
 
     // true
 
+
+You may also pass an array of values to determine if the given string ends with any of the given values:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::endsWith('This is my name', ['name', 'foo']);
+
+    // true
+    
+    $result = Str::endsWith('This is my name', ['this', 'foo']);
+    
+    // false
+
 <a name="method-str-finish"></a>
 #### `Str::finish()` {#collection-method}
 
