@@ -792,6 +792,10 @@ Occasionally, you may need to specify a specific database connection to be used 
 
     'email' => 'exists:connection.staff,email'
 
+Instead of specifying the table name directly, you may specify the Eloquent model which should be used to determine the table name:
+
+    'user_id' => 'exists:App\User,id'
+
 If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:
 
     use Illuminate\Validation\Rule;
@@ -804,12 +808,6 @@ If you would like to customize the query executed by the validation rule, you ma
             }),
         ],
     ]);
-
-#### Using The Model As Table Name
-
-    'user_id' => 'exists:'.User::class.',id'
-
-You may also use the model class instead of a string with the table name.
 
 <a name="rule-file"></a>
 #### file
@@ -1064,7 +1062,11 @@ The field under validation must be a valid timezone identifier according to the 
 
 The field under validation must not exist within the given database table.
 
-**Specifying A Custom Column Name:**
+**Specifying A Custom Table / Column Name:**
+
+Instead of specifying the table name directly, you may specify the Eloquent model which should be used to determine the table name:
+
+    'email' => 'unique:App\User,email_address'
 
 The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the field name will be used.
 
@@ -1112,12 +1114,6 @@ You may also specify additional query constraints by customizing the query using
     'email' => Rule::unique('users')->where(function ($query) {
         return $query->where('account_id', 1);
     })
-
-**Using Model As Table Name**
-
-You may also use the model class instead of a string with the table name:
-
-    'user_id' => 'unique:'.User::class.',id'
 
 <a name="rule-url"></a>
 #### url
