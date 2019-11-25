@@ -192,7 +192,7 @@ You may use the `url` method to get the URL for the given file. If you are using
 
 #### Temporary URLs
 
-For files stored using the `s3` you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
+For files stored using the `s3` you may create a temporary URL to a given file using the `temporaryUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
 
     $url = Storage::temporaryUrl(
         'file.jpg', now()->addMinutes(5)
