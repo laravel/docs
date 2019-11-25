@@ -264,6 +264,16 @@ The `refresh` method will re-hydrate the existing model using fresh data from th
 
     $flight->number; // "FR 900"
 
+
+#### Replicating Models
+
+You can replicate models using the `replicate` method. The `replicate` method will create a new model instance with the same attribute values:
+
+    $flight = App\Flight::first();
+
+    $newFlight = $flight->replicate();
+
+
 <a name="collections"></a>
 ### Collections
 
