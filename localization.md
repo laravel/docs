@@ -110,6 +110,23 @@ If you are using the [Blade templating engine](/docs/{{version}}/blade), you may
 
 If the specified translation string does not exist, the `__` function will return the translation string key. So, using the example above, the `__` function would return `messages.welcome` if the translation string does not exist.
 
+The translation string files may be nested in subdirectories:
+
+    /resources
+        /lang
+            /en
+                /welcome
+                    messages.php
+            /es
+                /welcome
+                    messages.php
+
+In this case the translation strings will be referenced by specifying the full path. For example:
+
+    {{ __('welcome/messages.welcome') }}
+
+    @lang('welcome/messages.welcome')
+
 > {note} The `@lang` directive does not escape any output. You are **fully responsible** for escaping your own output when using this directive.
 
 <a name="replacing-parameters-in-translation-strings"></a>
