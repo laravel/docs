@@ -480,7 +480,7 @@ The `whereExists` method allows you to write `where exists` SQL clauses. The `wh
                ->whereExists(function ($query) {
                    $query->select(DB::raw(1))
                          ->from('orders')
-                         ->whereRaw('orders.user_id = users.id');
+                         ->whereColumn('orders.user_id', 'users.id');
                })
                ->get();
 
