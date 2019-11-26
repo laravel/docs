@@ -291,11 +291,11 @@ For convenience, you may pass a model to the `assertDeleted` and `assertSoftDele
 
 For example, if you are using a model factory in your test, you may pass this model to one of these helpers to test your application properly deleted the record from the database:
 
-  public function testDatabase()
-  {
-      $user = factory(App\User::class)->create();
-
-      // Make call to application...
-
-      $this->assertDeleted($user);
-  }
+    public function testDatabase()
+    {
+        $user = factory(App\User::class)->create();
+  
+        // Make call to application...
+  
+        $this->assertDeleted($user);
+    }
