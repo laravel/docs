@@ -328,6 +328,20 @@ Using the subquery functionality available to the `select` and `addSelect` metho
         ->limit(1)
     ])->get();
 
+Alternatively, you can use `selectSub` to achieve the similar results. For example, a question may have numerous answers. We can get all the questions with the last time that each one is answered.
+
+    use App\Question;
+    use App\Answer;
+
+    return Question::select('questions.*')->selectSub(
+        Answer::select('created_at')
+            ->whereColumn('question_id', 'questions.id')
+            ->latest()
+            ->limit(1),
+        'last_answered_at'
+    )->get();
+
+
 #### Subquery Ordering
 
 In addition, the query builder's `orderBy` function supports subqueries. We may use this functionality to sort all destinations based on when the last flight arrived at that destination. Again, this may be done while executing a single query against the database:
