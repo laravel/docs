@@ -590,6 +590,7 @@ You may also update the default CLI version by issuing the following commands fr
     php71
     php72
     php73
+    php74
 
 <a name="web-servers"></a>
 ### Web Servers
