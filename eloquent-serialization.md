@@ -170,6 +170,21 @@ You may instruct a single model instance to append attributes using the `append`
 <a name="date-serialization"></a>
 ## Date Serialization
 
+#### Customizing The Default Date Format
+
+You may customize the default serialization format by overriding the `serializeDate` method:
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param  \DateTimeInterface  $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d');
+    }
+
 #### Customizing The Date Format Per Attribute
 
 You may customize the serialization format of individual Eloquent date attributes by specifying the date format in the [cast declaration](/docs/{{version}}/eloquent-mutators#attribute-casting):
