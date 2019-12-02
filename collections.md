@@ -38,6 +38,7 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 
 Collections are "macroable", which allows you to add additional methods to the `Collection` class at run time. For example, the following code adds a `toUpper` method to the `Collection` class:
 
+    use Illuminate\Support\Collection;
     use Illuminate\Support\Str;
 
     Collection::macro('toUpper', function () {
@@ -2370,13 +2371,20 @@ This method has the same signature as the [`whereIn`](#method-wherein) method; h
 
 The `whereInstanceOf` method filters the collection by a given class type:
 
+    use App\User;
+    use App\Post;
+
     $collection = collect([
         new User,
         new User,
         new Post,
     ]);
 
-    return $collection->whereInstanceOf(User::class);
+    $filtered = $collection->whereInstanceOf(User::class);
+
+    $filtered->all();
+
+    // [App\User, App\User]
 
 <a name="method-wherenotbetween"></a>
 #### `whereNotBetween()` {#collection-method}
@@ -2683,3 +2691,20 @@ While the `each` method calls the given callback for each item in the collection
     // 1
     // 2
     // 3
+
+<a name="method-remember"></a>
+#### `remember()` {#collection-method}
+
+The `remember` method returns a new lazy collection that will remember any values that have already been enumerated and will not retrieve them again when the collection is enumerated again:
+
+    $users = User::cursor()->remember();
+
+    // No query has been executed yet...
+
+    $users->take(5)->all();
+
+    // The query has been executed and the first 5 users have been hydrated from the database...
+
+    $users->take(20)->all();
+
+    // First 5 users come from the collection's cache... The rest are hydrated from the database...

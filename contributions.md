@@ -1,6 +1,7 @@
 # Contribution Guide
 
 - [Bug Reports](#bug-reports)
+- [Support Questions](#support-questions)
 - [Core Development Discussion](#core-development-discussion)
 - [Which Branch?](#which-branch)
 - [Compiled Assets](#compiled-assets)
@@ -8,6 +9,7 @@
 - [Coding Style](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
+- [Code of Conduct](#code-of-conduct)
 
 <a name="bug-reports"></a>
 ## Bug Reports
@@ -35,6 +37,20 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Website](https://github.com/laravel/laravel.com-next)
+</div>
+
+<a name="support-questions"></a>
+## Support Questions
+
+Laravel's GitHub issue trackers are not intended to provide Laravel help or support. Instead, use one of the following channels:
+
+<div class="content-list" markdown="1">
+- [Laracasts Forums](https://laracasts.com/discuss)
+- [Laravel.io Forums](https://laravel.io/forum)
+- [StackOverflow](https://stackoverflow.com/questions/tagged/laravel)
+- [Discord](https://discordapp.com/invite/KxwQuKb)
+- [Larachat](https://larachat.co)
+- [IRC](https://webchat.freenode.net/?nick=artisan&channels=%23laravel&prompt=1)
 </div>
 
 <a name="core-development-discussion"></a>
@@ -94,3 +110,15 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
 ### StyleCI
 
 Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
+
+<a name="code-of-conduct"></a>
+## Code of Conduct
+
+The Laravel code of conduct is derived from the Ruby code of conduct. Any violations of the code of conduct may be reported to Taylor Otwell (taylor@laravel.com):
+
+<div class="content-list" markdown="1">
+- Participants will be tolerant of opposing views.
+- Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
+- When interpreting the words and actions of others, participants should always assume good intentions.
+- Behavior which can be reasonably considered harassment will not be tolerated.
+</div>

@@ -115,7 +115,7 @@ To instruct Laravel to load the first view that exists from a given array of pos
 
     @componentFirst(['custom.alert', 'alert'])
         <strong>Whoops!</strong> Something went wrong!
-    @endcomponent
+    @endcomponentfirst
 
 Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title". Named slots may be displayed by "echoing" the variable that matches their name:
 
@@ -529,9 +529,13 @@ If you attempt to `@include` a view which does not exist, Laravel will throw an 
 
     @includeIf('view.name', ['some' => 'data'])
 
-If you would like to `@include` a view depending on a given boolean condition, you may use the `@includeWhen` directive:
+If you would like to `@include` a view if a given boolean expression evaluates to `true`, you may use the `@includeWhen` directive:
 
     @includeWhen($boolean, 'view.name', ['some' => 'data'])
+
+If you would like to `@include` a view if a given boolean expression evaluates to `false`, you may use the `@includeUnless` directive:
+
+    @includeUnless($boolean, 'view.name', ['some' => 'data'])
 
 To include the first view that exists from a given array of views, you may use the `includeFirst` directive:
 
@@ -627,7 +631,7 @@ The following example creates a `@datetime($var)` directive which formats a give
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register bindings in the container.
+         * Register any application services.
          *
          * @return void
          */
@@ -682,4 +686,8 @@ Once the custom conditional has been defined, we can easily use it on our templa
         // The application is in the testing environment...
     @else
         // The application is not in the local or testing environment...
+    @endenv
+
+    @unlessenv('production')
+        // The application is not in the production environment...
     @endenv

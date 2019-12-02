@@ -153,6 +153,7 @@ Sometimes you may need to send a notification to someone who is not stored as a 
 
     Notification::route('mail', 'taylor@example.com')
                 ->route('nexmo', '5555555555')
+                ->route('slack', 'https://hooks.slack.com/services/...')
                 ->notify(new InvoicePaid($invoice));
 
 <a name="mail-notifications"></a>
@@ -772,7 +773,7 @@ You may also use an image as your logo instead of an emoji:
     {
         return (new SlackMessage)
                     ->from('Laravel')
-                    ->image('https://laravel.com/favicon.png')
+                    ->image('https://laravel.com/img/favicon/favicon.ico')
                     ->content('This will display the Laravel logo next to the message');
     }
 

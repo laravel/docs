@@ -263,9 +263,13 @@ The `paymentMethods` method on the Billable model instance returns a collection 
 
     $paymentMethods = $user->paymentMethods();
 
-To retrieve the default payment method, the `defaultPaymentMethod` method may be used;
+To retrieve the default payment method, the `defaultPaymentMethod` method may be used:
 
     $paymentMethod = $user->defaultPaymentMethod();
+
+You can also retrieve a specific payment method that is owned by the Billable model using the `findPaymentMethod` method:
+
+    $paymentMethod = $user->findPaymentMethod($paymentMethodId);
 
 <a name="check-for-a-payment-method"></a>
 ### Determining If A User Has A Payment Method
@@ -321,9 +325,9 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
     $user = User::find(1);
 
-    $user->newSubscription('main', 'premium')->create($paymentMethod);
+    $user->newSubscription('default', 'premium')->create($paymentMethod);
 
-The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `main` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Stripe.
+The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Stripe.
 
 The `create` method, which accepts [a Stripe payment method identifier](#storing-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the customer ID and other relevant billing information.
 
@@ -333,7 +337,7 @@ The `create` method, which accepts [a Stripe payment method identifier](#storing
 
 If you would like to specify additional customer details, you may do so by passing them as the second argument to the `create` method:
 
-    $user->newSubscription('main', 'monthly')->create($paymentMethod, [
+    $user->newSubscription('default', 'monthly')->create($paymentMethod, [
         'email' => $email,
     ]);
 
@@ -343,7 +347,7 @@ To learn more about the additional fields supported by Stripe, check out Stripe'
 
 If you would like to apply a coupon when creating the subscription, you may use the `withCoupon` method:
 
-    $user->newSubscription('main', 'monthly')
+    $user->newSubscription('default', 'monthly')
          ->withCoupon('code')
          ->create($paymentMethod);
 
@@ -352,7 +356,7 @@ If you would like to apply a coupon when creating the subscription, you may use 
 
 Once a user is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an active subscription, even if the subscription is currently within its trial period:
 
-    if ($user->subscribed('main')) {
+    if ($user->subscribed('default')) {
         //
     }
 
@@ -360,7 +364,7 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
 
     public function handle($request, Closure $next)
     {
-        if ($request->user() && ! $request->user()->subscribed('main')) {
+        if ($request->user() && ! $request->user()->subscribed('default')) {
             // This user is not a paying customer...
             return redirect('billing');
         }
@@ -370,25 +374,25 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
 
 If you would like to determine if a user is still within their trial period, you may use the `onTrial` method. This method can be useful for displaying a warning to the user that they are still on their trial period:
 
-    if ($user->subscription('main')->onTrial()) {
+    if ($user->subscription('default')->onTrial()) {
         //
     }
 
-The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Stripe plan ID. In this example, we will determine if the user's `main` subscription is actively subscribed to the `monthly` plan:
+The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Stripe plan ID. In this example, we will determine if the user's `default` subscription is actively subscribed to the `monthly` plan:
 
-    if ($user->subscribedToPlan('monthly', 'main')) {
+    if ($user->subscribedToPlan('monthly', 'default')) {
         //
     }
     
-By passing an array to the `subscribedToPlan` method, you may determine if the user's `main` subscription is actively subscribed to the `monthly` or the `yearly` plan:
+By passing an array to the `subscribedToPlan` method, you may determine if the user's `default` subscription is actively subscribed to the `monthly` or the `yearly` plan:
 
-    if ($user->subscribedToPlan(['monthly', 'yearly'], 'main')) {
+    if ($user->subscribedToPlan(['monthly', 'yearly'], 'default')) {
         //
     }
 
 The `recurring` method may be used to determine if the user is currently subscribed and is no longer within their trial period:
 
-    if ($user->subscription('main')->recurring()) {
+    if ($user->subscription('default')->recurring()) {
         //
     }
 
@@ -396,19 +400,19 @@ The `recurring` method may be used to determine if the user is currently subscri
 
 To determine if the user was once an active subscriber, but has cancelled their subscription, you may use the `cancelled` method:
 
-    if ($user->subscription('main')->cancelled()) {
+    if ($user->subscription('default')->cancelled()) {
         //
     }
 
 You may also determine if a user has cancelled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
 
-    if ($user->subscription('main')->onGracePeriod()) {
+    if ($user->subscription('default')->onGracePeriod()) {
         //
     }
 
 To determine if the user has cancelled their subscription and is no longer within their "grace period", you may use the `ended` method:
 
-    if ($user->subscription('main')->ended()) {
+    if ($user->subscription('default')->ended()) {
         //
     }
 
@@ -419,11 +423,11 @@ If a subscription requires a secondary payment action after creation the subscri
 
 Similarly, if a secondary payment action is required when swapping plans the subscription will be marked as `past_due`. When your subscription is in either of these states it will not be active until the customer has confirmed their payment. Checking if a subscription has an incomplete payment can be done using the `hasIncompletePayment` method on the Billable model or a subscription instance:
 
-    if ($user->hasIncompletePayment('main')) {
+    if ($user->hasIncompletePayment('default')) {
         //
     }
 
-    if ($user->subscription('main')->hasIncompletePayment()) {
+    if ($user->subscription('default')->hasIncompletePayment()) {
         //
     }
 
@@ -432,6 +436,20 @@ When a subscription has an incomplete payment, you should direct the user to Cas
     <a href="{{ route('cashier.payment', $subscription->latestPayment()->id) }}">
         Please confirm your payment.
     </a>
+
+If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
+
+    use Laravel\Cashier\Cashier;
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Cashier::keepPastDueSubscriptionsActive();
+    }
 
 > {note} When a subscription is in an `incomplete` state it cannot be changed until the payment is confirmed. Therefore, the `swap` and `updateQuantity` methods will throw an exception when the subscription is in an `incomplete` state.
 
@@ -442,13 +460,13 @@ After a user is subscribed to your application, they may occasionally want to ch
 
     $user = App\User::find(1);
 
-    $user->subscription('main')->swap('provider-plan-id');
+    $user->subscription('default')->swap('provider-plan-id');
 
 If the user is on trial, the trial period will be maintained. Also, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
 If you would like to swap plans and cancel any trial period the user is currently on, you may use the `skipTrial` method:
 
-    $user->subscription('main')
+    $user->subscription('default')
             ->skipTrial()
             ->swap('provider-plan-id');
 
@@ -456,7 +474,7 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user = App\User::find(1);
 
-    $user->subscription('main')->swapAndInvoice('provider-plan-id');
+    $user->subscription('default')->swapAndInvoice('provider-plan-id');
 
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
@@ -465,23 +483,23 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
 
     $user = User::find(1);
 
-    $user->subscription('main')->incrementQuantity();
+    $user->subscription('default')->incrementQuantity();
 
     // Add five to the subscription's current quantity...
-    $user->subscription('main')->incrementQuantity(5);
+    $user->subscription('default')->incrementQuantity(5);
 
-    $user->subscription('main')->decrementQuantity();
+    $user->subscription('default')->decrementQuantity();
 
     // Subtract five to the subscription's current quantity...
-    $user->subscription('main')->decrementQuantity(5);
+    $user->subscription('default')->decrementQuantity(5);
 
 Alternatively, you may set a specific quantity using the `updateQuantity` method:
 
-    $user->subscription('main')->updateQuantity(10);
+    $user->subscription('default')->updateQuantity(10);
 
 The `noProrate` method may be used to update the subscription's quantity without pro-rating the charges:
 
-    $user->subscription('main')->noProrate()->updateQuantity(10);
+    $user->subscription('default')->noProrate()->updateQuantity(10);
 
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
 
@@ -503,7 +521,7 @@ The `taxPercentage` method enables you to apply a tax rate on a model-by-model b
 
 When changing the hard-coded value returned by the `taxPercentage` method, the tax settings on any existing subscriptions for the user will remain the same. If you wish to update the tax value for existing subscriptions with the returned `taxPercentage` value, you should call the `syncTaxPercentage` method on the user's subscription instance:
 
-    $user->subscription('main')->syncTaxPercentage();
+    $user->subscription('default')->syncTaxPercentage();
 
 <a name="subscription-anchor-date"></a>
 ### Subscription Anchor Date
@@ -517,7 +535,7 @@ By default, the billing cycle anchor is the date the subscription was created, o
 
     $anchor = Carbon::parse('first day of next month');
 
-    $user->newSubscription('main', 'premium')
+    $user->newSubscription('default', 'premium')
                 ->anchorBillingCycleOn($anchor->startOfDay())
                 ->create($paymentMethod);
 
@@ -528,26 +546,26 @@ For more information on managing subscription billing cycles, consult the [Strip
 
 To cancel a subscription, call the `cancel` method on the user's subscription:
 
-    $user->subscription('main')->cancel();
+    $user->subscription('default')->cancel();
 
 When a subscription is cancelled, Cashier will automatically set the `ends_at` column in your database. This column is used to know when the `subscribed` method should begin returning `false`. For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th.
 
 You may determine if a user has cancelled their subscription but are still on their "grace period" using the `onGracePeriod` method:
 
-    if ($user->subscription('main')->onGracePeriod()) {
+    if ($user->subscription('default')->onGracePeriod()) {
         //
     }
 
 If you wish to cancel a subscription immediately, call the `cancelNow` method on the user's subscription:
 
-    $user->subscription('main')->cancelNow();
+    $user->subscription('default')->cancelNow();
 
 <a name="resuming-subscriptions"></a>
 ### Resuming Subscriptions
 
 If a user has cancelled their subscription and you wish to resume it, use the `resume` method. The user **must** still be on their grace period in order to resume a subscription:
 
-    $user->subscription('main')->resume();
+    $user->subscription('default')->resume();
 
 If the user cancels a subscription and then resumes that subscription before the subscription has fully expired, they will not be billed immediately. Instead, their subscription will be re-activated, and they will be billed on the original billing cycle.
 
@@ -561,7 +579,7 @@ If you would like to offer trial periods to your customers while still collectin
 
     $user = User::find(1);
 
-    $user->newSubscription('main', 'monthly')
+    $user->newSubscription('default', 'monthly')
                 ->trialDays(10)
                 ->create($paymentMethod);
 
@@ -573,17 +591,17 @@ The `trialUntil` method allows you to provide a `DateTime` instance to specify w
 
     use Carbon\Carbon;
 
-    $user->newSubscription('main', 'monthly')
+    $user->newSubscription('default', 'monthly')
                 ->trialUntil(Carbon::now()->addDays(10))
                 ->create($paymentMethod);
 
 You may determine if the user is within their trial period using either the `onTrial` method of the user instance, or the `onTrial` method of the subscription instance. The two examples below are identical:
 
-    if ($user->onTrial('main')) {
+    if ($user->onTrial('default')) {
         //
     }
 
-    if ($user->subscription('main')->onTrial()) {
+    if ($user->subscription('default')->onTrial()) {
         //
     }
 
@@ -615,7 +633,7 @@ Once you are ready to create an actual subscription for the user, you may use th
 
     $user = User::find(1);
 
-    $user->newSubscription('main', 'monthly')->create($paymentMethod);
+    $user->newSubscription('default', 'monthly')->create($paymentMethod);
 
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
@@ -675,6 +693,8 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
         'stripe/webhook',
         '\App\Http\Controllers\WebhookController@handleWebhook'
     );
+
+Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Stripe webhook.
 
 <a name="handling-failed-subscriptions"></a>
 ### Failed Subscriptions

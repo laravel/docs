@@ -13,7 +13,9 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
+
 - ...
+
 </div>
 
 <a name="upgrade-7.0"></a>

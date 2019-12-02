@@ -81,7 +81,7 @@ When using Channels and [Laravel Echo](#installing-laravel-echo), you should spe
 
 #### Redis
 
-If you are using the Redis broadcaster, you should install the Predis library:
+If you are using the Redis broadcaster, you should either install the phpredis PHP extension via PECL or install the Predis library via Composer:
 
     composer require predis/predis
 

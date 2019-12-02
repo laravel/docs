@@ -606,7 +606,7 @@ Assert that the response has a given code:
 <a name="assert-successful"></a>
 #### assertSuccessful
 
-Assert that the response has a successful (200) status code:
+Assert that the response has a successful (>= 200 and < 300) status code:
 
     $response->assertSuccessful();
 

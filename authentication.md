@@ -65,6 +65,12 @@ This command should be used on fresh applications and will install a layout view
 
 > {tip} If your application doesn’t need registration, you may disable it by removing the newly created `RegisterController` and modifying your route declaration: `Auth::routes(['register' => false]);`.
 
+#### Creating Applications Including Authentication
+
+If you are starting a brand new application and would like to include the authentication scaffolding, you may use the `--auth` directive when creating your application. This command will create a new application with all of the authentication scaffolding compiled and installed:
+
+    laravel new blog --auth
+
 <a name="included-views"></a>
 ### Views
 

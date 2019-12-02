@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Expecting Input / Output](#expecting-input-and-output)
 
+<a name="introduction"></a>
 ## Introduction
 
 In addition to simplifying HTTP testing, Laravel provides a simple API for testing console applications that ask for user input.

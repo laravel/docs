@@ -44,7 +44,7 @@ Let's take a look at a basic service provider. Within any of your service provid
     class RiakServiceProvider extends ServiceProvider
     {
         /**
-         * Register bindings in the container.
+         * Register any application services.
          *
          * @return void
          */

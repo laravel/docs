@@ -620,7 +620,7 @@ The field under validation must be _yes_, _on_, _1_, or _true_. This is useful f
 <a name="rule-active-url"></a>
 #### active_url
 
-The field under validation must have a valid A or AAAA record according to the `dns_get_record` PHP function.
+The field under validation must have a valid A or AAAA record according to the `dns_get_record` PHP function. The hostname of the provided URL is extracted using the `parse_url` PHP function before being passed to `dns_get_record`.
 
 <a name="rule-after"></a>
 #### after:_date_
@@ -716,7 +716,7 @@ The field under validation must be _numeric_ and must have an exact length of _v
 <a name="rule-digits-between"></a>
 #### digits_between:_min_,_max_
 
-The field under validation must have a length between the given _min_ and _max_.
+The field under validation must be _numeric_ and must have a length between the given _min_ and _max_.
 
 <a name="rule-dimensions"></a>
 #### dimensions
@@ -791,6 +791,10 @@ If the `column` option is not specified, the field name will be used.
 Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name using "dot" syntax:
 
     'email' => 'exists:connection.staff,email'
+
+Instead of specifying the table name directly, you may specify the Eloquent model which should be used to determine the table name:
+
+    'user_id' => 'exists:App\User,id'
 
 If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:
 
@@ -1058,7 +1062,11 @@ The field under validation must be a valid timezone identifier according to the 
 
 The field under validation must not exist within the given database table.
 
-**Specifying A Custom Column Name:**
+**Specifying A Custom Table / Column Name:**
+
+Instead of specifying the table name directly, you may specify the Eloquent model which should be used to determine the table name:
+
+    'email' => 'unique:App\User,email_address'
 
 The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the field name will be used.
 

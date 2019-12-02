@@ -166,6 +166,10 @@ The `exists` method may be used to determine if a file exists on the disk:
 
     $exists = Storage::disk('s3')->exists('file.jpg');
 
+The `missing` method may be used to determine if a file is missing from the disk:
+
+    $missing = Storage::disk('s3')->missing('file.jpg');
+
 <a name="downloading-files"></a>
 ### Downloading Files
 
@@ -188,7 +192,7 @@ You may use the `url` method to get the URL for the given file. If you are using
 
 #### Temporary URLs
 
-For files stored using the `s3` you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
+For files stored using the `s3` you may create a temporary URL to a given file using the `temporaryUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
 
     $url = Storage::temporaryUrl(
         'file.jpg', now()->addMinutes(5)
@@ -345,7 +349,7 @@ If the file has already been stored, its visibility can be retrieved and set via
 
     $visibility = Storage::getVisibility('file.jpg');
 
-    Storage::setVisibility('file.jpg', 'public')
+    Storage::setVisibility('file.jpg', 'public');
 
 <a name="deleting-files"></a>
 ## Deleting Files
@@ -422,7 +426,7 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
     class DropboxServiceProvider extends ServiceProvider
     {
         /**
-         * Register bindings in the container.
+         * Register any application services.
          *
          * @return void
          */

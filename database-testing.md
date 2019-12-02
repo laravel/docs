@@ -284,4 +284,18 @@ Method  | Description
 ------------- | -------------
 `$this->assertDatabaseHas($table, array $data);`  |  Assert that a table in the database contains the given data.
 `$this->assertDatabaseMissing($table, array $data);`  |  Assert that a table in the database does not contain the given data.
+`$this->assertDeleted($table, array $data);`  |  Assert that the given record has been deleted.
 `$this->assertSoftDeleted($table, array $data);`  |  Assert that the given record has been soft deleted.
+
+For convenience, you may pass a model to the `assertDeleted` and `assertSoftDeleted` helpers to assert the record was deleted or soft deleted, respectively, from the database based on the model's primary key.
+
+For example, if you are using a model factory in your test, you may pass this model to one of these helpers to test your application properly deleted the record from the database:
+
+    public function testDatabase()
+    {
+        $user = factory(App\User::class)->create();
+  
+        // Make call to application...
+  
+        $this->assertDeleted($user);
+    }

@@ -36,6 +36,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::forget](#method-array-forget)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
+[Arr::isAssoc](#method-array-isassoc)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
@@ -78,7 +79,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [e](#method-e)
 [preg_replace_array](#method-preg-replace-array)
 [Str::after](#method-str-after)
+[Str::afterLast](#method-str-after-last)
 [Str::before](#method-str-before)
+[Str::beforeLast](#method-str-before-last)
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
@@ -342,6 +345,21 @@ The `Arr::has` method checks whether a given item or items exists in an array us
     // true
 
     $contains = Arr::has($array, ['product.price', 'product.discount']);
+
+    // false
+ 
+<a name="method-array-isassoc"></a>
+#### `Arr::isAssoc()` {#collection-method}
+
+The `Arr::isAssoc` returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
+
+    use Illuminate\Support\Arr;
+
+    $isAssoc = Arr::isAssoc(['product' => ['name' => 'Desk', 'price' => 100]]);
+
+    // true
+
+    $isAssoc = Arr::isAssoc([1, 2, 3]);
 
     // false
 
@@ -828,6 +846,17 @@ The `Str::after` method returns everything after the given value in a string:
 
     // ' my name'
 
+<a name="method-str-after-last"></a>
+#### `Str::afterLast()` {#collection-method}
+
+The `Str::afterLast` method returns everything after the last occurrence of the given value in a string:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::afterLast('App\Http\Controllers\Controller', '\\');
+
+    // 'Controller'
+
 <a name="method-str-before"></a>
 #### `Str::before()` {#collection-method}
 
@@ -838,6 +867,17 @@ The `Str::before` method returns everything before the given value in a string:
     $slice = Str::before('This is my name', 'my name');
 
     // 'This is '
+
+<a name="method-str-before-last"></a>
+#### `Str::beforeLast()` {#collection-method}
+
+The `Str::beforeLast` method returns everything before the last occurrence of the given value in a string:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::beforeLast('This is my name', 'is');
+
+    // 'This '
 
 <a name="method-camel-case"></a>
 #### `Str::camel()` {#collection-method}
@@ -890,6 +930,19 @@ The `Str::endsWith` method determines if the given string ends with the given va
     $result = Str::endsWith('This is my name', 'name');
 
     // true
+
+
+You may also pass an array of values to determine if the given string ends with any of the given values:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::endsWith('This is my name', ['name', 'foo']);
+
+    // true
+    
+    $result = Str::endsWith('This is my name', ['this', 'foo']);
+    
+    // false
 
 <a name="method-str-finish"></a>
 #### `Str::finish()` {#collection-method}

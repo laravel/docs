@@ -7,6 +7,7 @@
 - [Date Mutators](#date-mutators)
 - [Attribute Casting](#attribute-casting)
     - [Array & JSON Casting](#array-and-json-casting)
+    - [Date Casting](#date-casting)
 
 <a name="introduction"></a>
 ## Introduction

@@ -43,7 +43,7 @@ Laravel already makes it easy to perform authentication via traditional login fo
 > {note} This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
 
 <a name="upgrading"></a>
-#### Upgrading Passport
+## Upgrading Passport
 
 When upgrading to a new major version of Passport, it's important that you carefully review [the upgrade guide](https://github.com/laravel/passport/blob/master/UPGRADE.md).
 
@@ -229,7 +229,16 @@ By default, Passport issues long-lived access tokens that expire after one year.
 <a name="overriding-default-models"></a>
 ### Overriding Default Models
 
-You are free to extend the models used internally by Passport. Then, you may instruct Passport to use your custom models via the `Passport` class:
+You are free to extend the models used internally by Passport:
+
+    use App\Models\Passport\Client as PassportClient;
+
+    class Client extends PassportClient
+    {
+        // ...
+    }
+
+Then, you may instruct Passport to use your custom models via the `Passport` class:
 
     use App\Models\Passport\AuthCode;
     use App\Models\Passport\Client;
@@ -870,7 +879,7 @@ Typically, if you want to consume your API from your JavaScript application, you
         \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
     ],
 
-> {note} You should ensure that the `EncryptCookies` middleware is listed prior to the `CreateFreshApiToken` middleware in your middleware stack.
+> {note} You should ensure that the `CreateFreshApiToken` middleware is the last middleware listed in your middleware stack.
 
 This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. Now, you may make requests to your application's API without explicitly passing an access token:
 

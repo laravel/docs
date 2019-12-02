@@ -210,6 +210,16 @@ If the named route defines parameters, you may pass the parameters as the second
 
     $url = route('profile', ['id' => 1]);
 
+If you pass additional parameters in the array, those key / value pairs will automatically be added to the generated URL's query string:
+
+    Route::get('user/{id}/profile', function ($id) {
+        //
+    })->name('profile');
+
+    $url = route('profile', ['id' => 1, 'photos' => 'yes']);
+
+    // /user/1/profile?photos=yes
+
 #### Inspecting The Current Route
 
 If you would like to determine if the current request was routed to a given named route, you may use the `named` method on a Route instance. For example, you may check the current route name from a route middleware:
@@ -364,7 +374,7 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
         parent::boot();
 
         Route::bind('user', function ($value) {
-            return App\User::where('name', $value)->first() ?? abort(404);
+            return App\User::where('name', $value)->firstOrFail();
         });
     }
 
@@ -378,7 +388,7 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
      */
     public function resolveRouteBinding($value)
     {
-        return $this->where('name', $value)->first() ?? abort(404);
+        return $this->where('name', $value)->firstOrFail();
     }
 
 <a name="fallback-routes"></a>

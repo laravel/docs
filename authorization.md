@@ -131,7 +131,7 @@ The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, 
 <a name="gate-responses"></a>
 ### Gate Responses
 
-So far, we have only examined gates that return simple boolean values. However, sometimes you may wish to return a more detail response, including an error message. To do so, you may return a `Illuminate\Auth\Access\Response` from your gate:
+So far, we have only examined gates that return simple boolean values. However, sometimes you may wish to return a more detailed response, including an error message. To do so, you may return a `Illuminate\Auth\Access\Response` from your gate:
 
     use Illuminate\Auth\Access\Response;
     use Illuminate\Support\Facades\Gate;
@@ -290,7 +290,7 @@ You may continue to define additional methods on the policy as needed for the va
 <a name="policy-responses"></a>
 ### Policy Responses
 
-So far, we have only examined policy methods that return simple boolean values. However, sometimes you may wish to return a more detail response, including an error message. To do so, you may return a `Illuminate\Auth\Access\Response` from your policy method:
+So far, we have only examined policy methods that return simple boolean values. However, sometimes you may wish to return a more detailed response, including an error message. To do so, you may return an `Illuminate\Auth\Access\Response` from your policy method:
 
     use Illuminate\Auth\Access\Response;
 
@@ -299,7 +299,7 @@ So far, we have only examined policy methods that return simple boolean values. 
      *
      * @param  \App\User  $user
      * @param  \App\Post  $post
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response
      */
     public function update(User $user, Post $post)
     {
@@ -365,7 +365,7 @@ By default, all gates and policies automatically return `false` if the incoming 
          */
         public function update(?User $user, Post $post)
         {
-            return $user->id === $post->user_id;
+            return optional($user)->id === $post->user_id;
         }
     }
 

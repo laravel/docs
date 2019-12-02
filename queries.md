@@ -12,7 +12,7 @@
     - [Parameter Grouping](#parameter-grouping)
     - [Where Exists Clauses](#where-exists-clauses)
     - [JSON Where Clauses](#json-where-clauses)
-- [Ordering, Grouping, Limit, & Offset](#ordering-grouping-limit-and-offset)
+- [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit-and-offset)
 - [Conditional Clauses](#conditional-clauses)
 - [Inserts](#inserts)
 - [Updates](#updates)
@@ -527,7 +527,7 @@ You may use `whereJsonLength` to query JSON arrays by their length:
                     ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
-## Ordering, Grouping, Limit, & Offset
+## Ordering, Grouping, Limit & Offset
 
 #### orderBy
 
