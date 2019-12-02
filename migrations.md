@@ -219,8 +219,8 @@ Command  |  Description
 `$table->boolean('confirmed');`  |  BOOLEAN equivalent column.
 `$table->char('name', 100);`  |  CHAR equivalent column with an optional length.
 `$table->date('created_at');`  |  DATE equivalent column.
-`$table->dateTime('created_at');`  |  DATETIME equivalent column.
-`$table->dateTimeTz('created_at');`  |  DATETIME (with timezone) equivalent column.
+`$table->dateTime('created_at', 0);`  |  DATETIME equivalent column with an optional precision (total digits).
+`$table->dateTimeTz('created_at', 0);`  |  DATETIME (with timezone) equivalent column with an optional precision (total digits).
 `$table->decimal('amount', 8, 2);`  |  DECIMAL equivalent column with a precision (total digits) and scale (decimal digits).
 `$table->double('amount', 8, 2);`  |  DOUBLE equivalent column with a precision (total digits) and scale (decimal digits).
 `$table->enum('level', ['easy', 'hard']);`  |  ENUM equivalent column.
@@ -245,23 +245,23 @@ Command  |  Description
 `$table->multiPolygon('positions');`  |  MULTIPOLYGON equivalent column.
 `$table->nullableMorphs('taggable');`  |  Adds nullable versions of `morphs()` columns.
 `$table->nullableUuidMorphs('taggable');`  |  Adds nullable versions of `uuidMorphs()` columns.
-`$table->nullableTimestamps();`  |  Alias of `timestamps()` method.
+`$table->nullableTimestamps(0);`  |  Alias of `timestamps()` method.
 `$table->point('position');`  |  POINT equivalent column.
 `$table->polygon('positions');`  |  POLYGON equivalent column.
 `$table->rememberToken();`  |  Adds a nullable `remember_token` VARCHAR(100) equivalent column.
 `$table->set('flavors', ['strawberry', 'vanilla']);`  |  SET equivalent column.
 `$table->smallIncrements('id');`  |  Auto-incrementing UNSIGNED SMALLINT (primary key) equivalent column.
 `$table->smallInteger('votes');`  |  SMALLINT equivalent column.
-`$table->softDeletes();`  |  Adds a nullable `deleted_at` TIMESTAMP equivalent column for soft deletes.
-`$table->softDeletesTz();`  |  Adds a nullable `deleted_at` TIMESTAMP (with timezone) equivalent column for soft deletes.
+`$table->softDeletes(0);`  |  Adds a nullable `deleted_at` TIMESTAMP equivalent column for soft deletes with an optional precision (total digits).
+`$table->softDeletesTz(0);`  |  Adds a nullable `deleted_at` TIMESTAMP (with timezone) equivalent column for soft deletes with an optional precision (total digits).
 `$table->string('name', 100);`  |  VARCHAR equivalent column with a optional length.
 `$table->text('description');`  |  TEXT equivalent column.
-`$table->time('sunrise');`  |  TIME equivalent column.
-`$table->timeTz('sunrise');`  |  TIME (with timezone) equivalent column.
-`$table->timestamp('added_on');`  |  TIMESTAMP equivalent column.
-`$table->timestampTz('added_on');`  |  TIMESTAMP (with timezone) equivalent column.
-`$table->timestamps();`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP equivalent columns.
-`$table->timestampsTz();`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP (with timezone) equivalent columns.
+`$table->time('sunrise', 0);`  |  TIME equivalent column with an optional precision (total digits).
+`$table->timeTz('sunrise', 0);`  |  TIME (with timezone) equivalent column with an optional precision (total digits).
+`$table->timestamp('added_on', 0);`  |  TIMESTAMP equivalent column with an optional precision (total digits).
+`$table->timestampTz('added_on', 0);`  |  TIMESTAMP (with timezone) equivalent column with an optional precision (total digits).
+`$table->timestamps(0);`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP equivalent columns with an optional precision (total digits).
+`$table->timestampsTz(0);`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP (with timezone) equivalent columns with an optional precision (total digits).
 `$table->tinyIncrements('id');`  |  Auto-incrementing UNSIGNED TINYINT (primary key) equivalent column.
 `$table->tinyInteger('votes');`  |  TINYINT equivalent column.
 `$table->unsignedBigInteger('votes');`  |  UNSIGNED BIGINT equivalent column.
