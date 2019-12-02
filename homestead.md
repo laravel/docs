@@ -567,7 +567,7 @@ After running the command, you will see an Ngrok screen appear which contains th
 <a name="multiple-php-versions"></a>
 ### Multiple PHP Versions
 
-Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2" and "7.3" (the default):
+Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", and "7.4" (the default):
 
     sites:
         - map: homestead.test
@@ -581,6 +581,7 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php7.1 artisan list
     php7.2 artisan list
     php7.3 artisan list
+    php7.4 artisan list
 
 You may also update the default CLI version by issuing the following commands from within your Homestead virtual machine:
 
@@ -589,6 +590,7 @@ You may also update the default CLI version by issuing the following commands fr
     php71
     php72
     php73
+    php74
 
 <a name="web-servers"></a>
 ### Web Servers
