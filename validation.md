@@ -847,6 +847,10 @@ The field under validation must be included in the given list of values. Since t
             Rule::in(['first-zone', 'second-zone']),
         ],
     ]);
+    
+If `implode` is required, the `implode` glue must be a comma or validation will fail:
+
+    'item' => 'required|in:'. implode("," , $itemList);
 
 <a name="rule-in-array"></a>
 #### in_array:_anotherfield_.*
