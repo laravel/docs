@@ -39,6 +39,7 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 Collections are "macroable", which allows you to add additional methods to the `Collection` class at run time. For example, the following code adds a `toUpper` method to the `Collection` class:
 
     use Illuminate\Support\Str;
+    use Illuminate\Support\Collection;
 
     Collection::macro('toUpper', function () {
         return $this->map(function ($value) {
