@@ -156,6 +156,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [sort](#method-sort)
 [sortBy](#method-sortby)
 [sortByDesc](#method-sortbydesc)
+[sortDesc](#method-sortdesc)
 [sortKeys](#method-sortkeys)
 [sortKeysDesc](#method-sortkeysdesc)
 [splice](#method-splice)
@@ -1787,6 +1788,19 @@ You can also pass your own callback to determine how to sort the collection valu
 #### `sortByDesc()` {#collection-method}
 
 This method has the same signature as the [`sortBy`](#method-sortby) method, but will sort the collection in the opposite order.
+
+<a name="method-sortdesc"></a>
+#### `sortDesc()` {#collection-method}
+
+This method has the same signature as the [`sort`](#method-sort) method, but will sort the collection in the opposite order:
+
+    $collection = collect([5, 3, 1, 2, 4]);
+
+    $sorted = $collection->sortDesc();
+
+    $sorted->values()->all();
+
+    // [5, 4, 3, 2, 1]
 
 <a name="method-sortkeys"></a>
 #### `sortKeys()` {#collection-method}
