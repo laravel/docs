@@ -943,6 +943,17 @@ This command will place the new observer in your `App/Observers` directory. If t
         {
             //
         }
+
+        /**
+         * Handle the User "forceDeleted" event.
+         *
+         * @param  \App\User  $user
+         * @return void
+         */
+        public function forceDeleted(User $user)
+        {
+            //
+        }
     }
 
 To register an observer, use the `observe` method on the model you wish to observe. You may register observers in the `boot` method of one of your service providers. In this example, we'll register the observer in the `AppServiceProvider`:
