@@ -626,7 +626,7 @@ You may even insert several records into the table with a single call to `insert
         ['email' => 'dayle@example.com', 'votes' => 0]
     ]);
 
-The `insertOrIgnore` method will ignore duplicate record errors while inserting records into the database:
+The `insertOrIgnore` method will ignore duplicate record errors while inserting records into the database (available since v5.8.33):
 
     DB::table('users')->insertOrIgnore([
         ['id' => 1, 'email' => 'taylor@example.com'],
