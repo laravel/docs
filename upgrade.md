@@ -174,7 +174,7 @@ If you would like to release a lock without respecting its current owner, you ma
 
 In order to be fully compliant with `PSR-16` the return values of the `put` and `forever` methods of the `Illuminate\Contracts\Cache\Repository` contract and the return values of the `put`, `putMany` and `forever` methods of the `Illuminate\Contracts\Cache\Store` contract [have been changed](https://github.com/laravel/framework/pull/26726) from `void` to `bool`.
 
-<a name="#carbon-2.0"></a>
+<a name="carbon-2.0"></a>
 ### Carbon 2.0
 
 **Likelihood Of Impact: Medium**
