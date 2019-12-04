@@ -27,13 +27,13 @@
 
 **Likelihood Of Impact: Medium**
 
-Laravel 7 adds support for Symfony 5 which is now also the new minimum compatible version.
+Laravel 7 upgrade its underlying Symfony components to the 5.x series, which is now also the new minimum compatible version.
 
 ### PHP 7.2.5 Required
 
 **Likelihood Of Impact: Low**
 
-The new minimum PHP version (which mimics Symfony 5.0) is now 7.2.5.
+The new minimum PHP version is now 7.2.5.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
@@ -49,11 +49,11 @@ Next, examine any 3rd party packages consumed by your application and verify you
 
 **Likelihood Of Impact: High**
 
-Laravel 7 comes with a new default for serializing dates when using the `toArray` or `toJson` method on Eloquent models. It makes use of the default Carbon `toJSON` behavior and will provide a datetime string with fractions and timezone info.
+Laravel 7 uses a new date serialization format when using the `toArray` or `toJson` method on Eloquent models. To format dates for serialization, the framework now uses Carbon's `toJSON` method, which produces an ISO-8601 compatible date including timezone information and fractional seconds and better integration with client-side date parsing libraries.
 
-The previous behavior would serialize a date, for example, to `2019-12-02 20:01:00`. The new behavior will serialize a date to something like `2019-12-02T20:01:00.283041Z`. This will provide more info if you're, for example, building API's.
+Previously, dates would be serialized to a format like the following: `2019-12-02 20:01:00`. Dates serialized using the new format will appear like: `2019-12-02T20:01:00.283041Z`.
 
-If you want to keep using the previous behavior you can override the `serializeDate` method on your model:
+If you would like to keep using the previous behavior you can override the `serializeDate` method on your model:
 
     /**
      * Prepare a date for array / JSON serialization.
@@ -65,6 +65,8 @@ If you want to keep using the previous behavior you can override the `serializeD
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+> {tip} This change only affects serialization of models and model collections to arrays and JSON. This change has no affect on how dates are stored in your database.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
