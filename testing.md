@@ -39,8 +39,7 @@ Once the test has been generated, you may define test methods as you normally wo
 
     namespace Tests\Unit;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Tests\TestCase;
+    use PHPUnit\Framework\TestCase;
 
     class ExampleTest extends TestCase
     {
