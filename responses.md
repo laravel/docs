@@ -69,7 +69,7 @@ Or, you may use the `withHeaders` method to specify an array of headers to be ad
 
 Laravel includes a `cache.headers` middleware, which may be used to quickly set the `Cache-Control` header for a group of routes. If `etag` is specified in the list of directives, an MD5 hash of the response content will automatically be set as the ETag identifier:
 
-    Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function() {
+    Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
         Route::get('privacy', function () {
             // ...
         });
