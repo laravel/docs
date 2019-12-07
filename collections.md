@@ -621,7 +621,7 @@ If the collection is empty, `every` will return true:
 
     $collection = collect([]);
 
-    $collection->every(function($value, $key) {
+    $collection->every(function ($value, $key) {
         return $value > 2;
     });
 
@@ -2209,9 +2209,9 @@ The `whenEmpty` method will execute the given callback when the collection is em
 
     $collection = collect(['michael', 'tom']);
 
-    $collection->whenEmpty(function($collection) {
+    $collection->whenEmpty(function ($collection) {
         return $collection->push('adam');
-    }, function($collection) {
+    }, function ($collection) {
         return $collection->push('taylor');
     });
 
@@ -2250,9 +2250,9 @@ The `whenNotEmpty` method will execute the given callback when the collection is
 
     $collection = collect();
 
-    $collection->whenNotEmpty(function($collection) {
+    $collection->whenNotEmpty(function ($collection) {
         return $collection->push('adam');
-    }, function($collection) {
+    }, function ($collection) {
         return $collection->push('taylor');
     });
 
