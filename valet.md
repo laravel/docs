@@ -13,6 +13,7 @@
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
+- [Valet Directories & Files](#valet-directories-and-files)
 
 <a name="introduction"></a>
 ## Introduction
@@ -101,6 +102,12 @@ Valet allows you to switch PHP versions using the `valet use php@version` comman
     valet use php@7.2
 
     valet use php
+
+> {note} Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
+
+#### Resetting Your Installation
+
+If you are having trouble getting your Valet installation to run properly, executing the `composer global update` command followed by `valet install` will reset your installation and can solve a variety of problems. In rare cases it may be necessary to "hard reset" Valet by executing `valet uninstall --force` followed by `valet install`.
 
 <a name="upgrading"></a>
 ### Upgrading
@@ -286,30 +293,26 @@ Command  | Description
 `valet trust` | Add sudoers files for Brew and Valet to allow Valet commands to be run without prompting for passwords.
 `valet uninstall` | Uninstall Valet: Shows instructions for manual uninstall; or pass the `--force` parameter to aggressively delete all of Valet.
 
-<a name="technical-information"></a>
-## Technical Information
+<a name="valet-directories-and-files"></a>
+## Valet Directories & Files
 
-You may find the following information helpful if you are troubleshooting devops issues with your Valet environment.
+You may find the following directory and file information helpful while troubleshooting issues with your Valet environment:
 
-File/Path | Description
+File / Path | Description
 --------- | -----------
-`~/.config/valet/` | Folder containing all of Valet's configs. This is a good folder to backup if you make any custom changes.
-`~/.config/valet/dnsmasq.d/` | Folder for dnsmasq configs (including adding optional custom config settings)
-`~/.config/valet/Drivers/` | Folder for custom Valet Drivers (tip you can git-checkout repos here for custom drivers)
-`~/.config/valet/Extensions/` | Folder for custom Valet Extensions (custom commands)
-`~/.config/valet/Nginx/` | Folder where Valet stores all generated Nginx site configs (note: Valet will rebuild these files from stubs when running `secure` or `tld` or `install` commands)
-`~/.config/valet/Sites/` | Folder where Valet stores symlinks for linked projects
-`~/.config/valet/config.json` | Valet's master config file
-`~/.config/valet/valet.sock` | The PHP-FPM socket used by Valet's Nginx configuration. Only exists if PHP is running properly.
+`~/.config/valet/` | Contains all of Valet's configuration. You may wish to maintain a backup of this folder.
+`~/.config/valet/dnsmasq.d/` | Contains DNSMasq's configuration.
+`~/.config/valet/Drivers/` | Contains custom Valet drivers.
+`~/.config/valet/Extensions/` | Contains custom Valet extensions / commands.
+`~/.config/valet/Nginx/` | Contains all Valet generated Nginx site configurations. These files are rebuilt when running the `install`, `secure`, and `tld` commands.
+`~/.config/valet/Sites/` | Contains all symbolic links for linked projects.
+`~/.config/valet/config.json` | Valet's master configuration file
+`~/.config/valet/valet.sock` | The PHP-FPM socket used by Valet's Nginx configuration. This will only exist if PHP is running properly.
 `~/.config/valet/Log/fpm-php.www.log` | User log for PHP errors.
 `~/.config/valet/Log/nginx-error.log` | User log for Nginx errors.
 `/usr/local/var/log/php-fpm.log` | System log for PHP-FPM errors.
-`/usr/local/var/log/nginx` | System log directory for Nginx access and error logs.
-`/usr/local/etc/php/X.X/conf.d` | Folder containing `*.ini` files for various PHP configuration settings.
-`/usr/local/etc/php/X.X/php-fpm.d/valet-fpm.conf` | PHP-FPM pool configuration settings for Valet.
-`~/.composer/vendor/laravel/valet/cli/stubs/secure.valet.conf` | Default Nginx config stub Valet uses for building site certificates.
-
-NOTE: Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
-
-Troubleshooting Tip: running `composer global update` followed by `valet install` can fix a multitude of problems. In rare cases it may be necessary to reset things completely by running `valet uninstall --force` followed by `valet install` for a clean setup. 
+`/usr/local/var/log/nginx` | Contains Nginx access and error logs.
+`/usr/local/etc/php/X.X/conf.d` | Contains `*.ini` files for various PHP configuration settings.
+`/usr/local/etc/php/X.X/php-fpm.d/valet-fpm.conf` | PHP-FPM pool configuration file.
+`~/.composer/vendor/laravel/valet/cli/stubs/secure.valet.conf` | The default Nginx configuration used for building site certificates.
 
