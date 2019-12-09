@@ -476,6 +476,14 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice('provider-plan-id');
 
+#### Prorations
+
+By default, Stripe prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
+
+    $user->subscription('default')->noProrate()->swap('provider-plan-id');
+
+For more information on subscription proration, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/prorations).
+
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
 
@@ -497,7 +505,7 @@ Alternatively, you may set a specific quantity using the `updateQuantity` method
 
     $user->subscription('default')->updateQuantity(10);
 
-The `noProrate` method may be used to update the subscription's quantity without pro-rating the charges:
+The `noProrate` method may be used to update the subscription's quantity without prorating the charges:
 
     $user->subscription('default')->noProrate()->updateQuantity(10);
 
