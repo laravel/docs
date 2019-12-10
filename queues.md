@@ -164,7 +164,7 @@ Job classes are very simple, normally containing only a `handle` method which is
         }
     }
 
-In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models will be gracefully serialized and unserialized when the job is processing. If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
+In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing. If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance and its loaded relationships from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
 
 The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
 
@@ -177,6 +177,21 @@ If you would like to take total control over how the container injects dependenc
     });
 
 > {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
+
+#### Handling Relations
+
+Because loaded relationships also get serialized, jobs can become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model before setting it on the job's property:
+
+    /**
+     * Create a new job instance.
+     *
+     * @param  \App\Podcast  $podcast
+     * @return void
+     */
+    public function __construct(Podcast $podcast)
+    {
+        $this->podcast = $podcast->withoutRelations();
+    }
 
 <a name="job-middleware"></a>
 ### Job Middleware
