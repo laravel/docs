@@ -85,20 +85,9 @@ Now that you have routes and views setup for the included authentication control
 
 #### Path Customization
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication in the HOME constant defined in the `RouteServiceProvider` file:
+When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect path using the `HOME` constant defined in your `RouteServiceProvider`:
 
     public const HOME = '/home';
-
-Next, you should modify the `RedirectIfAuthenticated` middleware's `handle` method to use your new URI when redirecting the user.
-
-If the redirect path needs custom generation logic you may define a `redirectTo` method instead of a `redirectTo` property:
-
-    protected function redirectTo()
-    {
-        return '/path';
-    }
-
-> {tip} The `redirectTo` method will take precedence over the `redirectTo` property.
 
 #### Username Customization
 
