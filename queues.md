@@ -93,7 +93,7 @@ Adjusting this value based on your queue load can be more efficient than continu
         'retry_after' => 90,
         'block_for' => 5,
     ],
-    
+
 > {note} Setting `block_for` to `0` will cause queue workers to block indefinitely until a job is available. This will also prevent signals such as `SIGTERM` from being handled until the next job has been processed.
 
 #### Other Driver Prerequisites
@@ -178,9 +178,9 @@ If you would like to take total control over how the container injects dependenc
 
 > {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
 
-#### Handling Relations
+#### Handling Relationships
 
-Because loaded relationships also get serialized, jobs can become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model before setting it on the job's property:
+Because loaded relationships also get serialized, the serialized job string can become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model with no loaded relationships:
 
     /**
      * Create a new job instance.
