@@ -37,7 +37,7 @@ Laravel Tinker is a powerful REPL for the Laravel framework, powered by the [Psy
 
 #### Installation
 
-All Laravel applications include Tinker by default. If you still need to install it in your Laravel app, simply run:
+All Laravel applications include Tinker by default. However, you may install it manually if needed using Composer:
 
     composer require laravel/tinker
 
