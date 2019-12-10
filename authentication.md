@@ -85,9 +85,9 @@ Now that you have routes and views setup for the included authentication control
 
 #### Path Customization
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect location by defining a `redirectTo` property on the `LoginController`, `RegisterController`, `ResetPasswordController`, and `VerificationController`:
+When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication in the HOME constant defined in the `RouteServiceProvider` file:
 
-    protected $redirectTo = '/';
+    public const HOME = '/home';
 
 Next, you should modify the `RedirectIfAuthenticated` middleware's `handle` method to use your new URI when redirecting the user.
 
