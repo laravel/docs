@@ -321,8 +321,6 @@ The query watcher records the raw SQL, bindings, and execution time for all quer
 <a name="redis-watcher"></a>
 ### Redis Watcher
 
-> {note} Redis events must be enabled for the Redis watcher to function. You may enable Redis events by calling `Redis::enableEvents()` in the `boot` method of your `app/Providers/AppServiceProvider.php` file.
-
 The Redis watcher records all Redis commands executed by your application. If you are using Redis for caching, cache commands will also be recorded by the Redis Watcher.
 
 <a name="request-watcher"></a>
