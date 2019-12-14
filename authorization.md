@@ -527,9 +527,9 @@ When writing Blade templates, you may wish to display a portion of the page only
     @endcan
 
     @cannot('update', $post)
-        <!-- The Current User Can't Update The Post -->
+        <!-- The Current User Cannot Update The Post -->
     @elsecannot('create', App\Post::class)
-        <!-- The Current User Can't Create New Post -->
+        <!-- The Current User Cannot Create A New Post -->
     @endcannot
 
 These directives are convenient shortcuts for writing `@if` and `@unless` statements. The `@can` and `@cannot` statements above respectively translate to the following statements:
@@ -539,7 +539,7 @@ These directives are convenient shortcuts for writing `@if` and `@unless` statem
     @endif
 
     @unless (Auth::user()->can('update', $post))
-        <!-- The Current User Can't Update The Post -->
+        <!-- The Current User Cannot Update The Post -->
     @endunless
 
 You may also determine if a user has any authorization ability from a given list of abilities. To accomplish this, use the `@canany` directive:
