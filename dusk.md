@@ -248,6 +248,10 @@ The `maximize` method may be used to maximize the browser window:
 
     $browser->maximize();
 
+The `fitContent` method will resize the browser window to match the size of the content:
+
+    $browser->fitContent();
+
 <a name="browser-macros"></a>
 ### Browser Macros
 
