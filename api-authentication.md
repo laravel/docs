@@ -50,6 +50,7 @@ Once the `api_token` column has been added to your `users` table, you are ready 
      */
     protected function create(array $data)
     {
+        // Using the forceCreate method (instead of create) allows assigning the api token without adding it to the App\User::fillable array.
         return User::forceCreate([
             'name' => $data['name'],
             'email' => $data['email'],
