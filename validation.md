@@ -338,6 +338,8 @@ If you would like the `:attribute` portion of your validation message to be repl
 
 If you need to sanitize any data from the request before you apply your validation rules, you can use the `prepareForValidation` method:
 
+    use Illuminate\Support\Str;
+
     /**
      * Prepare the data for validation.
      *
@@ -346,7 +348,7 @@ If you need to sanitize any data from the request before you apply your validati
     protected function prepareForValidation()
     {
         $this->merge([
-            'slug' => \Str::slug($this->slug),
+            'slug' => Str::slug($this->slug),
         ]);
     }
 
