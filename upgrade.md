@@ -68,6 +68,13 @@ If you would like to keep using the previous behavior you can override the `seri
 
 > {tip} This change only affects serialization of models and model collections to arrays and JSON. This change has no affect on how dates are stored in your database.
 
+<a name="factory-types"></a>
+#### Factory Types
+
+**Likelihood Of Impact: Medium**
+
+Laravel 7 removes the factory types feature. This feature has been undocumented since October 2016. If you are still using this feature, you should upgrade to factory states, which provide more flexibility.
+
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
