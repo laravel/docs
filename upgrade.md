@@ -13,7 +13,7 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
-- ...
+- [Factory Types](#factory-types)
 </div>
 
 <a name="upgrade-7.0"></a>
@@ -73,7 +73,7 @@ If you would like to keep using the previous behavior you can override the `seri
 
 **Likelihood Of Impact: Medium**
 
-Laravel 7 removes the factory types feature. This feature has been undocumented since October 2016. If you are still using this feature, you should upgrade to factory states, which provide more flexibility.
+Laravel 7 removes the "factory types" feature. This feature has been undocumented since October 2016. If you are still using this feature, you should upgrade to [factory states](/docs/{{version}}/database-testing#factory-states), which provide more flexibility.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
