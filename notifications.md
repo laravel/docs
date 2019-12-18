@@ -278,7 +278,7 @@ When sending notifications via the `mail` channel, the notification system will 
          * Route notifications for the mail channel.
          *
          * @param  \Illuminate\Notifications\Notification  $notification
-         * @return string
+         * @return string|array
          */
         public function routeNotificationForMail($notification)
         {
@@ -286,7 +286,7 @@ When sending notifications via the `mail` channel, the notification system will 
         }
     }
 
-> {tip} By default the recipient name is not set, however, you can change this by returning an array in the function above where the key is the email field and the value is the name field.
+The above method only sets the recipient email field. However, you can set the recipient name as well by returning an array where the key is the email field and the value is the name field.
 
 <a name="customizing-the-subject"></a>
 ### Customizing The Subject
