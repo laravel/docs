@@ -286,6 +286,8 @@ When sending notifications via the `mail` channel, the notification system will 
         }
     }
 
+> {tip} By default the recipient name is not set, however, you can change this by returning an array in the function above where the key is the email field and the value is the name field.
+
 <a name="customizing-the-subject"></a>
 ### Customizing The Subject
 
