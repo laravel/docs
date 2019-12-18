@@ -690,9 +690,9 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
     stdout_logfile=/home/forge/app.com/worker.log
     stopwaitsecs=3600
 
-> {note} You should ensure that the value of `stopwaitsecs` is greater than your longest running job; if not, Supervisor may kill the job before finishing while the worker is being terminated.
-
 In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `queue:work sqs` portion of the `command` directive to reflect your desired queue connection.
+
+> {note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
 #### Starting Supervisor
 
