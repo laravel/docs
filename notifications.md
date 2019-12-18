@@ -278,15 +278,17 @@ When sending notifications via the `mail` channel, the notification system will 
          * Route notifications for the mail channel.
          *
          * @param  \Illuminate\Notifications\Notification  $notification
-         * @return string|array
+         * @return array|string
          */
         public function routeNotificationForMail($notification)
         {
+            // Return email address only...
             return $this->email_address;
+
+            // Return name and email address...
+            return [$this->name => $this->email_address];
         }
     }
-
-The above method only sets the recipient email field. However, you can set the recipient name as well by returning an array where the key is the email field and the value is the name field.
 
 <a name="customizing-the-subject"></a>
 ### Customizing The Subject
