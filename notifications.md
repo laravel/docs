@@ -286,7 +286,7 @@ When sending notifications via the `mail` channel, the notification system will 
             return $this->email_address;
 
             // Return name and email address...
-            return [$this->name => $this->email_address];
+            return [$this->email_address => $this->name];
         }
     }
 
