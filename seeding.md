@@ -28,6 +28,7 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
 
     use Illuminate\Database\Seeder;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Str;
 
     class DatabaseSeeder extends Seeder
@@ -42,7 +43,7 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
             DB::table('users')->insert([
                 'name' => Str::random(10),
                 'email' => Str::random(10).'@gmail.com',
-                'password' => bcrypt('password'),
+                'password' => Hash::make('password'),
             ]);
         }
     }
