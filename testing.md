@@ -54,4 +54,6 @@ Once the test has been generated, you may define test methods as you normally wo
         }
     }
 
+> {note} Starting from version 6.8.x, new unit tests created with Artisan extend the TestCase class from PHPUnit. Due to this change, the Laravel framework is no longer booted in order to shorten the runtime of the tests. If you want to use functions from Laravel, these tests are better suited for the feature tests.
+
 > {note} If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class.
