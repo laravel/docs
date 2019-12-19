@@ -6,6 +6,7 @@
 - [Writing Factories](#writing-factories)
     - [Factory States](#factory-states)
     - [Factory Callbacks](#factory-callbacks)
+    - [Extending Factories](#extending-factories)
 - [Using Factories](#using-factories)
     - [Creating Models](#creating-models)
     - [Persisting Models](#persisting-models)
@@ -137,6 +138,23 @@ You may also define callbacks for [factory states](#factory-states):
     $factory->afterCreatingState(App\User::class, 'delinquent', function ($user, $faker) {
         // ...
     });
+
+<a name="extending-factories"></a>
+### Extending Factories
+
+In the case that you have extended a Laravel Model - for example one provided by a package - and added additional attributes, you may wish to extend its Factory as well in order to utilize your child Model in tests and seeding.
+
+    // class Admin extends User
+
+    $factory->define(App\Admin::class, function (Faker\Generator $faker) {
+        return app(Illuminate\Database\Eloquent\Factory::class)
+            ->raw(
+                App\User::class,
+                [
+                    // ...
+                ]
+            );
+        });
 
 <a name="using-factories"></a>
 ## Using Factories
