@@ -29,7 +29,7 @@ Laravel provides a variety of helpful tools to make it easier to test your datab
 
 You can also use the `assertDatabaseMissing` helper to assert that data does not exist in the database.
 
-The `assertDatabaseHas` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
+The `assertDatabaseHas` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your feature tests.
 
 <a name="generating-factories"></a>
 ## Generating Factories
@@ -144,7 +144,7 @@ You may also define callbacks for [factory states](#factory-states):
 <a name="creating-models"></a>
 ### Creating Models
 
-Once you have defined your factories, you may use the global `factory` function in your tests or seed files to generate model instances. So, let's take a look at a few examples of creating models. First, we'll use the `make` method to create models but not save them to the database:
+Once you have defined your factories, you may use the global `factory` function in your feature tests or seed files to generate model instances. So, let's take a look at a few examples of creating models. First, we'll use the `make` method to create models but not save them to the database:
 
     public function testDatabase()
     {
@@ -243,7 +243,7 @@ If the relationship depends on the factory that defines it you may provide a cal
 <a name="using-seeds"></a>
 ## Using Seeds
 
-If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a test, you may use the `seed` method. By default, the `seed` method will return the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
+If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a feature test, you may use the `seed` method. By default, the `seed` method will return the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
 
     <?php
 
@@ -278,7 +278,7 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
 <a name="available-assertions"></a>
 ## Available Assertions
 
-Laravel provides several database assertions for your [PHPUnit](https://phpunit.de/) tests:
+Laravel provides several database assertions for your [PHPUnit](https://phpunit.de/) feature tests:
 
 Method  | Description
 ------------- | -------------

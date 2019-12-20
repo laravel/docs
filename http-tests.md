@@ -13,7 +13,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides a very fluent API for making HTTP requests to your application and examining the output. For example, take a look at the test defined below:
+Laravel provides a very fluent API for making HTTP requests to your application and examining the output. For example, take a look at the feature test defined below:
 
     <?php
 
@@ -267,7 +267,7 @@ In addition to creating images, you may create files of any other type using the
 <a name="response-assertions"></a>
 ### Response Assertions
 
-Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) tests. These assertions may be accessed on the response that is returned from the `json`, `get`, `post`, `put`, and `delete` test methods:
+Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) feature tests. These assertions may be accessed on the response that is returned from the `json`, `get`, `post`, `put`, and `delete` test methods:
 
 <style>
     .collection-method-list > p {
@@ -648,7 +648,7 @@ Assert that the response view is missing a piece of bound data:
 <a name="authentication-assertions"></a>
 ### Authentication Assertions
 
-Laravel also provides a variety of authentication related assertions for your [PHPUnit](https://phpunit.de/) tests:
+Laravel also provides a variety of authentication related assertions for your [PHPUnit](https://phpunit.de/) feature tests:
 
 Method  | Description
 ------------- | -------------
