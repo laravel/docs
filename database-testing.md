@@ -142,19 +142,13 @@ You may also define callbacks for [factory states](#factory-states):
 <a name="extending-factories"></a>
 ### Extending Factories
 
-In the case that you have extended a Laravel Model - for example one provided by a package - and added additional attributes, you may wish to extend its Factory as well in order to utilize your child Model in tests and seeding.
-
-    // class Admin extends User
+If you have extended a model, you may wish to extend its factory as well in order to utilize the child model's factory attributes during testing and seeding. To accomplish this, you may call the factory builder's `raw` method to obtain the raw array of attributes from any given factory:
 
     $factory->define(App\Admin::class, function (Faker\Generator $faker) {
-        return app(Illuminate\Database\Eloquent\Factory::class)
-            ->raw(
-                App\User::class,
-                [
-                    // ...
-                ]
-            );
-        });
+        return factory(App\User::class)->raw([
+            // ...
+        ]);
+    });
 
 <a name="using-factories"></a>
 ## Using Factories
@@ -312,8 +306,8 @@ For example, if you are using a model factory in your test, you may pass this mo
     public function testDatabase()
     {
         $user = factory(App\User::class)->create();
-  
+
         // Make call to application...
-  
+
         $this->assertDeleted($user);
     }
