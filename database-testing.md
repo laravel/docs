@@ -4,9 +4,9 @@
 - [Generating Factories](#generating-factories)
 - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
 - [Writing Factories](#writing-factories)
+    - [Extending Factories](#extending-factories)
     - [Factory States](#factory-states)
     - [Factory Callbacks](#factory-callbacks)
-    - [Extending Factories](#extending-factories)
 - [Using Factories](#using-factories)
     - [Creating Models](#creating-models)
     - [Persisting Models](#persisting-models)
@@ -99,6 +99,17 @@ You may also create additional factory files for each model for better organizat
 
 > {tip} You can set the Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
 
+<a name="extending-factories"></a>
+### Extending Factories
+
+If you have extended a model, you may wish to extend its factory as well in order to utilize the child model's factory attributes during testing and seeding. To accomplish this, you may call the factory builder's `raw` method to obtain the raw array of attributes from any given factory:
+
+    $factory->define(App\Admin::class, function (Faker\Generator $faker) {
+        return factory(App\User::class)->raw([
+            // ...
+        ]);
+    });
+
 <a name="factory-states"></a>
 ### Factory States
 
@@ -137,17 +148,6 @@ You may also define callbacks for [factory states](#factory-states):
 
     $factory->afterCreatingState(App\User::class, 'delinquent', function ($user, $faker) {
         // ...
-    });
-
-<a name="extending-factories"></a>
-### Extending Factories
-
-If you have extended a model, you may wish to extend its factory as well in order to utilize the child model's factory attributes during testing and seeding. To accomplish this, you may call the factory builder's `raw` method to obtain the raw array of attributes from any given factory:
-
-    $factory->define(App\Admin::class, function (Faker\Generator $faker) {
-        return factory(App\User::class)->raw([
-            // ...
-        ]);
     });
 
 <a name="using-factories"></a>
