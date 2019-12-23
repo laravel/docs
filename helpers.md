@@ -1016,7 +1016,7 @@ The `Str::orderedUuid` method generates a "timestamp first" UUID that may be eff
 <a name="method-str-plural"></a>
 #### `Str::plural()` {#collection-method}
 
-The `Str::plural` method converts a string to its plural form. This function currently only supports the English language:
+The `Str::plural` method converts a single word string to its plural form. This function currently only supports the English language:
 
     use Illuminate\Support\Str;
 
