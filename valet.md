@@ -158,33 +158,25 @@ To "unsecure" a site and revert back to serving its traffic over plain HTTP, use
 <a name="sharing-sites"></a>
 ## Sharing Sites
 
-At various stages in a project it's common to need to access your dev site from mobile devices, or to share it with other team members and clients. Valet includes a command to share your local sites with the world. No additional software installation is required.
+Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients. No additional software installation is required once Valet is installed.
 
-### Sharing sites via ngrok
+### Sharing Sites Via Ngrok
 
-Valet uses the free capabilities of ngrok to open a tunnel to your site so it can be accessed from an external URL. 
-If you need additional features beyond the free capabilities of ngrok, you may optionally subscribe to those via via their website.
-
-To share a site, navigate to the site's directory in your terminal and run the `valet share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser or share with your team. That's it.
+To share a site, navigate to the site's directory in your terminal and run the `valet share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser or share with your team.
 
 To stop sharing your site, hit `Control + C` to cancel the process.
 
-For advanced ngrok use, you may optionally pass additional parameters to the share command, such as `valet share --region=eu`.
+> {tip} You may pass additional parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
 
-### Sharing sites only on the local network
+### Sharing Sites On Your Local Network
 
-Valet restricts incoming traffic to just the internal 127.0.0.1 interface by default. This way your dev machine isn't exposed to needless security risks.
+Valet restricts incoming traffic to the internal `127.0.0.1` interface by default. This way your development machine isn't exposed to security risks from the Internet.
 
-If you wish to allow other devices on your local network to access the Valet sites on your machine via your computer's IP address (eg: `192.168.1.10/app-name.test`), you'll need to manually edit the appropriate nginx config file for that site to remove the restriction on the `listen` directive:
+If you wish to allow other devices on your local network to access the Valet sites on your machine via your machine's IP address (eg: `192.168.1.10/app-name.test`), you will need to manually edit the appropriate Nginx configuration file for that site to remove the restriction on the `listen` directive by removing the the `127.0.0.1:` prefix on the directive for ports 80 and 443.
 
-If you're serving the project site over `https` (ie: you have run `valet secure` for it) then the file to edit is `~/.config/valet/Nginx/app-name.test`. 
+If you have not run `valet secure` on the project, you can open up network access for all non-HTTPS sites by editing the `/usr/local/etc/nginx/valet/valet.conf` file. However, if you're serving the project site over HTTPS (you have run `valet secure` for the site) then you should edit the `~/.config/valet/Nginx/app-name.test` file.
 
-If you have not run valet secure on the project, then you can open up Valet for all non-https sites by editing `/usr/local/etc/nginx/valet/valet.conf`.  
-
-The edit to make in either case is simply to remove the `127.0.0.1:` prefix on the `listen` directives for ports 80 and 443.
-
-Once you've made your edits, run `valet restart` to apply the configuration change.
-
+Once you have updated your Nginx configuration, run the `valet restart` command to apply the configuration changes.
 
 <a name="site-specific-environment-variables"></a>
 ## Site Specific Environment Variables
@@ -337,4 +329,3 @@ File / Path | Description
 `/usr/local/etc/php/X.X/conf.d` | Contains `*.ini` files for various PHP configuration settings.
 `/usr/local/etc/php/X.X/php-fpm.d/valet-fpm.conf` | PHP-FPM pool configuration file.
 `~/.composer/vendor/laravel/valet/cli/stubs/secure.valet.conf` | The default Nginx configuration used for building site certificates.
-
