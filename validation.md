@@ -138,6 +138,15 @@ If your HTTP request contains "nested" parameters, you may specify them in your 
         'author.description' => 'required',
     ]);
 
+#### Specifying the error bag
+
+If you want to specify the bag in which the errors should be put, you may use the `validateWithBag` method.
+
+    $request->validateWithBag('contact_form', [
+        'email' => 'required|email',
+        'message' => 'required',
+    ]);
+
 <a name="quick-displaying-the-validation-errors"></a>
 ### Displaying The Validation Errors
 
