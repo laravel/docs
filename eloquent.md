@@ -367,6 +367,18 @@ If the exception is not caught, a `404` HTTP response is automatically sent back
     Route::get('/api/flights/{id}', function ($id) {
         return App\Flight::findOrFail($id);
     });
+    
+#### Get the first result or call a callback
+
+Sometimes you may wish to retrieve the first result of a query or perform some other actions if no results are found. The `firstOr` method will return the first result that's found or alternatively call a callback that's passed. You may optionally pass an array of columns to be retrieved as the first parameter:
+
+    $model = App\Flight::where('legs', '>', 100)->firstOr(['id', 'legs'], function () {
+        // Maybe perform some other query or log some information
+    });
+
+    $model = App\Flight::where('legs', '>', 100)->firstOr(function () {
+        // Maybe perform some other query or log some information
+    });
 
 <a name="retrieving-aggregates"></a>
 ### Retrieving Aggregates
