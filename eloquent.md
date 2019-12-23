@@ -354,6 +354,19 @@ You may also call the `find` method with an array of primary keys, which will re
 
     $flights = App\Flight::find([1, 2, 3]);
 
+Sometimes you may wish to retrieve the first result of a query or perform some other action if no results are found. The `firstOr` method will return the first result that is found or, if no results are found, execute the given callback. The result of the callback will be considered the result of the `firstOr` method:
+
+    $model = App\Flight::where('legs', '>', 100)->firstOr(function () {
+            // ...
+    });
+
+The `firstOr` method also accepts an array of columns to retrieve:
+
+    $model = App\Flight::where('legs', '>', 100)
+                ->firstOr(['id', 'legs'], function () {
+                    // ...
+                });
+
 #### Not Found Exceptions
 
 Sometimes you may wish to throw an exception if a model is not found. This is particularly useful in routes or controllers. The `findOrFail` and `firstOrFail` methods will retrieve the first result of the query; however, if no result is found, a `Illuminate\Database\Eloquent\ModelNotFoundException` will be thrown:
@@ -366,18 +379,6 @@ If the exception is not caught, a `404` HTTP response is automatically sent back
 
     Route::get('/api/flights/{id}', function ($id) {
         return App\Flight::findOrFail($id);
-    });
-    
-#### Get the first result or call a callback
-
-Sometimes you may wish to retrieve the first result of a query or perform some other actions if no results are found. The `firstOr` method will return the first result that's found or alternatively call a callback that's passed. You may optionally pass an array of columns to be retrieved as the first parameter:
-
-    $model = App\Flight::where('legs', '>', 100)->firstOr(['id', 'legs'], function () {
-        // Maybe perform some other query or log some information
-    });
-
-    $model = App\Flight::where('legs', '>', 100)->firstOr(function () {
-        // Maybe perform some other query or log some information
     });
 
 <a name="retrieving-aggregates"></a>
