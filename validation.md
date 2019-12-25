@@ -117,6 +117,13 @@ Alternatively, validation rules may be specified as arrays of rules instead of a
         'body' => ['required'],
     ]);
 
+If you would like to specify the [error bag](#named-error-bags) in which the error messages should be placed, you may use the `validateWithBag` method:
+
+    $request->validateWithBag('blog', [
+        'title' => ['required', 'unique:posts', 'max:255'],
+        'body' => ['required'],
+    ]);
+
 #### Stopping On First Validation Failure
 
 Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
@@ -136,15 +143,6 @@ If your HTTP request contains "nested" parameters, you may specify them in your 
         'title' => 'required|unique:posts|max:255',
         'author.name' => 'required',
         'author.description' => 'required',
-    ]);
-
-#### Specifying the error bag
-
-If you want to specify the bag in which the errors should be put, you may use the `validateWithBag` method.
-
-    $request->validateWithBag('contact_form', [
-        'email' => 'required|email',
-        'message' => 'required',
     ]);
 
 <a name="quick-displaying-the-validation-errors"></a>
