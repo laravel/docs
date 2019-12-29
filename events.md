@@ -75,8 +75,6 @@ You may even register listeners using the `*` as a wildcard parameter, allowing 
 <a name="event-discovery"></a>
 ### Event Discovery
 
-> {note} Event Discovery is available for Laravel 5.8.9 or later.
-
 Instead of registering events and listeners manually in the `$listen` array of the `EventServiceProvider`, you can enable automatic event discovery. When event discovery is enabled, Laravel will automatically find and register your events and listeners by scanning your application's `Listeners` directory. In addition, any explicitly defined events listed in the `EventServiceProvider` will still be registered.
 
 Laravel finds event listeners by scanning the listener classes using reflection. When Laravel finds any listener class method that begins with `handle`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:
