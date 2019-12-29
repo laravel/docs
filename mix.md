@@ -42,7 +42,7 @@ Before triggering Mix, you must first ensure that Node.js and NPM are installed 
     node -v
     npm -v
 
-By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install the latest version of Node and NPM using simple graphical installers from [their download page](https://nodejs.org/en/download/).
+By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install the latest version of Node and NPM using simple graphical installers from [their download page](https://nodejs.org/en/download/). If you are running into permissions issues when running NPM from Homestead, an alternative is to install NodeJS and NPM on the host machine and then run NPM from the host instead of Homestead.
 
 #### Laravel Mix
 
