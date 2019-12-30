@@ -284,7 +284,7 @@ If you would like to whitelist multiple redirect URLs for your client, you may s
 
     http://example.com/callback,http://examplefoo.com/callback
 
-> {note} Any URLs which contains commas must be encoded.
+> {note} Any URL which contains commas must be encoded.
 
 #### JSON API
 
