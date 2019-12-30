@@ -101,7 +101,7 @@ After making a test request to your application, the `dump` and `dumpHeaders` me
     }
 
 <a name="session-and-authentication"></a>
-## Session / Authentication
+## Session, Authentication & Cookies
 
 Laravel provides several helpers for working with the session during HTTP testing. First, you may set the session data to a given array using the `withSession` method. This is useful for loading the session with data before issuing a request to your application:
 
@@ -137,6 +137,19 @@ One common use of the session is for maintaining state for the authenticated use
 You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:
 
     $this->actingAs($user, 'api')
+
+Other helpful methods are available when tests should alter the incoming request. For instance, if you need to check your application's behavior when a certain cookie was previously set, you may use the `withCookie` or `withCookies` methods:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        public function testApplication()
+        {
+            $response = $this->withCookie('foo', 'bar')
+                             ->get('/');
+        }
+    }
 
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
