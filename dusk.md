@@ -1498,8 +1498,8 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
           - name: Upgrade Chrome Driver
             run: php artisan dusk:chrome-driver
           - name: Start Chrome Driver
-            run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+            run: ./vendor/laravel/dusk/bin/chromedriver-linux &
           - name: Run Laravel Server
-            run: php artisan serve > /dev/null 2>&1 &
+            run: php artisan serve &
           - name: Run Dusk Tests
             run: php artisan dusk
