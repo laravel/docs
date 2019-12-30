@@ -326,7 +326,7 @@ When your test requires migrations, like the authentication example above, you s
 <a name="dusk-selectors"></a>
 ### Dusk Selectors
 
-Choosing good CSS selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
+Choosing good CSS selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, front-end changes can cause CSS selectors like the following to break your tests:
 
     // HTML...
 

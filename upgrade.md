@@ -199,7 +199,7 @@ Laravel 6.0 has received [performance optimizations](https://github.com/laravel/
 
 **Likelihood Of Impact: Medium**
 
-To prevent possible CSRF attacks, the `email/resend` route registered by the router when using Laravel's built-in email verification has been updated from a `GET` route to a `POST` route. Therefore, you will need to update your frontend to send the proper request type to this route. For example, if you are using the built-in email verification template scaffolding:
+To prevent possible CSRF attacks, the `email/resend` route registered by the router when using Laravel's built-in email verification has been updated from a `GET` route to a `POST` route. Therefore, you will need to update your front end to send the proper request type to this route. For example, if you are using the built-in email verification template scaffolding:
 
     {{ __('Before proceeding, please check your email for a verification link.') }}
     {{ __('If you did not receive the email') }},

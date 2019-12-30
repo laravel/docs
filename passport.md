@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Upgrading Passport](#upgrading)
 - [Installation](#installation)
-    - [Frontend Quickstart](#frontend-quickstart)
+    - [Front-end Quickstart](#front-end-quickstart)
     - [Deploying Passport](#deploying-passport)
 - [Configuration](#configuration)
     - [Token Lifetimes](#token-lifetimes)
@@ -131,12 +131,12 @@ If you are not going to use Passport's default migrations, you should call the `
 
 By default, Passport uses an integer column to store the `user_id`. If your application uses a different column type to identify users (for example: UUIDs), you should modify the default Passport migrations after publishing them.
 
-<a name="frontend-quickstart"></a>
-### Frontend Quickstart
+<a name="front-end-quickstart"></a>
+### Front-end Quickstart
 
-> {note} In order to use the Passport Vue components, you must be using the [Vue](https://vuejs.org) JavaScript framework. These components also use the Bootstrap CSS framework. However, even if you are not using these tools, the components serve as a valuable reference for your own frontend implementation.
+> {note} In order to use the Passport Vue components, you must be using the [Vue](https://vuejs.org) JavaScript framework. These components also use the Bootstrap CSS framework. However, even if you are not using these tools, the components serve as a valuable reference for your own front-end implementation.
 
-Passport ships with a JSON API that you may use to allow your users to create clients and personal access tokens. However, it can be time consuming to code a frontend to interact with these APIs. So, Passport also includes pre-built [Vue](https://vuejs.org) components you may use as an example implementation or starting point for your own implementation.
+Passport ships with a JSON API that you may use to allow your users to create clients and personal access tokens. However, it can be time consuming to code a front end to interact with these APIs. So, Passport also includes pre-built [Vue](https://vuejs.org) components you may use as an example implementation or starting point for your own implementation.
 
 To publish the Passport Vue components, use the `vendor:publish` Artisan command:
 
@@ -290,11 +290,11 @@ If you would like to whitelist multiple redirect URLs for your client, you may s
 
 Since your users will not be able to utilize the `client` command, Passport provides a JSON API that you may use to create clients. This saves you the trouble of having to manually code controllers for creating, updating, and deleting clients.
 
-However, you will need to pair Passport's JSON API with your own frontend to provide a dashboard for your users to manage their clients. Below, we'll review all of the API endpoints for managing clients. For convenience, we'll use [Axios](https://github.com/axios/axios) to demonstrate making HTTP requests to the endpoints.
+However, you will need to pair Passport's JSON API with your own front end to provide a dashboard for your users to manage their clients. Below, we'll review all of the API endpoints for managing clients. For convenience, we'll use [Axios](https://github.com/axios/axios) to demonstrate making HTTP requests to the endpoints.
 
 The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
 
-> {tip} If you don't want to implement the entire client management frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
+> {tip} If you don't want to implement the entire client management front end yourself, you can use the [front-end quickstart](#front-end-quickstart) to have a fully functional front end in a matter of minutes.
 
 #### `GET /oauth/clients`
 
@@ -689,11 +689,11 @@ Once you have created a personal access client, you may issue tokens for a given
 
 #### JSON API
 
-Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
+Passport also includes a JSON API for managing personal access tokens. You may pair this with your own front end to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
 
 The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
 
-> {tip} If you don't want to implement the personal access token frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
+> {tip} If you don't want to implement the personal access token front end yourself, you can use the [front-end quickstart](#front-end-quickstart) to have a fully functional front end in a matter of minutes.
 
 #### `GET /oauth/scopes`
 

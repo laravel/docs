@@ -29,10 +29,10 @@
     - [Validation](/docs/{{version}}/validation)
     - [Error Handling](/docs/{{version}}/errors)
     - [Logging](/docs/{{version}}/logging)
-- ## Frontend
+- ## Front End
     - [Blade Templates](/docs/{{version}}/blade)
     - [Localization](/docs/{{version}}/localization)
-    - [Frontend Scaffolding](/docs/{{version}}/frontend)
+    - [Front-end Scaffolding](/docs/{{version}}/front-end)
     - [Compiling Assets](/docs/{{version}}/mix)
 - ## Security
     - [Authentication](/docs/{{version}}/authentication)

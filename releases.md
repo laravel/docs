@@ -27,7 +27,7 @@ For LTS releases, such as Laravel 6, bug fixes are provided for 2 years and secu
 <a name="laravel-6"></a>
 ## Laravel 6
 
-Laravel 6 (LTS) continues the improvements made in Laravel 5.8 by introducing semantic versioning, compatibility with [Laravel Vapor](https://vapor.laravel.com), improved authorization responses, job middleware, lazy collections, sub-query improvements, the extraction of frontend scaffolding to the `laravel/ui` Composer package, and a variety of other bug fixes and usability improvements.
+Laravel 6 (LTS) continues the improvements made in Laravel 5.8 by introducing semantic versioning, compatibility with [Laravel Vapor](https://vapor.laravel.com), improved authorization responses, job middleware, lazy collections, sub-query improvements, the extraction of front-end scaffolding to the `laravel/ui` Composer package, and a variety of other bug fixes and usability improvements.
 
 ### Semantic Versioning
 
@@ -73,7 +73,7 @@ The authorization policy's response and message may be easily retrieved using th
         echo $response->message();
     }
 
-In addition, these custom messages will automatically be returned to your frontend when using helper methods such as `$this->authorize` or `Gate::authorize` from your routes or controllers.
+In addition, these custom messages will automatically be returned to your front end when using helper methods such as `$this->authorize` or `Gate::authorize` from your routes or controllers.
 
 ### Job Middleware
 
@@ -213,9 +213,9 @@ In addition, we can use new subquery features added to the query builder's `orde
 
 ### Laravel UI
 
-The frontend scaffolding typically provided with previous releases of Laravel has been extracted into a `laravel/ui` Composer package. This allows the first-party UI scaffolding to be developed and versioned separately from the primary framework. As a result of this change, no Bootstrap or Vue code is present in default framework scaffolding, and the `make:auth` command has been extracted from the framework as well.
+The front-end scaffolding typically provided with previous releases of Laravel has been extracted into a `laravel/ui` Composer package. This allows the first-party UI scaffolding to be developed and versioned separately from the primary framework. As a result of this change, no Bootstrap or Vue code is present in default framework scaffolding, and the `make:auth` command has been extracted from the framework as well.
 
-In order to restore the traditional Vue / Bootstrap scaffolding present in previous releases of Laravel, you may install the `laravel/ui` package and use the `ui` Artisan command to install the frontend scaffolding:
+In order to restore the traditional Vue / Bootstrap scaffolding present in previous releases of Laravel, you may install the `laravel/ui` package and use the `ui` Artisan command to install the front-end scaffolding:
 
     composer require laravel/ui --dev
 

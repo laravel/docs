@@ -10,13 +10,13 @@
 <a name="introduction"></a>
 ## Introduction
 
-While Laravel does not dictate which JavaScript or CSS pre-processors you use, it does provide a basic starting point using [Bootstrap](https://getbootstrap.com/), [React](https://reactjs.org/), and / or [Vue](https://vuejs.org/) that will be helpful for many applications. By default, Laravel uses [NPM](https://www.npmjs.org) to install both of these frontend packages.
+While Laravel does not dictate which JavaScript or CSS pre-processors you use, it does provide a basic starting point using [Bootstrap](https://getbootstrap.com/), [React](https://reactjs.org/), and / or [Vue](https://vuejs.org/) that will be helpful for many applications. By default, Laravel uses [NPM](https://www.npmjs.org) to install both of these front-end packages.
 
 The Bootstrap and Vue scaffolding provided by Laravel is located in the `laravel/ui` Composer package, which may be installed using Composer:
 
     composer require laravel/ui --dev
 
-Once the `laravel/ui` package has been installed, you may install the frontend scaffolding using the `ui` Artisan command:
+Once the `laravel/ui` package has been installed, you may install the front-end scaffolding using the `ui` Artisan command:
 
     // Generate basic scaffolding...
     php artisan ui bootstrap
@@ -39,9 +39,9 @@ Laravel does not require you to use a specific JavaScript framework or library t
 <a name="writing-css"></a>
 ## Writing CSS
 
-After installing the `laravel/ui` Composer package and [generating the frontend scaffolding](#introduction), Laravel's `package.json` file will include the `bootstrap` package to help you get started prototyping your application's frontend using Bootstrap. However, feel free to add or remove packages from the `package.json` file as needed for your own application. You are not required to use the Bootstrap framework to build your Laravel application - it is provided as a good starting point for those who choose to use it.
+After installing the `laravel/ui` Composer package and [generating the front-end scaffolding](#introduction), Laravel's `package.json` file will include the `bootstrap` package to help you get started prototyping your application's front end using Bootstrap. However, feel free to add or remove packages from the `package.json` file as needed for your own application. You are not required to use the Bootstrap framework to build your Laravel application - it is provided as a good starting point for those who choose to use it.
 
-Before compiling your CSS, install your project's frontend dependencies using the [Node package manager (NPM)](https://www.npmjs.org):
+Before compiling your CSS, install your project's front-end dependencies using the [Node package manager (NPM)](https://www.npmjs.org):
 
     npm install
 
@@ -49,7 +49,7 @@ Once the dependencies have been installed using `npm install`, you can compile y
 
     npm run dev
 
-The `webpack.mix.js` file included with Laravel's frontend scaffolding will compile the `resources/sass/app.scss` SASS file. This `app.scss` file imports a file of SASS variables and loads Bootstrap, which provides a good starting point for most applications. Feel free to customize the `app.scss` file however you wish or even use an entirely different pre-processor by [configuring Laravel Mix](/docs/{{version}}/mix).
+The `webpack.mix.js` file included with Laravel's front-end scaffolding will compile the `resources/sass/app.scss` SASS file. This `app.scss` file imports a file of SASS variables and loads Bootstrap, which provides a good starting point for most applications. Feel free to customize the `app.scss` file however you wish or even use an entirely different pre-processor by [configuring Laravel Mix](/docs/{{version}}/mix).
 
 <a name="writing-javascript"></a>
 ## Writing JavaScript
@@ -71,7 +71,7 @@ By default, the Laravel `webpack.mix.js` file compiles your SASS and the `resour
 <a name="writing-vue-components"></a>
 ### Writing Vue Components
 
-When using the `laravel/ui` package to scaffold your frontend, an `ExampleComponent.vue` Vue component will be placed in the `resources/js/components` directory. The `ExampleComponent.vue` file is an example of a [single file Vue component](https://vuejs.org/guide/single-file-components) which defines its JavaScript and HTML template in the same file. Single file components provide a very convenient approach to building JavaScript driven applications. The example component is registered in your `app.js` file:
+When using the `laravel/ui` package to scaffold your front end, an `ExampleComponent.vue` Vue component will be placed in the `resources/js/components` directory. The `ExampleComponent.vue` file is an example of a [single file Vue component](https://vuejs.org/guide/single-file-components) which defines its JavaScript and HTML template in the same file. Single file components provide a very convenient approach to building JavaScript driven applications. The example component is registered in your `app.js` file:
 
     Vue.component(
         'example-component',
@@ -110,7 +110,7 @@ Presets are "macroable", which allows you to add additional methods to the `UiCo
     use Laravel\Ui\UiCommand;
 
     UiCommand::macro('nextjs', function (UiCommand $command) {
-        // Scaffold your frontend...
+        // Scaffold your front end...
     });
 
 Then, you may call the new preset via the `ui` command:

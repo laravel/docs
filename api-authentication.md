@@ -71,7 +71,7 @@ In the examples above, API tokens are stored in your database as plain-text. If 
 
 #### Generating Hashed Tokens
 
-When using hashed API tokens, you should not generate your API tokens during user registration. Instead, you will need to implement your own API token management page within your application. This page should allow users to initialize and refresh their API token. When a user makes a request to initialize or refresh their token, you should store a hashed copy of the token in the database, and return the plain-text copy of token to the view / frontend client for one-time display.
+When using hashed API tokens, you should not generate your API tokens during user registration. Instead, you will need to implement your own API token management page within your application. This page should allow users to initialize and refresh their API token. When a user makes a request to initialize or refresh their token, you should store a hashed copy of the token in the database, and return the plain-text copy of token to the view / front-end client for one-time display.
 
 For example, a controller method that initializes / refreshes the token for a given user and returns the plain-text token as a JSON response might look like the following:
 
