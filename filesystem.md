@@ -373,7 +373,7 @@ If necessary, you may specify the disk that the file should be deleted from:
 
 #### Get All Files Within A Directory
 
-The `files` method returns an array of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all sub-directories, you may use the `allFiles` method:
+The `files` method returns an array of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `allFiles` method:
 
     use Illuminate\Support\Facades\Storage;
 
@@ -383,7 +383,7 @@ The `files` method returns an array of all of the files in a given directory. If
 
 #### Get All Directories Within A Directory
 
-The `directories` method returns an array of all the directories within a given directory. Additionally, you may use the `allDirectories` method to get a list of all directories within a given directory and all of its sub-directories:
+The `directories` method returns an array of all the directories within a given directory. Additionally, you may use the `allDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
 
     $directories = Storage::directories($directory);
 
@@ -392,7 +392,7 @@ The `directories` method returns an array of all the directories within a given 
 
 #### Create A Directory
 
-The `makeDirectory` method will create the given directory, including any needed sub-directories:
+The `makeDirectory` method will create the given directory, including any needed subdirectories:
 
     Storage::makeDirectory($directory);
 

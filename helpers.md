@@ -537,7 +537,7 @@ You may also sort the array by the results of the given Closure:
 <a name="method-array-sort-recursive"></a>
 #### `Arr::sortRecursive()` {#collection-method}
 
-The `Arr::sortRecursive` method recursively sorts an array using the `sort` function for numeric sub=arrays and `ksort` for associative sub-arrays:
+The `Arr::sortRecursive` method recursively sorts an array using the `sort` function for numeric sub=arrays and `ksort` for associative subarrays:
 
     use Illuminate\Support\Arr;
 
