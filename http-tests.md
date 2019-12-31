@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
     - [Customizing Request Headers](#customizing-request-headers)
+    - [Cookies](#cookies)
     - [Debugging Responses](#debugging-responses)
 - [Session / Authentication](#session-and-authentication)
 - [Testing JSON APIs](#testing-json-apis)
@@ -70,6 +71,26 @@ You may use the `withHeaders` method to customize the request's headers before i
 
 > {tip} The CSRF middleware is automatically disabled when running tests.
 
+<a name="cookies"></a>
+### Cookies
+
+You may use the `withCookie` or `withCookies` methods to set cookie values before making a request. The `withCookie` method accepts a cookie name and value as its two arguments, while the `withCookies` method accepts an array of name / value pairs:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        public function testCookies()
+        {
+            $response = $this->withCookie('color', 'blue')->get('/');
+
+            $response = $this->withCookies([
+                'color' => 'blue',
+                'name' => 'Taylor',
+            ])->get('/');
+        }
+    }
+
 <a name="debugging-responses"></a>
 ### Debugging Responses
 
@@ -101,7 +122,7 @@ After making a test request to your application, the `dump` and `dumpHeaders` me
     }
 
 <a name="session-and-authentication"></a>
-## Session, Authentication & Cookies
+## Session / Authentication
 
 Laravel provides several helpers for working with the session during HTTP testing. First, you may set the session data to a given array using the `withSession` method. This is useful for loading the session with data before issuing a request to your application:
 
@@ -137,19 +158,6 @@ One common use of the session is for maintaining state for the authenticated use
 You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:
 
     $this->actingAs($user, 'api')
-
-Other helpful methods are available when tests should alter the incoming request. For instance, if you need to check your application's behavior when a certain cookie was previously set, you may use the `withCookie` or `withCookies` methods:
-
-    <?php
-
-    class ExampleTest extends TestCase
-    {
-        public function testApplication()
-        {
-            $response = $this->withCookie('foo', 'bar')
-                             ->get('/');
-        }
-    }
 
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
