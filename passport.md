@@ -563,6 +563,40 @@ When authenticating using the password grant, Passport will use the `password` a
         }
     }
 
+If you want customize the password validation while customizing the username field at the same time, you can define a `findAndValidateForPassport` method on your model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Support\Facades\Hash;
+    use Laravel\Passport\HasApiTokens;
+
+    class User extends Authenticatable
+    {
+        use HasApiTokens, Notifiable;
+
+        /**
+         * Find the user instance for the given username and validate its password.
+         *
+         * @param  string $username
+         * @param  string $password
+         * @return null|\App\User
+         */
+        public function findAndValidateForPassport($username, $password)
+        {
+            $user = $this->where('username', $username)->first();
+
+            if (! $user) {
+                return;
+            }
+
+            return Hash::check($password, $user->password);
+        }
+    }
+
 <a name="implicit-grant-tokens"></a>
 ## Implicit Grant Tokens
 
