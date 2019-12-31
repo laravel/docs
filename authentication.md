@@ -417,7 +417,7 @@ Laravel also provides a mechanism for invalidating and "logging out" a user's se
         // ...
     ],
 
-Then, you may use the `logoutOtherDevices` method on the `Auth` facade. This method requires the user to provide their current password, which your application should accept through an input form:
+Then, you may use the logoutOtherDevices method on the Auth facade. This method will store new password hash on current user, based on provided $password, which makes password hash stored in authenticated session invalid. $password should be provided by user through an input form and must be manualy validated against current password:
 
     use Illuminate\Support\Facades\Auth;
 
