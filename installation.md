@@ -105,7 +105,7 @@ You may also want to configure a few additional components of Laravel, such as:
 <a name="directory-configuration"></a>
 ### Directory Configuration
 
-Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a sub-directory of the "web directory". Attempting to do so could expose sensitive files present within your application.
+Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
 
 <a name="pretty-urls"></a>
 ### Pretty URLs
