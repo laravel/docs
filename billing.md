@@ -183,16 +183,17 @@ Next, the Stripe.js library may be used to attach a Stripe Element to the form a
         cardElement.mount('#card-element');
     </script>
 
-Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `handleCardSetup` method](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup):
+Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `confirmCardSetup` method](https://stripe.com/docs/js/setup_intents/confirm_card_setup):
 
     const cardHolderName = document.getElementById('card-holder-name');
     const cardButton = document.getElementById('card-button');
     const clientSecret = cardButton.dataset.secret;
 
     cardButton.addEventListener('click', async (e) => {
-        const { setupIntent, error } = await stripe.handleCardSetup(
-            clientSecret, cardElement, {
-                payment_method_data: {
+        const { setupIntent, error } = await stripe.confirmCardSetup(
+            clientSecret, {
+                payment_method: {
+                    card: cardElement,
                     billing_details: { name: cardHolderName.value }
                 }
             }
@@ -207,7 +208,7 @@ Next, the card can be verified and a secure "payment method identifier" can be r
 
 After the card has been verified by Stripe, you may pass the resulting `setupIntent.payment_method` identifier to your Laravel application, where it can be attached to the customer. The payment method can either be [added as a new payment method](#adding-payment-methods) or [used to update the default payment method](#updating-the-default-payment-method). You can also immediately use the payment method identifier to [create a new subscription](#creating-subscriptions).
 
-> {tip} If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/cards/saving-cards#saving-card-without-payment).
+> {tip} If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/save-and-reuse#php).
 
 #### Payment Methods For Single Charges
 
