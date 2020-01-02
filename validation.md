@@ -805,12 +805,12 @@ The field under validation must end with one of the given values.
 <a name="rule-exclude-if"></a>
 #### exclude_if:_anotherfield_,_value_
 
-The field under validation will be excluded from the request if the _anotherfield_ field is equal to _value_.
+The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is equal to _value_.
 
 <a name="rule-exclude-unless"></a>
 #### exclude_unless:_anotherfield_,_value_
 
-The field under validation will be excluded from the request unless _anotherfield_'s field is equal to _value_.
+The field under validation will be excluded from the request data returned by the `validate` and `validated` methods unless _anotherfield_'s field is equal to _value_.
 
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
