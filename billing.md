@@ -183,16 +183,17 @@ Next, the Stripe.js library may be used to attach a Stripe Element to the form a
         cardElement.mount('#card-element');
     </script>
 
-Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `handleCardSetup` method](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup):
+Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `confirmCardSetup` method](https://stripe.com/docs/js/setup_intents/confirm_card_setup):
 
     const cardHolderName = document.getElementById('card-holder-name');
     const cardButton = document.getElementById('card-button');
     const clientSecret = cardButton.dataset.secret;
 
     cardButton.addEventListener('click', async (e) => {
-        const { setupIntent, error } = await stripe.handleCardSetup(
-            clientSecret, cardElement, {
-                payment_method_data: {
+        const { setupIntent, error } = await stripe.confirmCardSetup(
+            clientSecret, {
+                payment_method: {
+                    card: cardElement,
                     billing_details: { name: cardHolderName.value }
                 }
             }
