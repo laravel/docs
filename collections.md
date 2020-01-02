@@ -7,6 +7,7 @@
 - [Higher Order Messages](#higher-order-messages)
 - [Lazy Collections](#lazy-collections)
     - [Introduction](#lazy-collection-introduction)
+    - [Creating Lazy Collections](#creating-lazy-collections)
     - [The Enumerable Contract](#the-enumerable-contract)
     - [Lazy Collection Methods](#lazy-collection-methods)
 
