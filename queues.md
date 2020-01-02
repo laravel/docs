@@ -80,6 +80,8 @@ If your Redis queue connection uses a Redis Cluster, your queue names must conta
         'retry_after' => 90,
     ],
 
+> {note} When use Horizon. Please note [horizon does not support clustered](https://github.com/laravel/horizon/issues/274#issuecomment-457218217). 
+
 **Blocking**
 
 When using the Redis queue, you may use the `block_for` configuration option to specify how long the driver should wait for a job to become available before iterating through the worker loop and re-polling the Redis database.
