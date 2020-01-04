@@ -111,9 +111,9 @@ The `{{ $slot }}` variable will contain the content we wish to inject into the c
         <strong>Whoops!</strong> Something went wrong!
     @endcomponent
 
-To instruct Laravel to load the first view that exists from a given array of possible views for the component, you may use the `componentFirst` directive:
+To instruct Laravel to load the first view that exists from a given array of possible views for the component, you may use the `componentfirst` directive:
 
-    @componentFirst(['custom.alert', 'alert'])
+    @componentfirst(['custom.alert', 'alert'])
         <strong>Whoops!</strong> Something went wrong!
     @endcomponentfirst
 
