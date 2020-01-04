@@ -15,6 +15,7 @@
     - [File Downloads](#file-downloads)
     - [File Responses](#file-responses)
 - [Response Macros](#response-macros)
+    - [Test Response Macros](#test-response-macros)
 
 <a name="creating-responses"></a>
 ## Creating Responses
@@ -295,3 +296,66 @@ If you would like to define a custom response that you can re-use in a variety o
 The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `ResponseFactory` implementation or the `response` helper:
 
     return response()->caps('foo');
+
+<a name="test-response-macros"></a>
+### Test Response Macros
+
+Since the `TestResponse` class uses the `Macroable` trait, you can also use macros to extend or summarise assertions for your `TestResponse` objects while testing:
+
+    <?php
+    
+    namespace Tests;
+    
+    use Illuminate\Contracts\Console\Kernel;
+    use Illuminate\Foundation\Application;
+    use Illuminate\Foundation\Testing\TestResponse;
+    
+    /**
+     * Trait CreatesApplication.
+     */
+    trait CreatesApplication
+    {
+        /**
+         * Creates the application.
+         */
+        final public function createApplication(): Application
+        {
+            $app = require __DIR__ . '/../bootstrap/app.php';
+    
+            assert($app instanceof Application);
+    
+            $app->make(Kernel::class)->bootstrap();
+    
+            // this method call registers macros after our app has been bootstrapped
+            $this->registerMacros();
+    
+            return $app;
+        }
+    
+        private final function registerMacros() {
+            // register macros for the TestResponse class
+            TestResponse::macro('assertHello', function ($subject) {
+                return $this->assertSee("Hello, $subject");
+            });
+        }
+    }
+
+And then use them like normal macros during your test functions:
+
+    
+    public function testValidCredentials(): void
+    {
+        $user = factory(User::class)->create([
+            'name' => "Taylor Otwell",
+            'email' => "taylor@laravel.com",
+            'password' => Hash::make("password"),
+        ]);
+
+        $response = $this->postJson('/api/auth/login', [
+            'email' => "taylor@laravel.com",
+            'password' => "password",
+        ]);
+
+        $response->assertStatus(200)
+            ->assertHello('Taylor');
+    }
