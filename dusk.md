@@ -552,6 +552,14 @@ The `waitForText` method may be used to wait until the given text is displayed o
     // Wait a maximum of one second for the text...
     $browser->waitForText('Hello World', 1);
 
+You may use the `waitUntilMissingText` method to wait until the displayed text has been removed from the page:
+
+    // Wait a maximum of five seconds for the text to be removed...
+    $browser->waitUntilMissingText('Hello World');
+
+    // Wait a maximum of one second for the text to be removed...
+    $browser->waitUntilMissingText('Hello World', 1);
+
 #### Waiting For Links
 
 The `waitForLink` method may be used to wait until the given link text is displayed on the page:
