@@ -259,7 +259,7 @@ When calling this method, the `user` arguments may be passed in order to the com
 
 When defining an option that expects an array input, each option value passed to the command should be prefixed with the option name:
 
-    email:send {user} {--id=*}
+    email:send {user?} {--id=*}
 
     php artisan email:send --id=1 --id=2
 
