@@ -13,7 +13,7 @@
     - [Requesting Tokens](#requesting-tokens)
     - [Refreshing Tokens](#refreshing-tokens)
 - [Authorization Code Grant with PKCE](#code-grant-pkce)
-    - [Creating A Authorization Code Grant with PKCE](#creating-a-auth-pkce-grant-client)
+    - [Creating The Client](#creating-a-auth-pkce-grant-client)
     - [Requesting Tokens](#requesting-auth-pkce-grant-tokens)
 - [Password Grant Tokens](#password-grant-tokens)
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
@@ -460,10 +460,10 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 <a name="code-grant-pkce"></a>
 ## Authorization Code Grant with PKCE
 
-The Authorization Code with Proof Key for Code Exchange (PKCE) is the preferred way for  the front end (e.g. a single page web application) or a native application such as a mobile app to access an API. This grant should be used when you can't guarantee that the client secret will be stored confidentiality or when mitigating the threat of having the authorization code intercepted by an attacker. A combination of a code verifier and a code challenge replaces the client secret when exchanging the authorization code for an access token.
+The Authorization Code grant with "Proof Key for Code Exchange" (PKCE) is a secure way to authenticate single page applications or native applications to access your API. This grant should be used when you can't guarantee that the client secret will be stored confidentiality or in order to mitigate the threat of having the authorization code intercepted by an attacker. A combination of a "code verifier" and a "code challenge" replaces the client secret when exchanging the authorization code for an access token.
 
 <a name="creating-a-auth-pkce-grant-client"></a>
-### Creating A Authorization Code Grant with PKCE
+### Creating The Client
 
 Before your application can issue tokens via the authorization code grant with PKCE, you will need to create a PKCE-enabled client. You may do this using the `passport:client` command with the `--public` option:
 
@@ -472,25 +472,30 @@ Before your application can issue tokens via the authorization code grant with P
 <a name="requesting-auth-pkce-grant-tokens"></a>
 ### Requesting Tokens
 
-#### Code verifier and Code challenge
+#### Code Verifier & Code Challenge
 
-As this authorization grant does not provide a client secret, developers will need to generate a combination of code verifier and code challenge to be able to request a token.
+As this authorization grant does not provide a client secret, developers will need to generate a combination of a code verifier and a code challenge in order to request a token.
 
-The code verifier is recommended to be a random, case insensitive string of with a minimum length of 43 characters and a maximum length of 128 characters created with letters, numbers and  `"-"`, `"."`, `"_"`, `"~"`, as defined in the [RFC 7636 specification](https://tools.ietf.org/html/rfc7636).
+The code verifier should be a random string of between 43 and 128 characters containing letters, numbers and  `"-"`, `"."`, `"_"`, `"~"`, as defined in the [RFC 7636 specification](https://tools.ietf.org/html/rfc7636).
 
-The code challenge should be created using a Base64 encoding with URL and filename-safe characters, with all trailing `'='` characters omitted and without the inclusion of any line breaks, whitespace, or other additional characters.
+The code challenge should be a Base64 encoded string with URL and filename-safe characters. The trailing `'='` characters should be removed and no line breaks, whitespace, or other additional characters should be present.
 
-    $code_challenge = strtr(rtrim(base64_encode(hash('sha256', $code_verifier, true)), '='), '+/', '-_');
+    $encoded = base64_encode(hash('sha256', $code_verifier, true));
+
+    $codeChallenge = strtr(rtrim($encoded, '='), '+/', '-_');
 
 #### Redirecting For Authorization
 
-Once a client has been created, developers may use their client ID and a generated code verifier and a code challenge to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
+Once a client has been created, you may use the client ID and the generated code verifier and code challenge to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route:
 
     Route::get('/redirect', function (Request $request) {
         $request->session()->put('state', $state = Str::random(40));
+
         $request->session()->put('code_verifier', $code_verifier = Str::random(128));
 
-        $code_challenge = strtr(rtrim(base64_encode(hash('sha256', $code_verifier, true)), '='), '+/', '-_');
+        $codeChallenge = strtr(rtrim(
+            base64_encode(hash('sha256', $code_verifier, true))
+        , '='), '+/', '-_');
 
         $query = http_build_query([
             'client_id' => 'client-id',
@@ -498,7 +503,7 @@ Once a client has been created, developers may use their client ID and a generat
             'response_type' => 'code',
             'scope' => '',
             'state' => $state,
-            'code_challenge' => $code_challenge,
+            'code_challenge' => $codeChallenge,
             'code_challenge_method' => 'S256',
         ]);
 
@@ -507,25 +512,26 @@ Once a client has been created, developers may use their client ID and a generat
 
 #### Converting Authorization Codes To Access Tokens
 
-If the user approves the authorization request, they will be redirected back to the consuming application. The consumer should verify the `state` parameter against the value that was stored prior to the redirect, as in the standard Authorization Code Grant. If the state parameter matches the consumer should issue a `POST` request to your application to request an access token. The request should include the authorization code that was issued by your application when the user approved the authorization request along with the originally generated code verifier.
+If the user approves the authorization request, they will be redirected back to the consuming application. The consumer should verify the `state` parameter against the value that was stored prior to the redirect, as in the standard Authorization Code Grant.
+
+If the state parameter matches, the consumer should issue a `POST` request to your application to request an access token. The request should include the authorization code that was issued by your application when the user approved the authorization request along with the originally generated code verifier:
 
     Route::get('/callback', function (Request $request) {
         $state = $request->session()->pull('state');
-        $code_verifier = $request->session()->pull('code_verifier');
+
+        $codeVerifier = $request->session()->pull('code_verifier');
 
         throw_unless(
             strlen($state) > 0 && $state === $request->state,
             InvalidArgumentException::class
         );
 
-        $http = new GuzzleHttp\Client;
-
-        $response = $http->post('http://your-app.com/oauth/token', [
+        $response = (new GuzzleHttp\Client)->post('http://your-app.com/oauth/token', [
             'form_params' => [
                 'grant_type' => 'authorization_code',
                 'client_id' => 'client-id',
                 'redirect_uri' => 'http://example.com/callback',
-                'code_verifier' => $code_verifier,
+                'code_verifier' => $codeVerifier,
                 'code' => $request->code,
             ],
         ]);
