@@ -789,6 +789,8 @@ You may define a `failed` method directly on your job class, allowing you to per
         }
     }
 
+> {note} The `failed` method will not be called if the job was dispatched using the `dispatchNow` method.
+
 <a name="failed-job-events"></a>
 ### Failed Job Events
 
