@@ -1496,7 +1496,7 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
         steps:
           - uses: actions/checkout@v1
           - name: Prepare The Environment
-            run: cp .env.example .env
+            run: cp .env.testing .env
           - name: Create Database
             run: mysql --user="root" --password="root" -e "CREATE DATABASE my-database character set UTF8mb4 collate utf8mb4_bin;"
           - name: Install Composer Dependencies
