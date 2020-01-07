@@ -735,7 +735,7 @@ If you would like to configure the failed job retry delay on a per-job basis, yo
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Cleaning Up After Failed Jobs
 
-You may define a `failed` method directly on your job class, allowing you to perform job specific clean-up when a failure occurs. This is the perfect location to send an alert to your users or revert any actions performed by the job. The `Exception` that caused the job to fail will be passed to the `failed` method:
+You may define a `failed` method directly on your job class, allowing you to perform job specific clean-up when a failure occurs and the job is running in a queue. `dispatchNow()` does not run as a queue, and therefore the failed method will not be called. This is the perfect location to send an alert to your users or revert any actions performed by the job. The `Exception` that caused the job to fail will be passed to the `failed` method:
 
     <?php
 
@@ -778,7 +778,8 @@ You may define a `failed` method directly on your job class, allowing you to per
         }
 
         /**
-         * The job failed to process.
+         * The job failed to process while running in a queue. Note this will not be called
+         * if the job is dispatched with `dispatchNow()`
          *
          * @param  Exception  $exception
          * @return void
