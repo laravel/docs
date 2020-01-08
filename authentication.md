@@ -28,7 +28,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-> {tip} **Want to get started fast?** Install the `laravel/ui` Composer package and run `php artisan ui vue --auth` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
+> {tip} **Want to get started fast?** Install the `laravel/ui` Composer package and run `php artisan ui:auth` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
 
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
 
@@ -59,7 +59,7 @@ Laravel's `laravel/ui` package provides a quick way to scaffold all of the route
 
     composer require laravel/ui --dev
 
-    php artisan ui vue --auth
+    php artisan ui:auth
 
 This command should be used on fresh applications and will install a layout view, registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated to handle post-login requests to your application's dashboard.
 
@@ -74,7 +74,7 @@ If you are starting a brand new application and would like to include the authen
 <a name="included-views"></a>
 ### Views
 
-As mentioned in the previous section, the `laravel/ui` package's `php artisan ui vue --auth` command will create all of the views you need for authentication and place them in the `resources/views/auth` directory.
+As mentioned in the previous section, the `laravel/ui` package's `php artisan ui:auth` command will create all of the views you need for authentication and place them in the `resources/views/auth` directory.
 
 The `ui` command will also create a `resources/views/layouts` directory containing a base layout for your application. All of these views use the Bootstrap CSS framework, but you are free to customize them however you wish.
 
