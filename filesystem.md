@@ -326,6 +326,16 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
 
 > {note} Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\Util::normalizePath` method.
 
+#### Retrieving File Name
+
+If you would like to get original name of the uploaded file you can do so, by using `getClientOriginalName` method, which returns the file name along with it's extension.
+
+    $filename = $request->file('avatar')->getClientOriginalName();
+
+You may also get only the file extension for getting the type of file by using `extension` method as shown in example below:
+
+    $filename = $request->file('avatar')->extension();
+
 #### Specifying A Disk
 
 By default, this method will use your default disk. If you would like to specify another disk, pass the disk name as the second argument to the `store` method:
