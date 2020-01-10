@@ -182,16 +182,6 @@ You may provide one of the following as the channel argument:
 - To send the notification to a user: `@user`
 </div>
 
-In addition you can also send Slack updates for specific tasks so you get the context of which task was run. You can do this by adding the `@slack` directive inside the `@task` directive:
-
-    @task('deploy', ['on' => 'web', 'confirm' => true])
-        cd site
-        git pull origin {{ $branch }}
-        php artisan migrate
-
-        @slack('webhook-url', '#deployments')
-    @endtask
-
 <a name="discord"></a>
 ### Discord
 
@@ -200,13 +190,3 @@ Envoy also supports sending notifications to [Discord](https://discord.com) afte
     @finished
         @discord('discord-webhook-url')
     @endfinished
-
-In addition you can also send Discord updates for specific tasks so you get the context of which task was run. You can do this by adding the `@discord` directive inside the `@task` directive:
-
-    @task('deploy', ['on' => 'web', 'confirm' => true])
-        cd site
-        git pull origin {{ $branch }}
-        php artisan migrate
-
-        @discord('discord-webhook-url')
-    @endtask
