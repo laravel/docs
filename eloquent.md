@@ -342,13 +342,16 @@ In addition, the query builder's `orderBy` function supports subqueries. We may 
 <a name="retrieving-single-models"></a>
 ## Retrieving Single Models / Aggregates
 
-In addition to retrieving all of the records for a given table, you may also retrieve single records using `find` or `first`. Instead of returning a collection of models, these methods return a single model instance:
+In addition to retrieving all of the records for a given table, you may also retrieve single records using `find`, `first`, or `firstWhere`. Instead of returning a collection of models, these methods return a single model instance:
 
     // Retrieve a model by its primary key...
     $flight = App\Flight::find(1);
 
     // Retrieve the first model matching the query constraints...
     $flight = App\Flight::where('active', 1)->first();
+    
+    // Shorthand for retrieving the first model matching the query constraints...
+    $flight = App\Flight::firstWhere('active', 1);
 
 You may also call the `find` method with an array of primary keys, which will return a collection of the matching records:
 
