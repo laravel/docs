@@ -55,6 +55,8 @@ Eloquent relationships are defined as methods on your Eloquent model classes. Si
 
 But, before diving too deep into using relationships, let's learn how to define each type.
 
+> {note} Relationship names cannot collide with attribute names as that could lead to your model not being able to know which one to resolve.
+
 <a name="one-to-one"></a>
 ### One To One
 

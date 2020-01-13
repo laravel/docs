@@ -234,7 +234,7 @@ By default, Passport issues long-lived access tokens that expire after one year.
 
 You are free to extend the models used internally by Passport:
 
-    use App\Models\Passport\Client as PassportClient;
+    use Laravel\Passport\Client as PassportClient;
 
     class Client extends PassportClient
     {
