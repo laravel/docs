@@ -261,6 +261,7 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
     use Tests\TestCase;
     use App\Jobs\ShipOrder;
     use Illuminate\Support\Facades\Queue;
+    use Illuminate\Bus\Queueable;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
 
@@ -288,12 +289,34 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
             // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
           
-            // Assert a job was pushed with a specific chain...
+            // Assert a job was pushed with a chain of instances of specific class...
             Queue::assertPushedWithChain(ShipOrder::class, [
                 AnotherJob::class,
                 FinalJob::class
             ]);
+            
+            // Assert a job was pushed with a chain of Queueables with specific properties...
+            Queue::assertPushedWithChain(ShipOrder::class, [
+                new AnotherJob(true),
+                new FinalJob(false)
+            ]);
         }
+    }
+    
+    class AnotherJob
+    {
+        use Queuable;
+        public $foo;
+        // constructor that sets $foo
+        // AnotherJob implementation
+    }
+    
+    class FinalJob
+    {
+        use Queueable;
+        public $bar;
+        // constructor that sets $bar
+        // FinalJob implementation
     }
 
 <a name="storage-fake"></a>
