@@ -252,7 +252,7 @@ The `fitContent` method will resize the browser window to match the size of the 
 
     $browser->fitContent();
 
-Dusk will automatically fit the content on failures prior to taking a screenshot. To disable this feature add the following to your test:
+When a test fails, Dusk will automatically resize the browser to fit the content prior to taking a screenshot. You may disable this feature by calling the `disableFitOnFailure` method within your test:
 
     $browser->disableFitOnFailure();
 
