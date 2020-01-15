@@ -356,11 +356,13 @@ You may also call the `find` method with an array of primary keys, which will re
 
 #### Not Found Exceptions
 
-Sometimes you may wish to throw an exception if a model is not found. This is particularly useful in routes or controllers. The `findOrFail` and `firstOrFail` methods will retrieve the first result of the query; however, if no result is found, a `Illuminate\Database\Eloquent\ModelNotFoundException` will be thrown:
+Sometimes you may wish to throw an exception if a model is not found. This is particularly useful in routes or controllers. The `findOrFail`, `firstOrFail` and `firstWhereOrFail` methods will retrieve the first result of the query; however, if no result is found, a `Illuminate\Database\Eloquent\ModelNotFoundException` will be thrown:
 
     $model = App\Flight::findOrFail(1);
 
     $model = App\Flight::where('legs', '>', 100)->firstOrFail();
+
+    $model = App\Flight::firstWhereOrFail('legs', '>', 100);
 
 If the exception is not caught, a `404` HTTP response is automatically sent back to the user. It is not necessary to write explicit checks to return `404` responses when using these methods:
 
