@@ -7,6 +7,7 @@
 - [Resources](#resources)
     - [Configuration](#configuration)
     - [Migrations](#migrations)
+    - [Factories](#factories)
     - [Routes](#routes)
     - [Translations](#translations)
     - [Views](#views)
