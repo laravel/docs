@@ -305,6 +305,8 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
     namespace Tests\Feature;
 
     use App\Jobs\ShipOrder;
+    use App\Jobs\AnotherJob;
+    use App\Jobs\FinalJob;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Support\Facades\Queue;
@@ -334,10 +336,20 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
             // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
 
-            // Assert a job was pushed with a specific chain...
+            // Assert a job was pushed with a given chain of jobs, matching by class...
             Queue::assertPushedWithChain(ShipOrder::class, [
                 AnotherJob::class,
                 FinalJob::class
+            ]);
+            
+            // Setup for matching jobs by class and properties
+            $expectedAnotherJob = new AnotherJob("foo");
+            $expectedFinalJob = new FinalJob("bar");
+            
+            // Assert a job was pushed with a given chain of jobs, matching by both class and properties...
+            Queue::assertPushedWithChain(ShipOrder::class, [
+                $expectedAnotherJob,
+                $expectedFinalJob
             ]);
         }
     }
