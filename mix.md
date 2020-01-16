@@ -317,6 +317,15 @@ Because versioned files are usually unnecessary in development, you may instruct
         mix.version();
     }
 
+If you deploy mix builds to a custom location, you can use add a `mix_url` value to `config/app.php`:
+
+    'mix_url' => env('MIX_ASSET_URL', null)
+
+The `mix()` helper will prefix the configured URL to generate URLs:
+
+    https://cdn.example.com/js/app.js?id=1964becbdd96414518cd
+    https://cdn.example.com/css/app.css?id=cbb9e3ccbb701ad9981f
+
 <a name="browsersync-reloading"></a>
 ## Browsersync Reloading
 
