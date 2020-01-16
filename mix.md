@@ -317,7 +317,7 @@ Because versioned files are usually unnecessary in development, you may instruct
         mix.version();
     }
 
-If you deploy mix builds to a custom location, you can use add a `mix_url` value to `config/app.php`:
+If you deploy mix builds to a custom location, you can add `mix_url` to `config/app.php`:
 
     'mix_url' => env('MIX_ASSET_URL', null)
 
