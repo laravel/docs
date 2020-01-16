@@ -371,6 +371,8 @@ The `contains` method uses "loose" comparisons when checking item values, meanin
 
 This method has the same signature as the [`contains`](#method-contains) method; however, all values are compared using "strict" comparisons.
 
+> {tip} This method has special behavior for [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-contains).
+
 <a name="method-count"></a>
 #### `count()` {#collection-method}
 
@@ -478,6 +480,8 @@ The `diff` method compares the collection against another collection or a plain 
     $diff->all();
 
     // [1, 3, 5]
+
+> {tip} This method has special behavior for [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-diff).
 
 <a name="method-diffassoc"></a>
 #### `diffAssoc()` {#collection-method}
@@ -642,6 +646,8 @@ The `except` method returns all items in the collection except for those with th
     // ['product_id' => 1]
 
 For the inverse of `except`, see the [only](#method-only) method.
+
+> {tip} This method has special behavior for [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-except).
 
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
@@ -976,6 +982,8 @@ The `intersect` method removes any values from the original collection that are 
     $intersect->all();
 
     // [0 => 'Desk', 2 => 'Chair']
+
+> {tip} This method has special behavior for [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).
 
 <a name="method-intersectbykeys"></a>
 #### `intersectByKeys()` {#collection-method}
@@ -1350,6 +1358,8 @@ The `only` method returns the items in the collection with the specified keys:
     // ['product_id' => 1, 'name' => 'Desk']
 
 For the inverse of `only`, see the [except](#method-except) method.
+
+> {tip} This method has special behavior for [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-only).
 
 <a name="method-pad"></a>
 #### `pad()` {#collection-method}
@@ -2085,6 +2095,8 @@ You may also pass your own callback to determine item uniqueness:
     */
 
 The `unique` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`uniqueStrict`](#method-uniquestrict) method to filter using "strict" comparisons.
+
+> {tip} This method has special behavior for [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-unique).
 
 <a name="method-uniquestrict"></a>
 #### `uniqueStrict()` {#collection-method}
