@@ -52,6 +52,8 @@ Laravel 5.6 requires PHP 7.1.3 or higher.
 
 Update your `laravel/framework` dependency to `5.6.*` and your `fideloper/proxy` dependency to `^4.0` in your `composer.json` file.
 
+If you are using the `laravel/browser-kit-testing` package, you should update the package to `4.*` in your composer.json file.
+
 In addition, if you are using the following first-party Laravel packages, you should upgrade them to their latest release:
 
 <div class="content-list" markdown="1">
