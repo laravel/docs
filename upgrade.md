@@ -25,13 +25,13 @@
 
 ### Symfony 5 Required
 
-**Likelihood Of Impact: Medium**
+**Risk of impacting you: Medium**
 
 Laravel 7 upgrade its underlying Symfony components to the 5.x series, which is now also the new minimum compatible version.
 
 ### PHP 7.2.5 Required
 
-**Likelihood Of Impact: Low**
+**Risk of impacting you: Low**
 
 The new minimum PHP version is now 7.2.5.
 
@@ -47,7 +47,7 @@ Finally, examine any other 3rd party packages consumed by your application and v
 <a name="date-serialization"></a>
 #### Date Serialization
 
-**Likelihood Of Impact: High**
+**Risk of impacting you: High**
 
 Laravel 7 uses a new date serialization format when using the `toArray` or `toJson` method on Eloquent models. To format dates for serialization, the framework now uses Carbon's `toJSON` method, which produces an ISO-8601 compatible date including timezone information and fractional seconds. In addition, this change provides better support and integration with client-side date parsing libraries.
 
@@ -71,7 +71,7 @@ If you would like to keep using the previous behavior you can override the `seri
 <a name="factory-types"></a>
 #### Factory Types
 
-**Likelihood Of Impact: Medium**
+**Risk of impacting you: Medium**
 
 Laravel 7 removes the "factory types" feature. This feature has been undocumented since October 2016. If you are still using this feature, you should upgrade to [factory states](/docs/{{version}}/database-testing#factory-states), which provide more flexibility.
 
