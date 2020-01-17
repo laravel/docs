@@ -218,7 +218,7 @@ The `@json` directive is also useful for seeding Vue components or `data-*` attr
 
 #### HTML Entity Encoding
 
-By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
+By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to globally disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
 
     <?php
 
@@ -239,6 +239,10 @@ By default, Blade (and the Laravel `e` helper) will double encode HTML entities.
             Blade::withoutDoubleEncoding();
         }
     }
+
+If you would like to locally disable double encoding, you can pass `false` as the second parameter to Blade:
+
+    {{ 'Laravel &amp; PHP', false }}
 
 <a name="blade-and-javascript-frameworks"></a>
 ### Blade & JavaScript Frameworks
