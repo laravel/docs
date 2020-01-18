@@ -88,6 +88,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
 [Str::is](#method-str-is)
+[Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::limit](#method-str-limit)
 [Str::orderedUuid](#method-str-ordered-uuid)
@@ -971,6 +972,21 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
     // true
 
     $matches = Str::is('baz*', 'foobar');
+
+    // false
+
+<a name="method-str-is-uuid"></a>
+#### `Str::isUuid()` {#collection-method}
+
+The `Str::isUuid` method determines if the given string is a valid UUID:
+
+    use Illuminate\Support\Str;
+
+    $isUuid = Str::isUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de');
+
+    // true
+
+    $isUuid = Str::isUuid('laravel');
 
     // false
 
