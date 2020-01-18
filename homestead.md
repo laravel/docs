@@ -336,7 +336,9 @@ After you have updated the `aliases` file, you should re-provision the Homestead
 <a name="accessing-homestead-globally"></a>
 ### Accessing Homestead Globally
 
-Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this on Mac / Linux systems by adding a Bash function to your Bash profile. On Windows, you may accomplish this by adding a "batch" file to your `PATH`. These scripts will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
+Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this on Mac / Linux systems by adding a Bash function to your Bash profile. On Windows, you may accomplish this by adding a function to your [PowerShell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles) or add a "batch" file to your `PATH`. 
+
+These scripts will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
 
 #### Mac / Linux
 
@@ -347,6 +349,20 @@ Sometimes you may want to `vagrant up` your Homestead machine from anywhere on y
 Make sure to tweak the `~/Homestead` path in the function to the location of your actual Homestead installation. Once the function is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
 
 #### Windows
+
+##### PowerShell
+
+Add the following to your [PowerShell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles):
+
+    function homestead ([String]$Command) {
+        Push-Location "C:\Homestead"
+        vagrant $Command
+        Pop-Location
+    }
+
+Make sure to tweak the example `C:\Homestead` path in the script to the actual location of your Homestead installation.
+
+##### Batch file
 
 Create a `homestead.bat` batch file anywhere on your machine with the following contents:
 
