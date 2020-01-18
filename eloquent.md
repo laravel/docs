@@ -454,6 +454,48 @@ The `update` method expects an array of column and value pairs representing the 
 
 > {note} When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
 
+#### Checking Internal State 
+
+Eloquent provides the `isDirty()`, `isClean()`, and `wasChanged()` methods to query the internal state of your model and see how it has changed from when it was originally loaded. 
+
+`isDirty()` checks to see if any attributes have been changed on the model since it was originally loaded. You may also pass an attribute name to see if a particular attribute is dirty. `isClean()` is the opposite of `isDirty()`, and accepts the same optional parameter. When the model is saved, the new attributes will be synced onto the model, and it will no longer be dirty.
+
+    $user = User::create([
+        'first_name' => 'Dwight',
+        'last_name' => 'Schrute',
+        'title' => 'Assistant to the Regional Manager',
+    ]);
+    
+    $user->title = 'Assistant Regional Manager';
+    
+    $user->isDirty(); // true
+    $user->isDirty('first_name'); // false
+    $user->isDirty('title'); // true
+    
+    $user->isClean(); // false
+    $user->isClean('first_name'); // true
+    $user->isClean('title'); // false
+    
+    $user->save();
+    
+    $user->isDirty(); // false
+    $user->isClean(); // true
+
+`wasChanged()` checks to see if any properties were changed during the previous save. You may also pass an attribute name to see if a particular attribute was changed. 
+
+    $user = User::create([
+        'first_name' => 'Dwight',
+        'last_name' => 'Schrute',
+        'title' => 'Assistant to the Regional Manager',
+    ]);
+    
+    $user->title = 'Assistant Regional Manager';
+    $user->save();
+    
+    $user->wasChanged(); // true
+    $user->wasChanged('first_name'); // false
+    $user->wasChanged('title'); // true    
+
 <a name="mass-assignment"></a>
 ### Mass Assignment
 
