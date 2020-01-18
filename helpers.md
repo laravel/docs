@@ -978,15 +978,15 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {#collection-method}
 
-The `Str::isUuid` method determines if a given string is a valid UUID:
+The `Str::isUuid` method determines if the given string is a valid UUID:
 
     use Illuminate\Support\Str;
 
-    $matches = Str::isUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de');
+    $isUuid = Str::isUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de');
 
     // true
 
-    $matches = Str::isUuid('laravel');
+    $isUuid = Str::isUuid('laravel');
 
     // false
 
