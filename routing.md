@@ -413,6 +413,26 @@ Laravel includes a [middleware](/docs/{{version}}/middleware) to rate limit acce
         });
     });
 
+#### Named Rate Limiting
+
+You may pass a 3rd parameter to the `throttle` middleware which gives it a name. For example, if you have a route for making a user's account delete request to the API, and you want to have a seperate rate limiting for it then you may pass a name to the `throttle` middleware so that it is used to calculate the maximum request count for this route separately from other API route of those using `throttle` middleware as well::
+
+    Route::middleware('auth:api')->group(function () {
+        Route::delete('/user/request', function () {
+            //
+        })->middleware('throttle:3,1,delete_user_request');
+
+        Route::middleware('auth:api', 'throttle:60,1,api')->group(function () {
+            Route::get('/user', function () {
+                //
+            });
+
+            Route::put('/user', function () {
+                //
+            });
+        });
+    });
+
 #### Dynamic Rate Limiting
 
 You may specify a dynamic request maximum based on an attribute of the authenticated `User` model. For example, if your `User` model contains a `rate_limit` attribute, you may pass the name of the attribute to the `throttle` middleware so that it is used to calculate the maximum request count:
