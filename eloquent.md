@@ -349,7 +349,7 @@ In addition to retrieving all of the records for a given table, you may also ret
 
     // Retrieve the first model matching the query constraints...
     $flight = App\Flight::where('active', 1)->first();
-    
+
     // Shorthand for retrieving the first model matching the query constraints...
     $flight = App\Flight::firstWhere('active', 1);
 
@@ -454,47 +454,47 @@ The `update` method expects an array of column and value pairs representing the 
 
 > {note} When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
 
-#### Checking Internal State 
+#### Examining Attribute Changes
 
-Eloquent provides the `isDirty()`, `isClean()`, and `wasChanged()` methods to query the internal state of your model and see how it has changed from when it was originally loaded. 
+Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how it's attributes have changed from when they were originally loaded.
 
-`isDirty()` checks to see if any attributes have been changed on the model since it was originally loaded. You may also pass an attribute name to see if a particular attribute is dirty. `isClean()` is the opposite of `isDirty()`, and accepts the same optional parameter. When the model is saved, the new attributes will be synced onto the model, and it will no longer be dirty.
+The `isDirty` method determines if any attributes have been changed since the model was loaded. You may pass a specific attribute name to determine if a particular attribute is dirty. The `isClean` method is the opposite of `isDirty` and also accepts an optional attribute argument:
 
     $user = User::create([
-        'first_name' => 'Dwight',
-        'last_name' => 'Schrute',
-        'title' => 'Assistant to the Regional Manager',
+        'first_name' => 'Taylor',
+        'last_name' => 'Otwell',
+        'title' => 'Developer',
     ]);
-    
-    $user->title = 'Assistant Regional Manager';
-    
+
+    $user->title = 'Painter';
+
     $user->isDirty(); // true
-    $user->isDirty('first_name'); // false
     $user->isDirty('title'); // true
-    
+    $user->isDirty('first_name'); // false
+
     $user->isClean(); // false
-    $user->isClean('first_name'); // true
     $user->isClean('title'); // false
-    
+    $user->isClean('first_name'); // true
+
     $user->save();
-    
+
     $user->isDirty(); // false
     $user->isClean(); // true
 
-`wasChanged()` checks to see if any properties were changed during the previous save. You may also pass an attribute name to see if a particular attribute was changed. 
+The `wasChanged` method determines if any attributes were changed when the model was last saved within the current request cycle. You may also pass an attribute name to see if a particular attribute was changed:
 
     $user = User::create([
-        'first_name' => 'Dwight',
-        'last_name' => 'Schrute',
-        'title' => 'Assistant to the Regional Manager',
+        'first_name' => 'Taylor',
+        'last_name' => 'Otwell',
+        'title' => 'Developer',
     ]);
-    
-    $user->title = 'Assistant Regional Manager';
+
+    $user->title = 'Painter';
     $user->save();
-    
+
     $user->wasChanged(); // true
+    $user->wasChanged('title'); // true
     $user->wasChanged('first_name'); // false
-    $user->wasChanged('title'); // true    
 
 <a name="mass-assignment"></a>
 ### Mass Assignment
