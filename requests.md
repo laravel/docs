@@ -199,11 +199,9 @@ When sending JSON requests to your application, you may access the JSON data via
 
 #### Retrieving Boolean Input Values
 
-Sometimes you will want to get a boolean from some input, for this you can use the `boolean` method. This method converts strings and integers to appropriate booleans (Using FILTER_VALIDATE_BOOLEAN). If the key is not found in the request input, `false` is returned.
+When dealing with HTML elements like checkboxes, your application may receive "truthy" values that are actually strings. For example, "true" or "on". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for "1", "true", "on", and "yes". All other values will return `false`:
 
     $archived = $request->boolean('archived');
-
-Example usage would be for a checkbox field, where the data is not sent unless it is checked.
 
 #### Retrieving A Portion Of The Input Data
 
@@ -298,7 +296,7 @@ All cookies created by the Laravel framework are encrypted and signed with an au
     $value = $request->cookie('name');
 
 Alternatively, you may use the `Cookie` facade to access cookie values:
-    
+
     use Illuminate\Support\Facades\Cookie;
 
     $value = Cookie::get('name');
