@@ -197,6 +197,14 @@ When sending JSON requests to your application, you may access the JSON data via
 
     $name = $request->input('user.name');
 
+#### Retrieving Boolean Input Values
+
+Sometimes you will want to get a boolean from some input, for this you can use the `boolean` method. This method converts strings and integers to appropriate booleans (Using FILTER_VALIDATE_BOOLEAN). If the key is not found in the request input, `false` is returned.
+
+    $archived = $request->boolean('archived');
+
+Example usage would be for a checkbox field, where the data is not sent unless it is checked.
+
 #### Retrieving A Portion Of The Input Data
 
 If you need to retrieve a subset of the input data, you may use the `only` and `except` methods. Both of these methods accept a single `array` or a dynamic list of arguments:
