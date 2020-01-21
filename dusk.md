@@ -1342,7 +1342,7 @@ As shown above, a "date picker" is an example of a component that might exist th
             $browser->click('@date-field')
                     ->within('@year-list', function ($browser) use ($year) {
                         $browser->click($year);
-                    });
+                    })
                     ->within('@month-list', function ($browser) use ($month) {
                         $browser->click($month);
                     })
