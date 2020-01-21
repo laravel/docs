@@ -94,7 +94,7 @@ You may use the `withCookie` or `withCookies` methods to set cookie values befor
 <a name="debugging-responses"></a>
 ### Debugging Responses
 
-After making a test request to your application, the `dump` and `dumpHeaders` methods may be used to examine and debug the response contents:
+After making a test request to your application, the `dump`, `dumpHeaders`, and `dumpSession` methods may be used to examine and debug the response contents:
 
     <?php
 
@@ -116,6 +116,8 @@ After making a test request to your application, the `dump` and `dumpHeaders` me
             $response = $this->get('/');
 
             $response->dumpHeaders();
+
+            $response->dumpSession();
 
             $response->dump();
         }
