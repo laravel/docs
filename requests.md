@@ -199,7 +199,7 @@ When sending JSON requests to your application, you may access the JSON data via
 
 #### Retrieving Boolean Input Values
 
-When dealing with HTML elements like checkboxes, your application may receive "truthy" values that are actually strings. For example, "true" or "on". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for "1", "true", "on", and "yes". All other values will return `false`:
+When dealing with HTML elements like checkboxes, your application may receive "truthy" values that are actually strings. For example, "true" or "on". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for 1, "1", true, "true", "on", and "yes". All other values will return `false`:
 
     $archived = $request->boolean('archived');
 
