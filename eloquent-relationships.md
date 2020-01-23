@@ -928,7 +928,7 @@ You may use "dot" notation to execute a query against a nested relationship. For
     use Illuminate\Database\Eloquent\Builder;
 
     $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) {
-        $query->where('banned', 1);
+        $query->where('banned', 0);
     })->get();
 
 <a name="querying-polymorphic-relationships"></a>
