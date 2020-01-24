@@ -217,18 +217,18 @@ View **creators** are very similar to view composers; however, they are executed
 <a name="optimizing-views"></a>
 ## Optimizing Views
 
-Views are compiled on demand by default. When a request is executed that loads a view, the framework will first check to see if the compiled version of the view exists. If the file exists, the framework will then check to see if the uncompiled view has been modified more recently than the compiled view. If the compiled view either does not exist, or the uncompiled view has been modified, the framework will recompile the view. Compiling views during the request negatively impacts performance, so Laravel has an Artisan command to precompile all views.
+By default, views are compiled on demand. When a request is executed that renders a view, Laravel will determine if a compiled version of the view exists. If the file exists, Laravel will then determine if the uncompiled view has been modified more recently than the compiled view. If the compiled view either does not exist, or the uncompiled view has been modified, Laravel will recompile the view.
+
+Compiling views during the request negatively impacts performance, so Laravel provides the `view:cache` Artisan command to precompile all of the views utilized by your application. For increased performance, you may wish to run this command as part of your deployment process:
 
     php artisan view:cache
-
-This command will loop through all the files in your view directory and compile them, so compilation does not have to occur during the request. Run this command during your deployment for the performance benefits.
 
 You may use the `view:clear` command to clear the view cache:
 
     php artisan view:clear
 
-Additionally, if you are working in an environment, such as production, where you can assume views will **never** change, you can disable the costly checks the framework runs to see if views are expired. In your `config/view.php` file, set the `expired` key to `false`. By default, this value will be set to `false` when the environment is production, and `true` for all others.
+Typically, you can assume that views will **never** be modified in your production environment. Therefore, you can usually disable the file modification checks Laravel makes to determine if views are expired by modifying the `expires` option within your `view` configuration file:
 
     'expires' => env('APP_ENV') !== 'production',
 
-> {note} You **must** run `php artisan view:cache` on your deployment to disable checking for expired views.
+> {note} You must run `php artisan view:cache` during your deployment process to disable checking for expired views.
