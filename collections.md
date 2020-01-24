@@ -1979,9 +1979,9 @@ This method can be useful when combined with factories to create [Eloquent](/doc
 
     /*
         [
-            ['id' => 1, 'name' => 'Category #1'],
-            ['id' => 2, 'name' => 'Category #2'],
-            ['id' => 3, 'name' => 'Category #3'],
+            ['id' => 1, 'name' => 'Category No. 1'],
+            ['id' => 2, 'name' => 'Category No. 2'],
+            ['id' => 3, 'name' => 'Category No. 3'],
         ]
     */
 
