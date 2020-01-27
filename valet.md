@@ -185,8 +185,18 @@ Some applications using other frameworks may depend on server environment variab
 
     <?php
 
+    // Set $_SERVER['key'] to "value" for the foo.test site...
     return [
-        'WEBSITE_NAME' => 'My Blog',
+        'foo' => [
+            'key' => 'value',
+        ],
+    ];
+
+    // Set $_SERVER['key'] to "value" for all sites...
+    return [
+        '*' => [
+            'key' => 'value',
+        ],
     ];
 
 <a name="custom-valet-drivers"></a>
