@@ -8,6 +8,7 @@
     - [API Keys](#api-keys)
     - [Currency Configuration](#currency-configuration)
     - [Logging](#logging)
+- [Stripe SDK](#stripe-sdk)
 - [Customers](#customers)
     - [Creating Customers](#creating-customers)
 - [Payment Methods](#payment-methods)
@@ -130,6 +131,15 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
 Cashier allows you to specify the log channel to be used when logging all Stripe related exceptions. You may specify the log channel using the `CASHIER_LOGGER` environment variable:
 
     CASHIER_LOGGER=default
+
+<a name="stripe-sdk"></a>
+## Stripe SDK
+
+Much of Cashier's objects are wrappers around Stripe objects. If you ever want to perform calls against the Stripe API which aren't implemented in Cashier itself you may conveniently retrieve these Stripe objects by the `asStripe` calls:
+
+    $stripeSubscription = $subscription->asStripeSubscription();
+
+    $stripeSubscription->update(['application_fee_percent' => 5]);
 
 <a name="customers"></a>
 ## Customers
