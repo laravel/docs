@@ -188,8 +188,8 @@ Some applications using other frameworks may depend on server environment variab
     // Or 'foo' could be replaced by '*' to set the variable for all sites
     return [
         'foo' => [
-                'key' => 'value',
-            ],
+            'key' => 'value',
+        ],
     ];
 
 <a name="custom-valet-drivers"></a>
