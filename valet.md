@@ -184,10 +184,17 @@ Once you have updated your Nginx configuration, run the `valet restart` command 
 Some applications using other frameworks may depend on server environment variables but do not provide a way for those variables to be configured within your project. Valet allows you to configure site specific environment variables by adding a `.valet-env.php` file within the root of your project. These variables will be added to the `$_SERVER` global array:
 
     <?php
-    // The following will set $_SERVER['key'] to 'value' for site foo.test
-    // Or 'foo' could be replaced by '*' to set the variable for all sites
+
+    // Set $_SERVER['key'] to "value" for the foo.test site...
     return [
         'foo' => [
+            'key' => 'value',
+        ],
+    ];
+
+    // Set $_SERVER['key'] to "value" for all sites...
+    return [
+        '*' => [
             'key' => 'value',
         ],
     ];
