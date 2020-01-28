@@ -839,7 +839,7 @@ The `preg_replace_array` function replaces a given pattern in the string sequent
 <a name="method-str-after"></a>
 #### `Str::after()` {#collection-method}
 
-The `Str::after` method returns everything after the given value in a string:
+The `Str::after` method returns everything after the given value in a string. The entire string will be returned if the value does not exist within the string:
 
     use Illuminate\Support\Str;
 
@@ -847,20 +847,16 @@ The `Str::after` method returns everything after the given value in a string:
 
     // ' my name'
 
-If key is not occured in text, method return whole string.
-
 <a name="method-str-after-last"></a>
 #### `Str::afterLast()` {#collection-method}
 
-The `Str::afterLast` method returns everything after the last occurrence of the given value in a string:
+The `Str::afterLast` method returns everything after the last occurrence of the given value in a string. The entire string will be returned if the value does not exist within the string:
 
     use Illuminate\Support\Str;
 
     $slice = Str::afterLast('App\Http\Controllers\Controller', '\\');
 
     // 'Controller'
-
-If key is not occured in text, method return whole string.
 
 <a name="method-str-before"></a>
 #### `Str::before()` {#collection-method}
