@@ -226,16 +226,21 @@ This route will register a "nested" resource that may be accessed with URLs like
 
 #### Shallow Nesting
 
-Shallow nesting is a way to keep nested resources of getting too verbose. Collection actions are scoped to the parent while member actions are placed at the root. This provides a sense of context while keeping routes succinct. 
+Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifier such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use "shallow nesting":
 
     Route::resource('photos.comments', 'CommentController')->shallow();
 
-This will register nested routes for `index`, `new` and `create` with URLS like: photos/{photo}/comment. For `show`, `edit`, `update` and `destroy` shallow routes are created like: comments/{comment}.
+The route definition above will define the following routes:
 
-It's basically a convenient shorthand for:
-
-    Route::resource('photos.comments', 'CommentsController')->only(['index', 'create', 'store']);
-    Route::resource('comments', 'CommentsController')->only(['show', 'edit', 'update', 'destroy']);
+Verb      | URI                               | Action       | Route Name
+----------|-----------------------------------|--------------|---------------------
+GET       | `/photos/{photo}/comments`        | index        | photos.comments.index
+GET       | `/photos/{photo}/comments/create` | create       | photos.comments.create
+POST      | `/photos/{photo}/comments`        | store        | photos.comments.store
+GET       | `/comments/{comment}`             | show         | comments.show
+GET       | `/comments/{comment}/edit`        | edit         | comments.edit
+PUT/PATCH | `/comments/{comment}`             | update       | comments.update
+DELETE    | `/comments/{comment}`             | destroy      | comments.destroy
 
 <a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes
