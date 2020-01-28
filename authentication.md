@@ -427,6 +427,8 @@ Then, you may use the `logoutOtherDevices` method on the `Auth` facade. This met
 
 > {note} When the `logoutOtherDevices` method is invoked, the user's other sessions will be invalidated entirely, meaning they will be "logged out" of all guards they were previously authenticated by.
 
+> {note} When using the `AuthenticateSession` in combination with a custom route name for the `login` route, you'll need to override the `unauthenticated` method on the exception handler to properly redirect users to your login page.
+
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards
 
