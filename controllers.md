@@ -224,6 +224,19 @@ Sometimes you may need to define routes to a "nested" resource. For example, a p
 
 This route will register a "nested" resource that may be accessed with URLs like the following: photos/{photos}/comments/{comments}.
 
+#### Shallow Nesting
+
+Shallow nesting is a way to keep nested resources of getting too verbose. Collection actions are scoped to the parent while member actions are placed at the root. This provides a sense of context while keeping routes succinct. 
+
+    Route::resource('photos.comments', 'CommentController')->shallow();
+
+This will register nested routes for `index`, `new` and `create` with URLS like: photos/{photo}/comment. For `show`, `edit`, `update` and `destroy` shallow routes are created like: comments/{comment}.
+
+It's basically a convenient shorthand for:
+
+    Route::resource('photos.comments', 'CommentsController')->only(['index', 'create', 'store']);
+    Route::resource('comments', 'CommentsController')->only(['show', 'edit', 'update', 'destroy']);
+
 <a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes
 
