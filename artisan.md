@@ -356,6 +356,8 @@ If you need to give the user a predefined set of choices, you may use the `choic
 
     $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], $defaultIndex);
 
+Additionally you can specify number of attempts for the question in case an invalid value was presented as attribute number 4 and whether multiple values are allowed as attribute 5.
+
 <a name="writing-output"></a>
 ### Writing Output
 
