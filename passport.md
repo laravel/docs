@@ -405,9 +405,10 @@ Sometimes you may wish to skip the authorization prompt, such as when authorizin
         }
     }
 
-You then need to tell Passport to use your extended model in the `AuthServiceProvider`:
+You then need to tell Passport to use your extended model. You may do this in the `boot` method of your `AuthServiceProvider`:
 
     use App\Models\Passport\Client;
+    use Laravel\Passport\Passport;
 
     /**
      * Register any authentication / authorization services.
