@@ -347,6 +347,9 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
                 new AnotherJob('foo'),
                 new FinalJob('bar'),
             ]);
+
+            // Assert a job was pushed without a chain of jobs...
+            Queue::assertPushedWithoutChain(ShipOrder::class);
         }
     }
 
