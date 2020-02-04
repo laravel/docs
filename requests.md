@@ -405,7 +405,7 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
         /**
          * The trusted proxies for this application.
          *
-         * @var array
+         * @var string|array
          */
         protected $proxies = [
             '192.168.1.1',
@@ -429,6 +429,6 @@ If you are using Amazon AWS or another "cloud" load balancer provider, you may n
     /**
      * The trusted proxies for this application.
      *
-     * @var array
+     * @var string|array
      */
     protected $proxies = '*';
