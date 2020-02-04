@@ -456,7 +456,7 @@ The `update` method expects an array of column and value pairs representing the 
 
 #### Examining Attribute Changes
 
-Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how it's attributes have changed from when they were originally loaded.
+Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how its attributes have changed from when they were originally loaded.
 
 The `isDirty` method determines if any attributes have been changed since the model was loaded. You may pass a specific attribute name to determine if a particular attribute is dirty. The `isClean` method is the opposite of `isDirty` and also accepts an optional attribute argument:
 
