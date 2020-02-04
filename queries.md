@@ -256,7 +256,7 @@ If you would like to perform a "left join" or "right join" instead of an "inner 
 To perform a "cross join" use the `crossJoin` method with the name of the table you wish to cross join to. Cross joins generate a cartesian product between the first table and the joined table:
 
     $users = DB::table('sizes')
-                ->crossJoin('colours')
+                ->crossJoin('colors')
                 ->get();
 
 #### Advanced Join Clauses
