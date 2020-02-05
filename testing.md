@@ -11,7 +11,9 @@ Laravel is built with testing in mind. In fact, support for testing with PHPUnit
 
 By default, your application's `tests` directory contains two directories: `Feature` and `Unit`. Unit tests are tests that focus on a very small, isolated portion of your code. In fact, most unit tests probably focus on a single method. Feature tests may test a larger portion of your code, including how several objects interact with each other or even a full HTTP request to a JSON endpoint.
 
-An `ExampleTest.php` file is provided in both the `Feature` and `Unit` test directories. After installing a new Laravel application, run `phpunit` on the command line to run your tests.
+An `ExampleTest.php` file is provided in both the `Feature` and `Unit` test directories. Note that the `Unit/ExampleTest.php` class does not extend the framework `tests/TestCase.php`, and will not boot the Laravel framework.
+
+After installing a new Laravel application, run `phpunit` on the command line to run your tests. 
 
 <a name="environment"></a>
 ## Environment
