@@ -43,6 +43,13 @@ Once a file has been stored and the symbolic link has been created, you can crea
 
     echo asset('storage/file.txt');
 
+You may configure additional symbolic links in your `filesystems` configuration file. Each of the configured links will be created when you run the `storage:link` command:
+
+    'links' => [
+        public_path('storage') => storage_path('app/public'),
+        public_path('images') => storage_path('app/images'),
+    ],
+
 <a name="the-local-driver"></a>
 ### The Local Driver
 
