@@ -43,7 +43,7 @@ Once a file has been stored and the symbolic link has been created, you can crea
 
     echo asset('storage/file.txt');
 
-You can also configure additional symbolic links in your `filesystems.php` configuration file that will be automatically created when you run the `storage:link` command.
+You may configure additional symbolic links in your `filesystems` configuration file. Each of the configured links will be created when you run the `storage:link` command:
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
