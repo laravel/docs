@@ -284,6 +284,10 @@ In addition to creating images, you may create files of any other type using the
 
     UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
 
+You may pass an optional `$mimeType` parameter to ensure mime types validate correctly:
+
+    UploadedFile::fake()->create('document.pdf', $sizeInKilobytes, 'application/pdf');
+
 <a name="available-assertions"></a>
 ## Available Assertions
 
