@@ -16,6 +16,8 @@
 <div class="content-list" markdown="1">
 - [Carbon 1.x No Longer Supported](#carbon-support)
 - [Redis Default Client](#redis-default-client)
+- [DynamoDB Cache Store](#dynamodb-cache-store)
+- [SQS Environment Variables](#sqs-environment-variables)
 - [Database `Capsule::table` Method](#capsule-table)
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
 - [Eloquent `BelongsTo::update` Method](#belongs-to-update)
@@ -94,7 +96,7 @@ In previous releases of Laravel, you did not need to return the value of the `de
 **Likelihood Of Impact: Low**
 
 The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect` method. If you are implementing this interface manually, you should add this method to your implementation.
-    
+
 ### Carbon
 
 <a name="carbon-support"></a>
@@ -119,6 +121,54 @@ If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should up
 
 The default Redis client has changed from `predis` to `phpredis`. In order to keep using `predis`, ensure the `redis.client` configuration option is set to `predis` in your `config/database.php` configuration file.
 
+<a name="dynamodb-cache-store"></a>
+#### DynamoDB Cache Store
+
+**Likelihood Of Impact: Optional**
+
+If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update your `config/cache.php` file to include the `dynamodb` store.
+
+    <?php
+    return [
+        ...
+        'stores' => [
+            ...
+            'dynamodb' => [
+                'driver' => 'dynamodb',
+                'key' => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY'),
+                'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+                'table' => env('DYNAMODB_CACHE_TABLE', 'cache'),
+                'endpoint' => env('DYNAMODB_ENDPOINT'),
+            ],
+        ],
+        ...
+    ];
+
+<a name="sqs-environment-variables"></a>
+#### SQS Environment Variables
+
+**Likelihood Of Impact: Optional**
+
+If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update your `config/queue.php` file to include the updated `sqs` connection environment variables.
+
+    <?php
+    return [
+        ...
+        'connections' => [
+            ...
+            'sqs' => [
+                'driver' => 'sqs',
+                'key' => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY'),
+                'prefix' => env('SQS_PREFIX', 'https://sqs.us-east-1.amazonaws.com/your-account-id'),
+                'queue' => env('SQS_QUEUE', 'your-queue-name'),
+                'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+            ],
+        ],
+        ...
+    ];
+
 ### Database
 
 <a name="capsule-table"></a>
@@ -128,7 +178,7 @@ The default Redis client has changed from `predis` to `phpredis`. In order to ke
 
 > {note} This change only applies to non-Laravel applications that are using `illuminate/database` as a dependency.
 
-The signature of the `Illuminate\Database\Capsule\Manager` class' `table` method has 
+The signature of the `Illuminate\Database\Capsule\Manager` class' `table` method has
 updated to accept a table alias as its second argument. If you are using `illuminate/database` outside of a Laravel application, you should update any calls to this method accordingly:
 
     /**
@@ -340,7 +390,7 @@ In previous releases of Laravel, passing associative array parameters to the `ro
     echo route('profile', ['status' => 'active']);
 
     // Laravel 6.0: http://example.com/profile?status=active
-    echo route('profile', ['status' => 'active']);    
+    echo route('profile', ['status' => 'active']);
 
 The `action` helper and `URL::action` method are also affected by this change:
 
@@ -350,7 +400,7 @@ The `action` helper and `URL::action` method are also affected by this change:
     echo action('ProfileController@show', ['profile' => 1]);
 
     // Laravel 6.0: http://example.com/profile?profile=1
-    echo action('ProfileController@show', ['profile' => 1]);   
+    echo action('ProfileController@show', ['profile' => 1]);
 
 ### Validation
 
