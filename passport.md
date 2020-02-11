@@ -912,7 +912,7 @@ The `scopes` middleware may be assigned to a route to verify that the incoming r
 
     Route::get('/orders', function () {
         // Access token has both "check-status" and "place-orders" scopes...
-    })->middleware('scopes:check-status,place-orders');
+    })->middleware(['auth:api', 'scopes:check-status,place-orders']);
 
 #### Check For Any Scopes
 
@@ -920,7 +920,7 @@ The `scope` middleware may be assigned to a route to verify that the incoming re
 
     Route::get('/orders', function () {
         // Access token has either "check-status" or "place-orders" scope...
-    })->middleware('scope:check-status,place-orders');
+    })->middleware(['auth:api', 'scope:check-status,place-orders']);
 
 #### Checking Scopes On A Token Instance
 
