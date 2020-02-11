@@ -352,6 +352,19 @@ You may chain where constraints together as well as add `or` clauses to the quer
                         ->orWhere('name', 'John')
                         ->get();
 
+You may also nest conditions within an `orWhere()` by passing a function as the first parameter. This will ensure they 
+are properly encapsulated within brackets. An instance of `Illuminate\Database\Query\Builder`
+will be passed as the first parameter.
+
+    $users = DB::table('users')
+                ->where('votes', '>', 100)
+                ->orWhere(function($query) {
+                    $query->where('name', 'Paul');
+                    $query->where('name', 'John');
+                })
+                ->get();
+
+
 #### Additional Where Clauses
 
 **whereBetween / orWhereBetween**
