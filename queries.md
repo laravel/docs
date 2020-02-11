@@ -352,18 +352,17 @@ You may chain where constraints together as well as add `or` clauses to the quer
                         ->orWhere('name', 'John')
                         ->get();
 
-You may also nest conditions within an `orWhere()` by passing a function as the first parameter. This will ensure they 
-are properly encapsulated within brackets. An instance of `Illuminate\Database\Query\Builder`
-will be passed as the first parameter.
+If you need to group an "or" condition within parentheses, you may pass a Closure as the first argument to the `orWhere` method:
 
     $users = DB::table('users')
                 ->where('votes', '>', 100)
                 ->orWhere(function($query) {
-                    $query->where('name', 'Paul');
-                    $query->where('name', 'John');
+                    $query->where('name', 'Abigail')
+                          ->where('votes', '>', 50);
                 })
                 ->get();
 
+    // SQL: select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 
 #### Additional Where Clauses
 
