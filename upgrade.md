@@ -16,8 +16,6 @@
 <div class="content-list" markdown="1">
 - [Carbon 1.x No Longer Supported](#carbon-support)
 - [Redis Default Client](#redis-default-client)
-- [DynamoDB Cache Store](#dynamodb-cache-store)
-- [SQS Environment Variables](#sqs-environment-variables)
 - [Database `Capsule::table` Method](#capsule-table)
 - [Eloquent Arrayable & `toArray`](#eloquent-to-array)
 - [Eloquent `BelongsTo::update` Method](#belongs-to-update)
