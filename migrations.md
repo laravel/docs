@@ -22,8 +22,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Migrations are special classes that allow developers to streamline the process of creating and sharing an application's database schema. Migrations are typically paired with Laravel's schema builder to facilitate building and evolving your application's database schema over time.
-In addition to providing a programmatic way for defining database schemas and having these included in your version control system, migrations provide a safe way to apply and roll back changes to your database.
+Migrations are like version control for your database, allowing your team to modify and share the application's database schema. Migrations are typically paired with Laravel's schema builder to build your application's database schema. If you have ever had to tell a teammate to manually add a column to their local database schema, you've faced the problem that database migrations solve.
 
 The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnostic support for creating and manipulating tables across all of Laravel's supported database systems.
 
@@ -36,7 +35,7 @@ To create a migration, use the `make:migration` [Artisan command](/docs/{{versio
 
 The new migration will be placed in your `database/migrations` directory. Each migration file name contains a timestamp, which allows Laravel to determine the order of the migrations.
 
-The `--table` and `--create` options may also be used to indicate the name of the table and whether or not the migration will be creating a new table. These options pre-fill the generated migration stub file accordingly:
+The `--table` and `--create` options may also be used to indicate the name of the table and whether or not the migration will be creating a new table. These options pre-fill the generated migration stub file with the specified table:
 
     php artisan make:migration create_users_table --create=users
 
@@ -49,7 +48,7 @@ If you would like to specify a custom output path for the generated migration, y
 
 A migration class contains two methods: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should reverse the operations performed by the `up` method.
 
-Within both of these methods you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). As an example, the following migration creates a `flights` table:
+Within both of these methods you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, the following migration creates a `flights` table:
 
     <?php
 
@@ -115,7 +114,7 @@ The `migrate:reset` command will roll back all of your application's migrations:
 
     php artisan migrate:reset
 
-#### Roll Back and Migrate in a Single Command
+#### Roll Back & Migrate Using A Single Command
 
 The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
 
@@ -142,7 +141,7 @@ The `migrate:fresh` command will drop all tables from the database and then exec
 <a name="creating-tables"></a>
 ### Creating Tables
 
-To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a closure which receives a `Blueprint` object that may be used to define the new table:
+To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object that may be used to define the new table:
 
     Schema::create('users', function (Blueprint $table) {
         $table->bigIncrements('id');
@@ -202,7 +201,7 @@ Before renaming a table, you should verify that any foreign key constraints on t
 <a name="creating-columns"></a>
 ### Creating Columns
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives a `Blueprint` instance you may use to add columns to the table:
+The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance you may use to add columns to the table:
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('email');
@@ -304,7 +303,7 @@ Modifier  |  Description
 
 #### Default Expressions
 
-The `default` modifier accepts a value or an `\Illuminate\Database\Query\Expression` instance. Using an `Expression` instance will prevent wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is when you have to assign default values to JSON columns:
+The `default` modifier accepts a value or an `\Illuminate\Database\Query\Expression` instance. Using an `Expression` instance will prevent wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is when you need to assign default values to JSON columns:
 
     <?php
 
@@ -413,7 +412,7 @@ You may even pass an array of columns to an index method to create a compound (o
 
     $table->index(['account_id', 'created_at']);
 
-Laravel will automatically generate an index name based on the table and column names and the index type, but you may pass a second argument to the method to specify the index name yourself:
+Laravel will automatically generate an index name based on the table, column names, and the index type, but you may pass a second argument to the method to specify the index name yourself:
 
     $table->unique('email', 'unique_email');
 
@@ -489,11 +488,11 @@ You may also specify the desired action for the "on delete" and "on update" prop
           ->references('id')->on('users')
           ->onDelete('cascade');
 
-To drop a foreign key, you may use the `dropForeign` method, passing the foreign key constraint to be deleted as argument. Foreign key constraints use the same naming convention as indexes, based on the table name and the columns in the constraint, followed by a "\_foreign" suffix:
+To drop a foreign key, you may use the `dropForeign` method, passing the foreign key constraint to be deleted as an argument. Foreign key constraints use the same naming convention as indexes, based on the table name and the columns in the constraint, followed by a "\_foreign" suffix:
 
     $table->dropForeign('posts_user_id_foreign');
 
-Alternatively, you may also pass to the `dropForeign` method an array containing the column name that holds the foreign key. That will be automatically converted to the constraint name convention used by Laravel's schema builder:
+Alternatively, you may pass an array containing the column name that holds the foreign key to the `dropForeign` method. The array will be automatically converted using the constraint name convention used by Laravel's schema builder:
 
     $table->dropForeign(['user_id']);
 
