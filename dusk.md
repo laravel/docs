@@ -1277,7 +1277,7 @@ Components are similar to Dusk’s “page objects”, but are intended for piec
 <a name="generating-components"></a>
 ### Generating Components
 
-To generate a component, use the `dusk:component` Artisan command. New components are placed in the `test/Browser/Components` directory:
+To generate a component, use the `dusk:component` Artisan command. New components are placed in the `tests/Browser/Components` directory:
 
     php artisan dusk:component DatePicker
 
