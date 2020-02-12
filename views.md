@@ -206,6 +206,8 @@ The `composer` method also accepts the `*` character as a wildcard, allowing you
     View::composer('*', function ($view) {
         //
     });
+    
+> {note} Using the `*` will also trigger the composer when loading views via @include; keep an eye to the performance
 
 #### View Creators
 
