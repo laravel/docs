@@ -44,7 +44,7 @@ The new minimum PHP version is now 7.2.5.
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `^7.0` in your `composer.json` file. In addition, update your `nunomaduro/collision` dependency to `^4.0`.
+Update your `laravel/framework` dependency to `^7.0` in your `composer.json` file. In addition, update your `nunomaduro/collision` dependency to `^4.1`.
 
 Finally, examine any other 3rd party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
 
