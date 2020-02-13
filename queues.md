@@ -93,7 +93,7 @@ Adjusting this value based on your queue load can be more efficient than continu
         'retry_after' => 90,
         'block_for' => 5,
     ],
-    
+
 > {note} Setting `block_for` to `0` will cause queue workers to block indefinitely until a job is available. This will also prevent signals such as `SIGTERM` from being handled until the next job has been processed.
 
 #### Other Driver Prerequisites
@@ -280,6 +280,12 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
             ProcessPodcast::dispatch($podcast);
         }
     }
+
+If you would like to conditionally dispatch a job, you may use the `dispatchIf` and `dispatchUnless` methods:
+
+    ProcessPodcast::dispatchIf($accountActive = true, $podcast);
+
+    ProcessPodcast::dispatchUnless($accountSuspended = false, $podcast);
 
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
