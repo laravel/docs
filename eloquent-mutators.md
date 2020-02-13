@@ -6,6 +6,7 @@
     - [Defining A Mutator](#defining-a-mutator)
 - [Date Mutators](#date-mutators)
 - [Attribute Casting](#attribute-casting)
+    - [Custom Casts](#custom-casts)
     - [Array & JSON Casting](#array-and-json-casting)
     - [Date Casting](#date-casting)
     - [Query Time Casting](#query-time-casting)
@@ -189,6 +190,129 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
     if ($user->is_admin) {
         //
     }
+
+<a name="custom-casts"></a>
+### Custom Casts
+
+Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. You may accomplish this by defining a class that implements the `CastsAttributes` interface.
+
+Classes that implement this interface must define a `get` and a `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the `json` cast type as a custom cast type:
+
+    <?php
+
+    namespace App\Casts;
+
+    use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+
+    class Json implements CastsAttributes
+    {
+        /**
+         * Cast the given value.
+         *
+         * @param  \Illuminate\Database\Eloquent\Model  $model
+         * @param  string  $key
+         * @param  mixed  $value
+         * @param  array  $attributes
+         * @return array
+         */
+        public function get($model, $key, $value, $attributes)
+        {
+            return json_decode($value, true);
+        }
+
+        /**
+         * Prepare the given value for storage.
+         *
+         * @param  \Illuminate\Database\Eloquent\Model  $model
+         * @param  string  $key
+         * @param  array  $value
+         * @param  array  $attributes
+         * @return string
+         */
+        public function set($model, $key, $value, $attributes)
+        {
+            return json_encode($value);
+        }
+    }
+
+Once you have defined a custom cast type, you may attach it to a model attribute using its class name:
+
+    <?php
+
+    namespace App;
+
+    use App\Casts\Json;
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        /**
+         * The attributes that should be cast to native types.
+         *
+         * @var array
+         */
+        protected $casts = [
+            'options' => Json::class,
+        ];
+    }
+
+#### Value Object Casting
+
+You are not limited to casting values to primitive types. You may also cast values to objects. Defining custom casts that cast values to objects is very similar to casting to primitive types; however, the `set` method should return an array of key / value pairs that will set raw, storable values on the model.
+
+As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value has two public properties: `lineOne` and `lineTwo`:
+
+    <?php
+
+    namespace App\Casts;
+
+    use App\Address;
+    use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+
+    class Address implements CastsAttributes
+    {
+        /**
+         * Cast the given value.
+         *
+         * @param  \Illuminate\Database\Eloquent\Model  $model
+         * @param  string  $key
+         * @param  mixed  $value
+         * @param  array  $attributes
+         * @return \App\Address
+         */
+        public function get($model, $key, $value, $attributes)
+        {
+            return new Address(
+                $attributes['address_line_one'],
+                $attributes['address_line_two']
+            );
+        }
+
+        /**
+         * Prepare the given value for storage.
+         *
+         * @param  \Illuminate\Database\Eloquent\Model  $model
+         * @param  string  $key
+         * @param  \App\Address  $value
+         * @param  array  $attributes
+         * @return array
+         */
+        public function set($model, $key, $value, $attributes)
+        {
+            return [
+                'address_line_one' => $value->lineOne,
+                'address_line_two' => $value->lineTwo,
+            ];
+        }
+    }
+
+When casting to value objects, any changes made to the value object will automatically be synced back to the model before the model is saved:
+
+    $user = App\User::find(1);
+
+    $user->address->lineOne = 'Updated Address Value';
+
+    $user->save();
 
 <a name="array-and-json-casting"></a>
 ### Array & JSON Casting
