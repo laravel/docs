@@ -222,7 +222,7 @@ Sometimes you may need to define routes to a "nested" resource. For example, a p
 
     Route::resource('photos.comments', 'PhotoCommentController');
 
-This route will register a "nested" resource that may be accessed with URLs like the following: photos/{photos}/comments/{comments}.
+This route will register a "nested" resource that may be accessed with URLs like the following: photos/{photo}/comments/{comment}.
 
 #### Shallow Nesting
 
