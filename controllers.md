@@ -218,11 +218,13 @@ To quickly generate an API resource controller that does not include the `create
 <a name="restful-nested-resources"></a>
 ### Nested Resources
 
-Sometimes you may need to define routes to a "nested" resource. For example, a photo resource may have multiple "comments" that may be attached to the photo. To "nest" resource controllers, use "dot" notation in your route declaration:
+Sometimes you may need to define routes to a nested resource. For example, a photo resource may have multiple comments that may be attached to the photo. To nest the resource controllers, use "dot" notation in your route declaration:
 
     Route::resource('photos.comments', 'PhotoCommentController');
 
-This route will register a "nested" resource that may be accessed with URLs like the following: photos/{photos}/comments/{comments}.
+This route will register a nested resource that may be accessed with URIs like the following:
+
+    /photos/{photo}/comments/{comment}
 
 #### Shallow Nesting
 
