@@ -319,6 +319,23 @@ If you would like to delay the execution of a queued job, you may use the `delay
 
 > {note} The Amazon SQS queue service has a maximum delay time of 15 minutes.
 
+#### Dispatching After The Response Is Sent To Browser
+
+Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the response is sent to the user's browser. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email:
+
+    use App\Jobs\SendNotification;
+
+    SendNotification::dispatchAfterResponse();
+
+You may `dispatch` a Closure and chain the `afterResponse` method onto the helper to execute a Closure after the response has been sent to the browser:
+
+    use App\Mail\WelcomeMessage;
+    use Illuminate\Support\Facades\Mail;
+
+    dispatch(function () {
+        Mail::to('taylor@laravel.com')->send(new WelcomeMessage);
+    })->afterResponse();
+
 <a name="synchronous-dispatching"></a>
 ### Synchronous Dispatching
 
