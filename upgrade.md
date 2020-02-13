@@ -19,6 +19,7 @@
 - [Blade Components & "Blade X"](#blade-components-and-blade-x)
 - [Factory Types](#factory-types)
 - [The `different` Validation Rule](#the-different-rule)
+- [The `assertSee` Assertion](#assert-see)
 </div>
 
 <a name="upgrade-7.0"></a>
@@ -204,6 +205,15 @@ The deprecated `Illuminate\Http\Resources\Json\Resource` class has been removed.
 **Likelihood Of Impact: Low**
 
 The `array` session driver data is now persistent for the current request. Previously, data stored in the `array` session could not be retrieved even during the current request.
+
+### Testing
+
+<a name="assert-see"></a>
+#### The `assertSee` Assertion
+
+**Likelihood Of Impact: Medium**
+
+The `assertSee` assertion on the `TestResponse` class will now automatically escape values. If you are manually escaping any values passed to this assertion you should no longer do so.
 
 ### Validation
 
