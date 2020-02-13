@@ -116,6 +116,13 @@ Alternatively, validation rules may be specified as arrays of rules instead of a
         'body' => ['required'],
     ]);
 
+You may use the `validateWithBag` method to validate a request and store any error messages within a [named error bag](#named-error-bags):
+
+    $validatedData = $request->validateWithBag('post', [
+        'title' => ['required', 'unique:posts', 'max:255'],
+        'body' => ['required'],
+    ]);
+
 #### Stopping On First Validation Failure
 
 Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
