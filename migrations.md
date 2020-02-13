@@ -35,6 +35,8 @@ To create a migration, use the `make:migration` [Artisan command](/docs/{{versio
 
 The new migration will be placed in your `database/migrations` directory. Each migration file name contains a timestamp, which allows Laravel to determine the order of the migrations.
 
+> {tip} Migration stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+
 The `--table` and `--create` options may also be used to indicate the name of the table and whether or not the migration will be creating a new table. These options pre-fill the generated migration stub file with the specified table:
 
     php artisan make:migration create_users_table --create=users

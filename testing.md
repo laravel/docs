@@ -34,6 +34,8 @@ To create a new test case, use the `make:test` Artisan command:
     // Create a test in the Unit directory...
     php artisan make:test UserTest --unit
 
+> {tip} Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+
 Once the test has been generated, you may define test methods as you normally would using PHPUnit. To run your tests, execute the `phpunit` or `artisan test` command from your terminal:
 
     <?php
