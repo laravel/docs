@@ -8,6 +8,7 @@
 - [Attribute Casting](#attribute-casting)
     - [Array & JSON Casting](#array-and-json-casting)
     - [Date Casting](#date-casting)
+    - [Query Time Casting](#query-time-casting)
 
 <a name="introduction"></a>
 ## Introduction
@@ -237,3 +238,27 @@ When using the `date` or `datetime` cast type, you may specify the date's format
     protected $casts = [
         'created_at' => 'datetime:Y-m-d',
     ];
+
+<a name="query-time-casting"></a>
+### Query Time Casting
+
+Sometimes you may need to apply casts while executing a query, such as when selecting a raw value from a table. For example, consider the following query:
+
+    use App\Post;
+    use App\User;
+
+    $users = User::select([
+        'users.*',
+        'last_posted_at' => Post::selectRaw('MAX(created_at)')
+                ->whereColumn('user_id', 'users.id')
+    ])->get();
+
+The `last_posted_at` attribute on the results of this query will be a raw string. It would be convenient if we could apply a `date` cast to this attribute when executing the query. To accomplish this, we may use the `withCasts` method:
+
+    $users = User::select([
+        'users.*',
+        'last_posted_at' => Post::selectRaw('MAX(created_at)')
+                ->whereColumn('user_id', 'users.id')
+    ])->withCasts([
+        'last_posted_at' => 'date'
+    ])->get();
