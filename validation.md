@@ -1128,6 +1128,16 @@ The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) univ
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules
 
+#### Skipping Validation When Fields Have Certain Values
+
+You may occasionally wish to not validate a given field if another field has a given value. You may accomplish this using the `exclude_if` validation rule. In this example, the `appointment_date` and `doctor_name` fields will not be validated if the `has_appointment` field has a value of `false`:
+
+    $v = Validator::make($data, [
+        'has_appointment' => 'required|bool',
+        'appointment_date' => 'exclude_if:has_appointment,false|required|date',
+        'doctor_name' => 'exclude_if:has_appointment,false|required|string',
+    ]);
+
 #### Validating When Present
 
 In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
