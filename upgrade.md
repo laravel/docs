@@ -14,6 +14,8 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
+- [The `Blade::component` Method](#the-blade-component-method)
+- [Blade Components & "Blade X"](#blade-components-and-blade-x)
 - [Factory Types](#factory-types)
 - [The `different` Validation Rule](#the-different-rule)
 </div>
@@ -71,6 +73,26 @@ Next, please update your `session` configuration file's `secure` option to have 
 **Likelihood Of Impact: Very Low**
 
 A `recentlyCreatedToken` method has been added to the `Illuminate\Auth\Passwords\TokenRepositoryInterface` interface. If you are writing a custom implementation of this interface, you should add this method to your implementation.
+
+### Blade
+
+<a name="the-blade-component-method"></a>
+#### The `component` Method
+
+**Likelihood Of Impact: Medium**
+
+The `Blade::component` method has been renamed to `Blade::aliasComponent`. Please update your calls to this method accordingly.
+
+<a name="blade-components-and-blade-x"></a>
+#### Blade Components & "Blade X"
+
+**Likelihood Of Impact: Medium**
+
+Laravel 7.x includes first-party support for Blade "tag components". If you are using the `spatie/laravel-blade-x` Composer package and wish to continue using that package, please disable Blade's built-in tag component functionality using the `Blade::withoutComponentTags` method. If you are not using Spatie's package, you can disregard these upgrade instructions. You may call the `withoutComponentTags` method from the `boot` method of your `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Blade;
+
+    Blade::withoutComponentTags();
 
 ### Eloquent
 
@@ -136,6 +158,8 @@ Finally, the `resolveRouteBinding` method of the `Illuminate\Http\Resources\Dele
 ### HTTP
 
 #### PSR-7 Compatibility
+
+**Likelihood Of Impact: Low**
 
 The Zend Diactoros library for generating PSR-7 responses has been deprecated. If you are using this package for PSR-7 compatibility, please install the `nyholm/psr7` Composer package instead. In addition, please install the `^2.0` release of the `symfony/psr-http-message-bridge` Composer package.
 
