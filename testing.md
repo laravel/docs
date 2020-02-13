@@ -61,7 +61,7 @@ Once the test has been generated, you may define test methods as you normally wo
 <a name="artisan-test-runner"></a>
 ### Artisan Test Runner
 
-In addition to the `phpunit` command, you may use the `test` Artisan command to run your tests. The Artisan test runner provides more information regarding the test that is currently running and will automatically stop on the first test failure.
+In addition to the `phpunit` command, you may use the `test` Artisan command to run your tests. The Artisan test runner provides more information regarding the test that is currently running and will automatically stop on the first test failure:
 
     php artisan test
 
