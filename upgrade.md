@@ -42,7 +42,27 @@ Update your `laravel/framework` dependency to `^7.0` in your `composer.json` fil
 
 Finally, examine any other 3rd party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
 
+### Authentication
+
+#### The `TokenRepositoryInterface`
+
+**Likelihood Of Impact: Very Low**
+
+A `recentlyCreatedToken` method has been added to the `Illuminate\Auth\Passwords\TokenRepositoryInterface` interface. If you are writing a custom implementation of this interface, you should add this method to your implementation.
+
 ### Eloquent
+
+#### The `addHidden` / `addVisible` Methods
+
+**Likelihood Of Impact: Low**
+
+The undocumented `addHidden` and `addVisible` methods have been removed. Instead, please use the `makeHidden` and `makeVisible` methods.
+
+#### The `booting` / `booted` Methods
+
+**Likelihood Of Impact: Low**
+
+The `booting` and `booted` methods have been added to Eloquent to provide a place to conveniently defined any logic that should execute during the model "boot" process. If you already have model methods with these names, you will need to rename your methods so they do not conflict with the newly added methods.
 
 <a name="date-serialization"></a>
 #### Date Serialization
@@ -74,6 +94,32 @@ If you would like to keep using the previous behavior you can override the `seri
 **Likelihood Of Impact: Medium**
 
 Laravel 7 removes the "factory types" feature. This feature has been undocumented since October 2016. If you are still using this feature, you should upgrade to [factory states](/docs/{{version}}/database-testing#factory-states), which provide more flexibility.
+
+#### The `getOriginal` Method
+
+**Likelihood Of Impact: Low**
+
+The `$model->getOriginal()` method will now respect any casts defined on the model. Previously, this method returned the uncast, raw attributes.
+
+### Queue
+
+#### Deprecated `--daemon` Flag Removed
+
+The deprecated `--daemon` flag on the `queue:work` command has been removed. This flag is no longer necessary as the working runs as a daemon by default.
+
+### Resources
+
+#### The `Illuminate\Http\Resources\Json\Resource` Class
+
+The deprecated `Illuminate\Http\Resources\Json\Resource` class has been removed. Your resources should extend the `Illuminate\Http\Resources\Json\JsonResource` class instead.
+
+### Session
+
+#### The `array` Session Driver
+
+**Likelihood Of Impact: Low**
+
+The `array` session driver data is now persistent for the current request. Previously, data stored in the `array` session could not be retrieved even during the current request.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
