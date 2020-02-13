@@ -6,6 +6,7 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
+- [Symfony 5 Related Upgrades](#symfony-5-related-upgrades)
 - [Date Serialization](#date-serialization)
 </div>
 
@@ -25,7 +26,7 @@
 
 ### Symfony 5 Required
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: High**
 
 Laravel 7 upgrade its underlying Symfony components to the 5.x series, which is now also the new minimum compatible version.
 
@@ -41,6 +42,21 @@ The new minimum PHP version is now 7.2.5.
 Update your `laravel/framework` dependency to `^7.0` in your `composer.json` file. In addition, update your `nunomaduro/collision` dependency to `^4.0`.
 
 Finally, examine any other 3rd party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
+
+<a name="symfony-5-related-upgrades"></a>
+### Symfony 5 Related Upgrades
+
+**Likelihood Of Impact: High**
+
+Laravel 7.x utilizes the 5.x series of the Symfony components. Some minor changes to your application are required to accommodate this upgrade.
+
+First, the `report` and `render` methods of your application's `App\Exceptions\Handler` class should accept instances of the `Throwable` interface instead of `Exception` instances.
+
+Next, please update your `session` configuration file's `secure` option to have a fallback value of `null` and the `same_site` option to have a fallback value of `lax`:
+
+    'secure' => env('SESSION_SECURE_COOKIE', null),
+
+    'same_site' => 'lax',
 
 ### Authentication
 
@@ -100,6 +116,16 @@ Laravel 7 removes the "factory types" feature. This feature has been undocumente
 **Likelihood Of Impact: Low**
 
 The `$model->getOriginal()` method will now respect any casts defined on the model. Previously, this method returned the uncast, raw attributes.
+
+#### Route Binding
+
+**Likelihood Of Impact: Low**
+
+The `resolveRouteBinding` method of the `Illuminate\Contracts\Routing\UrlRoutable` interface now accepts a `$field` argument. If you were implementing this interface by hand, you should update your implementation.
+
+In addition, the `resolveRouteBinding` method of the `Illuminate\Database\Eloquent\Model` class also now accepts a `$field` parameter. If you were overriding this method, you should update your method to accept this argument.
+
+Finally, the `resolveRouteBinding` method of the `Illuminate\Http\Resources\DelegatesToResources` trait also now accepts a `$field` parameter. If you were overriding this method, you should update your method to accept this argument.
 
 ### Queue
 
