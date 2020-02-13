@@ -1138,6 +1138,14 @@ You may occasionally wish to not validate a given field if another field has a g
         'doctor_name' => 'exclude_if:has_appointment,false|required|string',
     ]);
 
+Alternatively, you may use the `exclude_unless` rule to not validate a given field unless another field has a given value:
+
+    $v = Validator::make($data, [
+        'has_appointment' => 'required|bool',
+        'appointment_date' => 'exclude_unless:has_appointment,true|required|date',
+        'doctor_name' => 'exclude_unless:has_appointment,true|required|string',
+    ]);
+
 #### Validating When Present
 
 In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
