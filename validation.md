@@ -569,6 +569,8 @@ Below is a list of all available validation rules and their function:
 [Distinct](#rule-distinct)
 [E-Mail](#rule-email)
 [Ends With](#rule-ends-with)
+[Exclude If](#rule-exclude-if)
+[Exclude Unless](#rule-exclude-unless)
 [Exists (Database)](#rule-exists)
 [File](#rule-file)
 [Filled](#rule-filled)
@@ -772,6 +774,20 @@ The `filter` validator, which uses PHP's `filter_var` function under the hood, s
 #### ends_with:_foo_,_bar_,...
 
 The field under validation must end with one of the given values.
+
+<a name="rule-exclude-if"></a>
+#### exclude_if:_field_,_value_,...
+
+The field under validation should not be validated if the given _field_ does not have the given value:
+
+    'appointment_date' => 'exclude_if:has_appointment,false|required|date'
+
+<a name="rule-exclude-unless"></a>
+#### exclude_unless:_field_,_value_,...
+
+The field under validation should not be validated unless the given _field_ has the given value:
+
+    'appointment_date' => 'exclude_unless:has_appointment,true|required|date'
 
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
