@@ -288,14 +288,6 @@ To log users out of your application, you may use the `logout` method on the `Au
 
     Auth::logout();
 
-Laravel also provides methods to log a user out of the application only on their current device, or to log a user out of the application on their other devices:
-
-    Auth::logoutCurrentDevice();
-
-    Auth::logoutOtherDevices();
-
-> {note} Before using the `logoutOtherDevices` method, ensure that the `Illuminate\Session\Middleware\AuthenticateSession::class` middleware is present and active on your HTTP kernel's `web` [middleware group](/docs/{{version}}/middleware#middleware-groups).
-
 <a name="remembering-users"></a>
 ### Remembering Users
 
