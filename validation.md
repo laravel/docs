@@ -384,6 +384,13 @@ If you would like to create a validator instance manually but still take advanta
         'body' => 'required',
     ])->validate();
 
+You may use the `validateWithBag` method to store the error messages in a [named error bag](#named-error-bags) if validation fails:
+
+    Validator::make($request->all(), [
+        'title' => 'required|unique:posts|max:255',
+        'body' => 'required',
+    ])->validateWithBag('post');
+
 <a name="named-error-bags"></a>
 ### Named Error Bags
 
