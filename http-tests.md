@@ -628,6 +628,10 @@ Assert that the response view was given a piece of data:
 
     $response->assertViewHas($key, $value = null);
 
+In addition, view data may be accessed as array variables on the response:
+
+    $this->assertEquals('Taylor', $response['name']);
+
 <a name="assert-view-has-all"></a>
 #### assertViewHasAll
 
