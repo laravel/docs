@@ -324,9 +324,30 @@ Laravel automatically resolves Eloquent models defined in routes or controller a
 
 Since the `$user` variable is type-hinted as the `App\User` Eloquent model and the variable name matches the `{user}` URI segment, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
 
-#### Customizing The Key Name
+#### Customizing The Key
 
-If you would like model binding to use a database column other than `id` when retrieving a given model class, you may override the `getRouteKeyName` method on the Eloquent model:
+Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
+
+    Route::get('api/posts/{post:slug}', function (App\Post $post) {
+        return $post;
+    });
+
+#### Custom Keys & Scoping
+
+Sometimes, when implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the first Eloquent model. For example, consider this situation that retrieves a blog post by slug for a specific user:
+
+    use App\Post;
+    use App\User;
+
+    Route::get('api/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
+        return $post;
+    });
+
+When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural of the route parameter name) which can be used to retrieve the `Post` model.
+
+#### Customizing The Default Key Name
+
+If you would like model binding to use a default database column other than `id` when retrieving a given model class, you may override the `getRouteKeyName` method on the Eloquent model:
 
     /**
      * Get the route key for the model.
