@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Environment](#environment)
 - [Creating & Running Tests](#creating-and-running-tests)
+    - [Artisan Test Runner](#artisan-test-runner)
 
 <a name="introduction"></a>
 ## Introduction
@@ -33,7 +34,7 @@ To create a new test case, use the `make:test` Artisan command:
     // Create a test in the Unit directory...
     php artisan make:test UserTest --unit
 
-Once the test has been generated, you may define test methods as you normally would using PHPUnit. To run your tests, execute the `phpunit` command from your terminal:
+Once the test has been generated, you may define test methods as you normally would using PHPUnit. To run your tests, execute the `phpunit` or `artisan test` command from your terminal:
 
     <?php
 
@@ -56,3 +57,14 @@ Once the test has been generated, you may define test methods as you normally wo
     }
 
 > {note} If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class.
+
+<a name="artisan-test-runner"></a>
+### Artisan Test Runner
+
+In addition to the `phpunit` command, you may use the `test` Artisan command to run your tests. The Artisan test runner provides more information regarding the test that is currently running and will automatically stop on the first test failure.
+
+    php artisan test
+
+Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
+
+    php artisan test --group=feature
