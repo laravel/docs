@@ -183,8 +183,8 @@ Middleware groups may be assigned to routes and controller actions using the sam
     Route::group(['middleware' => ['web']], function () {
         //
     });
-    
-    Route::middleware(['web', 'subscribed'])->group(function () { 
+
+    Route::middleware(['web', 'subscribed'])->group(function () {
         //
     });
 
@@ -205,7 +205,8 @@ Rarely, you may need your middleware to execute in a specific order but not have
     protected $middlewarePriority = [
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \App\Http\Middleware\Authenticate::class,
+        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
