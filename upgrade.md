@@ -53,7 +53,7 @@ Finally, examine any other 3rd party packages consumed by your application and v
 
 **Likelihood Of Impact: High**
 
-Laravel 7.x utilizes the 5.x series of the Symfony components. Some minor changes to your application are required to accommodate this upgrade.
+Laravel 7 utilizes the 5.x series of the Symfony components. Some minor changes to your application are required to accommodate this upgrade.
 
 First, the `report` and `render` methods of your application's `App\Exceptions\Handler` class should accept instances of the `Throwable` interface instead of `Exception` instances:
 
@@ -99,7 +99,7 @@ The `Blade::component` method has been renamed to `Blade::aliasComponent`. Pleas
 
 **Likelihood Of Impact: Medium**
 
-Laravel 7.x includes first-party support for Blade "tag components". If you are using the `spatie/laravel-blade-x` Composer package and wish to continue using that package, please disable Blade's built-in tag component functionality using the `Blade::withoutComponentTags` method. If you are not using Spatie's package, you can disregard these upgrade instructions. You may call the `withoutComponentTags` method from the `boot` method of your `AppServiceProvider`:
+Laravel 7 includes first-party support for Blade "tag components". If you are using the `spatie/laravel-blade-x` Composer package and wish to continue using that package, please disable Blade's built-in tag component functionality using the `Blade::withoutComponentTags` method. If you are not using Spatie's package, you can disregard these upgrade instructions. You may call the `withoutComponentTags` method from the `boot` method of your `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Blade;
 
