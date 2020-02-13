@@ -7,6 +7,7 @@
 
 <div class="content-list" markdown="1">
 - [Symfony 5 Related Upgrades](#symfony-5-related-upgrades)
+- [Authentication Scaffolding](#authentication-scaffolding)
 - [Date Serialization](#date-serialization)
 </div>
 
@@ -68,9 +69,18 @@ Next, please update your `session` configuration file's `secure` option to have 
 
 ### Authentication
 
+<a name="authentication-scaffolding"></a>
+#### Scaffolding
+
+**Likelihood Of Impact: High**
+
+All authentication scaffolding has been moved to the `laravel/ui` repository. If you are using Laravel's authentication scaffolding, you should install the `~2.0` release of this package:
+
+    composer require laravel/ui "~2.0"
+
 #### The `TokenRepositoryInterface`
 
-**Likelihood Of Impact: Very Low**
+**Likelihood Of Impact: Low**
 
 A `recentlyCreatedToken` method has been added to the `Illuminate\Auth\Passwords\TokenRepositoryInterface` interface. If you are writing a custom implementation of this interface, you should add this method to your implementation.
 
