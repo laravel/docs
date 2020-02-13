@@ -19,7 +19,7 @@
 <a name="upgrade-7.0"></a>
 ## Upgrading To 7.0 From 6.0
 
-#### Estimated Upgrade Time: ?
+#### Estimated Upgrade Time: 15 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
