@@ -1,6 +1,6 @@
 # Upgrade Guide
 
-- [Upgrading To 7.0 From 6.0](#upgrade-7.0)
+- [Upgrading To 7.0 From 6.x](#upgrade-7.0)
 
 <a name="high-impact-changes"></a>
 ## High Impact Changes
@@ -23,7 +23,7 @@
 </div>
 
 <a name="upgrade-7.0"></a>
-## Upgrading To 7.0 From 6.0
+## Upgrading To 7.0 From 6.x
 
 #### Estimated Upgrade Time: 15 Minutes
 
