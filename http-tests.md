@@ -166,6 +166,10 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
 
 > {tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
+In addition, JSON response data may be accessed as array variables on the response:
+
+    $this->assertTrue($response['created']);
+
 <a name="verifying-exact-match"></a>
 ### Verifying An Exact JSON Match
 
