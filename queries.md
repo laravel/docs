@@ -11,6 +11,7 @@
 - [Where Clauses](#where-clauses)
     - [Parameter Grouping](#parameter-grouping)
     - [Where Exists Clauses](#where-exists-clauses)
+    - [Subquery Where Clauses](#subquery-where-clauses)
     - [JSON Where Clauses](#json-where-clauses)
 - [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit-and-offset)
 - [Conditional Clauses](#conditional-clauses)
@@ -490,6 +491,21 @@ The query above will produce the following SQL:
     where exists (
         select 1 from orders where orders.user_id = users.id
     )
+
+<a name="subquery-where-clauses"></a>
+### Subquery Where Clauses
+
+Sometimes you may need to construct a where clause that compares the results of a subquery to a given value. You may accomplish this by passing a Closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
+
+    use App\User;
+
+    $users = User::where(function ($query) {
+        $query->select('type')
+            ->from('membership')
+            ->whereColumn('user_id', 'users.id')
+            ->orderByDesc('start_date')
+            ->limit(1);
+    }, 'Pro')->get();
 
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
