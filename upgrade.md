@@ -15,6 +15,7 @@
 
 <div class="content-list" markdown="1">
 - [Factory Types](#factory-types)
+- [The `different` Validation Rule](#the-different-rule)
 </div>
 
 <a name="upgrade-7.0"></a>
@@ -132,15 +133,33 @@ In addition, the `resolveRouteBinding` method of the `Illuminate\Database\Eloque
 
 Finally, the `resolveRouteBinding` method of the `Illuminate\Http\Resources\DelegatesToResources` trait also now accepts a `$field` parameter. If you were overriding this method, you should update your method to accept this argument.
 
+### HTTP
+
+#### PSR-7 Compatibility
+
+The Zend Diactoros library for generating PSR-7 responses has been deprecated. If you are using this package for PSR-7 compatibility, please install the `nyholm/psr7` Composer package instead. In addition, please install the `^2.0` release of the `symfony/psr-http-message-bridge` Composer package.
+
+### Mail
+
+#### Markdown Mail Template Updates
+
+**Likelihood Of Impact: Low**
+
+The default Markdown mail templates have been refreshed with a more professional and appealing design. In addition, the undocumented `promotion` Markdown mail component has been removed.
+
 ### Queue
 
 #### Deprecated `--daemon` Flag Removed
+
+**Likelihood Of Impact: Low**
 
 The deprecated `--daemon` flag on the `queue:work` command has been removed. This flag is no longer necessary as the working runs as a daemon by default.
 
 ### Resources
 
 #### The `Illuminate\Http\Resources\Json\Resource` Class
+
+**Likelihood Of Impact: Low**
 
 The deprecated `Illuminate\Http\Resources\Json\Resource` class has been removed. Your resources should extend the `Illuminate\Http\Resources\Json\JsonResource` class instead.
 
@@ -151,6 +170,15 @@ The deprecated `Illuminate\Http\Resources\Json\Resource` class has been removed.
 **Likelihood Of Impact: Low**
 
 The `array` session driver data is now persistent for the current request. Previously, data stored in the `array` session could not be retrieved even during the current request.
+
+### Validation
+
+<a name="the-different-rule"></a>
+#### The `different` Rule
+
+**Likelihood Of Impact: Medium**
+
+The `different` rule will now fail if one of the specified parameters is missing from the request.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
