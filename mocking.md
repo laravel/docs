@@ -283,7 +283,7 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
             Notification::assertSentTo(
                 new AnonymousNotifiable, OrderShipped::class
             );
-            
+
             // Assert Notification::route() method sent notification to the correct user...
             Notification::assertSentTo(
                 new AnonymousNotifiable,
@@ -304,6 +304,8 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
 
     namespace Tests\Feature;
 
+    use App\Jobs\AnotherJob;
+    use App\Jobs\FinalJob;
     use App\Jobs\ShipOrder;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -334,11 +336,20 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
             // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
 
-            // Assert a job was pushed with a specific chain...
+            // Assert a job was pushed with a given chain of jobs, matching by class...
             Queue::assertPushedWithChain(ShipOrder::class, [
                 AnotherJob::class,
                 FinalJob::class
             ]);
+
+            // Assert a job was pushed with a given chain of jobs, matching by both class and properties...
+            Queue::assertPushedWithChain(ShipOrder::class, [
+                new AnotherJob('foo'),
+                new FinalJob('bar'),
+            ]);
+
+            // Assert a job was pushed without a chain of jobs...
+            Queue::assertPushedWithoutChain(ShipOrder::class);
         }
     }
 

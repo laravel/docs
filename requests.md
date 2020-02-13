@@ -121,7 +121,7 @@ The `method` method will return the HTTP verb for the request. You may use the `
 The [PSR-7 standard](https://www.php-fig.org/psr/psr-7/) specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request instead of a Laravel request, you will first need to install a few libraries. Laravel uses the *Symfony HTTP Message Bridge* component to convert typical Laravel requests and responses into PSR-7 compatible implementations:
 
     composer require symfony/psr-http-message-bridge
-    composer require zendframework/zend-diactoros
+    composer require nyholm/psr7
 
 Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route Closure or controller method:
 
@@ -196,6 +196,12 @@ When using dynamic properties, Laravel will first look for the parameter's value
 When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to dig into JSON arrays:
 
     $name = $request->input('user.name');
+
+#### Retrieving Boolean Input Values
+
+When dealing with HTML elements like checkboxes, your application may receive "truthy" values that are actually strings. For example, "true" or "on". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for 1, "1", true, "true", "on", and "yes". All other values will return `false`:
+
+    $archived = $request->boolean('archived');
 
 #### Retrieving A Portion Of The Input Data
 
@@ -290,7 +296,7 @@ All cookies created by the Laravel framework are encrypted and signed with an au
     $value = $request->cookie('name');
 
 Alternatively, you may use the `Cookie` facade to access cookie values:
-    
+
     use Illuminate\Support\Facades\Cookie;
 
     $value = Cookie::get('name');
@@ -399,7 +405,7 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
         /**
          * The trusted proxies for this application.
          *
-         * @var array
+         * @var string|array
          */
         protected $proxies = [
             '192.168.1.1',
@@ -423,6 +429,6 @@ If you are using Amazon AWS or another "cloud" load balancer provider, you may n
     /**
      * The trusted proxies for this application.
      *
-     * @var array
+     * @var string|array
      */
     protected $proxies = '*';

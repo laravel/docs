@@ -18,7 +18,7 @@
     - [CSRF Field](#csrf-field)
     - [Method Field](#method-field)
     - [Validation Errors](#validation-errors)
-- [Including Sub-Views](#including-sub-views)
+- [Including Subviews](#including-subviews)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
@@ -113,7 +113,7 @@ The `{{ $slot }}` variable will contain the content we wish to inject into the c
 
 To instruct Laravel to load the first view that exists from a given array of possible views for the component, you may use the `componentFirst` directive:
 
-    @componentFirst(['custom.alert', 'alert'])
+    @componentfirst(['custom.alert', 'alert'])
         <strong>Whoops!</strong> Something went wrong!
     @endcomponentfirst
 
@@ -147,7 +147,7 @@ Sometimes you may need to pass additional data to a component. For this reason, 
 
 #### Aliasing Components
 
-If your Blade components are stored in a sub-directory, you may wish to alias them for easier access. For example, imagine a Blade component that is stored at `resources/views/components/alert.blade.php`. You may use the `component` method to alias the component from `components.alert` to `alert`. Typically, this should be done in the `boot` method of your `AppServiceProvider`:
+If your Blade components are stored in a subdirectory, you may wish to alias them for easier access. For example, imagine a Blade component that is stored at `resources/views/components/alert.blade.php`. You may use the `component` method to alias the component from `components.alert` to `alert`. Typically, this should be done in the `boot` method of your `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Blade;
 
@@ -508,8 +508,8 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
-<a name="including-sub-views"></a>
-## Including Sub-Views
+<a name="including-subviews"></a>
+## Including Subviews
 
 Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
 
@@ -545,7 +545,7 @@ To include the first view that exists from a given array of views, you may use t
 
 #### Aliasing Includes
 
-If your Blade includes are stored in a sub-directory, you may wish to alias them for easier access. For example, imagine a Blade include that is stored at `resources/views/includes/input.blade.php` with the following content:
+If your Blade includes are stored in a subdirectory, you may wish to alias them for easier access. For example, imagine a Blade include that is stored at `resources/views/includes/input.blade.php` with the following content:
 
     <input type="{{ $type ?? 'text' }}">
 

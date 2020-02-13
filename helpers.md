@@ -88,6 +88,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
 [Str::is](#method-str-is)
+[Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::limit](#method-str-limit)
 [Str::orderedUuid](#method-str-ordered-uuid)
@@ -537,7 +538,7 @@ You may also sort the array by the results of the given Closure:
 <a name="method-array-sort-recursive"></a>
 #### `Arr::sortRecursive()` {#collection-method}
 
-The `Arr::sortRecursive` method recursively sorts an array using the `sort` function for numeric sub=arrays and `ksort` for associative sub-arrays:
+The `Arr::sortRecursive` method recursively sorts an array using the `sort` function for numeric sub=arrays and `ksort` for associative subarrays:
 
     use Illuminate\Support\Arr;
 
@@ -838,7 +839,7 @@ The `preg_replace_array` function replaces a given pattern in the string sequent
 <a name="method-str-after"></a>
 #### `Str::after()` {#collection-method}
 
-The `Str::after` method returns everything after the given value in a string:
+The `Str::after` method returns everything after the given value in a string. The entire string will be returned if the value does not exist within the string:
 
     use Illuminate\Support\Str;
 
@@ -849,7 +850,7 @@ The `Str::after` method returns everything after the given value in a string:
 <a name="method-str-after-last"></a>
 #### `Str::afterLast()` {#collection-method}
 
-The `Str::afterLast` method returns everything after the last occurrence of the given value in a string:
+The `Str::afterLast` method returns everything after the last occurrence of the given value in a string. The entire string will be returned if the value does not exist within the string:
 
     use Illuminate\Support\Str;
 
@@ -974,6 +975,21 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
 
     // false
 
+<a name="method-str-is-uuid"></a>
+#### `Str::isUuid()` {#collection-method}
+
+The `Str::isUuid` method determines if the given string is a valid UUID:
+
+    use Illuminate\Support\Str;
+
+    $isUuid = Str::isUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de');
+
+    // true
+
+    $isUuid = Str::isUuid('laravel');
+
+    // false
+
 <a name="method-kebab-case"></a>
 #### `Str::kebab()` {#collection-method}
 
@@ -1016,7 +1032,7 @@ The `Str::orderedUuid` method generates a "timestamp first" UUID that may be eff
 <a name="method-str-plural"></a>
 #### `Str::plural()` {#collection-method}
 
-The `Str::plural` method converts a string to its plural form. This function currently only supports the English language:
+The `Str::plural` method converts a single word string to its plural form. This function currently only supports the English language:
 
     use Illuminate\Support\Str;
 

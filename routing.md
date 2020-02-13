@@ -11,7 +11,7 @@
 - [Route Groups](#route-groups)
     - [Middleware](#route-group-middleware)
     - [Namespaces](#route-group-namespaces)
-    - [Sub-Domain Routing](#route-group-sub-domain-routing)
+    - [Subdomain Routing](#route-group-subdomain-routing)
     - [Route Prefixes](#route-group-prefixes)
     - [Route Name Prefixes](#route-group-name-prefixes)
 - [Route Model Binding](#route-model-binding)
@@ -274,10 +274,10 @@ Another common use-case for route groups is assigning the same PHP namespace to 
 
 Remember, by default, the `RouteServiceProvider` includes your route files within a namespace group, allowing you to register controller routes without specifying the full `App\Http\Controllers` namespace prefix. So, you only need to specify the portion of the namespace that comes after the base `App\Http\Controllers` namespace.
 
-<a name="route-group-sub-domain-routing"></a>
-### Sub-Domain Routing
+<a name="route-group-subdomain-routing"></a>
+### Subdomain Routing
 
-Route groups may also be used to handle sub-domain routing. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified by calling the `domain` method before defining the group:
+Route groups may also be used to handle subdomain routing. Subdomains may be assigned route parameters just like route URIs, allowing you to capture a portion of the subdomain for usage in your route or controller. The subdomain may be specified by calling the `domain` method before defining the group:
 
     Route::domain('{account}.myapp.com')->group(function () {
         Route::get('user/{id}', function ($account, $id) {
@@ -285,7 +285,7 @@ Route groups may also be used to handle sub-domain routing. Sub-domains may be a
         });
     });
 
-> {note} In order to ensure your sub-domain routes are reachable, you should register sub-domain routes before registering root domain routes. This will prevent root domain routes from overwriting sub-domain routes which have the same URI path.
+> {note} In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path.
 
 <a name="route-group-prefixes"></a>
 ### Route Prefixes
@@ -458,6 +458,24 @@ You may also combine this functionality with dynamic rate limits. For example, i
     Route::middleware('auth:api', 'throttle:10|rate_limit,1')->group(function () {
         Route::get('/user', function () {
             //
+        });
+    });
+
+#### Rate Limit Segments
+
+Typically, you will probably specify one rate limit for your entire API. However, your application may require different rate limits for different segments of your API. If this is the case, you will need to pass a segment name as the third argument to the `throttle` middleware:
+
+    Route::middleware('auth:api')->group(function () {
+        Route::middleware('throttle:60,1,default')->group(function () {
+            Route::get('/servers', function () {
+                //
+            });
+        });
+
+        Route::middleware('throttle:60,1,deletes')->group(function () {
+            Route::delete('/servers/{id}', function () {
+                //
+            });
         });
     });
 

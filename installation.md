@@ -44,9 +44,12 @@ First, download the Laravel installer using Composer:
 Make sure to place Composer's system-wide vendor bin directory in your `$PATH` so the laravel executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
 
 <div class="content-list" markdown="1">
-- macOS and GNU / Linux Distributions: `$HOME/.composer/vendor/bin`
+- macOS: `$HOME/.composer/vendor/bin`
 - Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
+- GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin`
 </div>
+
+You could also find the composer's global installation path by running `composer global about` and looking up from the first line.
 
 Once installed, the `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed:
 
@@ -105,7 +108,7 @@ You may also want to configure a few additional components of Laravel, such as:
 <a name="directory-configuration"></a>
 ### Directory Configuration
 
-Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a sub-directory of the "web directory". Attempting to do so could expose sensitive files present within your application.
+Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
 
 <a name="pretty-urls"></a>
 ### Pretty URLs

@@ -35,7 +35,7 @@
 
 Laravel queues provide a unified API across a variety of different queue backends, such as Beanstalk, Amazon SQS, Redis, or even a relational database. Queues allow you to defer the processing of a time consuming task, such as sending an email, until a later time. Deferring these time consuming tasks drastically speeds up web requests to your application.
 
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](https://kr.github.io/beanstalkd/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io),  and a synchronous driver that will execute jobs immediately (for local use). A `null` queue driver is also included which discards queued jobs.
+The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](https://beanstalkd.github.io/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io),  and a synchronous driver that will execute jobs immediately (for local use). A `null` queue driver is also included which discards queued jobs.
 
 <a name="connections-vs-queues"></a>
 ### Connections Vs. Queues
@@ -164,7 +164,7 @@ Job classes are very simple, normally containing only a `handle` method which is
         }
     }
 
-In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models will be gracefully serialized and unserialized when the job is processing. If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
+In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing. If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance and its loaded relationships from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
 
 The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
 
@@ -177,6 +177,21 @@ If you would like to take total control over how the container injects dependenc
     });
 
 > {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
+
+#### Handling Relationships
+
+Because loaded relationships also get serialized, the serialized job string can become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model with no loaded relationships:
+
+    /**
+     * Create a new job instance.
+     *
+     * @param  \App\Podcast  $podcast
+     * @return void
+     */
+    public function __construct(Podcast $podcast)
+    {
+        $this->podcast = $podcast->withoutRelations();
+    }
 
 <a name="job-middleware"></a>
 ### Job Middleware
@@ -593,9 +608,9 @@ Laravel includes a queue worker that will process new jobs as they are pushed on
 
 > {tip} To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
 
-Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment).
+Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment). In addition, remember that any static state created or modified by your application will not be automatically reset between jobs.
 
-Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker after your code is changed; however, this command is not as efficient as `queue:work`:
+Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker when you want to reload your updated code or reset the application state; however, this command is not as efficient as `queue:work`:
 
     php artisan queue:listen
 
@@ -605,7 +620,7 @@ You may also specify which queue connection the worker should utilize. The conne
 
     php artisan queue:work redis
 
-You may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes only that queue:
+You may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:
 
     php artisan queue:work redis --queue=emails
 
@@ -696,8 +711,11 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
     numprocs=8
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/worker.log
+    stopwaitsecs=3600
 
 In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `queue:work sqs` portion of the `command` directive to reflect your desired queue connection.
+
+> {note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
 #### Starting Supervisor
 
@@ -793,6 +811,8 @@ You may define a `failed` method directly on your job class, allowing you to per
             // Send user notification of failure, etc...
         }
     }
+
+> {note} The `failed` method will not be called if the job was dispatched using the `dispatchNow` method.
 
 <a name="failed-job-events"></a>
 ### Failed Job Events

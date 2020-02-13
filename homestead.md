@@ -59,6 +59,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 <div id="software-list" markdown="1">
 - Ubuntu 18.04
 - Git
+- PHP 7.4
 - PHP 7.3
 - PHP 7.2
 - PHP 7.1
@@ -567,7 +568,7 @@ After running the command, you will see an Ngrok screen appear which contains th
 <a name="multiple-php-versions"></a>
 ### Multiple PHP Versions
 
-Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2" and "7.3" (the default):
+Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", and "7.4" (the default):
 
     sites:
         - map: homestead.test
@@ -581,6 +582,7 @@ In addition, you may use any of the supported PHP versions via the CLI:
     php7.1 artisan list
     php7.2 artisan list
     php7.3 artisan list
+    php7.4 artisan list
 
 You may also update the default CLI version by issuing the following commands from within your Homestead virtual machine:
 
@@ -589,6 +591,7 @@ You may also update the default CLI version by issuing the following commands fr
     php71
     php72
     php73
+    php74
 
 <a name="web-servers"></a>
 ### Web Servers
@@ -625,7 +628,7 @@ To debug a PHP CLI application, use the `xphp` shell alias inside your Vagrant b
 
 When debugging functional tests that make requests to the web server, it is easier to autostart debugging rather than modifying tests to pass through a custom header or cookie to trigger debugging. To force Xdebug to start automatically, modify `/etc/php/7.x/fpm/conf.d/20-xdebug.ini` inside your Vagrant box and add the following configuration:
 
-    ; If Homestead.yml contains a different subnet for the IP address, this address may be different...
+    ; If Homestead.yaml contains a different subnet for the IP address, this address may be different...
     xdebug.remote_host = 192.168.10.1
     xdebug.remote_autostart = 1
 
@@ -725,7 +728,7 @@ Next, you need to update the Homestead source code. If you cloned the repository
 
 These commands pull the latest Homestead code from the GitHub repository, fetches the latest tags, and then checks out the latest tagged release. You can find the latest stable release version on the [GitHub releases page](https://github.com/laravel/homestead/releases).
 
-If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^9"` and update your dependencies:
+If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^10"` and update your dependencies:
 
     composer update
 

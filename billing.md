@@ -42,6 +42,7 @@
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
     - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
     - [Off-session Payment Notifications](#off-session-payment-notifications)
+- [Stripe SDK](#stripe-sdk)
 
 <a name="introduction"></a>
 ## Introduction
@@ -183,16 +184,17 @@ Next, the Stripe.js library may be used to attach a Stripe Element to the form a
         cardElement.mount('#card-element');
     </script>
 
-Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `handleCardSetup` method](https://stripe.com/docs/stripe-js/reference#stripe-handle-card-setup):
+Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `confirmCardSetup` method](https://stripe.com/docs/js/setup_intents/confirm_card_setup):
 
     const cardHolderName = document.getElementById('card-holder-name');
     const cardButton = document.getElementById('card-button');
     const clientSecret = cardButton.dataset.secret;
 
     cardButton.addEventListener('click', async (e) => {
-        const { setupIntent, error } = await stripe.handleCardSetup(
-            clientSecret, cardElement, {
-                payment_method_data: {
+        const { setupIntent, error } = await stripe.confirmCardSetup(
+            clientSecret, {
+                payment_method: {
+                    card: cardElement,
                     billing_details: { name: cardHolderName.value }
                 }
             }
@@ -207,7 +209,7 @@ Next, the card can be verified and a secure "payment method identifier" can be r
 
 After the card has been verified by Stripe, you may pass the resulting `setupIntent.payment_method` identifier to your Laravel application, where it can be attached to the customer. The payment method can either be [added as a new payment method](#adding-payment-methods) or [used to update the default payment method](#updating-the-default-payment-method). You can also immediately use the payment method identifier to [create a new subscription](#creating-subscriptions).
 
-> {tip} If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/cards/saving-cards#saving-card-without-payment).
+> {tip} If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/save-and-reuse#php).
 
 #### Payment Methods For Single Charges
 
@@ -383,7 +385,7 @@ The `subscribedToPlan` method may be used to determine if the user is subscribed
     if ($user->subscribedToPlan('monthly', 'default')) {
         //
     }
-    
+
 By passing an array to the `subscribedToPlan` method, you may determine if the user's `default` subscription is actively subscribed to the `monthly` or the `yearly` plan:
 
     if ($user->subscribedToPlan(['monthly', 'yearly'], 'default')) {
@@ -476,6 +478,14 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice('provider-plan-id');
 
+#### Prorations
+
+By default, Stripe prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
+
+    $user->subscription('default')->noProrate()->swap('provider-plan-id');
+
+For more information on subscription proration, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/prorations).
+
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
 
@@ -497,7 +507,7 @@ Alternatively, you may set a specific quantity using the `updateQuantity` method
 
     $user->subscription('default')->updateQuantity(10);
 
-The `noProrate` method may be used to update the subscription's quantity without pro-rating the charges:
+The `noProrate` method may be used to update the subscription's quantity without prorating the charges:
 
     $user->subscription('default')->noProrate()->updateQuantity(10);
 
@@ -832,7 +842,7 @@ Incomplete payment exceptions may be thrown for the following methods: `charge`,
 
 #### Incomplete and Past Due State
 
-When a payment needs additional confirmation, the subscription will remain in an `incomplete` or `past_due` state as indicated by its `stripe_status` database column. Cashier will make automatically activate the customer's subscription via a webhook as soon as payment confirmation is complete.
+When a payment needs additional confirmation, the subscription will remain in an `incomplete` or `past_due` state as indicated by its `stripe_status` database column. Cashier will automatically activate the customer's subscription via a webhook as soon as payment confirmation is complete.
 
 For more information on `incomplete` and `past_due` states, please refer to [our additional documentation](#incomplete-and-past-due-status).
 
@@ -846,3 +856,12 @@ Since SCA regulations require customers to occasionally verify their payment det
 To ensure that off-session payment confirmation notifications are delivered, verify that [Stripe webhooks are configured](#handling-stripe-webhooks) for your application and the `invoice.payment_action_required` webhook is enabled in your Stripe dashboard. In addition, your `Billable` model should also use Laravel's `Illuminate\Notifications\Notifiable` trait.
 
 > {note} Notifications will be sent even when customers are manually making a payment that requires additional confirmation. Unfortunately, there is no way for Stripe to know that the payment was done manually or "off-session". But, a customer will simply see a "Payment Successful" message if they visit the payment page after already confirming their payment. The customer will not be allowed to accidentally confirm the same payment twice and incur an accidental second charge.
+
+<a name="stripe-sdk"></a>
+## Stripe SDK
+
+Many of Cashier's objects are wrappers around Stripe SDK objects. If you would like to interact with the Stripe objects directly, you may conveniently retrieve them using the `asStripe` method:
+
+    $stripeSubscription = $subscription->asStripeSubscription();
+
+    $stripeSubscription->update(['application_fee_percent' => 5]);

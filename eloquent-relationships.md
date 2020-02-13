@@ -55,6 +55,8 @@ Eloquent relationships are defined as methods on your Eloquent model classes. Si
 
 But, before diving too deep into using relationships, let's learn how to define each type.
 
+> {note} Relationship names cannot collide with attribute names as that could lead to your model not being able to know which one to resolve.
+
 <a name="one-to-one"></a>
 ### One To One
 
@@ -223,7 +225,25 @@ If your parent model does not use `id` as its primary key, or you wish to join t
 <a name="many-to-many"></a>
 ### Many To Many
 
-Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of such a relationship is a user with many roles, where the roles are also shared by other users. For example, many users may have the role of "Admin". To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names, and contains the `user_id` and `role_id` columns.
+Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of such a relationship is a user with many roles, where the roles are also shared by other users. For example, many users may have the role of "Admin". 
+
+#### Table Structure
+
+To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names, and contains the `user_id` and `role_id` columns:
+
+    users
+        id - integer
+        name - string
+
+    roles
+        id - integer
+        name - string
+
+    role_user
+        user_id - integer
+        role_id - integer
+
+#### Model Structure
 
 Many-to-many relationships are defined by writing a method that returns the result of the `belongsToMany` method. For example, let's define the `roles` method on our `User` model:
 
@@ -926,7 +946,7 @@ You may use "dot" notation to execute a query against a nested relationship. For
     use Illuminate\Database\Eloquent\Builder;
 
     $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) {
-        $query->where('banned', 1);
+        $query->where('banned', 0);
     })->get();
 
 <a name="querying-polymorphic-relationships"></a>

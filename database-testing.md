@@ -4,6 +4,7 @@
 - [Generating Factories](#generating-factories)
 - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
 - [Writing Factories](#writing-factories)
+    - [Extending Factories](#extending-factories)
     - [Factory States](#factory-states)
     - [Factory Callbacks](#factory-callbacks)
 - [Using Factories](#using-factories)
@@ -29,7 +30,7 @@ Laravel provides a variety of helpful tools to make it easier to test your datab
 
 You can also use the `assertDatabaseMissing` helper to assert that data does not exist in the database.
 
-The `assertDatabaseHas` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
+The `assertDatabaseHas` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your feature tests.
 
 <a name="generating-factories"></a>
 ## Generating Factories
@@ -87,7 +88,7 @@ When testing, you may need to insert a few records into your database before exe
             'name' => $faker->name,
             'email' => $faker->unique()->safeEmail,
             'email_verified_at' => now(),
-            'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];
     });
@@ -97,6 +98,17 @@ Within the Closure, which serves as the factory definition, you may return the d
 You may also create additional factory files for each model for better organization. For example, you could create `UserFactory.php` and `CommentFactory.php` files within your `database/factories` directory. All of the files within the `factories` directory will automatically be loaded by Laravel.
 
 > {tip} You can set the Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
+
+<a name="extending-factories"></a>
+### Extending Factories
+
+If you have extended a model, you may wish to extend its factory as well in order to utilize the child model's factory attributes during testing and seeding. To accomplish this, you may call the factory builder's `raw` method to obtain the raw array of attributes from any given factory:
+
+    $factory->define(App\Admin::class, function (Faker\Generator $faker) {
+        return factory(App\User::class)->raw([
+            // ...
+        ]);
+    });
 
 <a name="factory-states"></a>
 ### Factory States
@@ -144,7 +156,7 @@ You may also define callbacks for [factory states](#factory-states):
 <a name="creating-models"></a>
 ### Creating Models
 
-Once you have defined your factories, you may use the global `factory` function in your tests or seed files to generate model instances. So, let's take a look at a few examples of creating models. First, we'll use the `make` method to create models but not save them to the database:
+Once you have defined your factories, you may use the global `factory` function in your feature tests or seed files to generate model instances. So, let's take a look at a few examples of creating models. First, we'll use the `make` method to create models but not save them to the database:
 
     public function testDatabase()
     {
@@ -243,7 +255,7 @@ If the relationship depends on the factory that defines it you may provide a cal
 <a name="using-seeds"></a>
 ## Using Seeds
 
-If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a test, you may use the `seed` method. By default, the `seed` method will return the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
+If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a feature test, you may use the `seed` method. By default, the `seed` method will return the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
 
     <?php
 
@@ -278,7 +290,7 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
 <a name="available-assertions"></a>
 ## Available Assertions
 
-Laravel provides several database assertions for your [PHPUnit](https://phpunit.de/) tests:
+Laravel provides several database assertions for your [PHPUnit](https://phpunit.de/) feature tests:
 
 Method  | Description
 ------------- | -------------
@@ -294,8 +306,8 @@ For example, if you are using a model factory in your test, you may pass this mo
     public function testDatabase()
     {
         $user = factory(App\User::class)->create();
-  
+
         // Make call to application...
-  
+
         $this->assertDeleted($user);
     }

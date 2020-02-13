@@ -85,20 +85,9 @@ Now that you have routes and views setup for the included authentication control
 
 #### Path Customization
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect location by defining a `redirectTo` property on the `LoginController`, `RegisterController`, `ResetPasswordController`, and `VerificationController`:
+When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect path using the `HOME` constant defined in your `RouteServiceProvider`:
 
-    protected $redirectTo = '/';
-
-Next, you should modify the `RedirectIfAuthenticated` middleware's `handle` method to use your new URI when redirecting the user.
-
-If the redirect path needs custom generation logic you may define a `redirectTo` method instead of a `redirectTo` property:
-
-    protected function redirectTo()
-    {
-        return '/path';
-    }
-
-> {tip} The `redirectTo` method will take precedence over the `redirectTo` property.
+    public const HOME = '/home';
 
 #### Username Customization
 
@@ -299,6 +288,14 @@ To log users out of your application, you may use the `logout` method on the `Au
 
     Auth::logout();
 
+Laravel also provides methods to log a user out of the application only on their current device, or to log a user out of the application on their other devices:
+
+    Auth::logoutCurrentDevice();
+
+    Auth::logoutOtherDevices();
+
+> {note} Before using the `logoutOtherDevices` method, ensure that the `Illuminate\Session\Middleware\AuthenticateSession::class` middleware is present and active on your HTTP kernel's `web` [middleware group](/docs/{{version}}/middleware#middleware-groups).
+
 <a name="remembering-users"></a>
 ### Remembering Users
 
@@ -412,7 +409,9 @@ To manually log users out of your application, you may use the `logout` method o
 <a name="invalidating-sessions-on-other-devices"></a>
 ### Invalidating Sessions On Other Devices
 
-Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is present and un-commented in your `app/Http/Kernel.php` class' `web` middleware group:
+Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. This feature is typically utilized when a user is changing or updating their password and you would like to invalidate sessions on other devices while keeping the current device authenticated.
+
+Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is present and un-commented in your `app/Http/Kernel.php` class' `web` middleware group:
 
     'web' => [
         // ...
@@ -426,7 +425,9 @@ Then, you may use the `logoutOtherDevices` method on the `Auth` facade. This met
 
     Auth::logoutOtherDevices($password);
 
-> {note} When the `logoutOtherDevices` method is invoked, the user's other sessions will be invalidated entirely, meaning they will be "logged out" of all guards they were previously authenticated by.
+When the `logoutOtherDevices` method is invoked, the user's other sessions will be invalidated entirely, meaning they will be "logged out" of all guards they were previously authenticated by.
+
+> {note} When using the `AuthenticateSession` middleware in combination with a custom route name for the `login` route, you must override the `unauthenticated` method on your application's exception handler to properly redirect users to your login page.
 
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards

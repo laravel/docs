@@ -278,11 +278,15 @@ When sending notifications via the `mail` channel, the notification system will 
          * Route notifications for the mail channel.
          *
          * @param  \Illuminate\Notifications\Notification  $notification
-         * @return string
+         * @return array|string
          */
         public function routeNotificationForMail($notification)
         {
+            // Return email address only...
             return $this->email_address;
+
+            // Return name and email address...
+            return [$this->email_address => $this->name];
         }
     }
 

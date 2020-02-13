@@ -12,6 +12,7 @@
     - [Authorizing Form Requests](#authorizing-form-requests)
     - [Customizing The Error Messages](#customizing-the-error-messages)
     - [Customizing The Validation Attributes](#customizing-the-validation-attributes)
+    - [Prepare Input For Validation](#prepare-input-for-validation)
 - [Manually Creating Validators](#manually-creating-validators)
     - [Automatic Redirection](#automatic-redirection)
     - [Named Error Bags](#named-error-bags)
@@ -30,7 +31,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides several different approaches to validate your application's incoming data. By default, Laravel's base controller class uses a `ValidatesRequests` trait which provides a convenient method to validate incoming HTTP request with a variety of powerful validation rules.
+Laravel provides several different approaches to validate your application's incoming data. By default, Laravel's base controller class uses a `ValidatesRequests` trait which provides a convenient method to validate incoming HTTP requests with a variety of powerful validation rules.
 
 <a name="validation-quickstart"></a>
 ## Validation Quickstart
@@ -337,6 +338,25 @@ If you would like the `:attribute` portion of your validation message to be repl
         return [
             'email' => 'email address',
         ];
+    }
+
+<a name="prepare-input-for-validation"></a>
+### Prepare Input For Validation
+
+If you need to sanitize any data from the request before you apply your validation rules, you can use the `prepareForValidation` method:
+
+    use Illuminate\Support\Str;
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'slug' => Str::slug($this->slug),
+        ]);
     }
 
 <a name="manually-creating-validators"></a>
@@ -790,18 +810,14 @@ The `filter` validator, which uses PHP's `filter_var` function under the hood, s
 The field under validation must end with one of the given values.
 
 <a name="rule-exclude-if"></a>
-#### exclude_if:_field_,_value_,...
+#### exclude_if:_anotherfield_,_value_
 
-The field under validation should not be validated if the given _field_ does not have the given value:
-
-    'appointment_date' => 'exclude_if:has_appointment,false|required|date'
+The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is equal to _value_.
 
 <a name="rule-exclude-unless"></a>
-#### exclude_unless:_field_,_value_,...
+#### exclude_unless:_anotherfield_,_value_
 
-The field under validation should not be validated unless the given _field_ has the given value:
-
-    'appointment_date' => 'exclude_unless:has_appointment,true|required|date'
+The field under validation will be excluded from the request data returned by the `validate` and `validated` methods unless _anotherfield_'s field is equal to _value_.
 
 <a name="rule-exists"></a>
 #### exists:_table_,_column_

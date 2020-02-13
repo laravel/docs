@@ -257,7 +257,7 @@ If you would like to perform a "left join" or "right join" instead of an "inner 
 To perform a "cross join" use the `crossJoin` method with the name of the table you wish to cross join to. Cross joins generate a cartesian product between the first table and the joined table:
 
     $users = DB::table('sizes')
-                ->crossJoin('colours')
+                ->crossJoin('colors')
                 ->get();
 
 #### Advanced Join Clauses
@@ -279,9 +279,9 @@ If you would like to use a "where" style clause on your joins, you may use the `
             })
             ->get();
 
-#### Sub-Query Joins
+#### Subquery Joins
 
-You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a sub-query. Each of these methods receive three arguments: the sub-query, its table alias, and a Closure that defines the related columns:
+You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receive three arguments: the subquery, its table alias, and a Closure that defines the related columns:
 
     $latestPosts = DB::table('posts')
                        ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
@@ -352,6 +352,18 @@ You may chain where constraints together as well as add `or` clauses to the quer
                         ->where('votes', '>', 100)
                         ->orWhere('name', 'John')
                         ->get();
+
+If you need to group an "or" condition within parentheses, you may pass a Closure as the first argument to the `orWhere` method:
+
+    $users = DB::table('users')
+                ->where('votes', '>', 100)
+                ->orWhere(function($query) {
+                    $query->where('name', 'Abigail')
+                          ->where('votes', '>', 50);
+                })
+                ->get();
+
+    // SQL: select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 
 #### Additional Where Clauses
 

@@ -66,7 +66,7 @@ The `papertrail` channel requires the `url` and `port` configuration options. Yo
 
 #### Configuring The Slack Channel
 
-The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
+The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team. By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this in your `logging` configuration file.
 
 <a name="building-log-stacks"></a>
 ### Building Log Stacks

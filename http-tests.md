@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
     - [Customizing Request Headers](#customizing-request-headers)
+    - [Cookies](#cookies)
     - [Debugging Responses](#debugging-responses)
 - [Session / Authentication](#session-and-authentication)
 - [Testing JSON APIs](#testing-json-apis)
@@ -13,7 +14,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides a very fluent API for making HTTP requests to your application and examining the output. For example, take a look at the test defined below:
+Laravel provides a very fluent API for making HTTP requests to your application and examining the output. For example, take a look at the feature test defined below:
 
     <?php
 
@@ -70,10 +71,30 @@ You may use the `withHeaders` method to customize the request's headers before i
 
 > {tip} The CSRF middleware is automatically disabled when running tests.
 
+<a name="cookies"></a>
+### Cookies
+
+You may use the `withCookie` or `withCookies` methods to set cookie values before making a request. The `withCookie` method accepts a cookie name and value as its two arguments, while the `withCookies` method accepts an array of name / value pairs:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        public function testCookies()
+        {
+            $response = $this->withCookie('color', 'blue')->get('/');
+
+            $response = $this->withCookies([
+                'color' => 'blue',
+                'name' => 'Taylor',
+            ])->get('/');
+        }
+    }
+
 <a name="debugging-responses"></a>
 ### Debugging Responses
 
-After making a test request to your application, the `dump` and `dumpHeaders` methods may be used to examine and debug the response contents:
+After making a test request to your application, the `dump`, `dumpHeaders`, and `dumpSession` methods may be used to examine and debug the response contents:
 
     <?php
 
@@ -95,6 +116,8 @@ After making a test request to your application, the `dump` and `dumpHeaders` me
             $response = $this->get('/');
 
             $response->dumpHeaders();
+
+            $response->dumpSession();
 
             $response->dump();
         }
@@ -265,13 +288,17 @@ In addition to creating images, you may create files of any other type using the
 
     UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
 
+If needed, you may pass a `$mimeType` argument to the method to explicitly define the MIME type that should be returned by the file:
+
+    UploadedFile::fake()->create('document.pdf', $sizeInKilobytes, 'application/pdf');
+
 <a name="available-assertions"></a>
 ## Available Assertions
 
 <a name="response-assertions"></a>
 ### Response Assertions
 
-Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) tests. These assertions may be accessed on the response that is returned from the `json`, `get`, `post`, `put`, and `delete` test methods:
+Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) feature tests. These assertions may be accessed on the response that is returned from the `json`, `get`, `post`, `put`, and `delete` test methods:
 
 <style>
     .collection-method-list > p {
@@ -656,7 +683,7 @@ Assert that the response view is missing a piece of bound data:
 <a name="authentication-assertions"></a>
 ### Authentication Assertions
 
-Laravel also provides a variety of authentication related assertions for your [PHPUnit](https://phpunit.de/) tests:
+Laravel also provides a variety of authentication related assertions for your [PHPUnit](https://phpunit.de/) feature tests:
 
 Method  | Description
 ------------- | -------------

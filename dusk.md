@@ -248,6 +248,14 @@ The `maximize` method may be used to maximize the browser window:
 
     $browser->maximize();
 
+The `fitContent` method will resize the browser window to match the size of the content:
+
+    $browser->fitContent();
+
+When a test fails, Dusk will automatically resize the browser to fit the content prior to taking a screenshot. You may disable this feature by calling the `disableFitOnFailure` method within your test:
+
+    $browser->disableFitOnFailure();
+
 <a name="browser-macros"></a>
 ### Browser Macros
 
@@ -440,7 +448,7 @@ You may even send a "hot key" to the primary CSS selector that contains your app
 
     $browser->keys('.app', ['{command}', 'j']);
 
-> {tip} All modifier keys are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/facebook/php-webdriver/blob/community/lib/WebDriverKeys.php).
+> {tip} All modifier keys are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
 
 <a name="using-the-mouse"></a>
 ### Using The Mouse
@@ -547,6 +555,14 @@ The `waitForText` method may be used to wait until the given text is displayed o
 
     // Wait a maximum of one second for the text...
     $browser->waitForText('Hello World', 1);
+
+You may use the `waitUntilMissingText` method to wait until the displayed text has been removed from the page:
+
+    // Wait a maximum of five seconds for the text to be removed...
+    $browser->waitUntilMissingText('Hello World');
+
+    // Wait a maximum of one second for the text to be removed...
+    $browser->waitUntilMissingText('Hello World', 1);
 
 #### Waiting For Links
 
@@ -1261,7 +1277,7 @@ Components are similar to Dusk’s “page objects”, but are intended for piec
 <a name="generating-components"></a>
 ### Generating Components
 
-To generate a component, use the `dusk:component` Artisan command. New components are placed in the `test/Browser/Components` directory:
+To generate a component, use the `dusk:component` Artisan command. New components are placed in the `tests/Browser/Components` directory:
 
     php artisan dusk:component DatePicker
 
@@ -1326,7 +1342,7 @@ As shown above, a "date picker" is an example of a component that might exist th
             $browser->click('@date-field')
                     ->within('@year-list', function ($browser) use ($year) {
                         $browser->click($year);
-                    });
+                    })
                     ->within('@month-list', function ($browser) use ($month) {
                         $browser->click($month);
                     })
@@ -1494,8 +1510,8 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
           - name: Upgrade Chrome Driver
             run: php artisan dusk:chrome-driver
           - name: Start Chrome Driver
-            run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+            run: ./vendor/laravel/dusk/bin/chromedriver-linux &
           - name: Run Laravel Server
-            run: php artisan serve > /dev/null 2>&1 &
+            run: php artisan serve &
           - name: Run Dusk Tests
             run: php artisan dusk
