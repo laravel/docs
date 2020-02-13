@@ -66,7 +66,7 @@ Within both of these methods you may use the Laravel schema builder to expressiv
         public function up()
         {
             Schema::create('flights', function (Blueprint $table) {
-                $table->bigIncrements('id');
+                $table->id();
                 $table->string('name');
                 $table->string('airline');
                 $table->timestamps();
@@ -144,7 +144,7 @@ The `migrate:fresh` command will drop all tables from the database and then exec
 To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments. The first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object that may be used to define the new table:
 
     Schema::create('users', function (Blueprint $table) {
-        $table->bigIncrements('id');
+        $table->id();
     });
 
 When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
@@ -166,7 +166,7 @@ You may easily check for the existence of a table or column using the `hasTable`
 If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
 
     Schema::connection('foo')->create('users', function (Blueprint $table) {
-        $table->bigIncrements('id');
+        $table->id();
     });
 
 You may use the following commands on the schema builder to define the table's options:
@@ -213,6 +213,8 @@ The schema builder contains a variety of column types that you may specify when 
 
 Command  |  Description
 -------  |  -----------
+`$table->id();`  |  Alias of `$table->bigIncrements('id')`.
+`$table->foreignId('user_id');`  |  Alias of `$table->unsignedBigInteger('user_id')`.
 `$table->bigIncrements('id');`  |  Auto-incrementing UNSIGNED BIGINT (primary key) equivalent column.
 `$table->bigInteger('votes');`  |  BIGINT equivalent column.
 `$table->binary('data');`  |  BLOB equivalent column.
@@ -322,7 +324,7 @@ The `default` modifier accepts a value or an `\Illuminate\Database\Query\Express
         public function up()
         {
             Schema::create('flights', function (Blueprint $table) {
-                $table->bigIncrements('id');
+                $table->id();
                 $table->json('movies')->default(new Expression('(JSON_ARRAY())'));
                 $table->timestamps();
             });
@@ -482,10 +484,18 @@ Laravel also provides support for creating foreign key constraints, which are us
         $table->foreign('user_id')->references('id')->on('users');
     });
 
+Since this syntax is rather verbose, Laravel provides additional, terser methods that use convention to provide a better developer experience. For example, the example above you could be written like so:
+
+    Schema::table('posts', function (Blueprint $table) {
+        $table->foreignId('user_id')->constrained();
+    });
+
+The `foreignId` method is an alias for `unsignedBigInteger` while the `constrained` method will use convention to determine the table and column name being referenced.
+
 You may also specify the desired action for the "on delete" and "on update" properties of the constraint:
 
-    $table->foreign('user_id')
-          ->references('id')->on('users')
+    $table->foreignId('user_id')
+          ->constrained()
           ->onDelete('cascade');
 
 To drop a foreign key, you may use the `dropForeign` method. Foreign key constraints use the same naming convention as indexes. So, we will concatenate the table name and the columns in the constraint then suffix the name with "\_foreign":
