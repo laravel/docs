@@ -1,6 +1,6 @@
 # Upgrade Guide
 
-- [Upgrading To 6.0 From 5.8](#upgrade-6.0)
+- [Upgrading to 6.0 From 5.8](#upgrade-6.0)
 
 <a name="high-impact-changes"></a>
 ## High Impact Changes
@@ -29,15 +29,15 @@
 </div>
 
 <a name="upgrade-6.0"></a>
-## Upgrading To 6.0 From 5.8
+## Upgrading to 6.0 From 5.8
 
 #### Estimated Upgrade Time: One Hour
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework, only a portion of these changes may actually affect your application.
 
 ### PHP 7.2 Required
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 PHP 7.1 will no longer be actively maintained as of December 2019. Therefore, Laravel 6.0 requires PHP 7.2 or greater.
 
@@ -53,13 +53,13 @@ Next, examine any 3rd party packages consumed by your application and verify you
 <a name="authorized-resources"></a>
 #### Authorized Resources & `viewAny`
 
-**Likelihood Of Impact: High**
+**Likelihood of Impact: High**
 
 Authorization policies attached to controllers using the `authorizeResource` method should now define a `viewAny` method, which will be called when a user accesses the controller's `index` method. Otherwise, calls to the `index` method of the controller will be rejected as unauthorized.
 
 #### Authorization Responses
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 The constructor signature of the `Illuminate\Auth\Access\Response` class has changed. You should update your code accordingly. If you are not constructing authorization responses manually and are only using the `allow` and `deny` instance methods within your policies, no change is required:
 
@@ -75,7 +75,7 @@ The constructor signature of the `Illuminate\Auth\Access\Response` class has cha
 
 #### Returning "Deny" Responses
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 In previous releases of Laravel, you did not need to return the value of the `deny` method from your policy methods since an exception was thrown immediately. However, in accordance with the Laravel documentation, you must now return the value of the `deny` method from your policies:
 
@@ -91,7 +91,7 @@ In previous releases of Laravel, you did not need to return the value of the `de
 <a name="auth-access-gate-contract"></a>
 #### The `Illuminate\Contracts\Auth\Access\Gate` Contract
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect` method. If you are implementing this interface manually, you should add this method to your implementation.
 
@@ -100,7 +100,7 @@ The `Illuminate\Contracts\Auth\Access\Gate` contract has received a new `inspect
 <a name="carbon-support"></a>
 #### Carbon 1.x No Longer Supported
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 Carbon 1.x [is no longer supported](https://github.com/laravel/framework/pull/28683) since it is nearing its maintenance end of life. Please upgrade your application to Carbon 2.0.
 
@@ -108,21 +108,21 @@ Carbon 1.x [is no longer supported](https://github.com/laravel/framework/pull/28
 
 #### The `AWS_REGION` Environment Variable
 
-**Likelihood Of Impact: Optional**
+**Likelihood of Impact: Optional**
 
 If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update all occurrences of `AWS_REGION` within your `config` directory to `AWS_DEFAULT_REGION`. In addition, you should update this environment variable's name in your `.env` file.
 
 <a name="redis-default-client"></a>
 #### Redis Default Client
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 The default Redis client has changed from `predis` to `phpredis`. In order to keep using `predis`, ensure the `redis.client` configuration option is set to `predis` in your `config/database.php` configuration file.
 
 <a name="dynamodb-cache-store"></a>
 #### DynamoDB Cache Store
 
-**Likelihood Of Impact: Optional**
+**Likelihood of Impact: Optional**
 
 If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update your `config/cache.php` file to include the `dynamodb` store.
 
@@ -146,7 +146,7 @@ If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should up
 <a name="sqs-environment-variables"></a>
 #### SQS Environment Variables
 
-**Likelihood Of Impact: Optional**
+**Likelihood of Impact: Optional**
 
 If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should update your `config/queue.php` file to include the updated `sqs` connection environment variables.
 
@@ -172,7 +172,7 @@ If you plan to utilize [Laravel Vapor](https://vapor.laravel.com), you should up
 <a name="capsule-table"></a>
 #### The Capsule `table` Method
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 > {note} This change only applies to non-Laravel applications that are using `illuminate/database` as a dependency.
 
@@ -191,7 +191,7 @@ updated to accept a table alias as its second argument. If you are using `illumi
 
 #### The `cursor` Method
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 The `cursor` method now returns an instance of `Illuminate\Support\LazyCollection` instead of a `Generator` The `LazyCollection` may be iterated just like a generator:
 
@@ -207,7 +207,7 @@ The `cursor` method now returns an instance of `Illuminate\Support\LazyCollectio
 <a name="belongs-to-update"></a>
 #### The `BelongsTo::update` Method
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 For consistency, the `update` method of the `BelongsTo` relationship now functions as an ad-hoc update query, meaning it does not provide mass assignment protection or fire Eloquent events. This makes the relationship consistent with the `update` methods on all other types of relationships.
 
@@ -222,14 +222,14 @@ If you would like to update a model attached via a `BelongsTo` relationship and 
 <a name="eloquent-to-array"></a>
 #### Arrayable & `toArray`
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 The Eloquent model's `toArray` method will now cast any attributes that implement `Illuminate\Contracts\Support\Arrayable` to an array.
 
 <a name="eloquent-primary-key-type"></a>
-#### Declaration Of Primary Key Type
+#### Declaration of Primary Key Type
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 Laravel 6.0 has received [performance optimizations](https://github.com/laravel/framework/pull/28153) for integer key types. If you are using a string as your model's primary key, you should declare the key type using the `$keyType` property on your model:
 
@@ -245,7 +245,7 @@ Laravel 6.0 has received [performance optimizations](https://github.com/laravel/
 <a name="email-verification-route"></a>
 #### Resend Verification Route HTTP Method
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 To prevent possible CSRF attacks, the `email/resend` route registered by the router when using Laravel's built-in email verification has been updated from a `GET` route to a `POST` route. Therefore, you will need to update your frontend to send the proper request type to this route. For example, if you are using the built-in email verification template scaffolding:
 
@@ -263,14 +263,14 @@ To prevent possible CSRF attacks, the `email/resend` route registered by the rou
 <a name="mustverifyemail-contract"></a>
 #### The `MustVerifyEmail` Contract
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 A new `getEmailForVerification` method has been added to the `Illuminate\Contracts\Auth\MustVerifyEmail` contract. If you are manually implementing this contract, you should implement this method. This method should return the object's associated email address. If your `App\User` model is using the `Illuminate\Auth\MustVerifyEmail` trait, no changes are required, as this trait implements this method for you.
 
 <a name="email-verification-route-change"></a>
 #### Email Verification Route Change
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 The route path for verifying emails has changed from `/email/verify/{id}` to `/email/verify/{id}/{hash}`. Any email verification emails that were sent prior to upgrading to Laravel 6.x will not longer be valid and will display a 404 page. If you wish, you may define a route matching the old verification URL path and display an informative message for your users that asks them to re-verify their email address.
 
@@ -279,7 +279,7 @@ The route path for verifying emails has changed from `/email/verify/{id}` to `/e
 
 #### String & Array Helpers Package
 
-**Likelihood Of Impact: High**
+**Likelihood of Impact: High**
 
 All `str_` and `array_` helpers have been moved to the new `laravel/helpers` Composer package and removed from the framework. If desired, you may update all calls to these helpers to use the `Illuminate\Support\Str` and `Illuminate\Support\Arr` classes. Alternatively, you can add the new `laravel/helpers` package to your application to continue using these helpers:
 
@@ -290,7 +290,7 @@ All `str_` and `array_` helpers have been moved to the new `laravel/helpers` Com
 <a name="trans-and-trans-choice"></a>
 #### The `Lang::trans` & `Lang::transChoice` Methods
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 The `Lang::trans` and `Lang::transChoice` methods of the translator have been renamed to `Lang::get` and `Lang::choice`.
 
@@ -299,7 +299,7 @@ In addition, if you are manually implementing the `Illuminate\Contracts\Translat
 <a name="get-from-json"></a>
 #### The `Lang::getFromJson` Method
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 The `Lang::get` and `Lang::getFromJson` methods have been consolidated. Calls to the `Lang::getFromJson` method should be updated to call `Lang::get`.
 
@@ -309,7 +309,7 @@ The `Lang::get` and `Lang::getFromJson` methods have been consolidated. Calls to
 
 #### Mandrill & SparkPost Drivers Removed
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 The `mandrill` and `sparkpost` mail drivers have been removed. If you would like to continue using either of these drivers, we encourage you to adopt a community maintained package of your choice that provides the driver.
 
@@ -317,7 +317,7 @@ The `mandrill` and `sparkpost` mail drivers have been removed. If you would like
 
 #### Nexmo Routing Removed
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 A lingering part of the Nexmo notification channel was removed from the core of the framework. If you're relying on routing Nexmo notifications you should manually implement the `routeNotificationForNexmo` method on your notifiable entity [as described in the documentation](/docs/{{version}}/notifications#routing-sms-notifications).
 
@@ -325,7 +325,7 @@ A lingering part of the Nexmo notification channel was removed from the core of 
 
 #### Password Validation
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 The `PasswordBroker` no longer restricts or validates passwords. Password validation was already being handled by the `ResetPasswordController` class, making the broker's validations redundant and impossible to customize. If you are manually using the `PasswordBroker` (or `Password` facade) outside of the built-in `ResetPasswordController`, you should validate all passwords before passing them to the broker.
 
@@ -334,7 +334,7 @@ The `PasswordBroker` no longer restricts or validates passwords. Password valida
 <a name="queue-retry-limit"></a>
 #### Queue Retry Limit
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 In previous releases of Laravel, the `php artisan queue:work` command would retry jobs indefinitely. Beginning with Laravel 6.0, this command will now try a job one time by default. If you would like to force jobs to be tried indefinitely, you may pass `0` to the `--tries` option:
 
@@ -349,7 +349,7 @@ In addition, please ensure your application's database contains a `failed_jobs` 
 <a name="the-input-facade"></a>
 #### The `Input` Facade
 
-**Likelihood Of Impact: Medium**
+**Likelihood of Impact: Medium**
 
 The `Input` facade, which was primarily a duplicate of the `Request` facade, has been removed. If you are using the `Input::get` method, you should now call the `Request::input` method. All other calls to the `Input` facade may simply be updated to use the `Request` facade.
 
@@ -357,7 +357,7 @@ The `Input` facade, which was primarily a duplicate of the `Request` facade, has
 
 #### The `between` Method
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 In previous releases of Laravel, the scheduler's `between` method exhibited confusing behavior across date boundaries. For example:
 
@@ -370,7 +370,7 @@ For most users, the expected behavior of this method would be to run the `list` 
 <a name="rackspace-storage-driver"></a>
 #### Rackspace Storage Driver Removed
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 The `rackspace` storage driver has been removed. If you would like to continue using Rackspace as a storage provider, we encourage you to adopt a community maintained package of your choice that provides this driver.
 
@@ -404,7 +404,7 @@ The `action` helper and `URL::action` method are also affected by this change:
 
 #### FormRequest `validationData` Method
 
-**Likelihood Of Impact: Low**
+**Likelihood of Impact: Low**
 
 The form request's `validationData` method was changed from `protected` to `public`. If you are overriding this method in your implementation, you should update the visibility to `public`.
 
