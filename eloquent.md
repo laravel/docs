@@ -721,7 +721,8 @@ You may create an unsaved copy of a model instance by using the `replicate` func
         'postcode' => '90001',
     ]);
 
-    $billingAddress = $shippingAddress->replicate(['type' => 'billing']);
+    $billingAddress = $shippingAddress->replicate()
+        ->fill(['type' => 'billing']);
     
     $billingAddress->save();
 
