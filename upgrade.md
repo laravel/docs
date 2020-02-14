@@ -141,7 +141,7 @@ If you would like to keep using the previous behavior you can override the `seri
         return $date->format('Y-m-d H:i:s');
     }
 
-> {tip} This change only affects serialization of models and model collections to arrays and JSON. This change has no affect on how dates are stored in your database.
+> {tip} This change only affects serialization of models and model collections to arrays and JSON. This change has no effect on how dates are stored in your database.
 
 <a name="factory-types"></a>
 #### Factory Types
