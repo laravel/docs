@@ -707,13 +707,13 @@ Sometimes you may need to truly remove a model from your database. To permanentl
 
     // Force deleting all related models...
     $flight->history()->forceDelete();
-    
+
 <a name="replicating-models"></a>
 ## Replicating Models
 
-You may create an unsaved copy of a model instance by using the `replicate` function. This is particularly helpful when you want to have a few model instances that share mostly the same attributes. 
+You may create an unsaved copy of a model instance using the `replicate` method. This is particularly useful when you have model instances that share many of the same attributes:
 
-    $shippingAddress = App\Address::create([
+    $shipping = App\Address::create([
         'type' => 'shipping',
         'line_1' => '123 Example Street',
         'city' => 'Victorville',
@@ -721,10 +721,11 @@ You may create an unsaved copy of a model instance by using the `replicate` func
         'postcode' => '90001',
     ]);
 
-    $billingAddress = $shippingAddress->replicate()
-        ->fill(['type' => 'billing']);
-    
-    $billingAddress->save();
+    $billing = $shipping->replicate()->fill([
+        'type' => 'billing'
+    ]);
+
+    $billing->save();
 
 <a name="query-scopes"></a>
 ## Query Scopes
