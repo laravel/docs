@@ -18,6 +18,7 @@
 - [Deleting Models](#deleting-models)
     - [Soft Deleting](#soft-deleting)
     - [Querying Soft Deleted Models](#querying-soft-deleted-models)
+- [Replicating Models](#replicating-models)
 - [Query Scopes](#query-scopes)
     - [Global Scopes](#global-scopes)
     - [Local Scopes](#local-scopes)
@@ -706,6 +707,23 @@ Sometimes you may need to truly remove a model from your database. To permanentl
 
     // Force deleting all related models...
     $flight->history()->forceDelete();
+    
+<a name="replicating-models"></a>
+## Replicating Models
+
+You may create an unsaved copy of a model instance by using the `replicate` function. This is particularly helpful when you want to have a few model instances that share mostly the same attributes. 
+
+    $shippingAddress = App\Address::create([
+        'type' => 'shipping',
+        'line_1' => '123 Example Street',
+        'city' => 'Victorville',
+        'state' => 'CA',
+        'postcode' => '90001',
+    ]);
+
+    $billingAddress = $shippingAddress->replicate(['type' => 'billing']);
+    
+    $billingAddress->save();
 
 <a name="query-scopes"></a>
 ## Query Scopes
