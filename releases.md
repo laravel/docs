@@ -41,7 +41,7 @@ Laravel 6 provides compatibility with [Laravel Vapor](https://vapor.laravel.com)
 
 ### Improved Exceptions Via Ignition
 
-Laravel 6 ships with [Ignition](https://github.com/facade/ignition), a new open source exception detail page created by Freek Van der Herten and Marcel Pociot. Ignition offers many benefits over previous releases, such as improved Blade error file and line number handling, runnable solutions for common problems, code editing, exception sharing, and an improved UX.
+Laravel 6 ships with [Ignition](https://github.com/facade/ignition), a new open source exception detail page created by [Freek Van der Herten](https://github.com/freekmurze)and [Marcel Pociot](https://github.com/mpociot). Ignition offers many benefits over previous releases, such as improved Blade error file and line number handling, runnable solutions for common problems, code editing, exception sharing, and an improved UX.
 
 ### Improved Authorization Responses
 
