@@ -117,7 +117,7 @@ The undocumented `addHidden` and `addVisible` methods have been removed. Instead
 
 **Likelihood Of Impact: Low**
 
-The `booting` and `booted` methods have been added to Eloquent to provide a place to conveniently defined any logic that should execute during the model "boot" process. If you already have model methods with these names, you will need to rename your methods so they do not conflict with the newly added methods.
+The `booting` and `booted` methods have been added to Eloquent to provide a place to conveniently define any logic that should execute during the model "boot" process. If you already have model methods with these names, you will need to rename your methods so they do not conflict with the newly added methods.
 
 <a name="date-serialization"></a>
 #### Date Serialization
