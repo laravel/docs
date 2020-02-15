@@ -188,7 +188,7 @@ The default Markdown mail templates have been refreshed with a more professional
 
 **Likelihood Of Impact: Low**
 
-The deprecated `--daemon` flag on the `queue:work` command has been removed. This flag is no longer necessary as the working runs as a daemon by default.
+The deprecated `--daemon` flag on the `queue:work` command has been removed. This flag is no longer necessary as the worker runs as a daemon by default.
 
 ### Resources
 
