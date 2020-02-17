@@ -57,7 +57,7 @@ Laravel ships with several pre-built authentication controllers, which are locat
 
 Laravel's `laravel/ui` package provides a quick way to scaffold all of the routes and views you need for authentication using a few simple commands:
 
-    composer require laravel/ui --dev
+    composer require laravel/ui
 
     php artisan ui vue --auth
 
