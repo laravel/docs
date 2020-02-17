@@ -2367,8 +2367,8 @@ The `whereIn` method filters the collection by a given key / value contained wit
 
     /*
         [
-            ['product' => 'Bookcase', 'price' => 150],
             ['product' => 'Desk', 'price' => 200],
+            ['product' => 'Bookcase', 'price' => 150],
         ]
     */
 
