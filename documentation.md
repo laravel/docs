@@ -77,6 +77,7 @@
     - [Database](/docs/{{version}}/database-testing)
     - [Mocking](/docs/{{version}}/mocking)
 - ## Official Packages
+    - [Airlock](/docs/{{version}}/airlock)
     - [Cashier](/docs/{{version}}/billing)
     - [Dusk](/docs/{{version}}/dusk)
     - [Envoy](/docs/{{version}}/envoy)
