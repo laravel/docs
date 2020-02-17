@@ -4,7 +4,12 @@
 - [Template Inheritance](#template-inheritance)
     - [Defining A Layout](#defining-a-layout)
     - [Extending A Layout](#extending-a-layout)
-- [Components & Slots](#components-and-slots)
+- [Components](#components)
+    - [Displaying Components](#displaying-components)
+    - [Passing Data To Components](#passing-data-to-components)
+    - [Managing Attributes](#managing-attributes)
+    - [Slots](#slots)
+- [Anonymous Components](#anonymous-components)
 - [Displaying Data](#displaying-data)
     - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
 - [Control Structures](#control-structures)
@@ -94,76 +99,183 @@ Blade views may be returned from routes using the global `view` helper:
         return view('child');
     });
 
-<a name="components-and-slots"></a>
-## Components & Slots
+<a name="components"></a>
+## Components
 
-Components and slots provide similar benefits to sections and layouts; however, some may find the mental model of components and slots easier to understand. First, let's imagine a reusable "alert" component we would like to reuse throughout our application:
+Components and slots provide similar benefits to sections and layouts; however, some may find the mental model of components and slots easier to understand. There are two approaches to writing components: class based components and anonymous components.
 
-    <!-- /resources/views/alert.blade.php -->
+To create a class based component, you may use the `make:component` Artisan command. To illustrate how to use components, we will create a simple `Alert` component. The `make:component` command will place the component in the `App\View\Components` directory:
+
+    php artisan make:component Alert
+
+If you would like the `make:component` command to also create a view template for the component, include the `view` option when executing the command. The view will be placed in the `resources/views/components` directory:
+
+    php artisan make:component Alert --view
+
+<a name="displaying-components"></a>
+### Displaying Components
+
+To display a component, you may use a Laravel component tag within one of your Blade templates. Blade component tags start with the string `x-` followed by the kebab case name of the component class:
+
+    <x-alert />
+
+    <x-user-profile />
+
+<a name="passing-data-to-components"></a>
+### Passing Data To Components
+
+You may pass data to Blade components using HTML attributes. Hard-coded, primitive values may be passed to the component using simple HTML attributes. PHP expressions and variables should be passed to the component via attributes that are prefixed with `:`:
+
+    <x-alert type="error" :message="$message" />
+
+You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view:
+
+    /**
+     * The alert type.
+     *
+     * @var string
+     */
+    public $type;
+
+    /**
+     * The alert message.
+     *
+     * @var string
+     */
+    public $message;
+
+    /**
+     * Create the component instance.
+     *
+     * @param  string  $type
+     * @param  string  $message
+     * @return void
+     */
+    public function __construct($type, $message)
+    {
+        $this->type = $type;
+        $this->message = $message;
+    }
+
+When your component is rendered, you may display the contents of your component's public variables by echoing the variables by name:
+
+    <div class="alert alert-{{ $type }}">
+        {{ $message }}
+    </div>
+
+#### Component Methods
+
+In addition to public variables being available to your component template, any public methods on the component may also be executed. For example, imagine a component that has a `isSelected` method:
+
+    /**
+     * Determine if the given option is the current selected option.
+     *
+     * @param  string  $option
+     * @return bool
+     */
+    public function isSelected($option)
+    {
+        return $option === $this->selected;
+    }
+
+You may execute this method from your component template by invoking the variable matching the name of the method:
+
+    <option {{ $isSelected($value) ? 'selected="selected"' : '' }} value="{{ $value }}">
+        {{ $label }}
+    </option>
+
+#### Additional Dependencies
+
+If your component requires dependencies from Laravel's [service container](/docs/{{version}}/container), you may list them before any of the component's data attributes and they will automatically be injected by the container:
+
+    use App\AlertCreator
+
+    /**
+     * Create the component instance.
+     *
+     * @param  \App\AlertCreator  $creator
+     * @param  string  $type
+     * @param  string  $message
+     * @return void
+     */
+    public function __construct(AlertCreator $creator, $type, $message)
+    {
+        $this->creator = $creator;
+        $this->type = $type;
+        $this->message = $message;
+    }
+
+<a name="managing-attributes"></a>
+### Managing Attributes
+
+We've already examined how to pass data attributes to a component; however, sometimes you may need to specify additional HTML attributes, such as `class`, that are not part of the data required for a component to function. Typically, you simply want to pass down these additional attributes to the root element of the component template. For example, imagine we want to render an `alert` component like so:
+
+    <x-alert type="error" :message="$message" class="mt-4" />
+
+All of the component attributes that are not part of the component's constructor will automatically be added to the component's "attribute bag". This attribute bag is automatically made available to the component via the `$attributes` variable. All of the attributes may be rendered within the component by echoing this variable:
+
+    <div {{ $attributes }}>
+        <!-- Component Content -->
+    </div>
+
+#### Default / Merged Attributes
+
+However, sometimes you may need to specify default values for attributes or merge additional values into some of the component's attributes. To accomplish this, you may use the attribute bag's `merge` method:
+
+    <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
+        {{ $message }}
+    </div>
+
+If we assume this component is utilized like so:
+
+    <x-alert type="error" :message="$message" class="mb-4" />
+
+The final rendered HTML of the component will appear like the following:
+
+    <div class="alert alert-error mb-4">
+        <!-- Contents of the $message variable -->
+    </div>
+
+<a name="slots"></a>
+### Slots
+
+Often, you will need to pass additional content to your component via "slots". Let's imagine that an `alert` component we created has the following markup:
+
+    <!-- /resources/views/components/alert.blade.php -->
 
     <div class="alert alert-danger">
         {{ $slot }}
     </div>
 
-The `{{ $slot }}` variable will contain the content we wish to inject into the component. Now, to construct this component, we can use the `@component` Blade directive:
+We may pass content to the `slot` by injecting content into the component:
 
-    @component('alert')
+    <x-alert>
         <strong>Whoops!</strong> Something went wrong!
-    @endcomponent
+    </x-alert>
 
-To instruct Laravel to load the first view that exists from a given array of possible views for the component, you may use the `componentFirst` directive:
+Sometimes a component may need to render multiple different slots in different locations within the component. Let's modify our alert component to allow for the injection of a "title":
 
-    @componentfirst(['custom.alert', 'alert'])
-        <strong>Whoops!</strong> Something went wrong!
-    @endcomponentfirst
+    <!-- /resources/views/components/alert.blade.php -->
 
-Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title". Named slots may be displayed by "echoing" the variable that matches their name:
-
-    <!-- /resources/views/alert.blade.php -->
+    <span class="alert-title">{{ $title }}</span>
 
     <div class="alert alert-danger">
-        <div class="alert-title">{{ $title }}</div>
-
         {{ $slot }}
     </div>
 
-Now, we can inject content into the named slot using the `@slot` directive. Any content not within a `@slot` directive will be passed to the component in the `$slot` variable:
+You may define the content of the named slot using the `x-slot` tag. Any content not within a `x-slot` tag will be passed to the component in the `$slot` variable:
 
-    @component('alert')
-        @slot('title')
-            Forbidden
-        @endslot
+    <x-alert>
+        <x-slot name="title">
+            Server Error
+        </x-slot>
 
-        You are not allowed to access this resource!
-    @endcomponent
+        <strong>Whoops!</strong> Something went wrong!
+    </x-alert>
 
-#### Passing Additional Data To Components
+<a name="anonymous-components"></a>
+### Anonymous Components
 
-Sometimes you may need to pass additional data to a component. For this reason, you can pass an array of data as the second argument to the `@component` directive. All of the data will be made available to the component template as variables:
-
-    @component('alert', ['foo' => 'bar'])
-        ...
-    @endcomponent
-
-#### Aliasing Components
-
-If your Blade components are stored in a subdirectory, you may wish to alias them for easier access. For example, imagine a Blade component that is stored at `resources/views/components/alert.blade.php`. You may use the `component` method to alias the component from `components.alert` to `alert`. Typically, this should be done in the `boot` method of your `AppServiceProvider`:
-
-    use Illuminate\Support\Facades\Blade;
-
-    Blade::component('components.alert', 'alert');
-
-Once the component has been aliased, you may render it using a directive:
-
-    @alert(['type' => 'danger'])
-        You are not allowed to access this resource!
-    @endalert
-
-You may omit the component parameters if it has no additional slots:
-
-    @alert
-        You are not allowed to access this resource!
-    @endalert
 
 <a name="displaying-data"></a>
 ## Displaying Data
