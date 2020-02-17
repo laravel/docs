@@ -979,12 +979,11 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
 <a name="method-str-ucfirst"></a>
 #### `Str::ucfirst()` {#collection-method}
 
-The `Str::ucfirst` method returns the given string with the first character capitalized.
-As with the other `Str` methods, but unlike PHP's built-in `ucfirst` method, it supports multibyte characters.
+The `Str::ucfirst` method returns the given string with the first character capitalized:
 
     use Illuminate\Support\Str;
 
-    $converted = Str::ucfirst('foo bar');
+    $string = Str::ucfirst('foo bar');
 
     // Foo bar
 
