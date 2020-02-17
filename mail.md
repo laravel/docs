@@ -1,6 +1,7 @@
 # Mail
 
 - [Introduction](#introduction)
+    - [Configuration](#configuration)
     - [Driver Prerequisites](#driver-prerequisites)
 - [Generating Mailables](#generating-mailables)
 - [Writing Mailables](#writing-mailables)
@@ -26,6 +27,11 @@
 ## Introduction
 
 Laravel provides a clean, simple API over the popular [SwiftMailer](https://swiftmailer.symfony.com/) library with drivers for SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
+
+<a name="configuration"></a>
+### Configuration
+
+Laravel's email services may be configured via the `mail` configuration file. Each mailer configured within this file may have its own options and even its own unique "transport", allowing your application to use different email services to send certain email messages. For example, your application might use Postmark to send transactional mail while using Amazon SES to send bulk mail.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
@@ -535,10 +541,20 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
 
 You are not limited to just specifying the "to" recipients when sending a message. You are free to set "to", "cc", and "bcc" recipients all within a single, chained method call:
 
+    use Illuminate\Support\Facades\Mail;
+
     Mail::to($request->user())
         ->cc($moreUsers)
         ->bcc($evenMoreUsers)
         ->send(new OrderShipped($order));
+
+#### Sending Mail Via A Specific Mailer
+
+By default, Laravel will use the mailer configured as the `default` mailer in your `mail` configuration file. However, you may use the `mailer` method to send a message using a specific mailer configuration:
+
+    Mail::mailer('postmark')
+            ->to($request->user())
+            ->send(new OrderShipped($order));
 
 <a name="rendering-mailables"></a>
 ## Rendering Mailables
