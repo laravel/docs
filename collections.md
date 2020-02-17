@@ -2374,8 +2374,6 @@ The `whereIn` method filters the collection by a given key / value contained wit
 
 The `whereIn` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`whereInStrict`](#method-whereinstrict) method to filter using "strict" comparisons.
 
-> {tip} The order of returned elements will match their order in the original Collection, not the order of values passed in.
-
 <a name="method-whereinstrict"></a>
 #### `whereInStrict()` {#collection-method}
 
