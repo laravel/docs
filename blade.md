@@ -9,6 +9,7 @@
     - [Passing Data To Components](#passing-data-to-components)
     - [Managing Attributes](#managing-attributes)
     - [Slots](#slots)
+    - [Inline Components](#inline-components)
 - [Anonymous Components](#anonymous-components)
 - [Displaying Data](#displaying-data)
     - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
@@ -294,6 +295,25 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 
         <strong>Whoops!</strong> Something went wrong!
     </x-alert>
+
+<a name="inline-components"></a>
+### Inline Components
+
+For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may simply return a string from the component's `render` method:
+
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
+    public function render()
+    {
+        return <<<'blade'
+            <div class="alert alert-danger">
+                {{ $slot }}
+            </div>
+        blade;
+    }
 
 <a name="anonymous-components"></a>
 ### Anonymous Components
