@@ -136,7 +136,7 @@ Once your component has been registered, it may be rendered using it's tag alias
 <a name="displaying-components"></a>
 ### Displaying Components
 
-To display a component, you may use a Laravel component tag within one of your Blade templates. Blade component tags start with the string `x-` followed by the kebab case name of the component class:
+To display a component, you may use a Blade component tag within one of your Blade templates. Blade component tags start with the string `x-` followed by the kebab case name of the component class:
 
     <x-alert />
 
