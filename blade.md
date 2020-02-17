@@ -10,7 +10,7 @@
     - [Managing Attributes](#managing-attributes)
     - [Slots](#slots)
     - [Inline Components](#inline-components)
-- [Anonymous Components](#anonymous-components)
+    - [Anonymous Components](#anonymous-components)
 - [Displaying Data](#displaying-data)
     - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
 - [Control Structures](#control-structures)
@@ -319,6 +319,28 @@ For very small components, it may feel cumbersome to manage both the component c
 
 <a name="anonymous-components"></a>
 ### Anonymous Components
+
+Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, just place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/view/components/alert.blade.php`:
+
+    <x-alert />
+
+You may use the `:` character to indicate if a component is nested deeper inside the `components` directory. For example, assuming the component is defined at `resources/views/components/inputs/button.blade.php`:
+
+    <x-inputs:button />
+
+#### Data Properties / Attributes
+
+Since anonymous components do not have any associated class, you may wonder how you may differentiate which data should be passed to the component as variables and which attributes should be placed in the component's [attribute bag](#managing-attributes).
+
+You may specify which attributes should be considered data variables using the `@props` directive at the top of your component's Blade template. All other attributes on the component will be available via the component's attribute bag:
+
+    <!-- /resources/views/components/alert.blade.php -->
+
+    @props(['type', 'message'])
+
+    <div {{ $attributes->merge(['alert alert-'.$type]) }}>
+        {{ $message }}
+    </div>
 
 <a name="displaying-data"></a>
 ## Displaying Data
