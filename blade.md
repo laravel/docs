@@ -233,7 +233,7 @@ If your component requires dependencies from Laravel's [service container](/docs
 <a name="managing-attributes"></a>
 ### Managing Attributes
 
-We've already examined how to pass data attributes to a component; however, sometimes you may need to specify additional HTML attributes, such as `class`, that are not part of the data required for a component to function. Typically, you simply want to pass down these additional attributes to the root element of the component template. For example, imagine we want to render an `alert` component like so:
+We've already examined how to pass data attributes to a component; however, sometimes you may need to specify additional HTML attributes, such as `class`, that are not part of the data required for a component to function. Typically, you simply want to pass these additional attributes down to the root element of the component template. For example, imagine we want to render an `alert` component like so:
 
     <x-alert type="error" :message="$message" class="mt-4" />
 
@@ -245,7 +245,7 @@ All of the component attributes that are not part of the component's constructor
 
 #### Default / Merged Attributes
 
-However, sometimes you may need to specify default values for attributes or merge additional values into some of the component's attributes. To accomplish this, you may use the attribute bag's `merge` method:
+Sometimes you may need to specify default values for attributes or merge additional values into some of the component's attributes. To accomplish this, you may use the attribute bag's `merge` method:
 
     <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
         {{ $message }}
@@ -255,7 +255,7 @@ If we assume this component is utilized like so:
 
     <x-alert type="error" :message="$message" class="mb-4" />
 
-The final rendered HTML of the component will appear like the following:
+The final, rendered HTML of the component will appear like the following:
 
     <div class="alert alert-error mb-4">
         <!-- Contents of the $message variable -->
@@ -301,7 +301,7 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 <a name="inline-components"></a>
 ### Inline Components
 
-For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may simply return a string from the component's `render` method:
+For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may simply return the component's markup directly from the `render` method:
 
     /**
      * Get the view / contents that represent the component.
