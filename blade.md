@@ -139,6 +139,10 @@ To display a component, you may use a Laravel component tag within one of your B
 
     <x-user-profile />
 
+If the component class is nested deeper within the `App\View\Components` directory, you may use the `:` character to indicate directory nesting. For example, if we assume a component is located at `App\View\Components\Inputs\Button.php`, we may render it like so:
+
+    <x-inputs:button />
+
 <a name="passing-data-to-components"></a>
 ### Passing Data To Components
 
