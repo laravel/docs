@@ -112,6 +112,24 @@ If you would like the `make:component` command to also create a view template fo
 
     php artisan make:component Alert --view
 
+#### Manually Registering Components
+
+When writing components for your own application, components are automatically discovered within the `App\View\Components` directory and `resources/views/components` directory. However, if you are building a package that utilizes Blade components, you will need to manually register your component class and it's HTML tag alias. You should typically register your components in the `boot` method of your package's service provider:
+
+    use Illuminate\Support\Facades\Blade;
+
+    /**
+     * Bootstrap your package's services.
+     */
+    public function boot()
+    {
+        Blade::component(AlertComponent::class, 'package-alert');
+    }
+
+Once your component has been registered, it may be rendered using it's tag alias:
+
+    <x-package-alert />
+
 <a name="displaying-components"></a>
 ### Displaying Components
 
@@ -275,7 +293,6 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 
 <a name="anonymous-components"></a>
 ### Anonymous Components
-
 
 <a name="displaying-data"></a>
 ## Displaying Data
