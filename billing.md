@@ -140,9 +140,13 @@ Cashier allows you to specify the log channel to be used when logging all Stripe
 
 Occasionally, you may wish to create a Stripe customer without beginning a subscription. You may accomplish this using the `createAsStripeCustomer` method:
 
-    $user->createAsStripeCustomer();
+    $stripeCustomer = $user->createAsStripeCustomer();
 
 Once the customer has been created in Stripe, you may begin a subscription at a later date.
+
+You may also use the `createOrGetStripeCustomer` method if you want to return the customer object if the billable entity is already a customer within Stripe.
+
+    $stripeCustomer = $user->createOrGetStripeCustomer();
 
 <a name="payment-methods"></a>
 ## Payment Methods
