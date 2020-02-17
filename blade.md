@@ -113,9 +113,11 @@ If you would like the `make:component` command to also create a view template fo
 
     php artisan make:component Alert --view
 
-#### Manually Registering Components
+#### Manually Registering Package Components
 
-When writing components for your own application, components are automatically discovered within the `App\View\Components` directory and `resources/views/components` directory. However, if you are building a package that utilizes Blade components, you will need to manually register your component class and it's HTML tag alias. You should typically register your components in the `boot` method of your package's service provider:
+When writing components for your own application, components are automatically discovered within the `App\View\Components` directory and `resources/views/components` directory.
+
+However, if you are building a package that utilizes Blade components, you will need to manually register your component class and it's HTML tag alias. You should typically register your components in the `boot` method of your package's service provider:
 
     use Illuminate\Support\Facades\Blade;
 
