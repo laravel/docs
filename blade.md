@@ -22,7 +22,7 @@
     - [Passing Data To Components](#passing-data-to-components)
     - [Managing Attributes](#managing-attributes)
     - [Slots](#slots)
-    - [Inline Components](#inline-components)
+    - [Inline Component Views](#inline-component-views)
     - [Anonymous Components](#anonymous-components)
 - [Including Subviews](#including-subviews)
     - [Rendering Views For Collections](#rendering-views-for-collections)
@@ -641,8 +641,8 @@ You may define the content of the named slot using the `x-slot` tag. Any content
         <strong>Whoops!</strong> Something went wrong!
     </x-alert>
 
-<a name="inline-components"></a>
-### Inline Components
+<a name="inline-component-views"></a>
+### Inline Component Views
 
 For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may return the component's markup directly from the `render` method:
 
