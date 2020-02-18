@@ -452,9 +452,7 @@ To create a class based component, you may use the `make:component` Artisan comm
 
     php artisan make:component Alert
 
-If you would like the `make:component` command to also create a view template for the component, include the `view` option when executing the command. The view will be placed in the `resources/views/components` directory:
-
-    php artisan make:component Alert --view
+The `make:component` command will also create a view template for the component. The view will be placed in the `resources/views/components` directory.
 
 #### Manually Registering Package Components
 
@@ -659,6 +657,12 @@ For very small components, it may feel cumbersome to manage both the component c
             </div>
         blade;
     }
+
+#### Generating Inline View Components
+
+To create a component that renders an inline view, you may use the `inline` option when executing the `make:component` command:
+
+    php artisan make:component Alert --inline
 
 <a name="anonymous-components"></a>
 ### Anonymous Components
