@@ -140,7 +140,7 @@ Cashier allows you to specify the log channel to be used when logging all Stripe
 <a name="retrieving-customers"></a>
 ### Retrieving Customers
 
-You can easily retrieve a customer by their Stripe ID through the `Cashier::findBillable` method. This will return an instance of the Billable model:
+You can retrieve a customer by their Stripe ID using the `Cashier::findBillable` method. This will return an instance of the Billable model:
 
     use Laravel\Cashier\Cashier;
 
