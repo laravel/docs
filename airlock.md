@@ -9,8 +9,8 @@
     - [Protecting Routes](#protecting-routes)
     - [Revoking Tokens](#revoking-tokens)
 - [SPA Authentication](#spa-authentication)
-    - [Configuration](#cors-and-cookies)
-    - [Authenticating](#authenticating)
+    - [Configuration](#spa-configuration)
+    - [Authenticating](#spa-authenticating)
     - [Protecting Routes](#protecting-spa-routes)
 - [Mobile Application Authentication](#mobile-application-authentication)
     - [Issuing API Tokens](#issuing-mobile-api-tokens)
@@ -51,7 +51,7 @@ Next, you should publish the Airlock configuration and migration files using the
 
     php artisan vendor:publish --provider="Laravel\Airlock\AirlockServiceProvider"
 
-Finally, you should run your database migrations. By default, Airlock will create one database table in which to store API tokens:
+Finally, you should run your database migrations. Airlock will create one database table in which to store API tokens:
 
     php artisan migrate
 
@@ -138,7 +138,7 @@ Airlock exists to offer a simple way to authenticate single page applications (S
 
 For this feature, Airlock does not use tokens of any kind. Instead, Airlock uses Laravel's built-in cookie based session authentication services. This provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS. Airlock will only attempt to authenticate using cookies when the incoming request originates from your own SPA frontend.
 
-<a name="spa-authentication"></a>
+<a name="spa-configuration"></a>
 ### Configuration
 
 #### Configuring Your First-Party Domains
@@ -168,7 +168,7 @@ In addition, you should ensure your application's session cookie domain configur
 
     'domain' => '.domain.com',
 
-<a name="authenticating"></a>
+<a name="spa-authenticating"></a>
 ### Authenticating
 
 To authenticate your SPA, your SPA's login page should first make a request to the `/airlock/csrf-cookie` route to initialize CSRF protection for the application:
