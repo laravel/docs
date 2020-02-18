@@ -104,6 +104,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
 [Str::title](#method-title-case)
+[Str::ucfirst](#method-str-ucfirst)
 [Str::uuid](#method-str-uuid)
 [Str::words](#method-str-words)
 [trans](#method-trans)
@@ -974,6 +975,17 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
     $matches = Str::is('baz*', 'foobar');
 
     // false
+
+<a name="method-str-ucfirst"></a>
+#### `Str::ucfirst()` {#collection-method}
+
+The `Str::ucfirst` method returns the given string with the first character capitalized:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::ucfirst('foo bar');
+
+    // Foo bar
 
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {#collection-method}
