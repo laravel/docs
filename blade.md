@@ -474,27 +474,27 @@ However, if you are building a package that utilizes Blade components, you will 
 
 Once your component has been registered, it may be rendered using its tag alias:
 
-    <x-package-alert />
+    <x-package-alert/>
 
 <a name="displaying-components"></a>
 ### Displaying Components
 
 To display a component, you may use a Blade component tag within one of your Blade templates. Blade component tags start with the string `x-` followed by the kebab case name of the component class:
 
-    <x-alert />
+    <x-alert/>
 
-    <x-user-profile />
+    <x-user-profile/>
 
 If the component class is nested deeper within the `App\View\Components` directory, you may use the `.` character to indicate directory nesting. For example, if we assume a component is located at `App\View\Components\Inputs\Button.php`, we may render it like so:
 
-    <x-inputs.button />
+    <x-inputs.button/>
 
 <a name="passing-data-to-components"></a>
 ### Passing Data To Components
 
 You may pass data to Blade components using HTML attributes. Hard-coded, primitive values may be passed to the component using simple HTML attributes. PHP expressions and variables should be passed to the component via attributes that are prefixed with `:`:
 
-    <x-alert type="error" :message="$message" />
+    <x-alert type="error" :message="$message"/>
 
 You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view:
 
@@ -578,7 +578,7 @@ If your component requires dependencies from Laravel's [service container](/docs
 
 We've already examined how to pass data attributes to a component; however, sometimes you may need to specify additional HTML attributes, such as `class`, that are not part of the data required for a component to function. Typically, you want to pass these additional attributes down to the root element of the component template. For example, imagine we want to render an `alert` component like so:
 
-    <x-alert type="error" :message="$message" class="mt-4" />
+    <x-alert type="error" :message="$message" class="mt-4"/>
 
 All of the attributes that are not part of the component's constructor will automatically be added to the component's "attribute bag". This attribute bag is automatically made available to the component via the `$attributes` variable. All of the attributes may be rendered within the component by echoing this variable:
 
@@ -596,7 +596,7 @@ Sometimes you may need to specify default values for attributes or merge additio
 
 If we assume this component is utilized like so:
 
-    <x-alert type="error" :message="$message" class="mb-4" />
+    <x-alert type="error" :message="$message" class="mb-4"/>
 
 The final, rendered HTML of the component will appear like the following:
 
@@ -665,11 +665,11 @@ For very small components, it may feel cumbersome to manage both the component c
 
 Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/view/components/alert.blade.php`:
 
-    <x-alert />
+    <x-alert/>
 
 You may use the `.` character to indicate if a component is nested deeper inside the `components` directory. For example, assuming the component is defined at `resources/views/components/inputs/button.blade.php`, you may render it like so:
 
-    <x-inputs.button />
+    <x-inputs.button/>
 
 #### Data Properties / Attributes
 
