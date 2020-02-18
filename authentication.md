@@ -89,6 +89,24 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
     public const HOME = '/home';
 
+#### Response Customization
+
+Laravel provides an empty `authenticated(Request $request, $user)` method that is intended to be overwritten if desired. Otherwise, the authenticated user will be redirected to the intended route.
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        return response([
+            //
+        ], Response::HTTP_OK);
+    }
+
 #### Username Customization
 
 By default, Laravel uses the `email` field for authentication. If you would like to customize this, you may define a `username` method on your `LoginController`:
@@ -397,6 +415,23 @@ To manually log users out of your application, you may use the `logout` method o
     use Illuminate\Support\Facades\Auth;
 
     Auth::logout();
+    
+### Customizing the Logout response
+
+If you need to change the response after the user is logged out, you may override the `loggedOut(Request $request)` method.
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        return response([
+            //
+        ], Response::HTTP_OK);
+    }
 
 <a name="invalidating-sessions-on-other-devices"></a>
 ### Invalidating Sessions On Other Devices
