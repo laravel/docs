@@ -472,7 +472,7 @@ However, if you are building a package that utilizes Blade components, you will 
         Blade::component(AlertComponent::class, 'package-alert');
     }
 
-Once your component has been registered, it may be rendered using it's tag alias:
+Once your component has been registered, it may be rendered using its tag alias:
 
     <x-package-alert />
 
