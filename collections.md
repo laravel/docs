@@ -2460,11 +2460,11 @@ This method has the same signature as the [`whereNotIn`](#method-wherenotin) met
 
 The `whereNotNull` method filters items where the given key is not null.
 
-    $collection = collect(
+    $collection = collect([
         ['name' => 'Desk'],
         ['name' => null],
         ['name' => 'Bookcase'],
-    );
+    ]);
     
     $filtered = $collection->whereNotNull('name');
 
@@ -2482,11 +2482,11 @@ The `whereNotNull` method filters items where the given key is not null.
 
 The `whereNull` method filters items where the given key is null.
 
-    $collection = collect(
+    $collection = collect([
         ['name' => 'Desk'],
         ['name' => null],
         ['name' => 'Bookcase'],
-    );
+    ]);
     
     $filtered = $collection->whereNull('name');
 
