@@ -188,6 +188,8 @@ For the remainder of this documentation, we'll discuss each method available on 
 [whereNotBetween](#method-wherenotbetween)
 [whereNotIn](#method-wherenotin)
 [whereNotInStrict](#method-wherenotinstrict)
+[whereNotNull](#method-wherenotnull)
+[whereNull](#method-wherenull)
 [wrap](#method-wrap)
 [zip](#method-zip)
 
@@ -2452,6 +2454,50 @@ The `whereNotIn` method uses "loose" comparisons when checking item values, mean
 #### `whereNotInStrict()` {#collection-method}
 
 This method has the same signature as the [`whereNotIn`](#method-wherenotin) method; however, all values are compared using "strict" comparisons.
+
+<a name="method-wherenotnull"></a>
+#### `whereNotNull()` {#collection-method}
+
+The `whereNotNull` method filters items where the given key is not null:
+
+    $collection = collect([
+        ['name' => 'Desk'],
+        ['name' => null],
+        ['name' => 'Bookcase'],
+    ]);
+    
+    $filtered = $collection->whereNotNull('name');
+
+    $filtered->all();
+    
+    /*
+        [
+            ['name' => 'Desk'],
+            ['name' => 'Bookcase'],
+        ]
+    */
+
+<a name="method-wherenull"></a>
+#### `whereNull()` {#collection-method}
+
+The `whereNull` method filters items where the given key is null:
+
+    $collection = collect([
+        ['name' => 'Desk'],
+        ['name' => null],
+        ['name' => 'Bookcase'],
+    ]);
+    
+    $filtered = $collection->whereNull('name');
+
+    $filtered->all();
+    
+    /*
+        [
+            ['name' => null],
+        ]
+    */
+
 
 <a name="method-wrap"></a>
 #### `wrap()` {#collection-method}
