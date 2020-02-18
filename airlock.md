@@ -251,6 +251,7 @@ To allow users to revoke API tokens issued to mobile devices, you may simply lis
     // Revoke a specific token...
     $user->tokens()->where('id', $id)->delete();
 
+<a name="testing"></a>
 ## Testing
 
 While testing, the `Airlock::actingAs` method may be used to authenticate a user and specify which abilities are granted to their token:
