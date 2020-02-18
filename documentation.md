@@ -49,6 +49,7 @@
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
     - [Helpers](/docs/{{version}}/helpers)
+    - [HTTP Client](/docs/{{version}}/http-client)
     - [Mail](/docs/{{version}}/mail)
     - [Notifications](/docs/{{version}}/notifications)
     - [Package Development](/docs/{{version}}/packages)
