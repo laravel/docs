@@ -10,6 +10,7 @@
     - [Logging](#logging)
 - [Customers](#customers)
     - [Creating Customers](#creating-customers)
+    - [Updating Customers](#updating-customers)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
