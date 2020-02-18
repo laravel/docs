@@ -7,6 +7,8 @@
     - [Authentication](#authentication)
     - [Error Handling](#error-handling)
 - [Testing](#testing)
+    - [Faking Responses](#faking-responses)
+    - [Inspecting Requests](#inspecting-requests)
 
 <a name="introduction"></a>
 ## Introduction
@@ -134,7 +136,12 @@ The `Illuminate\Http\Client\RequestException` instance has a public `$response` 
 <a name="testing"></a>
 ## Testing
 
-Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP wrapper is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made. For example, to instruct the HTTP client to return empty responses with a `200` status code for every request, you may call the `fake` method with no arguments:
+Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's HTTP wrapper is no exception. The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made.
+
+<a name="faking-responses"></a>
+### Faking Responses
+
+For example, to instruct the HTTP client to return empty responses with a `200` status code for every request, you may call the `fake` method with no arguments:
 
     use Illuminate\Support\Facades\Http;
 
@@ -184,6 +191,7 @@ If you require more complicated logic to determine what responses to return for 
         return Http::response('Hello World', 200);
     });
 
+<a name="inspecting-requests"></a>
 ### Inspecting Requests
 
 When faking responses, you may occasionally wish to inspect the requests the client receives in order to make sure your application is sending the correct data or headers. You may accomplish this by using the `Http::assertSent` method after calling `Http::fake`.
