@@ -97,6 +97,7 @@ If you prefer to use React to build your JavaScript application, Laravel makes i
 
     composer require laravel/ui --dev
 
+    // Generate basic scaffolding...
     php artisan ui react
 
     // Generate login / registration scaffolding...
