@@ -12,6 +12,7 @@
     - [Configuration](#spa-configuration)
     - [Authenticating](#spa-authenticating)
     - [Protecting Routes](#protecting-spa-routes)
+    - [Authorizing Private Broadcast Channels](#authorizing-private-broadcast-channels)
 - [Mobile Application Authentication](#mobile-application-authentication)
     - [Issuing API Tokens](#issuing-mobile-api-tokens)
     - [Protecting Routes](#protecting-mobile-api-routes)
@@ -164,7 +165,11 @@ If you are having trouble authenticating with your application from an SPA that 
 
 You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. You may configure your application's CORS settings in your `cors` configuration file.
 
-In addition, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may do this by prefixing the domain with a leading `.` within your `session` configuration file:
+In addition, you should enable the `withCredentials` option on your global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file:
+
+    axios.defaults.withCredentials = true;
+
+Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may do this by prefixing the domain with a leading `.` within your `session` configuration file:
 
     'domain' => '.domain.com',
 
@@ -172,8 +177,6 @@ In addition, you should ensure your application's session cookie domain configur
 ### Authenticating
 
 To authenticate your SPA, your SPA's login page should first make a request to the `/airlock/csrf-cookie` route to initialize CSRF protection for the application:
-
-    axios.defaults.withCredentials = true;
 
     axios.get('/airlock/csrf-cookie').then(response => {
         // Login...
@@ -193,6 +196,38 @@ To protect routes so that all incoming requests must be authenticated, you shoul
     Route::middleware('auth:airlock')->get('/user', function (Request $request) {
         return $request->user();
     });
+
+<a name="authorizing-private-broadcast-channels"></a>
+### Authorizing Private Broadcast Channels
+
+If your SPA needs to authenticate with [private / presence broadcast channels](/docs/{{version}}/broadcasting#authorizing-channels), you should place the `Broadcast::routes` method call within your `routes/api.php` file:
+
+    Broadcast::routes(['middleware' => ['auth:airlock']]);
+
+Next, in order for Pusher's authorization requests to succeed, you will need to provide a custom Pusher `authorizer` when initializing [Laravel Echo](/docs/{{version}}/broadcasting#installing-laravel-echo). This allows your application to configure Pusher to use the `axios` instance that is [properly configured for cross-domain requests](#cors-and-cookies):
+
+    window.Echo = new Echo({
+        broadcaster: "pusher",
+        cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+        encrypted: true,
+        key: process.env.MIX_PUSHER_APP_KEY,
+        authorizer: (channel, options) => {
+            return {
+                authorize: (socketId, callback) => {
+                    axios.post('/api/broadcasting/auth', {
+                        socket_id: socketId,
+                        channel_name: channel.name
+                    })
+                    .then(response => {
+                        callback(false, response.data);
+                    })
+                    .catch(error => {
+                        callback(true, error);
+                    });
+                }
+            };
+        },
+    })
 
 <a name="mobile-application-authentication"></a>
 ## Mobile Application Authentication
