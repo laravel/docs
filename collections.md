@@ -2466,7 +2466,7 @@ The `whereNotNull` method filters items where the given key is not null.
         ['name' => 'Bookcase'],
     );
     
-    $filtered = $collection->whereNotNull('price');
+    $filtered = $collection->whereNotNull('name');
 
     $filtered->all();
     
@@ -2488,7 +2488,7 @@ The `whereNull` method filters items where the given key is null.
         ['name' => 'Bookcase'],
     );
     
-    $filtered = $collection->whereNull('price');
+    $filtered = $collection->whereNull('name');
 
     $filtered->all();
     
