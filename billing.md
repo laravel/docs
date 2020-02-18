@@ -142,11 +142,20 @@ Occasionally, you may wish to create a Stripe customer without beginning a subsc
 
     $stripeCustomer = $user->createAsStripeCustomer();
 
-Once the customer has been created in Stripe, you may begin a subscription at a later date.
+Once the customer has been created in Stripe, you may begin a subscription at a later date. You can also use an optional `$options` array to pass in any additional parameters which are supported by the Stripe API:
+
+    $stripeCustomer = $user->createAsStripeCustomer($options);
 
 You may also use the `createOrGetStripeCustomer` method if you want to return the customer object if the billable entity is already a customer within Stripe.
 
     $stripeCustomer = $user->createOrGetStripeCustomer();
+
+<a name="updating-customers"></a>
+### Updating Customers
+
+Occasionally, you may wish to update a Stripe customer directly with additional info. You may accomplish this using the `updateStripeCustomer` method:
+
+    $stripeCustomer = $user->updateStripeCustomer($options);
 
 <a name="payment-methods"></a>
 ## Payment Methods
