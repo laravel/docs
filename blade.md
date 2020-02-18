@@ -576,11 +576,11 @@ If your component requires dependencies from Laravel's [service container](/docs
 <a name="managing-attributes"></a>
 ### Managing Attributes
 
-We've already examined how to pass data attributes to a component; however, sometimes you may need to specify additional HTML attributes, such as `class`, that are not part of the data required for a component to function. Typically, you simply want to pass these additional attributes down to the root element of the component template. For example, imagine we want to render an `alert` component like so:
+We've already examined how to pass data attributes to a component; however, sometimes you may need to specify additional HTML attributes, such as `class`, that are not part of the data required for a component to function. Typically, you want to pass these additional attributes down to the root element of the component template. For example, imagine we want to render an `alert` component like so:
 
     <x-alert type="error" :message="$message" class="mt-4" />
 
-All of the component attributes that are not part of the component's constructor will automatically be added to the component's "attribute bag". This attribute bag is automatically made available to the component via the `$attributes` variable. All of the attributes may be rendered within the component by echoing this variable:
+All of the attributes that are not part of the component's constructor will automatically be added to the component's "attribute bag". This attribute bag is automatically made available to the component via the `$attributes` variable. All of the attributes may be rendered within the component by echoing this variable:
 
     <div {{ $attributes }}>
         <!-- Component Content -->
@@ -644,7 +644,7 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 <a name="inline-components"></a>
 ### Inline Components
 
-For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may simply return the component's markup directly from the `render` method:
+For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may return the component's markup directly from the `render` method:
 
     /**
      * Get the view / contents that represent the component.
@@ -663,7 +663,7 @@ For very small components, it may feel cumbersome to manage both the component c
 <a name="anonymous-components"></a>
 ### Anonymous Components
 
-Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, just place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/view/components/alert.blade.php`:
+Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/view/components/alert.blade.php`:
 
     <x-alert />
 
