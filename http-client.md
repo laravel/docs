@@ -141,7 +141,7 @@ Many Laravel services provide functionality to help you easily and expressively 
 <a name="faking-responses"></a>
 ### Faking Responses
 
-For example, to instruct the HTTP client to return empty responses with a `200` status code for every request, you may call the `fake` method with no arguments:
+For example, to instruct the HTTP client to return empty, `200` status code responses for every request, you may call the `fake` method with no arguments:
 
     use Illuminate\Support\Facades\Http;
 
