@@ -9,6 +9,7 @@
     - [Timezones](#timezones)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
     - [Running Tasks On One Server](#running-tasks-on-one-server)
+    - [Change Mutex Storage](#mutex-storage)
     - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
 - [Task Output](#task-output)
@@ -231,6 +232,13 @@ To indicate that the task should run on only one server, use the `onOneServer` m
                     ->onOneServer();
 
 <a name="background-tasks"></a>
+### Mutex Storage
+
+If you want to move the mutex locks of your tasks running 'withoutOverlapping' or 'onOneServer' away from the default Cache you can do so by using the `useCache` method. This will i.e. prevent your locks getting flushed by a `php artisan cache:clear`. `useCache` accepts the name of a defined cache store. (See config/cache.php):
+
+    $schedule->useCache('not_your_default_cache_store')->command('longjob:run')->withoutOverlapping();
+
+<a name="mutex-storage"></a>
 ### Background Tasks
 
 By default, multiple commands scheduled at the same time will execute sequentially. If you have long-running commands, this may cause subsequent commands to start much later than anticipated. If you would like to run commands in the background so that they may all run simultaneously, you may use the `runInBackground` method:
