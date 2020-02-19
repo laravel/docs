@@ -494,33 +494,52 @@ You may pass data to Blade components using HTML attributes. Hard-coded, primiti
 
     <x-alert type="error" :message="$message"/>
 
-You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view:
+You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
 
-    /**
-     * The alert type.
-     *
-     * @var string
-     */
-    public $type;
+    <?php
 
-    /**
-     * The alert message.
-     *
-     * @var string
-     */
-    public $message;
+    namespace App\View\Components;
 
-    /**
-     * Create the component instance.
-     *
-     * @param  string  $type
-     * @param  string  $message
-     * @return void
-     */
-    public function __construct($type, $message)
+    use Illuminate\View\Component;
+
+    class Alert extends Component
     {
-        $this->type = $type;
-        $this->message = $message;
+        /**
+         * The alert type.
+         *
+         * @var string
+         */
+        public $type;
+
+        /**
+         * The alert message.
+         *
+         * @var string
+         */
+        public $message;
+
+        /**
+         * Create the component instance.
+         *
+         * @param  string  $type
+         * @param  string  $message
+         * @return void
+         */
+        public function __construct($type, $message)
+        {
+            $this->type = $type;
+            $this->message = $message;
+        }
+
+        /**
+         * Get the view / contents that represent the component.
+         *
+         * @return \Illuminate\View\View|string
+         */
+        public function render()
+        {
+            return view('components.alert');
+        }
     }
 
 When your component is rendered, you may display the contents of your component's public variables by echoing the variables by name:
