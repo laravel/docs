@@ -168,12 +168,20 @@ And, assuming the component's Blade template has been defined like so:
     <!-- /resources/views/components/alert.blade.php -->
 
     <div class="alert {{ $classForType() }}" {{ $attributes }}>
-        {{ $message }}
+        {{ $heading }}
+
+        {{ $slot }}
     </div>
 
 The component may be rendered in another Blade view using the component's tag:
 
-    <x-alert type="error" class="mb-4" />
+    <x-alert type="error" class="mb-4">
+        <x-slot name="heading">
+            Alert content...
+        </x-slot>
+
+        Default slot content...
+    </x-alert>
 
 As mentioned, this is just a very small sample of the functionality of the Blade component overhaul in Laravel 7 and does not demonstrate anonymous components, inline view components, and a variety of other features. Please consult the [full Blade component documentation](/docs/{{version}}/blade#components) to learn about this feature.
 
