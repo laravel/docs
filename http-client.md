@@ -47,7 +47,7 @@ The `Illumiante\Http\Client\Response` object also implements the PHP `ArrayAcces
 <a name="request-data"></a>
 ### Request Data
 
-Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional data with your request. These methods accept an array of data as their second argument. By default, this data will be sent as the `application/json` content type:
+Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional data with your request. So, these methods accept an array of data as their second argument. By default, data will be sent using the `application/json` content type:
 
     $response = Http::post('http://test.com/users', [
         'name' => 'Steve',
@@ -56,7 +56,7 @@ Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional
 
 #### Sending Form URL Encoded Requests
 
-If you would like to send data using the `application/x-www-form-urlencoded` content type, you may use the `asForm` method before making your request:
+If you would like to send data using the `application/x-www-form-urlencoded` content type, you should call the `asForm` method before making your request:
 
     $response = Http::asForm()->post('http://test.com/users', [
         'name' => 'Sara',
@@ -65,7 +65,7 @@ If you would like to send data using the `application/x-www-form-urlencoded` con
 
 #### Multi-Part Requests
 
-If you would like to send files as multi-part requests, you may use the `attach` method before making your request. This method accepts the name of the file and its contents. Optionally, you may provide a third argument which will be considered the file's filename:
+If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. Optionally, you may provide a third argument which will be considered the file's filename:
 
     $response = Http::attach(
         'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
@@ -82,7 +82,7 @@ Instead of passing the raw contents of a file, you may also pass a stream resour
 <a name="headers"></a>
 ### Headers
 
-Headers may be added to requests using the `withHeaders` method:
+Headers may be added to requests using the `withHeaders` method. This `withHeaders` method accepts an array of key / value pairs:
 
     $response = Http::withHeaders([
         'X-First' => 'foo'
@@ -104,7 +104,7 @@ You may specify basic and digest authentication credentials using the `withBasic
 
 #### Bearer Tokens
 
-If you would like to quickly add an `Authorization` bearer token to the request, you may use the `withToken` method:
+If you would like to quickly add an `Authorization` bearer token header to the request, you may use the `withToken` method:
 
     $response = Http::withToken('token')->post(...);
 
@@ -135,6 +135,10 @@ If you have a response instance and would like to throw an instance of `Illumina
 
 The `Illuminate\Http\Client\RequestException` instance has a public `$response` property which will allow you to inspect the returned response.
 
+The `throw` method returns the response instance if no error occurred, allowing you to chain other operations onto the `throw` method:
+
+    return Http::post(...)->throw()->json();
+
 <a name="testing"></a>
 ## Testing
 
@@ -153,7 +157,7 @@ For example, to instruct the HTTP client to return empty, `200` status code resp
 
 #### Faking Specific URLs
 
-Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will be actually executed. You may use the `response` method to construct stub / fake responses for these endpoints:
+Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the `response` method to construct stub / fake responses for these endpoints:
 
     Http::fake([
         // Stub a JSON response for GitHub endpoints...
@@ -175,7 +179,7 @@ If you would like to specify a fallback URL pattern that will stub all unmatched
 
 #### Faking Response Sequences
 
-Sometimes you may need to specify that a single URL should return a series of fake responses in sequence. You may accomplish this using the `Http::sequence` method to build the responses:
+Sometimes you may need to specify that a single URL should return a series of fake responses in a specific order. You may accomplish this using the `Http::sequence` method to build the responses:
 
     Http::fake([
         // Stub a series of responses for GitHub endpoints...
@@ -196,9 +200,9 @@ If you require more complicated logic to determine what responses to return for 
 <a name="inspecting-requests"></a>
 ### Inspecting Requests
 
-When faking responses, you may occasionally wish to inspect the requests the client receives in order to make sure your application is sending the correct data or headers. You may accomplish this by using the `Http::assertSent` method after calling `Http::fake`.
+When faking responses, you may occasionally wish to inspect the requests the client receives in order to make sure your application is sending the correct data or headers. You may accomplish this by calling the `Http::assertSent` method after calling `Http::fake`.
 
-The `assertSent` method accepts a callback which will be given an `Illuminate\Http\Client\Request` instance and should return a boolean value indicating if the request matches your expectations:
+The `assertSent` method accepts a callback which will be given an `Illuminate\Http\Client\Request` instance and should return a boolean value indicating if the request matches your expectations. In order for the test to pass, at least one request must have been issued matching the given expectations:
 
     Http::fake();
 
