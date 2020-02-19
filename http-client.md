@@ -37,6 +37,8 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
     $response->successful() : bool;
     $response->serverError() : bool;
     $response->clientError() : bool;
+    $response->header($header) : string;
+    $response->headers() : array;
 
 The `Illumiante\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
 
