@@ -337,6 +337,8 @@ Any arguments that can be passed to the `phpunit` command may also be passed to 
 
 ### Markdown Mail Template Improvements
 
+_Markdown mail template improvements were contributed by [Taylor Otwell](https://twitter.com/taylorotwell)_.
+
 The default Markdown mail template has received a fresh, more modern design based on the Tailwind CSS color palette. Of course, this template can be published and customized according to your application's needs:
 
 <p align="center">
