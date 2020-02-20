@@ -143,6 +143,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [matchAll](#method-fluent-str-matchAll)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
+[replace](#method-fluent-str-replace)
 [replaceArray](#method-fluent-str-replace-array)
 [replaceFirst](#method-fluent-str-replace-first)
 [replaceLast](#method-fluent-str-replace-last)
@@ -1667,6 +1668,17 @@ The `prepend` method prepends the given values onto the string:
     $string = Str::of('Framework')->prepend('Laravel ');
 
     // Laravel Framework
+
+<a name="method-fluent-str-replace"></a>
+#### `replace` {#collection-method}
+
+The `replace` method replaces a given string within the string:
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::of('Laravel 6.x')->replace('6.x', '7.x');
+
+    // Laravel 7.x
 
 <a name="method-fluent-str-replace-array"></a>
 #### `replaceArray` {#collection-method}
