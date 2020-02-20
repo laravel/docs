@@ -176,6 +176,12 @@ The Zend Diactoros library for generating PSR-7 responses has been deprecated. I
 
 ### Mail
 
+#### Configuration File Changes
+
+**Likelihood Of Impact: Optional**
+
+In order to support multiple mailers, the default `mail` configuration file has changed in Laravel 7.x to include an array of `mailers`. However, in order to preserve backwards compatibility, the Laravel 6.x format of this configuration file is still supported. So, no changes are **required** when upgrading to Laravel 7.x; however, you may wish to [examine the new `mail` configuration file](https://github.com/laravel/laravel/blob/develop/config/mail.php) structure and update your file to reflect the changes.
+
 #### Markdown Mail Template Updates
 
 **Likelihood Of Impact: Low**
@@ -197,6 +203,14 @@ The deprecated `--daemon` flag on the `queue:work` command has been removed. Thi
 **Likelihood Of Impact: Low**
 
 The deprecated `Illuminate\Http\Resources\Json\Resource` class has been removed. Your resources should extend the `Illuminate\Http\Resources\Json\JsonResource` class instead.
+
+### Routing
+
+#### The Router `getRoutes` Method
+
+**Likelihood Of Impact: Low**
+
+The router's `getRoutes` method now returns an instance of `Illuminate\Routing\RouteCollectionInterface` instead of `Illuminate\Routing\RouteCollection`.
 
 ### Session
 
