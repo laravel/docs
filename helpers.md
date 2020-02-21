@@ -28,6 +28,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 [Arr::add](#method-array-add)
 [Arr::collapse](#method-array-collapse)
+[Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
 [Arr::dot](#method-array-dot)
 [Arr::except](#method-array-except)
@@ -278,6 +279,39 @@ The `Arr::collapse` method collapses an array of arrays into a single array:
     $array = Arr::collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+<a name="method-array-crossjoin"></a>
+#### `Arr::crossJoin()` {#collection-method}
+
+The `Arr::crossJoin` method cross joins the given arrays, returning a Cartesian product with all possible permutations:
+
+    use Illuminate\Support\Arr;
+
+    $matrix = Arr::crossJoin([1, 2], ['a', 'b']);
+
+    /*
+        [
+            [1, 'a'],
+            [1, 'b'],
+            [2, 'a'],
+            [2, 'b'],
+        ]
+    */
+
+    $matrix = Arr::crossJoin([1, 2], ['a', 'b'], ['I', 'II']);
+
+    /*
+        [
+            [1, 'a', 'I'],
+            [1, 'a', 'II'],
+            [1, 'b', 'I'],
+            [1, 'b', 'II'],
+            [2, 'a', 'I'],
+            [2, 'a', 'II'],
+            [2, 'b', 'I'],
+            [2, 'b', 'II'],
+        ]
+    */
 
 <a name="method-array-divide"></a>
 #### `Arr::divide()` {#collection-method}
