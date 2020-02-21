@@ -226,6 +226,15 @@ The `orderByRaw` method may be used to set a raw string as the value of the `ord
                     ->orderByRaw('updated_at - created_at DESC')
                     ->get();
 
+### `groupByRaw`
+
+The `groupByRaw` method may be used to set a raw string as the value of the `group by` clause:
+
+    $orders = DB::table('orders')
+                    ->select('city', 'state')
+                    ->groupByRaw('city, state')
+                    ->get();
+
 <a name="joins"></a>
 ## Joins
 
