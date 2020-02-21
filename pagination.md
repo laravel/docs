@@ -196,7 +196,8 @@ Method  |  Description
 `$results->firstItem()`  |  Get the result number of the first item in the results.
 `$results->getOptions()`  |  Get the paginator options.
 `$results->getUrlRange($start, $end)`  |  Create a range of pagination URLs.
-`$results->hasMorePages()`  |  Determine if there are enough items to split into multiple pages.
+`$results->hasPages()`  |  Determine if there are enough items to split into multiple pages.
+`$results->hasMorePages()`  |  Determine if there is more items in the data store.
 `$results->items()`  |  Get the items for the current page.
 `$results->lastItem()`  |  Get the result number of the last item in the results.
 `$results->lastPage()`  |  Get the page number of the last available page. (Not available when using `simplePaginate`).
