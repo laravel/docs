@@ -174,7 +174,7 @@ To demonstrate attribute casting, let's cast the `is_admin` attribute, which is 
     class User extends Model
     {
         /**
-         * The attributes that should be cast to native types.
+         * The attributes that should be cast.
          *
          * @var array
          */
@@ -247,7 +247,7 @@ Once you have defined a custom cast type, you may attach it to a model attribute
     class User extends Model
     {
         /**
-         * The attributes that should be cast to native types.
+         * The attributes that should be cast.
          *
          * @var array
          */
@@ -314,6 +314,64 @@ When casting to value objects, any changes made to the value object will automat
 
     $user->save();
 
+#### Inbound Casting & Cast Parameters
+
+Occasionally, you may need to write a custom cast that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model. A classic example of an inbound only cast is a "hashing" cast. Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined.
+
+    <?php
+
+    namespace App\Casts;
+
+    use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
+
+    class Hash implements CastsInboundAttributes
+    {
+        /**
+         * The hashing algorithm.
+         *
+         * @var string
+         */
+        protected $algorithm;
+
+        /**
+         * Create a new cast class instance.
+         *
+         * @param  string|null  $algorithm
+         * @return void
+         */
+        public function __construct($algorithm = null)
+        {
+            $this->algorithm = $algorithm;
+        }
+
+        /**
+         * Prepare the given value for storage.
+         *
+         * @param  \Illuminate\Database\Eloquent\Model  $model
+         * @param  string  $key
+         * @param  array  $value
+         * @param  array  $attributes
+         * @return string
+         */
+        public function set($model, $key, $value, $attributes)
+        {
+            return is_null($this->algorithm)
+                        ? bcrypt($value);
+                        : hash($this->algorithm, $value);
+        }
+    }
+
+In this example, you may have noticed that the cast class accepts a constructor argument, allowing the algorithm to be customized. Cast parameters may be specified by separating them from the class name using a `:` character and comma-delimiting multiple parameters:
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'secret' => Hash::class.':sha256',
+    ];
+
 <a name="array-and-json-casting"></a>
 ### Array & JSON Casting
 
@@ -328,7 +386,7 @@ The `array` cast type is particularly useful when working with columns that are 
     class User extends Model
     {
         /**
-         * The attributes that should be cast to native types.
+         * The attributes that should be cast.
          *
          * @var array
          */
@@ -355,7 +413,7 @@ Once the cast is defined, you may access the `options` attribute and it will aut
 When using the `date` or `datetime` cast type, you may specify the date's format. This format will be used when the [model is serialized to an array or JSON](/docs/{{version}}/eloquent-serialization):
 
     /**
-     * The attributes that should be cast to native types.
+     * The attributes that should be cast.
      *
      * @var array
      */
