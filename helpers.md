@@ -45,6 +45,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::pull](#method-array-pull)
 [Arr::random](#method-array-random)
 [Arr::set](#method-array-set)
+[Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
 [Arr::sortRecursive](#method-array-sort-recursive)
 [Arr::where](#method-array-where)
@@ -534,6 +535,17 @@ The `Arr::set` method sets a value within a deeply nested array using "dot" nota
     Arr::set($array, 'products.desk.price', 200);
 
     // ['products' => ['desk' => ['price' => 200]]]
+
+<a name="method-array-shuffle"></a>
+#### `Arr::shuffle()` {#collection-method}
+
+The `Arr::shuffle` method randomly shuffles the items in the array:
+
+    use Illuminate\Support\Arr;
+
+    $array = Arr::shuffle([1, 2, 3, 4, 5]);
+
+    // [3, 2, 5, 1, 4] - (generated randomly)
 
 <a name="method-array-sort"></a>
 #### `Arr::sort()` {#collection-method}
