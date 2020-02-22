@@ -45,8 +45,8 @@ This command will place a new `CheckAge` class within your `app/Http/Middleware`
          */
         public function handle($request, Closure $next)
         {
-            if ($request->age <= 200) {
-                return redirect('home');
+            if ($request->age <= 200 && Route::current()->getName() !== 'home') {
+                return redirect()->route('home');
             }
 
             return $next($request);
