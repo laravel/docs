@@ -180,6 +180,8 @@ By default, Scout will use the primary key of the model as the unique ID stored 
 If you are installing Scout into an existing project, you may already have database records you need to import into your search driver. Scout provides an `import` Artisan command that you may use to import all of your existing records into your search indexes:
 
     php artisan scout:import "App\Post"
+    
+> {tip} If the value of the `queue` option in your `config/scout.php` configuration file is set to `true`, you won't be notified of any errors that arise during the batch import as the import is queued. Hence, some records might be missing from your algolia index after the import is completed. To debug the issue you may temporarily set the queue option to `false`. 
 
 The `flush` command may be used to remove all of a model's records from your search indexes:
 
