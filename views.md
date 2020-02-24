@@ -32,6 +32,8 @@ Views may also be nested within subdirectories of the `resources/views` director
 
     return view('admin.profile', $data);
 
+> {note} When using "Dot" notation to reference views, you cannot make use of directories containing dots in their name.
+
 #### Determining If A View Exists
 
 If you need to determine if a view exists, you may use the `View` facade. The `exists` method will return `true` if the view exists:
