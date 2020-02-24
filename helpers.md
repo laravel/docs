@@ -533,7 +533,7 @@ The `Arr::query` method converts the array into a query string:
 
     $array = ['name' => 'Taylor', 'sort' => ['by' => 'created_at', 'order' => 'desc']];
 
-    Arr:query($array);
+    Arr::query($array);
 
     // name=Taylor&sort[by]=created_at&sort[order]=desc
 
