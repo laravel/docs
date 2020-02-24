@@ -32,6 +32,8 @@ Views may also be nested within subdirectories of the `resources/views` director
 
     return view('admin.profile', $data);
 
+> {note} View directory names should not contain the `.` character.
+
 #### Determining If A View Exists
 
 If you need to determine if a view exists, you may use the `View` facade. The `exists` method will return `true` if the view exists:
