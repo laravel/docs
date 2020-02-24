@@ -1079,23 +1079,19 @@ The given _field_ must match the field under validation.
 <a name="rule-size"></a>
 #### size:_value_
 
-The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value (requires combination of the `numeric` or `integer` rules). For an array, _size_ corresponds to the `count` of the array. For files, _size_ corresponds to the file size in kilobytes. Let's look at some examples:
+The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value (the attribute must also have the `numeric` or `integer` rule). For an array, _size_ corresponds to the `count` of the array. For files, _size_ corresponds to the file size in kilobytes. Let's look at some examples:
 
-    // Below, an integer value of 12 will fail because
-    // it doesn't have a string length of exactly 12.
-    // The title "Laravel Nova" will pass.
+    // Validate that a string is greater than 12 characters long...
     'title' => 'size:12';
 
-    // With the `integer` or `numeric` rule,
-    // an integer value of 10 will succeed.
+    // Validate that a provided integer is greater than 10...
     'seats' => 'integer|size:10';
 
-    // An array with exactly 5 elements will pass.
-    'tags' => 'size:5';
+    // Validate that an array has exactly 5 elements...
+    'tags' => 'array|size:5';
 
-    // An uploaded image with a filesize
-    // of exactly 512 kilobytes will pass.
-    'image' => 'size:512';
+    // Validate that an uploaded file is exactly 512 kilobytes...
+    'image' => 'file|size:512';
 
 <a name="rule-starts-with"></a>
 #### starts_with:_foo_,_bar_,...
