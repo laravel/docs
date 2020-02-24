@@ -32,7 +32,7 @@ Views may also be nested within subdirectories of the `resources/views` director
 
     return view('admin.profile', $data);
 
-> {note} When using "Dot" notation to reference views, you cannot make use of directories containing dots in their name.
+> {note} View directory names should not contain the `.` character.
 
 #### Determining If A View Exists
 
