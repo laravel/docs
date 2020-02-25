@@ -356,3 +356,50 @@ The Artisan console's `make` commands are used to create a variety of classes, s
     php artisan stub:publish
 
 The published stubs will be located within a `stubs` directory in the root of your application. Any changes you make to these stubs will be reflected when you generate their corresponding classes using Artisan `make` commands.
+
+### Queue `maxExceptions` Configuration
+
+_Stub `maxExceptions` property was contributed by [Mohamed Said](https://twitter.com/themsaid)_.
+
+Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of exceptions. In Laravel 7, you may define a `maxExceptions` property on your job class:
+
+    <?php
+
+    namespace App\Jobs;
+
+    class ProcessPodcast implements ShouldQueue
+    {
+        /**
+         * The maximum number of exceptions to allow before failing.
+         *
+         * @var int
+         */
+        public $maxExceptions = 3;
+
+        /**
+         * Execute the job.
+         *
+         * @return void
+         */
+        public function handle()
+        {
+            Redis::throttle('key')->allow(10)->every(60)->then(function () {
+                // Lock obtained, process the podcast...
+            }, function () {
+                // Unable to obtain lock...
+                return $this->release(10);
+            });
+        }
+
+        /**
+         * Determine the time at which the job should timeout.
+         *
+         * @return \DateTime
+         */
+        public function retryUntil()
+        {
+            return now()->addMinutes(5);
+        }
+    }
+
+In this example, the job is released for ten seconds if the application is unable to obtain a Redis lock and will continue to be retried for up to five minutes. However, the job will fail if three unhandled exceptions are thrown by the job.
