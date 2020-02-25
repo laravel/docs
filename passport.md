@@ -463,16 +463,16 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 
 When tokens have been revoked or expired, you might want to purge them from the database. Passport ships with a command that can do this for you:
 
-    # This will purge both revoked and expired tokens and auth codes.
+    # Purge revoked and expired tokens and auth codes...
     php artisan passport:purge
 
-    # This will only purge revoked tokens and auth codes.
+    # Only purge revoked tokens and auth codes...
     php artisan passport:purge --revoked 
 
-    # This will only purge expired tokens and auth codes.
+    # Only purge expired tokens and auth codes...
     php artisan passport:purge --expired
 
-You can also set up a scheduled job in your console `Kernel` class to do this automatically:
+You may also configure a [scheduled job](/docs/{{version}}/scheduling) in your console `Kernel` class to automatically prune your tokens on a schedule:
 
     /**
      * Define the application's command schedule.
