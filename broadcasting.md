@@ -79,6 +79,10 @@ When using Channels and [Laravel Echo](#installing-laravel-echo), you should spe
         key: 'your-pusher-channels-key'
     });
 
+Finally, you will need to change your broadcast driver to `pusher` in your `.env` file:
+
+    BROADCAST_DRIVER=pusher
+
 #### Redis
 
 If you are using the Redis broadcaster, you should either install the phpredis PHP extension via PECL or install the Predis library via Composer:
