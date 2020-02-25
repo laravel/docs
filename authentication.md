@@ -28,7 +28,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-> {tip} **Want to get started fast?** Install the `laravel/ui` Composer package and run `php artisan ui vue --auth` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
+> {tip} **Want to get started fast?** Install the `laravel/ui` (1.0) Composer package and run `php artisan ui vue --auth` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
 
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
 
@@ -57,7 +57,7 @@ Laravel ships with several pre-built authentication controllers, which are locat
 
 Laravel's `laravel/ui` package provides a quick way to scaffold all of the routes and views you need for authentication using a few simple commands:
 
-    composer require laravel/ui --dev
+    composer require laravel/ui "^1.0" --dev
 
     php artisan ui vue --auth
 
