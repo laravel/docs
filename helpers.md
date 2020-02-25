@@ -531,11 +531,11 @@ The `Arr::query` method converts the array into a query string:
 
     use Illuminate\Support\Arr;
 
-    $array = ['name' => 'Taylor', 'sort' => ['by' => 'created_at', 'order' => 'desc']];
+    $array = ['name' => 'Taylor', 'order' => ['column' => 'created_at', 'direction' => 'desc']];
 
     Arr::query($array);
 
-    // name=Taylor&sort[by]=created_at&sort[order]=desc
+    // name=Taylor&order[column]=created_at&order[direction]=desc
 
 <a name="method-array-set"></a>
 #### `Arr::set()` {#collection-method}
