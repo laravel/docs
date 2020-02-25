@@ -85,7 +85,7 @@ Instead of passing the raw contents of a file, you may also pass a stream resour
 Headers may be added to requests using the `withHeaders` method. This `withHeaders` method accepts an array of key / value pairs:
 
     $response = Http::withHeaders([
-        'X-First' => 'foo'
+        'X-First' => 'foo',
         'X-Second' => 'bar'
     ])->post('http://test.com/users', [
         'name' => 'Taylor',
