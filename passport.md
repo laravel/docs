@@ -12,6 +12,7 @@
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
     - [Refreshing Tokens](#refreshing-tokens)
+    - [Purging Tokens](#purging-tokens)
 - [Authorization Code Grant with PKCE](#code-grant-pkce)
     - [Creating The Client](#creating-a-auth-pkce-grant-client)
     - [Requesting Tokens](#requesting-auth-pkce-grant-tokens)
@@ -456,6 +457,33 @@ If your application issues short-lived access tokens, users will need to refresh
     return json_decode((string) $response->getBody(), true);
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
+
+<a name="purging-tokens"></a>
+### Purging Tokens
+
+When tokens have been revoked or expired, you might want to purge them from the database. Passport ships with a command that can do this for you:
+
+    # Purge revoked and expired tokens and auth codes...
+    php artisan passport:purge
+
+    # Only purge revoked tokens and auth codes...
+    php artisan passport:purge --revoked 
+
+    # Only purge expired tokens and auth codes...
+    php artisan passport:purge --expired
+
+You may also configure a [scheduled job](/docs/{{version}}/scheduling) in your console `Kernel` class to automatically prune your tokens on a schedule:
+
+    /**
+     * Define the application's command schedule.
+     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @return void
+     */
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('passport:purge')->hourly();
+    }
 
 <a name="code-grant-pkce"></a>
 ## Authorization Code Grant with PKCE

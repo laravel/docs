@@ -221,6 +221,8 @@ If you pass additional parameters in the array, those key / value pairs will aut
 
     // /user/1/profile?photos=yes
 
+> {tip} Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
+
 #### Inspecting The Current Route
 
 If you would like to determine if the current request was routed to a given named route, you may use the `named` method on a Route instance. For example, you may check the current route name from a route middleware:
