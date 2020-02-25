@@ -68,10 +68,6 @@ Next, you should configure your Channels credentials in the `config/broadcasting
         'useTLS' => true
     ],
 
-Finally, you will need to change your broadcast driver to Pusher in your `.env` file:
-
-    BROADCAST_DRIVER=pusher
-
 When using Channels and [Laravel Echo](#installing-laravel-echo), you should specify `pusher` as your desired broadcaster when instantiating the Echo instance in your `resources/js/bootstrap.js` file:
 
     import Echo from "laravel-echo";
@@ -82,6 +78,10 @@ When using Channels and [Laravel Echo](#installing-laravel-echo), you should spe
         broadcaster: 'pusher',
         key: 'your-pusher-channels-key'
     });
+
+Finally, you will need to change your broadcast driver to `pusher` in your `.env` file:
+
+    BROADCAST_DRIVER=pusher
 
 #### Redis
 
