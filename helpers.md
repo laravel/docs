@@ -44,6 +44,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::prepend](#method-array-prepend)
 [Arr::pull](#method-array-pull)
 [Arr::random](#method-array-random)
+[Arr::query](#method-array-query)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
@@ -522,6 +523,19 @@ You may also specify the number of items to return as an optional second argumen
     $items = Arr::random($array, 2);
 
     // [2, 5] - (retrieved randomly)
+
+<a name="method-array-query"></a>
+#### `Arr::query()` {#collection-method}
+
+The `Arr::query` method converts the array into a query string:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['name' => 'Taylor', 'order' => ['column' => 'created_at', 'direction' => 'desc']];
+
+    Arr::query($array);
+
+    // name=Taylor&order[column]=created_at&order[direction]=desc
 
 <a name="method-array-set"></a>
 #### `Arr::set()` {#collection-method}
