@@ -370,6 +370,13 @@ Sometimes you may wish to specify that a job may be attempted many times, but sh
     class ProcessPodcast implements ShouldQueue
     {
         /**
+         * The number of times the job may be attempted.
+         *
+         * @var int
+         */
+        public $tries = 25;
+
+        /**
          * The maximum number of exceptions to allow before failing.
          *
          * @var int
@@ -390,16 +397,6 @@ Sometimes you may wish to specify that a job may be attempted many times, but sh
                 return $this->release(10);
             });
         }
-
-        /**
-         * Determine the time at which the job should timeout.
-         *
-         * @return \DateTime
-         */
-        public function retryUntil()
-        {
-            return now()->addMinutes(5);
-        }
     }
 
-In this example, the job is released for ten seconds if the application is unable to obtain a Redis lock and will continue to be retried for up to five minutes. However, the job will fail if three unhandled exceptions are thrown by the job.
+In this example, the job is released for ten seconds if the application is unable to obtain a Redis lock and will continue to be retried up to 25 times. However, the job will fail if three unhandled exceptions are thrown by the job.
