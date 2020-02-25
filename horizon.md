@@ -1,10 +1,10 @@
 # Laravel Horizon
 
 - [Introduction](#introduction)
-- [Upgrading Horizon](#upgrading)
 - [Installation](#installation)
     - [Configuration](#configuration)
     - [Dashboard Authorization](#dashboard-authorization)
+- [Upgrading Horizon](#upgrading-horizon)
 - [Running Horizon](#running-horizon)
     - [Deploying Horizon](#deploying-horizon)
 - [Tags](#tags)
@@ -21,15 +21,6 @@ All of your worker configuration is stored in a single, simple configuration fil
 <p align="center">
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1537195039/photos/Test.png" width="600" height="481">
 </p>
-
-<a name="upgrading"></a>
-## Upgrading Horizon
-
-When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
-
-In addition, you should re-publish Horizon's assets:
-
-    php artisan horizon:assets
 
 <a name="installation"></a>
 ## Installation
@@ -105,6 +96,15 @@ Horizon exposes a dashboard at `/horizon`. By default, you will only be able to 
     }
 
 > {note} Remember that Laravel injects the *authenticated* user to the Gate automatically. If your app is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function ($user)` above to `function ($user = null)` to force Laravel to not require authentication.
+
+<a name="upgrading-horizon"></a>
+## Upgrading Horizon
+
+When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
+
+In addition, you should re-publish Horizon's assets:
+
+    php artisan horizon:assets
 
 <a name="running-horizon"></a>
 ## Running Horizon
