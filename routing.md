@@ -219,8 +219,8 @@ If you pass additional parameters in the array, those key / value pairs will aut
     $url = route('profile', ['id' => 1, 'photos' => 'yes']);
 
     // /user/1/profile?photos=yes
-    
-For some applications, you may wish to specify request-wide default values for certain URL parameters (locale, current user slug, ...). To that end, you may [use the `URL::defaults` method](/docs/{{version}}/urls#default-values).
+
+> {tip} Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
 
 #### Inspecting The Current Route
 
