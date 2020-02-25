@@ -314,7 +314,7 @@ When casting to value objects, any changes made to the value object will automat
 
     $user->save();
 
-#### Inbound Casting & Cast Parameters
+#### Inbound Casting
 
 Occasionally, you may need to write a custom cast that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model. A classic example of an inbound only cast is a "hashing" cast. Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined.
 
@@ -361,7 +361,9 @@ Occasionally, you may need to write a custom cast that only transforms values th
         }
     }
 
-In this example, you may have noticed that the cast class accepts a constructor argument, allowing the algorithm to be customized. Cast parameters may be specified by separating them from the class name using a `:` character and comma-delimiting multiple parameters:
+#### Cast Parameters
+
+When attaching a custom cast to a model, cast parameters may be specified by separating them from the class name using a `:` character and comma-delimiting multiple parameters. The parameters will be passed to the constructor of the cast class:
 
     /**
      * The attributes that should be cast.
