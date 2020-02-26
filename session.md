@@ -21,7 +21,7 @@ Since HTTP driven applications are stateless, sessions provide a way to store in
 <a name="configuration"></a>
 ### Configuration
 
-The session configuration file is stored at `config/session.php`. Be sure to review the options available to you in this file. By default, Laravel is configured to use the `cookie` session driver, which will work well for many applications.
+The session configuration file is stored at `config/session.php`. Be sure to review the options available to you in this file. By default, Laravel is configured to use the `file` session driver, which will work well for many applications.
 
 The session `driver` configuration option defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:
 
