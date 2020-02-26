@@ -5,6 +5,7 @@
     - [Request Data](#request-data)
     - [Headers](#headers)
     - [Authentication](#authentication)
+    - [Retries](#retries)
     - [Error Handling](#error-handling)
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
@@ -107,6 +108,15 @@ You may specify basic and digest authentication credentials using the `withBasic
 If you would like to quickly add an `Authorization` bearer token header to the request, you may use the `withToken` method:
 
     $response = Http::withToken('token')->post(...);
+
+<a name="retries"></a>
+### Retries
+
+If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts two arguments: the number of times the request should be retried and the number of milliseconds that Laravel should wait in between retries:
+
+    $response = Http::retries(3, 100)->post(...);
+
+If all of the requests fail, an instance of `Illuminate\Http\Client\RequestException` will be thrown.
 
 <a name="error-handling"></a>
 ### Error Handling
