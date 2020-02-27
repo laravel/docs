@@ -33,7 +33,7 @@
 
 **Likelihood Of Impact: High**
 
-Laravel 7 upgrade its underlying Symfony components to the 5.x series, which is now also the new minimum compatible version.
+Laravel 7 upgraded its underlying Symfony components to the 5.x series, which is now also the new minimum compatible version.
 
 ### PHP 7.2.5 Required
 
