@@ -78,7 +78,8 @@
     - [Mocking](/docs/{{version}}/mocking)
 - ## Official Packages
     - [Airlock](/docs/{{version}}/airlock)
-    - [Cashier](/docs/{{version}}/billing)
+    - [Cashier (Stripe)](/docs/{{version}}/billing)
+    - [Cashier (Mollie)](https://github.com/laravel/cashier-mollie)
     - [Dusk](/docs/{{version}}/dusk)
     - [Envoy](/docs/{{version}}/envoy)
     - [Horizon](/docs/{{version}}/horizon)
