@@ -156,7 +156,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [title](#method-fluent-str-title)
 [singular](#method-fluent-str-singular)
 [slug](#method-fluent-str-slug)
-[slug](#method-fluent-str-slug)
 [snake](#method-fluent-str-snake)
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
