@@ -89,6 +89,10 @@ If you are using the Redis broadcaster, you should either install the phpredis P
 
     composer require predis/predis
 
+Next, you should update your broadcast driver to `redis` in your `.env` file:
+
+    BROADCAST_DRIVER=redis
+
 The Redis broadcaster will broadcast messages using Redis' pub / sub feature; however, you will need to pair this with a WebSocket server that can receive the messages from Redis and broadcast them to your WebSocket channels.
 
 When the Redis broadcaster publishes an event, it will be published on the event's specified channel names and the payload will be a JSON encoded string containing the event name, a `data` payload, and the user that generated the event's socket ID (if applicable).
