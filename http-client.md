@@ -41,7 +41,7 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
     $response->header($header) : string;
     $response->headers() : array;
 
-The `Illumiante\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
+The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
 
     return Http::get('http://test.com/users/1')['name'];
 
