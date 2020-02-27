@@ -209,6 +209,12 @@ When all of the responses in a response sequence have been consumed, any further
                                 ->whenEmpty(Http::response()),
     ]);
 
+If you would like to fake a sequence of responses but do not need to specify a specific URL pattern that should be faked, you may use the `Http::fakeSequence` method:
+
+    Http::fakeSequence()
+            ->push('Hello World', 200)
+            ->whenEmpty(Http::response());
+
 #### Fake Callback
 
 If you require more complicated logic to determine what responses to return for certain endpoints, you may pass a callback to the `fake` method. This callback will receive an instance of `Illuminate\Http\Client\Request` and should return a response instance:
