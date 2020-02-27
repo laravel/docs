@@ -199,6 +199,16 @@ Sometimes you may need to specify that a single URL should return a series of fa
                                 ->pushStatus(404),
     ]);
 
+When all of the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:
+
+    Http::fake([
+        // Stub a series of responses for GitHub endpoints...
+        'github.com/*' => Http::sequence()
+                                ->push('Hello World', 200)
+                                ->push(['foo' => 'bar'], 200)
+                                ->whenEmpty(Http::response()),
+    ]);
+
 #### Fake Callback
 
 If you require more complicated logic to determine what responses to return for certain endpoints, you may pass a callback to the `fake` method. This callback will receive an instance of `Illuminate\Http\Client\Request` and should return a response instance:
