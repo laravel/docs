@@ -674,7 +674,7 @@ Once you are ready to create an actual subscription for the user, you may use th
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
 
-> {tip} You may use [Laravel Valet's](/docs/{{version}}/valet) `valet share` command to help test webhooks during local development.
+> {tip} You may use [the Stripe CLI](https://stripe.com/docs/stripe-cli) to help test webhooks during local development.
 
 Stripe can notify your application of a variety of events via webhooks. By default, a route that points to Cashier's webhook controller is configured through the Cashier service provider. This controller will handle all incoming webhook requests.
 
