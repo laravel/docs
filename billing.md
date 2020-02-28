@@ -606,6 +606,8 @@ If the user cancels a subscription and then resumes that subscription before the
 <a name="subscription-trials"></a>
 ## Subscription Trials
 
+> {note} Since Cashier sets the trial end on the subscription itself and does not derive it from a Stripe plan, it's recommended to not rely on the trial days in your Stripe plans and always set them to a value of zero days.
+
 <a name="with-payment-method-up-front"></a>
 ### With Payment Method Up Front
 
