@@ -31,6 +31,7 @@
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)
     - [Without Payment Method Up Front](#without-payment-method-up-front)
+    - [Extending Trials](#extending-trials)
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
@@ -670,6 +671,23 @@ Once you are ready to create an actual subscription for the user, you may use th
     $user = User::find(1);
 
     $user->newSubscription('default', 'monthly')->create($paymentMethod);
+
+<a name="extending-trials"></a>
+### Extending Trials
+
+Cashier also offers the ability to extend the trial period of a subscription after it's been created. You can use the `extendTrial` method for this:
+
+    // End the trial 7 days from now.
+    $subscription->extendTrial(
+        now()->addDays(7)
+    );
+
+    // Add an additional 5 days to the trial.
+    $subscription->extendTrial(
+        $subscription->trial_ends_at->addDays(5)
+    );
+
+If the previous trial period was already over and the customer is already being billed for the subscription, you can still offer them an extended trial. Any time within this trial period will be prorated on the next invoice.
 
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
