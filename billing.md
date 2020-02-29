@@ -675,19 +675,19 @@ Once you are ready to create an actual subscription for the user, you may use th
 <a name="extending-trials"></a>
 ### Extending Trials
 
-Cashier also offers the ability to extend the trial period of a subscription after it's been created. You can use the `extendTrial` method for this:
+The `extendTrial` method allows you to extend the trial period of a subscription after it's been created:
 
-    // End the trial 7 days from now.
+    // End the trial 7 days from now...
     $subscription->extendTrial(
         now()->addDays(7)
     );
 
-    // Add an additional 5 days to the trial.
+    // Add an additional 5 days to the trial...
     $subscription->extendTrial(
         $subscription->trial_ends_at->addDays(5)
     );
 
-If the previous trial period was already over and the customer is already being billed for the subscription, you can still offer them an extended trial. Any time within this trial period will be prorated on the next invoice.
+If the trial has already expired and the customer is already being billed for the subscription, you can still offer them an extended trial. The time spent within the trial period will be deducted from the customer's next invoice.
 
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
