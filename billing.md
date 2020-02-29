@@ -31,6 +31,7 @@
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)
     - [Without Payment Method Up Front](#without-payment-method-up-front)
+    - [Extending Trials](#extending-trials)
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
@@ -606,6 +607,8 @@ If the user cancels a subscription and then resumes that subscription before the
 <a name="subscription-trials"></a>
 ## Subscription Trials
 
+> {note} Cashier manages trial dates for subscriptions and does not derive them from the Stripe plan. Therefore, you should configure your plan in Stripe to have a trial period of zero days so that Cashier can manage the trials instead.
+
 <a name="with-payment-method-up-front"></a>
 ### With Payment Method Up Front
 
@@ -669,10 +672,27 @@ Once you are ready to create an actual subscription for the user, you may use th
 
     $user->newSubscription('default', 'monthly')->create($paymentMethod);
 
+<a name="extending-trials"></a>
+### Extending Trials
+
+The `extendTrial` method allows you to extend the trial period of a subscription after it's been created:
+
+    // End the trial 7 days from now...
+    $subscription->extendTrial(
+        now()->addDays(7)
+    );
+
+    // Add an additional 5 days to the trial...
+    $subscription->extendTrial(
+        $subscription->trial_ends_at->addDays(5)
+    );
+
+If the trial has already expired and the customer is already being billed for the subscription, you can still offer them an extended trial. The time spent within the trial period will be deducted from the customer's next invoice.
+
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
 
-> {tip} You may use [Laravel Valet's](/docs/{{version}}/valet) `valet share` command to help test webhooks during local development.
+> {tip} You may use [the Stripe CLI](https://stripe.com/docs/stripe-cli) to help test webhooks during local development.
 
 Stripe can notify your application of a variety of events via webhooks. By default, a route that points to Cashier's webhook controller is configured through the Cashier service provider. This controller will handle all incoming webhook requests.
 
