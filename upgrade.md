@@ -55,7 +55,7 @@ Finally, examine any other third-party packages consumed by your application and
 
 Laravel 7 utilizes the 5.x series of the Symfony components. Some minor changes to your application are required to accommodate this upgrade.
 
-First, the `report` and `render` methods of your application's `App\Exceptions\Handler` class should accept instances of the `Throwable` interface instead of `Exception` class:
+First, the `report` and `render` methods of your application's `App\Exceptions\Handler` class should accept instances of the `Throwable` interface instead of `Exception` instances:
 
     use Throwable;
 
