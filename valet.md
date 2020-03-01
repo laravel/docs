@@ -9,6 +9,7 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
+- [Setting a Default Site](#serving-a-default-site)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
@@ -198,6 +199,20 @@ Some applications using other frameworks may depend on server environment variab
             'key' => 'value',
         ],
     ];
+
+<a name="serving-a-default-site"></a>
+## Serving a Default Site
+
+In some situations you may wish to configure your machine to serve a "default" site instead of a 404 if you visit a URL for a project that Valet is unable to find according to your parked or linked projects.
+
+This can also be helpful for some less flexible simulator apps or IDEs which only allow specifying 127.0.0.1 (and not a domain URL) for testing or simulation.
+
+To do this, manually edit your `~/.config/valet/config.json` file and add an item to the config array, pointing `default` at the path of the project to be served. For example:
+
+    "default": "/Users/YOUR_USERNAME/Sites/foo",
+    
+... and make sure the specified path contains files that can be served as a website.
+
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
