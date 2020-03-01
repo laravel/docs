@@ -116,7 +116,7 @@ You may append to the query string of pagination links using the `appends` metho
 
 If you wish to append all query string values to the pagination links you can use the `withQueryString` method:
 
-    {{ $users->awithQueryString()->links() }}
+    {{ $users->withQueryString()->links() }}
 
 If you wish to append a "hash fragment" to the paginator's URLs, you may use the `fragment` method. For example, to append `#foo` to the end of each pagination link, make the following call to the `fragment` method:
 
