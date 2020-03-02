@@ -12,6 +12,7 @@
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
     - [Updating Customers](#updating-customers)
+    - [Custom Email Addresses](#custom-email-addresses)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
@@ -168,6 +169,23 @@ You may also use the `createOrGetStripeCustomer` method if you want to return th
 Occasionally, you may wish to update the Stripe customer directly with additional information. You may accomplish this using the `updateStripeCustomer` method:
 
     $stripeCustomer = $user->updateStripeCustomer($options);
+
+<a name="custom-email-addresses"></a>
+### Custom Email Addresses
+
+By default, Cashier will use the `email` attribute on your Billable model to create customers within Stripe. You can override this using the `stripeEmail` method:
+
+    /**
+     * Get the email address used to create the customer in Stripe.
+     *
+     * @return string|null
+     */
+    public function stripeEmail()
+    {
+        return $this->email;
+    }
+
+You can also choose to return `null` since an email address isn't required for creating a customer within Stripe. If you do not provide an email address, features within Stripe like dunning emails, failed payment reminders, and other email related features will not be available.
 
 <a name="payment-methods"></a>
 ## Payment Methods
