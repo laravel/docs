@@ -46,6 +46,14 @@ The new minimum PHP version is now 7.2.5.
 
 Update your `laravel/framework` dependency to `^7.0` in your `composer.json` file. In addition, update your `nunomaduro/collision` dependency to `^4.1`.
 
+The following first-party packages have new major releases to support Laravel 7. If there are any, read through their individual upgrade guides before upgrading:
+
+- Browser Kit Testing v6.0
+- Envoy v2.0
+- Horizon v4.0
+- Scout v8.0
+- UI v2.0
+
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
 
 <a name="symfony-5-related-upgrades"></a>
