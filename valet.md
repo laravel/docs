@@ -307,16 +307,15 @@ If you would like to define a custom Valet driver for a single application, crea
 <a name="php-configuration"></a>
 ## PHP Configuration
 
-You may add extra configuration `.ini` files in the `/usr/local/etc/php/7.X/conf.d/` directory to customize the way that version of PHP operates.
-
-Once you've added or updated these settings you must reboot or run `valet restart php`.
+You may add additional PHP configuration `.ini` files in the `/usr/local/etc/php/7.X/conf.d/` directory to customize your PHP installation. Once you've added or updated these settings you should run `valet restart php`.
 
 ### PHP Memory Limits
-By default Valet sets memory_limit and file upload max size in `/usr/local/etc/php/7.X/conf.d/php-memory-limits.ini`. This affects both the CLI and FPM processes.
+
+By default, Valet specifies the PHP installation's memory limit and max file upload size in the `/usr/local/etc/php/7.X/conf.d/php-memory-limits.ini` configuration file. This affects both the CLI and FPM PHP processes.
 
 ### PHP-FPM Pool Processes
-Valet's PHP-FPM configuration is found in `/usr/local/etc/php/7.X/php-fpm.d/valet-fpm.conf`. In this file you may increase the number of FPM servers and child processes if your workflow requires it. Keep in mind that these settings will influence CPU and RAM requirements.
 
+Valet's PHP-FPM configuration is contained within the `/usr/local/etc/php/7.X/php-fpm.d/valet-fpm.conf` configuration file. In this file you may increase the number of FPM servers and child processes utilized by your PHP application.
 
 <a name="other-valet-commands"></a>
 ## Other Valet Commands
