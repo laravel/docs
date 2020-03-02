@@ -5,6 +5,7 @@
 - [Routing](#verification-routing)
     - [Protecting Routes](#protecting-routes)
 - [Views](#verification-views)
+- [Controller](#controller)
 - [After Verifying Emails](#after-verifying-emails)
 - [Events](#events)
 
@@ -68,7 +69,28 @@ To generate all of the necessary view for email verification, you may use the `l
 
 The email verification view is placed in `resources/views/auth/verify.blade.php`. You are free to customize this view as needed for your application.
 
+use `$user->hasVerifiedEmail()` to check if a user is verified in your view.
+
+
 <a name="after-verifying-emails"></a>
+## Controller
+
+You can make the following optional changes (depending on your use case) to `RegisterController` :
+
+    protected function create(array $data)
+    {
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        $user->sendEmailVerificationNotification();
+
+        return $user;
+    }
+  
+<a name="controller"></a>
 ## After Verifying Emails
 
 After an email address is verified, the user will automatically be redirected to `/home`. You can customize the post verification redirect location by defining a `redirectTo` method or property on the `VerificationController`:
