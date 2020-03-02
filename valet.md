@@ -9,6 +9,7 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
+- [Serving A Default Site](#serving-a-default-site)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
@@ -198,6 +199,13 @@ Some applications using other frameworks may depend on server environment variab
             'key' => 'value',
         ],
     ];
+
+<a name="serving-a-default-site"></a>
+## Serving A Default Site
+
+Sometimes, you may wish to configure Valet to serve a "default" site instead of a `404` when visiting an unknown `test` domain. To accomplish this, you may add a `default` option to your `~/.config/valet/config.json` configuration file containing the path to the site that should function as your default site:
+
+    "default": "/Users/Sally/Sites/foo",
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
