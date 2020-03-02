@@ -40,7 +40,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [CakePHP 3](https://cakephp.org)
 - [Concrete5](https://www.concrete5.org/)
 - [Contao](https://contao.org/en/)
-- [Craft](https://craftcms.com)
+- [Craft CMS](https://craftcms.com)
 - [Drupal](https://www.drupal.org/)
 - [Jigsaw](https://jigsaw.tighten.co)
 - [Joomla](https://www.joomla.org/)
