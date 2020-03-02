@@ -114,7 +114,7 @@ You may append to the query string of pagination links using the `appends` metho
 
     {{ $users->appends(['sort' => 'votes'])->links() }}
 
-If you wish to append all query string values to the pagination links you can use the `withQueryString` method:
+If you wish to append all current query string values to the pagination links you may use the `withQueryString` method:
 
     {{ $users->withQueryString()->links() }}
 
