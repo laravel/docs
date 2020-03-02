@@ -359,7 +359,7 @@ The published stubs will be located within a `stubs` directory in the root of yo
 
 ### Queue `maxExceptions` Configuration
 
-_Stub `maxExceptions` property was contributed by [Mohamed Said](https://twitter.com/themsaid)_.
+_The `maxExceptions` property was contributed by [Mohamed Said](https://twitter.com/themsaid)_.
 
 Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of exceptions. In Laravel 7, you may define a `maxExceptions` property on your job class:
 
