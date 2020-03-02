@@ -9,10 +9,10 @@
     - [Currency Configuration](#currency-configuration)
     - [Logging](#logging)
 - [Customers](#customers)
-    - [Custom Email Address](#custom-email-address)
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
     - [Updating Customers](#updating-customers)
+    - [Custom Email Addresses](#custom-email-addresses)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
@@ -139,23 +139,6 @@ Cashier allows you to specify the log channel to be used when logging all Stripe
 <a name="customers"></a>
 ## Customers
 
-<a name="custom-email-address"></a>
-### Custom Email Address
-
-By default, Cashier will use the `email` attribute on your Billable model to create the customer within Stripe. You can override this with the `stripeEmail` method:
-
-    /**
-     * Get the email address used to create the customer in Stripe.
-     *
-     * @return string|null
-     */
-    public function stripeEmail()
-    {
-        return $this->email;
-    }
-
-You can also choose to return nothing as an email address isn't required for creating a customer within Stripe. Please note that this means that features within Stripe like dunning emails, failed payment reminders, etc are not available. It is very much recommended to always provide an email address when working with Stripe.
-
 <a name="retrieving-customers"></a>
 ### Retrieving Customers
 
@@ -186,6 +169,23 @@ You may also use the `createOrGetStripeCustomer` method if you want to return th
 Occasionally, you may wish to update the Stripe customer directly with additional information. You may accomplish this using the `updateStripeCustomer` method:
 
     $stripeCustomer = $user->updateStripeCustomer($options);
+
+<a name="custom-email-addresses"></a>
+### Custom Email Addresses
+
+By default, Cashier will use the `email` attribute on your Billable model to create customers within Stripe. You can override this using the `stripeEmail` method:
+
+    /**
+     * Get the email address used to create the customer in Stripe.
+     *
+     * @return string|null
+     */
+    public function stripeEmail()
+    {
+        return $this->email;
+    }
+
+You can also choose to return `null` since an email address isn't required for creating a customer within Stripe. If you do not provide an email address, features within Stripe like dunning emails, failed payment reminders, and other email related features will not be available.
 
 <a name="payment-methods"></a>
 ## Payment Methods
