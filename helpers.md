@@ -1553,10 +1553,6 @@ The `finish` method adds a single instance of the given value to a string if it 
 
     // this/string/
 
-    $adjusted = Str::of('this/string')->finish('/');
-
-    // this/string/
-
 <a name="method-fluent-str-is"></a>
 #### `is` {#collection-method}
 
