@@ -1553,7 +1553,7 @@ The `finish` method adds a single instance of the given value to a string if it 
 
     // this/string/
 
-    $adjusted = Str::of('this/string')->finish('/');
+    $adjusted = Str::of('this/string/')->finish('/');
 
     // this/string/
 
