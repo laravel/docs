@@ -112,7 +112,7 @@ _Blade component tags were contributed by [Spatie](https://spatie.be/), [Marcel 
 
 > {tip} Blade components have been overhauled to allow tag based rendering, attribute management, component classes, inline view components, and more. Since the overhaul of Blade components is so extensive, please consult the [full Blade component documentation](/docs/{{version}}/blade#components) to learn about this feature.
 
-In summary, a component may now have an associated class which specifies the data is accepts. All public properties and methods defined on the component class will automatically be made available to the component view. Any additional HTML attributes specified on the component may be managed using the automatically included `$attribute` variable, which is an attribute bag instance.
+In summary, a component may now have an associated class which specifies the data it accepts. All public properties and methods defined on the component class will automatically be made available to the component view. Any additional HTML attributes specified on the component may be managed using the automatically included `$attribute` variable, which is an attribute bag instance.
 
 In this example, we will assume that an `App\View\Components\Alert` component has been defined like so:
 
@@ -359,7 +359,7 @@ The published stubs will be located within a `stubs` directory in the root of yo
 
 ### Queue `maxExceptions` Configuration
 
-_Stub `maxExceptions` property was contributed by [Mohamed Said](https://twitter.com/themsaid)_.
+_The `maxExceptions` property was contributed by [Mohamed Said](https://twitter.com/themsaid)_.
 
 Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of exceptions. In Laravel 7, you may define a `maxExceptions` property on your job class:
 

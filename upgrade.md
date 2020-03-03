@@ -46,7 +46,16 @@ The new minimum PHP version is now 7.2.5.
 
 Update your `laravel/framework` dependency to `^7.0` in your `composer.json` file. In addition, update your `nunomaduro/collision` dependency to `^4.1`.
 
-Finally, examine any other 3rd party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
+The following first-party packages have new major releases to support Laravel 7. If there are any, read through their individual upgrade guides before upgrading:
+
+- [Browser Kit Testing v6.0](https://github.com/laravel/browser-kit-testing/blob/master/UPGRADE.md)
+- [Envoy v2.0](https://github.com/laravel/envoy/blob/master/UPGRADE.md)
+- [Horizon v4.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
+- [Nova v3.0](https://nova.laravel.com/releases)
+- [Scout v8.0](https://github.com/laravel/scout/blob/master/UPGRADE.md)
+- UI v2.0 (No changes necessary)
+
+Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
 
 <a name="symfony-5-related-upgrades"></a>
 ### Symfony 5 Related Upgrades
@@ -75,9 +84,9 @@ Next, please update your `session` configuration file's `secure` option to have 
 
 **Likelihood Of Impact: High**
 
-All authentication scaffolding has been moved to the `laravel/ui` repository. If you are using Laravel's authentication scaffolding, you should install the `~2.0` release of this package:
+All authentication scaffolding has been moved to the `laravel/ui` repository. If you are using Laravel's authentication scaffolding, you should install the `^2.0` release of this package:
 
-    composer require laravel/ui "~2.0"
+    composer require laravel/ui "^2.0"
 
 #### The `TokenRepositoryInterface`
 
@@ -99,7 +108,7 @@ The `Blade::component` method has been renamed to `Blade::aliasComponent`. Pleas
 
 **Likelihood Of Impact: Medium**
 
-Laravel 7 includes first-party support for Blade "tag components". If you are using the `spatie/laravel-blade-x` Composer package and wish to continue using that package, please disable Blade's built-in tag component functionality using the `Blade::withoutComponentTags` method. If you are not using Spatie's package, you can disregard these upgrade instructions. You may call the `withoutComponentTags` method from the `boot` method of your `AppServiceProvider`:
+Laravel 7 includes first-party support for Blade "tag components". If you wish to disable Blade's built-in tag component functionality, you may call the `withoutComponentTags` method from the `boot` method of your `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Blade;
 
@@ -154,7 +163,7 @@ Laravel 7 removes the "factory types" feature. This feature has been undocumente
 
 **Likelihood Of Impact: Low**
 
-The `$model->getOriginal()` method will now respect any casts defined on the model. Previously, this method returned the uncast, raw attributes. If you would to continue retrieving the raw, uncast values, you may use the `getRawOriginal` method instead.
+The `$model->getOriginal()` method will now respect any casts defined on the model. Previously, this method returned the uncast, raw attributes. If you would like to continue retrieving the raw, uncast values, you may use the `getRawOriginal` method instead.
 
 #### Route Binding
 
@@ -227,7 +236,7 @@ The `array` session driver data is now persistent for the current request. Previ
 
 **Likelihood Of Impact: Medium**
 
-The `assertSee` assertion on the `TestResponse` class will now automatically escape values. If you are manually escaping any values passed to this assertion you should no longer do so.
+The `assertSee` and `assertDontSee` assertions on the `TestResponse` class will now automatically escape values. If you are manually escaping any values passed to these assertions you should no longer do so.
 
 ### Validation
 
@@ -241,4 +250,4 @@ The `different` rule will now fail if one of the specified parameters is missing
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/6.0...master) and choose which updates are important to you.
+We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/6.x...master) and choose which updates are important to you.

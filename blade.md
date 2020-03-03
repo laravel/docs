@@ -704,7 +704,7 @@ You may specify which attributes should be considered data variables using the `
 
     @props(['type', 'message'])
 
-    <div {{ $attributes->merge(['alert alert-'.$type]) }}>
+    <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
         {{ $message }}
     </div>
 
