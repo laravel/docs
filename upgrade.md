@@ -253,8 +253,6 @@ The `assertSee` and `assertDontSee` assertions on the `TestResponse` class will 
 
 The `different` rule will now fail if one of the specified parameters is missing from the request.
 
-
-
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
