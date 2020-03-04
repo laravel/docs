@@ -196,7 +196,7 @@ Laravel now provides an expressive, minimal API around the [Guzzle HTTP client](
     use Illuminate\Support\Facades\Http;
 
     $response = Http::withHeaders([
-        'X-First' => 'foo'
+        'X-First' => 'foo',
         'X-Second' => 'bar'
     ])->post('http://test.com/users', [
         'name' => 'Taylor',
