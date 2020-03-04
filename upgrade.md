@@ -227,7 +227,7 @@ The router's `getRoutes` method now returns an instance of `Illuminate\Routing\R
 
 **Likelihood Of Impact: Medium**
 
-Even though never officially documented, before Laravel 7 you could technically define two different routes with the same name. In Laravel 7 this isn't possible anymore and you should always provide unqiue names for your routes.
+Even though never officially documented, before Laravel 7 you could technically define two different routes with the same name. In Laravel 7 this isn't possible anymore and you should always provide unique names for your routes.
 
 ### Session
 
