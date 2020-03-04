@@ -20,6 +20,7 @@
 - [Factory Types](#factory-types)
 - [The `different` Validation Rule](#the-different-rule)
 - [The `assertSee` Assertion](#assert-see)
+- [Unique Route Names](#unique-route-names)
 </div>
 
 <a name="upgrade-7.0"></a>
@@ -220,6 +221,13 @@ The deprecated `Illuminate\Http\Resources\Json\Resource` class has been removed.
 **Likelihood Of Impact: Low**
 
 The router's `getRoutes` method now returns an instance of `Illuminate\Routing\RouteCollectionInterface` instead of `Illuminate\Routing\RouteCollection`.
+
+<a name="unique-route-names"></a>
+#### Unique Route Names
+
+**Likelihood Of Impact: Medium**
+
+Even though never officially documented, before Laravel 7 you could technically define two different routes with the same name. In Laravel 7 this isn't possible anymore and you should always provide unqiue names for your routes.
 
 ### Session
 
