@@ -221,6 +221,12 @@ The deprecated `Illuminate\Http\Resources\Json\Resource` class has been removed.
 
 The router's `getRoutes` method now returns an instance of `Illuminate\Routing\RouteCollectionInterface` instead of `Illuminate\Routing\RouteCollection`.
 
+#### CORS
+
+**Likelihood Of Impact: Low**
+
+Cross-Origin Resource Sharing (CORS) support is now integrated by default. If you are using any CORS third-party libraries you are now advised to use the [new `cors` configuration file](https://github.com/laravel/laravel/blob/develop/config/cors.php) and add the `\Fruitcake\Cors\HandleCors::class` middleware to your `App\Http\Kernel` middlewares list. This is specially true if you are using the `barryvdh/laravel-cors` package since it would conflict with the `illuminate/support` version used now by Laravel.
+
 ### Session
 
 #### The `array` Session Driver
@@ -246,6 +252,8 @@ The `assertSee` and `assertDontSee` assertions on the `TestResponse` class will 
 **Likelihood Of Impact: Medium**
 
 The `different` rule will now fail if one of the specified parameters is missing from the request.
+
+
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
