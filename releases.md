@@ -167,7 +167,7 @@ And, assuming the component's Blade template has been defined like so:
 
     <!-- /resources/views/components/alert.blade.php -->
 
-    <div class="alert {{ $classForType() }}" {{ $attributes }}>
+    <div class="alert {{ $classForType }}" {{ $attributes }}>
         {{ $heading }}
 
         {{ $slot }}
