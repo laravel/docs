@@ -86,7 +86,7 @@ Next, please update your `session` configuration file's `secure` option to have 
 
 **Likelihood Of Impact: High**
 
-All authentication scaffolding has been moved to the `laravel/ui` repository. If you are using Laravel's authentication scaffolding, you should install the `^2.0` release of this package:
+All authentication scaffolding has been moved to the `laravel/ui` repository. If you are using Laravel's authentication scaffolding, you should install the `^2.0` release of this package and the package should be installed in all environments. If you were previously including this package in the `require-dev` portion of your application's `composer.json` file, you should move it to the `require` section:
 
     composer require laravel/ui "^2.0"
 
