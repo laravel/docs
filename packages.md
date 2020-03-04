@@ -11,6 +11,7 @@
     - [Routes](#routes)
     - [Translations](#translations)
     - [Views](#views)
+    - [View Components](#view-components)
 - [Commands](#commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
@@ -254,6 +255,30 @@ If you would like to make your views available for publishing to the application
     }
 
 Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified publish location.
+
+<a name="view-components"></a>
+### View Components
+
+If your package contains [view components](/docs/{{version}}/blade#components), you may use the `loadViewComponentsAs` method to inform Laravel how to load them. The `loadViewComponentsAs` method accepts two arguments: the tag prefix for your view components and an array of your view components class. For example, if your package's prefix is `courier` and you have `Alert` and `Button` view components, you would add the following to your service provider's `boot` method:
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadViewComponentsAs('courier', [
+            Alert::class,
+            Button::class,
+        ]);
+    }
+
+Once your view components are registered in a service provider, you may reference them in your view like so:
+
+    <x-courier-alert />
+
+    <x-courier-button />
 
 <a name="commands"></a>
 ## Commands
