@@ -193,6 +193,8 @@ You may also specify route names for controller actions:
 
     Route::get('user/profile', 'UserProfileController@show')->name('profile');
 
+> {note} Route names should always be unique.
+
 #### Generating URLs To Named Routes
 
 Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the global `route` function:
