@@ -15,12 +15,13 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
+- [Unique Route Names](#unique-route-names)
+- [CORS Support](#cors-support)
 - [The `Blade::component` Method](#the-blade-component-method)
 - [Blade Components & "Blade X"](#blade-components-and-blade-x)
 - [Factory Types](#factory-types)
 - [The `different` Validation Rule](#the-different-rule)
 - [The `assertSee` Assertion](#assert-see)
-- [Unique Route Names](#unique-route-names)
 </div>
 
 <a name="upgrade-7.0"></a>
@@ -227,7 +228,14 @@ The router's `getRoutes` method now returns an instance of `Illuminate\Routing\R
 
 **Likelihood Of Impact: Medium**
 
-Even though never officially documented, before Laravel 7 you could technically define two different routes with the same name. In Laravel 7 this isn't possible anymore and you should always provide unique names for your routes.
+Even though never officially documented, previous Laravel releases allow you to define two different routes with the same name. In Laravel 7 this is no longer possible and you should always provide unique names for your routes. Routes with duplicate names can cause unexpected behavior in multiple areas of the framework.
+
+<a name="cors-support"></a>
+#### CORS Support
+
+**Likelihood Of Impact: Medium**
+
+Cross-Origin Resource Sharing (CORS) support is now integrated by default. If you are using any third-party CORS libraries you are now advised to use the [new `cors` configuration file](https://github.com/laravel/laravel/blob/develop/config/cors.php) and add the `\Fruitcake\Cors\HandleCors::class` middleware to your `App\Http\Kernel` global middleware list.
 
 ### Session
 
