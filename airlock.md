@@ -163,7 +163,9 @@ Next, you should add Airlock's middleware to your `api` middleware group within 
 
 If you are having trouble authenticating with your application from an SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
 
-You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. You may configure your application's CORS settings in your `cors` configuration file.
+You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. You may configure your application's CORS settings in your `cors` configuration file, make sure `supports_credentials` set to be `true`, and below paths should be enabled on the `paths` setting to enable CORS on said paths:
+
+    ['airlock/csrf-cookie', 'login', 'register']
 
 In addition, you should enable the `withCredentials` option on your global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file:
 
@@ -172,6 +174,8 @@ In addition, you should enable the `withCredentials` option on your global `axio
 Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may do this by prefixing the domain with a leading `.` within your `session` configuration file:
 
     'domain' => '.domain.com',
+    
+This will allow to any SPA that has the same domain or subdomain to works, so you should set your Vue or React or any other SPA's framework to have the domain or subdomain that would fit above configuration.
 
 <a name="spa-authenticating"></a>
 ### Authenticating
