@@ -37,6 +37,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::forget](#method-array-forget)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
+[Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
@@ -435,6 +436,27 @@ The `Arr::has` method checks whether a given item or items exists in an array us
     // true
 
     $contains = Arr::has($array, ['product.price', 'product.discount']);
+
+    // false
+
+<a name="method-array-hasany"></a>
+#### `Arr::hasAny()` {#collection-method}
+
+The `Arr::hasAny` method checks whether any item in a given set exists in an array using "dot" notation:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['product' => ['name' => 'Desk', 'price' => 100]];
+
+    $contains = Arr::hasAny($array, 'product.name');
+
+    // true
+
+    $contains = Arr::hasAny($array, ['product.name', 'product.discount']);
+
+    // true
+
+    $contains = Arr::hasAny($array, ['category', 'product.discount']);
 
     // false
 
