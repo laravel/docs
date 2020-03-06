@@ -261,11 +261,11 @@ The `array` session driver data is now persistent for the current request. Previ
 The `assertSee` and `assertDontSee` assertions on the `TestResponse` class will now automatically escape values. If you are manually escaping any values passed to these assertions you should no longer do so. If you need to assert unescaped values, you may pass `false` as the second argument to the method.
 
 <a name="assert-see"></a>
-#### The `TestResponse` class
+#### The `TestResponse` Class
 
 **Likelihood Of Impact: Low**
 
-The `\Illuminate\Foundation\Testing\TestResponse` class has been moved to `\Illuminate\Testing\TestResponse`. If you're extending this class, make sure to update the namespace.
+The `Illuminate\Foundation\Testing\TestResponse` class has been renamed to `Illuminate\Testing\TestResponse`. If you're extending this class, make sure to update the namespace.
 
 ### Validation
 
