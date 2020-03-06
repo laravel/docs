@@ -6,23 +6,23 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
-- [Symfony 5 Related Upgrades](#symfony-5-related-upgrades)
 - [Authentication Scaffolding](#authentication-scaffolding)
 - [Date Serialization](#date-serialization)
+- [Symfony 5 Related Upgrades](#symfony-5-related-upgrades)
 </div>
 
 <a name="medium-impact-changes"></a>
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
-- [Unique Route Names](#unique-route-names)
-- [Markdown Mail Template Updates](#markdown-mail-template-updates)
-- [CORS Support](#cors-support)
-- [The `Blade::component` Method](#the-blade-component-method)
 - [Blade Components & "Blade X"](#blade-components-and-blade-x)
+- [CORS Support](#cors-support)
 - [Factory Types](#factory-types)
-- [The `different` Validation Rule](#the-different-rule)
+- [Markdown Mail Template Updates](#markdown-mail-template-updates)
+- [The `Blade::component` Method](#the-blade-component-method)
 - [The `assertSee` Assertion](#assert-see)
+- [The `different` Validation Rule](#the-different-rule)
+- [Unique Route Names](#unique-route-names)
 </div>
 
 <a name="upgrade-7.0"></a>
