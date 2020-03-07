@@ -312,7 +312,7 @@ By default, the email's subject is the class name of the notification formatted 
 <a name="customizing-the-mailer"></a>
 ### Customizing The Mailer
 
-By default, the email notification will be sended using the default driver defined in the `config/mail.php` configuration file. However, you may specify mailer driver at runtime calling the `mailer` method when building your message:
+By default, the email notification will be sent using the default driver defined in the `config/mail.php` configuration file. However, you may specify a different mailer at runtime by calling the `mailer` method when building your message:
 
     /**
      * Get the mail representation of the notification.
@@ -323,7 +323,7 @@ By default, the email notification will be sended using the default driver defin
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->mailer('sns')
+                    ->mailer('postmark')
                     ->line('...');
     }
 
