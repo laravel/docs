@@ -95,7 +95,7 @@ If you are interested in learning more about writing Vue components, you should 
 
 If you prefer to use React to build your JavaScript application, Laravel makes it a cinch to swap the Vue scaffolding with React scaffolding:
 
-    composer require laravel/ui --dev
+    composer require laravel/ui
 
     // Generate basic scaffolding...
     php artisan ui react
