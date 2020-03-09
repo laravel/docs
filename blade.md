@@ -702,7 +702,7 @@ To create a component that renders an inline view, you may use the `inline` opti
 <a name="anonymous-components"></a>
 ### Anonymous Components
 
-Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/view/components/alert.blade.php`:
+Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/views/components/alert.blade.php`:
 
     <x-alert/>
 
