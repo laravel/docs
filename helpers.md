@@ -1360,7 +1360,7 @@ The `Str::wordsCount` counts the number of words in a string:
 
     use Illuminate\Support\Str;
 
-    return Str::words('My name is John Doe');
+    return Str::wordsCount('My name is John Doe');
 
     // 5
 
