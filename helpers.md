@@ -111,6 +111,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::ucfirst](#method-str-ucfirst)
 [Str::uuid](#method-str-uuid)
 [Str::words](#method-str-words)
+[Str::words](#method-str-wordscount)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
 
@@ -165,6 +166,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [ucfirst](#method-fluent-str-ucfirst)
 [whenEmpty](#method-fluent-str-when-empty)
 [words](#method-fluent-str-words)
+[wordsCount](#method-fluent-str-words-count)
 
 </div>
 
@@ -1350,6 +1352,17 @@ The `Str::words` method limits the number of words in a string:
     return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
 
     // Perfectly balanced, as >>>
+
+<a name="method-str-words-count"></a>
+#### `Str::wordsCount()` {#collection-method}
+
+The `Str::wordsCount` counts the number of words in a string:
+
+    use Illuminate\Support\Str;
+
+    return Str::words('My name is John Doe');
+
+    // 5
 
 <a name="method-trans"></a>
 #### `trans()` {#collection-method}
