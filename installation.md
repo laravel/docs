@@ -50,7 +50,7 @@ Make sure to place Composer's system-wide vendor bin directory in your `$PATH` s
 - GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin`
 </div>
 
-You could also find the composer's global installation path by running `composer global about` and looking up from the first line.
+You could also find Composer's global installation path by running `composer global about` and looking up from the first line.
 
 Once installed, the `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed:
 
