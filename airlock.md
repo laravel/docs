@@ -163,9 +163,11 @@ Next, you should add Airlock's middleware to your `api` middleware group within 
 
 If you are having trouble authenticating with your application from an SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
 
+> {note} Make sure that your frontend includes the `X-XSRF-TOKEN` header in the request. Otherwise, the request will be rejected. You can read more about this header in the [CSRF documentation](/docs/{{version}}/csrf).
+
 You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True` by setting the `supports_credentials` option within your application's `cors` configuration file to `true`.
 
-In addition, you should enable the `withCredentials` option on your global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file:
+In addition, you should enable the `withCredentials` option on your request. If you are using axios as your HTTP client you can set this option on your global `axios` instance. Typically, this should be performed in your frontend's root file:
 
     axios.defaults.withCredentials = true;
 
