@@ -154,7 +154,7 @@ If you would like to keep using the previous behavior you can override the `seri
         return $date->format('Y-m-d H:i:s');
     }
 
-> {tip} This change only affects serialization of models and model collections to arrays and JSON. This change has no effect on how dates are stored in your database.
+> {tip} This change only affects serialization of models and model collections to arrays and JSON. This change has no effect on how dates are stored in your database. Note also that Laravel will now convert your dates to UTC, if you are not using this for your application timezone.
 
 <a name="factory-types"></a>
 #### Factory Types
