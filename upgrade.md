@@ -75,7 +75,7 @@ First, the `report` and `render` methods of your application's `App\Exceptions\H
     public function report(Throwable $exception);
     public function render($request, Throwable $exception);
 
-Next, please update your `session` configuration file's `secure` option to have a fallback value of `null`.
+Next, please update your `session` configuration file's `secure` option to have a fallback value of `null`:
 
     'secure' => env('SESSION_SECURE_COOKIE', null),
 
