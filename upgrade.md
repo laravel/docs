@@ -21,8 +21,6 @@
 - [Markdown Mail Template Updates](#markdown-mail-template-updates)
 - [The `Blade::component` Method](#the-blade-component-method)
 - [The `assertSee` Assertion](#assert-see)
-- [The `TestResponse` class](#test-response)
-- [The `Assert` class](#assert-class)
 - [The `different` Validation Rule](#the-different-rule)
 - [Unique Route Names](#unique-route-names)
 </div>
