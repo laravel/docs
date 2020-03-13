@@ -493,6 +493,17 @@ As you can see, passing a `Closure` into the `where` method instructs the query 
 
 > {tip} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
 
+You may also pass a variable into the `Closure` to be used in the where clause within the `Closure`:
+
+	$vote_count = 100;
+	$users = DB::table('users')
+               ->where('name', '=', 'John')
+               ->where(function ($query) use($vote_count) {
+                   $query->where('votes', '>', $vote_count)
+                         ->orWhere('title', '=', 'Admin');
+               })
+               ->get();
+
 <a name="where-exists-clauses"></a>
 ### Where Exists Clauses
 
