@@ -139,7 +139,7 @@ The `booting` and `booted` methods have been added to Eloquent to provide a plac
 
 Laravel 7 uses a new date serialization format when using the `toArray` or `toJson` method on Eloquent models. To format dates for serialization, the framework now uses Carbon's `toJSON` method, which produces an ISO-8601 compatible date including timezone information and fractional seconds. In addition, this change provides better support and integration with client-side date parsing libraries.
 
-Previously, dates would be serialized to a format like the following: `2019-12-02 20:01:00`. Dates serialized using the new format will appear like: `2019-12-02T20:01:00.283041Z`.
+Previously, dates would be serialized to a format like the following: `2019-12-02 20:01:00`. Dates serialized using the new format will appear like: `2019-12-02T20:01:00.283041Z`. Please note that ISO-8601 dates are always expressed in UTC.
 
 If you would like to keep using the previous behavior you can override the `serializeDate` method on your model:
 
@@ -154,7 +154,7 @@ If you would like to keep using the previous behavior you can override the `seri
         return $date->format('Y-m-d H:i:s');
     }
 
-> {tip} This change only affects serialization of models and model collections to arrays and JSON. This change has no effect on how dates are stored in your database. Note also that Laravel will now convert your dates to UTC, if you are not using this for your application timezone.
+> {tip} This change only affects serialization of models and model collections to arrays and JSON. This change has no effect on how dates are stored in your database.
 
 <a name="factory-types"></a>
 #### Factory Types
