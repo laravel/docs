@@ -26,6 +26,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <div class="collection-method-list" markdown="1">
 
+[Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
 [Arr::collapse](#method-array-collapse)
 [Arr::crossJoin](#method-array-crossjoin)
@@ -255,8 +256,32 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <a name="arrays"></a>
 ## Arrays & Objects
 
+<a name="method-array-accessible"></a>
+#### `Arr::accessible` {#collection-method .first-collection-method}
+
+The `Arr::accessible` method checks that the given value is array accessible:
+
+    use Illuminate\Support\Arr;
+    use Illuminate\Support\Collection;
+
+    $isAccessible = Arr::accessible(['a' => 1, 'b' => 2]);
+
+    // true
+
+    $isAccessible = Arr::accessible(new Collection);
+
+    // true
+
+    $isAccessible = Arr::accessible('abc');
+
+    // false
+
+    $isAccessible = Arr::accessible(new stdClass);
+
+    // false
+
 <a name="method-array-add"></a>
-#### `Arr::add()` {#collection-method .first-collection-method}
+#### `Arr::add()` {#collection-method}
 
 The `Arr::add` method adds a given key / value pair to an array if the given key doesn't already exist in the array or is set to `null`:
 
