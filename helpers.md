@@ -33,23 +33,23 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::dot](#method-array-dot)
 [Arr::except](#method-array-except)
 [Arr::first](#method-array-first)
+[Arr::last](#method-array-last)
 [Arr::flatten](#method-array-flatten)
 [Arr::forget](#method-array-forget)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
 [Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
-[Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
 [Arr::pull](#method-array-pull)
 [Arr::random](#method-array-random)
-[Arr::query](#method-array-query)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
 [Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::query](#method-array-query)
 [Arr::where](#method-array-where)
 [Arr::wrap](#method-array-wrap)
 [data_fill](#method-data-fill)
@@ -375,6 +375,27 @@ A default value may also be passed as the third parameter to the method. This va
 
     $first = Arr::first($array, $callback, $default);
 
+<a name="method-array-last"></a>
+#### `Arr::last()` {#collection-method}
+
+The `Arr::last` method returns the last element of an array passing a given truth test:
+
+    use Illuminate\Support\Arr;
+
+    $array = [100, 200, 300, 110];
+
+    $last = Arr::last($array, function ($value, $key) {
+        return $value >= 150;
+    });
+
+    // 300
+
+A default value may be passed as the third argument to the method. This value will be returned if no value passes the truth test:
+
+    use Illuminate\Support\Arr;
+
+    $last = Arr::last($array, $callback, $default);
+
 <a name="method-array-flatten"></a>
 #### `Arr::flatten()` {#collection-method}
 
@@ -474,27 +495,6 @@ The `Arr::isAssoc` returns `true` if the given array is an associative array. An
     $isAssoc = Arr::isAssoc([1, 2, 3]);
 
     // false
-
-<a name="method-array-last"></a>
-#### `Arr::last()` {#collection-method}
-
-The `Arr::last` method returns the last element of an array passing a given truth test:
-
-    use Illuminate\Support\Arr;
-
-    $array = [100, 200, 300, 110];
-
-    $last = Arr::last($array, function ($value, $key) {
-        return $value >= 150;
-    });
-
-    // 300
-
-A default value may be passed as the third argument to the method. This value will be returned if no value passes the truth test:
-
-    use Illuminate\Support\Arr;
-
-    $last = Arr::last($array, $callback, $default);
 
 <a name="method-array-only"></a>
 #### `Arr::only()` {#collection-method}
@@ -598,19 +598,6 @@ You may also specify the number of items to return as an optional second argumen
 
     // [2, 5] - (retrieved randomly)
 
-<a name="method-array-query"></a>
-#### `Arr::query()` {#collection-method}
-
-The `Arr::query` method converts the array into a query string:
-
-    use Illuminate\Support\Arr;
-
-    $array = ['name' => 'Taylor', 'order' => ['column' => 'created_at', 'direction' => 'desc']];
-
-    Arr::query($array);
-
-    // name=Taylor&order[column]=created_at&order[direction]=desc
-
 <a name="method-array-set"></a>
 #### `Arr::set()` {#collection-method}
 
@@ -692,6 +679,19 @@ The `Arr::sortRecursive` method recursively sorts an array using the `sort` func
             ['Li', 'Roman', 'Taylor'],
         ]
     */
+
+<a name="method-array-query"></a>
+#### `Arr::query()` {#collection-method}
+
+The `Arr::query` method converts the array into a query string:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['name' => 'Taylor', 'order' => ['column' => 'created_at', 'direction' => 'desc']];
+
+    Arr::query($array);
+
+    // name=Taylor&order[column]=created_at&order[direction]=desc
 
 <a name="method-array-where"></a>
 #### `Arr::where()` {#collection-method}
