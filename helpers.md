@@ -33,6 +33,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::divide](#method-array-divide)
 [Arr::dot](#method-array-dot)
 [Arr::except](#method-array-except)
+[Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
 [Arr::last](#method-array-last)
 [Arr::flatten](#method-array-flatten)
@@ -378,6 +379,23 @@ The `Arr::except` method removes the given key / value pairs from an array:
     $filtered = Arr::except($array, ['price']);
 
     // ['name' => 'Desk']
+
+<a name="method-array-exists"></a>
+#### `Arr::exists()` {#collection-method}
+
+The `Arr::exists` method checks that the given key exists in the provided array:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['name' => 'John Doe', 'age' => 17];
+
+    $isExists = Arr::exists($array, 'name');
+
+    // true
+
+    $isExists = Arr::exists($array, 'salary');
+
+    // false
 
 <a name="method-array-first"></a>
 #### `Arr::first()` {#collection-method}
