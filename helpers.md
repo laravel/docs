@@ -258,7 +258,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 ## Arrays & Objects
 
 <a name="method-array-accessible"></a>
-#### `Arr::accessible` {#collection-method .first-collection-method}
+#### `Arr::accessible()` {#collection-method .first-collection-method}
 
 The `Arr::accessible` method checks that the given value is array accessible:
 
