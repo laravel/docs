@@ -926,4 +926,4 @@ Many of Cashier's objects are wrappers around Stripe SDK objects. If you would l
 
     $stripeSubscription = $subscription->asStripeSubscription();
 
-    $stripeSubscription->update(['application_fee_percent' => 5]);
+    $stripeSubscription->update($subscription->stripe_id, ['application_fee_percent' => 5]);
