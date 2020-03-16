@@ -26,12 +26,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <div class="collection-method-list" markdown="1">
 
+[Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
 [Arr::collapse](#method-array-collapse)
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
 [Arr::dot](#method-array-dot)
 [Arr::except](#method-array-except)
+[Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
 [Arr::flatten](#method-array-flatten)
 [Arr::forget](#method-array-forget)
@@ -44,8 +46,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
 [Arr::pull](#method-array-pull)
-[Arr::random](#method-array-random)
 [Arr::query](#method-array-query)
+[Arr::random](#method-array-random)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
@@ -255,8 +257,32 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <a name="arrays"></a>
 ## Arrays & Objects
 
+<a name="method-array-accessible"></a>
+#### `Arr::accessible()` {#collection-method .first-collection-method}
+
+The `Arr::accessible` method checks that the given value is array accessible:
+
+    use Illuminate\Support\Arr;
+    use Illuminate\Support\Collection;
+
+    $isAccessible = Arr::accessible(['a' => 1, 'b' => 2]);
+
+    // true
+
+    $isAccessible = Arr::accessible(new Collection);
+
+    // true
+
+    $isAccessible = Arr::accessible('abc');
+
+    // false
+
+    $isAccessible = Arr::accessible(new stdClass);
+
+    // false
+
 <a name="method-array-add"></a>
-#### `Arr::add()` {#collection-method .first-collection-method}
+#### `Arr::add()` {#collection-method}
 
 The `Arr::add` method adds a given key / value pair to an array if the given key doesn't already exist in the array or is set to `null`:
 
@@ -353,6 +379,23 @@ The `Arr::except` method removes the given key / value pairs from an array:
     $filtered = Arr::except($array, ['price']);
 
     // ['name' => 'Desk']
+
+<a name="method-array-exists"></a>
+#### `Arr::exists()` {#collection-method}
+
+The `Arr::exists` method checks that the given key exists in the provided array:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['name' => 'John Doe', 'age' => 17];
+
+    $exists = Arr::exists($array, 'name');
+
+    // true
+
+    $exists = Arr::exists($array, 'salary');
+
+    // false
 
 <a name="method-array-first"></a>
 #### `Arr::first()` {#collection-method}
@@ -577,6 +620,19 @@ A default value may be passed as the third argument to the method. This value wi
 
     $value = Arr::pull($array, $key, $default);
 
+<a name="method-array-query"></a>
+#### `Arr::query()` {#collection-method}
+
+The `Arr::query` method converts the array into a query string:
+
+    use Illuminate\Support\Arr;
+
+    $array = ['name' => 'Taylor', 'order' => ['column' => 'created_at', 'direction' => 'desc']];
+
+    Arr::query($array);
+
+    // name=Taylor&order[column]=created_at&order[direction]=desc
+
 <a name="method-array-random"></a>
 #### `Arr::random()` {#collection-method}
 
@@ -597,19 +653,6 @@ You may also specify the number of items to return as an optional second argumen
     $items = Arr::random($array, 2);
 
     // [2, 5] - (retrieved randomly)
-
-<a name="method-array-query"></a>
-#### `Arr::query()` {#collection-method}
-
-The `Arr::query` method converts the array into a query string:
-
-    use Illuminate\Support\Arr;
-
-    $array = ['name' => 'Taylor', 'order' => ['column' => 'created_at', 'direction' => 'desc']];
-
-    Arr::query($array);
-
-    // name=Taylor&order[column]=created_at&order[direction]=desc
 
 <a name="method-array-set"></a>
 #### `Arr::set()` {#collection-method}
