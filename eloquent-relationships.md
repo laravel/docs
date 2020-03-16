@@ -49,7 +49,7 @@ Database tables are often related to one another. For example, a blog post may h
 <a name="defining-relationships"></a>
 ## Defining Relationships
 
-Eloquent relationships are defined as methods on your Eloquent model classes. Since, like Eloquent models themselves, relationships also serve as powerful [query builders](/docs/{{version}}/queries), defining relationships as methods provides powerful method chaining and querying capabilities. For example, we may chain additional constraints on this `posts` relationship:
+Eloquent relationships are defined as methods on your Eloquent model classes. Like Eloquent models themselves, relationships also serve as powerful [query builders](/docs/{{version}}/queries), defining relationships as methods provides powerful method chaining and querying capabilities. For example, we may chain additional constraints on this `posts` relationship:
 
     $user->posts()->where('active', 1)->get();
 
