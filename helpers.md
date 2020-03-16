@@ -389,11 +389,11 @@ The `Arr::exists` method checks that the given key exists in the provided array:
 
     $array = ['name' => 'John Doe', 'age' => 17];
 
-    $isExists = Arr::exists($array, 'name');
+    $exists = Arr::exists($array, 'name');
 
     // true
 
-    $isExists = Arr::exists($array, 'salary');
+    $exists = Arr::exists($array, 'salary');
 
     // false
 
