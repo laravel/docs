@@ -144,7 +144,7 @@ Previously, dates would be serialized to a format like the following: `2019-12-0
 
 If you would like to keep using the previous behavior you can override the `serializeDate` method on your model:
 
-    Use DateTimeInterface;
+    use DateTimeInterface;
 
     /**
      * Prepare a date for array / JSON serialization.
