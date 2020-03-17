@@ -79,9 +79,6 @@ Next, please update your `session` configuration file's `secure` option to have 
 
     'secure' => env('SESSION_SECURE_COOKIE', null),
 
-    // 'lax' option is a more secure default for session cookies.
-    'same_site' => 'lax',
-
 ### Authentication
 
 <a name="authentication-scaffolding"></a>
