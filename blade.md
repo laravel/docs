@@ -494,7 +494,7 @@ You may pass data to Blade components using HTML attributes. Hard-coded, primiti
 
     <x-alert type="error" :message="$message"/>
 
-You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
+You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view. Multi-word properties should be `camelCase` in your constructor, and `kebab-case` in your component's template. It is not necessary to pass the data to the view from the component's `render` method:
 
     <?php
 
