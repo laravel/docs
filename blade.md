@@ -548,6 +548,26 @@ When your component is rendered, you may display the contents of your component'
         {{ $message }}
     </div>
 
+#### Casing
+
+Component constructor arguments should be specified using `camelCase`, while `kebab-case` should be used when referencing the argument names in your HTML attributes. For example, given the following component constructor:
+
+    /**
+     * Create the component instance.
+     *
+     * @param  string  $alertType
+     * @param  string  $message
+     * @return void
+     */
+    public function __construct($alertType)
+    {
+        $this->alertType = $alertType;
+    }
+
+The `$alertType` argument may be provided like so:
+
+    <x-alert alert-type="danger" />
+
 #### Component Methods
 
 In addition to public variables being available to your component template, any public methods on the component may also be executed. For example, imagine a component that has a `isSelected` method:
