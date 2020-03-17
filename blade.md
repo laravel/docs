@@ -467,7 +467,7 @@ However, if you are building a package that utilizes Blade components, you will 
      */
     public function boot()
     {
-        Blade::component(AlertComponent::class, 'package-alert');
+        Blade::component('package-alert', AlertComponent::class);
     }
 
 Once your component has been registered, it may be rendered using its tag alias:
