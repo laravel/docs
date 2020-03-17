@@ -494,7 +494,7 @@ You may pass data to Blade components using HTML attributes. Hard-coded, primiti
 
     <x-alert type="error" :message="$message"/>
 
-You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view. Multi-word properties should be `camelCase` in your constructor, and `kebab-case` in your component's template. It is not necessary to pass the data to the view from the component's `render` method:
+You should define the component's required data in its class constructor. All public properties on a component will automatically be made available to the component's view. It is not necessary to pass the data to the view from the component's `render` method:
 
     <?php
 
@@ -547,6 +547,26 @@ When your component is rendered, you may display the contents of your component'
     <div class="alert alert-{{ $type }}">
         {{ $message }}
     </div>
+
+#### Casing
+
+Component constructor arguments should be specified using `camelCase`, while `kebab-case` should be used when referencing the argument names in your HTML attributes. For example, given the following component constructor:
+
+    /**
+     * Create the component instance.
+     *
+     * @param  string  $alertType
+     * @param  string  $message
+     * @return void
+     */
+    public function __construct($alertType)
+    {
+        $this->alertType = $alertType;
+    }
+
+The `$alertType` argument may be provided like so:
+
+    <x-alert alert-type="danger" />
 
 #### Component Methods
 
