@@ -68,6 +68,12 @@ Next, install Guzzle and set the `default` option in your `config/mail.php` conf
     'postmark' => [
         'token' => 'your-postmark-token',
     ],
+    
+Finally, add the mailer configuration in the `mailers` section your `config/mail.php` configuration file.
+
+    'postmark' => [
+        'transport' => 'postmark',
+    ],
 
 #### SES Driver
 
