@@ -103,7 +103,8 @@ The `find` method finds a model that has a given primary key. If `$key` is a mod
     
 <a name="method-findMany"></a>
 #### `findMany($keys)`
-The `findMany` method returns all models that belong to a primary key passed in the `$keys` array:
+
+The `findMany` method returns all models with a primary key that is included in the `$keys` array:
 
     $users = User::all();
     
