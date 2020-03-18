@@ -54,6 +54,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [diff](#method-diff)
 [except](#method-except)
 [find](#method-find)
+[findMany](#method-findMany)
 [fresh](#method-fresh)
 [intersect](#method-intersect)
 [load](#method-load)
@@ -99,7 +100,16 @@ The `find` method finds a model that has a given primary key. If `$key` is a mod
     $users = User::all();
 
     $user = $users->find(1);
+    
+<a name="method-findMany"></a>
+#### `findMany($keys)`
 
+The `findMany` method returns all models with a primary key that is included in the `$keys` array:
+
+    $users = User::all();
+    
+    $user = $users->findMany([1, 2, 3]);
+    
 <a name="method-fresh"></a>
 #### `fresh($with = [])`
 
