@@ -92,6 +92,15 @@ Headers may be added to requests using the `withHeaders` method. This `withHeade
         'name' => 'Taylor',
     ]);
 
+<a name="options"></a>
+### Options
+
+Additional Guzzle options that are not supported by the native `Http` client methods maybe added to requests using the `withOptions` method. This `withOptions` method accepts an array of key / value pairs:
+
+    $response = Http::withOptions([
+        'debug' => true,
+    ])->get('http://test.com/data');
+
 <a name="authentication"></a>
 ### Authentication
 
