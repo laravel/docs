@@ -781,6 +781,12 @@ The `charge` method accepts an array as its third argument, allowing you to pass
         'custom_option' => $value,
     ]);
 
+You can also use the single charge method even if you aren't working with Stripe customers. For example, when you're capturing donations:
+
+    use App\User;
+
+    $stripeCharge = (new User)->charge(100, $paymentMethod);
+
 The `charge` method will throw an exception if the charge fails. If the charge is successful, an instance of `Laravel\Cashier\Payment` will be returned from the method:
 
     try {
