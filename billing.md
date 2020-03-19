@@ -884,11 +884,11 @@ Alternatively, you could allow Stripe to handle the payment confirmation for you
 
 Payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Subscription` model may throw exceptions.
 
-There are currently two types of payment exceptions which extend `IncompletePayment`. You can catch these separately if you want so you can customize the user experience: 
+There are currently two types of payment exceptions which extend `IncompletePayment`. You can catch these separately if needed so that you can customize the user experience:
 
 <div class="content-list" markdown="1">
-- `PaymentFailure`: this indicates that a payment failed because, for example, the credit card might has reached its limit.
 - `PaymentActionRequired`: this indicates that the Stripe requires extra verification in order to confirm and process a payment.
+- `PaymentFailure`: this indicates that a payment failed for various other reasons, such as being out of available funds.
 </div>
 
 <a name="strong-customer-authentication"></a>
