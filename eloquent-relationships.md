@@ -819,9 +819,11 @@ By default, Laravel will use the fully qualified class name to store the type of
         'videos' => 'App\Video',
     ]);
 
-You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
+You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish. 
 
 > {note} When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
+
+You can also grab the name of a morph alias from a Model, with `$post->getMorphClass()` which would return `"posts"` with the above example, or resolve the fully qualified class of a morph alias at runtime with `Relation::getMorphedModel($alias)`, eg: `Relation::getMorphedModel("posts")` should return "App\Post"
 
 <a name="querying-relations"></a>
 ## Querying Relations
