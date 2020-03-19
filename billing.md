@@ -781,7 +781,7 @@ The `charge` method accepts an array as its third argument, allowing you to pass
         'custom_option' => $value,
     ]);
 
-You can also use the single charge method even if you aren't working with Stripe customers. For example, when you're capturing donations:
+You may also use the `charge` method without an underlying customer or user:
 
     use App\User;
 
