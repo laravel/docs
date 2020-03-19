@@ -40,5 +40,9 @@ You may test this command with the following test which utilizes the `expectsQue
              ->expectsOutput('Your name is Taylor Otwell and you program in PHP.')
              ->assertExitCode(0);
     }
+    
+When writing a command which expects a confirmation in the form of a yes or no answer, you may utilize the `expectsConfirmation` method:
 
-
+    $this->artisan('module:import')
+        ->expectsConfirmation('Do you really wish to run this command?', 'no')
+        ->assertExitCode(1);
