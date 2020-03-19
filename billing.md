@@ -862,16 +862,16 @@ If your business is based in Europe you will need to abide by the Strong Custome
 <a name="payments-requiring-additional-confirmation"></a>
 ### Payments Requiring Additional Confirmation
 
-SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw an `IncompletePayment` exception that informs you that this extra verification is needed. After catching this exception, you have two options on how to proceed.
+SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw an `PaymentActionRequired` exception that informs you that this extra verification is needed. After catching this exception, you have two options on how to proceed.
 
-First, you could redirect your customer to the dedicated payment confirmation page which is included with Cashier. This page already has an associated route that is registered via Cashier's service provider. So, you may catch the `IncompletePayment` exception and redirect to the payment confirmation page:
+First, you could redirect your customer to the dedicated payment confirmation page which is included with Cashier. This page already has an associated route that is registered via Cashier's service provider. So, you may catch the `PaymentActionRequired` exception and redirect to the payment confirmation page:
 
-    use Laravel\Cashier\Exceptions\IncompletePayment;
+    use Laravel\Cashier\Exceptions\PaymentActionRequired;
 
     try {
         $subscription = $user->newSubscription('default', $planId)
                                 ->create($paymentMethod);
-    } catch (IncompletePayment $exception) {
+    } catch (PaymentActionRequired $exception) {
         return redirect()->route(
             'cashier.payment',
             [$exception->payment->id, 'redirect' => route('home')]
@@ -880,7 +880,7 @@ First, you could redirect your customer to the dedicated payment confirmation pa
 
 On the payment confirmation page, the customer will be prompted to enter their credit card info again and perform any additional actions required by Stripe, such as "3D Secure" confirmation. After confirming their payment, the user will be redirected to the URL provided by the `redirect` parameter specified above.
 
-Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if an `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
+Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if an `PaymentActionRequired` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
 
 Incomplete payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Subscription` model may throw exceptions.
 
