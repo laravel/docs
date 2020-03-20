@@ -7,6 +7,7 @@
     - [Authentication](#authentication)
     - [Retries](#retries)
     - [Error Handling](#error-handling)
+    - [Options](#options)
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
     - [Inspecting Requests](#inspecting-requests)
@@ -148,6 +149,15 @@ The `Illuminate\Http\Client\RequestException` instance has a public `$response` 
 The `throw` method returns the response instance if no error occurred, allowing you to chain other operations onto the `throw` method:
 
     return Http::post(...)->throw()->json();
+
+<a name="options"></a>
+### Options
+
+Additional Guzzle options that are not supported out of the box by the HTTP client methods may be added to requests using the `withOptions` method. This `withOptions` method accepts an array of key / value pairs:
+
+    $response = Http::withOptions([
+        'debug' => true,
+    ])->get('http://test.com/data');
 
 <a name="testing"></a>
 ## Testing
