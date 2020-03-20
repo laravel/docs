@@ -66,7 +66,7 @@ Next, if you plan to utilize Airlock to authenticate an SPA, you should add Airl
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 
-### Migration Customization
+#### Migration Customization
 
 If you are not going to use Airlock's default migrations, you should call the `Airlock::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=airlock-migrations`.
 
