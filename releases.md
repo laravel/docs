@@ -28,15 +28,15 @@ For LTS releases, such as Laravel 6, bug fixes are provided for 2 years and secu
 <a name="laravel-7"></a>
 ## Laravel 7
 
-Laravel 7 continues the improvements made in Laravel 6.x by introducing Laravel Airlock, routing speed improvements, custom Eloquent casts, Blade component tags, fluent string operations, a developer focused HTTP client, first-party CORS support, improved scoping for route model binding, stub customization, database queue improvements, multiple mail drivers, query-time casts, a new `artisan test` command, and a variety of other bug fixes and usability improvements.
+Laravel 7 continues the improvements made in Laravel 6.x by introducing Laravel Sanctum, routing speed improvements, custom Eloquent casts, Blade component tags, fluent string operations, a developer focused HTTP client, first-party CORS support, improved scoping for route model binding, stub customization, database queue improvements, multiple mail drivers, query-time casts, a new `artisan test` command, and a variety of other bug fixes and usability improvements.
 
-### Laravel Airlock
+### Laravel Sanctum
 
-_Laravel Airlock was built by [Taylor Otwell](https://github.com/taylorotwell)_.
+_Laravel Sanctum was built by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-Laravel Airlock provides a featherweight authentication system for SPAs (single page applications), mobile applications, and simple, token based APIs. Airlock allows each user of your application to generate multiple API tokens for their account. These tokens may be granted abilities / scopes which specify which actions the tokens are allowed to perform.
+Laravel Sanctum provides a featherweight authentication system for SPAs (single page applications), mobile applications, and simple, token based APIs. Sanctum allows each user of your application to generate multiple API tokens for their account. These tokens may be granted abilities / scopes which specify which actions the tokens are allowed to perform.
 
-For more information on Laravel Airlock, consult the [Airlock documentation](/docs/{{version}}/airlock).
+For more information on Laravel Sanctum, consult the [Sanctum documentation](/docs/{{version}}/sanctum).
 
 ### Custom Eloquent Casts
 
