@@ -42,7 +42,7 @@ The API based drivers such as Mailgun and Postmark are often simpler and faster 
 
 #### Mailgun Driver
 
-To use the Mailgun driver, first install Guzzle, then set the `driver` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file contains the following options:
+To use the Mailgun driver, first install Guzzle, then set the `default` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file contains the following options:
 
     'mailgun' => [
         'domain' => 'your-mailgun-domain',
@@ -63,7 +63,7 @@ To use the Postmark driver, install Postmark's SwiftMailer transport via Compose
 
     composer require wildbit/swiftmailer-postmark
 
-Next, install Guzzle and set the `driver` option in your `config/mail.php` configuration file to `postmark`. Finally, verify that your `config/services.php` configuration file contains the following options:
+Next, install Guzzle and set the `default` option in your `config/mail.php` configuration file to `postmark`. Finally, verify that your `config/services.php` configuration file contains the following options:
 
     'postmark' => [
         'token' => 'your-postmark-token',
@@ -75,7 +75,7 @@ To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. 
 
     "aws/aws-sdk-php": "~3.0"
 
-Next, set the `driver` option in your `config/mail.php` configuration file to `ses` and verify that your `config/services.php` configuration file contains the following options:
+Next, set the `default` option in your `config/mail.php` configuration file to `ses` and verify that your `config/services.php` configuration file contains the following options:
 
     'ses' => [
         'key' => 'your-ses-key',

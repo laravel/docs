@@ -7,6 +7,7 @@
     - [Authentication](#authentication)
     - [Retries](#retries)
     - [Error Handling](#error-handling)
+    - [Guzzle Options](#guzzle-options)
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
     - [Inspecting Requests](#inspecting-requests)
@@ -114,7 +115,7 @@ If you would like to quickly add an `Authorization` bearer token header to the r
 
 If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts two arguments: the number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
 
-    $response = Http::retries(3, 100)->post(...);
+    $response = Http::retry(3, 100)->post(...);
 
 If all of the requests fail, an instance of `Illuminate\Http\Client\RequestException` will be thrown.
 
@@ -148,6 +149,15 @@ The `Illuminate\Http\Client\RequestException` instance has a public `$response` 
 The `throw` method returns the response instance if no error occurred, allowing you to chain other operations onto the `throw` method:
 
     return Http::post(...)->throw()->json();
+
+<a name="guzzle-options"></a>
+### Guzzle Options
+
+You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:
+
+    $response = Http::withOptions([
+        'debug' => true,
+    ])->get('http://test.com/users');
 
 <a name="testing"></a>
 ## Testing

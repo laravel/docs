@@ -719,6 +719,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertSelectMissingOptions](#assert-select-missing-options)
 [assertSelectHasOption](#assert-select-has-option)
 [assertValue](#assert-value)
+[assertAttribute](#assert-attribute)
+[assertAriaAttribute](#assert-aria-attribute)
+[assertDataAttribute](#assert-data-attribute)
 [assertVisible](#assert-visible)
 [assertPresent](#assert-present)
 [assertMissing](#assert-missing)
@@ -1032,6 +1035,35 @@ Assert that the given value is available to be selected on the given field:
 Assert that the element matching the given selector has the given value:
 
     $browser->assertValue($selector, $value);
+
+<a name="assert-attribute"></a>
+#### assertAttribute
+
+Assert that the element matching the given selector has the given value in the provided attribute:
+
+    $browser->assertAttribute($selector, $attribute, $value);
+
+<a name="assert-aria-attribute"></a>
+#### assertAriaAttribute
+
+Assert that the element matching the given selector has the given value in the provided aria attribute:
+
+    $browser->assertAriaAttribute($selector, $attribute, $value);
+
+For example, given the markup `<button aria-label="Add"></>`, you may assert against the `aria-label` attribute like so:
+
+    $browser->assertAriaAttribute('button', 'label', 'Add')
+
+<a name="assert-data-attribute"></a>
+#### assertDataAttribute
+
+Assert that the element matching the given selector has the given value in the provided data attribute:
+
+    $browser->assertDataAttribute($selector, $attribute, $value);
+
+For example, given the markup `<tr id="row-1" data-content="attendees"></>`, you may assert against the `data-label` attribute like so:
+
+    $browser->assertDataAttribute('#row-1', 'content', 'attendees')
 
 <a name="assert-visible"></a>
 #### assertVisible

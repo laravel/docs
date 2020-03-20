@@ -193,6 +193,8 @@ You may also specify route names for controller actions:
 
     Route::get('user/profile', 'UserProfileController@show')->name('profile');
 
+> {note} Route names should always be unique.
+
 #### Generating URLs To Named Routes
 
 Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the global `route` function:
@@ -408,9 +410,10 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
      * Retrieve the model for a bound value.
      *
      * @param  mixed  $value
+     * @param  string|null  $field
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('name', $value)->firstOrFail();
     }

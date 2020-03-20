@@ -13,6 +13,7 @@
     - [Customizing The Sender](#customizing-the-sender)
     - [Customizing The Recipient](#customizing-the-recipient)
     - [Customizing The Subject](#customizing-the-subject)
+    - [Customizing The Mailer](#customizing-the-mailer)
     - [Customizing The Templates](#customizing-the-templates)
     - [Previewing Mail Notifications](#previewing-mail-notifications)
 - [Markdown Mail Notifications](#markdown-mail-notifications)
@@ -305,6 +306,24 @@ By default, the email's subject is the class name of the notification formatted 
     {
         return (new MailMessage)
                     ->subject('Notification Subject')
+                    ->line('...');
+    }
+    
+<a name="customizing-the-mailer"></a>
+### Customizing The Mailer
+
+By default, the email notification will be sent using the default driver defined in the `config/mail.php` configuration file. However, you may specify a different mailer at runtime by calling the `mailer` method when building your message:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->mailer('postmark')
                     ->line('...');
     }
 

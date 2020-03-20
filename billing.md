@@ -42,6 +42,7 @@
     - [Refunding Charges](#refunding-charges)
 - [Invoices](#invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
+- [Handling Failed Payments](#handling-failed-payments)
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
     - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
     - [Off-session Payment Notifications](#off-session-payment-notifications)
@@ -781,6 +782,12 @@ The `charge` method accepts an array as its third argument, allowing you to pass
         'custom_option' => $value,
     ]);
 
+You may also use the `charge` method without an underlying customer or user:
+
+    use App\User;
+
+    $stripeCharge = (new User)->charge(100, $paymentMethod);
+
 The `charge` method will throw an exception if the charge fails. If the charge is successful, an instance of `Laravel\Cashier\Payment` will be returned from the method:
 
     try {
@@ -852,17 +859,10 @@ From within a route or controller, use the `downloadInvoice` method to generate 
         ]);
     });
 
-<a name="strong-customer-authentication"></a>
-## Strong Customer Authentication
+<a name="handling-failed-payments"></a>
+## Handling Failed Payments
 
-If your business is based in Europe you will need to abide by the Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications.
-
-> {note} Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/en-be/guides/strong-customer-authentication) as well as their [documentation on the new SCA API's](https://stripe.com/docs/strong-customer-authentication).
-
-<a name="payments-requiring-additional-confirmation"></a>
-### Payments Requiring Additional Confirmation
-
-SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw an `IncompletePayment` exception that informs you that this extra verification is needed. After catching this exception, you have two options on how to proceed.
+Sometimes, payments for subscriptions or single charges can fail. When this happens, Cashier will throw an `IncompletePayment` exception that informs you that this happened. After catching this exception, you have two options on how to proceed.
 
 First, you could redirect your customer to the dedicated payment confirmation page which is included with Cashier. This page already has an associated route that is registered via Cashier's service provider. So, you may catch the `IncompletePayment` exception and redirect to the payment confirmation page:
 
@@ -880,9 +880,28 @@ First, you could redirect your customer to the dedicated payment confirmation pa
 
 On the payment confirmation page, the customer will be prompted to enter their credit card info again and perform any additional actions required by Stripe, such as "3D Secure" confirmation. After confirming their payment, the user will be redirected to the URL provided by the `redirect` parameter specified above.
 
-Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if an `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
+Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if a `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
 
-Incomplete payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Subscription` model may throw exceptions.
+Payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Subscription` model may throw exceptions.
+
+There are currently two types of payment exceptions which extend `IncompletePayment`. You can catch these separately if needed so that you can customize the user experience:
+
+<div class="content-list" markdown="1">
+- `PaymentActionRequired`: this indicates that Stripe requires extra verification in order to confirm and process a payment.
+- `PaymentFailure`: this indicates that a payment failed for various other reasons, such as being out of available funds.
+</div>
+
+<a name="strong-customer-authentication"></a>
+## Strong Customer Authentication
+
+If your business is based in Europe you will need to abide by the Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications.
+
+> {note} Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/en-be/guides/strong-customer-authentication) as well as their [documentation on the new SCA API's](https://stripe.com/docs/strong-customer-authentication).
+
+<a name="payments-requiring-additional-confirmation"></a>
+### Payments Requiring Additional Confirmation
+
+SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw a `PaymentActionRequired` exception that informs you that this extra verification is needed. More info on how to handle these exceptions be found [here](#handling-failed-payments).
 
 #### Incomplete and Past Due State
 

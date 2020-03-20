@@ -467,7 +467,7 @@ However, if you are building a package that utilizes Blade components, you will 
      */
     public function boot()
     {
-        Blade::component(AlertComponent::class, 'package-alert');
+        Blade::component('package-alert', AlertComponent::class);
     }
 
 Once your component has been registered, it may be rendered using its tag alias:
@@ -548,6 +548,26 @@ When your component is rendered, you may display the contents of your component'
         {{ $message }}
     </div>
 
+#### Casing
+
+Component constructor arguments should be specified using `camelCase`, while `kebab-case` should be used when referencing the argument names in your HTML attributes. For example, given the following component constructor:
+
+    /**
+     * Create the component instance.
+     *
+     * @param  string  $alertType
+     * @param  string  $message
+     * @return void
+     */
+    public function __construct($alertType)
+    {
+        $this->alertType = $alertType;
+    }
+
+The `$alertType` argument may be provided like so:
+
+    <x-alert alert-type="danger" />
+
 #### Component Methods
 
 In addition to public variables being available to your component template, any public methods on the component may also be executed. For example, imagine a component that has a `isSelected` method:
@@ -568,6 +588,22 @@ You may execute this method from your component template by invoking the variabl
     <option {{ $isSelected($value) ? 'selected="selected"' : '' }} value="{{ $value }}">
         {{ $label }}
     </option>
+
+If the component method accepts no arguments, you may simple render the method name as a variable instead of invoking it as a function. For example, imagine a component method that simply returns a string:
+
+    /**
+     * Get the size.
+     *
+     * @return string
+     */
+    public function size()
+    {
+        return 'Large';
+    }
+
+Within a component, you may retrieve the value of the method as a variable:
+
+    {{ $size }}
 
 #### Additional Dependencies
 
@@ -686,7 +722,7 @@ To create a component that renders an inline view, you may use the `inline` opti
 <a name="anonymous-components"></a>
 ### Anonymous Components
 
-Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/view/components/alert.blade.php`:
+Similar to inline components, anonymous components provide a mechanism for managing a component via a single file. However, anonymous components utilize a single view file and have no associated class. To define an anonymous component, you only need to place a Blade template within your `resources/views/components` directory. For example, assuming you have defined a component at `resources/views/components/alert.blade.php`:
 
     <x-alert/>
 
