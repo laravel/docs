@@ -169,6 +169,8 @@ In addition, you should enable the `withCredentials` option on your global `axio
 
     axios.defaults.withCredentials = true;
 
+If you are using SPA, you need to add "airlock/csrf-cookie", "login", "logout", "register" to the `paths` section in the `cors` configurations.
+
 Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may do this by prefixing the domain with a leading `.` within your `session` configuration file:
 
     'domain' => '.domain.com',
