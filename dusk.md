@@ -733,6 +733,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertVueIsNot](#assert-vue-is-not)
 [assertVueContains](#assert-vue-contains)
 [assertVueDoesNotContain](#assert-vue-does-not-contain)
+[assertAttribute](#assert-attribute)
+[assertAriaAttribute](#assert-aria-attribute)
+[assertDataAttribute](#assert-data-attribute)
 </div>
 
 <a name="assert-title"></a>
@@ -1131,6 +1134,35 @@ Assert that a given Vue component data property is an array and does not contain
 
     $browser->assertVueDoesNotContain($property, $value, $componentSelector = null);
 
+<a name="assert-attribute"></a>
+#### assertAttribute
+
+Assert that the element matching the given selector has the given value in the provided attribute:
+
+    $browser->assertAttribute($selector, $attribute, $value);
+
+<a name="assert-aria-attribute"></a>
+#### assertArriaAttribute
+
+Assert that the element matching the given selector has the given value in the provided aria attribute:
+
+    $browser->assertAriaAttribute($selector, $attribute, $value);
+
+For example, with `<button aria-label="Add"></>` you can assert the `aria-label` attribute with
+
+    $browser->assertAriaAttribute('button', 'label', 'Add')
+
+<a name="assert-data-attribute"></a>
+#### assertDataAttribute
+
+Assert that the element matching the given selector has the given value in the provided data attribute:
+
+    $browser->assertDataAttribute($selector, $attribute, $value);
+
+For example, with `<tr id="row-1" data-content="attendees"></>` you can assert the `data-label` attribute with
+
+    $browser->assertDataAttribute('#row-1', 'content', 'attendees')
+    
 <a name="pages"></a>
 ## Pages
 
