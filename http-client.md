@@ -7,7 +7,7 @@
     - [Authentication](#authentication)
     - [Retries](#retries)
     - [Error Handling](#error-handling)
-    - [Options](#options)
+    - [Guzzle Options](#guzzle-options)
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
     - [Inspecting Requests](#inspecting-requests)
@@ -150,14 +150,14 @@ The `throw` method returns the response instance if no error occurred, allowing 
 
     return Http::post(...)->throw()->json();
 
-<a name="options"></a>
-### Options
+<a name="guzzle-options"></a>
+### Guzzle Options
 
-Additional Guzzle options that are not supported out of the box by the HTTP client methods may be added to requests using the `withOptions` method. This `withOptions` method accepts an array of key / value pairs:
+You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:
 
     $response = Http::withOptions([
         'debug' => true,
-    ])->get('http://test.com/data');
+    ])->get('http://test.com/users');
 
 <a name="testing"></a>
 ## Testing
