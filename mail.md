@@ -66,6 +66,7 @@ To use the Postmark driver, install Postmark's SwiftMailer transport via Compose
 Next, install Guzzle and set the `default` option in your `config/mail.php` configuration file to `postmark`. Finally, verify that your `config/services.php` configuration file contains the following options:
 
     'postmark' => [
+        'transport' => 'postmark',
         'token' => 'your-postmark-token',
     ],
 
