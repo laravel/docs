@@ -174,6 +174,21 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 
     provider: virtualbox
 
+#### Configuring SSH Access
+
+In order to access you vagrant box through SSH, you need to configure the `authorize` and `keys` keys in your `Homestead.yaml` file.
+
+Use `ssh-keygen` to generate an SSH key pair. `ssh-keygen` is available on Mac, Linux, and Windows 10.
+
+    ssh-keygen -t rsa
+
+Once you have generated the SSH key, set the `authorize` key to the newly generated public key's path and add the private key's path under the `keys` key.
+
+    authorize: /path/to/public-key
+    
+    keys:
+      - /path/to/private-key
+
 #### Configuring Shared Folders
 
 The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary:
