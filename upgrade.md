@@ -59,6 +59,8 @@ The following first-party packages have new major releases to support Laravel 7.
 - [Telescope v3.0](https://github.com/laravel/telescope/releases)
 - UI v2.0 (No changes necessary)
 
+After updating `nunomaduro/collision` you will need to change `<listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener" />` to `<listener class="NunoMaduro\Collision\Adapters\Phpunit\Printer" />` in phpunit.xml.
+
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
 
 <a name="symfony-5-related-upgrades"></a>
