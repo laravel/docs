@@ -143,6 +143,8 @@ Sanctum exists to offer a simple way to authenticate single page applications (S
 
 For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses Laravel's built-in cookie based session authentication services. This provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS. Sanctum will only attempt to authenticate using cookies when the incoming request originates from your own SPA frontend.
 
+> {note} In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains.
+
 <a name="spa-configuration"></a>
 ### Configuration
 
