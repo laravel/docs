@@ -38,6 +38,10 @@ All language files return an array of keyed strings. For example:
 The default language for your application is stored in the `config/app.php` configuration file. You may modify this value to suit the needs of your application. You may also change the active language at runtime using the `setLocale` method on the `App` facade:
 
     Route::get('welcome/{locale}', function ($locale) {
+        if (! in_array($locale, ['en', 'es', 'fr'])) {
+            abort(400);
+        }
+
         App::setLocale($locale);
 
         //
