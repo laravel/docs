@@ -113,7 +113,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::start](#method-str-start)
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
-[Str::substr](#method-substr)
+[Str::substr](#method-str-substr)
 [Str::title](#method-title-case)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
@@ -1188,9 +1188,24 @@ The `Str::upper` method converts the given string to upper-case:
 
     use Illuminate\Support\Str;
 
-    $converted = Str::upper('laravel');
+    $string = Str::upper('laravel');
 
     // LARAVEL
+
+<a name="method-str-is-ascii"></a>
+#### `Str::isAscii()` {#collection-method}
+
+The `Str::isAscii` method determines if a given string is 7 bit ASCII:
+
+    use Illuminate\Support\Str;
+
+    $isAscii = Str::isAscii('Taylor');
+
+    // true
+
+    $isAscii = Str::isAscii('ü');
+
+    // false
 
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {#collection-method}
@@ -1207,21 +1222,6 @@ The `Str::isUuid` method determines if the given string is a valid UUID:
 
     // false
 
-<a name="method-str-is-ascii"></a>
-#### `Str::isAscii()` {#collection-method}
-
-The `Str::isAscii` method determines if a given string is 7 bit ASCII:
-
-    use Illuminate\Support\Str;
-
-    $isAscii = Str::isAscii('+');
-
-    // true
-
-    $isAscii = Str::isAscii('白');
-
-    // false
-
 <a name="method-kebab-case"></a>
 #### `Str::kebab()` {#collection-method}
 
@@ -1233,14 +1233,14 @@ The `Str::kebab` method converts the given string to `kebab-case`:
 
     // foo-bar
 
-<a name="method-length"></a>
+<a name="method-str-length"></a>
 #### `Str::length()` {#collection-method}
 
 The `Str::length` method returns the length of the given string:
 
     use Illuminate\Support\Str;
 
-    $converted = Str::length('Laravel');
+    $length = Str::length('Laravel');
 
     // 7
 
@@ -1428,7 +1428,7 @@ The `Str::studly` method converts the given string to `StudlyCase`:
 
     // FooBar
 
-<a name="method-substr"></a>
+<a name="method-str-substr"></a>
 #### `Str::substr()` {#collection-method}
 
 The `Str::substr` method returns the portion of string specified by the start and length parameters:
