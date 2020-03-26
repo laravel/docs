@@ -1241,7 +1241,7 @@ You may also pass a third argument to change the string that will be appended to
 
     // The quick brown fox (...)
 
-<a name="method-lower"></a>
+<a name="method-str-lower"></a>
 #### `Str::lower()` {#collection-method}
 
 The `Str::lower` method converts the given string to lowercase:
@@ -1439,7 +1439,7 @@ The `Str::ucfirst` method returns the given string with the first character capi
 
     // Foo bar
 
-<a name="method-upper"></a>
+<a name="method-str-upper"></a>
 #### `Str::upper()` {#collection-method}
 
 The `Str::upper` method converts the given string to uppercase:
