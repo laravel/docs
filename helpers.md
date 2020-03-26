@@ -1170,28 +1170,6 @@ The `Str::is` method determines if a given string matches a given pattern. Aster
 
     // false
 
-<a name="method-str-ucfirst"></a>
-#### `Str::ucfirst()` {#collection-method}
-
-The `Str::ucfirst` method returns the given string with the first character capitalized:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::ucfirst('foo bar');
-
-    // Foo bar
-
-<a name="method-upper"></a>
-#### `Str::upper()` {#collection-method}
-
-The `Str::upper` method converts the given string to upper-case:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::upper('laravel');
-
-    // LARAVEL
-
 <a name="method-str-is-ascii"></a>
 #### `Str::isAscii()` {#collection-method}
 
@@ -1449,6 +1427,28 @@ The `Str::title` method converts the given string to `Title Case`:
     $converted = Str::title('a nice title uses the correct case');
 
     // A Nice Title Uses The Correct Case
+
+<a name="method-str-ucfirst"></a>
+#### `Str::ucfirst()` {#collection-method}
+
+The `Str::ucfirst` method returns the given string with the first character capitalized:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::ucfirst('foo bar');
+
+    // Foo bar
+
+<a name="method-upper"></a>
+#### `Str::upper()` {#collection-method}
+
+The `Str::upper` method converts the given string to upper-case:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::upper('laravel');
+
+    // LARAVEL
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {#collection-method}
