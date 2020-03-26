@@ -994,7 +994,7 @@ If the specified translation string or key does not exist, the `__` function wil
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
-The `class_basename` function returns the class name of the given class with the class' namespace removed:
+The `class_basename` function returns the class name of the given class with the class's namespace removed:
 
     $class = class_basename('Foo\Bar\Baz');
 
