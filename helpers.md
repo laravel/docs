@@ -88,15 +88,19 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::afterLast](#method-str-after-last)
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
+[Str::between](#method-str-between)
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
 [Str::is](#method-str-is)
+[Str::isAscii](#method-str-is-ascii)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
+[Str::length](#method-str-length)
 [Str::limit](#method-str-limit)
+[Str::lower](#method-str-lower)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::plural](#method-str-plural)
 [Str::random](#method-str-random)
@@ -109,8 +113,10 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::start](#method-str-start)
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
+[Str::substr](#method-substr)
 [Str::title](#method-title-case)
 [Str::ucfirst](#method-str-ucfirst)
+[Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
 [Str::words](#method-str-words)
 [trans](#method-trans)
@@ -1058,6 +1064,17 @@ The `Str::beforeLast` method returns everything before the last occurrence of th
 
     // 'This '
 
+<a name="method-str-between"></a>
+#### `Str::between()` {#collection-method}
+
+The `Str::between` method returns the portion of a string between two given values:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::between('This is my name', 'This', 'name');
+
+    // ' is my '
+
 <a name="method-camel-case"></a>
 #### `Str::camel()` {#collection-method}
 
@@ -1164,6 +1181,17 @@ The `Str::ucfirst` method returns the given string with the first character capi
 
     // Foo bar
 
+<a name="method-upper"></a>
+#### `Str::upper()` {#collection-method}
+
+The `Str::upper` method converts the given string to upper-case:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::upper('laravel');
+
+    // LARAVEL
+
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {#collection-method}
 
@@ -1179,6 +1207,21 @@ The `Str::isUuid` method determines if the given string is a valid UUID:
 
     // false
 
+<a name="method-str-is-ascii"></a>
+#### `Str::isAscii()` {#collection-method}
+
+The `Str::isAscii` method determines if a given string is 7 bit ASCII:
+
+    use Illuminate\Support\Str;
+
+    $isAscii = Str::isAscii('+');
+
+    // true
+
+    $isAscii = Str::isAscii('白');
+
+    // false
+
 <a name="method-kebab-case"></a>
 #### `Str::kebab()` {#collection-method}
 
@@ -1189,6 +1232,17 @@ The `Str::kebab` method converts the given string to `kebab-case`:
     $converted = Str::kebab('fooBar');
 
     // foo-bar
+
+<a name="method-length"></a>
+#### `Str::length()` {#collection-method}
+
+The `Str::length` method returns the length of the given string:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::length('Laravel');
+
+    // 7
 
 <a name="method-str-limit"></a>
 #### `Str::limit()` {#collection-method}
@@ -1208,6 +1262,17 @@ You may also pass a third argument to change the string that will be appended to
     $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
 
     // The quick brown fox (...)
+
+<a name="method-lower"></a>
+#### `Str::lower()` {#collection-method}
+
+The `Str::lower` method converts the given string to lower-case:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::lower('LARAVEL');
+
+    // laravel
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {#collection-method}
@@ -1362,6 +1427,17 @@ The `Str::studly` method converts the given string to `StudlyCase`:
     $converted = Str::studly('foo_bar');
 
     // FooBar
+
+<a name="method-substr"></a>
+#### `Str::substr()` {#collection-method}
+
+The `Str::substr` method returns the portion of string specified by the start and length parameters:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::substr('The Laravel Framework', 4, 7);
+
+    // Laravel
 
 <a name="method-title-case"></a>
 #### `Str::title()` {#collection-method}
