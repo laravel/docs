@@ -1067,7 +1067,7 @@ The `Str::beforeLast` method returns everything before the last occurrence of th
 <a name="method-str-between"></a>
 #### `Str::between()` {#collection-method}
 
-The `Str::between` method returns the portion of a string between two given values:
+The `Str::between` method returns the portion of a string between two values:
 
     use Illuminate\Support\Str;
 
@@ -1244,7 +1244,7 @@ You may also pass a third argument to change the string that will be appended to
 <a name="method-lower"></a>
 #### `Str::lower()` {#collection-method}
 
-The `Str::lower` method converts the given string to lower-case:
+The `Str::lower` method converts the given string to lowercase:
 
     use Illuminate\Support\Str;
 
@@ -1442,7 +1442,7 @@ The `Str::ucfirst` method returns the given string with the first character capi
 <a name="method-upper"></a>
 #### `Str::upper()` {#collection-method}
 
-The `Str::upper` method converts the given string to upper-case:
+The `Str::upper` method converts the given string to uppercase:
 
     use Illuminate\Support\Str;
 
