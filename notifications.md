@@ -571,7 +571,7 @@ All broadcast notifications are queued for broadcasting. If you would like to co
                     ->onConnection('sqs')
                     ->onQueue('broadcasts');
 
-> {tip} In addition to the data you specify, broadcast notifications will also contain a `type` field containing the class name of the notification.
+> {tip} In addition to the data you specify, broadcast notifications will also contain a `type` field containing the class name of the notification. This, however, can be customized with `broadcastType` method in the notification class.
 
 <a name="listening-for-notifications"></a>
 ### Listening For Notifications
