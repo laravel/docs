@@ -1165,6 +1165,10 @@ By default, the `unique` rule will check the uniqueness of the column matching t
 
     Rule::unique('users', 'email_address')->ignore($user->id),
 
+Instead of using the `Rule` class, the above can simply be written using the `except` and `idColumn` parameters as:
+
+    'email' => 'unique:users,email_address,' . $user->id . ',user_id'
+
 **Adding Additional Where Clauses:**
 
 You may also specify additional query constraints by customizing the query using the `where` method. For example, let's add a constraint that verifies the `account_id` is `1`:
