@@ -1530,11 +1530,13 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
       dusk-php:
         runs-on: ubuntu-latest
         steps:
-          - uses: actions/checkout@v1
+          - uses: actions/checkout@v2
           - name: Prepare The Environment
             run: cp .env.example .env
           - name: Create Database
-            run: mysql --user="root" --password="root" -e "CREATE DATABASE my-database character set UTF8mb4 collate utf8mb4_bin;"
+            run: |
+              sudo systemctl start mysql
+              mysql --user="root" --password="root" -e "CREATE DATABASE my-database character set UTF8mb4 collate utf8mb4_bin;"
           - name: Install Composer Dependencies
             run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
           - name: Generate Application Key
