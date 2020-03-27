@@ -563,6 +563,24 @@ The `broadcast` channel broadcasts notifications using Laravel's [event broadcas
         ]);
     }
 
+In addition to the data you specify, broadcast notifications will also contain a `type` field containing the class name of the notification.
+
+#### Customizing The Notification Type
+
+If you would like to customize notification type that is passed to your JavaScript client, you may define a `broadcastType` method in the notification class:
+
+    use Illuminate\Notifications\Messages\BroadcastMessage;
+
+    /**
+     * Get the type of the notification being broadcast.
+     *
+     * @return string
+     */
+    public function broadcastType($notifiable)
+    {
+        return 'broadcast.message';
+    }
+
 #### Broadcast Queue Configuration
 
 All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
@@ -570,8 +588,6 @@ All broadcast notifications are queued for broadcasting. If you would like to co
     return (new BroadcastMessage($data))
                     ->onConnection('sqs')
                     ->onQueue('broadcasts');
-
-> {tip} In addition to the data you specify, broadcast notifications will also contain a `type` field containing the class name of the notification.
 
 <a name="listening-for-notifications"></a>
 ### Listening For Notifications
