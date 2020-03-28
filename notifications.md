@@ -308,7 +308,7 @@ By default, the email's subject is the class name of the notification formatted 
                     ->subject('Notification Subject')
                     ->line('...');
     }
-    
+
 <a name="customizing-the-mailer"></a>
 ### Customizing The Mailer
 
@@ -563,11 +563,17 @@ The `broadcast` channel broadcasts notifications using Laravel's [event broadcas
         ]);
     }
 
-In addition to the data you specify, broadcast notifications will also contain a `type` field containing the class name of the notification.
+#### Broadcast Queue Configuration
+
+All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
+
+    return (new BroadcastMessage($data))
+                    ->onConnection('sqs')
+                    ->onQueue('broadcasts');
 
 #### Customizing The Notification Type
 
-If you would like to customize notification type that is passed to your JavaScript client, you may define a `broadcastType` method in the notification class:
+In addition to the data you specify, all broadcast notifications also have a `type` field containing the full class name of the notification. If you would like to customize the notification `type` that is provided to your JavaScript client, you may define a `broadcastType` method on the notification class:
 
     use Illuminate\Notifications\Messages\BroadcastMessage;
 
@@ -580,14 +586,6 @@ If you would like to customize notification type that is passed to your JavaScri
     {
         return 'broadcast.message';
     }
-
-#### Broadcast Queue Configuration
-
-All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
-
-    return (new BroadcastMessage($data))
-                    ->onConnection('sqs')
-                    ->onQueue('broadcasts');
 
 <a name="listening-for-notifications"></a>
 ### Listening For Notifications
