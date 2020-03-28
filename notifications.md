@@ -576,7 +576,7 @@ If you would like to customize notification type that is passed to your JavaScri
      *
      * @return string
      */
-    public function broadcastType($notifiable)
+    public function broadcastType()
     {
         return 'broadcast.message';
     }
