@@ -5,6 +5,7 @@
     - [Request Data](#request-data)
     - [Headers](#headers)
     - [Authentication](#authentication)
+    - [Timeout](#timeout)
     - [Retries](#retries)
     - [Error Handling](#error-handling)
     - [Guzzle Options](#guzzle-options)
@@ -109,6 +110,15 @@ You may specify basic and digest authentication credentials using the `withBasic
 If you would like to quickly add an `Authorization` bearer token header to the request, you may use the `withToken` method:
 
     $response = Http::withToken('token')->post(...);
+
+<a name="timeout"></a>
+### Timeout
+
+The `timeout` method may be used to specify the maximum number of seconds to wait for a response:
+
+    $response = Http::timeout(3)->get(...);
+
+If the given timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
 
 <a name="retries"></a>
 ### Retries
