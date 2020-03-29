@@ -43,11 +43,11 @@ You may use Composer to install Telescope into your Laravel project:
 
     composer require laravel/telescope
 
-After installing Telescope, publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command:
-
-    php artisan telescope:install
+After installing Telescope, run the `migrate` command for to perform the Telescope migrations. After performing the Telescope migrations, you should also publish its assets using the `telescope:install` Artisan command:
 
     php artisan migrate
+
+    php artisan telescope:install
 
 #### Updating Telescope
 
