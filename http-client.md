@@ -114,11 +114,11 @@ If you would like to quickly add an `Authorization` bearer token header to the r
 <a name="timeout"></a>
 ### Timeout
 
-To set a timeout for your request, you can use the `timeout` method.
+The `timeout` method may be used to specify the maximum number of seconds to wait for a response:
 
     $response = Http::timeout(3)->get(...);
 
-If the timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
+If the given timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
 
 <a name="retries"></a>
 ### Retries
