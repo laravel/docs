@@ -677,9 +677,9 @@ Another solution provided by Laravel is to set a universal recipient of all emai
         'name' => 'Example'
     ],
 
-#### Mailtrap
+#### Mailtrap or MailSpons
 
-Finally, you may use a service like [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer.
+Finally, you may use services like [Mailtrap](https://mailtrap.io) or [MailSpons](https://mailspons.com) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in web-based message viewer.
 
 <a name="events"></a>
 ## Events
