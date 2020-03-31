@@ -208,6 +208,17 @@ Because indentation has special meaning within Markdown, Markdown mail templates
 
     php artisan vendor:publish --tag=laravel-mail --force
 
+#### Swift Mailer Bindings Removed
+
+**Likelihood Of Impact: Low**
+
+Laravel 7.x doesn't provide `swift.mailer` and `swift.transport` bindings.
+
+You can still get them through `mailer`, but please note that Laravel 8.x or 9.x will likely not use Swift Mailer anymore:
+
+    $swiftMailer = app('mailer')->getSwiftMailer();
+    $swiftTransport = $swiftMailer->getTransport();
+
 ### Queue
 
 #### Deprecated `--daemon` Flag Removed
