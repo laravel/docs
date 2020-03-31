@@ -190,8 +190,8 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
     if ($user->is_admin) {
         //
     }
-    
-Note that a `nullable` column with a value of `null` is always respected and won't be converted to the cast.
+
+> {note} Attributes that are `null` will not be cast.
 
 <a name="custom-casts"></a>
 ### Custom Casts
