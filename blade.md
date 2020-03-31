@@ -468,11 +468,16 @@ However, if you are building a package that utilizes Blade components, you will 
     public function boot()
     {
         Blade::component('package-alert', AlertComponent::class);
+        
+        //To register anonymous components
+        Blade::component('package-name::components.package-alert', 'package-alert');
     }
 
 Once your component has been registered, it may be rendered using its tag alias:
 
     <x-package-alert/>
+
+
 
 <a name="displaying-components"></a>
 ### Displaying Components
