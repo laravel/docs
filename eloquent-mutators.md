@@ -191,6 +191,8 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
         //
     }
 
+> {note} Attributes that are `null` will not be cast.
+
 <a name="custom-casts"></a>
 ### Custom Casts
 
