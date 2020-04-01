@@ -7,7 +7,6 @@
 - [Date Mutators](#date-mutators)
 - [Attribute Casting](#attribute-casting)
     - [Custom Casts](#custom-casts)
-    - [Castables](#castables)
     - [Array & JSON Casting](#array-and-json-casting)
     - [Date Casting](#date-casting)
     - [Query Time Casting](#query-time-casting)
@@ -377,6 +376,42 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
         'secret' => Hash::class.':sha256',
     ];
 
+#### Castables
+
+Instead of attaching the custom cast to your model, you may alternatively attach a class that implements the `Illuminate\Contracts\Database\Eloquent\Castable` interface:
+
+    protected $casts = [
+        'options' => \App\Address::class,
+    ];
+
+Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Contracts\Database\Eloquent\Castable;
+    use App\Casts\Address as AddressCast;
+
+    class Address implements Castable
+    {
+        /**
+         * Get the name of the caster class to use when casting from / to this cast target.
+         *
+         * @return string
+         */
+        public static function castUsing()
+        {
+            return AddressCast::class;
+        }
+    }
+
+When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed directly to the caster class:
+
+    protected $casts = [
+        'options' => \App\Address::class.':argument',
+    ];
+
 <a name="array-and-json-casting"></a>
 ### Array & JSON Casting
 
@@ -411,43 +446,6 @@ Once the cast is defined, you may access the `options` attribute and it will aut
     $user->options = $options;
 
     $user->save();
-
-<a name="castables"></a>
-### Castables
-
-Instead of using custom cast classes, you can also make use of the `Castable` interface. Value objects who implement it can be used directly in the `$casts` configuration.
-
-    protected $casts = [
-        'options' => \App\ValueObjects\Address::class,
-    ];
-    
-By implementing the `Castable` interface, you'll need to specify the caster class in the value object.
-
-    <?php
-    
-    namespace App\ValueObjects;
-    
-    use Illuminate\Contracts\Database\Eloquent\Castable;
-    use App\Casts\Address as AddressCast;
-    
-    class Address implements Castable
-    {
-        /**
-         * Get the caster class for this class.
-         *
-         * @return string
-         */
-        public static function castUsing()
-        {
-            return AddressCast::class;
-        }
-    }
-    
-You can still pass arguments in the `$casts` configuration, they are passed directly to the caster class.
-
-    protected $casts = [
-        'options' => \App\ValueObjects\Address::class . ':argument',
-    ];
 
 <a name="date-casting"></a>
 ### Date Casting
