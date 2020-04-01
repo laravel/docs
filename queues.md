@@ -300,9 +300,9 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
 
 If you would like to conditionally dispatch a job, you may use the `dispatchIf` and `dispatchUnless` methods:
 
-    ProcessPodcast::dispatchIf($accountActive = true, $podcast);
+    ProcessPodcast::dispatchIf($accountActive === true, $podcast);
 
-    ProcessPodcast::dispatchUnless($accountSuspended = false, $podcast);
+    ProcessPodcast::dispatchUnless($accountSuspended === false, $podcast);
 
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
