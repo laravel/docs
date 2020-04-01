@@ -598,7 +598,7 @@ The `reorder` method allows you to remove all the existing orders and optionally
 
     $unorderedUsers = $query->reorder()->get();
 
-To apply a new order at the same time, include the column you wish to sort by as the first argument and the direction as the second argument:
+To remove all existing orders and apply a new order, provide the column and direction as arguments to the method:
 
     $query = DB::table('users')->orderBy('name');
 
