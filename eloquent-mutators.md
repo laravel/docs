@@ -430,7 +430,7 @@ By implementing the `Castable` interface, you'll need to specify the caster clas
     use Illuminate\Contracts\Database\Eloquent\Castable;
     use App\Casts\Address as AddressCast;
     
-    class Addess implements Castable
+    class Address implements Castable
     {
         /**
          * Get the caster class for this class.
@@ -439,7 +439,7 @@ By implementing the `Castable` interface, you'll need to specify the caster clas
          */
         public static function castUsing()
         {
-            return AddressCast;
+            return AddressCast::class;
         }
     }
     
