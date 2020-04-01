@@ -1384,7 +1384,7 @@ The custom validator Closure receives four arguments: the name of the `$attribut
 
 You may also pass a class and method to the `extend` method instead of a Closure:
 
-    Validator::extend('foo', 'FooValidator@validate');
+    Validator::extend('foo', 'FooValidator@passes');
 
 #### Defining The Error Message
 
