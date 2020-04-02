@@ -198,7 +198,7 @@ Because loaded relationships also get serialized, the serialized job string can 
 <a name="job-middleware"></a>
 ### Job Middleware
 
-Job middleware allows you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
+Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
 
     /**
      * Execute the job.
