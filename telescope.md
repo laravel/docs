@@ -76,7 +76,7 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
         }
     }
 
-You should also prevent Telescope to be [auto-discovered](packages#package-discovery) in your `composer.json`:
+You should also prevent the Telescope package from being [auto-discovered](/docs/{{version}}/packages#package-discovery) by adding the following to your `composer.json` file:
 
     "extra": {
         "laravel": {
