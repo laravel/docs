@@ -47,6 +47,7 @@
     - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
     - [Off-session Payment Notifications](#off-session-payment-notifications)
 - [Stripe SDK](#stripe-sdk)
+- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -928,3 +929,22 @@ Many of Cashier's objects are wrappers around Stripe SDK objects. If you would l
     $stripeSubscription = $subscription->asStripeSubscription();
 
     $stripeSubscription->update(['application_fee_percent' => 5]);
+
+<a name="testing"></a>
+## Testing
+
+When it comes to testing your app integration with Cashier you have two options. Mocking or performing actual HTTP requests to the Stripe API. Mocking has the benefit of making your tests fast but has the downside that you'll have to partially re-implement Cashier's behavior. Using the Stripe API has the benefit of avoiding bugs and unexpected scenarios but will make your tests run slowly. You can choose one approach or a combination of both. Either way, you should know that Cashier itself already has a very good test suite so you should only focus on testing the subscription & payment flow of your app, and not of every underlying Cashier behavior.
+
+What we recommend is to make use of the actual Stripe API because it's the only way of really knowing that your calls were successful or not. Like said before, it'll slow down your tests a lot so you want to put these in one or multiple separate classes so you can only run these occassionally.
+
+To get started, add your `STRIPE_SECRET` **testing** key to your `phpunit.xml`:
+
+    <env name="STRIPE_SECRET" value="sk_test_<your-key>"/>
+
+Now, whenever you execute Cashier calls in your app, it'll send real API requests to your Stripe testing account. 
+
+As for fixtures, you can either choose to pre-fill your testing account with some plans which you can use for testing or you can create these on the fly when running your tests (but this will slow down your tests even more). [Cashier's own Integration test suite](https://github.com/laravel/cashier/tree/10.0/tests/Integration) takes the latter approach which you can use for inspiration for your own tests.
+
+### stripe-mock
+
+Stripe is currently developing a library called ["stripe-mock"](https://github.com/stripe/stripe-mock) which will allow to mock these expensive HTTP calls when testing. Unfortunately the library currently is stateless and Cashier relies on persisted state in Stripe a lot. When this library eventually implements persistence, we'll update Cashier's own test suite and update these docs so you can make use of it.
