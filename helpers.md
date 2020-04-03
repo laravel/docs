@@ -83,6 +83,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [preg_replace_array](#method-preg-replace-array)
 [Str::after](#method-str-after)
 [Str::afterLast](#method-str-after-last)
+[Str::ascii](#method-str-ascii)
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
 [Str::camel](#method-camel-case)
@@ -919,6 +920,17 @@ The `Str::afterLast` method returns everything after the last occurrence of the 
 
     // 'Controller'
 
+<a name="method-str-ascii"></a>
+#### `Str::ascii()` {#collection-method}
+
+The `Str::ascii` method transliterates a UTF-8 value to ASCII:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::ascii('û');
+
+    // 'u'
+    
 <a name="method-str-before"></a>
 #### `Str::before()` {#collection-method}
 
