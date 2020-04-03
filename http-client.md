@@ -266,7 +266,7 @@ The `assertSent` method accepts a callback which will be given an `Illuminate\Ht
                $request['role'] == 'Developer';
     });
     
-Besides that you can also expect that a specific request was not sent by using `assertNotSent`:
+If needed, you may assert that a specific request was not sent using the `assertNotSent` method:
 
     Http::fake();
     
@@ -279,10 +279,8 @@ Besides that you can also expect that a specific request was not sent by using `
         return $request->url() === 'http://test.com/posts';
     });
     
-And if you want to make sure no request was sent at all, you can make use of `assertNothingSent`:
+Or, if you would like to assert that no requests were sent, you may use the `assertNothingSent` method:
 
     Http::fake();
     
     Http::assertNothingSent();
-    
-
