@@ -6,6 +6,7 @@
     - [Protecting Routes](#protecting-routes)
 - [Views](#verification-views)
 - [After Verifying Emails](#after-verifying-emails)
+- [Customization](#customization)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -74,6 +75,23 @@ The email verification view is placed in `resources/views/auth/verify.blade.php`
 After an email address is verified, the user will automatically be redirected to `/home`. You can customize the post verification redirect location by defining a `redirectTo` method or property on the `VerificationController`:
 
     protected $redirectTo = '/dashboard';
+    
+<a name="customization"></a>
+## Customization
+
+#### Verification Email Customization
+
+You may easily modify the notification class used to send the email verification link to the user. To get started, override the `sendEmailVerificationNotification` method on your `User` model. Within this method, you may send the notification using any notification class you choose:
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail);
+    }
 
 <a name="events"></a>
 ## Events
