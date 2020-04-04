@@ -923,7 +923,7 @@ The `Str::afterLast` method returns everything after the last occurrence of the 
 <a name="method-str-ascii"></a>
 #### `Str::ascii()` {#collection-method}
 
-The `Str::ascii` method transliterates a UTF-8 value to ASCII:
+The `Str::ascii` method will attempt to transliterate the string into an ASCII value:
 
     use Illuminate\Support\Str;
 
