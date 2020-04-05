@@ -228,9 +228,3 @@ Compiling views during the request negatively impacts performance, so Laravel pr
 You may use the `view:clear` command to clear the view cache:
 
     php artisan view:clear
-
-Typically, you can assume that views will **never** be modified in your production environment. Therefore, you can usually disable the file modification checks Laravel makes to determine if views are expired by modifying the `expires` option within your `view` configuration file:
-
-    'expires' => env('APP_ENV') !== 'production',
-
-> {note} You must run `php artisan view:cache` during your deployment process to disable checking for expired views.
