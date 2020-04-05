@@ -943,4 +943,4 @@ To get started, add the **testing** version of your Stripe secret to your `phpun
 
 Now, whenever you interact with Cashier while testing, it will send actual API requests to your Stripe testing environment. For convenience, you should pre-fill your Stripe testing account with subscriptions / plans that you may then use during testing.
 
-In order to test different kind of scenarios in your test suite you can make use of a vast range of [Stripe testing tokens](https://stripe.com/docs/testing).
+> {tip} In order to test a variety of billing scenarios, such as credit card denials and failures, you may use the vast range of [testing card numbers and tokens](https://stripe.com/docs/testing) provided by Stripe.
