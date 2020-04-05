@@ -14,7 +14,7 @@
 
 Many web applications require users to verify their email addresses before using the application. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending and verifying email verification requests.
 
-<a name="model-preparation">
+<a name="model-preparation"></a>
 ## Model Preparation
 
 To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract:
