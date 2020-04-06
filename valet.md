@@ -78,7 +78,7 @@ Both Valet and Homestead are great choices for configuring your Laravel developm
 - Install or update [Homebrew](https://brew.sh/) to the latest version using `brew update`.
 - Install PHP 7.4 using Homebrew via `brew install php`.
 - Install [Composer](https://getcomposer.org).
-- Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/vendor/bin` directory is in your system's "PATH".
+- Install Valet with Composer via `composer global require laravel/valet`. Make sure you have `export PATH=$PATH:~/.composer/vendor/bin` in your `.zshrc` (OhMyZsh) or in your `bash_profile` file.
 - Run the `valet install` command. This will configure and install Valet and DnsMasq, and register Valet's daemon to launch when your system starts.
 </div>
 
