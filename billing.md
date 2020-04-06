@@ -24,6 +24,7 @@
     - [Checking Subscription Status](#checking-subscription-status)
     - [Changing Plans](#changing-plans)
     - [Subscription Quantity](#subscription-quantity)
+    - [Multiplan subscriptions](#multiplan-subscriptions)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
@@ -521,6 +522,8 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice('provider-plan-id');
 
+> {note} Please note that when you are working with multiple plans on a subscription you cannot use the `swap` and `swapAndInvoice` methods and should use the `addPlan`, `addPlanAndInvoice` and `removePlan` methods instead. More info about that can be found in the [multiplan subscriptions section](#multiplan-subscriptions).
+
 #### Prorations
 
 By default, Stripe prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
@@ -555,6 +558,59 @@ The `noProrate` method may be used to update the subscription's quantity without
     $user->subscription('default')->noProrate()->updateQuantity(10);
 
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
+
+> {note} Please note that when working with multiplan subscriptions, an extra "plan" parameter is required for the above quantity methods.
+
+<a name="multiplan-subscriptions"></a>
+### Multiplan Subscriptions
+
+Cashier provides support for [multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan) with Stripe. For example, you might want to provide different plans for different parts of your app. Consider you have an extra "backups" feature which you can let the customer optionally add on:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->addPlan('backup-plan');
+
+And now the customer will have two plans on their `default` subscription. The above method will add the new plan and the customer will be billed for it on the next billing cycle. If you would like to bill the customer immediately instead you can use the `addPlanAndInvoice` method:
+
+    $user->subscription('default')->addPlanAndInvoice('backup-plan');
+
+You can also remove plans again easily:
+
+    $user->subscription('default')->removePlan('backup-plan');
+
+Note that you cannot remove the last plan. Peventing proration when adding or removing plans is also supported:
+
+    $user->subscription('default')->noProrate()->removePlan('backup-plan');
+
+If you want to update quantities on subscription items you can easily do so by making use of all the [existing quantity methods](subscription-quantity) and passing an extra parameter with the plan:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->incrementQuantity(5, 'backup-plan');
+
+    $user->subscription('default')->decrementQuantity(3, 'backup-plan');
+
+    $user->subscription('default')->updateQuantity(10, 'backup-plan');
+
+> {note} When you have multiple plans set on a subscription please take into account that the `stripe_plan` and `quantity` attributes on the `Subscription` model will be `null` and you'll need to check these on the individual subscription items.
+
+#### Subscription Items
+
+When a subscription has multiple plans, it'll have multiple subscription items set in the database. If you need to retrieve and use these you can do so with the `items` relationship on the subscription:
+
+    $user = User::find(1);
+
+    $subscriptionItem = $user->subscription('default')->items->first();
+
+    // Retrieve the Stripe plan and quantity for a specific item.
+    $stripePlan = $subscriptionItem->stripe_plan;
+    $quantity = $subscriptionItem->quantity;
+
+You can also retrieve a specific plan using the `findItemOrFail` method:
+
+    $user = User::find(1);
+
+    $subscriptionItem = $user->subscription('default')->findItemOrFail('backups');
 
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
