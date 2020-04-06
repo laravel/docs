@@ -615,22 +615,45 @@ You can also retrieve a specific plan using the `findItemOrFail` method:
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
 
-To specify the tax percentage a user pays on a subscription, implement the `taxPercentage` method on your billable model, and return a numeric value between 0 and 100, with no more than 2 decimal places.
+To specify the tax rates a user pays on a subscription, implement the `taxRates` method on your billable model, and return an array with the Tax Rate IDs. You can define these tax rates in [your Stripe dashboard](https://dashboard.stripe.com/test/tax-rates).
 
-    public function taxPercentage()
+    public function taxRates()
     {
-        return 20;
+        return ['<stripe tax rate id>'];
     }
 
-The `taxPercentage` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates.
+The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for those as well by implementing a `planTaxRates` on your billable model:
 
-> {note} The `taxPercentage` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
+    public function planTaxRates()
+    {
+        return [
+            'plan-id' => ['<stripe tax rate id>'],
+        ];
+    }
 
-#### Syncing Tax Percentages
+> {note} The `taxRates` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
 
-When changing the hard-coded value returned by the `taxPercentage` method, the tax settings on any existing subscriptions for the user will remain the same. If you wish to update the tax value for existing subscriptions with the returned `taxPercentage` value, you should call the `syncTaxPercentage` method on the user's subscription instance:
+#### Syncing Tax Rates
 
-    $user->subscription('default')->syncTaxPercentage();
+When changing the hard-coded Tax Rate IDs returned by the `taxRates` method, the tax settings on any existing subscriptions for the user will remain the same. If you wish to update the tax value for existing subscriptions with the returned `taxTaxRates` values, you should call the `syncTaxRates` method on the user's subscription instance:
+
+    $user->subscription('default')->syncTaxRates();
+
+This will also sync any subscription item's tax rates so make sure you also properly change the `planTaxRates` method.
+
+#### Tax Exemption
+
+Cashier also offers some convenience methods to check wether or not the customer is tax exempt or not. The `isNotTaxExempt`, `isTaxExempt` and `reverseChargeApplies` methods are available on a billable model:
+
+    $user = User::find(1);
+
+    $user->isNotTaxExempt();
+    $user->isTaxExempt();
+    $user->reverseChargeApplies();
+
+These methods are also available on any `Laravel\Cashier\Invoice` object with the difference that here these methods will check the exempt status at the time the customer was invoiced.
+
+> {note} Note that these methods will perform a Stripe API call to determine the exemption status.
 
 <a name="subscription-anchor-date"></a>
 ### Subscription Anchor Date
@@ -882,7 +905,7 @@ The invoice will be charged immediately against the user's default payment metho
     $user->invoiceFor('Stickers', 500, [
         'quantity' => 50,
     ], [
-        'tax_percent' => 21,
+        'default_tax_rates' => ['<stripe tax rate id>'],
     ]);
 
 > {note} The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
