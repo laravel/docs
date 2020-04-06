@@ -876,6 +876,13 @@ From within a route or controller, use the `downloadInvoice` method to generate 
         ]);
     });
 
+The `downloadInvoice` method also allows for an optional custom filename as the third parameter. This filename will automatically be suffixed with `.pdf` for you:
+
+    return $request->user()->downloadInvoice($invoiceId, [
+        'vendor' => 'Your Company',
+        'product' => 'Your Product',
+    ], 'my-invoice');
+
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
 
