@@ -303,7 +303,13 @@ You can also retrieve a specific payment method that is owned by the Billable mo
 <a name="check-for-a-payment-method"></a>
 ### Determining If A User Has A Payment Method
 
-To determine if a Billable model has a payment method attached to their account, use the `hasPaymentMethod` method:
+To determine if a Billable model has a default payment method attached to their account, use the `hasDefaultPaymentMethod` method:
+
+    if ($user->hasDefaultPaymentMethod()) {
+        //
+    }
+
+To determine if a Billable model has at least one payment method attached to their account, use the `hasPaymentMethod` method:
 
     if ($user->hasPaymentMethod()) {
         //
