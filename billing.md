@@ -376,7 +376,7 @@ If you would like to specify additional customer or subscription details, you ma
     $user->newSubscription('default', 'monthly')->create($paymentMethod, [
         'email' => $email,
     ], [
-        'metadata' => ['note' => 'Some extra info here.'],
+        'metadata' => ['note' => 'Some extra information.'],
     ]);
 
 To learn more about the additional fields supported by Stripe, check out Stripe's documentation on [customer creation](https://stripe.com/docs/api#create_customer) and [subscription creation](https://stripe.com/docs/api/subscriptions/create).
@@ -522,7 +522,7 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice('provider-plan-id');
 
-> {note} Please note that when you are working with multiple plans on a subscription you cannot use the `swap` and `swapAndInvoice` methods and should use the `addPlan`, `addPlanAndInvoice` and `removePlan` methods instead. More info about that can be found in the [multiplan subscriptions section](#multiplan-subscriptions).
+> {note} When working with multiplan subscriptions, you cannot use the `swap` and `swapAndInvoice` methods. Instead, you should use the `addPlan`, `addPlanAndInvoice`, and `removePlan` methods. More information about these methods may be found in the [multiplan subscription documentation](#multiplan-subscriptions).
 
 #### Prorations
 
@@ -621,11 +621,11 @@ You can also retrieve a specific plan using the `findItemOrFail` method:
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
 
-To specify the tax rates a user pays on a subscription, implement the `taxRates` method on your billable model, and return an array with the Tax Rate IDs. You can define these tax rates in [your Stripe dashboard](https://dashboard.stripe.com/test/tax-rates).
+To specify the tax rates a user pays on a subscription, implement the `taxRates` method on your billable model, and return an array with the Tax Rate IDs. You can define these tax rates in [your Stripe dashboard](https://dashboard.stripe.com/test/tax-rates):
 
     public function taxRates()
     {
-        return ['<stripe tax rate id>'];
+        return ['tax-rate-id'];
     }
 
 The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for those as well by implementing a `planTaxRates` on your billable model:
@@ -633,7 +633,7 @@ The `taxRates` method enables you to apply a tax rate on a model-by-model basis,
     public function planTaxRates()
     {
         return [
-            'plan-id' => ['<stripe tax rate id>'],
+            'plan-id' => ['tax-rate-id'],
         ];
     }
 
@@ -645,21 +645,19 @@ When changing the hard-coded Tax Rate IDs returned by the `taxRates` method, the
 
     $user->subscription('default')->syncTaxRates();
 
-This will also sync any subscription item's tax rates so make sure you also properly change the `planTaxRates` method.
+This will also sync any subscription item tax rates so make sure you also properly change the `planTaxRates` method.
 
 #### Tax Exemption
 
-Cashier also offers some convenience methods to check wether or not the customer is tax exempt or not. The `isNotTaxExempt`, `isTaxExempt` and `reverseChargeApplies` methods are available on a billable model:
+Cashier also offers methods to determine if the customer is tax exempt by calling the Stripe API. The `isNotTaxExempt`, `isTaxExempt`, and `reverseChargeApplies` methods are available on the billable model:
 
     $user = User::find(1);
 
-    $user->isNotTaxExempt();
     $user->isTaxExempt();
+    $user->isNotTaxExempt();
     $user->reverseChargeApplies();
 
-These methods are also available on any `Laravel\Cashier\Invoice` object with the difference that here these methods will check the exempt status at the time the customer was invoiced.
-
-> {note} Note that these methods will perform a Stripe API call to determine the exemption status.
+These methods are also available on any `Laravel\Cashier\Invoice` object. However, when calling these methods on an `Invoice` object the methods will determine the exemption status at the time the invoice was created.
 
 <a name="subscription-anchor-date"></a>
 ### Subscription Anchor Date
@@ -911,7 +909,7 @@ The invoice will be charged immediately against the user's default payment metho
     $user->invoiceFor('Stickers', 500, [
         'quantity' => 50,
     ], [
-        'default_tax_rates' => ['<stripe tax rate id>'],
+        'default_tax_rates' => ['tax-rate-id'],
     ]);
 
 > {note} The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
