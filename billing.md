@@ -368,15 +368,17 @@ The `create` method, which accepts [a Stripe payment method identifier](#storing
 
 > {note} Passing a payment method identifier directly to the `create()` subscription method will also automatically add it to the user's stored payment methods.
 
-#### Additional User Details
+#### Additional Details
 
-If you would like to specify additional customer details, you may do so by passing them as the second argument to the `create` method:
+If you would like to specify additional customer or subscription details, you may do so by passing them as the second and third arguments to the `create` method:
 
     $user->newSubscription('default', 'monthly')->create($paymentMethod, [
         'email' => $email,
+    ], [
+        'metadata' => ['note' => 'Some extra info here.'],
     ]);
 
-To learn more about the additional fields supported by Stripe, check out Stripe's [documentation on customer creation](https://stripe.com/docs/api#create_customer).
+To learn more about the additional fields supported by Stripe, check out Stripe's documentation on [customer creation](https://stripe.com/docs/api#create_customer) and [subscription creation](https://stripe.com/docs/api/subscriptions/create).
 
 #### Coupons
 
@@ -385,6 +387,14 @@ If you would like to apply a coupon when creating the subscription, you may use 
     $user->newSubscription('default', 'monthly')
          ->withCoupon('code')
          ->create($paymentMethod);
+
+#### Adding Subscriptions
+
+If you would like to add a subscription to a customer who already has a default payment method set you can use the `add` method when using the `newSubscription` method:
+
+    $user = User::find(1);
+
+    $user->newSubscription('default', 'premium')->add();
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
