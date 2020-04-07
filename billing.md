@@ -628,7 +628,7 @@ To specify the tax rates a user pays on a subscription, implement the `taxRates`
         return ['tax-rate-id'];
     }
 
-The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for each plan by implementing a `planTaxRates` on your billable model:
+The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for each plan by implementing a `planTaxRates` method on your billable model:
 
     public function planTaxRates()
     {
