@@ -5,6 +5,7 @@
     - [Request Data](#request-data)
     - [Headers](#headers)
     - [Authentication](#authentication)
+    - [Timeout](#timeout)
     - [Retries](#retries)
     - [Error Handling](#error-handling)
     - [Guzzle Options](#guzzle-options)
@@ -109,6 +110,15 @@ You may specify basic and digest authentication credentials using the `withBasic
 If you would like to quickly add an `Authorization` bearer token header to the request, you may use the `withToken` method:
 
     $response = Http::withToken('token')->post(...);
+
+<a name="timeout"></a>
+### Timeout
+
+The `timeout` method may be used to specify the maximum number of seconds to wait for a response:
+
+    $response = Http::timeout(3)->get(...);
+
+If the given timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
 
 <a name="retries"></a>
 ### Retries
@@ -255,3 +265,22 @@ The `assertSent` method accepts a callback which will be given an `Illuminate\Ht
                $request['name'] == 'Taylor' &&
                $request['role'] == 'Developer';
     });
+    
+If needed, you may assert that a specific request was not sent using the `assertNotSent` method:
+
+    Http::fake();
+    
+    Http::post('http://test.com/users', [
+        'name' => 'Taylor',
+        'role' => 'Developer',
+    ]); 
+       
+    Http::assertNotSent(function (Request $request) {
+        return $request->url() === 'http://test.com/posts';
+    });
+    
+Or, if you would like to assert that no requests were sent, you may use the `assertNothingSent` method:
+
+    Http::fake();
+    
+    Http::assertNothingSent();

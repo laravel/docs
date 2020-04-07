@@ -191,6 +191,8 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
         //
     }
 
+> {note} Attributes that are `null` will not be cast.
+
 <a name="custom-casts"></a>
 ### Custom Casts
 
@@ -372,6 +374,42 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
      */
     protected $casts = [
         'secret' => Hash::class.':sha256',
+    ];
+
+#### Castables
+
+Instead of attaching the custom cast to your model, you may alternatively attach a class that implements the `Illuminate\Contracts\Database\Eloquent\Castable` interface:
+
+    protected $casts = [
+        'options' => \App\Address::class,
+    ];
+
+Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Contracts\Database\Eloquent\Castable;
+    use App\Casts\Address as AddressCast;
+
+    class Address implements Castable
+    {
+        /**
+         * Get the name of the caster class to use when casting from / to this cast target.
+         *
+         * @return string
+         */
+        public static function castUsing()
+        {
+            return AddressCast::class;
+        }
+    }
+
+When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed directly to the caster class:
+
+    protected $casts = [
+        'options' => \App\Address::class.':argument',
     ];
 
 <a name="array-and-json-casting"></a>

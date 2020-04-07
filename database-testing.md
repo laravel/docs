@@ -263,7 +263,7 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
 
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use OrderStatusesTableSeeder;
+    use OrderStatusSeeder;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -281,7 +281,7 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
             $this->seed();
 
             // Run a single seeder...
-            $this->seed(OrderStatusesTableSeeder::class);
+            $this->seed(OrderStatusSeeder::class);
 
             // ...
         }

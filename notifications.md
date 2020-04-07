@@ -308,7 +308,7 @@ By default, the email's subject is the class name of the notification formatted 
                     ->subject('Notification Subject')
                     ->line('...');
     }
-    
+
 <a name="customizing-the-mailer"></a>
 ### Customizing The Mailer
 
@@ -571,7 +571,21 @@ All broadcast notifications are queued for broadcasting. If you would like to co
                     ->onConnection('sqs')
                     ->onQueue('broadcasts');
 
-> {tip} In addition to the data you specify, broadcast notifications will also contain a `type` field containing the class name of the notification.
+#### Customizing The Notification Type
+
+In addition to the data you specify, all broadcast notifications also have a `type` field containing the full class name of the notification. If you would like to customize the notification `type` that is provided to your JavaScript client, you may define a `broadcastType` method on the notification class:
+
+    use Illuminate\Notifications\Messages\BroadcastMessage;
+
+    /**
+     * Get the type of the notification being broadcast.
+     *
+     * @return string
+     */
+    public function broadcastType()
+    {
+        return 'broadcast.message';
+    }
 
 <a name="listening-for-notifications"></a>
 ### Listening For Notifications

@@ -198,7 +198,7 @@ Because loaded relationships also get serialized, the serialized job string can 
 <a name="job-middleware"></a>
 ### Job Middleware
 
-Job middleware allow you wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
+Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
 
     /**
      * Execute the job.
@@ -300,9 +300,9 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
 
 If you would like to conditionally dispatch a job, you may use the `dispatchIf` and `dispatchUnless` methods:
 
-    ProcessPodcast::dispatchIf($accountActive = true, $podcast);
+    ProcessPodcast::dispatchIf($accountActive === true, $podcast);
 
-    ProcessPodcast::dispatchUnless($accountSuspended = false, $podcast);
+    ProcessPodcast::dispatchUnless($accountSuspended === false, $podcast);
 
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching

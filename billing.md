@@ -24,6 +24,7 @@
     - [Checking Subscription Status](#checking-subscription-status)
     - [Changing Plans](#changing-plans)
     - [Subscription Quantity](#subscription-quantity)
+    - [Multiplan Subscriptions](#multiplan-subscriptions)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
@@ -47,6 +48,7 @@
     - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
     - [Off-session Payment Notifications](#off-session-payment-notifications)
 - [Stripe SDK](#stripe-sdk)
+- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -58,7 +60,7 @@ Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://s
 
 When upgrading to a new version of Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier/blob/master/UPGRADE.md).
 
-> {note} To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 10.1 utilizes Stripe API version `2019-08-14`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
+> {note} To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 11 utilizes Stripe API version `2020-03-02`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
 
 <a name="installation"></a>
 ## Installation
@@ -302,7 +304,13 @@ You can also retrieve a specific payment method that is owned by the Billable mo
 <a name="check-for-a-payment-method"></a>
 ### Determining If A User Has A Payment Method
 
-To determine if a Billable model has a payment method attached to their account, use the `hasPaymentMethod` method:
+To determine if a Billable model has a default payment method attached to their account, use the `hasDefaultPaymentMethod` method:
+
+    if ($user->hasDefaultPaymentMethod()) {
+        //
+    }
+
+To determine if a Billable model has at least one payment method attached to their account, use the `hasPaymentMethod` method:
 
     if ($user->hasPaymentMethod()) {
         //
@@ -361,15 +369,17 @@ The `create` method, which accepts [a Stripe payment method identifier](#storing
 
 > {note} Passing a payment method identifier directly to the `create()` subscription method will also automatically add it to the user's stored payment methods.
 
-#### Additional User Details
+#### Additional Details
 
-If you would like to specify additional customer details, you may do so by passing them as the second argument to the `create` method:
+If you would like to specify additional customer or subscription details, you may do so by passing them as the second and third arguments to the `create` method:
 
     $user->newSubscription('default', 'monthly')->create($paymentMethod, [
         'email' => $email,
+    ], [
+        'metadata' => ['note' => 'Some extra information.'],
     ]);
 
-To learn more about the additional fields supported by Stripe, check out Stripe's [documentation on customer creation](https://stripe.com/docs/api#create_customer).
+To learn more about the additional fields supported by Stripe, check out Stripe's documentation on [customer creation](https://stripe.com/docs/api#create_customer) and [subscription creation](https://stripe.com/docs/api/subscriptions/create).
 
 #### Coupons
 
@@ -378,6 +388,14 @@ If you would like to apply a coupon when creating the subscription, you may use 
     $user->newSubscription('default', 'monthly')
          ->withCoupon('code')
          ->create($paymentMethod);
+
+#### Adding Subscriptions
+
+If you would like to add a subscription to a customer who already has a default payment method set you can use the `add` method when using the `newSubscription` method:
+
+    $user = User::find(1);
+
+    $user->newSubscription('default', 'premium')->add();
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
@@ -504,6 +522,8 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice('provider-plan-id');
 
+> {note} When working with multiplan subscriptions, you cannot use the `swap` and `swapAndInvoice` methods. Instead, you should use the `addPlan`, `addPlanAndInvoice`, and `removePlan` methods. More information about these methods may be found in the [multiplan subscription documentation](#multiplan-subscriptions).
+
 #### Prorations
 
 By default, Stripe prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
@@ -539,25 +559,105 @@ The `noProrate` method may be used to update the subscription's quantity without
 
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
 
+> {note} Please note that when working with multiplan subscriptions, an extra "plan" parameter is required for the above quantity methods.
+
+<a name="multiplan-subscriptions"></a>
+### Multiplan Subscriptions
+
+[Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan)s allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->addPlan('chat-plan');
+
+Now the customer will have two plans on their `default` subscription. The example above will add the new plan and the customer will be billed for it on their next billing cycle. If you would like to bill the customer immediately you may use the `addPlanAndInvoice` method:
+
+    $user->subscription('default')->addPlanAndInvoice('chat-plan');
+
+You may remove plans from subscriptions using the `removePlan` method:
+
+    $user->subscription('default')->removePlan('chat-plan');
+
+> {note} You may not remove the last plan on a subscription. Instead, you may simply cancel the subscription.
+
+#### Proration
+
+By default, Stripe will prorate charges when adding or removing plans from a subscription. If you would like to make a plan adjustment without proration, you should chain the `noProrate` method onto your plan operation:
+
+    $user->subscription('default')->noProrate()->removePlan('chat-plan');
+
+#### Quantities
+
+If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](subscription-quantity) and passing the name of hte plan as an additional argument to the method:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->incrementQuantity(5, 'chat-plan');
+
+    $user->subscription('default')->decrementQuantity(3, 'chat-plan');
+
+    $user->subscription('default')->updateQuantity(10, 'chat-plan');
+
+> {note} When you have multiple plans set on a subscription the `stripe_plan` and `quantity` attributes on the `Subscription` model will be `null`. To access the individual plans, you should use the `items` relationship available on the `Subscription` model.
+
+#### Subscription Items
+
+When a subscription has multiple plans, it will have multiple subscription "items" stored in your database's `subscription_items` table. You may access these via the `items` relationship on the subscription:
+
+    $user = User::find(1);
+
+    $subscriptionItem = $user->subscription('default')->items->first();
+
+    // Retrieve the Stripe plan and quantity for a specific item...
+    $stripePlan = $subscriptionItem->stripe_plan;
+    $quantity = $subscriptionItem->quantity;
+
+You can also retrieve a specific plan using the `findItemOrFail` method:
+
+    $user = User::find(1);
+
+    $subscriptionItem = $user->subscription('default')->findItemOrFail('chat-plan');
+
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
 
-To specify the tax percentage a user pays on a subscription, implement the `taxPercentage` method on your billable model, and return a numeric value between 0 and 100, with no more than 2 decimal places.
+To specify the tax rates a user pays on a subscription, implement the `taxRates` method on your billable model, and return an array with the Tax Rate IDs. You can define these tax rates in [your Stripe dashboard](https://dashboard.stripe.com/test/tax-rates):
 
-    public function taxPercentage()
+    public function taxRates()
     {
-        return 20;
+        return ['tax-rate-id'];
     }
 
-The `taxPercentage` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates.
+The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for those as well by implementing a `planTaxRates` on your billable model:
 
-> {note} The `taxPercentage` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
+    public function planTaxRates()
+    {
+        return [
+            'plan-id' => ['tax-rate-id'],
+        ];
+    }
 
-#### Syncing Tax Percentages
+> {note} The `taxRates` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
 
-When changing the hard-coded value returned by the `taxPercentage` method, the tax settings on any existing subscriptions for the user will remain the same. If you wish to update the tax value for existing subscriptions with the returned `taxPercentage` value, you should call the `syncTaxPercentage` method on the user's subscription instance:
+#### Syncing Tax Rates
 
-    $user->subscription('default')->syncTaxPercentage();
+When changing the hard-coded Tax Rate IDs returned by the `taxRates` method, the tax settings on any existing subscriptions for the user will remain the same. If you wish to update the tax value for existing subscriptions with the returned `taxTaxRates` values, you should call the `syncTaxRates` method on the user's subscription instance:
+
+    $user->subscription('default')->syncTaxRates();
+
+This will also sync any subscription item tax rates so make sure you also properly change the `planTaxRates` method.
+
+#### Tax Exemption
+
+Cashier also offers methods to determine if the customer is tax exempt by calling the Stripe API. The `isNotTaxExempt`, `isTaxExempt`, and `reverseChargeApplies` methods are available on the billable model:
+
+    $user = User::find(1);
+
+    $user->isTaxExempt();
+    $user->isNotTaxExempt();
+    $user->reverseChargeApplies();
+
+These methods are also available on any `Laravel\Cashier\Invoice` object. However, when calling these methods on an `Invoice` object the methods will determine the exemption status at the time the invoice was created.
 
 <a name="subscription-anchor-date"></a>
 ### Subscription Anchor Date
@@ -809,7 +909,7 @@ The invoice will be charged immediately against the user's default payment metho
     $user->invoiceFor('Stickers', 500, [
         'quantity' => 50,
     ], [
-        'tax_percent' => 21,
+        'default_tax_rates' => ['tax-rate-id'],
     ]);
 
 > {note} The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
@@ -859,6 +959,13 @@ From within a route or controller, use the `downloadInvoice` method to generate 
         ]);
     });
 
+The `downloadInvoice` method also allows for an optional custom filename as the third parameter. This filename will automatically be suffixed with `.pdf` for you:
+
+    return $request->user()->downloadInvoice($invoiceId, [
+        'vendor' => 'Your Company',
+        'product' => 'Your Product',
+    ], 'my-invoice');
+
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
 
@@ -878,7 +985,7 @@ First, you could redirect your customer to the dedicated payment confirmation pa
         );
     }
 
-On the payment confirmation page, the customer will be prompted to enter their credit card info again and perform any additional actions required by Stripe, such as "3D Secure" confirmation. After confirming their payment, the user will be redirected to the URL provided by the `redirect` parameter specified above.
+On the payment confirmation page, the customer will be prompted to enter their credit card info again and perform any additional actions required by Stripe, such as "3D Secure" confirmation. After confirming their payment, the user will be redirected to the URL provided by the `redirect` parameter specified above. Upon redirection, `message` (string) and `success` (integer) query string variables will be added to the URL.
 
 Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if a `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
 
@@ -928,3 +1035,18 @@ Many of Cashier's objects are wrappers around Stripe SDK objects. If you would l
     $stripeSubscription = $subscription->asStripeSubscription();
 
     $stripeSubscription->update(['application_fee_percent' => 5]);
+
+<a name="testing"></a>
+## Testing
+
+When testing an application that uses Cashier, you may mock the actual HTTP requests to the Stripe API; however, this requires you to partially re-implement Cashier's own behavior. Therefore, we recommend allowing your tests to hit the actual Stripe API. While this is slower, it provides more confidence that your application is working as expected and any slow tests may be placed within their own PHPUnit testing group.
+
+When testing, remember that that Cashier itself already has a great test suite, so you should only focus on testing the subscription and payment flow of your own application and not every underlying Cashier behavior.
+
+To get started, add the **testing** version of your Stripe secret to your `phpunit.xml` file:
+
+    <env name="STRIPE_SECRET" value="sk_test_<your-key>"/>
+
+Now, whenever you interact with Cashier while testing, it will send actual API requests to your Stripe testing environment. For convenience, you should pre-fill your Stripe testing account with subscriptions / plans that you may then use during testing.
+
+> {tip} In order to test a variety of billing scenarios, such as credit card denials and failures, you may use the vast range of [testing card numbers and tokens](https://stripe.com/docs/testing) provided by Stripe.

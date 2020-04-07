@@ -590,6 +590,20 @@ The `inRandomOrder` method may be used to sort the query results randomly. For e
                     ->inRandomOrder()
                     ->first();
 
+#### reorder
+
+The `reorder` method allows you to remove all the existing orders and optionally apply a new order. For example, you can remove all the existing orders:
+
+    $query = DB::table('users')->orderBy('name');
+
+    $unorderedUsers = $query->reorder()->get();
+
+To remove all existing orders and apply a new order, provide the column and direction as arguments to the method:
+
+    $query = DB::table('users')->orderBy('name');
+
+    $usersOrderedByEmail = $query->reorder('email', 'desc')->get();
+
 #### groupBy / having
 
 The `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
