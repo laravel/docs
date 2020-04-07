@@ -564,7 +564,7 @@ For more information on subscription quantities, consult the [Stripe documentati
 <a name="multiplan-subscriptions"></a>
 ### Multiplan Subscriptions
 
-[Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan)s allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
+[Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan) allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
 
     $user = User::find(1);
 
