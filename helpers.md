@@ -1745,7 +1745,7 @@ The `isEmpty` method determines if the given string is empty:
     // false
 
 
-<a name="method-fluent-str-is--not-empty"></a>
+<a name="method-fluent-str-is-not-empty"></a>
 #### `isNotEmpty` {#collection-method}
 
 The `isNotmpty` method determines if the given string is not empty:
