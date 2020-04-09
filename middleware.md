@@ -69,11 +69,13 @@ Whether a middleware runs before or after a request depends on the middleware it
 
     use Closure;
 
-    class BeforeMiddleware
+    class BeforeCheckAge
     {
         public function handle($request, Closure $next)
         {
-            // Perform action
+            if ($request->age <= 200) {
+                return redirect('home');
+            }
 
             return $next($request);
         }
@@ -87,15 +89,15 @@ However, this middleware would perform its task **after** the request is handled
 
     use Closure;
 
-    class AfterMiddleware
+    class AfterCheckAge
     {
         public function handle($request, Closure $next)
         {
-            $response = $next($request);
+            if ($request->age <= 200) {
+                return redirect('home');
+            }
 
-            // Perform action
-
-            return $response;
+            return $next($request);
         }
     }
 
