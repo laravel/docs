@@ -23,7 +23,7 @@ To get started, verify that your `App\User` model implements the `Illuminate\Con
 
 #### Generating The Reset Token Table Migration
 
-Next, a table must be created to store the password reset tokens. The migration for this table is included in `laravel/ui` package. So, all you need to do is install the package and run your database migrations:
+Next, a table must be created to store the password reset tokens. The migration for this table is included in the `laravel/ui` Composer package. After installing the `laravel/ui` package, you may use the `migrate` command to create the password reset token database table:
 
     composer require laravel/ui
     
