@@ -77,9 +77,11 @@ First, the `report`, `render`, `shouldReport`, and `renderForConsole` methods of
     public function render($request, Throwable $exception);
     public function renderForConsole($output, Throwable $exception);
 
-Next, please update your `session` configuration file's `secure` option to have a fallback value of `null`:
+Next, please update your `session` configuration file's `secure` option to fallback to a value of `null`:
 
-    'secure' => env('SESSION_SECURE_COOKIE', null),
+    // 'secure' => env('SESSION_SECURE_COOKIE', false),
+
+    'secure' => env('SESSION_SECURE_COOKIE'),
 
 ### Authentication
 
