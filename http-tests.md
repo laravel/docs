@@ -420,7 +420,7 @@ Assert that the response contains an exact match of the given JSON data:
 <a name="assert-forbidden"></a>
 #### assertForbidden
 
-Assert that the response has a forbidden status code:
+Assert that the response has a forbidden (403) status code:
 
     $response->assertForbidden();
 
