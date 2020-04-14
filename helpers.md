@@ -147,6 +147,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
+[isNotEmpty](#method-fluent-str-is-not-empty)
 [kebab](#method-fluent-str-kebab)
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
@@ -1742,6 +1743,22 @@ The `isEmpty` method determines if the given string is empty:
     $result = Str::of('Laravel')->trim()->isEmpty();
 
     // false
+
+<a name="method-fluent-str-is-not-empty"></a>
+#### `isNotEmpty` {#collection-method}
+
+The `isNotEmpty` method determines if the given string is not empty:
+
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('  ')->trim()->isNotEmpty();
+
+    // false
+
+    $result = Str::of('Laravel')->trim()->isNotEmpty();
+
+    // true
 
 <a name="method-fluent-str-kebab"></a>
 #### `kebab` {#collection-method}

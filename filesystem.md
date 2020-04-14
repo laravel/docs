@@ -213,9 +213,9 @@ If you need to specify additional [S3 request parameters](https://docs.aws.amazo
         ['ResponseContentType' => 'application/octet-stream']
     );
 
-#### Local URL Host Customization
+#### URL Host Customization
 
-If you would like to pre-define the host for files stored on a disk using the `local` driver, you may add a `url` option to the disk's configuration array:
+If you would like to pre-define the host for file URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
 
     'public' => [
         'driver' => 'local',

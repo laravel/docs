@@ -562,7 +562,7 @@ For more information on subscription quantities, consult the [Stripe documentati
 <a name="multiplan-subscriptions"></a>
 ### Multiplan Subscriptions
 
-[Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan)s allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
+[Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan) allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
 
     $user = User::find(1);
 
@@ -610,7 +610,7 @@ By default, Stripe will prorate charges when adding or removing plans from a sub
 
 #### Quantities
 
-If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](subscription-quantity) and passing the name of hte plan as an additional argument to the method:
+If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](subscription-quantity) and passing the name of the plan as an additional argument to the method:
 
     $user = User::find(1);
 
@@ -650,7 +650,7 @@ To specify the tax rates a user pays on a subscription, implement the `taxRates`
         return ['tax-rate-id'];
     }
 
-The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for those as well by implementing a `planTaxRates` on your billable model:
+The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for each plan by implementing a `planTaxRates` method on your billable model:
 
     public function planTaxRates()
     {
@@ -1025,7 +1025,7 @@ There are currently two types of payment exceptions which extend `IncompletePaym
 
 If your business is based in Europe you will need to abide by the Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications.
 
-> {note} Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/en-be/guides/strong-customer-authentication) as well as their [documentation on the new SCA API's](https://stripe.com/docs/strong-customer-authentication).
+> {note} Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/guides/strong-customer-authentication) as well as their [documentation on the new SCA APIs](https://stripe.com/docs/strong-customer-authentication).
 
 <a name="payments-requiring-additional-confirmation"></a>
 ### Payments Requiring Additional Confirmation
