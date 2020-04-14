@@ -548,6 +548,18 @@ When your component is rendered, you may display the contents of your component'
         {{ $message }}
     </div>
 
+You can also access the component's alias name through the public `$componentName` property. This equals the HTML element name after the `x-` prefix:
+
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
+    public function render()
+    {
+        $this->componentName; // Returns 'alert'
+    }
+
 #### Casing
 
 Component constructor arguments should be specified using `camelCase`, while `kebab-case` should be used when referencing the argument names in your HTML attributes. For example, given the following component constructor:
