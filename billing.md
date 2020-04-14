@@ -580,27 +580,30 @@ You may remove plans from subscriptions using the `removePlan` method:
 
 ### Swapping
 
-Swapping multiple plans at the same time is also allowed. Imagine you're on a `basic-plan` subscription with a `chat-plan` add-on and you want to upgrade to the `pro-plan`. You can swap plans like this:
+You may also change the plans attached to a multiplan subscription. For example, imagine you're on a `basic-plan` subscription with a `chat-plan` add-on and you want to upgrade to the `pro-plan` plan:
 
     $user = User::find(1);
 
     $user->subscription('default')->swap(['pro-plan', 'chat-plan']);
 
-What will happen is that the underlying subscription item with the `basic-plan` is deleted and the one with the `chat-plan` is kept. Additionally, a new one with the new `pro-plan` is created.
+When executing the code above, the underlying subscription item with the `basic-plan` is deleted and the one with the `chat-plan` is preserved. Additionally, a new subscription item for the new `pro-plan` is created.
 
-You can also pass in subscription item options, for example, if you immediately want to set some quantities:
-
-    $user = User::find(1);
-
-    $user->subscription('default')->swap(['pro-plan' => ['quantity' => 5], 'chat-plan']);
-
-If you want to swap a plan on a subscription item but rather not delete it you can do so with the `swap` method on the subscription item itself:
+You can also specify subscription item options. For example, you may need to specify the subscription plan quantities:
 
     $user = User::find(1);
 
-    $user->subscription('default')->findItemOrFail('basic-plan')->swap('pro-plan');
+    $user->subscription('default')->swap([
+        'pro-plan' => ['quantity' => 5],
+        'chat-plan'
+    ]);
 
-This is useful if you, for example, want to keep the metadata on the subscription item. Please note that it is more common to start with a new subscription item if you are upgrading or downgrading to a new plan.
+If you want to swap a single plan on a subscription, you may do so using the `swap` method on the subscription item itself. This approach is useful if you, for example, want to preserve all of the existing metadata on the subscription item.
+
+    $user = User::find(1);
+
+    $user->subscription('default')
+            ->findItemOrFail('basic-plan')
+            ->swap('pro-plan');
 
 #### Proration
 
