@@ -522,8 +522,6 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice('provider-plan-id');
 
-> {note} When working with multiplan subscriptions, you cannot use the `swap` and `swapAndInvoice` methods. Instead, you should use the `addPlan`, `addPlanAndInvoice`, and `removePlan` methods. More information about these methods may be found in the [multiplan subscription documentation](#multiplan-subscriptions).
-
 #### Prorations
 
 By default, Stripe prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
@@ -579,6 +577,30 @@ You may remove plans from subscriptions using the `removePlan` method:
     $user->subscription('default')->removePlan('chat-plan');
 
 > {note} You may not remove the last plan on a subscription. Instead, you may simply cancel the subscription.
+
+### Swapping
+
+Swapping multiple plans at the same time is also allowed. Imagine you're on a `basic-plan` subscription with a `chat-plan` add-on and you want to upgrade to the `pro-plan`. You can swap plans like this:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->swap(['pro-plan', 'chat-plan']);
+
+What will happen is that the underlying subscription item with the `basic-plan` is deleted and the one with the `chat-plan` is kept. Additionally, a new one with the new `pro-plan` is created.
+
+You can also pass in subscription item options, for example, if you immediately want to set some quantities:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->swap(['pro-plan' => ['quantity' => 5], 'chat-plan']);
+
+If you want to swap a plan on a subscription item but rather not delete it you can do so with the `swap` method on the subscription item itself:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->findItemOrFail('basic-plan')->swap('pro-plan');
+
+This is useful if you, for example, want to keep the metadata on the subscription item. Please note that it is more common to start with a new subscription item if you are upgrading or downgrading to a new plan.
 
 #### Proration
 
