@@ -159,8 +159,6 @@ If you would like a route parameter to always be constrained by a given regular 
     public function boot()
     {
         Route::pattern('id', '[0-9]+');
-
-        parent::boot();
     }
 
 Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
@@ -371,8 +369,6 @@ To register an explicit binding, use the router's `model` method to specify the 
 
     public function boot()
     {
-        parent::boot();
-
         Route::model('user', App\User::class);
     }
 
@@ -397,8 +393,6 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
      */
     public function boot()
     {
-        parent::boot();
-
         Route::bind('user', function ($value) {
             return App\User::where('name', $value)->firstOrFail();
         });

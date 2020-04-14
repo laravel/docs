@@ -57,8 +57,6 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
      */
     public function boot()
     {
-        parent::boot();
-
         Event::listen('event.name', function ($foo, $bar) {
             //
         });
