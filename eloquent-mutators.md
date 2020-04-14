@@ -482,5 +482,5 @@ The `last_posted_at` attribute on the results of this query will be a raw string
         'last_posted_at' => Post::selectRaw('MAX(created_at)')
                 ->whereColumn('user_id', 'users.id')
     ])->withCasts([
-        'last_posted_at' => 'date'
+        'last_posted_at' => 'datetime'
     ])->get();

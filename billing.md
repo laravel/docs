@@ -522,8 +522,6 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice('provider-plan-id');
 
-> {note} When working with multiplan subscriptions, you cannot use the `swap` and `swapAndInvoice` methods. Instead, you should use the `addPlan`, `addPlanAndInvoice`, and `removePlan` methods. More information about these methods may be found in the [multiplan subscription documentation](#multiplan-subscriptions).
-
 #### Prorations
 
 By default, Stripe prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
@@ -564,7 +562,7 @@ For more information on subscription quantities, consult the [Stripe documentati
 <a name="multiplan-subscriptions"></a>
 ### Multiplan Subscriptions
 
-[Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan)s allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
+[Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan) allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
 
     $user = User::find(1);
 
@@ -580,6 +578,33 @@ You may remove plans from subscriptions using the `removePlan` method:
 
 > {note} You may not remove the last plan on a subscription. Instead, you may simply cancel the subscription.
 
+### Swapping
+
+You may also change the plans attached to a multiplan subscription. For example, imagine you're on a `basic-plan` subscription with a `chat-plan` add-on and you want to upgrade to the `pro-plan` plan:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->swap(['pro-plan', 'chat-plan']);
+
+When executing the code above, the underlying subscription item with the `basic-plan` is deleted and the one with the `chat-plan` is preserved. Additionally, a new subscription item for the new `pro-plan` is created.
+
+You can also specify subscription item options. For example, you may need to specify the subscription plan quantities:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->swap([
+        'pro-plan' => ['quantity' => 5],
+        'chat-plan'
+    ]);
+
+If you want to swap a single plan on a subscription, you may do so using the `swap` method on the subscription item itself. This approach is useful if you, for example, want to preserve all of the existing metadata on the subscription item.
+
+    $user = User::find(1);
+
+    $user->subscription('default')
+            ->findItemOrFail('basic-plan')
+            ->swap('pro-plan');
+
 #### Proration
 
 By default, Stripe will prorate charges when adding or removing plans from a subscription. If you would like to make a plan adjustment without proration, you should chain the `noProrate` method onto your plan operation:
@@ -588,7 +613,7 @@ By default, Stripe will prorate charges when adding or removing plans from a sub
 
 #### Quantities
 
-If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](subscription-quantity) and passing the name of hte plan as an additional argument to the method:
+If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](subscription-quantity) and passing the name of the plan as an additional argument to the method:
 
     $user = User::find(1);
 
@@ -628,7 +653,7 @@ To specify the tax rates a user pays on a subscription, implement the `taxRates`
         return ['tax-rate-id'];
     }
 
-The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for those as well by implementing a `planTaxRates` on your billable model:
+The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for each plan by implementing a `planTaxRates` method on your billable model:
 
     public function planTaxRates()
     {
@@ -1003,7 +1028,7 @@ There are currently two types of payment exceptions which extend `IncompletePaym
 
 If your business is based in Europe you will need to abide by the Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications.
 
-> {note} Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/en-be/guides/strong-customer-authentication) as well as their [documentation on the new SCA API's](https://stripe.com/docs/strong-customer-authentication).
+> {note} Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/guides/strong-customer-authentication) as well as their [documentation on the new SCA APIs](https://stripe.com/docs/strong-customer-authentication).
 
 <a name="payments-requiring-additional-confirmation"></a>
 ### Payments Requiring Additional Confirmation
