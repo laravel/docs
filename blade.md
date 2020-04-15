@@ -425,7 +425,7 @@ The `@error` directive may be used to quickly check if [validation error message
 
     <label for="title">Post Title</label>
 
-    <input id="title" type="text" class="@error('title') is-invalid @enderror">
+    <input id="title" type="text" class="@error ('title') is-invalid @enderror">
 
     @error ('title')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -437,7 +437,7 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
 
     <label for="email">Email address</label>
 
-    <input id="email" type="email" class="@error('email', 'login') is-invalid @enderror">
+    <input id="email" type="email" class="@error ('email', 'login') is-invalid @enderror">
 
     @error ('email', 'login')
         <div class="alert alert-danger">{{ $message }}</div>
