@@ -744,6 +744,8 @@ You may specify which attributes should be considered data variables using the `
         {{ $message }}
     </div>
 
+> {note} The previous `@component` syntax for Blade components has not and will not be removed. For more information, please consult the [Laravel 6.x Componens & Slots documentation](https://laravel.com/docs/6.x/blade#components-and-slots) 
+
 <a name="including-subviews"></a>
 ## Including Subviews
 
