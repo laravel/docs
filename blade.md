@@ -269,12 +269,12 @@ You may check if a section has content using the `@hasSection` directive:
 
 Switch statements can be constructed using the `@switch`, `@case`, `@break`, `@default` and `@endswitch` directives:
 
-    @switch($i)
-        @case(1)
+    @switch ($i)
+        @case (1)
             First case...
             @break
 
-        @case(2)
+        @case (2)
             Second case...
             @break
 
