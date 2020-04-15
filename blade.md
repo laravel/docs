@@ -916,14 +916,14 @@ Programming a custom directive is sometimes more complex than necessary when def
 
 Once the custom conditional has been defined, we can easily use it on our templates:
 
-    @env('local')
+    @env ('local')
         // The application is in the local environment...
-    @elseenv('testing')
+    @elseenv ('testing')
         // The application is in the testing environment...
     @else
         // The application is not in the local or testing environment...
     @endenv
 
-    @unlessenv('production')
+    @unlessenv ('production')
         // The application is not in the production environment...
     @endenv
