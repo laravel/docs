@@ -51,7 +51,7 @@ Two of the primary benefits of using Blade are _template inheritance_ and _secti
             <title>App Name - @yield('title')</title>
         </head>
         <body>
-            @section('sidebar')
+            @section ('sidebar')
                 This is the master sidebar.
             @show
 
@@ -76,13 +76,13 @@ When defining a child view, use the Blade `@extends` directive to specify which 
 
     @section('title', 'Page Title')
 
-    @section('sidebar')
+    @section ('sidebar')
         @@parent
 
         <p>This is appended to the master sidebar.</p>
     @endsection
 
-    @section('content')
+    @section ('content')
         <p>This is my body content.</p>
     @endsection
 
@@ -222,11 +222,11 @@ For convenience, Blade also provides an `@unless` directive:
 
 In addition to the conditional directives already discussed, the `@isset` and `@empty` directives may be used as convenient shortcuts for their respective PHP functions:
 
-    @isset($records)
+    @isset ($records)
         // $records is defined and is not null...
     @endisset
 
-    @empty($records)
+    @empty ($records)
         // $records is "empty"...
     @endempty
 
@@ -244,11 +244,11 @@ The `@auth` and `@guest` directives may be used to quickly determine if the curr
 
 If needed, you may specify the [authentication guard](/docs/{{version}}/authentication) that should be checked when using the `@auth` and `@guest` directives:
 
-    @auth('admin')
+    @auth ('admin')
         // The user is authenticated...
     @endauth
 
-    @guest('admin')
+    @guest ('admin')
         // The user is not authenticated...
     @endguest
 
@@ -256,7 +256,7 @@ If needed, you may specify the [authentication guard](/docs/{{version}}/authenti
 
 You may check if a section has content using the `@hasSection` directive:
 
-    @hasSection('navigation')
+    @hasSection ('navigation')
         <div class="pull-right">
             @yield('navigation')
         </div>
@@ -427,7 +427,7 @@ The `@error` directive may be used to quickly check if [validation error message
 
     <input id="title" type="text" class="@error('title') is-invalid @enderror">
 
-    @error('title')
+    @error ('title')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
@@ -439,7 +439,7 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
 
     <input id="email" type="email" class="@error('email', 'login') is-invalid @enderror">
 
-    @error('email', 'login')
+    @error ('email', 'login')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
@@ -815,7 +815,7 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
 
 Blade allows you to push to named stacks which can be rendered somewhere else in another view or layout. This can be particularly useful for specifying any JavaScript libraries required by your child views:
 
-    @push('scripts')
+    @push ('scripts')
         <script src="/example.js"></script>
     @endpush
 
@@ -829,13 +829,13 @@ You may push to a stack as many times as needed. To render the complete stack co
 
 If you would like to prepend content onto the beginning of a stack, you should use the `@prepend` directive:
 
-    @push('scripts')
+    @push ('scripts')
         This will be second...
     @endpush
 
     // Later...
 
-    @prepend('scripts')
+    @prepend ('scripts')
         This will be first...
     @endprepend
 
@@ -916,14 +916,14 @@ Programming a custom directive is sometimes more complex than necessary when def
 
 Once the custom conditional has been defined, we can easily use it on our templates:
 
-    @env('local')
+    @env ('local')
         // The application is in the local environment...
-    @elseenv('testing')
+    @elseenv ('testing')
         // The application is in the testing environment...
     @else
         // The application is not in the local or testing environment...
     @endenv
 
-    @unlessenv('production')
+    @unlessenv ('production')
         // The application is not in the production environment...
     @endenv
