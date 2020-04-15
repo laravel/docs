@@ -354,6 +354,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
 [assertUnauthorized](#assert-unauthorized)
+[assertUnprocessableEntity](#assert-unprocessable-entity)
 [assertViewHas](#assert-view-has)
 [assertViewHasAll](#assert-view-has-all)
 [assertViewIs](#assert-view-is)
@@ -647,6 +648,13 @@ Assert that the response has a successful (>= 200 and < 300) status code:
 Assert that the response has an unauthorized (401) status code:
 
     $response->assertUnauthorized();
+
+<a name="assert-unprocessable-entity"></a>
+#### assertUnauthorized
+
+Assert that the response has an unprocessable entity (422) status code:
+
+    $response->assertUnprocessableEntity();
 
 <a name="assert-view-has"></a>
 #### assertViewHas
