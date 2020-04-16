@@ -169,7 +169,7 @@ Laravel 7 removes the "factory types" feature. This feature has been undocumente
 
 **Likelihood Of Impact: Low**
 
-The `$model->getOriginal()` method will now respect any casts defined on the model. Previously, this method returned the uncast, raw attributes. If you would like to continue retrieving the raw, uncast values, you may use the `getRawOriginal` method instead.
+The `$model->getOriginal()` method will now respect any casts and mutators defined on the model. Previously, this method returned the uncast, raw attributes. If you would like to continue retrieving the raw, uncast values, you may use the `getRawOriginal` method instead.
 
 #### Route Binding
 
