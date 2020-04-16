@@ -461,7 +461,7 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
 
 > {tip} Do not use excess indentation when writing Markdown emails. Markdown parsers will render indented content as code blocks.
 
-> {note} Please note that the `autolink` feature of Markdown is currently unsupported.
+> {note} The "autolink" feature of Markdown is not currently supported. Please construct links using the long form link syntax provided by Markdown.
 
 #### Button Component
 
