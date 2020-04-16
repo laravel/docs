@@ -225,7 +225,7 @@ If your parent model does not use `id` as its primary key, or you wish to join t
 <a name="many-to-many"></a>
 ### Many To Many
 
-Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of such a relationship is a user with many roles, where the roles are also shared by other users. For example, many users may have the role of "Admin". 
+Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of such a relationship is a user with many roles, where the roles are also shared by other users. For example, many users may have the role of "Admin".
 
 #### Table Structure
 
@@ -432,23 +432,23 @@ If you have defined a many-to-many relationship that uses a custom pivot model, 
 
 The "has-one-through" relationship links models through a single intermediate relation.
 
-For example, inside a vehicle repair shop, each Mechanic has one Car, and each Car has one Owner. While the Mechanic and the Owner have no direct connection, the Mechanic can access to the Owner _through_ the Car itself.
+For example, in a vehicle repair shop application, each `Mechanic` may have one `Car`, and each `Car` may have one `Owner`. While the `Mechanic` and the `Owner` have no direct connection, the `Mechanic` can access to the `Owner` _through_ the `Car` itself. Let's look at the tables necessary to define this relationship:
 
     mechanics
         id - integer
-		name - string
-	
+        name - string
+
     cars
-	    id - integer
-		model - string
-	    mechanic_id - integer
-    
+        id - integer
+        model - string
+        mechanic_id - integer
+
     owners
         id - integer
-		name - string
+        name - string
         car_id - integer
 
-Though the `owners` table does not contain a `mechanic_id` column, the `hasOneThrough` relation can provide access to the car's owner to the mechanic model. Now that we have examined the table structure for the relationship, let's define it on the `Mechanic` model:
+Now that we have examined the table structure for the relationship, let's define the relationship on the `Mechanic` model:
 
     <?php
 
@@ -471,7 +471,7 @@ The first argument passed to the `hasOneThrough` method is the name of the final
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
 
-    class Supplier extends Model
+    class Mechanic extends Model
     {
         /**
          * Get the car's owner.
@@ -483,8 +483,8 @@ Typical Eloquent foreign key conventions will be used when performing the relati
                 'App\Car',
                 'mechanic_id', // Foreign key on cars table...
                 'car_id', // Foreign key on owners table...
-                'id', // Local key on suppliers table...
-                'id' // Local key on users table...
+                'id', // Local key on mechanics table...
+                'id' // Local key on cars table...
             );
         }
     }
@@ -823,7 +823,7 @@ By default, Laravel will use the fully qualified class name to store the type of
         'videos' => 'App\Video',
     ]);
 
-You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish. 
+You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
 
 > {note} When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
 
