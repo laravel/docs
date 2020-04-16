@@ -439,11 +439,7 @@ Once the cast is defined, you may access the `options` attribute and it will aut
 
     $user = App\User::find(1);
 
-    $options = $user->options;
-
-    $options['key'] = 'value';
-
-    $user->options = $options;
+    $user->{'options->key'} = 'value';
 
     $user->save();
 
