@@ -461,6 +461,8 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
 
 > {tip} Do not use excess indentation when writing Markdown emails. Markdown parsers will render indented content as code blocks.
 
+> {note} Please note that the `autolink` feature of Markdown is currently unsupported.
+
 #### Button Component
 
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:
