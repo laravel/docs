@@ -431,20 +431,24 @@ If you have defined a many-to-many relationship that uses a custom pivot model, 
 ### Has One Through
 
 The "has-one-through" relationship links models through a single intermediate relation.
-For example, if each supplier has one user, and each user is associated with one user history record, then the supplier model may access the user's history _through_ the user. Let's look at the database tables necessary to define this relationship:
 
-    users
+For example, inside a vehicle repair shop, each Mechanic has one Car, and each Car has one Owner. While the Mechanic and the Owner have no direct connection, the Mechanic can access to the Owner _through_ the Car itself.
+
+    mechanics
         id - integer
-        supplier_id - integer
-
-    suppliers
+		name - string
+	
+    cars
+	    id - integer
+		model - string
+	    mechanic_id - integer
+    
+    owners
         id - integer
+		name - string
+        car_id - integer
 
-    history
-        id - integer
-        user_id - integer
-
-Though the `history` table does not contain a `supplier_id` column, the `hasOneThrough` relation can provide access to the user's history to the supplier model. Now that we have examined the table structure for the relationship, let's define it on the `Supplier` model:
+Though the `owners` table does not contain a `mechanic_id` column, the `hasOneThrough` relation can provide access to the car's owner to the mechanic model. Now that we have examined the table structure for the relationship, let's define it on the `Mechanic` model:
 
     <?php
 
@@ -452,14 +456,14 @@ Though the `history` table does not contain a `supplier_id` column, the `hasOneT
 
     use Illuminate\Database\Eloquent\Model;
 
-    class Supplier extends Model
+    class Mechanic extends Model
     {
         /**
-         * Get the user's history.
+         * Get the car's owner.
          */
-        public function userHistory()
+        public function carOwner()
         {
-            return $this->hasOneThrough('App\History', 'App\User');
+            return $this->hasOneThrough('App\Owner', 'App\Car');
         }
     }
 
@@ -470,15 +474,15 @@ Typical Eloquent foreign key conventions will be used when performing the relati
     class Supplier extends Model
     {
         /**
-         * Get the user's history.
+         * Get the car's owner.
          */
-        public function userHistory()
+        public function carOwner()
         {
             return $this->hasOneThrough(
-                'App\History',
-                'App\User',
-                'supplier_id', // Foreign key on users table...
-                'user_id', // Foreign key on history table...
+                'App\Owner',
+                'App\Car',
+                'mechanic_id', // Foreign key on cars table...
+                'car_id', // Foreign key on owners table...
                 'id', // Local key on suppliers table...
                 'id' // Local key on users table...
             );
