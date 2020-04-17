@@ -97,6 +97,8 @@ The Redis broadcaster will broadcast messages using Redis' pub / sub feature; ho
 
 When the Redis broadcaster publishes an event, it will be published on the event's specified channel names and the payload will be a JSON encoded string containing the event name, a `data` payload, and the user that generated the event's socket ID (if applicable).
 
+> {tip} Ensure you disable `redis.options.prefix` in `config/database.php` to prevent your websocket messages going to a non-existant channel.
+
 #### Socket.IO
 
 If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application. You may install it via the NPM package manager:
