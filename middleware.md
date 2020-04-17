@@ -159,6 +159,8 @@ When assigning middleware to a group of routes, you may occasionally need to pre
             //
         })->withoutMiddleware([CheckAge::class]);
     });
+    
+> {note} Note that `withoutMiddleware` does not applies to globally defined middlewares.
 
 <a name="middleware-groups"></a>
 ### Middleware Groups
