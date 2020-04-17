@@ -135,7 +135,7 @@ To use the Parallels provider, you will need to install [Parallels Vagrant plug-
 
 Because of [Vagrant limitations](https://www.vagrantup.com/docs/hyperv/limitations.html), The Hyper-V provider ignores all networking settings.
 
-#### Installing The Homestead Vagrant Box
+#### Option 1: Installing The Homestead Vagrant Box
 
 Once VirtualBox / VMware and Vagrant have been installed, you should add the `laravel/homestead` box to your Vagrant installation using the following command in your terminal. It will take a few minutes to download the box, depending on your Internet connection speed:
 
@@ -145,7 +145,7 @@ If this command fails, make sure your Vagrant installation is up to date.
 
 > {note} Homestead periodically issues "alpha" / "beta" boxes for testing, which may interfere with the `vagrant box add` command. If you are having issues running `vagrant box add`, you may run the `vagrant up` command and the correct box will be downloaded when Vagrant attempts to start the virtual machine.
 
-#### Installing Homestead
+#### Option 2: Installing Homestead
 
 You may install Homestead by cloning the repository onto your host machine. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel projects:
 
