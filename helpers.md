@@ -149,6 +149,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [kebab](#method-fluent-str-kebab)
+[ltrim](#method-fluent-str-ltrim)
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
@@ -161,6 +162,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [replaceFirst](#method-fluent-str-replace-first)
 [replaceLast](#method-fluent-str-replace-last)
 [replaceMatches](#method-fluent-str-replace-matches)
+[rtrim](#method-fluent-str-rtrim)
 [start](#method-fluent-str-start)
 [upper](#method-fluent-str-upper)
 [title](#method-fluent-str-title)
@@ -2078,6 +2080,36 @@ The `trim` method trims the given string:
     $string = Str::of('/Laravel/')->trim('/');
 
     // 'Laravel'
+
+<a name="method-fluent-str-ltrim"></a>
+### `ltrim` {#collection-method}
+
+The `ltrim` method left trims the given string:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('  Laravel  ')->ltrim();
+
+    // 'Laravel  '
+
+    $string = Str::of('/Laravel/')->ltrim('/');
+
+    // 'Laravel/'
+
+<a name="method-fluent-str-rtrim"></a>
+### `rtrim` {#collection-method}
+
+The `rtrim` method right trims the given string:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('  Laravel  ')->rtrim();
+
+    // '  Laravel'
+
+    $string = Str::of('/Laravel/')->rtrim('/');
+
+    // '/Laravel'
 
 <a name="method-fluent-str-ucfirst"></a>
 #### `ucfirst` {#collection-method}
