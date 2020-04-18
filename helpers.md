@@ -1814,6 +1814,21 @@ The `lower` method converts the given string to lowercase:
 
     // 'laravel'
 
+<a name="method-fluent-str-ltrim"></a>
+### `ltrim` {#collection-method}
+
+The `ltrim` method left trims the given string:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('  Laravel  ')->ltrim();
+
+    // 'Laravel  '
+
+    $string = Str::of('/Laravel/')->ltrim('/');
+
+    // 'Laravel/'
+
 <a name="method-fluent-str-match"></a>
 #### `match` {#collection-method}
 
@@ -1955,6 +1970,21 @@ The `replaceMatches` method also accepts a Closure that will be invoked with eac
 
     // '[1][2][3]'
 
+<a name="method-fluent-str-rtrim"></a>
+### `rtrim` {#collection-method}
+
+The `rtrim` method right trims the given string:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('  Laravel  ')->rtrim();
+
+    // '  Laravel'
+
+    $string = Str::of('/Laravel/')->rtrim('/');
+
+    // '/Laravel'
+
 <a name="method-fluent-str-start"></a>
 #### `start` {#collection-method}
 
@@ -2080,36 +2110,6 @@ The `trim` method trims the given string:
     $string = Str::of('/Laravel/')->trim('/');
 
     // 'Laravel'
-
-<a name="method-fluent-str-ltrim"></a>
-### `ltrim` {#collection-method}
-
-The `ltrim` method left trims the given string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  Laravel  ')->ltrim();
-
-    // 'Laravel  '
-
-    $string = Str::of('/Laravel/')->ltrim('/');
-
-    // 'Laravel/'
-
-<a name="method-fluent-str-rtrim"></a>
-### `rtrim` {#collection-method}
-
-The `rtrim` method right trims the given string:
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of('  Laravel  ')->rtrim();
-
-    // '  Laravel'
-
-    $string = Str::of('/Laravel/')->rtrim('/');
-
-    // '/Laravel'
 
 <a name="method-fluent-str-ucfirst"></a>
 #### `ucfirst` {#collection-method}
