@@ -14,7 +14,8 @@
 <a name="introduction"></a>
 ## Introduction
 
-The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper for working with arrays of data. For example, check out the following code. We'll use the `collect` helper to create a new collection instance from the array, run the `strtoupper` function on each element, and then remove all empty elements:
+The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper for working with arrays of data. For example, check out the following code. We'll use the `collect` helper to create a new collection instance from the array, run the `strtoupper` function on each element, and then remove h
+ll empty elements:
 
     $collection = collect(['taylor', 'abigail', null])->map(function ($name) {
         return strtoupper($name);
@@ -597,6 +598,7 @@ If you would like to stop iterating through the items, you may return `false` fr
             return false;
         }
     });
+And if you would like to go the next iteration, you may return `true` from your callback.
 
 <a name="method-eachspread"></a>
 #### `eachSpread()` {#collection-method}
