@@ -172,7 +172,7 @@ By default, Laravel Mix and Webpack will find `example.png`, copy it to your `pu
 
 As useful as this feature may be, it's possible that your existing folder structure is already configured in a way you like. If this is the case, you may disable `url()` rewriting like so:
 
-    mix.sass('resources/app/app.scss', 'public/css')
+    mix.sass('resources/sass/app.scss', 'public/css')
         .options({
             processCssUrls: false
         });
