@@ -149,10 +149,10 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [kebab](#method-fluent-str-kebab)
-[ltrim](#method-fluent-str-ltrim)
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
+[ltrim](#method-fluent-str-ltrim)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-matchAll)
 [plural](#method-fluent-str-plural)
@@ -1815,7 +1815,7 @@ The `lower` method converts the given string to lowercase:
     // 'laravel'
 
 <a name="method-fluent-str-ltrim"></a>
-### `ltrim` {#collection-method}
+#### `ltrim` {#collection-method}
 
 The `ltrim` method left trims the given string:
 
@@ -1971,7 +1971,7 @@ The `replaceMatches` method also accepts a Closure that will be invoked with eac
     // '[1][2][3]'
 
 <a name="method-fluent-str-rtrim"></a>
-### `rtrim` {#collection-method}
+#### `rtrim` {#collection-method}
 
 The `rtrim` method right trims the given string:
 
