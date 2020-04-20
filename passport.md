@@ -1001,6 +1001,8 @@ This Passport middleware will attach a `laravel_token` cookie to your outgoing r
             console.log(response.data);
         });
 
+> {note} The lifetime of the JWT depends on your `session.lifetime` configuration.
+
 #### Customizing The Cookie Name
 
 If needed, you can customize the `laravel_token` cookie's name using the `Passport::cookie` method. Typically, this method should be called from the `boot` method of your `AuthServiceProvider`:
