@@ -558,6 +558,24 @@ By default, Laravel will use the mailer configured as the `default` mailer in yo
             ->to($request->user())
             ->send(new OrderShipped($order));
 
+#### Looping Over Recipients
+
+Consider you want to loop over a specific set of recipients and send the mailable separately:
+
+    $mailable = new OrderShipped($order);
+
+    foreach (['taylor@laravel.com', 'dries@laravel.com'] as $recipient) {
+        Mail::to($recipient)->send($mailable);
+    }
+
+In the above scenario the email will be sent two times to `taylor@example.com` because the mailable object will append the new recipient to the old one. It's important to re-create the mailable instance for each recipient in order to prevent this from happening:
+
+    foreach (['taylor@laravel.com', 'dries@laravel.com'] as $recipient) {
+        $mailable = new OrderShipped($order);
+
+        Mail::to($recipient)->send($mailable);
+    }
+
 <a name="rendering-mailables"></a>
 ## Rendering Mailables
 
