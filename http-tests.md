@@ -4,6 +4,7 @@
     - [Customizing Request Headers](#customizing-request-headers)
     - [Cookies](#cookies)
     - [Debugging Responses](#debugging-responses)
+    - [Disabling Requests Throttling](#disabling-requests-throttling)
 - [Session / Authentication](#session-and-authentication)
 - [Testing JSON APIs](#testing-json-apis)
 - [Testing File Uploads](#testing-file-uploads)
@@ -122,6 +123,44 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
             $response->dump();
         }
     }
+
+<a name="disabling-requests-throttling"></a>
+### Disabling Requests Throttling
+
+When testing an API it could happen that you make too many requests to an endpoint in a short amount of time triggering the default `Illuminate\Routing\Middleware\ThrottleRequests` middleware which will throttle you requests and send you back an error response containing a HTTP error code 429. To avoid this behavior you can disable the middleware using the `withoutMiddleware` method, this way:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Routing\Middleware\ThrottleRequests;
+    use Tests\TestCase;
+
+    class ThrottlingTest extends TestCase
+    {
+
+        public function testThrottling()
+        {
+            $this->withoutMiddleware( ThrottleRequests::class );
+
+            $response1 = $this->getJson('/api/my-cool-api');
+
+            $response2 = $this->getJson('/api/my-cool-api');
+
+            $response1->assertStatus(200);
+            
+            $response2->assertStatus(200);
+
+        }
+
+    }
+
+You can disable throttling on a per test basis or globally in your `setUp()` method.
+
+> {tip} The `Illuminate\Foundation\Testing\WithoutMiddleware` uses `withoutMiddleware` to disable all middlewares: this is sometimes too much for your needs.
+
 
 <a name="session-and-authentication"></a>
 ## Session / Authentication
