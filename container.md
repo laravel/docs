@@ -110,6 +110,45 @@ Sometimes you may have a class that receives some injected classes, but also nee
               ->needs('$variableName')
               ->give($value);
 
+
+#### Binding Typed Variadics
+
+Sometimes you may have a class that receives an array of typed objects using a variadic constructor argument. For example, `Filter ...$filters` below:
+
+    class Firewall
+    {
+        public $logger;
+        public $filters;
+
+        public function __construct(Logger $logger, Filter ...$filters)
+        {
+            $this->logger = $logger;
+            $this->filters = $filters;
+        }
+    }
+
+You can specify a factory to use whenever `Firewall` needs `Filter` instances. The factory must return an array of `Filter` instances.
+
+    $this->app->when(Firewall::class)
+              ->needs(Filter::class)
+              ->give(function ($app) {
+                    return [
+                        $app->make(NullFilter::class),
+                        $app->make(ProfanityFilter::class),
+                        $app->make(TooLongFilter::class),
+                    ];
+              });
+
+You can also specify an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances.
+
+    $this->app->when(Firewall::class)
+              ->needs(Filter::class)
+              ->give([
+                  NullFilter::class,
+                  ProfanityFilter::class,
+                  TooLongFilter::class,
+              ]});
+
 <a name="binding-interfaces-to-implementations"></a>
 ### Binding Interfaces To Implementations
 
