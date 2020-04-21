@@ -113,12 +113,12 @@ Sometimes you may have a class that receives some injected classes, but also nee
 
 #### Binding Typed Variadics
 
-Sometimes you may have a class that receives an array of typed objects using a variadic constructor argument. For example, `Filter ...$filters` below:
+Occasionally you may have a class that receives an array of typed objects using a variadic constructor argument:
 
     class Firewall
     {
-        public $logger;
-        public $filters;
+        protected $logger;
+        protected $filters;
 
         public function __construct(Logger $logger, Filter ...$filters)
         {
@@ -127,7 +127,9 @@ Sometimes you may have a class that receives an array of typed objects using a v
         }
     }
 
-You can specify a factory to use whenever `Firewall` needs `Filter` instances. The factory must return an array of `Filter` instances.
+Using contextual binding, you may resolve this dependency by providing the `give` method with a Closure that returns an array of resolved `Filter` instances:
+
+You can specify a factory to use whenever `Firewall` needs `Filter` instances. The factory must return an array of `Filter` instances:
 
     $this->app->when(Firewall::class)
               ->needs(Filter::class)
@@ -139,7 +141,7 @@ You can specify a factory to use whenever `Firewall` needs `Filter` instances. T
                     ];
               });
 
-You can also specify an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances.
+For convenience, you may also simply provide an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances:
 
     $this->app->when(Firewall::class)
               ->needs(Filter::class)
