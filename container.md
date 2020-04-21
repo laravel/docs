@@ -129,8 +129,6 @@ Occasionally you may have a class that receives an array of typed objects using 
 
 Using contextual binding, you may resolve this dependency by providing the `give` method with a Closure that returns an array of resolved `Filter` instances:
 
-You can specify a factory to use whenever `Firewall` needs `Filter` instances. The factory must return an array of `Filter` instances:
-
     $this->app->when(Firewall::class)
               ->needs(Filter::class)
               ->give(function ($app) {
