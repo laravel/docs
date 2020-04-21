@@ -163,17 +163,17 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [replaceLast](#method-fluent-str-replace-last)
 [replaceMatches](#method-fluent-str-replace-matches)
 [rtrim](#method-fluent-str-rtrim)
-[start](#method-fluent-str-start)
-[upper](#method-fluent-str-upper)
-[title](#method-fluent-str-title)
 [singular](#method-fluent-str-singular)
 [slug](#method-fluent-str-slug)
 [snake](#method-fluent-str-snake)
+[start](#method-fluent-str-start)
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
+[title](#method-fluent-str-title)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
+[upper](#method-fluent-str-upper)
 [whenEmpty](#method-fluent-str-when-empty)
 [words](#method-fluent-str-words)
 
@@ -1985,43 +1985,6 @@ The `rtrim` method right trims the given string:
 
     // '/Laravel'
 
-<a name="method-fluent-str-start"></a>
-#### `start` {#collection-method}
-
-The `start` method adds a single instance of the given value to a string if it does not already start with the value:
-
-    use Illuminate\Support\Str;
-
-    $adjusted = Str::of('this/string')->start('/');
-
-    // /this/string
-
-    $adjusted = Str::of('/this/string')->start('/');
-
-    // /this/string
-
-<a name="method-fluent-str-upper"></a>
-#### `upper` {#collection-method}
-
-The `upper` method converts the given string to uppercase:
-
-    use Illuminate\Support\Str;
-
-    $adjusted = Str::of('laravel')->upper();
-
-    // LARAVEL
-
-<a name="method-fluent-str-title"></a>
-#### `title` {#collection-method}
-
-The `title` method converts the given string to `Title Case`:
-
-    use Illuminate\Support\Str;
-
-    $converted = Str::of('a nice title uses the correct case')->title();
-
-    // A Nice Title Uses The Correct Case
-
 <a name="method-fluent-str-singular"></a>
 #### `singular` {#collection-method}
 
@@ -2058,6 +2021,21 @@ The `snake` method converts the given string to `snake_case`:
     $converted = Str::of('fooBar')->snake();
 
     // foo_bar
+
+<a name="method-fluent-str-start"></a>
+#### `start` {#collection-method}
+
+The `start` method adds a single instance of the given value to a string if it does not already start with the value:
+
+    use Illuminate\Support\Str;
+
+    $adjusted = Str::of('this/string')->start('/');
+
+    // /this/string
+
+    $adjusted = Str::of('/this/string')->start('/');
+
+    // /this/string
 
 <a name="method-fluent-str-starts-with"></a>
 #### `startsWith` {#collection-method}
@@ -2096,6 +2074,17 @@ The `substr` method returns the portion of the string specified by the given sta
 
     // Frame
 
+<a name="method-fluent-str-title"></a>
+#### `title` {#collection-method}
+
+The `title` method converts the given string to `Title Case`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('a nice title uses the correct case')->title();
+
+    // A Nice Title Uses The Correct Case
+
 <a name="method-fluent-str-trim"></a>
 #### `trim` {#collection-method}
 
@@ -2121,6 +2110,17 @@ The `ucfirst` method returns the given string with the first character capitaliz
     $string = Str::of('foo bar')->ucfirst();
 
     // Foo bar
+
+<a name="method-fluent-str-upper"></a>
+#### `upper` {#collection-method}
+
+The `upper` method converts the given string to uppercase:
+
+    use Illuminate\Support\Str;
+
+    $adjusted = Str::of('laravel')->upper();
+
+    // LARAVEL
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {#collection-method}
