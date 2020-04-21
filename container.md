@@ -198,7 +198,7 @@ For convenience, you may also just provide an array of class names to be resolve
                   NullFilter::class,
                   ProfanityFilter::class,
                   TooLongFilter::class,
-              ]});
+              ]);
 
 <a name="tagging"></a>
 ### Tagging
