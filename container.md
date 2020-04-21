@@ -139,7 +139,7 @@ Using contextual binding, you may resolve this dependency by providing the `give
                     ];
               });
 
-For convenience, you may also simply provide an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances:
+For convenience, you may also just provide an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances:
 
     $this->app->when(Firewall::class)
               ->needs(Filter::class)
