@@ -218,14 +218,6 @@ Laravel 7.x doesn't provide `swift.mailer` and `swift.transport` container bindi
 
     $swiftTransport = $swiftMailer->getTransport();
 
-### Queue
-
-#### Deprecated `--daemon` Flag Removed
-
-**Likelihood Of Impact: Low**
-
-The deprecated `--daemon` flag on the `queue:work` command has been removed. This flag is no longer necessary as the worker runs as a daemon by default.
-
 ### Resources
 
 #### The `Illuminate\Http\Resources\Json\Resource` Class
