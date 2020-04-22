@@ -1859,7 +1859,7 @@ If you specify a matching group within the expression, Laravel will return a col
 
     use Illuminate\Support\Str;
 
-    $result = Str::of('bar fun bar fly')->match('/f(\w*)/');
+    $result = Str::of('bar fun bar fly')->matchAll('/f(\w*)/');
 
     // collect(['un', 'ly']);
 
