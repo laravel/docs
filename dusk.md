@@ -24,6 +24,7 @@
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
     - [Making Vue Assertions](#making-vue-assertions)
+    - [Scrolling An Element Into View](#scrolling-into-view)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
     - [Generating Pages](#generating-pages)
@@ -659,6 +660,14 @@ You may assert on the state of the Vue component like so:
                     ->assertVue('user.name', 'Taylor', '@profile-component');
         });
     }
+
+<a name="scrolling-into-view"></a>
+### Scrolling An Element Into View
+
+The `scrollIntoView` method will scroll an element into view at the given selector. This is useful to call prior to interacting with an element that is not currently in view.
+
+    $browser->scrollIntoView('selector')
+            ->click('selector');
 
 <a name="available-assertions"></a>
 ## Available Assertions
