@@ -164,6 +164,8 @@ For the remainder of this documentation, we'll discuss each method available on 
 [split](#method-split)
 [sum](#method-sum)
 [take](#method-take)
+[takeUntil](#method-takeuntil)
+[takeWhile](#method-takewhile)
 [tap](#method-tap)
 [times](#method-times)
 [toArray](#method-toarray)
@@ -175,7 +177,6 @@ For the remainder of this documentation, we'll discuss each method available on 
 [unless](#method-unless)
 [unlessEmpty](#method-unlessempty)
 [unlessNotEmpty](#method-unlessnotempty)
-[until](#method-until)
 [unwrap](#method-unwrap)
 [values](#method-values)
 [when](#method-when)
@@ -1959,6 +1960,50 @@ You may also pass a negative integer to take the specified amount of items from 
 
     // [4, 5]
 
+<a name="method-takeuntil"></a>
+#### `takeUntil()` {#collection-method}
+
+The `takeUntil` method returns items in the collection until the given callback returns `true`:
+
+    $collection = collect([1, 2, 3, 4]);
+
+    $subset = $collection->takeUntil(function ($item) {
+        return $item >= 3;
+    });
+
+    $subset->all();
+
+    // [1, 2]
+
+You may also pass a simple value to the `takeUntil` method to get the items until the given value is found:
+
+    $collection = collect([1, 2, 3, 4]);
+
+    $subset = $collection->until(3);
+
+    $subset->all();
+
+    // [1, 2]
+
+> {note} If the given value is not found or the callback never returns `true`, the `takeUntil` method will return all items in the collection.
+
+<a name="method-takewhile"></a>
+#### `takeWhile()` {#collection-method}
+
+The `takeWhile` method returns items in the collection until the given callback returns `false`:
+
+    $collection = collect([1, 2, 3, 4]);
+
+    $subset = $collection->takeWhile(function ($item) {
+        return $item < 3;
+    });
+
+    $subset->all();
+
+    // [1, 2]
+
+> {note} If the callback never returns `false`, the `takeWhile` method will return all items in the collection.
+
 <a name="method-tap"></a>
 #### `tap()` {#collection-method}
 
@@ -2150,33 +2195,6 @@ Alias for the [`whenNotEmpty`](#method-whennotempty) method.
 #### `unlessNotEmpty()` {#collection-method}
 
 Alias for the [`whenEmpty`](#method-whenempty) method.
-
-<a name="method-until"></a>
-#### `until()` {#collection-method}
-
-The `until` method returns items in the collection until the given value is found:
-
-    $collection = collect([1, 2, 3, 4]);
-
-    $subset = $collection->until(3);
-
-    $subset->all();
-
-    // [1, 2]
-
-You may also pass a callback to the `until` method to perform your own logic. The callback should return `true` when the `until` method should stop.
-
-    $collection = collect([1, 2, 3, 4]);
-
-    $subset = $collection->until(function ($item) {
-        return $item >= 3;
-    });
-
-    $subset->all();
-
-    // [1, 2]
-
-If the given value is not found or callback does not return `true`, the `until` method will return all items in the collection.
 
 <a name="method-unwrap"></a>
 #### `unwrap()` {#collection-method}
@@ -2580,7 +2598,7 @@ The `zip` method merges together the values of the given array with the values o
 <a name="higher-order-messages"></a>
 ## Higher Order Messages
 
-Collections also provide support for "higher order messages", which are short-cuts for performing common actions on collections. The collection methods that provide higher order messages are: [`average`](#method-average), [`avg`](#method-avg), [`contains`](#method-contains), [`each`](#method-each), [`every`](#method-every), [`filter`](#method-filter), [`first`](#method-first), [`flatMap`](#method-flatmap), [`groupBy`](#method-groupby), [`keyBy`](#method-keyby), [`map`](#method-map), [`max`](#method-max), [`min`](#method-min), [`partition`](#method-partition), [`reject`](#method-reject), [`some`](#method-some), [`sortBy`](#method-sortby), [`sortByDesc`](#method-sortbydesc), [`sum`](#method-sum), [`unique`](#method-unique), and [`until`](#method-until).
+Collections also provide support for "higher order messages", which are short-cuts for performing common actions on collections. The collection methods that provide higher order messages are: [`average`](#method-average), [`avg`](#method-avg), [`contains`](#method-contains), [`each`](#method-each), [`every`](#method-every), [`filter`](#method-filter), [`first`](#method-first), [`flatMap`](#method-flatmap), [`groupBy`](#method-groupby), [`keyBy`](#method-keyby), [`map`](#method-map), [`max`](#method-max), [`min`](#method-min), [`partition`](#method-partition), [`reject`](#method-reject), [`some`](#method-some), [`sortBy`](#method-sortby), [`sortByDesc`](#method-sortbydesc), [`sum`](#method-sum) [`takeUntil`](#method-takeuntil), [`takeWhile`](#method-takewhile) and [`unique`](#method-unique).
 
 Each higher order message can be accessed as a dynamic property on a collection instance. For instance, let's use the `each` higher order message to call a method on each object within a collection:
 
