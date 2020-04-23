@@ -1975,7 +1975,7 @@ The `takeUntil` method returns items in the collection until the given callback 
 
     // [1, 2]
 
-You may also pass a simple value to the `takeUntil` method, to get the items until the given value is found:
+You may also pass a simple value to the `takeUntil` method to get the items until the given value is found:
 
     $collection = collect([1, 2, 3, 4]);
 
