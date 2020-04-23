@@ -161,6 +161,12 @@ You may also specify which guard should be used to authenticate the given user b
 
     $this->actingAs($user, 'api')
 
+Note that when testing routes, you should still properly set the expected guard with your `api` middleware on your routes:
+
+    Route::middleware('auth:api')->get('/' function () {
+        return 'Ok';
+    })
+
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
 
