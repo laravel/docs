@@ -133,7 +133,7 @@ To use the VMware provider, you will need to purchase both VMware Fusion / Works
 
 To use the Parallels provider, you will need to install [Parallels Vagrant plug-in](https://github.com/Parallels/vagrant-parallels). It is free of charge.
 
-Because of [Vagrant limitations](https://www.vagrantup.com/docs/hyperv/limitations.html), The Hyper-V provider ignores all networking settings.
+Because of [Vagrant limitations](https://www.vagrantup.com/docs/hyperv/limitations.html), the Hyper-V provider ignores all networking settings.
 
 #### Installing The Homestead Vagrant Box
 
