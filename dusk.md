@@ -1226,7 +1226,7 @@ Once a page has been configured, you may navigate to it using the `visit` method
 
     $browser->visit(new Login);
 
-You may also navigate to the previous or next page using the following methods:
+You may navigate "back" and "forward" using the `back` and `forward` methods:
 
     $browser->back();
 
