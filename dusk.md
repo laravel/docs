@@ -1226,6 +1226,12 @@ Once a page has been configured, you may navigate to it using the `visit` method
 
     $browser->visit(new Login);
 
+You may navigate "back" and "forward" using the `back` and `forward` methods:
+
+    $browser->back();
+
+    $browser->forward();
+
 Sometimes you may already be on a given page and need to "load" the page's selectors and methods into the current test context. This is common when pressing a button and being redirected to a given page without explicitly navigating to it. In this situation, you may use the `on` method to load the page:
 
     use Tests\Browser\Pages\CreatePlaylist;
