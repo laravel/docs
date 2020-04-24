@@ -9,7 +9,6 @@
     - [Binding Typed Variadics](#binding-typed-variadics)
     - [Tagging](#tagging)
     - [Extending Bindings](#extending-bindings)
-    - [Binding Tags](#binding-tags)
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
@@ -162,6 +161,12 @@ Sometimes you may have a class that receives some injected classes, but also nee
               ->needs('$variableName')
               ->give($value);
 
+Sometimes a class may depend on an array of tagged instances. Using the `giveTagged` method, you may easily inject all of the container bindings with that tag:
+
+    $this->app->when(ReportAggregator::class)
+        ->needs('$reports')
+        ->giveTagged('reports');
+
 <a name="binding-typed-variadics"></a>
 ### Binding Typed Variadics
 
@@ -201,6 +206,14 @@ For convenience, you may also just provide an array of class names to be resolve
                   TooLongFilter::class,
               ]);
 
+#### Variadic Tag Dependencies
+
+Sometimes a class may have a variadic dependency that is type-hinted as a given class (`Report ...$reports`). Using the `needs` and `giveTagged` methods, you may easily inject all of the container bindings with that tag for the given dependency:
+
+    $this->app->when(ReportAggregator::class)
+        ->needs(Report::class)
+        ->giveTagged('reports');
+
 <a name="tagging"></a>
 ### Tagging
 
@@ -221,46 +234,6 @@ Once the services have been tagged, you may easily resolve them all via the `tag
     $this->app->bind('ReportAggregator', function ($app) {
         return new ReportAggregator($app->tagged('reports'));
     });
-
-
-<a name="binding-tags"></a>
-### Binding Tags
-
-If a class needs an array of instances or a variadic constructor argument, you can instruct the container to resolve that dependency with tagged services.
-
-To bind services tagged as "reports" to a primitive (`array`) constructor argument named `$reports`:
-
-    class ReportAggregator
-    {
-        /** @var Report[] */
-        public $reports;
-
-        public function __construct(array $reports)
-        {
-            $this->reports = $reports;
-        }
-    }
-
-    $this->app->when(ReportAggregator::class)
-        ->needs('$reports')
-        ->giveTagged('reports');
-
-To bind services tagged as "reports" to a variadic constructor argument typed `Report`:
-
-    class ReportAggregator
-    {
-        /** @var Report[] */
-        public $reports;
-
-        public function __construct(Report ...$reports)
-        {
-            $this->reports = $reports;
-        }
-    }
-
-    $this->app->when(ReportAggregator::class)
-        ->needs(Report::class)
-        ->giveTagged('reports');
 
 <a name="extending-bindings"></a>
 ### Extending Bindings
