@@ -633,14 +633,14 @@ You may also retrieve the parent from the polymorphic model by accessing the nam
 
     $imageable = $image->imageable;
 
-The `imageable` relation on the `Image` model will return either a `Post` or `User` instance, depending on which type of model owns the image. If you need to modify the `type` and `id` columns for the `morphTo` relation, make sure pass the exact same relationship name as the first parameter:
+The `imageable` relation on the `Image` model will return either a `Post` or `User` instance, depending on which type of model owns the image. If you need to specify custom `type` and `id` columns for the `morphTo` relation, always ensure you pass the relationship name (which should exactly match the method name) as the first parameter:
 
     /**
      * Get the owning imageable model.
      */
     public function imageable()
     {
-        return $this->morphTo('imageable', 'imageable_type', 'imageable_id');
+        return $this->morphTo(__FUNCTION__, 'imageable_type', 'imageable_id');
     }
 
 <a name="one-to-many-polymorphic-relations"></a>
