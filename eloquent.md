@@ -598,6 +598,33 @@ You may also come across situations where you want to update an existing model o
         ['price' => 99, 'discounted' => 1]
     );
 
+#### `firstOr`
+
+The `firstOr` method retrieves the first Model from a query, or if no matching Model is found, it will call a callback passed. This can be really useful if you need to perform extra steps when creating a model or want to do something other than creating a new model:
+
+    // Execute the query and get the first result or call a callback.
+    $flight = App\Flight::firstOr(function () {
+        return App\Flight::create([
+            'name' => 'Flight 10',
+            'delayed' => 1,
+            'arrival_time' => '11:30'
+        ]);
+    });
+
+You can also specify column names:
+
+    // Execute the query with a specify columns and get the first result or call a callback.
+    $flight = App\Flight::firstOr(
+        ['name', 'delayed', 'arrival_time'],
+        function () {
+            return App\Flight::create([
+                'name' => 'Flight 10',
+                'delayed' => 1,
+                'arrival_time' => '11:30'
+            ]);
+        }
+    );
+
 <a name="deleting-models"></a>
 ## Deleting Models
 
