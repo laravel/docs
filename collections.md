@@ -1979,7 +1979,7 @@ You may also pass a simple value to the `takeUntil` method to get the items unti
 
     $collection = collect([1, 2, 3, 4]);
 
-    $subset = $collection->until(3);
+    $subset = $collection->takeUntil(3);
 
     $subset->all();
 
