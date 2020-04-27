@@ -589,7 +589,7 @@ You may execute this method from your component template by invoking the variabl
         {{ $label }}
     </option>
 
-If the component method accepts no arguments, you may simple render the method name as a variable instead of invoking it as a function. For example, imagine a component method that simply returns a string:
+If the component method accepts no arguments, you may simply render the method name as a variable instead of invoking it as a function. For example, imagine a component method that simply returns a string:
 
     /**
      * Get the size.
