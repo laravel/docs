@@ -177,7 +177,7 @@ To get started, define a `tap` array on the channel's configuration. The `tap` a
 
     'single' => [
         'driver' => 'single',
-        'tap' => [\App\Logging\CustomizeFormatter::class],
+        'tap' => [App\Logging\CustomizeFormatter::class],
         'path' => storage_path('logs/laravel.log'),
         'level' => 'debug',
     ],
@@ -187,6 +187,8 @@ Once you have configured the `tap` option on your channel, you're ready to defin
     <?php
 
     namespace App\Logging;
+    
+    use Monolog\Formatter\LineFormatter;
 
     class CustomizeFormatter
     {
@@ -199,7 +201,9 @@ Once you have configured the `tap` option on your channel, you're ready to defin
         public function __invoke($logger)
         {
             foreach ($logger->getHandlers() as $handler) {
-                $handler->setFormatter(new LineFormatter('[%datetime%] %channel%.%level_name%: %message% %context% %extra%'));
+                $handler->setFormatter(new LineFormatter(
+                    '[%datetime%] %channel%.%level_name%: %message% %context% %extra%'
+                ));
             }
         }
     }
