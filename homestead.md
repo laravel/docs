@@ -467,7 +467,7 @@ Homestead configures a self-signed SSL certificate for each site defined in the 
       wildcard: "yes"
       use_wildcard: "yes"
 
-Create but do *not* use wildcard for a site:
+If the `use_wildcard` option is set to `no`, the wildcard certificate will be generated but will not be used:
 
     - map: foo.domain.test
       to: /home/vagrant/domain
