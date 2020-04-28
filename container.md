@@ -5,6 +5,8 @@
     - [Binding Basics](#binding-basics)
     - [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
     - [Contextual Binding](#contextual-binding)
+    - [Binding Primitives](#binding-primitives)
+    - [Binding Typed Variadics](#binding-typed-variadics)
     - [Tagging](#tagging)
     - [Extending Bindings](#extending-bindings)
 - [Resolving](#resolving)
@@ -102,14 +104,6 @@ You may also bind an existing object instance into the container using the `inst
 
     $this->app->instance('HelpSpot\API', $api);
 
-#### Binding Primitives
-
-Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:
-
-    $this->app->when('App\Http\Controllers\UserController')
-              ->needs('$variableName')
-              ->give($value);
-
 <a name="binding-interfaces-to-implementations"></a>
 ### Binding Interfaces To Implementations
 
@@ -157,6 +151,68 @@ Sometimes you may have two classes that utilize the same interface, but you wish
               ->give(function () {
                   return Storage::disk('s3');
               });
+
+<a name="binding-primitives"></a>
+### Binding Primitives
+
+Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:
+
+    $this->app->when('App\Http\Controllers\UserController')
+              ->needs('$variableName')
+              ->give($value);
+
+Sometimes a class may depend on an array of tagged instances. Using the `giveTagged` method, you may easily inject all of the container bindings with that tag:
+
+    $this->app->when(ReportAggregator::class)
+        ->needs('$reports')
+        ->giveTagged('reports');
+
+<a name="binding-typed-variadics"></a>
+### Binding Typed Variadics
+
+Occasionally you may have a class that receives an array of typed objects using a variadic constructor argument:
+
+    class Firewall
+    {
+        protected $logger;
+        protected $filters;
+
+        public function __construct(Logger $logger, Filter ...$filters)
+        {
+            $this->logger = $logger;
+            $this->filters = $filters;
+        }
+    }
+
+Using contextual binding, you may resolve this dependency by providing the `give` method with a Closure that returns an array of resolved `Filter` instances:
+
+    $this->app->when(Firewall::class)
+              ->needs(Filter::class)
+              ->give(function ($app) {
+                    return [
+                        $app->make(NullFilter::class),
+                        $app->make(ProfanityFilter::class),
+                        $app->make(TooLongFilter::class),
+                    ];
+              });
+
+For convenience, you may also just provide an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances:
+
+    $this->app->when(Firewall::class)
+              ->needs(Filter::class)
+              ->give([
+                  NullFilter::class,
+                  ProfanityFilter::class,
+                  TooLongFilter::class,
+              ]);
+
+#### Variadic Tag Dependencies
+
+Sometimes a class may have a variadic dependency that is type-hinted as a given class (`Report ...$reports`). Using the `needs` and `giveTagged` methods, you may easily inject all of the container bindings with that tag for the given dependency:
+
+    $this->app->when(ReportAggregator::class)
+        ->needs(Report::class)
+        ->giveTagged('reports');
 
 <a name="tagging"></a>
 ### Tagging

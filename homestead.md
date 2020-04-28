@@ -16,6 +16,7 @@
     - [Database Snapshots](#database-snapshots)
     - [Adding Additional Sites](#adding-additional-sites)
     - [Environment Variables](#environment-variables)
+    - [Wildcard SSL](#wildcard-ssl)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring Mailhog](#configuring-mailhog)
     - [Configuring Minio](#configuring-minio)
@@ -69,7 +70,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 - MySQL
 - lmm for MySQL or MariaDB database snapshots
 - Sqlite3
-- PostgreSQL
+- PostgreSQL (9.6, 10, 11, 12)
 - Composer
 - Node (With Yarn, Bower, Grunt, and Gulp)
 - Redis
@@ -455,6 +456,23 @@ You can set global environment variables by adding them to your `Homestead.yaml`
           value: bar
 
 After updating the `Homestead.yaml`, be sure to re-provision the machine by running `vagrant reload --provision`. This will update the PHP-FPM configuration for all of the installed PHP versions and also update the environment for the `vagrant` user.
+
+<a name="wildcard-ssl"></a>
+### Wildcard SSL
+
+Homestead configures a self-signed SSL certificate for each site defined in the `sites:` section of your `Homestead.yaml` file. If you would like to generate a wildcard SSL certificate for a site you may add a `wildcard` option to that site's configuration. If you would like to use the wildcard certificate instead of the single domain certificate, you must also add the `use_wildcard` option to the site's configuration:
+
+    - map: foo.domain.test
+      to: /home/vagrant/domain
+      wildcard: "yes"
+      use_wildcard: "yes"
+
+If the `use_wildcard` option is set to `no`, the wildcard certificate will be generated but will not be used:
+
+    - map: foo.domain.test
+      to: /home/vagrant/domain
+      wildcard: "yes"
+      use_wildcard: "no"
 
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules

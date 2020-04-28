@@ -589,22 +589,6 @@ You may execute this method from your component template by invoking the variabl
         {{ $label }}
     </option>
 
-If the component method accepts no arguments, you may simple render the method name as a variable instead of invoking it as a function. For example, imagine a component method that simply returns a string:
-
-    /**
-     * Get the size.
-     *
-     * @return string
-     */
-    public function size()
-    {
-        return 'Large';
-    }
-
-Within a component, you may retrieve the value of the method as a variable:
-
-    {{ $size }}
-
 #### Additional Dependencies
 
 If your component requires dependencies from Laravel's [service container](/docs/{{version}}/container), you may list them before any of the component's data attributes and they will automatically be injected by the container:

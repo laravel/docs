@@ -461,6 +461,8 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
 
 > {tip} Do not use excess indentation when writing Markdown emails. Markdown parsers will render indented content as code blocks.
 
+> {note} The "autolink" feature of Markdown is not currently supported. Please construct links using the long form link syntax provided by Markdown.
+
 #### Button Component
 
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:
@@ -547,6 +549,14 @@ You are not limited to just specifying the "to" recipients when sending a messag
         ->cc($moreUsers)
         ->bcc($evenMoreUsers)
         ->send(new OrderShipped($order));
+
+#### Looping Over Recipients
+
+Occasionally, you may need to send a mailable to a list of recipients by iterating over an array of recipients / email addresses. Since the `to` method appends email addresses to the mailable's list of recipients, you should always re-create the mailable instance for each recipient:
+
+    foreach (['taylor@example.com', 'dries@example.com'] as $recipient) {
+        Mail::to($recipient)->send(new OrderShipped($order));
+    }
 
 #### Sending Mail Via A Specific Mailer
 
