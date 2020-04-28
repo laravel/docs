@@ -356,7 +356,7 @@ You may `dispatch` a Closure and chain the `afterResponse` method onto the helpe
 <a name="synchronous-dispatching"></a>
 ### Synchronous Dispatching
 
-If you would like to dispatch a job immediately (synchronously), you may use the `dispatchNow` method. When using this method, the job will not be queued and will be run immediately within the current process:
+If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be run immediately within the current process:
 
     <?php
 
@@ -378,7 +378,7 @@ If you would like to dispatch a job immediately (synchronously), you may use the
         {
             // Create podcast...
 
-            ProcessPodcast::dispatchNow($podcast);
+            ProcessPodcast::dispatchSync($podcast);
         }
     }
 
@@ -865,8 +865,6 @@ You may define a `failed` method directly on your job class, allowing you to per
             // Send user notification of failure, etc...
         }
     }
-
-> {note} The `failed` method will not be called if the job was dispatched using the `dispatchNow` method.
 
 <a name="failed-job-events"></a>
 ### Failed Job Events
