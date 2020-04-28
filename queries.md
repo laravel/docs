@@ -744,6 +744,8 @@ You may also specify additional columns to update during the operation:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
+> {note} When using `increment` and `decrement` on Eloquent models, these will not trigger any model events.
+
 <a name="deletes"></a>
 ## Deletes
 
