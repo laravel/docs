@@ -16,6 +16,7 @@
     - [Database Snapshots](#database-snapshots)
     - [Adding Additional Sites](#adding-additional-sites)
     - [Environment Variables](#environment-variables)
+    - [Wildcard SSL](#wildcard-ssl)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring Mailhog](#configuring-mailhog)
     - [Configuring Minio](#configuring-minio)
@@ -24,7 +25,6 @@
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
     - [Mail](#mail)
-    - [WIldcard SSL](#wildcard-ssl)
 - [Debugging & Profiling](#debugging-and-profiling)
     - [Debugging Web Requests With Xdebug](#debugging-web-requests)
     - [Debugging CLI Applications](#debugging-cli-applications)
@@ -457,6 +457,23 @@ You can set global environment variables by adding them to your `Homestead.yaml`
 
 After updating the `Homestead.yaml`, be sure to re-provision the machine by running `vagrant reload --provision`. This will update the PHP-FPM configuration for all of the installed PHP versions and also update the environment for the `vagrant` user.
 
+<a name="wildcard-ssl"></a>
+### Wildcard SSL
+
+Homestead configures a self-signed SSL certificate for each site defined in the `sites:` section of your `Homestead.yaml` file. If you would like to generate a wildcard SSL certificate for a site you may add a `wildcard` option to that site's configuration. If you would like to use the wildcard certificate instead of the single domain certificate, you must also add the `use_wildcard` option to the site's configuration:
+
+    - map: foo.domain.test
+      to: /home/vagrant/domain
+      wildcard: "yes"
+      use_wildcard: "yes"
+
+Create but do *not* use wildcard for a site:
+
+    - map: foo.domain.test
+      to: /home/vagrant/domain
+      wildcard: "yes"
+      use_wildcard: "no"
+
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules
 
@@ -605,25 +622,6 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 ### Mail
 
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
-
-<a name="wildcard-ssl"></a>
-### Wildcard SSL
-
-Homestead configures a self-signed SSL certificate for each site defined in the `sites:` section of `Homestead.yaml`. If you would like to create a wildcard SSL certificate you can add ``wildcard: "yes"`` to generate a wildcard certificate. If you would like to use the wildcard certificate you can add `use_wildcard: "yes"` and Homestead will configure the site to use the wildcard SSL certificate *instead* of the single domain certificate.
-
-Create an use wildcard for a site:
-
-    - map: foo.domain.test
-      to: /home/vagrant/domain
-      wildcard: "yes"
-      use_wildcard: "yes"
-
-Create but do *not* use wildcard for a site:
-
-    - map: foo.domain.test
-      to: /home/vagrant/domain
-      wildcard: "yes"
-      use_wildcard: "no"
 
 <a name="debugging-and-profiling"></a>
 ## Debugging & Profiling
