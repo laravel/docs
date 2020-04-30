@@ -346,6 +346,49 @@ If you would like to disable the wrapping of the outermost resource, you may use
 
 > {note} The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections.
 
+If you would like to use a custom key instead of `data` in wrapping, you may use the `$wrap` attribute on the resource class:
+
+    <?php
+
+    namespace App\Http\Resources;
+
+    use Illuminate\Http\Resources\Json\JsonResource;
+
+    class User extends JsonResource
+    {
+        /**
+         * The "data" wrapper that should be applied.
+         *
+         * @var string
+         */
+        public static $wrap = 'user';
+
+        /**
+         * Transform the resource into an array.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @return array
+         */
+        public function toArray($request)
+        {
+            return [
+                'id' => $this->id,
+                'name' => $this->name,
+                'email' => $this->email,
+            ];
+        }
+    }
+
+It will wrap the data in JSON thus:
+
+    {
+        "user": {
+                "id": 1,
+                "name": "Eladio Schroeder Sr.",
+                "email": "therese28@example.com",
+        }
+    }
+
 ### Wrapping Nested Resources
 
 You have total freedom to determine how your resource's relationships are wrapped. If you would like all resource collections to be wrapped in a `data` key, regardless of their nesting, you should define a resource collection class for each resource and return the collection within a `data` key.
