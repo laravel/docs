@@ -16,6 +16,7 @@
     - [Database Snapshots](#database-snapshots)
     - [Adding Additional Sites](#adding-additional-sites)
     - [Environment Variables](#environment-variables)
+    - [SSL](#ssl)
     - [Wildcard SSL](#wildcard-ssl)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring Mailhog](#configuring-mailhog)
@@ -456,6 +457,17 @@ You can set global environment variables by adding them to your `Homestead.yaml`
           value: bar
 
 After updating the `Homestead.yaml`, be sure to re-provision the machine by running `vagrant reload --provision`. This will update the PHP-FPM configuration for all of the installed PHP versions and also update the environment for the `vagrant` user.
+
+<a name="ssl"></a>
+### SSL
+
+By default, Laravel Homestead generates a security certificate for all sites you register, allowing you to quickly develop via HTTPS on your local machine.
+
+To make your browser trust the certificate you need to take some manual actions. Connect into your Vagrant box and copy Homestead’s CA into a folder which is synced into your local machine.
+
+    cp /etc/nginx/ssl/ca.homestead.homestead.crt /home/vagrant/project1
+
+Open that file on your local machine and add it as a trusted certificate. Then delete the previously copied file. You're good to go now.
 
 <a name="wildcard-ssl"></a>
 ### Wildcard SSL
