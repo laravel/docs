@@ -3,9 +3,9 @@
 - [Introduction](#introduction)
 - [Upgrading Passport](#upgrading)
 - [Installation](#installation)
-    - [Migration Customization](#migration-customization)
     - [Frontend Quickstart](#frontend-quickstart)
     - [Deploying Passport](#deploying-passport)
+    - [Migration Customization](#migration-customization)
 - [Configuration](#configuration)
     - [Token Lifetimes](#token-lifetimes)
     - [Overriding Default Models](#overriding-default-models)
@@ -67,6 +67,10 @@ The Passport service provider registers its own database migration directory wit
 Next, you should run the `passport:install` command. This command will create the encryption keys needed to generate secure access tokens. In addition, the command will create "personal access" and "password grant" clients which will be used to generate access tokens:
 
     php artisan passport:install
+
+Alternatively, you may run the `passport:install` command with the `--uuids` option present. This flag will instruct Passport that you would like to use UUIDs instead of auto-incrementing integers as the Passport `Client` model's primary key values. After running the `passport:install` command with the `--uuids` option, you will be given additional instructions regarding disabling Passport's default migrations:
+
+    php artisan passport:install --uuids
 
 After running this command, add the `Laravel\Passport\HasApiTokens` trait to your `App\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
 
@@ -130,13 +134,6 @@ Finally, in your `config/auth.php` configuration file, you should set the `drive
             'provider' => 'users',
         ],
     ],
-
-<a name="migration-customization"></a>
-### Migration Customization
-
-If you are not going to use Passport's default migrations, you should call the `Passport::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=passport-migrations`.
-
-By default, Passport uses an integer column to store the `user_id`. If your application uses a different column type to identify users (for example: UUIDs), you should modify the default Passport migrations after publishing them.
 
 <a name="frontend-quickstart"></a>
 ### Frontend Quickstart
@@ -207,6 +204,11 @@ Additionally, you may publish Passport's configuration file using `php artisan v
     <public key here>
     -----END PUBLIC KEY-----"
 
+<a name="migration-customization"></a>
+### Migration Customization
+
+If you are not going to use Passport's default migrations, you should call the `Passport::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=passport-migrations`.
+
 <a name="configuration"></a>
 ## Configuration
 
@@ -268,69 +270,6 @@ Then, you may instruct Passport to use your custom models via the `Passport` cla
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
-
-<a name="client-primary-key"></a>
-### Client Primary Key
-
-If you would like to use UUIDs as the primary key for your clients instead of the incremental integer you can opt to [override the `Client` model](#overriding-default-models) with the `Client` model below:
-
-    use Illuminate\Support\Str;
-    use Laravel\Passport\Client as PassportClient;
-
-    class Client extends PassportClient
-    {
-        /**
-         * The table associated with the model.
-         *
-         * @var string
-         */
-        protected $table = 'oauth_clients';
-
-        /**
-         * The "type" of the primary key ID.
-         *
-         * @var string
-         */
-        protected $keyType = 'string';
-
-        /**
-         * Indicates if the IDs are auto-incrementing.
-         *
-         * @var bool
-         */
-        public $incrementing = false;
-
-        /**
-         * The "booting" method of the model.
-         *
-         * @return void
-         */
-        public static function boot()
-        {
-            parent::boot();
-
-            static::creating(function ($model) {
-                $model->{$model->getKeyName()} = (string) Str::uuid();
-            });
-        }
-    }
-
-After you've done that you'll also need to modify the existing migrations. [Export the migrations](#migration-customization) and adjust the following columns:
-
-    // Change the following line in the CreateOauthClientsTable migration...
-    $table->bigIncrements('id');
-
-    // To this...
-    $table->uuid('id');
-    $table->primary('id');
-
-    // Then change the column below on all token tables...
-    $table->unsignedBigInteger('client_id');
-
-    // To this...
-    $table->uuid('client_id');
-
-From now on your oauth clients will use uuids as their primary keys.
 
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
