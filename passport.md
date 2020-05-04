@@ -68,11 +68,9 @@ Next, you should run the `passport:install` command. This command will create th
 
     php artisan passport:install
 
-Alternatively, you may run the `passport:install` command with the `--uuids` option present. This flag will instruct Passport that you would like to use UUIDs instead of auto-incrementing integers as the Passport `Client` model's primary key values. After running the `passport:install` command with the `--uuids` option, you will be given additional instructions regarding disabling Passport's default migrations:
+> {tip} If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids).
 
-    php artisan passport:install --uuids
-
-After running this command, add the `Laravel\Passport\HasApiTokens` trait to your `App\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
+After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
 
     <?php
 
@@ -134,6 +132,13 @@ Finally, in your `config/auth.php` configuration file, you should set the `drive
             'provider' => 'users',
         ],
     ],
+
+<a name="client-uuids"></a>
+#### Client UUIDs
+
+You may run the `passport:install` command with the `--uuids` option present. This flag will instruct Passport that you would like to use UUIDs instead of auto-incrementing integers as the Passport `Client` model's primary key values. After running the `passport:install` command with the `--uuids` option, you will be given additional instructions regarding disabling Passport's default migrations:
+
+    php artisan passport:install --uuids
 
 <a name="frontend-quickstart"></a>
 ### Frontend Quickstart
