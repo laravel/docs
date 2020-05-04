@@ -212,7 +212,7 @@ You may clear the entire cache using the `flush` method:
 <a name="atomic-locks"></a>
 ### Atomic Locks
 
-> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb`, `redis`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Forge](https://forge.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:
 
