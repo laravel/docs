@@ -621,7 +621,7 @@ When using the password grant or client credentials grant, you may wish to autho
 <a name="specifying-the-user-provider"></a>
 ### Specifying The User Provider
 
-If your app uses more than one User Provider you may want to specify which one should be used. To do this you can use the `--provider` option when creating a new OAuth Client via `artisan passport:client`. The provider should match a valid provider defined in your 'config/auth.php'. You can then [protect your route via middleware](#via-middleware) to ensure that only users from the guard's provider are authorized.
+If your app uses more than one User Provider you may want to specify which one should be used. To do this you can use the `--provider` option when creating a new OAuth Client via `artisan passport:client`. The provider should match a valid provider defined in your `config/auth.php`. You can then [protect your route via middleware](#via-middleware) to ensure that only users from the guard's provider are authorized.
 
 <a name="customizing-the-username-field"></a>
 ### Customizing The Username Field
