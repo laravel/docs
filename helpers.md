@@ -154,7 +154,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [lower](#method-fluent-str-lower)
 [ltrim](#method-fluent-str-ltrim)
 [match](#method-fluent-str-match)
-[matchAll](#method-fluent-str-matchAll)
+[matchAll](#method-fluent-str-match-all)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [replace](#method-fluent-str-replace)

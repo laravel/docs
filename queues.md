@@ -478,22 +478,6 @@ You may chain the `onConnection` and `onQueue` methods to specify the connection
                   ->onConnection('sqs')
                   ->onQueue('processing');
 
-Alternatively, you may specify the `connection` as a property on the job class:
-
-    <?php
-
-    namespace App\Jobs;
-
-    class ProcessPodcast implements ShouldQueue
-    {
-        /**
-         * The queue connection that should handle the job.
-         *
-         * @var string
-         */
-        public $connection = 'sqs';
-    }
-
 <a name="max-job-attempts-and-timeout"></a>
 ### Specifying Max Job Attempts / Timeout Values
 
