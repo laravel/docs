@@ -867,6 +867,26 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
         //
     })->middleware('auth:api');
 
+If your app uses multiple authentication guards and your Client is using a [specific provider](#specifying-the-user-provider) then only users matching that Client's provider will be authorized. This allows you to protect requests intended for specific user providers:
+
+**config/auth.php:**
+
+    'api' => [
+        'driver'   => 'passport',
+        'provider' => 'users',
+    ],
+
+    'api-customers' => [
+        'driver'   => 'passport',
+        'provider' => 'customers',
+    ],
+
+**routes/api.php:**
+
+    Route::get('/customer', function () {
+        //
+    })->middleware('auth:api-customers');
+
 <a name="passing-the-access-token"></a>
 ### Passing The Access Token
 
