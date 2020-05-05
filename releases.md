@@ -217,6 +217,6 @@ The frontend scaffolding typically provided with previous releases of Laravel ha
 
 In order to restore the traditional Vue / Bootstrap scaffolding present in previous releases of Laravel, you may install the `laravel/ui` package and use the `ui` Artisan command to install the frontend scaffolding:
 
-    composer require laravel/ui --dev
+    composer require laravel/ui "^1.0" --dev
 
     php artisan ui vue --auth
