@@ -214,7 +214,7 @@ To mitigate this, Laravel provides functionality that allows you to limit concur
 
 The `block` method accepts two optional arguments. The first argument accepted by the `block` method is the maximum number of seconds the session lock should be held for before it is released. Of course, if the request finishes executing before this time the lock will be released earlier.
 
-The second argument accepted by the `block` method is the number of seconds a request should wait while attempting to obtain a session lock. A `Illuminate\Contracts\Cache\LockTimoutException` will be thrown if the request is unable to obtain a session lock within the given number of seconds:
+The second argument accepted by the `block` method is the number of seconds a request should wait while attempting to obtain a session lock. A `Illuminate\Contracts\Cache\LockTimoutException` will be thrown if the request is unable to obtain a session lock within the given number of seconds.
 
 <a name="adding-custom-session-drivers"></a>
 ## Adding Custom Session Drivers
