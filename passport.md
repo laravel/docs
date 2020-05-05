@@ -22,6 +22,7 @@
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
+    - [Specifying The User Provider](#specifying-the-user-provider)
     - [Customizing The Username Field](#customizing-the-username-field)
     - [Customizing The Password Validation](#customizing-the-password-validation)
 - [Implicit Grant Tokens](#implicit-grant-tokens)
@@ -627,6 +628,11 @@ When using the password grant or client credentials grant, you may wish to autho
         ],
     ]);
 
+<a name="specifying-the-user-provider"></a>
+### Specifying The User Provider
+
+If your app uses more than one User Provider you may want to specify which one should be used. To do this you can use the `--provider` option when creating a new OAuth Client via `artisan passport:client --password`. The provider should match a valid provider defined in your `config/auth.php`. You can then [protect your route via middleware](#via-middleware) to ensure that only users from the guard's provider are authorized.
+
 <a name="customizing-the-username-field"></a>
 ### Customizing The Username Field
 
@@ -870,6 +876,26 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
     Route::get('/user', function () {
         //
     })->middleware('auth:api');
+
+If your app uses multiple authentication guards and your Client is using a [specific provider](#specifying-the-user-provider) then only users matching that Client's provider will be authorized. This allows you to protect requests intended for specific user providers:
+
+**config/auth.php:**
+
+    'api' => [
+        'driver'   => 'passport',
+        'provider' => 'users',
+    ],
+
+    'api-customers' => [
+        'driver'   => 'passport',
+        'provider' => 'customers',
+    ],
+
+**routes/api.php:**
+
+    Route::get('/customer', function () {
+        //
+    })->middleware('auth:api-customers');
 
 <a name="passing-the-access-token"></a>
 ### Passing The Access Token
