@@ -631,7 +631,7 @@ When using the password grant or client credentials grant, you may wish to autho
 <a name="customizing-the-user-provider"></a>
 ### Customizing The User Provider
 
-If your application uses more than one authentication user provider, you may specify which user provider the password grant client uses. You may accomplish this by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your `config/auth.php` configuration file. You can then [protect your route using middleware](#via-middleware) to ensure that only users from the guard's specified provider are authorized.
+If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the password grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your `config/auth.php` configuration file. You can then [protect your route using middleware](#via-middleware) to ensure that only users from the guard's specified provider are authorized.
 
 <a name="customizing-the-username-field"></a>
 ### Customizing The Username Field
