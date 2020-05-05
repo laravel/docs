@@ -22,7 +22,7 @@
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
-    - [Specifying The User Provider](#specifying-the-user-provider)
+    - [Customizing The User Provider](#customizing-the-user-provider)
     - [Customizing The Username Field](#customizing-the-username-field)
     - [Customizing The Password Validation](#customizing-the-password-validation)
 - [Implicit Grant Tokens](#implicit-grant-tokens)
@@ -628,10 +628,10 @@ When using the password grant or client credentials grant, you may wish to autho
         ],
     ]);
 
-<a name="specifying-the-user-provider"></a>
-### Specifying The User Provider
+<a name="customizing-the-user-provider"></a>
+### Customizing The User Provider
 
-If your app uses more than one User Provider you may want to specify which one should be used. To do this you can use the `--provider` option when creating a new OAuth Client via `artisan passport:client --password`. The provider should match a valid provider defined in your `config/auth.php`. You can then [protect your route via middleware](#via-middleware) to ensure that only users from the guard's provider are authorized.
+If your application uses more than one authentication user provider, you may specify which user provider the password grant client uses. You may accomplish this by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your `config/auth.php` configuration file. You can then [protect your route using middleware](#via-middleware) to ensure that only users from the guard's specified provider are authorized.
 
 <a name="customizing-the-username-field"></a>
 ### Customizing The Username Field
@@ -877,9 +877,9 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
         //
     })->middleware('auth:api');
 
-If your app uses multiple authentication guards and your Client is using a [specific provider](#specifying-the-user-provider) then only users matching that Client's provider will be authorized. This allows you to protect requests intended for specific user providers:
+#### Multiple Authentication Guards
 
-**config/auth.php:**
+If your application authenticates different types of users that perhaps use entirely different Eloquent models, you will likely need to define a guard configuration for each user provider type in your application. This allows you to protect requests intended for specific user providers. For example, given the following guard configuration the `config/auth.php` configuration file:
 
     'api' => [
         'driver'   => 'passport',
@@ -891,11 +891,13 @@ If your app uses multiple authentication guards and your Client is using a [spec
         'provider' => 'customers',
     ],
 
-**routes/api.php:**
+The following route will utilize the `api-customers` guard, which uses the `customers` user provider, to authenticate incoming requests:
 
     Route::get('/customer', function () {
         //
     })->middleware('auth:api-customers');
+
+> {tip} For more information on using multiple user providers with Passport, please consult the [password grant documentation](#customizing-the-user-provider).
 
 <a name="passing-the-access-token"></a>
 ### Passing The Access Token
