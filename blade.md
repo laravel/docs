@@ -490,7 +490,7 @@ If the component class is nested deeper within the `App\View\Components` directo
 <a name="passing-data-to-components"></a>
 ### Passing Data To Components
 
-You may pass data to Blade components using HTML attributes. Hard-coded, primitive values may be passed to the component using simple HTML attributes. PHP expressions and variables should be passed to the component via attributes that are prefixed with `:`:
+You may pass data to Blade components using HTML attributes. Hard-coded, primitive values may be passed to the component using simple HTML attributes. PHP expressions and variables should be passed to the component via attributes that are prefixed with `:`.
 
     <x-alert type="error" :message="$message"/>
 
