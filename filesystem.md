@@ -438,7 +438,7 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
     use League\Flysystem\Filesystem;
     use Spatie\Dropbox\Client as DropboxClient;
     use Spatie\FlysystemDropbox\DropboxAdapter;
-    use Storage;
+    use Illuminate\Support\Facades\Storage;
 
     class DropboxServiceProvider extends ServiceProvider
     {
