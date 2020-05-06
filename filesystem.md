@@ -434,11 +434,11 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
 
     namespace App\Providers;
 
+    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\ServiceProvider;
     use League\Flysystem\Filesystem;
     use Spatie\Dropbox\Client as DropboxClient;
     use Spatie\FlysystemDropbox\DropboxAdapter;
-    use Storage;
 
     class DropboxServiceProvider extends ServiceProvider
     {
