@@ -6,6 +6,7 @@
     - [Frontend Quickstart](#frontend-quickstart)
     - [Deploying Passport](#deploying-passport)
     - [Migration Customization](#migration-customization)
+    - [Client Secret Hashing](#client-secret-hashing)
 - [Configuration](#configuration)
     - [Token Lifetimes](#token-lifetimes)
     - [Overriding Default Models](#overriding-default-models)
@@ -213,6 +214,15 @@ Additionally, you may publish Passport's configuration file using `php artisan v
 ### Migration Customization
 
 If you are not going to use Passport's default migrations, you should call the `Passport::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=passport-migrations`.
+
+<a name="client-secret-hashing"></a>
+### Client Secret Hashing
+
+If you want your client's secrets to be hashed in the database you can enable secret hashing by call the `Passport::hashClientSecrets` method in the `boot` method of your `AppServiceProvider`:
+
+    Passport::hashClientSecrets();
+
+This change means that all of your client secrets will only be shown one time when your client is created. If you lose the secret afterwards you'll have to create a new client.
 
 <a name="configuration"></a>
 ## Configuration
@@ -786,7 +796,12 @@ Before your application can issue personal access tokens, you will need to creat
 
     php artisan passport:client --personal
 
-If you have already defined a personal access client, you may instruct Passport to use it using the `personalAccessClientId` method. Typically, this method should be called from the `boot` method of your `AuthServiceProvider`:
+After creating your personal access client you'll need to define their ID and unhashed secret  in your `.env` file:
+
+    PASSPORT_PERSONAL_ACCESS_CLIENT_ID=client-id-value
+    PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=unhashed-client-secret-value
+
+Next, you should register these values by placing the following calls within the `boot` method of your `AuthServiceProvider`:
 
     /**
      * Register any authentication / authorization services.
@@ -799,7 +814,8 @@ If you have already defined a personal access client, you may instruct Passport 
 
         Passport::routes();
 
-        Passport::personalAccessClientId('client-id');
+        Passport::personalAccessClientId(config('passport.personal_access_token.id'));
+        Passport::personalAccessClientSecret(config('passport.personal_access_token.secret'));
     }
 
 <a name="managing-personal-access-tokens"></a>
