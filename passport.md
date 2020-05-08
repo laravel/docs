@@ -815,11 +815,11 @@ Next, you should register these values by placing the following calls to `Passpo
         Passport::routes();
 
         Passport::personalAccessClientId(
-            config('passport.personal_access_token.id')
+            config('passport.personal_access_client.id')
         );
 
         Passport::personalAccessClientSecret(
-            config('passport.personal_access_token.secret')
+            config('passport.personal_access_client.secret')
         );
     }
 
