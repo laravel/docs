@@ -37,8 +37,8 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
     $response->json() : array;
     $response->status() : int;
     $response->ok() : bool;
-    $response->failed() : bool;
     $response->successful() : bool;
+    $response->failed() : bool;
     $response->serverError() : bool;
     $response->clientError() : bool;
     $response->header($header) : string;
