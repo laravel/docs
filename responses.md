@@ -92,7 +92,7 @@ The `cookie` method also accepts a few more arguments which are used less freque
 
     ->cookie($name, $value, $minutes, $path, $domain, $secure, $httpOnly)
 
-Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment to the outgoing response from your application. The `queue` method accepts a `Cookie` instance or the arguments needed to create a `Cookie` instance. These cookies will be attached to the outgoing response before it is sent to the browser:
+Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment to the outgoing response from your application. The `queue` method accepts a `Cookie` instance or the arguments needed to create a `Cookie` instance. Add the `Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class` middleware to your HTTP Kernel middleware group. These cookies will be attached to the outgoing response before it is sent to the browser:
 
     Cookie::queue(Cookie::make('name', 'value', $minutes));
 
