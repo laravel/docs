@@ -42,7 +42,7 @@ Once the test has been generated, you may define test methods as you normally wo
 
     namespace Tests\Unit;
 
-    use PHPUnit\Framework\TestCase;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
