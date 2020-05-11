@@ -1095,6 +1095,15 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
             ]);
         }])->get();
 
+In addition, using the `loadMorphCount` method, you may eager load all nested relationship counts on the various entities of the polymorphic relation if the `ActivityFeed` models have already been retrieved:
+
+    $activities = ActivityFeed::with('parentable')
+        ->get()
+        ->loadMorphCount('parentable', [
+            Photo::class => ['tags'],
+            Post::class => ['comments'],
+        ]);
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
