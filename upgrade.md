@@ -80,17 +80,6 @@ First, the `report`, `render`, `shouldReport`, and `renderForConsole` methods of
 Next, please update your `session` configuration file's `secure` option to have a fallback value of `null`:
 
     'secure' => env('SESSION_SECURE_COOKIE', null),
-    
-Lastly, it's now required to always return integers from console commands and nothing else. If you were, for example, returning booleans you should change those to integers instead:
-
-    public function handle()
-    {
-        // Before...
-        return true;
-        
-        // After...
-        return 0;
-    }
 
 ### Authentication
 
