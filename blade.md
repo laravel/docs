@@ -896,7 +896,7 @@ As you can see, we will chain the `format` method onto whatever expression is pa
 <a name="custom-if-statements"></a>
 ### Custom If Statements
 
-Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using Closures. For example, let's define a custom conditional that checks the current application environment. We may do this in the `boot` method of our `AppServiceProvider`:
+Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using Closures. For example, let's define a custom conditional that checks the current application cloud provider. We may do this in the `boot` method of our `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Blade;
 
@@ -907,21 +907,21 @@ Programming a custom directive is sometimes more complex than necessary when def
      */
     public function boot()
     {
-        Blade::if('env', function ($environment) {
-            return app()->environment($environment);
+        Blade::if('cloud', function ($provider) {
+            return app()->environment($provider);
         });
     }
 
 Once the custom conditional has been defined, we can easily use it on our templates:
 
-    @env('local')
-        // The application is in the local environment...
-    @elseenv('testing')
-        // The application is in the testing environment...
+    @cloud('digitalocean')
+        // The application is using the digitalocean cloud provider...
+    @elsecloud('aws')
+        // The application is using the aws provider...
     @else
-        // The application is not in the local or testing environment...
+        // The application is not using the digitalocean or aws environment...
     @endenv
 
-    @unlessenv('production')
-        // The application is not in the production environment...
+    @unlesscloud('aws')
+        // The application is not using the aws environment...
     @endenv
