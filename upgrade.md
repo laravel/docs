@@ -81,6 +81,17 @@ Next, please update your `session` configuration file's `secure` option to have 
 
     'secure' => env('SESSION_SECURE_COOKIE', null),
 
+Symfony Console, which is the underlying component that powers Artisan, expects all commands to return an integer. Therefore, you should ensure that any of your commands which return a value are returning integers:
+
+    public function handle()
+    {
+        // Before...
+        return true;
+        
+        // After...
+        return 0;
+    }
+
 ### Authentication
 
 <a name="authentication-scaffolding"></a>
