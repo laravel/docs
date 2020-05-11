@@ -30,6 +30,27 @@ On the other hand, other packages are specifically intended for use with Laravel
 
 When writing a Laravel application, it generally does not matter if you use contracts or facades since both provide essentially equal levels of testability. However, when writing packages, your package will not typically have access to all of Laravel's testing helpers. If you would like to be able to write your package tests as if they existed inside a typical Laravel application, you may use the [Orchestral Testbench](https://github.com/orchestral/testbench) package.
 
+<a name="facades-and-service-provider"></a>
+#### Facades and your package's service provider
+If in your service provider you use `$this->app->singleton` or `$this->app->bind`, if you use a Facade, a singleton will always be returned because the `Facade` class keeps it's own record of what has been instantiated.
+
+If this behaviour is undesirable, clearing the resolved instance before the accessor is returned ensures that a new instance of the underlying class is called each time: 
+
+    use Illuminate\Support\Facades\Facade;
+
+    /**
+     * @method static [various methods]
+     */
+    class MyPackage extends Facade
+    {
+        protected static function getFacadeAccessor()
+        {
+            self::clearResolvedInstance(MyPackageUnderlyingClass::class);
+
+            return MyPackageUnderlyingClass::class;
+        }
+    }
+
 <a name="package-discovery"></a>
 ## Package Discovery
 
