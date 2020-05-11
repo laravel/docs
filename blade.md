@@ -908,7 +908,7 @@ Programming a custom directive is sometimes more complex than necessary when def
     public function boot()
     {
         Blade::if('cloud', function ($provider) {
-            return app()->environment($provider);
+            return config('filesystems.default') === $provider;
         });
     }
 
