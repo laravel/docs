@@ -81,7 +81,7 @@ Next, please update your `session` configuration file's `secure` option to have 
 
     'secure' => env('SESSION_SECURE_COOKIE', null),
 
-Lastly, if you were returning anything else than integers from your console commands, that'll now be converted to integers which is now a requirement in Symfony. If you were, for example, returning booleans you should change those to integers instead:
+Symfony Console, which is the underlying component that powers Artisan, expects all commands to return an integer. Therefore, you should ensure that any of your commands which return a value are returning integers:
 
     public function handle()
     {
