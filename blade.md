@@ -263,6 +263,20 @@ You may check if a section has content using the `@hasSection` directive:
 
         <div class="clearfix"></div>
     @endif
+    
+#### Environment Directives
+
+You may check if the production environment is currently active:
+
+    @production
+        // Production specific content...
+    @endproduction
+
+Or you may check if a specific environment is being used:
+
+    @env('staging')
+        // Staging specific content...
+    @endenv
 
 <a name="switch-statements"></a>
 ### Switch Statements
