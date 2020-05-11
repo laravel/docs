@@ -266,13 +266,13 @@ You may check if a section has content using the `@hasSection` directive:
     
 #### Environment Directives
 
-You may check if the production environment is currently active:
+You may check if the application is running in the production environment using the `@production` directive:
 
     @production
         // Production specific content...
     @endproduction
 
-Or you may check if a specific environment is being used:
+Or, you may determine if the application is running in a specific environment using the `@env` directive:
 
     @env('staging')
         // Staging specific content...
