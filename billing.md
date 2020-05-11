@@ -161,7 +161,11 @@ Once the customer has been created in Stripe, you may begin a subscription at a 
 
     $stripeCustomer = $user->createAsStripeCustomer($options);
 
-You may also use the `createOrGetStripeCustomer` method if you want to return the customer object if the billable entity is already a customer within Stripe.
+You may use the `asStripeCustomer` method if you want to return the customer object if the billable entity is already a customer within Stripe:
+
+    $stripeCustomer = $user->asStripeCustomer();
+
+The `createOrGetStripeCustomer` method may be used if you want to return the customer object but are not sure whether the billable entity is already a customer within Stripe. This method will create a new customer in Stripe if one does not already exist:
 
     $stripeCustomer = $user->createOrGetStripeCustomer();
 
