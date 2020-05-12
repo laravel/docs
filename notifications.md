@@ -147,6 +147,23 @@ If you would like to delay the delivery of the notification, you may chain the `
 
     $user->notify((new InvoicePaid($invoice))->delay($when));
 
+#### Customizing Notification Channel Queues
+
+If you would to specify a specific queue that should be used for each notification channel supported by the notification, you may define a `viaQueues` method on your notification. This method should return an array of channel name / queue name pairs:
+
+    /**
+     * Determine which queues should be used for each notification channel.
+     *
+     * @return array
+     */
+    public function viaQueues()
+    {
+        return [
+            'mail' => 'mail-queue',
+            'sms' => 'sms-queue',
+        ];
+    }
+
 <a name="on-demand-notifications"></a>
 ### On-Demand Notifications
 
