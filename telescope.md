@@ -26,6 +26,7 @@
     - [Redis Watcher](#redis-watcher)
     - [Request Watcher](#request-watcher)
     - [Schedule Watcher](#schedule-watcher)
+- [Displaying User Avatars](#displaying-user-avatars)
 
 <a name="introduction"></a>
 ## Introduction
@@ -351,3 +352,22 @@ The request watcher records the request, headers, session, and response data ass
 ### Schedule Watcher
 
 The schedule watcher records the command and output of any scheduled tasks run by your application.
+
+<a name="displaying-user-avatars"></a>
+## Displaying User Avatars
+
+The Telescope dashboard will display which authenticated user was logged in when the entry was saved. By default, Telescope will lookup a profile avatar using web service Gravatar. You may customize this avatar by registering a callback in your `TelescopeServiceProvider`. It should return an image URL from the authenticated user ID and email address passed to the callback.
+
+    use App\User;
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Telescope::avatar(function ($id, $email) {
+            return '/avatars/' . User::find($id)->avatar_path;
+        });
+    }
