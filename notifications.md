@@ -160,7 +160,7 @@ If you would to specify a specific queue that should be used for each notificati
     {
         return [
             'mail' => 'mail-queue',
-            'sms' => 'sms-queue',
+            'slack' => 'slack-queue',
         ];
     }
 
