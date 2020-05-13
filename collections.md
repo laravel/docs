@@ -1853,7 +1853,7 @@ This method has the same signature as the [`sortBy`](#method-sortby) method, but
 <a name="method-sortdesc"></a>
 #### `sortDesc()` {#collection-method}
 
-This method has the same signature as the [`sort`](#method-sort) method, but will sort the collection in the opposite order:
+This method will sort the collection in the opposite order as the [`sort`](#method-sort) method:
 
     $collection = collect([5, 3, 1, 2, 4]);
 
@@ -1862,6 +1862,8 @@ This method has the same signature as the [`sort`](#method-sort) method, but wil
     $sorted->values()->all();
 
     // [5, 4, 3, 2, 1]
+
+Unlike `sort`, you may not pass a callback to `sortDesc`. If you wish to use a callback, you should use [`sort`](#method-sort) and invert your comparison.
 
 <a name="method-sortkeys"></a>
 #### `sortKeys()` {#collection-method}
