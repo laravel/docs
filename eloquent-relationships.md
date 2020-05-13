@@ -1149,6 +1149,8 @@ For this operation, only two queries will be executed:
     select * from books
 
     select * from authors where id in (1, 2, 3, 4, 5, ...)
+    
+> {note} When using Eager Loading and non-integer primary keys, you should make sure that `protected $keyType` is set properly on the [model](/docs/7.x/eloquent#eloquent-model-conventions) to prevent all models from being retrieved.
 
 #### Eager Loading Multiple Relationships
 
