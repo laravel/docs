@@ -570,7 +570,6 @@ Component constructor arguments should be specified using `camelCase`, while `ke
      * Create the component instance.
      *
      * @param  string  $alertType
-     * @param  string  $message
      * @return void
      */
     public function __construct($alertType)
