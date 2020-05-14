@@ -406,6 +406,8 @@ The `whereNotIn` method verifies that the given column's value is **not** contai
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
 
+> {note} If you are binding a large integer dataset, the `whereIntegerInRaw` or  `whereIntegerNotInRaw` method may be used to greatly reduce your memory usage.
+
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
 The `whereNull` method verifies that the value of the given column is `NULL`:
