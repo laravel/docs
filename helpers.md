@@ -2038,13 +2038,13 @@ The `snake` method converts the given string to `snake_case`:
 <a name="method-fluent-str-split"></a>
 #### `split` {#collection-method}
 
-The `split` method split a string using a regular expression:3
+The `split` method splits a string into a collection using a regular expression:
 
     use Illuminate\Support\Str;
 
-    $keywords = Str::of('hypertext language, programming')->split('/[\s,]+/');
+    $segments = Str::of('one, two, three')->split('/[\s,]+/');
 
-    // collect(["hypertext", "language", "programming"])
+    // collect(["one", "two", "three"])
 
 <a name="method-fluent-str-start"></a>
 #### `start` {#collection-method}
