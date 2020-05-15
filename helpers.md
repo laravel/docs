@@ -167,6 +167,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [singular](#method-fluent-str-singular)
 [slug](#method-fluent-str-slug)
 [snake](#method-fluent-str-snake)
+[split](#method-fluent-str-split)
 [start](#method-fluent-str-start)
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
@@ -2033,6 +2034,17 @@ The `snake` method converts the given string to `snake_case`:
     $converted = Str::of('fooBar')->snake();
 
     // foo_bar
+
+<a name="method-fluent-str-split"></a>
+#### `split` {#collection-method}
+
+The `split` method split a string using a regular expression:3
+
+    use Illuminate\Support\Str;
+
+    $keywords = Str::of('hypertext language, programming')->split('/[\s,]+/');
+
+    // collect(["hypertext", "language", "programming"])
 
 <a name="method-fluent-str-start"></a>
 #### `start` {#collection-method}
