@@ -298,8 +298,6 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
 <a name="queue-fake"></a>
 ## Queue Fake
 
-> {tip} The queue fake should only be used when your application directly calls the `Queue` facade's various `push` methods. If you are [dispatching jobs](/docs/{{version}}/queues#dispatching-jobs) using the `dispatch` method on the job itself, you should use the [Bus fake](#bus-fake) instead.
-
 As an alternative to mocking, you may use the `Queue` facade's `fake` method to prevent jobs from being queued. You may then assert that jobs were pushed to the queue and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
 
     <?php
