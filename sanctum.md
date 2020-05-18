@@ -27,9 +27,10 @@ Laravel Sanctum provides a featherweight authentication system for SPAs (single 
 <a name="how-it-works"></a>
 ### How It Works
 
-Laravel Sanctum exists to solve two separate problems. 
+Laravel Sanctum exists to solve two separate problems.ealth
 
 #### API Tokens
+
 First, it is a simple package to issue API tokens to your users without the complication of OAuth. This feature is inspired by GitHub "access tokens". For example, imagine the "account settings" of your application has a screen where a user may generate an API token for their account. You may use Sanctum to generate and manage those tokens. These tokens typically have a very long expiration time (years), but may be manually revoked by the user at anytime.
 
 Laravel Sanctum offers this feature by storing user API tokens in a single database table and authenticating incoming requests via the `Authorization` header which should contain a valid API token.
