@@ -109,6 +109,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [get](#method-get)
 [groupBy](#method-groupby)
 [has](#method-has)
+[doesntHave](#method-doesnthave)
 [implode](#method-implode)
 [intersect](#method-intersect)
 [intersectByKeys](#method-intersectbykeys)
@@ -953,6 +954,25 @@ The `has` method determines if a given key exists in the collection:
 
     $collection->has(['amount', 'price']);
 
+    // false
+    
+<a name="method-doesnthave"></a>
+#### `doesntHave()` {#collection-method}
+
+The `doesntHave` method determines if a given key does not exist in the collection:
+
+    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
+
+    $collection->doesntHave('price');
+
+    // true
+
+    $collection->doesntHave(['price', 'name']);
+
+    // true
+    
+    $collection->doesntHave('product');
+    
     // false
 
 <a name="method-implode"></a>
