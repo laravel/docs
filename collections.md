@@ -679,6 +679,8 @@ If no callback is supplied, all entries of the collection that are equivalent to
 
     // [1, 2, 3]
 
+This method preserves the original collection's keys.
+
 For the inverse of `filter`, see the [reject](#method-reject) method.
 
 <a name="method-first"></a>
