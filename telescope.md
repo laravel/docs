@@ -59,7 +59,7 @@ When updating Telescope, you should re-publish Telescope's assets:
 
 If you plan to only use Telescope to assist your local development, you may install Telescope using the `--dev` flag:
 
-    composer require laravel/telescope --dev
+    composer require laravel/telescope "2.1.7" --dev
 
 After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your `app` configuration file. Instead, manually register the service provider in the `register` method of your `AppServiceProvider`:
 
