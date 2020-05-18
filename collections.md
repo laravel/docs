@@ -959,7 +959,7 @@ The `has` method determines if a given key exists in the collection:
 <a name="method-doesnthave"></a>
 #### `doesntHave()` {#collection-method}
 
-The `doesntHave` method determines if a given key does not exist in the collection:
+The `doesntHave` method determines if a given key is missing from the collection:
 
     $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
 
