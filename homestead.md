@@ -315,6 +315,8 @@ The default MongoDB installation will set the database username to `homestead` a
 
 You may specify a supported version of Elasticsearch, which may be a major version or an exact version number (major.minor.patch). The default installation will create a cluster named 'homestead'. You should never give Elasticsearch more than half of the operating system's memory, so make sure your Homestead machine has at least twice the Elasticsearch allocation.
 
+> {note} Since Homestead version 10.3.0 you need to use the exact version number (major.minor.patch) for Elasticsearch.
+
 > {tip} Check out the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current) to learn how to customize your configuration.
 
 #### Neo4j
