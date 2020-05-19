@@ -112,7 +112,7 @@ You may easily access your configuration values using the global `config` helper
     $value = config('app.timezone');
 
     // Retrieve a default value if the configuration value does not exist...
-    $value = config('app.timezone', Asia/Seoul');
+    $value = config('app.timezone', 'Asia/Seoul');
 
 To set configuration values at runtime, pass an array to the `config` helper:
 
