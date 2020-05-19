@@ -86,6 +86,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [preg_replace_array](#method-preg-replace-array)
 [Str::after](#method-str-after)
 [Str::afterLast](#method-str-after-last)
+[Str::ascii](#method-str-ascii)
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
 [Str::between](#method-str-between)
@@ -154,7 +155,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [lower](#method-fluent-str-lower)
 [ltrim](#method-fluent-str-ltrim)
 [match](#method-fluent-str-match)
-[matchAll](#method-fluent-str-matchAll)
+[matchAll](#method-fluent-str-match-all)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [replace](#method-fluent-str-replace)
@@ -166,6 +167,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [singular](#method-fluent-str-singular)
 [slug](#method-fluent-str-slug)
 [snake](#method-fluent-str-snake)
+[split](#method-fluent-str-split)
 [start](#method-fluent-str-start)
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
@@ -1045,6 +1047,17 @@ The `Str::afterLast` method returns everything after the last occurrence of the 
 
     // 'Controller'
 
+<a name="method-str-ascii"></a>
+#### `Str::ascii()` {#collection-method}
+
+The `Str::ascii` method will attempt to transliterate the string into an ASCII value:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::ascii('û');
+
+    // 'u'    
+    
 <a name="method-str-before"></a>
 #### `Str::before()` {#collection-method}
 
@@ -2021,6 +2034,17 @@ The `snake` method converts the given string to `snake_case`:
     $converted = Str::of('fooBar')->snake();
 
     // foo_bar
+
+<a name="method-fluent-str-split"></a>
+#### `split` {#collection-method}
+
+The `split` method splits a string into a collection using a regular expression:
+
+    use Illuminate\Support\Str;
+
+    $segments = Str::of('one, two, three')->split('/[\s,]+/');
+
+    // collect(["one", "two", "three"])
 
 <a name="method-fluent-str-start"></a>
 #### `start` {#collection-method}

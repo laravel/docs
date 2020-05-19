@@ -9,6 +9,7 @@
     - [Flash Data](#flash-data)
     - [Deleting Data](#deleting-data)
     - [Regenerating The Session ID](#regenerating-the-session-id)
+- [Session Blocking](#session-blocking)
 - [Adding Custom Session Drivers](#adding-custom-session-drivers)
     - [Implementing The Driver](#implementing-the-driver)
     - [Registering The Driver](#registering-the-driver)
@@ -197,6 +198,33 @@ Regenerating the session ID is often done in order to prevent malicious users fr
 Laravel automatically regenerates the session ID during authentication if you are using the built-in `LoginController`; however, if you need to manually regenerate the session ID, you may use the `regenerate` method.
 
     $request->session()->regenerate();
+
+<a name="session-blocking"></a>
+## Session Blocking
+
+> {note} To utilize session blocking, your application must be using a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks). Currently, those cache drivers include the `memcached`, `dynamodb`, `redis`, and `database` drivers. In addition, you may not use the `cookie` session driver.
+
+By default, Laravel allows requests using the same session to execute concurrently. So, for example, if you use a JavaScript HTTP library to make two HTTP requests to your application, they will both execute at the same time. For many applications, this is not a problem; however, session data loss can occur in a small subset of applications that make concurrent requests to two different application endpoints which both write data to the session.
+
+To mitigate this, Laravel provides functionality that allows you to limit concurrent requests for a given session. To get started, you may simply chain the `block` method onto your route definition. In this example, an incoming request to the `/profile` endpoint would acquire a session lock. While this lock is being held, any incoming requests to the `/profile` or `/order` endpoints which share the same session ID will wait for the first request to finish executing before continuing their execution:
+
+    Route::post('/profile', function () {
+        //
+    })->block($lockSeconds = 10, $waitSeconds = 10)
+
+    Route::post('/order', function () {
+        //
+    })->block($lockSeconds = 10, $waitSeconds = 10)
+
+The `block` method accepts two optional arguments. The first argument accepted by the `block` method is the maximum number of seconds the session lock should be held for before it is released. Of course, if the request finishes executing before this time the lock will be released earlier.
+
+The second argument accepted by the `block` method is the number of seconds a request should wait while attempting to obtain a session lock. A `Illuminate\Contracts\Cache\LockTimoutException` will be thrown if the request is unable to obtain a session lock within the given number of seconds.
+
+If neither of these arguments are passed, the lock will be obtained for a maximum of 10 seconds and requests will wait a maximum of 10 seconds while attempting to obtain a lock:
+
+    Route::post('/profile', function () {
+        //
+    })->block()
 
 <a name="adding-custom-session-drivers"></a>
 ## Adding Custom Session Drivers

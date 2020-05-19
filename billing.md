@@ -161,7 +161,11 @@ Once the customer has been created in Stripe, you may begin a subscription at a 
 
     $stripeCustomer = $user->createAsStripeCustomer($options);
 
-You may also use the `createOrGetStripeCustomer` method if you want to return the customer object if the billable entity is already a customer within Stripe.
+You may use the `asStripeCustomer` method if you want to return the customer object if the billable entity is already a customer within Stripe:
+
+    $stripeCustomer = $user->asStripeCustomer();
+
+The `createOrGetStripeCustomer` method may be used if you want to return the customer object but are not sure whether the billable entity is already a customer within Stripe. This method will create a new customer in Stripe if one does not already exist:
 
     $stripeCustomer = $user->createOrGetStripeCustomer();
 
@@ -824,7 +828,7 @@ Stripe can notify your application of a variety of events via webhooks. By defau
 
 By default, this controller will automatically handle cancelling subscriptions that have too many failed charges (as defined by your Stripe settings), customer updates, customer deletions, subscription updates, and payment method changes; however, as we'll soon discover, you can extend this controller to handle any webhook event you like.
 
-To ensure your application can handle Stripe webhooks, be sure to configure the webhook URL in the Stripe control panel. The full list of all webhooks you should configure in the Stripe control panel are:
+To ensure your application can handle Stripe webhooks, be sure to configure the webhook URL in the Stripe control panel. By default, Cashier's webhook controller listens to the `/stripe/webhook` URL path. The full list of all webhooks you should configure in the Stripe control panel are:
 
 - `customer.subscription.updated`
 - `customer.subscription.deleted`

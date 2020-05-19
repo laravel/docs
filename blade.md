@@ -263,6 +263,20 @@ You may check if a section has content using the `@hasSection` directive:
 
         <div class="clearfix"></div>
     @endif
+    
+#### Environment Directives
+
+You may check if the application is running in the production environment using the `@production` directive:
+
+    @production
+        // Production specific content...
+    @endproduction
+
+Or, you may determine if the application is running in a specific environment using the `@env` directive:
+
+    @env('staging')
+        // Staging specific content...
+    @endenv
 
 <a name="switch-statements"></a>
 ### Switch Statements
@@ -556,7 +570,6 @@ Component constructor arguments should be specified using `camelCase`, while `ke
      * Create the component instance.
      *
      * @param  string  $alertType
-     * @param  string  $message
      * @return void
      */
     public function __construct($alertType)
@@ -882,7 +895,7 @@ As you can see, we will chain the `format` method onto whatever expression is pa
 <a name="custom-if-statements"></a>
 ### Custom If Statements
 
-Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using Closures. For example, let's define a custom conditional that checks the current application environment. We may do this in the `boot` method of our `AppServiceProvider`:
+Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using Closures. For example, let's define a custom conditional that checks the current application cloud provider. We may do this in the `boot` method of our `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Blade;
 
@@ -893,21 +906,21 @@ Programming a custom directive is sometimes more complex than necessary when def
      */
     public function boot()
     {
-        Blade::if('env', function ($environment) {
-            return app()->environment($environment);
+        Blade::if('cloud', function ($provider) {
+            return config('filesystems.default') === $provider;
         });
     }
 
 Once the custom conditional has been defined, we can easily use it on our templates:
 
-    @env('local')
-        // The application is in the local environment...
-    @elseenv('testing')
-        // The application is in the testing environment...
+    @cloud('digitalocean')
+        // The application is using the digitalocean cloud provider...
+    @elsecloud('aws')
+        // The application is using the aws provider...
     @else
-        // The application is not in the local or testing environment...
-    @endenv
+        // The application is not using the digitalocean or aws environment...
+    @endcloud
 
-    @unlessenv('production')
-        // The application is not in the production environment...
-    @endenv
+    @unlesscloud('aws')
+        // The application is not using the aws environment...
+    @endcloud

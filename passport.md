@@ -5,7 +5,9 @@
 - [Installation](#installation)
     - [Frontend Quickstart](#frontend-quickstart)
     - [Deploying Passport](#deploying-passport)
+    - [Migration Customization](#migration-customization)
 - [Configuration](#configuration)
+    - [Client Secret Hashing](#client-secret-hashing)
     - [Token Lifetimes](#token-lifetimes)
     - [Overriding Default Models](#overriding-default-models)
 - [Issuing Access Tokens](#issuing-access-tokens)
@@ -20,6 +22,7 @@
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
+    - [Customizing The User Provider](#customizing-the-user-provider)
     - [Customizing The Username Field](#customizing-the-username-field)
     - [Customizing The Password Validation](#customizing-the-password-validation)
 - [Implicit Grant Tokens](#implicit-grant-tokens)
@@ -66,7 +69,9 @@ Next, you should run the `passport:install` command. This command will create th
 
     php artisan passport:install
 
-After running this command, add the `Laravel\Passport\HasApiTokens` trait to your `App\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
+> {tip} If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids).
+
+After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
 
     <?php
 
@@ -129,11 +134,12 @@ Finally, in your `config/auth.php` configuration file, you should set the `drive
         ],
     ],
 
-### Migration Customization
+<a name="client-uuids"></a>
+#### Client UUIDs
 
-If you are not going to use Passport's default migrations, you should call the `Passport::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=passport-migrations`.
+You may run the `passport:install` command with the `--uuids` option present. This flag will instruct Passport that you would like to use UUIDs instead of auto-incrementing integers as the Passport `Client` model's primary key values. After running the `passport:install` command with the `--uuids` option, you will be given additional instructions regarding disabling Passport's default migrations:
 
-By default, Passport uses an integer column to store the `user_id`. If your application uses a different column type to identify users (for example: UUIDs), you should modify the default Passport migrations after publishing them.
+    php artisan passport:install --uuids
 
 <a name="frontend-quickstart"></a>
 ### Frontend Quickstart
@@ -204,8 +210,22 @@ Additionally, you may publish Passport's configuration file using `php artisan v
     <public key here>
     -----END PUBLIC KEY-----"
 
+<a name="migration-customization"></a>
+### Migration Customization
+
+If you are not going to use Passport's default migrations, you should call the `Passport::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=passport-migrations`.
+
 <a name="configuration"></a>
 ## Configuration
+
+<a name="client-secret-hashing"></a>
+### Client Secret Hashing
+
+If you would like your client's secrets to be hashed when stored in your database, you should call the `Passport::hashClientSecrets` method in the `boot` method of your `AppServiceProvider`:
+
+    Passport::hashClientSecrets();
+
+Once enabled, all of your client secrets will only be shown one time when your client is created. Since the plain-text client secret value is never stored in the database, it is not possible to recovery it if it is lost.
 
 <a name="token-lifetimes"></a>
 ### Token Lifetimes
@@ -617,6 +637,11 @@ When using the password grant or client credentials grant, you may wish to autho
         ],
     ]);
 
+<a name="customizing-the-user-provider"></a>
+### Customizing The User Provider
+
+If your application uses more than one [authentication user provider](/docs/{{version}}/authentication#introduction), you may specify which user provider the password grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your `config/auth.php` configuration file. You can then [protect your route using middleware](#via-middleware) to ensure that only users from the guard's specified provider are authorized.
+
 <a name="customizing-the-username-field"></a>
 ### Customizing The Username Field
 
@@ -771,7 +796,12 @@ Before your application can issue personal access tokens, you will need to creat
 
     php artisan passport:client --personal
 
-If you have already defined a personal access client, you may instruct Passport to use it using the `personalAccessClientId` method. Typically, this method should be called from the `boot` method of your `AuthServiceProvider`:
+After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
+
+    PASSPORT_PERSONAL_ACCESS_CLIENT_ID=client-id-value
+    PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=unhashed-client-secret-value
+
+Next, you should register these values by placing the following calls to `Passport::personalAccessClientId` and `Passport::personalAccessClientSecret` within the `boot` method of your `AuthServiceProvider`:
 
     /**
      * Register any authentication / authorization services.
@@ -784,7 +814,13 @@ If you have already defined a personal access client, you may instruct Passport 
 
         Passport::routes();
 
-        Passport::personalAccessClientId('client-id');
+        Passport::personalAccessClientId(
+            config('passport.personal_access_client.id')
+        );
+
+        Passport::personalAccessClientSecret(
+            config('passport.personal_access_client.secret')
+        );
     }
 
 <a name="managing-personal-access-tokens"></a>
@@ -860,6 +896,28 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
     Route::get('/user', function () {
         //
     })->middleware('auth:api');
+
+#### Multiple Authentication Guards
+
+If your application authenticates different types of users that perhaps use entirely different Eloquent models, you will likely need to define a guard configuration for each user provider type in your application. This allows you to protect requests intended for specific user providers. For example, given the following guard configuration the `config/auth.php` configuration file:
+
+    'api' => [
+        'driver'   => 'passport',
+        'provider' => 'users',
+    ],
+
+    'api-customers' => [
+        'driver'   => 'passport',
+        'provider' => 'customers',
+    ],
+
+The following route will utilize the `api-customers` guard, which uses the `customers` user provider, to authenticate incoming requests:
+
+    Route::get('/customer', function () {
+        //
+    })->middleware('auth:api-customers');
+
+> {tip} For more information on using multiple user providers with Passport, please consult the [password grant documentation](#customizing-the-user-provider).
 
 <a name="passing-the-access-token"></a>
 ### Passing The Access Token

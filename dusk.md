@@ -1471,6 +1471,12 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
 
                 - store_artifacts:
                     path: tests/Browser/screenshots
+                    
+                - store_artifacts:
+                    path: tests/Browser/console
+                    
+                - store_artifacts:
+                    path: storage/logs
 
 
 <a name="running-tests-on-codeship"></a>

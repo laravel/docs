@@ -312,6 +312,24 @@ By default, your outermost resource is wrapped in a `data` key when the resource
         ]
     }
 
+If you would like to use a custom key instead of `data`, you may define a `$wrap` attribute on the resource class:
+
+    <?php
+
+    namespace App\Http\Resources;
+
+    use Illuminate\Http\Resources\Json\JsonResource;
+
+    class User extends JsonResource
+    {
+        /**
+         * The "data" wrapper that should be applied.
+         *
+         * @var string
+         */
+        public static $wrap = 'user';
+    }
+
 If you would like to disable the wrapping of the outermost resource, you may use the `withoutWrapping` method on the base resource class. Typically, you should call this method from your `AppServiceProvider` or another [service provider](/docs/{{version}}/providers) that is loaded on every request to your application:
 
     <?php

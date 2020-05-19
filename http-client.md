@@ -38,6 +38,7 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
     $response->status() : int;
     $response->ok() : bool;
     $response->successful() : bool;
+    $response->failed() : bool;
     $response->serverError() : bool;
     $response->clientError() : bool;
     $response->header($header) : string;
@@ -136,6 +137,9 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 
     // Determine if the status code was >= 200 and < 300...
     $response->successful();
+
+    // Determine if the status code was >= 400...
+    $response->failed();
 
     // Determine if the response has a 400 level status code...
     $response->clientError();

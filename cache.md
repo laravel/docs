@@ -13,6 +13,10 @@
     - [Storing Tagged Cache Items](#storing-tagged-cache-items)
     - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
     - [Removing Tagged Cache Items](#removing-tagged-cache-items)
+- [Atomic Locks](#atomic-locks)
+    - [Driver Prerequisites](#lock-driver-prerequisites)
+    - [Managing Locks](#managing-locks)
+    - [Managing Locks Across Processes](#managing-locks-across-processes)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
     - [Writing The Driver](#writing-the-driver)
     - [Registering The Driver](#registering-the-driver)
@@ -209,69 +213,6 @@ You may clear the entire cache using the `flush` method:
 
 > {note} Flushing the cache does not respect the cache prefix and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
 
-<a name="atomic-locks"></a>
-### Atomic Locks
-
-> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
-
-Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Forge](https://forge.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:
-
-    use Illuminate\Support\Facades\Cache;
-
-    $lock = Cache::lock('foo', 10);
-
-    if ($lock->get()) {
-        // Lock acquired for 10 seconds...
-
-        $lock->release();
-    }
-
-The `get` method also accepts a Closure. After the Closure is executed, Laravel will automatically release the lock:
-
-    Cache::lock('foo')->get(function () {
-        // Lock acquired indefinitely and automatically released...
-    });
-
-If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
-
-    use Illuminate\Contracts\Cache\LockTimeoutException;
-
-    $lock = Cache::lock('foo', 10);
-
-    try {
-        $lock->block(5);
-
-        // Lock acquired after waiting maximum of 5 seconds...
-    } catch (LockTimeoutException $e) {
-        // Unable to acquire lock...
-    } finally {
-        optional($lock)->release();
-    }
-
-    Cache::lock('foo', 10)->block(5, function () {
-        // Lock acquired after waiting maximum of 5 seconds...
-    });
-
-#### Managing Locks Across Processes
-
-Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token:
-
-    // Within Controller...
-    $podcast = Podcast::find($id);
-
-    $lock = Cache::lock('foo', 120);
-
-    if ($result = $lock->get()) {
-        ProcessPodcast::dispatch($podcast, $lock->owner());
-    }
-
-    // Within ProcessPodcast Job...
-    Cache::restoreLock('foo', $this->owner)->release();
-
-If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:
-
-    Cache::lock('foo')->forceRelease();
-
 <a name="the-cache-helper"></a>
 ### The Cache Helper
 
@@ -326,6 +267,86 @@ You may flush all items that are assigned a tag or list of tags. For example, th
 In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`:
 
     Cache::tags('authors')->flush();
+
+<a name="atomic-locks"></a>
+## Atomic Locks
+
+> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb`, `redis`, `database`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+
+<a name="lock-driver-prerequisites"></a>
+### Driver Prerequisites
+
+#### Database
+
+When using the `database` cache driver, you will need to setup a table to contain the cache locks. You'll find an example `Schema` declaration for the table below:
+
+    Schema::create('cache_locks', function ($table) {
+        $table->string('key')->primary();
+        $table->string('owner');
+        $table->integer('expiration');
+    });
+
+<a name="managing-locks"></a>
+### Managing Locks
+
+Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Forge](https://forge.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:
+
+    use Illuminate\Support\Facades\Cache;
+
+    $lock = Cache::lock('foo', 10);
+
+    if ($lock->get()) {
+        // Lock acquired for 10 seconds...
+
+        $lock->release();
+    }
+
+The `get` method also accepts a Closure. After the Closure is executed, Laravel will automatically release the lock:
+
+    Cache::lock('foo')->get(function () {
+        // Lock acquired indefinitely and automatically released...
+    });
+
+If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
+
+    use Illuminate\Contracts\Cache\LockTimeoutException;
+
+    $lock = Cache::lock('foo', 10);
+
+    try {
+        $lock->block(5);
+
+        // Lock acquired after waiting maximum of 5 seconds...
+    } catch (LockTimeoutException $e) {
+        // Unable to acquire lock...
+    } finally {
+        optional($lock)->release();
+    }
+
+    Cache::lock('foo', 10)->block(5, function () {
+        // Lock acquired after waiting maximum of 5 seconds...
+    });
+
+<a name="managing-locks-across-processes"></a>
+### Managing Locks Across Processes
+
+Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token:
+
+    // Within Controller...
+    $podcast = Podcast::find($id);
+
+    $lock = Cache::lock('foo', 120);
+
+    if ($result = $lock->get()) {
+        ProcessPodcast::dispatch($podcast, $lock->owner());
+    }
+
+    // Within ProcessPodcast Job...
+    Cache::restoreLock('foo', $this->owner)->release();
+
+If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:
+
+    Cache::lock('foo')->forceRelease();
 
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
