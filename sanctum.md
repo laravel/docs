@@ -27,7 +27,7 @@ Laravel Sanctum provides a featherweight authentication system for SPAs (single 
 <a name="how-it-works"></a>
 ### How It Works
 
-Laravel Sanctum exists to solve two separate problems.ealth
+Laravel Sanctum exists to solve two separate problems.
 
 #### API Tokens
 
