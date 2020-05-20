@@ -45,6 +45,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 Laravel's GitHub issue trackers are not intended to provide Laravel help or support. Instead, use one of the following channels:
 
 <div class="content-list" markdown="1">
+- [GitHub Discussions](https://github.com/laravel/framework/discussions)
 - [Laracasts Forums](https://laracasts.com/discuss)
 - [Laravel.io Forums](https://laravel.io/forum)
 - [StackOverflow](https://stackoverflow.com/questions/tagged/laravel)
