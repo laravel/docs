@@ -1569,5 +1569,6 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
           - name: Run Laravel Server
             run: php artisan serve &
           - name: Run Dusk Tests
-            run: php artisan dusk
+            env:
               APP_URL: "http://127.0.0.1:8000"
+            run: php artisan dusk
