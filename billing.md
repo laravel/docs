@@ -468,25 +468,25 @@ To determine if the user has cancelled their subscription and is no longer withi
 
 #### Subscription Scopes
 
-Most subscription statuses are also available as query scopes for you to filter subscriptions on:
+Most subscription states are also available as query scopes so that you may easily query your database for subscriptions that are in a given state:
 
-    // Get all active subscriptions of an application...
+    // Get all active subscriptions...
     $subscriptions = Subscription::query()->active()->get();
 
-    // Get all cancelled subscriptions of a user:
+    // Get all of the cancelled subscriptions for a user...
     $subscriptions = $user->subscriptions()->cancelled()->get();
 
-Here's a list of all query scopes on a subscription:
+A complete list of available scopes is available below:
 
     Subscription::query()->active();
     Subscription::query()->cancelled();
-    Subscription::query()->notCancelled();
     Subscription::query()->ended();
     Subscription::query()->incomplete();
-    Subscription::query()->onGracePeriod();
+    Subscription::query()->notCancelled();
     Subscription::query()->notOnGracePeriod();
-    Subscription::query()->onTrial();
     Subscription::query()->notOnTrial();
+    Subscription::query()->onGracePeriod();
+    Subscription::query()->onTrial();
     Subscription::query()->pastDue();
     Subscription::query()->recurring();
 
