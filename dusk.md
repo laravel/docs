@@ -1542,7 +1542,7 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
-If you are using [Github Actions](https://github.com/features/actions) to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
+If you are using [Github Actions](https://github.com/features/actions) to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server. Note that the application will be served on `http://127.0.0.1:8000` and simply using the default `APP_URL=http://localhost` will not work:
 
     name: CI
     on: [push]
@@ -1570,3 +1570,4 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
             run: php artisan serve &
           - name: Run Dusk Tests
             run: php artisan dusk
+              APP_URL: "http://127.0.0.1:8000"
