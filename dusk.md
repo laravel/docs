@@ -1570,3 +1570,4 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
             run: php artisan serve &
           - name: Run Dusk Tests
             run: php artisan dusk
+              APP_URL: "http://127.0.0.1:8000"
