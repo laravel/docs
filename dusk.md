@@ -1557,7 +1557,7 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
           - name: Create Database
             run: |
               sudo systemctl start mysql
-              mysql --user="root" --password="root" -e "CREATE DATABASE my-database character set UTF8mb4 collate utf8mb4_bin;"
+              mysql --user="root" --password="root" -e "CREATE DATABASE 'my-database' character set UTF8mb4 collate utf8mb4_bin;"
           - name: Install Composer Dependencies
             run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
           - name: Generate Application Key
