@@ -1091,7 +1091,7 @@ Many of Cashier's objects are wrappers around Stripe SDK objects. If you would l
 
     $stripeSubscription->save();
 
-Cashier also provides a few shortcut methods for updating some Stripe resources:
+You may also use the `updateStripeSubscription` method to update the Stripe subscription directly:
 
     $subscription->updateStripeSubscription(['application_fee_percent' => 5]);
 
