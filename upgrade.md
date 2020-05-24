@@ -33,6 +33,15 @@ Update your `laravel/framework` dependency to `^8.0` in your `composer.json` fil
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 8 support.
 
+<a name="closure-routes-caching"></a>
+#### Closure Routes Caching
+
+**Likelihood Of Impact: Low**
+
+Laravel 8 introduces caching of the closure-based routes. It will not affect you in any way, unless you override or use in your code directly `Illuminate\Routing\Route::prepareForSerialization`, which otherwise is used only in the `route:cache` command by the framework.
+
+The change implemented in this method is adding support for serialization of the closure and is mutating `Route::$action['uses']` value.
+
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
