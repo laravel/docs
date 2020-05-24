@@ -90,7 +90,7 @@ When a user is successfully authenticated, they will be redirected to the `/home
     public const HOME = '/home';
 
 
-If you need more robust customization of the response returned when a user is authenticated, Laravel provides an empty `authenticated(Request $request, $user)` method in the trait `AuthenticatesUsers` which can be found in `vendor/laravel/ui/auth-backend/` that may be overwritten if desired:
+If you need more robust customization of the response returned when a user is authenticated, Laravel provides an empty `authenticated(Request $request, $user)` method in the trait `AuthenticatesUsers` found in `vendor/laravel/ui/auth-backend/` that may be overwritten if desired:
 
     /**
      * The user has been authenticated.
