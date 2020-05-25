@@ -128,6 +128,8 @@ You may control how many additional links are displayed on each side of the pagi
 
     {{ $users->onEachSide(5)->links() }}
 
+> {note} Pagination `onEachSide` requires a minimum of "2".
+
 <a name="converting-results-to-json"></a>
 ### Converting Results To JSON
 
