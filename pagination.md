@@ -189,6 +189,7 @@ If you would like to designate a different file as the default pagination view, 
         Paginator::defaultSimpleView('view-name');
     }
 
+<a name="using-tailwind"></a>
 ### Using Tailwind
 
 Laravel includes pagination views built using [Tailwind CSS](https://tailwindcss.com/). To use these views instead of the default Bootstrap views, you may call the paginator's `useTailwind` method within your `AppServiceProvider`:
