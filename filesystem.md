@@ -313,7 +313,7 @@ In web applications, one of the most common use-cases for storing files is stori
 
 There are a few important things to note about this example. Note that we only specified a directory name, not a file name. By default, the `store` method will generate a unique ID to serve as the file name. The file's extension will be determined by examining the file's MIME type. The path to the file will be returned by the `store` method so you can store the path, including the generated file name, in your database.
 
-We prepend `public/` in the `store` method so that the file gets uploaded in the `public` directory (`storage/app/public`). If you upload the file to the `public` directory then it makes your life easier when it comes to access the file later. Without adding this, the file would be uploaded in the `storage/app/avatars` directory.
+We prepend `public/` in the `store` method so that the file gets uploaded in the `public` directory (`storage/app/public`). If you upload the file to the `public` directory then you can access the file from the `public/storage` symlink. Without adding this, the file would be uploaded in the `storage/app/avatars` directory.
 
 You may also call the `putFile` method on the `Storage` facade to perform the same file manipulation as the example above:
 
