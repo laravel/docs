@@ -263,7 +263,7 @@ You may check if a section has content using the `@hasSection` directive:
 
         <div class="clearfix"></div>
     @endif
-    
+
 #### Environment Directives
 
 You may check if the application is running in the production environment using the `@production` directive:
@@ -686,6 +686,18 @@ You may define the content of the named slot using the `x-slot` tag. Any content
     <x-alert>
         <x-slot name="title">
             Server Error
+        </x-slot>
+
+        <strong>Whoops!</strong> Something went wrong!
+    </x-alert>
+
+#### Scoped Slots
+
+If you have used a JavaScript framework such as Vue, you may be familiar with "scoped slots", which allow you to access data or methods from the component within your slot. You may achieve similar behavior in Laravel by defining public methods or properties on your component and accessing the component within your slot via the `$component` variable:
+
+    <x-alert>
+        <x-slot name="title">
+            {{ $component->formatAlert('Server Error') }}
         </x-slot>
 
         <strong>Whoops!</strong> Something went wrong!
