@@ -195,7 +195,7 @@ Envoy also supports sending notifications to [Discord](https://discord.com) afte
 <a name="telegram"></a>
 ### Telegram
 
-Envoy also supports sending notifications to [Telegram](https://telegram.org) after each task is executed. The `@telegram` directive accepts a Telegram Bot ID and a Chat ID. You may retrieve your Bot ID by creating a new one using [BotFather](https://t.me/botfather). You also need a valid Chat ID which you can retrieve with [@username_to_id_bot](https://t.me/username_to_id_bot). You should pass the entire Bot ID and Chat ID into the `@telegram` directive:
+Envoy also supports sending notifications to [Telegram](https://telegram.org) after each task is executed. The `@telegram` directive accepts a Telegram Bot ID and a Chat ID. You may retrieve your Bot ID by creating a new bot using [BotFather](https://t.me/botfather). You can retrieve a valid Chat ID using [@username_to_id_bot](https://t.me/username_to_id_bot). You should pass the entire Bot ID and Chat ID into the `@telegram` directive:
 
     @finished
         @telegram('<bot-id>','<chat-id>')
