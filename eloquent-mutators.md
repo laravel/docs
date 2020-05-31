@@ -358,7 +358,7 @@ Occasionally, you may need to write a custom cast that only transforms values th
         public function set($model, $key, $value, $attributes)
         {
             return is_null($this->algorithm)
-                        ? bcrypt($value);
+                        ? bcrypt($value)
                         : hash($this->algorithm, $value);
         }
     }
