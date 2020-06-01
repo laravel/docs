@@ -28,6 +28,7 @@
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
+- [Escaping Blade Directives](#escaping-blade-directives)
 - [Extending Blade](#extending-blade)
     - [Custom If Statements](#custom-if-statements)
 
@@ -858,6 +859,18 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
     <div>
         Monthly Revenue: {{ $metrics->monthlyRevenue() }}.
     </div>
+
+
+<a name="escaping-blade-directives"></a>
+## Escaping Blade Directives
+
+If you need to escape display a Blade directive, for example to display it in a webpage or to use it in the templating of a JavaScript framework, you can do so by prefixing it with another `@` symbol.
+
+    {{-- Blade source code --}}
+    @@json([])
+    
+    <!-- HTML output -->
+    @json([])
 
 <a name="extending-blade"></a>
 ## Extending Blade
