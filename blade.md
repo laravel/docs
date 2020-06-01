@@ -864,7 +864,7 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
 <a name="escaping-blade-directives"></a>
 ## Escaping Blade Directives
 
-If you need to escape display a Blade directive, for example to display it in a webpage or to use it in the templating of a JavaScript framework, you can do so by prefixing it with another `@` symbol.
+If you need to escape display a Blade directive, for example to display it in a webpage or to use it in the template for a JavaScript framework, you can do so by prefixing the directive with another `@` character.
 
     {{-- Blade source code --}}
     @@json([])
