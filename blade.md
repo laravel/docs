@@ -186,6 +186,14 @@ Since many JavaScript frameworks also use "curly" braces to indicate a given exp
 
 In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
 
+The `@` symbol may also be used to escape Blade directives:
+
+    {{-- Blade --}}
+    @@json()
+    
+    <!-- HTML output -->
+    @json()
+
 #### The `@verbatim` Directive
 
 If you are displaying JavaScript variables in a large portion of your template, you may wrap the HTML in the `@verbatim` directive so that you do not have to prefix each Blade echo statement with an `@` symbol:
