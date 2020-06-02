@@ -813,7 +813,7 @@ The `chargeProduct` method accepts an array as its second argument, allowing you
 <a name="refunding-orders"></a>
 ### Refunding Orders
 
-If you need to refund a Paddle order, you may use the `refund` method. This method accepts the Paddle Order ID as its first argument. You may retrieve transactions for a given billable entity using the `transactions` relationship:
+If you need to refund a Paddle order, you may use the `refund` method. This method accepts the Paddle Order ID as its first argument. You may retrieve transactions for a given billable entity using the `transactions` method:
 
     $transaction = $user->transactions()->first();
 
