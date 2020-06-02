@@ -680,7 +680,7 @@ Once you are ready to create an actual subscription for the user, you may use th
 <a name="handling-paddle-webhooks"></a>
 ## Handling Paddle Webhooks
 
-> {tip} You may use [Valet's `share` command](https://laravel.com/docs/7.x/valet#sharing-sites) to help test webhooks during local development.
+> {tip} You may use [Valet's `share` command](https://laravel.com/docs/{{version}}/valet#sharing-sites) to help test webhooks during local development.
 
 Paddle can notify your application of a variety of events via webhooks. By default, a route that points to Cashier's webhook controller is configured through the Cashier service provider. This controller will handle all incoming webhook requests.
 
