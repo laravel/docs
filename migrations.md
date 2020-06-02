@@ -176,8 +176,8 @@ You may use the following commands on the schema builder to define the table's o
 Command  |  Description
 -------  |  -----------
 `$table->engine = 'InnoDB';`  |  Specify the table storage engine (MySQL).
-`$table->charset = 'utf8';`  |  Specify a default character set for the table (MySQL).
-`$table->collation = 'utf8_unicode_ci';`  |  Specify a default collation for the table (MySQL).
+`$table->charset = 'utf8mb4';`  |  Specify a default character set for the table (MySQL).
+`$table->collation = 'utf8mb4_unicode_ci';`  |  Specify a default collation for the table (MySQL).
 `$table->temporary();`  |  Create a temporary table (except SQL Server).
 
 <a name="renaming-and-dropping-tables"></a>
@@ -292,8 +292,8 @@ Modifier  |  Description
 --------  |  -----------
 `->after('column')`  |  Place the column "after" another column (MySQL)
 `->autoIncrement()`  |  Set INTEGER columns as auto-increment (primary key)
-`->charset('utf8')`  |  Specify a character set for the column (MySQL)
-`->collation('utf8_unicode_ci')`  |  Specify a collation for the column (MySQL/PostgreSQL/SQL Server)
+`->charset('utf8mb4')`  |  Specify a character set for the column (MySQL)
+`->collation('utf8mb4_unicode_ci')`  |  Specify a collation for the column (MySQL/PostgreSQL/SQL Server)
 `->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL)
 `->default($value)`  |  Specify a "default" value for the column
 `->first()`  |  Place the column "first" in the table (MySQL)
