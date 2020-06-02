@@ -166,31 +166,31 @@ To make it easy for you to get started with inline checkout, Cashier includes a 
 
     <x-paddle-checkout :override="$payLink" class="w-full" />
 
-Since `height` is a preset value for inline checkouts you'll need to pass it explicitly as an attribute if you want to adjust it:
+To adjust the height of the inline checkout component, you may pass the `height` attribute to the Blade component:
 
     <x-paddle-checkout :override="$payLink" class="w-full" height="500" />
 
-Alternatively, you can fully customize the widget with custom options instead of using a pay link:
+#### Inline Checkout Without Pay Links
+
+Alternatively, you may customize the widget with custom options instead of using a pay link:
 
     $options = [
         'product' => $productId,
         'title' => 'Product Title',
     ];
 
-Then pass the options to the Blade component:
-
     <x-paddle-checkout :options="$options" class="w-full" />
 
-Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [Parameter Reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details.
+Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [Parameter Reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details on available options.
 
 <a name="user-identification"></a>
 ### User Identification
 
 In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to update a user's details such as their email address. When generating pay links, Paddle identifies users using the `customer_email` parameter. When creating a subscription, Paddle will try to match the user provided email to an existing Paddle user.
 
-In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, when a new subscription is created we will save the `customer_email` value in the database as the user's `paddle_email` column value. **It is extremely important that you do not modify this value.** Cashier will use the `paddle_email` value for every new subscription and [pay link](#pay-links) to ensure all transactions are linked to the same customer within Paddle. Furthermore, this will ensure that you can assign multiple Paddle subscriptions to a single user using Cashier. A caveat of this is that any [override of the `customerEmail` method](#customer-defaults) on a billable user won't work anymore after the initial subscription has been created.
+In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, when a new subscription is created we will save the `customer_email` value in the database in the user's `paddle_email` column. **It is extremely important that you do not modify this value.** Cashier will use the `paddle_email` value for every new subscription and [pay link](#pay-links) to ensure all transactions are linked to the same customer within Paddle. Furthermore, this will ensure that you can assign multiple Paddle subscriptions to a single user using Cashier. A caveat of this is that any [override of the `customerEmail` method](#customer-defaults) on a billable user won't work anymore after the initial subscription has been created.
 
-There is currently no way to modify a user's email address through the API. When a user wants to update their email address within Paddle, the only way for them to do that is to contact Paddle support. An extra problem with this is that we don't know whether or not that happened since there is no webhook when this change occurs. To make sure everything stays in sync, we recommend that customers let the email change happen through the vendor so you can update the email address manually once Paddle has updated it on their end. You can provide the matching `paddle_id` value of the user to Paddle to make sure they update the correct customer.
+There is currently no way to modify a user's email address through the Paddle API. When a user wants to update their email address within Paddle, the only way for them to do so is to contact Paddle customer support. In addition, even if a customer does contact Paddle customer support to change their email, we will not know that the email address has been updated because Paddle does not provide a webhook to observe these changes. Therefore, to make sure everything stays in sync, we recommend that you should make customer email change requests to Paddle on their behalf so that you can update the email address in your database manually once Paddle has updated it within their system. When communicating with Paddle, you may wish to provide the `paddle_id` value of the user to assist Paddle in updating the correct user.
 
 <a name="prices"></a>
 ## Prices
