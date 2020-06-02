@@ -110,7 +110,7 @@ Next, you should configure your Paddle keys in your `.env` file. You can retriev
 <a name="paddle-js"></a>
 ### Paddle JS
 
-Paddle relies on its own JavaScript library to initiate the checkout widget. You'll can load it by placing the `@paddleJS` directive right before you closing `</head>` tag:
+Paddle relies on its own JavaScript library to initiate the checkout widget. You can load it by placing the `@paddleJS` directive right before you closing `</head>` tag:
 
         @paddleJS
     </head>
@@ -193,7 +193,7 @@ There is currently no way to modify a user's email address through the API. When
 <a name="prices"></a>
 ## Prices
 
-One of the nice things about Paddle is that you can customize prices per currency. This allows you to set up different prices for different situations. Cashier Paddle comes with the ability to retrieve the prices for products:
+One of the nice things about Paddle is that you can customize prices per currency. This allows you to set up different prices for different countries. Cashier Paddle comes with the ability to retrieve the prices for products:
 
     use Laravel\Paddle\Cashier;
 
@@ -223,7 +223,7 @@ This will display something like:
        <li>Gold - $25.00</li>
     </ul>
 
-You can also display the net amount of prices which exclude taxes and the tax price separately:
+You can also display the net amount of prices which exclude taxes and display the tax separately:
 
     <ul>
         @foreach ($prices as $price)
@@ -242,7 +242,7 @@ If you already have a customer and want to display the prices when a customer is
     // Retrieve prices for two products...
     $prices = User::productPrices([123, 456]);
 
-Paddle will use a user's [`paddleCountry` method](#customer-defaults) to retrieve the prices in the currency that matches for them. So, for example, a user living in the US will see prices in USD while a user in Belgium will see prices in EUR. If no matching currency can be found the default set currency on the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
+Paddle will use a user's [`paddleCountry` method](#customer-defaults) to retrieve the prices in the currency that matches for them. So, for example, a user living in the US will see prices in USD while a user in Belgium will see prices in EUR. If no matching currency can be found the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
 
 #### Coupons
 
@@ -585,7 +585,7 @@ To pause a subscription, call the `pause` method on the user's subscription:
 
     $user->subscription('default')->pause();
 
-When a subscription is cancelled, Cashier will automatically set the `paused_from` column in your database. This column is used to know when the `paused` method should begin returning `true`. For example, if a customer pauses a subscription on March 1st, but the subscription was not scheduled to recurr until March 5th, the `paused` method will continue to return `false` until March 5th.
+When a subscription is paused, Cashier will automatically set the `paused_from` column in your database. This column is used to know when the `paused` method should begin returning `true`. For example, if a customer pauses a subscription on March 1st, but the subscription was not scheduled to recurr until March 5th, the `paused` method will continue to return `false` until March 5th.
 
 You may determine if a user has paused their subscription but are still on their "grace period" using the `onPausedGracePeriod` method:
 
