@@ -43,9 +43,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Cashier Paddle provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods and more.
+Laravel Cashier Paddle provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods, and more.
 
-While working with Cashier we recommend to also refer to Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference/intro).
+While working with Cashier we recommend you also refer to Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference/intro).
 
 <a name="upgrading-cashier"></a>
 ## Upgrading Cashier
@@ -101,7 +101,7 @@ Cashier assumes your Billable model will be the `App\User` class that ships with
 <a name="api-keys"></a>
 ### API Keys
 
-Next, you should configure your Paddle keys in your `.env` file. You can retrieve your Paddle API keys from the Paddle control panel.
+Next, you should configure your Paddle keys in your `.env` file. You can retrieve your Paddle API keys from the Paddle control panel:
 
     PADDLE_VENDOR_ID=your-paddle-vendor-id
     PADDLE_VENDOR_AUTH_CODE=your-paddle-vendor-auth-code
@@ -110,11 +110,13 @@ Next, you should configure your Paddle keys in your `.env` file. You can retriev
 <a name="paddle-js"></a>
 ### Paddle JS
 
-Paddle relies on its own JavaScript library to initiate the checkout widget. You can load it by placing the `@paddleJS` directive right before the closing `</head>` tag:
+Paddle relies on its own JavaScript library to initiate the Paddle checkout widget. You can load the JavaScript library by placing the `@paddleJS` directive right before your application layout's closing `</head>` tag:
+
+    <head>
+        ...
 
         @paddleJS
     </head>
-    <body>
 
 <a name="currency-configuration"></a>
 ### Currency Configuration
@@ -135,7 +137,7 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
 <a name="pay-links"></a>
 ### Pay Links
 
-One of the important things to know is that Paddle lacks an extensive CRUD API to perform state changes. Therefore, most of the Paddle interaction is done through [its checkout widget](https://developer.paddle.com/guides/how-tos/checkout/paddle-checkout). To allow us to generate this widget easily we use Paddle's API to generate pay links:
+Paddle lacks an extensive CRUD API to perform state changes. Therefore, most interactions with Paddle are done through [its checkout widget](https://developer.paddle.com/guides/how-tos/checkout/paddle-checkout). Before we can display the checkout widget, we will generate a "pay link" using Cashier:
 
     $user = User::find(1);
 
@@ -143,22 +145,24 @@ One of the important things to know is that Paddle lacks an extensive CRUD API t
         ->returnTo(route('home'))
         ->create();
 
-We then use these pay links on a `paddle-button` Blade component that ships with Cashier:
+Cashier includes a `paddle-button` Blade component. We may pass the pay link URL to this component as a "prop". When this button is clicked, Paddle's checkout widget will be displayed:
 
     <x-paddle-button :url="$payLink" class="w-8 h-4">
         Subscribe
     </x-paddle-button>
 
-Because this checkout widget works asynchronously, creation and updating of subscriptions is done through webhooks. Usually the delay for this is minimal but you should account for this in your app by considering that your user's subscription might not be immediately available after completing the checkout. It's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
+The Paddle checkout widget is asynchronous. Once the user creates or updates a subscription within the widget, Paddle will send our application webhooks so that we may properly update the subscription state in our own database. Therefore, it's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
 
-You can check out [the API documentation on pay link generation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink) for more info.
+After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
+
+For more information, you may review [the Paddle API documentation on pay link generation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink).
 
 <a name="inline-checkout"></a>
 ### Inline Checkout
 
-If you don't want to make use of the overlay checkout widget, Paddle also has an option to display an inline checkout. While you cannot properly adjust any of HTML fields (it's basically the checkout widget but inline) it allows you to embed it within your app's look and feel.
+If you don't want to make use of the "overlay" style checkout widget, Paddle also has an option to display the widget inline. While this approach does not allow you to adjust any of the checkout's HTML fields, it allows you to embed the widget within your application.
 
-To make it easy for you to get started with inline checkout we've shipped a `paddle-checkout` Blade component for you to use. You can generate a pay link just like you do with the overlay widget and pass that to the component's `override` attribute:
+To make it easy for you to get started with inline checkout, Cashier includes a `paddle-checkout` Blade component. To get started, you should [generate a pay link](#pay-links) and pass the pay link to the component's `override` attribute:
 
     <x-paddle-checkout :override="$payLink" class="w-full" />
 
@@ -170,7 +174,7 @@ Alternatively, you can fully customize the widget with custom options instead of
 
     $options = [
         'product' => $productId,
-        'title' => 'Product title',
+        'title' => 'Product Title',
     ];
 
 Then pass the options to the Blade component:
@@ -184,7 +188,7 @@ Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/
 
 In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to amend users.
 
-The way Paddle identifies users when generating pay links is through its `customer_email` parameter. When creating a subscription it'll try to match with whatever is set or what the user has filled out in the checkout as an existing Paddle user. Because of this there's some subtleties you need to be aware of when using Cashier. 
+The way Paddle identifies users when generating pay links is through its `customer_email` parameter. When creating a subscription it'll try to match with whatever is set or what the user has filled out in the checkout as an existing Paddle user. Because of this there's some subtleties you need to be aware of when using Cashier.
 
 First of all, whenever a new subscription is created we'll save the value set for `customer_email` in the database on the user in its `paddle_email` column. **It is extremely important that you do not modify this value.** Cashier will keep on using this `paddle_email` value for every new subscription and [pay links](#pay-links) to make sure all transactions are linked to the same customer within Paddle. This will make sure that you can use multiple Paddle subscriptions on a single user within Cashier. A caveat of this is that any [override of the `customerEmail` method](#customer-defaults) on a billable user won't work anymore after the initial subscription has been created.
 
@@ -251,7 +255,7 @@ You could also choose to display prices after a coupon reduction. Pass in any co
     use Laravel\Paddle\Cashier;
 
     $prices = Cashier::productPrices([123, 456], ['coupons' => 'SUMMERSALE,20PERCENTOFF']);
-    
+
 Then display the calculated prices using the `price` method:
 
     <ul>
@@ -320,7 +324,7 @@ Cashier allows you to set some useful defaults for your customer when creating p
     {
         //
     }
-    
+
 These defaults will be used for every action in Cashier that generates a [pay link](#pay-links).
 
 <a name="subscriptions"></a>
@@ -805,7 +809,7 @@ If you would like to make a "one off" charge against a specific product, you may
 
     $payLink = $user->chargeProduct($productId);
 
-Then use the pay link on the Paddle button component: 
+Then use the pay link on the Paddle button component:
 
     <x-paddle-button :url="$payLink" class="w-8 h-4">
         Buy
