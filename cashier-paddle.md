@@ -195,7 +195,7 @@ There is currently no way to modify a user's email address through the Paddle AP
 <a name="prices"></a>
 ## Prices
 
-One of the nice things about Paddle is that you can customize prices per currency. This allows you to set up different prices for different countries. Cashier Paddle comes with the ability to retrieve the prices for products:
+Paddle allows you to customize prices per currency, essentially allowing you to configure different prices for different countries. Cashier Paddle allows you to retrieve all of the prices for a given product using the `productPrices` method:
 
     use Laravel\Paddle\Cashier;
 
