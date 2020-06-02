@@ -186,9 +186,9 @@ Since many JavaScript frameworks also use "curly" braces to indicate a given exp
 
 In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
 
-Using the `@` symbol as a prefix will work to escape existing Blade directives:
+The `@` symbol may also be used to escape Blade directives:
 
-    {{-- Blade source code --}}
+    {{-- Blade --}}
     @@json()
     
     <!-- HTML output -->
