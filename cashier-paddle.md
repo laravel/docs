@@ -343,7 +343,7 @@ After the user has finished their checkout, a `subscription_created` webhook wil
 
 #### Additional Details
 
-If you would like to specify additional customer or subscription details, you may do so by passing them as the second argument to the `create` method:
+If you would like to specify additional customer or subscription details, you may do so by passing them as a key / value array to the `create` method:
 
     $payLink = $user->newSubscription('default', 'monthly')
         ->returnTo(route('home'))
@@ -364,19 +364,19 @@ If you would like to apply a coupon when creating the subscription, you may use 
 
 #### Metadata
 
-You can also pass through an array of metadata with the `withMetadata` method.
+You can also pass an array of metadata using the `withMetadata` method:
 
     $payLink = $user->newSubscription('default', 'monthly')
         ->returnTo(route('home'))
         ->withMetadata(['key' => 'value'])
         ->create();
 
-There are two reserved keys which are internally used to create your subscription model from the `subscription_created` webhook: `customer_id` & `subscription_name`.
+> {note} When providing metadata, please avoid using `customer_id` and `subscription_name` as metadata keys. These keys are reserved for internal use by Cashier.
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
 
-Once a user is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an active subscription, even if the subscription is currently within its trial period:
+Once a user is subscribed to your application, you may check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an active subscription, even if the subscription is currently within its trial period:
 
     if ($user->subscribed('default')) {
         //
@@ -468,15 +468,15 @@ A complete list of available scopes is available below:
 <a name="past-due-status"></a>
 #### Past Due Status
 
-If a payment fails for a subscription, it will be marked as `past_due`. When your subscription is in this state it will not be active until the customer has updated their payment. Checking if a subscription is past due can be done using the `pastDue` method on the subscription instance:
+If a payment fails for a subscription, it will be marked as `past_due`. When your subscription is in this state it will not be active until the customer has updated their payment information. You may determine if a subscription is past due using the `pastDue` method on the subscription instance:
 
     if ($user->subscription('default')->pastDue()) {
         //
     }
 
-When a subscription is past due, you should request the user to [update their payment information](#updating-payment-information). You can configure how past due subscriptions are handled in your [subscription settings](https://vendors.paddle.com/subscription-settings).
+When a subscription is past due, you should instruct the user to [update their payment information](#updating-payment-information). You may configure how past due subscriptions are handled in your [Paddle subscription settings](https://vendors.paddle.com/subscription-settings).
 
-If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
+If you would like subscriptions to still be considered active when they are `past_due`, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
 
     use Laravel\Cashier\Cashier;
 
@@ -495,33 +495,33 @@ If you would like the subscription to still be considered active when it's in a 
 <a name="subscription-single-charges"></a>
 ### Subscription Single Charges
 
-This allows you to charge your subscribers with a one-time charge on top of their subscriptions. This is useful if you're offering additional top ups on your subscription:
+Subscription single charges allow you to charge subscribers with a one-time charge on top of their subscriptions:
 
     $response = $user->subscription('default')->charge(12.99, 'Support Add-on');
 
-In contrast to [single charges](#single-charges), this method will immediately charge the customer's set payment method for the subscription. The amount is always in the currency of which the subscription currently is set to.
+In contrast to [single charges](#single-charges), this method will immediately charge the customer's stored payment method for the subscription. The charge amount is always in the currency of which the subscription currently is set to.
 
 <a name="updating-payment-information"></a>
 ### Updating Payment Information
 
-Paddle always saves a payment method per-subscription. If you want to update the default payment method for a subscription you can do so with the `updateUrl` method on the subscription model:
+Paddle always saves a payment method per subscription. If you want to update the default payment method for a subscription, you should first generate a subscription "update URL" using the `updateUrl` method on the subscription model:
 
     $user = App\User::find(1);
 
     $updateUrl = $user->subscription('default')->updateUrl();
 
-After that you can display the URL in the UI and allow the user to use the Paddle widget to update its payment information:
+Then, you may use the generated URL in combination with Cashier's provided `paddle-button` Blade component to allow the user to initiate the Paddle widget and update their payment information:
 
     <x-paddle-button :url="$updateUrl" class="w-8 h-4">
         Update Card
     </x-paddle-button>
 
-When a user has finished, a `subscription_updated` webhook will be fired and your subscription in the database will be updated with the new payment information.
+When a user has finished updating their information, a `subscription_updated` webhook will be dispatched by Paddle and the subscription details will be updated in your application's database.
 
 <a name="changing-plans"></a>
 ### Changing Plans
 
-After a user is subscribed to your application, they may occasionally want to change to a new subscription plan. To swap a user to a new subscription, pass the plan's identifier to the `swap` method:
+After a user has subscribed to your application, they may occasionally want to change to a new subscription plan. To swap a user to a new subscription, you should pass the Paddle plan's identifier to the subscription's `swap` method:
 
     $user = App\User::find(1);
 
