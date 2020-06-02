@@ -705,7 +705,7 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellation on failed charges, but if you have additional webhook events you would like to handle, you should extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `payment_success` webhook, you should add a `handlePaymentSuccess` method to the controller:
+Cashier automatically handles subscription cancellation on failed charges, but if you have additional webhook events you would like to handle, you should extend the `WebhookController`. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `payment_success` webhook, you should add a `handlePaymentSuccess` method to the controller:
 
     <?php
 
@@ -727,16 +727,16 @@ Cashier automatically handles subscription cancellation on failed charges, but i
         }
     }
 
-Next, define a route to your Cashier controller within your `routes/web.php` file. This will overwrite the default shipped route:
+Next, define a route to your Cashier controller within your `routes/web.php` file. This will overwrite the route included with Cashier:
 
     Route::post(
         'paddle/webhook',
         '\App\Http\Controllers\WebhookController@handleWebhook'
     );
 
-Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Paddle webhook.
+Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled. Both events contain the full payload of the Paddle webhook.
 
-You can optionally also override the default, built-in webhook route by setting the `CASHIER_WEBHOOK` env variable in your `.env` file. Note that this needs to be the full URL to your webhook route and needs to match the one set in your Paddle control panel:
+You can optionally also override the default, built-in webhook route by setting the `CASHIER_WEBHOOK` env variable in your `.env` file. This value should be the full URL to your webhook route and needs to match the URL set in your Paddle control panel:
 
     CASHIER_WEBHOOK=https://example.com/my-paddle-webhook-url
 
@@ -758,20 +758,19 @@ To enable webhook verification, ensure that the `PADDLE_PUBLIC_KEY` environment 
 <a name="simple-charge"></a>
 ### Simple Charge
 
-If you would like to make a "one off" charge against a customer's, you may use the `charge` method on a billable model instance. You'll need to provide a description for the product you're charging for as the second argument:
+If you would like to make a "one off" charge against a customer, you may use the `charge` method on a billable model instance to generate a pay link for the charge. The `charge` method accepts the charge amount (float) as its first argument and a charge description as its second argument:
 
-    // Paddle Accepts Charges In Floats...
-    $payLink = $user->charge(12.99, 'Product title');
+    $payLink = $user->charge(12.99, 'Product Title');
 
-Then use the pay link on the Paddle button component:
+After generating the pay link, you may use Cashier's provided `paddle-button` Blade component to allow the user to initiate the Paddle widget and complete the charge:
 
     <x-paddle-button :url="$payLink" class="w-8 h-4">
         Buy
     </x-paddle-button>
 
-The `charge` method accepts an array as its third argument, allowing you to pass any options you wish to the underlying Paddle pay link creation. Consult [the Paddle documentation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink) regarding the options available to you when creating charges:
+The `charge` method accepts an array as its third argument, allowing you to pass any options you wish to the underlying Paddle pay link creation. Please consult [the Paddle documentation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink) to learn more about the options available to you when creating charges:
 
-    $payLink = $user->charge(12.99, 'Product title', [
+    $payLink = $user->charge(12.99, 'Product Title', [
         'custom_option' => $value,
     ]);
 
@@ -781,16 +780,16 @@ You may also use the `charge` method without an underlying customer or user:
 
     $payLink = (new User)->charge(12.99, 'Product title');
 
-Charges happen in the currency set through the `cashier.currency` config option. This is set to USD by default.. You can override the default currency by setting the `CASHIER_CURRENCY` in your `.env` file:
+Charges happen in the currency specified in the `cashier.currency` configuration option. By default, this is set to USD. You may override the default currency by setting the `CASHIER_CURRENCY` in your `.env` file:
 
     CASHIER_CURRENCY=EUR
 
-You can also [override prices](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink#price-overrides) using Paddle's dynamic pricing matching system. Pass an array of prices instead of a fixed amount:
+You can also [override prices per currency](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink#price-overrides) using Paddle's dynamic pricing matching system. To do so, pass an array of prices instead of a fixed amount:
 
     $payLink = $user->charge([
         'USD:19.99',
         'EUR:15.99',
-    ], 'Product title');
+    ], 'Product Title');
 
 <a name="charging-products"></a>
 ### Charging Products
