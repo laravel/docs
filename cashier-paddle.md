@@ -794,19 +794,19 @@ You can also [override prices per currency](https://developer.paddle.com/api-ref
 <a name="charging-products"></a>
 ### Charging Products
 
-If you would like to make a "one off" charge against a specific product, you may use the `chargeProduct` method on a billable model instance:
+If you would like to make a "one off" charge against a specific product configured within Paddle, you may use the `chargeProduct` method on a billable model instance to generate a pay link:
 
     $payLink = $user->chargeProduct($productId);
 
-Then use the pay link on the Paddle button component:
+Then, you may provide the pay link to the `paddle-button` component to allow the user to initialize the Paddle widget:
 
     <x-paddle-button :url="$payLink" class="w-8 h-4">
         Buy
     </x-paddle-button>
 
-The `chargeProduct` method accepts an array as its second argument, allowing you to pass any options you wish to the underlying Paddle pay link creation. Consult [the Paddle documentation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink) regarding the options available to you when creating charges:
+The `chargeProduct` method accepts an array as its second argument, allowing you to pass any options you wish to the underlying Paddle pay link creation. Please consult [the Paddle documentation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink) regarding the options that are available to you when creating charges:
 
-    $payLink = $user->charge(12.99, 'Product title', [
+    $payLink = $user->charge(12.99, 'Product Title', [
         'custom_option' => $value,
     ]);
 
