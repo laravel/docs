@@ -43,7 +43,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Cashier Paddle provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods and much more.
+Laravel Cashier Paddle provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods and more.
 
 While working with Cashier we recommend to also refer to Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference/intro).
 
@@ -83,7 +83,7 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 <a name="billable-model"></a>
 ### Billable Model
 
-Before using Cashier, add the `Billable` trait to your model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons, and updating payment method information:
+Before using Cashier, you must add the `Billable` trait to your model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons and updating payment method information:
 
     use Laravel\Cashier\Billable;
 
@@ -110,7 +110,7 @@ Next, you should configure your Paddle keys in your `.env` file. You can retriev
 <a name="paddle-js"></a>
 ### Paddle JS
 
-Paddle relies on its own JavaScript library to initiate the checkout widget. You can load it by placing the `@paddleJS` directive right before you closing `</head>` tag:
+Paddle relies on its own JavaScript library to initiate the checkout widget. You can load it by placing the `@paddleJS` directive right before the closing `</head>` tag:
 
         @paddleJS
     </head>
@@ -135,7 +135,7 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
 <a name="pay-links"></a>
 ### Pay Links
 
-One of the important parts to know is that Paddle lacks an extensive CRUD API to perform state changes. Therefor, most of the Paddle interaction is done through [its checkout widget](https://developer.paddle.com/guides/how-tos/checkout/paddle-checkout). To allow us to generate this widget easily we use Paddle's API to generate pay links:
+One of the important things to know is that Paddle lacks an extensive CRUD API to perform state changes. Therefore, most of the Paddle interaction is done through [its checkout widget](https://developer.paddle.com/guides/how-tos/checkout/paddle-checkout). To allow us to generate this widget easily we use Paddle's API to generate pay links:
 
     $user = User::find(1);
 
@@ -149,20 +149,20 @@ We then use these pay links on a `paddle-button` Blade component that ships with
         Subscribe
     </x-paddle-button>
 
-Because this checkout widget works asynchronously, creation and updating of subscriptions is done through webhooks. Usually the delay for this is minimal but you should account for this in your app that your user's subscription might not be immediately available after completing the checkout. It's important and required that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
+Because this checkout widget works asynchronously, creation and updating of subscriptions is done through webhooks. Usually the delay for this is minimal but you should account for this in your app by considering that your user's subscription might not be immediately available after completing the checkout. It's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
 
 You can check out [the API documentation on pay link generation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink) for more info.
 
 <a name="inline-checkout"></a>
 ### Inline Checkout
 
-If you don't want to make use of the overlay checkout widget, Paddle also has an option to display an inline checkout. While you cannot properly adjust any of HTML fields (it's basically the checkout widget but then inline) it allows you to include it a little better within your app's look and feel.
+If you don't want to make use of the overlay checkout widget, Paddle also has an option to display an inline checkout. While you cannot properly adjust any of HTML fields (it's basically the checkout widget but inline) it allows you to embed it within your app's look and feel.
 
-To make it easy for you to get started with inline checkout we've shipped a `paddle-checkout` Blade component to use. You can generate a pay link just like you do with the overlay widget and pass that to the component's `override` attribute:
+To make it easy for you to get started with inline checkout we've shipped a `paddle-checkout` Blade component for you to use. You can generate a pay link just like you do with the overlay widget and pass that to the component's `override` attribute:
 
     <x-paddle-checkout :override="$payLink" class="w-full" />
 
-Since `height` is a preset value for inline checkouts you'll need to pass it explicitely as an attribute if you want to adjust it:
+Since `height` is a preset value for inline checkouts you'll need to pass it explicitly as an attribute if you want to adjust it:
 
     <x-paddle-checkout :override="$payLink" class="w-full" height="500" />
 
@@ -182,13 +182,13 @@ Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/
 <a name="user-identification"></a>
 ### User Identification
 
-In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's are very limited to make changes to a user within Paddle.
+In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to amend users.
 
-The way Paddle identifies users when generating pay links is through its `customer_email` parameter. When creating a subscription it'll try to match with whatever's set or what the user has filled out in the checkout with an existing Paddle user. Because of this there's some subtleties you need to be aware of when using Cashier. 
+The way Paddle identifies users when generating pay links is through its `customer_email` parameter. When creating a subscription it'll try to match with whatever is set or what the user has filled out in the checkout as an existing Paddle user. Because of this there's some subtleties you need to be aware of when using Cashier. 
 
-First of all, whenever a new subscription is created we'll save the value set for `customer_email` in the database on the user in its `paddle_email` column. **It is extremely important that you do not modify this value.** We'll keep on using this `paddle_email` value for every new subscription and [pay links](#pay-links) to make sure all transactions are linked to the same customer within Paddle. This will make sure that you can use multiple Paddle subscriptions on a single user within Cashier. A caveat of this is that any [override of the `customerEmail` method](#customer-defaults) on a billable user won't work anymore after the initial subscription has been created.
+First of all, whenever a new subscription is created we'll save the value set for `customer_email` in the database on the user in its `paddle_email` column. **It is extremely important that you do not modify this value.** Cashier will keep on using this `paddle_email` value for every new subscription and [pay links](#pay-links) to make sure all transactions are linked to the same customer within Paddle. This will make sure that you can use multiple Paddle subscriptions on a single user within Cashier. A caveat of this is that any [override of the `customerEmail` method](#customer-defaults) on a billable user won't work anymore after the initial subscription has been created.
 
-There is currently no way to modify a user's email address through the API. When a user wants to update their email address within Paddle, the only way for them to do that is to contact Paddle support. An extra problem with this is that we don't know wether or not that happened since there is no webhook when this change occurs. To make sure everything stays in sync we recommend that customers let the email change happen through the vendor so you can update the email address manually once Paddle has updated it on their end. You can provide the matching `paddle_id` value of the user to Paddle to make sure they update the correct customer.
+There is currently no way to modify a user's email address through the API. When a user wants to update their email address within Paddle, the only way for them to do that is to contact Paddle support. An extra problem with this is that we don't know whether or not that happened since there is no webhook when this change occurs. To make sure everything stays in sync, we recommend that customers let the email change happen through the vendor so you can update the email address manually once Paddle has updated it on their end. You can provide the matching `paddle_id` value of the user to Paddle to make sure they update the correct customer.
 
 <a name="prices"></a>
 ## Prices
@@ -246,7 +246,7 @@ Paddle will use a user's [`paddleCountry` method](#customer-defaults) to retriev
 
 #### Coupons
 
-You could also display the prices after a coupon reduction. Pass in any coupons as a comma separated string:
+You could also choose to display prices after a coupon reduction. Pass in any coupons as a comma separated string:
 
     use Laravel\Paddle\Cashier;
 
@@ -377,7 +377,7 @@ You can also pass through an array of metadata with the `withMetadata` method.
         ->withMetadata(['key' => 'value'])
         ->create();
 
-There's two reserved keys on this which are internally being used to create your subscription model from the `subscription_created` webhook: `customer_id` & `subscription_name`.
+There are two reserved keys which are internally used to create your subscription model from the `subscription_created` webhook: `customer_id` & `subscription_name`.
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
@@ -480,7 +480,7 @@ If a payment fails for a subscription, it will be marked as `past_due`. When you
         //
     }
 
-When a subscription is past due, you should request the user to [update their payment information](#updating-payment-information). You can configure how past due subcriptions are handled in your [subscription settings](https://vendors.paddle.com/subscription-settings).
+When a subscription is past due, you should request the user to [update their payment information](#updating-payment-information). You can configure how past due subscriptions are handled in your [subscription settings](https://vendors.paddle.com/subscription-settings).
 
 If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
 
@@ -505,7 +505,7 @@ This allows you to charge your subscribers with a one-time charge on top of thei
 
     $response = $user->subscription('default')->charge(12.99, 'Support Add-on');
 
-In contrary to [single charges](#single-charges) this method will immediately charge the customer's set payment method for the subscription. The amount is always in the currency of which the subscription currently is set to.
+In contrast to [single charges](#single-charges), this method will immediately charge the customer's set payment method for the subscription. The amount is always in the currency of which the subscription currently is set to.
 
 <a name="updating-payment-information"></a>
 ### Updating Payment Information
@@ -516,7 +516,7 @@ Paddle always saves a payment method per-subscription. If you want to update the
 
     $updateUrl = $user->subscription('default')->updateUrl();
 
-After that you can display the url in the UI and allow the user to use the Paddle widget to update its payment information:
+After that you can display the URL in the UI and allow the user to use the Paddle widget to update its payment information:
 
     <x-paddle-button :url="$updateUrl" class="w-8 h-4">
         Update Card
@@ -585,7 +585,7 @@ To pause a subscription, call the `pause` method on the user's subscription:
 
     $user->subscription('default')->pause();
 
-When a subscription is paused, Cashier will automatically set the `paused_from` column in your database. This column is used to know when the `paused` method should begin returning `true`. For example, if a customer pauses a subscription on March 1st, but the subscription was not scheduled to recurr until March 5th, the `paused` method will continue to return `false` until March 5th.
+When a subscription is paused, Cashier will automatically set the `paused_from` column in your database. This column is used to know when the `paused` method should begin returning `true`. For example, if a customer pauses a subscription on March 1st, but the subscription was not scheduled to recur until March 5th, the `paused` method will continue to return `false` until March 5th.
 
 You may determine if a user has paused their subscription but are still on their "grace period" using the `onPausedGracePeriod` method:
 
@@ -711,7 +711,7 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellation on failed charges, but if you have additional webhook events you would like to handle, extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `payment_success` webhook, you should add a `handlePaymentSuccess` method to the controller:
+Cashier automatically handles subscription cancellation on failed charges, but if you have additional webhook events you would like to handle, you should extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `payment_success` webhook, you should add a `handlePaymentSuccess` method to the controller:
 
     <?php
 
@@ -742,7 +742,7 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
 
 Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Paddle webhook.
 
-You can optionally also override the default, built-in webhook route by setting the `CASHIER_WEBHOOK` env variable in your `.env` file. Note that this needs to be the full url to your webhook route and needs to match the one set in your Paddle control panel:
+You can optionally also override the default, built-in webhook route by setting the `CASHIER_WEBHOOK` env variable in your `.env` file. Note that this needs to be the full URL to your webhook route and needs to match the one set in your Paddle control panel:
 
     CASHIER_WEBHOOK=https://example.com/my-paddle-webhook-url
 
@@ -856,4 +856,4 @@ When listing the transactions for the customer, you may use the transaction's he
 <a name="testing"></a>
 ## Testing
 
-Because Paddle currently lacks a proper CRUD API there's not much choice besides manually testing your billing flow. Paddle at the moment also lacks a sandboxed developer environment so any card charges you make are live ones. For this we recommend to use coupons with 100% off or free products during testing.
+Paddle currently lacks a proper CRUD API so you should manually test your billing flow. Paddle at the moment also lacks a sandboxed developer environment so any card charges you make are live ones. For this we recommend to use coupons with 100% off or free products during testing.
