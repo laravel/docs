@@ -813,19 +813,21 @@ The `chargeProduct` method accepts an array as its second argument, allowing you
 <a name="refunding-orders"></a>
 ### Refunding Orders
 
-If you need to refund a Paddle order, you may use the `refund` method. This method accepts the Paddle Order ID as its first argument:
+If you need to refund a Paddle order, you may use the `refund` method. This method accepts the Paddle Order ID as its first argument. You may retrieve transactions for a given billable entity using the `transactions` relationship:
 
     $transaction = $user->transactions()->first();
 
     $refundRequestId = $user->refund(transaction->order_id);
 
-You can also optionally specify a specific amount to refund as well as a reason:
+You may also optionally specify a specific amount to refund as well as a reason for the refund:
 
     $transaction = $user->transactions()->first();
 
-    $refundRequestId = $user->refund(transaction->order_id, 5.00, 'Unused product time');
+    $refundRequestId = $user->refund(
+        transaction->order_id, 5.00, 'Unused product time'
+    );
 
-You can use the `$refundRequestId` as a reference for the refund when contacting Paddle support.
+> {tip} You can use the `$refundRequestId` as a reference for the refund when contacting Paddle support.
 
 <a name="transactions"></a>
 ## Transactions
@@ -849,4 +851,4 @@ When listing the transactions for the customer, you may use the transaction's he
 <a name="testing"></a>
 ## Testing
 
-Paddle currently lacks a proper CRUD API so you should manually test your billing flow. Paddle at the moment also lacks a sandboxed developer environment so any card charges you make are live ones. For this we recommend to use coupons with 100% off or free products during testing.
+Paddle currently lacks a proper CRUD API so you will need to manually test your billing flow. Paddle also lacks a sandboxed developer environment so any card charges you make are live charges. In order to work around this, we recommend you use coupons with a 100% discount or free products during testing.
