@@ -587,7 +587,7 @@ You may determine if a user has paused their subscription but are still on their
         //
     }
 
-To resume a paused a subscription, call the `unpause` method on the user's subscription:
+To resume a paused a subscription, you may call the `unpause` method on the user's subscription:
 
     $user->subscription('default')->unpause();
 
@@ -606,21 +606,21 @@ You may determine if a user has cancelled their subscription but are still on th
         //
     }
 
-If you wish to cancel a subscription immediately, call the `cancelNow` method on the user's subscription:
+If you wish to cancel a subscription immediately, you may call the `cancelNow` method on the user's subscription:
 
     $user->subscription('default')->cancelNow();
 
-> {note} Paddle's subscriptions cannot be resumed after cancellation. If your customer wishes to resume their subscription, they'll have to subscribe to a new subscription.
+> {note} Paddle's subscriptions cannot be resumed after cancellation. If your customer wishes to resume their subscription, they will have to subscribe to a new subscription.
 
 <a name="subscription-trials"></a>
 ## Subscription Trials
 
-> {note} Cashier manages trial dates for subscriptions and does not derive them from the Paddle plan. Therefore, you should configure your plan in Paddle to have a trial period of zero days so that Cashier can manage the trials instead.
+> {note} Cashier manages its own trial dates for subscriptions and does not derive them from the Paddle plan. Therefore, you should configure your plan in Paddle to have a trial period of zero days so that Cashier can manage the trials instead.
 
 <a name="with-payment-method-up-front"></a>
 ### With Payment Method Up Front
 
-If you would like to offer trial periods to your customers while still collecting payment method information up front, you should use the `trialDays` method when creating your subscriptions:
+If you would like to offer trial periods to your customers while still collecting payment method information up front, you should use the `trialDays` method when creating your subscription pay links:
 
     $user = User::find(1);
 
@@ -629,11 +629,11 @@ If you would like to offer trial periods to your customers while still collectin
                 ->trialDays(10)
                 ->create();
 
-This method will set the trial period ending date on the subscription record within the database, as well as instruct Paddle to not begin billing the customer until after this date. When using the `trialDays` method, Cashier will overwrite any default trial period configured for the plan in Stripe.
+This method will set the trial period ending date on the subscription record within the database, as well as instruct Paddle to not begin billing the customer until after this date.
 
 > {note} If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
-You may determine if the user is within their trial period using either the `onTrial` method of the user instance, or the `onTrial` method of the subscription instance. The two examples below are identical:
+You may determine if the user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below have identical behavior:
 
     if ($user->onTrial('default')) {
         //
@@ -649,7 +649,7 @@ You may determine if the user is within their trial period using either the `onT
 If you would like to offer trial periods without collecting the user's payment method information up front, you may set the `trial_ends_at` column on the user record to your desired trial ending date. This is typically done during user registration:
 
     $user = User::create([
-        // Populate other user properties...
+        // Other user properties...
         'trial_ends_at' => now()->addDays(10),
     ]);
 
@@ -675,7 +675,7 @@ Once you are ready to create an actual subscription for the user, you may use th
         ->returnTo(route('home'))
         ->create();
 
-> {note} Please note that there is no way to extend or modify a trial period on a Paddle subscription when it has been created.
+> {note} There is no way to extend or modify a trial period on a Paddle subscription after it has been created.
 
 <a name="handling-paddle-webhooks"></a>
 ## Handling Paddle Webhooks
