@@ -277,7 +277,7 @@ You can retrieve a customer by their Paddle user ID using the `Cashier::findBill
 <a name="customer-defaults"></a>
 ### Customer Defaults
 
-Cashier allows you to set some useful defaults for your customer when creating pay links. Setting these defaults allow you to pre-fill a customer's email address, country and postcode so they can immediately move on to the payment part of the checkout widget. You can set these defaults by overriding these methods on your billable user:
+Cashier allows you to set some useful defaults for your customer when creating pay links. Setting these defaults allow you to pre-fill a customer's email address, country, and postcode so that they can immediately move on to the payment portion of the checkout widget. You can set these defaults by overriding the following methods on your billable user:
 
     /**
      * Get the customer's email address to associate with Paddle.
@@ -331,15 +331,15 @@ To create a subscription, first retrieve an instance of your billable model, whi
         ->returnTo(route('home'))
         ->create();
 
-The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Paddle. The `returnTo` method will redirect your user after they successfully completed the checkout.
+The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Paddle. The `returnTo` method accepts a URL that your user will be redirected to after they successfully complete the checkout.
 
-The `create` method will create a pay link which you can use to generate a payment button for. The payment button can easily be generated using the `paddle-button` Blade component that ships with Cashier Paddle:
+The `create` method will create a pay link which you can use to generate a payment button. The payment button can be generated using the `paddle-button` Blade component that ships with Cashier Paddle:
 
     <x-paddle-button :url="$payLink" class="w-8 h-4">
         Subscribe
     </x-paddle-button>
 
-After the user has finished their checkout a `subscription_created` will be fired from Paddle. Cashier will catch this webhook and setup the subscription for your customer. Make sure you've properly [set up webhooks](#handling-paddle-webhooks).
+After the user has finished their checkout, a `subscription_created` webhook will be dispatched from Paddle. Cashier will receive this webhook and setup the subscription for your customer. In order to make sure all webhooks are properly received and handled by your application, ensure you have properly [setup webhook handling](#handling-paddle-webhooks).
 
 #### Additional Details
 
