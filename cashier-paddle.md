@@ -202,14 +202,14 @@ Paddle allows you to customize prices per currency, essentially allowing you to 
     // Retrieve prices for two products...
     $prices = Cashier::productPrices([123, 456]);
 
-The currency will be determined based on the IP address of the request but you can optionally also pass a specific country to retrieve the prices for:
+The currency will be determined based on the IP address of the request; however, you may optionally provide a specific country to retrieve prices for:
 
     use Laravel\Paddle\Cashier;
 
     // Retrieve prices for two products...
     $prices = Cashier::productPrices([123, 456], ['customer_country' => 'BE']);
 
-After retrieving the prices you can display them in the UI of your website:
+After retrieving the prices you may display them however you wish:
 
     <ul>
         @foreach ($prices as $price)
@@ -217,15 +217,7 @@ After retrieving the prices you can display them in the UI of your website:
         @endforeach
     </ul>
 
-This will display something like:
-
-    <ul>
-       <li>Bronze - $5.00</li>
-       <li>Silver - $15.00</li>
-       <li>Gold - $25.00</li>
-    </ul>
-
-You can also display the net amount of prices which exclude taxes and display the tax separately:
+You may also display the net price (excludes tax) and display the tax amount separately:
 
     <ul>
         @foreach ($prices as $price)
@@ -233,28 +225,28 @@ You can also display the net amount of prices which exclude taxes and display th
         @endforeach
     </ul>
 
-For more info, [check Paddle's API documentation on prices](https://developer.paddle.com/api-reference/checkout-api/prices/getprices).
+For more information, [check Paddle's API documentation on prices](https://developer.paddle.com/api-reference/checkout-api/prices/getprices).
 
 #### Customers
 
-If you already have a customer and want to display the prices when a customer is logged in you can do so by retrieving them directly from the customer:
+If a user is already a customer and you would like to display the prices that apply to that customer, you may do so by retrieving the prices directly from the customer instance:
 
     use App\User;
 
     // Retrieve prices for two products...
     $prices = User::productPrices([123, 456]);
 
-Paddle will use a user's [`paddleCountry` method](#customer-defaults) to retrieve the prices in the currency that matches for them. So, for example, a user living in the US will see prices in USD while a user in Belgium will see prices in EUR. If no matching currency can be found the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
+Internally, Cashier will use the user's [`paddleCountry` method](#customer-defaults) to retrieve the prices in their currency. So, for example, a user living in the United States will see prices in USD while a user in Belgium will see prices in EUR. If no matching currency can be found the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
 
 #### Coupons
 
-You could also choose to display prices after a coupon reduction. Pass in any coupons as a comma separated string:
+You may also choose to display prices after a coupon reduction. When calling the `productPrices` method, coupons may be passed as a comma delimited string:
 
     use Laravel\Paddle\Cashier;
 
     $prices = Cashier::productPrices([123, 456], ['coupons' => 'SUMMERSALE,20PERCENTOFF']);
 
-Then display the calculated prices using the `price` method:
+Then, display the calculated prices using the `price` method:
 
     <ul>
         @foreach ($prices as $price)
@@ -262,7 +254,7 @@ Then display the calculated prices using the `price` method:
         @endforeach
     </ul>
 
-Even with coupons applied you can still display the original listed prices using the `listPrice` method:
+You may display the original listed prices (without coupon discounts) using the `listPrice` method:
 
     <ul>
         @foreach ($prices as $price)
