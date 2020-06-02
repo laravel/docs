@@ -480,7 +480,7 @@ If a payment fails for a subscription, it will be marked as `past_due`. When you
         //
     }
 
-When a subscription is past due, you should request the user to [update their payment information](#updating-payment-information).
+When a subscription is past due, you should request the user to [update their payment information](#updating-payment-information). You can configure how past due subcriptions are handled in your [subscription settings](https://vendors.paddle.com/subscription-settings).
 
 If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
 
