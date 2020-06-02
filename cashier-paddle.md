@@ -471,6 +471,33 @@ A complete list of available scopes is available below:
     Subscription::query()->onGracePeriod();
     Subscription::query()->notOnGracePeriod();
 
+<a name="past-due-status"></a>
+#### Past Due Status
+
+If a payment fails for a subscription, it will be marked as `past_due`. When your subscription is in this state it will not be active until the customer has updated their payment. Checking if a subscription is past due can be done using the `pastDue` method on the subscription instance:
+
+    if ($user->subscription('default')->pastDue()) {
+        //
+    }
+
+When a subscription is past due, you should request the user to [update their payment information](#updating-payment-information).
+
+If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
+
+    use Laravel\Cashier\Cashier;
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Cashier::keepPastDueSubscriptionsActive();
+    }
+
+> {note} When a subscription is in a `past_due` state it cannot be changed until payment information has been updated. Therefore, the `swap` and `updateQuantity` methods will throw an exception when the subscription is in a `past_due` state.
+
 <a name="subscription-single-charges"></a>
 ### Subscription Single Charges
 
