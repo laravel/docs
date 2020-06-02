@@ -28,7 +28,6 @@
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
-- [Escaping Blade Directives](#escaping-blade-directives)
 - [Extending Blade](#extending-blade)
     - [Custom If Statements](#custom-if-statements)
 
@@ -186,6 +185,14 @@ Since many JavaScript frameworks also use "curly" braces to indicate a given exp
     Hello, @{{ name }}.
 
 In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
+
+Using the `@` symbol as a prefix will work to escape Blade directives existing directives:
+
+    {{-- Blade source code --}}
+    @@json()
+    
+    <!-- HTML output -->
+    @json()
 
 #### The `@verbatim` Directive
 
@@ -859,18 +866,6 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
     <div>
         Monthly Revenue: {{ $metrics->monthlyRevenue() }}.
     </div>
-
-
-<a name="escaping-blade-directives"></a>
-## Escaping Blade Directives
-
-If you need to escape display a Blade directive, for example to display it in a webpage or to use it in the template for a JavaScript framework, you can do so by prefixing the directive with another `@` character.
-
-    {{-- Blade source code --}}
-    @@json([])
-    
-    <!-- HTML output -->
-    @json([])
 
 <a name="extending-blade"></a>
 ## Extending Blade
