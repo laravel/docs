@@ -806,7 +806,7 @@ Then, you may provide the pay link to the `paddle-button` component to allow the
 
 The `chargeProduct` method accepts an array as its second argument, allowing you to pass any options you wish to the underlying Paddle pay link creation. Please consult [the Paddle documentation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink) regarding the options that are available to you when creating charges:
 
-    $payLink = $user->charge(12.99, 'Product Title', [
+    $payLink = $user->chargeProduct($productId, [
         'custom_option' => $value,
     ]);
 
