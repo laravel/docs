@@ -9,6 +9,7 @@
     - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
+    - [Resolving Relations](#resolving-relations)
 - [Polymorphic Relationships](#polymorphic-relationships)
     - [One To One](#one-to-one-polymorphic-relations)
     - [One To Many](#one-to-many-polymorphic-relations)
@@ -548,6 +549,20 @@ Typical Eloquent foreign key conventions will be used when performing the relati
             );
         }
     }
+
+<a name="resolving-relations"></a>
+### Resolving Relations
+
+Alternatively, you may use the `resolveRelationUsing` method to define relations between Eloquent models. This can be useful when you wish extending a model without touching its code – for example when developing packages that depend on eachother. You may define the extensional relations in the `boot` function of one of yourgs service provider.
+
+    use Foo\Order;
+    use Bar\Customer;
+
+    Order::resolveRelationUsing('customer', function ($model) {
+        return $model->belongsTo(Customer::class, 'customer_id');
+    });
+
+> {note} To avoid automatically generated keys that are invalid – for example `{closure}_id` –, you may specify them explicitly.
 
 <a name="polymorphic-relationships"></a>
 ## Polymorphic Relationships
