@@ -498,6 +498,19 @@ The `wasChanged` method determines if any attributes were changed when the model
     $user->wasChanged('title'); // true
     $user->wasChanged('first_name'); // false
 
+The `getOriginal` method returns an array containing the original attributes of the model regardless of any changes since the model was loaded. You may pass a specific attribute name to get the original value of a particular attribute:
+
+    $user = User::find(1);
+
+    $user->name; // John
+    $user->email; // john@example.com
+
+    $user->name = "Jack";
+    $user->name; // Jack
+
+    $user->getOriginal('name'); // John
+    $user->getOriginal(); // Array of original attributes...
+
 <a name="mass-assignment"></a>
 ### Mass Assignment
 
