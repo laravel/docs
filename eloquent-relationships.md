@@ -553,7 +553,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 <a name="resolving-relations"></a>
 ### Resolving Relations
 
-Alternatively, you may use the `resolveRelationUsing` method to define relations between Eloquent models. This can be useful when you wish extending a model without touching its code – for example when developing packages that depend on eachother. You may define the extensional relations in the `boot` function of one of yourgs service provider.
+Alternatively, you may use the `resolveRelationUsing` method to define relations between Eloquent models. This can be useful when extending a model without touching its code – for example when developing packages that depend on eachother. You may define the extensional relations in the `boot` function of one of your service provider.
 
     use Foo\Order;
     use Bar\Customer;
