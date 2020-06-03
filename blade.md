@@ -145,12 +145,6 @@ However, instead of manually calling `json_encode`, you may use the `@json` Blad
 
 > {note} You should only use the `@json` directive to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
-The `@json` directive is also useful for seeding Vue components or `data-*` attributes:
-
-    <example-component :some-prop='@json($array)'></example-component>
-
-> {note} Using `@json` in element attributes requires that it be surrounded by single quotes.
-
 #### HTML Entity Encoding
 
 By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
@@ -190,7 +184,7 @@ The `@` symbol may also be used to escape Blade directives:
 
     {{-- Blade --}}
     @@json()
-    
+
     <!-- HTML output -->
     @json()
 
