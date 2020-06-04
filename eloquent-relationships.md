@@ -9,12 +9,12 @@
     - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
-    - [Resolving Relations](#resolving-relations)
 - [Polymorphic Relationships](#polymorphic-relationships)
     - [One To One](#one-to-one-polymorphic-relations)
     - [One To Many](#one-to-many-polymorphic-relations)
     - [Many To Many](#many-to-many-polymorphic-relations)
     - [Custom Polymorphic Types](#custom-polymorphic-types)
+- [Dynamic Relationships](#dynamic-relationships)
 - [Querying Relations](#querying-relations)
     - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
     - [Querying Relationship Existence](#querying-relationship-existence)
@@ -550,20 +550,6 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         }
     }
 
-<a name="resolving-relations"></a>
-### Resolving Relations
-
-Alternatively, you may use the `resolveRelationUsing` method to define relations between Eloquent models. This can be useful when extending a model without touching its code – for example when developing packages that depend on eachother. You may define the extensional relations in the `boot` function of one of your service provider.
-
-    use Foo\Order;
-    use Bar\Customer;
-
-    Order::resolveRelationUsing('customer', function ($model) {
-        return $model->belongsTo(Customer::class, 'customer_id');
-    });
-
-> {note} To avoid automatically generated keys that are invalid – for example `{closure}_id` –, you may specify them explicitly.
-
 <a name="polymorphic-relationships"></a>
 ## Polymorphic Relationships
 
@@ -858,6 +844,20 @@ You may determine the morph alias of a given model at runtime using the `getMorp
     $alias = $post->getMorphClass();
 
     $class = Relation::getMorphedModel($alias);
+
+<a name="dynamic-relationships"></a>
+### Dynamic Relationships
+
+You may use the `resolveRelationUsing` method to define relations between Eloquent models at runtime. While not typically recommended for normal application development, this may occasionally be useful when developing Laravel packages:
+
+    use App\Order;
+    use App\Customer;
+
+    Order::resolveRelationUsing('customer', function ($orderModel) {
+        return $orderModel->belongsTo(Customer::class, 'customer_id');
+    });
+
+> {note} When defining dynamic relationships, always provide explicit key name arguments to the Eloquent relationship methods.
 
 <a name="querying-relations"></a>
 ## Querying Relations
