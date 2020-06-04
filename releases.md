@@ -29,4 +29,4 @@ For LTS releases, such as Laravel 6, bug fixes are provided for 2 years and secu
 <a name="laravel-8"></a>
 ## Laravel 8
 
-Release notes for Laravel 8 will be placed here..
+Release notes for Laravel 8 will be placed here.
