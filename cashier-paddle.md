@@ -185,6 +185,8 @@ Alternatively, you may customize the widget with custom options instead of using
 
 Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [Parameter Reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details on available options.
 
+> {note} If you would like to also use the `passthrough` option when specifying custom options, please provide a key / value array. Cashier will automatically handle converting the array to a JSON string.
+
 <a name="user-identification"></a>
 ### User Identification
 
@@ -193,8 +195,6 @@ In contrast to Stripe, Paddle users are unique across the whole of Paddle, not u
 In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, when a new subscription is created we will save the `customer_email` value in the database in the user's `paddle_email` column. **It is extremely important that you do not modify this value.** Cashier will use the `paddle_email` value for every new subscription and [pay link](#pay-links) to ensure all transactions are linked to the same customer within Paddle. Furthermore, this will ensure that you can assign multiple Paddle subscriptions to a single user using Cashier. A caveat of this is that any [override of the `customerEmail` method](#customer-defaults) on a billable user won't work anymore after the initial subscription has been created.
 
 There is currently no way to modify a user's email address through the Paddle API. When a user wants to update their email address within Paddle, the only way for them to do so is to contact Paddle customer support. In addition, even if a customer does contact Paddle customer support to change their email, we will not know that the email address has been updated because Paddle does not provide a webhook to observe these changes. Therefore, to make sure everything stays in sync, we recommend that you should make customer email change requests to Paddle on their behalf so that you can update the email address in your database manually once Paddle has updated it within their system. When communicating with Paddle, you may wish to provide the `paddle_id` value of the user to assist Paddle in updating the correct user.
-
-Internally when we generate pay links we pass the user's auth identifier through the `passthrough` option as a json payload. We add the auth identifier using a `customer_id` key which is a reserved key for the passthrough option. If you're using passthrough to add metadata you're required to set it as a key/value array. Under the hood the array is json encoded. 
 
 <a name="prices"></a>
 ## Prices
