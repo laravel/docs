@@ -185,7 +185,7 @@ Alternatively, you may customize the widget with custom options instead of using
 
 Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [Parameter Reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details on available options.
 
-> {note} If you would like to also use the `passthrough` option when specifying custom options, please provide a key / value array. Cashier will automatically handle converting the array to a JSON string.
+> {note} If you would like to also use the `passthrough` option when specifying custom options, you should provide a key / value array since Cashier will automatically handle converting the array to a JSON string. In addition, the `customer_id` passthrough option is reserved for internal Cashier usage.
 
 <a name="user-identification"></a>
 ### User Identification
