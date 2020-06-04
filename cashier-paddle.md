@@ -194,6 +194,8 @@ In light of this behavior, there are some important things to keep in mind when 
 
 There is currently no way to modify a user's email address through the Paddle API. When a user wants to update their email address within Paddle, the only way for them to do so is to contact Paddle customer support. In addition, even if a customer does contact Paddle customer support to change their email, we will not know that the email address has been updated because Paddle does not provide a webhook to observe these changes. Therefore, to make sure everything stays in sync, we recommend that you should make customer email change requests to Paddle on their behalf so that you can update the email address in your database manually once Paddle has updated it within their system. When communicating with Paddle, you may wish to provide the `paddle_id` value of the user to assist Paddle in updating the correct user.
 
+Internally when we generate pay links we pass the user's auth identifier through the `passthrough` option as a json payload. We add the auth identifier using a `customer_id` key which is a reserved key for the passthrough option. If you're using passthrough to add metadata you're required to set it as a key/value array. Under the hood the array is json encoded. 
+
 <a name="prices"></a>
 ## Prices
 
