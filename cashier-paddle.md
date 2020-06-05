@@ -695,6 +695,7 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 - Subscription Created
 - Subscription Updated
 - Subscription Deleted
+- Payment Success (One-off purchases)
 
 > {note} Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/cashier-paddle#verifying-webhook-signatures) middleware.
 
