@@ -75,7 +75,7 @@ If you need to overwrite the migrations that ship with the Cashier package, you 
 
 If you would like to prevent Cashier's migrations from running entirely, you may use the `ignoreMigrations` provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
 
-    use Laravel\Cashier\Cashier;
+    use Laravel\Paddle\Cashier;
 
     Cashier::ignoreMigrations();
 
@@ -87,7 +87,7 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 
 Before using Cashier, you must add the `Billable` trait to your model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons and updating payment method information:
 
-    use Laravel\Cashier\Billable;
+    use Laravel\Paddle\Billable;
 
     class User extends Authenticatable
     {
@@ -274,7 +274,7 @@ You may display the original listed prices (without coupon discounts) using the 
 
 You can retrieve a customer by their Paddle user ID using the `Cashier::findBillable` method. This will return an instance of the Billable model:
 
-    use Laravel\Cashier\Cashier;
+    use Laravel\Paddle\Cashier;
 
     $user = Cashier::findBillable($paddleId);
 
@@ -482,7 +482,7 @@ When a subscription is past due, you should instruct the user to [update their p
 
 If you would like subscriptions to still be considered active when they are `past_due`, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
 
-    use Laravel\Cashier\Cashier;
+    use Laravel\Paddle\Cashier;
 
     /**
      * Register any application services.
@@ -716,7 +716,7 @@ Cashier automatically handles subscription cancellation on failed charges, but i
 
     namespace App\Http\Controllers;
 
-    use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
+    use Laravel\Paddle\Http\Controllers\WebhookController as CashierController;
 
     class WebhookController extends CashierController
     {
@@ -739,7 +739,7 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
         '\App\Http\Controllers\WebhookController@handleWebhook'
     );
 
-Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled. Both events contain the full payload of the Paddle webhook.
+Cashier emits a `Laravel\Paddle\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Paddle\Events\WebhookHandled` event when a webhook was handled. Both events contain the full payload of the Paddle webhook.
 
 You can optionally also override the default, built-in webhook route by setting the `CASHIER_WEBHOOK` env variable in your `.env` file. This value should be the full URL to your webhook route and needs to match the URL set in your Paddle control panel:
 
