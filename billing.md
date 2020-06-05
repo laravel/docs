@@ -113,7 +113,7 @@ Cashier assumes your Billable model will be the `App\User` class that ships with
 <a name="api-keys"></a>
 ### API Keys
 
-Next, you should configure your Stripe key in your `.env` file. You can retrieve your Stripe API keys from the Stripe control panel.
+Next, you should configure your Stripe keys in your `.env` file. You can retrieve your Stripe API keys from the Stripe control panel.
 
     STRIPE_KEY=your-stripe-key
     STRIPE_SECRET=your-stripe-secret
@@ -557,6 +557,8 @@ By default, Stripe prorates charges when swapping between plans. The `noProrate`
     $user->subscription('default')->noProrate()->swap('provider-plan-id');
 
 For more information on subscription proration, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/prorations).
+
+> {note} Executing the `noProrate` method before the `swapAndInvoice` method will have no affect on proration. An invoice will always be issued.
 
 <a name="subscription-quantity"></a>
 ### Subscription Quantity

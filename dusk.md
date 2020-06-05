@@ -405,6 +405,17 @@ You may clear the value of an input using the `clear` method:
 
     $browser->clear('email');
 
+You can instruct Dusk to type slowly using the `typeSlowly` method. By default, Dusk will pause for 100 milliseconds between key presses. To customize the amount of time between key presses, you may pass the appropriate number of milliseconds as the second argument to the method:
+
+    $browser->typeSlowly('mobile', '+1 (202) 555-5555');
+
+    $browser->typeSlowly('mobile', '+1 (202) 555-5555', 300);
+
+You may use the `appendSlowly` method to append text slowly:
+
+    $browser->type('tags', 'foo')
+            ->appendSlowly('tags', ', bar, baz');
+
 #### Dropdowns
 
 To select a value in a dropdown selection box, you may use the `select` method. Like the `type` method, the `select` method does not require a full CSS selector. When passing a value to the `select` method, you should pass the underlying option value instead of the display text:
