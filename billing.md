@@ -558,6 +558,20 @@ By default, Stripe prorates charges when swapping between plans. The `noProrate`
 
 For more information on subscription proration, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/prorations).
 
+#### Pending Updates
+
+When working with subscriptions you also have the ability to make Stripe wait with applying any changes if the payment was unsuccessful, either due to an invalid card or extra action required (like 3D Secure). You can apply this behavior using the `pendingIfPaymentFails` method:
+
+    $user->subscription('default')->pendingIfPaymentFails()->swap('provider-plan-id');
+
+This will hold off any plan changes until the customer has successfully made the payment. After they've done so their subscription will be updated with the `customer.subscription.updated` webhook. 
+
+Alternatively, you can also choose to hard stop any change to a subscription by using the `errorIfPaymentFails` method:
+
+    $user->subscription('default')->errorIfPaymentFails()->swap('provider-plan-id');
+
+This was the behavior before the [2019-03-14](https://stripe.com/docs/upgrades#2019-03-14) API update from Stripe. Applying this behavior will force the Stripe SDK to throw an error when a payment fails for a subscription.
+
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
 
