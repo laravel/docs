@@ -556,9 +556,9 @@ By default, Stripe prorates charges when swapping between plans. The `noProrate`
 
     $user->subscription('default')->noProrate()->swap('provider-plan-id');
 
-One catch is that if you use `swapAndInvoice` it will *always* issue a new invoice, regardless if `noProrate` was applied.
-
 For more information on subscription proration, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/prorations).
+
+> {note} Executing the `noProrate` method before the `swapAndInvoice` method will have no affect on proration. An invoice will always be issued.
 
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
