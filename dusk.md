@@ -623,6 +623,21 @@ Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. Yo
         return $something->isReady();
     }, "Something wasn't ready in time.");
 
+#### Waiting after typing
+
+You can also instruct Dusk to wait after typing. By default it'll wait for 100 milliseconds:
+
+    $browser->typeSlowly('mobile', '+1 (202) 555-5555');
+
+But you can specify a longer amount:
+
+    $browser->typeSlowly('mobile', '+1 (202) 555-5555', 300);
+
+Similarly you can use `appendSlowly` to append text and wait after appending it:
+
+    $browser->type('tags', 'foo')
+            ->appendSlowly('tags', ', bar, baz');
+
 <a name="scrolling-an-element-into-view"></a>
 ### Scrolling An Element Into View
 
