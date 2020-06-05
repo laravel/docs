@@ -558,6 +558,8 @@ By default, Stripe prorates charges when swapping between plans. The `noProrate`
 
 For more information on subscription proration, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/prorations).
 
+> {note} Executing the `noProrate` method before the `swapAndInvoice` method will have no affect on proration. An invoice will always be issued.
+
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
 
