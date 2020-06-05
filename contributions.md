@@ -26,17 +26,21 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Application](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
 - [Laravel Documentation](https://github.com/laravel/docs)
+- [Laravel Dusk](https://github.com/laravel/dusk)
 - [Laravel Cashier](https://github.com/laravel/cashier)
+- [Laravel Echo](https://github.com/laravel/echo)
 - [Laravel Envoy](https://github.com/laravel/envoy)
 - [Laravel Framework](https://github.com/laravel/framework)
 - [Laravel Homestead](https://github.com/laravel/homestead)
 - [Laravel Homestead Build Scripts](https://github.com/laravel/settler)
 - [Laravel Horizon](https://github.com/laravel/horizon)
 - [Laravel Passport](https://github.com/laravel/passport)
+- [Laravel Sanctum](https://github.com/laravel/sanctum)
 - [Laravel Scout](https://github.com/laravel/scout)
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Website](https://github.com/laravel/laravel.com-next)
+- [Laravel UI](https://github.com/laravel/ui)
 </div>
 
 <a name="support-questions"></a>
