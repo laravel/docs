@@ -26,13 +26,13 @@ If you are deploying your application to a server that is running Nginx, you may
     server {
         listen 80;
         server_name example.com;
-        root /example.com/public;
+        root /srv/example.com/public;
 
         add_header X-Frame-Options "SAMEORIGIN";
         add_header X-XSS-Protection "1; mode=block";
         add_header X-Content-Type-Options "nosniff";
 
-        index index.html index.htm index.php;
+        index index.php;
 
         charset utf-8;
 
@@ -46,8 +46,7 @@ If you are deploying your application to a server that is running Nginx, you may
         error_page 404 /index.php;
 
         location ~ \.php$ {
-            fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
-            fastcgi_index index.php;
+            fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
             include fastcgi_params;
         }

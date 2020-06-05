@@ -493,7 +493,7 @@ The Cron job for the site will be defined in the `/etc/cron.d` folder of the vir
 
 Mailhog allows you to easily catch your outgoing email and examine it without actually sending the mail to its recipients. To get started, update your `.env` file to use the following mail settings:
 
-    MAIL_DRIVER=smtp
+    MAIL_MAILER=smtp
     MAIL_HOST=localhost
     MAIL_PORT=1025
     MAIL_USERNAME=null

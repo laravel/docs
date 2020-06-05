@@ -145,12 +145,6 @@ However, instead of manually calling `json_encode`, you may use the `@json` Blad
 
 > {note} You should only use the `@json` directive to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
-The `@json` directive is also useful for seeding Vue components or `data-*` attributes:
-
-    <example-component :some-prop='@json($array)'></example-component>
-
-> {note} Using `@json` in element attributes requires that it be surrounded by single quotes.
-
 #### HTML Entity Encoding
 
 By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
@@ -185,6 +179,14 @@ Since many JavaScript frameworks also use "curly" braces to indicate a given exp
     Hello, @{{ name }}.
 
 In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
+
+The `@` symbol may also be used to escape Blade directives:
+
+    {{-- Blade --}}
+    @@json()
+
+    <!-- HTML output -->
+    @json()
 
 #### The `@verbatim` Directive
 
@@ -263,7 +265,7 @@ You may check if a section has content using the `@hasSection` directive:
 
         <div class="clearfix"></div>
     @endif
-    
+
 #### Environment Directives
 
 You may check if the application is running in the production environment using the `@production` directive:
@@ -686,6 +688,18 @@ You may define the content of the named slot using the `x-slot` tag. Any content
     <x-alert>
         <x-slot name="title">
             Server Error
+        </x-slot>
+
+        <strong>Whoops!</strong> Something went wrong!
+    </x-alert>
+
+#### Scoped Slots
+
+If you have used a JavaScript framework such as Vue, you may be familiar with "scoped slots", which allow you to access data or methods from the component within your slot. You may achieve similar behavior in Laravel by defining public methods or properties on your component and accessing the component within your slot via the `$component` variable:
+
+    <x-alert>
+        <x-slot name="title">
+            {{ $component->formatAlert('Server Error') }}
         </x-slot>
 
         <strong>Whoops!</strong> Something went wrong!

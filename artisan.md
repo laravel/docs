@@ -62,7 +62,7 @@ Tinker utilizes a white-list to determine which Artisan commands are allowed to 
         // App\Console\Commands\ExampleCommand::class,
     ],
 
-#### Alias Blacklist
+#### Classes That Should Not Be Aliased
 
 Typically, Tinker automatically aliases classes as you require them in Tinker. However, you may wish to never alias some classes. You may accomplish this by listing the classes in the `dont_alias` array of your `tinker.php` configuration file:
 

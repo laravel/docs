@@ -8,6 +8,7 @@
 - [Displaying Pagination Results](#displaying-pagination-results)
     - [Converting Results To JSON](#converting-results-to-json)
 - [Customizing The Pagination View](#customizing-the-pagination-view)
+    - [Using Tailwind](#using-tailwind)
 - [Paginator Instance Methods](#paginator-instance-methods)
 
 <a name="introduction"></a>
@@ -186,6 +187,18 @@ If you would like to designate a different file as the default pagination view, 
         Paginator::defaultView('view-name');
 
         Paginator::defaultSimpleView('view-name');
+    }
+
+<a name="using-tailwind"></a>
+### Using Tailwind
+
+Laravel includes pagination views built using [Tailwind CSS](https://tailwindcss.com/). To use these views instead of the default Bootstrap views, you may call the paginator's `useTailwind` method within your `AppServiceProvider`:
+
+    use Illuminate\Pagination\Paginator;
+
+    public function boot()
+    {
+        Paginator::useTailwind();
     }
 
 <a name="paginator-instance-methods"></a>

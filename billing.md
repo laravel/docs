@@ -466,6 +466,30 @@ To determine if the user has cancelled their subscription and is no longer withi
         //
     }
 
+#### Subscription Scopes
+
+Most subscription states are also available as query scopes so that you may easily query your database for subscriptions that are in a given state:
+
+    // Get all active subscriptions...
+    $subscriptions = Subscription::query()->active()->get();
+
+    // Get all of the cancelled subscriptions for a user...
+    $subscriptions = $user->subscriptions()->cancelled()->get();
+
+A complete list of available scopes is available below:
+
+    Subscription::query()->active();
+    Subscription::query()->cancelled();
+    Subscription::query()->ended();
+    Subscription::query()->incomplete();
+    Subscription::query()->notCancelled();
+    Subscription::query()->notOnGracePeriod();
+    Subscription::query()->notOnTrial();
+    Subscription::query()->onGracePeriod();
+    Subscription::query()->onTrial();
+    Subscription::query()->pastDue();
+    Subscription::query()->recurring();
+
 <a name="incomplete-and-past-due-status"></a>
 #### Incomplete and Past Due Status
 
@@ -1063,7 +1087,13 @@ Many of Cashier's objects are wrappers around Stripe SDK objects. If you would l
 
     $stripeSubscription = $subscription->asStripeSubscription();
 
-    $stripeSubscription->update(['application_fee_percent' => 5]);
+    $stripeSubscription->application_fee_percent = 5;
+
+    $stripeSubscription->save();
+
+You may also use the `updateStripeSubscription` method to update the Stripe subscription directly:
+
+    $subscription->updateStripeSubscription(['application_fee_percent' => 5]);
 
 <a name="testing"></a>
 ## Testing

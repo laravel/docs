@@ -14,6 +14,7 @@
     - [One To Many](#one-to-many-polymorphic-relations)
     - [Many To Many](#many-to-many-polymorphic-relations)
     - [Custom Polymorphic Types](#custom-polymorphic-types)
+- [Dynamic Relationships](#dynamic-relationships)
 - [Querying Relations](#querying-relations)
     - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
     - [Querying Relationship Existence](#querying-relationship-existence)
@@ -843,6 +844,20 @@ You may determine the morph alias of a given model at runtime using the `getMorp
     $alias = $post->getMorphClass();
 
     $class = Relation::getMorphedModel($alias);
+
+<a name="dynamic-relationships"></a>
+### Dynamic Relationships
+
+You may use the `resolveRelationUsing` method to define relations between Eloquent models at runtime. While not typically recommended for normal application development, this may occasionally be useful when developing Laravel packages:
+
+    use App\Order;
+    use App\Customer;
+
+    Order::resolveRelationUsing('customer', function ($orderModel) {
+        return $orderModel->belongsTo(Customer::class, 'customer_id');
+    });
+
+> {note} When defining dynamic relationships, always provide explicit key name arguments to the Eloquent relationship methods.
 
 <a name="querying-relations"></a>
 ## Querying Relations

@@ -498,6 +498,19 @@ The `wasChanged` method determines if any attributes were changed when the model
     $user->wasChanged('title'); // true
     $user->wasChanged('first_name'); // false
 
+The `getOriginal` method returns an array containing the original attributes of the model regardless of any changes since the model was loaded. You may pass a specific attribute name to get the original value of a particular attribute:
+
+    $user = User::find(1);
+
+    $user->name; // John
+    $user->email; // john@example.com
+
+    $user->name = "Jack";
+    $user->name; // Jack
+
+    $user->getOriginal('name'); // John
+    $user->getOriginal(); // Array of original attributes...
+
 <a name="mass-assignment"></a>
 ### Mass Assignment
 
@@ -533,7 +546,7 @@ If you already have a model instance, you may use the `fill` method to populate 
 
 #### Guarding Attributes
 
-While `$fillable` serves as a "white list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "black list". Importantly, you should use either `$fillable` or `$guarded` - not both. In the example below, all attributes **except for `price`** will be mass assignable:
+While `$fillable` serves as a "allow list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "deny list". Importantly, you should use either `$fillable` or `$guarded` - not both. In the example below, all attributes **except for `price`** will be mass assignable:
 
     <?php
 
