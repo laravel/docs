@@ -78,6 +78,7 @@
     - [Mocking](/docs/{{version}}/mocking)
 - ## Official Packages
     - [Cashier (Stripe)](/docs/{{version}}/billing)
+    - [Cashier (Paddle)](/docs/{{version}}/cashier-paddle)
     - [Cashier (Mollie)](https://github.com/laravel/cashier-mollie)
     - [Dusk](/docs/{{version}}/dusk)
     - [Envoy](/docs/{{version}}/envoy)
