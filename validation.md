@@ -537,6 +537,16 @@ If you would like the `:attribute` portion of your validation message to be repl
         'email' => 'email address',
     ],
 
+#### Specifying Custom Attributes In Validator
+
+You may also pass the custom attributes as the fourth argument to the `Validator::make` method:
+
+    $customAttributes = [
+        'email' => 'email address',
+    ];
+
+    $validator = Validator::make($input, $rules, $messages, $customAttributes);
+
 #### Specifying Custom Values In Language Files
 
 Sometimes you may need the `:value` portion of your validation message to be replaced with a custom representation of the value. For example, consider the following rule that specifies that a credit card number is required if the `payment_type` has a value of `cc`:
