@@ -529,15 +529,13 @@ In most cases, you will probably specify your custom messages in a language file
         ],
     ],
 
-#### Specifying Custom Attributes In Language Files
+#### Specifying Custom Attribute Values
 
 If you would like the `:attribute` portion of your validation message to be replaced with a custom attribute name, you may specify the custom name in the `attributes` array of your `resources/lang/xx/validation.php` language file:
 
     'attributes' => [
         'email' => 'email address',
     ],
-
-#### Specifying Custom Attributes In Validator
 
 You may also pass the custom attributes as the fourth argument to the `Validator::make` method:
 
