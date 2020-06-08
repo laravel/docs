@@ -780,7 +780,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
 
 #### Applying Global Scopes
 
-To assign a global scope to a model, you should override a given model's `booted` method and use the `addGlobalScope` method:
+To assign a global scope to a model, you should override a given model's `boot` method and use the `addGlobalScope` method:
 
     <?php
 
@@ -792,12 +792,14 @@ To assign a global scope to a model, you should override a given model's `booted
     class User extends Model
     {
         /**
-         * The "booted" method of the model.
+         * The "boot" method of the model.
          *
          * @return void
          */
-        protected static function booted()
+        protected static function boot()
         {
+            parent::boot();
+            
             static::addGlobalScope(new AgeScope);
         }
     }
