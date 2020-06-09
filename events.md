@@ -254,6 +254,18 @@ If you would like to customize the queue connection, queue name, or queue delay 
         public $delay = 60;
     }
 
+If you would like to define the listener's queue at runtime, you may define a `viaQueue` method on the listener:
+
+    /**
+     * Get the name of the listener's queue.
+     *
+     * @return string
+     */
+    public function viaQueue()
+    {
+        return 'listeners';
+    }
+
 #### Conditionally Queueing Listeners
 
 Sometimes, you may need to determine whether a listener should be queued based on some data that's only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be executed:
