@@ -733,6 +733,14 @@ Then, you should update the Vagrant box using the `vagrant box update` command:
 
     vagrant box update
 
+Next, you should run the `bash init.sh` command again from the Homestead directory to update some additional configuration files. You will be asked whether you wish to overwrite your existing `Homesyead.yaml`, `after.sh` and `aliases` files. You will likely have made changes to these files during daily usage. 
+
+    // Mac / Linux...
+    bash init.sh
+
+    // Windows...
+    init.bat
+
 Finally, you will need to regenerate your Homestead box to utilize the latest Vagrant installation:
 
     vagrant up
