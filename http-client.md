@@ -34,7 +34,7 @@ To make requests, you may use the `get`, `post`, `put`, `patch`, and `delete` me
 The `get` method returns an instance of `Illuminate\Http\Client\Response`, which provides a variety of methods that may be used to inspect the response:
 
     $response->body() : string;
-    $response->json() : array;
+    $response->json() : array|mixed;
     $response->status() : int;
     $response->ok() : bool;
     $response->successful() : bool;
