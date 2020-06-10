@@ -505,6 +505,12 @@ You may also specify the desired action for the "on delete" and "on update" prop
           ->constrained()
           ->onDelete('cascade');
 
+Any additional [column modifiers](#column-modifiers) must be called before `constrained`:
+
+    $table->foreignId('user_id')
+          ->nullable()
+          ->constrained();
+
 To drop a foreign key, you may use the `dropForeign` method, passing the foreign key constraint to be deleted as an argument. Foreign key constraints use the same naming convention as indexes, based on the table name and the columns in the constraint, followed by a "\_foreign" suffix:
 
     $table->dropForeign('posts_user_id_foreign');
