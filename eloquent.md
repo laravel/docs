@@ -632,7 +632,7 @@ In the example above, we are retrieving the model from the database before calli
 
     App\Flight::destroy(collect([1, 2, 3]));
     
-> {note} The `destroy` method loads each model individually and calls the `delete` method on them, so that the `deleting` and `deleted` events are fired.
+> {note} The `destroy` method loads each model individually and calls the `delete` method on them so that the `deleting` and `deleted` events are fired.
 
 #### Deleting Models By Query
 
