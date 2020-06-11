@@ -154,6 +154,8 @@ For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses
 
 First, you should configure which domains your SPA will be making requests from. You may configure these domains using the `stateful` configuration option in your `sanctum` configuration file. This configuration setting determines which domains will maintain "stateful" authentication using Laravel session cookies when making requests to your API.
 
+> {note} If you are accessing your application via a URL that includes the port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain.
+
 #### Sanctum Middleware
 
 Next, you should add Sanctum's middleware to your `api` middleware group within your `app/Http/Kernel.php` file. This middleware is responsible for ensuring that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens:
