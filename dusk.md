@@ -522,6 +522,16 @@ Sometimes you may wish to perform several operations while scoping all of the op
               ->clickLink('Delete');
     });
 
+You may also wish to execute assertions outside of the current scope. For example, you may wish to interact with a portion of the web page outside of the current scope such as in a component. You may use the `elsewhere` method to accomplish this. The operations performed in the callback will break the current scope to the given one.
+
+     $browser->with('.table', function ($table) {
+        // selector is `body .table`
+        $browser->elsewhere('.page-title', function ($title) {
+            // selector is `body .page-title`
+            $title->assertSee('Hello World');
+        });
+     });
+
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements
 
@@ -1442,6 +1452,90 @@ Once the component has been defined, we can easily select a date within the date
             });
         }
     }
+    
+#### Non-Standard Components
+
+Sometimes a given component does not have a single ancestor in the dom, this can occur in scenarios where popups are rendered to a seperate node such as this custom dropdown component. 
+
+    <div class="dropdown">
+        <label class="dropdown-toggle">My Custom Dropdown</label>
+        <input class="dropdown-input">
+    </div> 
+    
+    ...
+    
+    <div class="dropdown-menu">
+        <ul class="dropdown-list">
+            <li data-value="1">Option 1</li>
+            <li data-value="2">Option 2</li>
+            <li data-value="3">Option 3</li>
+        </ul>
+    </div>
+
+It makes sense to define the logic for interacting with this component in the same component class, but because they have seperate ancestors selecting the second portion with a scoped selector becomes untenable. In this scenarios you may bypass the current selector scope with the `elsewhere` method.
+
+    <?php
+    
+        namespace Tests\Browser\Components;
+    
+        use Laravel\Dusk\Browser;
+        use Laravel\Dusk\Component as BaseComponent;
+    
+        class DropdownPicker extends BaseComponent
+        {
+            /**
+             * Get the root selector for the component.
+             *
+             * @return string
+             */
+            public function selector()
+            {
+                return '.dropdown';
+            }
+    
+            /**
+             * Assert that the browser page contains the component.
+             *
+             * @param  Browser  $browser
+             * @return void
+             */
+            public function assert(Browser $browser)
+            {
+                $browser->assertVisible($this->selector());
+            }
+    
+            /**
+             * Get the element shortcuts for the component.
+             *
+             * @return array
+             */
+            public function elements()
+            {
+                return [
+                    '@toggle' => '.dropdown-toggle',
+                    '@list' => '.dropdown-menu .dropdown-list',
+                ];
+            }
+    
+            /**
+             * Select the given option.
+             *
+             * @param  \Laravel\Dusk\Browser  $browser
+             * @param  string  $value 
+             * @return void
+             */
+            public function selectFromDropdown($browser, $value)
+            {
+                // selector is `body .dropdown`
+                $browser->click('@toggle')
+                        ->elsewhere('@list', function ($browser) use ($value) {
+                            // selector is `body .dropdown-menu .dropdown-list`
+                            $browser->click("li[data-value=$value]");
+                        });
+            }
+        }
+
+
 
 <a name="continuous-integration"></a>
 ## Continuous Integration
