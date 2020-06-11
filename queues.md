@@ -802,7 +802,6 @@ If you require more complex logic for determining the retry delay, you may defin
     */
     public function retryAfter()
     {
-        // 1m, 2m, 4m, 8m, 16m etc
         return 60 * pow(2, $this->attempts());
     }
 
