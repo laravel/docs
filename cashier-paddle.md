@@ -147,6 +147,8 @@ Paddle lacks an extensive CRUD API to perform state changes. Therefore, most int
         ->returnTo(route('home'))
         ->create();
 
+    return view('billing', ['payLink' => $paylink]);
+
 Cashier includes a `paddle-button` Blade component. We may pass the pay link URL to this component as a "prop". When this button is clicked, Paddle's checkout widget will be displayed:
 
     <x-paddle-button :url="$payLink" class="w-8 h-4">
@@ -334,6 +336,8 @@ To create a subscription, first retrieve an instance of your billable model, whi
     $payLink = $user->newSubscription('default', 'premium')
         ->returnTo(route('home'))
         ->create();
+
+    return view('billing', ['payLink' => $paylink]);
 
 The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Paddle. The `returnTo` method accepts a URL that your user will be redirected to after they successfully complete the checkout.
 
@@ -633,6 +637,8 @@ If you would like to offer trial periods to your customers while still collectin
                 ->trialDays(10)
                 ->create();
 
+    return view('billing', ['payLink' => $paylink]);
+
 This method will set the trial period ending date on the subscription record within the database, as well as instruct Paddle to not begin billing the customer until after this date.
 
 > {note} If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
@@ -767,6 +773,8 @@ If you would like to make a "one off" charge against a customer, you may use the
 
     $payLink = $user->charge(12.99, 'Product Title');
 
+    return view('pay', ['payLink' => $paylink]);
+
 After generating the pay link, you may use Cashier's provided `paddle-button` Blade component to allow the user to initiate the Paddle widget and complete the charge:
 
     <x-paddle-button :url="$payLink" class="w-8 h-4">
@@ -802,6 +810,8 @@ You can also [override prices per currency](https://developer.paddle.com/api-ref
 If you would like to make a "one off" charge against a specific product configured within Paddle, you may use the `chargeProduct` method on a billable model instance to generate a pay link:
 
     $payLink = $user->chargeProduct($productId);
+
+    return view('pay', ['payLink' => $paylink]);
 
 Then, you may provide the pay link to the `paddle-button` component to allow the user to initialize the Paddle widget:
 
