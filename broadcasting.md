@@ -114,7 +114,7 @@ Next, you will need to instantiate Echo with the `socket.io` connector and a `ho
         host: window.location.hostname + ':6001'
     });
 
-Finally, you will need to run a compatible Socket.IO server. Laravel does not include a Socket.IO server implementation; however, a community driven Socket.IO server is currently maintained at the [tlaverdure/laravel-echo-server](https://github.com/tlaverdure/laravel-echo-server) GitHub repository.
+Finally, you will need to run a compatible Socket.IO server. Laravel does not include a Socket.IO server implementation; however, there are community driven Socket.IO servers such as [tlaverdure/laravel-echo-server](https://github.com/tlaverdure/laravel-echo-server) and [beyondcode/laravel-websockets](https://github.com/beyondcode/laravel-websockets).
 
 #### Queue Prerequisites
 
