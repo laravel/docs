@@ -340,6 +340,14 @@ By default, this method will use your default disk. If you would like to specify
     $path = $request->file('avatar')->store(
         'avatars/'.$request->user()->id, 's3'
     );
+    
+If you are using the `storeAs` method, you may pass the disk name as the third argument to the method:
+
+    $path = $request->file('avatar')->storeAs(
+        'avatars',
+        $request->user()->id,
+        's3'
+    );
 
 #### Other File Information
 
