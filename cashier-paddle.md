@@ -149,7 +149,13 @@ Paddle lacks an extensive CRUD API to perform state changes. Therefore, most int
 
 Cashier includes a `paddle-button` Blade component. We may pass the pay link URL to this component as a "prop". When this button is clicked, Paddle's checkout widget will be displayed:
 
-    <x-paddle-button :url="$payLink" class="w-8 h-4">
+    <x-paddle-button :url="$payLink" class="px-8 py-4">
+        Subscribe
+    </x-paddle-button>
+
+By default, this will display a button with the standard Paddle styling. You can also choose to remove any Paddle styling by applying `data-theme="none"`:
+
+    <x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="none">
         Subscribe
     </x-paddle-button>
 
@@ -339,7 +345,7 @@ The first argument passed to the `newSubscription` method should be the name of 
 
 The `create` method will create a pay link which you can use to generate a payment button. The payment button can be generated using the `paddle-button` Blade component that ships with Cashier Paddle:
 
-    <x-paddle-button :url="$payLink" class="w-8 h-4">
+    <x-paddle-button :url="$payLink" class="px-8 py-4">
         Subscribe
     </x-paddle-button>
 
@@ -516,7 +522,7 @@ Paddle always saves a payment method per subscription. If you want to update the
 
 Then, you may use the generated URL in combination with Cashier's provided `paddle-button` Blade component to allow the user to initiate the Paddle widget and update their payment information:
 
-    <x-paddle-button :url="$updateUrl" class="w-8 h-4">
+    <x-paddle-button :url="$updateUrl" class="px-8 py-4">
         Update Card
     </x-paddle-button>
 
@@ -769,7 +775,7 @@ If you would like to make a "one off" charge against a customer, you may use the
 
 After generating the pay link, you may use Cashier's provided `paddle-button` Blade component to allow the user to initiate the Paddle widget and complete the charge:
 
-    <x-paddle-button :url="$payLink" class="w-8 h-4">
+    <x-paddle-button :url="$payLink" class="px-8 py-4">
         Buy
     </x-paddle-button>
 
@@ -805,7 +811,7 @@ If you would like to make a "one off" charge against a specific product configur
 
 Then, you may provide the pay link to the `paddle-button` component to allow the user to initialize the Paddle widget:
 
-    <x-paddle-button :url="$payLink" class="w-8 h-4">
+    <x-paddle-button :url="$payLink" class="px-8 py-4">
         Buy
     </x-paddle-button>
 
