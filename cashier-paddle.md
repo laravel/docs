@@ -153,7 +153,7 @@ Cashier includes a `paddle-button` Blade component. We may pass the pay link URL
         Subscribe
     </x-paddle-button>
 
-By default, this will display a button with the standard Paddle styling. You can also choose to remove any Paddle styling by applying `data-theme="none"`:
+By default, this will display a button with the standard Paddle styling. You can remove all Paddle styling by adding the `data-theme="none"` attribute to the component:
 
     <x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="none">
         Subscribe
