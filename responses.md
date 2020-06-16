@@ -87,6 +87,8 @@ The `cookie` method on response instances allows you to easily attach cookies to
     return response($content)
                     ->header('Content-Type', $type)
                     ->cookie('name', 'value', $minutes);
+                    
+The cookie should be set before any headers are being sent. For example, cookies set after using the `dump()` function won't persist because a header is sent at that moment.
 
 The `cookie` method also accepts a few more arguments which are used less frequently. Generally, these arguments have the same purpose and meaning as the arguments that would be given to PHP's native [setcookie](https://secure.php.net/manual/en/function.setcookie.php) method:
 
