@@ -863,7 +863,7 @@ When listing the transactions for the customer, you may use the transaction's he
         @foreach ($transactions as $transaction)
             <tr>
                 <td>{{ $transaction->date()->toFormattedDateString() }}</td>
-                <td>{{ $transaction->total() }}</td>
+                <td>{{ $transaction->amount() }}</td>
                 <td><a href="{{ $transaction->receipt() }}" target="_blank">Download</a></td>
             </tr>
         @endforeach
