@@ -538,7 +538,7 @@ If you are not using a traditional relational database to store your users, you 
             Auth::provider('riak', function ($app, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\UserProvider...
 
-                return new RiakUserProvider($app->make('riak.connection'));
+                return new RiakUserProvider($app['hash'], $config['model']);
             });
         }
     }
