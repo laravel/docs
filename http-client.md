@@ -51,11 +51,20 @@ The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAcces
 <a name="request-data"></a>
 ### Request Data
 
-Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional data with your request. So, these methods accept an array of data as their second argument. By default, data will be sent using the `application/json` content type:
+Of course, it is common when using `GET`, `POST`, `PUT`, and `PATCH` to send additional data with your request. So, these methods accept an array of data as their second argument. By default, data will be sent using the `application/json` content type:
 
     $response = Http::post('http://test.com/users', [
         'name' => 'Steve',
         'role' => 'Network Administrator',
+    ]);
+
+#### GET Requests Query Parameters
+
+If you would like to send data using query parameters, you can either append the query string to the URL or pass an array of data to the second argument. When using the second argument with an array of data, this will automatically be parsed into the correct query string format, such as `http://test.com/users?page=1&query=Taylor`.
+
+    $response = Http::get('http://test.com/users', [
+        'page' => 1,
+        'query' => 'Taylor',
     ]);
 
 #### Sending Form URL Encoded Requests
