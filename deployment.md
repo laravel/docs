@@ -105,3 +105,5 @@ This command precompiles all your Blade views so they are not compiled on demand
 If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel application, [Laravel Forge](https://forge.laravel.com) is a wonderful alternative.
 
 Laravel Forge can create servers on various infrastructure providers such as DigitalOcean, Linode, AWS, and more. In addition, Forge installs and manages all of the tools needed to build robust Laravel applications, such as Nginx, MySQL, Redis, Memcached, Beanstalk, and more.
+
+If you want to go completely serverless, checkout [Laravel Vapor](https://vapor.laravel.com).
