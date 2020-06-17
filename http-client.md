@@ -63,8 +63,8 @@ Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional
 When making `GET` requests, you may either append a query string to the URL directly or pass an array of key / value pairs as the second argument to the `get` method:
 
     $response = Http::get('http://test.com/users', [
+        'name' => 'Taylor',
         'page' => 1,
-        'query' => 'Taylor',
     ]);
 
 #### Sending Form URL Encoded Requests
