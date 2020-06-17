@@ -51,16 +51,16 @@ The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAcces
 <a name="request-data"></a>
 ### Request Data
 
-Of course, it is common when using `GET`, `POST`, `PUT`, and `PATCH` to send additional data with your request. So, these methods accept an array of data as their second argument. By default, data will be sent using the `application/json` content type:
+Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional data with your request. So, these methods accept an array of data as their second argument. By default, data will be sent using the `application/json` content type:
 
     $response = Http::post('http://test.com/users', [
         'name' => 'Steve',
         'role' => 'Network Administrator',
     ]);
 
-#### GET Requests Query Parameters
+#### GET Request Query Parameters
 
-If you would like to send data using query parameters, you can either append the query string to the URL or pass an array of data to the second argument. When using the second argument with an array of data, this will automatically be parsed into the correct query string format, such as `http://test.com/users?page=1&query=Taylor`.
+When making `GET` requests, you may either append a query string to the URL directly or pass an array of key / value pairs as the second argument to the `get` method:
 
     $response = Http::get('http://test.com/users', [
         'page' => 1,
@@ -278,22 +278,22 @@ The `assertSent` method accepts a callback which will be given an `Illuminate\Ht
                $request['name'] == 'Taylor' &&
                $request['role'] == 'Developer';
     });
-    
+
 If needed, you may assert that a specific request was not sent using the `assertNotSent` method:
 
     Http::fake();
-    
+
     Http::post('http://test.com/users', [
         'name' => 'Taylor',
         'role' => 'Developer',
-    ]); 
-       
+    ]);
+
     Http::assertNotSent(function (Request $request) {
         return $request->url() === 'http://test.com/posts';
     });
-    
+
 Or, if you would like to assert that no requests were sent, you may use the `assertNothingSent` method:
 
     Http::fake();
-    
+
     Http::assertNothingSent();
