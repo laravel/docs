@@ -316,7 +316,7 @@ When casting to value objects, any changes made to the value object will automat
 
     $user->save();
 
-> {note} If you still want to output your Eloquent models as JSON or convert them to an array then it's expected that you implement `Illuminate\Contracts\Support\Arrayable` on any value object that's being casted.
+> {tip} If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces on the value object.
 
 #### Inbound Casting
 
