@@ -316,6 +316,8 @@ When casting to value objects, any changes made to the value object will automat
 
     $user->save();
 
+> {note} If you still want to output your Eloquent models as JSON or convert them to an array then it's expected that you implement `Illuminate\Contracts\Support\Arrayable` on any value object that's being casted.
+
 #### Inbound Casting
 
 Occasionally, you may need to write a custom cast that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model. A classic example of an inbound only cast is a "hashing" cast. Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined.
