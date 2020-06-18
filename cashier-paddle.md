@@ -147,7 +147,7 @@ Paddle lacks an extensive CRUD API to perform state changes. Therefore, most int
         ->returnTo(route('home'))
         ->create();
 
-    return view('billing', ['payLink' => $paylink]);
+    return view('billing', ['payLink' => $payLink]);
 
 Cashier includes a `paddle-button` Blade component. We may pass the pay link URL to this component as a "prop". When this button is clicked, Paddle's checkout widget will be displayed:
 
