@@ -171,9 +171,7 @@ To stop sharing your site, hit `Control + C` to cancel the process.
 
 ### Sharing Sites Via Expose
 
-If you have [Expose](https://beyondco.de/docs/expose) installed you can share your site by navigating to the site's directory in your terminal and running the `expose` command. Consult the expose documentation for additional command-line parameters it supports.
-
-Expose will show you the sharable URL you may use on your devices or amongst team members.
+If you have [Expose](https://beyondco.de/docs/expose) installed, you can share your site by navigating to the site's directory in your terminal and running the `expose` command. Consult the expose documentation for additional command-line parameters it supports. After sharing the site, Expose will display the sharable URL that you may use on your other devices or amongst team members.
 
 To stop sharing your site, hit `Control + C` to cancel the process.
 
