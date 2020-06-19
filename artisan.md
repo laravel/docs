@@ -54,6 +54,8 @@ You can publish Tinker's configuration file using the `vendor:publish` command:
 
 > {note} The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. Therefore, when using tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs.
 
+> {note} PsySH overwrites Laravel's error handler. Therefore PHP errors like E_WARNING, E_NOTICE will not throw an exception and not result in the script halting.
+
 #### Command Whitelist
 
 Tinker utilizes a white-list to determine which Artisan commands are allowed to be run within its shell. By default, you may run the `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize`, and `up` commands. If you would like to white-list more commands you may add them to the `commands` array in your `tinker.php` configuration file:
