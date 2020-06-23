@@ -5,6 +5,7 @@
 - [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
     - [Scoped Event Fakes](#scoped-event-fakes)
+- [HTTP Fake](#http-fake)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
@@ -185,6 +186,11 @@ If you only want to fake event listeners for a portion of your test, you may use
             $order->update([...]);
         }
     }
+
+<a name="http-fake"></a>
+## HTTP Fake
+
+The `Http` facade's `fake` method allows you to instruct the HTTP client to return stubbed / dummy responses when requests are made. For more information on faking outgoing HTTP requests, please consult the [HTTP Client testing documentation](/docs/{{version}}/http-client#testing).
 
 <a name="mail-fake"></a>
 ## Mail Fake
