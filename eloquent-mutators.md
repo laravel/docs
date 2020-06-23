@@ -270,6 +270,7 @@ As an example, we will define a custom cast class that casts multiple model valu
 
     use App\Address;
     use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+    use InvalidArgumentException;
 
     class Address implements CastsAttributes
     {
@@ -301,6 +302,10 @@ As an example, we will define a custom cast class that casts multiple model valu
          */
         public function set($model, $key, $value, $attributes)
         {
+            if (! $value instanceof Address) {
+                throw InvalidArgumentException('The given value is not an Address instance.');
+            }
+
             return [
                 'address_line_one' => $value->lineOne,
                 'address_line_two' => $value->lineTwo,
