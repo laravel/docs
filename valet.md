@@ -8,9 +8,9 @@
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
-    - [Proxying Services](#proxying)
 - [Sharing Sites](#sharing-sites)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
+- [Proxying Services](#proxying)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
@@ -157,33 +157,6 @@ To "unsecure" a site and revert back to serving its traffic over plain HTTP, use
 
     valet unsecure laravel
 
-<a name="proxying"></a>
-#### Proxying Services
-
-Valet provides helpers to create Nginx proxy configs for specified hosts.
-
-This is useful for services like `docker`, `vessel`, `mailhog` etc, so that both Valet and those other services can co-exist on the same machine.
-
-(In the case of `docker`, proxying avoids the problem where Valet and Docker want to share port 80, which is not allowed.)
-(In the case of a service like `mailhog`, it already runs on a different port, but proxying allows this to be given a name that Valet recognizes and can serve quickly and easily.)
-
-To generate a proxy config for a specific host:
-
-    valet proxy [domain] [host]
-
-for example, to proxy all traffic from `https://elasticsearch.test` to `http://127.0.0.1:9200` run:
-
-    valet proxy elasticsearch http://127.0.0.1:9200
-
-To remove a proxy config file:
-
-    valet unproxy [domain]
-
-To list all site configs that represent a proxy:
-
-    valet proxies
-
-
 <a name="sharing-sites"></a>
 ## Sharing Sites
 
@@ -233,6 +206,23 @@ Some applications using other frameworks may depend on server environment variab
             'key' => 'value',
         ],
     ];
+
+<a name="proxying-services"></a>
+## Proxying Services
+
+Sometimes you may wish to proxy a Valet domain to another service on your local machine. For example, you may occasionally need to run Valet while also running a separate site in Docker; however, Valet and Docker can't both bind to port 80 at the same time.
+
+To solve this, you may use the `proxy` command to generate a proxy. For example, you may proxy all traffic from `http://elasticsearch.test` to `http://127.0.0.1:9200`:
+
+    valet proxy elasticsearch http://127.0.0.1:9200
+
+You may remove a proxy using the `unproxy` command:
+
+    valet unproxy elasticsearch
+
+You may use the `proxies` command to list all site configuration that are proxied:
+
+    valet proxies
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
