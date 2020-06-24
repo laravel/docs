@@ -471,6 +471,10 @@ The `click` method may be used to "click" on an element matching the given selec
 
     $browser->click('.selector');
 
+The `clickAtXPath` method may be used to "click" on an element matching the given XPath expression:
+
+    $browser->clickAtXPath('//div[@class = "selector"]');
+
 #### Mouseover
 
 The `mouseover` method may be used when you need to move the mouse over an element matching the given selector:
