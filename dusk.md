@@ -471,6 +471,10 @@ The `click` method may be used to "click" on an element matching the given selec
 
     $browser->click('.selector');
 
+The `clickAtPoint` method may be used to "click" on the topmost element at a given pair of coordinates relative to the viewable area of the browser:
+
+    $browser->clickAtPoint(0, 0);
+
 The `clickAtXPath` method may be used to "click" on an element matching the given XPath expression:
 
     $browser->clickAtXPath('//div[@class = "selector"]');
