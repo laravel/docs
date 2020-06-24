@@ -57,6 +57,7 @@ The following first-party packages have new major releases to support Laravel 7.
 - [Nova v3.0](https://nova.laravel.com/releases)
 - [Scout v8.0](https://github.com/laravel/scout/blob/master/UPGRADE.md)
 - [Telescope v3.0](https://github.com/laravel/telescope/releases)
+- [Tinker v2.0](https://github.com/laravel/tinker/blob/2.x/CHANGELOG.md)
 - UI v2.0 (No changes necessary)
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 7 support.
