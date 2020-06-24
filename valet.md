@@ -8,6 +8,7 @@
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
+    - [Proxying Services](#proxying)
 - [Sharing Sites](#sharing-sites)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Custom Valet Drivers](#custom-valet-drivers)
@@ -155,6 +156,33 @@ By default, Valet serves sites over plain HTTP. However, if you would like to se
 To "unsecure" a site and revert back to serving its traffic over plain HTTP, use the `unsecure` command. Like the `secure` command, this command accepts the host name that you wish to unsecure:
 
     valet unsecure laravel
+
+<a name="proxying"></a>
+#### Proxying Services
+
+Valet provides helpers to create Nginx proxy configs for specified hosts.
+
+This is useful for services like `docker`, `vessel`, `mailhog` etc, so that both Valet and those other services can co-exist on the same machine.
+
+(In the case of `docker`, proxying avoids the problem where Valet and Docker want to share port 80, which is not allowed.)
+(In the case of a service like `mailhog`, it already runs on a different port, but proxying allows this to be given a name that Valet recognizes and can serve quickly and easily.)
+
+To generate a proxy config for a specific host:
+
+    valet proxy [domain] [host]
+
+for example, to proxy all traffic from `https://elasticsearch.test` to `http://127.0.0.1:9200` run:
+
+    valet proxy elasticsearch http://127.0.0.1:9200
+
+To remove a proxy config file:
+
+    valet unproxy [domain]
+
+To list all site configs that represent a proxy:
+
+    valet proxies
+
 
 <a name="sharing-sites"></a>
 ## Sharing Sites
