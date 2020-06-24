@@ -34,7 +34,7 @@ To make requests, you may use the `get`, `post`, `put`, `patch`, and `delete` me
 The `get` method returns an instance of `Illuminate\Http\Client\Response`, which provides a variety of methods that may be used to inspect the response:
 
     $response->body() : string;
-    $response->json() : array;
+    $response->json() : array|mixed;
     $response->status() : int;
     $response->ok() : bool;
     $response->successful() : bool;
@@ -56,6 +56,15 @@ Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional
     $response = Http::post('http://test.com/users', [
         'name' => 'Steve',
         'role' => 'Network Administrator',
+    ]);
+
+#### GET Request Query Parameters
+
+When making `GET` requests, you may either append a query string to the URL directly or pass an array of key / value pairs as the second argument to the `get` method:
+
+    $response = Http::get('http://test.com/users', [
+        'name' => 'Taylor',
+        'page' => 1,
     ]);
 
 #### Sending Form URL Encoded Requests
@@ -269,22 +278,22 @@ The `assertSent` method accepts a callback which will be given an `Illuminate\Ht
                $request['name'] == 'Taylor' &&
                $request['role'] == 'Developer';
     });
-    
+
 If needed, you may assert that a specific request was not sent using the `assertNotSent` method:
 
     Http::fake();
-    
+
     Http::post('http://test.com/users', [
         'name' => 'Taylor',
         'role' => 'Developer',
-    ]); 
-       
+    ]);
+
     Http::assertNotSent(function (Request $request) {
         return $request->url() === 'http://test.com/posts';
     });
-    
+
 Or, if you would like to assert that no requests were sent, you may use the `assertNothingSent` method:
 
     Http::fake();
-    
+
     Http::assertNothingSent();

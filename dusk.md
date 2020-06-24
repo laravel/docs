@@ -471,6 +471,14 @@ The `click` method may be used to "click" on an element matching the given selec
 
     $browser->click('.selector');
 
+The `clickAtXPath` method may be used to "click" on an element matching the given XPath expression:
+
+    $browser->clickAtXPath('//div[@class = "selector"]');
+
+The `clickAtPoint` method may be used to "click" on the topmost element at a given pair of coordinates relative to the viewable area of the browser:
+
+    $browser->clickAtPoint(0, 0);
+
 #### Mouseover
 
 The `mouseover` method may be used when you need to move the mouse over an element matching the given selector:
@@ -521,6 +529,16 @@ Sometimes you may wish to perform several operations while scoping all of the op
         $table->assertSee('Hello World')
               ->clickLink('Delete');
     });
+
+You may occasionally need to execute assertions outside of the current scope. You may use the `elsewhere` method to accomplish this:
+
+     $browser->with('.table', function ($table) {
+        // Current scope is `body .table`...
+        $browser->elsewhere('.page-title', function ($title) {
+            // Current scope is `body .page-title`...
+            $title->assertSee('Hello World');
+        });
+     });
 
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements
@@ -1482,10 +1500,10 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
 
                 - store_artifacts:
                     path: tests/Browser/screenshots
-                    
+
                 - store_artifacts:
                     path: tests/Browser/console
-                    
+
                 - store_artifacts:
                     path: storage/logs
 

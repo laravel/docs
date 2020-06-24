@@ -793,6 +793,18 @@ If you would like to configure the failed job retry delay on a per-job basis, yo
      */
     public $retryAfter = 3;
 
+If you require more complex logic for determining the retry delay, you may define a `retryAfter` method on your queued job class:
+
+    /**
+    * Calculate the number of seconds to wait before retrying the job.
+    *
+    * @return int
+    */
+    public function retryAfter()
+    {
+        return 60 * pow(2, $this->attempts());
+    }
+
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Cleaning Up After Failed Jobs
 

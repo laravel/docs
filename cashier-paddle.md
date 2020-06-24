@@ -143,13 +143,21 @@ Paddle lacks an extensive CRUD API to perform state changes. Therefore, most int
 
     $user = User::find(1);
 
-    $payLink = $user->newSubscription('default', 'premium')
+    $payLink = $user->newSubscription('default', $premium = 34567)
         ->returnTo(route('home'))
         ->create();
 
+    return view('billing', ['payLink' => $payLink]);
+
 Cashier includes a `paddle-button` Blade component. We may pass the pay link URL to this component as a "prop". When this button is clicked, Paddle's checkout widget will be displayed:
 
-    <x-paddle-button :url="$payLink" class="w-8 h-4">
+    <x-paddle-button :url="$payLink" class="px-8 py-4">
+        Subscribe
+    </x-paddle-button>
+
+By default, this will display a button with the standard Paddle styling. You can remove all Paddle styling by adding the `data-theme="none"` attribute to the component:
+
+    <x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="none">
         Subscribe
     </x-paddle-button>
 
@@ -335,11 +343,13 @@ To create a subscription, first retrieve an instance of your billable model, whi
         ->returnTo(route('home'))
         ->create();
 
+    return view('billing', ['payLink' => $payLink]);
+
 The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Paddle. The `returnTo` method accepts a URL that your user will be redirected to after they successfully complete the checkout.
 
 The `create` method will create a pay link which you can use to generate a payment button. The payment button can be generated using the `paddle-button` Blade component that ships with Cashier Paddle:
 
-    <x-paddle-button :url="$payLink" class="w-8 h-4">
+    <x-paddle-button :url="$payLink" class="px-8 py-4">
         Subscribe
     </x-paddle-button>
 
@@ -349,7 +359,7 @@ After the user has finished their checkout, a `subscription_created` webhook wil
 
 If you would like to specify additional customer or subscription details, you may do so by passing them as a key / value array to the `create` method:
 
-    $payLink = $user->newSubscription('default', 'monthly')
+    $payLink = $user->newSubscription('default', $monthly = 12345)
         ->returnTo(route('home'))
         ->create([
             'vat_number' => $vatNumber,
@@ -361,7 +371,7 @@ To learn more about the additional fields supported by Paddle, check out Paddle'
 
 If you would like to apply a coupon when creating the subscription, you may use the `withCoupon` method:
 
-    $payLink = $user->newSubscription('default', 'monthly')
+    $payLink = $user->newSubscription('default', $monthly = 12345)
         ->returnTo(route('home'))
         ->withCoupon('code')
         ->create();
@@ -370,7 +380,7 @@ If you would like to apply a coupon when creating the subscription, you may use 
 
 You can also pass an array of metadata using the `withMetadata` method:
 
-    $payLink = $user->newSubscription('default', 'monthly')
+    $payLink = $user->newSubscription('default', $monthly = 12345)
         ->returnTo(route('home'))
         ->withMetadata(['key' => 'value'])
         ->create();
@@ -404,15 +414,15 @@ If you would like to determine if a user is still within their trial period, you
         //
     }
 
-The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Paddle plan ID. In this example, we will determine if the user's `default` subscription is actively subscribed to the `monthly` plan:
+The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Paddle plan ID. In this example, we will determine if the user's `default` subscription is actively subscribed to the monthly plan:
 
-    if ($user->subscribedToPlan('monthly', 'default')) {
+    if ($user->subscribedToPlan($monthly = 12345, 'default')) {
         //
     }
 
-By passing an array to the `subscribedToPlan` method, you may determine if the user's `default` subscription is actively subscribed to the `monthly` or the `yearly` plan:
+By passing an array to the `subscribedToPlan` method, you may determine if the user's `default` subscription is actively subscribed to the monthly or the yearly plan:
 
-    if ($user->subscribedToPlan(['monthly', 'yearly'], 'default')) {
+    if ($user->subscribedToPlan([$monthly = 12345, $yearly = 54321], 'default')) {
         //
     }
 
@@ -516,7 +526,7 @@ Paddle always saves a payment method per subscription. If you want to update the
 
 Then, you may use the generated URL in combination with Cashier's provided `paddle-button` Blade component to allow the user to initiate the Paddle widget and update their payment information:
 
-    <x-paddle-button :url="$updateUrl" class="w-8 h-4">
+    <x-paddle-button :url="$updateUrl" class="px-8 py-4">
         Update Card
     </x-paddle-button>
 
@@ -529,7 +539,7 @@ After a user has subscribed to your application, they may occasionally want to c
 
     $user = App\User::find(1);
 
-    $user->subscription('default')->swap('provider-plan-id');
+    $user->subscription('default')->swap($premium = 34567);
 
 If the user is on trial, the trial period will be maintained. Also, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
@@ -537,19 +547,19 @@ If you would like to swap plans and cancel any trial period the user is currentl
 
     $user->subscription('default')
             ->skipTrial()
-            ->swap('provider-plan-id');
+            ->swap($premium = 34567);
 
 If you would like to swap plans and immediately invoice the user instead of waiting for their next billing cycle, you may use the `swapAndInvoice` method:
 
     $user = App\User::find(1);
 
-    $user->subscription('default')->swapAndInvoice('provider-plan-id');
+    $user->subscription('default')->swapAndInvoice($premium = 34567);
 
 #### Prorations
 
 By default, Paddle prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
 
-    $user->subscription('default')->noProrate()->swap('provider-plan-id');
+    $user->subscription('default')->noProrate()->swap($premium = 34567);
 
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
@@ -628,10 +638,12 @@ If you would like to offer trial periods to your customers while still collectin
 
     $user = User::find(1);
 
-    $payLink = $user->newSubscription('default', 'monthly')
+    $payLink = $user->newSubscription('default', $monthly = 12345)
                 ->returnTo(route('home'))
                 ->trialDays(10)
                 ->create();
+
+    return view('billing', ['payLink' => $payLink]);
 
 This method will set the trial period ending date on the subscription record within the database, as well as instruct Paddle to not begin billing the customer until after this date.
 
@@ -675,7 +687,7 @@ Once you are ready to create an actual subscription for the user, you may use th
 
     $user = User::find(1);
 
-    $payLink = $user->newSubscription('default', 'monthly')
+    $payLink = $user->newSubscription('default', $monthly = 12345)
         ->returnTo(route('home'))
         ->create();
 
@@ -767,9 +779,11 @@ If you would like to make a "one off" charge against a customer, you may use the
 
     $payLink = $user->charge(12.99, 'Product Title');
 
+    return view('pay', ['payLink' => $payLink]);
+
 After generating the pay link, you may use Cashier's provided `paddle-button` Blade component to allow the user to initiate the Paddle widget and complete the charge:
 
-    <x-paddle-button :url="$payLink" class="w-8 h-4">
+    <x-paddle-button :url="$payLink" class="px-8 py-4">
         Buy
     </x-paddle-button>
 
@@ -803,9 +817,11 @@ If you would like to make a "one off" charge against a specific product configur
 
     $payLink = $user->chargeProduct($productId);
 
+    return view('pay', ['payLink' => $payLink]);
+
 Then, you may provide the pay link to the `paddle-button` component to allow the user to initialize the Paddle widget:
 
-    <x-paddle-button :url="$payLink" class="w-8 h-4">
+    <x-paddle-button :url="$payLink" class="px-8 py-4">
         Buy
     </x-paddle-button>
 
@@ -847,7 +863,7 @@ When listing the transactions for the customer, you may use the transaction's he
         @foreach ($transactions as $transaction)
             <tr>
                 <td>{{ $transaction->date()->toFormattedDateString() }}</td>
-                <td>{{ $transaction->total() }}</td>
+                <td>{{ $transaction->amount() }}</td>
                 <td><a href="{{ $transaction->receipt() }}" target="_blank">Download</a></td>
             </tr>
         @endforeach

@@ -225,7 +225,7 @@ If you would like your client's secrets to be hashed when stored in your databas
 
     Passport::hashClientSecrets();
 
-Once enabled, all of your client secrets will only be shown one time when your client is created. Since the plain-text client secret value is never stored in the database, it is not possible to recovery it if it is lost.
+Once enabled, all of your client secrets will only be shown one time when your client is created. Since the plain-text client secret value is never stored in the database, it is not possible to recover if lost.
 
 <a name="token-lifetimes"></a>
 ### Token Lifetimes
@@ -304,7 +304,7 @@ The simplest way to create a client is using the `passport:client` Artisan comma
 
 **Redirect URLs**
 
-If you would like to whitelist multiple redirect URLs for your client, you may specify them using a comma-delimited list when prompted for the URL by the `passport:client` command:
+If you would like to allow multiple redirect URLs for your client, you may specify them using a comma-delimited list when prompted for the URL by the `passport:client` command:
 
     http://example.com/callback,http://examplefoo.com/callback
 
