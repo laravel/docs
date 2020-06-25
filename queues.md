@@ -802,7 +802,7 @@ If you require more complex logic for determining the retry delay, you may defin
     */
     public function retryAfter()
     {
-        return 60 * pow(2, $this->attempts());
+        return 3;
     }
 
 <a name="cleaning-up-after-failed-jobs"></a>
