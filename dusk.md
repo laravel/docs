@@ -754,6 +754,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertSelected](#assert-selected)
 [assertNotSelected](#assert-not-selected)
 [assertSelectHasOptions](#assert-select-has-options)
+[assertSelectMissingOption](#assert-select-missing-option)
 [assertSelectMissingOptions](#assert-select-missing-options)
 [assertSelectHasOption](#assert-select-has-option)
 [assertValue](#assert-value)
@@ -1052,6 +1053,13 @@ Assert that the given dropdown does not have the given value selected:
 Assert that the given array of values are available to be selected:
 
     $browser->assertSelectHasOptions($field, $values);
+
+<a name="assert-select-missing-option"></a>
+#### assertSelectMissingOption
+
+Assert that the given value is not available to be selected:
+
+    $browser->assertSelectMissingOption($field, $value);
 
 <a name="assert-select-missing-options"></a>
 #### assertSelectMissingOptions
