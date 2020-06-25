@@ -373,6 +373,11 @@ Dusk provides several methods for interacting with the current display text, val
     // Set the value...
     $browser->value('selector', 'value');
 
+To get the "value" of an input element that has a given field name, use the `inputValue` method:
+
+    // Retrieve the value of an input element...
+    $inputValue = $browser->inputValue('field');
+
 #### Retrieving Text
 
 The `text` method may be used to retrieve the display text of an element that matches the given selector:
