@@ -602,7 +602,7 @@ Occasionally, you may wish to wait for a given selector and then interact with t
 
     $browser->whenAvailable('.modal', function ($modal) {
         $modal->assertSee('Hello World')
-              ->press('OK');
+              ->pressAndWaitFor('OK');
     });
 
 #### Waiting For Text
