@@ -763,7 +763,7 @@ If the user cancels a subscription and then resumes that subscription before the
 <a name="subscription-trials"></a>
 ## Subscription Trials
 
-> {note} Cashier manages trial dates for subscriptions and does not derive them from the Stripe plan. Therefore, you should configure your plan in Stripe to have a trial period of zero days so that Cashier can manage the trials instead.
+> {note} When working with trial days you have to be aware that if you let your customer resubscribe to a new subscription that they'll start a new trial period. You'll need to make sure to use `trialDays(0)` when you let them resubscribe.
 
 <a name="with-payment-method-up-front"></a>
 ### With Payment Method Up Front
