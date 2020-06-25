@@ -771,6 +771,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertButtonDisabled](#assert-button-disabled)
 [assertFocused](#assert-focused)
 [assertNotFocused](#assert-not-focused)
+[assertAuthenticated](#assert-authenticated)
+[assertGuest](#assert-guest)
+[assertAuthenticatedAs](#assert-authenticated-as)
 [assertVue](#assert-vue)
 [assertVueIsNot](#assert-vue-is-not)
 [assertVueContains](#assert-vue-contains)
@@ -1180,6 +1183,27 @@ Assert that the given field is focused:
 Assert that the given field is not focused:
 
     $browser->assertNotFocused($field);
+
+<a name="assert-authenticated"></a>
+#### assertAuthenticated
+
+Assert that the user is authenticated:
+
+    $browser->assertAuthenticated();
+
+<a name="assert-guest"></a>
+#### assertGuest
+
+Assert that the user is not authenticated:
+
+    $browser->assertGuest();
+
+<a name="assert-authenticated-as"></a>
+#### assertAuthenticatedAs
+
+Assert that the user is authenticated as the given user:
+
+    $browser->assertAuthenticatedAs($user);
 
 <a name="assert-vue"></a>
 #### assertVue
