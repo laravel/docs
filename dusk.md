@@ -245,6 +245,10 @@ You may use the `resize` method to adjust the size of the browser window:
 
     $browser->resize(1920, 1080);
 
+You may use the `move` method to move the browser window to a different position on your screen:
+
+    $browser->move(100, 100);
+
 The `maximize` method may be used to maximize the browser window:
 
     $browser->maximize();
