@@ -609,7 +609,7 @@ Below is a list of all available validation rules and their function:
 [Digits Between](#rule-digits-between)
 [Dimensions (Image Files)](#rule-dimensions)
 [Distinct](#rule-distinct)
-[E-Mail](#rule-email)
+[Email](#rule-email)
 [Ends With](#rule-ends-with)
 [Exclude If](#rule-exclude-if)
 [Exclude Unless](#rule-exclude-unless)
