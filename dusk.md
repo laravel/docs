@@ -484,6 +484,22 @@ The `clickAtPoint` method may be used to "click" on the topmost element at a giv
 
     $browser->clickAtPoint(0, 0);
 
+The `clickAndHold` method may be used to simulate a mouse button being clicked and held down. A subsequent call to the `releaseMouse` method will undo this behavior and release the mouse button:
+
+    $browser->clickAndHold()
+            ->pause(1000)
+            ->releaseMouse();
+
+The `doubleClick` method may be used to simulate the double "click" of a mouse:
+
+    $browser->doubleClick();
+
+The `rightClick` method may be used to simulate the right "click" of a mouse:
+
+    $browser->rightClick();
+
+    $browser->rightClick('.selector');
+
 #### Mouseover
 
 The `mouseover` method may be used when you need to move the mouse over an element matching the given selector:
