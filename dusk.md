@@ -519,6 +519,10 @@ Or, you may drag an element in a single direction:
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
 
+Or, you may drag an element by a given offset:
+
+    $browser->dragOffset('.selector', 10, 10);
+
 <a name="javascript-dialogs"></a>
 ### JavaScript Dialogs
 
