@@ -629,8 +629,6 @@ If you wish to cancel a subscription immediately, you may call the `cancelNow` m
 <a name="subscription-trials"></a>
 ## Subscription Trials
 
-> {note} When working with trial days you have to be aware that if you let your customer resubscribe to a new subscription that they'll start a new trial period. You'll need to make sure to use `trialDays(0)` when you let them resubscribe.
-
 <a name="with-payment-method-up-front"></a>
 ### With Payment Method Up Front
 
@@ -658,6 +656,10 @@ You may determine if the user is within their trial period using either the `onT
     if ($user->subscription('default')->onTrial()) {
         //
     }
+
+#### Defining Trial Days In Paddle / Cashier
+
+You may choose to define how many trial days your plan's receive in the Paddle dashboard or always pass them explicitly using Cashier. If you choose to define your plan's trial days in Paddle you should be aware that new subscriptions, including new subscriptions for a customer that had a subscription in the past, will always receive a trial period unless you explicitly call the `trialDays(0)` method.
 
 <a name="without-payment-method-up-front"></a>
 ### Without Payment Method Up Front
