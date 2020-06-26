@@ -245,10 +245,6 @@ You may use the `resize` method to adjust the size of the browser window:
 
     $browser->resize(1920, 1080);
 
-You may use the `move` method to move the browser window to a different position on your screen:
-
-    $browser->move(100, 100);
-
 The `maximize` method may be used to maximize the browser window:
 
     $browser->maximize();
@@ -260,6 +256,10 @@ The `fitContent` method will resize the browser window to match the size of the 
 When a test fails, Dusk will automatically resize the browser to fit the content prior to taking a screenshot. You may disable this feature by calling the `disableFitOnFailure` method within your test:
 
     $browser->disableFitOnFailure();
+
+You may use the `move` method to move the browser window to a different position on your screen:
+
+    $browser->move(100, 100);
 
 <a name="browser-macros"></a>
 ### Browser Macros
@@ -377,7 +377,7 @@ Dusk provides several methods for interacting with the current display text, val
     // Set the value...
     $browser->value('selector', 'value');
 
-To get the "value" of an input element that has a given field name, use the `inputValue` method:
+You may use the `inputValue` method to get the "value" of an input element that has a given field name:
 
     // Retrieve the value of an input element...
     $inputValue = $browser->inputValue('field');
@@ -488,12 +488,6 @@ The `clickAtPoint` method may be used to "click" on the topmost element at a giv
 
     $browser->clickAtPoint(0, 0);
 
-The `clickAndHold` method may be used to simulate a mouse button being clicked and held down. A subsequent call to the `releaseMouse` method will undo this behavior and release the mouse button:
-
-    $browser->clickAndHold()
-            ->pause(1000)
-            ->releaseMouse();
-
 The `doubleClick` method may be used to simulate the double "click" of a mouse:
 
     $browser->doubleClick();
@@ -503,6 +497,12 @@ The `rightClick` method may be used to simulate the right "click" of a mouse:
     $browser->rightClick();
 
     $browser->rightClick('.selector');
+
+The `clickAndHold` method may be used to simulate a mouse button being clicked and held down. A subsequent call to the `releaseMouse` method will undo this behavior and release the mouse button:
+
+    $browser->clickAndHold()
+            ->pause(1000)
+            ->releaseMouse();
 
 #### Mouseover
 
@@ -523,7 +523,7 @@ Or, you may drag an element in a single direction:
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
 
-Or, you may drag an element by a given offset:
+Finally, you may drag an element by a given offset:
 
     $browser->dragOffset('.selector', 10, 10);
 
@@ -602,7 +602,7 @@ Occasionally, you may wish to wait for a given selector and then interact with t
 
     $browser->whenAvailable('.modal', function ($modal) {
         $modal->assertSee('Hello World')
-              ->pressAndWaitFor('OK');
+              ->press('OK');
     });
 
 #### Waiting For Text
@@ -1326,7 +1326,7 @@ You may navigate "back" and "forward" using the `back` and `forward` methods:
 
     $browser->forward();
 
-To refresh the page, use the `refresh` method:
+You may use the `refresh` method to refresh the page:
 
     $browser->refresh();
 
