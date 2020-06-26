@@ -379,8 +379,6 @@ Sometimes your queued event listeners may fail. If queued listener exceeds the m
 <a name="dispatching-events"></a>
 ## Dispatching Events
 
-To dispatch
-
 To dispatch an event, you may pass an instance of the event to the `event` helper. The helper will dispatch the event to all of its registered listeners. Since the `event` helper is globally available, you may call it from anywhere in your application:
 
     <?php
