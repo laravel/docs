@@ -257,6 +257,10 @@ When a test fails, Dusk will automatically resize the browser to fit the content
 
     $browser->disableFitOnFailure();
 
+You may use the `move` method to move the browser window to a different position on your screen:
+
+    $browser->move(100, 100);
+
 <a name="browser-macros"></a>
 ### Browser Macros
 
@@ -373,6 +377,11 @@ Dusk provides several methods for interacting with the current display text, val
     // Set the value...
     $browser->value('selector', 'value');
 
+You may use the `inputValue` method to get the "value" of an input element that has a given field name:
+
+    // Retrieve the value of an input element...
+    $inputValue = $browser->inputValue('field');
+
 #### Retrieving Text
 
 The `text` method may be used to retrieve the display text of an element that matches the given selector:
@@ -479,6 +488,22 @@ The `clickAtPoint` method may be used to "click" on the topmost element at a giv
 
     $browser->clickAtPoint(0, 0);
 
+The `doubleClick` method may be used to simulate the double "click" of a mouse:
+
+    $browser->doubleClick();
+
+The `rightClick` method may be used to simulate the right "click" of a mouse:
+
+    $browser->rightClick();
+
+    $browser->rightClick('.selector');
+
+The `clickAndHold` method may be used to simulate a mouse button being clicked and held down. A subsequent call to the `releaseMouse` method will undo this behavior and release the mouse button:
+
+    $browser->clickAndHold()
+            ->pause(1000)
+            ->releaseMouse();
+
 #### Mouseover
 
 The `mouseover` method may be used when you need to move the mouse over an element matching the given selector:
@@ -497,6 +522,10 @@ Or, you may drag an element in a single direction:
     $browser->dragRight('.selector', 10);
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
+
+Finally, you may drag an element by a given offset:
+
+    $browser->dragOffset('.selector', 10, 10);
 
 <a name="javascript-dialogs"></a>
 ### JavaScript Dialogs
@@ -754,6 +783,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertSelected](#assert-selected)
 [assertNotSelected](#assert-not-selected)
 [assertSelectHasOptions](#assert-select-has-options)
+[assertSelectMissingOption](#assert-select-missing-option)
 [assertSelectMissingOptions](#assert-select-missing-options)
 [assertSelectHasOption](#assert-select-has-option)
 [assertValue](#assert-value)
@@ -770,6 +800,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertButtonDisabled](#assert-button-disabled)
 [assertFocused](#assert-focused)
 [assertNotFocused](#assert-not-focused)
+[assertAuthenticated](#assert-authenticated)
+[assertGuest](#assert-guest)
+[assertAuthenticatedAs](#assert-authenticated-as)
 [assertVue](#assert-vue)
 [assertVueIsNot](#assert-vue-is-not)
 [assertVueContains](#assert-vue-contains)
@@ -1053,6 +1086,13 @@ Assert that the given array of values are available to be selected:
 
     $browser->assertSelectHasOptions($field, $values);
 
+<a name="assert-select-missing-option"></a>
+#### assertSelectMissingOption
+
+Assert that the given value is not available to be selected:
+
+    $browser->assertSelectMissingOption($field, $value);
+
 <a name="assert-select-missing-options"></a>
 #### assertSelectMissingOptions
 
@@ -1173,6 +1213,27 @@ Assert that the given field is not focused:
 
     $browser->assertNotFocused($field);
 
+<a name="assert-authenticated"></a>
+#### assertAuthenticated
+
+Assert that the user is authenticated:
+
+    $browser->assertAuthenticated();
+
+<a name="assert-guest"></a>
+#### assertGuest
+
+Assert that the user is not authenticated:
+
+    $browser->assertGuest();
+
+<a name="assert-authenticated-as"></a>
+#### assertAuthenticatedAs
+
+Assert that the user is authenticated as the given user:
+
+    $browser->assertAuthenticatedAs($user);
+
 <a name="assert-vue"></a>
 #### assertVue
 
@@ -1255,11 +1316,19 @@ Once a page has been configured, you may navigate to it using the `visit` method
 
     $browser->visit(new Login);
 
+You may use the `visitRoute` method to navigate to a named route:
+
+    $browser->visitRoute('login');
+
 You may navigate "back" and "forward" using the `back` and `forward` methods:
 
     $browser->back();
 
     $browser->forward();
+
+You may use the `refresh` method to refresh the page:
+
+    $browser->refresh();
 
 Sometimes you may already be on a given page and need to "load" the page's selectors and methods into the current test context. This is common when pressing a button and being redirected to a given page without explicitly navigating to it. In this situation, you may use the `on` method to load the page:
 
