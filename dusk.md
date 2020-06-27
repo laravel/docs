@@ -735,6 +735,10 @@ You may use the `cookie` method to get or set an encrypted cookie's value:
 
     $browser->cookie('name');
 
+You may use the `plainCookie` method to get or set a plain cookie's value:
+
+    $browser->plainCookie('name');
+
 You may use the `addCookie` method to create a new cookie using the given value:
 
     $browser->addCookie('name', 'value');
@@ -779,7 +783,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertFragmentBeginsWith](#assert-fragment-begins-with)
 [assertFragmentIsNot](#assert-fragment-is-not)
 [assertHasCookie](#assert-has-cookie)
+[assertHasPlainCookie](#assert-has-plain-cookie)
 [assertCookieMissing](#assert-cookie-missing)
+[assertPlainCookieMissing](#assert-plain-cookie-missing)
 [assertCookieValue](#assert-cookie-value)
 [assertPlainCookieValue](#assert-plain-cookie-value)
 [assertSee](#assert-see)
@@ -962,12 +968,26 @@ Assert that the given cookie is present:
 
     $browser->assertHasCookie($name);
 
+<a name="assert-has-plain-cookie"></a>
+#### assertHasPlainCookie
+
+Assert that the given plain cookie is present:
+
+    $browser->assertHasPlainCookie($name);
+
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
 Assert that the given cookie is not present:
 
     $browser->assertCookieMissing($name);
+
+<a name="assert-plain-cookie-missing"></a>
+#### assertPlainCookieMissing
+
+Assert that the given plain cookie is not present:
+
+    $browser->assertPlainCookieMissing($name);
 
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
