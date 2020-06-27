@@ -35,6 +35,14 @@ After installing Horizon, publish its assets using the `horizon:install` Artisan
 
     php artisan horizon:install
 
+This command will also create a `HorizonServiceProvider` in your `app/Providers` directory, extending the default Horizon service provider. Register the provider by adding it to the `providers` array in your `config/app.php` file:
+
+    'providers' => [
+        // Other service providers
+
+        App\Providers\HorizonServiceProvider::class,
+    ],
+
 <a name="configuration"></a>
 ### Configuration
 
