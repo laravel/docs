@@ -25,6 +25,7 @@
     - [Waiting For Elements](#waiting-for-elements)
     - [Scrolling An Element Into View](#scrolling-an-element-into-view)
     - [Making Vue Assertions](#making-vue-assertions)
+    - [Cookies](#cookies)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
     - [Generating Pages](#generating-pages)
@@ -726,6 +727,21 @@ You may assert on the state of the Vue component like so:
                     ->assertVue('user.name', 'Taylor', '@profile-component');
         });
     }
+
+<a name="cookies"></a>
+### Cookies
+
+You may use the `cookie` method to get or set an encrypted cookie's value:
+
+    $browser->cookie('name');
+
+You may use the `addCookie` method to create a new cookie using the given value:
+
+    $browser->addCookie('name', 'value');
+
+You may use the `deleteCookie` method to permanently delete the given cookie:
+
+    $browser->deleteCookie('name');
 
 <a name="available-assertions"></a>
 ## Available Assertions
