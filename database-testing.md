@@ -296,6 +296,7 @@ Method  | Description
 ------------- | -------------
 `$this->assertDatabaseHas($table, array $data);`  |  Assert that a table in the database contains the given data.
 `$this->assertDatabaseMissing($table, array $data);`  |  Assert that a table in the database does not contain the given data.
+`$this->assertDatabaseCount($table, int $count);`  |  Assert that a table in the database contains the given amount of entries.
 `$this->assertDeleted($table, array $data);`  |  Assert that the given record has been deleted.
 `$this->assertSoftDeleted($table, array $data);`  |  Assert that the given record has been soft deleted.
 
