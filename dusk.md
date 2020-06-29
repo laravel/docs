@@ -12,6 +12,7 @@
     - [Browser Macros](#browser-macros)
     - [Authentication](#authentication)
     - [Database Migrations](#migrations)
+    - [Cookies](#cookies)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
@@ -25,7 +26,6 @@
     - [Waiting For Elements](#waiting-for-elements)
     - [Scrolling An Element Into View](#scrolling-an-element-into-view)
     - [Making Vue Assertions](#making-vue-assertions)
-    - [Cookies](#cookies)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
     - [Generating Pages](#generating-pages)
@@ -329,6 +329,25 @@ When your test requires migrations, like the authentication example above, you s
     {
         use DatabaseMigrations;
     }
+
+<a name="cookies"></a>
+### Cookies
+
+You may use the `cookie` method to get or set an encrypted cookie's value:
+
+    $browser->cookie('name');
+
+    $browser->cookie('name', 'Taylor');
+
+You may use the `plainCookie` method to get or set an unencrypted cookie's value:
+
+    $browser->plainCookie('name');
+
+    $browser->plainCookie('name', 'Taylor');
+
+You may use the `deleteCookie` method to delete the given cookie:
+
+    $browser->deleteCookie('name');
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
@@ -728,25 +747,6 @@ You may assert on the state of the Vue component like so:
         });
     }
 
-<a name="cookies"></a>
-### Cookies
-
-You may use the `cookie` method to get or set an encrypted cookie's value:
-
-    $browser->cookie('name');
-
-You may use the `plainCookie` method to get or set a plain cookie's value:
-
-    $browser->plainCookie('name');
-
-You may use the `addCookie` method to create a new cookie using the given value:
-
-    $browser->addCookie('name', 'value');
-
-You may use the `deleteCookie` method to permanently delete the given cookie:
-
-    $browser->deleteCookie('name');
-
 <a name="available-assertions"></a>
 ## Available Assertions
 
@@ -971,7 +971,7 @@ Assert that the given cookie is present:
 <a name="assert-has-plain-cookie"></a>
 #### assertHasPlainCookie
 
-Assert that the given plain cookie is present:
+Assert that the given unencrypted cookie is present:
 
     $browser->assertHasPlainCookie($name);
 
@@ -985,7 +985,7 @@ Assert that the given cookie is not present:
 <a name="assert-plain-cookie-missing"></a>
 #### assertPlainCookieMissing
 
-Assert that the given plain cookie is not present:
+Assert that the given unencrypted cookie is not present:
 
     $browser->assertPlainCookieMissing($name);
 
