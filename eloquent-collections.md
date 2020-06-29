@@ -63,6 +63,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [makeHidden](#method-makeHidden)
 [only](#method-only)
 [unique](#method-unique)
+[toQuery](#method-toquery)
 
 </div>
 
@@ -172,6 +173,15 @@ The `only` method returns all of the models that have the given primary keys:
 The `unique` method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed.
 
     $users = $users->unique();
+
+<a name="method-toquery"></a>
+#### `toQuery()`
+
+The `toQuery` method return the Eloquent query builder from the collection.
+
+    $user = User::find(1);
+
+    $user->toQuery();
 
 <a name="custom-collections"></a>
 ## Custom Collections
