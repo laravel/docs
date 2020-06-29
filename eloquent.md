@@ -1110,10 +1110,12 @@ To register an observer, use the `observe` method on the model you wish to obser
 <a name="muting-events"></a>
 ### Muting Events
 
-You may occasionally wish to temporarily "mute" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a Closure as its only argument. Any code executed within this Closure will not fire model events. For example, the following will fetch and delete an `App\User` instance without firing any model events:
+You may occasionally wish to temporarily "mute" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a Closure as its only argument. Any code executed within this Closure will not fire model events. For example, the following will fetch and delete an `App\User` instance without firing any model events. Any value returned by the given Closure will be returned by the `withoutEvents` method:
 
     use App\User;
 
-    User::withoutEvents(function () use () {
+    $user = User::withoutEvents(function () use () {
         User::findOrFail(1)->delete();
+
+        return User::find(2);
     });
