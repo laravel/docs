@@ -1107,7 +1107,7 @@ To register an observer, use the `observe` method on the model you wish to obser
         }
     }
 
-<a name="mute"></a>
+<a name="events-mute"></a>
 ### Mute
 
 Whatever events is being triggered during the lifetime of your model, it's often needed to temporarily bypassing the model events so they don't get triggered when interacting with a given object. The following will try to fetch and delete a User without firing any model events:
