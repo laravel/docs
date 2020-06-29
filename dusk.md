@@ -12,6 +12,7 @@
     - [Browser Macros](#browser-macros)
     - [Authentication](#authentication)
     - [Database Migrations](#migrations)
+    - [Cookies](#cookies)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
@@ -328,6 +329,25 @@ When your test requires migrations, like the authentication example above, you s
     {
         use DatabaseMigrations;
     }
+
+<a name="cookies"></a>
+### Cookies
+
+You may use the `cookie` method to get or set an encrypted cookie's value:
+
+    $browser->cookie('name');
+
+    $browser->cookie('name', 'Taylor');
+
+You may use the `plainCookie` method to get or set an unencrypted cookie's value:
+
+    $browser->plainCookie('name');
+
+    $browser->plainCookie('name', 'Taylor');
+
+You may use the `deleteCookie` method to delete the given cookie:
+
+    $browser->deleteCookie('name');
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
@@ -763,7 +783,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertFragmentBeginsWith](#assert-fragment-begins-with)
 [assertFragmentIsNot](#assert-fragment-is-not)
 [assertHasCookie](#assert-has-cookie)
+[assertHasPlainCookie](#assert-has-plain-cookie)
 [assertCookieMissing](#assert-cookie-missing)
+[assertPlainCookieMissing](#assert-plain-cookie-missing)
 [assertCookieValue](#assert-cookie-value)
 [assertPlainCookieValue](#assert-plain-cookie-value)
 [assertSee](#assert-see)
@@ -946,12 +968,26 @@ Assert that the given cookie is present:
 
     $browser->assertHasCookie($name);
 
+<a name="assert-has-plain-cookie"></a>
+#### assertHasPlainCookie
+
+Assert that the given unencrypted cookie is present:
+
+    $browser->assertHasPlainCookie($name);
+
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
 Assert that the given cookie is not present:
 
     $browser->assertCookieMissing($name);
+
+<a name="assert-plain-cookie-missing"></a>
+#### assertPlainCookieMissing
+
+Assert that the given unencrypted cookie is not present:
+
+    $browser->assertPlainCookieMissing($name);
 
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
