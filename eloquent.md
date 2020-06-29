@@ -1120,6 +1120,6 @@ For example, if your application is normally listening for the `deleting` and `d
 
 If you rely on some value being returned, you can still do it too:
 
-    return User::withoutEvents(function () {
-        return User::find($someUserId)->doSomething();
+    $someValue = User::withoutEvents(function () {
+        return User::find($someUserId)->doSomethingAndReturnSomeValue();
     });
