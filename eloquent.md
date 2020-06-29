@@ -26,7 +26,7 @@
 - [Events](#events)
     - [Using Closures](#events-using-closures)
     - [Observers](#observers)
-    - [Mute](#events-mute)
+    - [Muting Events](#muting-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -632,7 +632,7 @@ In the example above, we are retrieving the model from the database before calli
     App\Flight::destroy([1, 2, 3]);
 
     App\Flight::destroy(collect([1, 2, 3]));
-    
+
 > {note} The `destroy` method loads each model individually and calls the `delete` method on them so that the `deleting` and `deleted` events are fired.
 
 #### Deleting Models By Query
@@ -1107,19 +1107,13 @@ To register an observer, use the `observe` method on the model you wish to obser
         }
     }
 
-<a name="events-mute"></a>
-### Mute
+<a name="muting-events"></a>
+### Muting Events
 
-Whatever events is being triggered during the lifetime of your model, it's often needed to temporarily bypassing the model events so they don't get triggered when interacting with a given object. The following will try to fetch and delete a User without firing any model events:
+You may occasionally wish to temporarily "mute" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a Closure as its only argument. Any code executed within this Closure will not fire model events. For example, the following will fetch and delete an `App\User` instance without firing any model events:
 
-    User::withoutEvents(function () {
-        User::find($someUserId)->delete();
-    });
+    use App\User;
 
-For example, if your application is normally listening for the `deleting` and `deleted` events on the User model, no events will be fired here. This can be particularily useful when testing you application.
-
-If you rely on some value being returned, you can still do it too:
-
-    $someValue = User::withoutEvents(function () {
-        return User::find($someUserId)->doSomethingAndReturnSomeValue();
+    User::withoutEvents(function () use () {
+        User::findOrFail(1)->delete();
     });
