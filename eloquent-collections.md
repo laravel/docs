@@ -62,8 +62,8 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [makeVisible](#method-makeVisible)
 [makeHidden](#method-makeHidden)
 [only](#method-only)
-[unique](#method-unique)
 [toQuery](#method-toquery)
+[unique](#method-unique)
 
 </div>
 
@@ -73,7 +73,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 The `contains` method may be used to determine if a given model instance is contained by the collection. This method accepts a primary key or a model instance:
 
     $users->contains(1);
-    
+
     $users->contains(User::find(1));
 
 <a name="method-diff"></a>
@@ -145,7 +145,7 @@ The `modelKeys` method returns the primary keys for all models in the collection
     $users->modelKeys();
 
     // [1, 2, 3, 4, 5]
-    
+
 <a name="method-makeVisible"></a>
 #### `makeVisible($attributes)`
 
@@ -167,21 +167,23 @@ The `only` method returns all of the models that have the given primary keys:
 
     $users = $users->only([1, 2, 3]);
 
+<a name="method-toquery"></a>
+#### `toQuery()`
+
+The `toQuery` method returns an Eloquent query builder instance containing a `whereIn` constraint on the collection model's primary keys:
+
+    $users = App\User::where('status', 'VIP')->get();
+
+    $users->toQuery()->update([
+        'status' => 'Administrator',
+    ]);
+
 <a name="method-unique"></a>
 #### `unique($key = null, $strict = false)`
 
 The `unique` method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed.
 
     $users = $users->unique();
-
-<a name="method-toquery"></a>
-#### `toQuery()`
-
-The `toQuery` method return the Eloquent query builder from the collection.
-
-    $user = User::find(1);
-
-    $user->toQuery();
 
 <a name="custom-collections"></a>
 ## Custom Collections
