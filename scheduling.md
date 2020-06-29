@@ -106,6 +106,9 @@ Method  | Description
 ------------- | -------------
 `->cron('* * * * *');`  |  Run the task on a custom Cron schedule
 `->everyMinute();`  |  Run the task every minute
+`->everyTwoMinutes();`  |  Run the task every two minutes
+`->everyThreeMinutes();`  |  Run the task every three minutes
+`->everyFourMinutes();`  |  Run the task every four minutes
 `->everyFiveMinutes();`  |  Run the task every five minutes
 `->everyTenMinutes();`  |  Run the task every ten minutes
 `->everyFifteenMinutes();`  |  Run the task every fifteen minutes
