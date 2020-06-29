@@ -26,6 +26,7 @@
 - [Events](#events)
     - [Using Closures](#events-using-closures)
     - [Observers](#observers)
+    - [Mute](#events-mute)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1105,3 +1106,20 @@ To register an observer, use the `observe` method on the model you wish to obser
             User::observe(UserObserver::class);
         }
     }
+
+<a name="mute"></a>
+### Mute
+
+Whatever events is being triggered during the lifetime of your model, it's often needed to temporarily bypassing the model events so they don't get triggered when interacting with a given object. The following will try to fetch and delete a User without firing any model events:
+
+    User::withoutEvents(function () {
+        User::find($someUserId)->delete();
+    });
+
+For example, if your application is normally listening for the `deleting` and `deleted` events on the User model, no events will be fired here. This can be particularily useful when testing you application.
+
+If you rely on some value being returned, you can still do it too:
+
+    return User::withoutEvents(function () {
+        return User::find($someUserId)->doSomething();
+    });
