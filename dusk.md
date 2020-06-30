@@ -261,6 +261,10 @@ When a test fails, Dusk will automatically resize the browser to fit the content
 
     $browser->disableFitOnFailure();
 
+To undo this behavior you may call the `enableFitOnFailure` method within your test:
+
+    $browser->enableFitOnFailure();
+
 You may use the `move` method to move the browser window to a different position on your screen:
 
     $browser->move(100, 100);
