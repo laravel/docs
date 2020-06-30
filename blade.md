@@ -655,34 +655,20 @@ The final, rendered HTML of the component will appear like the following:
     <div class="alert alert-error mb-4">
         <!-- Contents of the $message variable -->
     </div>
-    
-#### Dynamic Attributes
 
-Sometimes you may need to get attributes from your component where the attribute key is dynamic but always starts with the same text. For example, you may want to integrate your blade component with Livewire:
+#### Filtering Attributes
 
-    <input {{$attributes->whereStartsWith('wire:model')}} type={{$type}} />
+You may filter attributes using the `filter` method. This method accepts a Closure which should return `true` if you wish to retain the attribute in the attribute bag:
 
-If we assume this component is utilized like so:
+    {{ $attributes->filter(fn ($value, $key) => $key == 'foo') }}
 
-    <x-text-input wire:model.lazy="name" type="text" />
+For convenience, you may use the `whereStartsWith` method to retrieve all attributes whose keys begin with a given string:
 
-The final, rendered HTML of the component will appear like the following:
+    {{ $attributes->whereStartsWith('wire:model') }}
 
-    <input wire:model.lazy="name" type="text" />
-    
-You may also want to get the value of an attribute that starts with a specified string, which can be done using `->first()`. For example:
+Using the `first` method, you may render the first attribute in a given attribute bag:
 
-    <input {{$attributes->whereStartsWith('wire:model')}} type={{$type}} />
-    @error($attributes->whereStartsWith('wire:model')->first())
-        {{ $message }}
-    @enderror
-
-This will compile to the following and allow you to check for validation errors:
-
-    <input wire:model.lazy="name" type="text" />
-    @error("name")
-        {{ $message }}
-    @enderror
+    {{ $attributes->whereStartsWith('wire:model')->first() }}
 
 <a name="slots"></a>
 ### Slots
