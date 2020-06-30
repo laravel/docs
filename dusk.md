@@ -14,6 +14,7 @@
     - [Database Migrations](#migrations)
     - [Cookies](#cookies)
     - [Taking A Screenshot](#taking-a-screenshot)
+    - [Storing Console Output To Disk](#storing-console-output-to-disk)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
@@ -356,6 +357,13 @@ You may use the `deleteCookie` method to delete the given cookie:
 You may use the `screenshot` method to take a screenshot and store it with the given name:
 
     $browser->screenshot('filename');
+
+<a name="storing-console-output-to-disk"></a>
+### Storing Console Output To Disk
+
+You may use the `storeConsoleLog` method to store the console output with the given name to disk:
+
+    $browser->storeConsoleLog('filename');
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
