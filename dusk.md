@@ -13,6 +13,7 @@
     - [Authentication](#authentication)
     - [Database Migrations](#migrations)
     - [Cookies](#cookies)
+    - [Taking A Screenshot](#taking-a-screenshot)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
@@ -348,6 +349,13 @@ You may use the `plainCookie` method to get or set an unencrypted cookie's value
 You may use the `deleteCookie` method to delete the given cookie:
 
     $browser->deleteCookie('name');
+
+<a name="taking-a-screenshot"></a>
+### Taking A Screenshot
+
+You may use the `screenshot` method to take a screenshot and store it with the given name:
+
+    $browser->screenshot('filename');
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
