@@ -410,7 +410,13 @@ To click a link, you may use the `clickLink` method on the browser instance. The
 
     $browser->clickLink($linkText);
 
-> {note} This method interacts with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
+You may use the `seeLink` method to determine if the link that has the given display text is visible on the page.
+
+    if ($browser->seeLink($linkText)) {
+        // Do something...
+    }
+
+> {note} These methods interact with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
 
 <a name="text-values-and-attributes"></a>
 ### Text, Values, & Attributes
