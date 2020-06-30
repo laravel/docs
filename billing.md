@@ -12,6 +12,7 @@
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
     - [Updating Customers](#updating-customers)
+    - [Billing Portal](#billing-portal)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
@@ -175,6 +176,35 @@ The `createOrGetStripeCustomer` method may be used if you want to return the cus
 Occasionally, you may wish to update the Stripe customer directly with additional information. You may accomplish this using the `updateStripeCustomer` method:
 
     $stripeCustomer = $user->updateStripeCustomer($options);
+    
+<a name="billing-portal"></a>
+### Billing Portal
+
+Stripe offers [an easy way to set up a billing portal](https://stripe.com/docs/billing/subscriptions/customer-portal) so your customer can manage their subscription, payment methods and view their billing history. To implement this in your app you can redirect them to this portal from a controller method:
+
+    use Illuminate\Http\Request;
+
+    public function billingPortal(Request $request)
+    {
+        return $request->user()->redirectToBillingPortal();
+    }
+
+By default, when they're finished and want to return they'll be redirected to the `home` route of your app. If you'd like to provide a custome page for this you can provide a url of your own:
+
+    use Illuminate\Http\Request;
+
+    public function billingPortal(Request $request)
+    {
+        return $request->user()->redirectToBillingPortal(
+            route('billing')
+        );
+    }
+
+If you just want to quickly generate the url to the billing portal so you can, for example, share it in an email you can do:
+    
+    $url = $user->billingPortalUrl(
+        route('billing')
+    );
 
 <a name="payment-methods"></a>
 ## Payment Methods
