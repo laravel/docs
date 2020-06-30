@@ -115,11 +115,7 @@ By default, all entries older than 24 hours will be pruned. You may use the `hou
 <a name="dashboard-authorization"></a>
 ## Dashboard Authorization
 
-Telescope exposes a dashboard at `/telescope`. By default, you will only be able to access this dashboard in the `local` environment. 
-
-> {note} Make sure to change the `APP_ENV` variable to `production` in your production environment. Otherwise, Telescope will publicly expose your request data.
-
-Within your `app/Providers/TelescopeServiceProvider.php` file, there is a `gate` method. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
+Telescope exposes a dashboard at `/telescope`. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is a `gate` method. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
 
     /**
      * Register the Telescope gate.
@@ -136,6 +132,8 @@ Within your `app/Providers/TelescopeServiceProvider.php` file, there is a `gate`
             ]);
         });
     }
+
+> {note} You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
 
 <a name="filtering"></a>
 ## Filtering
