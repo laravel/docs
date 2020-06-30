@@ -15,6 +15,7 @@
     - [Cookies](#cookies)
     - [Taking A Screenshot](#taking-a-screenshot)
     - [Storing Console Output To Disk](#storing-console-output-to-disk)
+    - [Storing Page Source To Disk](#storing-page-source-to-disk)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
@@ -364,6 +365,13 @@ You may use the `screenshot` method to take a screenshot and store it with the g
 You may use the `storeConsoleLog` method to store the console output with the given name to disk:
 
     $browser->storeConsoleLog('filename');
+
+<a name="storing-page-source-to-disk"></a>
+### Storing Page Source To Disk
+
+You may use the `storeSource` method to store a snapshot of the page's current source code with the given name to disk:
+
+    $browser->storeSource('filename');
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
