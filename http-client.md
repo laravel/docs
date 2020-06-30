@@ -76,6 +76,14 @@ If you would like to send data using the `application/x-www-form-urlencoded` con
         'role' => 'Privacy Consultant',
     ]);
 
+#### Sending A Raw Request Body
+
+You may use the `withBody` method if you would like to provide a raw request body when making a request:
+
+    $response = Http::withBody(
+        base64_encode($photo)
+    )->post('http://test.com/photo');
+
 #### Multi-Part Requests
 
 If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. Optionally, you may provide a third argument which will be considered the file's filename:
