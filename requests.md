@@ -365,7 +365,7 @@ The `UploadedFile` class also contains methods for accessing the file's fully-qu
 
 #### Other File Methods
 
-There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://api.symfony.com/5.0/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
+There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://api.symfony.com/master/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
 
 <a name="storing-uploaded-files"></a>
 ### Storing Uploaded Files
