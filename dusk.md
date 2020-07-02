@@ -1533,9 +1533,9 @@ As shown above, a "date picker" is an example of a component that might exist th
         {
             return [
                 '@date-field' => 'input.datepicker-input',
-                '@year-list'  => 'div > div.datepicker-years',
+                '@year-list' => 'div > div.datepicker-years',
                 '@month-list' => 'div > div.datepicker-months',
-                '@day-list'   => 'div > div.datepicker-days',
+                '@day-list' => 'div > div.datepicker-days',
             ];
         }
 
