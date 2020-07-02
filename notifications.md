@@ -167,7 +167,7 @@ If you would to specify a specific queue that should be used for each notificati
 <a name="on-demand-notifications"></a>
 ### On-Demand Notifications
 
-Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the `Notification::route` method, you may specify ad-hoc notification routing information before sending the notification:
+Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the `Notification::route` facade method, you may specify ad-hoc notification routing information before sending the notification:
 
     Notification::route('mail', 'taylor@example.com')
                 ->route('nexmo', '5555555555')
