@@ -756,7 +756,7 @@ Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org)
         data: function () {
             return {
                 user: {
-                  name: 'Taylor'
+                    name: 'Taylor'
                 }
             };
         }
@@ -994,7 +994,7 @@ Assert that the current fragment does not match the given fragment:
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
 
-Assert that the given cookie is present:
+Assert that the given encrypted cookie is present:
 
     $browser->assertHasCookie($name);
 
@@ -1008,7 +1008,7 @@ Assert that the given unencrypted cookie is present:
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
-Assert that the given cookie is not present:
+Assert that the given encrypted cookie is not present:
 
     $browser->assertCookieMissing($name);
 
@@ -1022,7 +1022,7 @@ Assert that the given unencrypted cookie is not present:
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
 
-Assert that a cookie has a given value:
+Assert that an encrypted cookie has a given value:
 
     $browser->assertCookieValue($name, $value);
 
@@ -1194,7 +1194,7 @@ Assert that the element matching the given selector has the given value in the p
 
     $browser->assertAriaAttribute($selector, $attribute, $value);
 
-For example, given the markup `<button aria-label="Add"></>`, you may assert against the `aria-label` attribute like so:
+For example, given the markup `<button aria-label="Add"></button>`, you may assert against the `aria-label` attribute like so:
 
     $browser->assertAriaAttribute('button', 'label', 'Add')
 
@@ -1205,7 +1205,7 @@ Assert that the element matching the given selector has the given value in the p
 
     $browser->assertDataAttribute($selector, $attribute, $value);
 
-For example, given the markup `<tr id="row-1" data-content="attendees"></>`, you may assert against the `data-label` attribute like so:
+For example, given the markup `<tr id="row-1" data-content="attendees"></tr>`, you may assert against the `data-label` attribute like so:
 
     $browser->assertDataAttribute('#row-1', 'content', 'attendees')
 
