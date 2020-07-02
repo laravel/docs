@@ -994,7 +994,7 @@ Assert that the current fragment does not match the given fragment:
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
 
-Assert that the given cookie is present:
+Assert that the given encrypted cookie is present:
 
     $browser->assertHasCookie($name);
 
@@ -1008,7 +1008,7 @@ Assert that the given unencrypted cookie is present:
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
-Assert that the given cookie is not present:
+Assert that the given encrypted cookie is not present:
 
     $browser->assertCookieMissing($name);
 
@@ -1022,7 +1022,7 @@ Assert that the given unencrypted cookie is not present:
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
 
-Assert that a cookie has a given value:
+Assert that an encrypted cookie has a given value:
 
     $browser->assertCookieValue($name, $value);
 
