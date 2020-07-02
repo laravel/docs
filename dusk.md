@@ -1194,7 +1194,7 @@ Assert that the element matching the given selector has the given value in the p
 
     $browser->assertAriaAttribute($selector, $attribute, $value);
 
-For example, given the markup `<button aria-label="Add"></>`, you may assert against the `aria-label` attribute like so:
+For example, given the markup `<button aria-label="Add"></button>`, you may assert against the `aria-label` attribute like so:
 
     $browser->assertAriaAttribute('button', 'label', 'Add')
 
@@ -1205,7 +1205,7 @@ Assert that the element matching the given selector has the given value in the p
 
     $browser->assertDataAttribute($selector, $attribute, $value);
 
-For example, given the markup `<tr id="row-1" data-content="attendees"></>`, you may assert against the `data-label` attribute like so:
+For example, given the markup `<tr id="row-1" data-content="attendees"></tr>`, you may assert against the `data-label` attribute like so:
 
     $browser->assertDataAttribute('#row-1', 'content', 'attendees')
 
