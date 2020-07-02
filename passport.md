@@ -902,12 +902,12 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
 If your application authenticates different types of users that perhaps use entirely different Eloquent models, you will likely need to define a guard configuration for each user provider type in your application. This allows you to protect requests intended for specific user providers. For example, given the following guard configuration the `config/auth.php` configuration file:
 
     'api' => [
-        'driver'   => 'passport',
+        'driver' => 'passport',
         'provider' => 'users',
     ],
 
     'api-customers' => [
-        'driver'   => 'passport',
+        'driver' => 'passport',
         'provider' => 'customers',
     ],
 

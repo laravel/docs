@@ -158,7 +158,7 @@ You may register many resource controllers at once by passing an array to the `r
 
     Route::resources([
         'photos' => 'PhotoController',
-        'posts' => 'PostController'
+        'posts' => 'PostController',
     ]);
 
 #### Actions Handled By Resource Controller
@@ -210,7 +210,7 @@ You may register many API resource controllers at once by passing an array to th
 
     Route::apiResources([
         'photos' => 'PhotoController',
-        'posts' => 'PostController'
+        'posts' => 'PostController',
     ]);
 
 To quickly generate an API resource controller that does not include the `create` or `edit` methods, use the `--api` switch when executing the `make:controller` command:

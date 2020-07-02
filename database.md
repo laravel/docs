@@ -69,16 +69,16 @@ To see how read / write connections should be configured, let's look at this exa
         'write' => [
             'host' => [
                 '196.168.1.3',
-             ],
+            ],
         ],
-        'sticky'    => true,
-        'driver'    => 'mysql',
-        'database'  => 'database',
-        'username'  => 'root',
-        'password'  => '',
-        'charset'   => 'utf8mb4',
+        'sticky' => true,
+        'driver' => 'mysql',
+        'database' => 'database',
+        'username' => 'root',
+        'password' => '',
+        'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
-        'prefix'    => '',
+        'prefix' => '',
     ],
 
 Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.

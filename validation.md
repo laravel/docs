@@ -319,7 +319,7 @@ You may customize the error messages used by the form request by overriding the 
     {
         return [
             'title.required' => 'A title is required',
-            'body.required'  => 'A message is required',
+            'body.required' => 'A message is required',
         ];
     }
 
@@ -504,10 +504,10 @@ If needed, you may use custom error messages for validation instead of the defau
 In this example, the `:attribute` placeholder will be replaced by the actual name of the field under validation. You may also utilize other placeholders in validation messages. For example:
 
     $messages = [
-        'same'    => 'The :attribute and :other must match.',
-        'size'    => 'The :attribute must be exactly :size.',
+        'same' => 'The :attribute and :other must match.',
+        'size' => 'The :attribute must be exactly :size.',
         'between' => 'The :attribute value :input is not between :min - :max.',
-        'in'      => 'The :attribute must be one of the following types: :values',
+        'in' => 'The :attribute must be one of the following types: :values',
     ];
 
 #### Specifying A Custom Message For A Given Attribute
