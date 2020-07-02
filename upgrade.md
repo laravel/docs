@@ -88,7 +88,7 @@ Symfony Console, which is the underlying component that powers Artisan, expects 
     {
         // Before...
         return true;
-        
+
         // After...
         return 0;
     }
