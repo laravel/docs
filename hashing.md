@@ -54,7 +54,7 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default is acceptable for most applications:
 
     $hashed = Hash::make('password', [
-        'rounds' => 12
+        'rounds' => 12,
     ]);
 
 #### Adjusting The Argon2 Work Factor

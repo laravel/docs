@@ -520,7 +520,7 @@ In order to use Minio you will need to adjust the S3 disk configuration in your 
         'region' => env('AWS_DEFAULT_REGION'),
         'bucket' => env('AWS_BUCKET'),
         'endpoint' => env('AWS_URL'),
-        'use_path_style_endpoint' => true
+        'use_path_style_endpoint' => true,
     ]
 
 Finally, ensure your `.env` file has the following options:
