@@ -281,10 +281,11 @@ The `assertSent` method accepts a callback which will be given an `Illuminate\Ht
     ]);
 
     Http::assertSent(function ($request) {
-        return $request->hasHeader('X-First', 'foo') &&
-               $request->url() == 'http://test.com/users' &&
-               $request['name'] == 'Taylor' &&
-               $request['role'] == 'Developer';
+        $this->assertEquals('foo', $request->header('X-First'));
+        $this->assertEquals('Taylor', $request['name']);
+        $this->assertEquals('Developer', $request['role']);
+        
+        return $request->url() == 'http://test.com/users';       
     });
 
 If needed, you may assert that a specific request was not sent using the `assertNotSent` method:
