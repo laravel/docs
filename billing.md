@@ -176,7 +176,7 @@ The `createOrGetStripeCustomer` method may be used if you want to return the cus
 Occasionally, you may wish to update the Stripe customer directly with additional information. You may accomplish this using the `updateStripeCustomer` method:
 
     $stripeCustomer = $user->updateStripeCustomer($options);
-    
+
 <a name="billing-portal"></a>
 ### Billing Portal
 
@@ -201,7 +201,7 @@ By default, when the user is finished managing their subscription, they can retu
     }
 
 If you would like to only generate the URL to the billing portal, you may use the `billingPortalUrl` method:
-    
+
     $url = $user->billingPortalUrl(route('billing'));
 
 <a name="payment-methods"></a>

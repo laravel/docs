@@ -1056,8 +1056,8 @@ The `Str::ascii` method will attempt to transliterate the string into an ASCII v
 
     $slice = Str::ascii('û');
 
-    // 'u'    
-    
+    // 'u'
+
 <a name="method-str-before"></a>
 #### `Str::before()` {#collection-method}
 
