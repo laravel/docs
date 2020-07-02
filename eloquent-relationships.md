@@ -1346,6 +1346,15 @@ Eloquent provides convenient methods for adding new models to relationships. For
 
 Notice that we did not access the `comments` relationship as a dynamic property. Instead, we called the `comments` method to obtain an instance of the relationship. The `save` method will automatically add the appropriate `post_id` value to the new `Comment` model.
 
+Note that this will not add the new model to any existing collection on `$post->comments`. To make sure you have a correct list of related models, use the `refresh` method:
+
+    $post->comments()->save($comment);
+    
+    $post->refresh();
+    
+    // All comments with the newly saved one.
+    $post->comments;
+
 If you need to save multiple related models, you may use the `saveMany` method:
 
     $post = App\Post::find(1);
