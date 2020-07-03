@@ -249,6 +249,8 @@ By default, Passport issues long-lived access tokens that expire after one year.
 
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
+    
+> {note} Please note that the `expires_at` columns on the Passport table columns are read-only and shouldn't be modified. Upon issuing tokens, this information is stored on the tokens themselves, encrypted and can't be modified afterwards. If you want to invalidate a token you should revoke it.
 
 <a name="overriding-default-models"></a>
 ### Overriding Default Models
