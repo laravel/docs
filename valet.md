@@ -10,7 +10,7 @@
     - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
-- [Proxying Services](#proxying)
+- [Proxying Services](#proxying-services)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
