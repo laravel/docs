@@ -38,6 +38,7 @@
     - [Charging Products](#charging-products)
     - [Refunding Orders](#refunding-orders)
 - [Transactions](#transactions)
+    - [Past & Upcoming Payments](#past-and-upcoming-payments)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -870,6 +871,20 @@ When listing the transactions for the customer, you may use the transaction's he
             </tr>
         @endforeach
     </table>
+
+<a name="past-and-upcoming-payments"></a>
+### Past & Upcoming Payments
+
+If you want to display past or upcoming payments for recurring subscriptions you can use the `lastPayment` and `nextPayment` methods:
+
+    $subscription = $user->subscription('default');
+
+    $lastPayment = $subscription->lastPayment();
+    $nextPayment = $subscription->nextPayment();
+
+Both `lastPayment` and `nextPayment` will return an instance of `Laravel\Paddle\Payment` although `nextPayment` will return `null` when the billing cycle has ended (such as a cancelled subscription). You can use `Laravel\Paddle\Payment` to display the amount and payment date in a Blade view:
+
+    Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
 
 <a name="testing"></a>
 ## Testing
