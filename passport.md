@@ -14,6 +14,7 @@
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
     - [Refreshing Tokens](#refreshing-tokens)
+    - [Revoking Tokens](#revoking-tokens)
     - [Purging Tokens](#purging-tokens)
 - [Authorization Code Grant with PKCE](#code-grant-pkce)
     - [Creating The Client](#creating-a-auth-pkce-grant-client)
