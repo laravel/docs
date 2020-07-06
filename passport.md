@@ -480,6 +480,25 @@ If your application issues short-lived access tokens, users will need to refresh
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
+<a name="revoking-tokens"></a>
+### Revoking Tokens
+
+When you no longer want a token to be actively used by someone or you want to invalidate a compromised token you can revoke them:
+
+    use Laravel\Passport\Token;
+
+    $token = Token::find('token-uuid');
+
+    $token->revoke();
+
+Refresh tokens can also be revoked:
+
+    use Laravel\Passport\RefreshToken;
+
+    $token = RefreshToken::find('token-uuid');
+
+    $token->revoke();
+
 <a name="purging-tokens"></a>
 ### Purging Tokens
 
