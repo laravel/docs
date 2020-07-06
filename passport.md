@@ -484,13 +484,11 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 <a name="revoking-tokens"></a>
 ### Revoking Tokens
 
-When you no longer want a token to be actively used by someone or you want to invalidate a compromised token you can revoke them:
+You may revoke a token and all of its refresh tokens by making a `DELETE` request to Passport's token endpoint:
 
     $http = new GuzzleHttp\Client;
 
     $http->delete('http://your-app.com/oauth/tokens/{token-id}');
-
-This will revoke the token and all of its refresh tokens.
 
 <a name="purging-tokens"></a>
 ### Purging Tokens
