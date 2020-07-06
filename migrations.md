@@ -495,7 +495,7 @@ Since this syntax is rather verbose, Laravel provides additional, terser methods
 The `foreignId` method is an alias for `unsignedBigInteger` while the `constrained` method will use convention to determine the table and column name being referenced. If your table name does not match the convention, you may specify the table name by passing it as an argument to the `constrained` method:
 
     Schema::table('posts', function (Blueprint $table) {
-        $table->foreignId('user_id')->constrained('users_table');
+        $table->foreignId('user_id')->constrained('users');
     });
 
 
