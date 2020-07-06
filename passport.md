@@ -486,19 +486,11 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 
 When you no longer want a token to be actively used by someone or you want to invalidate a compromised token you can revoke them:
 
-    use Laravel\Passport\Token;
+    $http = new GuzzleHttp\Client;
 
-    $token = Token::find('token-uuid');
+    $http->delete('http://your-app.com/oauth/tokens/{token-id}');
 
-    $token->revoke();
-
-Refresh tokens can also be revoked:
-
-    use Laravel\Passport\RefreshToken;
-
-    $token = RefreshToken::find('token-uuid');
-
-    $token->revoke();
+This will revoke the token and all of its refresh tokens.
 
 <a name="purging-tokens"></a>
 ### Purging Tokens
