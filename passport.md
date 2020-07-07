@@ -14,6 +14,7 @@
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
     - [Refreshing Tokens](#refreshing-tokens)
+    - [Revoking Tokens](#revoking-tokens)
     - [Purging Tokens](#purging-tokens)
 - [Authorization Code Grant with PKCE](#code-grant-pkce)
     - [Creating The Client](#creating-a-auth-pkce-grant-client)
@@ -249,7 +250,7 @@ By default, Passport issues long-lived access tokens that expire after one year.
 
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
-    
+
 > {note} The `expires_at` columns on the Passport database tables are read-only and for display purposes only. When issuing tokens, Passport stores the expiration information within the signed and encrypted tokens. If you need to invalidate a token you should revoke it.
 
 <a name="overriding-default-models"></a>
@@ -459,6 +460,25 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 
 > {tip} Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by the `Passport::routes` method. There is no need to manually define this route. By default, this route is throttled using the settings of the `ThrottleRequests` middleware.
 
+#### JSON API
+
+Passport also includes a JSON API for managing authorized access tokens. You may pair this with your own frontend to offer your users a dashboard for managing access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints. The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application.
+
+#### `GET /oauth/tokens`
+
+This route returns all of the authorized access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they can revoke them:
+
+    axios.get('/oauth/tokens')
+        .then(response => {
+            console.log(response.data);
+        });
+
+#### `DELETE /oauth/tokens/{token-id}`
+
+This route may be used to revoke authorized access tokens and their related refresh tokens:
+
+    axios.delete('/oauth/tokens/' + tokenId);
+
 <a name="refreshing-tokens"></a>
 ### Refreshing Tokens
 
@@ -479,6 +499,20 @@ If your application issues short-lived access tokens, users will need to refresh
     return json_decode((string) $response->getBody(), true);
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
+
+<a name="revoking-tokens"></a>
+### Revoking Tokens
+
+You may revoke a token by using the `revokeAccessToken` method on the `TokenRepository`. You may revoke a token's refresh tokens using the `revokeRefreshTokensByAccessTokenId` method on the `RefreshTokenRepository`:
+
+    $tokenRepository = app('Laravel\Passport\TokenRepository');
+    $refreshTokenRepository = app('Laravel\Passport\RefreshTokenRepository');
+
+    // Revoke an access token...
+    $tokenRepository->revokeAccessToken($tokenId);
+
+    // Revoke all of the token's refresh tokens...
+    $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
 
 <a name="purging-tokens"></a>
 ### Purging Tokens
@@ -857,7 +891,7 @@ This route returns all of the [scopes](#token-scopes) defined for your applicati
 
 #### `GET /oauth/personal-access-tokens`
 
-This route returns all of the personal access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they may edit or delete them:
+This route returns all of the personal access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they may edit or revoke them:
 
     axios.get('/oauth/personal-access-tokens')
         .then(response => {
@@ -883,7 +917,7 @@ This route creates new personal access tokens. It requires two pieces of data: t
 
 #### `DELETE /oauth/personal-access-tokens/{token-id}`
 
-This route may be used to delete personal access tokens:
+This route may be used to revoke personal access tokens:
 
     axios.delete('/oauth/personal-access-tokens/' + tokenId);
 
