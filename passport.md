@@ -460,6 +460,27 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 
 > {tip} Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by the `Passport::routes` method. There is no need to manually define this route. By default, this route is throttled using the settings of the `ThrottleRequests` middleware.
 
+#### JSON API
+
+Passport also includes a JSON API for managing authorized access tokens. You may pair this with your own frontend to offer your users a dashboard for managing authorized access tokens. Below, we'll review all of the API endpoints for managing authorized access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
+
+The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
+
+#### `GET /oauth/tokens`
+
+This route returns all of the authorized access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they can revoke them:
+
+    axios.get('/oauth/tokens')
+        .then(response => {
+            console.log(response.data);
+        });
+
+#### `DELETE /oauth/tokens/{token-id}`
+
+This route may be used to revoke authorized access tokens and their related refresh tokens:
+
+    axios.delete('/oauth/tokens/' + tokenId);
+
 <a name="refreshing-tokens"></a>
 ### Refreshing Tokens
 
@@ -484,11 +505,16 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 <a name="revoking-tokens"></a>
 ### Revoking Tokens
 
-You may revoke a token and all of its refresh tokens by making a `DELETE` request to Passport's token endpoint:
+You may revoke a token and all of its refresh tokens by using the `revokeAccessToken` method on the `TokenRepository`:
 
-    $http = new GuzzleHttp\Client;
+    $tokenRepository = app('Laravel\Passport\TokenRepository');
+    $refreshTokenRepository = app('Laravel\Passport\RefreshTokenRepository');
 
-    $http->delete('http://your-app.com/oauth/tokens/{token-id}');
+    // Retrieve the token that needs to be revoked by its primary identifier...
+    $tokenRepository->revokeAccessToken($tokenId);
+
+    // Also make sure to revoke its refresh tokens...
+    $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
 
 <a name="purging-tokens"></a>
 ### Purging Tokens
@@ -867,7 +893,7 @@ This route returns all of the [scopes](#token-scopes) defined for your applicati
 
 #### `GET /oauth/personal-access-tokens`
 
-This route returns all of the personal access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they may edit or delete them:
+This route returns all of the personal access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they may edit or revoke them:
 
     axios.get('/oauth/personal-access-tokens')
         .then(response => {
@@ -893,7 +919,7 @@ This route creates new personal access tokens. It requires two pieces of data: t
 
 #### `DELETE /oauth/personal-access-tokens/{token-id}`
 
-This route may be used to delete personal access tokens:
+This route may be used to revoke personal access tokens:
 
     axios.delete('/oauth/personal-access-tokens/' + tokenId);
 
