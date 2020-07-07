@@ -250,7 +250,7 @@ By default, Passport issues long-lived access tokens that expire after one year.
 
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
-    
+
 > {note} The `expires_at` columns on the Passport database tables are read-only and for display purposes only. When issuing tokens, Passport stores the expiration information within the signed and encrypted tokens. If you need to invalidate a token you should revoke it.
 
 <a name="overriding-default-models"></a>
@@ -462,9 +462,7 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 
 #### JSON API
 
-Passport also includes a JSON API for managing authorized access tokens. You may pair this with your own frontend to offer your users a dashboard for managing authorized access tokens. Below, we'll review all of the API endpoints for managing authorized access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
-
-The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
+Passport also includes a JSON API for managing authorized access tokens. You may pair this with your own frontend to offer your users a dashboard for managing access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints. The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application.
 
 #### `GET /oauth/tokens`
 
@@ -505,15 +503,15 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 <a name="revoking-tokens"></a>
 ### Revoking Tokens
 
-You may revoke a token and all of its refresh tokens by using the `revokeAccessToken` method on the `TokenRepository`:
+You may revoke a token by using the `revokeAccessToken` method on the `TokenRepository`. You may revoke a token's refresh tokens using the `revokeRefreshTokensByAccessTokenId` method on the `RefreshTokenRepository`:
 
     $tokenRepository = app('Laravel\Passport\TokenRepository');
     $refreshTokenRepository = app('Laravel\Passport\RefreshTokenRepository');
 
-    // Retrieve the token that needs to be revoked by its primary identifier...
+    // Revoke an access token...
     $tokenRepository->revokeAccessToken($tokenId);
 
-    // Also make sure to revoke its refresh tokens...
+    // Revoke all of the token's refresh tokens...
     $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
 
 <a name="purging-tokens"></a>
