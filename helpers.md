@@ -176,6 +176,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
 [upper](#method-fluent-str-upper)
+[when](#method-fluent-str-when)
 [whenEmpty](#method-fluent-str-when-empty)
 [words](#method-fluent-str-words)
 
@@ -2146,6 +2147,36 @@ The `upper` method converts the given string to uppercase:
 
     // LARAVEL
 
+<a name="method-fluent-str-when"></a>
+#### `when` {#collection-method}
+
+Sometimes you may want clauses to apply to a string only when something else is true. For instance you may only want to apply a `trim` statement if a given input value is present on the incoming request. You may accomplish this using the `when` method:
+
+    $trim = $request->input('trim_character');
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('/Laravel/')->when($trim,function ($string,$trim) {
+        return $string->ltrim($trim)->rtrim($trim);
+    });
+
+    //Laravel
+
+The `when` method only executes the given Closure when the first parameter is `true`. If the first parameter is `false`, the Closure will not be executed.
+
+You may pass another Closure as the third parameter to the `when` method. This Closure will execute if the first parameter evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default trimming of a string:
+
+    $trim = null;
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of(' Laravel ')
+                    ->when($trim, function ($string,$trim) {
+                        return $string->ltrim($trim)->rtrim($trim);
+                    }, function ($string) {
+                        return $query->trim();
+                    });
+    //Laravel
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {#collection-method}
 
