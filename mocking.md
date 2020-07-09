@@ -273,7 +273,8 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
             // Assert a specific type of notification was sent meeting the given truth test...
             Notification::assertSentTo(
                 $user,
-                function (OrderShipped $notification, $channels) use ($order) {
+                OrderShipped::class,
+                function ($notification, $channels) use ($order) {
                     return $notification->order->id === $order->id;
                 }
             );
