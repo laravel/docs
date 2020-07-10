@@ -163,13 +163,13 @@ Method  | Description
 `->when(Closure);`  |  Limit the task based on a truth test
 `->environments($env);`  |  Limit the task to specific environments
 
-#### Specific Day Constraints
+#### Day Constraints
 
-The `days` method may be used to limit the execution of a task to specific days of the week. For example, to schedule a command to run hourly on Sundays and Wednesdays:
+The `days` method may be used to limit the execution of a task to specific days of the week. For example, you may schedule a command to run hourly on Sundays and Wednesdays:
 
     $schedule->command('reminders:send')
                     ->hourly()
-                    ->days([0,3]);
+                    ->days([0, 3]);
 
 #### Between Time Constraints
 
