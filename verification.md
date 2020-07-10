@@ -61,6 +61,12 @@ Laravel includes the `Auth\VerificationController` class that contains the neces
         // Only verified users may enter...
     })->middleware('verified');
 
+You may pass the route to redirect as argument.User will be redirect to given route if email is not varified
+
+    Route::get('profile', function () {
+        // Only verified users may enter...
+    })->middleware('verified:home');
+
 <a name="verification-views"></a>
 ## Views
 
