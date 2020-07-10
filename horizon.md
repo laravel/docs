@@ -29,7 +29,7 @@ All of your worker configuration is stored in a single, simple configuration fil
 
 You may use Composer to install Horizon into your Laravel project:
 
-    composer require laravel/horizon
+    composer require laravel/horizon ~3.0
 
 After installing Horizon, publish its assets using the `horizon:install` Artisan command:
 
