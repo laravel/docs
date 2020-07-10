@@ -158,9 +158,18 @@ Method  | Description
 `->thursdays();`  |  Limit the task to Thursday
 `->fridays();`  |  Limit the task to Friday
 `->saturdays();`  |  Limit the task to Saturday
+`->days(array|mixed);`  |  Limit the task to specific days
 `->between($start, $end);`  |  Limit the task to run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
 `->environments($env);`  |  Limit the task to specific environments
+
+#### Day Constraints
+
+The `days` method may be used to limit the execution of a task to specific days of the week. For example, you may schedule a command to run hourly on Sundays and Wednesdays:
+
+    $schedule->command('reminders:send')
+                    ->hourly()
+                    ->days([0, 3]);
 
 #### Between Time Constraints
 
