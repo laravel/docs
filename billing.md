@@ -623,10 +623,16 @@ For more information on subscription quantities, consult the [Stripe documentati
 [Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan) allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
 
     $user = User::find(1);
+    
+    $user->newSubscription('default', ['price_monthly', 'chat-plan'])->create($paymentMethod);
+    
+Now the customer will have two plans on their `default` subscription. Both plans will be charged for on their repsective billing intervals. Alternatively, you may add a new plan to an existing subscription at a later time:
+
+    $user = User::find(1);
 
     $user->subscription('default')->addPlan('chat-plan');
 
-Now the customer will have two plans on their `default` subscription. The example above will add the new plan and the customer will be billed for it on their next billing cycle. If you would like to bill the customer immediately you may use the `addPlanAndInvoice` method:
+The example above will add the new plan and the customer will be billed for it on their next billing cycle. If you would like to bill the customer immediately you may use the `addPlanAndInvoice` method:
 
     $user->subscription('default')->addPlanAndInvoice('chat-plan');
 
