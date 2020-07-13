@@ -624,9 +624,18 @@ For more information on subscription quantities, consult the [Stripe documentati
 
     $user = User::find(1);
 
+    $user->newSubscription('default', [
+        'price_monthly',
+        'chat-plan'
+    ])->create($paymentMethod);
+
+Now the customer will have two plans on their `default` subscription. Both plans will be charged for on their respective billing intervals. Alternatively, you may add a new plan to an existing subscription at a later time:
+
+    $user = User::find(1);
+
     $user->subscription('default')->addPlan('chat-plan');
 
-Now the customer will have two plans on their `default` subscription. The example above will add the new plan and the customer will be billed for it on their next billing cycle. If you would like to bill the customer immediately you may use the `addPlanAndInvoice` method:
+The example above will add the new plan and the customer will be billed for it on their next billing cycle. If you would like to bill the customer immediately you may use the `addPlanAndInvoice` method:
 
     $user->subscription('default')->addPlanAndInvoice('chat-plan');
 
@@ -634,7 +643,7 @@ You may remove plans from subscriptions using the `removePlan` method:
 
     $user->subscription('default')->removePlan('chat-plan');
 
-> {note} You may not remove the last plan on a subscription. Instead, you may simply cancel the subscription.
+> {note} You may not remove the last plan on a subscription. Instead, you should simply cancel the subscription.
 
 ### Swapping
 
