@@ -623,10 +623,13 @@ For more information on subscription quantities, consult the [Stripe documentati
 [Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan) allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
 
     $user = User::find(1);
-    
-    $user->newSubscription('default', ['price_monthly', 'chat-plan'])->create($paymentMethod);
-    
-Now the customer will have two plans on their `default` subscription. Both plans will be charged for on their repsective billing intervals. Alternatively, you may add a new plan to an existing subscription at a later time:
+
+    $user->newSubscription('default', [
+        'price_monthly',
+        'chat-plan'
+    ])->create($paymentMethod);
+
+Now the customer will have two plans on their `default` subscription. Both plans will be charged for on their respective billing intervals. Alternatively, you may add a new plan to an existing subscription at a later time:
 
     $user = User::find(1);
 
@@ -640,7 +643,7 @@ You may remove plans from subscriptions using the `removePlan` method:
 
     $user->subscription('default')->removePlan('chat-plan');
 
-> {note} You may not remove the last plan on a subscription. Instead, you may simply cancel the subscription.
+> {note} You may not remove the last plan on a subscription. Instead, you should simply cancel the subscription.
 
 ### Swapping
 
