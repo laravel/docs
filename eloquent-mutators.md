@@ -193,6 +193,8 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
 
 > {note} Attributes that are `null` will not be cast.
 
+> {note} You should never define a cast (or an attribute) that has the same name as a relationship. It is undocumented behavior in Laravel at this point (see [GitHub issue](https://github.com/laravel/framework/issues/32972)).
+
 <a name="custom-casts"></a>
 ### Custom Casts
 
