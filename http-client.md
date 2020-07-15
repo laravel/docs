@@ -81,7 +81,7 @@ If you would like to send data using the `application/x-www-form-urlencoded` con
 You may use the `withBody` method if you would like to provide a raw request body when making a request:
 
     $response = Http::withBody(
-        base64_encode($photo)
+        base64_encode($photo), 'image/jpeg'
     )->post('http://test.com/photo');
 
 #### Multi-Part Requests
