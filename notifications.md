@@ -126,6 +126,7 @@ Sending notifications can take time, especially if the channel needs an external
 
     namespace App\Notifications;
 
+    use App\Invoice;
     use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Notifications\Notification;
@@ -133,6 +134,13 @@ Sending notifications can take time, especially if the channel needs an external
     class InvoicePaid extends Notification implements ShouldQueue
     {
         use Queueable;
+
+        protected $invoice;
+        
+        public function __construct(Invoice $invoice)
+        {
+           $this->invoice = $invoice;
+        }
 
         // ...
     }
