@@ -2150,33 +2150,21 @@ The `upper` method converts the given string to uppercase:
 <a name="method-fluent-str-when"></a>
 #### `when` {#collection-method}
 
-Sometimes you may want clauses to apply to a string only when something else is true. For instance you may only want to apply a `trim` statement if a given input value is present on the incoming request. You may accomplish this using the `when` method:
-
-    $trim = $request->input('trim_character');
+The `when` method invokes the given Closure if given condition is true:
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('/Laravel/')->when($trim,function ($string,$trim) {
-        return $string->ltrim($trim)->rtrim($trim);
-    });
-
-    //Laravel
-
-The `when` method only executes the given Closure when the first parameter is `true`. If the first parameter is `false`, the Closure will not be executed.
-
-You may pass another Closure as the third parameter to the `when` method. This Closure will execute if the first parameter evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default trimming of a string:
-
-    $trim = null;
-
-    use Illuminate\Support\Str;
-
-    $string = Str::of(' Laravel ')
-                    ->when($trim, function ($string,$trim) {
-                        return $string->ltrim($trim)->rtrim($trim);
-                    }, function ($string) {
-                        return $query->trim();
+    $string = Str::of('My long content goes here')
+                    ->when(! Auth::check(),function ($stringable) {
+                        return $stringable->limit(10)
+                            ->append('To Continue reading ')
+                            ->append(new HtmlString('<a href="#">Get a Subscription</a>'));
                     });
-    //Laravel
+
+    // 'My long co...To Continue reading <a href="#">Get a Subscription</a>'
+
+You may pass another Closure as the third parameter to the `when` method. This Closure will execute if the first parameter evaluates as `false`.
+
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {#collection-method}
 
