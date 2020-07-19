@@ -202,7 +202,7 @@ Typically, you will want to pass some data to your view that you can utilize whe
         /**
          * Create a new message instance.
          *
-         * @param  Order  $order
+         * @param  \App\Order  $order
          * @return void
          */
         public function __construct(Order $order)
@@ -254,7 +254,7 @@ If you would like to customize the format of your email's data before it is sent
         /**
          * Create a new message instance.
          *
-         * @param  Order $order
+         * @param  \App\Order $order
          * @return void
          */
         public function __construct(Order $order)
