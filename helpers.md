@@ -176,6 +176,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
 [upper](#method-fluent-str-upper)
+[when](#method-fluent-str-when)
 [whenEmpty](#method-fluent-str-when-empty)
 [words](#method-fluent-str-words)
 
@@ -2145,6 +2146,22 @@ The `upper` method converts the given string to uppercase:
     $adjusted = Str::of('laravel')->upper();
 
     // LARAVEL
+
+<a name="method-fluent-str-when"></a>
+#### `when` {#collection-method}
+
+The `when` method invokes the given Closure if a given condition is true. The Closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Taylor')
+                    ->when(true, function ($string) {
+                        return $string->append(' Otwell');
+                    });
+
+    // 'Taylor Otwell'
+
+If necessary, you may pass another Closure as the third parameter to the `when` method. This Closure will execute if the condition parameter evaluates to `false`.
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {#collection-method}
