@@ -2150,20 +2150,18 @@ The `upper` method converts the given string to uppercase:
 <a name="method-fluent-str-when"></a>
 #### `when` {#collection-method}
 
-The `when` method invokes the given Closure if given condition is true:
+The `when` method invokes the given Closure if a given condition is true. The Closure will receive the fluent string instance:
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('My long content goes here')
-                    ->when(! Auth::check(),function ($stringable) {
-                        return $stringable->limit(10)
-                            ->append('To Continue reading ')
-                            ->append(new HtmlString('<a href="#">Get a Subscription</a>'));
+    $string = Str::of('Taylor')
+                    ->when(true, function ($string) {
+                        return $string->append(' Otwell');
                     });
 
-    // 'My long co...To Continue reading <a href="#">Get a Subscription</a>'
+    // 'Taylor Otwell'
 
-You may pass another Closure as the third parameter to the `when` method. This Closure will execute if the first parameter evaluates as `false`.
+If necessary, you may pass another Closure as the third parameter to the `when` method. This Closure will execute if the condition parameter evaluates to `false`.
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {#collection-method}
