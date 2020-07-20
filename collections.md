@@ -304,6 +304,8 @@ The `collect` method returns a new `Collection` instance with the items currentl
 
 The `collect` method is primarily useful for converting [lazy collections](#lazy-collections) into standard `Collection` instances:
 
+    use Illuminate\Support\LazyCollection;
+
     $lazyCollection = LazyCollection::make(function () {
         yield 1;
         yield 2;
@@ -2057,6 +2059,8 @@ The `takeWhile` method returns items in the collection until the given callback 
 
 The `tap` method passes the collection to the given callback, allowing you to "tap" into the collection at a specific point and do something with the items while not affecting the collection itself:
 
+    use Illuminate\Support\Facades\Log;
+
     collect([2, 4, 3, 1, 5])
         ->sort()
         ->tap(function ($collection) {
@@ -2071,6 +2075,8 @@ The `tap` method passes the collection to the given callback, allowing you to "t
 
 The static `times` method creates a new collection by invoking the callback a given amount of times:
 
+    use Illuminate\Support\Collection;
+
     $collection = Collection::times(10, function ($number) {
         return $number * 9;
     });
@@ -2080,6 +2086,9 @@ The static `times` method creates a new collection by invoking the callback a gi
     // [9, 18, 27, 36, 45, 54, 63, 72, 81, 90]
 
 This method can be useful when combined with factories to create [Eloquent](/docs/{{version}}/eloquent) models:
+
+    use App\Category;
+    use Illuminate\Support\Collection;
 
     $categories = Collection::times(3, function ($number) {
         return factory(Category::class)->create(['name' => "Category No. $number"]);
@@ -2248,6 +2257,8 @@ Alias for the [`whenEmpty`](#method-whenempty) method.
 #### `unwrap()` {#collection-method}
 
 The static `unwrap` method returns the collection's underlying items from the given value when applicable:
+
+    use Illuminate\Support\Collection;
 
     Collection::unwrap(collect('John Doe'));
 
@@ -2612,6 +2623,8 @@ The `whereNull` method filters items where the given key is null:
 
 The static `wrap` method wraps the given value in a collection when applicable:
 
+    use Illuminate\Support\Collection;
+
     $collection = Collection::wrap('John Doe');
 
     $collection->all();
@@ -2650,11 +2663,15 @@ Collections also provide support for "higher order messages", which are short-cu
 
 Each higher order message can be accessed as a dynamic property on a collection instance. For instance, let's use the `each` higher order message to call a method on each object within a collection:
 
+    use App\User;
+
     $users = User::where('votes', '>', 500)->get();
 
     $users->each->markAsVip();
 
 Likewise, we can use the `sum` higher order message to gather the total number of "votes" for a collection of users:
+
+    use App\User;
 
     $users = User::where('group', 'Development')->get();
 
@@ -2847,6 +2864,8 @@ In addition to the methods defined in the `Enumerable` contract, the `LazyCollec
 
 While the `each` method calls the given callback for each item in the collection right away, the `tapEach` method only calls the given callback as the items are being pulled out of the list one by one:
 
+    use Illuminate\Support\LazyCollection;
+
     $lazyCollection = LazyCollection::times(INF)->tapEach(function ($value) {
         dump($value);
     });
@@ -2863,6 +2882,8 @@ While the `each` method calls the given callback for each item in the collection
 #### `remember()` {#collection-method}
 
 The `remember` method returns a new lazy collection that will remember any values that have already been enumerated and will not retrieve them again when the collection is enumerated again:
+
+    use App\User;
 
     $users = User::cursor()->remember();
 
