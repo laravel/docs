@@ -71,6 +71,13 @@ Whether a middleware runs before or after a request depends on the middleware it
 
     class BeforeMiddleware
     {
+        /**
+         * Handle an incoming request.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Closure  $next
+         * @return mixed
+         */
         public function handle($request, Closure $next)
         {
             // Perform action
@@ -89,6 +96,13 @@ However, this middleware would perform its task **after** the request is handled
 
     class AfterMiddleware
     {
+        /**
+         * Handle an incoming request.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Closure  $next
+         * @return mixed
+         */
         public function handle($request, Closure $next)
         {
             $response = $next($request);
@@ -128,11 +142,15 @@ If you would like to assign middleware to specific routes, you should first assi
 
 Once the middleware has been defined in the HTTP kernel, you may use the `middleware` method to assign middleware to a route:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('admin/profile', function () {
         //
     })->middleware('auth');
 
 You may also assign multiple middleware to the route:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/', function () {
         //
@@ -141,6 +159,7 @@ You may also assign multiple middleware to the route:
 When assigning middleware, you may also pass the fully qualified class name:
 
     use App\Http\Middleware\CheckAge;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('admin/profile', function () {
         //
@@ -149,6 +168,7 @@ When assigning middleware, you may also pass the fully qualified class name:
 When assigning middleware to a group of routes, you may occasionally need to prevent the middleware from being applied to an individual route within the group. You may accomplish this using the `withoutMiddleware` method:
 
     use App\Http\Middleware\CheckAge;
+    use Illuminate\Support\Facades\Route;
 
     Route::middleware([CheckAge::class])->group(function () {
         Route::get('/', function () {
@@ -191,6 +211,8 @@ Out of the box, Laravel comes with `web` and `api` middleware groups that contai
     ];
 
 Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware. Again, middleware groups make it more convenient to assign many middleware to a route at once:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/', function () {
         //
@@ -264,6 +286,8 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
 Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::put('post/{id}', function ($id) {
         //
     })->middleware('role:editor');
@@ -281,11 +305,25 @@ Sometimes a middleware may need to do some work after the HTTP response has been
 
     class StartSession
     {
+        /**
+         * Handle the incoming request.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Closure  $next
+         * @return mixed
+         */
         public function handle($request, Closure $next)
         {
             return $next($request);
         }
 
+        /**
+         * Terminate the request.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Illuminate\Http\Response  $response
+         * @return mixed
+         */
         public function terminate($request, $response)
         {
             // Store the session data...
