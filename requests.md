@@ -28,8 +28,8 @@ To obtain an instance of the current HTTP request via dependency injection, you 
         /**
          * Store a new user.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -42,6 +42,8 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 #### Dependency Injection & Route Parameters
 
 If your controller method is also expecting input from a route parameter you should list your route parameters after your other dependencies. For example, if your route is defined like so:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::put('user/{id}', 'UserController@update');
 
@@ -58,9 +60,9 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
         /**
          * Update the specified user.
          *
-         * @param  Request  $request
+         * @param  \Illuminate\Http\Request  $request
          * @param  string  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function update(Request $request, $id)
         {
@@ -73,6 +75,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
 You may also type-hint the `Illuminate\Http\Request` class on a route Closure. The service container will automatically inject the incoming request into the Closure when it is executed:
 
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/', function (Request $request) {
         //
@@ -126,6 +129,7 @@ The [PSR-7 standard](https://www.php-fig.org/psr/psr-7/) specifies interfaces fo
 Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route Closure or controller method:
 
     use Psr\Http\Message\ServerRequestInterface;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/', function (ServerRequestInterface $request) {
         //
@@ -317,6 +321,9 @@ The `cookie` method also accepts a few more arguments which are used less freque
 
 Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment to the outgoing response from your application. The `queue` method accepts a `Cookie` instance or the arguments needed to create a `Cookie` instance. These cookies will be attached to the outgoing response before it is sent to the browser:
 
+
+    use Illuminate\Support\Facades\Cookie;
+
     Cookie::queue(Cookie::make('name', 'value', $minutes));
 
     Cookie::queue('name', 'value', $minutes);
@@ -398,7 +405,6 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
     namespace App\Http\Middleware;
 
     use Fideloper\Proxy\TrustProxies as Middleware;
-    use Illuminate\Http\Request;
 
     class TrustProxies extends Middleware
     {
