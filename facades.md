@@ -15,6 +15,7 @@ Facades provide a "static" interface to classes that are available in the applic
 
 All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespace. So, we can easily access a facade like so:
 
+    use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Facades\Cache;
 
     Route::get('/cache', function () {
@@ -39,6 +40,7 @@ One of the primary benefits of dependency injection is the ability to swap imple
 
 Typically, it would not be possible to mock or stub a truly static class method. However, since facades use dynamic methods to proxy method calls to objects resolved from the service container, we actually can test facades just as we would test an injected class instance. For example, given the following route:
 
+    use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Facades\Cache;
 
     Route::get('/cache', function () {
@@ -69,11 +71,15 @@ We can write the following test to verify that the `Cache::get` method was calle
 
 In addition to facades, Laravel includes a variety of "helper" functions which can perform common tasks like generating views, firing events, dispatching jobs, or sending HTTP responses. Many of these helper functions perform the same function as a corresponding facade. For example, this facade call and helper call are equivalent:
 
+    use Illuminate\Support\Facades\View;
+
     return View::make('profile');
 
     return view('profile');
 
 There is absolutely no practical difference between facades and helper functions. When using helper functions, you may still test them exactly as you would the corresponding facade. For example, given the following route:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/cache', function () {
         return cache('key');
@@ -118,7 +124,7 @@ The `Facade` base class makes use of the `__callStatic()` magic-method to defer 
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function showProfile($id)
         {
@@ -131,6 +137,8 @@ The `Facade` base class makes use of the `__callStatic()` magic-method to defer 
 Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy to accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service.
 
 If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
+
+    use Illuminate\Support\Facades\Facade;
 
     class Cache extends Facade
     {
@@ -161,7 +169,7 @@ Using real-time facades, you may treat any class in your application as if it we
         /**
          * Publish the podcast.
          *
-         * @param  Publisher  $publisher
+         * @param  \App\Contracts\Publisher  $publisher
          * @return void
          */
         public function publish(Publisher $publisher)
