@@ -159,8 +159,8 @@ Alternatively, once a user is authenticated, you may access the authenticated us
         /**
          * Update the user's profile.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function update(Request $request)
         {
@@ -184,6 +184,8 @@ To determine if the user is already logged into your application, you may use th
 ### Protecting Routes
 
 [Route middleware](/docs/{{version}}/middleware) can be used to only allow authenticated users to access a given route. Laravel ships with an `auth` middleware, which is defined at `Illuminate\Auth\Middleware\Authenticate`. Since this middleware is already registered in your HTTP kernel, all you need to do is attach the middleware to a route definition:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('profile', function () {
         // Only authenticated users may enter...
@@ -227,6 +229,8 @@ Sometimes, you may wish to require the user to confirm their password before acc
 
 To accomplish this, Laravel provides a `password.confirm` middleware. Attaching the `password.confirm` middleware to a route will redirect users to a screen where they need to confirm their password before they can continue:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('/settings/security', function () {
         // Users must confirm their password before continuing...
     })->middleware(['auth', 'password.confirm']);
@@ -259,7 +263,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
          *
          * @param  \Illuminate\Http\Request $request
          *
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function authenticate(Request $request)
         {
@@ -282,6 +286,8 @@ The `intended` method on the redirector will redirect the user to the URL they w
 
 If you wish, you may also add extra conditions to the authentication query in addition to the user's e-mail and password. For example, we may verify that user is marked as "active":
 
+    use Illuminate\Support\Facades\Auth;
+
     if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
         // The user is active, not suspended, and exists.
     }
@@ -294,6 +300,8 @@ You may specify which guard instance you would like to utilize using the `guard`
 
 The guard name passed to the `guard` method should correspond to one of the guards configured in your `auth.php` configuration file:
 
+    use Illuminate\Support\Facades\Auth;
+
     if (Auth::guard('admin')->attempt($credentials)) {
         //
     }
@@ -302,12 +310,16 @@ The guard name passed to the `guard` method should correspond to one of the guar
 
 To log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session:
 
+    use Illuminate\Support\Facades\Auth;
+
     Auth::logout();
 
 <a name="remembering-users"></a>
 ### Remembering Users
 
 If you would like to provide "remember me" functionality in your application, you may pass a boolean value as the second argument to the `attempt` method, which will keep the user authenticated indefinitely, or until they manually logout. Your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
+
+    use Illuminate\Support\Facades\Auth;
 
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
         // The user is being remembered...
@@ -316,6 +328,8 @@ If you would like to provide "remember me" functionality in your application, yo
 > {tip} If you are using the built-in `LoginController` that is shipped with Laravel, the proper logic to "remember" users is already implemented by the traits used by the controller.
 
 If you are "remembering" users, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
+
+    use Illuminate\Support\Facades\Auth;
 
     if (Auth::viaRemember()) {
         //
@@ -328,6 +342,8 @@ If you are "remembering" users, you may use the `viaRemember` method to determin
 
 If you need to log an existing user instance into your application, you may call the `login` method with the user instance. The given object must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). The `App\User` model included with Laravel already implements this interface:
 
+    use Illuminate\Support\Facades\Auth;
+
     Auth::login($user);
 
     // Login and "remember" the given user...
@@ -335,11 +351,15 @@ If you need to log an existing user instance into your application, you may call
 
 You may specify the guard instance you would like to use:
 
+    use Illuminate\Support\Facades\Auth;
+
     Auth::guard('admin')->login($user);
 
 #### Authenticate A User By ID
 
 To log a user into the application by their ID, you may use the `loginUsingId` method. This method accepts the primary key of the user you wish to authenticate:
+
+    use Illuminate\Support\Facades\Auth;
 
     Auth::loginUsingId(1);
 
@@ -350,6 +370,8 @@ To log a user into the application by their ID, you may use the `loginUsingId` m
 
 You may use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized, which means this method may be helpful when building a stateless API:
 
+    use Illuminate\Support\Facades\Auth;
+
     if (Auth::once($credentials)) {
         //
     }
@@ -358,6 +380,8 @@ You may use the `once` method to log a user into the application for a single re
 ## HTTP Basic Authentication
 
 [HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` [middleware](/docs/{{version}}/middleware) to your route. The `auth.basic` middleware is included with the Laravel framework, so you do not need to define it:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('profile', function () {
         // Only authenticated users may enter...
@@ -400,6 +424,8 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
     }
 
 Next, [register the route middleware](/docs/{{version}}/middleware#registering-middleware) and attach it to a route:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('api/user', function () {
         // Only authenticated users may enter...
