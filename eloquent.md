@@ -110,6 +110,10 @@ In addition, Eloquent assumes that the primary key is an incrementing integer va
 
     <?php
 
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
     class Flight extends Model
     {
         /**
@@ -123,6 +127,10 @@ In addition, Eloquent assumes that the primary key is an incrementing integer va
 If your primary key is not an integer, you should set the protected `$keyType` property on your model to `string`:
 
     <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
 
     class Flight extends Model
     {
@@ -175,6 +183,10 @@ If you need to customize the format of your timestamps, set the `$dateFormat` pr
 If you need to customize the names of the columns used to store the timestamps, you may set the `CREATED_AT` and `UPDATED_AT` constants in your model:
 
     <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
 
     class Flight extends Model
     {
@@ -287,7 +299,7 @@ You may also loop over the collection like an array:
 
 If you need to process thousands of Eloquent records, use the `chunk` command. The `chunk` method will retrieve a "chunk" of Eloquent models, feeding them to a given `Closure` for processing. Using the `chunk` method will conserve memory when working with large result sets:
 
-    Flight::chunk(200, function ($flights) {
+    App\Flight::chunk(200, function ($flights) {
         foreach ($flights as $flight) {
             //
         }
@@ -299,7 +311,7 @@ The first argument passed to the method is the number of records you wish to rec
 
 The `cursor` method allows you to iterate through your database records using a cursor, which will only execute a single query. When processing large amounts of data, the `cursor` method may be used to greatly reduce your memory usage:
 
-    foreach (Flight::where('foo', 'bar')->cursor() as $flight) {
+    foreach (App\Flight::where('foo', 'bar')->cursor() as $flight) {
         //
     }
 
@@ -322,10 +334,7 @@ Eloquent also offers advanced subquery support, which allows you to pull informa
 
 Using the subquery functionality available to the `select` and `addSelect` methods, we can select all of the `destinations` and the name of the flight that most recently arrived at that destination using a single query:
 
-    use App\Destination;
-    use App\Flight;
-
-    return Destination::addSelect(['last_flight' => Flight::select('name')
+    return App\Destination::addSelect(['last_flight' => App\Flight::select('name')
         ->whereColumn('destination_id', 'destinations.id')
         ->orderBy('arrived_at', 'desc')
         ->limit(1)
@@ -335,8 +344,8 @@ Using the subquery functionality available to the `select` and `addSelect` metho
 
 In addition, the query builder's `orderBy` function supports subqueries. We may use this functionality to sort all destinations based on when the last flight arrived at that destination. Again, this may be done while executing a single query against the database:
 
-    return Destination::orderByDesc(
-        Flight::select('arrived_at')
+    return App\Destination::orderByDesc(
+        App\Flight::select('arrived_at')
             ->whereColumn('destination_id', 'destinations.id')
             ->orderBy('arrived_at', 'desc')
             ->limit(1)
@@ -383,6 +392,8 @@ Sometimes you may wish to throw an exception if a model is not found. This is pa
 
 If the exception is not caught, a `404` HTTP response is automatically sent back to the user. It is not necessary to write explicit checks to return `404` responses when using these methods:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('/api/flights/{id}', function ($id) {
         return App\Flight::findOrFail($id);
     });
@@ -417,8 +428,8 @@ To create a new record in the database, create a new model instance, set attribu
         /**
          * Create a new flight instance.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -463,7 +474,7 @@ Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine 
 
 The `isDirty` method determines if any attributes have been changed since the model was loaded. You may pass a specific attribute name to determine if a particular attribute is dirty. The `isClean` method is the opposite of `isDirty` and also accepts an optional attribute argument:
 
-    $user = User::create([
+    $user = App\User::create([
         'first_name' => 'Taylor',
         'last_name' => 'Otwell',
         'title' => 'Developer',
@@ -486,7 +497,7 @@ The `isDirty` method determines if any attributes have been changed since the mo
 
 The `wasChanged` method determines if any attributes were changed when the model was last saved within the current request cycle. You may also pass an attribute name to see if a particular attribute was changed:
 
-    $user = User::create([
+    $user = App\User::create([
         'first_name' => 'Taylor',
         'last_name' => 'Otwell',
         'title' => 'Developer',
@@ -501,7 +512,7 @@ The `wasChanged` method determines if any attributes were changed when the model
 
 The `getOriginal` method returns an array containing the original attributes of the model regardless of any changes since the model was loaded. You may pass a specific attribute name to get the original value of a particular attribute:
 
-    $user = User::find(1);
+    $user = App\User::find(1);
 
     $user->name; // John
     $user->email; // john@example.com
@@ -663,6 +674,9 @@ In addition to actually removing records from your database, Eloquent can also "
 > {tip} The `SoftDeletes` trait will automatically cast the `deleted_at` attribute to a `DateTime` / `Carbon` instance for you.
 
 You should also add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     public function up()
     {
@@ -849,20 +863,20 @@ Eloquent also allows you to define global scopes using Closures, which is partic
 
 If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method. The method accepts the class name of the global scope as its only argument:
 
-    User::withoutGlobalScope(AgeScope::class)->get();
+    App\User::withoutGlobalScope(AgeScope::class)->get();
 
 Or, if you defined the global scope using a Closure:
 
-    User::withoutGlobalScope('age')->get();
+    App\User::withoutGlobalScope('age')->get();
 
 If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
 
     // Remove all of the global scopes...
-    User::withoutGlobalScopes()->get();
+    App\User::withoutGlobalScopes()->get();
 
     // Remove some of the global scopes...
-    User::withoutGlobalScopes([
-        FirstScope::class, SecondScope::class
+    App\User::withoutGlobalScopes([
+        App\Scopes\FirstScope::class, App\Scopes\SecondScope::class
     ])->get();
 
 <a name="local-scopes"></a>
@@ -1002,7 +1016,6 @@ Instead of using custom event classes, you may register Closures that execute wh
 
     namespace App;
 
-    use App\Scopes\AgeScope;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
