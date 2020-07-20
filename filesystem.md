@@ -55,6 +55,8 @@ You may configure additional symbolic links in your `filesystems` configuration 
 
 When using the `local` driver, all file operations are relative to the `root` directory defined in your `filesystems` configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
+    use Illuminate\Support\Facades\Storage;
+
     Storage::disk('local')->put('file.txt', 'Contents');
 
 #### Permissions
@@ -160,6 +162,8 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 
 If your application interacts with multiple disks, you may use the `disk` method on the `Storage` facade to work with files on a particular disk:
 
+    use Illuminate\Support\Facades\Storage;
+
     Storage::disk('s3')->put('avatars/1', $fileContents);
 
 <a name="retrieving-files"></a>
@@ -167,13 +171,19 @@ If your application interacts with multiple disks, you may use the `disk` method
 
 The `get` method may be used to retrieve the contents of a file. The raw string contents of the file will be returned by the method. Remember, all file paths should be specified relative to the "root" location configured for the disk:
 
+    use Illuminate\Support\Facades\Storage;
+
     $contents = Storage::get('file.jpg');
 
 The `exists` method may be used to determine if a file exists on the disk:
 
+    use Illuminate\Support\Facades\Storage;
+
     $exists = Storage::disk('s3')->exists('file.jpg');
 
 The `missing` method may be used to determine if a file is missing from the disk:
+
+    use Illuminate\Support\Facades\Storage;
 
     $missing = Storage::disk('s3')->missing('file.jpg');
 
@@ -181,6 +191,8 @@ The `missing` method may be used to determine if a file is missing from the disk
 ### Downloading Files
 
 The `download` method may be used to generate a response that forces the user's browser to download the file at the given path. The `download` method accepts a file name as the second argument to the method, which will determine the file name that is seen by the user downloading the file. Finally, you may pass an array of HTTP headers as the third argument to the method:
+
+    use Illuminate\Support\Facades\Storage;
 
     return Storage::download('file.jpg');
 
@@ -201,11 +213,15 @@ You may use the `url` method to get the URL for the given file. If you are using
 
 For files stored using the `s3` you may create a temporary URL to a given file using the `temporaryUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
 
+    use Illuminate\Support\Facades\Storage;
+
     $url = Storage::temporaryUrl(
         'file.jpg', now()->addMinutes(5)
     );
 
 If you need to specify additional [S3 request parameters](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests), you may pass the array of request parameters as the third argument to the `temporaryUrl` method:
+
+    use Illuminate\Support\Facades\Storage;
 
     $url = Storage::temporaryUrl(
         'file.jpg',
@@ -234,6 +250,8 @@ In addition to reading and writing files, Laravel can also provide information a
     $size = Storage::size('file.jpg');
 
 The `lastModified` method returns the UNIX timestamp of the last time the file was modified:
+
+    use Illuminate\Support\Facades\Storage;
 
     $time = Storage::lastModified('file.jpg');
 
@@ -265,11 +283,15 @@ There are a few important things to note about the `putFile` method. Note that w
 
 The `putFile` and `putFileAs` methods also accept an argument to specify the "visibility" of the stored file. This is particularly useful if you are storing the file on a cloud disk such as S3 and would like the file to be publicly accessible:
 
+    use Illuminate\Support\Facades\Storage;
+
     Storage::putFile('photos', new File('/path/to/photo'), 'public');
 
 #### Prepending & Appending To Files
 
 The `prepend` and `append` methods allow you to write to the beginning or end of a file:
+
+    use Illuminate\Support\Facades\Storage;
 
     Storage::prepend('file.log', 'Prepended Text');
 
@@ -278,6 +300,8 @@ The `prepend` and `append` methods allow you to write to the beginning or end of
 #### Copying & Moving Files
 
 The `copy` method may be used to copy an existing file to a new location on the disk, while the `move` method may be used to rename or move an existing file to a new location:
+
+    use Illuminate\Support\Facades\Storage;
 
     Storage::copy('old/file.jpg', 'new/file.jpg');
 
@@ -300,8 +324,8 @@ In web applications, one of the most common use-cases for storing files is stori
         /**
          * Update the avatar for the user.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function update(Request $request)
         {
@@ -315,6 +339,8 @@ There are a few important things to note about this example. Note that we only s
 
 You may also call the `putFile` method on the `Storage` facade to perform the same file manipulation as the example above:
 
+    use Illuminate\Support\Facades\Storage;
+
     $path = Storage::putFile('avatars', $request->file('avatar'));
 
 #### Specifying A File Name
@@ -326,6 +352,8 @@ If you would not like a file name to be automatically assigned to your stored fi
     );
 
 You may also use the `putFileAs` method on the `Storage` facade, which will perform the same file manipulation as the example above:
+
+    use Illuminate\Support\Facades\Storage;
 
     $path = Storage::putFileAs(
         'avatars', $request->file('avatar'), $request->user()->id
@@ -372,6 +400,8 @@ You can set the visibility when setting the file via the `put` method:
 
 If the file has already been stored, its visibility can be retrieved and set via the `getVisibility` and `setVisibility` methods:
 
+    use Illuminate\Support\Facades\Storage;
+
     $visibility = Storage::getVisibility('file.jpg');
 
     Storage::setVisibility('file.jpg', 'public');
@@ -410,6 +440,8 @@ The `files` method returns an array of all of the files in a given directory. If
 
 The `directories` method returns an array of all the directories within a given directory. Additionally, you may use the `allDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
 
+    use Illuminate\Support\Facades\Storage;
+
     $directories = Storage::directories($directory);
 
     // Recursive...
@@ -419,11 +451,15 @@ The `directories` method returns an array of all the directories within a given 
 
 The `makeDirectory` method will create the given directory, including any needed subdirectories:
 
+    use Illuminate\Support\Facades\Storage;
+
     Storage::makeDirectory($directory);
 
 #### Delete A Directory
 
 Finally, the `deleteDirectory` method may be used to remove a directory and all of its files:
+
+    use Illuminate\Support\Facades\Storage;
 
     Storage::deleteDirectory($directory);
 
