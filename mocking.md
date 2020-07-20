@@ -134,6 +134,10 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
 
 If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:
 
+    use App\Events\OrderCreated;
+    use App\Order;
+    use Illuminate\Support\Facades\Event;
+
     /**
      * Test order process.
      */
@@ -239,6 +243,8 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
     }
 
 If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:
+
+    use Illuminate\Support\Facades\Mail;
 
     Mail::assertQueued(...);
     Mail::assertNotQueued(...);
