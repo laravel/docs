@@ -38,7 +38,7 @@ In this example, the only argument passed to the `paginate` method is the number
         /**
          * Show all of the users for the application.
          *
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function index()
         {
@@ -54,6 +54,8 @@ In this example, the only argument passed to the `paginate` method is the number
 
 If you only need to display simple "Next" and "Previous" links in your pagination view, you may use the `simplePaginate` method to perform a more efficient query. This is very useful for large datasets when you do not need to display a link for each page number when rendering your view:
 
+    use Illuminate\Support\Facades\DB;
+
     $users = DB::table('users')->simplePaginate(15);
 
 <a name="paginating-eloquent-results"></a>
@@ -65,7 +67,7 @@ You may also paginate [Eloquent](/docs/{{version}}/eloquent) queries. In this ex
 
 You may call `paginate` after setting other constraints on the query, such as `where` clauses:
 
-    $users = User::where('votes', '>', 100)->paginate(15);
+    $users = App\User::where('votes', '>', 100)->paginate(15);
 
 You may also use the `simplePaginate` method when paginating Eloquent models:
 
@@ -101,6 +103,8 @@ The `links` method will render the links to the rest of the pages in the result 
 
 The `withPath` method allows you to customize the URI used by the paginator when generating links. For example, if you want the paginator to generate links like `http://example.com/custom/url?page=N`, you should pass `custom/url` to the `withPath` method:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('users', function () {
         $users = App\User::paginate(15);
 
@@ -133,6 +137,8 @@ You may control how many additional links are displayed on each side of the pagi
 ### Converting Results To JSON
 
 The Laravel paginator result classes implement the `Illuminate\Contracts\Support\Jsonable` Interface contract and expose the `toJson` method, so it's very easy to convert your pagination results to JSON. You may also convert a paginator instance to JSON by returning it from a route or controller action:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('users', function () {
         return App\User::paginate();
