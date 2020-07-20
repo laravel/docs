@@ -53,6 +53,8 @@ Each of these methods may also be accessed via the `URL` [facade](/docs/{{versio
 
 The `route` helper may be used to generate URLs to named routes. Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your `route` function calls. For example, imagine your application contains a route defined like the following:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('/post/{post}', function () {
         //
     })->name('post.show');
@@ -68,6 +70,8 @@ You will often be generating URLs using the primary key of [Eloquent models](/do
     echo route('post.show', ['post' => $post]);
 
 The `route` helper may also be used to generate URLs for routes with multiple parameters:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/post/{post}/comment/{comment}', function () {
         //
@@ -101,6 +105,7 @@ If you would like to generate a temporary signed route URL that expires, you may
 To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Request`:
 
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/unsubscribe/{user}', function (Request $request) {
         if (! $request->hasValidSignature()) {
@@ -124,6 +129,9 @@ Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignatu
     ];
 
 Once you have registered the middleware in your kernel, you may attach it to a route. If the incoming request does not have a valid signature, the middleware will automatically return a `403` error response:
+
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Route;
 
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
@@ -151,6 +159,8 @@ If the controller method accepts route parameters, you may pass them as the seco
 
 For some applications, you may wish to specify request-wide default values for certain URL parameters. For example, imagine many of your routes define a `{locale}` parameter:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('/{locale}/posts', function () {
         //
     })->name('post.index');
@@ -166,6 +176,13 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
 
     class SetDefaultLocaleForUrls
     {
+        /**
+         * Handle an incoming request.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Closure  $next
+         * @return mixed
+         */
         public function handle($request, Closure $next)
         {
             URL::defaults(['locale' => $request->user()->locale]);
