@@ -94,9 +94,13 @@ The `sticky` option is an *optional* value that can be used to allow the immedia
 
 When using multiple connections, you may access each connection via the `connection` method on the `DB` facade. The `name` passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file:
 
+    use Illuminate\Support\Facades\DB;
+
     $users = DB::connection('foo')->select(...);
 
 You may also access the raw, underlying PDO instance using the `getPdo` method on a connection instance:
+
+    use Illuminate\Support\Facades\DB;
 
     $pdo = DB::connection()->getPdo();
 
@@ -121,7 +125,7 @@ To run a basic query, you may use the `select` method on the `DB` facade:
         /**
          * Show a list of all of the application's users.
          *
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function index()
         {
@@ -143,11 +147,15 @@ The `select` method will always return an `array` of results. Each result within
 
 Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
 
+    use Illuminate\Support\Facades\DB;
+
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 
 #### Running An Insert Statement
 
 To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument and bindings as its second argument:
+
+    use Illuminate\Support\Facades\DB;
 
     DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
@@ -155,17 +163,23 @@ To execute an `insert` statement, you may use the `insert` method on the `DB` fa
 
 The `update` method should be used to update existing records in the database. The number of rows affected by the statement will be returned:
 
+    use Illuminate\Support\Facades\DB;
+
     $affected = DB::update('update users set votes = 100 where name = ?', ['John']);
 
 #### Running A Delete Statement
 
 The `delete` method should be used to delete records from the database. Like `update`, the number of rows affected will be returned:
 
+    use Illuminate\Support\Facades\DB;
+
     $deleted = DB::delete('delete from users');
 
 #### Running A General Statement
 
 Some database statements do not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
+
+    use Illuminate\Support\Facades\DB;
 
     DB::statement('drop table users');
 
@@ -213,6 +227,8 @@ If you would like to receive each SQL query executed by your application, you ma
 
 You may use the `transaction` method on the `DB` facade to run a set of operations within a database transaction. If an exception is thrown within the transaction `Closure`, the transaction will automatically be rolled back. If the `Closure` executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
 
+    use Illuminate\Support\Facades\DB;
+
     DB::transaction(function () {
         DB::table('users')->update(['votes' => 1]);
 
@@ -222,6 +238,8 @@ You may use the `transaction` method on the `DB` facade to run a set of operatio
 #### Handling Deadlocks
 
 The `transaction` method accepts an optional second argument which defines the number of times a transaction should be reattempted when a deadlock occurs. Once these attempts have been exhausted, an exception will be thrown:
+
+    use Illuminate\Support\Facades\DB;
 
     DB::transaction(function () {
         DB::table('users')->update(['votes' => 1]);
@@ -233,13 +251,19 @@ The `transaction` method accepts an optional second argument which defines the n
 
 If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method on the `DB` facade:
 
+    use Illuminate\Support\Facades\DB;
+
     DB::beginTransaction();
 
 You can rollback the transaction via the `rollBack` method:
 
+    use Illuminate\Support\Facades\DB;
+
     DB::rollBack();
 
 Lastly, you can commit a transaction via the `commit` method:
+
+    use Illuminate\Support\Facades\DB;
 
     DB::commit();
 
