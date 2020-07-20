@@ -55,7 +55,6 @@ It is often useful to reset your database after each test so that data from a pr
     namespace Tests\Feature;
 
     use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -262,7 +261,6 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
     namespace Tests\Feature;
 
     use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use OrderStatusSeeder;
     use Tests\TestCase;
 
