@@ -46,12 +46,16 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
 
 The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
 
+    use Illuminate\Support\Facades\Http;
+
     return Http::get('http://test.com/users/1')['name'];
 
 <a name="request-data"></a>
 ### Request Data
 
 Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional data with your request. So, these methods accept an array of data as their second argument. By default, data will be sent using the `application/json` content type:
+
+    use Illuminate\Support\Facades\Http;
 
     $response = Http::post('http://test.com/users', [
         'name' => 'Steve',
@@ -62,6 +66,8 @@ Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional
 
 When making `GET` requests, you may either append a query string to the URL directly or pass an array of key / value pairs as the second argument to the `get` method:
 
+    use Illuminate\Support\Facades\Http;
+
     $response = Http::get('http://test.com/users', [
         'name' => 'Taylor',
         'page' => 1,
@@ -70,6 +76,8 @@ When making `GET` requests, you may either append a query string to the URL dire
 #### Sending Form URL Encoded Requests
 
 If you would like to send data using the `application/x-www-form-urlencoded` content type, you should call the `asForm` method before making your request:
+
+    use Illuminate\Support\Facades\Http;
 
     $response = Http::asForm()->post('http://test.com/users', [
         'name' => 'Sara',
@@ -80,6 +88,8 @@ If you would like to send data using the `application/x-www-form-urlencoded` con
 
 You may use the `withBody` method if you would like to provide a raw request body when making a request:
 
+    use Illuminate\Support\Facades\Http;
+
     $response = Http::withBody(
         base64_encode($photo), 'image/jpeg'
     )->post('http://test.com/photo');
@@ -88,11 +98,15 @@ You may use the `withBody` method if you would like to provide a raw request bod
 
 If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. Optionally, you may provide a third argument which will be considered the file's filename:
 
+    use Illuminate\Support\Facades\Http;
+
     $response = Http::attach(
         'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
     )->post('http://test.com/attachments');
 
 Instead of passing the raw contents of a file, you may also pass a stream resource:
+
+    use Illuminate\Support\Facades\Http;
 
     $photo = fopen('photo.jpg', 'r');
 
@@ -104,6 +118,8 @@ Instead of passing the raw contents of a file, you may also pass a stream resour
 ### Headers
 
 Headers may be added to requests using the `withHeaders` method. This `withHeaders` method accepts an array of key / value pairs:
+
+    use Illuminate\Support\Facades\Http;
 
     $response = Http::withHeaders([
         'X-First' => 'foo',
@@ -117,6 +133,8 @@ Headers may be added to requests using the `withHeaders` method. This `withHeade
 
 You may specify basic and digest authentication credentials using the `withBasicAuth` and `withDigestAuth` methods, respectively:
 
+    use Illuminate\Support\Facades\Http;
+
     // Basic authentication...
     $response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(...);
 
@@ -127,12 +145,16 @@ You may specify basic and digest authentication credentials using the `withBasic
 
 If you would like to quickly add an `Authorization` bearer token header to the request, you may use the `withToken` method:
 
+    use Illuminate\Support\Facades\Http;
+
     $response = Http::withToken('token')->post(...);
 
 <a name="timeout"></a>
 ### Timeout
 
 The `timeout` method may be used to specify the maximum number of seconds to wait for a response:
+
+    use Illuminate\Support\Facades\Http;
 
     $response = Http::timeout(3)->get(...);
 
@@ -142,6 +164,8 @@ If the given timeout is exceeded, an instance of `Illuminate\Http\Client\Connect
 ### Retries
 
 If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts two arguments: the number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
+
+    use Illuminate\Support\Facades\Http;
 
     $response = Http::retry(3, 100)->post(...);
 
@@ -168,6 +192,8 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 
 If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response is a client or server error, you may use the `throw` method:
 
+    use Illuminate\Support\Facades\Http;
+
     $response = Http::post(...);
 
     // Throw an exception if a client or server error occurred...
@@ -179,12 +205,16 @@ The `Illuminate\Http\Client\RequestException` instance has a public `$response` 
 
 The `throw` method returns the response instance if no error occurred, allowing you to chain other operations onto the `throw` method:
 
+    use Illuminate\Support\Facades\Http;
+
     return Http::post(...)->throw()->json();
 
 <a name="guzzle-options"></a>
 ### Guzzle Options
 
 You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en/stable/request-options.html) using the `withOptions` method. The `withOptions` method accepts an array of key / value pairs:
+
+    use Illuminate\Support\Facades\Http;
 
     $response = Http::withOptions([
         'debug' => true,
@@ -210,6 +240,8 @@ For example, to instruct the HTTP client to return empty, `200` status code resp
 
 Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the `response` method to construct stub / fake responses for these endpoints:
 
+    use Illuminate\Support\Facades\Http;
+
     Http::fake([
         // Stub a JSON response for GitHub endpoints...
         'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
@@ -219,6 +251,8 @@ Alternatively, you may pass an array to the `fake` method. The array's keys shou
     ]);
 
 If you would like to specify a fallback URL pattern that will stub all unmatched URLs, you may use a single `*` character:
+
+    use Illuminate\Support\Facades\Http;
 
     Http::fake([
         // Stub a JSON response for GitHub endpoints...
@@ -232,6 +266,8 @@ If you would like to specify a fallback URL pattern that will stub all unmatched
 
 Sometimes you may need to specify that a single URL should return a series of fake responses in a specific order. You may accomplish this using the `Http::sequence` method to build the responses:
 
+    use Illuminate\Support\Facades\Http;
+
     Http::fake([
         // Stub a series of responses for GitHub endpoints...
         'github.com/*' => Http::sequence()
@@ -241,6 +277,8 @@ Sometimes you may need to specify that a single URL should return a series of fa
     ]);
 
 When all of the responses in a response sequence have been consumed, any further requests will cause the response sequence to throw an exception. If you would like to specify a default response that should be returned when a sequence is empty, you may use the `whenEmpty` method:
+
+    use Illuminate\Support\Facades\Http;
 
     Http::fake([
         // Stub a series of responses for GitHub endpoints...
@@ -252,6 +290,8 @@ When all of the responses in a response sequence have been consumed, any further
 
 If you would like to fake a sequence of responses but do not need to specify a specific URL pattern that should be faked, you may use the `Http::fakeSequence` method:
 
+    use Illuminate\Support\Facades\Http;
+
     Http::fakeSequence()
             ->push('Hello World', 200)
             ->whenEmpty(Http::response());
@@ -259,6 +299,8 @@ If you would like to fake a sequence of responses but do not need to specify a s
 #### Fake Callback
 
 If you require more complicated logic to determine what responses to return for certain endpoints, you may pass a callback to the `fake` method. This callback will receive an instance of `Illuminate\Http\Client\Request` and should return a response instance:
+
+    use Illuminate\Support\Facades\Http;
 
     Http::fake(function ($request) {
         return Http::response('Hello World', 200);
@@ -270,6 +312,8 @@ If you require more complicated logic to determine what responses to return for 
 When faking responses, you may occasionally wish to inspect the requests the client receives in order to make sure your application is sending the correct data or headers. You may accomplish this by calling the `Http::assertSent` method after calling `Http::fake`.
 
 The `assertSent` method accepts a callback which will be given an `Illuminate\Http\Client\Request` instance and should return a boolean value indicating if the request matches your expectations. In order for the test to pass, at least one request must have been issued matching the given expectations:
+
+    use Illuminate\Support\Facades\Http;
 
     Http::fake();
 
@@ -289,6 +333,8 @@ The `assertSent` method accepts a callback which will be given an `Illuminate\Ht
 
 If needed, you may assert that a specific request was not sent using the `assertNotSent` method:
 
+    use Illuminate\Support\Facades\Http;
+
     Http::fake();
 
     Http::post('http://test.com/users', [
@@ -301,6 +347,8 @@ If needed, you may assert that a specific request was not sent using the `assert
     });
 
 Or, if you would like to assert that no requests were sent, you may use the `assertNothingSent` method:
+
+    use Illuminate\Support\Facades\Http;
 
     Http::fake();
 

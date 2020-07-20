@@ -195,7 +195,7 @@ Typically, you will want to pass some data to your view that you can utilize whe
         /**
          * The order instance.
          *
-         * @var Order
+         * @var \App\Order
          */
         public $order;
 
@@ -247,7 +247,7 @@ If you would like to customize the format of your email's data before it is sent
         /**
          * The order instance.
          *
-         * @var Order
+         * @var \App\Order
          */
         protected $order;
 
@@ -527,9 +527,9 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
         /**
          * Ship the given order.
          *
-         * @param  Request  $request
+         * @param  \Illuminate\Http\Request  $request
          * @param  int  $orderId
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function ship(Request $request, $orderId)
         {
@@ -543,6 +543,7 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
 
 You are not limited to just specifying the "to" recipients when sending a message. You are free to set "to", "cc", and "bcc" recipients all within a single, chained method call:
 
+    use App\Mail\OrderShipped;
     use Illuminate\Support\Facades\Mail;
 
     Mail::to($request->user())
@@ -554,6 +555,9 @@ You are not limited to just specifying the "to" recipients when sending a messag
 
 Occasionally, you may need to send a mailable to a list of recipients by iterating over an array of recipients / email addresses. Since the `to` method appends email addresses to the mailable's list of recipients, you should always re-create the mailable instance for each recipient:
 
+    use App\Mail\OrderShipped;
+    use Illuminate\Support\Facades\Mail;
+
     foreach (['taylor@example.com', 'dries@example.com'] as $recipient) {
         Mail::to($recipient)->send(new OrderShipped($order));
     }
@@ -561,6 +565,9 @@ Occasionally, you may need to send a mailable to a list of recipients by iterati
 #### Sending Mail Via A Specific Mailer
 
 By default, Laravel will use the mailer configured as the `default` mailer in your `mail` configuration file. However, you may use the `mailer` method to send a message using a specific mailer configuration:
+
+    use App\Mail\OrderShipped;
+    use Illuminate\Support\Facades\Mail;
 
     Mail::mailer('postmark')
             ->to($request->user())
@@ -573,6 +580,9 @@ By default, Laravel will use the mailer configured as the `default` mailer in yo
 
 Since sending email messages can drastically lengthen the response time of your application, many developers choose to queue email messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/{{version}}/queues). To queue a mail message, use the `queue` method on the `Mail` facade after specifying the message's recipients:
 
+    use App\Mail\OrderShipped;
+    use Illuminate\Support\Facades\Mail;
+
     Mail::to($request->user())
         ->cc($moreUsers)
         ->bcc($evenMoreUsers)
@@ -584,6 +594,9 @@ This method will automatically take care of pushing a job onto the queue so the 
 
 If you wish to delay the delivery of a queued email message, you may use the `later` method. As its first argument, the `later` method accepts a `DateTime` instance indicating when the message should be sent:
 
+    use App\Mail\OrderShipped;
+    use Illuminate\Support\Facades\Mail;
+
     $when = now()->addMinutes(10);
 
     Mail::to($request->user())
@@ -594,6 +607,9 @@ If you wish to delay the delivery of a queued email message, you may use the `la
 #### Pushing To Specific Queues
 
 Since all mailable classes generated using the `make:mail` command make use of the `Illuminate\Bus\Queueable` trait, you may call the `onQueue` and `onConnection` methods on any mailable class instance, allowing you to specify the connection and queue name for the message:
+
+    use App\Mail\OrderShipped;
+    use Illuminate\Support\Facades\Mail;
 
     $message = (new OrderShipped($order))
                     ->onConnection('sqs')
@@ -629,6 +645,8 @@ Sometimes you may wish to capture the HTML content of a mailable without sending
 
 When designing a mailable's template, it is convenient to quickly preview the rendered mailable in your browser like a typical Blade template. For this reason, Laravel allows you to return any mailable directly from a route Closure or controller. When a mailable is returned, it will be rendered and displayed in the browser, allowing you to quickly preview its design without needing to send it to an actual email address:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('mailable', function () {
         $invoice = App\Invoice::find(1);
 
@@ -641,6 +659,9 @@ When designing a mailable's template, it is convenient to quickly preview the re
 Laravel allows you to send mailables in a locale other than the current language, and will even remember this locale if the mail is queued.
 
 To accomplish this, the `Mail` facade offers a `locale` method to set the desired language. The application will change into this locale when the mailable is being formatted and then revert back to the previous locale when formatting is complete:
+
+    use App\Mail\OrderShipped;
+    use Illuminate\Support\Facades\Mail;
 
     Mail::to($request->user())->locale('es')->send(
         new OrderShipped($order)
@@ -666,6 +687,9 @@ Sometimes, applications store each user's preferred locale. By implementing the 
     }
 
 Once you have implemented the interface, Laravel will automatically use the preferred locale when sending mailables and notifications to the model. Therefore, there is no need to call the `locale` method when using this interface:
+
+    use App\Mail\OrderShipped;
+    use Illuminate\Support\Facades\Mail;
 
     Mail::to($request->user())->send(new OrderShipped($order));
 
