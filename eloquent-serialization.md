@@ -56,6 +56,8 @@ Alternatively, you may cast a model or collection to a string, which will automa
 
 Since models and collections are converted to JSON when cast to a string, you can return Eloquent objects directly from your application's routes or controllers:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('users', function () {
         return App\User::all();
     });
@@ -173,6 +175,8 @@ You may instruct a single model instance to append attributes using the `append`
 #### Customizing The Default Date Format
 
 You may customize the default serialization format by overriding the `serializeDate` method:
+
+    use DateTimeInterface;
 
     /**
      * Prepare a date for array / JSON serialization.
