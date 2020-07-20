@@ -83,7 +83,7 @@ A one-to-one relationship is a very basic relation. For example, a `User` model 
 
 The first argument passed to the `hasOne` method is the name of the related model. Once the relationship is defined, we may retrieve the related record using Eloquent's dynamic properties. Dynamic properties allow you to access relationship methods as if they were properties defined on the model:
 
-    $phone = User::find(1)->phone;
+    $phone = App\User::find(1)->phone;
 
 Eloquent determines the foreign key of the relationship based on the model name. In this case, the `Phone` model is automatically assumed to have a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
 
@@ -341,7 +341,7 @@ For example, if your application contains users that may subscribe to podcasts, 
 
 Once this is done, you may access the intermediate table data using the customized name:
 
-    $users = User::with('podcasts')->get();
+    $users = App\User::with('podcasts')->get();
 
     foreach ($users->flatMap->podcasts as $podcast) {
         echo $podcast->subscription->created_at;
@@ -473,6 +473,12 @@ The first argument passed to the `hasOneThrough` method is the name of the final
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
 
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
     class Mechanic extends Model
     {
         /**
@@ -534,6 +540,12 @@ Now that we have examined the table structure for the relationship, let's define
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
 
     class Country extends Model
     {
@@ -850,11 +862,8 @@ You may determine the morph alias of a given model at runtime using the `getMorp
 
 You may use the `resolveRelationUsing` method to define relations between Eloquent models at runtime. While not typically recommended for normal application development, this may occasionally be useful when developing Laravel packages:
 
-    use App\Order;
-    use App\Customer;
-
-    Order::resolveRelationUsing('customer', function ($orderModel) {
-        return $orderModel->belongsTo(Customer::class, 'customer_id');
+    App\Order::resolveRelationUsing('customer', function ($orderModel) {
+        return $orderModel->belongsTo(App\Customer::class, 'customer_id');
     });
 
 > {note} When defining dynamic relationships, always provide explicit key name arguments to the Eloquent relationship methods.
@@ -1102,21 +1111,21 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
 
     use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-    $activities = ActivityFeed::query()
+    $activities = App\ActivityFeed::query()
         ->with(['parentable' => function (MorphTo $morphTo) {
             $morphTo->morphWithCount([
-                Photo::class => ['tags'],
-                Post::class => ['comments'],
+                App\Photo::class => ['tags'],
+                App\Post::class => ['comments'],
             ]);
         }])->get();
 
 In addition, you may use the `loadMorphCount` method to eager load all nested relationship counts on the various entities of the polymorphic relation if the `ActivityFeed` models have already been retrieved:
 
-    $activities = ActivityFeed::with('parentable')
+    $activities = App\ActivityFeed::with('parentable')
         ->get()
         ->loadMorphCount('parentable', [
-            Photo::class => ['tags'],
-            Post::class => ['comments'],
+            App\Photo::class => ['tags'],
+            App\Post::class => ['comments'],
         ]);
 
 <a name="eager-loading"></a>
@@ -1183,6 +1192,8 @@ If you would like to eager load a `morphTo` relationship, as well as nested rela
 
     <?php
 
+    namespace App;
+
     use Illuminate\Database\Eloquent\Model;
 
     class ActivityFeed extends Model
@@ -1202,12 +1213,12 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
 
     use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-    $activities = ActivityFeed::query()
+    $activities = App\ActivityFeed::query()
         ->with(['parentable' => function (MorphTo $morphTo) {
             $morphTo->morphWith([
-                Event::class => ['calendar'],
-                Photo::class => ['tags'],
-                Post::class => ['author'],
+                App\Event::class => ['calendar'],
+                App\Photo::class => ['tags'],
+                App\Post::class => ['author'],
             ]);
         }])->get();
 
@@ -1305,6 +1316,8 @@ This method accepts the name of the `morphTo` relationship as its first argument
 
     <?php
 
+    namespace App;
+
     use Illuminate\Database\Eloquent\Model;
 
     class ActivityFeed extends Model
@@ -1322,12 +1335,12 @@ In this example, let's assume `Event`, `Photo`, and `Post` models may create `Ac
 
 Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:
 
-    $activities = ActivityFeed::with('parentable')
+    $activities = App\ActivityFeed::with('parentable')
         ->get()
         ->loadMorph('parentable', [
-            Event::class => ['calendar'],
-            Photo::class => ['tags'],
-            Post::class => ['author'],
+            App\Event::class => ['calendar'],
+            App\Photo::class => ['tags'],
+            App\Post::class => ['author'],
         ]);
 
 <a name="inserting-and-updating-related-models"></a>
@@ -1358,9 +1371,9 @@ If you need to save multiple related models, you may use the `saveMany` method:
 The `save` and `saveMany` methods will not add the new models to any in-memory relationships that are already loaded onto the parent model. If you plan on accessing the relationship after using the `save` or `saveMany` methods, you may wish to use the `refresh` method to reload the model and its relationships:
 
     $post->comments()->save($comment);
-    
+
     $post->refresh();
-    
+
     // All comments, including the newly saved comment...
     $post->comments;
 
