@@ -42,6 +42,8 @@ First, let's review some code that is tightly coupled to a cache implementation.
 
     namespace App\Orders;
 
+    use App\Order;
+
     class Repository
     {
         /**
@@ -64,7 +66,7 @@ First, let's review some code that is tightly coupled to a cache implementation.
          * Retrieve an Order by ID.
          *
          * @param  int  $id
-         * @return Order
+         * @return \App\Order
          */
         public function find($id)
         {
@@ -96,7 +98,7 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
         /**
          * Create a new repository instance.
          *
-         * @param  Cache  $cache
+         * @param  \Illuminate\Contracts\Cache\Repository  $cache
          * @return void
          */
         public function __construct(Cache $cache)
@@ -135,13 +137,15 @@ For example, take a look at this event listener:
     {
         /**
          * The Redis factory implementation.
+         *
+         * @var \Illuminate\Contracts\Redis\Factory
          */
         protected $redis;
 
         /**
          * Create a new event handler instance.
          *
-         * @param  Factory  $redis
+         * @param  \Illuminate\Contracts\Redis\Factory  $redis
          * @return void
          */
         public function __construct(Factory $redis)
@@ -152,7 +156,7 @@ For example, take a look at this event listener:
         /**
          * Handle the event.
          *
-         * @param  OrderWasPlaced  $event
+         * @param  \App\Events\OrderWasPlaced  $event
          * @return void
          */
         public function handle(OrderWasPlaced $event)
