@@ -228,6 +228,8 @@ To register your package's [views](/docs/{{version}}/views) with Laravel, you ne
 
 Package views are referenced using the `package::view` syntax convention. So, once your view path is registered in a service provider, you may load the `admin` view from the `courier` package like so:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('admin', function () {
         return view('courier::admin');
     });
@@ -261,6 +263,9 @@ Now, when users of your package execute Laravel's `vendor:publish` Artisan comma
 
 If your package contains [view components](/docs/{{version}}/blade#components), you may use the `loadViewComponentsAs` method to inform Laravel how to load them. The `loadViewComponentsAs` method accepts two arguments: the tag prefix for your view components and an array of your view components class. For example, if your package's prefix is `courier` and you have `Alert` and `Button` view components, you would add the following to your service provider's `boot` method:
 
+    use Package\Namespace\Components\Alert;
+    use Package\Namespace\Components\Button;
+
     /**
      * Bootstrap any application services.
      *
@@ -284,6 +289,9 @@ Once your view components are registered in a service provider, you may referenc
 ## Commands
 
 To register your package's Artisan commands with Laravel, you may use the `commands` method. This method expects an array of command class names. Once the commands have been registered, you may execute them using the [Artisan CLI](/docs/{{version}}/artisan):
+
+    use Package\Namespace\Commands\FooCommand;
+    use Package\Namespace\Commands\BarCommand;
 
     /**
      * Bootstrap the application services.
