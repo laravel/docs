@@ -35,7 +35,10 @@ The cache configuration file also contains various other options, which are docu
 
 When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
 
-    Schema::create('cache', function ($table) {
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
+    Schema::create('cache', function (Blueprint $table) {
         $table->string('key')->unique();
         $table->text('value');
         $table->integer('expiration');
@@ -92,7 +95,7 @@ However, you may also use the `Cache` facade, which is what we will use througho
         /**
          * Show a list of all users of the application.
          *
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function index()
         {
@@ -106,6 +109,8 @@ However, you may also use the `Cache` facade, which is what we will use througho
 
 Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
 
+    use Illuminate\Support\Facades\Cache;
+
     $value = Cache::store('file')->get('foo');
 
     Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutes
@@ -115,11 +120,15 @@ Using the `Cache` facade, you may access various cache stores via the `store` me
 
 The `get` method on the `Cache` facade is used to retrieve items from the cache. If the item does not exist in the cache, `null` will be returned. If you wish, you may pass a second argument to the `get` method specifying the default value you wish to be returned if the item doesn't exist:
 
+    use Illuminate\Support\Facades\Cache;
+
     $value = Cache::get('key');
 
     $value = Cache::get('key', 'default');
 
 You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
+
+    use Illuminate\Support\Facades\Cache;
 
     $value = Cache::get('key', function () {
         return DB::table(...)->get();
@@ -129,6 +138,8 @@ You may even pass a `Closure` as the default value. The result of the `Closure` 
 
 The `has` method may be used to determine if an item exists in the cache. This method will return `false` if the value is `null`:
 
+    use Illuminate\Support\Facades\Cache;
+
     if (Cache::has('key')) {
         //
     }
@@ -136,6 +147,8 @@ The `has` method may be used to determine if an item exists in the cache. This m
 #### Incrementing / Decrementing Values
 
 The `increment` and `decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods accept an optional second argument indicating the amount by which to increment or decrement the item's value:
+
+    use Illuminate\Support\Facades\Cache;
 
     Cache::increment('key');
     Cache::increment('key', $amount);
@@ -146,6 +159,9 @@ The `increment` and `decrement` methods may be used to adjust the value of integ
 
 Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
 
+    use Illuminate\Support\Facades\Cache;
+    use Illuminate\Support\Facades\DB;
+
     $value = Cache::remember('users', $seconds, function () {
         return DB::table('users')->get();
     });
@@ -153,6 +169,9 @@ Sometimes you may wish to retrieve an item from the cache, but also store a defa
 If the item does not exist in the cache, the `Closure` passed to the `remember` method will be executed and its result will be placed in the cache.
 
 You may use the `rememberForever` method to retrieve an item from the cache or store it forever:
+
+    use Illuminate\Support\Facades\Cache;
+    use Illuminate\Support\Facades\DB;
 
     $value = Cache::rememberForever('users', function () {
         return DB::table('users')->get();
@@ -162,6 +181,8 @@ You may use the `rememberForever` method to retrieve an item from the cache or s
 
 If you need to retrieve an item from the cache and then delete the item, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
 
+    use Illuminate\Support\Facades\Cache;
+
     $value = Cache::pull('key');
 
 <a name="storing-items-in-the-cache"></a>
@@ -169,13 +190,19 @@ If you need to retrieve an item from the cache and then delete the item, you may
 
 You may use the `put` method on the `Cache` facade to store items in the cache:
 
+    use Illuminate\Support\Facades\Cache;
+
     Cache::put('key', 'value', $seconds);
 
 If the storage time is not passed to the `put` method, the item will be stored indefinitely:
 
+    use Illuminate\Support\Facades\Cache;
+
     Cache::put('key', 'value');
 
 Instead of passing the number of seconds as an integer, you may also pass a `DateTime` instance representing the expiration time of the cached item:
+
+    use Illuminate\Support\Facades\Cache;
 
     Cache::put('key', 'value', now()->addMinutes(10));
 
@@ -183,11 +210,15 @@ Instead of passing the number of seconds as an integer, you may also pass a `Dat
 
 The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
 
+    use Illuminate\Support\Facades\Cache;
+
     Cache::add('key', 'value', $seconds);
 
 #### Storing Items Forever
 
 The `forever` method may be used to store an item in the cache permanently. Since these items will not expire, they must be manually removed from the cache using the `forget` method:
+
+    use Illuminate\Support\Facades\Cache;
 
     Cache::forever('key', 'value');
 
@@ -198,15 +229,21 @@ The `forever` method may be used to store an item in the cache permanently. Sinc
 
 You may remove items from the cache using the `forget` method:
 
+    use Illuminate\Support\Facades\Cache;
+
     Cache::forget('key');
 
 You may also remove items by providing a zero or negative TTL:
+
+    use Illuminate\Support\Facades\Cache;
 
     Cache::put('key', 'value', 0);
 
     Cache::put('key', 'value', -5);
 
 You may clear the entire cache using the `flush` method:
+
+    use Illuminate\Support\Facades\Cache;
 
     Cache::flush();
 
@@ -227,6 +264,8 @@ If you provide an array of key / value pairs and an expiration time to the funct
 
 When the `cache` function is called without any arguments, it returns an instance of the `Illuminate\Contracts\Cache\Factory` implementation, allowing you to call other caching methods:
 
+    use Illuminate\Support\Facades\DB;
+
     cache()->remember('users', $seconds, function () {
         return DB::table('users')->get();
     });
@@ -243,6 +282,8 @@ When the `cache` function is called without any arguments, it returns an instanc
 
 Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
 
+    use Illuminate\Support\Facades\Cache;
+
     Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
 
     Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
@@ -251,6 +292,8 @@ Cache tags allow you to tag related items in the cache and then flush all cached
 ### Accessing Tagged Cache Items
 
 To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:
+
+    use Illuminate\Support\Facades\Cache;
 
     $john = Cache::tags(['people', 'artists'])->get('John');
 
@@ -261,9 +304,13 @@ To retrieve a tagged cache item, pass the same ordered list of tags to the `tags
 
 You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
 
+    use Illuminate\Support\Facades\Cache;
+
     Cache::tags(['people', 'authors'])->flush();
 
 In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`:
+
+    use Illuminate\Support\Facades\Cache;
 
     Cache::tags('authors')->flush();
 
@@ -279,7 +326,10 @@ In contrast, this statement would remove only caches tagged with `authors`, so `
 
 When using the `database` cache driver, you will need to setup a table to contain the cache locks. You'll find an example `Schema` declaration for the table below:
 
-    Schema::create('cache_locks', function ($table) {
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
+    Schema::create('cache_locks', function (Blueprint $table) {
         $table->string('key')->primary();
         $table->string('owner');
         $table->integer('expiration');
@@ -302,12 +352,15 @@ Atomic locks allow for the manipulation of distributed locks without worrying ab
 
 The `get` method also accepts a Closure. After the Closure is executed, Laravel will automatically release the lock:
 
+    use Illuminate\Support\Facades\Cache;
+
     Cache::lock('foo')->get(function () {
         // Lock acquired indefinitely and automatically released...
     });
 
 If the lock is not available at the moment you request it, you may instruct Laravel to wait for a specified number of seconds. If the lock can not be acquired within the specified time limit, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown:
 
+    use Illuminate\Support\Facades\Cache;
     use Illuminate\Contracts\Cache\LockTimeoutException;
 
     $lock = Cache::lock('foo', 10);
@@ -331,6 +384,10 @@ If the lock is not available at the moment you request it, you may instruct Lara
 
 Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token:
 
+    use App\Podcast;
+    use App\Jobs\ProcessPodcast;
+    use Illuminate\Support\Facades\Cache;
+
     // Within Controller...
     $podcast = Podcast::find($id);
 
@@ -344,6 +401,8 @@ Sometimes, you may wish to acquire a lock in one process and release it in anoth
     Cache::restoreLock('foo', $this->owner)->release();
 
 If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:
+
+    use Illuminate\Support\Facades\Cache;
 
     Cache::lock('foo')->forceRelease();
 
@@ -376,6 +435,8 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
     }
 
 We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\Cache\MemcachedStore` in the framework source code. Once our implementation is complete, we can finish our custom driver registration.
+
+    use Illuminate\Support\Facades\Cache;
 
     Cache::extend('mongo', function ($app) {
         return Cache::repository(new MongoStore);
