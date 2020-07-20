@@ -20,8 +20,6 @@ Laravel provides a very fluent API for making HTTP requests to your application 
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -47,6 +45,10 @@ The `get` method makes a `GET` request into the application, while the `assertSt
 You may use the `withHeaders` method to customize the request's headers before it is sent to the application. This allows you to add any custom headers you would like to the request:
 
     <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -78,6 +80,10 @@ You may use the `withCookie` or `withCookies` methods to set cookie values befor
 
     <?php
 
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+
     class ExampleTest extends TestCase
     {
         public function testCookies()
@@ -100,8 +106,6 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -130,6 +134,10 @@ Laravel provides several helpers for working with the session during HTTP testin
 
     <?php
 
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+
     class ExampleTest extends TestCase
     {
         public function testApplication()
@@ -143,7 +151,10 @@ One common use of the session is for maintaining state for the authenticated use
 
     <?php
 
+    namespace Tests\Feature;
+
     use App\User;
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -167,6 +178,10 @@ You may also specify which guard should be used to authenticate the given user b
 Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `getJson`, `postJson`, `putJson`, `patchJson`, `deleteJson`, and `optionsJson` methods may be used to issue JSON requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that the expected data was returned:
 
     <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -200,6 +215,10 @@ If you would like to verify that the given array is an **exact** match for the J
 
     <?php
 
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+
     class ExampleTest extends TestCase
     {
         /**
@@ -225,6 +244,10 @@ If you would like to verify that the given array is an **exact** match for the J
 If you would like to verify that the JSON response contains some given data at a specified path, you should use the `assertJsonPath` method:
 
     <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
@@ -252,14 +275,17 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Http\UploadedFile;
     use Illuminate\Support\Facades\Storage;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
         public function testAvatarUpload()
         {
             Storage::fake('avatars');
@@ -282,13 +308,19 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
 
 When creating files using the `fake` method, you may specify the width, height, and size of the image in order to better test your validation rules:
 
+    use Illuminate\Http\UploadedFile;
+
     UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);
 
 In addition to creating images, you may create files of any other type using the `create` method:
 
+    use Illuminate\Http\UploadedFile;
+
     UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
 
 If needed, you may pass a `$mimeType` argument to the method to explicitly define the MIME type that should be returned by the file:
+
+    use Illuminate\Http\UploadedFile;
 
     UploadedFile::fake()->create('document.pdf', $sizeInKilobytes, 'application/pdf');
 
