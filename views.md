@@ -23,6 +23,8 @@ Views contain the HTML served by your application and separate your controller /
 
 Since this view is stored at `resources/views/greeting.blade.php`, we may return it using the global `view` helper like so:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
     });
@@ -163,14 +165,14 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
         /**
          * The user repository implementation.
          *
-         * @var UserRepository
+         * @var \App\Repositories\UserRepository
          */
         protected $users;
 
         /**
          * Create a new profile composer.
          *
-         * @param  UserRepository  $users
+         * @param  \App\Repositories\UserRepository  $users
          * @return void
          */
         public function __construct(UserRepository $users)
@@ -182,7 +184,7 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
         /**
          * Bind data to the view.
          *
-         * @param  View  $view
+         * @param  \Illuminate\View\View  $view
          * @return void
          */
         public function compose(View $view)
@@ -199,12 +201,16 @@ Just before the view is rendered, the composer's `compose` method is called with
 
 You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
 
+    use Illuminate\Support\Facades\View;
+
     View::composer(
         ['profile', 'dashboard'],
         'App\Http\View\Composers\MyViewComposer'
     );
 
 The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
+
+    use Illuminate\Support\Facades\View;
 
     View::composer('*', function ($view) {
         //
@@ -213,6 +219,8 @@ The `composer` method also accepts the `*` character as a wildcard, allowing you
 #### View Creators
 
 View **creators** are very similar to view composers; however, they are executed immediately after the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
+
+    use Illuminate\Support\Facades\View;
 
     View::creator('profile', 'App\Http\View\Creators\ProfileCreator');
 
