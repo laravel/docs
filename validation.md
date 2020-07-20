@@ -43,6 +43,8 @@ To learn about Laravel's powerful validation features, let's look at a complete 
 
 First, let's assume we have the following routes defined in our `routes/web.php` file:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('post/create', 'PostController@create');
 
     Route::post('post', 'PostController@store');
@@ -66,7 +68,7 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
         /**
          * Show the form to create a new blog post.
          *
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function create()
         {
@@ -76,8 +78,8 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
         /**
          * Store a new blog post.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -95,8 +97,8 @@ To get a better understanding of the `validate` method, let's jump back into the
     /**
      * Store a new blog post.
      *
-     * @param  Request  $request
-     * @return Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -236,7 +238,7 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
     /**
      * Store the incoming blog post.
      *
-     * @param  StoreBlogPost  $request
+     * @param  \App\Http\Requests\StoreBlogPost  $request
      * @return Response
      */
     public function store(StoreBlogPost $request)
@@ -280,12 +282,14 @@ The form request class also contains an `authorize` method. Within this method, 
      */
     public function authorize()
     {
-        $comment = Comment::find($this->route('comment'));
+        $comment = App\Comment::find($this->route('comment'));
 
         return $comment && $this->user()->can('update', $comment);
     }
 
 Since all form requests extend the base Laravel request class, we may use the `user` method to access the currently authenticated user. Also note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::post('comment/{comment}');
 
@@ -377,8 +381,8 @@ If you do not want to use the `validate` method on the request, you may create a
         /**
          * Store a new blog post.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -406,12 +410,16 @@ After checking if the request validation failed, you may use the `withErrors` me
 
 If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the request's `validate` method, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an AJAX request, a JSON response will be returned:
 
+    use Illuminate\Support\Facades\Validator;
+
     Validator::make($request->all(), [
         'title' => 'required|unique:posts|max:255',
         'body' => 'required',
     ])->validate();
 
 You may use the `validateWithBag` method to store the error messages in a [named error bag](#named-error-bags) if validation fails:
+
+    use Illuminate\Support\Facades\Validator;
 
     Validator::make($request->all(), [
         'title' => 'required|unique:posts|max:255',
@@ -434,6 +442,8 @@ You may then access the named `MessageBag` instance from the `$errors` variable:
 ### After Validation Hook
 
 The validator also allows you to attach callbacks to be run after validation is completed. This allows you to easily perform further validation and even add more error messages to the message collection. To get started, use the `after` method on a validator instance:
+
+    use Illuminate\Support\Facades\Validator;
 
     $validator = Validator::make(...);
 
@@ -495,6 +505,8 @@ The `has` method may be used to determine if any error messages exist for a give
 
 If needed, you may use custom error messages for validation instead of the defaults. There are several ways to specify custom messages. First, you may pass the custom messages as the third argument to the `Validator::make` method:
 
+    use Illuminate\Support\Facades\Validator;
+
     $messages = [
         'required' => 'The :attribute field is required.',
     ];
@@ -538,6 +550,8 @@ If you would like the `:attribute` portion of your validation message to be repl
     ],
 
 You may also pass the custom attributes as the fourth argument to the `Validator::make` method:
+
+    use Illuminate\Support\Facades\Validator;
 
     $customAttributes = [
         'email' => 'email address',
@@ -853,6 +867,7 @@ Instead of specifying the table name directly, you may specify the Eloquent mode
 If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:
 
     use Illuminate\Validation\Rule;
+    use Illuminate\Support\Facades\Validator;
 
     Validator::make($data, [
         'email' => [
@@ -894,6 +909,7 @@ The file under validation must be an image (jpeg, png, bmp, gif, svg, or webp)
 The field under validation must be included in the given list of values. Since this rule often requires you to `implode` an array, the `Rule::in` method may be used to fluently construct the rule:
 
     use Illuminate\Validation\Rule;
+    use Illuminate\Support\Facades\Validator;
 
     Validator::make($data, [
         'zones' => [
@@ -980,6 +996,7 @@ The field under validation must have a minimum _value_. Strings, numerics, array
 The field under validation must not be included in the given list of values. The `Rule::notIn` method may be used to fluently construct the rule:
 
     use Illuminate\Validation\Rule;
+    use Illuminate\Support\Facades\Validator;
 
     Validator::make($data, [
         'toppings' => [
@@ -1050,6 +1067,7 @@ The field under validation must be present and not empty if the _anotherfield_ f
 If you would like to construct a more complex condition for the `required_if` rule, you may use the `Rule::requiredIf` method. This methods accepts a boolean or a Closure. When passed a Closure, the Closure should return `true` or `false` to indicate if the field under validation is required:
 
     use Illuminate\Validation\Rule;
+    use Illuminate\Support\Facades\Validator;
 
     Validator::make($request->all(), [
         'role_id' => Rule::requiredIf($request->user()->is_admin),
@@ -1151,6 +1169,7 @@ Sometimes, you may wish to ignore a given ID during the unique check. For exampl
 To instruct the validator to ignore the user's ID, we'll use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit the rules:
 
     use Illuminate\Validation\Rule;
+    use Illuminate\Support\Facades\Validator;
 
     Validator::make($data, [
         'email' => [
@@ -1163,19 +1182,27 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
 
 Instead of passing the model key's value to the `ignore` method, you may pass the entire model instance. Laravel will automatically extract the key from the model:
 
+    use Illuminate\Validation\Rule;
+
     Rule::unique('users')->ignore($user)
 
 If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:
 
+    use Illuminate\Validation\Rule;
+
     Rule::unique('users')->ignore($user->id, 'user_id')
 
 By default, the `unique` rule will check the uniqueness of the column matching the name of the attribute being validated. However, you may pass a different column name as the second argument to the `unique` method:
+
+    use Illuminate\Validation\Rule;
 
     Rule::unique('users', 'email_address')->ignore($user->id),
 
 **Adding Additional Where Clauses:**
 
 You may also specify additional query constraints by customizing the query using the `where` method. For example, let's add a constraint that verifies the `account_id` is `1`:
+
+    use Illuminate\Validation\Rule;
 
     'email' => Rule::unique('users')->where(function ($query) {
         return $query->where('account_id', 1);
@@ -1198,6 +1225,8 @@ The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) univ
 
 You may occasionally wish to not validate a given field if another field has a given value. You may accomplish this using the `exclude_if` validation rule. In this example, the `appointment_date` and `doctor_name` fields will not be validated if the `has_appointment` field has a value of `false`:
 
+    use Illuminate\Support\Facades\Validator;
+
     $v = Validator::make($data, [
         'has_appointment' => 'required|bool',
         'appointment_date' => 'exclude_if:has_appointment,false|required|date',
@@ -1205,6 +1234,8 @@ You may occasionally wish to not validate a given field if another field has a g
     ]);
 
 Alternatively, you may use the `exclude_unless` rule to not validate a given field unless another field has a given value:
+
+    use Illuminate\Support\Facades\Validator;
 
     $v = Validator::make($data, [
         'has_appointment' => 'required|bool',
@@ -1215,6 +1246,8 @@ Alternatively, you may use the `exclude_unless` rule to not validate a given fie
 #### Validating When Present
 
 In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
+
+    use Illuminate\Support\Facades\Validator;
 
     $v = Validator::make($data, [
         'email' => 'sometimes|required|email',
@@ -1227,6 +1260,8 @@ In the example above, the `email` field will only be validated if it is present 
 #### Complex Conditional Validation
 
 Sometimes you may wish to add validation rules based on more complex conditional logic. For example, you may wish to require a given field only if another field has a greater value than 100. Or, you may need two fields to have a given value only when another field is present. Adding these validation rules doesn't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
+
+    use Illuminate\Support\Facades\Validator;
 
     $v = Validator::make($data, [
         'email' => 'required|email',
@@ -1252,11 +1287,15 @@ The first argument passed to the `sometimes` method is the name of the field we 
 
 Validating array based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
 
+    use Illuminate\Support\Facades\Validator;
+
     $validator = Validator::make($request->all(), [
         'photos.profile' => 'required|image',
     ]);
 
 You may also validate each element of an array. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
+
+    use Illuminate\Support\Facades\Validator;
 
     $validator = Validator::make($request->all(), [
         'person.*.email' => 'email|unique:users',
@@ -1339,6 +1378,8 @@ Once the rule has been defined, you may attach it to a validator by passing an i
 
 If you only need the functionality of a custom rule once throughout your application, you may use a Closure instead of a rule object. The Closure receives the attribute's name, the attribute's value, and a `$fail` callback that should be called if validation fails:
 
+    use Illuminate\Support\Facades\Validator;
+
     $validator = Validator::make($request->all(), [
         'title' => [
             'required',
@@ -1392,6 +1433,8 @@ The custom validator Closure receives four arguments: the name of the `$attribut
 
 You may also pass a class and method to the `extend` method instead of a Closure:
 
+    use Illuminate\Support\Facades\Validator;
+
     Validator::extend('foo', 'FooValidator@validate');
 
 #### Defining The Error Message
@@ -1405,6 +1448,8 @@ You will also need to define an error message for your custom rule. You can do s
     // The rest of the validation error messages...
 
 When creating a custom validation rule, you may sometimes need to define custom placeholder replacements for error messages. You may do so by creating a custom Validator as described above then making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
+
+    use Illuminate\Support\Facades\Validator;
 
     /**
      * Bootstrap any application services.
@@ -1425,6 +1470,8 @@ When creating a custom validation rule, you may sometimes need to define custom 
 
 By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom extensions, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:
 
+    use Illuminate\Support\Facades\Validator;
+
     $rules = ['name' => 'unique:users,name'];
 
     $input = ['name' => ''];
@@ -1432,6 +1479,8 @@ By default, when an attribute being validated is not present or contains an empt
     Validator::make($input, $rules)->passes(); // true
 
 For a rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create such an "implicit" extension, use the `Validator::extendImplicit()` method:
+
+    use Illuminate\Support\Facades\Validator;
 
     Validator::extendImplicit('foo', function ($attribute, $value, $parameters, $validator) {
         return $value == 'foo';
