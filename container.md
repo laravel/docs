@@ -35,14 +35,14 @@ Let's look at a simple example:
         /**
          * The user repository implementation.
          *
-         * @var UserRepository
+         * @var \App\Repositories\UserRepository
          */
         protected $users;
 
         /**
          * Create a new controller instance.
          *
-         * @param  UserRepository  $users
+         * @param  \App\Repositories\UserRepository  $users
          * @return void
          */
         public function __construct(UserRepository $users)
@@ -54,7 +54,7 @@ Let's look at a simple example:
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function show($id)
         {
@@ -121,7 +121,7 @@ This statement tells the container that it should inject the `RedisEventPusher` 
     /**
      * Create a new class instance.
      *
-     * @param  EventPusher  $pusher
+     * @param  \App\Contracts\EventPusher  $pusher
      * @return void
      */
     public function __construct(EventPusher $pusher)
@@ -279,13 +279,15 @@ For example, you may type-hint a repository defined by your application in a con
     {
         /**
          * The user repository instance.
+         *
+         * @var \App\Users\Repository
          */
         protected $users;
 
         /**
          * Create a new controller instance.
          *
-         * @param  UserRepository  $users
+         * @param  \App\Users\Repository  $users
          * @return void
          */
         public function __construct(UserRepository $users)
@@ -297,7 +299,7 @@ For example, you may type-hint a repository defined by your application in a con
          * Show the user with the given ID.
          *
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function show($id)
         {
