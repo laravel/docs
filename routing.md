@@ -38,6 +38,8 @@ All Laravel routes are defined in your route files, which are located in the `ro
 
 For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://your-app.test/user` in your browser:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('/user', 'UserController@index');
 
 Routes defined in the `routes/api.php` file are nested within a route group by the `RouteServiceProvider`. Within this group, the `/api` URI prefix is automatically applied so you do not need to manually apply it to every route in the file. You may modify the prefix and other route group options by modifying your `RouteServiceProvider` class.
@@ -45,6 +47,8 @@ Routes defined in the `routes/api.php` file are nested within a route group by t
 #### Available Router Methods
 
 The router allows you to register routes that respond to any HTTP verb:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get($uri, $callback);
     Route::post($uri, $callback);
@@ -54,6 +58,8 @@ The router allows you to register routes that respond to any HTTP verb:
     Route::options($uri, $callback);
 
 Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method. Or, you may even register a route that responds to all HTTP verbs using the `any` method:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::match(['get', 'post'], '/', function () {
         //
@@ -77,13 +83,19 @@ Any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes that are d
 
 If you are defining a route that redirects to another URI, you may use the `Route::redirect` method. This method provides a convenient shortcut so that you do not have to define a full route or controller for performing a simple redirect:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::redirect('/here', '/there');
 
 By default, `Route::redirect` returns a `302` status code. You may customize the status code using the optional third parameter:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::redirect('/here', '/there', 301);
 
 You may use the `Route::permanentRedirect` method to return a `301` status code:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::permanentRedirect('/here', '/there');
 
@@ -91,6 +103,8 @@ You may use the `Route::permanentRedirect` method to return a `301` status code:
 ### View Routes
 
 If your route only needs to return a view, you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::view('/welcome', 'welcome');
 
@@ -104,11 +118,15 @@ If your route only needs to return a view, you may use the `Route::view` method.
 
 Sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('user/{id}', function ($id) {
         return 'User '.$id;
     });
 
 You may define as many route parameters as required by your route:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
         //
@@ -120,6 +138,8 @@ Route parameters are always encased within `{}` braces and should consist of alp
 ### Optional Parameters
 
 Occasionally you may need to specify a route parameter, but make the presence of that route parameter optional. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('user/{name?}', function ($name = null) {
         return $name;
@@ -133,6 +153,8 @@ Occasionally you may need to specify a route parameter, but make the presence of
 ### Regular Expression Constraints
 
 You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('user/{name}', function ($name) {
         //
@@ -151,6 +173,8 @@ You may constrain the format of your route parameters using the `where` method o
 
 If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
 
+    use Illuminate\Support\Facades\Route;
+
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -165,6 +189,8 @@ If you would like a route parameter to always be constrained by a given regular 
 
 Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('user/{id}', function ($id) {
         // Only executed if {id} is numeric...
     });
@@ -173,6 +199,8 @@ Once the pattern has been defined, it is automatically applied to all routes usi
 #### Encoded Forward Slashes
 
 The Laravel routing component allows all characters except `/`. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('search/{search}', function ($search) {
         return $search;
@@ -185,11 +213,15 @@ The Laravel routing component allows all characters except `/`. You must explici
 
 Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route by chaining the `name` method onto the route definition:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('user/profile', function () {
         //
     })->name('profile');
 
 You may also specify route names for controller actions:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('user/profile', 'UserProfileController@show')->name('profile');
 
@@ -207,6 +239,8 @@ Once you have assigned a name to a given route, you may use the route's name whe
 
 If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the URL in their correct positions:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('user/{id}/profile', function ($id) {
         //
     })->name('profile');
@@ -214,6 +248,8 @@ If the named route defines parameters, you may pass the parameters as the second
     $url = route('profile', ['id' => 1]);
 
 If you pass additional parameters in the array, those key / value pairs will automatically be added to the generated URL's query string:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('user/{id}/profile', function ($id) {
         //
@@ -257,6 +293,8 @@ Nested groups attempt to intelligently "merge" attributes with their parent grou
 
 To assign middleware to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::middleware(['first', 'second'])->group(function () {
         Route::get('/', function () {
             // Uses first & second Middleware
@@ -272,6 +310,8 @@ To assign middleware to all routes within a group, you may use the `middleware` 
 
 Another common use-case for route groups is assigning the same PHP namespace to a group of controllers using the `namespace` method:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::namespace('Admin')->group(function () {
         // Controllers Within The "App\Http\Controllers\Admin" Namespace
     });
@@ -282,6 +322,8 @@ Remember, by default, the `RouteServiceProvider` includes your route files withi
 ### Subdomain Routing
 
 Route groups may also be used to handle subdomain routing. Subdomains may be assigned route parameters just like route URIs, allowing you to capture a portion of the subdomain for usage in your route or controller. The subdomain may be specified by calling the `domain` method before defining the group:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::domain('{account}.myapp.com')->group(function () {
         Route::get('user/{id}', function ($account, $id) {
@@ -296,6 +338,8 @@ Route groups may also be used to handle subdomain routing. Subdomains may be ass
 
 The `prefix` method may be used to prefix each route in the group with a given URI. For example, you may want to prefix all route URIs within the group with `admin`:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::prefix('admin')->group(function () {
         Route::get('users', function () {
             // Matches The "/admin/users" URL
@@ -306,6 +350,8 @@ The `prefix` method may be used to prefix each route in the group with a given U
 ### Route Name Prefixes
 
 The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix all of the grouped route's names with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::name('admin.')->group(function () {
         Route::get('users', function () {
@@ -323,6 +369,8 @@ When injecting a model ID to a route or controller action, you will often query 
 
 Laravel automatically resolves Eloquent models defined in routes or controller actions whose type-hinted variable names match a route segment name. For example:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('api/users/{user}', function (App\User $user) {
         return $user->email;
     });
@@ -332,6 +380,8 @@ Since the `$user` variable is type-hinted as the `App\User` Eloquent model and t
 #### Customizing The Key
 
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('api/posts/{post:slug}', function (App\Post $post) {
         return $post;
@@ -343,6 +393,7 @@ Sometimes, when implicitly binding multiple Eloquent models in a single route de
 
     use App\Post;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('api/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
         return $post;
@@ -369,6 +420,8 @@ If you would like model binding to use a default database column other than `id`
 
 To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings in the `boot` method of the `RouteServiceProvider` class:
 
+    use Illuminate\Support\Facades\Route;
+
     public function boot()
     {
         parent::boot();
@@ -377,6 +430,8 @@ To register an explicit binding, use the router's `model` method to specify the 
     }
 
 Next, define a route that contains a `{user}` parameter:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('profile/{user}', function (App\User $user) {
         //
@@ -389,6 +444,8 @@ If a matching model instance is not found in the database, a 404 HTTP response w
 #### Customizing The Resolution Logic
 
 If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
+
+    use Illuminate\Support\Facades\Route;
 
     /**
      * Bootstrap any application services.
@@ -423,6 +480,8 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
 
 Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you may define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. You are free to add additional middleware to this route as needed:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::fallback(function () {
         //
     });
@@ -434,6 +493,8 @@ Using the `Route::fallback` method, you may define a route that will be executed
 
 Laravel includes a [middleware](/docs/{{version}}/middleware) to rate limit access to routes within your application. To get started, assign the `throttle` middleware to a route or a group of routes. The `throttle` middleware accepts two parameters that determine the maximum number of requests that can be made in a given number of minutes. For example, let's specify that an authenticated user may access the following group of routes 60 times per minute:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::middleware('auth:api', 'throttle:60,1')->group(function () {
         Route::get('/user', function () {
             //
@@ -443,6 +504,8 @@ Laravel includes a [middleware](/docs/{{version}}/middleware) to rate limit acce
 #### Dynamic Rate Limiting
 
 You may specify a dynamic request maximum based on an attribute of the authenticated `User` model. For example, if your `User` model contains a `rate_limit` attribute, you may pass the name of the attribute to the `throttle` middleware so that it is used to calculate the maximum request count:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::middleware('auth:api', 'throttle:rate_limit,1')->group(function () {
         Route::get('/user', function () {
@@ -454,11 +517,15 @@ You may specify a dynamic request maximum based on an attribute of the authentic
 
 You may specify different rate limits for guest and authenticated users. For example, you may specify a maximum of `10` requests per minute for guests `60` for authenticated users:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::middleware('throttle:10|60,1')->group(function () {
         //
     });
 
 You may also combine this functionality with dynamic rate limits. For example, if your `User` model contains a `rate_limit` attribute, you may pass the name of the attribute to the `throttle` middleware so that it is used to calculate the maximum request count for authenticated users:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::middleware('auth:api', 'throttle:10|rate_limit,1')->group(function () {
         Route::get('/user', function () {
@@ -469,6 +536,8 @@ You may also combine this functionality with dynamic rate limits. For example, i
 #### Rate Limit Segments
 
 Typically, you will probably specify one rate limit for your entire API. However, your application may require different rate limits for different segments of your API. If this is the case, you will need to pass a segment name as the third argument to the `throttle` middleware:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::middleware('auth:api')->group(function () {
         Route::middleware('throttle:60,1,default')->group(function () {
@@ -505,6 +574,8 @@ You may use the `@method` Blade directive to generate the `_method` input:
 ## Accessing The Current Route
 
 You may use the `current`, `currentRouteName`, and `currentRouteAction` methods on the `Route` facade to access information about the route handling the incoming request:
+
+    use Illuminate\Support\Facades\Route;
 
     $route = Route::current();
 
