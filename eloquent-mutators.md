@@ -299,6 +299,8 @@ As an example, we will define a custom cast class that casts multiple model valu
          * @param  \App\Address  $value
          * @param  array  $attributes
          * @return array
+         *
+         * @throws \InvalidArgumentException
          */
         public function set($model, $key, $value, $attributes)
         {
@@ -473,20 +475,17 @@ When using the `date` or `datetime` cast type, you may specify the date's format
 
 Sometimes you may need to apply casts while executing a query, such as when selecting a raw value from a table. For example, consider the following query:
 
-    use App\Post;
-    use App\User;
-
-    $users = User::select([
+    $users = App\User::select([
         'users.*',
-        'last_posted_at' => Post::selectRaw('MAX(created_at)')
+        'last_posted_at' => App\Post::selectRaw('MAX(created_at)')
                 ->whereColumn('user_id', 'users.id')
     ])->get();
 
 The `last_posted_at` attribute on the results of this query will be a raw string. It would be convenient if we could apply a `date` cast to this attribute when executing the query. To accomplish this, we may use the `withCasts` method:
 
-    $users = User::select([
+    $users = App\User::select([
         'users.*',
-        'last_posted_at' => Post::selectRaw('MAX(created_at)')
+        'last_posted_at' => App\Post::selectRaw('MAX(created_at)')
                 ->whereColumn('user_id', 'users.id')
     ])->withCasts([
         'last_posted_at' => 'datetime'
