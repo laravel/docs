@@ -54,7 +54,7 @@ Let's look at a simple example:
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return \Illuminate\Http\Response
+         * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
          */
         public function show($id)
         {

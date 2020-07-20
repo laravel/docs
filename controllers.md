@@ -42,7 +42,7 @@ Below is an example of a basic controller class. Note that the controller extend
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return View
+         * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
          */
         public function show($id)
         {
@@ -85,7 +85,7 @@ If you would like to define a controller that only handles a single action, you 
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return View
+         * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
          */
         public function __invoke($id)
         {
@@ -94,6 +94,8 @@ If you would like to define a controller that only handles a single action, you 
     }
 
 When registering routes for single action controllers, you do not need to specify a method:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('user/{id}', 'ShowProfile');
 
@@ -107,6 +109,8 @@ You may generate an invokable controller by using the `--invokable` option of th
 ## Controller Middleware
 
 [Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('profile', 'UserController@show')->middleware('auth');
 
@@ -150,11 +154,15 @@ This command will generate a controller at `app/Http/Controllers/PhotoController
 
 Next, you may register a resourceful route to the controller:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::resource('photos', 'PhotoController');
 
 This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions, including notes informing you of the HTTP verbs and URIs they handle.
 
 You may register many resource controllers at once by passing an array to the `resources` method:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::resources([
         'photos' => 'PhotoController',
@@ -192,6 +200,8 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 
 When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::resource('photos', 'PhotoController')->only([
         'index', 'show'
     ]);
@@ -204,9 +214,13 @@ When declaring a resource route, you may specify a subset of actions the control
 
 When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::apiResource('photos', 'PhotoController');
 
 You may register many API resource controllers at once by passing an array to the `apiResources` method:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::apiResources([
         'photos' => 'PhotoController',
@@ -222,6 +236,8 @@ To quickly generate an API resource controller that does not include the `create
 
 Sometimes you may need to define routes to a nested resource. For example, a photo resource may have multiple comments that may be attached to the photo. To nest the resource controllers, use "dot" notation in your route declaration:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::resource('photos.comments', 'PhotoCommentController');
 
 This route will register a nested resource that may be accessed with URIs like the following:
@@ -231,6 +247,8 @@ This route will register a nested resource that may be accessed with URIs like t
 #### Shallow Nesting
 
 Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifier such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use "shallow nesting":
+
+    use Illuminate\Support\Facades\Route;
 
     Route::resource('photos.comments', 'CommentController')->shallow();
 
@@ -251,6 +269,8 @@ DELETE    | `/comments/{comment}`             | destroy      | comments.destroy
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::resource('photos', 'PhotoController')->names([
         'create' => 'photos.build'
     ]);
@@ -259,6 +279,8 @@ By default, all resource controller actions have a route name; however, you can 
 ### Naming Resource Route Parameters
 
 By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by using the `parameters` method. The array passed into the `parameters` method should be an associative array of resource names and parameter names:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::resource('users', 'AdminUserController')->parameters([
         'users' => 'admin_user'
@@ -299,6 +321,8 @@ Once the verbs have been customized, a resource route registration such as `Rout
 
 If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to `Route::resource`; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::get('photos/popular', 'PhotoController@method');
 
     Route::resource('photos', 'PhotoController');
@@ -322,13 +346,15 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
     {
         /**
          * The user repository instance.
+         *
+         * @var \App\Repositories\UserRepository
          */
         protected $users;
 
         /**
          * Create a new controller instance.
          *
-         * @param  UserRepository  $users
+         * @param  \App\Repositories\UserRepository  $users
          * @return void
          */
         public function __construct(UserRepository $users)
@@ -354,8 +380,8 @@ In addition to constructor injection, you may also type-hint dependencies on you
         /**
          * Store a new user.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -366,6 +392,8 @@ In addition to constructor injection, you may also type-hint dependencies on you
     }
 
 If your controller method is also expecting input from a route parameter, list your route arguments after your other dependencies. For example, if your route is defined like so:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::put('user/{id}', 'UserController@update');
 
@@ -382,9 +410,9 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
         /**
          * Update the given user.
          *
-         * @param  Request  $request
+         * @param  \Illuminate\Http\Request  $request
          * @param  string  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function update(Request $request, $id)
         {
