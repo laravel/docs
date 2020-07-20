@@ -34,9 +34,9 @@ You may encrypt a value using the `encrypt` helper. All encrypted values are enc
         /**
          * Store a secret message for the user.
          *
-         * @param  Request  $request
+         * @param  \Illuminate\Http\Request  $request
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function storeSecret(Request $request, $id)
         {
