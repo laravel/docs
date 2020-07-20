@@ -50,6 +50,8 @@ Of course, manually creating the files for each event and listener is cumbersome
 
 Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register Closure based events manually in the `boot` method of your `EventServiceProvider`:
 
+    use Illuminate\Support\Facades\Event;
+
     /**
      * Register any other events for your application.
      *
@@ -67,6 +69,8 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
 #### Wildcard Event Listeners
 
 You may even register listeners using the `*` as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the event name as their first argument, and the entire event data array as their second argument:
+
+    use Illuminate\Support\Facades\Event;
 
     Event::listen('event.*', function ($eventName, array $data) {
         //
@@ -395,7 +399,7 @@ To dispatch an event, you may pass an instance of the event to the `event` helpe
          * Ship the given order.
          *
          * @param  int  $orderId
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function ship($orderId)
         {
@@ -408,6 +412,8 @@ To dispatch an event, you may pass an instance of the event to the `event` helpe
     }
 
 Alternatively, if your event uses the `Illuminate\Foundation\Events\Dispatchable` trait, you may call the static `dispatch` method on the event. Any arguments passed to the `dispatch` method will be passed to the event's constructor:
+
+    use App\Events\OrderShipped;
 
     OrderShipped::dispatch($order);
 
