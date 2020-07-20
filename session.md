@@ -43,7 +43,10 @@ The session `driver` configuration option defines where session data will be sto
 
 When using the `database` session driver, you will need to create a table to contain the session items. Below is an example `Schema` declaration for the table:
 
-    Schema::create('sessions', function ($table) {
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
+    Schema::create('sessions', function (Blueprint $table) {
         $table->string('id')->unique();
         $table->foreignId('user_id')->nullable();
         $table->string('ip_address', 45)->nullable();
@@ -84,9 +87,9 @@ There are two primary ways of working with session data in Laravel: the global `
         /**
          * Show the profile for the given user.
          *
-         * @param  Request  $request
+         * @param  \Illuminate\Http\Request  $request
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function show(Request $request, $id)
         {
@@ -107,6 +110,8 @@ When you retrieve an item from the session, you may also pass a default value as
 #### The Global Session Helper
 
 You may also use the global `session` PHP function to retrieve and store data in the session. When the `session` helper is called with a single, string argument, it will return the value of that session key. When the helper is called with an array of key / value pairs, those values will be stored in the session:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('home', function () {
         // Retrieve a piece of data from the session...
@@ -208,6 +213,8 @@ By default, Laravel allows requests using the same session to execute concurrent
 
 To mitigate this, Laravel provides functionality that allows you to limit concurrent requests for a given session. To get started, you may simply chain the `block` method onto your route definition. In this example, an incoming request to the `/profile` endpoint would acquire a session lock. While this lock is being held, any incoming requests to the `/profile` or `/order` endpoints which share the same session ID will wait for the first request to finish executing before continuing their execution:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::post('/profile', function () {
         //
     })->block($lockSeconds = 10, $waitSeconds = 10)
@@ -221,6 +228,8 @@ The `block` method accepts two optional arguments. The first argument accepted b
 The second argument accepted by the `block` method is the number of seconds a request should wait while attempting to obtain a session lock. A `Illuminate\Contracts\Cache\LockTimoutException` will be thrown if the request is unable to obtain a session lock within the given number of seconds.
 
 If neither of these arguments are passed, the lock will be obtained for a maximum of 10 seconds and requests will wait a maximum of 10 seconds while attempting to obtain a lock:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::post('/profile', function () {
         //
