@@ -36,8 +36,8 @@ You may hash a password by calling the `make` method on the `Hash` facade:
         /**
          * Update the password for the user.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function update(Request $request)
         {
@@ -53,6 +53,8 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 
 If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default is acceptable for most applications:
 
+    use Illuminate\Support\Facades\Hash;
+
     $hashed = Hash::make('password', [
         'rounds' => 12,
     ]);
@@ -60,6 +62,8 @@ If you are using the Bcrypt algorithm, the `make` method allows you to manage th
 #### Adjusting The Argon2 Work Factor
 
 If you are using the Argon2 algorithm, the `make` method allows you to manage the work factor of the algorithm using the `memory`, `time`, and `threads` options; however, the defaults are acceptable for most applications:
+
+    use Illuminate\Support\Facades\Hash;
 
     $hashed = Hash::make('password', [
         'memory' => 1024,
@@ -73,6 +77,8 @@ If you are using the Argon2 algorithm, the `make` method allows you to manage th
 
 The `check` method allows you to verify that a given plain-text string corresponds to a given hash. However, if you are using the `LoginController` [included with Laravel](/docs/{{version}}/authentication), you will probably not need to use this directly, as this controller automatically calls this method:
 
+    use Illuminate\Support\Facades\Hash;
+
     if (Hash::check('plain-text', $hashedPassword)) {
         // The passwords match...
     }
@@ -80,6 +86,8 @@ The `check` method allows you to verify that a given plain-text string correspon
 #### Checking If A Password Needs To Be Rehashed
 
 The `needsRehash` function allows you to determine if the work factor used by the hasher has changed since the password was hashed:
+
+    use Illuminate\Support\Facades\Hash;
 
     if (Hash::needsRehash($hashed)) {
         $hashed = Hash::make('plain-text');
