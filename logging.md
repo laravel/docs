@@ -101,9 +101,13 @@ Take note of the `level` configuration option present on the `syslog` and `slack
 
 So, imagine we log a message using the `debug` method:
 
+    use Illuminate\Support\Facades\Log;
+
     Log::debug('An informational message.');
 
 Given our configuration, the `syslog` channel will write the message to the system log; however, since the error message is not `critical` or above, it will not be sent to Slack. However, if we log an `emergency` message, it will be sent to both the system log and Slack since the `emergency` level is above our minimum level threshold for both channels:
+
+    use Illuminate\Support\Facades\Log;
 
     Log::emergency('The system is down!');
 
@@ -111,6 +115,8 @@ Given our configuration, the `syslog` channel will write the message to the syst
 ## Writing Log Messages
 
 You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades). As previously mentioned, the logger provides the eight logging levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**:
+
+    use Illuminate\Support\Facades\Log;
 
     Log::emergency($message);
     Log::alert($message);
@@ -137,7 +143,7 @@ So, you may call any of these methods to log a message for the corresponding lev
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function showProfile($id)
         {
@@ -151,6 +157,8 @@ So, you may call any of these methods to log a message for the corresponding lev
 
 An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
 
+    use Illuminate\Support\Facades\Log;
+
     Log::info('User failed to login.', ['id' => $user->id]);
 
 <a name="writing-to-specific-channels"></a>
@@ -158,9 +166,13 @@ An array of contextual data may also be passed to the log methods. This contextu
 
 Sometimes you may wish to log a message to a channel other than your application's default channel. You may use the `channel` method on the `Log` facade to retrieve and log to any channel defined in your configuration file:
 
+    use Illuminate\Support\Facades\Log;
+
     Log::channel('slack')->info('Something happened!');
 
 If you would like to create an on-demand logging stack consisting of multiple channels, you may use the `stack` method:
+
+    use Illuminate\Support\Facades\Log;
 
     Log::stack(['single', 'slack'])->info('Something happened!');
 
