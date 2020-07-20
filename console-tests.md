@@ -13,6 +13,8 @@ In addition to simplifying HTTP testing, Laravel provides a simple API for testi
 
 Laravel allows you to easily "mock" user input for your console commands using the `expectsQuestion` method. In addition, you may specify the exit code and text that you expect to be output by the console command using the `assertExitCode` and `expectsOutput` methods. For example, consider the following console command:
 
+    use Illuminate\Support\Facades\Artisan;
+
     Artisan::command('question', function () {
         $name = $this->ask('What is your name?');
 
