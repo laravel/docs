@@ -71,6 +71,7 @@ Every resource class defines a `toArray` method which returns the array of attri
 
     use App\Http\Resources\User as UserResource;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/user', function () {
         return new UserResource(User::find(1));
@@ -83,6 +84,7 @@ If you are returning a collection of resources or a paginated response, you may 
 
     use App\Http\Resources\User as UserResource;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/user', function () {
         return UserResource::collection(User::all());
@@ -123,6 +125,7 @@ After defining your resource collection, it may be returned from a route or cont
 
     use App\Http\Resources\UserCollection;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/users', function () {
         return new UserCollection(User::all());
@@ -152,6 +155,7 @@ When the `preserveKeys` property is set to `true`, collection keys will be prese
 
     use App\Http\Resources\User as UserResource;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/user', function () {
         return UserResource::collection(User::all()->keyBy->id);
@@ -216,6 +220,7 @@ Once a resource has been defined, it may be returned directly from a route or co
 
     use App\Http\Resources\User as UserResource;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/user', function () {
         return new UserResource(User::find(1));
@@ -251,6 +256,7 @@ While resources translate a single model into an array, resource collections tra
 
     use App\Http\Resources\User as UserResource;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/user', function () {
         return UserResource::collection(User::all());
@@ -287,6 +293,7 @@ Like singular resources, resource collections may be returned directly from rout
 
     use App\Http\Resources\UserCollection;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/users', function () {
         return new UserCollection(User::all());
@@ -431,6 +438,7 @@ You may always pass a paginator instance to the `collection` method of a resourc
 
     use App\Http\Resources\UserCollection;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/users', function () {
         return new UserCollection(User::paginate());
@@ -473,6 +481,8 @@ Paginated responses always contain `meta` and `links` keys with information abou
 
 Sometimes you may wish to only include an attribute in a resource response if a given condition is met. For example, you may wish to only include a value if the current user is an "administrator". Laravel provides a variety of helper methods to assist you in this situation. The `when` method may be used to conditionally add an attribute to a resource response:
 
+    use Illuminate\Support\Facades\Auth;
+
     /**
      * Transform the resource into an array.
      *
@@ -495,6 +505,8 @@ In this example, the `secret` key will only be returned in the final resource re
 
 The `when` method also accepts a Closure as its second argument, allowing you to calculate the resulting value only if the given condition is `true`:
 
+    use Illuminate\Support\Facades\Auth;
+
     'secret' => $this->when(Auth::user()->isAdmin(), function () {
         return 'secret-value';
     }),
@@ -502,6 +514,8 @@ The `when` method also accepts a Closure as its second argument, allowing you to
 #### Merging Conditional Attributes
 
 Sometimes you may have several attributes that should only be included in the resource response based on the same condition. In this case, you may use the `mergeWhen` method to include the attributes in the response only when the given condition is `true`:
+
+    use Illuminate\Support\Facades\Auth;
 
     /**
      * Transform the resource into an array.
@@ -661,6 +675,9 @@ Sometimes you may wish to only include certain meta data with a resource respons
 
 You may also add top-level data when constructing resource instances in your route or controller. The `additional` method, which is available on all resources, accepts an array of data that should be added to the resource response:
 
+    use App\Http\Resources\UserCollection;
+    use App\User;
+
     return (new UserCollection(User::all()->load('roles')))
                     ->additional(['meta' => [
                         'key' => 'value',
@@ -673,6 +690,7 @@ As you have already read, resources may be returned directly from routes and con
 
     use App\Http\Resources\User as UserResource;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/user', function () {
         return new UserResource(User::find(1));
@@ -682,6 +700,7 @@ However, sometimes you may need to customize the outgoing HTTP response before i
 
     use App\Http\Resources\User as UserResource;
     use App\User;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('/user', function () {
         return (new UserResource(User::find(1)))
