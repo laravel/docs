@@ -140,6 +140,8 @@ Before diving into each component of event broadcasting, let's take a high level
 
 In our application, let's assume we have a page that allows users to view the shipping status for their orders. Let's also assume that a `ShippingStatusUpdated` event is fired when a shipping status update is processed by the application:
 
+    use App\Events\ShippingStatusUpdated;
+
     event(new ShippingStatusUpdated($update));
 
 #### The `ShouldBroadcast` Interface
@@ -183,6 +185,9 @@ The `ShouldBroadcast` interface requires our event to define a `broadcastOn` met
 
 Remember, users must be authorized to listen on private channels. We may define our channel authorization rules in the `routes/channels.php` file. In this example, we need to verify that any user attempting to listen on the private `order.1` channel is actually the creator of the order:
 
+    use App\Order;
+    use Illuminate\Support\Facades\Broadcast;
+
     Broadcast::channel('order.{orderId}', function ($user, $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
     });
@@ -223,6 +228,11 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
     {
         use SerializesModels;
 
+        /*
+         * The user instance.
+         *
+         * @var \App\User
+         */
         public $user;
 
         /**
@@ -341,9 +351,13 @@ Private channels require you to authorize that the currently authenticated user 
 
 Thankfully, Laravel makes it easy to define the routes to respond to channel authorization requests. In the `BroadcastServiceProvider` included with your Laravel application, you will see a call to the `Broadcast::routes` method. This method will register the `/broadcasting/auth` route to handle authorization requests:
 
+    use Illuminate\Support\Facades\Broadcast;
+
     Broadcast::routes();
 
 The `Broadcast::routes` method will automatically place its routes within the `web` middleware group; however, you may pass an array of route attributes to the method if you would like to customize the assigned attributes:
+
+    use Illuminate\Support\Facades\Broadcast;
 
     Broadcast::routes($attributes);
 
@@ -362,6 +376,8 @@ By default, Echo will use the `/broadcasting/auth` endpoint to authorize channel
 
 Next, we need to define the logic that will actually perform the channel authorization. This is done in the `routes/channels.php` file that is included with your application. In this file, you may use the `Broadcast::channel` method to register channel authorization callbacks:
 
+    use Illuminate\Support\Facades\Broadcast;
+
     Broadcast::channel('order.{orderId}', function ($user, $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
     });
@@ -375,6 +391,7 @@ All authorization callbacks receive the currently authenticated user as their fi
 Just like HTTP routes, channel routes may also take advantage of implicit and explicit [route model binding](/docs/{{version}}/routing#route-model-binding). For example, instead of receiving the string or numeric order ID, you may request an actual `Order` model instance:
 
     use App\Order;
+    use Illuminate\Support\Facades\Broadcast;
 
     Broadcast::channel('order.{order}', function ($user, Order $order) {
         return $user->id === $order->user_id;
@@ -383,6 +400,8 @@ Just like HTTP routes, channel routes may also take advantage of implicit and ex
 #### Authorization Callback Authentication
 
 Private and presence broadcast channels authenticate the current user via your application's default authentication guard. If the user is not authenticated, channel authorization is automatically denied and the authorization callback is never executed. However, you may assign multiple, custom guards that should authenticate the incoming request if necessary:
+
+    use Illuminate\Support\Facades\Broadcast;
 
     Broadcast::channel('channel', function () {
         // ...
@@ -442,6 +461,8 @@ Finally, you may place the authorization logic for your channel in the channel c
 
 Once you have defined an event and marked it with the `ShouldBroadcast` interface, you only need to fire the event using the `event` function. The event dispatcher will notice that the event is marked with the `ShouldBroadcast` interface and will queue the event for broadcasting:
 
+    use App\Events\ShippingStatusUpdated;
+
     event(new ShippingStatusUpdated($update));
 
 <a name="only-to-others"></a>
@@ -449,9 +470,13 @@ Once you have defined an event and marked it with the `ShouldBroadcast` interfac
 
 When building an application that utilizes event broadcasting, you may substitute the `event` function with the `broadcast` function. Like the `event` function, the `broadcast` function dispatches the event to your server-side listeners:
 
+    use App\Events\ShippingStatusUpdated;
+
     broadcast(new ShippingStatusUpdated($update));
 
 However, the `broadcast` function also exposes the `toOthers` method which allows you to exclude the current user from the broadcast's recipients:
+
+    use App\Events\ShippingStatusUpdated;
 
     broadcast(new ShippingStatusUpdated($update))->toOthers();
 
@@ -572,6 +597,8 @@ All presence channels are also private channels; therefore, users must be [autho
 
 The data returned by the authorization callback will be made available to the presence channel event listeners in your JavaScript application. If the user is not authorized to join the presence channel, you should return `false` or `null`:
 
+    use Illuminate\Support\Facades\Broadcast;
+
     Broadcast::channel('chat.{roomId}', function ($user, $roomId) {
         if ($user->canJoinRoom($roomId)) {
             return ['id' => $user->id, 'name' => $user->name];
@@ -601,6 +628,9 @@ The `here` callback will be executed immediately once the channel is joined succ
 
 Presence channels may receive events just like public or private channels. Using the example of a chatroom, we may want to broadcast `NewMessage` events to the room's presence channel. To do so, we'll return an instance of `PresenceChannel` from the event's `broadcastOn` method:
 
+    use App\Events\NewMessage;
+    use Illuminate\Broadcasting\PresenceChannel;
+
     /**
      * Get the channels the event should broadcast on.
      *
@@ -612,6 +642,8 @@ Presence channels may receive events just like public or private channels. Using
     }
 
 Like public or private events, presence channel events may be broadcast using the `broadcast` function. As with other events, you may use the `toOthers` method to exclude the current user from receiving the broadcast:
+
+    use App\Events\NewMessage;
 
     broadcast(new NewMessage($message));
 
