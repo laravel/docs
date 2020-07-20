@@ -155,7 +155,7 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function showProfile($id)
         {
@@ -167,11 +167,15 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
 
 As mentioned above, you may call any of the Redis commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server, so pass the arguments the Redis command expects:
 
+    use Illuminate\Support\Facades\Redis;
+
     Redis::set('name', 'Taylor');
 
     $values = Redis::lrange('names', 5, 10);
 
 Alternatively, you may also pass commands to the server using the `command` method, which accepts the name of the command as its first argument, and an array of values as its second argument:
+
+    use Illuminate\Support\Facades\Redis;
 
     $values = Redis::command('lrange', ['name', 5, 10]);
 
@@ -179,9 +183,13 @@ Alternatively, you may also pass commands to the server using the `command` meth
 
 You may get a Redis instance by calling the `Redis::connection` method:
 
+    use Illuminate\Support\Facades\Redis;
+
     $redis = Redis::connection();
 
 This will give you an instance of the default Redis server. You may also pass the connection or cluster name to the `connection` method to get a specific server or cluster as defined in your Redis configuration:
+
+    use Illuminate\Support\Facades\Redis;
 
     $redis = Redis::connection('my-connection');
 
@@ -189,6 +197,8 @@ This will give you an instance of the default Redis server. You may also pass th
 ### Pipelining Commands
 
 Pipelining should be used when you need to send many commands to the server. The `pipeline` method accepts one argument: a `Closure` that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be streamed to the server thus providing better performance:
+
+    use Illuminate\Support\Facades\Redis;
 
     Redis::pipeline(function ($pipe) {
         for ($i = 0; $i < 1000; $i++) {
@@ -241,6 +251,9 @@ First, let's setup a channel listener using the `subscribe` method. We'll place 
 
 Now we may publish messages to the channel using the `publish` method:
 
+    use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Facades\Redis;
+
     Route::get('publish', function () {
         // Route logic...
 
@@ -250,6 +263,8 @@ Now we may publish messages to the channel using the `publish` method:
 #### Wildcard Subscriptions
 
 Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The `$channel` name will be passed as the second argument to the provided callback `Closure`:
+
+    use Illuminate\Support\Facades\Redis;
 
     Redis::psubscribe(['*'], function ($message, $channel) {
         echo $message;
