@@ -238,6 +238,16 @@ Laravel 7.x doesn't provide `swift.mailer` and `swift.transport` container bindi
 
 The deprecated `Illuminate\Http\Resources\Json\Resource` class has been removed. Your resources should extend the `Illuminate\Http\Resources\Json\JsonResource` class instead.
 
+### Console
+
+#### The `DetectsApplicationNamespace` Trait
+
+**Likelihood Of Impact: Low**
+
+The deprecated `Illuminate\Console\DetectsApplicationNamespace` trait has been removed. You may now use `Illuminate\Container\Container` instead:
+
+    Container::getInstance()->getNamespace();
+
 ### Routing
 
 #### The Router `getRoutes` Method
