@@ -31,6 +31,9 @@ All exceptions are handled by the `App\Exceptions\Handler` class. This class con
 
 For example, if you need to report different types of exceptions in different ways, you may use the PHP `instanceof` comparison operator:
 
+    use Throwable;
+    use App\Exceptions\CustomException;
+
     /**
      * Report or log an exception.
      *
@@ -70,6 +73,8 @@ If available, Laravel automatically adds the current user's ID to every exceptio
 
 Sometimes you may need to report an exception but continue handling the current request. The `report` helper function allows you to quickly report an exception using your exception handler's `report` method without rendering an error page:
 
+    use Throwable;
+
     public function isValid($value)
     {
         try {
@@ -102,6 +107,9 @@ The `$dontReport` property of the exception handler contains an array of excepti
 ### The Render Method
 
 The `render` method is responsible for converting a given exception into an HTTP response that should be sent back to the browser. By default, the exception is passed to the base class which generates a response for you. However, you are free to check the exception type or return your own custom response:
+
+    use Throwable;
+    use App\Exceptions\CustomException;
 
     /**
      * Render an exception into an HTTP response.
