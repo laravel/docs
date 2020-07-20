@@ -141,12 +141,17 @@ Job classes are very simple, normally containing only a `handle` method which is
     {
         use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+        /*
+         * The podcast instance.
+         *
+         * @var \App\Podcast
+         */
         protected $podcast;
 
         /**
          * Create a new job instance.
          *
-         * @param  Podcast  $podcast
+         * @param  \App\Podcast  $podcast
          * @return void
          */
         public function __construct(Podcast $podcast)
@@ -157,7 +162,7 @@ Job classes are very simple, normally containing only a `handle` method which is
         /**
          * Execute the job.
          *
-         * @param  AudioProcessor  $processor
+         * @param  \App\AudioProcessor  $processor
          * @return void
          */
         public function handle(AudioProcessor $processor)
@@ -172,6 +177,7 @@ The `handle` method is called when the job is processed by the queue. Note that 
 
 If you would like to take total control over how the container injects dependencies into the `handle` method, you may use the container's `bindMethod` method. The `bindMethod` method accepts a callback which receives the job and the container. Within the callback, you are free to invoke the `handle` method however you wish. Typically, you should call this method from a [service provider](/docs/{{version}}/providers):
 
+    use App\AudioProcessor;
     use App\Jobs\ProcessPodcast;
 
     $this->app->bindMethod(ProcessPodcast::class.'@handle', function ($job, $app) {
@@ -183,6 +189,8 @@ If you would like to take total control over how the container injects dependenc
 #### Handling Relationships
 
 Because loaded relationships also get serialized, the serialized job string can become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model with no loaded relationships:
+
+    use App\Podcast;
 
     /**
      * Create a new job instance.
@@ -199,6 +207,8 @@ Because loaded relationships also get serialized, the serialized job string can 
 ### Job Middleware
 
 Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
+
+    use Illuminate\Support\Facades\Redis;
 
     /**
      * Execute the job.
@@ -287,8 +297,8 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -299,6 +309,8 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
     }
 
 If you would like to conditionally dispatch a job, you may use the `dispatchIf` and `dispatchUnless` methods:
+
+    use App\Jobs\ProcessPodcast;
 
     ProcessPodcast::dispatchIf($accountActive === true, $podcast);
 
@@ -322,8 +334,8 @@ If you would like to delay the execution of a queued job, you may use the `delay
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -371,8 +383,8 @@ If you would like to dispatch a job immediately (synchronously), you may use the
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -387,12 +399,21 @@ If you would like to dispatch a job immediately (synchronously), you may use the
 
 Job chaining allows you to specify a list of queued jobs that should be run in sequence after the primary job has executed successfully. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `withChain` method on any of your dispatchable jobs:
 
+    use App\Jobs\ProcessPodcast;
+    use App\Jobs\OptimizePodcast;
+    use App\Jobs\ReleasePodcast;
+
     ProcessPodcast::withChain([
         new OptimizePodcast,
         new ReleasePodcast
     ])->dispatch();
 
 In addition to chaining job class instances, you may also chain Closures:
+
+    use App\Podcast;
+    use App\Jobs\ProcessPodcast;
+    use App\Jobs\OptimizePodcast;
+    use App\Jobs\ReleasePodcast;
 
     ProcessPodcast::withChain([
         new OptimizePodcast,
@@ -407,6 +428,10 @@ In addition to chaining job class instances, you may also chain Closures:
 #### Chain Connection & Queue
 
 If you would like to specify the default connection and queue that should be used for the chained jobs, you may use the `allOnConnection` and `allOnQueue` methods. These methods specify the queue connection and queue name that should be used unless the queued job is explicitly assigned a different connection / queue:
+
+    use App\Jobs\ProcessPodcast;
+    use App\Jobs\OptimizePodcast;
+    use App\Jobs\ReleasePodcast;
 
     ProcessPodcast::withChain([
         new OptimizePodcast,
@@ -433,8 +458,8 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -461,8 +486,8 @@ If you are working with multiple queue connections, you may specify which connec
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -473,6 +498,8 @@ If you are working with multiple queue connections, you may specify which connec
     }
 
 You may chain the `onConnection` and `onQueue` methods to specify the connection and the queue for a job:
+
+    use App\Jobs\ProcessPodcast;
 
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
@@ -492,6 +519,8 @@ However, you may take a more granular approach by defining the maximum number of
     <?php
 
     namespace App\Jobs;
+
+    use Illuminate\Contracts\Queue\ShouldQueue;
 
     class ProcessPodcast implements ShouldQueue
     {
@@ -527,6 +556,9 @@ Sometimes you may wish to specify that a job may be attempted many times, but sh
     <?php
 
     namespace App\Jobs;
+
+    use Illuminate\Support\Facades\Redis;
+    use Illuminate\Contracts\Queue\ShouldQueue;
 
     class ProcessPodcast implements ShouldQueue
     {
@@ -576,6 +608,8 @@ However, you may also define the maximum number of seconds a job should be allow
 
     namespace App\Jobs;
 
+    use Illuminate\Contracts\Queue\ShouldQueue;
+
     class ProcessPodcast implements ShouldQueue
     {
         /**
@@ -595,6 +629,8 @@ If your application interacts with Redis, you may throttle your queued jobs by t
 
 For example, using the `throttle` method, you may throttle a given type of job to only run 10 times every 60 seconds. If a lock can not be obtained, you should typically release the job back onto the queue so it can be retried later:
 
+    use Illuminate\Support\Facades\Redis;
+
     Redis::throttle('key')->allow(10)->every(60)->then(function () {
         // Job logic...
     }, function () {
@@ -608,6 +644,8 @@ For example, using the `throttle` method, you may throttle a given type of job t
 > {note}  Releasing a throttled job back onto the queue will still increment the job's total number of `attempts`.
 
 Alternatively, you may specify the maximum number of workers that may simultaneously process a given job. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time. For example, using the `funnel` method, you may limit jobs of a given type to only be processed by one worker at a time:
+
+    use Illuminate\Support\Facades\Redis;
 
     Redis::funnel('key')->limit(1)->then(function () {
         // Job logic...
@@ -989,6 +1027,9 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
     }
 
 Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks that execute before the worker attempts to fetch a job from a queue. For example, you might register a Closure to rollback any transactions that were left open by a previously failed job:
+
+    use Illuminate\Support\Facades\Queue;
+    use Illuminate\Support\Facades\DB;
 
     Queue::looping(function () {
         while (DB::transactionLevel() > 0) {
