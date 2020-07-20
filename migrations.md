@@ -145,6 +145,9 @@ The `migrate:fresh` command will drop all tables from the database and then exec
 
 To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object that may be used to define the new table:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::create('users', function (Blueprint $table) {
         $table->id();
     });
@@ -154,6 +157,8 @@ When creating the table, you may use any of the schema builder's [column methods
 #### Checking For Table / Column Existence
 
 You may check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
+
+    use Illuminate\Support\Facades\Schema;
 
     if (Schema::hasTable('users')) {
         //
@@ -166,6 +171,9 @@ You may check for the existence of a table or column using the `hasTable` and `h
 #### Database Connection & Table Options
 
 If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::connection('foo')->create('users', function (Blueprint $table) {
         $table->id();
@@ -185,9 +193,13 @@ Command  |  Description
 
 To rename an existing database table, use the `rename` method:
 
+    use Illuminate\Support\Facades\Schema;
+
     Schema::rename($from, $to);
 
 To drop an existing table, you may use the `drop` or `dropIfExists` methods:
+
+    use Illuminate\Support\Facades\Schema;
 
     Schema::drop('users');
 
@@ -204,6 +216,9 @@ Before renaming a table, you should verify that any foreign key constraints on t
 ### Creating Columns
 
 The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance you may use to add columns to the table:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('email');
@@ -282,6 +297,9 @@ Command  |  Description
 
 In addition to the column types listed above, there are several column "modifiers" you may use while adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('users', function (Blueprint $table) {
         $table->string('email')->nullable();
     });
@@ -348,11 +366,17 @@ Before modifying a column, be sure to add the `doctrine/dbal` dependency to your
 
 The `change` method allows you to modify type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->change();
     });
 
 We could also modify a column to be nullable:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->nullable()->change();
@@ -363,6 +387,9 @@ We could also modify a column to be nullable:
 #### Renaming Columns
 
 To rename a column, you may use the `renameColumn` method on the schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
@@ -375,11 +402,17 @@ To rename a column, you may use the `renameColumn` method on the schema builder.
 
 To drop a column, use the `dropColumn` method on the schema builder. Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
     });
 
 You may drop multiple columns from a table by passing an array of column names to the `dropColumn` method:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn(['votes', 'avatar', 'location']);
@@ -471,6 +504,9 @@ Command  |  Description
 
 If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('geo', function (Blueprint $table) {
         $table->dropIndex(['state']); // Drops index 'geo_state_index'
     });
@@ -480,6 +516,9 @@ If you pass an array of columns into a method that drops indexes, the convention
 
 Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('posts', function (Blueprint $table) {
         $table->unsignedBigInteger('user_id');
 
@@ -488,11 +527,17 @@ Laravel also provides support for creating foreign key constraints, which are us
 
 Since this syntax is rather verbose, Laravel provides additional, terser methods that use convention to provide a better developer experience. The example above could be written like so:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('posts', function (Blueprint $table) {
         $table->foreignId('user_id')->constrained();
     });
 
 The `foreignId` method is an alias for `unsignedBigInteger` while the `constrained` method will use convention to determine the table and column name being referenced. If your table name does not match the convention, you may specify the table name by passing it as an argument to the `constrained` method:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('posts', function (Blueprint $table) {
         $table->foreignId('user_id')->constrained('users');
@@ -520,6 +565,8 @@ Alternatively, you may pass an array containing the column name that holds the f
     $table->dropForeign(['user_id']);
 
 You may enable or disable foreign key constraints within your migrations by using the following methods:
+
+    use Illuminate\Support\Facades\Schema;
 
     Schema::enableForeignKeyConstraints();
 
