@@ -110,6 +110,9 @@ To get started, open your `tests/DuskTestCase.php` file, which is the base Dusk 
 
 Next, you may modify the `driver` method to connect to the URL and port of your choice. In addition, you may modify the "desired capabilities" that should be passed to the WebDriver:
 
+    use \Facebook\WebDriver\Remote\RemoteWebDriver;
+    use \Facebook\WebDriver\Remote\DesiredCapabilities;
+
     /**
      * Create the RemoteWebDriver instance.
      *
@@ -163,6 +166,9 @@ By default, Dusk will automatically attempt to start ChromeDriver. If this does 
     }
 
 In addition, if you start ChromeDriver on a port other than 9515, you should modify the `driver` method of the same class:
+
+    use \Facebook\WebDriver\Remote\RemoteWebDriver;
+    use \Facebook\WebDriver\Remote\DesiredCapabilities;
 
     /**
      * Create the RemoteWebDriver instance.
@@ -227,6 +233,8 @@ As you can see in the example above, the `browse` method accepts a callback. A b
 #### Creating Multiple Browsers
 
 Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, "ask" for more than one browser in the signature of the callback given to the `browse` method:
+
+    use App\User;
 
     $this->browse(function ($first, $second) {
         $first->loginAs(User::find(1))
@@ -307,6 +315,8 @@ The `macro` function accepts a name as its first argument, and a Closure as its 
 
 Often, you will be testing pages that require authentication. You can use Dusk's `loginAs` method in order to avoid interacting with the login screen during every test. The `loginAs` method accepts a user ID or user model instance:
 
+    use App\User;
+
     $this->browse(function ($first, $second) {
         $first->loginAs(User::find(1))
               ->visit('/home');
@@ -323,9 +333,7 @@ When your test requires migrations, like the authentication example above, you s
 
     namespace Tests\Browser;
 
-    use App\User;
     use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Laravel\Dusk\Chrome;
     use Tests\DuskTestCase;
 
     class ExampleTest extends DuskTestCase
@@ -763,6 +771,8 @@ Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org)
     });
 
 You may assert on the state of the Vue component like so:
+
+    use Laravel\Dusk\Browser;
 
     /**
      * A basic Vue test example.
@@ -1363,6 +1373,8 @@ The `url` method should return the path of the URL that represents the page. Dus
 
 The `assert` method may make any assertions necessary to verify that the browser is actually on the given page. Completing this method is not necessary; however, you are free to make these assertions if you wish. These assertions will be run automatically when navigating to the page:
 
+    use Laravel\Dusk\Browser;
+
     /**
      * Assert that the browser is on the page.
      *
@@ -1452,6 +1464,7 @@ In addition to the default methods defined on pages, you may define additional m
     namespace Tests\Browser\Pages;
 
     use Laravel\Dusk\Browser;
+    use Laravel\Dusk\Page;
 
     class Dashboard extends Page
     {
