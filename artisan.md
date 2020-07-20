@@ -154,6 +154,8 @@ Closure based commands provide an alternative to defining console commands as cl
 
 Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your Closure based routes using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a Closure which receives the commands arguments and options:
 
+    use Illuminate\Support\Facades\Artisan;
+
     Artisan::command('build {project}', function ($project) {
         $this->info("Building {$project}!");
     });
@@ -166,6 +168,7 @@ In addition to receiving your command's arguments and options, command Closures 
 
     use App\DripEmailer;
     use App\User;
+    use Illuminate\Support\Facades\Artisan;
 
     Artisan::command('email:send {user}', function (DripEmailer $drip, $user) {
         $drip->send(User::find($user));
@@ -174,6 +177,8 @@ In addition to receiving your command's arguments and options, command Closures 
 #### Closure Command Descriptions
 
 When defining a Closure based command, you may use the `describe` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
+
+    use Illuminate\Support\Facades\Artisan;
 
     Artisan::command('build {project}', function ($project) {
         $this->info("Building {$project}!");
@@ -449,6 +454,9 @@ You may also manually register commands by adding its class name to the `$comman
 
 Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts either the command's name or class as the first argument, and an array of command parameters as the second argument. The exit code will be returned:
 
+    use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Facades\Artisan;
+
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
             'user' => 1, '--queue' => 'default'
@@ -459,9 +467,14 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 
 Alternatively, you may pass the entire Artisan command to the `call` method as a string:
 
+    use Illuminate\Support\Facades\Artisan;
+
     Artisan::call('email:send 1 --queue=default');
 
 Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/{{version}}/queues). Before using this method, make sure you have configured your queue and are running a queue listener:
+
+    use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Facades\Artisan;
 
     Route::get('/foo', function () {
         Artisan::queue('email:send', [
@@ -473,6 +486,8 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
 
 You may also specify the connection or queue the Artisan command should be dispatched to:
 
+    use Illuminate\Support\Facades\Artisan;
+
     Artisan::queue('email:send', [
         'user' => 1, '--queue' => 'default'
     ])->onConnection('redis')->onQueue('commands');
@@ -480,6 +495,9 @@ You may also specify the connection or queue the Artisan command should be dispa
 #### Passing Array Values
 
 If your command defines an option that accepts an array, you may pass an array of values to that option:
+
+    use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Facades\Artisan;
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
@@ -490,6 +508,8 @@ If your command defines an option that accepts an array, you may pass an array o
 #### Passing Boolean Values
 
 If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you should pass `true` or `false`:
+
+    use Illuminate\Support\Facades\Artisan;
 
     $exitCode = Artisan::call('migrate:refresh', [
         '--force' => true,
