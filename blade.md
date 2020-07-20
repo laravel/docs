@@ -92,9 +92,13 @@ In this example, the `sidebar` section is utilizing the `@@parent` directive to 
 
 The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
 
+    use Illuminate\Support\Facades\View;
+
     @yield('content', View::make('view.name'))
 
 Blade views may be returned from routes using the global `view` helper:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('blade', function () {
         return view('child');
@@ -104,6 +108,8 @@ Blade views may be returned from routes using the global `view` helper:
 ## Displaying Data
 
 You may display data passed to your Blade views by wrapping the variable in curly braces. For example, given the following route:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('greeting', function () {
         return view('welcome', ['name' => 'Samantha']);
@@ -217,6 +223,8 @@ You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@end
     @endif
 
 For convenience, Blade also provides an `@unless` directive:
+
+    use Illuminate\Support\Facades\Auth;
 
     @unless (Auth::check())
         You are not signed in.
