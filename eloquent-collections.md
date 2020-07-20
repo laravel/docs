@@ -74,16 +74,14 @@ The `contains` method may be used to determine if a given model instance is cont
 
     $users->contains(1);
 
-    $users->contains(User::find(1));
+    $users->contains(App\User::find(1));
 
 <a name="method-diff"></a>
 #### `diff($items)`
 
 The `diff` method returns all of the models that are not present in the given collection:
 
-    use App\User;
-
-    $users = $users->diff(User::whereIn('id', [1, 2, 3])->get());
+    $users = $users->diff(App\User::whereIn('id', [1, 2, 3])->get());
 
 <a name="method-except"></a>
 #### `except($keys)`
@@ -97,7 +95,7 @@ The `except` method returns all of the models that do not have the given primary
 
 The `find` method finds a model that has a given primary key. If `$key` is a model instance, `find` will attempt to return a model matching the primary key. If `$key` is an array of keys, `find` will return all models which match the `$keys` using `whereIn()`:
 
-    $users = User::all();
+    $users = App\User::all();
 
     $user = $users->find(1);
 
@@ -115,9 +113,7 @@ The `fresh` method retrieves a fresh instance of each model in the collection fr
 
 The `intersect` method returns all of the models that are also present in the given collection:
 
-    use App\User;
-
-    $users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());
+    $users = $users->intersect(App\User::whereIn('id', [1, 2, 3])->get());
 
 <a name="method-load"></a>
 #### `load($relations)`
