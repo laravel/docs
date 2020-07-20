@@ -50,12 +50,16 @@ Next, your `user` table must contain an `email_verified_at` column to store the 
 
 Laravel includes the `Auth\VerificationController` class that contains the necessary logic to send verification links and verify emails. To register the necessary routes for this controller, pass the `verify` option to the `Auth::routes` method:
 
+    use Illuminate\Support\Facades\Auth;
+
     Auth::routes(['verify' => true]);
 
 <a name="protecting-routes"></a>
 ### Protecting Routes
 
 [Route middleware](/docs/{{version}}/middleware) can be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware, which is defined at `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition:
+
+    use Illuminate\Support\Facades\Route;
 
     Route::get('profile', function () {
         // Only verified users may enter...
