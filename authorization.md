@@ -39,6 +39,8 @@ You do not need to choose between exclusively using gates or exclusively using p
 
 Gates are Closures that determine if a user is authorized to perform a given action and are typically defined in the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument, and may optionally receive additional arguments such as a relevant Eloquent model:
 
+    use Illuminate\Support\Facades\Gate;
+
     /**
      * Register any authentication / authorization services.
      *
@@ -59,6 +61,8 @@ Gates are Closures that determine if a user is authorized to perform a given act
 
 Gates may also be defined using a `Class@method` style callback string, like controllers:
 
+    use Illuminate\Support\Facades\Gate;
+
     /**
      * Register any authentication / authorization services.
      *
@@ -76,6 +80,8 @@ Gates may also be defined using a `Class@method` style callback string, like con
 
 To authorize an action using gates, you should use the `allows` or `denies` methods. Note that you are not required to pass the currently authenticated user to these methods. Laravel will automatically take care of passing the user into the gate Closure:
 
+    use Illuminate\Support\Facades\Gate;
+
     if (Gate::allows('edit-settings')) {
         // The current user can edit settings
     }
@@ -90,6 +96,8 @@ To authorize an action using gates, you should use the `allows` or `denies` meth
 
 If you would like to determine if a particular user is authorized to perform an action, you may use the `forUser` method on the `Gate` facade:
 
+    use Illuminate\Support\Facades\Gate;
+
     if (Gate::forUser($user)->allows('update-post', $post)) {
         // The user can update the post...
     }
@@ -99,6 +107,8 @@ If you would like to determine if a particular user is authorized to perform an 
     }
 
 You may authorize multiple actions at a time with the `any` or `none` methods:
+
+    use Illuminate\Support\Facades\Gate;
 
     if (Gate::any(['update-post', 'delete-post'], $post)) {
         // The user can update or delete the post
@@ -112,6 +122,8 @@ You may authorize multiple actions at a time with the `any` or `none` methods:
 
 If you would like to attempt to authorize an action and automatically throw an `Illuminate\Auth\Access\AuthorizationException` if the user is not allowed to perform the given action, you may use the `Gate::authorize` method. Instances of `AuthorizationException` are automatically converted to `403` HTTP response:
 
+    use Illuminate\Support\Facades\Gate;
+
     Gate::authorize('update-post', $post);
 
     // The action is authorized...
@@ -119,6 +131,8 @@ If you would like to attempt to authorize an action and automatically throw an `
 #### Supplying Additional Context
 
 The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, `none`, `authorize`, `can`, `cannot`) and the authorization [Blade directives](#via-blade-templates) (`@can`, `@cannot`, `@canany`) can receive an array as the second argument. These array elements are passed as parameters to gate, and can be used for additional context when making authorization decisions:
+
+    use Illuminate\Support\Facades\Gate;
 
     Gate::define('create-post', function ($user, $category, $extraFlag) {
         return $category->group > 3 && $extraFlag === true;
@@ -144,6 +158,8 @@ So far, we have only examined gates that return simple boolean values. However, 
 
 When returning an authorization response from your gate, the `Gate::allows` method will still return a simple boolean value; however, you may use the `Gate::inspect` method to get the full authorization response returned by the gate:
 
+    use Illuminate\Support\Facades\Gate;
+
     $response = Gate::inspect('edit-settings', $post);
 
     if ($response->allowed()) {
@@ -154,6 +170,8 @@ When returning an authorization response from your gate, the `Gate::allows` meth
 
 Of course, when using the `Gate::authorize` method to throw an `AuthorizationException` if the action is not authorized, the error message provided by the authorization response will be propagated to the HTTP response:
 
+    use Illuminate\Support\Facades\Gate;
+
     Gate::authorize('edit-settings', $post);
 
     // The action is authorized...
@@ -162,6 +180,8 @@ Of course, when using the `Gate::authorize` method to throw an `AuthorizationExc
 ### Intercepting Gate Checks
 
 Sometimes, you may wish to grant all abilities to a specific user. You may use the `before` method to define a callback that is run before all other authorization checks:
+
+    use Illuminate\Support\Facades\Gate;
 
     Gate::before(function ($user, $ability) {
         if ($user->isSuperAdmin()) {
@@ -172,6 +192,8 @@ Sometimes, you may wish to grant all abilities to a specific user. You may use t
 If the `before` callback returns a non-null result that result will be considered the result of the check.
 
 You may use the `after` method to define a callback to be executed after all other authorization checks:
+
+    use Illuminate\Support\Facades\Gate;
 
     Gate::after(function ($user, $ability, $result, $arguments) {
         if ($user->isSuperAdmin()) {
@@ -310,6 +332,8 @@ So far, we have only examined policy methods that return simple boolean values. 
 
 When returning an authorization response from your policy, the `Gate::allows` method will still return a simple boolean value; however, you may use the `Gate::inspect` method to get the full authorization response returned by the gate:
 
+    use Illuminate\Support\Facades\Gate;
+
     $response = Gate::inspect('update', $post);
 
     if ($response->allowed()) {
@@ -319,6 +343,8 @@ When returning an authorization response from your policy, the `Gate::allows` me
     }
 
 Of course, when using the `Gate::authorize` method to throw an `AuthorizationException` if the action is not authorized, the error message provided by the authorization response will be propagated to the HTTP response:
+
+    use Illuminate\Support\Facades\Gate;
 
     Gate::authorize('update', $post);
 
@@ -426,6 +452,8 @@ In this example, we're passing the `can` middleware two arguments. The first is 
 
 Again, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the middleware. The class name will be used to determine which policy to use when authorizing the action:
 
+    use Illuminate\Support\Facades\Route;
+
     Route::post('/post', function () {
         // The current user may create posts...
     })->middleware('can:create,App\Post');
@@ -448,9 +476,9 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
         /**
          * Update the given blog post.
          *
-         * @param  Request  $request
-         * @param  Post  $post
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \App\Post  $post
+         * @return \Illuminate\Http\Response
          * @throws \Illuminate\Auth\Access\AuthorizationException
          */
         public function update(Request $request, Post $post)
@@ -468,8 +496,8 @@ As previously discussed, some actions like `create` may not require a model inst
     /**
      * Create a new blog post.
      *
-     * @param  Request  $request
-     * @return Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create(Request $request)
@@ -491,7 +519,6 @@ The `authorizeResource` method accepts the model's class name as its first argum
 
     use App\Http\Controllers\Controller;
     use App\Post;
-    use Illuminate\Http\Request;
 
     class PostController extends Controller
     {
@@ -533,6 +560,8 @@ When writing Blade templates, you may wish to display a portion of the page only
     @endcannot
 
 These directives are convenient shortcuts for writing `@if` and `@unless` statements. The `@can` and `@cannot` statements above respectively translate to the following statements:
+
+    use Illuminate\Support\Facades\Auth;
 
     @if (Auth::user()->can('update', $post))
         <!-- The Current User Can Update The Post -->
@@ -583,12 +612,14 @@ When authorizing actions using policies, you may pass an array as the second arg
 
 When attempting to determine if the authenticated user can update a given post, we can invoke this policy method like so:
 
+    use App\Post;
+
     /**
      * Update the given blog post.
      *
-     * @param  Request  $request
-     * @param  Post  $post
-     * @return Response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Post $post)
