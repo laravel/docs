@@ -2359,6 +2359,8 @@ For the inverse of `blank`, see the [`filled`](#method-filled) method.
 
 The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners:
 
+    use App\Events\UserRegistered;
+
     broadcast(new UserRegistered($user));
 
 <a name="method-cache"></a>
@@ -2491,6 +2493,8 @@ The `env` function retrieves the value of an [environment variable](/docs/{{vers
 
 The `event` function dispatches the given [event](/docs/{{version}}/events) to its listeners:
 
+    use App\Events\UserRegistered;
+
     event(new UserRegistered($user));
 
 <a name="method-factory"></a>
@@ -2583,7 +2587,7 @@ The `optional` function accepts any argument and allows you to access properties
 The `optional` function also accepts a Closure as its second argument. The Closure will be invoked if the value provided as the first argument is not null:
 
     return optional(User::find($id), function ($user) {
-        return new DummyUser;
+        return new \App\DummyUser;
     });
 
 <a name="method-policy"></a>
