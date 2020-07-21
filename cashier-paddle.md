@@ -36,7 +36,7 @@
     - [Simple Charge](#simple-charge)
     - [Charging Products](#charging-products)
     - [Refunding Orders](#refunding-orders)
-- [Transactions](#transactions)
+- [Receipts](#receipts)
     - [Past & Upcoming Payments](#past-and-upcoming-payments)
 - [Testing](#testing)
 
@@ -65,7 +65,7 @@ First, require the Cashier package for Paddle with Composer:
 
 #### Database Migrations
 
-The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table as well as create new `subscriptions` table to hold all of your customer's subscriptions and a `receipts` table to hold all of your receipts:
+The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table as well as a new `subscriptions` table to hold all of your customer's subscriptions and a `receipts` table to hold all of your receipts:
 
     php artisan migrate
 
