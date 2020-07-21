@@ -94,7 +94,7 @@ Before using Cashier, you must add the `Billable` trait to your user model defin
         use Billable;
     }
 
-If you have billable entities that are not users, you may add the trait to those classes:
+If you have billable entities that are not users, you may also add the trait to those classes:
 
     use Laravel\Paddle\Billable;
 
