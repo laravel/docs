@@ -65,7 +65,7 @@ First, require the Cashier package for Paddle with Composer:
 
 #### Database Migrations
 
-The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table as well as a new `subscriptions` table to hold all of your customer's subscriptions and a `receipts` table to hold all of your receipts:
+The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table. In addition, a new `subscriptions` table will be created to store all of your customer's subscriptions. Finally, a new `receipts` table will be created to store all of your receipt information:
 
     php artisan migrate
 
@@ -85,7 +85,7 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 <a name="billable-model"></a>
 ### Billable Model
 
-Before using Cashier, you must add the `Billable` trait to your model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons and updating payment method information:
+Before using Cashier, you must add the `Billable` trait to your user model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons and updating payment method information:
 
     use Laravel\Paddle\Billable;
 
@@ -94,7 +94,7 @@ Before using Cashier, you must add the `Billable` trait to your model definition
         use Billable;
     }
 
-The trait can be implemented on other types of models in the same app as well:
+If you have billable entities that are not users, you may add the trait to those classes:
 
     use Laravel\Paddle\Billable;
 
@@ -201,11 +201,11 @@ Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/
 <a name="user-identification"></a>
 ### User Identification
 
-In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to update a user's details such as their email address. When generating pay links, Paddle identifies users using the `customer_email` parameter. When creating a subscription, Paddle will try to match the user provided email to an existing Paddle user. It is also possible that Paddle can update the `user_id` of a subscription at random without Cashier knowing about it since there isn't a webhook that's fired when this happens.
+In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to update a user's details such as their email address. When generating pay links, Paddle identifies users using the `customer_email` parameter. When creating a subscription, Paddle will try to match the user provided email to an existing Paddle user.
 
-In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, you should be aware that even though subscriptions in Cashier are tied to the same app user, **they could be tied to different users within Paddle**. Secondly, each subscription has its own connected payment information and could also have different email addresses (dependending on which was used to create the subscription).
+In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, you should be aware that even though subscriptions in Cashier are tied to the same application user, **they could be tied to different users within Paddle's internal systems**. Secondly, each subscription has its own connected payment method information and could also have different email addresses within Paddle's internal systems (depending on which email was assigned to the user when the subscription was created).
 
-Therefor, when displaying subscriptions you should always inform the user which email address or payment information is connected to the subscription on a per-subscription basis. Retrieving this information can be done with the following methods on the `Subscription` model:
+Therefore, when displaying subscriptions you should always inform the user which email address or payment method information is connected to the subscription on a per-subscription basis. Retrieving this information can be done with the following methods on the `Subscription` model:
 
     $subscription = $user->subscription('default');
 
@@ -294,7 +294,7 @@ You may display the original listed prices (without coupon discounts) using the 
         @endforeach
     </ul>
 
-> {note} When using the prices API, Paddle only allows to apply coupons on one-time products at the moment and not to subscription plans.
+> {note} When using the prices API, Paddle only allows to apply coupons to one-time purchase products and not to subscription plans.
 
 <a name="customers"></a>
 ## Customers
@@ -618,7 +618,7 @@ To resume a paused a subscription, you may call the `unpause` method on the user
 
     $user->subscription('default')->unpause();
 
-> {note} When a subscription is paused it cannot be modified. If you want to swap to a different plan or update quantities you'll have to resume the subscription first.
+> {note} A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first.
 
 <a name="cancelling-subscriptions"></a>
 ### Cancelling Subscriptions
@@ -687,7 +687,9 @@ If you would like to offer trial periods without collecting the user's payment m
         // Other user properties...
     ]);
 
-    $user->createAsCustomer(['trial_ends_at' => now()->addDays(10)]);
+    $user->createAsCustomer([
+        'trial_ends_at' => now()->addDays(10)
+    ]);
 
 Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the `User` instance will return `true` if the current date is not past the value of `trial_ends_at`:
 
