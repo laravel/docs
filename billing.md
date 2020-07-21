@@ -1050,6 +1050,7 @@ If you need to refund a Stripe charge, you may use the `refund` method. This met
 
 <a name="invoices"></a>
 ## Invoices
+
 <a name="retrieving-invoices"></a>
 ### Retrieving Invoices
 
