@@ -43,7 +43,7 @@
     - [Charge With Invoice](#charge-with-invoice)
     - [Refunding Charges](#refunding-charges)
 - [Invoices](#invoices)
-    - [Retrieving Invoices](#)
+    - [Retrieving Invoices](#retrieving-invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 - [Handling Failed Payments](#handling-failed-payments)
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
