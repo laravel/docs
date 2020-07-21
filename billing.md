@@ -1061,11 +1061,11 @@ You may easily retrieve an array of a billable model's invoices using the `invoi
     // Include pending invoices in the results...
     $invoices = $user->invoicesIncludingPending();
 
-To retrieve a specific invoice, use the `findInvoice` method:
+You may use the `findInvoice` method to retrieve a specific invoice:
 
     $invoice = $user->findInvoice($invoiceId);
 
-### Displaying Invoice Information
+#### Displaying Invoice Information
 
 When listing the invoices for the customer, you may use the invoice's helper methods to display the relevant invoice information. For example, you may wish to list every invoice in a table, allowing the user to easily download any of them:
 
