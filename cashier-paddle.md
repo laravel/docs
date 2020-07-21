@@ -201,7 +201,7 @@ Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/
 <a name="user-identification"></a>
 ### User Identification
 
-In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to update a user's details such as their email address. When generating pay links, Paddle identifies users using the `customer_email` parameter. When creating a subscription, Paddle will try to match the user provided email to an existing Paddle user.
+In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to update a user's details such as their email address. When generating pay links, Paddle identifies users using the `customer_email` parameter. When creating a subscription, Paddle will try to match the user provided email to an existing Paddle user. It is also possible that Paddle can update the `user_id` of a subscription at random without Cashier knowing about it since there isn't a webhook that's fired when this happens.
 
 In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, you should be aware that even though subscriptions in Cashier are tied to the same app user, **they could be tied to different users within Paddle**. Secondly, each subscription has its own connected payment information and could also have different email addresses (dependending on which was used to create the subscription).
 
@@ -294,7 +294,7 @@ You may display the original listed prices (without coupon discounts) using the 
         @endforeach
     </ul>
 
-> {note} Paddle only allows to apply coupons on one-time products at the moment and not to subscription plans.
+> {note} When using the prices API, Paddle only allows to apply coupons on one-time products at the moment and not to subscription plans.
 
 <a name="customers"></a>
 ## Customers
