@@ -14,7 +14,6 @@
     - [User Identification](#user-identification)
 - [Prices](#prices)
 - [Customers](#customers)
-    - [Retrieving Customers](#retrieving-customers)
     - [Customer Defaults](#customer-defaults)
 - [Subscriptions](#subscriptions)
     - [Creating Subscriptions](#creating-subscriptions)
@@ -37,7 +36,7 @@
     - [Simple Charge](#simple-charge)
     - [Charging Products](#charging-products)
     - [Refunding Orders](#refunding-orders)
-- [Transactions](#transactions)
+- [Receipts](#receipts)
     - [Past & Upcoming Payments](#past-and-upcoming-payments)
 - [Testing](#testing)
 
@@ -66,7 +65,7 @@ First, require the Cashier package for Paddle with Composer:
 
 #### Database Migrations
 
-The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table as well as create a new `subscriptions` table to hold all of your customer's subscriptions:
+The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table. In addition, a new `subscriptions` table will be created to store all of your customer's subscriptions. Finally, a new `receipts` table will be created to store all of your receipt information:
 
     php artisan migrate
 
@@ -86,7 +85,7 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 <a name="billable-model"></a>
 ### Billable Model
 
-Before using Cashier, you must add the `Billable` trait to your model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons and updating payment method information:
+Before using Cashier, you must add the `Billable` trait to your user model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons and updating payment method information:
 
     use Laravel\Paddle\Billable;
 
@@ -95,11 +94,14 @@ Before using Cashier, you must add the `Billable` trait to your model definition
         use Billable;
     }
 
-Cashier assumes your Billable model will be the `App\User` class that ships with Laravel. If you wish to change this you can specify a different model in your `.env` file:
+If you have billable entities that are not users, you may also add the trait to those classes:
 
-    CASHIER_MODEL=App\User
+    use Laravel\Paddle\Billable;
 
-> {note} If you're using a model other than Laravel's supplied `App\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model's table name.
+    class Team extends Model
+    {
+        use Billable;
+    }
 
 <a name="api-keys"></a>
 ### API Keys
@@ -201,9 +203,18 @@ Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/
 
 In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to update a user's details such as their email address. When generating pay links, Paddle identifies users using the `customer_email` parameter. When creating a subscription, Paddle will try to match the user provided email to an existing Paddle user.
 
-In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, when a new subscription is created we will save the `customer_email` value in the database in the user's `paddle_email` column. **It is extremely important that you do not modify this value.** Cashier will use the `paddle_email` value for every new subscription and [pay link](#pay-links) to ensure all transactions are linked to the same customer within Paddle. Furthermore, this will ensure that you can assign multiple Paddle subscriptions to a single user using Cashier. A caveat of this is that any [override of the `customerEmail` method](#customer-defaults) on a billable user won't work anymore after the initial subscription has been created.
+In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, you should be aware that even though subscriptions in Cashier are tied to the same application user, **they could be tied to different users within Paddle's internal systems**. Secondly, each subscription has its own connected payment method information and could also have different email addresses within Paddle's internal systems (depending on which email was assigned to the user when the subscription was created).
 
-There is currently no way to modify a user's email address through the Paddle API. When a user wants to update their email address within Paddle, the only way for them to do so is to contact Paddle customer support. In addition, even if a customer does contact Paddle customer support to change their email, we will not know that the email address has been updated because Paddle does not provide a webhook to observe these changes. Therefore, to make sure everything stays in sync, we recommend that you should make customer email change requests to Paddle on their behalf so that you can update the email address in your database manually once Paddle has updated it within their system. When communicating with Paddle, you may wish to provide the `paddle_id` value of the user to assist Paddle in updating the correct user.
+Therefore, when displaying subscriptions you should always inform the user which email address or payment method information is connected to the subscription on a per-subscription basis. Retrieving this information can be done with the following methods on the `Subscription` model:
+
+    $subscription = $user->subscription('default');
+
+    $customerEmailAddress = $subscription->paddleEmail();
+    $cardBrand = $subscription->cardBrand();
+    $cardLastFour = $subscription->cardLastFour();
+    $cardExpirationDate = $subscription->cardExpirationDate();
+
+There is currently no way to modify a user's email address through the Paddle API. When a user wants to update their email address within Paddle, the only way for them to do so is to contact Paddle customer support. When communicating with Paddle, they need to provide the `paddleEmail` value of the subscription to assist Paddle in updating the correct user.
 
 <a name="prices"></a>
 ## Prices
@@ -238,6 +249,14 @@ You may also display the net price (excludes tax) and display the tax amount sep
         @endforeach
     </ul>
 
+If you retrieved prices for subscription plans you can display their initial and recurring price separately:
+
+    <ul>
+        @foreach ($prices as $price)
+            <li>{{ $price->product_title }} - Initial: {{ $price->initialPrice()->gross() }} - Recurring: {{ $price->recurringPrice()->gross() }}</li>
+        @endforeach
+    </ul>
+
 For more information, [check Paddle's API documentation on prices](https://developer.paddle.com/api-reference/checkout-api/prices/getprices).
 
 #### Customers
@@ -247,7 +266,7 @@ If a user is already a customer and you would like to display the prices that ap
     use App\User;
 
     // Retrieve prices for two products...
-    $prices = User::productPrices([123, 456]);
+    $prices = User::find(1)->productPrices([123, 456]);
 
 Internally, Cashier will use the user's [`paddleCountry` method](#customer-defaults) to retrieve the prices in their currency. So, for example, a user living in the United States will see prices in USD while a user in Belgium will see prices in EUR. If no matching currency can be found the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
 
@@ -275,17 +294,10 @@ You may display the original listed prices (without coupon discounts) using the 
         @endforeach
     </ul>
 
+> {note} When using the prices API, Paddle only allows to apply coupons to one-time purchase products and not to subscription plans.
+
 <a name="customers"></a>
 ## Customers
-
-<a name="retrieving-customers"></a>
-### Retrieving Customers
-
-You can retrieve a customer by their Paddle user ID using the `Cashier::findBillable` method. This will return an instance of the Billable model:
-
-    use Laravel\Paddle\Cashier;
-
-    $user = Cashier::findBillable($paddleId);
 
 <a name="customer-defaults"></a>
 ### Customer Defaults
@@ -386,7 +398,7 @@ You can also pass an array of metadata using the `withMetadata` method:
         ->withMetadata(['key' => 'value'])
         ->create();
 
-> {note} When providing metadata, please avoid using `customer_id` and `subscription_name` as metadata keys. These keys are reserved for internal use by Cashier.
+> {note} When providing metadata, please avoid using `subscription_name` as a metadata key. This key is reserved for internal use by Cashier.
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
@@ -606,6 +618,8 @@ To resume a paused a subscription, you may call the `unpause` method on the user
 
     $user->subscription('default')->unpause();
 
+> {note} A subscription cannot be modified while it is paused. If you want to swap to a different plan or update quantities you must resume the subscription first.
+
 <a name="cancelling-subscriptions"></a>
 ### Cancelling Subscriptions
 
@@ -667,14 +681,15 @@ You may choose to define how many trial days your plan's receive in the Paddle d
 <a name="without-payment-method-up-front"></a>
 ### Without Payment Method Up Front
 
-If you would like to offer trial periods without collecting the user's payment method information up front, you may set the `trial_ends_at` column on the user record to your desired trial ending date. This is typically done during user registration:
+If you would like to offer trial periods without collecting the user's payment method information up front, you may set the `trial_ends_at` column on the customer record attached to your user to your desired trial ending date. This is typically done during user registration:
 
     $user = User::create([
         // Other user properties...
-        'trial_ends_at' => now()->addDays(10),
     ]);
 
-> {note} Be sure to add a [date mutator](/docs/{{version}}/eloquent-mutators#date-mutators) for `trial_ends_at` to your model definition.
+    $user->createAsCustomer([
+        'trial_ends_at' => now()->addDays(10)
+    ]);
 
 Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the `User` instance will return `true` if the current date is not past the value of `trial_ends_at`:
 
@@ -712,7 +727,8 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 - Subscription Created
 - Subscription Updated
 - Subscription Deleted
-- Payment Success (One-off purchases)
+- Payment Succeeded
+- Subscription Payment Succeeded
 
 > {note} Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/cashier-paddle#verifying-webhook-signatures) middleware.
 
@@ -727,7 +743,7 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellation on failed charges, but if you have additional webhook events you would like to handle, you should extend the `WebhookController`. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `payment_success` webhook, you should add a `handlePaymentSuccess` method to the controller:
+Cashier automatically handles subscription cancellation on failed charges, but if you have additional webhook events you would like to handle, you should extend the `WebhookController`. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `payment_succeeded` webhook, you should add a `handlePaymentSucceeded` method to the controller:
 
     <?php
 
@@ -738,12 +754,12 @@ Cashier automatically handles subscription cancellation on failed charges, but i
     class WebhookController extends CashierController
     {
         /**
-         * Handle payment success.
+         * Handle payment succeeded.
          *
          * @param  array  $payload
          * @return \Symfony\Component\HttpFoundation\Response
          */
-        public function handlePaymentSuccess($payload)
+        public function handlePaymentSucceeded($payload)
         {
             // Handle The Event
         }
@@ -839,37 +855,37 @@ The `chargeProduct` method accepts an array as its second argument, allowing you
 <a name="refunding-orders"></a>
 ### Refunding Orders
 
-If you need to refund a Paddle order, you may use the `refund` method. This method accepts the Paddle Order ID as its first argument. You may retrieve transactions for a given billable entity using the `transactions` method:
+If you need to refund a Paddle order, you may use the `refund` method. This method accepts the Paddle Order ID as its first argument. You may retrieve receipts for a given billable entity using the `receipts` method:
 
-    $transaction = $user->transactions()->first();
+    $receipt = $user->receipts()->first();
 
-    $refundRequestId = $user->refund(transaction->order_id);
+    $refundRequestId = $user->refund($receipt->order_id);
 
 You may also optionally specify a specific amount to refund as well as a reason for the refund:
 
-    $transaction = $user->transactions()->first();
+    $receipt = $user->receipts()->first();
 
     $refundRequestId = $user->refund(
-        transaction->order_id, 5.00, 'Unused product time'
+        $receipt->order_id, 5.00, 'Unused product time'
     );
 
 > {tip} You can use the `$refundRequestId` as a reference for the refund when contacting Paddle support.
 
-<a name="transactions"></a>
-## Transactions
+<a name="receipts"></a>
+## Receipts
 
-You may easily retrieve an array of a billable model's transactions using the `transactions` method:
+You may easily retrieve an array of a billable model's receipts using the `receipts` method:
 
-    $transactions = $user->transactions();
+    $receipts = $user->receipts();
 
-When listing the transactions for the customer, you may use the transaction's helper methods to display the relevant transaction information. For example, you may wish to list every transaction in a table, allowing the user to easily download any of the receipts:
+When listing the receipts for the customer, you may use the receipt's helper methods to display the relevant receipt information. For example, you may wish to list every receipt in a table, allowing the user to easily download any of the receipts:
 
     <table>
-        @foreach ($transactions as $transaction)
+        @foreach ($receipts as $receipt)
             <tr>
-                <td>{{ $transaction->date()->toFormattedDateString() }}</td>
-                <td>{{ $transaction->amount() }}</td>
-                <td><a href="{{ $transaction->receipt() }}" target="_blank">Download</a></td>
+                <td>{{ $receipt->paid_at->toFormattedDateString() }}</td>
+                <td>{{ $receipt->amount() }}</td>
+                <td><a href="{{ $receipt->receipt_url }}" target="_blank">Download</a></td>
             </tr>
         @endforeach
     </table>
