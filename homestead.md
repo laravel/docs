@@ -227,9 +227,9 @@ If you change the `sites` property after provisioning the Homestead box, you sho
 
 > {note} Homestead scripts are built to be as idempotent as possible. However, if you are experiencing issues while provisioning you should destroy and rebuild the machine via `vagrant destroy && vagrant up`.
 
-#### Enable or Disable Services
+#### Enable / Disable Services
 
-Homestead starts several services by default however if your configuration overrides one of these defaults you can specify which services you would like to enable or disable during provisioning. For example if you only needed PostgreSQL 12 your `services:` configuration in `Homestead.yaml` might look like:
+Homestead starts several services by default; however, you may customize which services are enabled or disabled during provisioning. For example, you may enable PostgreSQL and disable MySQL:
 
     services:
         - enabled:
@@ -237,7 +237,7 @@ Homestead starts several services by default however if your configuration overr
         - disabled:
             - "mysql"
 
-This configuration would ensure `postgresql@12-main` service would be enabled and `mysql` would be disabled from starting at boot. The specified services will also be started or stopped based on their location in `enabled` and `disabled` sections.
+The specified services will be started or stopped based on their order in the `enabled` and `disabled` directives.
 
 <a name="hostname-resolution"></a>
 #### Hostname Resolution
@@ -472,7 +472,7 @@ After updating the `Homestead.yaml`, be sure to re-provision the machine by runn
 <a name="wildcard-ssl"></a>
 ### Wildcard SSL
 
-Homestead configures a self-signed SSL certificate for each site defined in the `sites:` section of your `Homestead.yaml` file. If you would like to generate a wildcard SSL certificate for a site you may add a `wildcard` option to that site's configuration. By default the site will use the wild card certificate *instead* of the specific domain certificate.
+Homestead configures a self-signed SSL certificate for each site defined in the `sites:` section of your `Homestead.yaml` file. If you would like to generate a wildcard SSL certificate for a site you may add a `wildcard` option to that site's configuration. By default, the site will use the wildcard certificate *instead* of the specific domain certificate:
 
     - map: foo.domain.test
       to: /home/vagrant/domain
