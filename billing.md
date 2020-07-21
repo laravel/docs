@@ -1049,7 +1049,7 @@ If you need to refund a Stripe charge, you may use the `refund` method. This met
 
 <a name="invoices"></a>
 ## Invoices
-
+### Retrieving Invoices
 You may easily retrieve an array of a billable model's invoices using the `invoices` method:
 
     $invoices = $user->invoices();
@@ -1057,6 +1057,11 @@ You may easily retrieve an array of a billable model's invoices using the `invoi
     // Include pending invoices in the results...
     $invoices = $user->invoicesIncludingPending();
 
+To retrieve a specific invoice, use the `findInvoice` method:
+
+    $invoice = $user->findInvoice($invoiceId);
+
+### Displaying Invoice Information
 When listing the invoices for the customer, you may use the invoice's helper methods to display the relevant invoice information. For example, you may wish to list every invoice in a table, allowing the user to easily download any of them:
 
     <table>
