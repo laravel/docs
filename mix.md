@@ -350,7 +350,7 @@ You may inject environment variables into Mix by prefixing a key in your `.env` 
 
     MIX_SENTRY_DSN_PUBLIC=http://example.com
 
-After the variable has been defined in your `.env` file, you may access via the `process.env` object. If the value changes while you are running a `watch` task, you will need to restart the task:
+After the variable has been defined in your `.env` file, you may access it via the `process.env` object. If the value changes while you are running a `watch` task, you will need to restart the task:
 
     process.env.MIX_SENTRY_DSN_PUBLIC
 
