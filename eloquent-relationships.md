@@ -977,7 +977,7 @@ If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesn
         $query->where('content', 'like', 'foo%');
     })->get();
 
-You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts with comments from authors that are not banned:
+You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments and posts that have comments from authors that are not banned:
 
     use Illuminate\Database\Eloquent\Builder;
 
