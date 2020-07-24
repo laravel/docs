@@ -915,13 +915,11 @@ The `queue:failed` command will list the job ID, connection, queue, and failure 
 
     php artisan queue:retry 5
 
-Also, you can use multiple IDs:
+If necessary, you may pass multiple IDs or an ID range (when using numeric IDs) to the command:
 
     php artisan queue:retry 5 6 7 8 9 10
 
-Or IDs range (only valid with numeric IDs):
-
-    php artisan queue:retry --range 5-10
+    php artisan queue:retry --range=5-10
 
 To retry all of your failed jobs, execute the `queue:retry` command and pass `all` as the ID:
 
