@@ -16,7 +16,7 @@ Laravel makes interacting with databases extremely simple across a variety of da
 <div class="content-list" markdown="1">
 - MySQL 5.6+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
 - PostgreSQL 9.4+ ([Version Policy](https://www.postgresql.org/support/versioning/))
-- SQLite 3.8.8+
+- SQLite 3.31.0+
 - SQL Server 2017+ ([Version Policy](https://support.microsoft.com/en-us/lifecycle/search))
 </div>
 
