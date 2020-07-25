@@ -270,7 +270,7 @@ You can also use the `sectionMissing` directive to check if a section does not h
 
     @sectionMissing('navigation')
         <div class="pull-right">
-            @yield('default-navigation')
+            @include('default-navigation')
         </div>
     @endif
 
