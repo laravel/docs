@@ -266,6 +266,14 @@ You may check if a section has content using the `@hasSection` directive:
         <div class="clearfix"></div>
     @endif
 
+You can also use the `sectionMissing` directive to check if a section does not have content:
+
+    @sectionMissing('navigation')
+        <div class="pull-right">
+            @yield('default-navigation')
+        </div>
+    @endif
+
 #### Environment Directives
 
 You may check if the application is running in the production environment using the `@production` directive:
