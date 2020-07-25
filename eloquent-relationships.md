@@ -1268,6 +1268,12 @@ In this example, Eloquent will only eager load posts where the post's `title` co
 
 > {note} The `limit` and `take` query builder methods may not be used when constraining eager loads.
 
+Eager loading on the subquery is also possible:
+
+    $users = App\User::with(['posts' => function ($query) {
+        $query->orderBy('created_at', 'desc')->with('comments');
+    }])->get();
+
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
