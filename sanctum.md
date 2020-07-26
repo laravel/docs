@@ -173,7 +173,7 @@ Next, you should add Sanctum's middleware to your `api` middleware group within 
 
 If you are having trouble authenticating with your application from an SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
 
-You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True` by setting the `supports_credentials` option within your application's `cors` configuration file to `true`.
+You should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True` by setting the `supports_credentials` option within your application's `cors` configuration file to `true` and to allow SPA domain to access the resource from Laravel backend using `Access-Control-Allow-Origin` set `paths` value in your application's `cors` configuration file to `['api/*','sanctum/csrf-cookie','login','logout']`.
 
 In addition, you should enable the `withCredentials` option on your global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file:
 
