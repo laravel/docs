@@ -11,6 +11,7 @@
 - [Sharing Sites](#sharing-sites)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Proxying Services](#proxying-services)
+- [Configuration Tuning](#configuration-tuning)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
@@ -223,6 +224,32 @@ You may remove a proxy using the `unproxy` command:
 You may use the `proxies` command to list all site configuration that are proxied:
 
     valet proxies
+
+<a name="configuration-tuning"></a>
+## Configuration Tuning
+
+Valet implements a configuration footprint intended to be friendly about how much it demands of PC resources typically available to local development environments.
+
+If your development projects demand increased limits, the following configuration settings are the most likely to be of interest:
+
+    /usr/local/etc/php/X.X/php-fpm.d/valet-fpm.conf
+        pm.max_children = 5  # bursts of traffic to a Valet domain or large queue volume may demand a higher number of simultaneous requests
+
+    /usr/local/etc/php/X.X/conf.d/php-memory-limits.ini
+        memory_limit = 512M
+        upload_max_filesize = 512M
+        post_max_size = 512M
+
+    /usr/local/etc/nginx/valet/valet.conf
+        client_max_body_size 128M;
+
+    /usr/local/etc/php/X.X/conf.d/*.ini
+        TIP! You can add your own custom php.ini alterations as *.ini files in this directory, without editing the master php.ini file!!
+
+    /Users/your_username/.config/valet/dnsmasq.d/*.conf
+        TIP! You can put your own customer dnsmasq config directives in *.conf files here, such as logging and fallback nameservers
+
+See the [Valet Directories & Files](#valet-directories-and-files) section below for additional technical information.
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
