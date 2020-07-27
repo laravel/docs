@@ -266,7 +266,7 @@ You may check if a section has content using the `@hasSection` directive:
         <div class="clearfix"></div>
     @endif
 
-You can also use the `sectionMissing` directive to check if a section does not have content:
+You may use the `sectionMissing` directive to determine if a section does not have content:
 
     @sectionMissing('navigation')
         <div class="pull-right">
