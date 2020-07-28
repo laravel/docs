@@ -653,4 +653,20 @@ Laravel raises a variety of [events](/docs/{{version}}/events) during the authen
         'Illuminate\Auth\Events\PasswordReset' => [
             'App\Listeners\LogPasswordReset',
         ],
+        
+        'Illuminate\Auth\Events\CurrentDeviceLogout' => [
+            'App\Listeners\LogCurrentDeviceLogout',
+        ],
+        
+        'Illuminate\Auth\Events\OtherDeviceLogout' => [
+            'App\Listeners\LogOtherDeviceLogout',
+        ],
+        
+        'Illuminate\Auth\Events\Validated' => [
+            'App\Listeners\LogValidated',
+        ],
+        
+        'Illuminate\Auth\Events\Verified' => [
+            'App\Listeners\LogVerified',
+        ],
     ];
