@@ -327,6 +327,11 @@ You may remove a cookie using the `forget` method of the `Cookie` facade.
 
     Cookie::queue(Cookie::forget('name'));
 
+Alternatively, the cookie removal may be added to the response.
+
+    $cookie = Cookie::forget('name');
+    return response('Hello World')->withCookie($cookie);
+
 #### Generating Cookie Instances
 
 If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be given to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
