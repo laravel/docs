@@ -321,17 +321,6 @@ Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment
 
     Cookie::queue('name', 'value', $minutes);
 
-#### Removing Cookies From The Client
-
-You may remove a cookie using the `forget` method of the `Cookie` facade.
-
-    Cookie::queue(Cookie::forget('name'));
-
-Alternatively, the cookie removal may be added to the response.
-
-    $cookie = Cookie::forget('name');
-    return response('Hello World')->withCookie($cookie);
-
 #### Generating Cookie Instances
 
 If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be given to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
@@ -339,6 +328,18 @@ If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instan
     $cookie = cookie('name', 'value', $minutes);
 
     return response('Hello World')->cookie($cookie);
+
+#### Expiring Cookies Early
+
+You may remove a cookie by expiring it via the `forget` method of the `Cookie` facade:
+
+    Cookie::queue(Cookie::forget('name'));
+
+Alternatively, you may attach the expired cookie to a response instance:
+
+    $cookie = Cookie::forget('name');
+
+    return response('Hello World')->withCookie($cookie);
 
 <a name="files"></a>
 ## Files
