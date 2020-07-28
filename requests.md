@@ -329,6 +329,18 @@ If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instan
 
     return response('Hello World')->cookie($cookie);
 
+#### Expiring Cookies Early
+
+You may remove a cookie by expiring it via the `forget` method of the `Cookie` facade:
+
+    Cookie::queue(Cookie::forget('name'));
+
+Alternatively, you may attach the expired cookie to a response instance:
+
+    $cookie = Cookie::forget('name');
+
+    return response('Hello World')->withCookie($cookie);
+
 <a name="files"></a>
 ## Files
 
