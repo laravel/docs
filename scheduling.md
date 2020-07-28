@@ -126,7 +126,7 @@ Method  | Description
 `->weeklyOn(1, '8:00');`  |  Run the task every week on Monday at 8:00
 `->monthly();`  |  Run the task on the first day of every month at 00:00
 `->monthlyOn(4, '15:00');`  |  Run the task every month on the 4th at 15:00
-`->monthlyOnLastDay('15:00');` | Run the task on the last day of the month at 15:00
+`->lastDayOfMonth('15:00');` | Run the task on the last day of the month at 15:00
 `->quarterly();` |  Run the task on the first day of every quarter at 00:00
 `->yearly();`  |  Run the task on the first day of every year at 00:00
 `->timezone('America/New_York');` | Set the timezone
