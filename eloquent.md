@@ -1049,6 +1049,17 @@ This command will place the new observer in your `App/Observers` directory. If t
         {
             //
         }
+        
+        /**
+         * Handle the User "saved" event.
+         *
+         * @param  \App\User  $user
+         * @return void
+         */
+        public function saved(User $user)
+        {
+            //
+        }
 
         /**
          * Handle the User "updated" event.
