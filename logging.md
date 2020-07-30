@@ -187,7 +187,7 @@ Once you have configured the `tap` option on your channel, you're ready to defin
     <?php
 
     namespace App\Logging;
-    
+
     use Monolog\Formatter\LineFormatter;
 
     class CustomizeFormatter

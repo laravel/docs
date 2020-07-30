@@ -106,12 +106,19 @@ Method  | Description
 ------------- | -------------
 `->cron('* * * * *');`  |  Run the task on a custom Cron schedule
 `->everyMinute();`  |  Run the task every minute
+`->everyTwoMinutes();`  |  Run the task every two minutes
+`->everyThreeMinutes();`  |  Run the task every three minutes
+`->everyFourMinutes();`  |  Run the task every four minutes
 `->everyFiveMinutes();`  |  Run the task every five minutes
 `->everyTenMinutes();`  |  Run the task every ten minutes
 `->everyFifteenMinutes();`  |  Run the task every fifteen minutes
 `->everyThirtyMinutes();`  |  Run the task every thirty minutes
 `->hourly();`  |  Run the task every hour
 `->hourlyAt(17);`  |  Run the task every hour at 17 minutes past the hour
+`->everyTwoHours();`  |  Run the task every two hours
+`->everyThreeHours();`  |  Run the task every three hours
+`->everyFourHours();`  |  Run the task every four hours
+`->everySixHours();`  |  Run the task every six hours
 `->daily();`  |  Run the task every day at midnight
 `->dailyAt('13:00');`  |  Run the task every day at 13:00
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
@@ -119,6 +126,7 @@ Method  | Description
 `->weeklyOn(1, '8:00');`  |  Run the task every week on Monday at 8:00
 `->monthly();`  |  Run the task on the first day of every month at 00:00
 `->monthlyOn(4, '15:00');`  |  Run the task every month on the 4th at 15:00
+`->lastDayOfMonth('15:00');` | Run the task on the last day of the month at 15:00
 `->quarterly();` |  Run the task on the first day of every quarter at 00:00
 `->yearly();`  |  Run the task on the first day of every year at 00:00
 `->timezone('America/New_York');` | Set the timezone
@@ -150,9 +158,18 @@ Method  | Description
 `->thursdays();`  |  Limit the task to Thursday
 `->fridays();`  |  Limit the task to Friday
 `->saturdays();`  |  Limit the task to Saturday
+`->days(array|mixed);`  |  Limit the task to specific days
 `->between($start, $end);`  |  Limit the task to run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
 `->environments($env);`  |  Limit the task to specific environments
+
+#### Day Constraints
+
+The `days` method may be used to limit the execution of a task to specific days of the week. For example, you may schedule a command to run hourly on Sundays and Wednesdays:
+
+    $schedule->command('reminders:send')
+                    ->hourly()
+                    ->days([0, 3]);
 
 #### Between Time Constraints
 
@@ -231,7 +248,7 @@ If needed, you may specify how many minutes must pass before the "without overla
 <a name="running-tasks-on-one-server"></a>
 ### Running Tasks On One Server
 
-> {note} To utilize this feature, your application must be using the `memcached` or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+> {note} To utilize this feature, your application must be using the `database`, `memcached`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 If your application is running on multiple servers, you may limit a scheduled job to only execute on a single server. For instance, assume you have a scheduled task that generates a new report every Friday night. If the task scheduler is running on three worker servers, the scheduled task will run on all three servers and generate the report three times. Not good!
 

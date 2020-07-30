@@ -498,7 +498,7 @@ The `diffAssoc` method compares the collection against another collection or a p
     $collection = collect([
         'color' => 'orange',
         'type' => 'fruit',
-        'remain' => 6
+        'remain' => 6,
     ]);
 
     $diff = $collection->diffAssoc([
@@ -765,7 +765,7 @@ You may optionally pass the function a "depth" argument:
             ['name' => 'iPhone 6S', 'brand' => 'Apple'],
         ],
         'Samsung' => [
-            ['name' => 'Galaxy S7', 'brand' => 'Samsung']
+            ['name' => 'Galaxy S7', 'brand' => 'Samsung'],
         ],
     ]);
 
@@ -998,11 +998,11 @@ The `intersect` method removes any values from the original collection that are 
 The `intersectByKeys` method removes any keys from the original collection that are not present in the given `array` or collection:
 
     $collection = collect([
-        'serial' => 'UX301', 'type' => 'screen', 'year' => 2009
+        'serial' => 'UX301', 'type' => 'screen', 'year' => 2009,
     ]);
 
     $intersect = $collection->intersectByKeys([
-        'reference' => 'UX404', 'type' => 'tab', 'year' => 2011
+        'reference' => 'UX404', 'type' => 'tab', 'year' => 2011,
     ]);
 
     $intersect->all();
@@ -1224,12 +1224,12 @@ The `mapWithKeys` method iterates through the collection and passes each value t
         [
             'name' => 'John',
             'department' => 'Sales',
-            'email' => 'john@example.com'
+            'email' => 'john@example.com',
         ],
         [
             'name' => 'Jane',
             'department' => 'Marketing',
-            'email' => 'jane@example.com'
+            'email' => 'jane@example.com',
         ]
     ]);
 
@@ -2268,7 +2268,7 @@ The `values` method returns a new collection with the keys reset to consecutive 
 
     $collection = collect([
         10 => ['product' => 'Desk', 'price' => 200],
-        11 => ['product' => 'Desk', 'price' => 200]
+        11 => ['product' => 'Desk', 'price' => 200],
     ]);
 
     $values = $collection->values();
@@ -2573,11 +2573,11 @@ The `whereNotNull` method filters items where the given key is not null:
         ['name' => null],
         ['name' => 'Bookcase'],
     ]);
-    
+
     $filtered = $collection->whereNotNull('name');
 
     $filtered->all();
-    
+
     /*
         [
             ['name' => 'Desk'],
@@ -2595,11 +2595,11 @@ The `whereNull` method filters items where the given key is null:
         ['name' => null],
         ['name' => 'Bookcase'],
     ]);
-    
+
     $filtered = $collection->whereNull('name');
 
     $filtered->all();
-    
+
     /*
         [
             ['name' => null],

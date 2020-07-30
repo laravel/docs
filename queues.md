@@ -831,7 +831,7 @@ You may define a `failed` method directly on your job class, allowing you to per
         /**
          * Create a new job instance.
          *
-         * @param  Podcast  $podcast
+         * @param  \App\Podcast  $podcast
          * @return void
          */
         public function __construct(Podcast $podcast)
@@ -842,7 +842,7 @@ You may define a `failed` method directly on your job class, allowing you to per
         /**
          * Execute the job.
          *
-         * @param  AudioProcessor  $processor
+         * @param  \App\AudioProcessor  $processor
          * @return void
          */
         public function handle(AudioProcessor $processor)
@@ -851,9 +851,9 @@ You may define a `failed` method directly on your job class, allowing you to per
         }
 
         /**
-         * The job failed to process.
+         * Handle a job failure.
          *
-         * @param  Exception  $exception
+         * @param  \Exception  $exception
          * @return void
          */
         public function failed(Exception $exception)
@@ -912,6 +912,12 @@ To view all of your failed jobs that have been inserted into your `failed_jobs` 
 The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
 
     php artisan queue:retry 5
+
+If necessary, you may pass multiple IDs or an ID range (when using numeric IDs) to the command:
+
+    php artisan queue:retry 5 6 7 8 9 10
+
+    php artisan queue:retry --range=5-10
 
 To retry all of your failed jobs, execute the `queue:retry` command and pass `all` as the ID:
 

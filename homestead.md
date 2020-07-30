@@ -227,6 +227,18 @@ If you change the `sites` property after provisioning the Homestead box, you sho
 
 > {note} Homestead scripts are built to be as idempotent as possible. However, if you are experiencing issues while provisioning you should destroy and rebuild the machine via `vagrant destroy && vagrant up`.
 
+#### Enable / Disable Services
+
+Homestead starts several services by default; however, you may customize which services are enabled or disabled during provisioning. For example, you may enable PostgreSQL and disable MySQL:
+
+    services:
+        - enabled:
+            - "postgresql@12-main"
+        - disabled:
+            - "mysql"
+
+The specified services will be started or stopped based on their order in the `enabled` and `disabled` directives.
+
 <a name="hostname-resolution"></a>
 #### Hostname Resolution
 
@@ -460,12 +472,11 @@ After updating the `Homestead.yaml`, be sure to re-provision the machine by runn
 <a name="wildcard-ssl"></a>
 ### Wildcard SSL
 
-Homestead configures a self-signed SSL certificate for each site defined in the `sites:` section of your `Homestead.yaml` file. If you would like to generate a wildcard SSL certificate for a site you may add a `wildcard` option to that site's configuration. If you would like to use the wildcard certificate instead of the single domain certificate, you must also add the `use_wildcard` option to the site's configuration:
+Homestead configures a self-signed SSL certificate for each site defined in the `sites:` section of your `Homestead.yaml` file. If you would like to generate a wildcard SSL certificate for a site you may add a `wildcard` option to that site's configuration. By default, the site will use the wildcard certificate *instead* of the specific domain certificate:
 
     - map: foo.domain.test
       to: /home/vagrant/domain
       wildcard: "yes"
-      use_wildcard: "yes"
 
 If the `use_wildcard` option is set to `no`, the wildcard certificate will be generated but will not be used:
 
@@ -520,7 +531,7 @@ In order to use Minio you will need to adjust the S3 disk configuration in your 
         'region' => env('AWS_DEFAULT_REGION'),
         'bucket' => env('AWS_BUCKET'),
         'endpoint' => env('AWS_URL'),
-        'use_path_style_endpoint' => true
+        'use_path_style_endpoint' => true,
     ]
 
 Finally, ensure your `.env` file has the following options:
@@ -746,7 +757,7 @@ Next, you need to update the Homestead source code. If you cloned the repository
 
 These commands pull the latest Homestead code from the GitHub repository, fetches the latest tags, and then checks out the latest tagged release. You can find the latest stable release version on the [GitHub releases page](https://github.com/laravel/homestead/releases).
 
-If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^10"` and update your dependencies:
+If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^11"` and update your dependencies:
 
     composer update
 

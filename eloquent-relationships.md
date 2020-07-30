@@ -977,7 +977,7 @@ If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesn
         $query->where('content', 'like', 'foo%');
     })->get();
 
-You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts with comments from authors that are not banned:
+You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments and posts that have comments from authors that are not banned:
 
     use Illuminate\Database\Eloquent\Builder;
 
@@ -1354,6 +1354,15 @@ If you need to save multiple related models, you may use the `saveMany` method:
         new App\Comment(['message' => 'A new comment.']),
         new App\Comment(['message' => 'Another comment.']),
     ]);
+
+The `save` and `saveMany` methods will not add the new models to any in-memory relationships that are already loaded onto the parent model. If you plan on accessing the relationship after using the `save` or `saveMany` methods, you may wish to use the `refresh` method to reload the model and its relationships:
+
+    $post->comments()->save($comment);
+    
+    $post->refresh();
+    
+    // All comments, including the newly saved comment...
+    $post->comments;
 
 <a name="the-push-method"></a>
 #### Recursively Saving Models & Relationships

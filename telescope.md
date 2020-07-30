@@ -133,6 +133,8 @@ Telescope exposes a dashboard at `/telescope`. By default, you will only be able
         });
     }
 
+> {note} You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
+
 <a name="filtering"></a>
 ## Filtering
 

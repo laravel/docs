@@ -133,11 +133,13 @@ An event class is a data container which holds the information related to the ev
     namespace App\Events;
 
     use App\Order;
+    use Illuminate\Broadcasting\InteractsWithSockets;
+    use Illuminate\Foundation\Events\Dispatchable;
     use Illuminate\Queue\SerializesModels;
 
     class OrderShipped
     {
-        use SerializesModels;
+        use Dispatchable, InteractsWithSockets, SerializesModels;
 
         public $order;
 
@@ -402,6 +404,10 @@ To dispatch an event, you may pass an instance of the event to the `event` helpe
             event(new OrderShipped($order));
         }
     }
+
+Alternatively, if your event uses the `Illuminate\Foundation\Events\Dispatchable` trait, you may call the static `dispatch` method on the event. Any arguments passed to the `dispatch` method will be passed to the event's constructor:
+
+    OrderShipped::dispatch($order);
 
 > {tip} When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#event-fake) makes it a cinch.
 

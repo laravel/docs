@@ -12,6 +12,10 @@
     - [Browser Macros](#browser-macros)
     - [Authentication](#authentication)
     - [Database Migrations](#migrations)
+    - [Cookies](#cookies)
+    - [Taking A Screenshot](#taking-a-screenshot)
+    - [Storing Console Output To Disk](#storing-console-output-to-disk)
+    - [Storing Page Source To Disk](#storing-page-source-to-disk)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
@@ -257,6 +261,10 @@ When a test fails, Dusk will automatically resize the browser to fit the content
 
     $browser->disableFitOnFailure();
 
+You may use the `move` method to move the browser window to a different position on your screen:
+
+    $browser->move(100, 100);
+
 <a name="browser-macros"></a>
 ### Browser Macros
 
@@ -325,6 +333,46 @@ When your test requires migrations, like the authentication example above, you s
         use DatabaseMigrations;
     }
 
+<a name="cookies"></a>
+### Cookies
+
+You may use the `cookie` method to get or set an encrypted cookie's value:
+
+    $browser->cookie('name');
+
+    $browser->cookie('name', 'Taylor');
+
+You may use the `plainCookie` method to get or set an unencrypted cookie's value:
+
+    $browser->plainCookie('name');
+
+    $browser->plainCookie('name', 'Taylor');
+
+You may use the `deleteCookie` method to delete the given cookie:
+
+    $browser->deleteCookie('name');
+
+<a name="taking-a-screenshot"></a>
+### Taking A Screenshot
+
+You may use the `screenshot` method to take a screenshot and store it with the given filename. All screenshots will be stored within the `tests/Browser/screenshots` directory:
+
+    $browser->screenshot('filename');
+
+<a name="storing-console-output-to-disk"></a>
+### Storing Console Output To Disk
+
+You may use the `storeConsoleLog` method to write the console output to disk with the given filename. Console output will be stored within the `tests/Browser/console` directory:
+
+    $browser->storeConsoleLog('filename');
+
+<a name="storing-page-source-to-disk"></a>
+### Storing Page Source To Disk
+
+You may use the `storeSource` method to write the page's current source to disk with the given filename. The page source will be stored within the `tests/Browser/source` directory:
+
+    $browser->storeSource('filename');
+
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
 
@@ -358,7 +406,13 @@ To click a link, you may use the `clickLink` method on the browser instance. The
 
     $browser->clickLink($linkText);
 
-> {note} This method interacts with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
+You may use the `seeLink` method to determine if a link that has the given display text is visible on the page:
+
+    if ($browser->seeLink($linkText)) {
+        // ...
+    }
+
+> {note} These methods interact with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
 
 <a name="text-values-and-attributes"></a>
 ### Text, Values, & Attributes
@@ -372,6 +426,11 @@ Dusk provides several methods for interacting with the current display text, val
 
     // Set the value...
     $browser->value('selector', 'value');
+
+You may use the `inputValue` method to get the "value" of an input element that has a given field name:
+
+    // Retrieve the value of an input element...
+    $inputValue = $browser->inputValue('field');
 
 #### Retrieving Text
 
@@ -479,6 +538,22 @@ The `clickAtPoint` method may be used to "click" on the topmost element at a giv
 
     $browser->clickAtPoint(0, 0);
 
+The `doubleClick` method may be used to simulate the double "click" of a mouse:
+
+    $browser->doubleClick();
+
+The `rightClick` method may be used to simulate the right "click" of a mouse:
+
+    $browser->rightClick();
+
+    $browser->rightClick('.selector');
+
+The `clickAndHold` method may be used to simulate a mouse button being clicked and held down. A subsequent call to the `releaseMouse` method will undo this behavior and release the mouse button:
+
+    $browser->clickAndHold()
+            ->pause(1000)
+            ->releaseMouse();
+
 #### Mouseover
 
 The `mouseover` method may be used when you need to move the mouse over an element matching the given selector:
@@ -497,6 +572,10 @@ Or, you may drag an element in a single direction:
     $browser->dragRight('.selector', 10);
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
+
+Finally, you may drag an element by a given offset:
+
+    $browser->dragOffset('.selector', 10, 10);
 
 <a name="javascript-dialogs"></a>
 ### JavaScript Dialogs
@@ -677,7 +756,7 @@ Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org)
         data: function () {
             return {
                 user: {
-                  name: 'Taylor'
+                    name: 'Taylor'
                 }
             };
         }
@@ -734,7 +813,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertFragmentBeginsWith](#assert-fragment-begins-with)
 [assertFragmentIsNot](#assert-fragment-is-not)
 [assertHasCookie](#assert-has-cookie)
+[assertHasPlainCookie](#assert-has-plain-cookie)
 [assertCookieMissing](#assert-cookie-missing)
+[assertPlainCookieMissing](#assert-plain-cookie-missing)
 [assertCookieValue](#assert-cookie-value)
 [assertPlainCookieValue](#assert-plain-cookie-value)
 [assertSee](#assert-see)
@@ -754,6 +835,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertSelected](#assert-selected)
 [assertNotSelected](#assert-not-selected)
 [assertSelectHasOptions](#assert-select-has-options)
+[assertSelectMissingOption](#assert-select-missing-option)
 [assertSelectMissingOptions](#assert-select-missing-options)
 [assertSelectHasOption](#assert-select-has-option)
 [assertValue](#assert-value)
@@ -770,6 +852,9 @@ Dusk provides a variety of assertions that you may make against your application
 [assertButtonDisabled](#assert-button-disabled)
 [assertFocused](#assert-focused)
 [assertNotFocused](#assert-not-focused)
+[assertAuthenticated](#assert-authenticated)
+[assertGuest](#assert-guest)
+[assertAuthenticatedAs](#assert-authenticated-as)
 [assertVue](#assert-vue)
 [assertVueIsNot](#assert-vue-is-not)
 [assertVueContains](#assert-vue-contains)
@@ -909,21 +994,35 @@ Assert that the current fragment does not match the given fragment:
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
 
-Assert that the given cookie is present:
+Assert that the given encrypted cookie is present:
 
     $browser->assertHasCookie($name);
+
+<a name="assert-has-plain-cookie"></a>
+#### assertHasPlainCookie
+
+Assert that the given unencrypted cookie is present:
+
+    $browser->assertHasPlainCookie($name);
 
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
-Assert that the given cookie is not present:
+Assert that the given encrypted cookie is not present:
 
     $browser->assertCookieMissing($name);
+
+<a name="assert-plain-cookie-missing"></a>
+#### assertPlainCookieMissing
+
+Assert that the given unencrypted cookie is not present:
+
+    $browser->assertPlainCookieMissing($name);
 
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
 
-Assert that a cookie has a given value:
+Assert that an encrypted cookie has a given value:
 
     $browser->assertCookieValue($name, $value);
 
@@ -1053,6 +1152,13 @@ Assert that the given array of values are available to be selected:
 
     $browser->assertSelectHasOptions($field, $values);
 
+<a name="assert-select-missing-option"></a>
+#### assertSelectMissingOption
+
+Assert that the given value is not available to be selected:
+
+    $browser->assertSelectMissingOption($field, $value);
+
 <a name="assert-select-missing-options"></a>
 #### assertSelectMissingOptions
 
@@ -1088,7 +1194,7 @@ Assert that the element matching the given selector has the given value in the p
 
     $browser->assertAriaAttribute($selector, $attribute, $value);
 
-For example, given the markup `<button aria-label="Add"></>`, you may assert against the `aria-label` attribute like so:
+For example, given the markup `<button aria-label="Add"></button>`, you may assert against the `aria-label` attribute like so:
 
     $browser->assertAriaAttribute('button', 'label', 'Add')
 
@@ -1099,7 +1205,7 @@ Assert that the element matching the given selector has the given value in the p
 
     $browser->assertDataAttribute($selector, $attribute, $value);
 
-For example, given the markup `<tr id="row-1" data-content="attendees"></>`, you may assert against the `data-label` attribute like so:
+For example, given the markup `<tr id="row-1" data-content="attendees"></tr>`, you may assert against the `data-label` attribute like so:
 
     $browser->assertDataAttribute('#row-1', 'content', 'attendees')
 
@@ -1172,6 +1278,27 @@ Assert that the given field is focused:
 Assert that the given field is not focused:
 
     $browser->assertNotFocused($field);
+
+<a name="assert-authenticated"></a>
+#### assertAuthenticated
+
+Assert that the user is authenticated:
+
+    $browser->assertAuthenticated();
+
+<a name="assert-guest"></a>
+#### assertGuest
+
+Assert that the user is not authenticated:
+
+    $browser->assertGuest();
+
+<a name="assert-authenticated-as"></a>
+#### assertAuthenticatedAs
+
+Assert that the user is authenticated as the given user:
+
+    $browser->assertAuthenticatedAs($user);
 
 <a name="assert-vue"></a>
 #### assertVue
@@ -1255,11 +1382,19 @@ Once a page has been configured, you may navigate to it using the `visit` method
 
     $browser->visit(new Login);
 
+You may use the `visitRoute` method to navigate to a named route:
+
+    $browser->visitRoute('login');
+
 You may navigate "back" and "forward" using the `back` and `forward` methods:
 
     $browser->back();
 
     $browser->forward();
+
+You may use the `refresh` method to refresh the page:
+
+    $browser->refresh();
 
 Sometimes you may already be on a given page and need to "load" the page's selectors and methods into the current test context. This is common when pressing a button and being redirected to a given page without explicitly navigating to it. In this situation, you may use the `on` method to load the page:
 

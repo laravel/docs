@@ -159,8 +159,8 @@ By default, Scout will use the primary key of the model as the unique ID stored 
         {
             return $this->email;
         }
-        
-         /**
+
+        /**
          * Get the key name used to index the model.
          *
          * @return mixed

@@ -329,6 +329,18 @@ If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instan
 
     return response('Hello World')->cookie($cookie);
 
+#### Expiring Cookies Early
+
+You may remove a cookie by expiring it via the `forget` method of the `Cookie` facade:
+
+    Cookie::queue(Cookie::forget('name'));
+
+Alternatively, you may attach the expired cookie to a response instance:
+
+    $cookie = Cookie::forget('name');
+
+    return response('Hello World')->withCookie($cookie);
+
 <a name="files"></a>
 ## Files
 
@@ -365,7 +377,7 @@ The `UploadedFile` class also contains methods for accessing the file's fully-qu
 
 #### Other File Methods
 
-There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
+There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://api.symfony.com/master/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
 
 <a name="storing-uploaded-files"></a>
 ### Storing Uploaded Files

@@ -53,7 +53,7 @@ Two of the primary benefits of using Blade are _template inheritance_ and _secti
         <body>
             @section('sidebar')
                 This is the master sidebar.
-            @show
+            @endsection
 
             <div class="container">
                 @yield('content')
@@ -264,6 +264,14 @@ You may check if a section has content using the `@hasSection` directive:
         </div>
 
         <div class="clearfix"></div>
+    @endif
+
+You may use the `sectionMissing` directive to determine if a section does not have content:
+
+    @sectionMissing('navigation')
+        <div class="pull-right">
+            @include('default-navigation')
+        </div>
     @endif
 
 #### Environment Directives
@@ -655,6 +663,20 @@ The final, rendered HTML of the component will appear like the following:
     <div class="alert alert-error mb-4">
         <!-- Contents of the $message variable -->
     </div>
+
+#### Filtering Attributes
+
+You may filter attributes using the `filter` method. This method accepts a Closure which should return `true` if you wish to retain the attribute in the attribute bag:
+
+    {{ $attributes->filter(fn ($value, $key) => $key == 'foo') }}
+
+For convenience, you may use the `whereStartsWith` method to retrieve all attributes whose keys begin with a given string:
+
+    {{ $attributes->whereStartsWith('wire:model') }}
+
+Using the `first` method, you may render the first attribute in a given attribute bag:
+
+    {{ $attributes->whereStartsWith('wire:model')->first() }}
 
 <a name="slots"></a>
 ### Slots
