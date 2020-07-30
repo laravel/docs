@@ -352,7 +352,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
     $user = User::find(1);
 
-    $payLink = $user->newSubscription('default', 'premium')
+    $payLink = $user->newSubscription('default', $premium = 12345)
         ->returnTo(route('home'))
         ->create();
 
