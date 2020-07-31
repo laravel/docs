@@ -1445,12 +1445,12 @@ You may also specify how you wish the resulting collection to be keyed:
 
     // ['prod-100' => 'Desk', 'prod-200' => 'Chair']
 
-It supports nested key arguments:
+The `pluck` method also supports retrieving nested values using "dot" notation:
 
     $collection = collect([
         [
             'speakers' => [
-                'first_day' => ['Rosa','Judith'],
+                'first_day' => ['Rosa', 'Judith'],
                 'second_day' => ['Angela', 'Kathleen'],
             ],
         ],
