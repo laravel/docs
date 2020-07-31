@@ -1436,6 +1436,23 @@ The `pluck` method retrieves all of the values for a given key:
     $plucked->all();
 
     // ['Desk', 'Chair']
+    
+It supports nested key arguments:
+
+    $collection = collect([
+        [
+            'speakers' => [
+                'first_day' => ['Rosa','Judith'],
+                'second_day' => ['Angela', 'Kathleen'],
+            ],
+        ],
+    ]);
+
+    $plucked = $collection->pluck('speakers.first_day');
+
+    $plucked->all();
+
+    // ['Rosa', 'Judith']
 
 You may also specify how you wish the resulting collection to be keyed:
 
