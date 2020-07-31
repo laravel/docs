@@ -1445,6 +1445,23 @@ You may also specify how you wish the resulting collection to be keyed:
 
     // ['prod-100' => 'Desk', 'prod-200' => 'Chair']
 
+The `pluck` method also supports retrieving nested values using "dot" notation:
+
+    $collection = collect([
+        [
+            'speakers' => [
+                'first_day' => ['Rosa', 'Judith'],
+                'second_day' => ['Angela', 'Kathleen'],
+            ],
+        ],
+    ]);
+
+    $plucked = $collection->pluck('speakers.first_day');
+
+    $plucked->all();
+
+    // ['Rosa', 'Judith']
+
 If duplicate keys exist, the last matching element will be inserted into the plucked collection:
 
     $collection = collect([
