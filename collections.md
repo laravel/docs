@@ -1436,7 +1436,15 @@ The `pluck` method retrieves all of the values for a given key:
     $plucked->all();
 
     // ['Desk', 'Chair']
-    
+
+You may also specify how you wish the resulting collection to be keyed:
+
+    $plucked = $collection->pluck('name', 'product_id');
+
+    $plucked->all();
+
+    // ['prod-100' => 'Desk', 'prod-200' => 'Chair']
+
 It supports nested key arguments:
 
     $collection = collect([
@@ -1453,14 +1461,6 @@ It supports nested key arguments:
     $plucked->all();
 
     // ['Rosa', 'Judith']
-
-You may also specify how you wish the resulting collection to be keyed:
-
-    $plucked = $collection->pluck('name', 'product_id');
-
-    $plucked->all();
-
-    // ['prod-100' => 'Desk', 'prod-200' => 'Chair']
 
 If duplicate keys exist, the last matching element will be inserted into the plucked collection:
 
