@@ -53,7 +53,7 @@ Two of the primary benefits of using Blade are _template inheritance_ and _secti
         <body>
             @section('sidebar')
                 This is the master sidebar.
-            @endsection
+            @show
 
             <div class="container">
                 @yield('content')
