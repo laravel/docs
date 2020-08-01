@@ -99,7 +99,7 @@ Next, you should update your broadcast driver to `redis` in your `.env` file:
 
 The Redis broadcaster will broadcast messages using Redis' pub / sub feature; however, you will need to pair this with a WebSocket server that can receive the messages from Redis and broadcast them to your WebSocket channels.
 
-When the Redis broadcaster publishes an event, it will be published on the event's specified channel names and the payload will be a JSON encoded string containing the event name, a `data` payload, and the user that generated the event's socket ID (if applicable).
+When the Redis broadcaster publishes an event, it will be published on the event's specified channel names with `redis_prefix` parameter in `config\database.php`, and can be configured in `.env` file with `REDIS_PREFIX`, which is `laravel_database_` by default. The payload will be a JSON encoded string containing the event name, a `data` payload, and the user that generated the event's socket ID (if applicable).
 
 #### Socket.IO
 
