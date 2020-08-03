@@ -237,6 +237,8 @@ Once you have created a model and [its associated database table](/docs/{{versio
     foreach ($flights as $flight) {
         echo $flight->name;
     }
+    
+> {note} You can also use the `query` and `newQuery` methods to start building fresh queries on a model. However, these methods are not meant to be overridden in your own models as that could lead to unexpected and broken behavior.
 
 #### Adding Additional Constraints
 
