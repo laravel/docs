@@ -434,7 +434,7 @@ If you have defined a many-to-many relationship that uses a custom pivot model, 
 
 The "has-one-through" relationship links models through a single intermediate relation.
 
-For example, in a vehicle repair shop application, each `Mechanic` may have one `Car`, and each `Car` may have one `Owner`. While the `Mechanic` and the `Owner` have no direct connection, the `Mechanic` can access to the `Owner` _through_ the `Car` itself. Let's look at the tables necessary to define this relationship:
+For example, in a vehicle repair shop application, each `Mechanic` may have one `Car`, and each `Car` may have one `Owner`. While the `Mechanic` and the `Owner` have no direct connection, the `Mechanic` can access the `Owner` _through_ the `Car` itself. Let's look at the tables necessary to define this relationship:
 
     mechanics
         id - integer
