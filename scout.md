@@ -8,6 +8,7 @@
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
     - [Configuring The Model ID](#configuring-the-model-id)
+    - [Auto Identifying users](#auto-identifying-users)
 - [Indexing](#indexing)
     - [Batch Import](#batch-import)
     - [Adding Records](#adding-records)
@@ -170,6 +171,15 @@ By default, Scout will use the primary key of the model as the unique ID stored 
             return 'email';
         }
     }
+
+<a name="auto-identifying-users"></a>
+### Auto Identifying Users
+
+Scout also allows you to auto identifying users for certain drivers (currently Algolia only). You can enable this by setting `SCOUT_IDENTIFY_USER` in your `.env` file:
+
+    SCOUT_IDENTIFY_USER=true
+
+Doing this will pass along the request's IP address and your authed user's primary identifier to Algolia so it's associated with any search request that's being made.
 
 <a name="indexing"></a>
 ## Indexing
