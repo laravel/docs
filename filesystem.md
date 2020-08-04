@@ -376,6 +376,16 @@ If the file has already been stored, its visibility can be retrieved and set via
 
     Storage::setVisibility('file.jpg', 'public');
 
+Alternatively, you may use the `storePublicly` and `storePubliclyAs` methods on an uploaded file instance to upload a file with the `public` visibility.
+
+    $path = $request->file('avatar')->storePublicly('avatars', 's3');
+
+    $path = $request->file('avatar')->storePubliclyAs(
+        'avatars',
+        $request->user()->id,
+        's3'
+    );
+
 <a name="deleting-files"></a>
 ## Deleting Files
 
