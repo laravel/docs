@@ -558,7 +558,7 @@ You should define the component's required data in its class constructor. All pu
         /**
          * Get the view / contents that represent the component.
          *
-         * @return \Illuminate\View\View|string
+         * @return \Illuminate\View\View|\Closure|string
          */
         public function render()
         {
@@ -632,6 +632,28 @@ If your component requires dependencies from Laravel's [service container](/docs
         $this->type = $type;
         $this->message = $message;
     }
+
+#### Using Attributes & Slots Inside The Class
+
+Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a Closure from your component's `render` method. The Closure will receive a `$data` array as its only argument:
+
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|\Closure|string
+     */
+    public function render()
+    {
+        return function (array $data) {
+            // $data['componentName'];
+            // $data['attributes'];
+            // $data['slot'];
+
+            return view('components.alert');
+        };
+    }
+
+The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is a `Illuminate\Support\HtmlString` instance with the contents of the slot from the component.
 
 <a name="managing-attributes"></a>
 ### Managing Attributes
@@ -735,7 +757,7 @@ For very small components, it may feel cumbersome to manage both the component c
     /**
      * Get the view / contents that represent the component.
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\View\View|\Closure|string
      */
     public function render()
     {
