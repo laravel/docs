@@ -612,27 +612,6 @@ You may execute this method from your component template by invoking the variabl
         {{ $label }}
     </option>
 
-#### Additional Dependencies
-
-If your component requires dependencies from Laravel's [service container](/docs/{{version}}/container), you may list them before any of the component's data attributes and they will automatically be injected by the container:
-
-    use App\AlertCreator
-
-    /**
-     * Create the component instance.
-     *
-     * @param  \App\AlertCreator  $creator
-     * @param  string  $type
-     * @param  string  $message
-     * @return void
-     */
-    public function __construct(AlertCreator $creator, $type, $message)
-    {
-        $this->creator = $creator;
-        $this->type = $type;
-        $this->message = $message;
-    }
-
 #### Using Attributes & Slots Inside The Class
 
 Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a Closure from your component's `render` method. The Closure will receive a `$data` array as its only argument:
@@ -654,6 +633,27 @@ Blade components also allow you to access the component name, attributes, and sl
     }
 
 The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is a `Illuminate\Support\HtmlString` instance with the contents of the slot from the component.
+
+#### Additional Dependencies
+
+If your component requires dependencies from Laravel's [service container](/docs/{{version}}/container), you may list them before any of the component's data attributes and they will automatically be injected by the container:
+
+    use App\AlertCreator
+
+    /**
+     * Create the component instance.
+     *
+     * @param  \App\AlertCreator  $creator
+     * @param  string  $type
+     * @param  string  $message
+     * @return void
+     */
+    public function __construct(AlertCreator $creator, $type, $message)
+    {
+        $this->creator = $creator;
+        $this->type = $type;
+        $this->message = $message;
+    }
 
 <a name="managing-attributes"></a>
 ### Managing Attributes
