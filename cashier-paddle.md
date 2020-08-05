@@ -37,6 +37,7 @@
     - [Refunding Orders](#refunding-orders)
 - [Receipts](#receipts)
     - [Past & Upcoming Payments](#past-and-upcoming-payments)
+- [Handling Failed Payments](#handling-failed-payments)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -755,7 +756,7 @@ Cashier automatically handles subscription cancellation on failed charges, but i
          * Handle payment succeeded.
          *
          * @param  array  $payload
-         * @return \Symfony\Component\HttpFoundation\Response
+         * @return void
          */
         public function handlePaymentSucceeded($payload)
         {
@@ -902,6 +903,33 @@ Both of these methods will return an instance of `Laravel\Paddle\Payment`; howev
 
     Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
 
+<a name="handling-failed-payments"></a>
+## Handling Failed Payments
+
+Subscription payments fail for various reasons, such as expired cards or a card having insufficient funds. When this happens, we recommend that you let Paddle handle payment failures for you. Specifically, you may [setup Paddle's automatic billing emails](https://vendors.paddle.com/subscription-settings) in your Paddle dashboard.
+
+Alternatively, you can perform more precise customization by catching the [`subscription_payment_failed`](https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-payment-failed) webhook and enabling the "Subscription Payment Failed" option in the Webhook settings of your Paddle dashboard:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Laravel\Paddle\Http\Controllers\WebhookController as CashierController;
+
+    class WebhookController extends CashierController
+    {
+        /**
+         * Handle subscription payment failed.
+         *
+         * @param  array  $payload
+         * @return void
+         */
+        public function handleSubscriptionPaymentFailed($payload)
+        {
+            // Handle the failed subscription payment...
+        }
+    }
+    
 <a name="testing"></a>
 ## Testing
 
