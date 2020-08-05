@@ -59,7 +59,7 @@ It's best to envision middleware as a series of "layers" HTTP requests must pass
 
 > {tip} All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor.
 
-### Before & After Middleware
+#### Before & After Middleware
 
 Whether a middleware runs before or after a request depends on the middleware itself. For example, the following middleware would perform some task **before** the request is handled by the application:
 
