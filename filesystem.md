@@ -376,7 +376,7 @@ If the file has already been stored, its visibility can be retrieved and set via
 
     Storage::setVisibility('file.jpg', 'public');
 
-Alternatively, you may use the `storePublicly` and `storePubliclyAs` methods on an uploaded file instance to upload a file with the `public` visibility.
+When interacting with uploaded files, you may use the `storePublicly` and `storePubliclyAs` methods to store the uploaded file with `public` visibility:
 
     $path = $request->file('avatar')->storePublicly('avatars', 's3');
 
