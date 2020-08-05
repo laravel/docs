@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Defining Middleware](#defining-middleware)
+    - [Before & After Middleware](#before-and-after)
 - [Registering Middleware](#registering-middleware)
     - [Global Middleware](#global-middleware)
     - [Assigning Middleware To Routes](#assigning-middleware-to-routes)
@@ -59,6 +60,7 @@ It's best to envision middleware as a series of "layers" HTTP requests must pass
 
 > {tip} All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor.
 
+<a name="before-and-after-middleware"></a>
 ### Before & After Middleware
 
 Whether a middleware runs before or after a request depends on the middleware itself. For example, the following middleware would perform some task **before** the request is handled by the application:
