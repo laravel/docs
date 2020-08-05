@@ -906,9 +906,9 @@ Both of these methods will return an instance of `Laravel\Paddle\Payment`; howev
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
 
-Sometimes, subscription payments fail for various reasons, e.g. customer's credit card has insufficient funds or has expired. When this happens, we recommend to let Paddle handle the payment failures for you. In this case, you may [setup Paddle's automatic billing emails](https://vendors.paddle.com/subscription-settings) in your Paddle dashboard.
+Subscription payments fail for various reasons, such as expired cards or a card having insufficient funds. When this happens, we recommend that you let Paddle handle payment failures for you. Specifically, you may [setup Paddle's automatic billing emails](https://vendors.paddle.com/subscription-settings) in your Paddle dashboard.
 
-Alternatively, you can also opt to take control yourself by implementing the [`subscription_payment_failed`](https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-payment-failed) webhook and enabling the "Subscription Payment Failed" option in Webhook settings of your Paddle dashboard:
+Alternatively, you can perform more precise customization by catching the [`subscription_payment_failed`](https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-payment-failed) webhook and enabling the "Subscription Payment Failed" option in the Webhook settings of your Paddle dashboard:
 
     <?php
 
@@ -926,7 +926,7 @@ Alternatively, you can also opt to take control yourself by implementing the [`s
          */
         public function handleSubscriptionPaymentFailed($payload)
         {
-            // Handle The Event
+            // Handle the failed subscription payment...
         }
     }
     
