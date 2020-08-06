@@ -106,7 +106,7 @@ In addition, when upgrading to any new Horizon version, you should re-publish Ho
 
     php artisan horizon:publish
     
-To keep the assets up-to-date and avoid issues in future updates, we highly recommend adding the command to the `post-autoload-dump` scripts in your `composer.json` file:
+To keep the assets up-to-date and avoid issues in future updates, we highly recommend adding the command to the `post-update-cmd` scripts in your `composer.json` file:
 
     {
         "scripts": {
