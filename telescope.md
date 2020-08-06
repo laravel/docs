@@ -5,6 +5,7 @@
     - [Configuration](#configuration)
     - [Data Pruning](#data-pruning)
     - [Migration Customization](#migration-customization)
+- [Upgrading Telescope](#upgrading-telescope)
 - [Dashboard Authorization](#dashboard-authorization)
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
@@ -49,12 +50,6 @@ After installing Telescope, publish its assets using the `telescope:install` Art
     php artisan telescope:install
 
     php artisan migrate
-
-#### Updating Telescope
-
-When updating Telescope, you should re-publish Telescope's assets:
-
-    php artisan telescope:publish
 
 ### Installing Only In Specific Environments
 
@@ -111,6 +106,25 @@ Without pruning, the `telescope_entries` table can accumulate records very quick
 By default, all entries older than 24 hours will be pruned. You may use the `hours` option when calling the command to determine how long to retain Telescope data. For example, the following command will delete all records created over 48 hours ago:
 
     $schedule->command('telescope:prune --hours=48')->daily();
+    
+<a name="upgrading-telescope"></a>
+## Upgrading Telescope
+
+When upgrading to a new version of Telescope, you should re-publish Telescope's assets:
+
+    php artisan telescope:publish
+
+To keep the assets up-to-date and avoid issues in future updates, we highly recommend adding the command to the `post-autoload-dump` scripts in your `composer.json` file:
+
+    {
+        "scripts": {
+            "post-autoload-dump": [
+                "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+                "@php artisan package:discover --ansi",
+                "@php artisan telescope:publish --ansi"
+            ]
+        }
+    }
 
 <a name="dashboard-authorization"></a>
 ## Dashboard Authorization
