@@ -110,9 +110,7 @@ To keep the assets up-to-date and avoid issues in future updates, we highly reco
 
     {
         "scripts": {
-            "post-autoload-dump": [
-                "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-                "@php artisan package:discover --ansi",
+            "post-update-cmd": [
                 "@php artisan horizon:publish --ansi"
             ]
         }
