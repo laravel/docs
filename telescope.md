@@ -5,8 +5,8 @@
     - [Configuration](#configuration)
     - [Data Pruning](#data-pruning)
     - [Migration Customization](#migration-customization)
+    - [Dashboard Authorization](#dashboard-authorization)
 - [Upgrading Telescope](#upgrading-telescope)
-- [Dashboard Authorization](#dashboard-authorization)
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
     - [Batches](#filtering-batches)
@@ -106,28 +106,9 @@ Without pruning, the `telescope_entries` table can accumulate records very quick
 By default, all entries older than 24 hours will be pruned. You may use the `hours` option when calling the command to determine how long to retain Telescope data. For example, the following command will delete all records created over 48 hours ago:
 
     $schedule->command('telescope:prune --hours=48')->daily();
-    
-<a name="upgrading-telescope"></a>
-## Upgrading Telescope
-
-When upgrading to a new version of Telescope, you should re-publish Telescope's assets:
-
-    php artisan telescope:publish
-
-To keep the assets up-to-date and avoid issues in future updates, we highly recommend adding the command to the `post-autoload-dump` scripts in your `composer.json` file:
-
-    {
-        "scripts": {
-            "post-autoload-dump": [
-                "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-                "@php artisan package:discover --ansi",
-                "@php artisan telescope:publish --ansi"
-            ]
-        }
-    }
 
 <a name="dashboard-authorization"></a>
-## Dashboard Authorization
+### Dashboard Authorization
 
 Telescope exposes a dashboard at `/telescope`. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is a `gate` method. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
 
@@ -148,6 +129,25 @@ Telescope exposes a dashboard at `/telescope`. By default, you will only be able
     }
 
 > {note} You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
+    
+<a name="upgrading-telescope"></a>
+## Upgrading Telescope
+
+When upgrading to a new version of Telescope, you should re-publish Telescope's assets:
+
+    php artisan telescope:publish
+
+To keep the assets up-to-date and avoid issues in future updates, we highly recommend adding the command to the `post-autoload-dump` scripts in your `composer.json` file:
+
+    {
+        "scripts": {
+            "post-autoload-dump": [
+                "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+                "@php artisan package:discover --ansi",
+                "@php artisan telescope:publish --ansi"
+            ]
+        }
+    }
 
 <a name="filtering"></a>
 ## Filtering
