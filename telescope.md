@@ -137,7 +137,7 @@ When upgrading to a new version of Telescope, you should re-publish Telescope's 
 
     php artisan telescope:publish
 
-To keep the assets up-to-date and avoid issues in future updates, we highly recommend adding the command to the `post-autoload-dump` scripts in your `composer.json` file:
+To keep the assets up-to-date and avoid issues in future updates, we highly recommend adding the command to the `post-update-cmd` scripts in your `composer.json` file:
 
     {
         "scripts": {
