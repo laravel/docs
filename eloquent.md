@@ -984,7 +984,6 @@ Instead of using custom event classes, you may register Closures that execute wh
 
     namespace App;
 
-    use App\Scopes\AgeScope;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
