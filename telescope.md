@@ -129,7 +129,7 @@ Telescope exposes a dashboard at `/telescope`. By default, you will only be able
     }
 
 > {note} You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
-    
+
 <a name="upgrading-telescope"></a>
 ## Upgrading Telescope
 
@@ -137,7 +137,7 @@ When upgrading to a new version of Telescope, you should re-publish Telescope's 
 
     php artisan telescope:publish
 
-To keep the assets up-to-date and avoid issues in future updates, we highly recommend adding the command to the `post-update-cmd` scripts in your `composer.json` file:
+To keep the assets up-to-date and avoid issues in future updates, you may add the `telescope:publish` command to the `post-update-cmd` scripts in your application's `composer.json` file:
 
     {
         "scripts": {
