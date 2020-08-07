@@ -102,9 +102,19 @@ Horizon exposes a dashboard at `/horizon`. By default, you will only be able to 
 
 When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
 
-In addition, you should re-publish Horizon's assets:
+In addition, when upgrading to any new Horizon version, you should re-publish Horizon's assets:
 
     php artisan horizon:publish
+
+To keep the assets up-to-date and avoid issues in future updates, you may add the command to the `post-update-cmd` scripts in your `composer.json` file:
+
+    {
+        "scripts": {
+            "post-update-cmd": [
+                "@php artisan horizon:publish --ansi"
+            ]
+        }
+    }
 
 <a name="running-horizon"></a>
 ## Running Horizon
