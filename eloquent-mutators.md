@@ -388,7 +388,7 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
 Instead of attaching the custom cast to your model, you may alternatively attach a class that implements the `Illuminate\Contracts\Database\Eloquent\Castable` interface:
 
     protected $casts = [
-        'options' => \App\Address::class,
+        'address' => \App\Address::class,
     ];
 
 Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:
@@ -416,7 +416,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
 When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed directly to the caster class:
 
     protected $casts = [
-        'options' => \App\Address::class.':argument',
+        'address' => \App\Address::class.':argument',
     ];
 
 <a name="array-and-json-casting"></a>
