@@ -238,6 +238,21 @@ In addition, you may return a [mailable object](/docs/{{version}}/mail) from the
     {
         return (new Mailable($this->invoice))->to($notifiable->email);
     }
+    
+And if you wanted to specify a plain text view separately you can pass it as the second element of an array to the first argument of the `view` method:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)->view(
+            ['emails.name.html', 'emails.name.plain'], ['invoice' => $this->invoice]
+        );
+    }
 
 <a name="error-messages"></a>
 #### Error Messages
