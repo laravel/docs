@@ -1021,6 +1021,17 @@ This command will place the new observer in your `App/Observers` directory. If t
     class UserObserver
     {
         /**
+         * Handle the User "creating" event.
+         *
+         * @param  \App\User  $user
+         * @return void
+         */
+        public function creating(User $user)
+        {
+            //
+        }
+
+        /**
          * Handle the User "created" event.
          *
          * @param  \App\User  $user
@@ -1032,12 +1043,34 @@ This command will place the new observer in your `App/Observers` directory. If t
         }
 
         /**
+         * Handle the User "updating" event.
+         *
+         * @param  \App\User  $user
+         * @return void
+         */
+        public function updating(User $user)
+        {
+            //
+        }
+
+        /**
          * Handle the User "updated" event.
          *
          * @param  \App\User  $user
          * @return void
          */
         public function updated(User $user)
+        {
+            //
+        }
+
+        /**
+         * Handle the User "deleting" event.
+         *
+         * @param  \App\User  $user
+         * @return void
+         */
+        public function deleting(User $user)
         {
             //
         }
