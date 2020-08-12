@@ -57,7 +57,7 @@ The default server configuration should suffice for development. However, you ar
         ],
 
         'cache' => [
-            'url' => 'tls://h:secret-password@127.0.0.1:6379?database=1',
+            'url' => 'tls://h:secret-password@127.0.0.1:6380?database=1',
         ],
 
     ],
