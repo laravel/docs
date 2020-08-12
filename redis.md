@@ -46,7 +46,7 @@ The Redis configuration for your application is located in the `config/database.
 
     ],
 
-The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Each Redis server defined in your configuration file is required to have a name, host, and port, unless you define a single URL:
+The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Each Redis server defined in your configuration file is required to have a name, host, and port unless you define a single URL to represent the Redis connection:
 
     'redis' => [
 
@@ -57,7 +57,7 @@ The default server configuration should suffice for development. However, you ar
         ],
 
         'cache' => [
-            'url' => 'tls://h:secret-password@127.0.0.1:6380?database=1',
+            'url' => 'tls://user:password@127.0.0.1:6380?database=1',
         ],
 
     ],
@@ -137,7 +137,7 @@ If you plan to use PhpRedis extension along with the `Redis` Facade alias, you s
 
     'RedisManager' => Illuminate\Support\Facades\Redis::class,
 
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, PhpRedis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout`, `timeout` and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
+In addition to the default `host`, `port`, `database`, and `password` server configuration options, PhpRedis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
