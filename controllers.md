@@ -277,13 +277,13 @@ Sometimes, when implicitly binding multiple Eloquent models in resource route de
 
     use App\Http\Controllers\PostsController;
 
-    Route::resource('users.posts', PostsController::class')->scoped();
+    Route::resource('users.posts', PostsController::class)->scoped();
 
 You may override the default model route keys by passing an array to the `scoped` method:
 
     use App\Http\Controllers\PostsController;
 
-    Route::resource('users.posts', PostsController::class')->scoped([
+    Route::resource('users.posts', PostsController::class)->scoped([
         'post' => 'slug',
     ]);
 
