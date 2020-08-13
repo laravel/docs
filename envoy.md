@@ -47,7 +47,7 @@ All of your Envoy tasks should be defined in an `Envoy.blade.php` file in the ro
         ls -la
     @endtask
 
-As you can see, an array of `@servers` is defined at the top of the file, allowing you to reference these servers in the `on` option of your task declarations. Within your `@task` declarations, you should place the Bash code that should run on your server when the task is executed.
+As you can see, an array of `@servers` is defined at the top of the file, allowing you to reference these servers in the `on` option of your task declarations. Servers array doesn't support a multiline declaration, so be sure to keep it on a single line. Within your `@task` declarations, you should place the Bash code that should run on your server when the task is executed.
 
 You can force a script to run locally by specifying the server's IP address as `127.0.0.1`:
 
