@@ -1,32 +1,32 @@
-# Upgrade Guide
+# 升級指南
 
-- [Upgrading To 5.7.0 From 5.6](#upgrade-5.7.0)
+- [從 5.6 升級到 5.7.0](#upgrade-5.7.0)
 
 <a name="upgrade-5.7.0"></a>
-## Upgrading To 5.7.0 From 5.6
+## 從 5.6 升級到 5.7.0
 
-#### Estimated Upgrade Time: 10 - 15 Minutes
+#### 預估升級時間：10 - 15 分鐘
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {note} 我們嘗試記錄每個重大變更。由於有些重大的變更是在框架最隱密的地方，但實際上只有一小部分的變更會影響你的應用程式。
 
-### Updating Dependencies
+### 更新依賴項目
 
-Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` file.
+在 `composer.json` 檔案中更新 `laravel/framework` 到 `5.7.*`。
 
-If you are using Laravel Passport, you should update your `laravel/passport` dependency to `^7.0` in your `composer.json` file.
+如果你正在使用 Laravel Passport，請到 `composer.json` 檔案中更新 `laravel/passport` 到 `^7.0`。
 
-Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
+最後，請檢查你的應用程式所使用的第三方套件的版本是否能支援 Laravel 5.7。
 
-### Application
+### 應用程式
 
-#### The `register` Method
+#### `register` 方法
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The unused `options` argument of the `Illuminate\Foundation\Application` class' `register` method has been removed. If you are overriding this method, you should update your method's signature:
+`Illuminate\Foundation\Application` 類別的 `register` 方法的 `options` 參數已正式棄用。如果你有覆寫過這個方法，請更新這個方法的參數：
 
     /**
-     * Register a service provider with the application.
+     * 為應用程式註冊服務提供者。
      *
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
      * @param  bool   $force
@@ -36,50 +36,50 @@ The unused `options` argument of the `Illuminate\Foundation\Application` class' 
 
 ### Artisan
 
-#### Scheduled Job Connection & Queues
+#### 排程任務的連線與隊列
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The `$schedule->job` method now respects the `queue` and `connection` properties on the job class if a connection / job is not explicitly passed into the `job` method.
+如果現在沒有直接傳遞連線與任務到 `job` 方法，則 `$schedule->job` 方法會採用 Job 類別上的 `queue` 和 `connection` 屬性。
 
-Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25216).
+一般來說，這應該視為是錯誤修復。然而，經過審慎考量，還是把它列為重大變更。[如果遇到有關此變更的任何問題，請通知我們](https://github.com/laravel/framework/pull/25216)。
 
 ### Assets
 
-#### Asset Directory Flattened
+#### Asset 目錄扁平化
 
-**Likelihood Of Impact: None**
+**影響程度：沒有影響**
 
-For new Laravel 5.7 applications, the assets directory that contains the scripts and styles has been flattened into the `resources` directory. This **will not** affect existing applications and does not require changes to your existing applications.
+對於新的 Laravel 5.7 應用程式，具有 script 與 style 的 assert 目錄已正式壓平到 `resources` 目錄。這**並不會**影響到現有的應用程式，所以不需要修改現有的應用程式。
 
-However, if you wish to make this change, you should move all files from the `resources/assets/*` directory up one level:
+不過，如果你想要進行此變更，請將 `resources/assets/*` 上的所有檔案移動至上一層：
 
-- From `resources/assets/js/*` to `resources/js/*`
-- From `resources/assets/sass/*` to `resources/sass/*`
+- 從 `resources/assets/js/*` 到 `resources/js/*`
+- 從 `resources/assets/sass/*` 到 `resources/sass/*`
 
-Then, update any reference to the old directories in your `webpack.mix.js` file:
+然後，更新 `webpack.mix.js` 檔案中任何舊目錄的引用路徑：
 
     mix.js('resources/js/app.js', 'public/js')
        .sass('resources/sass/app.scss', 'public/css');
 
-#### `svg` Directory Added
+#### 新增 `svg` 目錄
 
-**Likelihood Of Impact: Very High**
+**影響程度：非常高**
 
-A new directory, `svg`, was added to the `public` directory. It contains four svg files: `403.svg`, `404.svg`, `500.svg`, and `503.svg`, which are displayed on their respective error pages.
+新加入的目錄，`svg`，已加到 `public` 目錄中。它具有四個 svg 檔案：`403.svg`、`404.svg`、`500.svg` 和 `503.svg`，它們會顯示在各自的錯誤頁面上。
 
-You may get the files [from GitHub](https://github.com/laravel/laravel/tree/5.7/public/svg).
+你可以從 [GitHub](https://github.com/laravel/laravel/tree/5.7/public/svg) 上取得檔案。
 
-### Authentication
+### 認證
 
-#### The `Authenticate` Middleware
+#### `Authenticate` 中介層
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middleware has been updated to accept the incoming `$request` as its first argument. If you are overriding this method in your own `Authenticate` middleware, you should update your middleware's signature:
+`Illuminate\Auth\Middleware\Authenticate` 中介層的 `authenticate` 方法現在可以傳入 `$request` 作為它的第一個參數。如果你正在自己的 `Authenticate` 中介層中覆寫這個方法，應該更新方法的參數。
 
     /**
-     * Determine if the user is logged in to any of the given guards.
+     * 確認使用者是否有登入到任何給定的 Guard。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $guards
@@ -89,14 +89,14 @@ The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middl
      */
     protected function authenticate($request, array $guards)
 
-#### The `ResetsPasswords` Trait
+#### `ResetsPasswords` Trait
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The protected `sendResetResponse` method of the `ResetsPasswords` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
+`ResetsPasswords` Trait 受保護的 `sendResetResponse` 方法現在可以傳入 `Illuminate\Http\Request` 作為它的第一個參數。如果你正在覆寫這個方法，應該更新方法的參數。
 
     /**
-     * Get the response for a successful password reset.
+     * 取得成功的密碼重設的回應。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $response
@@ -104,14 +104,14 @@ The protected `sendResetResponse` method of the `ResetsPasswords` trait now acce
      */
     protected function sendResetResponse(Request $request, $response)
 
-#### The `SendsPasswordResetEmails` Trait
+#### `SendsPasswordResetEmails` Trait
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
+`SendsPasswordResetEmails` Trait 受保護的 `sendResetLinkResponse` 方法現在可以傳入 `Illuminate\Http\Request` 作為它的第一個參數。如果你正在覆寫這個方法，應該更新方法的參數。
 
     /**
-     * Get the response for a successful password reset link.
+     * 取得成功的密碼重設連結的回應。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $response
@@ -119,16 +119,16 @@ The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` t
      */
     protected function sendResetLinkResponse(Request $request, $response)
 
-### Authorization
+### 授權
 
-#### The `Gate` Contract
+#### `Gate` Contract
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The `raw` method was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate\Contracts\Auth\Access\Gate` contract](https://github.com/laravel/framework/pull/25143):
+`raw` 方法能見度已從 `protected` 改為 `public`。還有，它[已加到 `Illuminate\Contracts\Auth\Access\Gate` Contract](https://github.com/laravel/framework/pull/25143)：
 
     /**
-     * Get the raw result from the authorization callback.
+     * 從授權回呼上取得原生結果。
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments
@@ -136,16 +136,16 @@ The `raw` method was changed from `protected` to `public` visibility. In additio
      */
     public function raw($ability, $arguments = []);
 
-If you are implementing this interface, you should add this method to your implementation.
+如果你正在實作這個介面，你應該將這個方法加到實作中。
 
-#### The `Login` Event
+#### `Login` 事件
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The `__construct` method of `Illuminate\Auth\Events\Login` event has a new `$guard` argument:
+`Illuminate\Auth\Events\Login` 事件的 `__construct` 方法新增 `$guard` 參數：
 
     /**
-     * Create a new event instance.
+     * 建立新事件實例。
      *
      * @param  string  $guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
@@ -154,7 +154,7 @@ The `__construct` method of `Illuminate\Auth\Events\Login` event has a new `$gua
      */
     public function __construct($guard, $user, $remember)
 
-If you are dispatching this event manually within your application, you'll need to pass this new argument into the event's constructor. The following example passes the default framework guard to the Login event:
+如果要在應用程式中手動觸發這個事件，會需要傳遞這個參數到事件的建構子。下列會示範傳遞預設框架的 Guard 到登入事件：
 
     use Illuminate\Auth\Events\Login;
 
@@ -162,11 +162,11 @@ If you are dispatching this event manually within your application, you'll need 
 
 ### Blade
 
-#### The `or` Operator
+#### `or` 運算子
 
-**Likelihood Of Impact: High**
+**影響程度：高**
 
-The Blade "or" operator has been removed in favor of PHP's built-in `??` "null coalesce" operator, which has the same purpose and functionality:
+Blade 「or」 運算子已正式棄用，並使用 PHP 內建的 `??`「空合併」運算子來取代之，該運算子具有相同的作用與功能：
 
     // Laravel 5.6...
     {{ $foo or 'default' }}
@@ -174,19 +174,19 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` "null c
     // Laravel 5.7...
     {{ $foo ?? 'default' }}
 
-### Cache
+### 快取
 
-**Likelihood Of Impact: Very High**
+**影響程度：非常高**
 
-A new `data` directory has been added to `storage/framework/cache`. You should create this directory in your own application:
+新的 `data` 目錄已加到 `storage/framework/cache`。你應該在應用程式中建立這個目錄。
 
     mkdir -p storage/framework/cache/data
 
-Then, add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) file to the newly created `data` directory:
+然後，新增 [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) 檔案到剛建立的 `data` 目錄中：
 
     cp storage/framework/cache/.gitignore storage/framework/cache/data/.gitignore
 
-Finally, ensure that the [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) file is updated as follows:
+最後，請確保 [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) 檔案有更新底下內容：
 
     *
     !data/
@@ -194,36 +194,36 @@ Finally, ensure that the [storage/framework/cache/.gitignore](https://github.com
 
 ### Carbon
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-Carbon "macros" are now handled by the Carbon library directly instead of Laravel's extension of the library. We do not expect this to break your code; however, [please make us aware of any problems you encounter related to this change](https://github.com/laravel/framework/pull/23938).
+Carbon「macros」現在交由 Carbon 函式庫直接來處理，而不是 Laravel 的函式庫擴充。我們並不希望這會破壞你的程式碼。還有，[請讓我們知道你在這個變更發現的相關問題](https://github.com/laravel/framework/pull/23938)。
 
-### Collections
+### 集合
 
-#### The `split` Method
+#### `split` 方法
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The `split` method [has been updated to always return the requested number of "groups"](https://github.com/laravel/framework/pull/24088), unless the total number of items in the original collection is less than the requested collection count. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+`split` 方法[已更新成回傳要求的「群集」數量](https://github.com/laravel/framework/pull/24088)，不包括原本集合項目總數量小於要求的總數量。一般來說，這應該視為是錯誤修復。然而，經過審慎考量，還是把它列為重大變更。
 
 ### Cookie
 
-#### `Factory` Contract Method Signature
+#### `Factory` Contract 方法參數
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The signatures of the `make` and `forever` methods of the `Illuminate\Contracts\Cookie\Factory` interface [have been changed](https://github.com/laravel/framework/pull/23200). If you are implementing this interface, you should update these methods in your implementation.
+`Illuminate\Contracts\Cookie\Factory` 介面的 `make` 和 `forever` 方法的參數[有做修改](https://github.com/laravel/framework/pull/23200)。如果你正在實作這個介面，請更新這些方法到你的實作。
 
-### Database
+### 資料庫
 
-#### The `softDeletesTz` Migration Method
+#### `softDeletesTz` Migration 方法
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The schema table builder's `softDeletesTz` method now accepts the column name as its first argument, while the `$precision` has been moved to the second argument position:
+資料表結構建構氣的 `softDeletesTz` 方法現在可以將欄位名稱作為它的第一個參數，而 `$precision` 已移至第二參數位置：
 
     /**
-     * Add a "deleted at" timestampTz for the table.
+     * 資料表新增「刪除時間」timestampTz。
      *
      * @param  string  $column
      * @param  int  $precision
@@ -231,14 +231,14 @@ The schema table builder's `softDeletesTz` method now accepts the column name as
      */
     public function softDeletesTz($column = 'deleted_at', $precision = 0)
 
-#### The `ConnectionInterface` Contract
+#### `ConnectionInterface` Contract
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The `Illuminate\Database\ConnectionInterface` contract's `select` and `selectOne` method signatures have been updated to accommodate the new `$useReadPdo` argument:
+`Illuminate\Database\ConnectionInterface` Contract 的 `select` 與 `selectOne` 方法參數新加入了 `$useReadPdo` 參數：
 
     /**
-     * Run a select statement and return a single result.
+     * 執行 select 語法並回傳單一結果。
      *
      * @param  string  $query
      * @param  array   $bindings
@@ -248,7 +248,7 @@ The `Illuminate\Database\ConnectionInterface` contract's `select` and `selectOne
     public function selectOne($query, $bindings = [], $useReadPdo = true);
 
     /**
-     * Run a select statement against the database.
+     * 對資料庫執行 select 語法。
      *
      * @param  string  $query
      * @param  array   $bindings
@@ -257,10 +257,10 @@ The `Illuminate\Database\ConnectionInterface` contract's `select` and `selectOne
      */
     public function select($query, $bindings = [], $useReadPdo = true);
 
-In addition, the `cursor` method was added to the contract:
+另外，`cursor` 方法已加到 Contract：
 
     /**
-     * Run a select statement against the database and returns a generator.
+     * 對資料庫執行 select 語法並回傳一個產生器。
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -269,32 +269,32 @@ In addition, the `cursor` method was added to the contract:
      */
     public function cursor($query, $bindings = [], $useReadPdo = true);
 
-If you are implementing this interface, you should add this method to your implementation.
+如果你正在實作這個介面，可以將這個方法加到你的實作。
 
-#### The `whereDate` Method
+#### `whereDate` 方法
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The query builder's `whereDate` method now converts `DateTime` instances to `Y-m-d` format:
+查詢建構器的 `whereDate` 方法現在可以將 `DateTime` 實體轉換為 `Y-m-d` 格式：
 
-    // previous behaviour - SELECT * FROM `table` WHERE `created_at` > '2018-08-01 13:00:00'
+    // 之前的用法 - SELECT * FROM `table` WHERE `created_at` > '2018-08-01 13:00:00'
     $query->whereDate('created_at', '>', Carbon::parse('2018-08-01 13:00:00'));
     
-    // current behaviour - SELECT * FROM `table` WHERE `created_at` > '2018-08-01'
+    // 當前的用法 - SELECT * FROM `table` WHERE `created_at` > '2018-08-01'
     $query->whereDate('created_at', '>', Carbon::parse('2018-08-01 13:00:00'));
      
 
-#### Migration Command Output
+#### Migration 命令輸出
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The core migration commands have been [updated to set the output instance on the migrator class](https://github.com/laravel/framework/pull/24811). If you were overriding or extending the migration commands, you should remove references to `$this->migrator->getNotes()` and use `$this->migrator->setOutput($this->output)` instead.
+Migration 核心命令已[更新成可以設定 Migration 類別上的輸出實體](https://github.com/laravel/framework/pull/24811)。如果你要覆寫或擴充 Migrateion 命令，可以使用 `$this->migrator->setOutput($this->output)` 來取代 `$this->migrator->getNotes()`。
 
-#### SQL Server Driver Priority
+#### SQL Server 驅動
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-Prior to Laravel 5.7, the `PDO_DBLIB` driver was used as the default SQL Server PDO driver. This driver is considered deprecated by Microsoft. As of Laravel 5.7, `PDO_SQLSRV` will be used as the default driver if it is available. Alternatively, you may choose to use the `PDO_ODBC` driver:
+在 Laravel 5.7 之前，`PDO_DBLIB` 驅動被用來作為預設的 SQL Server PDO 驅動。Microsoft 認為要棄用這個驅動。從 Laravel 5.7 開始，`PDO_SQLSRV` 將會在可用的情況下被用來做為預設的驅動。還有，你可以選擇使用 `PDO_ODBC` 驅動：
 
     'sqlsrv' => [
         // ...
@@ -302,53 +302,53 @@ Prior to Laravel 5.7, the `PDO_DBLIB` driver was used as the default SQL Server 
         'odbc_datasource_name' => 'your-odbc-dsn',
     ],
 
-If neither of these drivers are available, Laravel will use the `PDO_DBLIB` driver.
+如果無法使用這些驅動，Laravel 會使用 `PDO_DBLIB` 驅動。
 
-#### SQLite Foreign Keys
+#### SQLite 的外鍵
 
-**Likelihood Of Impact: Medium**
+**影響程度：中度**
 
-SQLite does not support dropping foreign keys. For that reason, using the `dropForeign` method on a table now throws an exception. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+SQLite 不支援刪除外鍵。因此，資料表上使用 `dropForeign` 方法現在會跳出異常。一般來說，這應該視為是錯誤修復。然而，經過審慎考量，還是把它列為重大變更。
 
-If you run your migrations on multiple types of databases, consider using `DB::getDriverName()` in your migrations to skip unsupported foreign key methods for SQLite.
+如果你在多種資料庫上執行你的 Migration，請考慮在 Migration 中使用 `DB::getDriverName()` 來略過 SQLite 不支援的外鍵方法。
 
-### Debug
+### 除錯
 
-#### Dumper Classes
+#### Dumper 類別
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The `Illuminate\Support\Debug\Dumper` and `Illuminate\Support\Debug\HtmlDumper` classes have been removed in favor of using Symfony's native variable dumpers: `Symfony\Component\VarDumper\VarDumper` and `Symfony\Component\VarDumper\Dumper\HtmlDumper`.
+刪除了 `Illuminate\Support\Debug\Dumper` 和 `Illuminate\Support\Debug\HtmlDumper` 類別，並改用 Symfony 的自身 Dumper：`Symfony\Component\VarDumper\VarDumper` and `Symfony\Component\VarDumper\Dumper\HtmlDumper`。
 
 ### Eloquent
 
-#### The `latest` / `oldest` Methods
+#### `latest` 與 `oldest` 方法
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The Eloquent query builder's `latest` and `oldest` methods have been updated to respect custom "created at" timestamp columns that may be specified on your Eloquent models. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+Eloquent 查詢建構器的 `latest` 和 `oldest` 方法已更新為採用 Eloquent 模型上指定自訂的「created_at」時間戳的欄位。 一般來說，這應該視為是錯誤修復。然而，經過審慎考量，還是把它列為重大變更。
 
-#### The `wasChanged` Method
+#### `wasChanged` 方法
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
+Eloquent 模型的更改為現在可以在觸發 `updated` 模型事件**之前**可以使用 `wasChanged` 方法。一般來說，這應該視為是錯誤修復。然而，經過審慎考量，還是把它列為重大變更。 [如果你在這個變更上遇到的任何問題，請讓我們知道](https://github.com/laravel/framework/pull/25026).
 
-#### PostgreSQL Special Float Values
+#### PostgreSQL 特殊浮點數值
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-PostgreSQL supports the float values `Infinity`, `-Infinity` and `NaN`. Prior to Laravel 5.7, these were cast to `0` when the Eloquent casting type for the column was `float`, `double`, or `real`.
+PostgreSQL 支援浮點數值有 `Infinity`、`-Infinity` 和 `NaN`。在 Laravel 5.7 之前，當 Eloquent 為欄位轉換型別為 `float`、`double` 或 `real` 時，這些會被轉換成 `0`。
 
-As of Laravel 5.7, these values will be cast to the corresponding PHP constants `INF`, `-INF`, and `NAN`.
+從 Laravel 5.7 開始，這些值會被轉換成對應的 PHP 常數 `INF`、`-INF` 和 `NAN`。
 
-### Email Verification
+### Email 驗證
 
-**Likelihood Of Impact: Optional**
+**影響程度：非必要**
 
-If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/5.7/app/Http/Controllers/Auth/VerificationController.php).
+如果你選擇使用 Laravel 新的[電子郵件驗證服務](/docs/{{version}}/verification)，就會需要加入額外的套件到你的應用程式。首先，將 `VerificationController` 加到你的應用程式：[App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/5.7/app/Http/Controllers/Auth/VerificationController.php)。
 
-You will also need to modify your `App\User` model to implement the `MustVerifyEmail` contract:
+你還需要修改你的 `App\User` 模型來實作 `MustVerifyEmail` 介面：
 
     <?php
 
@@ -365,9 +365,9 @@ You will also need to modify your `App\User` model to implement the `MustVerifyE
         // ...
     }
 
-In order to use the `verified` middleware so that only verified users may access a given route, you will need to update the `$routeMiddleware` property of your `app/Http/Kernel.php` file to include the new `verified` and `signed` middleware:
+為了只讓驗證通過的使用者存取給定的路由而使用 `verified` 中介層，你需要更新 `app/Http/Kernel.php` 檔案，引入的 `verified` 與 `signed` 中介層到 `$routeMiddleware` 屬性：
 
-    // Within App\Http\Kernel Class...
+    // 在 App\Http\Kernel Class 中...
 
     protected $routeMiddleware = [
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
@@ -380,19 +380,19 @@ In order to use the `verified` middleware so that only verified users may access
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 
-You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
+你也會需要驗證視圖範本。這個視圖被放置在 `resources/views/auth/verify.blade.php`。你可以 [GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub) 上取得這個視圖範本。
 
-Next, your user table must contain an `email_verified_at` column to store the date and time that the email address was verified:
+接著，你的使用者資料表必須包含 `email_verified_at` 欄位來儲存電子郵件被驗證的日期與時間：
 
     $table->timestamp('email_verified_at')->nullable();
 
-In order to send the email when a user is registered, you should register following events and listeners in your [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/5.7/app/Providers/EventServiceProvider.php) class:
+為了要在使用者註冊之後寄送電子信件，你應該在 [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/5.7/app/Providers/EventServiceProvider.php) 類別註冊下列事件與監聽器：
 
     use Illuminate\Auth\Events\Registered;
     use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 
     /**
-     * The event listener mappings for the application.
+     * 應用程式的事件監聽器對照表。
      *
      * @var array
      */
@@ -402,84 +402,84 @@ In order to send the email when a user is registered, you should register follow
         ],
     ];
 
-Finally, when calling the `Auth::routes` method, you should pass the `verify` option to the method:
+最後，在呼叫 `Auth::routes` 方法時，你應該傳遞 `verify` 選項到該方法。
 
     Auth::routes(['verify' => true]);
 
-### Filesystem
+### 檔案系統
 
-#### `Filesystem` Contract Methods
+#### `Filesystem` Contract 方法
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The `readStream` and `writeStream` methods [have been added to the `Illuminate\Contracts\Filesystem\Filesystem` contract](https://github.com/laravel/framework/pull/23755). If you are implementing this interface, you should add these methods to your implementation.
+[`Illuminate\Contracts\Filesystem\Filesystem` Contract](https://github.com/laravel/framework/pull/23755) 已加入 `readStream` 和 `writeStream` 方法。如果你正在實作這個介面，可以將這些方法加到你的實作中。
 
-### Hashing
+### 雜湊
 
-#### `Hash::check` Method
+#### `Hash::check` 方法
 
-**Likelihood Of Impact: None**
+**影響程度：沒有影響**
 
-The `check` method now **optionally** checks if the algorithm of the hash matches the configured algorithm.
+現在 `check` 方法**可以選擇**檢查雜湊演算法是否與設定的演算法對應。
 
-### Mail
+### 郵件
 
-#### Mailable Dynamic Variable Casing
+#### 轉換郵件動態變數
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with dynamic view variables. Dynamic mailable variables are not a documented Laravel feature, so likelihood of impact to your application is low.
+動態傳遞郵件視圖的變數[會自動轉為「駝峰式命名」](https://github.com/laravel/framework/pull/24232)，這可使郵件動態變數的用法與動態視圖變數一致。動態郵件變數不是 Laravel 文件上的功能，所以對你的應用程式影響程度很小。
 
-#### Template Theme
+#### 模板主題
 
-**Likelihood Of Impact: Medium**
+**影響程度：中度**
 
-If you have customized the default theme styles used for Markdown mailable templates, you will need to re-publish and make your customizations again. The button color classes have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error'.
+如果你有為 Markdown 自訂郵件模板的預設主題樣式，將會需要重新發布並再次客製化。按鈕顏色類別將「blue」、「green」和「red」依序改名為「primary」、「success」和「error」。
 
-### Queue
+### 隊列
 
-#### `QUEUE_DRIVER` Environment Variable
+#### `QUEUE_DRIVER` 環境變數
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The `QUEUE_DRIVER` environment variable has been renamed to `QUEUE_CONNECTION`. This should not affect existing applications that you are upgrading unless you intentionally modify your `config/queue.php` configuration file to match Laravel 5.7's.
+`QUEUE_DRIVER` 環境變數已重新命名為 `QUEUE_CONNECTION`。這不會影響既有的應用程式的升級，除非你刻意修改 `config/queue.php` 設定檔來對應 Laravel 5.7。
 
-#### `WorkCommand` Options
+#### `WorkCommand` 選項
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The `stop-when-empty` option was added to the `WorkCommand`. If you extend this command, you need to add `stop-when-empty` to `$signature` property of your class.
+`stop-when-empty` 選項已加到 `WorkCommand` 中。如果你有繼承過這個命令，則需要將 `stop-when-empty` 加到類別的 `$signature` 屬性
 
-### Routing
+### 路由
 
-#### The `Route::redirect` Method
+#### `Route::redirect` 方法
 
-**Likelihood Of Impact: High**
+**影響程度： High**
 
-The `Route::redirect` method now returns a `302` HTTP status code redirect. The `permanentRedirect` method has been added to allow `301` redirects.
+`Route::redirect` 方法現在會回傳 `302` HTTP 狀態碼的重導行為。加入了 `permanentRedirect` 方法來允許 `301` 重導。
 
-    // Return a 302 redirect...
+    // 回傳 302 重導...
     Route::redirect('/foo', '/bar');
 
-    // Return a 301 redirect...
+    // 回傳 301 重導...
     Route::redirect('/foo', '/bar', 301);
 
-    // Return a 301 redirect...
+    // 回傳 301 重導...
     Route::permanentRedirect('/foo', '/bar');
 
-#### The `addRoute` Method
+#### `addRoute` 方法
 
-**Likelihood Of Impact: Low**
+**影響程度：低**
 
-The `addRoute` method of the `Illuminate\Routing\Router` class has been changed from `protected` to `public`.
+`Illuminate\Routing\Router` 類別的 `addRoute` 方法已從 `protected` 改為 `public`。
 
-### Validation
+### 驗證
 
-#### Nested Validation Data
+#### 巢狀驗證資料
 
-**Likelihood Of Impact: Medium**
+**影響程度：中度**
 
-In previous versions of Laravel, the `validate` method did not return the correct data for nested validation rules. This has been corrected in Laravel 5.7:
+在之前的 Laravel 版本，`validate` 方法沒有為巢狀驗證規則回傳正確的資料。Laravel 5.7 已修正了這個問題：
 
     $data = Validator::make([
         'person' => [
@@ -490,33 +490,33 @@ In previous versions of Laravel, the `validate` method did not return the correc
 
     dump($data);
 
-    // Prior Behavior...
+    // 之前的結果...
     ['person' => ['name' => 'Taylor', 'job' => 'Developer']]
 
-    // New Behavior...
+    // 新的結果...
     ['person' => ['name' => 'Taylor']]
 
-#### The `Validator` Contract
+#### `Validator` Contract
 
-**Likelihood Of Impact: Very Low**
+**影響程度：非常低**
 
-The `validate` method [was added to the `Illuminate\Contracts\Validation\Validator` contract](https://github.com/laravel/framework/pull/25128):
+`validate` 方法[已加到 `Illuminate\Contracts\Validation\Validator` contract](https://github.com/laravel/framework/pull/25128):
 
     /**
-     * Run the validator's rules against its data.
+     * 針對特定資料執行驗證器的規則。
      *
      * @return array
      */
     public function validate();
 
-If you are implementing this interface, you should add this method to your implementation.
+如果要實作這個介面，你可以將這個方法加到實例中。
 
-### Testing
+### 測試
 
-**Likelihood of Impact: Medium**
+**影響程度：中度**
 
-Laravel 5.7 introduces improved testing tools for Artisan commands. By default, Artisan command output is now mocked. If you are relying on the `artisan` method to run commands as part of your test, you should use `Artisan::call` or define `public $mockConsoleOutput = false` as a property in your test class.
+Laravel 5.7 採用了為 Artisan 命令所優化的測試工具。現在預設的 Artisan 命令輸出會被 Mock。如果在測試的過程中需要 `artisan` 方法來執行命令，你可以使用 `Artisan::call` 或在你的測試類別上定義 `public $mockConsoleOutput = false`。
 
-### Miscellaneous
+### 其他
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...5.7) and choose which updates are important to you.
+我們也鼓勵你查看 `laravel/laravel` [GitHub 儲存褲](https://github.com/laravel/laravel)中的任何異動。儘管許多更改並不是必要的，但你可能希望保持這些文件與你的應用程序同步。其中一些更改將在本升級指南中介紹，但其他更改（例如更改設定檔案或註釋）將不會被介紹。你可以使用 [GitHub 比較工具](https://github.com/laravel/laravel/compare/5.6...5.7)來輕易的檢查更動的內容，並選擇哪些更新對你比較重要。
