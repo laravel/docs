@@ -82,6 +82,7 @@
     - [Cashier (Mollie)](https://github.com/laravel/cashier-mollie)
     - [Dusk](/docs/{{version}}/dusk)
     - [Envoy](/docs/{{version}}/envoy)
+    - [Forge SDK](/docs/{{version}}/forge-sdk)
     - [Horizon](/docs/{{version}}/horizon)
     - [Passport](/docs/{{version}}/passport)
     - [Sanctum](/docs/{{version}}/sanctum)
