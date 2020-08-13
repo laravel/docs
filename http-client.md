@@ -5,6 +5,7 @@
     - [Request Data](#request-data)
     - [Headers](#headers)
     - [Authentication](#authentication)
+    - [Base URL](#base-url)
     - [Timeout](#timeout)
     - [Retries](#retries)
     - [Error Handling](#error-handling)
@@ -128,6 +129,17 @@ You may specify basic and digest authentication credentials using the `withBasic
 If you would like to quickly add an `Authorization` bearer token header to the request, you may use the `withToken` method:
 
     $response = Http::withToken('token')->post(...);
+
+<a name="base-url"></a>
+### Base URL
+
+The base url can be specified using the `baseUrl` method. This `baseUrl` method accepts an url string:
+
+    $http = Http::baseUrl('https://example.com')
+        ->withHeaders([
+            'X-First' => 'foo',
+            'X-Second' => 'bar'
+        ]);
 
 <a name="timeout"></a>
 ### Timeout
