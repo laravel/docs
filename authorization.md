@@ -144,7 +144,7 @@ So far, we have only examined gates that return simple boolean values. However, 
 
 When returning an authorization response from your gate, the `Gate::allows` method will still return a simple boolean value; however, you may use the `Gate::inspect` method to get the full authorization response returned by the gate:
 
-    $response = Gate::inspect('edit-settings', $post);
+    $response = Gate::inspect('update-post', $post);
 
     if ($response->allowed()) {
         // The action is authorized...
@@ -154,7 +154,7 @@ When returning an authorization response from your gate, the `Gate::allows` meth
 
 Of course, when using the `Gate::authorize` method to throw an `AuthorizationException` if the action is not authorized, the error message provided by the authorization response will be propagated to the HTTP response:
 
-    Gate::authorize('edit-settings', $post);
+    Gate::authorize('update-post', $post);
 
     // The action is authorized...
 
