@@ -267,6 +267,7 @@ You may configure how many seconds are considered a "long wait" within your `con
 
     'waits' => [
         'redis:default' => 60,
+        'redis:critical,high' => 90,
     ],
 
 <a name="metrics"></a>
