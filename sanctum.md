@@ -134,6 +134,9 @@ You may "revoke" tokens by deleting them from your database using the `tokens` r
 
     // Revoke all tokens...
     $user->tokens()->delete();
+    
+    // Revoke the user's current token...
+    $request->user()->currentAccessToken()->delete();    
 
     // Revoke a specific token...
     $user->tokens()->where('id', $id)->delete();
