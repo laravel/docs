@@ -19,8 +19,6 @@ Alternatively, you can install the `predis/predis` package via Composer:
 
     composer require predis/predis
 
-> {note} Predis has been abandoned by the package's original author and may be removed from Laravel in a future release.
-
 <a name="configuration"></a>
 ### Configuration
 
