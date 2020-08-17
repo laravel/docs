@@ -1515,6 +1515,8 @@ You may also pass a second argument to set the key of the prepended item:
 
     // ['zero' => 0, 'one' => 1, 'two' => 2]
 
+Warning, passing a null key value will re-key the collection and disassociate existing key values.
+
 <a name="method-pull"></a>
 #### `pull()` {#collection-method}
 
