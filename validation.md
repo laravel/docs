@@ -1181,6 +1181,10 @@ You may also specify additional query constraints by customizing the query using
         return $query->where('account_id', 1);
     })
 
+You may use the above-mentioned [unique rule](#rule-unique) syntax to apply all these rules with multiple where conditions in a single line:
+ 
+    'email' => 'required|unique:users,email_address,$user->id,user_id,account_id,1,deleted_at,NULL'
+
 <a name="rule-url"></a>
 #### url
 
