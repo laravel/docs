@@ -232,6 +232,12 @@ In addition to the conditional directives already discussed, the `@isset` and `@
         // $records is "empty"...
     @endempty
 
+If you want the part of the component to be displayed only once per template, you may wrap it in the `@once` directive:
+
+    @once
+        // Specific content which will be rendered once
+    @endonce
+
 #### Authentication Directives
 
 The `@auth` and `@guest` directives may be used to quickly determine if the current user is authenticated or is a guest:
@@ -510,6 +516,8 @@ To display a component, you may use a Blade component tag within one of your Bla
 If the component class is nested deeper within the `App\View\Components` directory, you may use the `.` character to indicate directory nesting. For example, if we assume a component is located at `App\View\Components\Inputs\Button.php`, we may render it like so:
 
     <x-inputs.button/>
+
+> {tip} You can use [`@once` directive](/docs/{{version}}/blade#if-statements) if you need to display part of the component only once per template.
 
 <a name="passing-data-to-components"></a>
 ### Passing Data To Components
