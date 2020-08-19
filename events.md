@@ -367,7 +367,7 @@ Sometimes your queued event listeners may fail. If queued listener exceeds the m
          * Handle a job failure.
          *
          * @param  \App\Events\OrderShipped  $event
-         * @param  \Exception  $exception
+         * @param  \Throwable  $exception
          * @return void
          */
         public function failed(OrderShipped $event, $exception)
