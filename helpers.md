@@ -216,11 +216,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
-[decrypt](#method-decrypt)
 [dispatch](#method-dispatch)
 [dispatch_now](#method-dispatch-now)
 [dump](#method-dump)
-[encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
@@ -2435,13 +2433,6 @@ The `dd` function dumps the given variables and ends execution of the script:
 
 If you do not want to halt the execution of your script, use the [`dump`](#method-dump) function instead.
 
-<a name="method-decrypt"></a>
-#### `decrypt()` {#collection-method}
-
-The `decrypt` function decrypts the given value using Laravel's [encrypter](/docs/{{version}}/encryption):
-
-    $decrypted = decrypt($encrypted_value);
-
 <a name="method-dispatch"></a>
 #### `dispatch()` {#collection-method}
 
@@ -2466,13 +2457,6 @@ The `dump` function dumps the given variables:
     dump($value1, $value2, $value3, ...);
 
 If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
-
-<a name="method-encrypt"></a>
-#### `encrypt()` {#collection-method}
-
-The `encrypt` function encrypts the given value using Laravel's [encrypter](/docs/{{version}}/encryption):
-
-    $encrypted = encrypt($unencrypted_value);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}

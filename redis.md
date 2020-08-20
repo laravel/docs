@@ -19,8 +19,6 @@ Alternatively, you can install the `predis/predis` package via Composer:
 
     composer require predis/predis
 
-> {note} Predis has been abandoned by the package's original author and may be removed from Laravel in a future release.
-
 <a name="configuration"></a>
 ### Configuration
 
@@ -46,7 +44,21 @@ The Redis configuration for your application is located in the `config/database.
 
     ],
 
-The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Each Redis server defined in your configuration file is required to have a name, host, and port.
+The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Each Redis server defined in your configuration file is required to have a name, host, and port unless you define a single URL to represent the Redis connection:
+
+    'redis' => [
+
+        'client' => env('REDIS_CLIENT', 'phpredis'),
+
+        'default' => [
+            'url' => 'tcp://127.0.0.1:6379?database=0',
+        ],
+
+        'cache' => [
+            'url' => 'tls://user:password@127.0.0.1:6380?database=1',
+        ],
+
+    ],
 
 #### Configuring Clusters
 
@@ -123,7 +135,7 @@ If you plan to use PhpRedis extension along with the `Redis` Facade alias, you s
 
     'RedisManager' => Illuminate\Support\Facades\Redis::class,
 
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, PhpRedis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout` and `timeout`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
+In addition to the default `host`, `port`, `database`, and `password` server configuration options, PhpRedis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -131,6 +143,10 @@ In addition to the default `host`, `port`, `database`, and `password` server con
         'port' => env('REDIS_PORT', 6379),
         'database' => 0,
         'read_timeout' => 60,
+        'context' => [
+            // 'auth' => ['username', 'secret'],
+            // 'stream' => ['verify_peer' => false],
+        ],
     ],
 
 #### The Redis Facade

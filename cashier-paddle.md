@@ -27,7 +27,6 @@
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)
     - [Without Payment Method Up Front](#without-payment-method-up-front)
-    - [Extending Trials](#extending-trials)
 - [Handling Paddle Webhooks](#handling-paddle-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
@@ -38,6 +37,7 @@
     - [Refunding Orders](#refunding-orders)
 - [Receipts](#receipts)
     - [Past & Upcoming Payments](#past-and-upcoming-payments)
+- [Handling Failed Payments](#handling-failed-payments)
 - [Testing](#testing)
 
 <a name="introduction"></a>
@@ -492,7 +492,6 @@ A complete list of available scopes is available below:
     Subscription::query()->onGracePeriod();
     Subscription::query()->notOnGracePeriod();
 
-<a name="past-due-status"></a>
 #### Past Due Status
 
 If a payment fails for a subscription, it will be marked as `past_due`. When your subscription is in this state it will not be active until the customer has updated their payment information. You may determine if a subscription is past due using the `pastDue` method on the subscription instance:
@@ -757,7 +756,7 @@ Cashier automatically handles subscription cancellation on failed charges, but i
          * Handle payment succeeded.
          *
          * @param  array  $payload
-         * @return \Symfony\Component\HttpFoundation\Response
+         * @return void
          */
         public function handlePaymentSucceeded($payload)
         {
@@ -769,7 +768,7 @@ Next, define a route to your Cashier controller within your `routes/web.php` fil
 
     Route::post(
         'paddle/webhook',
-        '\App\Http\Controllers\WebhookController@handleWebhook'
+        '\App\Http\Controllers\WebhookController'
     );
 
 Cashier emits a `Laravel\Paddle\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Paddle\Events\WebhookHandled` event when a webhook was handled. Both events contain the full payload of the Paddle webhook.
@@ -904,6 +903,33 @@ Both of these methods will return an instance of `Laravel\Paddle\Payment`; howev
 
     Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
 
+<a name="handling-failed-payments"></a>
+## Handling Failed Payments
+
+Subscription payments fail for various reasons, such as expired cards or a card having insufficient funds. When this happens, we recommend that you let Paddle handle payment failures for you. Specifically, you may [setup Paddle's automatic billing emails](https://vendors.paddle.com/subscription-settings) in your Paddle dashboard.
+
+Alternatively, you can perform more precise customization by catching the [`subscription_payment_failed`](https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-payment-failed) webhook and enabling the "Subscription Payment Failed" option in the Webhook settings of your Paddle dashboard:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Laravel\Paddle\Http\Controllers\WebhookController as CashierController;
+
+    class WebhookController extends CashierController
+    {
+        /**
+         * Handle subscription payment failed.
+         *
+         * @param  array  $payload
+         * @return void
+         */
+        public function handleSubscriptionPaymentFailed($payload)
+        {
+            // Handle the failed subscription payment...
+        }
+    }
+    
 <a name="testing"></a>
 ## Testing
 

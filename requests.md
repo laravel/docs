@@ -427,7 +427,7 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
         /**
          * The headers that should be used to detect proxies.
          *
-         * @var string
+         * @var int
          */
         protected $headers = Request::HEADER_X_FORWARDED_ALL;
     }

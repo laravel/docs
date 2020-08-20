@@ -11,6 +11,7 @@
     - [Nested Resources](#restful-nested-resources)
     - [Naming Resource Routes](#restful-naming-resource-routes)
     - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
+    - [Scoping Resource Routes](#restful-scoping-resource-routes)
     - [Localizing Resource URIs](#restful-localizing-resource-uris)
     - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
@@ -267,6 +268,26 @@ By default, `Route::resource` will create the route parameters for your resource
  The example above generates the following URIs for the resource's `show` route:
 
     /users/{admin_user}
+
+
+<a name="restful-scoping-resource-routes"></a>
+### Scoping Resource Routes
+
+Sometimes, when implicitly binding multiple Eloquent models in resource route definitions, you may wish to scope the second Eloquent model such that it must be a child of the first Eloquent model. For example, consider this situation that retrieves a blog post by slug for a specific user:
+
+    use App\Http\Controllers\PostsController;
+
+    Route::resource('users.posts', PostsController::class)->scoped();
+
+You may override the default model route keys by passing an array to the `scoped` method:
+
+    use App\Http\Controllers\PostsController;
+
+    Route::resource('users.posts', PostsController::class)->scoped([
+        'post' => 'slug',
+    ]);
+
+When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural of the route parameter name) which can be used to retrieve the `Post` model.
 
 <a name="restful-localizing-resource-uris"></a>
 ### Localizing Resource URIs

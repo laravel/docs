@@ -545,25 +545,7 @@ If you already have a model instance, you may use the `fill` method to populate 
 
     $flight->fill(['name' => 'Flight 22']);
 
-#### Guarding Attributes
-
-While `$fillable` serves as a "allow list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "deny list". Importantly, you should use either `$fillable` or `$guarded` - not both. In the example below, all attributes **except for `price`** will be mass assignable:
-
-    <?php
-
-    namespace App;
-
-    use Illuminate\Database\Eloquent\Model;
-
-    class Flight extends Model
-    {
-        /**
-         * The attributes that aren't mass assignable.
-         *
-         * @var array
-         */
-        protected $guarded = ['price'];
-    }
+#### Allowing Mass Assignment
 
 If you would like to make all attributes mass assignable, you may define the `$guarded` property as an empty array:
 
@@ -1002,7 +984,6 @@ Instead of using custom event classes, you may register Closures that execute wh
 
     namespace App;
 
-    use App\Scopes\AgeScope;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model

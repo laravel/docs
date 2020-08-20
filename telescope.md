@@ -5,7 +5,8 @@
     - [Configuration](#configuration)
     - [Data Pruning](#data-pruning)
     - [Migration Customization](#migration-customization)
-- [Dashboard Authorization](#dashboard-authorization)
+    - [Dashboard Authorization](#dashboard-authorization)
+- [Upgrading Telescope](#upgrading-telescope)
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
     - [Batches](#filtering-batches)
@@ -49,12 +50,6 @@ After installing Telescope, publish its assets using the `telescope:install` Art
     php artisan telescope:install
 
     php artisan migrate
-
-#### Updating Telescope
-
-When updating Telescope, you should re-publish Telescope's assets:
-
-    php artisan telescope:publish
 
 ### Installing Only In Specific Environments
 
@@ -113,7 +108,7 @@ By default, all entries older than 24 hours will be pruned. You may use the `hou
     $schedule->command('telescope:prune --hours=48')->daily();
 
 <a name="dashboard-authorization"></a>
-## Dashboard Authorization
+### Dashboard Authorization
 
 Telescope exposes a dashboard at `/telescope`. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is a `gate` method. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
 
@@ -134,6 +129,23 @@ Telescope exposes a dashboard at `/telescope`. By default, you will only be able
     }
 
 > {note} You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
+
+<a name="upgrading-telescope"></a>
+## Upgrading Telescope
+
+When upgrading to a new version of Telescope, you should re-publish Telescope's assets:
+
+    php artisan telescope:publish
+
+To keep the assets up-to-date and avoid issues in future updates, you may add the `telescope:publish` command to the `post-update-cmd` scripts in your application's `composer.json` file:
+
+    {
+        "scripts": {
+            "post-update-cmd": [
+                "@php artisan telescope:publish --ansi"
+            ]
+        }
+    }
 
 <a name="filtering"></a>
 ## Filtering

@@ -149,7 +149,7 @@ If you would like to delay the delivery of the notification, you may chain the `
 
 #### Customizing Notification Channel Queues
 
-If you would to specify a specific queue that should be used for each notification channel supported by the notification, you may define a `viaQueues` method on your notification. This method should return an array of channel name / queue name pairs:
+If you would like to specify a specific queue that should be used for each notification channel supported by the notification, you may define a `viaQueues` method on your notification. This method should return an array of channel name / queue name pairs:
 
     /**
      * Determine which queues should be used for each notification channel.
@@ -224,7 +224,23 @@ Instead of defining the "lines" of text in the notification class, you may use t
         );
     }
 
-In addition, you may return a [mailable object](/docs/{{version}}/mail) from the `toMail` method:
+You may specify a plain-text view for the mail message by passing the view name as the second element of an array that is given to the `view` method of the `MailMessage`:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)->view(
+            ['emails.name.html', 'emails.name.plain'], 
+            ['invoice' => $this->invoice]
+        );
+    }
+
+In addition, you may return a full [mailable object](/docs/{{version}}/mail) from the `toMail` method:
 
     use App\Mail\InvoicePaid as Mailable;
 

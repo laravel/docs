@@ -808,7 +808,7 @@ If you require more complex logic for determining the retry delay, you may defin
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Cleaning Up After Failed Jobs
 
-You may define a `failed` method directly on your job class, allowing you to perform job specific clean-up when a failure occurs. This is the perfect location to send an alert to your users or revert any actions performed by the job. The `Exception` that caused the job to fail will be passed to the `failed` method:
+You may define a `failed` method directly on your job class, allowing you to perform job specific clean-up when a failure occurs. This is the perfect location to send an alert to your users or revert any actions performed by the job. The `Throwable` exception that caused the job to fail will be passed to the `failed` method:
 
     <?php
 
@@ -853,10 +853,10 @@ You may define a `failed` method directly on your job class, allowing you to per
         /**
          * Handle a job failure.
          *
-         * @param  \Exception  $exception
+         * @param  \Throwable  $exception
          * @return void
          */
-        public function failed(Exception $exception)
+        public function failed(Throwable $exception)
         {
             // Send user notification of failure, etc...
         }
@@ -909,7 +909,7 @@ To view all of your failed jobs that have been inserted into your `failed_jobs` 
 
     php artisan queue:failed
 
-The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
+The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
 
     php artisan queue:retry 5
 
