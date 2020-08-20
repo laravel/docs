@@ -13,6 +13,7 @@
     - [The Loop Variable](#the-loop-variable)
     - [Comments](#comments)
     - [PHP](#php)
+    - [The `@once` Directive](#the-once-directive)
 - [Forms](#forms)
     - [CSRF Field](#csrf-field)
     - [Method Field](#method-field)
@@ -232,12 +233,6 @@ In addition to the conditional directives already discussed, the `@isset` and `@
         // $records is "empty"...
     @endempty
 
-If you want the part of the component to be displayed only once per template, you may wrap it in the `@once` directive:
-
-    @once
-        // Specific content which will be rendered once
-    @endonce
-
 #### Authentication Directives
 
 The `@auth` and `@guest` directives may be used to quickly determine if the current user is authenticated or is a guest:
@@ -421,6 +416,18 @@ In some situations, it's useful to embed PHP code into your views. You can use t
 
 > {tip} While Blade provides this feature, using it frequently may be a signal that you have too much logic embedded within your template.
 
+### The `@once` Directive
+
+The `@once` directive allows you to define a portion of the template that will only be evaluate once per rendering cycle. This may be useful for pushing a given piece of JavaScript into the page's header using [stacks](#stacks). For example, if you are rendering a given [component](#components) within a loop, you may wish to only push the JavaScript to the header the the first time the component is rendered:
+
+    @once
+        @push('scripts')
+            <script>
+                // Your custom JavaScript...
+            </script>
+        @endpush
+    @endonce
+
 <a name="forms"></a>
 ## Forms
 
@@ -516,8 +523,6 @@ To display a component, you may use a Blade component tag within one of your Bla
 If the component class is nested deeper within the `App\View\Components` directory, you may use the `.` character to indicate directory nesting. For example, if we assume a component is located at `App\View\Components\Inputs\Button.php`, we may render it like so:
 
     <x-inputs.button/>
-
-> {tip} You can use [`@once` directive](/docs/{{version}}/blade#if-statements) if you need to display part of the component only once per template.
 
 <a name="passing-data-to-components"></a>
 ### Passing Data To Components
