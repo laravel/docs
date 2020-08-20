@@ -187,7 +187,7 @@ Horizon allows you to assign “tags” to jobs, including mailables, event broa
 
     namespace App\Jobs;
 
-    use App\Video;
+    use App\Models\Video;
     use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Foundation\Bus\Dispatchable;
@@ -201,14 +201,14 @@ Horizon allows you to assign “tags” to jobs, including mailables, event broa
         /**
          * The video instance.
          *
-         * @var \App\Video
+         * @var \App\Models\Video
          */
         public $video;
 
         /**
          * Create a new job instance.
          *
-         * @param  \App\Video  $video
+         * @param  \App\Models\Video  $video
          * @return void
          */
         public function __construct(Video $video)
@@ -227,9 +227,9 @@ Horizon allows you to assign “tags” to jobs, including mailables, event broa
         }
     }
 
-If this job is queued with an `App\Video` instance that has an `id` of `1`, it will automatically receive the tag `App\Video:1`. This is because Horizon will examine the job's properties for any Eloquent models. If Eloquent models are found, Horizon will intelligently tag the job using the model's class name and primary key:
+If this job is queued with an `App\Models\Video` instance that has an `id` of `1`, it will automatically receive the tag `App\Models\Video:1`. This is because Horizon will examine the job's properties for any Eloquent models. If Eloquent models are found, Horizon will intelligently tag the job using the model's class name and primary key:
 
-    $video = App\Video::find(1);
+    $video = App\Models\Video::find(1);
 
     App\Jobs\RenderVideo::dispatch($video);
 

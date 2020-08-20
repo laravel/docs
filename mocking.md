@@ -161,7 +161,7 @@ If you only want to fake event listeners for a portion of your test, you may use
     namespace Tests\Feature;
 
     use App\Events\OrderCreated;
-    use App\Order;
+    use App\Models\Order;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Support\Facades\Event;
     use Illuminate\Foundation\Testing\WithoutMiddleware;

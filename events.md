@@ -132,7 +132,7 @@ An event class is a data container which holds the information related to the ev
 
     namespace App\Events;
 
-    use App\Order;
+    use App\Models\Order;
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Foundation\Events\Dispatchable;
     use Illuminate\Queue\SerializesModels;
@@ -146,7 +146,7 @@ An event class is a data container which holds the information related to the ev
         /**
          * Create a new event instance.
          *
-         * @param  \App\Order  $order
+         * @param  \App\Models\Order  $order
          * @return void
          */
         public function __construct(Order $order)
@@ -385,7 +385,7 @@ To dispatch an event, you may pass an instance of the event to the `event` helpe
 
     use App\Events\OrderShipped;
     use App\Http\Controllers\Controller;
-    use App\Order;
+    use App\Models\Order;
 
     class OrderController extends Controller
     {

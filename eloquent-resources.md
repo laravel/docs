@@ -70,7 +70,7 @@ Before diving into all of the options available to you when writing resources, l
 Every resource class defines a `toArray` method which returns the array of attributes that should be converted to JSON when sending the response. Notice that we can access model properties directly from the `$this` variable. This is because a resource class will automatically proxy property and method access down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller:
 
     use App\Http\Resources\User as UserResource;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/user', function () {
         return new UserResource(User::find(1));
@@ -82,7 +82,7 @@ Every resource class defines a `toArray` method which returns the array of attri
 If you are returning a collection of resources or a paginated response, you may use the `collection` method when creating the resource instance in your route or controller:
 
     use App\Http\Resources\User as UserResource;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/user', function () {
         return UserResource::collection(User::all());
@@ -122,7 +122,7 @@ Once the resource collection class has been generated, you may easily define any
 After defining your resource collection, it may be returned from a route or controller:
 
     use App\Http\Resources\UserCollection;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/users', function () {
         return new UserCollection(User::all());
@@ -151,7 +151,7 @@ When returning a resource collection from a route, Laravel resets the collection
 When the `preserveKeys` property is set to `true`, collection keys will be preserved:
 
     use App\Http\Resources\User as UserResource;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/user', function () {
         return UserResource::collection(User::all()->keyBy->id);
@@ -215,7 +215,7 @@ In essence, resources are simple. They only need to transform a given model into
 Once a resource has been defined, it may be returned directly from a route or controller:
 
     use App\Http\Resources\User as UserResource;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/user', function () {
         return new UserResource(User::find(1));
@@ -250,7 +250,7 @@ If you would like to include related resources in your response, you may add the
 While resources translate a single model into an array, resource collections translate a collection of models into an array. It is not absolutely necessary to define a resource collection class for each one of your model types since all resources provide a `collection` method to generate an "ad-hoc" resource collection on the fly:
 
     use App\Http\Resources\User as UserResource;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/user', function () {
         return UserResource::collection(User::all());
@@ -286,7 +286,7 @@ However, if you need to customize the meta data returned with the collection, it
 Like singular resources, resource collections may be returned directly from routes or controllers:
 
     use App\Http\Resources\UserCollection;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/users', function () {
         return new UserCollection(User::all());
@@ -430,7 +430,7 @@ When returning paginated collections in a resource response, Laravel will wrap y
 You may always pass a paginator instance to the `collection` method of a resource or to a custom resource collection:
 
     use App\Http\Resources\UserCollection;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/users', function () {
         return new UserCollection(User::paginate());
@@ -672,7 +672,7 @@ You may also add top-level data when constructing resource instances in your rou
 As you have already read, resources may be returned directly from routes and controllers:
 
     use App\Http\Resources\User as UserResource;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/user', function () {
         return new UserResource(User::find(1));
@@ -681,7 +681,7 @@ As you have already read, resources may be returned directly from routes and con
 However, sometimes you may need to customize the outgoing HTTP response before it is sent to the client. There are two ways to accomplish this. First, you may chain the `response` method onto the resource. This method will return an `Illuminate\Http\JsonResponse` instance, allowing you full control of the response's headers:
 
     use App\Http\Resources\User as UserResource;
-    use App\User;
+    use App\Models\User;
 
     Route::get('/user', function () {
         return (new UserResource(User::find(1)))

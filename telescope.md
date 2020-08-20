@@ -372,7 +372,7 @@ The schedule watcher records the command and output of any scheduled tasks run b
 
 The Telescope dashboard displays the user avatar for the user that was logged in when a given entry was saved. By default, Telescope will retrieve avatars using the Gravatar web service. However, you may customize the avatar URL by registering a callback in your `TelescopeServiceProvider`. The callback will receive the user's ID and email address and should return the user's avatar image URL:
 
-    use App\User;
+    use App\Models\User;
     use Laravel\Telescope\Telescope;
 
     /**

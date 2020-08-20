@@ -263,7 +263,7 @@ For more information, [check Paddle's API documentation on prices](https://devel
 
 If a user is already a customer and you would like to display the prices that apply to that customer, you may do so by retrieving the prices directly from the customer instance:
 
-    use App\User;
+    use App\Models\User;
 
     // Retrieve prices for two products...
     $prices = User::find(1)->productPrices([123, 456]);
@@ -348,7 +348,7 @@ These defaults will be used for every action in Cashier that generates a [pay li
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
 
-To create a subscription, first retrieve an instance of your billable model, which typically will be an instance of `App\User`. Once you have retrieved the model instance, you may use the `newSubscription` method to create the model's subscription pay link:
+To create a subscription, first retrieve an instance of your billable model, which typically will be an instance of `App\Models\User`. Once you have retrieved the model instance, you may use the `newSubscription` method to create the model's subscription pay link:
 
     $user = User::find(1);
 
@@ -532,7 +532,7 @@ In contrast to [single charges](#single-charges), this method will immediately c
 
 Paddle always saves a payment method per subscription. If you want to update the default payment method for a subscription, you should first generate a subscription "update URL" using the `updateUrl` method on the subscription model:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $updateUrl = $user->subscription('default')->updateUrl();
 
@@ -549,7 +549,7 @@ When a user has finished updating their information, a `subscription_updated` we
 
 After a user has subscribed to your application, they may occasionally want to change to a new subscription plan. To swap a user to a new subscription, you should pass the Paddle plan's identifier to the subscription's `swap` method:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $user->subscription('default')->swap($premium = 34567);
 
@@ -563,7 +563,7 @@ If you would like to swap plans and cancel any trial period the user is currentl
 
 If you would like to swap plans and immediately invoice the user instead of waiting for their next billing cycle, you may use the `swapAndInvoice` method:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $user->subscription('default')->swapAndInvoice($premium = 34567);
 
@@ -815,7 +815,7 @@ The `charge` method accepts an array as its third argument, allowing you to pass
 
 You may also use the `charge` method without an underlying customer or user:
 
-    use App\User;
+    use App\Models\User;
 
     $payLink = (new User)->charge(12.99, 'Product title');
 
@@ -929,7 +929,7 @@ Alternatively, you can perform more precise customization by catching the [`subs
             // Handle the failed subscription payment...
         }
     }
-    
+
 <a name="testing"></a>
 ## Testing
 

@@ -128,7 +128,7 @@ So, you may call any of these methods to log a message for the corresponding lev
     namespace App\Http\Controllers;
 
     use App\Http\Controllers\Controller;
-    use App\User;
+    use App\Models\User;
     use Illuminate\Support\Facades\Log;
 
     class UserController extends Controller

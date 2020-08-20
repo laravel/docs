@@ -48,7 +48,7 @@ To define an accessor, create a `getFooAttribute` method on your model where `Fo
 
 As you can see, the original value of the column is passed to the accessor, allowing you to manipulate and return the value. To access the value of the accessor, you may access the `first_name` attribute on a model instance:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $firstName = $user->first_name;
 
@@ -93,7 +93,7 @@ To define a mutator, define a `setFooAttribute` method on your model where `Foo`
 
 The mutator will receive the value that is being set on the attribute, allowing you to manipulate the value and set the manipulated value on the Eloquent model's internal `$attributes` property. So, for example, if we attempt to set the `first_name` attribute to `Sally`:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $user->first_name = 'Sally';
 
@@ -126,7 +126,7 @@ By default, Eloquent will convert the `created_at` and `updated_at` columns to i
 
 When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $user->deleted_at = now();
 
@@ -134,7 +134,7 @@ When a column is considered a date, you may set its value to a UNIX timestamp, d
 
 As noted above, when retrieving attributes that are listed in your `$dates` property, they will automatically be cast to [Carbon](https://github.com/briannesbitt/Carbon) instances, allowing you to use any of Carbon's methods on your attributes:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     return $user->deleted_at->getTimestamp();
 
@@ -185,7 +185,7 @@ To demonstrate attribute casting, let's cast the `is_admin` attribute, which is 
 
 Now the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     if ($user->is_admin) {
         //
@@ -268,7 +268,7 @@ As an example, we will define a custom cast class that casts multiple model valu
 
     namespace App\Casts;
 
-    use App\Address;
+    use App\Models\Address;
     use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
     use InvalidArgumentException;
 
@@ -281,7 +281,7 @@ As an example, we will define a custom cast class that casts multiple model valu
          * @param  string  $key
          * @param  mixed  $value
          * @param  array  $attributes
-         * @return \App\Address
+         * @return \App\Models\Address
          */
         public function get($model, $key, $value, $attributes)
         {
@@ -296,7 +296,7 @@ As an example, we will define a custom cast class that casts multiple model valu
          *
          * @param  \Illuminate\Database\Eloquent\Model  $model
          * @param  string  $key
-         * @param  \App\Address  $value
+         * @param  \App\Models\Address  $value
          * @param  array  $attributes
          * @return array
          */
@@ -315,7 +315,7 @@ As an example, we will define a custom cast class that casts multiple model valu
 
 When casting to value objects, any changes made to the value object will automatically be synced back to the model before the model is saved:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $user->address->lineOne = 'Updated Address Value';
 
@@ -388,7 +388,7 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
 Instead of attaching the custom cast to your model, you may alternatively attach a class that implements the `Illuminate\Contracts\Database\Eloquent\Castable` interface:
 
     protected $casts = [
-        'address' => \App\Address::class,
+        'address' => \App\Models\Address::class,
     ];
 
 Objects that implement the `Castable` interface must define a `castUsing` method that returns the class name of the custom caster class that is responsible for casting to and from the `Castable` class:
@@ -416,7 +416,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
 When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed directly to the caster class:
 
     protected $casts = [
-        'address' => \App\Address::class.':argument',
+        'address' => \App\Models\Address::class.':argument',
     ];
 
 <a name="array-and-json-casting"></a>
@@ -444,7 +444,7 @@ The `array` cast type is particularly useful when working with columns that are 
 
 Once the cast is defined, you may access the `options` attribute and it will automatically be deserialized from JSON into a PHP array. When you set the value of the `options` attribute, the given array will automatically be serialized back into JSON for storage:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $options = $user->options;
 
@@ -473,8 +473,8 @@ When using the `date` or `datetime` cast type, you may specify the date's format
 
 Sometimes you may need to apply casts while executing a query, such as when selecting a raw value from a table. For example, consider the following query:
 
-    use App\Post;
-    use App\User;
+    use App\Models\Post;
+    use App\Models\User;
 
     $users = User::select([
         'users.*',

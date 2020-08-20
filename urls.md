@@ -22,7 +22,7 @@ Laravel provides several helpers to assist you in generating URLs for your appli
 
 The `url` helper may be used to generate arbitrary URLs for your application. The generated URL will automatically use the scheme (HTTP or HTTPS) and host from the current request:
 
-    $post = App\Post::find(1);
+    $post = App\Models\Post::find(1);
 
     echo url("/posts/{$post->id}");
 

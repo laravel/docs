@@ -28,7 +28,7 @@ Let's look at a simple example:
 
     use App\Http\Controllers\Controller;
     use App\Repositories\UserRepository;
-    use App\User;
+    use App\Models\User;
 
     class UserController extends Controller
     {
@@ -273,7 +273,7 @@ For example, you may type-hint a repository defined by your application in a con
 
     namespace App\Http\Controllers;
 
-    use App\Users\Repository as UserRepository;
+    use App\Models\Users\Repository as UserRepository;
 
     class UserController extends Controller
     {

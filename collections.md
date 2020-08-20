@@ -2511,8 +2511,8 @@ This method has the same signature as the [`whereIn`](#method-wherein) method; h
 
 The `whereInstanceOf` method filters the collection by a given class type:
 
-    use App\User;
-    use App\Post;
+    use App\Models\User;
+    use App\Models\Post;
 
     $collection = collect([
         new User,
@@ -2524,7 +2524,7 @@ The `whereInstanceOf` method filters the collection by a given class type:
 
     $filtered->all();
 
-    // [App\User, App\User]
+    // [App\Models\User, App\Models\User]
 
 <a name="method-wherenotbetween"></a>
 #### `whereNotBetween()` {#collection-method}
@@ -2689,7 +2689,7 @@ To supplement the already powerful `Collection` class, the `LazyCollection` clas
 
 For example, imagine your application needs to process a multi-gigabyte log file while taking advantage of Laravel's collection methods to parse the logs. Instead of reading the entire file into memory at once, lazy collections may be used to keep only a small part of the file in memory at a given time:
 
-    use App\LogEntry;
+    use App\Models\LogEntry;
     use Illuminate\Support\LazyCollection;
 
     LazyCollection::make(function () {
@@ -2706,13 +2706,13 @@ For example, imagine your application needs to process a multi-gigabyte log file
 
 Or, imagine you need to iterate through 10,000 Eloquent models. When using traditional Laravel collections, all 10,000 Eloquent models must be loaded into memory at the same time:
 
-    $users = App\User::all()->filter(function ($user) {
+    $users = App\Models\User::all()->filter(function ($user) {
         return $user->id > 500;
     });
 
 However, the query builder's `cursor` method returns a `LazyCollection` instance. This allows you to still only run a single query against the database but also only keep one Eloquent model loaded in memory at a time. In this example, the `filter` callback is not executed until we actually iterate over each user individually, allowing for a drastic reduction in memory usage:
 
-    $users = App\User::cursor()->filter(function ($user) {
+    $users = App\Models\User::cursor()->filter(function ($user) {
         return $user->id > 500;
     });
 

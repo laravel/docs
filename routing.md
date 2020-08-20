@@ -321,17 +321,17 @@ When injecting a model ID to a route or controller action, you will often query 
 
 Laravel automatically resolves Eloquent models defined in routes or controller actions whose type-hinted variable names match a route segment name. For example:
 
-    Route::get('api/users/{user}', function (App\User $user) {
+    Route::get('api/users/{user}', function (App\Models\User $user) {
         return $user->email;
     });
 
-Since the `$user` variable is type-hinted as the `App\User` Eloquent model and the variable name matches the `{user}` URI segment, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
+Since the `$user` variable is type-hinted as the `App\Models\User` Eloquent model and the variable name matches the `{user}` URI segment, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
 
 #### Customizing The Key
 
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
 
-    Route::get('api/posts/{post:slug}', function (App\Post $post) {
+    Route::get('api/posts/{post:slug}', function (App\Models\Post $post) {
         return $post;
     });
 
@@ -339,8 +339,8 @@ Sometimes you may wish to resolve Eloquent models using a column other than `id`
 
 Sometimes, when implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the first Eloquent model. For example, consider this situation that retrieves a blog post by slug for a specific user:
 
-    use App\Post;
-    use App\User;
+    use App\Models\Post;
+    use App\Models\User;
 
     Route::get('api/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
         return $post;
@@ -369,16 +369,16 @@ To register an explicit binding, use the router's `model` method to specify the 
 
     public function boot()
     {
-        Route::model('user', App\User::class);
+        Route::model('user', App\Models\User::class);
     }
 
 Next, define a route that contains a `{user}` parameter:
 
-    Route::get('profile/{user}', function (App\User $user) {
+    Route::get('profile/{user}', function (App\Models\User $user) {
         //
     });
 
-Since we have bound all `{user}` parameters to the `App\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance from the database which has an ID of `1`.
+Since we have bound all `{user}` parameters to the `App\Models\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance from the database which has an ID of `1`.
 
 If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
@@ -394,7 +394,7 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
     public function boot()
     {
         Route::bind('user', function ($value) {
-            return App\User::where('name', $value)->firstOrFail();
+            return App\Models\User::where('name', $value)->firstOrFail();
         });
     }
 

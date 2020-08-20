@@ -183,7 +183,7 @@ Typically, you will want to pass some data to your view that you can utilize whe
 
     namespace App\Mail;
 
-    use App\Order;
+    use App\Models\Order;
     use Illuminate\Bus\Queueable;
     use Illuminate\Mail\Mailable;
     use Illuminate\Queue\SerializesModels;
@@ -202,7 +202,7 @@ Typically, you will want to pass some data to your view that you can utilize whe
         /**
          * Create a new message instance.
          *
-         * @param  \App\Order  $order
+         * @param  \App\Models\Order  $order
          * @return void
          */
         public function __construct(Order $order)
@@ -235,7 +235,7 @@ If you would like to customize the format of your email's data before it is sent
 
     namespace App\Mail;
 
-    use App\Order;
+    use App\Models\Order;
     use Illuminate\Bus\Queueable;
     use Illuminate\Mail\Mailable;
     use Illuminate\Queue\SerializesModels;
@@ -247,14 +247,14 @@ If you would like to customize the format of your email's data before it is sent
         /**
          * The order instance.
          *
-         * @var Order
+         * @var \App\Models\Order
          */
         protected $order;
 
         /**
          * Create a new message instance.
          *
-         * @param  \App\Order $order
+         * @param  \App\Models\Order $order
          * @return void
          */
         public function __construct(Order $order)
@@ -518,7 +518,7 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
 
     use App\Http\Controllers\Controller;
     use App\Mail\OrderShipped;
-    use App\Order;
+    use App\Models\Order;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Mail;
 
@@ -620,7 +620,7 @@ If you have mailable classes that you want to always be queued, you may implemen
 
 Sometimes you may wish to capture the HTML content of a mailable without sending it. To accomplish this, you may call the `render` method of the mailable. This method will return the evaluated contents of the mailable as a string:
 
-    $invoice = App\Invoice::find(1);
+    $invoice = App\Models\Invoice::find(1);
 
     return (new App\Mail\InvoicePaid($invoice))->render();
 
@@ -630,7 +630,7 @@ Sometimes you may wish to capture the HTML content of a mailable without sending
 When designing a mailable's template, it is convenient to quickly preview the rendered mailable in your browser like a typical Blade template. For this reason, Laravel allows you to return any mailable directly from a route Closure or controller. When a mailable is returned, it will be rendered and displayed in the browser, allowing you to quickly preview its design without needing to send it to an actual email address:
 
     Route::get('mailable', function () {
-        $invoice = App\Invoice::find(1);
+        $invoice = App\Models\Invoice::find(1);
 
         return new App\Mail\InvoicePaid($invoice);
     });

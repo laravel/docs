@@ -848,7 +848,7 @@ Occasionally, you may need to specify a specific database connection to be used 
 
 Instead of specifying the table name directly, you may specify the Eloquent model which should be used to determine the table name:
 
-    'user_id' => 'exists:App\User,id'
+    'user_id' => 'exists:App\Models\User,id'
 
 If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:
 
@@ -1132,7 +1132,7 @@ The field under validation must not exist within the given database table.
 
 Instead of specifying the table name directly, you may specify the Eloquent model which should be used to determine the table name:
 
-    'email' => 'unique:App\User,email_address'
+    'email' => 'unique:App\Models\User,email_address'
 
 The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the field name will be used.
 

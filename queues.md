@@ -129,8 +129,8 @@ Job classes are very simple, normally containing only a `handle` method which is
 
     namespace App\Jobs;
 
-    use App\AudioProcessor;
-    use App\Podcast;
+    use App\Models\Podcast;
+    use App\Services\AudioProcessor;
     use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Foundation\Bus\Dispatchable;
@@ -187,7 +187,7 @@ Because loaded relationships also get serialized, the serialized job string can 
     /**
      * Create a new job instance.
      *
-     * @param  \App\Podcast  $podcast
+     * @param  \App\Models\Podcast  $podcast
      * @return void
      */
     public function __construct(Podcast $podcast)
@@ -814,8 +814,8 @@ You may define a `failed` method directly on your job class, allowing you to per
 
     namespace App\Jobs;
 
-    use App\AudioProcessor;
-    use App\Podcast;
+    use App\Models\Podcast;
+    use App\Services\AudioProcessor;
     use Exception;
     use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
@@ -831,7 +831,7 @@ You may define a `failed` method directly on your job class, allowing you to per
         /**
          * Create a new job instance.
          *
-         * @param  \App\Podcast  $podcast
+         * @param  \App\Models\Podcast  $podcast
          * @return void
          */
         public function __construct(Podcast $podcast)
@@ -842,7 +842,7 @@ You may define a `failed` method directly on your job class, allowing you to per
         /**
          * Execute the job.
          *
-         * @param  \App\AudioProcessor  $processor
+         * @param  \App\Services\AudioProcessor  $processor
          * @return void
          */
         public function handle(AudioProcessor $processor)

@@ -638,12 +638,12 @@ The `componentName` is equal to the name used in the HTML tag after the `x-` pre
 
 If your component requires dependencies from Laravel's [service container](/docs/{{version}}/container), you may list them before any of the component's data attributes and they will automatically be injected by the container:
 
-    use App\AlertCreator
+    use App\Services\AlertCreator
 
     /**
      * Create the component instance.
      *
-     * @param  \App\AlertCreator  $creator
+     * @param  \App\Services\AlertCreator  $creator
      * @param  string  $type
      * @param  string  $message
      * @return void

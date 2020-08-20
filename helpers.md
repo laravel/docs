@@ -2379,7 +2379,7 @@ You may add items to the cache by passing an array of key / value pairs to the f
 
 The `class_uses_recursive` function returns all traits used by a class, including traits used by all of its parent classes:
 
-    $traits = class_uses_recursive(App\User::class);
+    $traits = class_uses_recursive(App\Models\User::class);
 
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
@@ -2482,7 +2482,7 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 
 The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/database-testing#writing-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
 
-    $user = factory(App\User::class)->make();
+    $user = factory(App\Models\User::class)->make();
 
 <a name="method-filled"></a>
 #### `filled()` {#collection-method}
@@ -2575,7 +2575,7 @@ The `optional` function also accepts a Closure as its second argument. The Closu
 
 The `policy` method retrieves a [policy](/docs/{{version}}/authorization#creating-policies) instance for a given class:
 
-    $policy = policy(App\User::class);
+    $policy = policy(App\Models\User::class);
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}

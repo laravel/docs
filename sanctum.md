@@ -134,9 +134,9 @@ You may "revoke" tokens by deleting them from your database using the `tokens` r
 
     // Revoke all tokens...
     $user->tokens()->delete();
-    
+
     // Revoke the user's current token...
-    $request->user()->currentAccessToken()->delete();    
+    $request->user()->currentAccessToken()->delete();
 
     // Revoke a specific token...
     $user->tokens()->where('id', $id)->delete();
@@ -254,7 +254,7 @@ You may use Sanctum tokens to authenticate your mobile application's requests to
 
 To get started, create a route that accepts the user's email / username, password, and device name, then exchanges those credentials for a new Sanctum token. The endpoint will return the plain-text Sanctum token which may then be stored on the mobile device and used to make additional API requests:
 
-    use App\User;
+    use App\Models\User;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Validation\ValidationException;
@@ -306,7 +306,7 @@ To allow users to revoke API tokens issued to mobile devices, you may list them 
 
 While testing, the `Sanctum::actingAs` method may be used to authenticate a user and specify which abilities are granted to their token:
 
-    use App\User;
+    use App\Models\User;
     use Laravel\Sanctum\Sanctum;
 
     public function test_task_list_can_be_retrieved()

@@ -41,9 +41,9 @@ Don't worry if this all sounds confusing now! Many applications will never need 
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
 
-By default, Laravel includes an `App\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app` directory. This model may be used with the default Eloquent authentication driver. If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
+By default, Laravel includes an `App\Models\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app/Models` directory. This model may be used with the default Eloquent authentication driver. If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
-When building the database schema for the `App\User` model, make sure the password column is at least 60 characters in length. Maintaining the default string column length of 255 characters would be a good choice.
+When building the database schema for the `App\Models\User` model, make sure the password column is at least 60 characters in length. Maintaining the default string column length of 255 characters would be a good choice.
 
 Also, you should verify that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for users that select the "remember me" option when logging into your application.
 
@@ -131,7 +131,7 @@ To modify the form fields that are required when a new user registers with your 
 
 The `validator` method of the `RegisterController` contains the validation rules for new users of the application. You are free to modify this method as you wish.
 
-The `create` method of the `RegisterController` is responsible for creating new `App\User` records in your database using the [Eloquent ORM](/docs/{{version}}/eloquent). You are free to modify this method according to the needs of your database.
+The `create` method of the `RegisterController` is responsible for creating new `App\Models\User` records in your database using the [Eloquent ORM](/docs/{{version}}/eloquent). You are free to modify this method according to the needs of your database.
 
 <a name="retrieving-the-authenticated-user"></a>
 ### Retrieving The Authenticated User
@@ -326,7 +326,7 @@ If you are "remembering" users, you may use the `viaRemember` method to determin
 
 #### Authenticate A User Instance
 
-If you need to log an existing user instance into your application, you may call the `login` method with the user instance. The given object must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). The `App\User` model included with Laravel already implements this interface:
+If you need to log an existing user instance into your application, you may call the `login` method with the user instance. The given object must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). The `App\Models\User` model included with Laravel already implements this interface:
 
     Auth::login($user);
 
@@ -485,7 +485,7 @@ The simplest way to implement a custom, HTTP request based authentication system
 
 To get started, call the `Auth::viaRequest` method within the `boot` method of your `AuthServiceProvider`. The `viaRequest` method accepts an authentication driver name as its first argument. This name can be any string that describes your custom guard. The second argument passed to the method should be a Closure that receives the incoming HTTP request and returns a user instance or, if authentication fails, `null`:
 
-    use App\User;
+    use App\Models\User;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
 
@@ -645,7 +645,7 @@ Laravel raises a variety of [events](/docs/{{version}}/events) during the authen
         'Illuminate\Auth\Events\Validated' => [
             'App\Listeners\LogValidated',
         ],
-        
+
         'Illuminate\Auth\Events\Verified' => [
             'App\Listeners\LogVerified',
         ],

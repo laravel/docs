@@ -192,7 +192,7 @@ To get started, let's write a test that verifies we can log into our application
 
     namespace Tests\Browser;
 
-    use App\User;
+    use App\Models\User;
     use Illuminate\Foundation\Testing\DatabaseMigrations;
     use Laravel\Dusk\Chrome;
     use Tests\DuskTestCase;
@@ -323,7 +323,7 @@ When your test requires migrations, like the authentication example above, you s
 
     namespace Tests\Browser;
 
-    use App\User;
+    use App\Models\User;
     use Illuminate\Foundation\Testing\DatabaseMigrations;
     use Laravel\Dusk\Chrome;
     use Tests\DuskTestCase;

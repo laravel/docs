@@ -143,7 +143,7 @@ One common use of the session is for maintaining state for the authenticated use
 
     <?php
 
-    use App\User;
+    use App\Models\User;
 
     class ExampleTest extends TestCase
     {

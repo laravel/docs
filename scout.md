@@ -189,18 +189,18 @@ Enabling this feature this will also pass the request's IP address and your auth
 
 If you are installing Scout into an existing project, you may already have database records you need to import into your search driver. Scout provides an `import` Artisan command that you may use to import all of your existing records into your search indexes:
 
-    php artisan scout:import "App\Post"
+    php artisan scout:import "App\Models\Post"
 
 The `flush` command may be used to remove all of a model's records from your search indexes:
 
-    php artisan scout:flush "App\Post"
+    php artisan scout:flush "App\Models\Post"
 
 <a name="adding-records"></a>
 ### Adding Records
 
 Once you have added the `Laravel\Scout\Searchable` trait to a model, all you need to do is `save` a model instance and it will automatically be added to your search index. If you have configured Scout to [use queues](#queueing) this operation will be performed in the background by your queue worker:
 
-    $order = new App\Order;
+    $order = new App\Models\Order;
 
     // ...
 
@@ -211,7 +211,7 @@ Once you have added the `Laravel\Scout\Searchable` trait to a model, all you nee
 If you would like to add a collection of models to your search index via an Eloquent query, you may chain the `searchable` method onto an Eloquent query. The `searchable` method will [chunk the results](/docs/{{version}}/eloquent#chunking-results) of the query and add the records to your search index. Again, if you have configured Scout to use queues, all of the chunks will be added in the background by your queue workers:
 
     // Adding via Eloquent query...
-    App\Order::where('price', '>', 100)->searchable();
+    App\Models\Order::where('price', '>', 100)->searchable();
 
     // You may also add records via relationships...
     $user->orders()->searchable();
@@ -226,7 +226,7 @@ The `searchable` method can be considered an "upsert" operation. In other words,
 
 To update a searchable model, you only need to update the model instance's properties and `save` the model to your database. Scout will automatically persist the changes to your search index:
 
-    $order = App\Order::find(1);
+    $order = App\Models\Order::find(1);
 
     // Update the order...
 
@@ -235,7 +235,7 @@ To update a searchable model, you only need to update the model instance's prope
 You may also use the `searchable` method on an Eloquent query to update a collection of models. If the models do not exist in your search index, they will be created:
 
     // Updating via Eloquent query...
-    App\Order::where('price', '>', 100)->searchable();
+    App\Models\Order::where('price', '>', 100)->searchable();
 
     // You may also update via relationships...
     $user->orders()->searchable();
@@ -248,14 +248,14 @@ You may also use the `searchable` method on an Eloquent query to update a collec
 
 To remove a record from your index, `delete` the model from the database. This form of removal is even compatible with [soft deleted](/docs/{{version}}/eloquent#soft-deleting) models:
 
-    $order = App\Order::find(1);
+    $order = App\Models\Order::find(1);
 
     $order->delete();
 
 If you do not want to retrieve the model before deleting the record, you may use the `unsearchable` method on an Eloquent query instance or collection:
 
     // Removing via Eloquent query...
-    App\Order::where('price', '>', 100)->unsearchable();
+    App\Models\Order::where('price', '>', 100)->unsearchable();
 
     // You may also remove via relationships...
     $user->orders()->unsearchable();
@@ -268,14 +268,14 @@ If you do not want to retrieve the model before deleting the record, you may use
 
 Sometimes you may need to perform a batch of Eloquent operations on a model without syncing the model data to your search index. You may do this using the `withoutSyncingToSearch` method. This method accepts a single callback which will be immediately executed. Any model operations that occur within the callback will not be synced to the model's index:
 
-    App\Order::withoutSyncingToSearch(function () {
+    App\Models\Order::withoutSyncingToSearch(function () {
         // Perform model actions...
     });
 
 <a name="conditionally-searchable-model-instances"></a>
 ### Conditionally Searchable Model Instances
 
-Sometimes you may need to only make a model searchable under certain conditions. For example, imagine you have `App\Post` model that may be in one of two states: "draft" and "published". You may only want to allow "published" posts to be searchable. To accomplish this, you may define a `shouldBeSearchable` method on your model:
+Sometimes you may need to only make a model searchable under certain conditions. For example, imagine you have `App\Models\Post` model that may be in one of two states: "draft" and "published". You may only want to allow "published" posts to be searchable. To accomplish this, you may define a `shouldBeSearchable` method on your model:
 
     public function shouldBeSearchable()
     {
@@ -285,7 +285,7 @@ Sometimes you may need to only make a model searchable under certain conditions.
 The `shouldBeSearchable` method is only applied when manipulating models through the `save` method, queries, or relationships. Directly making models or collections searchable using the `searchable` method will override the result of the `shouldBeSearchable` method:
 
     // Will respect "shouldBeSearchable"...
-    App\Order::where('price', '>', 100)->searchable();
+    App\Models\Order::where('price', '>', 100)->searchable();
 
     $user->orders()->searchable();
 
@@ -301,23 +301,23 @@ The `shouldBeSearchable` method is only applied when manipulating models through
 
 You may begin searching a model using the `search` method. The search method accepts a single string that will be used to search your models. You should then chain the `get` method onto the search query to retrieve the Eloquent models that match the given search query:
 
-    $orders = App\Order::search('Star Trek')->get();
+    $orders = App\Models\Order::search('Star Trek')->get();
 
 Since Scout searches return a collection of Eloquent models, you may even return the results directly from a route or controller and they will automatically be converted to JSON:
 
     use Illuminate\Http\Request;
 
     Route::get('/search', function (Request $request) {
-        return App\Order::search($request->search)->get();
+        return App\Models\Order::search($request->search)->get();
     });
 
 If you would like to get the raw results before they are converted to Eloquent models, you should use the `raw` method:
 
-    $orders = App\Order::search('Star Trek')->raw();
+    $orders = App\Models\Order::search('Star Trek')->raw();
 
 Search queries will typically be performed on the index specified by the model's [`searchableAs`](#configuring-model-indexes) method. However, you may use the `within` method to specify a custom index that should be searched instead:
 
-    $orders = App\Order::search('Star Trek')
+    $orders = App\Models\Order::search('Star Trek')
         ->within('tv_shows_popularity_desc')
         ->get();
 
@@ -326,18 +326,18 @@ Search queries will typically be performed on the index specified by the model's
 
 Scout allows you to add simple "where" clauses to your search queries. Currently, these clauses only support basic numeric equality checks, and are primarily useful for scoping search queries by a tenant ID. Since a search index is not a relational database, more advanced "where" clauses are not currently supported:
 
-    $orders = App\Order::search('Star Trek')->where('user_id', 1)->get();
+    $orders = App\Models\Order::search('Star Trek')->where('user_id', 1)->get();
 
 <a name="pagination"></a>
 ### Pagination
 
 In addition to retrieving a collection of models, you may paginate your search results using the `paginate` method. This method will return a `Paginator` instance just as if you had [paginated a traditional Eloquent query](/docs/{{version}}/pagination):
 
-    $orders = App\Order::search('Star Trek')->paginate();
+    $orders = App\Models\Order::search('Star Trek')->paginate();
 
 You may specify how many models to retrieve per page by passing the amount as the first argument to the `paginate` method:
 
-    $orders = App\Order::search('Star Trek')->paginate(15);
+    $orders = App\Models\Order::search('Star Trek')->paginate(15);
 
 Once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/blade) just as if you had paginated a traditional Eloquent query:
 
@@ -359,10 +359,10 @@ If your indexed models are [soft deleting](/docs/{{version}}/eloquent#soft-delet
 When this configuration option is `true`, Scout will not remove soft deleted models from the search index. Instead, it will set a hidden `__soft_deleted` attribute on the indexed record. Then, you may use the `withTrashed` or `onlyTrashed` methods to retrieve the soft deleted records when searching:
 
     // Include trashed records when retrieving results...
-    $orders = App\Order::search('Star Trek')->withTrashed()->get();
+    $orders = App\Models\Order::search('Star Trek')->withTrashed()->get();
 
     // Only include trashed records when retrieving results...
-    $orders = App\Order::search('Star Trek')->onlyTrashed()->get();
+    $orders = App\Models\Order::search('Star Trek')->onlyTrashed()->get();
 
 > {tip} When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
 
@@ -373,7 +373,7 @@ If you need to customize the search behavior of an engine you may pass a callbac
 
     use Algolia\AlgoliaSearch\SearchIndex;
 
-    App\Order::search('Star Trek', function (SearchIndex $algolia, string $query, array $options) {
+    App\Models\Order::search('Star Trek', function (SearchIndex $algolia, string $query, array $options) {
         $options['body']['query']['bool']['filter']['geo_distance'] = [
             'distance' => '1000km',
             'location' => ['lat' => 36, 'lon' => 111],
@@ -456,4 +456,4 @@ If you would like to define a custom builder method, you may use the `macro` met
 
 The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `Laravel\Scout\Builder` implementation:
 
-    App\Order::search('Star Trek')->count();
+    App\Models\Order::search('Star Trek')->count();

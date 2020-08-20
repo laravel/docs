@@ -208,8 +208,8 @@ Once the policy exists, it needs to be registered. The `AuthServiceProvider` inc
 
     namespace App\Providers;
 
+    use App\Models\Post;
     use App\Policies\PostPolicy;
-    use App\Post;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
     use Illuminate\Support\Facades\Gate;
 
@@ -265,16 +265,16 @@ The `update` method will receive a `User` and a `Post` instance as its arguments
 
     namespace App\Policies;
 
-    use App\Post;
-    use App\User;
+    use App\Models\Post;
+    use App\Models\User;
 
     class PostPolicy
     {
         /**
          * Determine if the given post can be updated by the user.
          *
-         * @param  \App\User  $user
-         * @param  \App\Post  $post
+         * @param  \App\Models\User  $user
+         * @param  \App\Models\Post  $post
          * @return bool
          */
         public function update(User $user, Post $post)
@@ -297,8 +297,8 @@ So far, we have only examined policy methods that return simple boolean values. 
     /**
      * Determine if the given post can be updated by the user.
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Auth\Access\Response
      */
     public function update(User $user, Post $post)
@@ -334,7 +334,7 @@ When defining policy methods that will not receive a model instance, such as a `
     /**
      * Determine if the given user can create posts.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return bool
      */
     public function create(User $user)
@@ -351,16 +351,16 @@ By default, all gates and policies automatically return `false` if the incoming 
 
     namespace App\Policies;
 
-    use App\Post;
-    use App\User;
+    use App\Models\Post;
+    use App\Models\User;
 
     class PostPolicy
     {
         /**
          * Determine if the given post can be updated by the user.
          *
-         * @param  \App\User  $user
-         * @param  \App\Post  $post
+         * @param  \App\Models\User  $user
+         * @param  \App\Models\Post  $post
          * @return bool
          */
         public function update(?User $user, Post $post)
@@ -403,7 +403,7 @@ If a [policy is registered](#registering-policies) for the given model, the `can
 
 Remember, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the `can` method. The class name will be used to determine which policy to use when authorizing the action:
 
-    use App\Post;
+    use App\Models\Post;
 
     if ($user->can('create', Post::class)) {
         // Executes the "create" method on the relevant policy...
@@ -414,7 +414,7 @@ Remember, some actions like `create` may not require a model instance. In these 
 
 Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware is assigned the `can` key in your `App\Http\Kernel` class. Let's explore an example of using the `can` middleware to authorize that a user can update a blog post:
 
-    use App\Post;
+    use App\Models\Post;
 
     Route::put('/post/{post}', function (Post $post) {
         // The current user may update the post...
@@ -428,7 +428,7 @@ Again, some actions like `create` may not require a model instance. In these sit
 
     Route::post('/post', function () {
         // The current user may create posts...
-    })->middleware('can:create,App\Post');
+    })->middleware('can:create,App\Models\Post');
 
 <a name="via-controller-helpers"></a>
 ### Via Controller Helpers
@@ -440,7 +440,7 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
     namespace App\Http\Controllers;
 
     use App\Http\Controllers\Controller;
-    use App\Post;
+    use App\Models\Post;
     use Illuminate\Http\Request;
 
     class PostController extends Controller
@@ -490,7 +490,7 @@ The `authorizeResource` method accepts the model's class name as its first argum
     namespace App\Http\Controllers;
 
     use App\Http\Controllers\Controller;
-    use App\Post;
+    use App\Models\Post;
     use Illuminate\Http\Request;
 
     class PostController extends Controller
@@ -522,13 +522,13 @@ When writing Blade templates, you may wish to display a portion of the page only
 
     @can('update', $post)
         <!-- The Current User Can Update The Post -->
-    @elsecan('create', App\Post::class)
+    @elsecan('create', App\Models\Post::class)
         <!-- The Current User Can Create New Post -->
     @endcan
 
     @cannot('update', $post)
         <!-- The Current User Cannot Update The Post -->
-    @elsecannot('create', App\Post::class)
+    @elsecannot('create', App\Models\Post::class)
         <!-- The Current User Cannot Create A New Post -->
     @endcannot
 
@@ -546,7 +546,7 @@ You may also determine if a user has any authorization ability from a given list
 
     @canany(['update', 'view', 'delete'], $post)
         // The current user can update, view, or delete the post
-    @elsecanany(['create'], \App\Post::class)
+    @elsecanany(['create'], \App\Models\::class)
         // The current user can create a post
     @endcanany
 
@@ -554,11 +554,11 @@ You may also determine if a user has any authorization ability from a given list
 
 Like most of the other authorization methods, you may pass a class name to the `@can` and `@cannot` directives if the action does not require a model instance:
 
-    @can('create', App\Post::class)
+    @can('create', App\Models\::class)
         <!-- The Current User Can Create Posts -->
     @endcan
 
-    @cannot('create', App\Post::class)
+    @cannot('create', App\Models\::class)
         <!-- The Current User Can't Create Posts -->
     @endcannot
 
@@ -570,8 +570,8 @@ When authorizing actions using policies, you may pass an array as the second arg
     /**
      * Determine if the given post can be updated by the user.
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\  $post
      * @param  int  $category
      * @return bool
      */

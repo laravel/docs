@@ -67,7 +67,7 @@ Tinker utilizes a white-list to determine which Artisan commands are allowed to 
 Typically, Tinker automatically aliases classes as you require them in Tinker. However, you may wish to never alias some classes. You may accomplish this by listing the classes in the `dont_alias` array of your `tinker.php` configuration file:
 
     'dont_alias' => [
-        App\User::class,
+        App\Models\User::class,
     ],
 
 <a name="writing-commands"></a>
@@ -95,8 +95,8 @@ Let's take a look at an example command. Note that we are able to inject any dep
 
     namespace App\Console\Commands;
 
-    use App\DripEmailer;
-    use App\User;
+    use App\Models\User;
+    use App\Support\DripEmailer;
     use Illuminate\Console\Command;
 
     class SendEmails extends Command
@@ -128,7 +128,7 @@ Let's take a look at an example command. Note that we are able to inject any dep
         /**
          * Execute the console command.
          *
-         * @param  \App\DripEmailer  $drip
+         * @param  \App\Support\DripEmailer  $drip
          * @return mixed
          */
         public function handle(DripEmailer $drip)
@@ -164,8 +164,8 @@ The Closure is bound to the underlying command instance, so you have full access
 
 In addition to receiving your command's arguments and options, command Closures may also type-hint additional dependencies that you would like resolved out of the [service container](/docs/{{version}}/container):
 
-    use App\DripEmailer;
-    use App\User;
+    use App\Models\User;
+    use App\Support\DripEmailer;
 
     Artisan::command('email:send {user}', function (DripEmailer $drip, $user) {
         $drip->send(User::find($user));
@@ -396,7 +396,7 @@ The `table` method makes it easy to correctly format multiple rows / columns of 
 
     $headers = ['Name', 'Email'];
 
-    $users = App\User::all(['name', 'email'])->toArray();
+    $users = App\Models\User::all(['name', 'email'])->toArray();
 
     $this->table($headers, $users);
 
@@ -404,7 +404,7 @@ The `table` method makes it easy to correctly format multiple rows / columns of 
 
 For long running tasks, it could be helpful to show a progress indicator. Using the output object, we can start, advance and stop the Progress Bar. First, define the total number of steps the process will iterate through. Then, advance the Progress Bar after processing each item:
 
-    $users = App\User::all();
+    $users = App\Models\User::all();
 
     $bar = $this->output->createProgressBar(count($users));
 

@@ -21,19 +21,19 @@ When building JSON APIs, you will often need to convert your models and relation
 
 To convert a model and its loaded [relationships](/docs/{{version}}/eloquent-relationships) to an array, you should use the `toArray` method. This method is recursive, so all attributes and all relations (including the relations of relations) will be converted to arrays:
 
-    $user = App\User::with('roles')->first();
+    $user = App\Models\User::with('roles')->first();
 
     return $user->toArray();
 
 To convert only a model's attributes to an array, use the `attributesToArray` method:
 
-    $user = App\User::first();
+    $user = App\Models\User::first();
 
     return $user->attributesToArray();
 
 You may also convert entire [collections](/docs/{{version}}/eloquent-collections) of models to arrays:
 
-    $users = App\User::all();
+    $users = App\Models\User::all();
 
     return $users->toArray();
 
@@ -42,7 +42,7 @@ You may also convert entire [collections](/docs/{{version}}/eloquent-collections
 
 To convert a model to JSON, you should use the `toJson` method. Like `toArray`, the `toJson` method is recursive, so all attributes and relations will be converted to JSON. You may also specify JSON encoding options [supported by PHP](https://secure.php.net/manual/en/function.json-encode.php):
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     return $user->toJson();
 
@@ -50,14 +50,14 @@ To convert a model to JSON, you should use the `toJson` method. Like `toArray`, 
 
 Alternatively, you may cast a model or collection to a string, which will automatically call the `toJson` method on the model or collection:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     return (string) $user;
 
 Since models and collections are converted to JSON when cast to a string, you can return Eloquent objects directly from your application's routes or controllers:
 
     Route::get('users', function () {
-        return App\User::all();
+        return App\Models\User::all();
     });
 
 #### Relationships

@@ -26,7 +26,7 @@ You may encrypt a value using the `encryptString` method of the `Crypt` facade. 
     namespace App\Http\Controllers;
 
     use App\Http\Controllers\Controller;
-    use App\User;
+    use App\Models\User;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Crypt;
 

@@ -211,7 +211,7 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
 
     namespace App\Events;
 
-    use App\User;
+    use App\Models\User;
     use Illuminate\Broadcasting\Channel;
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Broadcasting\PresenceChannel;
@@ -374,7 +374,7 @@ All authorization callbacks receive the currently authenticated user as their fi
 
 Just like HTTP routes, channel routes may also take advantage of implicit and explicit [route model binding](/docs/{{version}}/routing#route-model-binding). For example, instead of receiving the string or numeric order ID, you may request an actual `Order` model instance:
 
-    use App\Order;
+    use App\Models\Order;
 
     Broadcast::channel('order.{order}', function ($user, Order $order) {
         return $user->id === $order->user_id;
@@ -407,8 +407,8 @@ Finally, you may place the authorization logic for your channel in the channel c
 
     namespace App\Broadcasting;
 
-    use App\Order;
-    use App\User;
+    use App\Models\Order;
+    use App\Models\User;
 
     class OrderChannel
     {
@@ -425,8 +425,8 @@ Finally, you may place the authorization logic for your channel in the channel c
         /**
          * Authenticate the user's access to the channel.
          *
-         * @param  \App\User  $user
-         * @param  \App\Order  $order
+         * @param  \App\Models\User  $user
+         * @param  \App\Models\Order  $order
          * @return array|bool
          */
         public function join(User $user, Order $order)
@@ -660,4 +660,4 @@ Once you have configured a notification to use the broadcast channel, you may li
             console.log(notification.type);
         });
 
-In this example, all notifications sent to `App\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework.
+In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework.

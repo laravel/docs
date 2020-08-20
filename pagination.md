@@ -61,7 +61,7 @@ If you only need to display simple "Next" and "Previous" links in your paginatio
 
 You may also paginate [Eloquent](/docs/{{version}}/eloquent) queries. In this example, we will paginate the `User` model with `15` items per page. As you can see, the syntax is nearly identical to paginating query builder results:
 
-    $users = App\User::paginate(15);
+    $users = App\Models\User::paginate(15);
 
 You may call `paginate` after setting other constraints on the query, such as `where` clauses:
 
@@ -102,7 +102,7 @@ The `links` method will render the links to the rest of the pages in the result 
 The `withPath` method allows you to customize the URI used by the paginator when generating links. For example, if you want the paginator to generate links like `http://example.com/custom/url?page=N`, you should pass `custom/url` to the `withPath` method:
 
     Route::get('users', function () {
-        $users = App\User::paginate(15);
+        $users = App\Models\User::paginate(15);
 
         $users->withPath('custom/url');
 
@@ -135,7 +135,7 @@ You may control how many additional links are displayed on each side of the pagi
 The Laravel paginator result classes implement the `Illuminate\Contracts\Support\Jsonable` Interface contract and expose the `toJson` method, so it's very easy to convert your pagination results to JSON. You may also convert a paginator instance to JSON by returning it from a route or controller action:
 
     Route::get('users', function () {
-        return App\User::paginate();
+        return App\Models\User::paginate();
     });
 
 The JSON from the paginator will include meta information such as `total`, `current_page`, `last_page`, and more. The actual result objects will be available via the `data` key in the JSON array. Here is an example of the JSON created by returning a paginator instance from a route:

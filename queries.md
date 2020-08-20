@@ -520,7 +520,7 @@ The query above will produce the following SQL:
 
 Sometimes you may need to construct a where clause that compares the results of a subquery to a given value. You may accomplish this by passing a Closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
 
-    use App\User;
+    use App\Models\User;
 
     $users = User::where(function ($query) {
         $query->select('type')

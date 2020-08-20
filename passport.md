@@ -72,7 +72,7 @@ Next, you should run the `passport:install` command. This command will create th
 
 > {tip} If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids).
 
-After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
+After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
 
     <?php
 
@@ -105,7 +105,7 @@ Next, you should call the `Passport::routes` method within the `boot` method of 
          * @var array
          */
         protected $policies = [
-            'App\Model' => 'App\Policies\ModelPolicy',
+            'App\Models\Model' => 'App\Policies\ModelPolicy',
         ];
 
         /**
@@ -699,7 +699,7 @@ When authenticating using the password grant, Passport will use the `email` attr
          * Find the user instance for the given username.
          *
          * @param  string  $username
-         * @return \App\User
+         * @return \App\Models\User
          */
         public function findForPassport($username)
         {
@@ -864,7 +864,7 @@ Next, you should register these values by placing the following calls to `Passpo
 
 Once you have created a personal access client, you may issue tokens for a given user using the `createToken` method on the `User` model instance. The `createToken` method accepts the name of the token as its first argument and an optional array of [scopes](#token-scopes) as its second argument:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     // Creating a token without scopes...
     $token = $user->createToken('Token Name')->accessToken;
@@ -1144,7 +1144,7 @@ Passport raises events when issuing access tokens and refresh tokens. You may us
 
 Passport's `actingAs` method may be used to specify the currently authenticated user as well as its scopes. The first argument given to the `actingAs` method is the user instance and the second is an array of scopes that should be granted to the user's token:
 
-    use App\User;
+    use App\Models\User;
     use Laravel\Passport\Passport;
 
     public function testServerCreation()

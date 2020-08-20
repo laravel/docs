@@ -106,11 +106,11 @@ Before using Cashier, add the `Billable` trait to your model definition. This tr
         use Billable;
     }
 
-Cashier assumes your Billable model will be the `App\User` class that ships with Laravel. If you wish to change this you can specify a different model in your `.env` file:
+Cashier assumes your Billable model will be the `App\Models\User` class that ships with Laravel. If you wish to change this you can specify a different model in your `.env` file:
 
-    CASHIER_MODEL=App\User
+    CASHIER_MODEL=App\Models\User
 
-> {note} If you're using a model other than Laravel's supplied `App\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model's table name.
+> {note} If you're using a model other than Laravel's supplied `App\Models\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model's table name.
 
 <a name="api-keys"></a>
 ### API Keys
@@ -390,7 +390,7 @@ The `deletePaymentMethods` method will delete all of the payment method informat
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
 
-To create a subscription, first retrieve an instance of your billable model, which typically will be an instance of `App\User`. Once you have retrieved the model instance, you may use the `newSubscription` method to create the model's subscription:
+To create a subscription, first retrieve an instance of your billable model, which typically will be an instance of `App\Models\User`. Once you have retrieved the model instance, you may use the `newSubscription` method to create the model's subscription:
 
     $user = User::find(1);
 
@@ -569,7 +569,7 @@ If you would like the subscription to still be considered active when it's in a 
 
 After a user is subscribed to your application, they may occasionally want to change to a new subscription plan. To swap a user to a new subscription, pass the plan's price identifier to the `swap` method:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $user->subscription('default')->swap('provider-price-id');
 
@@ -583,7 +583,7 @@ If you would like to swap plans and cancel any trial period the user is currentl
 
 If you would like to swap plans and immediately invoice the user instead of waiting for their next billing cycle, you may use the `swapAndInvoice` method:
 
-    $user = App\User::find(1);
+    $user = App\Models\User::find(1);
 
     $user->subscription('default')->swapAndInvoice('provider-price-id');
 
@@ -787,7 +787,7 @@ These methods are also available on any `Laravel\Cashier\Invoice` object. Howeve
 
 By default, the billing cycle anchor is the date the subscription was created, or if a trial period is used, the date that the trial ends. If you would like to modify the billing anchor date, you may use the `anchorBillingCycleOn` method:
 
-    use App\User;
+    use App\Models\User;
     use Carbon\Carbon;
 
     $user = User::find(1);
@@ -1009,7 +1009,7 @@ The `charge` method accepts an array as its third argument, allowing you to pass
 
 You may also use the `charge` method without an underlying customer or user:
 
-    use App\User;
+    use App\Models\User;
 
     $stripeCharge = (new User)->charge(100, $paymentMethod);
 
