@@ -12,6 +12,7 @@
     - [Translations](#translations)
     - [Views](#views)
     - [View Components](#view-components)
+    - [Anonymous Components](#anonymous-components)
 - [Commands](#commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
@@ -279,6 +280,15 @@ Once your view components are registered in a service provider, you may referenc
     <x-courier-alert />
 
     <x-courier-button />
+
+<a name="anonymous-components"></a>
+### Anonymous Components
+
+If your package contains [anonymous components](/docs/{{version}}/blade#anonymous-components), you need to place them inside `/path/to/package/views/components` then you may reference them using the `package::component` syntax convention. For example, if your package named `courier`, you may reference an anonymous component named `alert` like so:
+
+    <x-courier::alert />
+
+> First, you need to register your [package's views](#views) using `loadViewsFrom`
 
 <a name="commands"></a>
 ## Commands
