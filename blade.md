@@ -667,6 +667,8 @@ All of the attributes that are not part of the component's constructor will auto
     <div {{ $attributes }}>
         <!-- Component Content -->
     </div>
+    
+> {note} Using `{{ $attributes }}` or directives like `@env` etc directly on a component isn't supported at this time.
 
 #### Default / Merged Attributes
 
