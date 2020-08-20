@@ -13,6 +13,7 @@
     - [The Loop Variable](#the-loop-variable)
     - [Comments](#comments)
     - [PHP](#php)
+    - [The `@once` Directive](#the-once-directive)
 - [Forms](#forms)
     - [CSRF Field](#csrf-field)
     - [Method Field](#method-field)
@@ -414,6 +415,18 @@ In some situations, it's useful to embed PHP code into your views. You can use t
     @endphp
 
 > {tip} While Blade provides this feature, using it frequently may be a signal that you have too much logic embedded within your template.
+
+### The `@once` Directive
+
+The `@once` directive allows you to define a portion of the template that will only be evaluate once per rendering cycle. This may be useful for pushing a given piece of JavaScript into the page's header using [stacks](#stacks). For example, if you are rendering a given [component](#components) within a loop, you may wish to only push the JavaScript to the header the the first time the component is rendered:
+
+    @once
+        @push('scripts')
+            <script>
+                // Your custom JavaScript...
+            </script>
+        @endpush
+    @endonce
 
 <a name="forms"></a>
 ## Forms
