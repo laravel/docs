@@ -215,9 +215,9 @@ Classes that implement this interface must define a `get` and `set` method. The 
          * @param  string  $key
          * @param  mixed  $value
          * @param  array  $attributes
-         * @return array
+         * @return mixed
          */
-        public function get($model, $key, $value, $attributes)
+        public function get($model, string $key, $value, array $attributes)
         {
             return json_decode($value, true);
         }
@@ -229,9 +229,9 @@ Classes that implement this interface must define a `get` and `set` method. The 
          * @param  string  $key
          * @param  array  $value
          * @param  array  $attributes
-         * @return string
+         * @return array|string
          */
-        public function set($model, $key, $value, $attributes)
+        public function set($model, string $key, $value, array $attributes)
         {
             return json_encode($value);
         }
