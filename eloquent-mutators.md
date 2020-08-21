@@ -281,7 +281,7 @@ As an example, we will define a custom cast class that casts multiple model valu
          * @param  string  $key
          * @param  mixed  $value
          * @param  array  $attributes
-         * @return mixed
+         * @return \App\Models\Address
          */
         public function get($model, string $key, $value, array $attributes)
         {
@@ -296,7 +296,7 @@ As an example, we will define a custom cast class that casts multiple model valu
          *
          * @param  \Illuminate\Database\Eloquent\Model  $model
          * @param  string  $key
-         * @param  mixed  $value
+         * @param  \App\Models\Address  $value
          * @param  array  $attributes
          * @return array|string
          */
