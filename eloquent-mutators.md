@@ -209,7 +209,7 @@ Classes that implement this interface must define a `get` and `set` method. The 
     class Json implements CastsAttributes
     {
         /**
-         * Cast the given value.
+         * Transform the attribute from the underlying model values.
          *
          * @param  \Illuminate\Database\Eloquent\Model  $model
          * @param  string  $key
@@ -223,11 +223,11 @@ Classes that implement this interface must define a `get` and `set` method. The 
         }
 
         /**
-         * Prepare the given value for storage.
+         * Transform the attribute to its underlying model values.
          *
          * @param  \Illuminate\Database\Eloquent\Model  $model
          * @param  string  $key
-         * @param  array  $value
+         * @param  mixed  $value
          * @param  array  $attributes
          * @return array|string
          */
@@ -275,32 +275,32 @@ As an example, we will define a custom cast class that casts multiple model valu
     class Address implements CastsAttributes
     {
         /**
-         * Cast the given value.
+         * Transform the attribute from the underlying model values.
          *
          * @param  \Illuminate\Database\Eloquent\Model  $model
          * @param  string  $key
          * @param  mixed  $value
          * @param  array  $attributes
-         * @return \App\Address
+         * @return mixed
          */
-        public function get($model, $key, $value, $attributes)
+        public function get($model, string $key, $value, array $attributes)
         {
             return new Address(
                 $attributes['address_line_one'],
                 $attributes['address_line_two']
             );
         }
-
+        
         /**
-         * Prepare the given value for storage.
+         * Transform the attribute to its underlying model values.
          *
          * @param  \Illuminate\Database\Eloquent\Model  $model
          * @param  string  $key
-         * @param  \App\Address  $value
+         * @param  mixed  $value
          * @param  array  $attributes
-         * @return array
+         * @return array|string
          */
-        public function set($model, $key, $value, $attributes)
+        public function set($model, string $key, $value, array $attributes)
         {
             if (! $value instanceof Address) {
                 throw new InvalidArgumentException('The given value is not an Address instance.');
@@ -354,15 +354,15 @@ Occasionally, you may need to write a custom cast that only transforms values th
         }
 
         /**
-         * Prepare the given value for storage.
+         * Transform the attribute to its underlying model values.
          *
          * @param  \Illuminate\Database\Eloquent\Model  $model
          * @param  string  $key
-         * @param  array  $value
+         * @param  mixed  $value
          * @param  array  $attributes
-         * @return string
+         * @return array
          */
-        public function set($model, $key, $value, $attributes)
+        public function set($model, string $key, $value, array $attributes)
         {
             return is_null($this->algorithm)
                         ? bcrypt($value)
