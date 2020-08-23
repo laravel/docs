@@ -193,6 +193,23 @@ You may also specify route names for controller actions:
 
     Route::get('user/profile', 'UserProfileController@show')->name('profile');
 
+Laravel automatically generates multiple named routes for all your handles in the resourceful route.
+
+    // Multiple named routes will automatically be generated for this resourceful route
+    Route::resource('/posts', 'PostsController');
+
+You cannot chain the `name` method onto the resourceful route definition, it will throw an error. You can provide a third argument with a `names` array to either change the name for all the route handles or selective route handles.
+
+    // To change the named routes for all route handles
+    Route::resource('/posts', 'PostsController', ['names' => 'blogs']);
+
+    // To change the named routes for selective route handles
+    Route::resource('/posts', 'PostsController', ['names' => [
+        'index' => 'blogs.index', // This will change the auto generated 'posts.index' route name to 'blogs.index'
+        'create' => 'blogs.create', // This will change the auto generated 'posts.create' route name to 'blogs.create'
+        'show' => 'blogs.show', // This will change the auto generated 'posts.show' route name to 'blogs.show'
+    ]]);
+
 > {note} Route names should always be unique.
 
 #### Generating URLs To Named Routes
@@ -204,6 +221,12 @@ Once you have assigned a name to a given route, you may use the route's name whe
 
     // Generating Redirects...
     return redirect()->route('profile');
+
+If you are using resourceful route then named routes for all your handles will be generated automatically. The URLs for these named routes can be generated using the `route` helper:
+
+    Route::resource('/posts', 'PostsController');
+
+    $indexUrl = route('posts.index');
 
 If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the URL in their correct positions:
 
