@@ -192,7 +192,7 @@ If you need to use a custom `Collection` object with your own extension methods,
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use App\Support\CustomCollection;
     use Illuminate\Database\Eloquent\Model;

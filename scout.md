@@ -46,7 +46,7 @@ Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
     use Laravel\Scout\Searchable;
@@ -84,7 +84,7 @@ Each Eloquent model is synced with a given search "index", which contains all of
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
     use Laravel\Scout\Searchable;
@@ -111,7 +111,7 @@ By default, the entire `toArray` form of a given model will be persisted to its 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
     use Laravel\Scout\Searchable;
@@ -142,7 +142,7 @@ By default, Scout will use the primary key of the model as the unique ID stored 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
     use Laravel\Scout\Searchable;

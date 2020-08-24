@@ -76,7 +76,7 @@ After running the `passport:install` command, add the `Laravel\Passport\HasApiTo
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;
@@ -685,7 +685,7 @@ When authenticating using the password grant, Passport will use the `email` attr
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;
@@ -714,7 +714,7 @@ When authenticating using the password grant, Passport will use the `password` a
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;

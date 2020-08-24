@@ -71,7 +71,7 @@ Sometimes you may wish to limit the attributes, such as passwords, that are incl
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -91,7 +91,7 @@ Alternatively, you may use the `visible` property to define a white-list of attr
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -122,7 +122,7 @@ Occasionally, when casting models to an array or JSON, you may wish to add attri
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -143,7 +143,7 @@ After creating the accessor, add the attribute name to the `appends` property on
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 

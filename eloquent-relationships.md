@@ -66,7 +66,7 @@ A one-to-one relationship is a very basic relation. For example, a `User` model 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -99,7 +99,7 @@ So, we can access the `Phone` model from our `User`. Now, let's define a relatio
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -141,7 +141,7 @@ A one-to-many relationship is used to define relationships where a single model 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -183,7 +183,7 @@ Now that we can access all of a post's comments, let's define a relationship to 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -251,7 +251,7 @@ Many-to-many relationships are defined by writing a method that returns the resu
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -292,7 +292,7 @@ To define the inverse of a many-to-many relationship, you place another call to 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -364,7 +364,7 @@ If you would like to define a custom model to represent the intermediate table o
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -383,7 +383,7 @@ When defining the `RoleUser` model, we will extend the `Pivot` class:
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -396,7 +396,7 @@ You can combine `using` and `withPivot` in order to retrieve columns from the in
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -454,7 +454,7 @@ Now that we have examined the table structure for the relationship, let's define
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -516,7 +516,7 @@ Now that we have examined the table structure for the relationship, let's define
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -584,7 +584,7 @@ Next, let's examine the model definitions needed to build this relationship:
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -674,7 +674,7 @@ Next, let's examine the model definitions needed to build this relationship:
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -759,7 +759,7 @@ Next, we're ready to define the relationships on the model. The `Post` and `Vide
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -780,7 +780,7 @@ Next, on the `Tag` model, you should define a method for each of its related mod
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -868,7 +868,7 @@ For example, imagine a blog system in which a `User` model has many associated `
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -1126,7 +1126,7 @@ When accessing Eloquent relationships as properties, the relationship data is "l
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -1225,7 +1225,7 @@ Sometimes you might want to always load some relationships when retrieving a mod
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -1531,7 +1531,7 @@ When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` w
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 

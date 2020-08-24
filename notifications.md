@@ -70,7 +70,7 @@ Notifications may be sent in two ways: using the `notify` method of the `Notifia
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;
@@ -299,7 +299,7 @@ When sending notifications via the `mail` channel, the notification system will 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;
@@ -636,7 +636,7 @@ If you would like to customize which channels a notifiable entity receives its b
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Broadcasting\PrivateChannel;
     use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -759,7 +759,7 @@ To route Nexmo notifications to the proper phone number, define a `routeNotifica
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;
@@ -936,7 +936,7 @@ To route Slack notifications to the proper location, define a `routeNotification
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Foundation\Auth\User as Authenticatable;
     use Illuminate\Notifications\Notifiable;

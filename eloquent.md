@@ -57,7 +57,7 @@ Now, let's look at an example `Flight` model, which we will use to retrieve and 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -72,7 +72,7 @@ Note that we did not tell Eloquent which table to use for our `Flight` model. By
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -92,7 +92,7 @@ Eloquent will also assume that each table has a primary key column named `id`. Y
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -140,7 +140,7 @@ By default, Eloquent expects `created_at` and `updated_at` columns to exist on y
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -158,7 +158,7 @@ If you need to customize the format of your timestamps, set the `$dateFormat` pr
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -188,7 +188,7 @@ By default, all Eloquent models will use the default database connection configu
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -209,7 +209,7 @@ If you would like to define the default values for some of your model's attribut
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -523,7 +523,7 @@ So, to get started, you should define which model attributes you want to make ma
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -632,7 +632,7 @@ In addition to actually removing records from your database, Eloquent can also "
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\SoftDeletes;
@@ -779,7 +779,7 @@ To assign a global scope to a model, you should override a given model's `booted
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use App\Scopes\AgeScope;
     use Illuminate\Database\Eloquent\Model;
@@ -807,7 +807,7 @@ Eloquent also allows you to define global scopes using Closures, which is partic
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Model;
@@ -856,7 +856,7 @@ Scopes should always return a query builder instance:
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -907,7 +907,7 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -952,7 +952,7 @@ To get started, define a `$dispatchesEvents` property on your Eloquent model tha
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use App\Events\UserDeleted;
     use App\Events\UserSaved;
@@ -982,7 +982,7 @@ Instead of using custom event classes, you may register Closures that execute wh
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 

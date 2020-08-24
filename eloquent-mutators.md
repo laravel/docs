@@ -28,7 +28,7 @@ To define an accessor, create a `getFooAttribute` method on your model where `Fo
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -73,7 +73,7 @@ To define a mutator, define a `setFooAttribute` method on your model where `Foo`
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -106,7 +106,7 @@ By default, Eloquent will convert the `created_at` and `updated_at` columns to i
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -144,7 +144,7 @@ By default, timestamps are formatted as `'Y-m-d H:i:s'`. If you need to customiz
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -167,7 +167,7 @@ To demonstrate attribute casting, let's cast the `is_admin` attribute, which is 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 
@@ -241,7 +241,7 @@ Once you have defined a custom cast type, you may attach it to a model attribute
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use App\Casts\Json;
     use Illuminate\Database\Eloquent\Model;
@@ -395,7 +395,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
     use App\Casts\Address as AddressCast;
@@ -426,7 +426,7 @@ The `array` cast type is particularly useful when working with columns that are 
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
 

@@ -151,7 +151,7 @@ Using real-time facades, you may treat any class in your application as if it we
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use App\Contracts\Publisher;
     use Illuminate\Database\Eloquent\Model;
@@ -176,7 +176,7 @@ Injecting a publisher implementation into the method allows us to easily test th
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Facades\App\Contracts\Publisher;
     use Illuminate\Database\Eloquent\Model;

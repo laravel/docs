@@ -21,7 +21,7 @@ To get started, verify that your `App\Models\User` model implements the `Illumin
 
     <?php
 
-    namespace App;
+    namespace App\Models;
 
     use Illuminate\Contracts\Auth\MustVerifyEmail;
     use Illuminate\Foundation\Auth\User as Authenticatable;
