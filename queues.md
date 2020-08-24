@@ -816,7 +816,7 @@ You may define a `failed` method directly on your job class, allowing you to per
 
     use App\AudioProcessor;
     use App\Podcast;
-    use Exception;
+    use Throwable;
     use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Queue\InteractsWithQueue;
