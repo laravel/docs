@@ -198,17 +198,17 @@ Laravel automatically generates multiple named routes for all your handles in th
     // Multiple named routes will automatically be generated for this resourceful route
     Route::resource('/posts', 'PostsController');
 
-You cannot chain the `name` method onto the resourceful route definition, it will throw an error. You can provide a third argument with a `names` array to either change the name for all the route handles or selective route handles.
+You can also use the `names` method on a resourceful route which takes a string or an array as an argument to either change the name for all the route handles or selective route handles.
 
     // To change the named routes for all route handles
-    Route::resource('/posts', 'PostsController', ['names' => 'blogs']);
+    Route::resource('/posts', 'PostsController')->names('blogs');
 
     // To change the named routes for selective route handles
-    Route::resource('/posts', 'PostsController', ['names' => [
+    Route::resource('/posts', 'PostsController')->names([
         'index' => 'blogs.index', // This will change the auto generated 'posts.index' route name to 'blogs.index'
         'create' => 'blogs.create', // This will change the auto generated 'posts.create' route name to 'blogs.create'
         'show' => 'blogs.show', // This will change the auto generated 'posts.show' route name to 'blogs.show'
-    ]]);
+    ]);
 
 > {note} Route names should always be unique.
 
