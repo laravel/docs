@@ -642,7 +642,7 @@ Blade components also allow you to access the component name, attributes, and sl
             // $data['attributes'];
             // $data['slot'];
 
-            return view('components.alert');
+            return '<div>Component content</div>';
         };
     }
 
@@ -681,7 +681,7 @@ All of the attributes that are not part of the component's constructor will auto
     <div {{ $attributes }}>
         <!-- Component Content -->
     </div>
-    
+
 > {note} Echoing variables (`{{ $attributes }}`) or using directives such as `@env` directly on a component is not supported at this time.
 
 #### Default / Merged Attributes
