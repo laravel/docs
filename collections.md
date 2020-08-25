@@ -78,6 +78,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [average](#method-average)
 [avg](#method-avg)
 [chunk](#method-chunk)
+[chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
 [collect](#method-collect)
 [combine](#method-combine)
@@ -262,6 +263,21 @@ This method is especially useful in [views](/docs/{{version}}/views) when workin
             @endforeach
         </div>
     @endforeach
+
+<a name="method-chunkwhile"></a>
+#### `chunkWhile()` {#collection-method}
+
+The `chunkWhile` method breaks the collection into multiple, smaller collections based on the evaluation of the given callback:
+
+    $collection = collect(str_split('AABBCCCD'));
+
+    $chunks = $collection->chunkWhile(function($current, $key, $chunk) {
+        return $current === $chunk->last();
+    });
+
+    $chunks->toArray();
+
+    // [['A', 'A'], ['B', 'B'], ['C', 'C', 'C'], ['D']]
 
 <a name="method-collapse"></a>
 #### `collapse()` {#collection-method}
@@ -2746,6 +2762,7 @@ Almost all methods available on the `Collection` class are also available on the
 [average](#method-average)
 [avg](#method-avg)
 [chunk](#method-chunk)
+[chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
 [collect](#method-collect)
 [combine](#method-combine)
