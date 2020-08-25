@@ -208,6 +208,7 @@ Therefore, when displaying subscriptions you should always inform the user which
     $subscription = $user->subscription('default');
 
     $customerEmailAddress = $subscription->paddleEmail();
+    $paymentMethod = $subscription->paymentMethod();
     $cardBrand = $subscription->cardBrand();
     $cardLastFour = $subscription->cardLastFour();
     $cardExpirationDate = $subscription->cardExpirationDate();
