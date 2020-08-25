@@ -711,7 +711,7 @@ By default, Stripe will prorate charges when adding or removing plans from a sub
 
 #### Quantities
 
-If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](subscription-quantity) and passing the name of the plan as an additional argument to the method:
+If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](#subscription-quantity) and passing the name of the plan as an additional argument to the method:
 
     $user = User::find(1);
 
