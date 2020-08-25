@@ -505,6 +505,13 @@ You may also specify the desired action for the "on delete" and "on update" prop
           ->constrained()
           ->onDelete('cascade');
 
+When the action is `cascade` for the "on delete" and "on update" properties you can use the `cascadeOnDelete` and `cascadeOnUpdate` methods.
+
+    $table->foreignId('user_id')
+          ->constrained()
+          ->cascadeOnUpdate()
+          ->cascadeOnDelete();
+
 Any additional [column modifiers](#column-modifiers) must be called before `constrained`:
 
     $table->foreignId('user_id')
