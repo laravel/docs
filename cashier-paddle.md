@@ -812,12 +812,6 @@ The `charge` method accepts an array as its third argument, allowing you to pass
         'custom_option' => $value,
     ]);
 
-You may also use the `charge` method without an underlying customer or user:
-
-    use App\User;
-
-    $payLink = (new User)->charge(12.99, 'Product title');
-
 Charges happen in the currency specified in the `cashier.currency` configuration option. By default, this is set to USD. You may override the default currency by setting the `CASHIER_CURRENCY` in your `.env` file:
 
     CASHIER_CURRENCY=EUR
