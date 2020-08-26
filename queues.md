@@ -564,7 +564,7 @@ In this example, the job is released for ten seconds if the application is unabl
 
 #### Timeout
 
-> {note} The `pcntl` PHP extension must be installed for this feature to work.
+> {note} The `pcntl` PHP extension must be installed for the `timeout` feature to work.
 
 Likewise, the maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
 
