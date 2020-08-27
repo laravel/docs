@@ -10,6 +10,7 @@
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
 - [Storage Fake](#storage-fake)
+- [Interacting With Time](#interacting-with-time)
 - [Facades](#mocking-facades)
 
 <a name="introduction"></a>
@@ -400,6 +401,32 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
     }
 
 > {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
+
+<a name="interacting-with-time"></a>
+## Interacting With Time
+
+When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Carbon::now`. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time:
+
+    public function testTimeCanBeManipulated()
+    {
+        // Travel into the future...
+        $this->travel(5)->milliseconds();
+        $this->travel(5)->seconds();
+        $this->travel(5)->minutes();
+        $this->travel(5)->hours();
+        $this->travel(5)->days();
+        $this->travel(5)->weeks();
+        $this->travel(5)->years();
+
+        // Travel into the past...
+        $this->travel(-5)->hours();
+
+        // Travel to an explicit time...
+        $this->travelTo(now()->subHours(6));
+
+        // Return back to the present time...
+        $this->travelBack();
+    }
 
 <a name="mocking-facades"></a>
 ## Facades
