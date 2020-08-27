@@ -1001,6 +1001,14 @@ Instead of using custom event classes, you may register Closures that execute wh
         }
     }
 
+If needed, you may utilize [queueable anonymous event listeners](/docs/{{version}}/events#queuable-anonymous-event-listeners) when registering model events. This will instruct Laravel to execute the model event listener using the [queue](/docs/{{version}}/queues):
+
+    use function Illuminate\Events\queueable;
+
+    static::created(queueable(function ($user) {
+        //
+    }));
+
 <a name="observers"></a>
 ### Observers
 
