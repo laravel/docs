@@ -392,18 +392,21 @@ If you would like to dispatch a job immediately (synchronously), you may use the
 <a name="job-chaining"></a>
 ### Job Chaining
 
-Job chaining allows you to specify a list of queued jobs that should be run in sequence after the primary job has executed successfully. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `withChain` method on any of your dispatchable jobs:
+Job chaining allows you to specify a list of queued jobs that should be run in sequence after the primary job has executed successfully. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `chain` method provided by the `Bus` facade:
 
-    ProcessPodcast::withChain([
+    use Illuminate\Support\Facades\Bus;
+
+    Bus::chain([
+        new ProcessPodcast,
         new OptimizePodcast,
-        new ReleasePodcast
+        new ReleasePodcast,
     ])->dispatch();
 
 In addition to chaining job class instances, you may also chain Closures:
 
-    ProcessPodcast::withChain([
+    Bus::chain([
+        new ProcessPodcast,
         new OptimizePodcast,
-        new ReleasePodcast,
         function () {
             Podcast::update(...);
         },
@@ -415,10 +418,26 @@ In addition to chaining job class instances, you may also chain Closures:
 
 If you would like to specify the default connection and queue that should be used for the chained jobs, you may use the `allOnConnection` and `allOnQueue` methods. These methods specify the queue connection and queue name that should be used unless the queued job is explicitly assigned a different connection / queue:
 
-    ProcessPodcast::withChain([
+    Bus::chain([
+        new ProcessPodcast,
         new OptimizePodcast,
-        new ReleasePodcast
+        new ReleasePodcast,
     ])->dispatch()->allOnConnection('redis')->allOnQueue('podcasts');
+
+#### Job Chain Failures
+
+When chaining jobs, you may use the `chain` method to specify a Closure that should be invoked if a job within the chain fails. The given callback will receive the exception instance that caused the job failure:
+
+    use Illuminate\Support\Facades\Bus;
+    use Throwable;
+
+    Bus::chain([
+        new ProcessPodcast,
+        new OptimizePodcast,
+        new ReleasePodcast,
+    ])->catch(function (Throwable $e) {
+        // A job within the chain has failed...
+    })->dispatch();
 
 <a name="customizing-the-queue-and-connection"></a>
 ### Customizing The Queue & Connection
