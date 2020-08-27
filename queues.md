@@ -905,11 +905,15 @@ You may customize your queue worker even further by only processing particular q
 
     php artisan queue:work redis --queue=emails
 
-#### Processing A Single Job
+#### Processing A Specified Number Of Jobs
 
 The `--once` option may be used to instruct the worker to only process a single job from the queue:
 
     php artisan queue:work --once
+
+The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs:
+
+    php artisan queue:work --max-jobs=1000
 
 #### Processing All Queued Jobs & Then Exiting
 
