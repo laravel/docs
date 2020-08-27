@@ -60,6 +60,25 @@ The default server configuration should suffice for development. However, you ar
 
     ],
 
+#### Configuring Schemes
+
+It is possible to specify the connection scheme for each Redis server. By default clients are using the `tcp` scheme,
+but if you want to leverage TLS/SSL encryption when connecting to secured Redis instances, you should use the `tls` scheme:
+
+    'redis' => [
+
+        'client' => env('REDIS_CLIENT', 'phpredis'),
+
+        'default' => [
+            'scheme' => 'tls',
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_DB', 0),
+        ],
+
+    ],
+
 #### Configuring Clusters
 
 If your application is utilizing a cluster of Redis servers, you should define these clusters within a `clusters` key of your Redis configuration:
