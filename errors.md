@@ -154,7 +154,7 @@ Instead of type-checking exceptions in the exception handler's `report` and `ren
         }
     }
 
-If your exception contains custom reporting logic that is dynamic and only occurs when certain conditions are met, you may sometimes need to instruct Laravel to report the exception using the default exception handling configuration. To accomplish this, you may return `false` from the exception's `report` method:
+If your exception contains custom reporting logic that only occurs when certain conditions are met, you may need to instruct Laravel to report the exception using the default exception handling configuration. To accomplish this, you may return `false` from the exception's `report` method:
 
     /**
      * Report the exception.
