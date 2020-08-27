@@ -154,6 +154,20 @@ Instead of type-checking exceptions in the exception handler's `report` and `ren
         }
     }
 
+If your exception contains custom reporting logic that is dynamic and only occurs when certain conditions are met, you may sometimes need to instruct Laravel to report the exception using the default exception handling configuration. To accomplish this, you may return `false` from the exception's `report` method:
+
+    /**
+     * Report the exception.
+     *
+     * @return bool|void
+     */
+    public function report()
+    {
+        // Determine if the exception needs custom reporting...
+
+        return false;
+    }
+
 > {tip} You may type-hint any required dependencies of the `report` method and they will automatically be injected into the method by Laravel's [service container](/docs/{{version}}/container).
 
 <a name="http-exceptions"></a>
