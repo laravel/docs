@@ -439,19 +439,38 @@ Event subscribers are classes that may subscribe to multiple events from within 
          * Register the listeners for the subscriber.
          *
          * @param  \Illuminate\Events\Dispatcher  $events
+         * @return void
          */
         public function subscribe($events)
         {
             $events->listen(
                 'Illuminate\Auth\Events\Login',
-                'App\Listeners\UserEventSubscriber@handleUserLogin'
+                [UserEventSubscriber::class, 'handleUserLogin']
             );
 
             $events->listen(
                 'Illuminate\Auth\Events\Logout',
-                'App\Listeners\UserEventSubscriber@handleUserLogout'
+                [UserEventSubscriber::class, 'handleUserLogout']
             );
         }
+    }
+
+Alternatively, your subscriber's `subscribe` method may return an array of event to handler mappings. In this case, the event listener mappings will be registered for you automatically:
+
+    use Illuminate\Auth\Events\Login;
+    use Illuminate\Auth\Events\Logout;
+
+    /**
+     * Register the listeners for the subscriber.
+     *
+     * @return array
+     */
+    public function subscribe()
+    {
+        return [
+            Login::class => [UserEventSubscriber::class, 'handleUserLogin'],
+            Logout::class => [UserEventSubscriber::class, 'handleUserLogout'],
+        ];
     }
 
 <a name="registering-event-subscribers"></a>
