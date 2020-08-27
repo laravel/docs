@@ -15,6 +15,13 @@
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
     - [Rate Limiting](#rate-limiting)
     - [Error Handling](#error-handling)
+- [Job Batching](#job-batching)
+    - [Defining Batchable Jobs](#defining-batchable-jobs)
+    - [Dispatching Batches](#dispatching-batches)
+    - [Adding Jobs To Batches](#adding-jobs-to-batches)
+    - [Inspecting Batches](#inspecting-batches)
+    - [Cancelling Batches](#cancelling-batches)
+    - [Batch Failures](#batch-failures)
 - [Queueing Closures](#queueing-closures)
 - [Running The Queue Worker](#running-the-queue-worker)
     - [Queue Priorities](#queue-priorities)
@@ -623,6 +630,215 @@ Alternatively, you may specify the maximum number of workers that may simultaneo
 ### Error Handling
 
 If an exception is thrown while the job is being processed, the job will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The maximum number of attempts is defined by the `--tries` switch used on the `queue:work` Artisan command. Alternatively, the maximum number of attempts may be defined on the job class itself. More information on running the queue worker [can be found below](#running-the-queue-worker).
+
+<a name="job-batching"></a>
+## Job Batching
+
+Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing. Before getting started, you should create a database migration to build a table that will contain your job batch meta information. This migration may be generated using the `queue:batches-table` Artisan command:
+
+    php artisan queue:batches-table
+
+    php artisan migrate
+
+<a name="defining-batchable-jobs"></a>
+### Defining Batchable Jobs
+
+To build a batchable job, you should [create a queueable job](#creating-jobs) as normal; however, you should add the `Illuminate\Bus\Batchable` trait to the job class. This trait provides access to a `batch` method which may be used to retrieve the current batch that the job is executing in:
+
+    <?php
+
+    namespace App\Jobs;
+
+    use App\Models\Podcast;
+    use App\Services\AudioProcessor;
+    use Illuminate\Bus\Batchable;
+    use Illuminate\Bus\Queueable;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Foundation\Bus\Dispatchable;
+    use Illuminate\Queue\InteractsWithQueue;
+    use Illuminate\Queue\SerializesModels;
+
+    class ProcessPodcast implements ShouldQueue
+    {
+        use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+        /**
+         * Execute the job.
+         *
+         * @return void
+         */
+        public function handle()
+        {
+            if ($this->batch()->cancelled()) {
+                // Detected cancelled batch...
+
+                return;
+            }
+
+            // Batched job executing...
+        }
+    }
+
+<a name="dispatching-batches"></a>
+### Dispatching Batches
+
+To dispatch a batch of jobs, you should use `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked:
+
+    use App\Jobs\ProcessPodcast;
+    use App\Podcast;
+    use Illuminate\Bus\Batch;
+    use Illuminate\Support\Facades\Batch;
+    use Throwable;
+
+    $batch = Bus::batch([
+        new ProcessPodcast(Podcast::find(1)),
+        new ProcessPodcast(Podcast::find(2)),
+        new ProcessPodcast(Podcast::find(3)),
+        new ProcessPodcast(Podcast::find(4)),
+        new ProcessPodcast(Podcast::find(5)),
+    ])->then(function (Batch $batch) {
+        // All jobs completed successfully...
+    })->catch(function (Batch $batch, Throwable $e) {
+        // First batch job failure detected...
+    })->finally(function (Batch $batch) {
+        // The batch has finished executing...
+    })->dispatch();
+
+    return $batch->id;
+
+#### Naming Batches
+
+Some tools such as Laravel Horizon and Laravel Telescope may provide more user-friendly debug information for batches if batches are named. To assign an arbitrary name to a batch, you may call the `name` method while defining the batch:
+
+    $batch = Bus::batch([
+        // ...
+    ])->then(function (Batch $batch) {
+        // All jobs completed successfully...
+    })->name('Process Podcasts')->dispatch();
+
+<a name="adding-jobs-to-batches"></a>
+### Adding Jobs To Batches
+
+Sometimes it may be useful to add additional jobs to a batch from within a batched job. This pattern can be useful when you need to batch thousands of jobs which may take too long to dispatch during a web request. So, instead, you may wish to dispatch an initial batch of "loader" jobs that hydrate the batch with more jobs:
+
+    $batch = Bus::batch([
+        new LoadImportBatch,
+        new LoadImportBatch,
+        new LoadImportBatch,
+    ])->then(function (Batch $batch) {
+        // All jobs completed successfully...
+    })->name('Import Contacts')->dispatch();
+
+In this example, we will use the `LoadImportBatch` job to hydrate the batch with additional jobs. To accomplish this, we may use the `add` method on the batch instance that can be accessed within the job:
+
+    use App\Jobs\ImportContacts;
+    use Illuminate\Support\Collection;
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        if ($this->batch()->cancelled()) {
+            return;
+        }
+
+        $this->batch()->add(Collection::times(1000, function () {
+            return new ImportContacts;
+        }));
+    }
+
+> {note} You may only add jobs to a batch from within a job that belongs to the same batch.
+
+<a name="inspecting-batches"></a>
+### Inspecting Batches
+
+The `Illuminate\Bus\Batch` method that is provided to batch completion callbacks has a variety of properties and methods to assist you in interacting with and inspecting a given batch of jobs.
+
+    // The UUID of the batch...
+    $batch->id;
+
+    // The name of the batch (if applicable)...
+    $batch->name;
+
+    // The number of jobs assigned to the batch...
+    $batch->totalJobs;
+
+    // The number of jobs that have not been processed by the queue...
+    $batch->pendingJobs;
+
+    // The number of jobs that have failed...
+    $batch->failedJobs;
+
+    // The number of jobs that have been processed thus far...
+    $batch->processedJobs();
+
+    // The completion percentage of the batch (0-100)...
+    $batch->progress();
+
+    // Indicates if the batch has finished executing...
+    $batch->finished();
+
+    // Cancel the execution of the batch...
+    $batch->cancel();
+
+    // Indicates if the batch has been cancelled...
+    $batch->cancelled();
+
+#### Returning Batches From Routes
+
+All `Illuminate\Bus\Batch` instances are JSON serializable, meaning you can return them directly from one of your application's routes to retrieve a JSON payload containing information about the batch, including its completion progress. To retrieve a batch by its ID, you may use the `Bus` facade's `findBatch` method:
+
+    use Illuminate\Support\Facades\Bus;
+    use Illuminate\Support\Facades\Route;
+
+    Route::get('/batch/{batchId}', function (string $batchId) {
+        return Bus::findBatch($batchId);
+    });
+
+<a name="cancelling-batches"></a>
+### Cancelling Batches
+
+Sometimes you may need to cancel a given batch's execution. This can be accomplished by calling the `cancel` method on the `Illuminate\Bus\Batch` instance:
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        if ($this->user->exceedsImportLimit()) {
+            return $this->batch()->cancel();
+        }
+
+        if ($this->batch()->cancelled()) {
+            return;
+        }
+    }
+
+<a name="batch-failures"></a>
+### Batch Failures
+
+When a batch job fails, the `catch` callback (if assigned) will be invoked. This callback is only invoked for the job that fails within the batch.
+
+#### Allowing Failures
+
+When a job within a batch fails, Laravel will automatically mark the batch as "cancelled". If you wish, you may disable this behavior so that a job failure does not automatically mark the batch as cancelled. This may be accomplished by calling the `allowFailures` method while dispatching the batch:
+
+    $batch = Bus::batch([
+        // ...
+    ])->then(function (Batch $batch) {
+        // All jobs completed successfully...
+    })->allowFailures()->dispatch();
+
+#### Retrying Failed Batch Jobs
+
+For convenience, Laravel provides a `queue:retry-batch` Artisan command that allows you to easily retry all of the failed jobs for a given batch. The `queue:retry-batch` command accepts the UUID of the batch whose failed jobs should be retried:
+
+    php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 
 <a name="queueing-closures"></a>
 ## Queueing Closures
