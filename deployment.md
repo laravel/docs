@@ -88,8 +88,6 @@ If you are building a large application with many routes, you should make sure t
 
 This command reduces all of your route registrations into a single method call within a cached file, improving the performance of route registration when registering hundreds of routes.
 
-> {note} Since this feature uses PHP serialization, you may only cache the routes for applications that exclusively use controller based routes. PHP is not able to serialize Closures.
-
 <a name="optimizing-view-loading"></a>
 ### Optimizing View Loading
 
