@@ -21,6 +21,7 @@
     - [The `Jobs` Directory](#the-jobs-directory)
     - [The `Listeners` Directory](#the-listeners-directory)
     - [The `Mail` Directory](#the-mail-directory)
+    - [The `Models` Directory](#the-models-directory)
     - [The `Notifications` Directory](#the-notifications-directory)
     - [The `Policies` Directory](#the-policies-directory)
     - [The `Providers` Directory](#the-providers-directory)
@@ -30,12 +31,6 @@
 ## Introduction
 
 The default Laravel application structure is intended to provide a great starting point for both large and small applications. But you are free to organize your application however you like. Laravel imposes almost no restrictions on where any given class is located - as long as Composer can autoload the class.
-
-#### Where Is The Models Directory?
-
-When getting started with Laravel, many developers are confused by the lack of a `models` directory. However, the lack of such a directory is intentional. We find the word "models" ambiguous since it means many different things to many different people. Some developers refer to an application's "model" as the totality of all of its business logic, while others refer to "models" as classes that interact with a relational database.
-
-For this reason, we choose to place Eloquent models in the `app` directory by default, and allow the developer to place them somewhere else if they choose.
 
 <a name="the-root-directory"></a>
 ## The Root Directory
@@ -150,6 +145,11 @@ This directory does not exist by default, but will be created for you if you exe
 #### The Mail Directory
 
 This directory does not exist by default, but will be created for you if you execute the `make:mail` Artisan command. The `Mail` directory contains all of your classes that represent emails sent by your application. Mail objects allow you to encapsulate all of the logic of building an email in a single, simple class that may be sent using the `Mail::send` method.
+
+<a name="the-models-directory"></a>
+#### The Models Directory
+
+The `Models` directory contains all of your Eloquent model classes. The Eloquent ORM included with Laravel provides a beautiful, simple ActiveRecord implementation for working with your database. Each database table has a corresponding "Model" which is used to interact with that table. Models allow you to query for data in your tables, as well as insert new records into the table.
 
 <a name="the-notifications-directory"></a>
 #### The Notifications Directory
