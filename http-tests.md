@@ -7,6 +7,7 @@
 - [Session / Authentication](#session-and-authentication)
 - [Testing JSON APIs](#testing-json-apis)
 - [Testing File Uploads](#testing-file-uploads)
+- [Testing Views](#testing-views)
 - [Available Assertions](#available-assertions)
     - [Response Assertions](#response-assertions)
     - [Authentication Assertions](#authentication-assertions)
@@ -291,6 +292,45 @@ In addition to creating images, you may create files of any other type using the
 If needed, you may pass a `$mimeType` argument to the method to explicitly define the MIME type that should be returned by the file:
 
     UploadedFile::fake()->create('document.pdf', $sizeInKilobytes, 'application/pdf');
+
+<a name="testing-views"></a>
+## Testing Views
+
+Laravel allows you to render a view in isolation without making a simulated HTTP request to the application. To accomplish this, you may use the `view` method within your test. The `view` method accepts the view name and an optional array of data. The method returns an instance of `Illuminate\Testing\TestView`, which offers several methods to conveniently make assertions about the view's contents:
+
+    public function testWelcomeView()
+    {
+        $view = $this->view('welcome', ['name' => 'Taylor']);
+
+        $view->assertSee('Taylor');
+    }
+
+The `TestView` object provides the following assertion methods: `assertSee`, `assertSeeInOrder`, `assertSeeText`, `assertSeeTextInOrder`, `assertDontSee`, and `assertDontSeeText`.
+
+If needed, you may get the raw, rendered view contents by casting the `TestView` instance to a string:
+
+    $contents = (string) $this->view('welcome');
+
+#### Sharing Errors
+
+Some views may depend on errors shared in the global error bag provided by Laravel. To hydrate the error bag with error messages, you may use the `withViewErrors` method:
+
+    $view = $this->withViewErrors([
+        'name' => ['Please provide a valid name.']
+    ])->view('form');
+
+    $view->assertSee('Please provide a valid name.');
+
+#### Rendering Raw Blade
+
+If necessary, you may use the `blade` method to evaluate and render a raw Blade string. Like the `view` method, the `blade` method returns an instance of `Illuminate\Testing\TestView`:
+
+    $view = $this->blade(
+        '<x-component :name="$name" />',
+        ['name' => 'Taylor']
+    );
+
+    $view->assertSee('Taylor');
 
 <a name="available-assertions"></a>
 ## Available Assertions
