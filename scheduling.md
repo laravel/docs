@@ -332,6 +332,19 @@ The `onSuccess` and `onFailure` methods allow you to specify code to be executed
                  // The task failed...
              });
 
+If output is available from your command, you may access it in your `after`, `onSuccess` or `onFailure` hooks by type-hinting an `Illuminate\Support\Stringable` instance as `$output` on your hook's Closure definition:
+
+    use Illuminate\Support\Stringable;
+
+    $schedule->command('emails:send')
+             ->daily()
+             ->onSuccess(function (Stringable $output) {
+                 // The task succeeded...
+             })
+             ->onFailure(function (Stringable $output) {
+                 // The task failed...
+             });
+
 #### Pinging URLs
 
 Using the `pingBefore` and `thenPing` methods, the scheduler can automatically ping a given URL before or after a task is complete. This method is useful for notifying an external service, such as [Laravel Envoyer](https://envoyer.io), that your scheduled task is commencing or has finished execution:
