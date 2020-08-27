@@ -91,7 +91,7 @@ If your service provider registers many simple bindings, you may wish to use the
          */
         public $singletons = [
             DowntimeNotifier::class => PingdomDowntimeNotifier::class,
-            ServerToolsProvider::class => ServerToolsProvider::class,
+            ServerProvider::class => ServerToolsProvider::class,
         ];
     }
 
