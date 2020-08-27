@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
 - [Basic Controllers](#basic-controllers)
     - [Defining Controllers](#defining-controllers)
-    - [Controllers & Namespaces](#controllers-and-namespaces)
     - [Single Action Controllers](#single-action-controllers)
 - [Controller Middleware](#controller-middleware)
 - [Resource Controllers](#resource-controllers)
@@ -53,20 +52,13 @@ Below is an example of a basic controller class. Note that the controller extend
 
 You can define a route to this controller action like so:
 
-    Route::get('user/{id}', 'UserController@show');
+    use App\Http\Controllers\UserController;
+
+    Route::get('user/{id}', [UserController::class, 'show']);
 
 Now, when a request matches the specified route URI, the `show` method on the `UserController` class will be executed. The route parameters will also be passed to the method.
 
 > {tip} Controllers are not **required** to extend a base class. However, you will not have access to convenience features such as the `middleware`, `validate`, and `dispatch` methods.
-
-<a name="controllers-and-namespaces"></a>
-### Controllers & Namespaces
-
-It is very important to note that we did not need to specify the full controller namespace when defining the controller route. Since the `RouteServiceProvider` loads your route files within a route group that contains the namespace, we only specified the portion of the class name that comes after the `App\Http\Controllers` portion of the namespace.
-
-If you choose to nest your controllers deeper into the `App\Http\Controllers` directory, use the specific class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you should register routes to the controller like so:
-
-    Route::get('foo', 'Photos\AdminController@method');
 
 <a name="single-action-controllers"></a>
 ### Single Action Controllers
@@ -96,7 +88,9 @@ If you would like to define a controller that only handles a single action, you 
 
 When registering routes for single action controllers, you do not need to specify a method:
 
-    Route::get('user/{id}', 'ShowProfile');
+    use App\Http\Controllers\ShowProfile;
+
+    Route::get('user/{id}', ShowProfile::class);
 
 You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:
 
@@ -109,7 +103,7 @@ You may generate an invokable controller by using the `--invokable` option of th
 
 [Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
 
-    Route::get('profile', 'UserController@show')->middleware('auth');
+    Route::get('profile', [UserController::class, 'show'])->middleware('auth');
 
 However, it is more convenient to specify middleware within your controller's constructor. Using the `middleware` method from your controller's constructor, you may easily assign middleware to the controller's action. You may even restrict the middleware to only certain methods on the controller class:
 
@@ -151,15 +145,15 @@ This command will generate a controller at `app/Http/Controllers/PhotoController
 
 Next, you may register a resourceful route to the controller:
 
-    Route::resource('photos', 'PhotoController');
+    Route::resource('photos', PhotoController::class);
 
 This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions, including notes informing you of the HTTP verbs and URIs they handle.
 
 You may register many resource controllers at once by passing an array to the `resources` method:
 
     Route::resources([
-        'photos' => 'PhotoController',
-        'posts' => 'PostController',
+        'photos' => PhotoController::class,
+        'posts' => PostController::class,
     ]);
 
 #### Actions Handled By Resource Controller
@@ -193,11 +187,11 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 
 When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
 
-    Route::resource('photos', 'PhotoController')->only([
+    Route::resource('photos', PhotoController::class)->only([
         'index', 'show'
     ]);
 
-    Route::resource('photos', 'PhotoController')->except([
+    Route::resource('photos', PhotoController::class)->except([
         'create', 'store', 'update', 'destroy'
     ]);
 
@@ -205,13 +199,13 @@ When declaring a resource route, you may specify a subset of actions the control
 
 When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
 
-    Route::apiResource('photos', 'PhotoController');
+    Route::apiResource('photos', PhotoController::class);
 
 You may register many API resource controllers at once by passing an array to the `apiResources` method:
 
     Route::apiResources([
-        'photos' => 'PhotoController',
-        'posts' => 'PostController',
+        'photos' => PhotoController::class,
+        'posts' => PostController::class,
     ]);
 
 To quickly generate an API resource controller that does not include the `create` or `edit` methods, use the `--api` switch when executing the `make:controller` command:
@@ -223,7 +217,7 @@ To quickly generate an API resource controller that does not include the `create
 
 Sometimes you may need to define routes to a nested resource. For example, a photo resource may have multiple comments that may be attached to the photo. To nest the resource controllers, use "dot" notation in your route declaration:
 
-    Route::resource('photos.comments', 'PhotoCommentController');
+    Route::resource('photos.comments', PhotoCommentController::class);
 
 This route will register a nested resource that may be accessed with URIs like the following:
 
@@ -233,7 +227,7 @@ This route will register a nested resource that may be accessed with URIs like t
 
 Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifier such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use "shallow nesting":
 
-    Route::resource('photos.comments', 'CommentController')->shallow();
+    Route::resource('photos.comments', CommentController::class)->shallow();
 
 The route definition above will define the following routes:
 
@@ -252,7 +246,7 @@ DELETE    | `/comments/{comment}`             | destroy      | comments.destroy
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
-    Route::resource('photos', 'PhotoController')->names([
+    Route::resource('photos', PhotoController::class)->names([
         'create' => 'photos.build'
     ]);
 
@@ -261,14 +255,13 @@ By default, all resource controller actions have a route name; however, you can 
 
 By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by using the `parameters` method. The array passed into the `parameters` method should be an associative array of resource names and parameter names:
 
-    Route::resource('users', 'AdminUserController')->parameters([
+    Route::resource('users', AdminUserController::class)->parameters([
         'users' => 'admin_user'
     ]);
 
  The example above generates the following URIs for the resource's `show` route:
 
     /users/{admin_user}
-
 
 <a name="restful-scoping-resource-routes"></a>
 ### Scoping Resource Routes
@@ -320,9 +313,9 @@ Once the verbs have been customized, a resource route registration such as `Rout
 
 If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to `Route::resource`; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
 
-    Route::get('photos/popular', 'PhotoController@method');
+    Route::get('photos/popular', [PhotoController::class, 'popular']);
 
-    Route::resource('photos', 'PhotoController');
+    Route::resource('photos', PhotoController::class);
 
 > {tip} Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
 
@@ -388,7 +381,7 @@ In addition to constructor injection, you may also type-hint dependencies on you
 
 If your controller method is also expecting input from a route parameter, list your route arguments after your other dependencies. For example, if your route is defined like so:
 
-    Route::put('user/{id}', 'UserController@update');
+    Route::put('user/{id}', [UserController::class, 'update']);
 
 You may still type-hint the `Illuminate\Http\Request` and access your `id` parameter by defining your controller method as follows:
 
@@ -415,8 +408,6 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
 
 <a name="route-caching"></a>
 ## Route Caching
-
-> {note} Closure based routes cannot be cached. To use route caching, you must convert any Closure routes to controller classes.
 
 If your application is exclusively using controller based routes, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. In some cases, your route registration may even be up to 100x faster. To generate a route cache, just execute the `route:cache` Artisan command:
 
