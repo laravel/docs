@@ -805,6 +805,18 @@ If you require more complex logic for determining the retry delay, you may defin
         return 3;
     }
 
+You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 seconds for the first retry, 5 seconds for the second retry, and 10 seconds for the third retry:
+
+    /**
+    * Calculate the number of seconds to wait before retrying the job.
+    *
+    * @return array
+    */
+    public function backoff()
+    {
+        return [1, 5, 10];
+    }
+
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Cleaning Up After Failed Jobs
 
