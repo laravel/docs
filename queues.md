@@ -424,7 +424,7 @@ If you would like to specify the default connection and queue that should be use
         new ReleasePodcast,
     ])->dispatch()->allOnConnection('redis')->allOnQueue('podcasts');
 
-#### Job Chain Failures
+#### Chain Failures
 
 When chaining jobs, you may use the `chain` method to specify a Closure that should be invoked if a job within the chain fails. The given callback will receive the exception instance that caused the job failure:
 
