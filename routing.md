@@ -442,6 +442,14 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
         return Limit::perMinute(1000);
     });
 
+If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will be automatically returned by Laravel. If you would like to define your own response that should be returned by a rate limit, you may use the `response` method:
+
+    RateLimiter::for('global', function (Request $request) {
+        return Limit::perMinute(1000)->response(function () {
+            return response('Custom response...', 429);
+        });
+    });
+
 Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit dynamically based on the incoming request or authenticated user:
 
     RateLimiter::for('uploads', function (Request $request) {
