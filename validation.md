@@ -43,9 +43,11 @@ To learn about Laravel's powerful validation features, let's look at a complete 
 
 First, let's assume we have the following routes defined in our `routes/web.php` file:
 
-    Route::get('post/create', 'PostController@create');
+    use App\Http\Controllers\PostController;
 
-    Route::post('post', 'PostController@store');
+    Route::get('post/create', [PostController::class, 'create']);
+
+    Route::post('post', [PostController::class, 'store']);
 
 The `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
 

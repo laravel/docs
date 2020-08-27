@@ -969,9 +969,11 @@ Cashier automatically handles subscription cancellation on failed charges, but i
 
 Next, define a route to your Cashier controller within your `routes/web.php` file. This will overwrite the default shipped route:
 
+    use App\Http\Controllers\WebhookController;
+
     Route::post(
         'stripe/webhook',
-        '\App\Http\Controllers\WebhookController@handleWebhook'
+        [WebhookController::class, 'handleWebhook']
     );
 
 Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Stripe webhook.

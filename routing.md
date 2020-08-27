@@ -10,7 +10,6 @@
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
     - [Middleware](#route-group-middleware)
-    - [Namespaces](#route-group-namespaces)
     - [Subdomain Routing](#route-group-subdomain-routing)
     - [Route Prefixes](#route-group-prefixes)
     - [Route Name Prefixes](#route-group-name-prefixes)
@@ -40,7 +39,9 @@ All Laravel routes are defined in your route files, which are located in the `ro
 
 For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://your-app.test/user` in your browser:
 
-    Route::get('/user', 'UserController@index');
+    use App\Http\Controllers\UserController;
+
+    Route::get('/user', [UserController::class, 'index']);
 
 Routes defined in the `routes/api.php` file are nested within a route group by the `RouteServiceProvider`. Within this group, the `/api` URI prefix is automatically applied so you do not need to manually apply it to every route in the file. You may modify the prefix and other route group options by modifying your `RouteServiceProvider` class.
 
@@ -191,7 +192,7 @@ Named routes allow the convenient generation of URLs or redirects for specific r
 
 You may also specify route names for controller actions:
 
-    Route::get('user/profile', 'UserProfileController@show')->name('profile');
+    Route::get('user/profile', [UserProfileController::class, 'show'])->name('profile');
 
 > {note} Route names should always be unique.
 
@@ -266,17 +267,6 @@ To assign middleware to all routes within a group, you may use the `middleware` 
             // Uses first & second Middleware
         });
     });
-
-<a name="route-group-namespaces"></a>
-### Namespaces
-
-Another common use-case for route groups is assigning the same PHP namespace to a group of controllers using the `namespace` method:
-
-    Route::namespace('Admin')->group(function () {
-        // Controllers Within The "App\Http\Controllers\Admin" Namespace
-    });
-
-Remember, by default, the `RouteServiceProvider` includes your route files within a namespace group, allowing you to register controller routes without specifying the full `App\Http\Controllers` namespace prefix. So, you only need to specify the portion of the namespace that comes after the base `App\Http\Controllers` namespace.
 
 <a name="route-group-subdomain-routing"></a>
 ### Subdomain Routing

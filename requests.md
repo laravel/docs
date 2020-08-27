@@ -43,7 +43,9 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 
 If your controller method is also expecting input from a route parameter you should list your route parameters after your other dependencies. For example, if your route is defined like so:
 
-    Route::put('user/{id}', 'UserController@update');
+    use App\Http\Controllers\UserController;
+
+    Route::put('user/{id}', [UserController::class, 'update']);
 
 You may still type-hint the `Illuminate\Http\Request` and access your route parameter `id` by defining your controller method as follows:
 
