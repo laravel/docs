@@ -1110,3 +1110,13 @@ You may occasionally wish to temporarily "mute" all events fired by a model. You
 
         return User::find(2);
     });
+
+#### Saving A Single Model Without Events
+
+Sometimes you may wish to "save" a given model without raising any events. You may accomplish this using the `saveQuietly` method:
+
+    $user = User::findOrFail(1);
+
+    $user->name = 'Victoria Faith';
+
+    $user->saveQuietly();
