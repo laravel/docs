@@ -43,8 +43,6 @@
 <a name="introduction"></a>
 ## Introduction
 
-> {note} Cashier Paddle is currently in beta. During the beta period things can and probably will change. Don't use Cashier Paddle in production until a stable version has been released. We appreciate your help with testing and reporting any bugs.
-
 Laravel Cashier Paddle provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods, and more.
 
 While working with Cashier we recommend you also refer to Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference/intro).
@@ -210,6 +208,7 @@ Therefore, when displaying subscriptions you should always inform the user which
     $subscription = $user->subscription('default');
 
     $customerEmailAddress = $subscription->paddleEmail();
+    $paymentMethod = $subscription->paymentMethod();
     $cardBrand = $subscription->cardBrand();
     $cardLastFour = $subscription->cardLastFour();
     $cardExpirationDate = $subscription->cardExpirationDate();
@@ -812,12 +811,6 @@ The `charge` method accepts an array as its third argument, allowing you to pass
     $payLink = $user->charge(12.99, 'Product Title', [
         'custom_option' => $value,
     ]);
-
-You may also use the `charge` method without an underlying customer or user:
-
-    use App\Models\User;
-
-    $payLink = (new User)->charge(12.99, 'Product title');
 
 Charges happen in the currency specified in the `cashier.currency` configuration option. By default, this is set to USD. You may override the default currency by setting the `CASHIER_CURRENCY` in your `.env` file:
 
