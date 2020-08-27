@@ -921,6 +921,13 @@ The `--stop-when-empty` option may be used to instruct the worker to process all
 
     php artisan queue:work --stop-when-empty
 
+#### Processing Jobs For A Given Number Of Seconds
+
+The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time:
+
+    // Process jobs for one hour and then exit...
+    php artisan queue:work --max-time=3600
+
 #### Resource Considerations
 
 Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should free any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
