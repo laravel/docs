@@ -780,27 +780,27 @@ Then, when running your [queue worker](#running-the-queue-worker), you can speci
 
     php artisan queue:work redis --tries=3
 
-In addition, you may specify how many seconds Laravel should wait before retrying a job that has failed using the `--delay` option. By default, a job is retried immediately:
+In addition, you may specify how many seconds Laravel should wait before retrying a job that has failed using the `--backoff` option. By default, a job is retried immediately:
 
-    php artisan queue:work redis --tries=3 --delay=3
+    php artisan queue:work redis --tries=3 --backoff=3
 
-If you would like to configure the failed job retry delay on a per-job basis, you may do so by defining a `retryAfter` property on your queued job class:
+If you would like to configure the failed job retry delay on a per-job basis, you may do so by defining a `backoff` property on your queued job class:
 
     /**
      * The number of seconds to wait before retrying the job.
      *
      * @var int
      */
-    public $retryAfter = 3;
+    public $backoff = 3;
 
-If you require more complex logic for determining the retry delay, you may define a `retryAfter` method on your queued job class:
+If you require more complex logic for determining the retry delay, you may define a `backoff` method on your queued job class:
 
     /**
     * Calculate the number of seconds to wait before retrying the job.
     *
     * @return int
     */
-    public function retryAfter()
+    public function backoff()
     {
         return 3;
     }
