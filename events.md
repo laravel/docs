@@ -50,6 +50,8 @@ Of course, manually creating the files for each event and listener is cumbersome
 
 Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register Closure based events manually in the `boot` method of your `EventServiceProvider`:
 
+    use App\Events\PodcastProcessed;
+
     /**
      * Register any other events for your application.
      *
@@ -57,7 +59,7 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
      */
     public function boot()
     {
-        Event::listen('event.name', function ($foo, $bar) {
+        Event::listen(function (PodcastProcessed $event) {
             //
         });
     }
