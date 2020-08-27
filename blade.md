@@ -25,6 +25,7 @@
     - [Slots](#slots)
     - [Inline Component Views](#inline-component-views)
     - [Anonymous Components](#anonymous-components)
+    - [Dynamic Components](#dynamic-components)
 - [Including Subviews](#including-subviews)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -814,6 +815,13 @@ You may specify which attributes should be considered data variables using the `
     <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
         {{ $message }}
     </div>
+
+<a name="dynamic-components"></a>
+### Dynamic Components
+
+Sometimes you may need to render a component but not know which component should be rendered until runtime. In this situation, you may use Laravel's built-in `dynamic-component` component to render the component based on a runtime value or variable:
+
+    <x-dynamic-component :component="$componentName" class="mt-4" />
 
 <a name="including-subviews"></a>
 ## Including Subviews
