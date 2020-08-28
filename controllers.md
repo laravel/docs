@@ -215,6 +215,18 @@ This route will register a nested resource that may be accessed with URIs like t
 
     /photos/{photo}/comments/{comment}
 
+#### Scoping Nested Resources
+
+Laravel's [implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enabling automatic scoping as well as instruct Laravel which field the child resource should be retrieved by:
+
+    Route::resource('photos.comments', PhotoCommentController::class)->scoped([
+        'comment' => 'slug',
+    ]);
+
+This route will register a scoped nested resource that may be accessed with URIs like the following:
+
+    /photos/{photo}/comments/{comment:slug}
+
 #### Shallow Nesting
 
 Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifier such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use "shallow nesting":
