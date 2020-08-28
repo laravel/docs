@@ -150,7 +150,7 @@ One common use of the session is for maintaining state for the authenticated use
     {
         public function testApplication()
         {
-            $user = factory(User::class)->create();
+            $user = User::factory()->create();
 
             $response = $this->actingAs($user)
                              ->withSession(['foo' => 'bar'])

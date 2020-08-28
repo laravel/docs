@@ -144,7 +144,7 @@ If you only want to fake event listeners for a specific set of events, you may p
             OrderCreated::class,
         ]);
 
-        $order = factory(Order::class)->create();
+        $order = Order::factory()->create();
 
         Event::assertDispatched(OrderCreated::class);
 
@@ -176,7 +176,7 @@ If you only want to fake event listeners for a portion of your test, you may use
         public function testOrderProcess()
         {
             $order = Event::fakeFor(function () {
-                $order = factory(Order::class)->create();
+                $order = Order::factory()->create();
 
                 Event::assertDispatched(OrderCreated::class);
 

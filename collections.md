@@ -2115,7 +2115,7 @@ The static `times` method creates a new collection by invoking the callback a gi
 This method can be useful when combined with factories to create [Eloquent](/docs/{{version}}/eloquent) models:
 
     $categories = Collection::times(3, function ($number) {
-        return factory(Category::class)->create(['name' => "Category No. $number"]);
+        return Category::factory()->create(['name' => "Category No. $number"]);
     });
 
     $categories->all();

@@ -1150,7 +1150,7 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
     public function testServerCreation()
     {
         Passport::actingAs(
-            factory(User::class)->create(),
+            User::factory()->create(),
             ['create-servers']
         );
 
@@ -1167,7 +1167,7 @@ Passport's `actingAsClient` method may be used to specify the currently authenti
     public function testGetOrders()
     {
         Passport::actingAsClient(
-            factory(Client::class)->create(),
+            Client::factory()->create(),
             ['check-status']
         );
 

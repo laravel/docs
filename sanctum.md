@@ -312,7 +312,7 @@ While testing, the `Sanctum::actingAs` method may be used to authenticate a user
     public function test_task_list_can_be_retrieved()
     {
         Sanctum::actingAs(
-            factory(User::class)->create(),
+            User::factory()->create(),
             ['view-tasks']
         );
 
@@ -324,6 +324,6 @@ While testing, the `Sanctum::actingAs` method may be used to authenticate a user
 If you would like to grant all abilities to the token, you should include `*` in the ability list provided to the `actingAs` method:
 
     Sanctum::actingAs(
-        factory(User::class)->create(),
+        User::factory()->create(),
         ['*']
     );

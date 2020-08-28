@@ -55,9 +55,11 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
 <a name="using-model-factories"></a>
 ### Using Model Factories
 
-Of course, manually specifying the attributes for each model seed is cumbersome. Instead, you can use [model factories](/docs/{{version}}/database-testing#writing-factories) to conveniently generate large amounts of database records. First, review the [model factory documentation](/docs/{{version}}/database-testing#writing-factories) to learn how to define your factories. Once you have defined your factories, you may use the `factory` helper function to insert records into your database.
+Of course, manually specifying the attributes for each model seed is cumbersome. Instead, you can use [model factories](/docs/{{version}}/database-testing#writing-factories) to conveniently generate large amounts of database records. First, review the [model factory documentation](/docs/{{version}}/database-testing#writing-factories) to learn how to define your factories.
 
 For example, let's create 50 users and attach a relationship to each user:
+
+    use App\Models\User;
 
     /**
      * Run the database seeds.
@@ -66,9 +68,10 @@ For example, let's create 50 users and attach a relationship to each user:
      */
     public function run()
     {
-        factory(App\Models\User::class, 50)->create()->each(function ($user) {
-            $user->posts()->save(factory(App\Models\Post::class)->make());
-        });
+        User::factory()
+                ->times(50)
+                ->hasPosts(1)
+                ->create();
     }
 
 <a name="calling-additional-seeders"></a>
