@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Generating Migrations](#generating-migrations)
+    - [Squashing Migrations](#squashing-migrations)
 - [Migration Structure](#migration-structure)
 - [Running Migrations](#running-migrations)
     - [Rolling Back Migrations](#rolling-back-migrations)
@@ -44,6 +45,22 @@ The `--table` and `--create` options may also be used to indicate the name of th
     php artisan make:migration add_votes_to_users_table --table=users
 
 If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
+
+<a name="squashing-migrations"></a>
+### Squashing Migrations
+
+As you build your application, you may accumulate more and more migrations over time. This can lead to your migration directory becoming bloated with potentially hundreds of migrations. If you would like, you may "squash" your migrations into a single SQL file. To get started, execute the `schema:dump` command:
+
+    php artisan schema:dump
+
+    // Dump the current database schema and prune all existing migrations...
+    php artisan schema:dump --prune
+
+When you execute this command, Laravel will write a "schema" file to your `database/schema` directory. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute the schema file's SQL first. After executing the schema file's commands, Laravel will execute any remaining migrations that were not part of the schema dump.
+
+You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
+
+> {note} Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases.
 
 <a name="migration-structure"></a>
 ## Migration Structure
