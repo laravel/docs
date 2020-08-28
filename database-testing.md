@@ -128,32 +128,32 @@ Via the `faker` property, factories have access to the [Faker](https://github.co
 <a name="factory-states"></a>
 ### Factory States
 
-State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `delinquent` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like. After all, it's just a typical PHP method:
+State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `suspended` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like. After all, it's just a typical PHP method:
 
     /**
-     * Indicate that the user is delinquent.
+     * Indicate that the user is suspended.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function delinquent()
+    public function suspended()
     {
         return $this->state([
-            'account_status' => 'delinquent',
+            'account_status' => 'suspended',
         ]);
     }
 
 If your state transformation requires access to the other attributes defined by the factory, you may pass a callback to the `state` method. The callback will receive the array of raw attributes defined for the factory:
 
     /**
-     * Indicate that the user is delinquent.
+     * Indicate that the user is suspended.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function delinquent()
+    public function suspended()
     {
         return $this->state(function (array $attributes) {
             return [
-                'account_status' => 'delinquent',
+                'account_status' => 'suspended',
             ];
         });
     }
@@ -229,7 +229,7 @@ The `HasFactory` trait's `factory` method will use conventions to determine the 
 
 You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you may simply call state methods directly:
 
-    $users = User::factory()->count(5)->delinquent()->make();
+    $users = User::factory()->count(5)->suspended()->make();
 
 #### Overriding Attributes
 
