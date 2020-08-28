@@ -1739,7 +1739,7 @@ The `isAscii` method determines if a given string is an ASCII string:
 
     // true
 
-    $result = Str::of('ü')->isAcii();
+    $result = Str::of('ü')->isAscii();
 
     // false
 
