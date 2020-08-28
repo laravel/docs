@@ -9,6 +9,7 @@
 - [Using Factories](#using-factories)
     - [Creating Models](#creating-models)
     - [Persisting Models](#persisting-models)
+    - [Sequences](#sequences)
 - [Factory Relationships](#factory-relationships)
     - [Relationships Within Definitions](#relationships-within-definition)
     - [Has Many Relationships](#has-many-relationships)
@@ -118,7 +119,7 @@ To get started, take a look at the `database/factories/UserFactory.php` file in 
         }
     }
 
-As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `model` property and `definition` method. The `definition` method returns the default set of attribute values that should be used when creating a model using the factory.
+As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `model` property and `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory.
 
 Via the `faker` property, factories have access to the [Faker](https://github.com/fzaninotto/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
@@ -127,7 +128,7 @@ Via the `faker` property, factories have access to the [Faker](https://github.co
 <a name="factory-states"></a>
 ### Factory States
 
-State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `delinquent` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like:
+State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `delinquent` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like. After all, it's just a typical PHP method:
 
     /**
      * Indicate that the user is delinquent.
@@ -160,7 +161,7 @@ If your state transformation requires access to the other attributes defined by 
 <a name="factory-callbacks"></a>
 ### Factory Callbacks
 
-Factory callbacks are registered using the `afterMaking` and `afterCreating` methods, and allow you to perform additional tasks after making or creating a model. You should register these callbacks by defining a `configure` method on the factory class. This method will automatically be called by Laravel when the factory is instantiated:
+Factory callbacks are registered using the `afterMaking` and `afterCreating` methods and allow you to perform additional tasks after making or creating a model. You should register these callbacks by defining a `configure` method on the factory class. This method will automatically be called by Laravel when the factory is instantiated:
 
     namespace Database\Factories;
 
@@ -202,7 +203,7 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
 <a name="creating-models"></a>
 ### Creating Models
 
-Once you have defined your factories, you may use the static `factory` method provided by the `HasFactory` trait on your Eloquent models to instantiate a factory instance for that model. Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models but not save them to the database:
+Once you have defined your factories, you may use the static `factory` method provided by the `HasFactory` trait on your Eloquent models in order to instantiate a factory instance for that model. Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:
 
     use App\Models\User;
 
@@ -213,22 +214,22 @@ Once you have defined your factories, you may use the static `factory` method pr
         // Use model in tests...
     }
 
-You may also create a Collection of many models or create models of a given type:
+You may create a collection of many models using the `count` method:
 
     // Create three App\Models\User instances...
-    $users = User::factory()->times(3)->make();
+    $users = User::factory()->count(3)->make();
 
-The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model. Specifically, the method will look for a factory in the `Database\Factories` namespace that has as class name matching the model name and suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may use the factory directly to create model instances. To create a new factory instance using the factory class, you should call the static `new` method on the factory:
+The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may use the factory directly to create model instances. To create a new factory instance using the factory class, you should call the static `new` method on the factory:
 
     use Database\Factories\UserFactory;
 
-    $users = UserFactory::new()->times(3)->make();
+    $users = UserFactory::new()->count(3)->make();
 
 #### Applying States
 
 You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you may simply call state methods directly:
 
-    $users = User::factory()->times(5)->delinquent()->make();
+    $users = User::factory()->count(5)->delinquent()->make();
 
 #### Overriding Attributes
 
@@ -238,7 +239,7 @@ If you would like to override some of the default values of your models, you may
         'name' => 'Abigail Otwell',
     ]);
 
-Alternatively, the `state` method may be called directly on the factory instance:
+Alternatively, the `state` method may be called directly on the factory instance to perform an inline state transformation:
 
     $user = User::factory()->state([
         'name' => 'Abigail Otwell',
@@ -249,7 +250,7 @@ Alternatively, the `state` method may be called directly on the factory instance
 <a name="persisting-models"></a>
 ### Persisting Models
 
-The `create` method not only creates the model instances but also saves them to the database using Eloquent's `save` method:
+The `create` method creates model instances and persists them to the database using Eloquent's `save` method:
 
     use App\Models\User;
 
@@ -259,7 +260,7 @@ The `create` method not only creates the model instances but also saves them to 
         $user = User::factory()->create();
 
         // Create three App\Models\User instances...
-        $users = User::factory()->times(3)->create();
+        $users = User::factory()->count(3)->create();
 
         // Use model in tests...
     }
@@ -269,6 +270,24 @@ You may override attributes on the model by passing an array of attributes to th
     $user = User::factory()->create([
         'name' => 'Abigail',
     ]);
+
+<a name="sequences"></a>
+### Sequences
+
+Sometimes you may wish to alternate the value of a given model attribute for each created model. You may accomplish this by defining a state transformation as a `Sequence` instance. For example, we may wish to alternate the value of an `admin` column on a `User` model between `Y` and `N` for each created user:
+
+    use App\Models\User;
+    use Illuminate\Database\Eloquent\Factories\Sequence;
+
+    $users = User::factory()
+                    ->count(10)
+                    ->state(new Sequence(
+                        ['admin' => 'Y'],
+                        ['admin' => 'N'],
+                    ))
+                    ->create();
+
+In this example, five users will be created with an `admin` value of `Y` and five users will be created with an `admin` value of `N`.
 
 <a name="factory-relationships"></a>
 ## Factory Relationships
@@ -294,7 +313,7 @@ You may attach relationships to models in your factory definitions. For example,
         ];
     }
 
-If the relationship depends on the factory that defines it you may provide a callback which accepts the evaluated attribute array:
+If the relationship's columns depend on the factory that defines it you may provide a callback which accepts the evaluated attribute array:
 
     /**
      * Define the model's default state.
@@ -322,13 +341,13 @@ Next, let's explore building Eloquent model relationships using Laravel's fluent
     use App\Models\User;
 
     $users = User::factory()
-                ->has(Post::factory()->times(3))
+                ->has(Post::factory()->count(3))
                 ->create();
 
 By convention, when passing a `Post` model to the `has` method, Laravel will assume that the `User` model must have a `posts` method that defines the relationship. If necessary, you may explicitly specify the name of the relationship that you would like to manipulate:
 
     $users = User::factory()
-                ->has(Post::factory()->times(3), 'posts')
+                ->has(Post::factory()->count(3), 'posts')
                 ->create();
 
 Of course, you may perform state manipulations on the related models. In addition, you may pass a Closure based state transformation if your state change requires access to the parent model:
@@ -336,7 +355,7 @@ Of course, you may perform state manipulations on the related models. In additio
     $users = User::factory()
                 ->has(
                     Post::factory()
-                            ->times(3)
+                            ->count(3)
                             ->state(function (array $attributes, User $user) {
                                 return ['user_type' => $user->type];
                             })
@@ -376,7 +395,7 @@ Now that we have explored how to build "has many" relationships using factories,
     use App\Models\User;
 
     $posts = Post::factory()
-                ->times(3)
+                ->count(3)
                 ->for(User::factory()->state([
                     'name' => 'Jessica Archer',
                 ]))
@@ -384,10 +403,10 @@ Now that we have explored how to build "has many" relationships using factories,
 
 #### Using Magic Methods
 
-For convenience, you may use the factory's magic relationship methods to define "belongs to" relationships. For example, the following example will use convention to determine that the related model should be created via a `user` relationship method on the `Post` model:
+For convenience, you may use the factory's magic relationship methods to define "belongs to" relationships. For example, the following example will use convention to determine that the three posts should belong to the `user` relationship on the `Post` model:
 
     $posts = Post::factory()
-                ->times(3)
+                ->count(3)
                 ->forUser([
                     'name' => 'Jessica Archer',
                 ])
@@ -396,25 +415,25 @@ For convenience, you may use the factory's magic relationship methods to define 
 <a name="many-to-many-relationships"></a>
 ### Many To Many Relationships
 
-Like [has many relationships](#has-many-relationships), many to many relationships may be created using the `has` method:
+Like [has many relationships](#has-many-relationships), "many to many" relationships may be created using the `has` method:
 
     use App\Models\Role;
     use App\Models\User;
 
     $users = User::factory()
-                ->has(Role::factory()->times(3))
+                ->has(Role::factory()->count(3))
                 ->create();
 
 #### Pivot Table Attributes
 
-If you need to define attributes that should be set on the pivot / intermediate table linking the models, you may use the `hasAttached` method. This method accepts an array of attribute names and values as its second argument:
+If you need to define attributes that should be set on the pivot / intermediate table linking the models, you may use the `hasAttached` method. This method accepts an array of pivot table attribute names and values as its second argument:
 
     use App\Models\Role;
     use App\Models\User;
 
     $users = User::factory()
                 ->hasAttached(
-                    Role::factory()->times(3),
+                    Role::factory()->count(3),
                     ['active' => true]
                 )
                 ->create();
@@ -424,7 +443,7 @@ You may provide a Closure based state transformation if your state change requir
     $users = User::factory()
                 ->hasAttached(
                     Role::factory()
-                        ->times(3)
+                        ->count(3)
                         ->state(function (array $attributes, User $user) {
                             return ['name' => $user->name.' Role'];
                         }),
@@ -453,9 +472,9 @@ For convenience, you may use the factory's magic relationship methods to define 
 
 #### Morph To Relationships
 
-However, magic methods may not be used to create `morphTo` relationships. Instead, the `for` method must be used directly and the name of the relationship must be explicitly provided. For example, imagine that the `Comment` model has a `commentable` method that defines a `morphTo` relationship. In this situation, we may create three comments that belong to a single post using the `for` method directly:
+Magic methods may not be used to create `morphTo` relationships. Instead, the `for` method must be used directly and the name of the relationship must be explicitly provided. For example, imagine that the `Comment` model has a `commentable` method that defines a `morphTo` relationship. In this situation, we may create three comments that belong to a single post using the `for` method directly:
 
-    $comments = Comment::factory()->times(3)->for(
+    $comments = Comment::factory()->count(3)->for(
         Post::factory(), 'commentable'
     )->create();
 
@@ -468,7 +487,7 @@ Polymorphic "many to many" relationships may be created just like non-polymorphi
 
     $users = Video::factory()
                 ->hasAttached(
-                    Tag::factory()->times(3),
+                    Tag::factory()->count(3),
                     ['public' => true]
                 )
                 ->create();
