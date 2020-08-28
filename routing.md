@@ -327,6 +327,7 @@ Sometimes you may wish to resolve Eloquent models using a column other than `id`
         return $post;
     });
 
+<a name="implicit-model-binding-scoping"></a>
 #### Custom Keys & Scoping
 
 Sometimes, when implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the first Eloquent model. For example, consider this situation that retrieves a blog post by slug for a specific user:
