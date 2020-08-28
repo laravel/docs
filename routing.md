@@ -357,11 +357,18 @@ If you would like model binding to use a default database column other than `id`
 <a name="explicit-binding"></a>
 ### Explicit Binding
 
-To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings in the `boot` method of the `RouteServiceProvider` class:
+To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings at the beginning of the `boot` method of your `RouteServiceProvider` class:
 
+    /**
+     * Define your route model bindings, pattern filters, etc.
+     *
+     * @return void
+     */
     public function boot()
     {
         Route::model('user', App\Models\User::class);
+
+        // ...
     }
 
 Next, define a route that contains a `{user}` parameter:
@@ -379,7 +386,7 @@ If a matching model instance is not found in the database, a 404 HTTP response w
 If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
 
     /**
-     * Bootstrap any application services.
+     * Define your route model bindings, pattern filters, etc.
      *
      * @return void
      */
@@ -388,6 +395,8 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
         Route::bind('user', function ($value) {
             return App\Models\User::where('name', $value)->firstOrFail();
         });
+
+        // ...
     }
 
 Alternatively, you may override the `resolveRouteBinding` method on your Eloquent model. This method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
