@@ -60,10 +60,9 @@ The default server configuration should suffice for development. However, you ar
 
     ],
 
-#### Configuring Schemes
+#### Configuring The Connection Scheme
 
-It is possible to specify the connection scheme for each Redis server. By default clients are using the `tcp` scheme,
-but if you want to leverage TLS/SSL encryption when connecting to secured Redis instances, you should use the `tls` scheme:
+By default, Redis clients will use the `tcp` scheme when connecting to your Reids servers; however, you may use TLS / SSL encryption by specifying a `scheme` configuration option in your Redis server configuration:
 
     'redis' => [
 
