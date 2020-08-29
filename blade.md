@@ -288,6 +288,16 @@ Or, you may determine if the application is running in a specific environment us
     @env('staging')
         // Staging specific content...
     @endenv
+    
+The `@env` directive can accept multiple strings or an array:
+
+    @env('staging', 'production')
+        // Staging & production specific content...
+    @endenv
+    
+    @env(['local', 'test'])
+        // Local & test specific content...
+    @endenv
 
 <a name="switch-statements"></a>
 ### Switch Statements
