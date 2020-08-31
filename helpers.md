@@ -103,6 +103,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
 [Str::orderedUuid](#method-str-ordered-uuid)
+[Str::padBoth](#method-str-padboth)
+[Str::padLeft](#method-str-padleft)
+[Str::padRight](#method-str-padright)
 [Str::plural](#method-str-plural)
 [Str::random](#method-str-random)
 [Str::replaceArray](#method-str-replace-array)
@@ -156,6 +159,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [ltrim](#method-fluent-str-ltrim)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
+[padBoth](#method-fluent-str-padboth)
+[padLeft](#method-fluent-str-padleft)
+[padRight](#method-fluent-str-padright)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [replace](#method-fluent-str-replace)
@@ -1276,6 +1282,51 @@ The `Str::orderedUuid` method generates a "timestamp first" UUID that may be eff
 
     return (string) Str::orderedUuid();
 
+<a name="method-str-padboth"></a>
+#### `Str::padBoth()` {#collection-method}
+
+The `Str::padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::padBoth('Alien', 10, '_');
+
+    // '__Alien___'
+
+    $padded = Str::padBoth('Alien', 10);
+
+    // '  Alien   '
+
+<a name="method-str-padleft"></a>
+#### `Str::padLeft()` {#collection-method}
+
+The `Str::padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::padLeft('Alien', 10, '-=');
+
+    // '-=-=-Alien'
+
+    $padded = Str::padLeft('Alien', 10);
+
+    // '     Alien'
+
+<a name="method-str-padright"></a>
+#### `Str::padRight()` {#collection-method}
+
+The `Str::padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::padRight('Alien', 10, '-');
+
+    // 'Alien-----'
+
+    $padded = Str::padRight('Alien', 10);
+
+    // 'Alien     '
+
 <a name="method-str-plural"></a>
 #### `Str::plural()` {#collection-method}
 
@@ -1876,6 +1927,51 @@ If you specify a matching group within the expression, Laravel will return a col
     // collect(['un', 'ly']);
 
 If no matches are found, an empty collection will be returned.
+
+<a name="method-fluent-str-padboth"></a>
+#### `padBoth` {#collection-method}
+
+The `padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('Alien')->padBoth(10, '_');
+
+    // '__Alien___'
+
+    $padded = Str::of('Alien')->padBoth(10);
+
+    // '  Alien   '
+
+<a name="method-fluent-str-padleft"></a>
+#### `padLeft` {#collection-method}
+
+The `padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('Alien')->padLeft(10, '-=');
+
+    // '-=-=-Alien'
+
+    $padded = Str::of('Alien')->padLeft(10);
+
+    // '     Alien'
+
+<a name="method-fluent-str-padright"></a>
+#### `padRight` {#collection-method}
+
+The `padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('Alien')->padRight(10, '-');
+
+    // 'Alien-----'
+
+    $padded = Str::of('Alien')->padRight(10);
+
+    // 'Alien     '
 
 <a name="method-fluent-str-plural"></a>
 #### `plural` {#collection-method}
