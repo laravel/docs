@@ -42,6 +42,22 @@ Update your `laravel/framework` dependency to `^8.0` in your `composer.json` fil
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 8 support.
 
+### Collections
+
+#### The `isset` Method
+
+**Likelihood Of Impact: Low**
+
+To be consistent with typical PHP behavior, the `offsetExists` method of `Illuminate\Support\Collection` has been updated to use `isset` instead of `array_key_exists`. This may present a change in behavior when dealing with collection items that have a value of `null`:
+
+    $collection = collect([null]);
+
+    // Laravel 7.x - true
+    isset($collection[0]);
+
+    // Laravel 8.x - false
+    isset($collection[0]);
+
 ### Eloquent
 
 <a name="model-factories"></a>
@@ -52,6 +68,30 @@ Finally, examine any other third-party packages consumed by your application and
 Laravel's [model factories](/docs/{{version}}/database-testing#creating-factories) feature has been totally rewritten to support classes and is not compatible with Laravel 7.x style factories. However, to ease the upgrade process, a new `laravel/legacy-factories` package has been created to continue using your existing factories with Laravel 8.x. You may install this package via Composer:
 
     composer require laravel/legacy-factories
+
+#### The `Castable` Interface
+
+**Likelihood Of Impact: Low**
+
+The `castUsing` method of the `Castable` interface has been updated to accept an array of arguments. If you are implementing this interface you should update your implementation accordingly:
+
+    public static function castUsing(array $arguments);
+
+#### Increment / Decrement Events
+
+**Likelihood Of Impact: Low**
+
+Proper "update" and "save" related model events will now be dispatched when executing the `increment` or `decrement` methods on Eloquent model instances.
+
+### Events
+
+#### The `Dispatcher` Contract
+
+**Likelihood Of Impact: Low**
+
+The `listen` method of the `Illuminate\Contracts\Events\Dispatcher` contract has been updated to make the `$listener` property optional. This change was made to support automatic detection of handled event types via reflection. If you are manually implementing this interface, you should update your implementation accordingly:
+
+    public function listen($events, $listener = null);
 
 ### Framework
 
@@ -67,6 +107,26 @@ The [maintenance mode](/docs/{{version}}/configuration#maintenance-mode) feature
     if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
         require __DIR__.'/../storage/framework/maintenance.php';
     }
+
+#### Manager `$app` Property
+
+**Likelihood Of Impact: Low**
+
+The previously deprecated `$app` property of the `Illuminate\Support\Manager` class has been removed. If you were relying on this property, you should use the `$container` property instead.
+
+#### The `elixir` Helper
+
+**Likelihood Of Impact: Low**
+
+The previously deprecated `elixir` helper has been removed. Applications still using this method are encouraged to upgrade to [Laravel Mix](https://github.com/JeffreyWay/laravel-mix).
+
+### Mail
+
+#### The `sendNow` Method
+
+**Likelihood Of Impact: Low**
+
+The previously deprecated `sendNow` method has been removed. Instead, please use the `send` method.
 
 ### Pagination
 
@@ -105,6 +165,31 @@ If you plan to use the [job batching](/docs/{{version}}/queues#job-batching) fea
 
 Next, the `failed.driver` configuration option within your `queue` configuration file should be updated to `database-uuids`.
 
+### Scheduling
+
+#### The `cron-expression` Library
+
+**Likelihood Of Impact: Low**
+
+Laravel's dependency on `dragonmantank/cron-expression` has been updated from `2.x` to `3.x`. This should not cause any breaking change in your application unless you are interacting with the `cron-expression` library directly. If you are interacting with this library directly, please review its [change log](https://github.com/dragonmantank/cron-expression/blob/master/CHANGELOG.md).
+
+### Session
+
+#### The `Session` Contract
+
+**Likelihood Of Impact: Low**
+
+The `Illuminate\Contracts\Session\Session` contract has been received a new `pull` method. If you are implementing this contract manually, you should update your implementation accordingly:
+
+    /**
+      * Get the value of a given key and then forget it.
+      *
+      * @param  string  $key
+      * @param  mixed  $default
+      * @return mixed
+      */
+     public function pull($key, $default = null);
+
 ### Testing
 
 <a name="assert-exact-json-method"></a>
@@ -113,6 +198,14 @@ Next, the `failed.driver` configuration option within your `queue` configuration
 **Likelihood Of Impact: Medium**
 
 The `assertExactJson` method now requires numeric keys of compared arrays to match and be in the same order. If you would like to compare JSON against an array without requiring numerically keyed arrays to have the same order, you may use the `assertSimilarJson` method instead.
+
+### Validation
+
+### Database Rule Connections
+
+**Likelihood Of Impact: Low**
+
+The `unique` and `exists` rules will now respect the specified connection name (accessed via the model's `getConnectionName` method) of Eloquent models when performing queries.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
