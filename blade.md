@@ -286,17 +286,11 @@ You may check if the application is running in the production environment using 
 Or, you may determine if the application is running in a specific environment using the `@env` directive:
 
     @env('staging')
-        // Staging specific content...
+        // The application is running in "staging"...
     @endenv
     
-The `@env` directive can accept multiple strings or an array:
-
-    @env('staging', 'production')
-        // Staging & production specific content...
-    @endenv
-    
-    @env(['local', 'test'])
-        // Local & test specific content...
+    @env(['staging', 'production'])
+        // The application is running in "staging" or "production"...
     @endenv
 
 <a name="switch-statements"></a>
