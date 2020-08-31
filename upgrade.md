@@ -160,7 +160,7 @@ If you plan to use the [job batching](/docs/{{version}}/queues#job-batching) fea
     use Illuminate\Database\Schema\Blueprint;
     use Illuminate\Support\Facades\Schema;
 
-    Schema::create('{{table}}', function (Blueprint $table) {
+    Schema::table('failed_jobs', function (Blueprint $table) {
         $table->string('uuid')->after('id')->unique();
     });
 
