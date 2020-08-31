@@ -1289,13 +1289,13 @@ The `Str::padBoth` method wraps PHP's `str_pad` function, padding both sides of 
 
     use Illuminate\Support\Str;
 
-    $padded = Str::padBoth('Alien', 10, '_');
+    $padded = Str::padBoth('James', 10, '_');
 
-    // '__Alien___'
+    // '__James___'
 
-    $padded = Str::padBoth('Alien', 10);
+    $padded = Str::padBoth('James', 10);
 
-    // '  Alien   '
+    // '  James   '
 
 <a name="method-str-padleft"></a>
 #### `Str::padLeft()` {#collection-method}
@@ -1304,13 +1304,13 @@ The `Str::padLeft` method wraps PHP's `str_pad` function, padding the left side 
 
     use Illuminate\Support\Str;
 
-    $padded = Str::padLeft('Alien', 10, '-=');
+    $padded = Str::padLeft('James', 10, '-=');
 
-    // '-=-=-Alien'
+    // '-=-=-James'
 
-    $padded = Str::padLeft('Alien', 10);
+    $padded = Str::padLeft('James', 10);
 
-    // '     Alien'
+    // '     James'
 
 <a name="method-str-padright"></a>
 #### `Str::padRight()` {#collection-method}
@@ -1319,13 +1319,13 @@ The `Str::padRight` method wraps PHP's `str_pad` function, padding the right sid
 
     use Illuminate\Support\Str;
 
-    $padded = Str::padRight('Alien', 10, '-');
+    $padded = Str::padRight('James', 10, '-');
 
-    // 'Alien-----'
+    // 'James-----'
 
-    $padded = Str::padRight('Alien', 10);
+    $padded = Str::padRight('James', 10);
 
-    // 'Alien     '
+    // 'James     '
 
 <a name="method-str-plural"></a>
 #### `Str::plural()` {#collection-method}
@@ -1935,13 +1935,13 @@ The `padBoth` method wraps PHP's `str_pad` function, padding both sides of a str
 
     use Illuminate\Support\Str;
 
-    $padded = Str::of('Alien')->padBoth(10, '_');
+    $padded = Str::of('James')->padBoth(10, '_');
 
-    // '__Alien___'
+    // '__James___'
 
-    $padded = Str::of('Alien')->padBoth(10);
+    $padded = Str::of('James')->padBoth(10);
 
-    // '  Alien   '
+    // '  James   '
 
 <a name="method-fluent-str-padleft"></a>
 #### `padLeft` {#collection-method}
@@ -1950,13 +1950,13 @@ The `padLeft` method wraps PHP's `str_pad` function, padding the left side of a 
 
     use Illuminate\Support\Str;
 
-    $padded = Str::of('Alien')->padLeft(10, '-=');
+    $padded = Str::of('James')->padLeft(10, '-=');
 
-    // '-=-=-Alien'
+    // '-=-=-James'
 
-    $padded = Str::of('Alien')->padLeft(10);
+    $padded = Str::of('James')->padLeft(10);
 
-    // '     Alien'
+    // '     James'
 
 <a name="method-fluent-str-padright"></a>
 #### `padRight` {#collection-method}
@@ -1965,13 +1965,13 @@ The `padRight` method wraps PHP's `str_pad` function, padding the right side of 
 
     use Illuminate\Support\Str;
 
-    $padded = Str::of('Alien')->padRight(10, '-');
+    $padded = Str::of('James')->padRight(10, '-');
 
-    // 'Alien-----'
+    // 'James-----'
 
-    $padded = Str::of('Alien')->padRight(10);
+    $padded = Str::of('James')->padRight(10);
 
-    // 'Alien     '
+    // 'James     '
 
 <a name="method-fluent-str-plural"></a>
 #### `plural` {#collection-method}
