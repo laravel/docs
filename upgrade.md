@@ -180,7 +180,7 @@ Laravel's dependency on `dragonmantank/cron-expression` has been updated from `2
 
 **Likelihood Of Impact: Low**
 
-The `Illuminate\Contracts\Session\Session` contract has been received a new `pull` method. If you are implementing this contract manually, you should update your implementation accordingly:
+The `Illuminate\Contracts\Session\Session` contract has received a new `pull` method. If you are implementing this contract manually, you should update your implementation accordingly:
 
     /**
       * Get the value of a given key and then forget it.
