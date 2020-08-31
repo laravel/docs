@@ -297,7 +297,7 @@ Optional software is installed using the "features" setting in your Homestead co
         - crystal: true
         - docker: true
         - elasticsearch:
-            version: 7
+            version: 7.9.0
         - gearman: true
         - golang: true
         - grafana: true
