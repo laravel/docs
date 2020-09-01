@@ -152,7 +152,7 @@ The paginator now uses the [Tailwind CSS framework](https://tailwindcss.com) for
 For consistency with other features of Laravel, the `retryAfter` method and `retryAfter` property of queued jobs, mailers, notifications, and listeners has been renamed to `backoff`. You should update the name of this method / property in the relevant classes in your application.
 
 <a name="queue-timeout-at-property"></a>
-#### The `timeoutAt` Method
+#### The `timeoutAt` Property
 
 **Likelihood Of Impact: High**
 
