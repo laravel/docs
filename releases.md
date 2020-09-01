@@ -47,9 +47,71 @@ By overwhelming community demand, the default Laravel application skeleton now c
 
 _Model factory classes were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-Eloquent [model factories](/docs/{{version}}/database-testing#creating-factories) have been entirely re-written as class based factories and improved to have first-class relationship support:
+Eloquent [model factories](/docs/{{version}}/database-testing#creating-factories) have been entirely re-written as class based factories and improved to have first-class relationship support. For example, the `UserFactory` included with Laravel is written like so:
+
+    <?php
+
+    namespace Database\Factories;
+
+    use App\Models\User;
+    use Illuminate\Database\Eloquent\Factories\Factory;
+    use Illuminate\Support\Str;
+
+    class UserFactory extends Factory
+    {
+        /**
+         * The name of the factory's corresponding model.
+         *
+         * @var string
+         */
+        protected $model = User::class;
+
+        /**
+         * Define the model's default state.
+         *
+         * @return array
+         */
+        public function definition()
+        {
+            return [
+                'name' => $this->faker->name,
+                'email' => $this->faker->unique()->safeEmail,
+                'email_verified_at' => now(),
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'remember_token' => Str::random(10),
+            ];
+        }
+    }
+
+Thanks to the new `HasFactory` trait available on generated models, the model factory may be used like so:
 
     use App\User;
+
+    User::factory()->count(50)->create();
+
+Since model factories are now simple PHP classes, state transformations may be written as class methods. In addition, you may add any other helper classes to your Eloquent model factory as needed.
+
+For example, your `User` model might have a `suspended` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like. After all, it's just a typical PHP method:
+
+    /**
+     * Indicate that the user is suspended.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function suspended()
+    {
+        return $this->state([
+            'account_status' => 'suspended',
+        ]);
+    }
+
+After defining the state transformation method, we may use it like so:
+
+    use App\User;
+
+    User::factory()->count(5)->suspended()->create();
+
+As mentioned, Laravel 8's model factories contain first class support for relationships. So, assuming our `User` model has a `posts` relationship method, we may simply run the following code to generate a user with three posts:
 
     $users = User::factory()
                 ->hasPosts(3, [
@@ -59,7 +121,7 @@ Eloquent [model factories](/docs/{{version}}/database-testing#creating-factories
 
 To ease the upgrade process, the [laravel/legacy-factories](https://github.com/laravel/legacy-factories) package has been released to provide support for the previous iteration of model factories within Laravel 8.x.
 
-To learn more about model factories, please consult the [database testing documentation](/docs/{{version}}/database-testing#creating-factories).
+Laravel's re-written factories contain many more features that we think you will love. To learn more about model factories, please consult the [database testing documentation](/docs/{{version}}/database-testing#creating-factories).
 
 ### Migration Squashing
 
@@ -193,12 +255,77 @@ To learn more about Blade components, please consult the [Blade documentation](/
 
 _Event listener improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-### Tailwind Pagination Views
+Closure based event listeners may now be registered by only passing the Closure to the `Event::listen` method. Laravel will inspect the Closure to determine which type of event the listener handlers:
+
+    use App\Events\PodcastProcessed;
+    use Illuminate\Support\Facades\Event;
+
+    Event::listen(function (PodcastProcessed $event) {
+        //
+    });
+
+In addition, Closure based event listeners may now be marked as queueable using the `Illuminate\Events\queueable` function:
+
+    use App\Events\PodcastProcessed;
+    use function Illuminate\Events\queueable;
+    use Illuminate\Support\Facades\Event;
+
+    Event::listen(queueable(function (PodcastProcessed $event) {
+        //
+    }));
+
+Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods to customize the execution of the queued listener:
+
+    Event::listen(queueable(function (PodcastProcessed $event) {
+        //
+    })->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
+
+If you would like to handle anonymous queued listener failures, you may provide a Closure to the `catch` method while defining the `queueable` listener:
+
+    use App\Events\PodcastProcessed;
+    use function Illuminate\Events\queueable;
+    use Illuminate\Support\Facades\Event;
+    use Throwable;
+
+    Event::listen(queueable(function (PodcastProcessed $event) {
+        //
+    })->catch(function (PodcastProcessed $event, Throwable $e) {
+        // The queued listener failed...
+    }));
 
 ### Time Testing Helpers
 
 _Time testing helpers were contributed by [Taylor Otwell](https://github.com/taylorotwell) with inspiration from Ruby on Rails_.
 
+When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\Support\Carbon::now()`. Laravel's base feature test class now includes helpers that allow you to manipulate the current time:
+
+    public function testTimeCanBeManipulated()
+    {
+        // Travel into the future...
+        $this->travel(5)->milliseconds();
+        $this->travel(5)->seconds();
+        $this->travel(5)->minutes();
+        $this->travel(5)->hours();
+        $this->travel(5)->days();
+        $this->travel(5)->weeks();
+        $this->travel(5)->years();
+
+        // Travel into the past...
+        $this->travel(-5)->hours();
+
+        // Travel to an explicit time...
+        $this->travelTo(now()->subHours(6));
+
+        // Return back to the present time...
+        $this->travelBack();
+    }
+
 ### Artisan `serve` Improvements
 
 _Artisan `serve` improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+The Artisan `serve` command has been improved with automatic reloading when environment variable changes are detected within your local `.env` file. Previously, the command had to be manually stopped and restarted.
+
+### Tailwind Pagination Views
+
+The Laravel paginator has been updated to use the [Tailwind CSS](https://tailwindcss.com) framework by default. Tailwind CSS is a highly customizable, low-level CSS framework that gives you all of the building blocks you need to build bespoke designs without any annoying opinionated styles you have to fight to override. Of course, Bootstrap 3 and 4 views remain available as well.
