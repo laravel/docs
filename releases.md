@@ -241,6 +241,16 @@ For this reason, Laravel now allows you to pre-render a maintenance mode view th
 
 _Catch improvements were contributed by [Mohamed Said](https://github.com/themsaid)_.
 
+Using the new `catch` method, you may now provide a Closure that should be executed if a queued Closure fails to complete successfully after exhausting all of your queue's configured retry attempts:
+
+    use Throwable;
+
+    dispatch(function () use ($podcast) {
+        $podcast->publish();
+    })->catch(function (Throwable $e) {
+        // This job has failed...
+    });
+
 ### Dynamic Blade Components
 
 _Dynamic Blade components were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
