@@ -326,7 +326,7 @@ If you have stored a file on one of your [filesystem disks](/docs/{{version}}/fi
      */
     public function build()
     {
-       return $this->view('email.orders.shipped')
+       return $this->view('emails.orders.shipped')
                    ->attachFromStorage('/path/to/file');
     }
 
@@ -339,7 +339,7 @@ If necessary, you may specify the file's attachment name and additional options 
      */
     public function build()
     {
-       return $this->view('email.orders.shipped')
+       return $this->view('emails.orders.shipped')
                    ->attachFromStorage('/path/to/file', 'name.pdf', [
                        'mime' => 'application/pdf'
                    ]);
@@ -354,7 +354,7 @@ The `attachFromStorageDisk` method may be used if you need to specify a storage 
      */
     public function build()
     {
-       return $this->view('email.orders.shipped')
+       return $this->view('emails.orders.shipped')
                    ->attachFromStorageDisk('s3', '/path/to/file');
     }
 
