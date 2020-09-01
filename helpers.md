@@ -103,6 +103,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
 [Str::orderedUuid](#method-str-ordered-uuid)
+[Str::padBoth](#method-str-padboth)
+[Str::padLeft](#method-str-padleft)
+[Str::padRight](#method-str-padright)
 [Str::plural](#method-str-plural)
 [Str::random](#method-str-random)
 [Str::replaceArray](#method-str-replace-array)
@@ -156,6 +159,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [ltrim](#method-fluent-str-ltrim)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
+[padBoth](#method-fluent-str-padboth)
+[padLeft](#method-fluent-str-padleft)
+[padRight](#method-fluent-str-padright)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [replace](#method-fluent-str-replace)
@@ -1276,6 +1282,51 @@ The `Str::orderedUuid` method generates a "timestamp first" UUID that may be eff
 
     return (string) Str::orderedUuid();
 
+<a name="method-str-padboth"></a>
+#### `Str::padBoth()` {#collection-method}
+
+The `Str::padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::padBoth('James', 10, '_');
+
+    // '__James___'
+
+    $padded = Str::padBoth('James', 10);
+
+    // '  James   '
+
+<a name="method-str-padleft"></a>
+#### `Str::padLeft()` {#collection-method}
+
+The `Str::padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::padLeft('James', 10, '-=');
+
+    // '-=-=-James'
+
+    $padded = Str::padLeft('James', 10);
+
+    // '     James'
+
+<a name="method-str-padright"></a>
+#### `Str::padRight()` {#collection-method}
+
+The `Str::padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::padRight('James', 10, '-');
+
+    // 'James-----'
+
+    $padded = Str::padRight('James', 10);
+
+    // 'James     '
+
 <a name="method-str-plural"></a>
 #### `Str::plural()` {#collection-method}
 
@@ -1739,7 +1790,7 @@ The `isAscii` method determines if a given string is an ASCII string:
 
     // true
 
-    $result = Str::of('ü')->isAcii();
+    $result = Str::of('ü')->isAscii();
 
     // false
 
@@ -1807,7 +1858,7 @@ The `limit` method truncates the given string at the specified length:
 
     // The quick brown fox...
 
-You may also pass a third argument to change the string that will be appended to the end:
+You may also pass a second argument to change the string that will be appended to the end:
 
     use Illuminate\Support\Str;
 
@@ -1876,6 +1927,51 @@ If you specify a matching group within the expression, Laravel will return a col
     // collect(['un', 'ly']);
 
 If no matches are found, an empty collection will be returned.
+
+<a name="method-fluent-str-padboth"></a>
+#### `padBoth` {#collection-method}
+
+The `padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('James')->padBoth(10, '_');
+
+    // '__James___'
+
+    $padded = Str::of('James')->padBoth(10);
+
+    // '  James   '
+
+<a name="method-fluent-str-padleft"></a>
+#### `padLeft` {#collection-method}
+
+The `padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('James')->padLeft(10, '-=');
+
+    // '-=-=-James'
+
+    $padded = Str::of('James')->padLeft(10);
+
+    // '     James'
+
+<a name="method-fluent-str-padright"></a>
+#### `padRight` {#collection-method}
+
+The `padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('James')->padRight(10, '-');
+
+    // 'James-----'
+
+    $padded = Str::of('James')->padRight(10);
+
+    // 'James     '
 
 <a name="method-fluent-str-plural"></a>
 #### `plural` {#collection-method}
