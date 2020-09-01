@@ -8,7 +8,7 @@
 <div class="content-list" markdown="1">
 - [Model Factories](#model-factories)
 - [Queue `retryAfter` Method](#queue-retry-after-method)
-- [Queue `timeoutAt` Property](#queue-timeout-at-property")
+- [Queue `timeoutAt` Property](#queue-timeout-at-property)
 - [Pagination Defaults](#pagination-defaults)
 </div>
 
