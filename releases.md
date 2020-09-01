@@ -29,4 +29,176 @@ For LTS releases, such as Laravel 6, bug fixes are provided for 2 years and secu
 <a name="laravel-8"></a>
 ## Laravel 8
 
-Release notes for Laravel 8 will be placed here.
+Laravel 8 continues the improvements made in Laravel 7.x by introducing Laravel Jetstream, model factory classes, migration squashing, job batching, improved rate limiting, queue improvements, dynamic Blade components, Tailwind pagination views, time testing helpers, improvements to `artisan serve`, event listener improvements, and a variety of other bug fixes and usability improvements.
+
+### Laravel Jetstream
+
+_Laravel Jetstream was written by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+[Laravel Jetstream](https://github.com/laravel/jetstream) is a beautifully designed application scaffolding for Laravel. Jetstream provides the perfect starting point for your next and includes login, registration, email verification, two-factor authentication, session management, API support via Laravel Sanctum, and optional team management. Laravel Jetstream replaces and improves upon the legacy authentication UI scaffolding available for previous versions of Laravel.
+
+Jetstream is designed using [Tailwind CSS](https://tailwindcss.com) and offers your choice of [Livewire](https://laravel-livewire.com) or [Inertia](https://inertiajs.com) scaffolding.
+
+### Models Directory
+
+By overwhelming community demand, the default Laravel application skeleton now contains an `app/Models` directory. We hope you enjoy this new home for your Eloquent models! All relevant generator commands have been updated to assume models exist within the `app/Models` directory if it exists. If the directory does not exist, the framework will assume your models should be placed within the `app` directory.
+
+### Model Factory Classes
+
+_Model factory classes were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Eloquent [model factories](/docs/{{version}}/database-testing#creating-factories) have been entirely re-written as class based factories and improved to have first-class relationship support:
+
+    use App\User;
+
+    $users = User::factory()
+                ->hasPosts(3, [
+                    'published' => false,
+                ])
+                ->create();
+
+To ease the upgrade process, the [laravel/legacy-factories](https://github.com/laravel/legacy-factories) package has been released to provide support for the previous iteration of model factories within Laravel 8.x.
+
+To learn more about model factories, please consult the [database testing documentation](/docs/{{version}}/database-testing#creating-factories).
+
+### Migration Squashing
+
+_Migration squashing was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+As you build your application, you may accumulate more and more migrations over time. This can lead to your migration directory becoming bloated with potentially hundreds of migrations. If you would like, you may now "squash" your migrations into a single SQL file. To get started, execute the `schema:dump` command:
+
+    php artisan schema:dump
+
+    // Dump the current database schema and prune all existing migrations...
+    php artisan schema:dump --prune
+
+When you execute this command, Laravel will write a "schema" file to your `database/schema` directory. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute the schema file's SQL first. After executing the schema file's commands, Laravel will execute any remaining migrations that were not part of the schema dump.
+
+### Job Batching
+
+_Job batching was contributed by [Taylor Otwell](https://github.com/taylorotwell) & [Mohamed Said](https://github.com/themsaid)_.
+
+Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing.
+
+The new `batch` method of the `Bus` facade may be used to dispatch a batch of jobs. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked:
+
+    use App\Jobs\ProcessPodcast;
+    use App\Podcast;
+    use Illuminate\Bus\Batch;
+    use Illuminate\Support\Facades\Batch;
+    use Throwable;
+
+    $batch = Bus::batch([
+        new ProcessPodcast(Podcast::find(1)),
+        new ProcessPodcast(Podcast::find(2)),
+        new ProcessPodcast(Podcast::find(3)),
+        new ProcessPodcast(Podcast::find(4)),
+        new ProcessPodcast(Podcast::find(5)),
+    ])->then(function (Batch $batch) {
+        // All jobs completed successfully...
+    })->catch(function (Batch $batch, Throwable $e) {
+        // First batch job failure detected...
+    })->finally(function (Batch $batch) {
+        // The batch has finished executing...
+    })->dispatch();
+
+    return $batch->id;
+
+To learn more about job batching, please consult the [queue documentation](/docs/{{version}}/queues#job-batching).
+
+### Improved Rate Limiting
+
+_Rate limiting improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Laravel's request rate limiter feature has been augmented with more flexibility and power, while still maintaining backwards compatibility with previous release's `throttle` middleware API.
+
+Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a Closure that returns the limit configuration that should apply to routes that are assigned this rate limiter:
+
+    use Illuminate\Cache\RateLimiting\Limit;
+    use Illuminate\Support\Facades\RateLimiter;
+
+    RateLimiter::for('global', function (Request $request) {
+        return Limit::perMinute(1000);
+    });
+
+Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit dynamically based on the incoming request or authenticated user:
+
+    RateLimiter::for('uploads', function (Request $request) {
+        return $request->user()->vipCustomer()
+                    ? Limit::none()
+                    : Limit::perMinute(100);
+    });
+
+Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `by` method when building your rate limit:
+
+    RateLimiter::for('uploads', function (Request $request) {
+        return $request->user()->vipCustomer()
+                    ? Limit::none()
+                    : Limit::perMinute(100)->by($request->ip());
+    });
+
+Rate limiters may be attached to routes or route groups using the `throttle` [middleware](/docs/{{version}}/middleware). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
+
+    Route::middleware(['throttle:uploads'])->group(function () {
+        Route::post('/audio', function () {
+            //
+        });
+
+        Route::post('/video', function () {
+            //
+        });
+    });
+
+To learn more about rate limiting, please consult the [routing documentation](/docs/{{version}}/routing#rate-limiting).
+
+### Improved Maintenance Mode
+
+_Maintenance mode improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell) with inspiration from [Spatie](https://spatie.be)_.
+
+In previous releases of Laravel, the `php artisan down` maintenance mode feature may be bypassed using an "allow list" of IP addresses that were allowed to access the application. This feature has been removed in favor of a simpler "secret" / token solution.
+
+While in maintenance mode, you may use use the `secret` option to specify a maintenance mode bypass token:
+
+    php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
+
+After placing the application in maintenance mode, you may navigate to the application URL matching this token and Laravel will issue a maintenance mode bypass cookie to your browser:
+
+    https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
+
+When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
+
+#### Pre-Rendering The Maintenace Mode View
+
+If you utilize the `php artisan down` command during deployment, your users may still occasionally encounter errors if they access the application while your Composer dependencies or other infrastructure components are updating. This occurs because a significant part of the Laravel framework must boot in order to determine your application is in maintenance mode and render the maintenance mode view using the templating engine.
+
+For this reason, Laravel now allows you to pre-render a maintenance mode view that will be returned at the very beginning of the request cycle. This view is rendered before any of your application's dependencies have loaded. You may pre-render a template of your choice using the `down` command's `render` option:
+
+    php artisan down --render="errors::503"
+
+### Closure Dispatch / Chain `catch`
+
+_Catch improvements were contributed by [Mohamed Said](https://github.com/themsaid)_.
+
+### Dynamic Blade Components
+
+_Dynamic Blade components were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Sometimes you may need to render a component but not know which component should be rendered until runtime. In this situation, you may now use Laravel's built-in `dynamic-component` component to render the component based on a runtime value or variable:
+
+    <x-dynamic-component :component="$componentName" class="mt-4" />
+
+To learn more about Blade components, please consult the [Blade documentation](/docs/{{version}}/blade#components).
+
+### Event Listener Improvements
+
+_Event listener improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+### Tailwind Pagination Views
+
+### Time Testing Helpers
+
+_Time testing helpers were contributed by [Taylor Otwell](https://github.com/taylorotwell) with inspiration from Ruby on Rails_.
+
+### Artisan `serve` Improvements
+
+_Artisan `serve` improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
