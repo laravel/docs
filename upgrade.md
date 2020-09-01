@@ -40,17 +40,21 @@ The new minimum PHP version is now 7.3.0.
 
 Update the following dependencies in your `composer.json` file:
 
+<div class="content-list" markdown="1">
 - `laravel/framework` to `^8.0`
 - `nunomaduro/collision` to `^5.0`
 - `guzzlehttp/guzzle` to `^7.0.1`
 - `facade/ignition` to `^2.3.6`
+</div>
 
 The following first-party packages have new major releases to support Laravel 8. If there are any, read through their individual upgrade guides before upgrading:
 
+<div class="content-list" markdown="1">
 - [Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
 - [Passport v10.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)
 - [Socialite v5.0](https://github.com/laravel/scout/blob/master/UPGRADE.md)
 - [Telescope v4.0](https://github.com/laravel/telescope/releases)
+</div>
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 8 support.
 
