@@ -47,7 +47,7 @@ Update the following dependencies in your `composer.json` file:
 - `facade/ignition` to `^2.3.6`
 </div>
 
-The following first-party packages have new major releases to support Laravel 8. If there are any, read through their individual upgrade guides before upgrading:
+The following first-party packages have new major releases to support Laravel 8. If applicable, you should read their individual upgrade guides before upgrading:
 
 <div class="content-list" markdown="1">
 - [Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
