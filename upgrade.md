@@ -8,6 +8,7 @@
 <div class="content-list" markdown="1">
 - [Model Factories](#model-factories)
 - [Queue `retryAfter` Method](#queue-retry-after-method)
+- [Queue `timeoutAt` Property](#queue-timeout-at-property")
 - [Pagination Defaults](#pagination-defaults)
 </div>
 
@@ -165,6 +166,13 @@ The paginator now uses the [Tailwind CSS framework](https://tailwindcss.com) for
 **Likelihood Of Impact: High**
 
 For consistency with other features of Laravel, the `retryAfter` method and `retryAfter` property of queued jobs, mailers, notifications, and listeners has been renamed to `backoff`. You should update the name of this method / property in the relevant classes in your application.
+
+<a name="queue-timeout-at-property"></a>
+#### The `timeoutAt` Property
+
+**Likelihood Of Impact: High**
+
+The `timeoutAt` property of queued jobs, notifications, and listeners has been renamed to `retryUntil`. You should update the name of this property in the relevant classes in your application.
 
 <a name="failed-jobs-table-batch-support"></a>
 #### Failed Jobs Table Batch Support
