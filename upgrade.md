@@ -53,7 +53,7 @@ The following first-party packages have new major releases to support Laravel 8.
 <div class="content-list" markdown="1">
 - [Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
 - [Passport v10.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)
-- [Socialite v5.0](https://github.com/laravel/scout/blob/master/UPGRADE.md)
+- [Socialite v5.0](https://github.com/laravel/socialite/blob/master/UPGRADE.md)
 - [Telescope v4.0](https://github.com/laravel/telescope/releases)
 </div>
 
