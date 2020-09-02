@@ -185,15 +185,12 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
          */
         public function configure()
         {
-            $this->afterMaking(function (User $user) {
+            return $this->afterMaking(function (User $user) {
+                //
+            })->afterCreating(function (User $user) {
                 //
             });
-
-            $this->afterCreating(function (User $user) {
-                //
-            });
-            
-            return $this;
+           
         }
 
         // ...
