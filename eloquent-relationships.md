@@ -316,7 +316,7 @@ As you have already learned, working with many-to-many relations requires the pr
     $user = App\User::find(1);
 
     foreach ($user->roles as $role) {
-        echo $role->pivot->created_at;
+        echo $role->pivot->role_id;
     }
 
 Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table, and may be used like any other Eloquent model.
