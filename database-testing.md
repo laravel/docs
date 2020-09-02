@@ -190,7 +190,6 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
             })->afterCreating(function (User $user) {
                 //
             });
-           
         }
 
         // ...
