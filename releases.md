@@ -85,7 +85,7 @@ Eloquent [model factories](/docs/{{version}}/database-testing#creating-factories
 
 Thanks to the new `HasFactory` trait available on generated models, the model factory may be used like so:
 
-    use App\User;
+    use App\Models\User;
 
     User::factory()->count(50)->create();
 
@@ -107,7 +107,7 @@ For example, your `User` model might have a `suspended` state that modifies one 
 
 After defining the state transformation method, we may use it like so:
 
-    use App\User;
+    use App\Models\User;
 
     User::factory()->count(5)->suspended()->create();
 
