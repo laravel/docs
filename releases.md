@@ -219,7 +219,7 @@ _Maintenance mode improvements were contributed by [Taylor Otwell](https://githu
 
 In previous releases of Laravel, the `php artisan down` maintenance mode feature may be bypassed using an "allow list" of IP addresses that were allowed to access the application. This feature has been removed in favor of a simpler "secret" / token solution.
 
-While in maintenance mode, you may use use the `secret` option to specify a maintenance mode bypass token:
+While in maintenance mode, you may use the `secret` option to specify a maintenance mode bypass token:
 
     php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
 
