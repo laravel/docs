@@ -35,7 +35,7 @@ Laravel 8 continues the improvements made in Laravel 7.x by introducing Laravel 
 
 _Laravel Jetstream was written by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-[Laravel Jetstream](https://github.com/laravel/jetstream) is a beautifully designed application scaffolding for Laravel. Jetstream provides the perfect starting point for your next and includes login, registration, email verification, two-factor authentication, session management, API support via Laravel Sanctum, and optional team management. Laravel Jetstream replaces and improves upon the legacy authentication UI scaffolding available for previous versions of Laravel.
+[Laravel Jetstream](https://github.com/laravel/jetstream) is a beautifully designed application scaffolding for Laravel. Jetstream provides the perfect starting point for your next project and includes login, registration, email verification, two-factor authentication, session management, API support via Laravel Sanctum, and optional team management. Laravel Jetstream replaces and improves upon the legacy authentication UI scaffolding available for previous versions of Laravel.
 
 Jetstream is designed using [Tailwind CSS](https://tailwindcss.com) and offers your choice of [Livewire](https://laravel-livewire.com) or [Inertia](https://inertiajs.com) scaffolding.
 
@@ -85,7 +85,7 @@ Eloquent [model factories](/docs/{{version}}/database-testing#creating-factories
 
 Thanks to the new `HasFactory` trait available on generated models, the model factory may be used like so:
 
-    use App\User;
+    use App\Models\User;
 
     User::factory()->count(50)->create();
 
@@ -107,7 +107,7 @@ For example, your `User` model might have a `suspended` state that modifies one 
 
 After defining the state transformation method, we may use it like so:
 
-    use App\User;
+    use App\Models\User;
 
     User::factory()->count(5)->suspended()->create();
 
@@ -219,7 +219,7 @@ _Maintenance mode improvements were contributed by [Taylor Otwell](https://githu
 
 In previous releases of Laravel, the `php artisan down` maintenance mode feature may be bypassed using an "allow list" of IP addresses that were allowed to access the application. This feature has been removed in favor of a simpler "secret" / token solution.
 
-While in maintenance mode, you may use use the `secret` option to specify a maintenance mode bypass token:
+While in maintenance mode, you may use the `secret` option to specify a maintenance mode bypass token:
 
     php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
 
