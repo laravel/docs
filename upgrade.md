@@ -10,6 +10,7 @@
 - [Queue `retryAfter` Method](#queue-retry-after-method)
 - [Queue `timeoutAt` Property](#queue-timeout-at-property)
 - [Pagination Defaults](#pagination-defaults)
+- [Routing](#Routing)
 </div>
 
 <a name="medium-impact-changes"></a>
@@ -157,6 +158,26 @@ The paginator now uses the [Tailwind CSS framework](https://tailwindcss.com) for
     use Illuminate\Pagination\Paginator;
 
     Paginator::useBootstrap();
+    
+### Routing
+
+<a name="Routing"></a>
+#### Nameppace required
+
+**Likelihood Of Impact: High**
+
+Routing now requires a use statement and class name resolution:
+
+```
+    use App\Http\Controllers\UserController;
+```
+And
+```
+    Route::get('/user', [UserController::class, 'index']);
+    // or
+    Route::any('/user', 'App\\Http\\Controllers\\UserControllerr@index');
+```
+
 
 ### Queue
 
