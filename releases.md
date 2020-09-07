@@ -324,6 +324,7 @@ In addition to the `phpunit` command, you may now use the `test` Artisan command
 
     php artisan test
 
+REMOVE
 <p align="center">
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1582142435/Screen_Shot_2020-02-19_at_2.00.01_PM.png">
 </p>
@@ -338,6 +339,7 @@ _Markdown mail template improvements were contributed by [Taylor Otwell](https:/
 
 The default Markdown mail template has received a fresh, more modern design based on the Tailwind CSS color palette. Of course, this template can be published and customized according to your application's needs:
 
+REMOVE
 <p align="center">
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1582142674/Screen_Shot_2020-02-19_at_2.04.11_PM.png">
 </p>
