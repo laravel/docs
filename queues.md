@@ -706,7 +706,7 @@ To dispatch a batch of jobs, you should use `batch` method of the `Bus` facade. 
     use App\Jobs\ProcessPodcast;
     use App\Podcast;
     use Illuminate\Bus\Batch;
-    use Illuminate\Support\Facades\Batch;
+    use Illuminate\Support\Facades\Bus;
     use Throwable;
 
     $batch = Bus::batch([
