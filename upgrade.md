@@ -162,7 +162,7 @@ The paginator now uses the [Tailwind CSS framework](https://tailwindcss.com) for
 ### Routing
 
 <a name="Routing"></a>
-#### Nameppace required
+#### Namespace required
 
 **Likelihood Of Impact: High**
 
