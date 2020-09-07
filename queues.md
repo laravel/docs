@@ -566,6 +566,8 @@ In this example, the job is released for ten seconds if the application is unabl
 
 > {note} The `pcntl` PHP extension must be installed in order to specify job timeouts.
 
+> {note} IO-blocker processes could be ignore this feature, therefore this feature is not guaranteed for job timeouts. Try to provide timeout ways to all socket connections in job externally.
+
 Likewise, the maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
 
     php artisan queue:work --timeout=30
