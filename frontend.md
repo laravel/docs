@@ -7,7 +7,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-While Laravel does not dictate which JavaScript or CSS pre-processors you use, it does provide a basic starting point using [Tailwind CSS](https://tailwindcss.com/), [Inertia](https://inertiajs.org/), and / or [Livewire](https://laravel-livewire.com/) that will be helpful for many applications. By default, Laravel uses [NPM](https://www.npmjs.org) to install frontend packages.
+While Laravel does not dictate which JavaScript or CSS pre-processors you use, it does provide a basic starting point using [Tailwind CSS](https://tailwindcss.com/), [Inertia](https://inertiajs.com/), and / or [Livewire](https://laravel-livewire.com/) that will be helpful for many applications. By default, Laravel uses [NPM](https://www.npmjs.com/) to install frontend packages.
 
 The Tailwind CSS and Livewire / Inertia scaffolding provided by Laravel is located in the `laravel/jetstream` Composer package, which may be installed using Composer:
 
