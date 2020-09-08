@@ -207,13 +207,13 @@ Laravel's dependency on `dragonmantank/cron-expression` has been updated from `2
 The `Illuminate\Contracts\Session\Session` contract has received a new `pull` method. If you are implementing this contract manually, you should update your implementation accordingly:
 
     /**
-      * Get the value of a given key and then forget it.
-      *
-      * @param  string  $key
-      * @param  mixed  $default
-      * @return mixed
-      */
-     public function pull($key, $default = null);
+     * Get the value of a given key and then forget it.
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function pull($key, $default = null);
 
 ### Testing
 
