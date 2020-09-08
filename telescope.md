@@ -135,7 +135,7 @@ Telescope exposes a dashboard at `/telescope`. By default, you will only be able
 
 When upgrading to a new major version of Telescope, it's important that you carefully review [the upgrade guide](https://github.com/laravel/telescope/blob/master/UPGRADE.md).
 
-In addition, when upgrading to any new Telescope version, you should re-publish Horizon's assets:
+In addition, when upgrading to any new Telescope version, you should re-publish Telescope's assets:
 
     php artisan telescope:publish
 
