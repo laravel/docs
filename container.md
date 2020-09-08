@@ -3,11 +3,11 @@
 - [Introduction](#introduction)
 - [Binding](#binding)
     - [Binding Basics](#binding-basics)
+    - [Tagging](#tagging)
     - [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
     - [Contextual Binding](#contextual-binding)
     - [Binding Primitives](#binding-primitives)
     - [Binding Typed Variadics](#binding-typed-variadics)
-    - [Tagging](#tagging)
     - [Extending Bindings](#extending-bindings)
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
@@ -103,6 +103,29 @@ You may also bind an existing object instance into the container using the `inst
     $api = new \HelpSpot\API(new HttpClient);
 
     $this->app->instance('HelpSpot\API', $api);
+
+
+<a name="tagging"></a>
+### Tagging
+
+Occasionally, you may need to resolve all of a certain "category" of binding. For example, perhaps you are building a report aggregator that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:
+
+    $this->app->bind('SpeedReport', function () {
+        //
+    });
+
+    $this->app->bind('MemoryReport', function () {
+        //
+    });
+
+    $this->app->tag(['SpeedReport', 'MemoryReport'], 'reports');
+
+Once the services have been tagged, you may easily resolve them all via the `tagged` method:
+
+    $this->app->bind('ReportAggregator', function ($app) {
+        return new ReportAggregator($app->tagged('reports'));
+    });
+
 
 <a name="binding-interfaces-to-implementations"></a>
 ### Binding Interfaces To Implementations
@@ -213,27 +236,6 @@ Sometimes a class may have a variadic dependency that is type-hinted as a given 
     $this->app->when(ReportAggregator::class)
         ->needs(Report::class)
         ->giveTagged('reports');
-
-<a name="tagging"></a>
-### Tagging
-
-Occasionally, you may need to resolve all of a certain "category" of binding. For example, perhaps you are building a report aggregator that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:
-
-    $this->app->bind('SpeedReport', function () {
-        //
-    });
-
-    $this->app->bind('MemoryReport', function () {
-        //
-    });
-
-    $this->app->tag(['SpeedReport', 'MemoryReport'], 'reports');
-
-Once the services have been tagged, you may easily resolve them all via the `tagged` method:
-
-    $this->app->bind('ReportAggregator', function ($app) {
-        return new ReportAggregator($app->tagged('reports'));
-    });
 
 <a name="extending-bindings"></a>
 ### Extending Bindings
