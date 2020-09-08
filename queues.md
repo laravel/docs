@@ -586,6 +586,8 @@ However, you may also define the maximum number of seconds a job should be allow
         public $timeout = 120;
     }
 
+Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value.
+
 <a name="rate-limiting"></a>
 ### Rate Limiting
 
