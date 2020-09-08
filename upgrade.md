@@ -57,6 +57,8 @@ The following first-party packages have new major releases to support Laravel 8.
 - [Telescope v4.0](https://github.com/laravel/telescope/releases)
 </div>
 
+In addition, the Laravel installer has been updated to support `composer create-project` and Laravel Jetstream. Any installer older than 4.0 will cease to work after October 2020. You should upgrade your global installer to `^4.0` as soon as possible.
+
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 8 support.
 
 ### Collections
