@@ -10,7 +10,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-> {tip} **Want to get started fast?** Install the `laravel/ui` Composer package and run `php artisan ui vue --auth` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. This single command will take care of scaffolding your entire authentication system, including resetting passwords!
+> {tip} **Want to get started fast?** Install the `laravel/jetstream` Composer package and run `php artisan jetstream:install livewire/inertia` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. This single command will take care of scaffolding your entire authentication system, including resetting passwords!
 
 Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets.
 
@@ -23,77 +23,43 @@ To get started, verify that your `App\Models\User` model implements the `Illumin
 
 #### Generating The Reset Token Table Migration
 
-Next, a table must be created to store the password reset tokens. The migration for this table is included in the `laravel/ui` Composer package. After installing the `laravel/ui` package, you may use the `migrate` command to create the password reset token database table:
+Next, a table must be created to store the password reset tokens. The migration for this table is included in the `laravel/jetstream` Composer package. After installing the `laravel/jetstream` package, you may use the `migrate` command to create the password reset token database table:
 
-    composer require laravel/ui
+    composer require laravel/jetstream
+
+    php artisan jetstream:install livewire/inertia
 
     php artisan migrate
 
 <a name="resetting-routing"></a>
 ## Routing
 
-Laravel includes `Auth\ForgotPasswordController` and `Auth\ResetPasswordController` classes that contains the logic necessary to e-mail password reset links and reset user passwords. All of the routes needed to perform password resets may be generated using the `laravel/ui` Composer package:
+All of the routes needed to perform password resets may be generated using the `laravel/jetstream` Composer package:
 
-    composer require laravel/ui
+    composer require laravel/jetstream
 
-    php artisan ui vue --auth
+    php artisan jetstream:install livewire/inertia
 
 <a name="resetting-views"></a>
 ## Views
 
-To generate all of the necessary view for resetting passwords, you may use the `laravel/ui` Composer package:
+To generate all of the necessary view for resetting passwords, you may use the `laravel/jetstream` Composer package:
 
-    composer require laravel/ui
+    composer require laravel/jetstream
 
-    php artisan ui vue --auth
+    php artisan jetstream:install livewire/inertia
 
-These views are placed in `resources/views/auth/passwords`. You are free to customize them as needed for your application.
+These views are placed in the `resources/views/auth` directory. You are free to customize them as needed for your application.
 
 <a name="after-resetting-passwords"></a>
 ## After Resetting Passwords
 
-Once you have defined the routes and views to reset your user's passwords, you may access the route in your browser at `/password/reset`. The `ForgotPasswordController` included with the framework already includes the logic to send the password reset link e-mails, while the `ResetPasswordController` includes the logic to reset user passwords.
-
-After a password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post password reset redirect location by defining a `redirectTo` property on the `ResetPasswordController`:
-
-    protected $redirectTo = '/dashboard';
+Once you have defined the routes and views to reset your user's passwords, you may access the route in your browser at `/password/reset`. The controllers included in the Laravel Jetstream package already includes the logic to send the password reset link emails as well as the logic to reset user passwords.
 
 > {note} By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
 
 <a name="password-customization"></a>
 ## Customization
-
-#### Authentication Guard Customization
-
-In your `auth.php` configuration file, you may configure multiple "guards", which may be used to define authentication behavior for multiple user tables. You can customize the included `ResetPasswordController` to use the guard of your choice by overriding the `guard` method on the controller. This method should return a guard instance:
-
-    use Illuminate\Support\Facades\Auth;
-
-    /**
-     * Get the guard to be used during password reset.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard()
-    {
-        return Auth::guard('guard-name');
-    }
-
-#### Password Broker Customization
-
-In your `auth.php` configuration file, you may configure multiple password "brokers", which may be used to reset passwords on multiple user tables. You can customize the included `ForgotPasswordController` and `ResetPasswordController` to use the broker of your choice by overriding the `broker` method:
-
-    use Illuminate\Support\Facades\Password;
-
-    /**
-     * Get the broker to be used during password reset.
-     *
-     * @return PasswordBroker
-     */
-    public function broker()
-    {
-        return Password::broker('name');
-    }
 
 #### Reset Email Customization
 
