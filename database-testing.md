@@ -181,7 +181,7 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
         /**
          * Configure the model factory.
          *
-         * @return void
+         * @return $this
          */
         public function configure()
         {
@@ -192,6 +192,8 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
             $this->afterCreating(function (User $user) {
                 //
             });
+            
+            return parent::configure();
         }
 
         // ...
