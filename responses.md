@@ -165,14 +165,16 @@ If you would like to customize the value that is placed in the route parameter, 
 <a name="redirecting-controller-actions"></a>
 ### Redirecting To Controller Actions
 
-You may also generate redirects to [controller actions](/docs/{{version}}/controllers). To do so, pass the controller and action name to the `action` method. Remember, you do not need to specify the full namespace to the controller since Laravel's `RouteServiceProvider` will automatically set the base controller namespace:
+You may also generate redirects to [controller actions](/docs/{{version}}/controllers). To do so, pass the controller and action name to the `action` method:
 
-    return redirect()->action('HomeController@index');
+    use App\Http\Controllers\HomeController;
+
+    return redirect()->action([HomeController::class, 'index']);
 
 If your controller route requires parameters, you may pass them as the second argument to the `action` method:
 
     return redirect()->action(
-        'UserController@profile', ['id' => 1]
+        [UserController::class, 'profile'], ['id' => 1]
     );
 
 <a name="redirecting-external-domains"></a>
