@@ -6,7 +6,6 @@
 - [Routing](#verification-routing)
     - [Protecting Routes](#protecting-routes)
 - [Views](#verification-views)
-- [After Verifying Emails](#after-verifying-emails)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -48,9 +47,11 @@ Next, your `user` table must contain an `email_verified_at` column to store the 
 <a name="verification-routing"></a>
 ## Routing
 
-Laravel includes the `Auth\VerificationController` class that contains the necessary logic to send verification links and verify emails. To register the necessary routes for this controller, pass the `verify` option to the `Auth::routes` method:
+The [Laravel Jetstream](https://github.com/laravel/jetstream) package contains the necessary logic to send verification links and verify emails. The routes needed for this functionality are automatically registered by Jetstream, which may be installed via Composer:
 
-    Auth::routes(['verify' => true]);
+    composer require laravel/jetstream
+
+    php artisan jetstream:install livewire/inertia
 
 <a name="protecting-routes"></a>
 ### Protecting Routes
@@ -64,20 +65,13 @@ Laravel includes the `Auth\VerificationController` class that contains the neces
 <a name="verification-views"></a>
 ## Views
 
-To generate all of the necessary view for email verification, you may use the `laravel/ui` Composer package:
+To generate all of the necessary view for email verification, you may use the `laravel/jetstream` Composer package:
 
-    composer require laravel/ui
+    composer require laravel/jetstream
 
-    php artisan ui vue --auth
+    php artisan jetstream:install livewire/inertia
 
-The email verification view is placed in `resources/views/auth/verify.blade.php`. You are free to customize this view as needed for your application.
-
-<a name="after-verifying-emails"></a>
-## After Verifying Emails
-
-After an email address is verified, the user will automatically be redirected to `/home`. You can customize the post verification redirect location by defining a `redirectTo` method or property on the `VerificationController`:
-
-    protected $redirectTo = '/dashboard';
+The email verification view is placed in the `resources/views/auth/` directory. You are free to customize this view as needed for your application.
 
 <a name="events"></a>
 ## Events
