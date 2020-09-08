@@ -20,9 +20,9 @@ Once the `laravel/jetstream` package has been installed, you may install the fro
     php artisan jetstream:install inertia
 
     // Generate team support scaffolding...
-    php artisan jetstream:install --teams=
+    php artisan jetstream:install --teams
 
-> {tip} To learn more about Laravel Jetstream, please consult the official [Jetstream documnetation](https://github.com/laravel/jetstream).
+> {tip} To learn more about Laravel Jetstream, please consult the official [Jetstream documentation](https://github.com/laravel/jetstream).
 
 #### CSS
 
