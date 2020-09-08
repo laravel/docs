@@ -168,16 +168,13 @@ The paginator now uses the [Tailwind CSS framework](https://tailwindcss.com) for
 
 Routing now requires a use statement and class name resolution:
 
-```
     use App\Http\Controllers\UserController;
-```
+
 And
-```
+
     Route::get('/user', [UserController::class, 'index']);
     // or
     Route::any('/user', 'App\\Http\\Controllers\\UserControllerr@index');
-```
-
 
 ### Queue
 
