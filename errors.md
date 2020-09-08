@@ -115,7 +115,7 @@ By default, the Laravel exception handler will convert exceptions into an HTTP r
      */
     public function register()
     {
-        $this->renderable(function (CustomException $e) {
+        $this->renderable(function (CustomException $e, $request) {
             return response()->view('errors.custom', [], 500);
         });
     }
