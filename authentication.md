@@ -28,8 +28,6 @@
 <a name="introduction"></a>
 ## Introduction
 
-> {tip} **Want to get started fast?** Install the `laravel/jetstream` Composer package and run `php artisan jetstream:install livewire/inertia` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
-
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
 
 At its core, Laravel's authentication facilities are made up of "guards" and "providers". Guards define how users are authenticated for each request. For example, Laravel ships with a `session` guard which maintains state using session storage and cookies.
@@ -37,6 +35,10 @@ At its core, Laravel's authentication facilities are made up of "guards" and "pr
 Providers define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using Eloquent and the database query builder. However, you are free to define additional providers as needed for your application.
 
 Don't worry if this all sounds confusing now! Many applications will never need to modify the default authentication configuration.
+
+#### Getting Started Fast
+
+Want to get started fast? Install the `laravel/jetstream` Composer package and run `php artisan jetstream:install livewire/inertia` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
 
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
