@@ -38,7 +38,7 @@ Don't worry if this all sounds confusing now! Many applications will never need 
 
 #### Getting Started Fast
 
-Want to get started fast? Install the `laravel/jetstream` Composer package and run `php artisan jetstream:install livewire/inertia` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
+Want to get started fast? Install the `laravel/jetstream` Composer package and run `php artisan jetstream:install livewire` or `php artisan jetstream:install inertia` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
 
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
