@@ -203,7 +203,19 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
 <a name="creating-models"></a>
 ### Creating Models
 
-Once you have defined your factories, you may use the static `factory` method provided by the `HasFactory` trait on your Eloquent models in order to instantiate a factory instance for that model. Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:
+Once you have defined your factories, you may use the static `factory` method provided by the `Illuminate\Database\Eloquent\Factories\HasFactory` trait on your Eloquent models in order to instantiate a factory instance for that model:
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        use HasFactory;
+    }
+
+Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:
 
     use App\Models\User;
 
