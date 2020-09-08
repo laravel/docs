@@ -575,6 +575,13 @@ The `orderBy` method allows you to sort the result of the query by a given colum
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->get();
+                    
+If you need to sort by multiple columns, you may invoke `orderBy` as many times as needed:
+                                         
+    $users = DB::table('users')
+                    ->orderBy('name', 'desc')
+                    ->orderBy('email', 'asc')
+                    ->get();
 
 #### latest / oldest
 
