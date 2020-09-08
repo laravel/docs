@@ -314,6 +314,7 @@ Modifier  |  Description
 `->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL)
 `->default($value)`  |  Specify a "default" value for the column
 `->first()`  |  Place the column "first" in the table (MySQL)
+`->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL)
 `->nullable($value = true)`  |  Allows (by default) NULL values to be inserted into the column
 `->storedAs($expression)`  |  Create a stored generated column (MySQL)
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL)
