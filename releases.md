@@ -325,7 +325,7 @@ In addition to the `phpunit` command, you may now use the `test` Artisan command
     php artisan test
 
 <p align="center">
-<img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1582142435/Screen_Shot_2020-02-19_at_2.00.01_PM.png">
+<img src="https://laravel.com/img/docs/7x-release-notes-artisan-test-preview.png">
 </p>
 
 Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
@@ -339,7 +339,7 @@ _Markdown mail template improvements were contributed by [Taylor Otwell](https:/
 The default Markdown mail template has received a fresh, more modern design based on the Tailwind CSS color palette. Of course, this template can be published and customized according to your application's needs:
 
 <p align="center">
-<img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1582142674/Screen_Shot_2020-02-19_at_2.04.11_PM.png">
+<img src="https://laravel.com/img/docs/7x-release-notes-notification-preview.png">
 </p>
 
 For more information on Markdown mail, please consult the [mail documentation](/docs/{{version}}/mail#markdown-mailables).
