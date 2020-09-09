@@ -19,8 +19,8 @@
 - [PHP 7.3.0 Required](#php-7.3.0-required)
 - [Failed Jobs Table Batch Support](#failed-jobs-table-batch-support)
 - [Maintenance Mode Updates](#maintenance-mode-updates)
+- [The `php artisan down --message` Option](#artisan-down-message)
 - [The `assertExactJson` Method](#assert-exact-json-method)
-- [The `php artisan down --message` option](#artisan-down-message)
 </div>
 
 <a name="upgrade-8.0"></a>
@@ -129,11 +129,11 @@ The [maintenance mode](/docs/{{version}}/configuration#maintenance-mode) feature
     }
 
 <a name="artisan-down-message"></a>
-#### The `php artisan down --message` option
+#### The `php artisan down --message` Option
 
 **Likelihood Of Impact: Medium**
 
-The `--message` option for the `php artisan down` command has been removed.  Instead, please use the `--render` option.
+The `--message` option of the `php artisan down` command has been removed. As an alternative, consider [pre-rendering your maintenance mode views](/docs/{{version}}/configuration#maintenance-mode) with the message of your choice.
 
 #### Manager `$app` Property
 
