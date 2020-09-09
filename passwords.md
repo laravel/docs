@@ -4,17 +4,18 @@
 - [Database Considerations](#resetting-database)
 - [Routing](#resetting-routing)
 - [Views](#resetting-views)
-- [After Resetting Passwords](#after-resetting-passwords)
 - [Customization](#password-customization)
 
 <a name="introduction"></a>
 ## Introduction
 
-> {tip} **Want to get started fast?** Install the `laravel/jetstream` Composer package and run `php artisan jetstream:install livewire/inertia` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. This single command will take care of scaffolding your entire authentication system, including resetting passwords!
-
 Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets.
 
 > {note} Before using the password reset features of Laravel, your user must use the `Illuminate\Notifications\Notifiable` trait.
+
+#### Getting Started Fast
+
+Want to get started fast? Install [Laravel Jetstream](https://jetstream.laravel.com) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. Jetstream will take care of scaffolding your entire authentication system, including resetting passwords!
 
 <a name="resetting-database"></a>
 ## Database Considerations
@@ -23,40 +24,19 @@ To get started, verify that your `App\Models\User` model implements the `Illumin
 
 #### Generating The Reset Token Table Migration
 
-Next, a table must be created to store the password reset tokens. The migration for this table is included in the `laravel/jetstream` Composer package. After installing the `laravel/jetstream` package, you may use the `migrate` command to create the password reset token database table:
-
-    composer require laravel/jetstream
-
-    php artisan jetstream:install livewire/inertia
+Next, a table must be created to store the password reset tokens. The migration for this table is included in the default Laravel installation, so you only need to migrate your database to create this table:
 
     php artisan migrate
 
 <a name="resetting-routing"></a>
 ## Routing
 
-All of the routes needed to perform password resets may be generated using the `laravel/jetstream` Composer package:
-
-    composer require laravel/jetstream
-
-    php artisan jetstream:install livewire/inertia
+All of the routes needed to perform password resets are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com).
 
 <a name="resetting-views"></a>
 ## Views
 
-To generate all of the necessary view for resetting passwords, you may use the `laravel/jetstream` Composer package:
-
-    composer require laravel/jetstream
-
-    php artisan jetstream:install livewire/inertia
-
-These views are placed in the `resources/views/auth` directory. You are free to customize them as needed for your application.
-
-<a name="after-resetting-passwords"></a>
-## After Resetting Passwords
-
-Once you have defined the routes and views to reset your user's passwords, you may access the route in your browser at `/password/reset`. The controllers included in the Laravel Jetstream package already includes the logic to send the password reset link emails as well as the logic to reset user passwords.
-
-> {note} By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
+All of the views needed to perform password resets are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com).
 
 <a name="password-customization"></a>
 ## Customization
