@@ -210,7 +210,10 @@ If you need to specify additional [S3 request parameters](https://docs.aws.amazo
     $url = Storage::temporaryUrl(
         'file.jpg',
         now()->addMinutes(5),
-        ['ResponseContentDisposition' => 'attachment; filename=file2.jpg']
+        [
+            'ResponseContentType' => 'application/octet-stream',
+            'ResponseContentDisposition' => 'attachment; filename=file2.jpg',
+        ]
     );
 
 #### URL Host Customization
