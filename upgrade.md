@@ -20,6 +20,7 @@
 - [Failed Jobs Table Batch Support](#failed-jobs-table-batch-support)
 - [Maintenance Mode Updates](#maintenance-mode-updates)
 - [The `assertExactJson` Method](#assert-exact-json-method)
+- [The `php artisan down --message` option](#artisan-down-message)
 </div>
 
 <a name="upgrade-8.0"></a>
@@ -126,6 +127,13 @@ The [maintenance mode](/docs/{{version}}/configuration#maintenance-mode) feature
     if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
         require __DIR__.'/../storage/framework/maintenance.php';
     }
+
+<a name="artisan-down-message"></a>
+#### The `php artisan down --message` option
+
+**Likelihood Of Impact: Medium**
+
+The `--message` option for the `php artisan down` command has been removed.  Instead, please use the `--render` option.
 
 #### Manager `$app` Property
 
