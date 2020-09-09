@@ -142,7 +142,7 @@ State manipulation methods allow you to define discrete modifications that can b
         ]);
     }
 
-If your state transformation requires access to the other attributes defined by the factory, you may pass a callback to the `state` method. The callback will receive the array of raw attributes defined for the factory:
+If your state transformation requires access to the other attributes defined by the factory (including `$faker`), you may pass a callback to the `state` method. The callback will receive the array of raw attributes defined for the factory:
 
     /**
      * Indicate that the user is suspended.
