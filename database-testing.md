@@ -158,7 +158,7 @@ If your state transformation requires access to the other attributes defined by 
         });
     }
 
-> {tip} If you are generating dynamic values within the state transformation method, you will need to pass a callback rather than modifying `$this->state` directly, as this causes the callback to be run every time a model is created.
+> {tip} If you want to use Faker or otherwise generate dynamic values within the state transformation method, you will need to pass a callback rather than modifying `$this->state` directly.
 
 <a name="factory-callbacks"></a>
 ### Factory Callbacks
