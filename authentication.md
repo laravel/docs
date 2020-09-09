@@ -38,7 +38,7 @@ Don't worry if this all sounds confusing now! Many applications will never need 
 
 #### Getting Started Fast
 
-Want to get started fast? Install the `laravel/jetstream` Composer package and run `php artisan jetstream:install livewire` or `php artisan jetstream:install inertia` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
+Want to get started fast? Install [Laravel Jetstream](https://jetstream.laravel.com) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. Jetstream will take care of scaffolding your entire authentication system!
 
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
@@ -59,24 +59,28 @@ Laravel's `laravel/jetstream` package provides a quick way to scaffold all of th
 
     composer require laravel/jetstream
 
-    php artisan jetstream:install livewire/inertia
+    // Install Jetstream with the Livewire stack...
+    php artisan jetstream:install livewire
 
-This command should be used on fresh applications and will install a layout view, registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated to handle post-login requests to your application's dashboard.
+    // Install Jetstream with the Inertia stack...
+    php artisan jetstream:install inertia
 
-To learn more about Jetstream, please visit the official [Jetstream documentation](https://github.com/laravel/jetstream).
+This command should be used on fresh applications and will install a layout view, registration and login views, as well as routes for all authentication end-points. A `/dashboard` route will also be generated to handle post-login requests to your application's dashboard.
+
+To learn more about Jetstream, please visit the official [Jetstream documentation](https://jetstream.laravel.com).
 
 #### Creating Applications Including Authentication
 
-If you are starting a brand new application and would like to include the authentication scaffolding, you may use the `--jet` directive when creating your application. This command will create a new application with all of the authentication scaffolding compiled and installed:
+If you are starting a brand new application and would like to include the authentication scaffolding, you may use the `--jet` directive when creating your application via the Laravel Installer. This command will create a new application with all of the authentication scaffolding compiled and installed:
 
-    laravel new blog --jet
+    laravel new kitetail --jet
 
 <a name="included-views"></a>
 ### Views
 
 As mentioned in the previous section, the `laravel/jetstream` package's `php artisan jetstream:install` command will create all of the views you need for authentication and place them in the `resources/views/auth` directory.
 
-The `jetstream` command will also create a `resources/views/layouts` directory containing a base layout for your application. All of these views use the Tailwind CSS framework, but you are free to customize them however you wish.
+Jetstream will also create a `resources/views/layouts` directory containing a base layout for your application. All of these views use the Tailwind CSS framework, but you are free to customize them however you wish.
 
 <a name="included-authenticating"></a>
 ### Authenticating
@@ -85,14 +89,16 @@ Now that you have routes and views setup for the included authentication control
 
 #### Path Customization
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect path using the `HOME` constant defined in your `RouteServiceProvider`:
+When a user is successfully authenticated, they will typically be redirected to the `/home` URI. You can customize the post-authentication redirect path using the `HOME` constant defined in your `RouteServiceProvider`:
 
     public const HOME = '/home';
+
+When using Laravel Jetstream, the Jetstream installation process will change the value of the `HOME` constant to `/dashboard`.
 
 <a name="retrieving-the-authenticated-user"></a>
 ### Retrieving The Authenticated User
 
-You may access the authenticated user via the `Auth` facade:
+While handling an incoming request, you may access the authenticated user via the `Auth` facade:
 
     use Illuminate\Support\Facades\Auth;
 
@@ -102,7 +108,7 @@ You may access the authenticated user via the `Auth` facade:
     // Get the currently authenticated user's ID...
     $id = Auth::id();
 
-Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods:
+Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods. By type-hinting the `Illuminate\Http\Request` object, you may gain convenient access to the authenticated user from any controller method in your application:
 
     <?php
 
@@ -175,19 +181,6 @@ When attaching the `auth` middleware to a route, you may also specify which guar
     {
         $this->middleware('auth:api');
     }
-
-<a name="password-confirmation"></a>
-### Password Confirmation
-
-Sometimes, you may wish to require the user to confirm their password before accessing a specific area of your application. For example, you may require this before the user modifies any billing settings within the application.
-
-To accomplish this, Laravel provides a `password.confirm` middleware. Attaching the `password.confirm` middleware to a route will redirect users to a screen where they need to confirm their password before they can continue:
-
-    Route::get('/settings/security', function () {
-        // Users must confirm their password before continuing...
-    })->middleware(['auth', 'password.confirm']);
-
-After the user has successfully confirmed their password, the user is redirected to the route they originally tried to access. By default, after confirming their password, the user will not have to confirm their password again for three hours. You are free to customize the length of time before the user must re-confirm their password using the `auth.password_timeout` configuration option.
 
 <a name="login-throttling"></a>
 ### Login Throttling
