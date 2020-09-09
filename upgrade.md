@@ -43,10 +43,11 @@ The new minimum PHP version is now 7.3.0.
 Update the following dependencies in your `composer.json` file:
 
 <div class="content-list" markdown="1">
-- `laravel/framework` to `^8.0`
-- `nunomaduro/collision` to `^5.0`
 - `guzzlehttp/guzzle` to `^7.0.1`
 - `facade/ignition` to `^2.3.6`
+- `laravel/framework` to `^8.0`
+- `nunomaduro/collision` to `^5.0`
+- `phpunit/phpunit` to `^9.0`
 </div>
 
 The following first-party packages have new major releases to support Laravel 8. If applicable, you should read their individual upgrade guides before upgrading:
