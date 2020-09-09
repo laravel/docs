@@ -13,6 +13,10 @@
 
 Many web applications require users to verify their email addresses before using the application. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending and verifying email verification requests.
 
+#### Getting Started Fast
+
+Want to get started fast? Install [Laravel Jetstream](https://jetstream.laravel.com) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. Jetstream will take care of scaffolding your entire authentication system, including email verification support!
+
 <a name="model-preparation"></a>
 ## Model Preparation
 
@@ -47,11 +51,7 @@ Next, your `user` table must contain an `email_verified_at` column to store the 
 <a name="verification-routing"></a>
 ## Routing
 
-The [Laravel Jetstream](https://github.com/laravel/jetstream) package contains the necessary logic to send verification links and verify emails. The routes needed for this functionality are automatically registered by Jetstream, which may be installed via Composer:
-
-    composer require laravel/jetstream
-
-    php artisan jetstream:install livewire/inertia
+All of the routes needed to perform email verification are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com).
 
 <a name="protecting-routes"></a>
 ### Protecting Routes
@@ -65,13 +65,7 @@ The [Laravel Jetstream](https://github.com/laravel/jetstream) package contains t
 <a name="verification-views"></a>
 ## Views
 
-To generate all of the necessary view for email verification, you may use the `laravel/jetstream` Composer package:
-
-    composer require laravel/jetstream
-
-    php artisan jetstream:install livewire/inertia
-
-The email verification view is placed in the `resources/views/auth/` directory. You are free to customize this view as needed for your application.
+All of the views needed to perform email verification are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com).
 
 <a name="events"></a>
 ## Events
