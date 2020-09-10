@@ -245,43 +245,57 @@ Next, the `failed.driver` configuration option within your `queue` configuration
 
 ### Routing
 
-#### Syntax Change - Removed `$namespace`
+#### Automatic Controller Namespace Prefixing
 
-**Likelihood Of Impact: Low**
+**Likelihood Of Impact: Optional**
 
-The default style syntax for routes has changed slightly in Laravel `8.x`.  In most cases this won't impact upgraded applications.  However, if you run into an issue where you need to continue using the original  `UserController@index` style syntax, you can add the following back to your `app/Providers/RouteServiceProvider.php` file:
+In previous releases of Laravel, the `RouteServiceProvider` class contained a `$namespace` property with a value of `App\Http\Controllers`. This value of this property was used to automatically prefix controller route declarations controller route URL generation such as when calling the `action` helper.
 
-	class RouteServiceProvider extends ServiceProvider
-	{
-		/**
-		 * This namespace is applied to your controller routes.
-		 *
-		 * In addition, it is set as the URL generator's root namespace.
-		 *
-		 * @var string
-		 */
-		protected $namespace = 'App\Http\Controllers';
+In Laravel 8, this property is set to `null` by default. This allows your controller route declarations to use the standard PHP callable syntax, which provides better support for jumping to the controller class in many IDEs:
 
-		/**
-		 * Define your route model bindings, pattern filters, etc.
-		 *
-		 * @return void
-		 */
-		public function boot()
-		{
-			$this->configureRateLimiting();
+    use App\Http\Controllers\UserController;
 
-			$this->routes(function () {
-			Route::middleware('web')
-				->namespace($this->namespace)
-				->group(base_path('routes/web.php'));
+    // Using PHP callable syntax...
+    Route::get('/users', [UserController::class, 'index']);
 
-			Route::prefix('api')
-				->middleware('api')
-				->namespace($this->namespace)
-				->group(base_path('routes/api.php'));
-		});
-	}
+    // Using string syntax...
+    Route::get('/users', 'App\Http\Controllers\UserController@index');
+
+In most cases this won't impact applications that are being upgraded because your `RouteServiceProvider` will still contain the `$naemspace` property with its previous value. However, if you upgrade your application by creating a brand new Laravel project, you may encounter this as a breaking change.
+
+If you would like to continue using the original auto-prefixed controller routing, you can simply set the value of the `$namespace` property within your `RouteServiceProvider` and update the route registrations within the `boot` method to use the `$namespace` property:
+
+    class RouteServiceProvider extends ServiceProvider
+    {
+        /**
+         * This namespace is applied to your controller routes.
+         *
+         * In addition, it is set as the URL generator's root namespace.
+         *
+         * @var string
+         */
+        protected $namespace = 'App\Http\Controllers';
+
+        /**
+         * Define your route model bindings, pattern filters, etc.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            $this->configureRateLimiting();
+
+            $this->routes(function () {
+                Route::middleware('web')
+                    ->namespace($this->namespace)
+                    ->group(base_path('routes/web.php'));
+
+                Route::prefix('api')
+                    ->middleware('api')
+                    ->namespace($this->namespace)
+                    ->group(base_path('routes/api.php'));
+        });
+    }
 
 ### Scheduling
 
