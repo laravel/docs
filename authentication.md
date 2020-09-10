@@ -8,7 +8,6 @@
     - [Authenticating](#included-authenticating)
     - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
     - [Protecting Routes](#protecting-routes)
-    - [Password Confirmation](#password-confirmation)
     - [Login Throttling](#login-throttling)
 - [Manually Authenticating Users](#authenticating-users)
     - [Remembering Users](#remembering-users)
