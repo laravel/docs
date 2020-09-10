@@ -142,7 +142,7 @@ You may also provide a `retry` option to the `down` command, which will be set a
 
 #### Bypassing Maintenance Mode
 
-Even while in maintenance mode, you may use use the `secret` option to specify a maintenance mode bypass token:
+Even while in maintenance mode, you may use the `secret` option to specify a maintenance mode bypass token:
 
     php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
 
