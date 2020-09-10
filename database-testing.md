@@ -213,15 +213,24 @@ Once you have defined your factories, you may use the static `factory` method pr
         use HasFactory;
     }
 
-Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:
+Let's take a look at a few examples of creating models. Use the `withFaker` trait inside the feature tests to be able to use the faker instance. First, we'll use the `make` method to create models without persisting them to the database:
 
+    namespace Tests\Feature;
+    
     use App\Models\User;
-
-    public function testDatabase()
+    use Illuminate\Foundation\Testing\WithFaker;
+    use Tests\TestCase;
+    
+    class ExampleTest extends TestCase
     {
-        $user = User::factory()->make();
-
-        // Use model in tests...
+        use withFaker;
+            
+        public function testDatabase()
+        {
+            $user = User::factory()->make();
+    
+            // Use model in tests...
+        }
     }
 
 You may create a collection of many models using the `count` method:
@@ -262,17 +271,26 @@ Alternatively, the `state` method may be called directly on the factory instance
 
 The `create` method creates model instances and persists them to the database using Eloquent's `save` method:
 
+    namespace Tests\Feature;
+    
     use App\Models\User;
-
-    public function testDatabase()
+    use Illuminate\Foundation\Testing\WithFaker;
+    use Tests\TestCase;
+    
+    class ExampleTest extends TestCase
     {
-        // Create a single App\Models\User instance...
-        $user = User::factory()->create();
-
-        // Create three App\Models\User instances...
-        $users = User::factory()->count(3)->create();
-
-        // Use model in tests...
+        use withFaker;
+        
+        public function testDatabase()
+        {
+            // Create a single App\Models\User instance...
+            $user = User::factory()->create();
+    
+            // Create three App\Models\User instances...
+            $users = User::factory()->count(3)->create();
+    
+            // Use model in tests...
+        }
     }
 
 You may override attributes on the model by passing an array of attributes to the `create` method:
