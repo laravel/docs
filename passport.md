@@ -132,6 +132,7 @@ Finally, in your `config/auth.php` configuration file, you should set the `drive
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
+            'hash' => false,
         ],
     ],
 
