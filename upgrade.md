@@ -85,6 +85,8 @@ To be consistent with typical PHP behavior, the `offsetExists` method of `Illumi
 <a name="seeder-factory-namespaces"></a>
 #### Seeder & Factory Namespaces
 
+**Likelihood Of Impact: High**
+
 Seeders and factories now use namespaced classes. To accommodate for these changes, add a namespace `Database/Factories` to your factory classes and `Database/Seeders` to your seeder classes:
 
     <?php
