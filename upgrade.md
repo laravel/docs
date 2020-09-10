@@ -17,6 +17,7 @@
 
 <div class="content-list" markdown="1">
 - [PHP 7.3.0 Required](#php-7.3.0-required)
+- [RouteServiceProvider Changes](#route-servces-provider-updates)
 - [Failed Jobs Table Batch Support](#failed-jobs-table-batch-support)
 - [Maintenance Mode Updates](#maintenance-mode-updates)
 - [The `php artisan down --message` Option](#artisan-down-message)
@@ -62,6 +63,36 @@ The following first-party packages have new major releases to support Laravel 8.
 In addition, the Laravel installer has been updated to support `composer create-project` and Laravel Jetstream. Any installer older than 4.0 will cease to work after October 2020. You should upgrade your global installer to `^4.0` as soon as possible.
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 8 support.
+
+### Routes
+
+<a name="route-servces-provider-updates"></a>
+#### RouteServiceProvider
+
+**Likelihood Of Impact: High**
+
+Previously controller classes were prefixed in the RouteServiceProvider with `'App\Http\Controllers'`. You will need to update your route files to either use the full controller path or use the new nomenclature.
+
+The old method of:
+
+```
+Route::get('user/{id}', 'Users\UserController@show']);
+```
+
+becomes:
+
+
+```
+Route::get('user/{id}', 'App\Http\Controllers\Users\UserController@show']);
+```
+
+or:
+
+```
+use App\Http\Controllers\UserController;
+
+Route::get('user/{id}', [UserController::class, 'show']);
+```
 
 ### Collections
 
