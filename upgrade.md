@@ -238,7 +238,7 @@ If you plan to use the [job batching](/docs/{{version}}/queues#job-batching) fea
     use Illuminate\Support\Facades\Schema;
 
     Schema::table('failed_jobs', function (Blueprint $table) {
-        $table->string('uuid')->after('id')->unique();
+        $table->string('uuid')->after('id')->nullable()->unique();
     });
 
 Next, the `failed.driver` configuration option within your `queue` configuration file should be updated to `database-uuids`.
