@@ -261,7 +261,7 @@ To learn more about Blade components, please consult the [Blade documentation](/
 
 _Event listener improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-Closure based event listeners may now be registered by only passing the Closure to the `Event::listen` method. Laravel will inspect the Closure to determine which type of event the listener handlers:
+Closure based event listeners may now be registered by only passing the Closure to the `Event::listen` method. Laravel will inspect the Closure to determine which type of event the listener handles:
 
     use App\Events\PodcastProcessed;
     use Illuminate\Support\Facades\Event;
