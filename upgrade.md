@@ -21,6 +21,7 @@
 - [Maintenance Mode Updates](#maintenance-mode-updates)
 - [The `php artisan down --message` Option](#artisan-down-message)
 - [The `assertExactJson` Method](#assert-exact-json-method)
+- [Seeder & Factory Namespaces](#seeder-factory-namespaces)
 </div>
 
 <a name="upgrade-8.0"></a>
@@ -78,6 +79,45 @@ To be consistent with typical PHP behavior, the `offsetExists` method of `Illumi
 
     // Laravel 8.x - false
     isset($collection[0]);
+    
+### Database
+
+<a name="seeder-factory-namespaces"></a>
+#### Seeder & Factory Namespaces
+
+Seeders and factories now use namespaced classes. To accommodate for these changes, add a namespace `Database/Factories` to your factory classes and `Database/Seeders` to your seeder classes:
+
+    <?php
+
+    namespace Database\Seeders;
+
+    use App\Models\User;
+    use Illuminate\Database\Seeder;
+
+    class DatabaseSeeder extends Seeder
+    {
+        /**
+         * Seed the application's database.
+         *
+         * @return void
+         */
+        public function run()
+        {
+            ...
+        }
+    }
+
+The previous `database/seeds` directory should also be renamed to `database/seeders`.
+
+In addition, these new namespaced classes should be autoloaded from your `composer.json` file. Add them to your `psr-4` setting:
+
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
 
 ### Eloquent
 
