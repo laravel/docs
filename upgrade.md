@@ -10,6 +10,7 @@
 - [Queue `retryAfter` Method](#queue-retry-after-method)
 - [Queue `timeoutAt` Property](#queue-timeout-at-property)
 - [Pagination Defaults](#pagination-defaults)
+- [Seeder & Factory Namespaces](#seeder-factory-namespaces)
 </div>
 
 <a name="medium-impact-changes"></a>
@@ -21,7 +22,6 @@
 - [Maintenance Mode Updates](#maintenance-mode-updates)
 - [The `php artisan down --message` Option](#artisan-down-message)
 - [The `assertExactJson` Method](#assert-exact-json-method)
-- [Seeder & Factory Namespaces](#seeder-factory-namespaces)
 </div>
 
 <a name="upgrade-8.0"></a>
@@ -79,7 +79,7 @@ To be consistent with typical PHP behavior, the `offsetExists` method of `Illumi
 
     // Laravel 8.x - false
     isset($collection[0]);
-    
+
 ### Database
 
 <a name="seeder-factory-namespaces"></a>
@@ -107,9 +107,9 @@ Seeders and factories now use namespaced classes. To accommodate for these chang
         }
     }
 
-The previous `database/seeds` directory should also be renamed to `database/seeders`.
+The previous `database/seeds` directory should be renamed to `database/seeders`.
 
-In addition, these new namespaced classes should be autoloaded from your `composer.json` file. Add them to your `psr-4` setting:
+In addition, these new namespaced classes should be autoloaded from your `composer.json` file:
 
     "autoload": {
         "psr-4": {
