@@ -123,7 +123,7 @@ Laravel's re-written factories contain many more features that we think you will
 
 _Migration squashing was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-As you build your application, you may accumulate more and more migrations over time. This can lead to your migration directory becoming bloated with potentially hundreds of migrations. If you would like, you may now "squash" your migrations into a single SQL file. To get started, execute the `schema:dump` command:
+As you build your application, you may accumulate more and more migrations over time. This can lead to your migration directory becoming bloated with potentially hundreds of migrations. If you're using MySQL or PostgreSQL, you may now "squash" your migrations into a single SQL file. To get started, execute the `schema:dump` command:
 
     php artisan schema:dump
 
