@@ -111,7 +111,7 @@ Seeders and factories now use namespaced classes. To accommodate for these chang
 
 The previous `database/seeds` directory should be renamed to `database/seeders`.
 
-In addition, these new namespaced classes should be autoloaded from your `composer.json` file:
+In your `composer.json` file, remove `classmap` block from the `autoload` section and add the new namespaced classes:
 
     "autoload": {
         "psr-4": {
