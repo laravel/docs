@@ -213,7 +213,7 @@ Once you have defined your factories, you may use the static `factory` method pr
         use HasFactory;
     }
 
-Let's take a look at a few examples of creating models. Use the `withFaker` trait inside the feature tests to be able to use the faker instance. First, we'll use the `make` method to create models without persisting them to the database:
+Let's take a look at a few examples of creating models. Use the `WithFaker` trait inside the feature tests to be able to use the faker instance. First, we'll use the `make` method to create models without persisting them to the database:
 
     namespace Tests\Feature;
     
@@ -223,7 +223,7 @@ Let's take a look at a few examples of creating models. Use the `withFaker` trai
     
     class ExampleTest extends TestCase
     {
-        use withFaker;
+        use WithFaker;
             
         public function testDatabase()
         {
@@ -279,7 +279,7 @@ The `create` method creates model instances and persists them to the database us
     
     class ExampleTest extends TestCase
     {
-        use withFaker;
+        use WithFaker;
         
         public function testDatabase()
         {
