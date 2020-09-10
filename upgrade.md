@@ -243,6 +243,46 @@ If you plan to use the [job batching](/docs/{{version}}/queues#job-batching) fea
 
 Next, the `failed.driver` configuration option within your `queue` configuration file should be updated to `database-uuids`.
 
+### Routing
+
+#### Syntax Change - Removed `$namespace`
+
+**Likelihood Of Impact: Low**
+
+The default style syntax for routes has changed slightly in Laravel `8.x`.  In most cases this won't impact upgraded applications.  However, if you run into an issue where you need to continue using the original  `UserController@index` style syntax, you can add the following back to your `app/Providers/RouteServiceProvider.php` file:
+
+	class RouteServiceProvider extends ServiceProvider
+	{
+		/**
+		 * This namespace is applied to your controller routes.
+		 *
+		 * In addition, it is set as the URL generator's root namespace.
+		 *
+		 * @var string
+		 */
+		protected $namespace = 'App\Http\Controllers';
+
+		/**
+		 * Define your route model bindings, pattern filters, etc.
+		 *
+		 * @return void
+		 */
+		public function boot()
+		{
+			$this->configureRateLimiting();
+
+			$this->routes(function () {
+			Route::middleware('web')
+				->namespace($this->namespace)
+				->group(base_path('routes/web.php'));
+
+			Route::prefix('api')
+				->middleware('api')
+				->namespace($this->namespace)
+				->group(base_path('routes/api.php'));
+		});
+	}
+
 ### Scheduling
 
 #### The `cron-expression` Library
