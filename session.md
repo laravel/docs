@@ -148,15 +148,18 @@ To store data in the session, you will typically use the `put` method or the `se
 
     // Via a request instance...
     $request->session()->put('key', 'value');
+	$request->session()->save();
 
     // Via the global helper...
     session(['key' => 'value']);
+	session()->save();
 
 #### Pushing To Array Session Values
 
 The `push` method may be used to push a new value onto a session value that is an array. For example, if the `user.teams` key contains an array of team names, you may push a new value onto the array like so:
 
     $request->session()->push('user.teams', 'developers');
+	$request->session()->save();
 
 #### Retrieving & Deleting An Item
 
