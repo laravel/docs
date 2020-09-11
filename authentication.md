@@ -55,7 +55,7 @@ Also, you should verify that your `users` (or equivalent) table contains a nulla
 
 Laravel's `laravel/ui` package provides a quick way to scaffold all of the routes and views you need for authentication using a few simple commands:
 
-    composer require laravel/ui
+    composer require laravel/ui:^2.4
 
     php artisan ui vue --auth
 
