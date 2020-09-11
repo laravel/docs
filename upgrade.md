@@ -9,6 +9,7 @@
 - [Model Factories](#model-factories)
 - [Queue `retryAfter` Method](#queue-retry-after-method)
 - [Queue `timeoutAt` Property](#queue-timeout-at-property)
+- [Queue `allOnQueue` and `allOnConnection`](#queue-allOnQueue-allOnConnection)
 - [Pagination Defaults](#pagination-defaults)
 - [Seeder & Factory Namespaces](#seeder-factory-namespaces)
 </div>
@@ -226,6 +227,18 @@ For consistency with other features of Laravel, the `retryAfter` method and `ret
 **Likelihood Of Impact: High**
 
 The `timeoutAt` property of queued jobs, notifications, and listeners has been renamed to `retryUntil`. You should update the name of this property in the relevant classes in your application.
+
+<a name="#queue-allOnQueue-allOnConnection"></a>
+#### The `allOnQueue()` / `allOnConnection()` Methods
+
+**Likelihood Of Impact: High**
+
+For consistency with other dispatching methods, the `allOnQueue()` and `allOnConnection()` methods used with job chaining have been removed. You may use the `onQueue()` and `onConnection()` methods instead. These methods should be called before calling the `dispatch` method:
+
+    ProcessPodcast::withChain([
+        new OptimizePodcast,
+        new ReleasePodcast
+    ])->onConnection('redis')->onQueue('podcasts')->dispatch();
 
 <a name="failed-jobs-table-batch-support"></a>
 #### Failed Jobs Table Batch Support
