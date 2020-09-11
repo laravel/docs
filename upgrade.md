@@ -48,6 +48,7 @@ Update the following dependencies in your `composer.json` file:
 - `guzzlehttp/guzzle` to `^7.0.1`
 - `facade/ignition` to `^2.3.6`
 - `laravel/framework` to `^8.0`
+- `laravel/ui` to `^3.0`
 - `nunomaduro/collision` to `^5.0`
 - `phpunit/phpunit` to `^9.0`
 </div>
