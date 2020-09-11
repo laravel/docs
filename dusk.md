@@ -333,7 +333,7 @@ When your test requires migrations, like the authentication example above, you s
         use DatabaseMigrations;
     }
 
-> {note} It is recommended that you do not use an Sqlite in-memory database, as the browser will be unable to access the memory used by the dusk process.
+> {note} SQLite in-memory databases may not be used when executing Dusk tests. Since the browser executes within its own process, it will not be able to access the in-memory databases of other processes.
 
 <a name="cookies"></a>
 ### Cookies
