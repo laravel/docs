@@ -14,7 +14,7 @@ While Laravel does not dictate which JavaScript or CSS pre-processors you use, i
 
 The Bootstrap and Vue scaffolding provided by Laravel is located in the `laravel/ui` Composer package, which may be installed using Composer:
 
-    composer require laravel/ui
+    composer require laravel/ui:^2.4
 
 Once the `laravel/ui` package has been installed, you may install the frontend scaffolding using the `ui` Artisan command:
 
