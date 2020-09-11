@@ -229,11 +229,11 @@ For consistency with other features of Laravel, the `retryAfter` method and `ret
 The `timeoutAt` property of queued jobs, notifications, and listeners has been renamed to `retryUntil`. You should update the name of this property in the relevant classes in your application.
 
 <a name="#queue-allOnQueue-allOnConnection"></a>
-#### The `allOnQueue()` and `allOnConnection()` Methods
+#### The `allOnQueue()` / `allOnConnection()` Methods
 
 **Likelihood Of Impact: High**
 
-For consistency with other dispatching options, the `allOnQueue()` and `allOnConnection()` methods used with job chaining have been removed. You may use the `onQueue()` and `onConnection()` methods instead:
+For consistency with other dispatching methods, the `allOnQueue()` and `allOnConnection()` methods used with job chaining have been removed. You may use the `onQueue()` and `onConnection()` methods instead. These methods should be called before calling the `dispatch` method:
 
     ProcessPodcast::withChain([
         new OptimizePodcast,

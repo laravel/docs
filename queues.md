@@ -739,7 +739,7 @@ Some tools such as Laravel Horizon and Laravel Telescope may provide more user-f
 
 #### Batch Connection & Queue
 
-If you would like to specify the connection and queue that should be used for the batch jobs, you may use the `onConnection` and `onQueue` methods:
+If you would like to specify the connection and queue that should be used for the batched jobs, you may use the `onConnection` and `onQueue` methods:
 
     $batch = Bus::batch([
         // ...
