@@ -251,7 +251,7 @@ If you would like to provide your own policy discovery logic, you may register a
         // return policy class name...
     });
 
-> {note} Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potential auto-discovered policies.
+> {note} Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potentially auto-discovered policies.
 
 <a name="writing-policies"></a>
 ## Writing Policies
