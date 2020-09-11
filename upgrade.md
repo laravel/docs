@@ -88,7 +88,7 @@ To be consistent with typical PHP behavior, the `offsetExists` method of `Illumi
 
 **Likelihood Of Impact: High**
 
-Seeders and factories now use namespaced classes. To accommodate for these changes, add a namespace `Database/Factories` to your factory classes and `Database/Seeders` to your seeder classes:
+Seeders and factories are now namespaced. To accommodate for these changes, add the `Database\Seeders` namespace to your seeder classes. In addition, the previous `database/seeds` directory should be renamed to `database/seeders`:
 
     <?php
 
@@ -110,9 +110,9 @@ Seeders and factories now use namespaced classes. To accommodate for these chang
         }
     }
 
-The previous `database/seeds` directory should be renamed to `database/seeders`.
+If you are choosing to use the `laravel/legacy-factories` package, no changes to your factory classes are required. However, if you are upgrading your factories, you should add the `Database\Factories` namespace to those classes.
 
-In your `composer.json` file, remove `classmap` block from the `autoload` section and add the new namespaced classes:
+Next, in your `composer.json` file, remove `classmap` block from the `autoload` section and add the new namespaced class directory mappings:
 
     "autoload": {
         "psr-4": {
