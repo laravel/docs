@@ -84,7 +84,7 @@ Jetstream will also create a `resources/views/layouts` directory containing a ba
 <a name="included-authenticating"></a>
 ### Authenticating
 
-Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application! You may access your application in a browser since the authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
+Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application! You may access your application in a browser since Jetstream's authentication controllers already contain the logic to authenticate existing users and store new users in the database.
 
 #### Path Customization
 
