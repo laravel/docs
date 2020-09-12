@@ -165,7 +165,7 @@ The `listen` method of the `Illuminate\Contracts\Events\Dispatcher` contract has
 
 **Likelihood Of Impact: Optional**
 
-The [maintenance mode](/docs/{{version}}/configuration#maintenance-mode) feature of Laravel has been improved in Laravel 8.x. Pre-rendering the maintenance mode template is now supported and eliminates the chances of end users encountering errors during maintenance mode. However, to support this, the following lines must be added to your `public/index.php` file. These lines should be placed directly under the existing `LARAVEL_START` constant definition:
+The [maintenance mode](/docs/{{version}}/configuration#maintenance-mode) feature of Laravel has been improved in Laravel 8.x. Pre-rendering the maintenance mode template is now supported and eliminates the chances of end users encountering errors during maintenance mode. However, to support this, the following lines must be added to your [public/index.php](https://github.com/laravel/laravel/blob/3b418421e783c2a68e1c0927c30c1552a24875db/public/index.php) file. These lines should be placed directly under the existing `LARAVEL_START` constant definition:
 
     define('LARAVEL_START', microtime(true));
 
