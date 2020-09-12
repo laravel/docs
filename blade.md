@@ -174,15 +174,7 @@ By default, Blade (and the Laravel `e` helper) will double encode HTML entities.
 <a name="blade-and-javascript-frameworks"></a>
 ### Blade & JavaScript Frameworks
 
-Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
-
-    <h1>Laravel</h1>
-
-    Hello, @{{ name }}.
-
-In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
-
-The `@` symbol may also be used to escape Blade directives:
+The `@` symbol may be used to escape Blade directives:
 
     {{-- Blade --}}
     @@json()
@@ -289,7 +281,7 @@ Or, you may determine if the application is running in a specific environment us
     @env('staging')
         // The application is running in "staging"...
     @endenv
-    
+
     @env(['staging', 'production'])
         // The application is running in "staging" or "production"...
     @endenv
