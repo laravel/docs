@@ -178,10 +178,6 @@ Some exceptions describe HTTP error codes from the server. For example, this may
 
     abort(404);
 
-The `abort` helper will immediately raise an exception which will be rendered by the exception handler. Optionally, you may provide the response text:
-
-    abort(403, 'Unauthorized action.');
-
 <a name="custom-http-error-pages"></a>
 ### Custom HTTP Error Pages
 
