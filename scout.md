@@ -72,7 +72,7 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
 
-    composer require algolia/algoliasearch-client-php:^2.2
+    composer require algolia/algoliasearch-client-php
 
 <a name="configuration"></a>
 ## Configuration
