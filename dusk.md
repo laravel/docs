@@ -1744,16 +1744,25 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
 ### Gitlab CI
 
 If you are using [Gitlab CI](https://docs.gitlab.com/ee/ci/) to run your Dusk tests, you may use this configuration file as a starting point, however you need to add some changed to `tests/DuskTestCase.php`, specificlly adding the `--no-sandbox` to the ChromeDriver options. like so 
-        ```php
-        // DuskTestCase.php
-        
+first we change `DuskTestCase.php` into
+
+    <?php
+    .....
+    abstract class DuskTestCase extends BaseTestCase
+    {
+        ....
+        /**
+         * Create the RemoteWebDriver instance.
+         *
+         * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+         */
         protected function driver()
         {
             $options = (new ChromeOptions)->addArguments([
                 '--disable-gpu',
                 '--headless',
                 '--window-size=1920,1080',
-                '--no-sandbox' // <------ this is needed for gitlab
+                '--no-sandbox' // add this for gitlab CI
             ]);
 
             return RemoteWebDriver::create(
@@ -1762,9 +1771,9 @@ If you are using [Gitlab CI](https://docs.gitlab.com/ee/ci/) to run your Dusk te
                 )
             );
         }
-        ```
- 
+    }
 
+then, we can use this `gitlab-ci.yaml` as our starting point for the tests
 
     language: php
 
