@@ -45,6 +45,7 @@
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
     - [GitHub Actions](#running-tests-on-github-actions)
+    - [Gitlab CI](#running-tests-on-gitlab-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1738,3 +1739,50 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
             env:
               APP_URL: "http://127.0.0.1:8000"
             run: php artisan dusk
+    
+<a name="running-tests-on-gitlab-ci"></a>
+### Gitlab CI
+
+If you are using [Gitlab CI](https://docs.gitlab.com/ee/ci/) to run your Dusk tests, you may use this configuration file as a starting point, however you need to add some changed to `tests/DuskTestCase.php`, specificlly adding the `--no-sandbox` to the ChromeDriver options. like so 
+        ```php
+        // DuskTestCase.php
+        
+        protected function driver()
+        {
+            $options = (new ChromeOptions)->addArguments([
+                '--disable-gpu',
+                '--headless',
+                '--window-size=1920,1080',
+                '--no-sandbox' // <------ this is needed for gitlab
+            ]);
+
+            return RemoteWebDriver::create(
+                'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
+                    ChromeOptions::CAPABILITY, $options
+                )
+            );
+        }
+        ```
+ 
+
+
+    language: php
+
+    stages:
+      - test
+
+     dusk_tests:
+        stage: test
+        image: chilio/laravel-dusk-ci:latest
+        services:
+          - mysql:5.7
+        script:
+          - composer install
+          - configure-laravel
+          - start-nginx-ci-project
+          - cp .env.example .env
+          - php artisan key:generate
+          - php artisan migrate
+          - php artisan dusk
+
+            
