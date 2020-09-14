@@ -517,7 +517,7 @@ Once your component has been registered, it may be rendered using its tag alias:
 
     <x-package-alert/>
 
-In addition, you may also make use of a class based autoloader by making use of the `componentNamespace` method. For example, your package might have an `ColorPicker` component that lives in the `Package\Views\Components` namespace:
+Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Package\Views\Components` namespace:
 
     use Illuminate\Support\Facades\Blade;
 
@@ -526,14 +526,15 @@ In addition, you may also make use of a class based autoloader by making use of 
      */
     public function boot()
     {
-        Blade::componentNamespace('Package\\Views\\Components', 'package');
+        Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
     }
 
 This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:
 
-    <x-package::color-picker/>
+    <x-nightshade::calendar />
+    <x-nightshade::color-picker />
 
-Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are supported as well by using the dot notation.
+Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
 
 <a name="displaying-components"></a>
 ### Displaying Components
