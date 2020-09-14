@@ -51,7 +51,7 @@ Next, your `user` table must contain an `email_verified_at` column to store the 
 <a name="verification-routing"></a>
 ## Routing
 
-All of the routes needed to perform email verification are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com).
+All of the routes needed to perform email verification are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com/1.x/features/authentication.html#email-verification).
 
 <a name="protecting-routes"></a>
 ### Protecting Routes
@@ -65,7 +65,7 @@ All of the routes needed to perform email verification are automatically include
 <a name="verification-views"></a>
 ## Views
 
-All of the views needed to perform email verification are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com).
+All of the views needed to perform email verification are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com/1.x/installation.html).
 
 <a name="events"></a>
 ## Events
