@@ -197,6 +197,8 @@ You may use the `url` method to get the URL for the given file. If you are using
 
 > {note} Remember, if you are using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory.
 
+> {note} When using the `local` driver, the return value of `url()` is not guaranteed to be a valid URL as the URL method does not ensure that the value it returns is URL encoded. This means if you pass a path that contains spaces to the method, you will receive spaces back in the return value (i.e. `Storage::url('path/to/my file.pdf');` would return `/storage/app/path/to/my file.pdf`, not `/storage/app/path/to/my%20file.pdf`)
+
 #### Temporary URLs
 
 For files stored using the `s3` you may create a temporary URL to a given file using the `temporaryUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
