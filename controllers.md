@@ -90,7 +90,7 @@ When registering routes for single action controllers, you do not need to specif
 
     use App\Http\Controllers\ShowProfile;
 
-    Route::get('user/{id}', ShowProfile::class);
+    Route::get('user/{id}', [ShowProfile::class]);
 
 You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:
 
