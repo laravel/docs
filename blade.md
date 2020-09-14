@@ -517,6 +517,24 @@ Once your component has been registered, it may be rendered using its tag alias:
 
     <x-package-alert/>
 
+In addition, you may also make use of a class based autoloader by making use of the `componentNamespace` method. For example, your package might have an `ColorPicker` component that lives in the `Package\Views\Components` namespace:
+
+    use Illuminate\Support\Facades\Blade;
+
+    /**
+     * Bootstrap your package's services.
+     */
+    public function boot()
+    {
+        Blade::componentNamespace('Package\\Views\\Components', 'package');
+    }
+
+This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:
+
+    <x-package::color-picker/>
+
+Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are supported as well by using the dot notation.
+
 <a name="displaying-components"></a>
 ### Displaying Components
 
