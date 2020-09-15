@@ -171,3 +171,19 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
     }
 
 Once the default value for the `locale` parameter has been set, you are no longer required to pass its value when generating URLs via the `route` helper.
+
+One thing to note with setting url defaults is that these can conflict with the implicit model bindings. To solve this, you need to [prioritize your middleware](https://laravel.com/docs/{{version}}/middleware#sorting-middleware) before the `SubstituteBindings` middleware that ships with Laravel:
+
+    /**
+     * The priority-sorted list of middleware.
+     *
+     * This forces non-global middleware to always be in the given order.
+     *
+     * @var array
+     */
+    protected $middlewarePriority = [
+        ...
+        \App\Http\MiddlewareSetDefaultLocaleForUrls::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ...
+    ];
