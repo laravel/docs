@@ -251,7 +251,7 @@ If you would like to provide your own policy discovery logic, you may register a
         // return policy class name...
     });
 
-> {note} Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potential auto-discovered policies.
+> {note} Any policies that are explicitly mapped in your `AuthServiceProvider` will take precedence over any potentially auto-discovered policies.
 
 <a name="writing-policies"></a>
 ## Writing Policies
@@ -548,7 +548,7 @@ You may also determine if a user has any authorization ability from a given list
 
     @canany(['update', 'view', 'delete'], $post)
         // The current user can update, view, or delete the post
-    @elsecanany(['create'], \App\Models\::class)
+    @elsecanany(['create'], \App\Models\Post::class)
         // The current user can create a post
     @endcanany
 
@@ -556,11 +556,11 @@ You may also determine if a user has any authorization ability from a given list
 
 Like most of the other authorization methods, you may pass a class name to the `@can` and `@cannot` directives if the action does not require a model instance:
 
-    @can('create', App\Models\::class)
+    @can('create', App\Models\Post::class)
         <!-- The Current User Can Create Posts -->
     @endcan
 
-    @cannot('create', App\Models\::class)
+    @cannot('create', App\Models\Post::class)
         <!-- The Current User Can't Create Posts -->
     @endcannot
 

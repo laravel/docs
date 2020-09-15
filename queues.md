@@ -416,13 +416,13 @@ In addition to chaining job class instances, you may also chain Closures:
 
 #### Chain Connection & Queue
 
-If you would like to specify the default connection and queue that should be used for the chained jobs, you may use the `allOnConnection` and `allOnQueue` methods. These methods specify the queue connection and queue name that should be used unless the queued job is explicitly assigned a different connection / queue:
+If you would like to specify the connection and queue that should be used for the chained jobs, you may use the `onConnection` and `onQueue` methods. These methods specify the queue connection and queue name that should be used unless the queued job is explicitly assigned a different connection / queue:
 
     Bus::chain([
         new ProcessPodcast,
         new OptimizePodcast,
         new ReleasePodcast,
-    ])->dispatch()->allOnConnection('redis')->allOnQueue('podcasts');
+    ])->onConnection('redis')->onQueue('podcasts')->dispatch();
 
 #### Chain Failures
 
@@ -612,6 +612,8 @@ However, you may also define the maximum number of seconds a job should be allow
         public $timeout = 120;
     }
 
+Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value.
+
 <a name="rate-limiting"></a>
 ### Rate Limiting
 
@@ -734,6 +736,16 @@ Some tools such as Laravel Horizon and Laravel Telescope may provide more user-f
     ])->then(function (Batch $batch) {
         // All jobs completed successfully...
     })->name('Process Podcasts')->dispatch();
+
+#### Batch Connection & Queue
+
+If you would like to specify the connection and queue that should be used for the batched jobs, you may use the `onConnection` and `onQueue` methods:
+
+    $batch = Bus::batch([
+        // ...
+    ])->then(function (Batch $batch) {
+        // All jobs completed successfully...
+    })->onConnection('redis')->onQueue('podcasts')->dispatch();
 
 <a name="adding-jobs-to-batches"></a>
 ### Adding Jobs To Batches

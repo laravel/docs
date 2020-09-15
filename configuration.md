@@ -136,13 +136,13 @@ To enable maintenance mode, execute the `down` Artisan command:
 
     php artisan down
 
-You may also provide `message` and `retry` options to the `down` command. The `message` value may be used to display or log a custom message, while the `retry` value will be set as the `Retry-After` HTTP header's value:
+You may also provide a `retry` option to the `down` command, which will be set as the `Retry-After` HTTP header's value:
 
-    php artisan down --message="Upgrading Database" --retry=60
+    php artisan down --retry=60
 
 #### Bypassing Maintenance Mode
 
-Even while in maintenance mode, you may use use the `secret` option to specify a maintenance mode bypass token:
+Even while in maintenance mode, you may use the `secret` option to specify a maintenance mode bypass token:
 
     php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
 

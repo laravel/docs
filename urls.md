@@ -132,11 +132,7 @@ Once you have registered the middleware in your kernel, you may attach it to a r
 <a name="urls-for-controller-actions"></a>
 ## URLs For Controller Actions
 
-The `action` function generates a URL for the given controller action. You do not need to pass the full namespace of the controller. Instead, pass the controller class name relative to the `App\Http\Controllers` namespace:
-
-    $url = action('HomeController@index');
-
-You may also reference actions with a "callable" array syntax:
+The `action` function generates a URL for the given controller action:
 
     use App\Http\Controllers\HomeController;
 
@@ -144,7 +140,7 @@ You may also reference actions with a "callable" array syntax:
 
 If the controller method accepts route parameters, you may pass them as the second argument to the function:
 
-    $url = action('UserController@profile', ['id' => 1]);
+    $url = action([UserController::class, 'profile'], ['id' => 1]);
 
 <a name="default-values"></a>
 ## Default Values

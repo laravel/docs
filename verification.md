@@ -6,13 +6,16 @@
 - [Routing](#verification-routing)
     - [Protecting Routes](#protecting-routes)
 - [Views](#verification-views)
-- [After Verifying Emails](#after-verifying-emails)
 - [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
 
 Many web applications require users to verify their email addresses before using the application. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending and verifying email verification requests.
+
+#### Getting Started Fast
+
+Want to get started fast? Install [Laravel Jetstream](https://jetstream.laravel.com) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. Jetstream will take care of scaffolding your entire authentication system, including email verification support!
 
 <a name="model-preparation"></a>
 ## Model Preparation
@@ -48,9 +51,7 @@ Next, your `user` table must contain an `email_verified_at` column to store the 
 <a name="verification-routing"></a>
 ## Routing
 
-Laravel includes the `Auth\VerificationController` class that contains the necessary logic to send verification links and verify emails. To register the necessary routes for this controller, pass the `verify` option to the `Auth::routes` method:
-
-    Auth::routes(['verify' => true]);
+All of the routes needed to perform email verification are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com/1.x/features/authentication.html#email-verification).
 
 <a name="protecting-routes"></a>
 ### Protecting Routes
@@ -64,20 +65,7 @@ Laravel includes the `Auth\VerificationController` class that contains the neces
 <a name="verification-views"></a>
 ## Views
 
-To generate all of the necessary view for email verification, you may use the `laravel/ui` Composer package:
-
-    composer require laravel/ui
-
-    php artisan ui vue --auth
-
-The email verification view is placed in `resources/views/auth/verify.blade.php`. You are free to customize this view as needed for your application.
-
-<a name="after-verifying-emails"></a>
-## After Verifying Emails
-
-After an email address is verified, the user will automatically be redirected to `/home`. You can customize the post verification redirect location by defining a `redirectTo` method or property on the `VerificationController`:
-
-    protected $redirectTo = '/dashboard';
+All of the views needed to perform email verification are automatically included in [Laravel Jetstream](https://jetstream.laravel.com). To learn how to install Jetstream, please consult the official [Jetstream documentation](https://jetstream.laravel.com/1.x/installation.html).
 
 <a name="events"></a>
 ## Events

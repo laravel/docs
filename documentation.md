@@ -32,7 +32,6 @@
 - ## Frontend
     - [Blade Templates](/docs/{{version}}/blade)
     - [Localization](/docs/{{version}}/localization)
-    - [Frontend Scaffolding](/docs/{{version}}/frontend)
     - [Compiling Assets](/docs/{{version}}/mix)
 - ## Security
     - [Authentication](/docs/{{version}}/authentication)
@@ -83,6 +82,7 @@
     - [Dusk](/docs/{{version}}/dusk)
     - [Envoy](/docs/{{version}}/envoy)
     - [Horizon](/docs/{{version}}/horizon)
+    - [Jetstream](https://jetstream.laravel.com)
     - [Passport](/docs/{{version}}/passport)
     - [Sanctum](/docs/{{version}}/sanctum)
     - [Scout](/docs/{{version}}/scout)

@@ -2287,15 +2287,13 @@ The `words` method limits the number of words in a string:
 <a name="method-action"></a>
 #### `action()` {#collection-method}
 
-The `action` function generates a URL for the given controller action. You do not need to pass the full namespace of the controller. Instead, pass the controller class name relative to the `App\Http\Controllers` namespace:
-
-    $url = action('HomeController@index');
+The `action` function generates a URL for the given controller action:
 
     $url = action([HomeController::class, 'index']);
 
 If the method accepts route parameters, you may pass them as the second argument to the method:
 
-    $url = action('UserController@profile', ['id' => 1]);
+    $url = action([UserController::class, 'profile'], ['id' => 1]);
 
 <a name="method-asset"></a>
 #### `asset()` {#collection-method}
@@ -2368,7 +2366,7 @@ The `abort` function throws [an HTTP exception](/docs/{{version}}/errors#http-ex
 
     abort(403);
 
-You may also provide the exception's response text and custom response headers:
+You may also provide the exception's message and custom response headers that should be sent to the browser:
 
     abort(403, 'Unauthorized.', $headers);
 

@@ -60,7 +60,7 @@ When you execute this command, Laravel will write a "schema" file to your `datab
 
 You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
 
-> {note} Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases.
+> {note} Migration squashing is only available for the MySQL and PostgreSQL databases.
 
 <a name="migration-structure"></a>
 ## Migration Structure
@@ -314,6 +314,7 @@ Modifier  |  Description
 `->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL)
 `->default($value)`  |  Specify a "default" value for the column
 `->first()`  |  Place the column "first" in the table (MySQL)
+`->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL)
 `->nullable($value = true)`  |  Allows (by default) NULL values to be inserted into the column
 `->storedAs($expression)`  |  Create a stored generated column (MySQL)
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL)

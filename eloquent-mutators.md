@@ -454,6 +454,12 @@ Once the cast is defined, you may access the `options` attribute and it will aut
 
     $user->save();
 
+To update a single field of a JSON attribute with a more terse syntax, you may use the `->` operator:
+
+    $user = App\Models\User::find(1);
+
+    $user->update(['options->key' => 'value']);
+
 <a name="date-casting"></a>
 ### Date Casting
 

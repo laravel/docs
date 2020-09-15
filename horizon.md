@@ -56,10 +56,14 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
                 'balance' => 'auto',
                 'minProcesses' => 1,
                 'maxProcesses' => 10,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
                 'tries' => 3,
             ],
         ],
     ],
+
+The `balanceMaxShift` and `balanceCooldown` configuration values to determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
 #### Job Trimming
 

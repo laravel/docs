@@ -56,6 +56,8 @@ Once installed, the `laravel new` command will create a fresh Laravel installati
 
     laravel new blog
 
+> {tip} Want to create a Laravel project with login, registration, and more features already built for you? Check out [Laravel Jetstream](https://jetstream.laravel.com).
+
 #### Via Composer Create-Project
 
 Alternatively, you may also install Laravel by issuing the Composer `create-project` command in your terminal:

@@ -197,7 +197,7 @@ To authenticate your SPA, your SPA's login page should first make a request to t
 
 During this request Laravel will set an `XSRF-TOKEN` cookie containing the current CSRF token. This token should then be passed in an `X-XSRF-TOKEN` header on subsequent requests, which libraries like Axios and the Angular HttpClient will do automatically for you.
 
-Once CSRF protection has been initialized, you should make a `POST` request to the typical Laravel `/login` route. This `/login` route may be provided by the `laravel/ui` [authentication scaffolding](/docs/{{version}}/authentication#introduction) package.
+Once CSRF protection has been initialized, you should make a `POST` request to the typical Laravel `/login` route. This `/login` route may be provided by the `laravel/jetstream` [authentication scaffolding](/docs/{{version}}/authentication#introduction) package.
 
 If the login request is successful, you will be authenticated and subsequent requests to your API routes will automatically be authenticated via the session cookie that the Laravel backend issued to your client.
 

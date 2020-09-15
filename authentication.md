@@ -8,7 +8,6 @@
     - [Authenticating](#included-authenticating)
     - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
     - [Protecting Routes](#protecting-routes)
-    - [Password Confirmation](#password-confirmation)
     - [Login Throttling](#login-throttling)
 - [Manually Authenticating Users](#authenticating-users)
     - [Remembering Users](#remembering-users)
@@ -28,8 +27,6 @@
 <a name="introduction"></a>
 ## Introduction
 
-> {tip} **Want to get started fast?** Install the `laravel/ui` Composer package and run `php artisan ui vue --auth` in a fresh Laravel application. After migrating your database, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These commands will take care of scaffolding your entire authentication system!
-
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
 
 At its core, Laravel's authentication facilities are made up of "guards" and "providers". Guards define how users are authenticated for each request. For example, Laravel ships with a `session` guard which maintains state using session storage and cookies.
@@ -37,6 +34,10 @@ At its core, Laravel's authentication facilities are made up of "guards" and "pr
 Providers define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using Eloquent and the database query builder. However, you are free to define additional providers as needed for your application.
 
 Don't worry if this all sounds confusing now! Many applications will never need to modify the default authentication configuration.
+
+#### Getting Started Fast
+
+Want to get started fast? Install [Laravel Jetstream](https://jetstream.laravel.com) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. Jetstream will take care of scaffolding your entire authentication system!
 
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
@@ -53,90 +54,50 @@ Also, you should verify that your `users` (or equivalent) table contains a nulla
 <a name="included-routing"></a>
 ### Routing
 
-Laravel's `laravel/ui` package provides a quick way to scaffold all of the routes and views you need for authentication using a few simple commands:
+Laravel's `laravel/jetstream` package provides a quick way to scaffold all of the routes and views you need for authentication using a few simple commands:
 
-    composer require laravel/ui
+    composer require laravel/jetstream
 
-    php artisan ui vue --auth
+    // Install Jetstream with the Livewire stack...
+    php artisan jetstream:install livewire
 
-This command should be used on fresh applications and will install a layout view, registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated to handle post-login requests to your application's dashboard.
+    // Install Jetstream with the Inertia stack...
+    php artisan jetstream:install inertia
 
-The `laravel/ui` package also generates several pre-built authentication controllers, which are located in the `App\Http\Controllers\Auth` namespace. The `RegisterController` handles new user registration, the `LoginController` handles authentication, the `ForgotPasswordController` handles e-mailing links for resetting passwords, and the `ResetPasswordController` contains the logic to reset passwords. Each of these controllers uses a trait to include their necessary methods. For many applications, you will not need to modify these controllers at all.
+This command should be used on fresh applications and will install a layout view, registration and login views, as well as routes for all authentication end-points. A `/dashboard` route will also be generated to handle post-login requests to your application's dashboard.
 
-> {tip} If your application doesn’t need registration, you may disable it by removing the newly created `RegisterController` and modifying your route declaration: `Auth::routes(['register' => false]);`.
+To learn more about Jetstream, please visit the official [Jetstream documentation](https://jetstream.laravel.com).
 
 #### Creating Applications Including Authentication
 
-If you are starting a brand new application and would like to include the authentication scaffolding, you may use the `--auth` directive when creating your application. This command will create a new application with all of the authentication scaffolding compiled and installed:
+If you are starting a brand new application and would like to include the authentication scaffolding, you may use the `--jet` directive when creating your application via the Laravel Installer. This command will create a new application with all of the authentication scaffolding compiled and installed:
 
-    laravel new blog --auth
+    laravel new kitetail --jet
 
 <a name="included-views"></a>
 ### Views
 
-As mentioned in the previous section, the `laravel/ui` package's `php artisan ui vue --auth` command will create all of the views you need for authentication and place them in the `resources/views/auth` directory.
+As mentioned in the previous section, the `laravel/jetstream` package's `php artisan jetstream:install` command will create all of the views you need for authentication and place them in the `resources/views/auth` directory.
 
-The `ui` command will also create a `resources/views/layouts` directory containing a base layout for your application. All of these views use the Bootstrap CSS framework, but you are free to customize them however you wish.
+Jetstream will also create a `resources/views/layouts` directory containing a base layout for your application. All of these views use the Tailwind CSS framework, but you are free to customize them however you wish.
 
 <a name="included-authenticating"></a>
 ### Authenticating
 
-Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application! You may access your application in a browser since the authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
+Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application! You may access your application in a browser since Jetstream's authentication controllers already contain the logic to authenticate existing users and store new users in the database.
 
 #### Path Customization
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect path using the `HOME` constant defined in your `RouteServiceProvider`:
+When a user is successfully authenticated, they will typically be redirected to the `/home` URI. You can customize the post-authentication redirect path using the `HOME` constant defined in your `RouteServiceProvider`:
 
     public const HOME = '/home';
 
-If you need more robust customization of the response returned when a user is authenticated, Laravel provides an empty `authenticated(Request $request, $user)` method within the `AuthenticatesUsers` trait. This trait is used by the `LoginController` class that is installed into your application when using the `laravel/ui` package. Therefore, you can define your own `authenticated` method within the `LoginController` class:
-
-    /**
-     * The user has been authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
-     * @return mixed
-     */
-    protected function authenticated(Request $request, $user)
-    {
-        return response([
-            //
-        ]);
-    }
-
-#### Username Customization
-
-By default, Laravel uses the `email` field for authentication. If you would like to customize this, you may define a `username` method on your `LoginController`:
-
-    public function username()
-    {
-        return 'username';
-    }
-
-#### Guard Customization
-
-You may also customize the "guard" that is used to authenticate and register users. To get started, define a `guard` method on your `LoginController`, `RegisterController`, and `ResetPasswordController`. The method should return a guard instance:
-
-    use Illuminate\Support\Facades\Auth;
-
-    protected function guard()
-    {
-        return Auth::guard('guard-name');
-    }
-
-#### Validation / Storage Customization
-
-To modify the form fields that are required when a new user registers with your application, or to customize how new users are stored into your database, you may modify the `RegisterController` class. This class is responsible for validating and creating new users of your application.
-
-The `validator` method of the `RegisterController` contains the validation rules for new users of the application. You are free to modify this method as you wish.
-
-The `create` method of the `RegisterController` is responsible for creating new `App\Models\User` records in your database using the [Eloquent ORM](/docs/{{version}}/eloquent). You are free to modify this method according to the needs of your database.
+When using Laravel Jetstream, the Jetstream installation process will change the value of the `HOME` constant to `/dashboard`.
 
 <a name="retrieving-the-authenticated-user"></a>
 ### Retrieving The Authenticated User
 
-You may access the authenticated user via the `Auth` facade:
+While handling an incoming request, you may access the authenticated user via the `Auth` facade:
 
     use Illuminate\Support\Facades\Auth;
 
@@ -146,7 +107,7 @@ You may access the authenticated user via the `Auth` facade:
     // Get the currently authenticated user's ID...
     $id = Auth::id();
 
-Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods:
+Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods. By type-hinting the `Illuminate\Http\Request` object, you may gain convenient access to the authenticated user from any controller method in your application:
 
     <?php
 
@@ -220,28 +181,15 @@ When attaching the `auth` middleware to a route, you may also specify which guar
         $this->middleware('auth:api');
     }
 
-<a name="password-confirmation"></a>
-### Password Confirmation
-
-Sometimes, you may wish to require the user to confirm their password before accessing a specific area of your application. For example, you may require this before the user modifies any billing settings within the application.
-
-To accomplish this, Laravel provides a `password.confirm` middleware. Attaching the `password.confirm` middleware to a route will redirect users to a screen where they need to confirm their password before they can continue:
-
-    Route::get('/settings/security', function () {
-        // Users must confirm their password before continuing...
-    })->middleware(['auth', 'password.confirm']);
-
-After the user has successfully confirmed their password, the user is redirected to the route they originally tried to access. By default, after confirming their password, the user will not have to confirm their password again for three hours. You are free to customize the length of time before the user must re-confirm their password using the `auth.password_timeout` configuration option.
-
 <a name="login-throttling"></a>
 ### Login Throttling
 
-If you are using Laravel's built-in `LoginController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait will already be included in your controller. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address.
+If you are using Laravel Jetstream, rate limiting will automatically be applied to login attempts. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address.
 
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
 
-Note that you are not required to use the authentication controllers included with Laravel. If you choose to remove these controllers, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch!
+Note that you are not required to use the authentication controllers included with Laravel Jetstream. If you choose to not use this scaffolding, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch!
 
 We will access Laravel's authentication services via the `Auth` [facade](/docs/{{version}}/facades), so we'll need to make sure to import the `Auth` facade at the top of the class. Next, let's check out the `attempt` method:
 
@@ -312,8 +260,6 @@ If you would like to provide "remember me" functionality in your application, yo
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
         // The user is being remembered...
     }
-
-> {tip} If you are using the built-in `LoginController` that is shipped with Laravel, the proper logic to "remember" users is already implemented by the traits used by the controller.
 
 If you are "remembering" users, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
 

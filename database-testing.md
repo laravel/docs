@@ -201,7 +201,19 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
 <a name="creating-models"></a>
 ### Creating Models
 
-Once you have defined your factories, you may use the static `factory` method provided by the `HasFactory` trait on your Eloquent models in order to instantiate a factory instance for that model. Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:
+Once you have defined your factories, you may use the static `factory` method provided by the `Illuminate\Database\Eloquent\Factories\HasFactory` trait on your Eloquent models in order to instantiate a factory instance for that model:
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        use HasFactory;
+    }
+
+Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:
 
     use App\Models\User;
 
@@ -217,11 +229,17 @@ You may create a collection of many models using the `count` method:
     // Create three App\Models\User instances...
     $users = User::factory()->count(3)->make();
 
-The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may use the factory directly to create model instances. To create a new factory instance using the factory class, you should call the static `new` method on the factory:
+The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
 
-    use Database\Factories\UserFactory;
-
-    $users = UserFactory::new()->count(3)->make();
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return \Database\Factories\Administration\FlightFactory::new();
+    }
 
 #### Applying States
 

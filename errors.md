@@ -29,7 +29,7 @@ For local development, you should set the `APP_DEBUG` environment variable to `t
 
 All exceptions are handled by the `App\Exceptions\Handler` class. This class contains a `register` method where you may register custom exception reporter and renderer callbacks. We'll examine each of these concepts in detail. Exception reporting is used to log exceptions or send them to an external service like [Flare](https://flareapp.io), [Bugsnag](https://bugsnag.com) or [Sentry](https://github.com/getsentry/sentry-laravel). By default, exceptions will be logged based on your [logging](/docs/{{version}}/logging) configuration. However, you are free to log exceptions however you wish.
 
-For example, if you need to report different types of exceptions in different ways, you may use the the `reportable` method to register a Closure that should be executed when an exception of a given type needs to be reported. Laravel will deduce what type of exception the Closure reports by examining the type-hint of the Closure:
+For example, if you need to report different types of exceptions in different ways, you may use the `reportable` method to register a Closure that should be executed when an exception of a given type needs to be reported. Laravel will deduce what type of exception the Closure reports by examining the type-hint of the Closure:
 
     use App\Exceptions\CustomException;
 
@@ -115,7 +115,7 @@ By default, the Laravel exception handler will convert exceptions into an HTTP r
      */
     public function register()
     {
-        $this->renderable(function (CustomException $e) {
+        $this->renderable(function (CustomException $e, $request) {
             return response()->view('errors.custom', [], 500);
         });
     }
@@ -177,10 +177,6 @@ If your exception contains custom reporting logic that only occurs when certain 
 Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to generate such a response from anywhere in your application, you may use the `abort` helper:
 
     abort(404);
-
-The `abort` helper will immediately raise an exception which will be rendered by the exception handler. Optionally, you may provide the response text:
-
-    abort(403, 'Unauthorized action.');
 
 <a name="custom-http-error-pages"></a>
 ### Custom HTTP Error Pages
