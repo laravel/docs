@@ -143,7 +143,7 @@ The new `batch` method of the `Bus` facade may be used to dispatch a batch of jo
     use App\Jobs\ProcessPodcast;
     use App\Podcast;
     use Illuminate\Bus\Batch;
-    use Illuminate\Support\Facades\Batch;
+    use Illuminate\Support\Facades\Bus;
     use Throwable;
 
     $batch = Bus::batch([

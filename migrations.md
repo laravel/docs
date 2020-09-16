@@ -60,7 +60,7 @@ When you execute this command, Laravel will write a "schema" file to your `datab
 
 You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
 
-> {note} Migration squashing is only available for the MySQL and PostgreSQL databases.
+> {note} Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases.
 
 <a name="migration-structure"></a>
 ## Migration Structure
