@@ -227,7 +227,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [dump](#method-dump)
 [env](#method-env)
 [event](#method-event)
-[factory](#method-factory)
 [filled](#method-filled)
 [info](#method-info)
 [logger](#method-logger)
