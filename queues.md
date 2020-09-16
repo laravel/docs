@@ -1231,11 +1231,11 @@ If you would like to delete all jobs from the default queue of the default conne
 
     php artisan queue:clear
 
-You may also provide the `connection` argument and `queue` option to delete jobs from a non-default connection or a non-default queue:
+You may also provide the `connection` argument and `queue` option to delete jobs from a specific connection and queue:
 
     php artisan queue:clear redis --queue=emails
 
-> {note} Clearing jobs from queues is only available for the Redis, SQS and Database queue drivers. The SQS message deletion process takes upto 60 seconds, so jobs sent to the SQS queue upto 60 seconds after you clear the queue might also be deleted.
+> {note} Clearing jobs from queues is only available for the SQS, Redis, and database queue drivers. In addition, the SQS message deletion process takes up to 60 seconds, so jobs sent to the SQS queue up to 60 seconds after you clear the queue might also be deleted.
 
 <a name="job-events"></a>
 ## Job Events
