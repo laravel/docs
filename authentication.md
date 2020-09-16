@@ -51,6 +51,8 @@ Also, you should verify that your `users` (or equivalent) table contains a nulla
 <a name="authentication-quickstart"></a>
 ## Authentication Quickstart
 
+> {note} This portion of the documentation discusses authenticating users via the [Laravel Jetstream](https://jetstream.laravel.com) package, which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
+
 <a name="included-routing"></a>
 ### Routing
 
