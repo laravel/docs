@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
     - [Model Preparation](#model-preparation)
-    - [Database Considerations](#verification-database)
+    - [Database Preparation](#database-preparation)
 - [Routing](#verification-routing)
     - [The Email Verification Notice](#the-email-verification-notice)
     - [The Email Verification Handler](#the-email-verification-handler)
@@ -39,8 +39,8 @@ To get started, verify that your `App\Models\User` model implements the `Illumin
 
 Once this interface has been added to your model, newly registered users will automatically be sent an email containing an email verification link. As you can see by examining your `EventServiceProvider`, Laravel already contains a `SendEmailVerificationNotification` listener that is attached to the `Illuminate\Auth\Events\Registered` event.
 
-<a name="verification-database"></a>
-### Database Considerations
+<a name="database-preparation"></a>
+### Database Preparation
 
 Next, your `user` table must contain an `email_verified_at` column to store the date and time that the email address was verified. By default, the `users` table migration included with the Laravel framework already includes this column. So, all you need to do is run your database migrations:
 
