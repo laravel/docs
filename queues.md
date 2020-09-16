@@ -1235,7 +1235,7 @@ You may also provide the `connection` argument and `queue` option to delete jobs
 
     php artisan queue:clear redis --queue=emails
 
-> {note} Clearing jobs from queues is only available for the Redis and Database queue drivers.
+> {note} Clearing jobs from queues is only available for the Redis, SQS and Database queue drivers.
 
 <a name="job-events"></a>
 ## Job Events
