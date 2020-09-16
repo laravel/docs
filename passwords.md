@@ -37,6 +37,8 @@ To properly implement support for allowing users to reset their passwords, we wi
 <a name="requesting-the-password-reset-link"></a>
 ### Requesting The Password Reset Link
 
+#### The Password Reset Link Request Form
+
 First, we will define the routes that are needed to request password reset links. To get started, we will define a route that returns a view with the password reset link request form:
 
     Route::get('/forgot-password', function () {
@@ -44,6 +46,8 @@ First, we will define the routes that are needed to request password reset links
     })->middleware(['guest'])->name('password.request');
 
 The view that is returned by this route should have an `email` field within its form, which will allow the user to request a password reset link for a given email address.
+
+#### Handling The Form Submission
 
 Next, we will define a route will handle the form request from the "forgot password" view. This route will be responsible for validating the email address and sending the password reset request to the corresponding user:
 
@@ -66,7 +70,7 @@ Before moving on, let's examine this route in more detail. First, the request's 
 
 The `sendResetLink` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/password.php` language file.
 
-> {tip} When manually implementing password resets, you are required to define the contents of the the views yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out [Laravel Jetstream](https://jetstream.laravel.com).
+> {tip} When manually implementing password resets, you are required to define the contents of the the views and routes yourself. If you would like scaffolding that includes all necessary authentication and verification logic, check out [Laravel Jetstream](https://jetstream.laravel.com).
 
 <a name="resetting-the-password"></a>
 ### Resetting The Password
