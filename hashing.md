@@ -71,7 +71,7 @@ If you are using the Argon2 algorithm, the `make` method allows you to manage th
 
 #### Verifying A Password Against A Hash
 
-The `check` method allows you to verify that a given plain-text string corresponds to a given hash. However, if you are using the `LoginController` [included with Laravel](/docs/{{version}}/authentication), you will probably not need to use this directly, as this controller automatically calls this method:
+The `check` method allows you to verify that a given plain-text string corresponds to a given hash:
 
     if (Hash::check('plain-text', $hashedPassword)) {
         // The passwords match...
