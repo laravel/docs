@@ -1227,11 +1227,11 @@ For convenience, you may choose to automatically delete jobs with missing models
 <a name="clearing-jobs-from-queues"></a>
 ## Clearing Jobs From Queues
 
-If you would like to delete all jobs from the default queue of a connection, you may do so using the `queue:clear` Artisan command by specifying the connection name:
+If you would like to delete all jobs from the default queue of the default connection, you may do so using the `queue:clear` Artisan command:
 
-    php artisan queue:clear redis
+    php artisan queue:clear
 
-You may also provide the `queue` option to delete jobs from a non-default queue:
+You may also provide the `connection` argument and `queue` option to delete jobs from a non-default connection or a non-default queue:
 
     php artisan queue:clear redis --queue=emails
 
