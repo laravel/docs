@@ -120,7 +120,7 @@ Of course, we need to define a route to actually handle the password reset form 
                     : back()->withErrors(['email' => trans($status)]);
     })->middleware(['guest'])->name('password.update');
 
-Before moving on, let's examine this route in more detail. First, the request's `token`, 'email', and `password` attributes are validated. Next, we will use Laravel's built-in "password broker" to validate the password reset request credentials.
+Before moving on, let's examine this route in more detail. First, the request's `token`, `email`, and `password` attributes are validated. Next, we will use Laravel's built-in "password broker" to validate the password reset request credentials.
 
 If the token, email address, and password given to the password broker are valid, the Closure passed to the `reset` method will be invoked. Within this Closure, which receives the user instance and the plain-text password, we may update the user's password in the database.
 
