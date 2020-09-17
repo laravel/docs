@@ -131,7 +131,7 @@ If your parent model does not use `id` as its primary key, or you wish to join t
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'foreign_key', 'other_key');
+        return $this->belongsTo('App\Models\User', 'foreign_key', 'owner_key');
     }
 
 <a name="one-to-many"></a>
@@ -221,7 +221,7 @@ If your parent model does not use `id` as its primary key, or you wish to join t
      */
     public function post()
     {
-        return $this->belongsTo('App\Models\Post', 'foreign_key', 'other_key');
+        return $this->belongsTo('App\Models\Post', 'foreign_key', 'owner_key');
     }
 
 <a name="many-to-many"></a>
