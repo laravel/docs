@@ -37,7 +37,13 @@ To get started, verify that your `App\Models\User` model implements the `Illumin
         // ...
     }
 
-Once this interface has been added to your model, newly registered users will automatically be sent an email containing an email verification link. As you can see by examining your `EventServiceProvider`, Laravel already contains a `SendEmailVerificationNotification` listener that is attached to the `Illuminate\Auth\Events\Registered` event.
+Once this interface has been added to your model, newly registered users will automatically be sent an email containing an email verification link. As you can see by examining your `EventServiceProvider`, Laravel already contains a `SendEmailVerificationNotification` [listener](/docs/{{version}}/events) that is attached to the `Illuminate\Auth\Events\Registered` event.
+
+If you are manually implementing registration within your application instead of using [Laravel Jetstream](https://jetstream.laravel.com), you should ensure that you are dispatching the `Illuminate\Auth\Events\Registered` event after a user's registration is successful:
+
+    use Illuminate\Auth\Events\Registered;
+
+    event(new Registered($user));
 
 <a name="database-preparation"></a>
 ### Database Preparation
@@ -49,7 +55,7 @@ Next, your `user` table must contain an `email_verified_at` column to store the 
 <a name="verification-routing"></a>
 ## Routing
 
-To properly implement email verification, three routes will need to be defined. First, a route will be needed to display a notice to the user that they should click the email verification link in the email verification that Laravel sent them after registration. Second, a route will be needed to handle requests generated when the user clicks the email verification link in the email. Third, a route will be needed to resend a verification link if the user accidentally loses the first one.
+To properly implement email verification, three routes will need to be defined. First, a route will be needed to display a notice to the user that they should click the email verification link in the verification email that Laravel sent them after registration. Second, a route will be needed to handle requests generated when the user clicks the email verification link in the email. Third, a route will be needed to resend a verification link if the user accidentally loses the first one.
 
 <a name="the-email-verification-notice"></a>
 ### The Email Verification Notice
