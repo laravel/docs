@@ -75,28 +75,16 @@ The route that returns the email verification notice should be named `verificati
 
 Next, we need a route that will handle requests generated when the user clicks the email verification link that was emailed to them. This route should be named `verification.verify` and be assigned the `auth` and `signed` middlewares:
 
-    use Illuminate\Auth\Events\Verified;
+    use Illuminate\Foundation\Auth\EmailVerificationRequest;
     use Illuminate\Http\Request;
 
-    Route::get('/email/verify/{id}/{hash}', function (Request $request) {
-        if (! hash_equals((string) $request->route('id'),
-                          (string) $request->user()->getKey())) {
-            abort(403);
-        }
-
-        if (! hash_equals((string) $this->route('hash'),
-                          sha1($this->user()->getEmailForVerification()))) {
-            abort(403);
-        }
-
-        $request->user()->markEmailAsVerified();
-
-        event(new Verified($request->user()));
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
 
         return redirect('/home');
     })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Before moving on, let's take a closer look at this route. First, the route should verify the route's `id` and `hash` parameters are valid. If these values are valid, you may mark the user's email address as verified. The `markEmailAsVerified` method is available to the default `App\Models\User` model via the `Illuminate\Foundation\Auth\User` base class. Once the user's email address has been verified, you may redirect them wherever you wish.
+Before moving on, let's take a closer look at this route. First, you'll notice we are using an `EmailVerificationRequest` request type instead of the typical `Illuminate\Http\Request` instance. The `EmailVerificationRequest` is a [form request]() that is included with Laravel. This request will take care of automatically validating the request's `id` and `hash` parameters. So, we can proceed directly to calling the `fulfill` method on the request. This method will call the `markEmailAsVerified` method on the authenticated user and dispatch the `Illuminate\Auth\Events\Verified` event. The `markEmailAsVerified` method is available to the default `App\Models\User` model via the `Illuminate\Foundation\Auth\User` base class. Once the user's email address has been verified, you may redirect them wherever you wish.
 
 <a name="resending-the-verification-email"></a>
 ### Resending The Verification Email
