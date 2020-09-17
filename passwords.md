@@ -68,7 +68,7 @@ Next, we will define a route will handle the form request from the "forgot passw
 
 Before moving on, let's examine this route in more detail. First, the request's `email` attribute is validated. Next, we will use Laravel's built-in "password broker" (via the `Password` facade) to send a password reset link to the user. The password broker will take care of retrieving the user by the given field (in this case, the email address) and sending the user a password reset link via Laravel's built-in [notification system](/docs/{{version}}/notifications).
 
-The `sendResetLink` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/password.php` language file.
+The `sendResetLink` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
 
 > {tip} When manually implementing password resets, you are required to define the contents of the the views and routes yourself. If you would like scaffolding that includes all necessary authentication and verification logic, check out [Laravel Jetstream](https://jetstream.laravel.com).
 
@@ -124,7 +124,7 @@ Before moving on, let's examine this route in more detail. First, the request's 
 
 If the token, email address, and password given to the password broker are valid, the Closure passed to the `reset` method will be invoked. Within this Closure, which receives the user instance and the plain-text password, we may update the user's password in the database.
 
-The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/password.php` language file.
+The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/passwords.php` language file.
 
 <a name="password-customization"></a>
 ## Customization
