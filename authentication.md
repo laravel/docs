@@ -58,7 +58,7 @@ First, consider how authentication works. When using a web browser, a user will 
 
 When a remote service needs to authenticate to access an API, cookies are not typically used because there is no web browser. Instead, the remote service sends an API token to the API on each request. The application may validate the incoming token against a table of valid API tokens and "authenticate" the request as being performed by the user associated with that API token.
 
-#### Laravel's Built-in Authentication Services
+#### Laravel's Built-in Browser Authentication Services
 
 Laravel includes built-in authentication and session services which are typically accessed via the `Auth` and `Session` facades. These features provide cookie based authentication for requests that are initiated from web browsers. They provide methods that allow you to verify a user's credentials and authenticate the user. In addition, these services will automatically store the proper data in the user's session and issue the proper session cookie.
 
