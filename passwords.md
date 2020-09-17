@@ -18,14 +18,14 @@ Most web applications provide a way for users to reset their forgotten passwords
 <a name="model-preparation"></a>
 ### Model Preparation
 
-Before using the password reset features of Laravel, your user must use the `Illuminate\Notifications\Notifiable` trait. Typically, this trait is automatically included on the default `App\Models\User` model that is included with Laravel.
+Before using the password reset features of Laravel, your `App\Models\User` model must use the `Illuminate\Notifications\Notifiable` trait. Typically, this trait is automatically included on the default `App\Models\User` model that is included with Laravel.
 
 Next, verify that your `App\Models\User` model implements the `Illuminate\Contracts\Auth\CanResetPassword` contract. The `App\Models\User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Passwords\CanResetPassword` trait to include the methods needed to implement the interface.
 
 <a name="database-preparation"></a>
 ### Database Preparation
 
-A table must be created to store the password reset tokens. The migration for this table is included in the default Laravel installation, so you only need to migrate your database to create this table:
+A table must be created to store your application's password reset tokens. The migration for this table is included in the default Laravel installation, so you only need to migrate your database to create this table:
 
     php artisan migrate
 
@@ -45,7 +45,7 @@ First, we will define the routes that are needed to request password reset links
         return view('auth.forgot-password');
     })->middleware(['guest'])->name('password.request');
 
-The view that is returned by this route should have an `email` field within its form, which will allow the user to request a password reset link for a given email address.
+The view that is returned by this route should have a form containing an `email` field, which will allow the user to request a password reset link for a given email address.
 
 #### Handling The Form Submission
 
@@ -62,8 +62,8 @@ Next, we will define a route will handle the form request from the "forgot passw
         );
 
         return $status === Password::RESET_LINK_SENT
-                    ? back()->with(['status' => trans($status)])
-                    : back()->withErrors(['email' => trans($status)]);
+                    ? back()->with(['status' => __($status)])
+                    : back()->withErrors(['email' => __($status)]);
     })->middleware(['guest'])->name('password.email');
 
 Before moving on, let's examine this route in more detail. First, the request's `email` attribute is validated. Next, we will use Laravel's built-in "password broker" to send a password reset link to the user. The password broker will take care of retrieving the user by the given field (in this case, the email address) and sending the user a password reset link via Laravel's built-in [notification system](/docs/{{version}}/notifications).
@@ -116,8 +116,8 @@ Of course, we need to define a route to actually handle the password reset form 
         );
 
         return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', trans($status))
-                    : back()->withErrors(['email' => trans($status)]);
+                    ? redirect()->route('login')->with('status', __($status))
+                    : back()->withErrors(['email' => __($status)]);
     })->middleware(['guest'])->name('password.update');
 
 Before moving on, let's examine this route in more detail. First, the request's `token`, `email`, and `password` attributes are validated. Next, we will use Laravel's built-in "password broker" to validate the password reset request credentials.
