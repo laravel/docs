@@ -282,7 +282,16 @@ If you would like to continue using the original auto-prefixed controller routin
     class RouteServiceProvider extends ServiceProvider
     {
         /**
-         * This namespace is applied to your controller routes.
+         * The path to the "home" route for your application.
+         *
+         * This is used by Laravel authentication to redirect users after login.
+         *
+         * @var string
+         */
+        public const HOME = '/home';
+
+        /**
+         * If specified, this namespace is automatically applied to your controller routes.
          *
          * In addition, it is set as the URL generator's root namespace.
          *
@@ -308,6 +317,18 @@ If you would like to continue using the original auto-prefixed controller routin
                     ->middleware('api')
                     ->namespace($this->namespace)
                     ->group(base_path('routes/api.php'));
+            });
+        }
+
+        /**
+         * Configure the rate limiters for the application.
+         *
+         * @return void
+         */
+        protected function configureRateLimiting()
+        {
+            RateLimiter::for('api', function (Request $request) {
+                return Limit::perMinute(60);
             });
         }
     }
