@@ -82,7 +82,7 @@ In response to the complexity of OAuth2 and developer confusion, we set out to b
 
 Laravel Sanctum is a hybrid web / API authentication package that can manage your application's entire authentication process. This is possible because when Sanctum based applications receive a request, Sanctum will first determine if the request includes a session cookie that references an authenticated session. Sanctum accomplishes this by calling Laravel's built-in authentication services which we discussed earlier. If the request is not being authenticated via a session cookie, Sanctum will inspect the request for an API token. If an API token is present, Sanctum will authenticate the request using that token. To learn more about this process, please consult Sanctum's ["how it works"](/docs/{{version}}/sanctum#how-it-works) documentation.
 
-Laravel Sanctum is the API package we have chosen to include with the Laravel Jetstream authentication scaffolding because we believe it is the best fit for the majority of web application's authentication needs.
+Laravel Sanctum is the API package we have chosen to include with the [Laravel Jetstream](https://jetstream.laravel.com) authentication scaffolding because we believe it is the best fit for the majority of web application's authentication needs.
 
 #### Summary & Choosing Your Stack
 
