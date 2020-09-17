@@ -308,7 +308,8 @@ If you would like to continue using the original auto-prefixed controller routin
                     ->middleware('api')
                     ->namespace($this->namespace)
                     ->group(base_path('routes/api.php'));
-        });
+            });
+        }
     }
 
 ### Scheduling
