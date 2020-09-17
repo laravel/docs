@@ -60,7 +60,7 @@ When a remote service needs to authenticate to access an API, cookies are not ty
 
 #### Laravel's Built-in Browser Authentication Services
 
-Laravel includes built-in authentication and session services which are typically accessed via the `Auth` and `Session` facades. These features provide cookie based authentication for requests that are initiated from web browsers. They provide methods that allow you to verify a user's credentials and authenticate the user. In addition, these services will automatically store the proper data in the user's session and issue the proper session cookie.
+Laravel includes built-in authentication and session services which are typically accessed via the `Auth` and `Session` facades. These features provide cookie based authentication for requests that are initiated from web browsers. They provide methods that allow you to verify a user's credentials and authenticate the user. In addition, these services will automatically store the proper data in the user's session and issue the proper session cookie. A discussion of how to use these services is contained within this documentation.
 
 **Jetstream / Fortify**
 
