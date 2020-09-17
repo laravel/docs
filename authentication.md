@@ -86,7 +86,7 @@ Laravel Sanctum is the API package we have chosen to include with the [Laravel J
 
 #### Summary & Choosing Your Stack
 
-In summary, if your application will be access using a browser, your application will use Laravel's built-in authentication services.
+In summary, if your application will be accessed using a browser, your application will use Laravel's built-in authentication services.
 
 Next, if your application offers an API, you will choose between [Passport](/docs/{{version}}/passport) or [Sanctum](/docs/{{version}}/sanctum) to provide API token authentication for your application. In general, Sanctum should be preferred when possible since it is a simple, complete solution for API authentication, SPA authentication, and mobile authentication, including support for "scopes" or "abilities".
 
