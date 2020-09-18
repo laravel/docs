@@ -724,7 +724,7 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 
 - Subscription Created
 - Subscription Updated
-- Subscription Deleted
+- Subscription Cancelled
 - Payment Succeeded
 - Subscription Payment Succeeded
 
