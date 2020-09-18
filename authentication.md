@@ -17,6 +17,10 @@
     - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
 - [Logging Out](#logging-out)
     - [Invalidating Sessions On Other Devices](#invalidating-sessions-on-other-devices)
+- [Password Confirmation](#password-confirmation)
+    - [Configuration](#password-confirmation-configuration)
+    - [Routing](#password-confirmation-routing)
+    - [Protecting Routes](#password-confirmation-protecting-routes)
 - [Social Authentication](/docs/{{version}}/socialite)
 - [Adding Custom Guards](#adding-custom-guards)
     - [Closure Request Guards](#closure-request-guards)
@@ -424,6 +428,61 @@ Then, you may use the `logoutOtherDevices` method on the `Auth` facade. This met
 When the `logoutOtherDevices` method is invoked, the user's other sessions will be invalidated entirely, meaning they will be "logged out" of all guards they were previously authenticated by.
 
 > {note} When using the `AuthenticateSession` middleware in combination with a custom route name for the `login` route, you must override the `unauthenticated` method on your application's exception handler to properly redirect users to your login page.
+
+<a name="password-confirmation"></a>
+## Password Confirmation
+
+While building your application, you may occasionally have actions that should require the user to confirm their password before the action is performed. Laravel includes built-in middleware to make this process a breeze. Implementing this feature will require you to define two routes: one route to display a view asking the user to confirm their password, and one route to confirm that the password is valid and redirect the user to their intended destination.
+
+> {tip} The following documentation discusses how to integrate with Laravel's password confirmation features directly; however, if you would like to get started more quickly, the [Laravel Jetstream](https://jetstream.laravel.com) authentication scaffolding package includes support for this feature!
+
+<a name="password-confirmation-configuration"></a>
+### Configuration
+
+After confirming their password, a user will not be asked to confirm their password again for three hours. However, you may configure the length of time before the user is re-prompted for their password by changing the value of the `password_timeout` configuration value within your `auth` configuration file.
+
+<a name="password-confirmation-routing"></a>
+### Routing
+
+#### The Password Confirmation Form
+
+First, we will define the route that is needed to display a view requesting that the user confirm their password:
+
+    Route::get('/confirm-password', function () {
+        return view('auth.confirm-password');
+    })->middleware(['auth'])->name('password.confirm');
+
+As you might expect, the view that is returned by this route should have a form containing an `password` field. In addition, feel free to include text within the view that explains that the user is entering a protected area of the application and must confirm their password.
+
+#### Confirming The Password
+
+Next, we will define a route will handle the form request from the "confirm password" view. This route will be responsible for validating the password and redirecting the user to their intended destination:
+
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Hash;
+
+    Route::post('/confirm-password', function (Request $request) {
+        if (! Hash::check($request->password, $request->user()->password)) {
+            return back()->withErrors([
+                'password' => ['The provided password does not match our records.']
+            ]);
+        }
+
+        $request->session()->passwordConfirmed();
+
+        return redirect()->intended();
+    })->middleware(['auth'])->name('password.confirm');
+
+Before moving on, let's examine this route in more detail. First, the request's `password` attribute is determined to actually match the authenticated user's password. If the password is valid, we need to inform Laravel's session that the user has confirmed their password. The `passwordConfirmed` method will set a timestamp in the user's session that Laravel can use to determine when the user last confirmed their password. Finally, we can redirect the user to their intended destination.
+
+<a name="password-confirmation-protecting-routes"></a>
+### Protecting Routes
+
+Finally, you should ensure that the route that performs the confirmed action is assigned the `password.confirm` middleware. This middleware is included with the default installation of Laravel and will automatically store the user's intended destination in the session so that the user may be redirected to that location after confirming their password:
+
+    Route::post('/settings', function () {
+        // ...
+    })->middleware(['password.confirm']);
 
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards
