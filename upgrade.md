@@ -46,6 +46,8 @@ PHP 7.1 will no longer be actively maintained as of December 2019. Therefore, La
 
 Update your `laravel/framework` dependency to `^6.0` in your `composer.json` file.
 
+If it exists, update your `laravel/passport` dependency to `^9.3.2` in your `composer.json` file.
+
 Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 6 support.
 
 ### Authorization
