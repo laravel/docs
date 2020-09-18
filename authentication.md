@@ -452,7 +452,7 @@ First, we will define the route that is needed to display a view requesting that
         return view('auth.confirm-password');
     })->middleware(['auth'])->name('password.confirm');
 
-As you might expect, the view that is returned by this route should have a form containing an `password` field. In addition, feel free to include text within the view that explains that the user is entering a protected area of the application and must confirm their password.
+As you might expect, the view that is returned by this route should have a form containing a `password` field. In addition, feel free to include text within the view that explains that the user is entering a protected area of the application and must confirm their password.
 
 #### Confirming The Password
 
@@ -478,7 +478,11 @@ Before moving on, let's examine this route in more detail. First, the request's 
 <a name="password-confirmation-protecting-routes"></a>
 ### Protecting Routes
 
-Finally, you should ensure that the route that performs the confirmed action is assigned the `password.confirm` middleware. This middleware is included with the default installation of Laravel and will automatically store the user's intended destination in the session so that the user may be redirected to that location after confirming their password. After storing the user's intended destination in the session, this middleware will redirect the user to the `password.confirm` [named route](/docs/{{version}}/routing#named-routes):
+You should ensure that any route that performs an action that should require recent password confirmation is assigned the `password.confirm` middleware. This middleware is included with the default installation of Laravel and will automatically store the user's intended destination in the session so that the user may be redirected to that location after confirming their password. After storing the user's intended destination in the session, the middleware will redirect the user to the `password.confirm` [named route](/docs/{{version}}/routing#named-routes):
+
+    Route::get('/settings', function () {
+        // ...
+    })->middleware(['password.confirm']);
 
     Route::post('/settings', function () {
         // ...
