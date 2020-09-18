@@ -17,7 +17,7 @@
     - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
 - [Logging Out](#logging-out)
     - [Invalidating Sessions On Other Devices](#invalidating-sessions-on-other-devices)
-- [Social Authentication](https://github.com/laravel/socialite)
+- [Social Authentication](/docs/{{version}}/socialite)
 - [Adding Custom Guards](#adding-custom-guards)
     - [Closure Request Guards](#closure-request-guards)
 - [Adding Custom User Providers](#adding-custom-user-providers)
