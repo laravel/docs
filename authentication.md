@@ -478,7 +478,7 @@ Before moving on, let's examine this route in more detail. First, the request's 
 <a name="password-confirmation-protecting-routes"></a>
 ### Protecting Routes
 
-Finally, you should ensure that the route that performs the confirmed action is assigned the `password.confirm` middleware. This middleware is included with the default installation of Laravel and will automatically store the user's intended destination in the session so that the user may be redirected to that location after confirming their password:
+Finally, you should ensure that the route that performs the confirmed action is assigned the `password.confirm` middleware. This middleware is included with the default installation of Laravel and will automatically store the user's intended destination in the session so that the user may be redirected to that location after confirming their password. After storing the user's intended destination in the session, this middleware will redirect the user to the `password.confirm` [named route](/docs/{{version}}/routing#named-routes):
 
     Route::post('/settings', function () {
         // ...
