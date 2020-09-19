@@ -76,6 +76,12 @@ The `route` helper may also be used to generate URLs for routes with multiple pa
     echo route('comment.show', ['post' => 1, 'comment' => 3]);
 
     // http://example.com/post/1/comment/3
+    
+You can also overload the `route` helper, with parameters that are not present in the route. These will instead be added as query parameters.
+
+    echo route('post.show', ['post' => $post, 'search' => 'Laravel']);
+    
+    // http://example.com/post/1?search=Laravel
 
 <a name="signed-urls"></a>
 ### Signed URLs
