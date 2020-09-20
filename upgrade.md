@@ -528,6 +528,10 @@ All `array_*` and `str_*` global helpers [have been deprecated](https://github.c
 
 The impact of this change has been marked as `medium` since the helpers have been moved to the new [laravel/helpers](https://github.com/laravel/helpers) package which offers a backwards compatibility layer for all of the global array and string functions.
 
+After updating Laravel do not forget to clear the views that were compiled using the old helper methods.
+
+    php artisan view:clear
+
 <a name="deferred-service-providers"></a>
 #### Deferred Service Providers
 
