@@ -63,6 +63,12 @@ To generate a URL to this route, you may use the `route` helper like so:
 
     // http://example.com/post/1
 
+Any additional array parameters that do not correspond to the route's definition parameters will be added to the URL's query string:
+
+    echo route('post.show', ['post' => 1, 'search' => 'rocket']);
+
+    // http://example.com/post/1?search=rocket
+
 You will often be generating URLs using the primary key of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's primary key:
 
     echo route('post.show', ['post' => $post]);
@@ -76,12 +82,6 @@ The `route` helper may also be used to generate URLs for routes with multiple pa
     echo route('comment.show', ['post' => 1, 'comment' => 3]);
 
     // http://example.com/post/1/comment/3
-    
-You can also overload the `route` helper, with parameters that are not present in the route. These will instead be added as query parameters.
-
-    echo route('post.show', ['post' => $post, 'search' => 'Laravel']);
-    
-    // http://example.com/post/1?search=Laravel
 
 <a name="signed-urls"></a>
 ### Signed URLs
