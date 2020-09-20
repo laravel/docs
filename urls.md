@@ -63,6 +63,12 @@ To generate a URL to this route, you may use the `route` helper like so:
 
     // http://example.com/post/1
 
+Any additional array parameters that do not correspond to the route's definition parameters will be added to the URL's query string:
+
+    echo route('post.show', ['post' => 1, 'search' => 'rocket']);
+
+    // http://example.com/post/1?search=rocket
+
 You will often be generating URLs using the primary key of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's primary key:
 
     echo route('post.show', ['post' => $post]);
