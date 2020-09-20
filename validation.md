@@ -659,6 +659,8 @@ Below is a list of all available validation rules and their function:
 [Starts With](#rule-starts-with)
 [String](#rule-string)
 [Timezone](#rule-timezone)
+[Unfilled If](#rule-unfilled-if)
+[Unfilled With](#rule-unfilled-with)
 [Unique (Database)](#rule-unique)
 [URL](#rule-url)
 [UUID](#rule-uuid)
@@ -1131,6 +1133,17 @@ The field under validation must be a string. If you would like to allow the fiel
 #### timezone
 
 The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function.
+
+<a name="rule-unfilled-if"></a>
+#### unfilled_if:_anotherfield_,_value_,...
+
+The field under validation must not be present if the _anotherfield_ field is equal to any _value_.
+
+<a name="rule-unfilled-with"></a>
+#### unfilled_with:_foo_,_bar_,...
+
+The field under validation must not be present _only if any_ of the other specified fields are present.
+
 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
