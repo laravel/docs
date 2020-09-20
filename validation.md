@@ -147,7 +147,7 @@ If your HTTP request contains "nested" parameters, you may specify them in your 
         'author.description' => 'required',
     ]);
 
-On the other hand, if your field name contains a literal dot, you can explicitly prevent this from being interpreted as "dot" syntax:
+On the other hand, if your field name contains a literal period, you can explicitly prevent this from being interpreted as "dot" syntax by escaping the period with a backslash:
 
     $request->validate([
         'title' => 'required|unique:posts|max:255',
