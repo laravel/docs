@@ -285,6 +285,10 @@ All `str_` and `array_` helpers have been moved to the new `laravel/helpers` Com
 
     composer require laravel/helpers
 
+If you do not use the new `laravel/helpers` package do not forget to clear the views that were compiled using the old helper methods after updating to Laravel 6.x.
+
+    php artisan view:clear
+
 ### Localization
 
 <a name="trans-and-trans-choice"></a>
