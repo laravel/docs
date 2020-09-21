@@ -134,6 +134,21 @@ Laravel's [model factories](/docs/{{version}}/database-testing#creating-factorie
 
     composer require laravel/legacy-factories
 
+When using the old style of factories in combination with the new factory classes, it's best to place your old factories in a separate directory like `database/legacy-factories`. Then update your `composer.json`'s `autoload` settings to the following:
+
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        },
+        "classmap": [
+            "database/legacy-factories"
+        ]
+    },
+    
+Don't forget to run `composer dump-autoload` after moving the files to a different directory.
+
 #### The `Castable` Interface
 
 **Likelihood Of Impact: Low**
