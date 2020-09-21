@@ -513,6 +513,7 @@ Alternatively, your subscriber's `subscribe` method may return an array of event
             Login::class => [
                 [UserEventSubscriber::class, 'handleUserLogin']
             ],
+
             Logout::class => [
                 [UserEventSubscriber::class, 'handleUserLogout']
             ],
