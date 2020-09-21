@@ -42,6 +42,8 @@ All Laravel applications include Tinker by default. However, you may install it 
 
     composer require laravel/tinker
 
+> {tip} Looking for a graphical UI for interacting with your Laravel application? Check out [Tinkerwell](https://tinkerwell.app)!
+
 #### Usage
 
 Tinker allows you to interact with your entire Laravel application on the command line, including the Eloquent ORM, jobs, events, and more. To enter the Tinker environment, run the `tinker` Artisan command:
