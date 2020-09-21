@@ -133,6 +133,8 @@ Next, in your `composer.json` file, remove `classmap` block from the `autoload` 
 Laravel's [model factories](/docs/{{version}}/database-testing#creating-factories) feature has been totally rewritten to support classes and is not compatible with Laravel 7.x style factories. However, to ease the upgrade process, a new `laravel/legacy-factories` package has been created to continue using your existing factories with Laravel 8.x. You may install this package via Composer:
 
     composer require laravel/legacy-factories
+    
+Please note that you cannot use the new style of factories in combination with the old style. If you'd like to use the new model factory classes you'll need to upgrade your old factories first.
 
 #### The `Castable` Interface
 
