@@ -387,9 +387,7 @@ The `deletePaymentMethods` method will delete all of the payment method informat
 <a name="subscriptions"></a>
 ## Subscriptions
 
-Subscriptions provide a way to set up recurring payments for your customers. Control things like quantities, multiple subscription plans, trialing and much more.
-
-An important note in general when working with subscriptions is that Cashier always considers the lastly added subscription in the database for a specific subscription name as the actively used subscription. So for example if you have two subscriptions of the name "default", one cancelled and one active one that was added later on, only the lastly added subscription will be used when performing status checks such as `subscribed`, `onTrial`, `subscribedToPlan` etc. If you want to perform actions such as re-activiting subscriptions you should only perform them against the lastly added subscriptions. The other ones stored in the database are purely for referencing and historical data purposes.
+Subscriptions provide a way to set up recurring payments for your customers and support multiple subscription plans, subscription quantities, trials, and more.
 
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
@@ -486,6 +484,8 @@ The `recurring` method may be used to determine if the user is currently subscri
     if ($user->subscription('default')->recurring()) {
         //
     }
+
+> {note} If a user has two subscriptions with the same name, the most recent subscription will always be returned by the `subscription` method. For example, a user might have two subscription records named `default`; however, one of the subscriptions may be an old, expired subscription, while the other is the current, active subscription. The most recent subscription will always be returned while older subscriptions are kept in the database for historical review.
 
 #### Cancelled Subscription Status
 
