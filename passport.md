@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
 - [Upgrading Passport](#upgrading)
 - [Installation](#installation)
-    - [Frontend Quickstart](#frontend-quickstart)
     - [Deploying Passport](#deploying-passport)
     - [Migration Customization](#migration-customization)
 - [Configuration](#configuration)
@@ -141,42 +140,6 @@ Finally, in your `config/auth.php` configuration file, you should set the `drive
 You may run the `passport:install` command with the `--uuids` option present. This flag will instruct Passport that you would like to use UUIDs instead of auto-incrementing integers as the Passport `Client` model's primary key values. After running the `passport:install` command with the `--uuids` option, you will be given additional instructions regarding disabling Passport's default migrations:
 
     php artisan passport:install --uuids
-
-<a name="frontend-quickstart"></a>
-### Frontend Quickstart
-
-> {note} In order to use the Passport Vue components, you must be using the [Vue](https://vuejs.org) JavaScript framework. These components also use the Bootstrap CSS framework. However, even if you are not using these tools, the components serve as a valuable reference for your own frontend implementation.
-
-Passport ships with a JSON API that you may use to allow your users to create clients and personal access tokens. However, it can be time consuming to code a frontend to interact with these APIs. So, Passport also includes pre-built [Vue](https://vuejs.org) components you may use as an example implementation or starting point for your own implementation.
-
-To publish the Passport Vue components, use the `vendor:publish` Artisan command:
-
-    php artisan vendor:publish --tag=passport-components
-
-The published components will be placed in your `resources/js/components` directory. Once the components have been published, you should register them in your `resources/js/app.js` file:
-
-    Vue.component(
-        'passport-clients',
-        require('./components/passport/Clients.vue').default
-    );
-
-    Vue.component(
-        'passport-authorized-clients',
-        require('./components/passport/AuthorizedClients.vue').default
-    );
-
-    Vue.component(
-        'passport-personal-access-tokens',
-        require('./components/passport/PersonalAccessTokens.vue').default
-    );
-
-> {note} Prior to Laravel v5.7.19, appending `.default` when registering components results in a console error. An explanation for this change can be found in the [Laravel Mix v4.0.0 release notes](https://github.com/JeffreyWay/laravel-mix/releases/tag/v4.0.0).
-
-After registering the components, make sure to run `npm run dev` to recompile your assets. Once you have recompiled your assets, you may drop the components into one of your application's templates to get started creating clients and personal access tokens:
-
-    <passport-clients></passport-clients>
-    <passport-authorized-clients></passport-authorized-clients>
-    <passport-personal-access-tokens></passport-personal-access-tokens>
 
 <a name="deploying-passport"></a>
 ### Deploying Passport
@@ -320,8 +283,6 @@ Since your users will not be able to utilize the `client` command, Passport prov
 However, you will need to pair Passport's JSON API with your own frontend to provide a dashboard for your users to manage their clients. Below, we'll review all of the API endpoints for managing clients. For convenience, we'll use [Axios](https://github.com/axios/axios) to demonstrate making HTTP requests to the endpoints.
 
 The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
-
-> {tip} If you don't want to implement the entire client management frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
 
 #### `GET /oauth/clients`
 
@@ -855,8 +816,6 @@ Once you have created a personal access client, you may issue tokens for a given
 Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
 
 The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
-
-> {tip} If you don't want to implement the personal access token frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
 
 #### `GET /oauth/scopes`
 
