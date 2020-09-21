@@ -387,6 +387,10 @@ The `deletePaymentMethods` method will delete all of the payment method informat
 <a name="subscriptions"></a>
 ## Subscriptions
 
+Subscriptions provide a way to set up recurring payments for your customers. Control things like quantities, multiple subscription plans, trialing and much more.
+
+An important note in general when working with subscriptions is that Cashier always considers the lastly added subscription in the database for a specific subscription name as the actively used subscription. So for example if you have two subscriptions of the name "default", one cancelled and one active one that was added later on, only the lastly added subscription will be used when performing status checks such as `subscribed`, `onTrial`, `subscribedToPlan` etc.
+
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
 
