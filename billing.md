@@ -387,6 +387,8 @@ The `deletePaymentMethods` method will delete all of the payment method informat
 <a name="subscriptions"></a>
 ## Subscriptions
 
+Subscriptions provide a way to set up recurring payments for your customers and support multiple subscription plans, subscription quantities, trials, and more.
+
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
 
@@ -482,6 +484,8 @@ The `recurring` method may be used to determine if the user is currently subscri
     if ($user->subscription('default')->recurring()) {
         //
     }
+
+> {note} If a user has two subscriptions with the same name, the most recent subscription will always be returned by the `subscription` method. For example, a user might have two subscription records named `default`; however, one of the subscriptions may be an old, expired subscription, while the other is the current, active subscription. The most recent subscription will always be returned while older subscriptions are kept in the database for historical review.
 
 #### Cancelled Subscription Status
 
