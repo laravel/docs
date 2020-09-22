@@ -7,6 +7,7 @@
 - [Upgrading Horizon](#upgrading-horizon)
 - [Running Horizon](#running-horizon)
     - [Deploying Horizon](#deploying-horizon)
+- [Clearing Jobs From Queues](#clearing-jobs-from-queues)
 - [Tags](#tags)
 - [Notifications](#notifications)
 - [Metrics](#metrics)
@@ -177,6 +178,19 @@ Once the configuration file has been created, you may update the Supervisor conf
     sudo supervisorctl start horizon
 
 For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
+
+<a name="clearing-jobs-from-queues"></a>
+## Clearing Jobs From Queues
+
+If you would like to delete all jobs from the default queue, you may do so using the `horizon:clear` Artisan command:
+
+    php artisan horizon:clear
+
+You may also provide the `queue` option to delete jobs from a specific queue:
+
+    php artisan horizon:clear --queue=emails
+
+> {note} When using Horizon, it is preferable that you use the `horizon:clear` command instead of the `queue:clear` command to clear jobs from the queue, otherwise your Horizon dashboard will continue to show the cleared jobs as pending.
 
 <a name="tags"></a>
 ## Tags
