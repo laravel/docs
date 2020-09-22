@@ -427,7 +427,7 @@ If you would like to specify the connection and queue that should be used for th
 
 #### Chain Failures
 
-When chaining jobs, you may use the `chain` method to specify a Closure that should be invoked if a job within the chain fails. The given callback will receive the exception instance that caused the job failure:
+When chaining jobs, you may use the `catch` method to specify a Closure that should be invoked if a job within the chain fails. The given callback will receive the exception instance that caused the job failure:
 
     use Illuminate\Support\Facades\Bus;
     use Throwable;
