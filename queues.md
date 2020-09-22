@@ -1227,6 +1227,8 @@ For convenience, you may choose to automatically delete jobs with missing models
 <a name="clearing-jobs-from-queues"></a>
 ## Clearing Jobs From Queues
 
+> {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:clear` command to clear jobs from the queue instead of the `queue:clear` command.
+
 If you would like to delete all jobs from the default queue of the default connection, you may do so using the `queue:clear` Artisan command:
 
     php artisan queue:clear
