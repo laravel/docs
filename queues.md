@@ -222,7 +222,7 @@ Job middleware allow you to wrap custom logic around the execution of queued job
         }, function () {
             // Could not obtain lock...
 
-            return $this->release(5);
+            return $this->job->release(5);
         });
     }
 
