@@ -31,7 +31,7 @@ Laravel 8 continues the improvements made in Laravel 7.x by introducing Laravel 
 
 _Laravel Jetstream was written by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-[Laravel Jetstream](https://github.com/laravel/jetstream) is a beautifully designed application scaffolding for Laravel. Jetstream provides the perfect starting point for your next project and includes login, registration, email verification, two-factor authentication, session management, API support via Laravel Sanctum, and optional team management. Laravel Jetstream replaces and improves upon the legacy authentication UI scaffolding available for previous versions of Laravel.
+[Laravel Jetstream](https://jetstream.laravel.com) is a beautifully designed application scaffolding for Laravel. Jetstream provides the perfect starting point for your next project and includes login, registration, email verification, two-factor authentication, session management, API support via Laravel Sanctum, and optional team management. Laravel Jetstream replaces and improves upon the legacy authentication UI scaffolding available for previous versions of Laravel.
 
 Jetstream is designed using [Tailwind CSS](https://tailwindcss.com) and offers your choice of [Livewire](https://laravel-livewire.com) or [Inertia](https://inertiajs.com) scaffolding.
 
