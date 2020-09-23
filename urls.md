@@ -193,7 +193,7 @@ The `$middlewarePriority` property is defined in the base `Illuminate\Foundation
      */
     protected $middlewarePriority = [
         // ...
-         \App\Http\MiddlewareSetDefaultLocaleForUrls::class,
+         \App\Http\Middleware\SetDefaultLocaleForUrls::class,
          \Illuminate\Routing\Middleware\SubstituteBindings::class,
          // ...
     ];
