@@ -241,7 +241,7 @@ For consistency with other dispatching methods, the `allOnQueue()` and `allOnCon
         new ReleasePodcast
     ])->onConnection('redis')->onQueue('podcasts')->dispatch();
 
-The `allOnQueue()` and `allOnConnection()` still exists when using `dispatch()` helper, which will create an instance of `PendingDuspatch`.
+The `allOnQueue()` and `allOnConnection()` still exists when using `dispatch()` helper, which will create an instance of `PendingDispatch`.
 
 <a name="failed-jobs-table-batch-support"></a>
 #### Failed Jobs Table Batch Support
