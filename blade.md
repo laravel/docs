@@ -726,6 +726,26 @@ The final, rendered HTML of the component will appear like the following:
         <!-- Contents of the $message variable -->
     </div>
 
+#### Non-Class Attribute Merging
+
+When merging attributes that are not `class` attributes, the values provided to the `merge` method will be considered the "default" values of attribute which can be overwritten by the component's consumer. Unlike `class` attributes, non-class attributes are not appended to each other. For example, an `button` component may look like the following:
+
+    <button {{ $attributes->merge(['type' => 'button']) }}>
+        {{ $slot }}
+    </button>
+
+To render the button component with a custom `type`, it may be specified when consuming the component. If no type is specified, the `button` type will be used:
+
+    <x-button type="submit">
+        Submit
+    </x-button>
+
+The rendered HTML of the `button` component in this example would be:
+
+    <button type="submit">
+        Submit
+    </button>
+
 #### Filtering Attributes
 
 You may filter attributes using the `filter` method. This method accepts a Closure which should return `true` if you wish to retain the attribute in the attribute bag:
