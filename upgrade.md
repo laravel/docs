@@ -66,6 +66,8 @@ In addition, the Laravel installer has been updated to support `composer create-
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 8 support.
 
+> {tip} If any third-party packages do not yet have Guzzle 7 support, then you may use the `^6.5.5|^7.0.1` version constraint.
+
 ### Collections
 
 #### The `isset` Method
