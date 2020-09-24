@@ -726,23 +726,25 @@ The final, rendered HTML of the component will appear like the following:
         <!-- Contents of the $message variable -->
     </div>
 
-When passing through attributes that are not `class` they will be overwritten:
+#### Non-Class Attributes
 
-    <div {{ $attributes->merge(['data-id' => 'alert']) }}>
-        {{ $message }}
-    </div>
+When merging attributes that are not `class` attributes, the values provided to the `merge` method will be considered the "default" values of attribute which can be overwritten by the component's consumer. Unlike `class` attributes, non-class attributes are not appended to each other. For example, an `button` component may look like the following:
 
-The `data-id` attribute is overwritten when we consume the component like so:
+    <button {{ $attributes->merge(['type' => 'button']) }}>
+        {{ $slot }}
+    </button>
 
-    <x-alert data-id="success">
-        {{ $message }}
-    </x-alert>
+To render the button component with a custom `type`, it may be specified when consuming the component. If no type is specified, the `button` type will be used:
 
-The final, rendered HTML of the component will appear like the following:
+    <x-button type="submit">
+        Submit
+    </x-button>
 
-    <div data-id="success">
-        <!-- Contents of the $message variable -->
-    </div>
+The rendered HTML of the `button` component in this example would be:
+
+    <button type="submit">
+        Submit
+    </button>
 
 #### Filtering Attributes
 
