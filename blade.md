@@ -726,7 +726,7 @@ The final, rendered HTML of the component will appear like the following:
         <!-- Contents of the $message variable -->
     </div>
 
-#### Non-Class Attributes
+#### Non-Class Attribute Merging
 
 When merging attributes that are not `class` attributes, the values provided to the `merge` method will be considered the "default" values of attribute which can be overwritten by the component's consumer. Unlike `class` attributes, non-class attributes are not appended to each other. For example, an `button` component may look like the following:
 
