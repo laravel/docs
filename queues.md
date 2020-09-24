@@ -1202,11 +1202,11 @@ To retry all of your failed jobs, execute the `queue:retry` command and pass `al
 
     php artisan queue:retry all
 
-> {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
-
 If you would like to delete a failed job, you may use the `queue:forget` command:
 
     php artisan queue:forget 5
+
+> {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
 
 To delete all of your failed jobs, you may use the `queue:flush` command:
 
