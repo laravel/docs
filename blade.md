@@ -726,6 +726,24 @@ The final, rendered HTML of the component will appear like the following:
         <!-- Contents of the $message variable -->
     </div>
 
+When passing through attributes that are not `class` they will be overwritten:
+
+    <div {{ $attributes->merge(['data-id' => 'alert']) }}>
+        {{ $message }}
+    </div>
+
+The `data-id` attribute is overwritten when we consume the component like so:
+
+    <x-alert data-id="success">
+        {{ $message }}
+    </x-alert>
+
+The final, rendered HTML of the component will appear like the following:
+
+    <div data-id="success">
+        <!-- Contents of the $message variable -->
+    </div>
+
 #### Filtering Attributes
 
 You may filter attributes using the `filter` method. This method accepts a Closure which should return `true` if you wish to retain the attribute in the attribute bag:
