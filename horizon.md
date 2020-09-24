@@ -11,6 +11,7 @@
 - [Notifications](#notifications)
 - [Metrics](#metrics)
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
+- [Deleting Failed Jobs](#deleting-failed-jobs)
 
 <a name="introduction"></a>
 ## Introduction
@@ -297,3 +298,10 @@ If you would like to delete all jobs from the default queue, you may do so using
 You may also provide the `queue` option to delete jobs from a specific queue:
 
     php artisan horizon:clear --queue=emails
+
+<a name="deleting-failed-jobs"></a>
+## Deleting Failed Jobs
+
+If you would like to delete a failed job, you may use the `horizon:forget` command:
+
+    php artisan horizon:forget 5
