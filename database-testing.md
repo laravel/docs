@@ -128,21 +128,7 @@ Via the `faker` property, factories have access to the [Faker](https://github.co
 <a name="factory-states"></a>
 ### Factory States
 
-State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `suspended` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like. After all, it's just a typical PHP method:
-
-    /**
-     * Indicate that the user is suspended.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function suspended()
-    {
-        return $this->state([
-            'account_status' => 'suspended',
-        ]);
-    }
-
-If your state transformation requires access to the other attributes defined by the factory, you may pass a callback to the `state` method. The callback will receive the array of raw attributes defined for the factory:
+State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `suspended` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like. After all, it's just a typical PHP method. The provided state manipulation callback will receive the array of raw attributes defined for the factory and should return an array of attributes to modify:
 
     /**
      * Indicate that the user is suspended.
