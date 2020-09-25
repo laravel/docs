@@ -160,11 +160,8 @@ You should check out a tagged version of Homestead since the `master` branch may
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
-    // Mac / Linux...
     bash init.sh
 
-    // Windows...
-    init.bat
 
 <a name="configuring-homestead"></a>
 ### Configuring Homestead
