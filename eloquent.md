@@ -457,6 +457,8 @@ The `update` method expects an array of column and value pairs representing the 
 
 > {note} When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
 
+> {note} Use `App\Flight::find($id)->update($data)` instead of `App\Flight::where('id', $id)->update($data)` for single model instance updates if you want to make use of any specified mutators, dates and guarded/fillable attributes.
+
 #### Examining Attribute Changes
 
 Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how its attributes have changed from when they were originally loaded.
