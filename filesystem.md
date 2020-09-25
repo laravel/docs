@@ -10,6 +10,7 @@
 - [Retrieving Files](#retrieving-files)
     - [Downloading Files](#downloading-files)
     - [File URLs](#file-urls)
+    - [File Paths](#file-paths)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
     - [File Uploads](#file-uploads)
@@ -228,6 +229,15 @@ If you would like to pre-define the host for file URLs generated using the `Stor
         'url' => env('APP_URL').'/storage',
         'visibility' => 'public',
     ],
+
+<a name="file-paths"></a>
+### File Paths
+
+You may use the `path` method to get the path for a given file. If you are using the `local` driver, this will return the absolute path to the file. If you are using the `s3` driver, this method will return the relative path to the file in the S3 bucket:
+
+    use Illuminate\Support\Facades\Storage;
+
+    $path = Storage::path('file.jpg');
 
 <a name="file-metadata"></a>
 ### File Metadata
