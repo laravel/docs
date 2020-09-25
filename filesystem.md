@@ -233,7 +233,7 @@ If you would like to pre-define the host for file URLs generated using the `Stor
 <a name="file-paths"></a>
 ### File Paths
 
-You may use the `path` method to get the path for the given file. If you are using the `local` driver, this will return an absolute path on the filesystem to the file. If you are using the `s3` driver, the relative path to the file in the S3 bucket will be returned:
+You may use the `path` method to get the path for a given file. If you are using the `local` driver, this will return the absolute path to the file. If you are using the `s3` driver, this method will return the relative path to the file in the S3 bucket:
 
     use Illuminate\Support\Facades\Storage;
 
