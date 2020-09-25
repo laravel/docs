@@ -114,6 +114,8 @@ The following dependencies are needed for the listed queue drivers:
 - Redis: `predis/predis ~1.0` or phpredis PHP extension
 </div>
 
+> {note} Using the phpredis extension will require you to rename the `Redis` Facade alias in your `app.php` config file, because it will conflict with the installed PHP `Redis` class name
+
 <a name="creating-jobs"></a>
 ## Creating Jobs
 
