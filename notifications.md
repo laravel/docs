@@ -10,12 +10,12 @@
     - [On-Demand Notifications](#on-demand-notifications)
 - [Mail Notifications](#mail-notifications)
     - [Formatting Mail Messages](#formatting-mail-messages)
-    - [Attachments](#mail-attachments)
     - [Customizing The Sender](#customizing-the-sender)
     - [Customizing The Recipient](#customizing-the-recipient)
     - [Customizing The Subject](#customizing-the-subject)
     - [Customizing The Mailer](#customizing-the-mailer)
     - [Customizing The Templates](#customizing-the-templates)
+    - [Attachments](#mail-attachments)
     - [Previewing Mail Notifications](#previewing-mail-notifications)
 - [Markdown Mail Notifications](#markdown-mail-notifications)
     - [Generating The Message](#generating-the-message)
@@ -275,63 +275,6 @@ Some notifications inform users of errors, such as a failed invoice payment. You
                     ->line('...');
     }
 
-<a name="mail-attachments"></a>
-### Attachments
-
-To add attachments to an email notification, use the `attach` method within the notification class' `toMail` method. The `attach` method accepts the full (absolute) path to the file as its first argument:
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->attach('/path/to/file');
-    }
-
-When attaching files to a message, you may also specify the display name and / or MIME type by passing an `array` as the second argument to the `attach` method:
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->attach('/path/to/file', [
-                        'as' => 'name.pdf',
-                        'mime' => 'application/pdf',
-                    ]);
-    }
-
-> {tip} Unlike attaching files in mailable objects, you may not attach a file right from the storage disk using `attachFromStorage`. You should rather use `attach` method with an absolute path to the file on the storage disk.
-
-#### Raw Data Attachments
-
-Just like in a [mailable object](/docs/{{version}}/mail), the `attachData` method may be used to attach a raw string of bytes as an attachment.
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->attachData($this->pdf, 'name.pdf', [
-                        'mime' => 'application/pdf',
-                    ]);
-    }
-
 <a name="customizing-the-sender"></a>
 ### Customizing The Sender
 
@@ -424,6 +367,63 @@ By default, the email notification will be sent using the default driver defined
 You can modify the HTML and plain-text template used by mail notifications by publishing the notification package's resources. After running this command, the mail notification templates will be located in the `resources/views/vendor/notifications` directory:
 
     php artisan vendor:publish --tag=laravel-notifications
+
+<a name="mail-attachments"></a>
+### Attachments
+
+To add attachments to an email notification, use the `attach` method while building your message. The `attach` method accepts the full (absolute) path to the file as its first argument:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->greeting('Hello!')
+                    ->attach('/path/to/file');
+    }
+
+When attaching files to a message, you may also specify the display name and / or MIME type by passing an `array` as the second argument to the `attach` method:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->greeting('Hello!')
+                    ->attach('/path/to/file', [
+                        'as' => 'name.pdf',
+                        'mime' => 'application/pdf',
+                    ]);
+    }
+
+> {tip} Unlike attaching files in mailable objects, you may not attach a file directly from the storage disk using `attachFromStorage`. You should rather use `attach` method with an absolute path to the file on the storage disk. Alternatively, you could return a [mailable](/docs/{{version}}/mail#generating-mailables) from the `toMail` method.
+
+#### Raw Data Attachments
+
+The `attachData` method may be used to attach a raw string of bytes as an attachment:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->greeting('Hello!')
+                    ->attachData($this->pdf, 'name.pdf', [
+                        'mime' => 'application/pdf',
+                    ]);
+    }
 
 <a name="previewing-mail-notifications"></a>
 ### Previewing Mail Notifications
