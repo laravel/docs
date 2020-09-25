@@ -106,11 +106,11 @@ Before using Cashier, add the `Billable` trait to your model definition. This tr
         use Billable;
     }
 
-Cashier assumes your Billable model will be the `App\Models\User` class that ships with Laravel. If you wish to change this you can specify a different model in your `.env` file:
+Cashier assumes your Billable model will be `App\User`. If you wish to change this you can specify a different model in your `.env` file:
 
     CASHIER_MODEL=App\Models\User
 
-> {note} If you're using a model other than Laravel's supplied `App\Models\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model's table name.
+> {note} If you're using a model other than the `App\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model's table name.
 
 <a name="api-keys"></a>
 ### API Keys
