@@ -890,6 +890,12 @@ Cashier refers to this type of trial as a "generic trial", since it is not attac
         // User is within their trial period...
     }
 
+To get the specific end date for a trial period, you can make use of the `trialEndsAt` method on a customer. This method will return a Carbon date object if a user is on a trial or `null` when they aren't. You may also pass an optional subscription name parameter if you want to get the end trial date for a specific subscription other than the default one:
+
+    if ($user->onTrial()) {
+        $trialEndsAt = $user->trialEndsAt('main');
+    }
+
 You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
 
     if ($user->onGenericTrial()) {
