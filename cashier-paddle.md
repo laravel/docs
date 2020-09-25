@@ -695,12 +695,6 @@ Cashier refers to this type of trial as a "generic trial", since it is not attac
         // User is within their trial period...
     }
 
-You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
-
-    if ($user->onGenericTrial()) {
-        // User is within their "generic" trial period...
-    }
-
 Once you are ready to create an actual subscription for the user, you may use the `newSubscription` method as usual:
 
     $user = User::find(1);
@@ -708,6 +702,18 @@ Once you are ready to create an actual subscription for the user, you may use th
     $payLink = $user->newSubscription('default', $monthly = 12345)
         ->returnTo(route('home'))
         ->create();
+
+To retrieve the user's trial ending date, you may use the `trialEndsAt` method. This method will return a Carbon date instance if a user is on a trial or `null` if they aren't. You may also pass an optional subscription name parameter if you would like to get the trial ending date for a specific subscription other than the default one:
+
+    if ($user->onTrial()) {
+        $trialEndsAt = $user->trialEndsAt('main');
+    }
+
+You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
+
+    if ($user->onGenericTrial()) {
+        // User is within their "generic" trial period...
+    }
 
 > {note} There is no way to extend or modify a trial period on a Paddle subscription after it has been created.
 
