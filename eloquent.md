@@ -436,6 +436,19 @@ To create a new record in the database, create a new model instance, set attribu
 
 In this example, we assign the `name` parameter from the incoming HTTP request to the `name` attribute of the `App\Models\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually.
 
+It is also possible to create instances directly from an associative array, while taking advantage of the model's guarded/fillable attributes, dates, mutators/accessors and automatically recorded timestamps, by using the create function of the `Model` class:
+
+     /**
+     * Create a new flight instance from valid data
+     *
+     * @param  $data
+     * @return Flight
+     */
+    public function create($data)
+    {
+        return App\Models\Flight::create($data);
+    }
+
 <a name="updates"></a>
 ### Updates
 
@@ -446,10 +459,26 @@ The `save` method may also be used to update models that already exist in the da
     $flight->name = 'New Flight Name';
 
     $flight->save();
+    
+
+It is also possible to update an existing instance directly, while taking advantage of the model features and rules (guarded/fillable attributes, dates, mutators/accessors, timestamps). When the identifier is known, an instance can be updated from an associative array where the keys correspond to fillable attribute columns:
+
+    public function update($id, $data)
+    {
+        return App\Models\Flight::find($id)->update($data);
+    }
+
+It is only necessary to provide keys for the fields that are to be updated. In the example above, datetime conversions, mutations and guards will be applied as specified in the `Flight` class. It is possible to bypass the rules and mutators defined on the model with the `update` function of the `Builder` rather than `Model`, by using the `where` method instead of `find`:
+
+    public function update($id, $data)
+    {
+        return App\Models\Flight::where('id', $id)->update($data);
+    }
+ 
 
 #### Mass Updates
 
-Updates can also be performed against any number of models that match a given query. In this example, all flights that are `active` and have a `destination` of `San Diego` will be marked as delayed:
+The Eloquent `Builder` methods can also be used to perform updates against any number of models that match a given query. In this example, all flights that are `active` and have a `destination` of `San Diego` will be marked as delayed:
 
     App\Models\Flight::where('active', 1)
               ->where('destination', 'San Diego')
