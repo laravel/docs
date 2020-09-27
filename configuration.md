@@ -152,7 +152,7 @@ After placing the application in maintenance mode, you may navigate to the appli
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
-#### Pre-Rendering The Maintenace Mode View
+#### Pre-Rendering The Maintenance Mode View
 
 If you utilize the `php artisan down` command during deployment, your users may still occasionally encounter errors if they access the application while your Composer dependencies or other infrastructure components are updating. This occurs because a significant part of the Laravel framework must boot in order to determine your application is in maintenance mode and render the maintenance mode view using the templating engine.
 
