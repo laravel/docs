@@ -59,7 +59,7 @@ The following first-party packages have new major releases to support Laravel 8.
 - [Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
 - [Passport v10.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)
 - [Socialite v5.0](https://github.com/laravel/socialite/blob/master/UPGRADE.md)
-- [Telescope v4.0](https://github.com/laravel/telescope/releases)
+- [Telescope v4.0](https://github.com/laravel/telescope/blob/master/UPGRADE.md)
 </div>
 
 In addition, the Laravel installer has been updated to support `composer create-project` and Laravel Jetstream. Any installer older than 4.0 will cease to work after October 2020. You should upgrade your global installer to `^4.0` as soon as possible.
