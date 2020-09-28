@@ -328,6 +328,8 @@ By default, only the model keys will be present on the `pivot` object. If your p
 If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
 
     return $this->belongsToMany('App\Models\Role')->withTimestamps();
+    
+> {note} When using timestamps on pivot tables, they are expected to have both `created_at` and `updated_at` timestamp columns. You cannot just have a `created_at` column.
 
 #### Customizing The `pivot` Attribute Name
 
