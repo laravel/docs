@@ -329,7 +329,7 @@ If you want your pivot table to have automatically maintained `created_at` and `
 
     return $this->belongsToMany('App\Models\Role')->withTimestamps();
     
-> {note} When using timestamps on pivot tables, they are expected to have both `created_at` and `updated_at` timestamp columns. You cannot just have a `created_at` column.
+> {note} When using timestamps on pivot tables, the table is required to have both `created_at` and `updated_at` timestamp columns.
 
 #### Customizing The `pivot` Attribute Name
 
