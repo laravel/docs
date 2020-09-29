@@ -362,6 +362,13 @@ The `Illuminate\Contracts\Session\Session` contract has received a new `pull` me
 
 ### Testing
 
+<a name="decode-response-json-method"></a>
+#### The `decodeResponseJson` Method
+
+**Likelihood Of Impact: Low**
+
+The `decodeResponseJson` method that belongs to the `Illuminate\Testing\TestResponse` class no longer accepts any arguments. Please consider using the `json` method instead.
+
 <a name="assert-exact-json-method"></a>
 #### The `assertExactJson` Method
 
