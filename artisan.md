@@ -18,6 +18,7 @@
 - [Registering Commands](#registering-commands)
 - [Programmatically Executing Commands](#programmatically-executing-commands)
     - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
+- [Events](#events)
 - [Stub Customization](#stub-customization)
 
 <a name="introduction"></a>
@@ -521,6 +522,12 @@ If you would like to call another console command and suppress all of its output
     $this->callSilent('email:send', [
         'user' => 1, '--queue' => 'default'
     ]);
+
+<a name="Events"></a>    
+## Events
+Artisan dispatches three events when running commands, `ArtisanStarting`, `CommandStarting` and `CommandFinished`. The `ArtisanStarting` command is dispatched immediately when Artisan starts running, `CommandStarting` right before a command runs and `CommandFinished` once a command finished running.
+
+The `ArtisanStarting` event gives you access to the Artisan application instance while the `CommandStarting` and `CommandFinished` events give you access to the command name, the input and the output of the command. The `CommandFinished` event also contains the exit code that the command returned.
 
 <a name="stub-customization"></a>
 ## Stub Customization
