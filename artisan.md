@@ -523,11 +523,10 @@ If you would like to call another console command and suppress all of its output
         'user' => 1, '--queue' => 'default'
     ]);
 
-<a name="Events"></a>    
+<a name="events"></a>    
 ## Events
-Artisan dispatches three events when running commands, `ArtisanStarting`, `CommandStarting` and `CommandFinished`. The `ArtisanStarting` command is dispatched immediately when Artisan starts running, `CommandStarting` right before a command runs and `CommandFinished` once a command finished running.
 
-The `ArtisanStarting` event gives you access to the Artisan application instance while the `CommandStarting` and `CommandFinished` events give you access to the command name, the input and the output of the command. The `CommandFinished` event also contains the exit code that the command returned.
+Artisan dispatches three events when running commands: `Illuminate\Console\Events\ArtisanStarting`, `Illuminate\Console\Events\CommandStarting` and `Illuminate\Console\Events\CommandFinished`. The `ArtisanStarting` event is dispatched immediately when Artisan starts running. Next, the `CommandStarting` event is dispatched right before a command runs. Finally, the `CommandFinished` event is dispatched once a command finishes executing.
 
 <a name="stub-customization"></a>
 ## Stub Customization
