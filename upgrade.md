@@ -363,6 +363,13 @@ The `Illuminate\Contracts\Session\Session` contract has received a new `pull` me
 ### Testing
 
 <a name="assert-exact-json-method"></a>
+#### The `decodeResponseJson` Method
+
+**Likelihood Of Impact: High**
+
+The `decodeResponseJson` method now will not take parameters anymore, it will only print the full json, you may use the `json` method instead.
+
+<a name="assert-exact-json-method"></a>
 #### The `assertExactJson` Method
 
 **Likelihood Of Impact: Medium**
