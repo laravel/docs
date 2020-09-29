@@ -665,12 +665,18 @@ Blade components also allow you to access the component name, attributes, and sl
             // $data['componentName'];
             // $data['attributes'];
             // $data['slot'];
-
-            return '<div>Component content</div>';
+            
+            // return '<div>Components content</div>';
+            
+            // return <<<'blade'
+            //        <div>Components content</div>
+            //blade;
+            
+            return 'components.content';
         };
     }
 
-The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is a `Illuminate\Support\HtmlString` instance with the contents of the slot from the component.
+The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is a `Illuminate\Support\HtmlString` instance with the contents of the slot from the component. The Closure will implicitly return the string to the global `view` helper, if the view exists, or will create a blade view from the string provided.
 
 #### Additional Dependencies
 
