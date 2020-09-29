@@ -181,6 +181,12 @@ The `throw` method returns the response instance if no error occurred, allowing 
 
     return Http::post(...)->throw()->json();
 
+If you would like to perform some additional logic before the exception is thrown, you may pass a Closure to the `throw` method. The exception will be thrown automatically after the Closure is invoked, so you do not need to re-throw the exception from within the Closure:
+
+    return Http::post(...)->throw(function ($response, $e) {
+        //
+    })->json();
+
 <a name="guzzle-options"></a>
 ### Guzzle Options
 
