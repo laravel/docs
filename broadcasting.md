@@ -105,7 +105,7 @@ When the Redis broadcaster publishes an event, it will be published on the event
 
 If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application. You may install it via the NPM package manager:
 
-    npm install --save socket.io-client
+    npm install --save-dev socket.io-client
 
 Next, you will need to instantiate Echo with the `socket.io` connector and a `host`.
 
@@ -482,7 +482,7 @@ If you are not using Vue and Axios, you will need to manually configure your Jav
 
 Laravel Echo is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by Laravel. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since we will be using the Pusher Channels broadcaster:
 
-    npm install --save laravel-echo pusher-js
+    npm install --save-dev laravel-echo pusher-js
 
 Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework:
 
