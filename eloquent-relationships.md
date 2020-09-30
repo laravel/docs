@@ -1073,6 +1073,19 @@ You may also alias the relationship count result, allowing multiple counts on th
 
     echo $posts[0]->pending_comments_count;
 
+If you want to sum the number value of results from a relationship, you also can `withCount` method:
+
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Support\Facades\DB;
+
+    $posts = App\Models\Post::withCount([
+        'comments as comments_star_sum' => function(Builder $query) {
+            $query->select(DB::raw('sum(star)'));
+        },
+    ])->get();
+
+same as `sum`, you also can get avg value by `withCount`
+
 If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
 
     $posts = App\Models\Post::select(['title', 'body'])->withCount('comments')->get();
