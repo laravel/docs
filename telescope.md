@@ -12,6 +12,7 @@
     - [Batches](#filtering-batches)
 - [Tagging](#tagging)
 - [Available Watchers](#available-watchers)
+    - [Batch Watcher](#batch-watcher)
     - [Cache Watcher](#cache-watcher)
     - [Command Watcher](#command-watcher)
     - [Dump Watcher](#dump-watcher)
@@ -27,6 +28,7 @@
     - [Redis Watcher](#redis-watcher)
     - [Request Watcher](#request-watcher)
     - [Schedule Watcher](#schedule-watcher)
+    - [View Watcher](#view-watcher)
 - [Displaying User Avatars](#displaying-user-avatars)
 
 <a name="introduction"></a>
@@ -254,6 +256,11 @@ Some watchers also allow you to provide additional customization options:
         ...
     ],
 
+<a name="batch-watcher"></a>
+### Batch Watcher
+
+The batch watcher records information about queued batches, including the job and connection information.
+
 <a name="cache-watcher"></a>
 ### Cache Watcher
 
@@ -368,6 +375,11 @@ The request watcher records the request, headers, session, and response data ass
 ### Schedule Watcher
 
 The schedule watcher records the command and output of any scheduled tasks run by your application.
+
+<a name="view-watcher"></a>
+### View Watcher
+
+The view watcher records the view name, path, data, and "composers" used when rendering views.
 
 <a name="displaying-user-avatars"></a>
 ## Displaying User Avatars
