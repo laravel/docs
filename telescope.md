@@ -259,7 +259,7 @@ Some watchers also allow you to provide additional customization options:
 <a name="batch-watcher"></a>
 ### Batch Watcher
 
-The batch watcher records the batch data, queue and connection when a batch of jobs is dispatched.
+The batch watcher records information about queued batches, including the job and connection information.
 
 <a name="cache-watcher"></a>
 ### Cache Watcher
@@ -379,7 +379,7 @@ The schedule watcher records the command and output of any scheduled tasks run b
 <a name="view-watcher"></a>
 ### View Watcher
 
-The view watcher records the view, path, view data and view composers when rendering any kind of view, including partials, layouts or full views.
+The view watcher records the view name, path, data, and "composers" used when rendering views.
 
 <a name="displaying-user-avatars"></a>
 ## Displaying User Avatars
