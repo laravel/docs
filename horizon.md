@@ -18,10 +18,6 @@ Horizon provides a beautiful dashboard and code-driven configuration for your La
 
 All of your worker configuration is stored in a single, simple configuration file, allowing your configuration to stay in source control where your entire team can collaborate.
 
-<p align="center">
-<img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1537195039/photos/Test.png" width="600" height="481">
-</p>
-
 <a name="installation"></a>
 ## Installation
 
