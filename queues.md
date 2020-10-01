@@ -924,7 +924,7 @@ The `--once` option may be used to instruct the worker to only process a single 
 
     php artisan queue:work --once
 
-The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs:
+The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs:
 
     php artisan queue:work --max-jobs=1000
 
@@ -936,7 +936,7 @@ The `--stop-when-empty` option may be used to instruct the worker to process all
 
 #### Processing Jobs For A Given Number Of Seconds
 
-The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time:
+The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time:
 
     // Process jobs for one hour and then exit...
     php artisan queue:work --max-time=3600
