@@ -332,6 +332,13 @@ If necessary, you may use the `blade` method to evaluate and render a raw Blade 
 
     $view->assertSee('Taylor');
 
+#### Blade Components
+You may use the `component` method to evaluate and render a blade component. Like the `view` method, the `component` method returns an instance of `Illuminate\Testing\TestView`:
+
+    $view = $this->component(Profile::class, ['name' => 'Taylor']);
+
+    $view->assertSee('Taylor');
+
 <a name="available-assertions"></a>
 ## Available Assertions
 
