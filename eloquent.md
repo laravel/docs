@@ -547,6 +547,19 @@ If you already have a model instance, you may use the `fill` method to populate 
 
     $flight->fill(['name' => 'Flight 22']);
 
+#### Mass Assignment & JSON Columns
+
+When assigning JSON columns, each column mass-assignable key must be specified in your model's `$fillable` array. For security, Laravel does not support updating nested JSON attributes when using the `guarded` property:
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    $fillable = [
+        'options->enabled',
+    ];
+
 #### Allowing Mass Assignment
 
 If you would like to make all attributes mass assignable, you may define the `$guarded` property as an empty array:
