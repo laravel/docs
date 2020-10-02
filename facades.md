@@ -218,7 +218,7 @@ When the real-time facade is used, the publisher implementation will be resolved
          */
         public function test_podcast_can_be_published()
         {
-            $podcast = factory(Podcast::class)->create();
+            $podcast = Podcast::factory()->create();
 
             Publisher::shouldReceive('publish')->once()->with($podcast);
 

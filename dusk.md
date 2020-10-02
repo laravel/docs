@@ -211,7 +211,7 @@ To get started, let's write a test that verifies we can log into our application
          */
         public function testBasicExample()
         {
-            $user = factory(User::class)->create([
+            $user = User::factory()->create([
                 'email' => 'taylor@laravel.com',
             ]);
 
