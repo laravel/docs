@@ -137,6 +137,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [pad](#method-pad)
 [partition](#method-partition)
 [pipe](#method-pipe)
+[pipeInto](#method-pipeinto)
 [pluck](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
@@ -1436,6 +1437,38 @@ The `pipe` method passes the collection to the given callback and returns the re
     });
 
     // 6
+
+<a name="method-pipeinto"></a>
+#### `pipeInto()` {#collection-method}
+
+The `pipeInto` method creates a new instance of the given class and passes the collection into the constructor:
+
+    class ResourceCollection
+    {
+        /**
+         * The Collection instance.
+         */
+        public $collection;
+
+        /**
+         * Create a new ResourceCollection instance.
+         *
+         * @param  Collection  $resource
+         * @return void
+         */
+        public function __construct(Collection $collection)
+        {
+            $this->collection = $collection;
+        }
+    }
+
+    $collection = collect([1, 2, 3]);
+
+    $resource = $collection->pipeInto(ResourceCollection::class);
+
+    $resource->collection->all();
+
+    // [1, 2, 3]
 
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
