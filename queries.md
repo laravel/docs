@@ -733,6 +733,19 @@ When updating a JSON column, you should use `->` syntax to access the appropriat
     $affected = DB::table('users')
                   ->where('id', 1)
                   ->update(['options->enabled' => true]);
+                  
+When using these operations you have to explicitly add them to your `$fillable` array on your Eloquent model:
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    $fillable = [
+        'options->enabled',
+    ];
+    
+This is to prevent attackers from using mass assignement to update any key on the JSON object that they want.
 
 <a name="increment-and-decrement"></a>
 ### Increment & Decrement
