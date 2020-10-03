@@ -16,6 +16,7 @@
     - [Taking A Screenshot](#taking-a-screenshot)
     - [Storing Console Output To Disk](#storing-console-output-to-disk)
     - [Storing Page Source To Disk](#storing-page-source-to-disk)
+    - [Laravel Tinker](#laravel-tinker)
 - [Interacting With Elements](#interacting-with-elements)
     - [Dusk Selectors](#dusk-selectors)
     - [Clicking Links](#clicking-links)
@@ -377,6 +378,15 @@ You may use the `storeConsoleLog` method to write the console output to disk wit
 You may use the `storeSource` method to write the page's current source to disk with the given filename. The page source will be stored within the `tests/Browser/source` directory:
 
     $browser->storeSource('filename');
+
+<a name="laravel-tinker"></a>
+### Laravel Tinker
+
+For those using Tinker you may use the `tinker` method to temporarily pause Dusk and its tests until Tinker can open.
+
+    $browser->visitRoute('login')
+        ->tinker()
+        ->assertSee('Hello World');
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
