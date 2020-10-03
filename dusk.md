@@ -87,7 +87,7 @@ If you would like to install a different version of ChromeDriver than what is in
 
     # Install a given version of ChromeDriver for all supported OSs...
     php artisan dusk:chrome-driver --all
-    
+
     # Install the version of ChromeDriver that matches the detected version of Chrome / Chromium for your OS...
     php artisan dusk:chrome-driver --detect
 
@@ -647,8 +647,10 @@ The `waitFor` method may be used to pause the execution of the test until the el
 
 You may also wait until the given selector is missing from the page:
 
+    // Wait a maximum of five seconds until the selector is missing...
     $browser->waitUntilMissing('.selector');
 
+    // Wait a maximum of one second until the selector is missing...
     $browser->waitUntilMissing('.selector', 1);
 
 #### Scoping Selectors When Available
