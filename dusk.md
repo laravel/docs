@@ -645,6 +645,14 @@ The `waitFor` method may be used to pause the execution of the test until the el
     // Wait a maximum of one second for the selector...
     $browser->waitFor('.selector', 1);
 
+You may also wait until the selector contains the given text:
+
+    // Wait a maximum of five seconds for the selector to contain the given text...
+    $browser->waitForTextIn('.selector', 'Hello World');
+
+    // Wait a maximum of one second for the selector to contain the given text...
+    $browser->waitForTextIn('.selector', 'Hello World', 1);
+
 You may also wait until the given selector is missing from the page:
 
     // Wait a maximum of five seconds until the selector is missing...
