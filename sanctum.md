@@ -64,7 +64,7 @@ Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanc
 
     'api' => [
         EnsureFrontendRequestsAreStateful::class,
-        'throttle:60,1',
+        'throttle:api',
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 
@@ -88,7 +88,7 @@ To begin issuing tokens for users, your User model should use the `HasApiTokens`
 
     class User extends Authenticatable
     {
-        use HasApiTokens, Notifiable;
+        use HasApiTokens, HasFactory, Notifiable;
     }
 
 To issue a token, you may use the `createToken` method. The `createToken` method returns a `Laravel\Sanctum\NewAccessToken` instance. API tokens are hashed using SHA-256 hashing before being stored in your database, but you may access the plain-text value of the token using the `plainTextToken` property of the `NewAccessToken` instance. You should display this value to the user immediately after the token has been created:
@@ -167,7 +167,7 @@ Next, you should add Sanctum's middleware to your `api` middleware group within 
 
     'api' => [
         EnsureFrontendRequestsAreStateful::class,
-        'throttle:60,1',
+        'throttle:api',
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 
