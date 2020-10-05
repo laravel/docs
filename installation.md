@@ -22,7 +22,7 @@ However, if you are not using Homestead, you will need to make sure your server 
 - PHP >= 7.3
 - BCMath PHP Extension
 - Ctype PHP Extension
-- Fileinfo PHP extension
+- Fileinfo PHP Extension
 - JSON PHP Extension
 - Mbstring PHP Extension
 - OpenSSL PHP Extension
