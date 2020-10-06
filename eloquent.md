@@ -609,6 +609,15 @@ You may also come across situations where you want to update an existing model o
         ['price' => 99, 'discounted' => 1]
     );
 
+If you would like to perform multiple "upserts", then you should use the `upsert` method instead. The first argument is the values to insert or update, and the second argument is the column(s) that uniquely identify records.
+
+    $numRecords = App\Models\Flight::upsert([
+        ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
+        ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
+    ], ['departure', 'destination']);
+
+The `upsert` method will also automatically set the `updated_at` timestamps, if timestamps are enabled on the model.
+
 <a name="deleting-models"></a>
 ## Deleting Models
 

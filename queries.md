@@ -694,6 +694,13 @@ The `insertOrIgnore` method will ignore duplicate record errors while inserting 
         ['id' => 2, 'email' => 'dayle@example.com'],
     ]);
 
+The `upsert` method will insert rows that do not exist and update the rows that already exist with the new values. The first argument is the values to insert or update, and the second argument is the column(s) that uniquely identify records.
+
+    DB::table('users')->upsert([
+        ['email' => 'taylor@example.com', 'votes' => 0],
+        ['email' => 'dayle@example.com', 'votes' => 0],
+    ], 'email');
+
 #### Auto-Incrementing IDs
 
 If the table has an auto-incrementing id, use the `insertGetId` method to insert a record and then retrieve the ID:
