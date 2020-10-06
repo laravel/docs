@@ -285,6 +285,10 @@ All `str_` and `array_` helpers have been moved to the new `laravel/helpers` Com
 
     composer require laravel/helpers
 
+If you choose to update your Laravel application's views to use the class based methods, you should clear your compiled views which may still be using the global helpers:
+
+    php artisan view:clear
+
 ### Localization
 
 <a name="trans-and-trans-choice"></a>
