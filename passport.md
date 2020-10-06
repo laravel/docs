@@ -83,7 +83,7 @@ After running the `passport:install` command, add the `Laravel\Passport\HasApiTo
 
     class User extends Authenticatable
     {
-        use HasApiTokens, Notifiable;
+        use HasApiTokens, HasFactory, Notifiable;
     }
 
 Next, you should call the `Passport::routes` method within the `boot` method of your `AuthServiceProvider`. This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
