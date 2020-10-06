@@ -1283,7 +1283,11 @@ Just as with product checkouts, you can customize the success and cancellation u
 
 Using Stripe Checkout for subscriptions with Cashier requires you to enable the `customer.subscription.created` webhook so make sure you enable it in your dashboard. This webhook will create the subscription in your database and all of the relevant subscription items.
 
+#### Fulfilling Orders
+
 There's a special thing to consider when using Stripe Checkout to start your customer's subscription. Because payment for a subscription can be delayed or the webhook can be delayed there's a possibility a subscription might not yet be active when the customer returns to the app. To handle this you might want display a message informing the user that their payment is pending. You can then clear this message when a [`checkout.session.completed`](https://stripe.com/docs/api/events/types#event_types-checkout.session.completed) webhook comes in or when their subscription was added to the database.
+
+For more information on fulfilling orders with Stripe Checkout, see [the Stripe documentation](https://stripe.com/docs/payments/checkout/fulfill-orders#fulfill).
 
 #### Trial Periods
 
