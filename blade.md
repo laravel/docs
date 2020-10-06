@@ -748,6 +748,12 @@ The rendered HTML of the `button` component in this example would be:
         Submit
     </button>
 
+If you would like an attribute other than `class` to have its values appended together, you may use the `prepends` method:
+
+    <div {{ $attributes->merge(['data-controller' => $attributes->prepends('profile-controller')]) }}>
+        {{ $slot }}
+    </div>
+
 #### Filtering Attributes
 
 You may filter attributes using the `filter` method. This method accepts a Closure which should return `true` if you wish to retain the attribute in the attribute bag:
