@@ -285,7 +285,7 @@ All `str_` and `array_` helpers have been moved to the new `laravel/helpers` Com
 
     composer require laravel/helpers
 
-If you do not use the new `laravel/helpers` package do not forget to clear the views that were compiled using the old helper methods after updating to Laravel 6.x.
+If you choose to update your Laravel application's views to use the class based methods, you should clear your compiled views which may still be using the global helpers:
 
     php artisan view:clear
 
