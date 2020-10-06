@@ -110,14 +110,14 @@ In Laravel, each type of email sent by your application is represented as a "mai
 <a name="writing-mailables"></a>
 ## Writing Mailables
 
-All of a mailable class' configuration is done in the `build` method. Within this method, you may call various methods such as `from`, `subject`, `view`, and `attach` to configure the email's presentation and delivery.
+All of a mailable class configuration is done in the `build` method. Within this method, you may call various methods such as `from`, `subject`, `view`, and `attach` to configure the email's presentation and delivery.
 
 <a name="configuring-the-sender"></a>
 ### Configuring The Sender
 
 #### Using The `from` Method
 
-First, let's explore configuring the sender of the email. Or, in other words, who the email is going to be "from". There are two ways to configure the sender. First, you may use the `from` method within your mailable class' `build` method:
+First, let's explore configuring the sender of the email. Or, in other words, who the email is going to be "from". There are two ways to configure the sender. First, you may use the `from` method within your mailable class `build` method:
 
     /**
      * Build the message.
@@ -143,7 +143,7 @@ In addition, you may define a global "reply_to" address within your `config/mail
 <a name="configuring-the-view"></a>
 ### Configuring The View
 
-Within a mailable class' `build` method, you may use the `view` method to specify which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
+Within a mailable class `build` method, you may use the `view` method to specify which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
 
     /**
      * Build the message.
@@ -177,7 +177,7 @@ If you would like to define a plain-text version of your email, you may use the 
 
 #### Via Public Properties
 
-Typically, you will want to pass some data to your view that you can utilize when rendering the email's HTML. There are two ways you may make data available to your view. First, any public property defined on your mailable class will automatically be made available to the view. So, for example, you may pass data into your mailable class' constructor and set that data to public properties defined on the class:
+Typically, you will want to pass some data to your view that you can utilize when rendering the email's HTML. There are two ways you may make data available to your view. First, any public property defined on your mailable class will automatically be made available to the view. So, for example, you may pass data into your mailable class constructor and set that data to public properties defined on the class:
 
     <?php
 
@@ -229,7 +229,7 @@ Once the data has been set to a public property, it will automatically be availa
 
 #### Via The `with` Method:
 
-If you would like to customize the format of your email's data before it is sent to the template, you may manually pass your data to the view via the `with` method. Typically, you will still pass data via the mailable class' constructor; however, you should set this data to `protected` or `private` properties so the data is not automatically made available to the template. Then, when calling the `with` method, pass an array of data that you wish to make available to the template:
+If you would like to customize the format of your email's data before it is sent to the template, you may manually pass your data to the view via the `with` method. Typically, you will still pass data via the mailable class constructor; however, you should set this data to `protected` or `private` properties so the data is not automatically made available to the template. Then, when calling the `with` method, pass an array of data that you wish to make available to the template:
 
     <?php
 
@@ -286,7 +286,7 @@ Once the data has been passed to the `with` method, it will automatically be ava
 <a name="attachments"></a>
 ### Attachments
 
-To add attachments to an email, use the `attach` method within the mailable class' `build` method. The `attach` method accepts the full path to the file as its first argument:
+To add attachments to an email, use the `attach` method within the mailable class `build` method. The `attach` method accepts the full path to the file as its first argument:
 
     /**
      * Build the message.
