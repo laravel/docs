@@ -575,9 +575,9 @@ The `orderBy` method allows you to sort the result of the query by a given colum
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->get();
-                    
+
 If you need to sort by multiple columns, you may invoke `orderBy` as many times as needed:
-                                         
+
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->orderBy('email', 'asc')
@@ -693,6 +693,13 @@ The `insertOrIgnore` method will ignore duplicate record errors while inserting 
         ['id' => 1, 'email' => 'taylor@example.com'],
         ['id' => 2, 'email' => 'dayle@example.com'],
     ]);
+
+The `upsert` method will insert rows that do not exist and update the rows that already exist with the new values. The method's first argument is the values to insert or update, while the second argument is the column(s) that uniquely identify records within the associated table. The method's third and final argument is the columns that should be updated if a matching record already exists in the database:
+
+    DB::table('flights')->upsert([
+        ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
+        ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
+    ], ['departure', 'destination'], ['price']);
 
 #### Auto-Incrementing IDs
 

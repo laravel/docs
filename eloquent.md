@@ -602,12 +602,19 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
 
 You may also come across situations where you want to update an existing model or create a new model if none exists. Laravel provides an `updateOrCreate` method to do this in one step. Like the `firstOrCreate` method, `updateOrCreate` persists the model, so there's no need to call `save()`:
 
-    // If there's a flight from Oakland to San Diego, set the price to $99.
-    // If no matching model exists, create one.
+    // If there's a flight from Oakland to San Diego, set the price to $99...
+    // If no matching model exists, create one...
     $flight = App\Models\Flight::updateOrCreate(
         ['departure' => 'Oakland', 'destination' => 'San Diego'],
         ['price' => 99, 'discounted' => 1]
     );
+
+If you would like to perform multiple "upserts" in a single query, then you should use the `upsert` method instead. The method's first argument is the values to insert or update, while the second argument is the column(s) that uniquely identify records within the associated table. The method's third and final argument is the columns that should be updated if a matching record already exists in the database. The `upsert` method will automatically set the `created_at` and `updated_at` timestamps if timestamps are enabled on the model:
+
+    App\Models\Flight::upsert([
+        ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
+        ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
+    ], ['departure', 'destination'], ['price']);
 
 <a name="deleting-models"></a>
 ## Deleting Models
