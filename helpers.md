@@ -2347,7 +2347,7 @@ The `url` function generates a fully qualified URL to the given path:
 
     $url = url('user/profile', [1]);
 
-If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned:
+If no path is provided, an `Illuminate\Routing\UrlGenerator` instance is returned:
 
     $current = url()->current();
 

@@ -31,7 +31,7 @@ The `url` helper may be used to generate arbitrary URLs for your application. Th
 <a name="accessing-the-current-url"></a>
 ### Accessing The Current URL
 
-If no path is provided to the `url` helper, a `Illuminate\Routing\UrlGenerator` instance is returned, allowing you to access information about the current URL:
+If no path is provided to the `url` helper, an `Illuminate\Routing\UrlGenerator` instance is returned, allowing you to access information about the current URL:
 
     // Get the current URL without the query string...
     echo url()->current();

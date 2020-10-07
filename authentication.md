@@ -614,7 +614,7 @@ Finally, you may use this provider in your `guards` configuration:
 <a name="the-user-provider-contract"></a>
 ### The User Provider Contract
 
-The `Illuminate\Contracts\Auth\UserProvider` implementations are only responsible for fetching a `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
+The `Illuminate\Contracts\Auth\UserProvider` implementations are only responsible for fetching an `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
 
 Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 

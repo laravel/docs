@@ -133,7 +133,7 @@ The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, 
 <a name="gate-responses"></a>
 ### Gate Responses
 
-So far, we have only examined gates that return simple boolean values. However, sometimes you may wish to return a more detailed response, including an error message. To do so, you may return a `Illuminate\Auth\Access\Response` from your gate:
+So far, we have only examined gates that return simple boolean values. However, sometimes you may wish to return a more detailed response, including an error message. To do so, you may return an `Illuminate\Auth\Access\Response` from your gate:
 
     use Illuminate\Auth\Access\Response;
     use Illuminate\Support\Facades\Gate;
