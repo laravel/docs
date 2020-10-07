@@ -168,6 +168,7 @@ Method  | Description
 `->saturdays();`  |  Limit the task to Saturday
 `->days(array|mixed);`  |  Limit the task to specific days
 `->between($startTime, $endTime);`  |  Limit the task to run between start and end times
+`->unlessBetween($startTime, $endTime);`  |  Limit the task to not run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
 `->environments($env);`  |  Limit the task to specific environments
 
