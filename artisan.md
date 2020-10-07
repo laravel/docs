@@ -305,6 +305,8 @@ If you need to retrieve all of the arguments as an `array`, call the `arguments`
 
     $arguments = $this->arguments();
 
+If the argument does not exist, `null` will be returned.
+
 Options may be retrieved just as easily as arguments using the `option` method. To retrieve all of the options as an array, call the `options` method:
 
     // Retrieve a specific option...
@@ -313,7 +315,7 @@ Options may be retrieved just as easily as arguments using the `option` method. 
     // Retrieve all options...
     $options = $this->options();
 
-If the argument or option does not exist, `null` will be returned.
+If the option does not exist, `false` will be returned.
 
 <a name="prompting-for-input"></a>
 ### Prompting For Input
