@@ -609,12 +609,12 @@ You may also come across situations where you want to update an existing model o
         ['price' => 99, 'discounted' => 1]
     );
 
-If you would like to perform multiple "upserts" in a single query, then you should use the `upsert` method instead. The method's first argument is the values to insert or update, while the second argument is the column(s) that uniquely identify records within the associated table. The `upsert` method will automatically set the `updated_at` timestamps if timestamps are enabled on the model:
+If you would like to perform multiple "upserts" in a single query, then you should use the `upsert` method instead. The method's first argument is the values to insert or update, while the second argument is the column(s) that uniquely identify records within the associated table. The method's third and final argument is the columns that should be updated if a matching record already exists in the database. The `upsert` method will automatically set the `created_at` and `updated_at` timestamps if timestamps are enabled on the model:
 
-    $updatedRows = App\Models\Flight::upsert([
+    App\Models\Flight::upsert([
         ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
-    ], ['departure', 'destination']);
+    ], ['departure', 'destination'], ['price']);
 
 <a name="deleting-models"></a>
 ## Deleting Models
