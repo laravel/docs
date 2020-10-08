@@ -1297,7 +1297,7 @@ You can of course also set a trial period with Stripe Checkout:
         ->trialDays(1)
         ->checkout();
 
-However, in the above example, the trial day period will be automatically extended to 48 hours. This is the minimum amount of trial days that Stripe Checkout supports. The reason for this is that customers will have 24 hours with Stripe Checkout to complete their purchase after their checkout was done. This way they'll still get their one day trial after completing their purchase.
+However, in the above example, the trial day period will be automatically extended to 48 hours. This is the minimum amount of trialing time that Stripe Checkout requires. The reason for this is that customers will have 24 hours with Stripe Checkout to complete their purchase after their checkout was done. This way they'll still get their one day trial after completing their purchase.
 
 <a name="customizing-the-checkout-button"></a>
 ### Customizing The Checkout Button
