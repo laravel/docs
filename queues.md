@@ -19,6 +19,7 @@
     - [Defining Batchable Jobs](#defining-batchable-jobs)
     - [Dispatching Batches](#dispatching-batches)
     - [Adding Jobs To Batches](#adding-jobs-to-batches)
+    - [Including Chains In Batches](#including-chains-in-batches)
     - [Inspecting Batches](#inspecting-batches)
     - [Cancelling Batches](#cancelling-batches)
     - [Batch Failures](#batch-failures)
@@ -783,6 +784,52 @@ In this example, we will use the `LoadImportBatch` job to hydrate the batch with
     }
 
 > {note} You may only add jobs to a batch from within a job that belongs to the same batch.
+
+<a name="including-chains-in-batches"></a>
+### Including Chains In Batches
+
+Chains can be included in batches by included an array of jobs within the batched job array.
+
+    use App\Jobs\TranscribePodcast;
+    use App\Jobs\ProcessPodcast;
+    use App\Jobs\OptimizePodcast;
+    use App\Jobs\BackupPodcast;
+    use App\Podcast;
+    use Illuminate\Bus\Batch;
+    use Illuminate\Support\Facades\Bus;
+    
+    $podcast = Podcast::find(1);
+    
+    $batch = Bus::batch([
+        new TranscribePodcast($podcast),
+        [
+            new ProcessPodcast($podcast),
+            new OptimizePodcast($podcast),
+            new BackupPodcast($podcast),
+        ],
+    ])->then(function (Batch $batch) {
+        // All jobs completed successfully...
+    })->dispatch();
+
+Each job, individual or chained, is tracked and included in the batch. This is useful for when you have many jobs to execute that you want tracked, but some have to happen in a particular order.
+
+In the above example `TranscribePodcast` and `ProcessPodcast` will both be processed at the same time with `OptimizePodcast` and `BackupPodcast` chained onto `ProcessPodcast` in the order they are listed. Completion callbacks are triggered only when all jobs, even those that are chained, are processed.
+
+Closures can also be included in the chain:
+
+     $batch = Bus::batch([
+         new TranscribePodcast($podcast),
+         [
+             new ProcessPodcast($podcast),
+             new OptimizePodcast($podcast),
+             new BackupPodcast($podcast),
+             function () use ($podcast) {
+                $podcast->update(...);
+             }
+         ],
+     ])->then(function (Batch $batch) {
+         // All jobs completed successfully...
+     })->dispatch();
 
 <a name="inspecting-batches"></a>
 ### Inspecting Batches
