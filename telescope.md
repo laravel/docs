@@ -70,7 +70,6 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
     {
         if ($this->app->isLocal()) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
         }
     }
 
