@@ -1122,7 +1122,7 @@ To register an observer, use the `observe` method on the model you wish to obser
          *
          * @return void
          */
-        public function boot()
+        public static function boot()
         {
             User::observe(UserObserver::class);
         }
