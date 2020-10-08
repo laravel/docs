@@ -46,8 +46,8 @@
     - [Retrieving Invoices](#retrieving-invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
 - [Checkout](#checkout)
-    - [Simple Charge Checkouts](#simple-charge-checkouts)
     - [Product Checkouts](#product-checkouts)
+    - [Simple Charge Checkouts](#simple-charge-checkouts)
     - [Subscription Checkouts](#subscription-checkouts)
     - [Customizing The Checkout Button](#customizing-the-checkout-button)
 - [Handling Failed Payments](#handling-failed-payments)
@@ -1224,18 +1224,18 @@ Cashier Stripe provides support for [Stripe's Checkout feature](https://stripe.c
 
 These docs contain information on how to get started using Stripe Checkout with Cashier. For more information on how to use Checkout please refer to [the Stripe documentation](https://stripe.com/docs/payments/checkout).
 
-<a name="simple-charge-checkouts"></a>
-### Simple Charge Checkouts
+<a name="product-checkouts"></a>
+### Product Checkouts
 
-You may perform a simple charge by using the `checkout` method on a billable model. This will initiate a new Stripe Checkout Session. By default, you're required to pass a price in cents and a name for the product:
+You may perform a checkout for a price of an existing product from your Stripe dashboard by using the `checkout` method on a billable model. This will initiate a new Stripe Checkout Session. By default, you're required to pass a Price ID:
 
-    $checkout = $user->checkout(1200, 'T-Shirt');
+    $checkout = $user->checkout('price_12345');
     
     return view('your-app-checkout-view', compact('checkout'));
 
 It's also possible to pass a specific quantity for the product:
 
-    $checkout = $user->checkout(1200, 'T-Shirt', 15);
+    $checkout = $user->checkout('price_12345', 15);
 
 You can pass this session to the view and generate a button for it:
 
@@ -1243,21 +1243,21 @@ You can pass this session to the view and generate a button for it:
 
 When a customer clicks this button they'll be redirected to Stripe's checkout page. By default, when a user successfully completes a purchase or cancels a purchase they'll be redirected to your `home` route location. But you can easily overwrite this by passing the `success_url` & `cancel_url` parameters:
 
-    $checkout = $user->checkout(1200, 'T-Shirt', 1, [
+    $checkout = $user->checkout('price_12345', 1, [
         'success_url' => route('your-success-route'),
         'cancel_url' => route('your-cancel-route'),
     ]);
 
-> {note} When using the `checkout` method, Stripe will always create a new product and price in your Stripe dashboard. Therefor we recommend to create the products up front in your Stripe dashboard and make more use of the `checkoutProduct` method. 
+<a name="simple-charge-checkouts"></a>
+### Simple Charge Checkouts
 
-<a name="product-checkouts"></a>
-### Product Checkouts
+Like the `checkout` method above, you can also perform a simple charge for a non-existing product. To do so you may use the `checkoutCharge` method on a billable model and pass it a chargeable amount, a product name and an optional quantity:
 
-Like the `checkout` method above, you can also checkout existing products from your Stripe dashboard. To do so you may use the `checkoutProduct` method on a billable model and pass it a Price ID and optional quantity:
-
-    $checkout = $user->checkoutProduct('price_12345', 5);
+    $checkout = $user->checkoutCharge(1200, 'T-Shirt', 5);
     
     return view('your-app-checkout-view', compact('checkout'));
+
+> {note} When using the `checkoutCharge` method, Stripe will always create a new product and price in your Stripe dashboard. Therefor we recommend to create the products up front in your Stripe dashboard and make more use of the `checkout` method. 
 
 <a name="subscription-checkouts"></a>
 ### Subscription Checkouts
