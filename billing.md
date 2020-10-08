@@ -1277,7 +1277,7 @@ Just as with product checkouts, you can customize the success and cancellation u
         'cancel_url' => route('your-cancel-route'),
     ]);
     
-> {note} Unfortunately Stripe Checkout doesn't yet supports all parameters when starting subscriptions. Using the `anchorBillingCycleOn` method on the subscription builder, setting proration behavior or setting payment behavior won't have any effect. Please consult [the Stripe Session API docs](https://stripe.com/docs/api/checkout/sessions/create) to know which parameters are available.
+> {note} Unfortunately Stripe Checkout doesn't yet supports all parameters when starting subscriptions. Using the `anchorBillingCycleOn` method on the subscription builder, setting proration behavior or setting payment behavior won't have any effect. Please consult [the Stripe Checkout Session API docs](https://stripe.com/docs/api/checkout/sessions/create) to know which parameters are available.
 
 #### Webhooks
 
