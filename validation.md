@@ -256,7 +256,7 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
         $validated = $request->validated();
     }
 
-If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
+If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, an HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
 
 #### Adding After Hooks To Form Requests
 
@@ -298,7 +298,7 @@ Since all form requests extend the base Laravel request class, we may use the `u
 
     Route::post('comment/{comment}');
 
-If the `authorize` method returns `false`, a HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
+If the `authorize` method returns `false`, an HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
 
 If you plan to have authorization logic in another part of your application, return `true` from the `authorize` method:
 
