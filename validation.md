@@ -406,7 +406,7 @@ If you do not want to use the `validate` method on the request, you may create a
         }
     }
 
-The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
+The first argument passed to the `make` method is the data under validation. The second argument is an array of the validation rules that should be applied to the data.
 
 After checking if the request validation failed, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
 
@@ -1248,7 +1248,7 @@ Let's assume our web application is for game collectors. If a game collector reg
         return $input->games >= 100;
     });
 
-The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
+The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is a list of the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
 
     $v->sometimes(['reason', 'cost'], 'required', function ($input) {
         return $input->games >= 100;
