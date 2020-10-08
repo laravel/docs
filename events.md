@@ -25,7 +25,7 @@ Events serve as a great way to decouple various aspects of your application, sin
 <a name="registering-events-and-listeners"></a>
 ## Registering Events & Listeners
 
-The `EventServiceProvider` included with your Laravel application provides a convenient place to register all of your application's event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add a `OrderShipped` event:
+The `EventServiceProvider` included with your Laravel application provides a convenient place to register all of your application's event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:
 
     /**
      * The event listener mappings for the application.
