@@ -393,6 +393,13 @@ If you would like to display plain, uncolored console output, use the `line` met
 
     $this->line('Display this on the screen');
 
+You may use the `newLine` method to display a blank line:
+
+    $this->newLine();
+
+    // Write three blank lines...
+    $this->newLine(3);
+
 #### Table Layouts
 
 The `table` method makes it easy to correctly format multiple rows / columns of data. Just pass in the headers and rows to the method. The width and height will be dynamically calculated based on the given data:
