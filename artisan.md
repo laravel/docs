@@ -393,11 +393,12 @@ If you would like to display plain, uncolored console output, use the `line` met
 
     $this->line('Display this on the screen');
 
-To display a blank line, use the `newLine` method:
+You may use the `newLine` method to display a blank line:
 
     $this->newLine();
 
-You may optionally pass an integer to `newLine` to specify how many blank lines you would like to display.
+    // Write three blank lines...
+    $this->newLine(3);
 
 #### Table Layouts
 
