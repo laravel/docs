@@ -19,6 +19,7 @@
 
 <div class="content-list" markdown="1">
 - [PHP 7.3.0 Required](#php-7.3.0-required)
+- [The `queue` option in Artisan Commands](#queue-option-artisan-commands)
 - [Failed Jobs Table Batch Support](#failed-jobs-table-batch-support)
 - [Maintenance Mode Updates](#maintenance-mode-updates)
 - [The `php artisan down --message` Option](#artisan-down-message)
@@ -242,6 +243,15 @@ For consistency with other dispatching methods, the `allOnQueue()` and `allOnCon
     ])->onConnection('redis')->onQueue('podcasts')->dispatch();
 
 Note that this change only affects code using the `withChain` method. The `allOnQueue()` and `allOnConnection()` are still available when using the global `dispatch()` helper.
+
+<a name="queue-option-artisan-commands"></a>
+#### The `queue` option on Artisan Commands
+
+**Likelihood Of Impact: Medium**
+
+While `queue` was an argument when calling Artisan commands in previous releases of Laravel, it's now an option. You should use it as option instead.
+
+    queue clear --queue=default
 
 <a name="failed-jobs-table-batch-support"></a>
 #### Failed Jobs Table Batch Support
