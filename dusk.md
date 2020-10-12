@@ -837,6 +837,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertDontSee](#assert-dont-see)
 [assertSeeIn](#assert-see-in)
 [assertDontSeeIn](#assert-dont-see-in)
+[assertScript](#assert-script)
 [assertSourceHas](#assert-source-has)
 [assertSourceMissing](#assert-source-missing)
 [assertSeeLink](#assert-see-link)
@@ -1075,6 +1076,14 @@ Assert that the given text is present within the selector:
 Assert that the given text is not present within the selector:
 
     $browser->assertDontSeeIn($selector, $text);
+
+<a name="assert-script"></a>
+#### assertScript
+
+Assert that the given JavaScript expression evaluates to the given value:
+
+    $browser->assertScript('window.isLoaded')
+            ->assertScript('document.readyState', 'complete');
 
 <a name="assert-source-has"></a>
 #### assertSourceHas
