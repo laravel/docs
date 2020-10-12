@@ -50,6 +50,30 @@ If you would like to generate a [database migration](/docs/{{version}}/migration
 
     php artisan make:model Flight -m
 
+If you would like to generate a [factory](/docs/{{version}}/seeding) when you generate the model, you may use the `--factory` or `-f` option:
+
+    php artisan make:model Flight --factory
+
+    php artisan make:model Flight -f
+
+If you would like to generate a [seed](/docs/{{version}}/seeding) when you generate the model, you may use the `--seed` or `-s` option:
+
+    php artisan make:model Flight --seed
+
+    php artisan make:model Flight -s
+
+If you would like to generate a [controller](/docs/{{version}}/controllers) when you generate the model, you may use the `--controller` or `-c` option:
+
+    php artisan make:model Flight --controller
+
+    php artisan make:model Flight -c
+
+You can combine these options to somethig like:
+
+    php artisan make:model Flight --migration --factory --seed --controller
+
+    php artisan make:model Flight -mfsc
+
 <a name="eloquent-model-conventions"></a>
 ### Eloquent Model Conventions
 
