@@ -974,6 +974,12 @@ Sometimes you may need to determine if two models are the "same". The `is` metho
         //
     }
 
+The `is` method is also available when using the `belongsTo`, `hasOne`, `morphTo`, and `morphOne` relationships. This method is particularly helpful when you would like to compare a related model without issuing a query to retrieve that model:
+
+    if ($post->author()->is($user)) {
+        //
+    }
+
 <a name="events"></a>
 ## Events
 
