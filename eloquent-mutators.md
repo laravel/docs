@@ -425,9 +425,10 @@ Objects that implement the `Castable` interface must define a `castUsing` method
         /**
          * Get the name of the caster class to use when casting from / to this cast target.
          *
+         * @param  array  $arguments
          * @return string
          */
-        public static function castUsing()
+        public static function castUsing(array $arguments)
         {
             return AddressCast::class;
         }
