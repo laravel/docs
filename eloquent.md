@@ -50,6 +50,19 @@ If you would like to generate a [database migration](/docs/{{version}}/migration
 
     php artisan make:model Flight -m
 
+You may generate various other types of classes when generating a model, such as factories, seeders, and controllers. In addition, these options may be combined to create multiple classes at once:
+
+    php artisan make:model Flight --factory
+    php artisan make:model Flight -f
+
+    php artisan make:model Flight --seed
+    php artisan make:model Flight -s
+
+    php artisan make:model Flight --controller
+    php artisan make:model Flight -c
+
+    php artisan make:model Flight -mfsc
+
 <a name="eloquent-model-conventions"></a>
 ### Eloquent Model Conventions
 
