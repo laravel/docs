@@ -1080,7 +1080,7 @@ Assert that the given text is not present within the selector:
 <a name="assert-script"></a>
 #### assertScript
 
-Assert that the given JavaScript expression has a given value:
+Assert that the given JavaScript expression evaluates to the given value:
 
     $browser->assertScript('window.isLoaded')
             ->assertScript('document.readyState', 'complete');
