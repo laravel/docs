@@ -748,6 +748,21 @@ If you would like to specify the connection and queue that should be used for th
         // All jobs completed successfully...
     })->onConnection('redis')->onQueue('podcasts')->dispatch();
 
+#### Chains Within Batches
+
+You may add a set of [chained jobs](#job-chaining) within a batch by placing the chained jobs within an array. For example, we may execute two job chains in parallel. Since the two chains are batched, we will be able to inspect the batch completion progress as a whole:
+
+    Bus::batch([
+        [
+            new ReleasePodcast(1);
+            new SendPodcastReleaseNotification(1);
+        ],
+        [
+            new ReleasePodcast(2);
+            new SendPodcastReleaseNotification(2);
+        ],
+    ])->dispatch();
+
 <a name="adding-jobs-to-batches"></a>
 ### Adding Jobs To Batches
 
