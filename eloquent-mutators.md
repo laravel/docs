@@ -427,7 +427,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
          *
          * @return string
          */
-        public static function castUsing()
+        public static function castUsing(array $arguments)
         {
             return AddressCast::class;
         }
