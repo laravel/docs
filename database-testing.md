@@ -487,7 +487,7 @@ Polymorphic "many to many" relationships may be created just like non-polymorphi
     use App\Models\Tag;
     use App\Models\Video;
 
-    $users = Video::factory()
+    $videos = Video::factory()
                 ->hasAttached(
                     Tag::factory()->count(3),
                     ['public' => true]
@@ -496,7 +496,7 @@ Polymorphic "many to many" relationships may be created just like non-polymorphi
 
 Of course, the magic `has` method may also be used to create polymorphic "many to many" relationships:
 
-    $users = Video::factory()
+    $videos = Video::factory()
                 ->hasTags(3, ['public' => true])
                 ->create();
 
