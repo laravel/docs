@@ -424,7 +424,7 @@ In some situations, it's useful to embed PHP code into your views. You can use t
 <a name="the-once-directive"></a>
 ### The `@once` Directive
 
-The `@once` directive allows you to define a portion of the template that will only be evaluate once per rendering cycle. This may be useful for pushing a given piece of JavaScript into the page's header using [stacks](#stacks). For example, if you are rendering a given [component](#components) within a loop, you may wish to only push the JavaScript to the header the first time the component is rendered:
+The `@once` directive allows you to define a portion of the template that will only be evaluated once per rendering cycle. This may be useful for pushing a given piece of JavaScript into the page's header using [stacks](#stacks). For example, if you are rendering a given [component](#components) within a loop, you may wish to only push the JavaScript to the header the first time the component is rendered:
 
     @once
         @push('scripts')
@@ -730,7 +730,7 @@ The final, rendered HTML of the component will appear like the following:
 
 #### Non-Class Attribute Merging
 
-When merging attributes that are not `class` attributes, the values provided to the `merge` method will be considered the "default" values of attribute which can be overwritten by the component's consumer. Unlike `class` attributes, non-class attributes are not appended to each other. For example, an `button` component may look like the following:
+When merging attributes that are not `class` attributes, the values provided to the `merge` method will be considered the "default" values of attribute which can be overwritten by the component's consumer. Unlike `class` attributes, non-class attributes are not appended to each other. For example, a `button` component may look like the following:
 
     <button {{ $attributes->merge(['type' => 'button']) }}>
         {{ $slot }}
@@ -795,7 +795,7 @@ Sometimes a component may need to render multiple different slots in different l
         {{ $slot }}
     </div>
 
-You may define the content of the named slot using the `x-slot` tag. Any content not within a `x-slot` tag will be passed to the component in the `$slot` variable:
+You may define the content of the named slot using the `x-slot` tag. Any content not within an `x-slot` tag will be passed to the component in the `$slot` variable:
 
     <x-alert>
         <x-slot name="title">
