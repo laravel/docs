@@ -274,7 +274,7 @@ The `intended` method on the redirector will redirect the user to the URL they w
 
 #### Specifying Additional Conditions
 
-If you wish, you may also add extra conditions to the authentication query in addition to the user's e-mail and password. For example, we may verify that user is marked as "active":
+If you wish, you may also add extra conditions to the authentication query in addition to the user's e-mail and password. For example, we may verify that the user is marked as "active":
 
     if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
         // The user is active, not suspended, and exists.
@@ -456,7 +456,7 @@ As you might expect, the view that is returned by this route should have a form 
 
 #### Confirming The Password
 
-Next, we will define a route will handle the form request from the "confirm password" view. This route will be responsible for validating the password and redirecting the user to their intended destination:
+Next, we will define a route that will handle the form request from the "confirm password" view. This route will be responsible for validating the password and redirecting the user to their intended destination:
 
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
@@ -554,7 +554,7 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
         });
     }
 
-Once your custom authentication driver has been defined, you use it as a driver within `guards` configuration of your `auth.php` configuration file:
+Once your custom authentication driver has been defined, you use it as a driver within the `guards` configuration of your `auth.php` configuration file:
 
     'guards' => [
         'api' => [
