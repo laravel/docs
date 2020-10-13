@@ -518,6 +518,8 @@ To drop a foreign key, you may use the `dropForeign` method, passing the foreign
 Alternatively, you may pass an array containing the column name that holds the foreign key to the `dropForeign` method. The array will be automatically converted using the constraint name convention used by Laravel's schema builder:
 
     $table->dropForeign(['user_id']);
+    
+> {note} The `dropForeign` method doesn't drop the actual foreign key column, to do so you should add `$table->dropColumn('user_id')` after the `dropForeign` method.
 
 You may enable or disable foreign key constraints within your migrations by using the following methods:
 
