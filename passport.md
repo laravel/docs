@@ -60,7 +60,7 @@ When upgrading to a new major version of Passport, it's important that you caref
 
 To get started, install Passport via the Composer package manager:
 
-    composer require laravel/passport
+    composer require laravel/passport "~9.0"
 
 The Passport service provider registers its own database migration directory with the framework, so you should migrate your database after installing the package. The Passport migrations will create the tables your application needs to store clients and access tokens:
 
