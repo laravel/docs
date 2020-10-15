@@ -429,6 +429,12 @@ It is no longer necessary to specify the `--daemon` option when calling the `que
     // Process a single job...
     php artisan queue:work --once
 
+#### Failed Jobs Table
+
+If your application contains a `failed_jobs` table, you should add an `exception` column to the table:
+
+    $table->longText('exception')->after('payload');
+
 #### Database Driver Changes
 
 If you are using the `database` driver to store your queued jobs, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` columns.
