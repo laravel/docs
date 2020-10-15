@@ -701,7 +701,7 @@ The `upsert` method will insert rows that do not exist and update the rows that 
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
     ], ['departure', 'destination'], ['price']);
 
-> {note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a PRIMARY or UNIQUE index.
+> {note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index.
 
 #### Auto-Incrementing IDs
 
