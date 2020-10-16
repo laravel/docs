@@ -318,7 +318,7 @@ The `cursor` method allows you to iterate through your database records using a 
         //
     }
 
-The `cursor` returns an `Illuminate\Support\LazyCollection` instance. [Lazy collections](/docs/{{version}}/collections#lazy-collections) allow you to use many of collection methods available on typical Laravel collections while only loading a single model into memory at a time:
+The `cursor` returns an `Illuminate\Support\LazyCollection` instance. [Lazy collections](/docs/{{version}}/collections#lazy-collections) allow you to use many of the collection methods available on typical Laravel collections while only loading a single model into memory at a time:
 
     $users = App\Models\User::cursor()->filter(function ($user) {
         return $user->id > 500;
@@ -562,7 +562,7 @@ If you already have a model instance, you may use the `fill` method to populate 
 
 #### Mass Assignment & JSON Columns
 
-When assigning JSON columns, each column mass-assignable key must be specified in your model's `$fillable` array. For security, Laravel does not support updating nested JSON attributes when using the `guarded` property:
+When assigning JSON columns, each column's mass-assignable key must be specified in your model's `$fillable` array. For security, Laravel does not support updating nested JSON attributes when using the `guarded` property:
 
     /**
      * The attributes that are mass assignable.
@@ -622,7 +622,7 @@ You may also come across situations where you want to update an existing model o
         ['price' => 99, 'discounted' => 1]
     );
 
-If you would like to perform multiple "upserts" in a single query, then you should use the `upsert` method instead. The method's first argument is the values to insert or update, while the second argument is the column(s) that uniquely identify records within the associated table. The method's third and final argument is the columns that should be updated if a matching record already exists in the database. The `upsert` method will automatically set the `created_at` and `updated_at` timestamps if timestamps are enabled on the model:
+If you would like to perform multiple "upserts" in a single query, then you should use the `upsert` method instead. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of the columns that should be updated if a matching record already exists in the database. The `upsert` method will automatically set the `created_at` and `updated_at` timestamps if timestamps are enabled on the model:
 
     App\Models\Flight::upsert([
         ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
@@ -970,7 +970,7 @@ Now, you may pass the parameters when calling the scope:
 <a name="comparing-models"></a>
 ## Comparing Models
 
-Sometimes you may need to determine if two models are the "same". The `is` method may be used to quickly verify two models have same primary key, table, and database connection:
+Sometimes you may need to determine if two models are the "same". The `is` method may be used to quickly verify two models have the same primary key, table, and database connection:
 
     if ($post->is($anotherPost)) {
         //
@@ -1057,7 +1057,7 @@ If needed, you may utilize [queueable anonymous event listeners](/docs/{{version
 
 #### Defining Observers
 
-If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
     php artisan make:observer UserObserver --model=User
 
