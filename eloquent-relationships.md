@@ -971,7 +971,7 @@ When accessing the records for a model, you may wish to limit your results based
 
     $posts = App\Models\Post::doesntHave('comments')->get();
 
-If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to put "where" conditions on your `doesntHave` queries. These methods allows you to add customized constraints to a relationship constraint, such as checking the content of a comment:
+If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to put "where" conditions on your `doesntHave` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
     use Illuminate\Database\Eloquent\Builder;
 
