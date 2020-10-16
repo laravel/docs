@@ -535,7 +535,26 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
         }
     }
 
-When using `$this->seed()`, the main database driver will be used. If you would like the database driver specified in the `phpunit.xml` file to be used, you can define the `$seed` variable in your test class and set it to true. Now, assuming that the driver has been already defined in the `config/database.php`, the `RefreshDatabase` will use that instead of the main driver, automatically.
+Alternatively, you may instruct the `RefreshDatabase` trait to automatically seed the database before each test. You may accomplish this by defining a `$seed` property on your test class:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Tests\TestCase;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * Indicates whether the database should be seeded before each test.
+         *
+         * @var bool
+         */
+        protected $seed = true;
+        
+        // ...
+    }
 
 <a name="available-assertions"></a>
 ## Available Assertions
