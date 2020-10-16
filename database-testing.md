@@ -535,6 +535,8 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
         }
     }
 
+When using `$this->seed()`, the main database driver will be used. If you would like the database driver specified in the `phpunit.xml` file to be used, you can define the `$seed` variable in your test class and set it to true. Now, assuming that the driver has been already defined in the `config/database.php`, the `RefreshDatabase` will use that instead of the main driver, automatically.
+
 <a name="available-assertions"></a>
 ## Available Assertions
 
