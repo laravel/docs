@@ -63,7 +63,7 @@ Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanc
     use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
     'api' => [
-        EnsureFrontendRequestsAreStateful::class,
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         'throttle:api',
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
