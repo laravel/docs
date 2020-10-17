@@ -31,9 +31,9 @@ This Cron will call the Laravel command scheduler every minute. When the `schedu
 
 ### Starting The Scheduler Locally
 
-Typically, you would not add a scheduler Cron entry to your local development machine. Instead you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you exit the command:
+Typically, you would not add a scheduler Cron entry to your local development machine. Instead you may use the `schedule:run` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you exit the command:
 
-    php artisan schedule:work
+    php artisan schedule:run
 
 <a name="defining-schedules"></a>
 ## Defining Schedules
