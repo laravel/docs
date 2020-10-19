@@ -6,14 +6,16 @@
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
-    - [Job Middleware](#job-middleware)
+- [Job Middleware](#job-middleware)
+    - [Rate Limiting](#rate-limiting)
+    - [Preventing Job Overlaps](#preventing-job-overlaps)
+    - [Limiting Concurrent Jobs](#limiting-concurrent-jobs)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
     - [Job Chaining](#job-chaining)
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
-    - [Rate Limiting](#rate-limiting)
     - [Error Handling](#error-handling)
 - [Job Batching](#job-batching)
     - [Defining Batchable Jobs](#defining-batchable-jobs)
@@ -204,7 +206,7 @@ Because loaded relationships also get serialized, the serialized job string can 
     }
 
 <a name="job-middleware"></a>
-### Job Middleware
+## Job Middleware
 
 Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
 
@@ -275,6 +277,82 @@ After creating job middleware, they may be attached to a job by returning them f
     public function middleware()
     {
         return [new RateLimited];
+    }
+
+<a name="rate-limiting"></a>
+## Rate Limiting
+
+Laravel includes a rate limiting middleware that you may utilize to rate limit jobs. Rate limiters are defined using the `RateLimiter` facade's `for` method, with a syntax similar to how they are defined for [routes](/docs/{{version}}/routing#defining-rate-limiters).
+
+For example, you may wish to allow users to backup their data once per hour while imposing no such limit on premium customers. To accomplish this, you may define a `RateLimiter` in your `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\RateLimiter;
+
+    RateLimiter::for('backups', function ($job) {
+        return $job->user->vipCustomer()
+                    ? Limit::none()
+                    : Limit::perHour(1)->by($job->user->id);
+    });
+
+You may then attach the rate limiter to your backup job using the `RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration.
+
+    use Illuminate\Queue\Middleware\RateLimited;
+
+    public function middleware()
+    {
+        return [new RateLimited('backups')];
+    }
+
+If you are using Redis, you may use the `RateLimitedWithRedis` middleware, which is specific to Redis and is more efficient.
+
+> {note}  Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly.
+
+<a name="preventing-job-overlaps"></a>
+## Preventing Job Overlaps
+
+Laravel includes a `WithoutOverlapping` middleware that allows you to prevent job overlaps based on a key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time.
+
+For example, let's say you have a refund processing job and you want to prevent refund job overlaps for the same order ID. To accomplish this, you can simply include the `WithoutOverlapping` middleware on your refund processing job:
+
+    use Illuminate\Queue\Middleware\WithoutOverlapping;
+
+    public function middleware()
+    {
+        return [new WithoutOverlapping($this->order->id)];
+    }
+
+Any overlapping jobs will then be released back to the queue. You may also provide a delay in releasing the job:
+
+    public function middleware()
+    {
+        return [new WithoutOverlapping($this->order->id)->releaseAfter(60)];
+    }
+
+If you wish to delete all overlapping jobs, you can use the `dontRelease` method:
+
+    public function middleware()
+    {
+        return [new WithoutOverlapping($this->order->id)->dontRelease()];
+    }
+
+<a name="limiting-concurrent-jobs"></a>
+## Limiting Concurrent Jobs
+
+> {note} This feature requires that your application can interact with a [Redis server](/docs/{{version}}/redis).
+
+You may specify the maximum number of workers that may simultaneously process a given job. For example, using the `funnel` method of the `Redis` facade, you may create a middleware to limit jobs of a given type to only be processed by a maximum of two workers at a time:
+
+    public function handle($job, $next)
+    {
+        Redis::funnel('key')->limit(2)->then(function () {
+            // Lock obtained...
+
+            $next($job);
+        }, function () {
+            // Could not obtain lock...
+
+            return $job->release(10);
+        });
     }
 
 <a name="dispatching-jobs"></a>
@@ -614,39 +692,6 @@ However, you may also define the maximum number of seconds a job should be allow
     }
 
 Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value.
-
-<a name="rate-limiting"></a>
-### Rate Limiting
-
-> {note} This feature requires that your application can interact with a [Redis server](/docs/{{version}}/redis).
-
-If your application interacts with Redis, you may throttle your queued jobs by time or concurrency. This feature can be of assistance when your queued jobs are interacting with APIs that are also rate limited.
-
-For example, using the `throttle` method, you may throttle a given type of job to only run 10 times every 60 seconds. If a lock can not be obtained, you should typically release the job back onto the queue so it can be retried later:
-
-    Redis::throttle('key')->allow(10)->every(60)->then(function () {
-        // Job logic...
-    }, function () {
-        // Could not obtain lock...
-
-        return $this->release(10);
-    });
-
-> {tip} In the example above, the `key` may be any string that uniquely identifies the type of job you would like to rate limit. For example, you may wish to construct the key based on the class name of the job and the IDs of the Eloquent models it operates on.
-
-> {note}  Releasing a throttled job back onto the queue will still increment the job's total number of `attempts`.
-
-Alternatively, you may specify the maximum number of workers that may simultaneously process a given job. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time. For example, using the `funnel` method, you may limit jobs of a given type to only be processed by one worker at a time:
-
-    Redis::funnel('key')->limit(1)->then(function () {
-        // Job logic...
-    }, function () {
-        // Could not obtain lock...
-
-        return $this->release(10);
-    });
-
-> {tip} When using rate limiting, the number of attempts your job will need to run successfully can be hard to determine. Therefore, it is useful to combine rate limiting with [time based attempts](#time-based-attempts).
 
 <a name="error-handling"></a>
 ### Error Handling
