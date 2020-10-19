@@ -280,7 +280,7 @@ After creating job middleware, they may be attached to a job by returning them f
     }
 
 <a name="rate-limiting"></a>
-## Rate Limiting
+### Rate Limiting
 
 Laravel includes a rate limiting middleware that you may utilize to rate limit jobs. Rate limiters are defined using the `RateLimiter` facade's `for` method, with a syntax similar to how they are defined for [routes](/docs/{{version}}/routing#defining-rate-limiters).
 
@@ -308,7 +308,7 @@ If you are using Redis, you may use the `RateLimitedWithRedis` middleware, which
 > {note}  Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly.
 
 <a name="preventing-job-overlaps"></a>
-## Preventing Job Overlaps
+### Preventing Job Overlaps
 
 Laravel includes a `WithoutOverlapping` middleware that allows you to prevent job overlaps based on a key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time.
 
@@ -336,7 +336,7 @@ If you wish to delete all overlapping jobs, you can use the `dontRelease` method
     }
 
 <a name="limiting-concurrent-jobs"></a>
-## Limiting Concurrent Jobs
+### Limiting Concurrent Jobs
 
 > {note} This feature requires that your application can interact with a [Redis server](/docs/{{version}}/redis).
 
