@@ -184,7 +184,7 @@ The `--message` option of the `php artisan down` command has been removed. As an
 
 **Likelihood Of Impact: Low**
 
-A `--no-reload` option of the `php artisan serve` command has been added. This is used when you need the server to load actual `$_ENV` environment variables instead of attempting to reload `.env` files, often used for CI tools when testing with Laravel Dusk.
+A `--no-reload` option has been added to the `php artisan serve` command. This will instruct the built-in server to not reload the server when environment file changes are detected. This option is primarily helpful when running Laravel Dusk tests in a CI environment.
 
 #### Manager `$app` Property
 
