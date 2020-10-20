@@ -1042,6 +1042,7 @@ Localization of multiple notifiable entries may also be achieved via the `Notifi
 
     Notification::locale('es')->send($users, new InvoicePaid($invoice));
 
+<a name="user-preferred-locales"></a>
 ### User Preferred Locales
 
 Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on your notifiable model, you may instruct Laravel to use this stored locale when sending a notification:

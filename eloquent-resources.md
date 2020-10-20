@@ -369,6 +369,7 @@ If you would like to disable the wrapping of the outermost resource, you may use
 
 > {note} The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections.
 
+<a name="wrapping-nested-resources"></a>
 ### Wrapping Nested Resources
 
 You have total freedom to determine how your resource's relationships are wrapped. If you would like all resource collections to be wrapped in a `data` key, regardless of their nesting, you should define a resource collection class for each resource and return the collection within a `data` key.
@@ -395,6 +396,7 @@ You may be wondering if this will cause your outermost resource to be wrapped in
         }
     }
 
+<a name="data-wrapping-and-pagination"></a>
 ### Data Wrapping And Pagination
 
 When returning paginated collections in a resource response, Laravel will wrap your resource data in a `data` key even if the `withoutWrapping` method has been called. This is because paginated responses always contain `meta` and `links` keys with information about the paginator's state:

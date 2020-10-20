@@ -47,6 +47,7 @@ In a Laravel application's `config/app.php` configuration file, the `providers` 
 
 Once your package has been configured for discovery, Laravel will automatically register its service providers and facades when it is installed, creating a convenient installation experience for your package's users.
 
+<a name="opting-out-of-package-discovery"></a>
 ### Opting Out Of Package Discovery
 
 If you are the consumer of a package and would like to disable package discovery for a package, you may list the package name in the `extra` section of your application's `composer.json` file:

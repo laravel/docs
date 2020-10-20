@@ -67,6 +67,7 @@ In addition, the Laravel installer has been updated to support `composer create-
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 8 support.
 
+<a name="collections"></a>
 ### Collections
 
 <a name="the-isset-method"></a>
@@ -84,6 +85,7 @@ To be consistent with typical PHP behavior, the `offsetExists` method of `Illumi
     // Laravel 8.x - false
     isset($collection[0]);
 
+<a name="database"></a>
 ### Database
 
 <a name="seeder-factory-namespaces"></a>
@@ -125,6 +127,7 @@ Next, in your `composer.json` file, remove `classmap` block from the `autoload` 
         }
     },
 
+<a name="eloquent"></a>
 ### Eloquent
 
 <a name="model-factories"></a>
@@ -152,6 +155,7 @@ The `castUsing` method of the `Castable` interface has been updated to accept an
 
 Proper "update" and "save" related model events will now be dispatched when executing the `increment` or `decrement` methods on Eloquent model instances.
 
+<a name="events"></a>
 ### Events
 
 <a name="the-dispatcher-contract"></a>
@@ -163,6 +167,7 @@ The `listen` method of the `Illuminate\Contracts\Events\Dispatcher` contract has
 
     public function listen($events, $listener = null);
 
+<a name="framework"></a>
 ### Framework
 
 <a name="maintenance-mode-updates"></a>
@@ -199,6 +204,7 @@ The previously deprecated `$app` property of the `Illuminate\Support\Manager` cl
 
 The previously deprecated `elixir` helper has been removed. Applications still using this method are encouraged to upgrade to [Laravel Mix](https://github.com/JeffreyWay/laravel-mix).
 
+<a name="mail"></a>
 ### Mail
 
 <a name="the-sendnow-method"></a>
@@ -208,6 +214,7 @@ The previously deprecated `elixir` helper has been removed. Applications still u
 
 The previously deprecated `sendNow` method has been removed. Instead, please use the `send` method.
 
+<a name="pagination"></a>
 ### Pagination
 
 <a name="pagination-defaults"></a>
@@ -221,6 +228,7 @@ The paginator now uses the [Tailwind CSS framework](https://tailwindcss.com) for
 
     Paginator::useBootstrap();
 
+<a name="queue"></a>
 ### Queue
 
 <a name="queue-retry-after-method"></a>
@@ -267,6 +275,7 @@ If you plan to use the [job batching](/docs/{{version}}/queues#job-batching) fea
 
 Next, the `failed.driver` configuration option within your `queue` configuration file should be updated to `database-uuids`.
 
+<a name="routing"></a>
 ### Routing
 
 <a name="automatic-controller-namespace-prefixing"></a>
@@ -344,6 +353,7 @@ If you would like to continue using the original auto-prefixed controller routin
         }
     }
 
+<a name="scheduling"></a>
 ### Scheduling
 
 <a name="the-cron-expression-library"></a>
@@ -353,6 +363,7 @@ If you would like to continue using the original auto-prefixed controller routin
 
 Laravel's dependency on `dragonmantank/cron-expression` has been updated from `2.x` to `3.x`. This should not cause any breaking change in your application unless you are interacting with the `cron-expression` library directly. If you are interacting with this library directly, please review its [change log](https://github.com/dragonmantank/cron-expression/blob/master/CHANGELOG.md).
 
+<a name="session"></a>
 ### Session
 
 <a name="the-session-contract"></a>
@@ -371,6 +382,7 @@ The `Illuminate\Contracts\Session\Session` contract has received a new `pull` me
      */
     public function pull($key, $default = null);
 
+<a name="testing"></a>
 ### Testing
 
 <a name="decode-response-json-method"></a>
@@ -387,8 +399,10 @@ The `decodeResponseJson` method that belongs to the `Illuminate\Testing\TestResp
 
 The `assertExactJson` method now requires numeric keys of compared arrays to match and be in the same order. If you would like to compare JSON against an array without requiring numerically keyed arrays to have the same order, you may use the `assertSimilarJson` method instead.
 
+<a name="validation"></a>
 ### Validation
 
+<a name="database-rule-connections"></a>
 ### Database Rule Connections
 
 **Likelihood Of Impact: Low**

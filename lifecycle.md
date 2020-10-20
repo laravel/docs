@@ -14,12 +14,14 @@ The goal of this document is to give you a good, high-level overview of how the 
 <a name="lifecycle-overview"></a>
 ## Lifecycle Overview
 
+<a name="first-things"></a>
 ### First Things
 
 The entry point for all requests to a Laravel application is the `public/index.php` file. All requests are directed to this file by your web server (Apache / Nginx) configuration. The `index.php` file doesn't contain much code. Rather, it is a starting point for loading the rest of the framework.
 
 The `index.php` file loads the Composer generated autoloader definition, and then retrieves an instance of the Laravel application from `bootstrap/app.php`. The first action taken by Laravel itself is to create an instance of the application / [service container](/docs/{{version}}/container).
 
+<a name="http-console-kernels"></a>
 ### HTTP / Console Kernels
 
 Next, the incoming request is sent to either the HTTP kernel or the console kernel, depending on the type of request that is entering the application. These two kernels serve as the central location that all requests flow through. For now, let's just focus on the HTTP kernel, which is located in `app/Http/Kernel.php`.

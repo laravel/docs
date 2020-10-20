@@ -690,6 +690,7 @@ You may remove plans from subscriptions using the `removePlan` method:
 
 > {note} You may not remove the last plan on a subscription. Instead, you should simply cancel the subscription.
 
+<a name="swapping"></a>
 ### Swapping
 
 You may also change the plans attached to a multiplan subscription. For example, imagine you're on a `basic-plan` subscription with a `chat-plan` add-on and you want to upgrade to the `pro-plan` plan:

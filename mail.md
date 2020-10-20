@@ -667,6 +667,7 @@ To accomplish this, the `Mail` facade offers a `locale` method to set the desire
         new OrderShipped($order)
     );
 
+<a name="user-preferred-locales"></a>
 ### User Preferred Locales
 
 Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on one or more of your models, you may instruct Laravel to use this stored locale when sending mail:

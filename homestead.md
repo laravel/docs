@@ -693,6 +693,7 @@ To enable Blackfire, use the "features" setting in your Homestead configuration 
 
 Blackfire server credentials and client credentials [require a user account](https://blackfire.io/signup). Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [review the Blackfire documentation for more details](https://blackfire.io/docs/cookbooks/index).
 
+<a name="profiling-php-performance-using-xhgui"></a>
 ### Profiling PHP Performance Using XHGui
 
 [XHGui](https://www.github.com/perftools/xhgui) is a user interface for exploring the performance of your PHP applications. To enable XHGui, add `xhgui: 'true'` to your site configuration:
@@ -752,6 +753,7 @@ When customizing Homestead, Ubuntu may ask you if you would like to keep a packa
         -o Dpkg::Options::="--force-confold" \
         install your-package
 
+<a name="user-customizations"></a>
 ### User Customizations
 
 When using Homestead in a team setting, you may want to tweak Homestead to better fit your personal development style. You may create a `user-customizations.sh` file in the root of your Homestead directory (The same directory containing your `Homestead.yaml`). Within this file, you may make any customization you would like; however, the `user-customizations.sh` should not be version controlled.

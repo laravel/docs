@@ -779,6 +779,7 @@ To restrict access to the route to specific scopes you may provide a comma-delim
         ...
     })->middleware('client:check-status,your-scope');
 
+<a name="retrieving-tokens"></a>
 ### Retrieving Tokens
 
 To retrieve a token using this grant type, make a request to the `oauth/token` endpoint:

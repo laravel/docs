@@ -159,6 +159,7 @@ To "unsecure" a site and revert back to serving its traffic over plain HTTP, use
 
 Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients. No additional software installation is required once Valet is installed.
 
+<a name="sharing-sites-via-ngrok"></a>
 ### Sharing Sites Via Ngrok
 
 To share a site, navigate to the site's directory in your terminal and run the `valet share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser or share with your team.
@@ -167,12 +168,14 @@ To stop sharing your site, hit `Control + C` to cancel the process.
 
 > {tip} You may pass additional parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
 
+<a name="sharing-sites-via-expose"></a>
 ### Sharing Sites Via Expose
 
 If you have [Expose](https://beyondco.de/docs/expose) installed, you can share your site by navigating to the site's directory in your terminal and running the `expose` command. Consult the expose documentation for additional command-line parameters it supports. After sharing the site, Expose will display the sharable URL that you may use on your other devices or amongst team members.
 
 To stop sharing your site, hit `Control + C` to cancel the process.
 
+<a name="sharing-sites-on-your-local-network"></a>
 ### Sharing Sites On Your Local Network
 
 Valet restricts incoming traffic to the internal `127.0.0.1` interface by default. This way your development machine isn't exposed to security risks from the Internet.
