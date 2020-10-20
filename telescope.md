@@ -53,6 +53,7 @@ After installing Telescope, publish its assets using the `telescope:install` Art
 
     php artisan migrate
 
+<a name="installing-only-in-specific-environments"></a>
 ### Installing Only In Specific Environments
 
 If you plan to only use Telescope to assist your local development, you may install Telescope using the `--dev` flag:

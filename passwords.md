@@ -37,6 +37,7 @@ To properly implement support for allowing users to reset their passwords, we wi
 <a name="requesting-the-password-reset-link"></a>
 ### Requesting The Password Reset Link
 
+<a name="the-password-reset-link-request-form"></a>
 #### The Password Reset Link Request Form
 
 First, we will define the routes that are needed to request password reset links. To get started, we will define a route that returns a view with the password reset link request form:
@@ -47,6 +48,7 @@ First, we will define the routes that are needed to request password reset links
 
 The view that is returned by this route should have a form containing an `email` field, which will allow the user to request a password reset link for a given email address.
 
+<a name="password-reset-link-handling-the-form-submission"></a>
 #### Handling The Form Submission
 
 Next, we will define a route will handle the form request from the "forgot password" view. This route will be responsible for validating the email address and sending the password reset request to the corresponding user:
@@ -75,6 +77,7 @@ The `sendResetLink` method returns a "status" slug. This status may be translate
 <a name="resetting-the-password"></a>
 ### Resetting The Password
 
+<a name="the-password-reset-form"></a>
 #### The Password Reset Form
 
 Next, we will define the routes necessary to actually reset the password once the user clicks on the password reset link that has been emailed to them and provides a new password. First, let's define the route that will display the reset password form that is displayed when the user clicks the reset password link. This route will receive a `token` parameter that we will use later to verify the password reset request:
@@ -85,6 +88,7 @@ Next, we will define the routes necessary to actually reset the password once th
 
 The view that is returned by this route should have a form containing an `email` field, a `password` field, a `password_confirmation` field, and a hidden `token` field, which should contain the value of the secret token received by our route.
 
+<a name="password-reset-handling-the-form-submission"></a>
 #### Handling The Form Submission
 
 Of course, we need to define a route to actually handle the password reset form submission. This route will be responsible for validating the incoming request and updating the user's password in the database:
@@ -129,6 +133,7 @@ The `reset` method returns a "status" slug. This status may be translated using 
 <a name="password-customization"></a>
 ## Customization
 
+<a name="reset-email-customization"></a>
 #### Reset Email Customization
 
 You may easily modify the notification class used to send the password reset link to the user. To get started, override the `sendPasswordResetNotification` method on your `User` model. Within this method, you may send the notification using any notification class you choose. The password reset `$token` is the first argument received by the method:

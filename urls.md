@@ -102,6 +102,7 @@ If you would like to generate a temporary signed route URL that expires, you may
         'unsubscribe', now()->addMinutes(30), ['user' => 1]
     );
 
+<a name="validating-signed-route-requests"></a>
 #### Validating Signed Route Requests
 
 To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Request`:
@@ -178,6 +179,7 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
 
 Once the default value for the `locale` parameter has been set, you are no longer required to pass its value when generating URLs via the `route` helper.
 
+<a name="url-defaults-middleware-priority"></a>
 #### URL Defaults & Middleware Priority
 
 Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](https://laravel.com/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this by making sure your middleware occurs before the `SubstituteBindings` middleware within the `$middlewarePriority` property of your application's HTTP kernel.
