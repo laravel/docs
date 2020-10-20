@@ -27,6 +27,7 @@ The database configuration for your application is located at `config/database.p
 
 By default, Laravel's sample [environment configuration](/docs/{{version}}/configuration#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. You are free to modify this configuration as needed for your local database.
 
+<a name="sqlite-configuration"></a>
 #### SQLite Configuration
 
 After creating a new SQLite database using a command such as `touch database/database.sqlite`, you can easily configure your environment variables to point to this newly created database by using the database's absolute path:
@@ -38,6 +39,7 @@ To enable foreign key constraints for SQLite connections, you should set the `DB
 
     DB_FOREIGN_KEYS=true
 
+<a name="configuration-using-urls"></a>
 #### Configuration Using URLs
 
 Typically, database connections are configured using multiple configuration values such as `host`, `database`, `username`, `password`, etc. Each of these configuration values has its own corresponding environment variable. This means that when configuring your database connection information on a production server, you need to manage several environment variables.
@@ -85,6 +87,7 @@ Note that three keys have been added to the configuration array: `read`, `write`
 
 You only need to place items in the `read` and `write` arrays if you wish to override the values from the main array. So, in this case, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.3` will be used for the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
 
+<a name="the-sticky-option"></a>
 #### The `sticky` Option
 
 The `sticky` option is an *optional* value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the `sticky` option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.
@@ -105,6 +108,7 @@ You may also access the raw, underlying PDO instance using the `getPdo` method o
 
 Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, `delete`, and `statement`.
 
+<a name="running-a-select-query"></a>
 #### Running A Select Query
 
 To run a basic query, you may use the `select` method on the `DB` facade:
@@ -139,30 +143,35 @@ The `select` method will always return an `array` of results. Each result within
         echo $user->name;
     }
 
+<a name="using-named-bindings"></a>
 #### Using Named Bindings
 
 Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
 
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 
+<a name="running-an-insert-statement"></a>
 #### Running An Insert Statement
 
 To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument and bindings as its second argument:
 
     DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
+<a name="running-an-update-statement"></a>
 #### Running An Update Statement
 
 The `update` method should be used to update existing records in the database. The number of rows affected by the statement will be returned:
 
     $affected = DB::update('update users set votes = 100 where name = ?', ['John']);
 
+<a name="running-a-delete-statement"></a>
 #### Running A Delete Statement
 
 The `delete` method should be used to delete records from the database. Like `update`, the number of rows affected will be returned:
 
     $deleted = DB::delete('delete from users');
 
+<a name="running-a-general-statement"></a>
 #### Running A General Statement
 
 Some database statements do not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
@@ -219,6 +228,7 @@ You may use the `transaction` method on the `DB` facade to run a set of operatio
         DB::table('posts')->delete();
     });
 
+<a name="handling-deadlocks"></a>
 #### Handling Deadlocks
 
 The `transaction` method accepts an optional second argument which defines the number of times a transaction should be reattempted when a deadlock occurs. Once these attempts have been exhausted, an exception will be thrown:
@@ -229,6 +239,7 @@ The `transaction` method accepts an optional second argument which defines the n
         DB::table('posts')->delete();
     }, 5);
 
+<a name="manually-using-transactions"></a>
 #### Manually Using Transactions
 
 If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method on the `DB` facade:

@@ -49,6 +49,7 @@ You may hash a password by calling the `make` method on the `Hash` facade:
         }
     }
 
+<a name="adjusting-the-bcrypt-work-factor"></a>
 #### Adjusting The Bcrypt Work Factor
 
 If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default is acceptable for most applications:
@@ -57,6 +58,7 @@ If you are using the Bcrypt algorithm, the `make` method allows you to manage th
         'rounds' => 12,
     ]);
 
+<a name="adjusting-the-argon2-work-factor"></a>
 #### Adjusting The Argon2 Work Factor
 
 If you are using the Argon2 algorithm, the `make` method allows you to manage the work factor of the algorithm using the `memory`, `time`, and `threads` options; however, the defaults are acceptable for most applications:
@@ -69,6 +71,7 @@ If you are using the Argon2 algorithm, the `make` method allows you to manage th
 
 > {tip} For more information on these options, check out the [official PHP documentation](https://secure.php.net/manual/en/function.password-hash.php).
 
+<a name="verifying-a-password-against-a-hash"></a>
 #### Verifying A Password Against A Hash
 
 The `check` method allows you to verify that a given plain-text string corresponds to a given hash:
@@ -77,6 +80,7 @@ The `check` method allows you to verify that a given plain-text string correspon
         // The passwords match...
     }
 
+<a name="checking-if-a-password-needs-to-be-rehashed"></a>
 #### Checking If A Password Needs To Be Rehashed
 
 The `needsRehash` function allows you to determine if the work factor used by the hasher has changed since the password was hashed:

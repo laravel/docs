@@ -58,6 +58,7 @@ Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional
         'role' => 'Network Administrator',
     ]);
 
+<a name="get-request-query-parameters"></a>
 #### GET Request Query Parameters
 
 When making `GET` requests, you may either append a query string to the URL directly or pass an array of key / value pairs as the second argument to the `get` method:
@@ -67,6 +68,7 @@ When making `GET` requests, you may either append a query string to the URL dire
         'page' => 1,
     ]);
 
+<a name="sending-form-url-encoded-requests"></a>
 #### Sending Form URL Encoded Requests
 
 If you would like to send data using the `application/x-www-form-urlencoded` content type, you should call the `asForm` method before making your request:
@@ -76,6 +78,7 @@ If you would like to send data using the `application/x-www-form-urlencoded` con
         'role' => 'Privacy Consultant',
     ]);
 
+<a name="sending-a-raw-request-body"></a>
 #### Sending A Raw Request Body
 
 You may use the `withBody` method if you would like to provide a raw request body when making a request:
@@ -84,6 +87,7 @@ You may use the `withBody` method if you would like to provide a raw request bod
         base64_encode($photo), 'image/jpeg'
     )->post('http://test.com/photo');
 
+<a name="multi-part-requests"></a>
 #### Multi-Part Requests
 
 If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. Optionally, you may provide a third argument which will be considered the file's filename:
@@ -123,6 +127,7 @@ You may specify basic and digest authentication credentials using the `withBasic
     // Digest authentication...
     $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(...);
 
+<a name="bearer-tokens"></a>
 #### Bearer Tokens
 
 If you would like to quickly add an `Authorization` bearer token header to the request, you may use the `withToken` method:
@@ -164,6 +169,7 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
     // Determine if the response has a 500 level status code...
     $response->serverError();
 
+<a name="throwing-exceptions"></a>
 #### Throwing Exceptions
 
 If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response is a client or server error, you may use the `throw` method:
@@ -214,6 +220,7 @@ For example, to instruct the HTTP client to return empty, `200` status code resp
     
 > {note} When faking requests, HTTP client middleware are not executed. You should define expectations for faked responses as if these middleware have run correctly.
 
+<a name="faking-specific-urls"></a>
 #### Faking Specific URLs
 
 Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the `response` method to construct stub / fake responses for these endpoints:
@@ -236,6 +243,7 @@ If you would like to specify a fallback URL pattern that will stub all unmatched
         '*' => Http::response('Hello World', 200, ['Headers']),
     ]);
 
+<a name="faking-response-sequences"></a>
 #### Faking Response Sequences
 
 Sometimes you may need to specify that a single URL should return a series of fake responses in a specific order. You may accomplish this using the `Http::sequence` method to build the responses:
@@ -264,6 +272,7 @@ If you would like to fake a sequence of responses but do not need to specify a s
             ->push('Hello World', 200)
             ->whenEmpty(Http::response());
 
+<a name="fake-callback"></a>
 #### Fake Callback
 
 If you require more complicated logic to determine what responses to return for certain endpoints, you may pass a callback to the `fake` method. This callback will receive an instance of `Illuminate\Http\Client\Request` and should return a response instance:

@@ -40,6 +40,7 @@ Providers define how users are retrieved from your persistent storage. Laravel s
 
 Don't worry if this all sounds confusing now! Many applications will never need to modify the default authentication configuration.
 
+<a name="getting-started-fast"></a>
 #### Getting Started Fast
 
 Want to get started fast? Install [Laravel Jetstream](https://jetstream.laravel.com) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. Jetstream will take care of scaffolding your entire authentication system!
@@ -62,6 +63,7 @@ First, consider how authentication works. When using a web browser, a user will 
 
 When a remote service needs to authenticate to access an API, cookies are not typically used because there is no web browser. Instead, the remote service sends an API token to the API on each request. The application may validate the incoming token against a table of valid API tokens and "authenticate" the request as being performed by the user associated with that API token.
 
+<a name="laravels-built-in-browser-authentication-services"></a>
 #### Laravel's Built-in Browser Authentication Services
 
 Laravel includes built-in authentication and session services which are typically accessed via the `Auth` and `Session` facades. These features provide cookie based authentication for requests that are initiated from web browsers. They provide methods that allow you to verify a user's credentials and authenticate the user. In addition, these services will automatically store the proper data in the user's session and issue the proper session cookie. A discussion of how to use these services is contained within this documentation.
@@ -72,6 +74,7 @@ As discussed in this documentation, you can interact with these authentication s
 
 Laravel Fortify is a headless authentication backend for Laravel that implements many of the features found in this documentation, including cookie-based authentication as well as other features such as two-factor authentication and email verification. Laravel Jetstream is a UI that consumes and exposes Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Laravel Livewire](https://laravel-livewire.com), and / or [Inertia.js](https://inertiajs.com). Laravel Jetstream, in addition to offering browser-based cookie authentication, includes built-in integration with Laravel Sanctum to offer API token authentication. Laravel's API authentication offerings are discussed below.
 
+<a name="laravels-api-authentication-services"></a>
 #### Laravel's API Authentication Services
 
 Laravel provides two optional packages to assist you in managing API tokens and authenticating requests made with API tokens: [Passport](/docs/{{version}}/passport) and [Sanctum](/docs/{{version}}/sanctum). Please note that these libraries and Laravel's built-in cookie based authentication libraries are not mutually exclusive. These libraries primarily focus on API token authentication while the built-in authentication services focus on cookie based browser authentication. Many applications will use both Laravel's built-in cookie based authentication services and one of Laravel's API authentication packages.
@@ -88,6 +91,7 @@ Laravel Sanctum is a hybrid web / API authentication package that can manage you
 
 Laravel Sanctum is the API package we have chosen to include with the [Laravel Jetstream](https://jetstream.laravel.com) authentication scaffolding because we believe it is the best fit for the majority of web application's authentication needs.
 
+<a name="summary-choosing-your-stack"></a>
 #### Summary & Choosing Your Stack
 
 In summary, if your application will be accessed using a browser, your application will use Laravel's built-in authentication services.
@@ -118,6 +122,7 @@ Laravel's `laravel/jetstream` package provides a quick way to scaffold all of th
 
 This command should be used on fresh applications and will install a layout view, registration and login views, as well as routes for all authentication end-points. A `/dashboard` route will also be generated to handle post-login requests to your application's dashboard.
 
+<a name="creating-applications-including-authentication"></a>
 #### Creating Applications Including Authentication
 
 If you are starting a brand new application and would like to include the authentication scaffolding, you may use the `--jet` directive when creating your application via the Laravel Installer. This command will create a new application with all of the authentication scaffolding compiled and installed:
@@ -138,6 +143,7 @@ Jetstream will also create a `resources/views/layouts` directory containing a ba
 
 Now that your application has been scaffolded for authentication, you are ready to register and authenticate! You may simply access your application in a browser since Jetstream's authentication controllers already contain the logic to authenticate existing users and store new users in the database.
 
+<a name="path-customization"></a>
 #### Path Customization
 
 When a user is successfully authenticated, they will typically be redirected to the `/home` URI. You can customize the post-authentication redirect path using the `HOME` constant defined in your `RouteServiceProvider`:
@@ -181,6 +187,7 @@ Alternatively, once a user is authenticated, you may access the authenticated us
         }
     }
 
+<a name="determining-if-the-current-user-is-authenticated"></a>
 #### Determining If The Current User Is Authenticated
 
 To determine if the user is already logged into your application, you may use the `check` method on the `Auth` facade, which will return `true` if the user is authenticated:
@@ -202,6 +209,7 @@ To determine if the user is already logged into your application, you may use th
         // Only authenticated users may enter...
     })->middleware('auth');
 
+<a name="redirecting-unauthenticated-users"></a>
 #### Redirecting Unauthenticated Users
 
 When the `auth` middleware detects an unauthorized user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior by updating the `redirectTo` function in your `app/Http/Middleware/Authenticate.php` file:
@@ -217,6 +225,7 @@ When the `auth` middleware detects an unauthorized user, it will redirect the us
         return route('login');
     }
 
+<a name="specifying-a-guard"></a>
 #### Specifying A Guard
 
 When attaching the `auth` middleware to a route, you may also specify which guard should be used to authenticate the user. The guard specified should correspond to one of the keys in the `guards` array of your `auth.php` configuration file:
@@ -272,6 +281,7 @@ The `attempt` method will return `true` if authentication was successful. Otherw
 
 The `intended` method on the redirector will redirect the user to the URL they were attempting to access before being intercepted by the authentication middleware. A fallback URI may be given to this method in case the intended destination is not available.
 
+<a name="specifying-additional-conditions"></a>
 #### Specifying Additional Conditions
 
 If you wish, you may also add extra conditions to the authentication query in addition to the user's e-mail and password. For example, we may verify that the user is marked as "active":
@@ -282,6 +292,7 @@ If you wish, you may also add extra conditions to the authentication query in ad
 
 > {note} In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
 
+<a name="accessing-specific-guard-instances"></a>
 #### Accessing Specific Guard Instances
 
 You may specify which guard instance you would like to utilize using the `guard` method on the `Auth` facade. This allows you to manage authentication for separate parts of your application using entirely separate authenticatable models or user tables.
@@ -292,6 +303,7 @@ The guard name passed to the `guard` method should correspond to one of the guar
         //
     }
 
+<a name="manually-logging-out"></a>
 #### Logging Out
 
 To log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session:
@@ -316,6 +328,7 @@ If you are "remembering" users, you may use the `viaRemember` method to determin
 <a name="other-authentication-methods"></a>
 ### Other Authentication Methods
 
+<a name="authenticate-a-user-instance"></a>
 #### Authenticate A User Instance
 
 If you need to log an existing user instance into your application, you may call the `login` method with the user instance. The given object must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). The `App\Models\User` model included with Laravel already implements this interface. This method of authentication is useful when you already have a valid user instance, such as directly after a user registers with your application:
@@ -329,6 +342,7 @@ You may specify the guard instance you would like to use:
 
     Auth::guard('admin')->login($user);
 
+<a name="authenticate-a-user-by-id"></a>
 #### Authenticate A User By ID
 
 To log a user into the application by their ID, you may use the `loginUsingId` method. This method accepts the primary key of the user you wish to authenticate:
@@ -338,6 +352,7 @@ To log a user into the application by their ID, you may use the `loginUsingId` m
     // Login and "remember" the given user...
     Auth::loginUsingId(1, true);
 
+<a name="authenticate-a-user-once"></a>
 #### Authenticate A User Once
 
 You may use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized, which means this method may be helpful when building a stateless API:
@@ -357,6 +372,7 @@ You may use the `once` method to log a user into the application for a single re
 
 Once the middleware has been attached to the route, you will automatically be prompted for credentials when accessing the route in your browser. By default, the `auth.basic` middleware will use the `email` column on the user record as the "username".
 
+<a name="a-note-on-fastcgi"></a>
 #### A Note On FastCGI
 
 If you are using PHP FastCGI, HTTP Basic authentication may not work correctly out of the box. The following lines should be added to your `.htaccess` file:
@@ -444,6 +460,7 @@ After confirming their password, a user will not be asked to confirm their passw
 <a name="password-confirmation-routing"></a>
 ### Routing
 
+<a name="the-password-confirmation-form"></a>
 #### The Password Confirmation Form
 
 First, we will define the route that is needed to display a view requesting that the user confirm their password:
@@ -454,6 +471,7 @@ First, we will define the route that is needed to display a view requesting that
 
 As you might expect, the view that is returned by this route should have a form containing a `password` field. In addition, feel free to include text within the view that explains that the user is entering a protected area of the application and must confirm their password.
 
+<a name="confirming-the-password"></a>
 #### Confirming The Password
 
 Next, we will define a route that will handle the form request from the "confirm password" view. This route will be responsible for validating the password and redirecting the user to their intended destination:

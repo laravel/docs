@@ -227,12 +227,14 @@ The `HasFactory` trait's `factory` method will use conventions to determine the 
         return \Database\Factories\Administration\FlightFactory::new();
     }
 
+<a name="applying-states"></a>
 #### Applying States
 
 You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you may simply call state methods directly:
 
     $users = User::factory()->count(5)->suspended()->make();
 
+<a name="overriding-attributes"></a>
 #### Overriding Attributes
 
 If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified values will be replaced while the rest of the values remain set to their default values as specified by the factory:
@@ -364,6 +366,7 @@ Of course, you may perform state manipulations on the related models. In additio
                 )
                 ->create();
 
+<a name="has-many-relationships-using-magic-methods"></a>
 #### Using Magic Methods
 
 For convenience, you may use the factory's magic relationship methods to define relationships. For example, the following example will use convention to determine that the related models should be created via a `posts` relationship method on the `User` model:
@@ -403,6 +406,7 @@ Now that we have explored how to build "has many" relationships using factories,
                 ]))
                 ->create();
 
+<a name="belongs-to-relationships-using-magic-methods"></a>
 #### Using Magic Methods
 
 For convenience, you may use the factory's magic relationship methods to define "belongs to" relationships. For example, the following example will use convention to determine that the three posts should belong to the `user` relationship on the `Post` model:
@@ -426,6 +430,7 @@ Like [has many relationships](#has-many-relationships), "many to many" relations
                 ->has(Role::factory()->count(3))
                 ->create();
 
+<a name="pivot-table-attributes"></a>
 #### Pivot Table Attributes
 
 If you need to define attributes that should be set on the pivot / intermediate table linking the models, you may use the `hasAttached` method. This method accepts an array of pivot table attribute names and values as its second argument:
@@ -453,6 +458,7 @@ You may provide a Closure based state transformation if your state change requir
                 )
                 ->create();
 
+<a name="many-to-many-relationships-using-magic-methods"></a>
 #### Using Magic Methods
 
 For convenience, you may use the factory's magic relationship methods to define many to many relationships. For example, the following example will use convention to determine that the related models should be created via a `roles` relationship method on the `User` model:
@@ -472,6 +478,7 @@ For convenience, you may use the factory's magic relationship methods to define 
 
     $post = Post::factory()->hasComments(3)->create();
 
+<a name="morph-to-relationships"></a>
 #### Morph To Relationships
 
 Magic methods may not be used to create `morphTo` relationships. Instead, the `for` method must be used directly and the name of the relationship must be explicitly provided. For example, imagine that the `Comment` model has a `commentable` method that defines a `morphTo` relationship. In this situation, we may create three comments that belong to a single post using the `for` method directly:
@@ -480,6 +487,7 @@ Magic methods may not be used to create `morphTo` relationships. Instead, the `f
         Post::factory(), 'commentable'
     )->create();
 
+<a name="polymorphic-many-to-many-relationships"></a>
 #### Polymorphic Many To Many Relationships
 
 Polymorphic "many to many" relationships may be created just like non-polymorphic "many to many" relationships:

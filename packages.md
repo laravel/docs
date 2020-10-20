@@ -47,6 +47,7 @@ In a Laravel application's `config/app.php` configuration file, the `providers` 
 
 Once your package has been configured for discovery, Laravel will automatically register its service providers and facades when it is installed, creating a convenient installation experience for your package's users.
 
+<a name="opting-out-of-package-discovery"></a>
 ### Opting Out Of Package Discovery
 
 If you are the consumer of a package and would like to disable package discovery for a package, you may list the package name in the `extra` section of your application's `composer.json` file:
@@ -102,6 +103,7 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
 
 > {note} You should not define Closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
 
+<a name="default-package-configuration"></a>
 #### Default Package Configuration
 
 You may also merge your own package configuration file with the application's published copy. This will allow your users to define only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
@@ -171,6 +173,7 @@ Package translations are referenced using the `package::file.line` syntax conven
 
     echo trans('courier::messages.welcome');
 
+<a name="publishing-translations"></a>
 #### Publishing Translations
 
 If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:
@@ -212,10 +215,12 @@ Package views are referenced using the `package::view` syntax convention. So, on
         return view('courier::admin');
     });
 
+<a name="overriding-package-views"></a>
 #### Overriding Package Views
 
 When you use the `loadViewsFrom` method, Laravel actually registers two locations for your views: the application's `resources/views/vendor` directory and the directory you specify. So, using the `courier` example, Laravel will first check if a custom version of the view has been provided by the developer in `resources/views/vendor/courier`. Then, if the view has not been customized, Laravel will search the package view directory you specified in your call to `loadViewsFrom`. This makes it easy for package users to customize / override your package's views.
 
+<a name="publishing-views"></a>
 #### Publishing Views
 
 If you would like to make your views available for publishing to the application's `resources/views/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package view paths and their desired publish locations:
@@ -260,6 +265,7 @@ Once your view components are registered in a service provider, you may referenc
 
     <x-courier-button />
 
+<a name="anonymous-components"></a>
 #### Anonymous Components
 
 If your package contains anonymous components, they must be placed within a `components` directory of your package's "views" directory (as specified by `loadViewsFrom`). Then, you may render them by prefixing the component name with the package's view namespace:

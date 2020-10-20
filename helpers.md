@@ -22,6 +22,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
     }
 </style>
 
+<a name="arrays-and-objects-method-list"></a>
 ### Arrays & Objects
 
 <div class="collection-method-list" markdown="1">
@@ -61,6 +62,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [last](#method-last)
 </div>
 
+<a name="paths-method-list"></a>
 ### Paths
 
 <div class="collection-method-list" markdown="1">
@@ -76,6 +78,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 </div>
 
+<a name="strings-method-list"></a>
 ### Strings
 
 <div class="collection-method-list" markdown="1">
@@ -128,7 +131,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 </div>
 
-<a name="fluent-strings"></a>
+<a name="fluent-strings-method-list"></a>
 ### Fluent Strings
 
 <div class="collection-method-list" markdown="1">
@@ -188,6 +191,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 </div>
 
+<a name="urls-method-list"></a>
 ### URLs
 
 <div class="collection-method-list" markdown="1">
@@ -201,6 +205,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 </div>
 
+<a name="miscellaneous-method-list"></a>
 ### Miscellaneous
 
 <div class="collection-method-list" markdown="1">

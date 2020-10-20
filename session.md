@@ -39,6 +39,7 @@ The session `driver` configuration option defines where session data will be sto
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
+<a name="database"></a>
 #### Database
 
 When using the `database` session driver, you will need to create a table to contain the session items. Below is an example `Schema` declaration for the table:
@@ -58,6 +59,7 @@ You may use the `session:table` Artisan command to generate this migration:
 
     php artisan migrate
 
+<a name="redis"></a>
 #### Redis
 
 Before using Redis sessions with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer. For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
@@ -104,6 +106,7 @@ When you retrieve an item from the session, you may also pass a default value as
         return 'default';
     });
 
+<a name="the-global-session-helper"></a>
 #### The Global Session Helper
 
 You may also use the global `session` PHP function to retrieve and store data in the session. When the `session` helper is called with a single, string argument, it will return the value of that session key. When the helper is called with an array of key / value pairs, those values will be stored in the session:
@@ -121,12 +124,14 @@ You may also use the global `session` PHP function to retrieve and store data in
 
 > {tip} There is little practical difference between using the session via an HTTP request instance versus using the global `session` helper. Both methods are [testable](/docs/{{version}}/testing) via the `assertSessionHas` method which is available in all of your test cases.
 
+<a name="retrieving-all-session-data"></a>
 #### Retrieving All Session Data
 
 If you would like to retrieve all the data in the session, you may use the `all` method:
 
     $data = $request->session()->all();
 
+<a name="determining-if-an-item-exists-in-the-session"></a>
 #### Determining If An Item Exists In The Session
 
 To determine if an item is present in the session, you may use the `has` method. The `has` method returns `true` if the item is present and is not `null`:
@@ -152,12 +157,14 @@ To store data in the session, you will typically use the `put` method or the `se
     // Via the global helper...
     session(['key' => 'value']);
 
+<a name="pushing-to-array-session-values"></a>
 #### Pushing To Array Session Values
 
 The `push` method may be used to push a new value onto a session value that is an array. For example, if the `user.teams` key contains an array of team names, you may push a new value onto the array like so:
 
     $request->session()->push('user.teams', 'developers');
 
+<a name="retrieving-deleting-an-item"></a>
 #### Retrieving & Deleting An Item
 
 The `pull` method will retrieve and delete an item from the session in a single statement:

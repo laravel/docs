@@ -40,6 +40,7 @@ After publishing Horizon's assets, its primary configuration file will be locate
 
 > {note} You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each environment on which you plan to run Horizon.
 
+<a name="balance-options"></a>
 #### Balance Options
 
 Horizon allows you to choose from three balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy, which is the configuration file's default, splits incoming jobs evenly between processes:
@@ -67,6 +68,7 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
 
 The `balanceMaxShift` and `balanceCooldown` configuration values to determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
+<a name="job-trimming"></a>
 #### Job Trimming
 
 The `horizon` configuration file allows you to configure how long recent and failed jobs should be persisted (in minutes). By default, recent jobs are kept for one hour while failed jobs are kept for a week:
@@ -144,6 +146,7 @@ You may gracefully terminate the master Horizon process on your machine using th
 
 If you are deploying Horizon to a live server, you should configure a process monitor to monitor the `php artisan horizon` command and restart it if it quits unexpectedly. When deploying fresh code to your server, you will need to instruct the master Horizon process to terminate so it can be restarted by your process monitor and receive your code changes.
 
+<a name="installing-supervisor"></a>
 #### Installing Supervisor
 
 Supervisor is a process monitor for the Linux operating system, and will automatically restart your `horizon` process if it fails. To install Supervisor on Ubuntu, you may use the following command:
@@ -152,6 +155,7 @@ Supervisor is a process monitor for the Linux operating system, and will automat
 
 > {tip} If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
 
+<a name="supervisor-configuration"></a>
 #### Supervisor Configuration
 
 Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `horizon.conf` file that starts and monitors a `horizon` process:
@@ -168,6 +172,7 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
 
 > {note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
+<a name="starting-supervisor"></a>
 #### Starting Supervisor
 
 Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
@@ -235,6 +240,7 @@ If this job is queued with an `App\Models\Video` instance that has an `id` of `1
 
     App\Jobs\RenderVideo::dispatch($video);
 
+<a name="manually-tagging"></a>
 #### Manually Tagging
 
 If you would like to manually define the tags for one of your queueable objects, you may define a `tags` method on the class:
@@ -263,6 +269,7 @@ If you would like to be notified when one of your queues has a long wait time, y
     Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');
     Horizon::routeSmsNotificationsTo('15556667777');
 
+<a name="configuring-notification-wait-time-thresholds"></a>
 #### Configuring Notification Wait Time Thresholds
 
 You may configure how many seconds are considered a "long wait" within your `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination:

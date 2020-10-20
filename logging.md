@@ -24,6 +24,7 @@ All of the configuration for your application's logging system is housed in the 
 
 By default, Laravel will use the `stack` channel when logging messages. The `stack` channel is used to aggregate multiple log channels into a single channel. For more information on building stacks, check out the [documentation below](#building-log-stacks).
 
+<a name="configuring-the-channel-name"></a>
 #### Configuring The Channel Name
 
 By default, Monolog is instantiated with a "channel name" that matches the current environment, such as `production` or `local`. To change this value, add a `name` option to your channel's configuration:
@@ -34,6 +35,7 @@ By default, Monolog is instantiated with a "channel name" that matches the curre
         'channels' => ['single', 'slack'],
     ],
 
+<a name="available-channel-drivers"></a>
 #### Available Channel Drivers
 
 Name | Description
@@ -50,6 +52,7 @@ Name | Description
 
 > {tip} Check out the documentation on [advanced channel customization](#advanced-monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
+<a name="configuring-the-single-and-daily-channels"></a>
 #### Configuring The Single and Daily Channels
 
 The `single` and `daily` channels have three optional configuration options: `bubble`, `permission`, and `locking`.
@@ -60,10 +63,12 @@ Name | Description | Default
 `permission` | The log file's permissions | `0644`
 `locking` | Attempt to lock the log file before writing to it | `false`
 
+<a name="configuring-the-papertrail-channel"></a>
 #### Configuring The Papertrail Channel
 
 The `papertrail` channel requires the `url` and `port` configuration options. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
 
+<a name="configuring-the-slack-channel"></a>
 #### Configuring The Slack Channel
 
 The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team. By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this in your `logging` configuration file.
@@ -95,6 +100,7 @@ As previously mentioned, the `stack` driver allows you to combine multiple chann
 
 Let's dissect this configuration. First, notice our `stack` channel aggregates two other channels via its `channels` option: `syslog` and `slack`. So, when logging messages, both of these channels will have the opportunity to log the message.
 
+<a name="log-levels"></a>
 #### Log Levels
 
 Take note of the `level` configuration option present on the `syslog` and `slack` channel configurations in the example above. This option determines the minimum "level" a message must be in order to be logged by the channel. Monolog, which powers Laravel's logging services, offers all of the log levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info**, and **debug**.
@@ -147,6 +153,7 @@ So, you may call any of these methods to log a message for the corresponding lev
         }
     }
 
+<a name="contextual-information"></a>
 #### Contextual Information
 
 An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
@@ -226,6 +233,7 @@ When using the `monolog` driver, the `handler` configuration option is used to s
         ],
     ],
 
+<a name="monolog-formatters"></a>
 #### Monolog Formatters
 
 When using the `monolog` driver, the Monolog `LineFormatter` will be used as the default formatter. However, you may customize the type of formatter passed to the handler using the `formatter` and `formatter_with` configuration options:
