@@ -148,6 +148,7 @@ If you would like to delay the delivery of the notification, you may chain the `
 
     $user->notify((new InvoicePaid($invoice))->delay($when));
 
+<a name="customizing-notification-channel-queues"></a>
 #### Customizing Notification Channel Queues
 
 If you would like to specify a specific queue that should be used for each notification channel supported by the notification, you may define a `viaQueues` method on your notification. This method should return an array of channel name / queue name pairs:
@@ -208,6 +209,7 @@ In this example, we register a greeting, a line of text, a call to action, and t
 
 > {tip} When sending mail notifications, be sure to set the `name` value in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
 
+<a name="other-notification-formatting-options"></a>
 #### Other Notification Formatting Options
 
 Instead of defining the "lines" of text in the notification class, you may use the `view` method to specify a custom template that should be used to render the notification email:
@@ -406,6 +408,7 @@ When attaching files to a message, you may also specify the display name and / o
 
 > {tip} Unlike attaching files in mailable objects, you may not attach a file directly from the storage disk using `attachFromStorage`. You should rather use `attach` method with an absolute path to the file on the storage disk. Alternatively, you could return a [mailable](/docs/{{version}}/mail#generating-mailables) from the `toMail` method.
 
+<a name="raw-data-attachments"></a>
 #### Raw Data Attachments
 
 The `attachData` method may be used to attach a raw string of bytes as an attachment:
@@ -484,6 +487,7 @@ Markdown mail notifications use a combination of Blade components and Markdown s
     {{ config('app.name') }}
     @endcomponent
 
+<a name="button-component"></a>
 #### Button Component
 
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`. You may add as many button components to a notification as you wish:
@@ -492,6 +496,7 @@ The button component renders a centered button link. The component accepts two a
     View Invoice
     @endcomponent
 
+<a name="panel-component"></a>
 #### Panel Component
 
 The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the notification. This allows you to draw attention to a given block of text:
@@ -500,6 +505,7 @@ The panel component renders the given block of text in a panel that has a slight
     This is the panel content.
     @endcomponent
 
+<a name="table-component"></a>
 #### Table Component
 
 The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
@@ -520,6 +526,7 @@ You may export all of the Markdown notification components to your own applicati
 
 This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain an `html` and a `text` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
 
+<a name="customizing-the-css"></a>
 #### Customizing The CSS
 
 After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown notifications.
@@ -575,6 +582,7 @@ If a notification supports being stored in a database table, you should define a
         ];
     }
 
+<a name="todatabase-vs-toarray"></a>
 #### `toDatabase` Vs. `toArray`
 
 The `toArray` method is also used by the `broadcast` channel to determine which data to broadcast to your JavaScript client. If you would like to have two different array representations for the `database` and `broadcast` channels, you should define a `toDatabase` method instead of a `toArray` method.
@@ -654,6 +662,7 @@ The `broadcast` channel broadcasts notifications using Laravel's [event broadcas
         ]);
     }
 
+<a name="broadcast-queue-configuration"></a>
 #### Broadcast Queue Configuration
 
 All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
@@ -662,6 +671,7 @@ All broadcast notifications are queued for broadcasting. If you would like to co
                     ->onConnection('sqs')
                     ->onQueue('broadcasts');
 
+<a name="customizing-the-notification-type"></a>
 #### Customizing The Notification Type
 
 In addition to the data you specify, all broadcast notifications also have a `type` field containing the full class name of the notification. If you would like to customize the notification `type` that is provided to your JavaScript client, you may define a `broadcastType` method on the notification class:
@@ -688,6 +698,7 @@ Notifications will broadcast on a private channel formatted using a `{notifiable
             console.log(notification.type);
         });
 
+<a name="customizing-the-notification-channel"></a>
 #### Customizing The Notification Channel
 
 If you would like to customize which channels a notifiable entity receives its broadcast notifications on, you may define a `receivesBroadcastNotificationsOn` method on the notifiable entity:
@@ -775,6 +786,7 @@ Laravel also supports sending shortcode notifications, which are pre-defined mes
 
 > {tip} Like [routing SMS Notifications](#routing-sms-notifications), you should implement the `routeNotificationForShortcode` method on your notifiable model.
 
+<a name="unicode-content"></a>
 #### Unicode Content
 
 If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `NexmoMessage` instance:
@@ -871,6 +883,7 @@ In this example we are just sending a single line of text to Slack, which will c
 
 <img src="https://laravel.com/img/docs/basic-slack-notification.png">
 
+<a name="customizing-the-sender-recipient"></a>
 #### Customizing The Sender & Recipient
 
 You may use the `from` and `to` methods to customize the sender and recipient. The `from` method accepts a username and emoji identifier, while the `to` method accepts a channel or username:
@@ -963,6 +976,7 @@ The example above will create a Slack message that looks like the following:
 
 <img src="https://laravel.com/img/docs/slack-fields-attachment.png">
 
+<a name="markdown-attachment-content"></a>
 #### Markdown Attachment Content
 
 If some of your attachment fields contain Markdown, you may use the `markdown` method to instruct Slack to parse and display the given attachment fields as Markdown formatted text. The values accepted by this method are: `pretext`, `text`, and / or `fields`. For more information about Slack attachment formatting, check out the [Slack API documentation](https://api.slack.com/docs/message-formatting#message_formatting):

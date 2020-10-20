@@ -87,10 +87,12 @@ Once Valet is installed, try pinging any `*.test` domain on your terminal using 
 
 Valet will automatically start its daemon each time your machine boots. There is no need to run `valet start` or `valet install` ever again once the initial Valet installation is complete.
 
+<a name="database"></a>
 #### Database
 
 If you need a database, try MySQL by running `brew install mysql@5.7` on your command line. Once MySQL has been installed, you may start it using the `brew services start mysql@5.7` command. You can then connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
 
+<a name="php-versions"></a>
 #### PHP Versions
 
 Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Brew if it is not already installed:
@@ -101,6 +103,7 @@ Valet allows you to switch PHP versions using the `valet use php@version` comman
 
 > {note} Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
 
+<a name="resetting-your-installation"></a>
 #### Resetting Your Installation
 
 If you are having trouble getting your Valet installation to run properly, executing the `composer global update` command followed by `valet install` will reset your installation and can solve a variety of problems. In rare cases it may be necessary to "hard reset" Valet by executing `valet uninstall --force` followed by `valet install`.
@@ -229,6 +232,7 @@ Once you have completed your custom Valet driver, place it in the `~/.config/val
 
 Let's take a look at a sample implementation of each method your custom Valet driver should implement.
 
+<a name="the-serves-method"></a>
 #### The `serves` Method
 
 The `serves` method should return `true` if your driver should handle the incoming request. Otherwise, the method should return `false`. So, within this method you should attempt to determine if the given `$sitePath` contains a project of the type you are trying to serve.
@@ -248,6 +252,7 @@ For example, let's pretend we are writing a `WordPressValetDriver`. Our `serves`
         return is_dir($sitePath.'/wp-admin');
     }
 
+<a name="the-isstaticfile-method"></a>
 #### The `isStaticFile` Method
 
 The `isStaticFile` should determine if the incoming request is for a file that is "static", such as an image or a stylesheet. If the file is static, the method should return the fully qualified path to the static file on disk. If the incoming request is not for a static file, the method should return `false`:
@@ -271,6 +276,7 @@ The `isStaticFile` should determine if the incoming request is for a file that i
 
 > {note} The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
 
+<a name="the-frontcontrollerpath-method"></a>
 #### The `frontControllerPath` Method
 
 The `frontControllerPath` method should return the fully qualified path to your application's "front controller", which is typically your "index.php" file or equivalent:

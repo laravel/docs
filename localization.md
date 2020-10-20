@@ -51,6 +51,7 @@ You may configure a "fallback language", which will be used when the active lang
 
     'fallback_locale' => 'en',
 
+<a name="determining-the-current-locale"></a>
 #### Determining The Current Locale
 
 You may use the `getLocale` and `isLocale` methods on the `App` facade to determine the current locale or check if the locale is a given value:

@@ -262,6 +262,7 @@ Using OAuth2 with authorization codes is how most developers are familiar with O
 
 First, developers building applications that need to interact with your application's API will need to register their application with yours by creating a "client". Typically, this consists of providing the name of their application and a URL that your application can redirect to after users approve their request for authorization.
 
+<a name="the-passportclient-command"></a>
 #### The `passport:client` Command
 
 The simplest way to create a client is using the `passport:client` Artisan command. This command may be used to create your own clients for testing your OAuth2 functionality. When you run the `client` command, Passport will prompt you for more information about your client and will provide you with a client ID and secret:
@@ -276,6 +277,7 @@ If you would like to allow multiple redirect URLs for your client, you may speci
 
 > {note} Any URL which contains commas must be encoded.
 
+<a name="clients-json-api"></a>
 #### JSON API
 
 Since your users will not be able to utilize the `client` command, Passport provides a JSON API that you may use to create clients. This saves you the trouble of having to manually code controllers for creating, updating, and deleting clients.
@@ -284,6 +286,7 @@ However, you will need to pair Passport's JSON API with your own frontend to pro
 
 The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
 
+<a name="get-oauthclients"></a>
 #### `GET /oauth/clients`
 
 This route returns all of the clients for the authenticated user. This is primarily useful for listing all of the user's clients so that they may edit or delete them:
@@ -293,6 +296,7 @@ This route returns all of the clients for the authenticated user. This is primar
             console.log(response.data);
         });
 
+<a name="post-oauthclients"></a>
 #### `POST /oauth/clients`
 
 This route is used to create new clients. It requires two pieces of data: the client's `name` and a `redirect` URL. The `redirect` URL is where the user will be redirected after approving or denying a request for authorization.
@@ -312,6 +316,7 @@ When a client is created, it will be issued a client ID and client secret. These
             // List errors on response...
         });
 
+<a name="put-oauthclientsclient-id"></a>
 #### `PUT /oauth/clients/{client-id}`
 
 This route is used to update clients. It requires two pieces of data: the client's `name` and a `redirect` URL. The `redirect` URL is where the user will be redirected after approving or denying a request for authorization. The route will return the updated client instance:
@@ -329,6 +334,7 @@ This route is used to update clients. It requires two pieces of data: the client
             // List errors on response...
         });
 
+<a name="delete-oauthclientsclient-id"></a>
 #### `DELETE /oauth/clients/{client-id}`
 
 This route is used to delete clients:
@@ -341,6 +347,7 @@ This route is used to delete clients:
 <a name="requesting-tokens"></a>
 ### Requesting Tokens
 
+<a name="requesting-tokens-redirecting-for-authorization"></a>
 #### Redirecting For Authorization
 
 Once a client has been created, developers may use their client ID and secret to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
@@ -361,6 +368,7 @@ Once a client has been created, developers may use their client ID and secret to
 
 > {tip} Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
 
+<a name="approving-the-request"></a>
 #### Approving The Request
 
 When receiving authorization requests, Passport will automatically display a template to the user allowing them to approve or deny the authorization request. If they approve the request, they will be redirected back to the `redirect_uri` that was specified by the consuming application. The `redirect_uri` must match the `redirect` URL that was specified when the client was created.
@@ -390,6 +398,7 @@ Sometimes you may wish to skip the authorization prompt, such as when authorizin
         }
     }
 
+<a name="requesting-tokens-converting-authorization-codes-to-access-tokens"></a>
 #### Converting Authorization Codes To Access Tokens
 
 If the user approves the authorization request, they will be redirected back to the consuming application. The consumer should first verify the `state` parameter against the value that was stored prior to the redirect. If the state parameter matches the consumer should issue a `POST` request to your application to request an access token. The request should include the authorization code that was issued by your application when the user approved the authorization request. In this example, we'll use the Guzzle HTTP library to make the `POST` request:
@@ -421,10 +430,12 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 
 > {tip} Like the `/oauth/authorize` route, the `/oauth/token` route is defined for you by the `Passport::routes` method. There is no need to manually define this route. By default, this route is throttled using the settings of the `ThrottleRequests` middleware.
 
+<a name="tokens-json-api"></a>
 #### JSON API
 
 Passport also includes a JSON API for managing authorized access tokens. You may pair this with your own frontend to offer your users a dashboard for managing access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints. The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application.
 
+<a name="get-oauthtokens"></a>
 #### `GET /oauth/tokens`
 
 This route returns all of the authorized access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they can revoke them:
@@ -434,6 +445,7 @@ This route returns all of the authorized access tokens that the authenticated us
             console.log(response.data);
         });
 
+<a name="delete-oauthtokenstoken-id"></a>
 #### `DELETE /oauth/tokens/{token-id}`
 
 This route may be used to revoke authorized access tokens and their related refresh tokens:
@@ -517,6 +529,7 @@ Before your application can issue tokens via the authorization code grant with P
 <a name="requesting-auth-pkce-grant-tokens"></a>
 ### Requesting Tokens
 
+<a name="code-verifier-code-challenge"></a>
 #### Code Verifier & Code Challenge
 
 As this authorization grant does not provide a client secret, developers will need to generate a combination of a code verifier and a code challenge in order to request a token.
@@ -529,6 +542,7 @@ The code challenge should be a Base64 encoded string with URL and filename-safe 
 
     $codeChallenge = strtr(rtrim($encoded, '='), '+/', '-_');
 
+<a name="code-grant-pkce-redirecting-for-authorization"></a>
 #### Redirecting For Authorization
 
 Once a client has been created, you may use the client ID and the generated code verifier and code challenge to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route:
@@ -555,6 +569,7 @@ Once a client has been created, you may use the client ID and the generated code
         return redirect('http://your-app.com/oauth/authorize?'.$query);
     });
 
+<a name="code-grant-pkce-converting-authorization-codes-to-access-tokens"></a>
 #### Converting Authorization Codes To Access Tokens
 
 If the user approves the authorization request, they will be redirected back to the consuming application. The consumer should verify the `state` parameter against the value that was stored prior to the redirect, as in the standard Authorization Code Grant.
@@ -811,12 +826,14 @@ Once you have created a personal access client, you may issue tokens for a given
     // Creating a token with scopes...
     $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
+<a name="personal-access-tokens-json-api"></a>
 #### JSON API
 
 Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
 
 The JSON API is guarded by the `web` and `auth` middleware; therefore, it may only be called from your own application. It is not able to be called from an external source.
 
+<a name="get-oauthscopes"></a>
 #### `GET /oauth/scopes`
 
 This route returns all of the [scopes](#token-scopes) defined for your application. You may use this route to list the scopes a user may assign to a personal access token:
@@ -826,6 +843,7 @@ This route returns all of the [scopes](#token-scopes) defined for your applicati
             console.log(response.data);
         });
 
+<a name="get-oauthpersonal-access-tokens"></a>
 #### `GET /oauth/personal-access-tokens`
 
 This route returns all of the personal access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they may edit or revoke them:
@@ -835,6 +853,7 @@ This route returns all of the personal access tokens that the authenticated user
             console.log(response.data);
         });
 
+<a name="post-oauthpersonal-access-tokens"></a>
 #### `POST /oauth/personal-access-tokens`
 
 This route creates new personal access tokens. It requires two pieces of data: the token's `name` and the `scopes` that should be assigned to the token:
@@ -852,6 +871,7 @@ This route creates new personal access tokens. It requires two pieces of data: t
             // List errors on response...
         });
 
+<a name="delete-oauthpersonal-access-tokenstoken-id"></a>
 #### `DELETE /oauth/personal-access-tokens/{token-id}`
 
 This route may be used to revoke personal access tokens:
@@ -870,6 +890,7 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
         //
     })->middleware('auth:api');
 
+<a name="multiple-authentication-guards"></a>
 #### Multiple Authentication Guards
 
 If your application authenticates different types of users that perhaps use entirely different Eloquent models, you will likely need to define a guard configuration for each user provider type in your application. This allows you to protect requests intended for specific user providers. For example, given the following guard configuration the `config/auth.php` configuration file:
@@ -936,6 +957,7 @@ If a client does not request any specific scopes, you may configure your Passpor
 <a name="assigning-scopes-to-tokens"></a>
 ### Assigning Scopes To Tokens
 
+<a name="when-requesting-authorization-codes"></a>
 #### When Requesting Authorization Codes
 
 When requesting an access token using the authorization code grant, consumers should specify their desired scopes as the `scope` query string parameter. The `scope` parameter should be a space-delimited list of scopes:
@@ -951,6 +973,7 @@ When requesting an access token using the authorization code grant, consumers sh
         return redirect('http://your-app.com/oauth/authorize?'.$query);
     });
 
+<a name="when-issuing-personal-access-tokens"></a>
 #### When Issuing Personal Access Tokens
 
 If you are issuing personal access tokens using the `User` model's `createToken` method, you may pass the array of desired scopes as the second argument to the method:
@@ -965,6 +988,7 @@ Passport includes two middleware that may be used to verify that an incoming req
     'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
     'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
 
+<a name="check-for-all-scopes"></a>
 #### Check For All Scopes
 
 The `scopes` middleware may be assigned to a route to verify that the incoming request's access token has *all* of the listed scopes:
@@ -973,6 +997,7 @@ The `scopes` middleware may be assigned to a route to verify that the incoming r
         // Access token has both "check-status" and "place-orders" scopes...
     })->middleware(['auth:api', 'scopes:check-status,place-orders']);
 
+<a name="check-for-any-scopes"></a>
 #### Check For Any Scopes
 
 The `scope` middleware may be assigned to a route to verify that the incoming request's access token has *at least one* of the listed scopes:
@@ -981,6 +1006,7 @@ The `scope` middleware may be assigned to a route to verify that the incoming re
         // Access token has either "check-status" or "place-orders" scope...
     })->middleware(['auth:api', 'scope:check-status,place-orders']);
 
+<a name="checking-scopes-on-a-token-instance"></a>
 #### Checking Scopes On A Token Instance
 
 Once an access token authenticated request has entered your application, you may still check if the token has a given scope using the `tokenCan` method on the authenticated `User` instance:
@@ -993,6 +1019,7 @@ Once an access token authenticated request has entered your application, you may
         }
     });
 
+<a name="additional-scope-methods"></a>
 #### Additional Scope Methods
 
 The `scopeIds` method will return an array of all defined IDs / names:
@@ -1032,6 +1059,7 @@ This Passport middleware will attach a `laravel_token` cookie to your outgoing r
             console.log(response.data);
         });
 
+<a name="customizing-the-cookie-name"></a>
 #### Customizing The Cookie Name
 
 If needed, you can customize the `laravel_token` cookie's name using the `Passport::cookie` method. Typically, this method should be called from the `boot` method of your `AuthServiceProvider`:
@@ -1050,6 +1078,7 @@ If needed, you can customize the `laravel_token` cookie's name using the `Passpo
         Passport::cookie('custom_name');
     }
 
+<a name="csrf-protection"></a>
 #### CSRF Protection
 
 When using this method of authentication, you will need to ensure a valid CSRF token header is included in your requests. The default Laravel JavaScript scaffolding includes an Axios instance, which will automatically use the encrypted `XSRF-TOKEN` cookie value to send a `X-XSRF-TOKEN` header on same-origin requests.

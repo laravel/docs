@@ -150,6 +150,7 @@ The `dusk` command accepts any argument that is normally accepted by the PHPUnit
 
     php artisan dusk --group=foo
 
+<a name="manually-starting-chromedriver"></a>
 #### Manually Starting ChromeDriver
 
 By default, Dusk will automatically attempt to start ChromeDriver. If this does not work for your particular system, you may manually start ChromeDriver before running the `dusk` command. If you choose to start ChromeDriver manually, you should comment out the following line of your `tests/DuskTestCase.php` file:
@@ -227,6 +228,7 @@ To get started, let's write a test that verifies we can log into our application
 
 As you can see in the example above, the `browse` method accepts a callback. A browser instance will automatically be passed to this callback by Dusk and is the main object used to interact with and make assertions against your application.
 
+<a name="creating-multiple-browsers"></a>
 #### Creating Multiple Browsers
 
 Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, "ask" for more than one browser in the signature of the callback given to the `browse` method:
@@ -246,6 +248,7 @@ Sometimes you may need multiple browsers in order to properly carry out a test. 
               ->assertSee('Jeffrey Way');
     });
 
+<a name="resizing-browser-windows"></a>
 #### Resizing Browser Windows
 
 You may use the `resize` method to adjust the size of the browser window:
@@ -422,6 +425,7 @@ You may use the `seeLink` method to determine if a link that has the given displ
 <a name="text-values-and-attributes"></a>
 ### Text, Values, & Attributes
 
+<a name="retrieving-setting-values"></a>
 #### Retrieving & Setting Values
 
 Dusk provides several methods for interacting with the current display text, value, and attributes of elements on the page. For example, to get the "value" of an element that matches a given selector, use the `value` method:
@@ -437,12 +441,14 @@ You may use the `inputValue` method to get the "value" of an input element that 
     // Retrieve the value of an input element...
     $inputValue = $browser->inputValue('field');
 
+<a name="retrieving-text"></a>
 #### Retrieving Text
 
 The `text` method may be used to retrieve the display text of an element that matches the given selector:
 
     $text = $browser->text('selector');
 
+<a name="retrieving-attributes"></a>
 #### Retrieving Attributes
 
 Finally, the `attribute` method may be used to retrieve an attribute of an element matching the given selector:
@@ -452,6 +458,7 @@ Finally, the `attribute` method may be used to retrieve an attribute of an eleme
 <a name="using-forms"></a>
 ### Using Forms
 
+<a name="typing-values"></a>
 #### Typing Values
 
 Dusk provides a variety of methods for interacting with forms and input elements. First, let's take a look at an example of typing text into an input field:
@@ -480,6 +487,7 @@ You may use the `appendSlowly` method to append text slowly:
     $browser->type('tags', 'foo')
             ->appendSlowly('tags', ', bar, baz');
 
+<a name="dropdowns"></a>
 #### Dropdowns
 
 To select a value in a dropdown selection box, you may use the `select` method. Like the `type` method, the `select` method does not require a full CSS selector. When passing a value to the `select` method, you should pass the underlying option value instead of the display text:
@@ -490,6 +498,7 @@ You may select a random option by omitting the second parameter:
 
     $browser->select('size');
 
+<a name="checkboxes"></a>
 #### Checkboxes
 
 To "check" a checkbox field, you may use the `check` method. Like many other input related methods, a full CSS selector is not required. If an exact selector match can't be found, Dusk will search for a checkbox with a matching `name` attribute:
@@ -498,6 +507,7 @@ To "check" a checkbox field, you may use the `check` method. Like many other inp
 
     $browser->uncheck('terms');
 
+<a name="radio-buttons"></a>
 #### Radio Buttons
 
 To "select" a radio button option, you may use the `radio` method. Like many other input related methods, a full CSS selector is not required. If an exact selector match can't be found, Dusk will search for a radio with matching `name` and `value` attributes:
@@ -529,6 +539,7 @@ You may even send a "hot key" to the primary CSS selector that contains your app
 <a name="using-the-mouse"></a>
 ### Using The Mouse
 
+<a name="clicking-on-elements"></a>
 #### Clicking On Elements
 
 The `click` method may be used to "click" on an element matching the given selector:
@@ -559,12 +570,14 @@ The `clickAndHold` method may be used to simulate a mouse button being clicked a
             ->pause(1000)
             ->releaseMouse();
 
+<a name="mouseover"></a>
 #### Mouseover
 
 The `mouseover` method may be used when you need to move the mouse over an element matching the given selector:
 
     $browser->mouseover('.selector');
 
+<a name="drag-drop"></a>
 #### Drag & Drop
 
 The `drag` method may be used to drag an element matching the given selector to another element:
@@ -629,12 +642,14 @@ You may occasionally need to execute assertions outside of the current scope. Yo
 
 When testing applications that use JavaScript extensively, it often becomes necessary to "wait" for certain elements or data to be available before proceeding with a test. Dusk makes this a cinch. Using a variety of methods, you may wait for elements to be visible on the page or even wait until a given JavaScript expression evaluates to `true`.
 
+<a name="waiting"></a>
 #### Waiting
 
 If you need to pause the test for a given number of milliseconds, use the `pause` method:
 
     $browser->pause(1000);
 
+<a name="waiting-for-selectors"></a>
 #### Waiting For Selectors
 
 The `waitFor` method may be used to pause the execution of the test until the element matching the given CSS selector is displayed on the page. By default, this will pause the test for a maximum of five seconds before throwing an exception. If necessary, you may pass a custom timeout threshold as the second argument to the method:
@@ -661,6 +676,7 @@ You may also wait until the given selector is missing from the page:
     // Wait a maximum of one second until the selector is missing...
     $browser->waitUntilMissing('.selector', 1);
 
+<a name="scoping-selectors-when-available"></a>
 #### Scoping Selectors When Available
 
 Occasionally, you may wish to wait for a given selector and then interact with the element matching the selector. For example, you may wish to wait until a modal window is available and then press the "OK" button within the modal. The `whenAvailable` method may be used in this case. All element operations performed within the given callback will be scoped to the original selector:
@@ -670,6 +686,7 @@ Occasionally, you may wish to wait for a given selector and then interact with t
               ->press('OK');
     });
 
+<a name="waiting-for-text"></a>
 #### Waiting For Text
 
 The `waitForText` method may be used to wait until the given text is displayed on the page:
@@ -688,6 +705,7 @@ You may use the `waitUntilMissingText` method to wait until the displayed text h
     // Wait a maximum of one second for the text to be removed...
     $browser->waitUntilMissingText('Hello World', 1);
 
+<a name="waiting-for-links"></a>
 #### Waiting For Links
 
 The `waitForLink` method may be used to wait until the given link text is displayed on the page:
@@ -698,6 +716,7 @@ The `waitForLink` method may be used to wait until the given link text is displa
     // Wait a maximum of one second for the link...
     $browser->waitForLink('Create', 1);
 
+<a name="waiting-on-the-page-location"></a>
 #### Waiting On The Page Location
 
 When making a path assertion such as `$browser->assertPathIs('/home')`, the assertion can fail if `window.location.pathname` is being updated asynchronously. You may use the `waitForLocation` method to wait for the location to be a given value:
@@ -708,6 +727,7 @@ You may also wait for a named route's location:
 
     $browser->waitForRoute($routeName, $parameters);
 
+<a name="waiting-for-page-reloads"></a>
 #### Waiting for Page Reloads
 
 If you need to make assertions after a page has been reloaded, use the `waitForReload` method:
@@ -716,6 +736,7 @@ If you need to make assertions after a page has been reloaded, use the `waitForR
             ->waitForReload()
             ->assertSee('something');
 
+<a name="waiting-on-javascript-expressions"></a>
 #### Waiting On JavaScript Expressions
 
 Sometimes you may wish to pause the execution of a test until a given JavaScript expression evaluates to `true`. You may easily accomplish this using the `waitUntil` method. When passing an expression to this method, you do not need to include the `return` keyword or an ending semi-colon:
@@ -728,6 +749,7 @@ Sometimes you may wish to pause the execution of a test until a given JavaScript
     // Wait a maximum of one second for the expression to be true...
     $browser->waitUntil('App.data.servers.length > 0', 1);
 
+<a name="waiting-on-vue-expressions"></a>
 #### Waiting On Vue Expressions
 
 The following methods may be used to wait until a given Vue component attribute has a given value:
@@ -738,6 +760,7 @@ The following methods may be used to wait until a given Vue component attribute 
     // Wait until the component attribute doesn't contain the given value...
     $browser->waitUntilVueIsNot('user.name', null, '@user');
 
+<a name="waiting-with-a-callback"></a>
 #### Waiting With A Callback
 
 Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. You may use this method directly to wait for a given callback to return `true`. The `waitUsing` method accepts the maximum number of seconds to wait, the interval at which the Closure should be evaluated, the Closure, and an optional failure message:
@@ -1369,6 +1392,7 @@ To generate a page object, use the `dusk:page` Artisan command. All page objects
 
 By default, pages have three methods: `url`, `assert`, and `elements`. We will discuss the `url` and `assert` methods now. The `elements` method will be [discussed in more detail below](#shorthand-selectors).
 
+<a name="the-url-method"></a>
 #### The `url` Method
 
 The `url` method should return the path of the URL that represents the page. Dusk will use this URL when navigating to the page in the browser:
@@ -1383,6 +1407,7 @@ The `url` method should return the path of the URL that represents the page. Dus
         return '/login';
     }
 
+<a name="the-assert-method"></a>
 #### The `assert` Method
 
 The `assert` method may make any assertions necessary to verify that the browser is actually on the given page. Completing this method is not necessary; however, you are free to make these assertions if you wish. These assertions will be run automatically when navigating to the page:
@@ -1450,6 +1475,7 @@ Now, you may use this shorthand selector anywhere you would use a full CSS selec
 
     $browser->type('@email', 'taylor@laravel.com');
 
+<a name="global-shorthand-selectors"></a>
 #### Global Shorthand Selectors
 
 After installing Dusk, a base `Page` class will be placed in your `tests/Browser/Pages` directory. This class contains a `siteElements` method which may be used to define global shorthand selectors that should be available on every page throughout your application:

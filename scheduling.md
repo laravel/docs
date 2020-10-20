@@ -172,6 +172,7 @@ Method  | Description
 `->when(Closure);`  |  Limit the task based on a truth test
 `->environments($env);`  |  Limit the task to specific environments
 
+<a name="day-constraints"></a>
 #### Day Constraints
 
 The `days` method may be used to limit the execution of a task to specific days of the week. For example, you may schedule a command to run hourly on Sundays and Wednesdays:
@@ -180,6 +181,7 @@ The `days` method may be used to limit the execution of a task to specific days 
                     ->hourly()
                     ->days([0, 3]);
 
+<a name="between-time-constraints"></a>
 #### Between Time Constraints
 
 The `between` method may be used to limit the execution of a task based on the time of day:
@@ -194,6 +196,7 @@ Similarly, the `unlessBetween` method can be used to exclude the execution of a 
                         ->hourly()
                         ->unlessBetween('23:00', '4:00');
 
+<a name="truth-test-constraints"></a>
 #### Truth Test Constraints
 
 The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given `Closure` returns `true`, the task will execute as long as no other constraining conditions prevent the task from running:
@@ -210,6 +213,7 @@ The `skip` method may be seen as the inverse of `when`. If the `skip` method ret
 
 When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
 
+<a name="environment-constraints"></a>
 #### Environment Constraints
 
 The `environments` method may be used to execute tasks only on the given environments:
@@ -354,6 +358,7 @@ If output is available from your command, you may access it in your `after`, `on
                  // The task failed...
              });
 
+<a name="pinging-urls"></a>
 #### Pinging URLs
 
 Using the `pingBefore` and `thenPing` methods, the scheduler can automatically ping a given URL before or after a task is complete. This method is useful for notifying an external service, such as [Laravel Envoyer](https://envoyer.io), that your scheduled task is commencing or has finished execution:

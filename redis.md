@@ -60,6 +60,7 @@ The default server configuration should suffice for development. However, you ar
 
     ],
 
+<a name="configuring-the-connection-scheme"></a>
 #### Configuring The Connection Scheme
 
 By default, Redis clients will use the `tcp` scheme when connecting to your Redis servers; however, you may use TLS / SSL encryption by specifying a `scheme` configuration option in your Redis server configuration:
@@ -78,6 +79,7 @@ By default, Redis clients will use the `tcp` scheme when connecting to your Redi
 
     ],
 
+<a name="configuring-clusters"></a>
 #### Configuring Clusters
 
 If your application is utilizing a cluster of Redis servers, you should define these clusters within a `clusters` key of your Redis configuration:
@@ -167,6 +169,7 @@ In addition to the default `host`, `port`, `database`, and `password` server con
         ],
     ],
 
+<a name="the-redis-facade"></a>
 #### The Redis Facade
 
 To avoid class naming collisions with the Redis PHP extension itself, you will need to delete or rename the `Illuminate\Support\Facades\Redis` facade alias from your `app` configuration file's `aliases` array. Generally, you should remove this alias entirely and only reference the facade by its fully qualified class name while using the Redis PHP extension.
@@ -209,6 +212,7 @@ Alternatively, you may also pass commands to the server using the `command` meth
 
     $values = Redis::command('lrange', ['name', 5, 10]);
 
+<a name="using-multiple-redis-connections"></a>
 #### Using Multiple Redis Connections
 
 You may get a Redis instance by calling the `Redis::connection` method:
@@ -281,6 +285,7 @@ Now we may publish messages to the channel using the `publish` method:
         Redis::publish('test-channel', json_encode(['foo' => 'bar']));
     });
 
+<a name="wildcard-subscriptions"></a>
 #### Wildcard Subscriptions
 
 Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The `$channel` name will be passed as the second argument to the provided callback `Closure`:

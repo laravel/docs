@@ -35,6 +35,7 @@ Views may also be nested within subdirectories of the `resources/views` director
 
 > {note} View directory names should not contain the `.` character.
 
+<a name="determining-if-a-view-exists"></a>
 #### Determining If A View Exists
 
 If you need to determine if a view exists, you may use the `View` facade. The `exists` method will return `true` if the view exists:
@@ -45,6 +46,7 @@ If you need to determine if a view exists, you may use the `View` facade. The `e
         //
     }
 
+<a name="creating-the-first-available-view"></a>
 #### Creating The First Available View
 
 Using the `first` method, you may create the first view that exists in a given array of views. This is useful if your application or package allows views to be customized or overwritten:
@@ -195,6 +197,7 @@ Just before the view is rendered, the composer's `compose` method is called with
 
 > {tip} All view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor.
 
+<a name="attaching-a-composer-to-multiple-views"></a>
 #### Attaching A Composer To Multiple Views
 
 You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
@@ -210,6 +213,7 @@ The `composer` method also accepts the `*` character as a wildcard, allowing you
         //
     });
 
+<a name="view-creators"></a>
 #### View Creators
 
 View **creators** are very similar to view composers; however, they are executed immediately after the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:

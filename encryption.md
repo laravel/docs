@@ -17,6 +17,7 @@ Before using Laravel's encrypter, you must set a `key` option in your `config/ap
 <a name="using-the-encrypter"></a>
 ## Using The Encrypter
 
+<a name="encrypting-a-value"></a>
 #### Encrypting A Value
 
 You may encrypt a value using the `encryptString` method of the `Crypt` facade. All encrypted values are encrypted using OpenSSL and the `AES-256-CBC` cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC) to detect any modifications to the encrypted string:
@@ -49,6 +50,7 @@ You may encrypt a value using the `encryptString` method of the `Crypt` facade. 
         }
     }
 
+<a name="decrypting-a-value"></a>
 #### Decrypting A Value
 
 You may decrypt values using the `decryptString` method of the `Crypt` facade. If the value can not be properly decrypted, such as when the MAC is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:

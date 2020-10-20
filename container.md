@@ -78,6 +78,7 @@ Almost all of your service container bindings will be registered within [service
 
 > {tip} There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
 
+<a name="simple-bindings"></a>
 #### Simple Bindings
 
 Within a service provider, you always have access to the container via the `$this->app` property. We can register a binding using the `bind` method, passing the class or interface name that we wish to register along with a `Closure` that returns an instance of the class:
@@ -88,6 +89,7 @@ Within a service provider, you always have access to the container via the `$thi
 
 Note that we receive the container itself as an argument to the resolver. We can then use the container to resolve sub-dependencies of the object we are building.
 
+<a name="binding-a-singleton"></a>
 #### Binding A Singleton
 
 The `singleton` method binds a class or interface into the container that should only be resolved one time. Once a singleton binding is resolved, the same object instance will be returned on subsequent calls into the container:
@@ -96,6 +98,7 @@ The `singleton` method binds a class or interface into the container that should
         return new \HelpSpot\API($app->make('HttpClient'));
     });
 
+<a name="binding-instances"></a>
 #### Binding Instances
 
 You may also bind an existing object instance into the container using the `instance` method. The given instance will always be returned on subsequent calls into the container:
@@ -206,6 +209,7 @@ For convenience, you may also just provide an array of class names to be resolve
                   TooLongFilter::class,
               ]);
 
+<a name="variadic-tag-dependencies"></a>
 #### Variadic Tag Dependencies
 
 Sometimes a class may have a variadic dependency that is type-hinted as a given class (`Report ...$reports`). Using the `needs` and `giveTagged` methods, you may easily inject all of the container bindings with that tag for the given dependency:

@@ -60,6 +60,7 @@ Since models and collections are converted to JSON when cast to a string, you ca
         return App\Models\User::all();
     });
 
+<a name="relationships"></a>
 #### Relationships
 
 When an Eloquent model is converted to JSON, its loaded relationships will automatically be included as attributes on the JSON object. Also, though Eloquent relationship methods are defined using "camel case", a relationship's JSON attribute will be "snake case".
@@ -105,6 +106,7 @@ Alternatively, you may use the `visible` property to define a white-list of attr
         protected $visible = ['first_name', 'last_name'];
     }
 
+<a name="temporarily-modifying-attribute-visibility"></a>
 #### Temporarily Modifying Attribute Visibility
 
 If you would like to make some typically hidden attributes visible on a given model instance, you may use the `makeVisible` method. The `makeVisible` method returns the model instance for convenient method chaining:
@@ -159,6 +161,7 @@ After creating the accessor, add the attribute name to the `appends` property on
 
 Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON representations. Attributes in the `appends` array will also respect the `visible` and `hidden` settings configured on the model.
 
+<a name="appending-at-run-time"></a>
 #### Appending At Run Time
 
 You may instruct a single model instance to append attributes using the `append` method. Or, you may use the `setAppends` method to override the entire array of appended properties for a given model instance:
@@ -170,6 +173,7 @@ You may instruct a single model instance to append attributes using the `append`
 <a name="date-serialization"></a>
 ## Date Serialization
 
+<a name="customizing-the-default-date-format"></a>
 #### Customizing The Default Date Format
 
 You may customize the default serialization format by overriding the `serializeDate` method:
@@ -185,6 +189,7 @@ You may customize the default serialization format by overriding the `serializeD
         return $date->format('Y-m-d');
     }
 
+<a name="customizing-the-date-format-per-attribute"></a>
 #### Customizing The Date Format Per Attribute
 
 You may customize the serialization format of individual Eloquent date attributes by specifying the date format in the [cast declaration](/docs/{{version}}/eloquent-mutators#attribute-casting):

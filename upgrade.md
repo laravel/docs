@@ -28,6 +28,7 @@
 <a name="upgrade-8.0"></a>
 ## Upgrading To 8.0 From 7.x
 
+<a name="estimated-upgrade-time-15-minutes"></a>
 #### Estimated Upgrade Time: 15 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
@@ -68,6 +69,7 @@ Finally, examine any other third-party packages consumed by your application and
 
 ### Collections
 
+<a name="the-isset-method"></a>
 #### The `isset` Method
 
 **Likelihood Of Impact: Low**
@@ -134,6 +136,7 @@ Laravel's [model factories](/docs/{{version}}/database-testing#creating-factorie
 
     composer require laravel/legacy-factories
 
+<a name="the-castable-interface"></a>
 #### The `Castable` Interface
 
 **Likelihood Of Impact: Low**
@@ -142,6 +145,7 @@ The `castUsing` method of the `Castable` interface has been updated to accept an
 
     public static function castUsing(array $arguments);
 
+<a name="increment-decrement-events"></a>
 #### Increment / Decrement Events
 
 **Likelihood Of Impact: Low**
@@ -150,6 +154,7 @@ Proper "update" and "save" related model events will now be dispatched when exec
 
 ### Events
 
+<a name="the-dispatcher-contract"></a>
 #### The `Dispatcher` Contract
 
 **Likelihood Of Impact: Low**
@@ -180,12 +185,14 @@ The [maintenance mode](/docs/{{version}}/configuration#maintenance-mode) feature
 
 The `--message` option of the `php artisan down` command has been removed. As an alternative, consider [pre-rendering your maintenance mode views](/docs/{{version}}/configuration#maintenance-mode) with the message of your choice.
 
+<a name="manager-app-property"></a>
 #### Manager `$app` Property
 
 **Likelihood Of Impact: Low**
 
 The previously deprecated `$app` property of the `Illuminate\Support\Manager` class has been removed. If you were relying on this property, you should use the `$container` property instead.
 
+<a name="the-elixir-helper"></a>
 #### The `elixir` Helper
 
 **Likelihood Of Impact: Low**
@@ -194,6 +201,7 @@ The previously deprecated `elixir` helper has been removed. Applications still u
 
 ### Mail
 
+<a name="the-sendnow-method"></a>
 #### The `sendNow` Method
 
 **Likelihood Of Impact: Low**
@@ -261,6 +269,7 @@ Next, the `failed.driver` configuration option within your `queue` configuration
 
 ### Routing
 
+<a name="automatic-controller-namespace-prefixing"></a>
 #### Automatic Controller Namespace Prefixing
 
 **Likelihood Of Impact: Optional**
@@ -337,6 +346,7 @@ If you would like to continue using the original auto-prefixed controller routin
 
 ### Scheduling
 
+<a name="the-cron-expression-library"></a>
 #### The `cron-expression` Library
 
 **Likelihood Of Impact: Low**
@@ -345,6 +355,7 @@ Laravel's dependency on `dragonmantank/cron-expression` has been updated from `2
 
 ### Session
 
+<a name="the-session-contract"></a>
 #### The `Session` Contract
 
 **Likelihood Of Impact: Low**

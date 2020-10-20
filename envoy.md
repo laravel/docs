@@ -30,6 +30,7 @@ Since global Composer libraries can sometimes cause package version conflicts, y
 
 > {note} Make sure to place the `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin` directory in your PATH so the `envoy` executable is found when running the `envoy` command in your terminal.
 
+<a name="updating-envoy"></a>
 #### Updating Envoy
 
 You may also use Composer to keep your Envoy installation up to date. Issuing the `composer global update` command will update all of your globally installed Composer packages:
@@ -134,6 +135,7 @@ Envoy allows you to easily run a task across multiple servers. First, add additi
         php artisan migrate
     @endtask
 
+<a name="parallel-execution"></a>
 #### Parallel Execution
 
 By default, tasks will be executed on each server serially. In other words, a task will finish running on the first server before proceeding to execute on the second server. If you would like to run a task across multiple servers in parallel, add the `parallel` option to your task declaration:
