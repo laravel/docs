@@ -128,7 +128,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 </div>
 
-<a name="fluent-strings"></a>
+<a name="fluent-strings-method-list"></a>
 ### Fluent Strings
 
 <div class="collection-method-list" markdown="1">
