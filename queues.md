@@ -282,7 +282,7 @@ After creating job middleware, they may be attached to a job by returning them f
 <a name="rate-limiting"></a>
 ### Rate Limiting
 
-Laravel includes a rate limiting middleware that you may utilize to rate limit jobs. Rate limiters are defined using the `RateLimiter` facade's `for` method, with a syntax similar to how they are defined for [routes](/docs/{{version}}/routing#defining-rate-limiters).
+Although we just demonstrated how to write your own rate limiting job middleware, Laravel includes a rate limiting middleware that you may utilize to rate limit jobs. Like [route rate limiters](/docs/{{version}}/routing#defining-rate-limiter), job rate limiters are defined using the `RateLimiter` facade's `for` method.
 
 For example, you may wish to allow users to backup their data once per hour while imposing no such limit on premium customers. To accomplish this, you may define a `RateLimiter` in your `AppServiceProvider`:
 
@@ -298,61 +298,61 @@ You may then attach the rate limiter to your backup job using the `RateLimited` 
 
     use Illuminate\Queue\Middleware\RateLimited;
 
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
     public function middleware()
     {
         return [new RateLimited('backups')];
     }
 
-If you are using Redis, you may use the `RateLimitedWithRedis` middleware, which is specific to Redis and is more efficient.
+Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [`retryUntil` method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
 
-> {note}  Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly.
+> {tip} If you are using Redis, you may use the `RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware.
 
 <a name="preventing-job-overlaps"></a>
 ### Preventing Job Overlaps
 
-Laravel includes a `WithoutOverlapping` middleware that allows you to prevent job overlaps based on a key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time.
+Laravel includes a `WithoutOverlapping` middleware that allows you to prevent job overlaps based on an arbitrary key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time.
 
-For example, let's say you have a refund processing job and you want to prevent refund job overlaps for the same order ID. To accomplish this, you can simply include the `WithoutOverlapping` middleware on your refund processing job:
+For example, let's imagine you have a refund processing job and you want to prevent refund job overlaps for the same order ID. To accomplish this, you can return the `WithoutOverlapping` middleware from your refund processing job's `middleware` method:
 
     use Illuminate\Queue\Middleware\WithoutOverlapping;
 
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
     public function middleware()
     {
         return [new WithoutOverlapping($this->order->id)];
     }
 
-Any overlapping jobs will then be released back to the queue. You may also provide a delay in releasing the job:
+Any overlapping jobs will be released back to the queue. You may also specify the number of seconds that must elapse before the job will be attempted again:
 
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
     public function middleware()
     {
         return [new WithoutOverlapping($this->order->id)->releaseAfter(60)];
     }
 
-If you wish to delete all overlapping jobs, you can use the `dontRelease` method:
+If you wish to immediately delete any overlapping jobs, you may use the `dontRelease` method:
 
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
     public function middleware()
     {
         return [new WithoutOverlapping($this->order->id)->dontRelease()];
-    }
-
-<a name="limiting-concurrent-jobs"></a>
-### Limiting Concurrent Jobs
-
-> {note} This feature requires that your application can interact with a [Redis server](/docs/{{version}}/redis).
-
-You may specify the maximum number of workers that may simultaneously process a given job. For example, using the `funnel` method of the `Redis` facade, you may create a middleware to limit jobs of a given type to only be processed by a maximum of two workers at a time:
-
-    public function handle($job, $next)
-    {
-        Redis::funnel('key')->limit(2)->then(function () {
-            // Lock obtained...
-
-            $next($job);
-        }, function () {
-            // Could not obtain lock...
-
-            return $job->release(10);
-        });
     }
 
 <a name="dispatching-jobs"></a>
