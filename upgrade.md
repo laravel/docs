@@ -180,6 +180,12 @@ The [maintenance mode](/docs/{{version}}/configuration#maintenance-mode) feature
 
 The `--message` option of the `php artisan down` command has been removed. As an alternative, consider [pre-rendering your maintenance mode views](/docs/{{version}}/configuration#maintenance-mode) with the message of your choice.
 
+#### The `php artisan serve --no-reload` Option
+
+**Likelihood Of Impact: Low**
+
+A `--no-reload` option of the `php artisan serve` command has been added. This is used when you need the server to load actual `$_ENV` environment variables instead of attempting to reload `.env` files, often used for CI tools when testing with Laravel Dusk.
+
 #### Manager `$app` Property
 
 **Likelihood Of Impact: Low**
