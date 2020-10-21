@@ -208,6 +208,8 @@ The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clau
                     ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
                     ->get();
 
+> {note} `whereRaw` with OR clause cannot use [`SoftDeletes`](/docs/{{version}}/eloquent#soft-deleting) trait safely. If you use OR clause in `whereRaw`, you should be either using SQL Parentheses in `whereRaw` or using `orWhere` instead of `whereRaw`.
+
 #### `havingRaw / orHavingRaw`
 
 The `havingRaw` and `orHavingRaw` methods may be used to set a raw string as the value of the `having` clause. These methods accept an optional array of bindings as their second argument:
