@@ -136,7 +136,7 @@ The `reset` method returns a "status" slug. This status may be translated using 
 <a name="reset-link-customization"></a>
 #### Reset Link Customization
 
-You may want to keep the default notification but change the password reset link. You can achieve this by calling the static method `createUrlUsing` with a `Closure` in the `boot` method of your `AppServiceProvider`.
+You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a Closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from a service provider's `boot` method:
 
     use Illuminate\Auth\Notifications\ResetPassword;
 
@@ -147,7 +147,9 @@ You may want to keep the default notification but change the password reset link
      */
     public function boot()
     {
-        ResetPassword::createUrlUsing(fn ($notifiable, string $token) => config('app.front_end_url') . '/auth/reset-password?token=' . $token);
+        ResetPassword::createUrlUsing(function ($notifiable, string $token) {
+            return 'https://example.com/auth/reset-password?token='.$token;
+        });
     }
 
 <a name="reset-email-customization"></a>
