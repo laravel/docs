@@ -344,7 +344,7 @@ Any overlapping jobs will be released back to the queue. You may also specify th
      */
     public function middleware()
     {
-        return [new WithoutOverlapping($this->order->id)->releaseAfter(60)];
+        return [(new WithoutOverlapping($this->order->id))->releaseAfter(60)];
     }
 
 If you wish to immediately delete any overlapping jobs, you may use the `dontRelease` method:
@@ -356,7 +356,7 @@ If you wish to immediately delete any overlapping jobs, you may use the `dontRel
      */
     public function middleware()
     {
-        return [new WithoutOverlapping($this->order->id)->dontRelease()];
+        return [(new WithoutOverlapping($this->order->id))->dontRelease()];
     }
 
 <a name="dispatching-jobs"></a>
