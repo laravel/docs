@@ -240,7 +240,7 @@ If you would like to verify that the JSON response contains some given data at a
 
             $response
                 ->assertStatus(201)
-                ->assertJsonPath('team.owner.name', 'foo')
+                ->assertJsonPath('team.owner.name', 'foo');
         }
     }
 
