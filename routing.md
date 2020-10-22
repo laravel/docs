@@ -422,6 +422,21 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
         return $this->where('name', $value)->firstOrFail();
     }
 
+If a route is utilizing [implicit binding scoping](#implicit-model-binding-scoping), the `resolveChildRouteBinding` method will be used to resolve the child binding of the parent model:
+
+    /**
+     * Retrieve the child model for a bound value.
+     *
+     * @param  string  $childType
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveChildRouteBinding($childType, $value, $field)
+    {
+        return parent::resolveChildRouteBinding($childType, $value, $field);
+    }
+
 <a name="fallback-routes"></a>
 ## Fallback Routes
 
