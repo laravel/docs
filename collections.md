@@ -272,7 +272,7 @@ The `chunkWhile` method breaks the collection into multiple, smaller collections
 
     $collection = collect(str_split('AABBCCCD'));
 
-    $chunks = $collection->chunkWhile(function($current, $key, $chunk) {
+    $chunks = $collection->chunkWhile(function ($current, $key, $chunk) {
         return $current === $chunk->last();
     });
 
