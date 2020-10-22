@@ -879,10 +879,6 @@ If a notification supports being sent as a Slack message, you should define a `t
                     ->content('One of your invoices has been paid!');
     }
 
-In this example we are just sending a single line of text to Slack, which will create a message that looks like the following:
-
-<img src="https://laravel.com/img/docs/basic-slack-notification.png">
-
 <a name="customizing-the-sender-recipient"></a>
 #### Customizing The Sender & Recipient
 
@@ -942,10 +938,6 @@ You may also add "attachments" to Slack messages. Attachments provide richer for
                     });
     }
 
-The example above will generate a Slack message that looks like the following:
-
-<img src="https://laravel.com/img/docs/basic-slack-attachment.png">
-
 Attachments also allow you to specify an array of data that should be presented to the user. The given data will be presented in a table-style format for easy reading:
 
     /**
@@ -971,10 +963,6 @@ Attachments also allow you to specify an array of data that should be presented 
                                     ]);
                     });
     }
-
-The example above will create a Slack message that looks like the following:
-
-<img src="https://laravel.com/img/docs/slack-fields-attachment.png">
 
 <a name="markdown-attachment-content"></a>
 #### Markdown Attachment Content
