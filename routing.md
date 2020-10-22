@@ -422,7 +422,7 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
         return $this->where('name', $value)->firstOrFail();
     }
 
-If you feel that your `resolveRouteBinding` it's being ignored, it's probably because you're using Model Scoping as well, which instead uses the function `resolveChildRouteBinding` on the parent Model.
+If a route is utilizing [implicit binding scoping](#implicit-model-binding-scoping), the `resolveChildRouteBinding` method will be used to resolve the child binding of the parent model:
 
     /**
      * Retrieve the child model for a bound value.
@@ -434,10 +434,6 @@ If you feel that your `resolveRouteBinding` it's being ignored, it's probably be
      */
     public function resolveChildRouteBinding($childType, $value, $field)
     {
-        if ($field === 'obfuscated') {
-            $field = null;
-            $value = $this->decode($value);
-        }
         return parent::resolveChildRouteBinding($childType, $value, $field);
     }
 
