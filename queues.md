@@ -9,7 +9,6 @@
 - [Job Middleware](#job-middleware)
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
-    - [Limiting Concurrent Jobs](#limiting-concurrent-jobs)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
