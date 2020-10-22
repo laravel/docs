@@ -422,6 +422,25 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
         return $this->where('name', $value)->firstOrFail();
     }
 
+If you feel that your `resolveRouteBinding` it's being ignored, it's probably because you're using Model Scoping as well, which instead uses the function `resolveChildRouteBinding` on the parent Model.
+
+    /**
+     * Retrieve the child model for a bound value.
+     *
+     * @param  string  $childType
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveChildRouteBinding($childType, $value, $field)
+    {
+        if ($field === 'obfuscated') {
+            $field = null;
+            $value = $this->decode($value);
+        }
+        return parent::resolveChildRouteBinding($childType, $value, $field);
+    }
+
 <a name="fallback-routes"></a>
 ## Fallback Routes
 
