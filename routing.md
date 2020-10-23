@@ -92,6 +92,8 @@ By default, `Route::redirect` returns a `302` status code. You may customize the
 You may use the `Route::permanentRedirect` method to return a `301` status code:
 
     Route::permanentRedirect('/here', '/there');
+    
+> {note} When using route parameters in redirect routes, the following ones are reserved and cannot be used: `destination` & `status`.
 
 <a name="view-routes"></a>
 ### View Routes
@@ -101,6 +103,8 @@ If your route only needs to return a view, you may use the `Route::view` method.
     Route::view('/welcome', 'welcome');
 
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
+    
+> {note} When using route parameters in view routes, the following ones are reserved and cannot be used: `view`, `data`, `status` & `headers`.
 
 <a name="route-parameters"></a>
 ## Route Parameters
