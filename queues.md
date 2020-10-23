@@ -358,6 +358,8 @@ If you wish to immediately delete any overlapping jobs, you may use the `dontRel
         return [(new WithoutOverlapping($this->order->id))->dontRelease()];
     }
 
+> {note} The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks).
+
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
 
