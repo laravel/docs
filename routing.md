@@ -324,6 +324,17 @@ Laravel automatically resolves Eloquent models defined in routes or controller a
 
 Since the `$user` variable is type-hinted as the `App\Models\User` Eloquent model and the variable name matches the `{user}` URI segment, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
 
+Likewise, the same is true when type-hinting the `$user` variable in a controller method's arguments. For example:
+
+    Route::get('users/{user}', 'UserController@show');
+
+and
+
+    public function show(User $user)
+    {
+        return view('user.profile', ['user' => $user]);
+    }
+
 <a name="customizing-the-key"></a>
 #### Customizing The Key
 
