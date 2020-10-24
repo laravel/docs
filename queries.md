@@ -208,7 +208,7 @@ The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clau
                     ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
                     ->get();
 
-> {note} `whereRaw` with OR clause cannot use [`SoftDeletes`](/docs/{{version}}/eloquent#soft-deleting) trait safely. If you use OR clause in `whereRaw`, you should be either using SQL Parentheses in `whereRaw` or using `orWhere` instead of `whereRaw`.
+> {note} `whereRaw` with OR clause cannot use [`SoftDeletes`](/docs/{{version}}/eloquent#soft-deleting) trait safely. If you use OR clause in `whereRaw`, you should use SQL Parentheses in `whereRaw`, closure to `where` or `orWhere` instead of `whereRaw`.
 
 #### `havingRaw / orHavingRaw`
 
