@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
+    - [Using Dusk on Laravel Homestead](#dusk-on-homestead)
     - [Managing ChromeDriver Installations](#managing-chromedriver-installations)
     - [Using Other Browsers](#using-other-browsers)
 - [Getting Started](#getting-started)
@@ -68,6 +69,18 @@ To run your tests, use the `dusk` Artisan command. The `dusk` command accepts an
 If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
 
     php artisan dusk:fails
+
+
+<a name="dusk-on-homestead"></a>
+### Using Dusk on Laravel Homestead
+
+If you are running [Laravel Homestead](homestead.md), you will need to explicitly enable the [`webdriver` feature](homestead.md#installing-optional-features) in your Homestead configuration, since Dusk is not supported anymore by default:
+
+     features:
+         - webdriver: true
+
+Do not forget to provision the VM afterwards to make sure the prerequisites are installed.
+
 
 <a name="managing-chromedriver-installations"></a>
 ### Managing ChromeDriver Installations
