@@ -58,6 +58,8 @@ If you are using the Bcrypt algorithm, the `make` method allows you to manage th
         'rounds' => 12,
     ]);
 
+> {note} As Laravel `Hash` facade utilizes PHP's `password_hash` function, in combination with the `bcrypt` driver only the first 72 characters of the plain text are hashed. For more information, check out the [official PHP documentation](https://www.php.net/manual/en/function.password-hash.php).
+
 <a name="adjusting-the-argon2-work-factor"></a>
 #### Adjusting The Argon2 Work Factor
 
