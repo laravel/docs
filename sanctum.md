@@ -90,7 +90,7 @@ You are free to extend the `PersonalAccessToken` model used internally by Sanctu
         // ...
     }
 
-Then, you may instruct Sanctum to use your custom models via the `Sanctum` class:
+Then, you may instruct Sanctum to use your custom model via the `usePersonalAccessTokenModel` method provided by Sanctum. Typically, you should call this method in the `boot` method of one of your service providers:
 
     use App\Models\Passport\PersonalAccessToken;
     use Laravel\Sanctum\Sanctum;
