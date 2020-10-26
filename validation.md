@@ -1003,7 +1003,7 @@ The field under validation must have a minimum _value_. Strings, numerics, array
 <a name="multiple-of"></a>
 #### multiple_of:_value_
 
-The field under validation must be a multiple of _value_. This can be useful when validating a number input that utilises the `step` attribute.
+The field under validation must be a multiple of _value_.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
