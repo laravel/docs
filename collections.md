@@ -1889,7 +1889,7 @@ The `sortBy` method sorts the collection by the given key. The sorted collection
         ]
     */
 
-This method accepts sort flags as the second argument:
+This method accepts [sort flags](https://www.php.net/manual/en/function.sort.php) as its second argument:
 
     $collection = collect([
         ['title' => 'Item 1'],
@@ -1909,7 +1909,7 @@ This method accepts sort flags as the second argument:
         ]
     */
 
-You can also pass your own callback to determine how to sort the collection values:
+Alternatively, you may pass your own callback to determine how to sort the collection's values:
 
     $collection = collect([
         ['name' => 'Desk', 'colors' => ['Black', 'Mahogany']],
