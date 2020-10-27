@@ -196,6 +196,22 @@ The `flush` command may be used to remove all of a model's records from your sea
 
     php artisan scout:flush "App\Models\Post"
 
+<a name="modifying-the-import-query"></a>
+#### Modifying The Import Query
+
+If you would like to modify the query that is used to retrieve all of your models for batch importing, you may define a `makeAllSearchableUsing` method on your model. This is a great place to add any eager relationship loading that may be necessary before importing your models:
+
+    /**
+     * Modify the query used to retrieve models when making all of the models searchable.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function makeAllSearchableUsing($query)
+    {
+        return $query->with('author');
+    }
+
 <a name="adding-records"></a>
 ### Adding Records
 
