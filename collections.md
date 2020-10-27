@@ -1889,6 +1889,26 @@ The `sortBy` method sorts the collection by the given key. The sorted collection
         ]
     */
 
+This method accepts sort flags as the second argument:
+
+    $collection = collect([
+        ['title' => 'Item 1'],
+        ['title' => 'Item 12'],
+        ['title' => 'Item 3'],
+    ]);
+
+    $sorted = $collection->sortBy('title', SORT_NATURAL);
+
+    $sorted->values()->all();
+
+    /*
+        [
+            ['title' => 'Item 1'],
+            ['title' => 'Item 3'],
+            ['title' => 'Item 12'],
+        ]
+    */
+
 You can also pass your own callback to determine how to sort the collection values:
 
     $collection = collect([
