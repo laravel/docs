@@ -1786,3 +1786,15 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
             env:
               APP_URL: "http://127.0.0.1:8000"
             run: php artisan dusk
+          - name: Upload Screenshots
+            if: failure()
+            uses: actions/upload-artifact@v2
+            with:
+              name: screenshots
+              path: tests/Browser/screenshots
+          - name: Upload Console Logs
+            if: failure()
+            uses: actions/upload-artifact@v2
+            with:
+              name: console
+              path: tests/Browser/console  
