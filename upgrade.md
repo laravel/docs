@@ -282,6 +282,14 @@ If you plan to use the [job batching](/docs/{{version}}/queues#job-batching) fea
 
 Next, the `failed.driver` configuration option within your `queue` configuration file should be updated to `database-uuids`.
 
+In addition, you may wish to generate UUIDs for your existing failed jobs:
+
+    DB::table('failed_jobs')->whereNull('uuid')->cursor()->each(function ($job) {
+        DB::table('failed_jobs')
+            ->where('id', $job->id)
+            ->update(['uuid' => (string) Illuminate\Support\Str::uuid()]);
+    });
+
 <a name="routing"></a>
 ### Routing
 
