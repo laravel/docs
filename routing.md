@@ -92,7 +92,7 @@ By default, `Route::redirect` returns a `302` status code. You may customize the
 You may use the `Route::permanentRedirect` method to return a `301` status code:
 
     Route::permanentRedirect('/here', '/there');
-    
+
 > {note} When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`.
 
 <a name="view-routes"></a>
@@ -103,7 +103,7 @@ If your route only needs to return a view, you may use the `Route::view` method.
     Route::view('/welcome', 'welcome');
 
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
-    
+
 > {note} When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
 
 <a name="route-parameters"></a>
@@ -155,6 +155,16 @@ You may constrain the format of your route parameters using the `where` method o
     Route::get('user/{id}/{name}', function ($id, $name) {
         //
     })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+
+For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:
+
+    Route::get('user/{id}/{name}', function ($id, $name) {
+        //
+    })->whereNumeric('id')->whereAlpha('name');
+
+    Route::get('user/{id}', function ($id) {
+        //
+    })->whereUuid('id');
 
 <a name="parameters-global-constraints"></a>
 #### Global Constraints
