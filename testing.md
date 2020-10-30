@@ -68,4 +68,4 @@ In addition to the `phpunit` command, you may use the `test` Artisan command to 
 
 Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
 
-    php artisan test --group=feature --stop-on-failure
+    php artisan test --testsuite=Feature --stop-on-failure
