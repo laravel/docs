@@ -31,7 +31,7 @@ In addition to generating resources that transform individual models, you may ge
 
 To create a resource collection, you should use the `--collection` flag when creating the resource. Or, including the word `Collection` in the resource name will indicate to Laravel that it should create a collection resource. Collection resources extend the `Illuminate\Http\Resources\Json\ResourceCollection` class:
 
-    php artisan make:resource Users --collection
+    php artisan make:resource User --collection
 
     php artisan make:resource UserCollection
 
