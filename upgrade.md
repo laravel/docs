@@ -174,6 +174,14 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` "null c
     // Laravel 5.7...
     {{ $foo ?? 'default' }}
 
+> {note} The "or" operator and `??` "null coalesce" operator only has the same purpose when you expect return a `NULL` value. When comparing values, like `true` or `false` in a `@if`, you should replace for `||` operator.
+
+    // Laravel 5.6...
+    @if(is_int('text1') or is_int('text2') or is_int(1))
+
+    // Laravel 5.7...
+    @if(is_int('text1') || is_int('text2') || is_int(1))
+
 ### Cache
 
 **Likelihood Of Impact: Very High**
