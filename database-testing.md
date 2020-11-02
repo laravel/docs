@@ -66,6 +66,8 @@ It is often useful to reset your database after each test so that data from a pr
             // ...
         }
     }
+    
+> {tip} The `RefreshDatabase` trait does not refresh other connected databases other than the default.
 
 <a name="creating-factories"></a>
 ## Creating Factories
