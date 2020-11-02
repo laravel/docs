@@ -1,12 +1,13 @@
 # Installation
 
-- [Installation](#installation)
-    - [Server Requirements](#server-requirements)
-    - [Installing Laravel](#installing-laravel)
-    - [Configuration](#configuration)
-- [Web Server Configuration](#web-server-configuration)
-    - [Directory Configuration](#directory-configuration)
-    - [Pretty URLs](#pretty-urls)
+- [Meet Laravel](#meet-laravel)
+- [Your First Laravel Project](#installation)
+    - [Laravel Sail](#laravel-sail)
+    - [Installation For MacOS](#installation-for-macos)
+    - [Installation For Windows](#installation-for-windows)
+    - [Installation For Linux](#installation-for-linux)
+- [Initial Configuration](#initial-configuration)
+- [Next Steps](#next-steps)
 
 <a name="installation"></a>
 ## Installation

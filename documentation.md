@@ -4,13 +4,11 @@
     - [Contribution Guide](/docs/{{version}}/contributions)
 - ## Getting Started
     - [Installation](/docs/{{version}}/installation)
+    - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
-    - [Homestead](/docs/{{version}}/homestead)
-    - [Valet](/docs/{{version}}/valet)
     - [Deployment](/docs/{{version}}/deployment)
 - ## Architecture Concepts
-    - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Service Container](/docs/{{version}}/container)
     - [Service Providers](/docs/{{version}}/providers)
     - [Facades](/docs/{{version}}/facades)
