@@ -63,7 +63,7 @@ The `public` directory contains the `index.php` file, which is the entry point f
 <a name="the-resources-directory"></a>
 #### The Resources Directory
 
-The `resources` directory contains your views as well as your raw, un-compiled assets such as LESS, SASS, or JavaScript. This directory also houses all of your language files.
+The `resources` directory contains your views as well as your raw, un-compiled assets such as CSS or JavaScript. This directory also houses all of your language files.
 
 <a name="the-routes-directory"></a>
 #### The Routes Directory
