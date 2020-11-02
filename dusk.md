@@ -24,6 +24,7 @@
     - [Attaching Files](#attaching-files)
     - [Using The Keyboard](#using-the-keyboard)
     - [Using The Mouse](#using-the-mouse)
+    - [Executing JavaScript](#executing-javascript)
     - [JavaScript Dialogs](#javascript-dialogs)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
@@ -594,6 +595,18 @@ Or, you may drag an element in a single direction:
 Finally, you may drag an element by a given offset:
 
     $browser->dragOffset('.selector', 10, 10);
+
+<a name="executing-javascript"></a>
+### Executing JavaScript
+
+To execute JavaScript within the browser:
+
+    $output = $browser->script('document.documentElement.scrollTop = 0');
+
+    $output = $browser->script([
+        'document.body.scrollTop = 0', // For Safari
+        'document.documentElement.scrollTop = 0', // For Chrome, Firefox, IE and Opera
+    ]);
 
 <a name="javascript-dialogs"></a>
 ### JavaScript Dialogs
