@@ -316,13 +316,10 @@ If you need to process thousands of Eloquent records, use the `chunk` command. T
 
 The first argument passed to the method is the number of records you wish to receive per "chunk". The Closure passed as the second argument will be called for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the Closure.
 
-If you are using `chunk` and filtering by a value that you are then updating within your callback you should use `chunkById` instead.
+If you are filtering the results of the `chunk` method based on a column that you will also be updating while iterating over the results, you should use the `chunkById` method:
 
-    Flight::where('lift_off', 1)->chunkById(200, function ($flights) {
-        foreach ($flights as $flight) {
-            $flight->lift_off = 0;
-            $flight->save();
-        }
+    Flight::where('departed', true)->chunkById(200, function ($flights) {
+        $flights->each->update(['departed' => false]);
     });
 
 <a name="using-cursors"></a>
