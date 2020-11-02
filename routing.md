@@ -400,7 +400,7 @@ To register an explicit binding, use the router's `model` method to specify the 
      */
     public function boot()
     {
-        Route::model('user', App\Models\User::class);
+        Route::model('user', \App\Models\User::class);
 
         // ...
     }
