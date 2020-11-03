@@ -31,14 +31,14 @@ We want it to be as easy as possible to get started with Laravel. There are a va
 
 Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local computer's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your personal computer. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
-Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis.
+Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
 
 > {tip} Already a Docker expert? Don't worry! Everything about Sail can be customized using the `docker-compose.yml` file included with Laravel.
 
 <a name="getting-started-on-macos"></a>
 ### Getting Started On MacOS
 
-If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "my-app", you may run the following command in your terminal:
+If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "my-app", you may run the following command in your terminal:
 
 ```bash
 curl -s https://laravel.build/my-app | bash
@@ -85,10 +85,12 @@ Once the application's Docker containers have been started, you can access the a
 
 Of course, you will need to be able to modify the Laravel application files that were created within your WSL2 installation. To accomplish this, we recommend using Microsoft's [Visual Studio Code](https://code.visualstudio.com) editor and their first-party extension for [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
 
+Once these tools are installed, you may open any Laravel project by executing the `code .` command from your application's root directory using Windows Terminal.
+
 <a name="getting-started-on-linux"></a>
 ### Getting Started On Linux
 
-If you're developing on Linux and [Docker](https://www.docker.com) is installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "my-app", you may run the following command in your terminal:
+If you're developing on Linux and [Docker](https://www.docker.com) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "my-app", you may run the following command in your terminal:
 
 ```bash
 curl -s https://laravel.build/my-app | bash
@@ -109,7 +111,7 @@ Once the application's Docker containers have been started, you can access the a
 <a name="installation-via-composer"></a>
 ### Installation Via Composer
 
-If your local computer already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
+If your computer already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
 
     composer create-project laravel/laravel my-app
 
@@ -129,9 +131,16 @@ You may also want to configure a few additional components of Laravel, such as:
 <div class="content-list" markdown="1">
 - [Cache](/docs/{{version}}/cache#configuration)
 - [Database](/docs/{{version}}/database#configuration)
+- [Queues](/docs/{{version}}/queues#introduction)
 - [Session](/docs/{{version}}/session#configuration)
 </div>
 
 <a name="laravel-sail"></a>
 ## Laravel Sail
 
+<a name="laravel-sail-introduction"></a>
+### Introduction
+
+Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
+
+At its heart, Sail is the `docker-compose.yml` file and the `sail` script that is stored at the root of your project. The `sail` script provides a CLI with convenient methods for interacting with the Docker containers defined by the `docker-compose.yml` file.
