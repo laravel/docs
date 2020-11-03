@@ -9,10 +9,10 @@
 - [Laravel Sail](#laravel-sail)
     - [Introduction](#laravel-sail-introduction)
     - [Starting & Stopping](#starting-and-stopping-sail)
-    - [Executing Commands](#executing-commands)
-    - [Interacting With Databases](#interacting-with-databases)
-    - [Adding Additional Services](#adding-additional-services)
-    - [Container CLI](#container-cli)
+    - [Executing Commands](#executing-sail-commands)
+    - [Interacting With Databases](#interacting-with-sail-databases)
+    - [Adding Additional Services](#adding-additional-sail-services)
+    - [Container CLI](#sail-container-cli)
 - [Next Steps](#next-steps)
 
 <a name="meet-laravel"></a>
@@ -144,3 +144,46 @@ You may also want to configure a few additional components of Laravel, such as:
 Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
 
 At its heart, Sail is the `docker-compose.yml` file and the `sail` script that is stored at the root of your project. The `sail` script provides a CLI with convenient methods for interacting with the Docker containers defined by the `docker-compose.yml` file.
+
+<a name="starting-and-stopping-sail"></a>
+### Starting & Stopping
+
+To start all of the Docker containers defined in your `docker-compose.yml` file, you may run the `up` command:
+
+```bash
+./sail up
+```
+
+Once the application's containers have been started, you may access the project in your web browser at: http://localhost.
+
+To stop all of the containers, you may simply use Control + C to stop the container's execution. Or, if the containers are running in the background, you may use the `down` command:
+
+```bash
+./sail down
+```
+
+<a name="executing-sail-commands"></a>
+### Executing Commands
+
+When using Laravel Sail, your application is executing within a Docker container and is isolated from your local computer. However, Sail provides a convenient way to run various commands against your application, such as arbitrary PHP commands, Artisan commands, Composer commands, and NPM / Node commands:
+
+```bash
+./sail php --version
+
+./sail artisan queue:work
+
+./sail composer require laravel/sanctum
+
+./sail node --version
+
+./sail npm run prod
+```
+
+<a name="interacting-with-sail-databases"></a>
+### Interacting With Databases
+
+<a name="adding-additional-sail-services"></a>
+### Adding Additional Services
+
+<a name="sail-container-cli"></a>
+### Container CLI
