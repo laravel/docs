@@ -1,110 +1,128 @@
 # Installation
 
 - [Meet Laravel](#meet-laravel)
-- [Your First Laravel Project](#installation)
-    - [Laravel Sail](#laravel-sail)
-    - [Installation For MacOS](#installation-for-macos)
-    - [Installation For Windows](#installation-for-windows)
-    - [Installation For Linux](#installation-for-linux)
+- [Your First Laravel Project](#your-first-laravel-project)
+    - [Getting Started On MacOS](#getting-started-on-macos)
+    - [Getting Started On Windows](#getting-started-on-windows)
+    - [Getting Started On Linux](#getting-started-on-linux)
 - [Initial Configuration](#initial-configuration)
+- [Laravel Sail](#laravel-sail)
+    - [Introduction](#laravel-sail-introduction)
+    - [Starting & Stopping](#starting-and-stopping-sail)
+    - [Executing Commands](#executing-commands)
+    - [Interacting With Databases](#interacting-with-databases)
+    - [Adding Additional Services](#adding-additional-services)
+    - [Container CLI](#container-cli)
 - [Next Steps](#next-steps)
 
-<a name="installation"></a>
-## Installation
+<a name="meet-laravel"></a>
+## Meet Laravel
 
-<a name="server-requirements"></a>
-### Server Requirements
+Laravel is a web application framework with expressive, elegant syntax. A web framework provides a structure and starting point for creating your application, allowing you to focus on creating something amazing while we sweat the details.
 
-The Laravel framework has a few system requirements. All of these requirements are satisfied by the [Laravel Homestead](/docs/{{version}}/homestead) virtual machine, so it's highly recommended that you use Homestead as your local Laravel development environment.
+Laravel strives to provide an amazing developer experience, while providing powerful features such as thorough dependency injection, an expressive database abstraction layer, queues and scheduled jobs, unit and integration testing, and more.
 
-However, if you are not using Homestead, you will need to make sure your server meets the following requirements:
+Whether your new to PHP or web frameworks or have years of experience, Laravel is a framework that can grow with you. We'll help you take your first steps as a web developer or give you a boost as you take your expertise to the next level. We can't wait to see what you build.
 
-<div class="content-list" markdown="1">
-- PHP >= 7.3
-- BCMath PHP Extension
-- Ctype PHP Extension
-- Fileinfo PHP Extension
-- JSON PHP Extension
-- Mbstring PHP Extension
-- OpenSSL PHP Extension
-- PDO PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
-</div>
+<a name="your-first-laravel-project"></a>
+## Your First Laravel Project
 
-<a name="installing-laravel"></a>
-### Installing Laravel
+We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your own computer. While you may wish to explore these options at a later time, Laravel provides Sail, a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
 
-Laravel utilizes [Composer](https://getcomposer.org) to manage its dependencies. So, before using Laravel, make sure you have Composer installed on your machine.
+Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local computer's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your personal computer. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
-<a name="via-laravel-installer"></a>
-#### Via Laravel Installer
+Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis.
 
-First, download the Laravel installer using Composer:
+> {tip} Already a Docker expert? Don't worry! Everything about Sail can be customized using the `docker-compose.yml` file included with Laravel.
 
-    composer global require laravel/installer
+<a name="getting-started-on-macos"></a>
+### Getting Started On MacOS
 
-Make sure to place Composer's system-wide vendor bin directory in your `$PATH` so the laravel executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
+If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "my-app", you may run the following command in your terminal:
 
-<div class="content-list" markdown="1">
-- macOS: `$HOME/.composer/vendor/bin`
-- Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
-- GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin`
-</div>
+```bash
+curl -s https://laravel.build/my-app | bash
+```
 
-You could also find the composer's global installation path by running `composer global about` and looking up from the first line.
+Of course, you can change `my-app` in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
 
-Once installed, the `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed:
+After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
-    laravel new blog
+```bash
+cd my-app
 
-> {tip} Want to create a Laravel project with login, registration, and more features already built for you? Check out [Laravel Jetstream](https://jetstream.laravel.com).
+./sail up
+```
 
-<a name="via-composer-create-project"></a>
-#### Via Composer Create-Project
+Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost. To continue learning more about Laravel Sail, review its [complete documentation](#laravel-sail).
 
-Alternatively, you may also install Laravel by issuing the Composer `create-project` command in your terminal:
+<a name="getting-started-on-windows"></a>
+### Getting Started On Windows
 
-    composer create-project --prefer-dist laravel/laravel blog
+Before we create a new Laravel application on your Windows machine, make sure to install [Docker Desktop](https://www.docker.com/products/docker-desktop). Next, you should ensure that Windows Subsystem for Linux 2 (WSL2) is installed and enabled. WSL allows you to run Linux binary executables natively on Windows 10. Information on how to install and enable WSL2 can be found within Microsoft's [developer environment documentation](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-<a name="local-development-server"></a>
-#### Local Development Server
+> {tip} After installing and enabling WSL2, you should ensure that Docker Desktop is [configured to use the WSL2 backend](https://docs.docker.com/docker-for-windows/wsl/).
 
-If you have PHP installed locally and you would like to use PHP's built-in development server to serve your application, you may use the `serve` Artisan command. This command will start a development server at `http://localhost:8000`:
+Next, you are ready to create your first Laravel project. Launch [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) and begin a new terminal session for your WSL2 Linux operating system. Next, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "my-app", you may run the following command in your terminal:
+
+```bash
+curl -s https://laravel.build/my-app | bash
+```
+
+Of course, you can change `my-app` in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
+
+After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+
+```bash
+cd my-app
+
+./sail up
+```
+
+Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost. To continue learning more about Laravel Sail, review its [complete documentation](#laravel-sail).
+
+#### Developing Within WSL2
+
+Of course, you will need to be able to modify the Laravel application files that were created within your WSL2 installation. To accomplish this, we recommend using Microsoft's [Visual Studio Code](https://code.visualstudio.com) editor and their first-party extension for [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
+
+<a name="getting-started-on-linux"></a>
+### Getting Started On Linux
+
+If you're developing on Linux and [Docker](https://www.docker.com) is installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "my-app", you may run the following command in your terminal:
+
+```bash
+curl -s https://laravel.build/my-app | bash
+```
+
+Of course, you can change `my-app` in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
+
+After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+
+```bash
+cd my-app
+
+./sail up
+```
+
+Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost. To continue learning more about Laravel Sail, review its [complete documentation](#laravel-sail).
+
+<a name="installation-via-composer"></a>
+### Installation Via Composer
+
+If your local computer already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
+
+    composer create-project laravel/laravel my-app
+
+    cd my-app
 
     php artisan serve
 
-More robust local development options are available via [Homestead](/docs/{{version}}/homestead) and [Valet](/docs/{{version}}/valet).
-
-<a name="configuration"></a>
-### Configuration
-
-<a name="public-directory"></a>
-#### Public Directory
-
-After installing Laravel, you should configure your web server's document / web root to be the `public` directory. The `index.php` in this directory serves as the front controller for all HTTP requests entering your application.
-
-<a name="configuration-files"></a>
-#### Configuration Files
+<a name="initial-configuration"></a>
+## Initial Configuration
 
 All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
 
-<a name="directory-permissions"></a>
-#### Directory Permissions
-
-After installing Laravel, you may need to configure some permissions. Directories within the `storage` and the `bootstrap/cache` directories should be writable by your web server or Laravel will not run. If you are using the [Homestead](/docs/{{version}}/homestead) virtual machine, these permissions should already be set.
-
-<a name="application-key"></a>
-#### Application Key
-
-The next thing you should do after installing Laravel is set your application key to a random string. If you installed Laravel via Composer or the Laravel installer, this key has already been set for you by the `php artisan key:generate` command.
-
-Typically, this string should be 32 characters long. The key can be set in the `.env` environment file. If you have not copied the `.env.example` file to a new file named `.env`, you should do that now. **If the application key is not set, your user sessions and other encrypted data will not be secure!**
-
-<a name="additional-configuration"></a>
-#### Additional Configuration
-
-Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+However, Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
 
 You may also want to configure a few additional components of Laravel, such as:
 
@@ -114,41 +132,6 @@ You may also want to configure a few additional components of Laravel, such as:
 - [Session](/docs/{{version}}/session#configuration)
 </div>
 
-<a name="web-server-configuration"></a>
-## Web Server Configuration
+<a name="laravel-sail"></a>
+## Laravel Sail
 
-<a name="directory-configuration"></a>
-### Directory Configuration
-
-Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
-
-<a name="pretty-urls"></a>
-### Pretty URLs
-
-<a name="apache"></a>
-#### Apache
-
-Laravel includes a `public/.htaccess` file that is used to provide URLs without the `index.php` front controller in the path. Before serving Laravel with Apache, be sure to enable the `mod_rewrite` module so the `.htaccess` file will be honored by the server.
-
-If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this alternative:
-
-    Options +FollowSymLinks -Indexes
-    RewriteEngine On
-
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
-
-<a name="nginx"></a>
-#### Nginx
-
-If you are using Nginx, the following directive in your site configuration will direct all requests to the `index.php` front controller:
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-When using [Homestead](/docs/{{version}}/homestead) or [Valet](/docs/{{version}}/valet), pretty URLs will be automatically configured.
