@@ -24,11 +24,11 @@
     - [Attaching Files](#attaching-files)
     - [Using The Keyboard](#using-the-keyboard)
     - [Using The Mouse](#using-the-mouse)
-    - [Executing JavaScript](#executing-javascript)
     - [JavaScript Dialogs](#javascript-dialogs)
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
     - [Scrolling An Element Into View](#scrolling-an-element-into-view)
+    - [Executing JavaScript](#executing-javascript)
     - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
@@ -596,18 +596,6 @@ Finally, you may drag an element by a given offset:
 
     $browser->dragOffset('.selector', 10, 10);
 
-<a name="executing-javascript"></a>
-### Executing JavaScript
-
-To execute JavaScript within the browser:
-
-    $output = $browser->script('document.documentElement.scrollTop = 0');
-
-    $output = $browser->script([
-        'document.body.scrollTop = 0', // For Safari
-        'document.documentElement.scrollTop = 0', // For Chrome, Firefox, IE and Opera
-    ]);
-
 <a name="javascript-dialogs"></a>
 ### JavaScript Dialogs
 
@@ -789,6 +777,18 @@ Sometimes you may not be able to click on an element because it is outside of th
 
     $browser->scrollIntoView('selector')
             ->click('selector');
+
+<a name="executing-javascript"></a>
+### Executing JavaScript
+
+You may use the `script` method to execute JavaScript within the browser:
+
+    $output = $browser->script('document.documentElement.scrollTop = 0');
+
+    $output = $browser->script([
+        'document.body.scrollTop = 0',
+        'document.documentElement.scrollTop = 0',
+    ]);
 
 <a name="making-vue-assertions"></a>
 ### Making Vue Assertions
