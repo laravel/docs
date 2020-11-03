@@ -127,18 +127,14 @@ All of the configuration files for the Laravel framework are stored in the `conf
 
 Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
 
-In addition, since many of Laravel's configuration option values may vary depending on whether your application is running on your local computer or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
+<a name="environment-configuration"></a>
+#### Environment Based Configuration
+
+Since many of Laravel's configuration option values may vary depending on whether your application is running on your local computer or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
 
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 
-After examining Laravel's basic configuration options, you may wish to configure a few additional components of Laravel, such as:
-
-<div class="content-list" markdown="1">
-- [Cache](/docs/{{version}}/cache#configuration)
-- [Database](/docs/{{version}}/database#configuration)
-- [Queues](/docs/{{version}}/queues#introduction)
-- [Session](/docs/{{version}}/session#configuration)
-</div>
+> {tip} For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="laravel-sail"></a>
 ## Laravel Sail
@@ -227,3 +223,6 @@ After running this command, the Dockerfiles and other configuration files used b
 ```bash
 ./sail build
 ```
+
+<a name="next-steps"></a>
+## Next Steps
