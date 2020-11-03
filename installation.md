@@ -13,6 +13,7 @@
     - [Interacting With Databases](#interacting-with-sail-databases)
     - [Adding Additional Services](#adding-additional-sail-services)
     - [Container CLI](#sail-container-cli)
+    - [Customization](#sail-customization)
 - [Next Steps](#next-steps)
 
 <a name="meet-laravel"></a>
@@ -124,9 +125,13 @@ If your computer already has PHP and Composer installed, you may create a new La
 
 All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
 
-However, Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
 
-You may also want to configure a few additional components of Laravel, such as:
+In addition, since many of Laravel's configuration option values may vary depending on whether your application is running on your local computer or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
+
+Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
+
+After examining Laravel's basic configuration options, you may wish to configure a few additional components of Laravel, such as:
 
 <div class="content-list" markdown="1">
 - [Cache](/docs/{{version}}/cache#configuration)
@@ -182,8 +187,43 @@ When using Laravel Sail, your application is executing within a Docker container
 <a name="interacting-with-sail-databases"></a>
 ### Interacting With Databases
 
+<a name="interacting-with-sail-databases-mysql"></a>
+#### MySQL
+
+As you may have noticed, your application's `docker-compose.yml` file contains an entry for a MySQL container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your database is persisted even when stopping and restarting your containers. Once you have started your containers, you may connect to the MySQL instance within your application by setting your `DB_HOST` environment variable within your application's `.env` file to `mysql`.
+
+To connect to your application's MySQL database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the MySQL database is accessible at `localhost` port `3306`.
+
+<a name="interacting-with-sail-databases-redis"></a>
+#### Redis
+
+Your application's `docker-compose.yml` file also contains an entry for a [Redis](https://redis.io) container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your Redis data is persisted even when stopping and restarting your containers. Once you have started your containers, you may connect to the Redis instance within your application by setting your `REDIS_HOST` environment variable within your application's `.env` file to `redis`.
+
+To connect to your application's Redis database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the Redis database is accessible at `localhost` port `6379`.
+
 <a name="adding-additional-sail-services"></a>
 ### Adding Additional Services
 
 <a name="sail-container-cli"></a>
 ### Container CLI
+
+Sometimes you may wish to start a Bash session within your application's container. You may use the `ssh` command to connect to your application's container, allowing you to inspect its file and installed services:
+
+```bash
+./sail ssh
+```
+
+<a name="sail-customization"></a>
+### Sail Customization
+
+Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:install` Artisan command and publish the resources exported by the `Laravel\Sail\SailServiceProvider` service provider:
+
+```bash
+./sail artisan sail:install
+```
+
+After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may rebuild your application's containers using the `build` command:
+
+```bash
+./sail build
+```
