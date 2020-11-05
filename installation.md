@@ -249,4 +249,4 @@ After running this command, the Dockerfiles and other configuration files used b
 <a name="next-steps"></a>
 ## Next Steps
 
-Now that you have created your Laravel project, you may wondering what to learn next. We recommend becoming familiar with how Laravel works by reading our documentation on the Laravel [request lifecycle](/docs/{{version}}/lifecycle). Or, if you want to jump straight into coding, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent).
+Now that you have created your Laravel project, you may wondering what to learn next. We recommend becoming familiar with how Laravel works by reading our documentation on Laravel's [request lifecycle](/docs/{{version}}/lifecycle), [configuration](/docs/{{version}}/configuration), or [directory structure](/docs/{{version}}/structure). Or, if you want to jump straight into coding, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent).
