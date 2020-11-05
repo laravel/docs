@@ -268,7 +268,7 @@ If you would like to determine if the current request was routed to a given name
 <a name="route-groups"></a>
 ## Route Groups
 
-Route groups allow you to share route attributes, such as middleware, across a large number of routes without needing to define those attributes on each individual route. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
+Route groups allow you to share route attributes, such as middleware, across a large number of routes without needing to define those attributes on each individual route.
 
 Nested groups attempt to intelligently "merge" attributes with their parent group. Middleware and `where` conditions are merged while names and prefixes are appended. Namespace delimiters and slashes in URI prefixes are automatically added where appropriate.
 
