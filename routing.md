@@ -321,6 +321,14 @@ The `name` method may be used to prefix each route name in the group with a give
             // Route assigned name "admin.users"...
         })->name('users');
     });
+    
+When assigning route group parameters as an array argument, name prefixes should instead be set using `as`:
+
+    Route::group(['as' => 'admin.'], function () {
+        Route::get('users', function () {
+            // Route assigned name "admin.users"...
+        })->name('users');
+    });
 
 <a name="route-model-binding"></a>
 ## Route Model Binding
