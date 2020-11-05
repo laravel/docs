@@ -251,7 +251,7 @@ The `chunk` method breaks the collection into multiple, smaller collections of a
 
     $chunks = $collection->chunk(4);
 
-    $chunks->toArray();
+    $chunks->all();
 
     // [[1, 2, 3, 4], [5, 6, 7]]
 
@@ -276,7 +276,7 @@ The `chunkWhile` method breaks the collection into multiple, smaller collections
         return $current === $chunk->last();
     });
 
-    $chunks->toArray();
+    $chunks->all();
 
     // [['A', 'A'], ['B', 'B'], ['C', 'C', 'C'], ['D']]
 
@@ -880,7 +880,7 @@ The `groupBy` method groups the collection's items by a given key:
 
     $grouped = $collection->groupBy('account_id');
 
-    $grouped->toArray();
+    $grouped->all();
 
     /*
         [
@@ -900,7 +900,7 @@ Instead of passing a string `key`, you may pass a callback. The callback should 
         return substr($item['account_id'], -3);
     });
 
-    $grouped->toArray();
+    $grouped->all();
 
     /*
         [
@@ -1219,7 +1219,7 @@ The `mapToGroups` method groups the collection's items by the given callback. Th
         return [$item['department'] => $item['name']];
     });
 
-    $grouped->toArray();
+    $grouped->all();
 
     /*
         [
@@ -2033,7 +2033,7 @@ The `split` method breaks a collection into the given number of groups:
 
     $groups = $collection->split(3);
 
-    $groups->toArray();
+    $groups->all();
 
     // [[1, 2], [3, 4], [5]]
 
@@ -2146,7 +2146,7 @@ The `tap` method passes the collection to the given callback, allowing you to "t
     collect([2, 4, 3, 1, 5])
         ->sort()
         ->tap(function ($collection) {
-            Log::debug('Values after sorting', $collection->values()->toArray());
+            Log::debug('Values after sorting', $collection->values()->all());
         })
         ->shift();
 
