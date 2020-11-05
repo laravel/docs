@@ -78,6 +78,7 @@
     - [Cashier (Mollie)](https://github.com/laravel/cashier-mollie)
     - [Dusk](/docs/{{version}}/dusk)
     - [Envoy](/docs/{{version}}/envoy)
+    - [Homestead](/docs/{{version}}/homestead)
     - [Horizon](/docs/{{version}}/horizon)
     - [Jetstream](https://jetstream.laravel.com)
     - [Passport](/docs/{{version}}/passport)
@@ -85,4 +86,5 @@
     - [Scout](/docs/{{version}}/scout)
     - [Socialite](/docs/{{version}}/socialite)
     - [Telescope](/docs/{{version}}/telescope)
+    - [Valet](/docs/{{version}}/valet)
 - [API Documentation](/api/8.x)
