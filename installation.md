@@ -5,6 +5,7 @@
     - [Getting Started On MacOS](#getting-started-on-macos)
     - [Getting Started On Windows](#getting-started-on-windows)
     - [Getting Started On Linux](#getting-started-on-linux)
+    - [Installation Via Composer](#installation-via-composer)
 - [Initial Configuration](#initial-configuration)
 - [Laravel Sail](#laravel-sail)
     - [Introduction](#laravel-sail-introduction)
@@ -28,7 +29,7 @@ Whether your new to PHP or web frameworks or have years of experience, Laravel i
 <a name="your-first-laravel-project"></a>
 ## Your First Laravel Project
 
-We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your own computer. While you may wish to explore these options at a later time, Laravel provides Sail, a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
+We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your own computer. While you may wish to explore these options at a later time, Laravel provides [Sail](https://github.com/laravel/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
 
 Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local computer's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your personal computer. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
@@ -200,6 +201,27 @@ To connect to your application's Redis database from your local machine, you may
 <a name="adding-additional-sail-services"></a>
 ### Adding Additional Services
 
+Since Laravel Sail is built using a standard `docker-compose.yml` file, you are free to add additional services to your container configuration based on your application's own needs.
+
+<a name="sharing-services-across-projects"></a>
+#### Sharing Services Across Projects
+
+Sometimes you may wish to share a single service such as MySQL across multiple projects. To accomplish this, we recommend using [Takeout](https://github.com/tighten/takeout), an open source tool developed by Tighten. After enabling a Takeout service, you should add the `takeout` network to your `laravel.test` container definition within your `docker-compose.yml` file:
+
+```yaml
+networks:
+    - sail
+    - takeout
+```
+
+Once you have added your container to the `takeout` network, you may start Sail:
+
+```bash
+./sail up
+```
+
+For more information on using Takeout services and connecting them to Sail, please consult the [official Takeout documentation](https://github.com/tighten/takeout).
+
 <a name="sail-container-cli"></a>
 ### Container CLI
 
@@ -226,3 +248,5 @@ After running this command, the Dockerfiles and other configuration files used b
 
 <a name="next-steps"></a>
 ## Next Steps
+
+Now that you have created your Laravel project, you may wondering what to learn next. We recommend becoming familiar with how Laravel works by reading our documentation on the Laravel [request lifecycle](/docs/{{version}}/lifecycle). Or, if you want to jump straight into coding, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent).
