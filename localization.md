@@ -97,6 +97,8 @@ Translation files that use translation strings as keys are stored as JSON files 
     {
         "I love programming.": "Me encanta programar."
     }
+    
+> {note} Please note that you cannot use translation strings which conflict with language file names. For example, using `__('Action')` for the "NL" locale while a `nl/action.php` file is defined but without an `nl.json` defined will result in the translator returning the contents of `nl/action.php`.
 
 <a name="retrieving-translation-strings"></a>
 ## Retrieving Translation Strings
