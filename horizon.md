@@ -135,6 +135,12 @@ You may pause the Horizon process and instruct it to continue processing jobs us
 
     php artisan horizon:continue
 
+You may also pause and continue specific Horizon supervisors (worker groups) using the `horizon:pause-supervisor` and `horizon:continue-supervisor` Artisan commands:
+
+    php artisan horizon:pause-supervisor supervisor-1
+
+    php artisan horizon:continue-supervisor supervisor-1
+
 You may check the current status of the Horizon process using the `horizon:status` Artisan command:
 
     php artisan horizon:status

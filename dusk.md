@@ -28,6 +28,7 @@
     - [Scoping Selectors](#scoping-selectors)
     - [Waiting For Elements](#waiting-for-elements)
     - [Scrolling An Element Into View](#scrolling-an-element-into-view)
+    - [Executing JavaScript](#executing-javascript)
     - [Making Vue Assertions](#making-vue-assertions)
 - [Available Assertions](#available-assertions)
 - [Pages](#pages)
@@ -83,7 +84,7 @@ If you would like to install a different version of ChromeDriver than what is in
     php artisan dusk:chrome-driver
 
     # Install a given version of ChromeDriver for your OS...
-    php artisan dusk:chrome-driver 74
+    php artisan dusk:chrome-driver 86
 
     # Install a given version of ChromeDriver for all supported OSs...
     php artisan dusk:chrome-driver --all
@@ -512,7 +513,7 @@ To "check" a checkbox field, you may use the `check` method. Like many other inp
 
 To "select" a radio button option, you may use the `radio` method. Like many other input related methods, a full CSS selector is not required. If an exact selector match can't be found, Dusk will search for a radio with matching `name` and `value` attributes:
 
-    $browser->radio('version', 'php7');
+    $browser->radio('version', 'php8');
 
 <a name="attaching-files"></a>
 ### Attaching Files
@@ -776,6 +777,18 @@ Sometimes you may not be able to click on an element because it is outside of th
 
     $browser->scrollIntoView('selector')
             ->click('selector');
+
+<a name="executing-javascript"></a>
+### Executing JavaScript
+
+You may use the `script` method to execute JavaScript within the browser:
+
+    $output = $browser->script('document.documentElement.scrollTop = 0');
+
+    $output = $browser->script([
+        'document.body.scrollTop = 0',
+        'document.documentElement.scrollTop = 0',
+    ]);
 
 <a name="making-vue-assertions"></a>
 ### Making Vue Assertions
@@ -1698,7 +1711,7 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
 
 To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. These commands are just a starting point and you are free to add additional commands as needed:
 
-    phpenv local 7.2
+    phpenv local 7.3
     cp .env.testing .env
     mkdir -p ./bootstrap/cache
     composer install --no-interaction --prefer-dist
@@ -1797,4 +1810,4 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
             uses: actions/upload-artifact@v2
             with:
               name: console
-              path: tests/Browser/console  
+              path: tests/Browser/console

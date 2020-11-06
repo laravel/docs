@@ -28,7 +28,7 @@ When using the scheduler, you only need to add the following Cron entry to your 
 
     * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 
-This Cron will call the Laravel command scheduler every minute. When the `schedule:run` command is executed, Laravel will evaluate your scheduled tasks and runs the tasks that are due.
+This Cron will call the Laravel command scheduler every minute. When the `schedule:run` command is executed, Laravel will evaluate your scheduled tasks and run the tasks that are due.
 
 <a name="starting-the-scheduler-locally"></a>
 ### Starting The Scheduler Locally

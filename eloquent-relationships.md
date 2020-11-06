@@ -20,8 +20,8 @@
     - [Querying Relationship Existence](#querying-relationship-existence)
     - [Querying Relationship Absence](#querying-relationship-absence)
     - [Querying Polymorphic Relationships](#querying-polymorphic-relationships)
-    - [Counting Related Models](#counting-related-models)
-    - [Counting Related Models On Polymorphic Relationships](#counting-related-models-on-polymorphic-relationships)
+    - [Aggregating Related Models](#aggregating-related-models)
+    - [Aggregating Related Models On Polymorphic Relationships](#aggregating-related-models-on-polymorphic-relationships)
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
     - [Lazy Eager Loading](#lazy-eager-loading)
@@ -333,7 +333,7 @@ By default, only the model keys will be present on the `pivot` object. If your p
 If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
 
     return $this->belongsToMany('App\Models\Role')->withTimestamps();
-    
+
 > {note} When using timestamps on pivot tables, the table is required to have both `created_at` and `updated_at` timestamp columns.
 
 <a name="customizing-the-pivot-attribute-name"></a>
@@ -1056,7 +1056,10 @@ Instead of passing an array of possible polymorphic models, you may provide `*` 
     })->get();
 
 <a name="counting-related-models"></a>
-### Counting Related Models
+<a name="aggregating-related-models-related-models"></a>
+### Aggregating Related Models
+
+#### Counting Related Models
 
 If you want to count the number of results from a relationship without actually loading them you may use the `withCount` method, which will place a `{relation}_count` column on your resulting models. For example:
 
@@ -1111,6 +1114,22 @@ If you need to set additional query constraints on the eager loading query, you 
     $book->loadCount(['reviews' => function ($query) {
         $query->where('rating', 5);
     }])
+
+#### Other Aggregate Functions
+
+In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `withAvg`, and `withSum`. These methods will place a `{relation}_{function}_{column}` column on your resulting models. For example:
+
+    $posts = App\Models\Post::withSum('comments', 'votes')->get();
+
+    foreach ($posts as $post) {
+        echo $post->comments_sum_votes;
+    }
+
+These additional aggregate operations may also be performed on Eloquent models that have already been retrieved:
+
+    $post = App\Models\Post::first();
+
+    $post->loadSum('comments', 'votes');
 
 <a name="counting-related-models-on-polymorphic-relationships"></a>
 ### Counting Related Models On Polymorphic Relationships

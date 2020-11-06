@@ -60,8 +60,9 @@ We can write the following test to verify that the `Cache::get` method was calle
              ->with('key')
              ->andReturn('value');
 
-        $this->visit('/cache')
-             ->see('value');
+        $response = $this->get('/cache');
+
+        $response->assertSee('value');
     }
 
 <a name="facades-vs-helper-functions"></a>

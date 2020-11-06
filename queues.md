@@ -815,12 +815,12 @@ You may add a set of [chained jobs](#job-chaining) within a batch by placing the
 
     Bus::batch([
         [
-            new ReleasePodcast(1);
-            new SendPodcastReleaseNotification(1);
+            new ReleasePodcast(1),
+            new SendPodcastReleaseNotification(1),
         ],
         [
-            new ReleasePodcast(2);
-            new SendPodcastReleaseNotification(2);
+            new ReleasePodcast(2),
+            new SendPodcastReleaseNotification(2),
         ],
     ])->dispatch();
 
