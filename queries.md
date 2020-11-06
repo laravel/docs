@@ -320,7 +320,7 @@ You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a q
 <a name="unions"></a>
 ## Unions
 
-The query builder also provides a quick way to "union" two queries together. For example, you may create an initial query and use the `union` method to union it with a second query:
+The query builder also provides a quick way to "union" two or more queries together. For example, you may create an initial query and use the `union` method to union it with more queries:
 
     $first = DB::table('users')
                 ->whereNull('first_name');
