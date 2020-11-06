@@ -45,11 +45,15 @@ For example, if you need to report different types of exceptions in different wa
         });
     }
 
-When you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback:
+When you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback or return `false` from the callback:
 
     $this->reportable(function (CustomException $e) {
         //
     })->stop();
+
+    $this->reportable(function (CustomException $e) {
+        return false;
+    });
 
 > {tip} To customize the exception reporting for a given exception, you may also consider using [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions)
 
