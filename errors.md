@@ -101,6 +101,16 @@ The `$dontReport` property of the exception handler contains an array of excepti
         \Illuminate\Validation\ValidationException::class,
     ];
 
+You may also ignore exceptions with the `ignore` method of the exception handler. This method accepts the exception type and an optional callback that lets you decide at runtime whether to ignore the exception. You should call this method inside your exception handler's `register` method.
+
+    public function register()
+    {
+        $this->ignore(CustomException::class, function (CustomException $e) {
+            // Only ignore this exception if its error code equals 404
+            return $e->getCode() === 404;
+        });
+    }
+
 <a name="rendering-exceptions"></a>
 ### Rendering Exceptions
 
