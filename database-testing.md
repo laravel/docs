@@ -67,6 +67,9 @@ It is often useful to reset your database after each test so that data from a pr
         }
     }
 
+> {tip} If you want to test code, which uses several database connections for one table, replace `RefreshDatabase`
+> with `DatabaseMigrations` trait
+
 <a name="creating-factories"></a>
 ## Creating Factories
 
