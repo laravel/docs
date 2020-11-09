@@ -236,6 +236,17 @@ networks:
     - takeout
 ```
 
+In addition, you will need to add the `takeout` network to the root level `networks` entry in your `docker-compose.yml` file:
+
+```yaml
+networks:
+    sail:
+        driver: bridge
+    takeout:
+        external:
+            name: takeout
+```
+
 Once you have added your container to the `takeout` network, you may start Sail:
 
 ```bash
