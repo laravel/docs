@@ -102,7 +102,7 @@ Then, you may instruct Sanctum to use your custom model via the `usePersonalAcce
      */
     public function boot()
     {
-        Sanctum::usePersonalAccessTokenModel(Token::class);
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 
 <a name="api-token-authentication"></a>
