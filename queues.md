@@ -6,6 +6,7 @@
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
+    - [Unique Jobs](#unique-jobs)
 - [Job Middleware](#job-middleware)
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
@@ -207,6 +208,77 @@ Because loaded relationships also get serialized, the serialized job string can 
     {
         $this->podcast = $podcast->withoutRelations();
     }
+
+<a name="unique-jobs"></a>
+### Unique Jobs
+
+Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class:
+
+    <?php
+
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Contracts\Queue\ShouldBeUnique;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
+    {
+        ...
+    }
+
+In the example above, the `UpdateSearchIndex` job is unique. So, new dispatches of the job will be ignored until the job has completed processing.
+
+In certain cases, you may want to define uniqueness in another way or you may want to specify a timeout, beyond which the job no longer stays unique. You may use the optional `uniqueId` and `uniqueFor` parameters defined as either methods or public properties on the class for such cases:
+
+    <?php
+
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Contracts\Queue\ShouldBeUnique;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
+    {
+        public $product;
+
+        /**
+        * The number of seconds after which the job will no longer stay unique.
+        *
+        * @var int
+        */
+        public $uniqueFor = 3600;
+
+        /**
+        * The unique ID of the job.
+        *
+        * @return string
+        */
+        public function uniqueId()
+        {
+            return $this->product->id;
+        }
+    }
+
+In the example above, the `UpdateSearchIndex` job is unique by the product ID. So, any new dispatches of the job on the same product ID will be ignored until the job has completed processing. The timeout of the job "uniqueness" is set at 1 hour, beyond which the job no longer stays unique.
+
+Behind the scenes, when the `UpdateSearchIndex` job is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is not acquired, the dispatch is ignored. This lock is released when the job completes processing. By default, Laravel will use the default cache driver for this lock. However, if you wish to use a separate driver for acquiring the lock, you may use the `uniqueVia` method to do so:
+
+    use Illuminate\Support\Facades\Cache;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
+    {
+        ...
+
+        /**
+        * The unique ID of the job.
+        *
+        * @return \Illuminate\Contracts\Cache\Repository
+        */
+        public function uniqueVia()
+        {
+            return Cache::driver('lock');
+        }
+    }
+
+> {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks).
+
+> {tip} If you are just looking to limit concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
 
 <a name="job-middleware"></a>
 ## Job Middleware
