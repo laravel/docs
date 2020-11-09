@@ -212,6 +212,8 @@ Because loaded relationships also get serialized, the serialized job string can 
 <a name="unique-jobs"></a>
 ### Unique Jobs
 
+> {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks).
+
 Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class:
 
     <?php
@@ -224,21 +226,27 @@ Sometimes, you may want to ensure that only one instance of a specific job is on
         ...
     }
 
-In the example above, the `UpdateSearchIndex` job is unique. So, new dispatches of the job will be ignored until the job has completed processing.
+In the example above, the `UpdateSearchIndex` job is unique. So, new dispatches of the job will be ignored if another instance of the job is already on the queue and has not finished processing.
 
-In certain cases, you may want to define uniqueness in another way or you may want to specify a timeout, beyond which the job no longer stays unique. You may use the optional `uniqueId` and `uniqueFor` parameters defined as either methods or public properties on the class for such cases:
+In certain cases, you may want to define a specific "key" that makes the job unique or you may want to specify a timeout beyond which the job no longer stays unique. To accomplish this, you may define `uniqueId` and `uniqueFor` properties or methods on your job class:
 
     <?php
 
+    use App\Product;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Contracts\Queue\ShouldBeUnique;
 
     class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
     {
+        /**
+         * The product instance.
+         *
+         * @var \App\Product
+         */
         public $product;
 
         /**
-        * The number of seconds after which the job will no longer stay unique.
+        * The number of seconds after which the job's unique lock will be released.
         *
         * @var int
         */
@@ -255,9 +263,12 @@ In certain cases, you may want to define uniqueness in another way or you may wa
         }
     }
 
-In the example above, the `UpdateSearchIndex` job is unique by the product ID. So, any new dispatches of the job on the same product ID will be ignored until the job has completed processing. The timeout of the job "uniqueness" is set at 1 hour, beyond which the job no longer stays unique.
+In the example above, the `UpdateSearchIndex` job is unique by a product ID. So, any new dispatches of the job with the same product ID will be ignored until the existing job has completed processing. In addition, if the existing job is not processed within one hour, the unique lock will be released and another job with the same unique key can be dispatched to the queue.
 
-Behind the scenes, when the `UpdateSearchIndex` job is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is not acquired, the dispatch is ignored. This lock is released when the job completes processing. By default, Laravel will use the default cache driver for this lock. However, if you wish to use a separate driver for acquiring the lock, you may use the `uniqueVia` method to do so:
+<a name="unique-job-locks"></a>
+#### Unique Job Locks
+
+Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is not acquired, the dispatch is ignored. This lock is released when the job completes processing or fails all of its retry attempts. By default, Laravel will use the default cache driver to obtain this lock. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method the returns the cache driver that should be used:
 
     use Illuminate\Support\Facades\Cache;
 
@@ -272,13 +283,11 @@ Behind the scenes, when the `UpdateSearchIndex` job is dispatched, Laravel attem
         */
         public function uniqueVia()
         {
-            return Cache::driver('lock');
+            return Cache::driver('redis');
         }
     }
 
-> {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks).
-
-> {tip} If you are just looking to limit concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
+> {tip} If only need to limit the concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
 
 <a name="job-middleware"></a>
 ## Job Middleware
