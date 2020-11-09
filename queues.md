@@ -266,7 +266,7 @@ Behind the scenes, when the `UpdateSearchIndex` job is dispatched, Laravel attem
         ...
 
         /**
-        * The unique ID of the job.
+        * Get the cache driver for the unique job lock.
         *
         * @return \Illuminate\Contracts\Cache\Repository
         */
