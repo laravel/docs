@@ -7,6 +7,7 @@
     - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
+    - [Starter Kits](/docs/{{version}}/starter-kits)
     - [Deployment](/docs/{{version}}/deployment)
 - ## Architecture Concepts
     - [Service Container](/docs/{{version}}/container)
