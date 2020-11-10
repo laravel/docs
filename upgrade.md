@@ -235,6 +235,10 @@ The paginator now uses the [Tailwind CSS framework](https://tailwindcss.com) for
 
     Paginator::useBootstrap();
 
+**Likelihood Of Impact: Low**
+
+The paginator for `LengthAwarePaginator` returns an additional property `links`. Which returns the items in the paginated list with `url`, `label` and `active` properties.
+
 <a name="queue"></a>
 ### Queue
 
