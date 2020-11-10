@@ -15,7 +15,7 @@
 
 Many web applications require users to verify their email addresses before using the application. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending and verifying email verification requests.
 
-> {tip} Want to get started fast? Install [Laravel Jetstream](https://jetstream.laravel.com) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. Jetstream will take care of scaffolding your entire authentication system, including email verification support!
+> {tip} Want to get started fast? Install one of the [Laravel authentication starter kits](/docs/{{version}}/starter-kits) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. The starter kits will take care of scaffolding your entire authentication system, including email verification support!
 
 <a name="model-preparation"></a>
 ### Model Preparation
@@ -39,7 +39,7 @@ To get started, verify that your `App\Models\User` model implements the `Illumin
 
 Once this interface has been added to your model, newly registered users will automatically be sent an email containing an email verification link. As you can see by examining your `EventServiceProvider`, Laravel already contains a `SendEmailVerificationNotification` [listener](/docs/{{version}}/events) that is attached to the `Illuminate\Auth\Events\Registered` event.
 
-If you are manually implementing registration within your application instead of using [Laravel Jetstream](https://jetstream.laravel.com), you should ensure that you are dispatching the `Illuminate\Auth\Events\Registered` event after a user's registration is successful:
+If you are manually implementing registration within your application instead of using [a starter kit](/docs/{{version}}/starter-kits), you should ensure that you are dispatching the `Illuminate\Auth\Events\Registered` event after a user's registration is successful:
 
     use Illuminate\Auth\Events\Registered;
 
@@ -68,7 +68,7 @@ As mentioned previously, a route should be defined that will return a view instr
 
 The route that returns the email verification notice should be named `verification.notice`. It is important that the route be assigned this exact name since the `verified` middleware [included with Laravel](#protecting-routes) will automatically redirect to this route name if a user has not verified their email address.
 
-> {tip} When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out [Laravel Jetstream](https://jetstream.laravel.com).
+> {tip} When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out the [Laravel authentication starter kits](/docs/{{version}}/starter-kits).
 
 <a name="the-email-verification-handler"></a>
 ### The Email Verification Handler
@@ -115,7 +115,7 @@ If an unverified user attempts to access a route that has been assigned this mid
 <a name="events"></a>
 ## Events
 
-When using [Laravel Jetstream](https://jetstream.laravel.com), Laravel dispatches [events](/docs/{{version}}/events) during the email verification process. If you are manually handling email verification for your application, you may wish to manually dispatch these events after verification is completed. You may attach listeners to these events in your `EventServiceProvider`:
+When using the [Laravel authentication starter kits](/docs/{{version}}/starter-kits), Laravel dispatches [events](/docs/{{version}}/events) during the email verification process. If you are manually handling email verification for your application, you may wish to manually dispatch these events after verification is completed. You may attach listeners to these events in your `EventServiceProvider`:
 
     /**
      * The event listener mappings for the application.
