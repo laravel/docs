@@ -656,6 +656,8 @@ When designing a mailable's template, it is convenient to quickly preview the re
         return new App\Mail\InvoicePaid($invoice);
     });
 
+> {note} If you use [inline attachements](#inline-attachments) please note that these cannot be rendered as they use a CID embedded image which only renders in an actual email.
+
 <a name="localizing-mailables"></a>
 ## Localizing Mailables
 
