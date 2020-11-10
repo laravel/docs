@@ -803,6 +803,11 @@ If you wish to truncate the entire table, which will remove all rows and reset t
 
     DB::table('users')->truncate();
 
+<a name="table-truncation-and-postgresql"></a>
+#### Table Truncation & PostgreSQL
+
+When truncating a PostgreSQL database, the `CASCADE` behavior will be applied. This means that all foreign key related records in other tables will be deleted as well.
+
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
 
