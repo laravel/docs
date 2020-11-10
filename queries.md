@@ -802,6 +802,8 @@ The query builder may also be used to delete records from the table via the `del
 If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to zero, you may use the `truncate` method:
 
     DB::table('users')->truncate();
+    
+> {note} When using `truncate` in a PostgreSQL database it will apply `CASCADE` and delete related records in other tables as well.
 
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
