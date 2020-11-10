@@ -203,6 +203,16 @@ When using Laravel Sail, your application is executing within a Docker container
 ./sail npm run prod
 ```
 
+When reading the Laravel documentation, you will often see references to Artisan and Composer commands that do not reference Sail. Those examples assume that PHP is installed on your local computer. If you are using Sail for your local Laravel development environment, you should execute those commands using Sail:
+
+```bash
+// Running Artisan commands locally...
+php artisan queue:work
+
+// Running Artisan commands within Laravel Sail...
+./sail artisan queue:work
+```
+
 <a name="interacting-with-sail-databases"></a>
 ### Interacting With Databases
 
@@ -283,3 +293,5 @@ After running this command, the Dockerfiles and other configuration files used b
 ## Next Steps
 
 Now that you have created your Laravel project, you may wondering what to learn next. We recommend becoming familiar with how Laravel works by reading our documentation on Laravel's [request lifecycle](/docs/{{version}}/lifecycle), [configuration](/docs/{{version}}/configuration), or [directory structure](/docs/{{version}}/structure). Or, if you want to jump straight into coding, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent).
+
+> {tip} If you want to get a head start building your application, check out one of our official [application starter kits](/docs/{{version}}/starter-kits).
