@@ -4,9 +4,7 @@
     - [Database Considerations](#introduction-database-considerations)
     - [Ecosystem Overview](#ecosystem-overview)
 - [Authentication Quickstart](#authentication-quickstart)
-    - [Routing](#included-routing)
-    - [Views](#included-views)
-    - [Authenticating](#included-authenticating)
+    - [Install A Starter Kit](#install-a-starter-kit)
     - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
     - [Protecting Routes](#protecting-routes)
     - [Login Throttling](#login-throttling)
@@ -72,11 +70,11 @@ Laravel includes built-in authentication and session services which are typicall
 
 As discussed in this documentation, you can interact with these authentication services manually to build your application's own authentication layer. However, to help you get started more quickly, we have released [free packages](/docs/{{version}}/starter-kits) that provide robust, modern scaffolding of the entire authentication layer. These packages are [Laravel Breeze](https://github.com/laravel/breeze), [Laravel Jetstream](https://jetstream.laravel.com), and [Laravel Fortify](https://github.com/laravel/fortify).
 
-Laravel Breeze is a minimal, simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple Blade templates styled with [Tailwind](htts://tailwindcss.com). To get started, check out the documentation on Laravel's [authentication starter kits](/docs/{{version}}/starter-kits).
+Laravel Breeze is a minimal, simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](htts://tailwindcss.com). To get started, check out the documentation on Laravel's [authentication starter kits](/docs/{{version}}/starter-kits).
 
 Laravel Fortify is a headless authentication backend for Laravel that implements many of the features found in this documentation, including cookie-based authentication as well as other features such as two-factor authentication and email verification.
 
-Laravel Jetstream is a UI that consumes and exposes Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Laravel Livewire](https://laravel-livewire.com), and / or [Inertia.js](https://inertiajs.com). Laravel Jetstream, in addition to offering browser-based cookie authentication, includes two-factor authentication, team support, and built-in integration with [Laravel Sanctum](/docs/{{version}}/sanctum) to offer API token authentication. Laravel's API authentication offerings are discussed below.
+[Laravel Jetstream](https://jetstream.laravel.com) is a UI that consumes and exposes Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Laravel Livewire](https://laravel-livewire.com), and / or [Inertia.js](https://inertiajs.com). Laravel Jetstream, in addition to offering browser-based cookie authentication, includes two-factor authentication, team support, and built-in integration with [Laravel Sanctum](/docs/{{version}}/sanctum) to offer API token authentication. Laravel's API authentication offerings are discussed below.
 
 <a name="laravels-api-authentication-services"></a>
 #### Laravel's API Authentication Services
@@ -109,12 +107,16 @@ And, if you would like to get started quickly, we are pleased to recommend [Lara
 <a name="authentication-quickstart"></a>
 ## Authentication Quickstart
 
-> {note} This portion of the documentation discusses authenticating users via the [Laravel authentication starter kit](/docs/{{version}}/starter-kits), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
+> {note} This portion of the documentation discusses authenticating users via the [Laravel authentication starter kits](/docs/{{version}}/starter-kits), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
 
 <a name="install-a-starter-kit"></a>
 ### Install A Starter Kit
 
-Something about installing a starter kit.
+First, you should [install a Laravel authentication starter kit](/docs/{{version}}/starter-kits). Our current starter kits, Laravel Breeze and Laravel Jetstream, offer beautifully designed starting points for incorporating authentication into your fresh Laravel application.
+
+Laravel Breeze is a minimal, simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](htts://tailwindcss.com).
+
+[Laravel Jetstream](https://jetstream.laravel.com) is a more robust authentication starter kit that includes support for scaffolding your application with [Laravel Livewire](https://laravel-livewire.com) or [Inertia.js and Vue](https://inertiajs.com). In addition, Jetstream features optional support for two-factor authentication, teams, profile management, browser session management, API support via [Laravel Sanctum](/docs/{{version}}/sanctum), account deletion, and more.
 
 <a name="path-customization"></a>
 #### Path Customization
@@ -123,7 +125,7 @@ When a user is successfully authenticated, they will typically be redirected to 
 
     public const HOME = '/home';
 
-> {tip} When using Laravel Breeze or Laravel Jetstream, the installation process will change the value of the `HOME` constant to `/dashboard`.
+> {tip} When using Laravel Breeze or Laravel Jetstream, the installation process will change the value of the `HOME` constant from its default value of `/home` to `/dashboard`.
 
 <a name="retrieving-the-authenticated-user"></a>
 ### Retrieving The Authenticated User
@@ -217,7 +219,7 @@ If you are using Laravel Breeze or Laravel Jetstream, rate limiting will automat
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
 
-You are not required to use the authentication scaffolding included with an [authentication starter kit](/docs/{{version}}/starter-kits). If you choose to not use this scaffolding, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch!
+You are not required to use the authentication scaffolding included with the [authentication starter kits](/docs/{{version}}/starter-kits). If you choose to not use this scaffolding, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch!
 
 We will access Laravel's authentication services via the `Auth` [facade](/docs/{{version}}/facades), so we'll need to make sure to import the `Auth` facade at the top of the class. Next, let's check out the `attempt` method:
 
