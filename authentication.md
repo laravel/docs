@@ -41,7 +41,7 @@ Don't worry if this all sounds confusing now! Many applications will never need 
 <a name="getting-started-fast"></a>
 #### Getting Started Fast
 
-Want to get started fast? Install a [Laravel authentication starter kit](/docs/{{version}}/starter-kits) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. The starter kits will take care of scaffolding your entire authentication system!
+Want to get started fast? Install a [Laravel application starter kit](/docs/{{version}}/starter-kits) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. The starter kits will take care of scaffolding your entire authentication system!
 
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
@@ -66,15 +66,15 @@ When a remote service needs to authenticate to access an API, cookies are not ty
 
 Laravel includes built-in authentication and session services which are typically accessed via the `Auth` and `Session` facades. These features provide cookie based authentication for requests that are initiated from web browsers. They provide methods that allow you to verify a user's credentials and authenticate the user. In addition, these services will automatically store the proper data in the user's session and issue the proper session cookie. A discussion of how to use these services is contained within this documentation.
 
-**Authentication Starter Kits**
+**Application Starter Kits**
 
 As discussed in this documentation, you can interact with these authentication services manually to build your application's own authentication layer. However, to help you get started more quickly, we have released [free packages](/docs/{{version}}/starter-kits) that provide robust, modern scaffolding of the entire authentication layer. These packages are [Laravel Breeze](https://github.com/laravel/breeze), [Laravel Jetstream](https://jetstream.laravel.com), and [Laravel Fortify](https://github.com/laravel/fortify).
 
-Laravel Breeze is a minimal, simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](htts://tailwindcss.com). To get started, check out the documentation on Laravel's [authentication starter kits](/docs/{{version}}/starter-kits).
+Laravel Breeze is a minimal, simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](htts://tailwindcss.com). To get started, check out the documentation on Laravel's [application starter kits](/docs/{{version}}/starter-kits).
 
 Laravel Fortify is a headless authentication backend for Laravel that implements many of the features found in this documentation, including cookie-based authentication as well as other features such as two-factor authentication and email verification.
 
-[Laravel Jetstream](https://jetstream.laravel.com) is a UI that consumes and exposes Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Laravel Livewire](https://laravel-livewire.com), and / or [Inertia.js](https://inertiajs.com). Laravel Jetstream, in addition to offering browser-based cookie authentication, includes two-factor authentication, team support, and built-in integration with [Laravel Sanctum](/docs/{{version}}/sanctum) to offer API token authentication. Laravel's API authentication offerings are discussed below.
+[Laravel Jetstream](https://jetstream.laravel.com) is an application starter kit that consumes and exposes Fortify's authentication services with a beautiful, modern UI powered by [Tailwind CSS](https://tailwindcss.com), [Laravel Livewire](https://laravel-livewire.com), and / or [Inertia.js](https://inertiajs.com). Laravel Jetstream includes optional support for two-factor authentication, team support, browser session management, profile management, and built-in integration with [Laravel Sanctum](/docs/{{version}}/sanctum) to offer API token authentication. Laravel's API authentication offerings are discussed below.
 
 <a name="laravels-api-authentication-services"></a>
 #### Laravel's API Authentication Services
@@ -91,7 +91,7 @@ In response to the complexity of OAuth2 and developer confusion, we set out to b
 
 Laravel Sanctum is a hybrid web / API authentication package that can manage your application's entire authentication process. This is possible because when Sanctum based applications receive a request, Sanctum will first determine if the request includes a session cookie that references an authenticated session. Sanctum accomplishes this by calling Laravel's built-in authentication services which we discussed earlier. If the request is not being authenticated via a session cookie, Sanctum will inspect the request for an API token. If an API token is present, Sanctum will authenticate the request using that token. To learn more about this process, please consult Sanctum's ["how it works"](/docs/{{version}}/sanctum#how-it-works) documentation.
 
-Laravel Sanctum is the API package we have chosen to include with the [Laravel Jetstream](https://jetstream.laravel.com) authentication starter kit because we believe it is the best fit for the majority of web application's authentication needs.
+Laravel Sanctum is the API package we have chosen to include with the [Laravel Jetstream](https://jetstream.laravel.com) application starter kit because we believe it is the best fit for the majority of web application's authentication needs.
 
 <a name="summary-choosing-your-stack"></a>
 #### Summary & Choosing Your Stack
@@ -107,16 +107,16 @@ And, if you would like to get started quickly, we are pleased to recommend [Lara
 <a name="authentication-quickstart"></a>
 ## Authentication Quickstart
 
-> {note} This portion of the documentation discusses authenticating users via the [Laravel authentication starter kits](/docs/{{version}}/starter-kits), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
+> {note} This portion of the documentation discusses authenticating users via the [Laravel application starter kits](/docs/{{version}}/starter-kits), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
 
 <a name="install-a-starter-kit"></a>
 ### Install A Starter Kit
 
-First, you should [install a Laravel authentication starter kit](/docs/{{version}}/starter-kits). Our current starter kits, Laravel Breeze and Laravel Jetstream, offer beautifully designed starting points for incorporating authentication into your fresh Laravel application.
+First, you should [install a Laravel application starter kit](/docs/{{version}}/starter-kits). Our current starter kits, Laravel Breeze and Laravel Jetstream, offer beautifully designed starting points for incorporating authentication into your fresh Laravel application.
 
 Laravel Breeze is a minimal, simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](htts://tailwindcss.com).
 
-[Laravel Jetstream](https://jetstream.laravel.com) is a more robust authentication starter kit that includes support for scaffolding your application with [Laravel Livewire](https://laravel-livewire.com) or [Inertia.js and Vue](https://inertiajs.com). In addition, Jetstream features optional support for two-factor authentication, teams, profile management, browser session management, API support via [Laravel Sanctum](/docs/{{version}}/sanctum), account deletion, and more.
+[Laravel Jetstream](https://jetstream.laravel.com) is a more robust application starter kit that includes support for scaffolding your application with [Laravel Livewire](https://laravel-livewire.com) or [Inertia.js and Vue](https://inertiajs.com). In addition, Jetstream features optional support for two-factor authentication, teams, profile management, browser session management, API support via [Laravel Sanctum](/docs/{{version}}/sanctum), account deletion, and more.
 
 <a name="path-customization"></a>
 #### Path Customization
@@ -219,7 +219,7 @@ If you are using Laravel Breeze or Laravel Jetstream, rate limiting will automat
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
 
-You are not required to use the authentication scaffolding included with the [authentication starter kits](/docs/{{version}}/starter-kits). If you choose to not use this scaffolding, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch!
+You are not required to use the authentication scaffolding included with the [application starter kits](/docs/{{version}}/starter-kits). If you choose to not use this scaffolding, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch!
 
 We will access Laravel's authentication services via the `Auth` [facade](/docs/{{version}}/facades), so we'll need to make sure to import the `Auth` facade at the top of the class. Next, let's check out the `attempt` method:
 
@@ -425,7 +425,7 @@ When the `logoutOtherDevices` method is invoked, the user's other sessions will 
 
 While building your application, you may occasionally have actions that should require the user to confirm their password before the action is performed. Laravel includes built-in middleware to make this process a breeze. Implementing this feature will require you to define two routes: one route to display a view asking the user to confirm their password, and one route to confirm that the password is valid and redirect the user to their intended destination.
 
-> {tip} The following documentation discusses how to integrate with Laravel's password confirmation features directly; however, if you would like to get started more quickly, the [Laravel authentication starter kits](/docs/{{version}}/starter-kits) include support for this feature!
+> {tip} The following documentation discusses how to integrate with Laravel's password confirmation features directly; however, if you would like to get started more quickly, the [Laravel application starter kits](/docs/{{version}}/starter-kits) include support for this feature!
 
 <a name="password-confirmation-configuration"></a>
 ### Configuration
