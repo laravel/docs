@@ -129,6 +129,9 @@ The debug option in your config/app.php configuration file determines how much i
 <a name="deploying-with-forge-or-vapor"></a>
 ## Deploying With Forge / Vapor
 
+<a name="laravel-forge"></a>
+#### Laravel Forge
+
 If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel application, [Laravel Forge](https://forge.laravel.com) is a wonderful alternative.
 
 Laravel Forge can create servers on various infrastructure providers such as DigitalOcean, Linode, AWS, and more. In addition, Forge installs and manages all of the tools needed to build robust Laravel applications, such as Nginx, MySQL, Redis, Memcached, Beanstalk, and more.
