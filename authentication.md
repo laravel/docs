@@ -122,15 +122,6 @@ Laravel's `laravel/jetstream` package provides a quick way to scaffold all of th
 
 This command should be used on fresh applications and will install a layout view, registration and login views, as well as routes for all authentication end-points. A `/dashboard` route will also be generated to handle post-login requests to your application's dashboard.
 
-<a name="creating-applications-including-authentication"></a>
-#### Creating Applications Including Authentication
-
-If you are starting a brand new application and would like to include the authentication scaffolding, you may use the `--jet` directive when creating your application via the Laravel Installer. This command will create a new application with all of the authentication scaffolding compiled and installed:
-
-    laravel new kitetail --jet
-
-> {tip} To learn more about Jetstream, please visit the official [Jetstream documentation](https://jetstream.laravel.com).
-
 <a name="included-views"></a>
 ### Views
 
