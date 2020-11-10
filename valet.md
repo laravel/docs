@@ -1,7 +1,6 @@
 # Laravel Valet
 
 - [Introduction](#introduction)
-    - [Valet Or Homestead](#valet-or-homestead)
 - [Installation](#installation)
     - [Upgrading](#upgrading)
 - [Serving Sites](#serving-sites)
@@ -60,15 +59,6 @@ Out of the box, Valet support includes, but is not limited to:
 </div>
 
 However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).
-
-<a name="valet-or-homestead"></a>
-### Valet Or Homestead
-
-As you may know, Laravel offers [Homestead](/docs/{{version}}/homestead), another local Laravel development environment. Homestead and Valet differ in regards to their intended audience and their approach to local development. Homestead offers an entire Ubuntu virtual machine with automated Nginx configuration. Homestead is a wonderful choice if you want a fully virtualized Linux development environment or are on Windows / Linux.
-
-Valet only supports Mac, and requires you to install PHP and a database server directly onto your local machine. This is easily achieved by using [Homebrew](https://brew.sh/) with commands like `brew install php` and `brew install mysql`. Valet provides a blazing fast local development environment with minimal resource consumption, so it's great for developers who only require PHP / MySQL and do not need a fully virtualized development environment.
-
-Both Valet and Homestead are great choices for configuring your Laravel development environment. Which one you choose will depend on your personal taste and your team's needs.
 
 <a name="installation"></a>
 ## Installation

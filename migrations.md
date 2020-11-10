@@ -110,8 +110,6 @@ To run all of your outstanding migrations, execute the `migrate` Artisan command
 
     php artisan migrate
 
-> {note} If you are using the [Homestead virtual machine](/docs/{{version}}/homestead), you should run this command from within your virtual machine.
-
 <a name="forcing-migrations-to-run-in-production"></a>
 #### Forcing Migrations To Run In Production
 
