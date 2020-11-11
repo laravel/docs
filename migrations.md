@@ -1,6 +1,7 @@
 # Database: Migrations
 
 - [Introduction](#introduction)
+- [Migrations Setup and Status](#migrations-repository)
 - [Generating Migrations](#generating-migrations)
     - [Squashing Migrations](#squashing-migrations)
 - [Migration Structure](#migration-structure)
@@ -26,6 +27,17 @@
 Migrations are like version control for your database, allowing your team to modify and share the application's database schema. Migrations are typically paired with Laravel's schema builder to build your application's database schema. If you have ever had to tell a teammate to manually add a column to their local database schema, you've faced the problem that database migrations solve.
 
 The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnostic support for creating and manipulating tables across all of Laravel's supported database systems.
+
+<a name="migrations-repository"></a>
+## Migrations Setup and Status
+
+To begin using migrations to manage the database schema, it is first necessary to install the migrations repository. To do so, use the `migrate:install` [Artisan command](/docs/{{version}}/artisan):
+
+    php artisan migrate:install
+    
+The result is a system database table designed to track which migrations have been run. The default name of this table may be customized in the `config/database.php` configuration file, and the `--database` option may be used to specifity the database connection to use. 
+
+> {tip} The status, or state, of the migration system may be queried anytime using the `php artisan migrate:status` Artisan command.
 
 <a name="generating-migrations"></a>
 ## Generating Migrations
