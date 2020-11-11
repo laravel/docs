@@ -4,16 +4,15 @@
     - [Contribution Guide](/docs/{{version}}/contributions)
 - ## Getting Started
     - [Installation](/docs/{{version}}/installation)
-    - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
     - [Starter Kits](/docs/{{version}}/starter-kits)
     - [Deployment](/docs/{{version}}/deployment)
 - ## Architecture Concepts
+    - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Service Container](/docs/{{version}}/container)
     - [Service Providers](/docs/{{version}}/providers)
     - [Facades](/docs/{{version}}/facades)
-    - [Contracts](/docs/{{version}}/contracts)
 - ## The Basics
     - [Routing](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
@@ -43,6 +42,7 @@
     - [Broadcasting](/docs/{{version}}/broadcasting)
     - [Cache](/docs/{{version}}/cache)
     - [Collections](/docs/{{version}}/collections)
+    - [Contracts](/docs/{{version}}/contracts)
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
     - [Helpers](/docs/{{version}}/helpers)
