@@ -17,6 +17,8 @@
     - [Container CLI](#sail-container-cli)
     - [Customization](#sail-customization)
 - [Next Steps](#next-steps)
+    - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
+    - [Laravel The API Backend](#laravel-the-api-backend)
 
 <a name="meet-laravel"></a>
 ## Meet Laravel
@@ -292,6 +294,23 @@ After running this command, the Dockerfiles and other configuration files used b
 <a name="next-steps"></a>
 ## Next Steps
 
-Now that you have created your Laravel project, you may wondering what to learn next. We recommend becoming familiar with how Laravel works by reading our documentation on Laravel's [request lifecycle](/docs/{{version}}/lifecycle), [configuration](/docs/{{version}}/configuration), or [directory structure](/docs/{{version}}/structure). Or, if you want to jump straight into coding, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent).
+Now that you have created your Laravel project, you may be wondering what to learn next. First, we strongly recommend becoming familiar with how Laravel works by reading our documentation on Laravel's [request lifecycle](/docs/{{version}}/lifecycle), [configuration](/docs/{{version}}/configuration), or [directory structure](/docs/{{version}}/structure). In addition, you should read the documentation on Laravel's [service container](/docs/{{version}}/container) and [facades](/docs/{{version}}/facades).
+
+How you want to use Laravel will also dictate the next steps on your journey. There are a variety of ways to use Laravel, and we'll explore two primary use cases for the framework below.
+
+<a name="laravel-the-fullstack-framework"></a>
+### Laravel The Full Stack Framework
+
+Laravel may serve as a full stack framework. By "full stack" framework we mean that you are going to use Laravel to route requests to your application and render your frontend via [Blade templates](/docs/{{version}}/blade) or using an single-page application hybrid technology like [Inertia.js](https://inertiajs.com). This is the most common way to use the Laravel framework.
+
+If this is how you plan to use Laravel, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent). In addition, you might be interested in learning about community packages like [Livewire](https://laravel-livewire.com) and [Inertia.js](https://inertiajs.com). These packages allow you to use Laravel as a full-stack framework while enjoying many of the UI benefits provided by single-page JavaScript applications.
 
 > {tip} If you want to get a head start building your application, check out one of our official [application starter kits](/docs/{{version}}/starter-kits).
+
+<a name="laravel-the-api-backend"></a>
+### Laravel The API Backend
+
+Laravel my also serve as an API backend to a JavaScript single-page application or mobile application. For example, you might use Laravel as an API backend for your [Next.js](https://nextjs.org) application. In this context, you may use Laravel to provide [authentication](/docs/{{version}}/sanctum) and data storage / retrieval for your application, while also taking advantage of Laravel's powerful services such as queues, emails, notifications, and more.
+
+If this is how you plan to use Laravel, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [Laravel Sanctum](/docs/{{version}}/sanctum), and the [Eloquent ORM](/docs/{{version}}/eloquent).
+
