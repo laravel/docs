@@ -3,7 +3,7 @@
 - [Meet Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
 - [Your First Laravel Project](#your-first-laravel-project)
-    - [Getting Started On MacOS](#getting-started-on-macos)
+    - [Getting Started On macOS](#getting-started-on-macos)
     - [Getting Started On Windows](#getting-started-on-windows)
     - [Getting Started On Linux](#getting-started-on-linux)
     - [Installation Via Composer](#installation-via-composer)
@@ -62,7 +62,7 @@ Laravel Sail is a light-weight command-line interface for interacting with Larav
 > {tip} Already a Docker expert? Don't worry! Everything about Sail can be customized using the `docker-compose.yml` file included with Laravel.
 
 <a name="getting-started-on-macos"></a>
-### Getting Started On MacOS
+### Getting Started On macOS
 
 If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "my-app", you may run the following command in your terminal:
 
@@ -144,6 +144,25 @@ If your computer already has PHP and Composer installed, you may create a new La
     cd my-app
 
     php artisan serve
+
+<a name="the-laravel-installer"></a>
+#### The Laravel Installer
+
+Or, you may install the Laravel Installer as a global Composer dependency:
+
+    composer global require laravel/installer
+
+    laravel new my-app
+
+    php artisan serve
+
+Make sure to place Composer's system-wide vendor bin directory in your `$PATH` so the `laravel` executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
+
+<div class="content-list" markdown="1">
+- macOS: `$HOME/.composer/vendor/bin`
+- Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
+- GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin`
+</div>
 
 <a name="initial-configuration"></a>
 ## Initial Configuration
