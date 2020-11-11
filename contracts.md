@@ -24,8 +24,6 @@ Laravel's [facades](/docs/{{version}}/facades) and helper functions provide a si
 
 Unlike facades, which do not require you to require them in your class' constructor, contracts allow you to define explicit dependencies for your classes. Some developers prefer to explicitly define their dependencies in this way and therefore prefer to use contracts, while other developers enjoy the convenience of facades.
 
-> {tip} Most applications will be fine regardless of whether you prefer facades or contracts. However, if you are building a package, you should strongly consider using contracts since they will be easier to test in a package context.
-
 <a name="when-to-use-contracts"></a>
 ## When To Use Contracts
 
