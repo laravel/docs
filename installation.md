@@ -313,7 +313,15 @@ After running this command, the Dockerfiles and other configuration files used b
 <a name="next-steps"></a>
 ## Next Steps
 
-Now that you have created your Laravel project, you may be wondering what to learn next. First, we strongly recommend becoming familiar with how Laravel works by reading our documentation on Laravel's [request lifecycle](/docs/{{version}}/lifecycle), [configuration](/docs/{{version}}/configuration), or [directory structure](/docs/{{version}}/structure). In addition, you should read the documentation on Laravel's [service container](/docs/{{version}}/container) and [facades](/docs/{{version}}/facades).
+Now that you have created your Laravel project, you may be wondering what to learn next. First, we strongly recommend becoming familiar with how Laravel works by reading the following documentation:
+
+<div class="content-list" markdown="1">
+- [Request Lifecycle](/docs/{{version}}/lifecycle)
+- [Configuration](/docs/{{version}}/configuration)
+- [Directory Structure](/docs/{{version}}/structure)
+- [Service Container](/docs/{{version}}/container)
+- [Facades](/docs/{{version}}/facades)
+</div>
 
 How you want to use Laravel will also dictate the next steps on your journey. There are a variety of ways to use Laravel, and we'll explore two primary use cases for the framework below.
 
