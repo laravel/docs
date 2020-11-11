@@ -74,12 +74,10 @@ A deep understanding of the Laravel service container is essential to building a
 <a name="binding-basics"></a>
 ### Binding Basics
 
-Almost all of your service container bindings will be registered within [service providers](/docs/{{version}}/providers), so most of these examples will demonstrate using the container in that context.
-
-> {tip} There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
-
 <a name="simple-bindings"></a>
 #### Simple Bindings
+
+Almost all of your service container bindings will be registered within [service providers](/docs/{{version}}/providers), so most of these examples will demonstrate using the container in that context.
 
 Within a service provider, you always have access to the container via the `$this->app` property. We can register a binding using the `bind` method, passing the class or interface name that we wish to register along with a `Closure` that returns an instance of the class:
 
@@ -88,6 +86,16 @@ Within a service provider, you always have access to the container via the `$thi
     });
 
 Note that we receive the container itself as an argument to the resolver. We can then use the container to resolve sub-dependencies of the object we are building.
+
+As mentioned, you will typically be interacting with the container within service providers; however, if you would like to interact with the container outside of a service provider, you may do so via the `App` [facade](/docs/{{version}}/facades):
+
+    use Illuminate\Support\Facades\App;
+
+    App::bind('HelpSpot\API', function ($app) {
+        // ...
+    });
+
+> {tip} There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
 
 <a name="binding-a-singleton"></a>
 #### Binding A Singleton
@@ -117,7 +125,7 @@ A very powerful feature of the service container is its ability to bind an inter
         'App\Services\RedisEventPusher'
     );
 
-This statement tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in a constructor, or any other location where dependencies are injected by the service container:
+This statement tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in the constructor of a class that is resolved by the container. Remember, controllers, event listeners, middleware, and various other types of classes within Laravel applications are always resolved using the container:
 
     use App\Contracts\EventPusher;
 
@@ -252,24 +260,43 @@ The `extend` method allows the modification of resolved services. For example, w
 ## Resolving
 
 <a name="the-make-method"></a>
-#### The `make` Method
+### The `make` Method
 
-You may use the `make` method to resolve a class instance out of the container. The `make` method accepts the name of the class or interface you wish to resolve:
+You may use the `make` method to resolve a class instance from the container. The `make` method accepts the name of the class or interface you wish to resolve:
 
     $api = $this->app->make('HelpSpot\API');
 
-If you are in a location of your code that does not have access to the `$app` variable, you may use the global `resolve` helper:
+If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) to resolve a class instance from the container:
 
-    $api = resolve('HelpSpot\API');
+    use Illuminate\Support\Facades\App;
 
-If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method:
+    $api = App::make('HelpSpot\API');
 
-    $api = $this->app->makeWith('HelpSpot\API', ['id' => 1]);
+If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `HelpSpot\API` service:
+
+    use Illuminate\Support\Facades\App;
+
+    $api = App::makeWith('HelpSpot\API', ['id' => 1]);
+
+If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\Container\Container` class on your class' constructor:
+
+    use Illuminate\Container\Container;
+
+    /**
+     * Create a new class instance.
+     *
+     * @param  \Illuminate\Container\Container
+     * @return void
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
 
 <a name="automatic-injection"></a>
-#### Automatic Injection
+### Automatic Injection
 
-Alternatively, and importantly, you may "type-hint" the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). In practice, this is how most of your objects should be resolved by the container.
+Alternatively, and importantly, you may type-hint the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). In practice, this is how most of your objects should be resolved by the container.
 
 For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:
 
@@ -277,19 +304,21 @@ For example, you may type-hint a repository defined by your application in a con
 
     namespace App\Http\Controllers;
 
-    use App\Models\Users\Repository as UserRepository;
+    use App\Repositories\UserRepository;
 
     class UserController extends Controller
     {
         /**
          * The user repository instance.
+         *
+         * @var \App\Repositories\UserRepository
          */
         protected $users;
 
         /**
          * Create a new controller instance.
          *
-         * @param  UserRepository  $users
+         * @param  \App\Repositories\UserRepository  $users
          * @return void
          */
         public function __construct(UserRepository $users)
@@ -301,7 +330,7 @@ For example, you may type-hint a repository defined by your application in a con
          * Show the user with the given ID.
          *
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function show($id)
         {
