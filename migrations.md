@@ -49,7 +49,7 @@ If you would like to specify a custom output path for the generated migration, y
 <a name="squashing-migrations"></a>
 ### Squashing Migrations
 
-As you build your application, you may accumulate more and more migrations over time. This can lead to your migration directory becoming bloated with potentially hundreds of migrations. If you would like, you may "squash" your migrations into a single SQL file. To get started, execute the `schema:dump` command:
+As you build your application, you may accumulate more and more migrations over time. This can lead to your migration directory becoming bloated with potentially hundreds of migrations. If you would l
 
     php artisan schema:dump
 
@@ -60,7 +60,7 @@ When you execute this command, Laravel will write a "schema" file to your `datab
 
 You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
 
-> {note} Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases. Of course, you may not use a MySQL / PostgreSQL database dump in combination with an in-memory SQLite database during testing.
+> {note} Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases. However, database dumps may not be restored to in-memory SQLite databases.
 
 <a name="migration-structure"></a>
 ## Migration Structure
@@ -326,6 +326,7 @@ Modifier  |  Description
 `->storedAs($expression)`  |  Create a stored generated column (MySQL)
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL)
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value
+`->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated
 `->virtualAs($expression)`  |  Create a virtual generated column (MySQL)
 `->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL)
 `->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL)

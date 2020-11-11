@@ -406,7 +406,7 @@ When attaching files to a message, you may also specify the display name and / o
                     ]);
     }
 
-> {tip} Unlike attaching files in mailable objects, you may not attach a file directly from the storage disk using `attachFromStorage`. You should rather use `attach` method with an absolute path to the file on the storage disk. Alternatively, you could return a [mailable](/docs/{{version}}/mail#generating-mailables) from the `toMail` method.
+> {tip} Unlike attaching files in mailable objects, you may not attach a file directly from the storage disk using `attachFromStorage`. You should rather use the `attach` method with an absolute path to the file on the storage disk. Alternatively, you could return a [mailable](/docs/{{version}}/mail#generating-mailables) from the `toMail` method.
 
 <a name="raw-data-attachments"></a>
 #### Raw Data Attachments

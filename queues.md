@@ -6,6 +6,7 @@
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
+    - [Unique Jobs](#unique-jobs)
 - [Job Middleware](#job-middleware)
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
@@ -207,6 +208,86 @@ Because loaded relationships also get serialized, the serialized job string can 
     {
         $this->podcast = $podcast->withoutRelations();
     }
+
+<a name="unique-jobs"></a>
+### Unique Jobs
+
+> {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks).
+
+Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class:
+
+    <?php
+
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Contracts\Queue\ShouldBeUnique;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
+    {
+        ...
+    }
+
+In the example above, the `UpdateSearchIndex` job is unique. So, new dispatches of the job will be ignored if another instance of the job is already on the queue and has not finished processing.
+
+In certain cases, you may want to define a specific "key" that makes the job unique or you may want to specify a timeout beyond which the job no longer stays unique. To accomplish this, you may define `uniqueId` and `uniqueFor` properties or methods on your job class:
+
+    <?php
+
+    use App\Product;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Contracts\Queue\ShouldBeUnique;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
+    {
+        /**
+         * The product instance.
+         *
+         * @var \App\Product
+         */
+        public $product;
+
+        /**
+        * The number of seconds after which the job's unique lock will be released.
+        *
+        * @var int
+        */
+        public $uniqueFor = 3600;
+
+        /**
+        * The unique ID of the job.
+        *
+        * @return string
+        */
+        public function uniqueId()
+        {
+            return $this->product->id;
+        }
+    }
+
+In the example above, the `UpdateSearchIndex` job is unique by a product ID. So, any new dispatches of the job with the same product ID will be ignored until the existing job has completed processing. In addition, if the existing job is not processed within one hour, the unique lock will be released and another job with the same unique key can be dispatched to the queue.
+
+<a name="unique-job-locks"></a>
+#### Unique Job Locks
+
+Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is not acquired, the dispatch is ignored. This lock is released when the job completes processing or fails all of its retry attempts. By default, Laravel will use the default cache driver to obtain this lock. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method the returns the cache driver that should be used:
+
+    use Illuminate\Support\Facades\Cache;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
+    {
+        ...
+
+        /**
+        * Get the cache driver for the unique job lock.
+        *
+        * @return \Illuminate\Contracts\Cache\Repository
+        */
+        public function uniqueVia()
+        {
+            return Cache::driver('redis');
+        }
+    }
+
+> {tip} If only need to limit the concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
 
 <a name="job-middleware"></a>
 ## Job Middleware
@@ -762,7 +843,7 @@ To build a batchable job, you should [create a queueable job](#creating-jobs) as
 <a name="dispatching-batches"></a>
 ### Dispatching Batches
 
-To dispatch a batch of jobs, you should use `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked:
+To dispatch a batch of jobs, you should use the `batch` method of the `Bus` facade. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked:
 
     use App\Jobs\ProcessPodcast;
     use App\Podcast;
