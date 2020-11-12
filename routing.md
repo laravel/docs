@@ -27,18 +27,20 @@
 <a name="basic-routing"></a>
 ## Basic Routing
 
-The most basic Laravel routes accept a URI and a `Closure`, providing a very simple and expressive method of defining routes:
+The most basic Laravel routes accept a URI and a `Closure`, providing a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
 
-    Route::get('foo', function () {
+    use Illuminate\Support\Facades\Route;
+
+    Route::get('/greeting', function () {
         return 'Hello World';
     });
 
 <a name="the-default-route-files"></a>
 #### The Default Route Files
 
-All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by the framework. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection. The routes in `routes/api.php` are stateless and are assigned the `api` middleware group.
+All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by your application's `App\Providers\RouteServiceProvider`. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection. The routes in `routes/api.php` are stateless and are assigned the `api` middleware group.
 
-For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://your-app.test/user` in your browser:
+For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://example.com/user` in your browser:
 
     use App\Http\Controllers\UserController;
 
@@ -71,7 +73,7 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
 <a name="csrf-protection"></a>
 #### CSRF Protection
 
-Any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](/docs/{{version}}/csrf):
+Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](/docs/{{version}}/csrf):
 
     <form method="POST" action="/profile">
         @csrf
@@ -89,7 +91,7 @@ By default, `Route::redirect` returns a `302` status code. You may customize the
 
     Route::redirect('/here', '/there', 301);
 
-You may use the `Route::permanentRedirect` method to return a `301` status code:
+Or, you may use the `Route::permanentRedirect` method to return a `301` status code:
 
     Route::permanentRedirect('/here', '/there');
 
@@ -98,7 +100,7 @@ You may use the `Route::permanentRedirect` method to return a `301` status code:
 <a name="view-routes"></a>
 ### View Routes
 
-If your route only needs to return a view, you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
+If your route only needs to return a [view](/docs/{{version}}/views), you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
 
     Route::view('/welcome', 'welcome');
 
@@ -124,12 +126,12 @@ You may define as many route parameters as required by your route:
         //
     });
 
-Route parameters are always encased within `{}` braces and should consist of alphabetic characters, and may not contain a `-` character. Instead of using the `-` character, use an underscore (`_`). Route parameters are injected into route callbacks / controllers based on their order - the names of the callback / controller arguments do not matter.
+Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.
 
 <a name="parameters-optional-parameters"></a>
 ### Optional Parameters
 
-Occasionally you may need to specify a route parameter, but make the presence of that route parameter optional. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
+Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
 
     Route::get('user/{name?}', function ($name = null) {
         return $name;
@@ -166,10 +168,12 @@ For convenience, some commonly used regular expression patterns have helper meth
         //
     })->whereUuid('id');
 
+If the incoming request does not match the route pattern constraints, a `404` HTTP response will be returned.
+
 <a name="parameters-global-constraints"></a>
 #### Global Constraints
 
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
+If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `App\Providers\RouteServiceProvider` class:
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -183,16 +187,16 @@ If you would like a route parameter to always be constrained by a given regular 
 
 Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
 
-    Route::get('user/{id}', function ($id) {
+    Route::get('/user/{id}', function ($id) {
         // Only executed if {id} is numeric...
     });
 
 <a name="parameters-encoded-forward-slashes"></a>
 #### Encoded Forward Slashes
 
-The Laravel routing component allows all characters except `/`. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
+The Laravel routing component allows all characters except `/` to be present within route parameter values. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
 
-    Route::get('search/{search}', function ($search) {
+    Route::get('/search/{search}', function ($search) {
         return $search;
     })->where('search', '.*');
 
@@ -203,20 +207,23 @@ The Laravel routing component allows all characters except `/`. You must explici
 
 Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route by chaining the `name` method onto the route definition:
 
-    Route::get('user/profile', function () {
+    Route::get('/user/profile', function () {
         //
     })->name('profile');
 
 You may also specify route names for controller actions:
 
-    Route::get('user/profile', [UserProfileController::class, 'show'])->name('profile');
+    Route::get(
+        '/user/profile',
+        [UserProfileController::class, 'show']
+    )->name('profile');
 
 > {note} Route names should always be unique.
 
 <a name="generating-urls-to-named-routes"></a>
 #### Generating URLs To Named Routes
 
-Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the global `route` function:
+Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via Laravel's `route` and `redirect` helper functions:
 
     // Generating URLs...
     $url = route('profile');
@@ -224,7 +231,7 @@ Once you have assigned a name to a given route, you may use the route's name whe
     // Generating Redirects...
     return redirect()->route('profile');
 
-If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the URL in their correct positions:
+If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the generated URL in their correct positions:
 
     Route::get('user/{id}/profile', function ($id) {
         //
