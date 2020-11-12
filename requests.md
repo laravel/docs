@@ -2,9 +2,13 @@
 
 - [Accessing The Request](#accessing-the-request)
     - [Request Path & Method](#request-path-and-method)
+    - [Request Headers](#request-headers)
+    - [Request IP Address](#request-ip)
     - [PSR-7 Requests](#psr7-requests)
 - [Input Trimming & Normalization](#input-trimming-and-normalization)
-- [Retrieving Input](#retrieving-input)
+- [Input](#input)
+    - [Retrieving Input](#retrieving-input)
+    - [Determining If Input Is Present](#determining-if-input-is-present)
     - [Old Input](#old-input)
     - [Cookies](#cookies)
 - [Files](#files)
@@ -15,7 +19,7 @@
 <a name="accessing-the-request"></a>
 ## Accessing The Request
 
-To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your route callback or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):
+To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your route closure or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):
 
     <?php
 
@@ -38,6 +42,14 @@ To obtain an instance of the current HTTP request via dependency injection, you 
             //
         }
     }
+
+As mentioned, you may also type-hint the `Illuminate\Http\Request` class on a route closure. The service container will automatically inject the incoming request into the closure when it is executed:
+
+    use Illuminate\Http\Request;
+
+    Route::get('/', function (Request $request) {
+        //
+    });
 
 <a name="dependency-injection-route-parameters"></a>
 #### Dependency Injection & Route Parameters
@@ -71,32 +83,30 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` route
         }
     }
 
-<a name="accessing-the-request-via-route-closures"></a>
-#### Accessing The Request Via Route Closures
-
-You may also type-hint the `Illuminate\Http\Request` class on a route closure. The service container will automatically inject the incoming request into the closure when it is executed:
-
-    use Illuminate\Http\Request;
-
-    Route::get('/', function (Request $request) {
-        //
-    });
-
 <a name="request-path-and-method"></a>
 ### Request Path & Method
 
-The `Illuminate\Http\Request` instance provides a variety of methods for examining the HTTP request for your application and extends the `Symfony\Component\HttpFoundation\Request` class. We will discuss a few of the most important methods below.
+The `Illuminate\Http\Request` instance provides a variety of methods for examining the incoming HTTP request and extends the `Symfony\Component\HttpFoundation\Request` class. We will discuss a few of the most important methods below.
 
 <a name="retrieving-the-request-path"></a>
 #### Retrieving The Request Path
 
-The `path` method returns the request's path information. So, if the incoming request is targeted at `http://domain.com/foo/bar`, the `path` method will return `foo/bar`:
+The `path` method returns the request's path information. So, if the incoming request is targeted at `http://example.com/foo/bar`, the `path` method will return `foo/bar`:
 
     $uri = $request->path();
+
+<a name="inspecting-the-request-path"></a>
+#### Inspecting The Request Path / Route
 
 The `is` method allows you to verify that the incoming request path matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:
 
     if ($request->is('admin/*')) {
+        //
+    }
+
+Using the `routeIs` method, you may determine if the incoming request has matched a [named route](/docs/{{version}}/routing#named-routes):
+
+    if ($request->routeIs('admin.*')) {
         //
     }
 
@@ -105,11 +115,9 @@ The `is` method allows you to verify that the incoming request path matches a gi
 
 To retrieve the full URL for the incoming request you may use the `url` or `fullUrl` methods. The `url` method will return the URL without the query string, while the `fullUrl` method includes the query string:
 
-    // Without Query String...
     $url = $request->url();
 
-    // With Query String...
-    $url = $request->fullUrl();
+    $urlWithQueryString = $request->fullUrl();
 
 <a name="retrieving-the-request-method"></a>
 #### Retrieving The Request Method
@@ -121,6 +129,32 @@ The `method` method will return the HTTP verb for the request. You may use the `
     if ($request->isMethod('post')) {
         //
     }
+
+<a name="request-headers"></a>
+### Request Headers
+
+You may retrieve a request header from the `Illuminate\Http\Request` instance using the `header` method. If the header is not present on the request, `null` will be returned. However, the `header` method accepts an optional second argument that will be returned if the header is not present on the request:
+
+    $value = $request->header('X-Header-Name');
+
+    $value = $request->header('X-Header-Name', 'default');
+
+The `hasHeader` method may be used to determine if the request contains a given header:
+
+    if ($request->hasHeader('X-Header-Name')) {
+        //
+    }
+
+For convenience, the `bearerToken` may be used to a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:
+
+    $token = $request->bearerToken();
+
+<a name="request-ip-address"></a>
+### Request IP Address
+
+The `ip` method may be used to retrieve the IP address of the client that made the request to your application:
+
+    $ipAddress = $request->ip();
 
 <a name="psr7-requests"></a>
 ### PSR-7 Requests
@@ -143,17 +177,20 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
 <a name="input-trimming-and-normalization"></a>
 ## Input Trimming & Normalization
 
-By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
+By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `App\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
 
 If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
 
+<a name="input"></a>
+## Input
+
 <a name="retrieving-input"></a>
-## Retrieving Input
+### Retrieving Input
 
 <a name="retrieving-all-input-data"></a>
 #### Retrieving All Input Data
 
-You may also retrieve all of the input data as an `array` using the `all` method:
+You may also retrieve all of the incoming request's input data as an `array` using the `all` method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:
 
     $input = $request->all();
 
@@ -193,19 +230,10 @@ You may call the `query` method without any arguments in order to retrieve all o
 
     $query = $request->query();
 
-<a name="retrieving-input-via-dynamic-properties"></a>
-#### Retrieving Input Via Dynamic Properties
-
-You may also access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
-
-    $name = $request->name;
-
-When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the route parameters.
-
 <a name="retrieving-json-input-values"></a>
 #### Retrieving JSON Input Values
 
-When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to dig into JSON arrays:
+When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to retrieve values that are nested within JSON arrays:
 
     $name = $request->input('user.name');
 
@@ -215,6 +243,15 @@ When sending JSON requests to your application, you may access the JSON data via
 When dealing with HTML elements like checkboxes, your application may receive "truthy" values that are actually strings. For example, "true" or "on". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for 1, "1", true, "true", "on", and "yes". All other values will return `false`:
 
     $archived = $request->boolean('archived');
+
+<a name="retrieving-input-via-dynamic-properties"></a>
+#### Retrieving Input Via Dynamic Properties
+
+You may also access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
+
+    $name = $request->name;
+
+When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the matched route's parameters.
 
 <a name="retrieving-a-portion-of-the-input-data"></a>
 #### Retrieving A Portion Of The Input Data
@@ -229,12 +266,12 @@ If you need to retrieve a subset of the input data, you may use the `only` and `
 
     $input = $request->except('credit_card');
 
-> {tip} The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
+> {note} The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
 
-<a name="determining-if-an-input-value-is-present"></a>
-#### Determining If An Input Value Is Present
+<a name="determining-if-input-is-present"></a>
+### Determining If Input Is Present
 
-You should use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:
+You may use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:
 
     if ($request->has('name')) {
         //
@@ -246,7 +283,7 @@ When given an array, the `has` method will determine if all of the specified val
         //
     }
 
-The `whenHas` method will execute the given callback if a value is present on the request:
+The `whenHas` method will execute the given closure if a value is present on the request:
 
     $request->whenHas('name', function ($input) {
         //
@@ -264,7 +301,7 @@ If you would like to determine if a value is present on the request and is not e
         //
     }
 
-The `whenFilled` method will execute the given callback if a value is present on the request and is not empty:
+The `whenFilled` method will execute the given closure if a value is present on the request and is not empty:
 
     $request->whenFilled('name', function ($input) {
         //
@@ -279,7 +316,7 @@ To determine if a given key is absent from the request, you may use the `missing
 <a name="old-input"></a>
 ### Old Input
 
-Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation features](/docs/{{version}}/validation), it is unlikely you will need to manually use these methods, as some of Laravel's built-in validation facilities will call them automatically.
+Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation features](/docs/{{version}}/validation), it is possible that you will not need to manually use these session input flashing methods directly, as some of Laravel's built-in validation facilities will call them automatically.
 
 <a name="flashing-input-to-the-session"></a>
 #### Flashing Input To The Session
@@ -301,6 +338,8 @@ Since you often will want to flash input to the session and then redirect to the
 
     return redirect('form')->withInput();
 
+    return redirect()->route('user.create')->withInput();
+
     return redirect('form')->withInput(
         $request->except('password')
     );
@@ -312,7 +351,7 @@ To retrieve flashed input from the previous request, use the `old` method on the
 
     $username = $request->old('username');
 
-Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper. If no old input exists for the given field, `null` will be returned:
+Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to re-populate the form. If no old input exists for the given field, `null` will be returned:
 
     <input type="text" name="username" value="{{ old('username') }}">
 
@@ -325,12 +364,6 @@ Laravel also provides a global `old` helper. If you are displaying old input wit
 All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on an `Illuminate\Http\Request` instance:
 
     $value = $request->cookie('name');
-
-Alternatively, you may use the `Cookie` facade to access cookie values:
-
-    use Illuminate\Support\Facades\Cookie;
-
-    $value = Cookie::get('name');
 
 <a name="attaching-cookies-to-responses"></a>
 #### Attaching Cookies To Responses
@@ -347,16 +380,16 @@ The `cookie` method also accepts a few more arguments which are used less freque
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
 
-Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment to the outgoing response from your application. The `queue` method accepts a `Cookie` instance or the arguments needed to create a `Cookie` instance. These cookies will be attached to the outgoing response before it is sent to the browser:
+If you would like to ensure that a cookie is sent with the outgoing response but you do not yet have an instance of that response, you can use the `Cookie` facade to "queue" cookies for attachment to the response when it is sent. The `queue` method accepts the arguments needed to create a cookie instance. These cookies will be attached to the outgoing response before it is sent to the browser:
 
-    Cookie::queue(Cookie::make('name', 'value', $minutes));
+    use Illuminate\Support\Facades\Cookie;
 
     Cookie::queue('name', 'value', $minutes);
 
 <a name="generating-cookie-instances"></a>
 #### Generating Cookie Instances
 
-If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be given to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
+If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be attached to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
 
     $cookie = cookie('name', 'value', $minutes);
 
@@ -365,15 +398,13 @@ If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instan
 <a name="expiring-cookies-early"></a>
 #### Expiring Cookies Early
 
-You may remove a cookie by expiring it via the `forget` method of the `Cookie` facade:
+You may remove a cookie by expiring it via the `withoutCookie` method of an outgoing response:
+
+    return response('Hello World')->withoutCookie('name');
+
+If you do not yet have an instance of the outgoing response, you may use the `Cookie` facade's `queue` method to expire a cookie:
 
     Cookie::queue(Cookie::forget('name'));
-
-Alternatively, you may attach the expired cookie to a response instance:
-
-    $cookie = Cookie::forget('name');
-
-    return response('Hello World')->withCookie($cookie);
 
 <a name="files"></a>
 ## Files
