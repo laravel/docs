@@ -356,7 +356,7 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
         /**
          * Create a new controller instance.
          *
-         * @param  UserRepository  $users
+         * @param  \App\Repositories\UserRepository  $users
          * @return void
          */
         public function __construct(UserRepository $users)
@@ -364,8 +364,6 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
             $this->users = $users;
         }
     }
-
-You may also type-hint any [Laravel contract](/docs/{{version}}/contracts). If the container can resolve it, you can type-hint it. Depending on your application, injecting your dependencies into your controller may provide better testability.
 
 <a name="method-injection"></a>
 #### Method Injection

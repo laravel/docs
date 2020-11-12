@@ -70,6 +70,17 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
         //
     });
 
+<a name="dependency-injection"></a>
+#### Dependency Injection
+
+You may type-hint any dependencies required by your route in your route's callback signature. The declared dependencies will automatically be resolved and injected into the callback by the Laravel [service container](/docs/{{version}}/container). For example, you may type-hint the `Illuminate\Http\Request` class to have the current HTTP request automatically injected into your route callback:
+
+    use Illuminate\Http\Request;
+
+    Route::get('/users', function (Request $request) {
+        // ...
+    });
+
 <a name="csrf-protection"></a>
 #### CSRF Protection
 
@@ -116,28 +127,39 @@ If your route only needs to return a [view](/docs/{{version}}/views), you may us
 
 Sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
 
-    Route::get('user/{id}', function ($id) {
+    Route::get('/user/{id}', function ($id) {
         return 'User '.$id;
     });
 
 You may define as many route parameters as required by your route:
 
-    Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
+    Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
         //
     });
 
 Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.
+
+<a name="parameters-and-dependency-injection"></a>
+#### Parameters & Dependency Injection
+
+If your route has dependencies that you would like the Laravel service container to automatically inject into your route's callback, you should list your route parameters after your dependencies:
+
+    use Illuminate\Http\Request;
+
+    Route::get('/user/{id}', function (Request $request, $id) {
+        return 'User '.$id;
+    });
 
 <a name="parameters-optional-parameters"></a>
 ### Optional Parameters
 
 Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
 
-    Route::get('user/{name?}', function ($name = null) {
+    Route::get('/user/{name?}', function ($name = null) {
         return $name;
     });
 
-    Route::get('user/{name?}', function ($name = 'John') {
+    Route::get('/user/{name?}', function ($name = 'John') {
         return $name;
     });
 
@@ -146,25 +168,25 @@ Occasionally you may need to specify a route parameter that may not always be pr
 
 You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
 
-    Route::get('user/{name}', function ($name) {
+    Route::get('/user/{name}', function ($name) {
         //
     })->where('name', '[A-Za-z]+');
 
-    Route::get('user/{id}', function ($id) {
+    Route::get('/user/{id}', function ($id) {
         //
     })->where('id', '[0-9]+');
 
-    Route::get('user/{id}/{name}', function ($id, $name) {
+    Route::get('/user/{id}/{name}', function ($id, $name) {
         //
     })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 
 For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:
 
-    Route::get('user/{id}/{name}', function ($id, $name) {
+    Route::get('/user/{id}/{name}', function ($id, $name) {
         //
     })->whereNumeric('id')->whereAlpha('name');
 
-    Route::get('user/{id}', function ($id) {
+    Route::get('/user/{id}', function ($id) {
         //
     })->whereUuid('id');
 
