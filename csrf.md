@@ -2,7 +2,7 @@
 
 - [Introduction](#csrf-introduction)
 - [Preventing CSRF Requests](#preventing-csrf-requests)
-- [Excluding URIs](#csrf-excluding-uris)
+    - [Excluding URIs](#csrf-excluding-uris)
 - [X-CSRF-Token](#csrf-x-csrf-token)
 - [X-XSRF-Token](#csrf-x-xsrf-token)
 
@@ -64,7 +64,7 @@ The `App\Http\Middleware\VerifyCsrfToken` [middleware](/docs/{{version}}/middlew
 If you are building an SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
 
 <a name="csrf-excluding-uris"></a>
-## Excluding URIs From CSRF Protection
+### Excluding URIs From CSRF Protection
 
 Sometimes you may wish to exclude a set of URIs from CSRF protection. For example, if you are using [Stripe](https://stripe.com) to process payments and are utilizing their webhook system, you will need to exclude your Stripe webhook handler route from CSRF protection since Stripe will not know what CSRF token to send to your routes.
 
