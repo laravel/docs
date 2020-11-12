@@ -365,47 +365,6 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
     $value = $request->cookie('name');
 
-<a name="attaching-cookies-to-responses"></a>
-#### Attaching Cookies To Responses
-
-You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and number of minutes the cookie should be considered valid to this method:
-
-    return response('Hello World')->cookie(
-        'name', 'value', $minutes
-    );
-
-The `cookie` method also accepts a few more arguments which are used less frequently. Generally, these arguments have the same purpose and meaning as the arguments that would be given to PHP's native [setcookie](https://secure.php.net/manual/en/function.setcookie.php) method:
-
-    return response('Hello World')->cookie(
-        'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
-    );
-
-If you would like to ensure that a cookie is sent with the outgoing response but you do not yet have an instance of that response, you can use the `Cookie` facade to "queue" cookies for attachment to the response when it is sent. The `queue` method accepts the arguments needed to create a cookie instance. These cookies will be attached to the outgoing response before it is sent to the browser:
-
-    use Illuminate\Support\Facades\Cookie;
-
-    Cookie::queue('name', 'value', $minutes);
-
-<a name="generating-cookie-instances"></a>
-#### Generating Cookie Instances
-
-If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be attached to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
-
-    $cookie = cookie('name', 'value', $minutes);
-
-    return response('Hello World')->cookie($cookie);
-
-<a name="expiring-cookies-early"></a>
-#### Expiring Cookies Early
-
-You may remove a cookie by expiring it via the `withoutCookie` method of an outgoing response:
-
-    return response('Hello World')->withoutCookie('name');
-
-If you do not yet have an instance of the outgoing response, you may use the `Cookie` facade's `queue` method to expire a cookie:
-
-    Cookie::queue(Cookie::forget('name'));
-
 <a name="files"></a>
 ## Files
 
