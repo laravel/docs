@@ -1422,6 +1422,8 @@ If you would like to `save` your model and all of its associated relationships, 
 
     $post->push();
 
+> {note} The `push` method will only apply the `save` method to related models that are loaded in memory. When replicating a model using `replicate`, it will not replicate relationships from the original model that have not already been loaded.
+
 <a name="the-create-method"></a>
 ### The Create Method
 
