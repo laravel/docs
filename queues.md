@@ -517,7 +517,7 @@ Alternatively, the `dispatchAfterResponse` method delays dispatching a job until
 
     SendNotification::dispatchAfterResponse();
 
-You may `dispatch` a Closure and chain the `afterResponse` method onto the helper to execute a Closure after the response has been sent to the browser:
+You may `dispatch` a closure and chain the `afterResponse` method onto the helper to execute a closure after the response has been sent to the browser:
 
     use App\Mail\WelcomeMessage;
     use Illuminate\Support\Facades\Mail;
@@ -568,7 +568,7 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
         new ReleasePodcast,
     ])->dispatch();
 
-In addition to chaining job class instances, you may also chain Closures:
+In addition to chaining job class instances, you may also chain closures:
 
     Bus::chain([
         new ProcessPodcast,
@@ -594,7 +594,7 @@ If you would like to specify the connection and queue that should be used for th
 <a name="chain-failures"></a>
 #### Chain Failures
 
-When chaining jobs, you may use the `catch` method to specify a Closure that should be invoked if a job within the chain fails. The given callback will receive the exception instance that caused the job failure:
+When chaining jobs, you may use the `catch` method to specify a closure that should be invoked if a job within the chain fails. The given callback will receive the exception instance that caused the job failure:
 
     use Illuminate\Support\Facades\Bus;
     use Throwable;
@@ -1035,7 +1035,7 @@ For convenience, Laravel provides a `queue:retry-batch` Artisan command that all
 <a name="queueing-closures"></a>
 ## Queueing Closures
 
-Instead of dispatching a job class to the queue, you may also dispatch a Closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching Closures to the queue, the Closure's code contents is cryptographically signed so it can not be modified in transit:
+Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code contents is cryptographically signed so it can not be modified in transit:
 
     $podcast = App\Podcast::find(1);
 
@@ -1043,7 +1043,7 @@ Instead of dispatching a job class to the queue, you may also dispatch a Closure
         $podcast->publish();
     });
 
-Using the `catch` method, you may provide a Closure that should be executed if the queued Closure fails to complete successfully after exhausting all of your queue's configured retry attempts:
+Using the `catch` method, you may provide a closure that should be executed if the queued closure fails to complete successfully after exhausting all of your queue's configured retry attempts:
 
     use Throwable;
 
@@ -1459,7 +1459,7 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
         }
     }
 
-Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks that execute before the worker attempts to fetch a job from a queue. For example, you might register a Closure to rollback any transactions that were left open by a previously failed job:
+Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks that execute before the worker attempts to fetch a job from a queue. For example, you might register a closure to rollback any transactions that were left open by a previously failed job:
 
     Queue::looping(function () {
         while (DB::transactionLevel() > 0) {

@@ -1109,7 +1109,7 @@ In addition, using the `loadCount` method, you may load a relationship count aft
 
     $book->loadCount('genres');
 
-If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be `Closure` instances which receive the query builder instance:
+If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be closure instances which receive the query builder instance:
 
     $book->loadCount(['reviews' => function ($query) {
         $query->where('rating', 5);
@@ -1324,7 +1324,7 @@ Sometimes you may need to eager load a relationship after the parent model has a
         $books->load('author', 'publisher');
     }
 
-If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be `Closure` instances which receive the query instance:
+If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be closure instances which receive the query instance:
 
     $author->load(['books' => function ($query) {
         $query->orderBy('published_date', 'asc');
@@ -1480,7 +1480,7 @@ The `belongsTo`, `hasOne`, `hasOneThrough`, and `morphOne` relationships allow y
         return $this->belongsTo('App\Models\User')->withDefault();
     }
 
-To populate the default model with attributes, you may pass an array or Closure to the `withDefault` method:
+To populate the default model with attributes, you may pass an array or closure to the `withDefault` method:
 
     /**
      * Get the author of the post.

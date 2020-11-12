@@ -48,7 +48,7 @@ Of course, manually creating the files for each event and listener is cumbersome
 <a name="manually-registering-events"></a>
 ### Manually Registering Events
 
-Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register Closure based events manually in the `boot` method of your `EventServiceProvider`:
+Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register closure based events manually in the `boot` method of your `EventServiceProvider`:
 
     use App\Events\PodcastProcessed;
 
@@ -67,7 +67,7 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
 <a name="queuable-anonymous-event-listeners"></a>
 #### Queueable Anonymous Event Listeners
 
-When registering event listeners manually, you may wrap the listener Closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
+When registering event listeners manually, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
 
     use App\Events\PodcastProcessed;
     use function Illuminate\Events\queueable;
@@ -91,7 +91,7 @@ Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods
         //
     })->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
 
-If you would like to handle anonymous queued listener failures, you may provide a Closure to the `catch` method while defining the `queueable` listener:
+If you would like to handle anonymous queued listener failures, you may provide a closure to the `catch` method while defining the `queueable` listener:
 
     use App\Events\PodcastProcessed;
     use function Illuminate\Events\queueable;

@@ -226,7 +226,7 @@ This will give you an instance of the default Redis server. You may also pass th
 <a name="pipelining-commands"></a>
 ### Pipelining Commands
 
-Pipelining should be used when you need to send many commands to the server. The `pipeline` method accepts one argument: a `Closure` that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be streamed to the server thus providing better performance:
+Pipelining should be used when you need to send many commands to the server. The `pipeline` method accepts one argument: a closure that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be streamed to the server thus providing better performance:
 
     Redis::pipeline(function ($pipe) {
         for ($i = 0; $i < 1000; $i++) {
@@ -288,7 +288,7 @@ Now we may publish messages to the channel using the `publish` method:
 <a name="wildcard-subscriptions"></a>
 #### Wildcard Subscriptions
 
-Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The `$channel` name will be passed as the second argument to the provided callback `Closure`:
+Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The `$channel` name will be passed as the second argument to the provided callback closure:
 
     Redis::psubscribe(['*'], function ($message, $channel) {
         echo $message;

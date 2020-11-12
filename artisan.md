@@ -147,10 +147,10 @@ Let's take a look at an example command. Note that we are able to inject any dep
 <a name="closure-commands"></a>
 ### Closure Commands
 
-Closure based commands provide an alternative to defining console commands as classes. In the same way that route Closures are an alternative to controllers, think of command Closures as an alternative to command classes. Within the `commands` method of your `app/Console/Kernel.php` file, Laravel loads the `routes/console.php` file:
+Closure based commands provide an alternative to defining console commands as classes. In the same way that route closures are an alternative to controllers, think of command closures as an alternative to command classes. Within the `commands` method of your `app/Console/Kernel.php` file, Laravel loads the `routes/console.php` file:
 
     /**
-     * Register the Closure based commands for the application.
+     * Register the closure based commands for the application.
      *
      * @return void
      */
@@ -159,18 +159,18 @@ Closure based commands provide an alternative to defining console commands as cl
         require base_path('routes/console.php');
     }
 
-Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your Closure based routes using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a Closure which receives the commands arguments and options:
+Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based routes using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the commands arguments and options:
 
     Artisan::command('build {project}', function ($project) {
         $this->info("Building {$project}!");
     });
 
-The Closure is bound to the underlying command instance, so you have full access to all of the helper methods you would typically be able to access on a full command class.
+The closure is bound to the underlying command instance, so you have full access to all of the helper methods you would typically be able to access on a full command class.
 
 <a name="type-hinting-dependencies"></a>
 #### Type-Hinting Dependencies
 
-In addition to receiving your command's arguments and options, command Closures may also type-hint additional dependencies that you would like resolved out of the [service container](/docs/{{version}}/container):
+In addition to receiving your command's arguments and options, command closures may also type-hint additional dependencies that you would like resolved out of the [service container](/docs/{{version}}/container):
 
     use App\Models\User;
     use App\Support\DripEmailer;
@@ -182,7 +182,7 @@ In addition to receiving your command's arguments and options, command Closures 
 <a name="closure-command-descriptions"></a>
 #### Closure Command Descriptions
 
-When defining a Closure based command, you may use the `describe` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
+When defining a closure based command, you may use the `describe` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
 
     Artisan::command('build {project}', function ($project) {
         $this->info("Building {$project}!");
@@ -356,7 +356,7 @@ The `anticipate` method can be used to provide auto-completion for possible choi
 
     $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 
-Alternatively, you may pass a Closure as the second argument to the `anticipate` method. The Closure will be called each time the user types an input character. The Closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
+Alternatively, you may pass a closure as the second argument to the `anticipate` method. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
 
     $name = $this->anticipate('What is your name?', function ($input) {
         // Return auto-completion options...

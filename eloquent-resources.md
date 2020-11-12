@@ -500,7 +500,7 @@ Sometimes you may wish to only include an attribute in a resource response if a 
 
 In this example, the `secret` key will only be returned in the final resource response if the authenticated user's `isAdmin` method returns `true`. If the method returns `false`, the `secret` key will be removed from the resource response entirely before it is sent back to the client. The `when` method allows you to expressively define your resources without resorting to conditional statements when building the array.
 
-The `when` method also accepts a Closure as its second argument, allowing you to calculate the resulting value only if the given condition is `true`:
+The `when` method also accepts a closure as its second argument, allowing you to calculate the resulting value only if the given condition is `true`:
 
     'secret' => $this->when(Auth::user()->isAdmin(), function () {
         return 'secret-value';
@@ -566,7 +566,7 @@ In this example, if the relationship has not been loaded, the `posts` key will b
 <a name="conditional-pivot-information"></a>
 #### Conditional Pivot Information
 
-In addition to conditionally including relationship information in your resource responses, you may conditionally include data from the intermediate tables of many-to-many relationships using the `whenPivotLoaded` method. The `whenPivotLoaded` method accepts the name of the pivot table as its first argument. The second argument should be a Closure that defines the value to be returned if the pivot information is available on the model:
+In addition to conditionally including relationship information in your resource responses, you may conditionally include data from the intermediate tables of many-to-many relationships using the `whenPivotLoaded` method. The `whenPivotLoaded` method accepts the name of the pivot table as its first argument. The second argument should be a closure that defines the value to be returned if the pivot information is available on the model:
 
     /**
      * Transform the resource into an array.

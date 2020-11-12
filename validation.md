@@ -1078,7 +1078,7 @@ The field under validation must be present in the input data and not empty. A fi
 
 The field under validation must be present and not empty if the _anotherfield_ field is equal to any _value_.
 
-If you would like to construct a more complex condition for the `required_if` rule, you may use the `Rule::requiredIf` method. This methods accepts a boolean or a Closure. When passed a Closure, the Closure should return `true` or `false` to indicate if the field under validation is required:
+If you would like to construct a more complex condition for the `required_if` rule, you may use the `Rule::requiredIf` method. This methods accepts a boolean or a closure. When passed a closure, the closure should return `true` or `false` to indicate if the field under validation is required:
 
     use Illuminate\Validation\Rule;
 
@@ -1273,13 +1273,13 @@ Let's assume our web application is for game collectors. If a game collector reg
         return $input->games >= 100;
     });
 
-The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is a list of the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
+The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is a list of the rules we want to add. If the closure passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
 
     $v->sometimes(['reason', 'cost'], 'required', function ($input) {
         return $input->games >= 100;
     });
 
-> {tip} The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files.
+> {tip} The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files.
 
 <a name="validating-arrays"></a>
 ## Validating Arrays
@@ -1371,7 +1371,7 @@ Once the rule has been defined, you may attach it to a validator by passing an i
 <a name="using-closures"></a>
 ### Using Closures
 
-If you only need the functionality of a custom rule once throughout your application, you may use a Closure instead of a rule object. The Closure receives the attribute's name, the attribute's value, and a `$fail` callback that should be called if validation fails:
+If you only need the functionality of a custom rule once throughout your application, you may use a closure instead of a rule object. The closure receives the attribute's name, the attribute's value, and a `$fail` callback that should be called if validation fails:
 
     $validator = Validator::make($request->all(), [
         'title' => [
@@ -1422,9 +1422,9 @@ Another method of registering custom validation rules is using the `extend` meth
         }
     }
 
-The custom validator Closure receives four arguments: the name of the `$attribute` being validated, the `$value` of the attribute, an array of `$parameters` passed to the rule, and the `Validator` instance.
+The custom validator closure receives four arguments: the name of the `$attribute` being validated, the `$value` of the attribute, an array of `$parameters` passed to the rule, and the `Validator` instance.
 
-You may also pass a class and method to the `extend` method instead of a Closure:
+You may also pass a class and method to the `extend` method instead of a closure:
 
     Validator::extend('foo', 'FooValidator@validate');
 

@@ -15,7 +15,7 @@
 <a name="accessing-the-request"></a>
 ## Accessing The Request
 
-To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your controller method. The incoming request instance will automatically be injected by the [service container](/docs/{{version}}/container):
+To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your route callback or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):
 
     <?php
 
@@ -28,8 +28,8 @@ To obtain an instance of the current HTTP request via dependency injection, you 
         /**
          * Store a new user.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -48,7 +48,7 @@ If your controller method is also expecting input from a route parameter you sho
 
     Route::put('user/{id}', [UserController::class, 'update']);
 
-You may still type-hint the `Illuminate\Http\Request` and access your route parameter `id` by defining your controller method as follows:
+You may still type-hint the `Illuminate\Http\Request` and access your `id` route parameter by defining your controller method as follows:
 
     <?php
 
@@ -61,9 +61,9 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
         /**
          * Update the specified user.
          *
-         * @param  Request  $request
+         * @param  \Illuminate\Http\Request  $request
          * @param  string  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function update(Request $request, $id)
         {
@@ -74,7 +74,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
 <a name="accessing-the-request-via-route-closures"></a>
 #### Accessing The Request Via Route Closures
 
-You may also type-hint the `Illuminate\Http\Request` class on a route Closure. The service container will automatically inject the incoming request into the Closure when it is executed:
+You may also type-hint the `Illuminate\Http\Request` class on a route closure. The service container will automatically inject the incoming request into the closure when it is executed:
 
     use Illuminate\Http\Request;
 
@@ -130,7 +130,7 @@ The [PSR-7 standard](https://www.php-fig.org/psr/psr-7/) specifies interfaces fo
     composer require symfony/psr-http-message-bridge
     composer require nyholm/psr7
 
-Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route Closure or controller method:
+Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route closure or controller method:
 
     use Psr\Http\Message\ServerRequestInterface;
 

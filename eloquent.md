@@ -306,7 +306,7 @@ You may also loop over the collection like an array:
 <a name="chunking-results"></a>
 ### Chunking Results
 
-If you need to process thousands of Eloquent records, use the `chunk` command. The `chunk` method will retrieve a "chunk" of Eloquent models, feeding them to a given `Closure` for processing. Using the `chunk` method will conserve memory when working with large result sets:
+If you need to process thousands of Eloquent records, use the `chunk` command. The `chunk` method will retrieve a "chunk" of Eloquent models, feeding them to a given closure for processing. Using the `chunk` method will conserve memory when working with large result sets:
 
     Flight::chunk(200, function ($flights) {
         foreach ($flights as $flight) {
@@ -314,7 +314,7 @@ If you need to process thousands of Eloquent records, use the `chunk` command. T
         }
     });
 
-The first argument passed to the method is the number of records you wish to receive per "chunk". The Closure passed as the second argument will be called for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the Closure.
+The first argument passed to the method is the number of records you wish to receive per "chunk". The closure passed as the second argument will be called for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the closure.
 
 If you are filtering the results of the `chunk` method based on a column that you will also be updating while iterating over the results, you should use the `chunkById` method. Using the `chunk` method in these scenarios could lead to unexpected and inconsistent results:
 
@@ -871,7 +871,7 @@ After adding the scope, a query to `User::all()` will produce the following SQL:
 <a name="anonymous-global-scopes"></a>
 #### Anonymous Global Scopes
 
-Eloquent also allows you to define global scopes using Closures, which is particularly useful for simple scopes that do not warrant a separate class:
+Eloquent also allows you to define global scopes using closures, which is particularly useful for simple scopes that do not warrant a separate class:
 
     <?php
 
@@ -902,7 +902,7 @@ If you would like to remove a global scope for a given query, you may use the `w
 
     User::withoutGlobalScope(AgeScope::class)->get();
 
-Or, if you defined the global scope using a Closure:
+Or, if you defined the global scope using a closure:
 
     User::withoutGlobalScope('age')->get();
 
@@ -961,13 +961,13 @@ Once the scope has been defined, you may call the scope methods when querying th
 
     $users = App\Models\User::popular()->active()->orderBy('created_at')->get();
 
-Combining multiple Eloquent model scopes via an `or` query operator may require the use of Closure callbacks:
+Combining multiple Eloquent model scopes via an `or` query operator may require the use of closure callbacks:
 
     $users = App\Models\User::popular()->orWhere(function (Builder $query) {
         $query->active();
     })->get();
 
-However, since this can be cumbersome, Laravel provides a "higher order" `orWhere` method that allows you to fluently chain these scopes together without the use of Closures:
+However, since this can be cumbersome, Laravel provides a "higher order" `orWhere` method that allows you to fluently chain these scopes together without the use of closures:
 
     $users = App\Models\User::popular()->orWhere->active()->get();
 
@@ -1055,7 +1055,7 @@ After defining and mapping your Eloquent events, you may use [event listeners](h
 <a name="events-using-closures"></a>
 ### Using Closures
 
-Instead of using custom event classes, you may register Closures that execute when various model events are fired. Typically, you should register these Closures in the `booted` method of your model:
+Instead of using custom event classes, you may register closures that execute when various model events are fired. Typically, you should register these closures in the `booted` method of your model:
 
     <?php
 
@@ -1187,7 +1187,7 @@ To register an observer, use the `observe` method on the model you wish to obser
 <a name="muting-events"></a>
 ### Muting Events
 
-You may occasionally wish to temporarily "mute" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a Closure as its only argument. Any code executed within this Closure will not fire model events. For example, the following will fetch and delete an `App\Models\User` instance without firing any model events. Any value returned by the given Closure will be returned by the `withoutEvents` method:
+You may occasionally wish to temporarily "mute" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a closure as its only argument. Any code executed within this closure will not fire model events. For example, the following will fetch and delete an `App\Models\User` instance without firing any model events. Any value returned by the given closure will be returned by the `withoutEvents` method:
 
     use App\Models\User;
 

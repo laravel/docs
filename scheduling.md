@@ -40,7 +40,7 @@ Typically, you would not add a scheduler Cron entry to your local development ma
 <a name="defining-schedules"></a>
 ## Defining Schedules
 
-You may define all of your scheduled tasks in the `schedule` method of the `App\Console\Kernel` class. To get started, let's look at an example of scheduling a task. In this example, we will schedule a `Closure` to be called every day at midnight. Within the `Closure` we will execute a database query to clear a table:
+You may define all of your scheduled tasks in the `schedule` method of the `App\Console\Kernel` class. To get started, let's look at an example of scheduling a task. In this example, we will schedule a closure to be called every day at midnight. Within the closure we will execute a database query to clear a table:
 
     <?php
 
@@ -75,14 +75,14 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
         }
     }
 
-In addition to scheduling using Closures, you may also use [invokable objects](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
+In addition to scheduling using closures, you may also use [invokable objects](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
 
     $schedule->call(new DeleteRecentUsers)->daily();
 
 <a name="scheduling-artisan-commands"></a>
 ### Scheduling Artisan Commands
 
-In addition to scheduling Closure calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
+In addition to scheduling closure calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
 
     $schedule->command('emails:send Taylor --force')->daily();
 
@@ -91,7 +91,7 @@ In addition to scheduling Closure calls, you may also schedule [Artisan commands
 <a name="scheduling-queued-jobs"></a>
 ### Scheduling Queued Jobs
 
-The `job` method may be used to schedule a [queued job](/docs/{{version}}/queues). This method provides a convenient way to schedule jobs without using the `call` method to manually create Closures to queue the job:
+The `job` method may be used to schedule a [queued job](/docs/{{version}}/queues). This method provides a convenient way to schedule jobs without using the `call` method to manually create closures to queue the job:
 
     $schedule->job(new Heartbeat)->everyFiveMinutes();
 
@@ -201,7 +201,7 @@ Similarly, the `unlessBetween` method can be used to exclude the execution of a 
 <a name="truth-test-constraints"></a>
 #### Truth Test Constraints
 
-The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given `Closure` returns `true`, the task will execute as long as no other constraining conditions prevent the task from running:
+The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given closure returns `true`, the task will execute as long as no other constraining conditions prevent the task from running:
 
     $schedule->command('emails:send')->daily()->when(function () {
         return true;
@@ -347,7 +347,7 @@ The `onSuccess` and `onFailure` methods allow you to specify code to be executed
                  // The task failed...
              });
 
-If output is available from your command, you may access it in your `after`, `onSuccess` or `onFailure` hooks by type-hinting an `Illuminate\Support\Stringable` instance as `$output` on your hook's Closure definition:
+If output is available from your command, you may access it in your `after`, `onSuccess` or `onFailure` hooks by type-hinting an `Illuminate\Support\Stringable` instance as `$output` on your hook's closure definition:
 
     use Illuminate\Support\Stringable;
 

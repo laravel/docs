@@ -354,7 +354,7 @@ By convention, when passing a `Post` model to the `has` method, Laravel will ass
                 ->has(Post::factory()->count(3), 'posts')
                 ->create();
 
-Of course, you may perform state manipulations on the related models. In addition, you may pass a Closure based state transformation if your state change requires access to the parent model:
+Of course, you may perform state manipulations on the related models. In addition, you may pass a closure based state transformation if your state change requires access to the parent model:
 
     $user = User::factory()
                 ->has(
@@ -383,7 +383,7 @@ When using magic methods to create factory relationships, you may pass an array 
                 ])
                 ->create();
 
-You may provide a Closure based state transformation if your state change requires access to the parent model:
+You may provide a closure based state transformation if your state change requires access to the parent model:
 
     $user = User::factory()
                 ->hasPosts(3, function (array $attributes, User $user) {
@@ -445,7 +445,7 @@ If you need to define attributes that should be set on the pivot / intermediate 
                 )
                 ->create();
 
-You may provide a Closure based state transformation if your state change requires access to the related model:
+You may provide a closure based state transformation if your state change requires access to the related model:
 
     $users = User::factory()
                 ->hasAttached(
@@ -560,7 +560,7 @@ Alternatively, you may instruct the `RefreshDatabase` trait to automatically see
          * @var bool
          */
         protected $seed = true;
-        
+
         // ...
     }
 

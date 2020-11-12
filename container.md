@@ -116,7 +116,7 @@ First, if you write a class that implements an interface and you wish to type-hi
 
 Almost all of your service container bindings will be registered within [service providers](/docs/{{version}}/providers), so most of these examples will demonstrate using the container in that context.
 
-Within a service provider, you always have access to the container via the `$this->app` property. We can register a binding using the `bind` method, passing the class or interface name that we wish to register along with a `Closure` that returns an instance of the class:
+Within a service provider, you always have access to the container via the `$this->app` property. We can register a binding using the `bind` method, passing the class or interface name that we wish to register along with a closure that returns an instance of the class:
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
@@ -265,7 +265,7 @@ Occasionally you may have a class that receives an array of typed objects using 
         }
     }
 
-Using contextual binding, you may resolve this dependency by providing the `give` method with a Closure that returns an array of resolved `Filter` instances:
+Using contextual binding, you may resolve this dependency by providing the `give` method with a closure that returns an array of resolved `Filter` instances:
 
     $this->app->when(Firewall::class)
               ->needs(Filter::class)
@@ -320,7 +320,7 @@ Once the services have been tagged, you may easily resolve them all via the cont
 <a name="extending-bindings"></a>
 ### Extending Bindings
 
-The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a Closure, which should return the modified service, as its only argument. The Closure receives the service being resolved and the container instance:
+The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a closure, which should return the modified service, as its only argument. The closure receives the service being resolved and the container instance:
 
     $this->app->extend(Service::class, function ($service, $app) {
         return new DecoratedService($service);

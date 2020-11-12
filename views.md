@@ -142,7 +142,7 @@ For this example, let's register the view composers within a [service provider](
                 'profile', 'App\Http\View\Composers\ProfileComposer'
             );
 
-            // Using Closure based composers...
+            // Using closure based composers...
             View::composer('dashboard', function ($view) {
                 //
             });

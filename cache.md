@@ -123,7 +123,7 @@ The `get` method on the `Cache` facade is used to retrieve items from the cache.
 
     $value = Cache::get('key', 'default');
 
-You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
+You may even pass a closure as the default value. The result of the closure will be returned if the specified item does not exist in the cache. Passing a closure allows you to defer the retrieval of default values from a database or other external service:
 
     $value = Cache::get('key', function () {
         return DB::table(...)->get();
@@ -157,7 +157,7 @@ Sometimes you may wish to retrieve an item from the cache, but also store a defa
         return DB::table('users')->get();
     });
 
-If the item does not exist in the cache, the `Closure` passed to the `remember` method will be executed and its result will be placed in the cache.
+If the item does not exist in the cache, the closure passed to the `remember` method will be executed and its result will be placed in the cache.
 
 You may use the `rememberForever` method to retrieve an item from the cache or store it forever:
 
@@ -311,7 +311,7 @@ Atomic locks allow for the manipulation of distributed locks without worrying ab
         $lock->release();
     }
 
-The `get` method also accepts a Closure. After the Closure is executed, Laravel will automatically release the lock:
+The `get` method also accepts a closure. After the closure is executed, Laravel will automatically release the lock:
 
     Cache::lock('foo')->get(function () {
         // Lock acquired indefinitely and automatically released...
@@ -432,7 +432,7 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
         }
     }
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
+The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a closure that should return an `Illuminate\Cache\Repository` instance. The closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
 
 Once your extension is registered, update your `config/cache.php` configuration file's `driver` option to the name of your extension.
 

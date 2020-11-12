@@ -711,7 +711,7 @@ The `Arr::sort` method sorts an array by its values:
 
     // ['Chair', 'Desk', 'Table']
 
-You may also sort the array by the results of the given Closure:
+You may also sort the array by the results of the given closure:
 
     use Illuminate\Support\Arr;
 
@@ -759,7 +759,7 @@ The `Arr::sortRecursive` method recursively sorts an array using the `sort` func
 <a name="method-array-where"></a>
 #### `Arr::where()` {#collection-method}
 
-The `Arr::where` method filters an array using the given Closure:
+The `Arr::where` method filters an array using the given closure:
 
     use Illuminate\Support\Arr;
 
@@ -2072,7 +2072,7 @@ The `replaceMatches` method replaces all portions of a string matching a given p
 
     // '15015551000'
 
-The `replaceMatches` method also accepts a Closure that will be invoked with each portion of the string matching the given party, allowing you to perform the replacement logic within the Closure and return the replaced value:
+The `replaceMatches` method also accepts a closure that will be invoked with each portion of the string matching the given party, allowing you to perform the replacement logic within the closure and return the replaced value:
 
     use Illuminate\Support\Str;
 
@@ -2248,7 +2248,7 @@ The `upper` method converts the given string to uppercase:
 <a name="method-fluent-str-when"></a>
 #### `when` {#collection-method}
 
-The `when` method invokes the given Closure if a given condition is true. The Closure will receive the fluent string instance:
+The `when` method invokes the given closure if a given condition is true. The closure will receive the fluent string instance:
 
     use Illuminate\Support\Str;
 
@@ -2259,12 +2259,12 @@ The `when` method invokes the given Closure if a given condition is true. The Cl
 
     // 'Taylor Otwell'
 
-If necessary, you may pass another Closure as the third parameter to the `when` method. This Closure will execute if the condition parameter evaluates to `false`.
+If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {#collection-method}
 
-The `whenEmpty` method invokes the given Closure if the string is empty. If the Closure returns a value, that value will also be returned by the `whenEmpty` method. If the Closure does not return a value, the fluent string instance will be returned:
+The `whenEmpty` method invokes the given closure if the string is empty. If the closure returns a value, that value will also be returned by the `whenEmpty` method. If the closure does not return a value, the fluent string instance will be returned:
 
     use Illuminate\Support\Str;
 
@@ -2655,7 +2655,7 @@ The `optional` function accepts any argument and allows you to access properties
 
     {!! old('name', optional($user)->name) !!}
 
-The `optional` function also accepts a Closure as its second argument. The Closure will be invoked if the value provided as the first argument is not null:
+The `optional` function also accepts a closure as its second argument. The closure will be invoked if the value provided as the first argument is not null:
 
     return optional(User::find($id), function ($user) {
         return $user->name;
@@ -2698,13 +2698,13 @@ The `request` function returns the current [request](/docs/{{version}}/requests)
 <a name="method-rescue"></a>
 #### `rescue()` {#collection-method}
 
-The `rescue` function executes the given Closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](/docs/{{version}}/errors#the-exception-handler); however, the request will continue processing:
+The `rescue` function executes the given closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](/docs/{{version}}/errors#the-exception-handler); however, the request will continue processing:
 
     return rescue(function () {
         return $this->method();
     });
 
-You may also pass a second argument to the `rescue` function. This argument will be the "default" value that should be returned if an exception occurs while executing the Closure:
+You may also pass a second argument to the `rescue` function. This argument will be the "default" value that should be returned if an exception occurs while executing the closure:
 
     return rescue(function () {
         return $this->method();
@@ -2761,7 +2761,7 @@ The session store will be returned if no value is passed to the function:
 <a name="method-tap"></a>
 #### `tap()` {#collection-method}
 
-The `tap` function accepts two arguments: an arbitrary `$value` and a Closure. The `$value` will be passed to the Closure and then be returned by the `tap` function. The return value of the Closure is irrelevant:
+The `tap` function accepts two arguments: an arbitrary `$value` and a closure. The `$value` will be passed to the closure and then be returned by the `tap` function. The return value of the closure is irrelevant:
 
     $user = tap(User::first(), function ($user) {
         $user->name = 'taylor';
@@ -2769,7 +2769,7 @@ The `tap` function accepts two arguments: an arbitrary `$value` and a Closure. T
         $user->save();
     });
 
-If no Closure is passed to the `tap` function, you may call any method on the given `$value`. The return value of the method you call will always be `$value`, regardless of what the method actually returns in its definition. For example, the Eloquent `update` method typically returns an integer. However, we can force the method to return the model itself by chaining the `update` method call through the `tap` function:
+If no closure is passed to the `tap` function, you may call any method on the given `$value`. The return value of the method you call will always be `$value`, regardless of what the method actually returns in its definition. For example, the Eloquent `update` method typically returns an integer. However, we can force the method to return the model itself by chaining the `update` method call through the `tap` function:
 
     $user = tap($user)->update([
         'name' => $name,
@@ -2825,7 +2825,7 @@ The `trait_uses_recursive` function returns all traits used by a trait:
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}
 
-The `transform` function executes a `Closure` on a given value if the value is not [blank](#method-blank) and returns the result of the `Closure`:
+The `transform` function executes a closure on a given value if the value is not [blank](#method-blank) and returns the result of the closure:
 
     $callback = function ($value) {
         return $value * 2;
@@ -2835,7 +2835,7 @@ The `transform` function executes a `Closure` on a given value if the value is n
 
     // 10
 
-A default value or `Closure` may also be passed as the third parameter to the method. This value will be returned if the given value is blank:
+A default value or closure may also be passed as the third parameter to the method. This value will be returned if the given value is blank:
 
     $result = transform(null, $callback, 'The value is blank');
 
@@ -2851,7 +2851,7 @@ The `validator` function creates a new [validator](/docs/{{version}}/validation)
 <a name="method-value"></a>
 #### `value()` {#collection-method}
 
-The `value` function returns the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed then its result will be returned:
+The `value` function returns the value it is given. However, if you pass a closure to the function, the closure will be executed then its result will be returned:
 
     $result = value(true);
 
@@ -2873,7 +2873,7 @@ The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 <a name="method-with"></a>
 #### `with()` {#collection-method}
 
-The `with` function returns the value it is given. If a `Closure` is passed as the second argument to the function, the `Closure` will be executed and its result will be returned:
+The `with` function returns the value it is given. If a closure is passed as the second argument to the function, the closure will be executed and its result will be returned:
 
     $callback = function ($value) {
         return (is_numeric($value)) ? $value * 2 : 0;

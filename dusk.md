@@ -301,7 +301,7 @@ If you would like to define a custom browser method that you can re-use in a var
         }
     }
 
-The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro as a method on a `Browser` implementation:
+The `macro` function accepts a name as its first argument, and a closure as its second. The macro's closure will be executed when calling the macro as a method on a `Browser` implementation:
 
     $this->browse(function ($browser) use ($user) {
         $browser->visit('/pay')
@@ -764,7 +764,7 @@ The following methods may be used to wait until a given Vue component attribute 
 <a name="waiting-with-a-callback"></a>
 #### Waiting With A Callback
 
-Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. You may use this method directly to wait for a given callback to return `true`. The `waitUsing` method accepts the maximum number of seconds to wait, the interval at which the Closure should be evaluated, the Closure, and an optional failure message:
+Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. You may use this method directly to wait for a given callback to return `true`. The `waitUsing` method accepts the maximum number of seconds to wait, the interval at which the closure should be evaluated, the closure, and an optional failure message:
 
     $browser->waitUsing(10, 1, function () use ($something) {
         return $something->isReady();

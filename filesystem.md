@@ -519,7 +519,7 @@ Next, you should create a [service provider](/docs/{{version}}/providers) such a
         }
     }
 
-The first argument of the `extend` method is the name of the driver and the second is a Closure that receives the `$app` and `$config` variables. The resolver Closure must return an instance of `League\Flysystem\Filesystem`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
+The first argument of the `extend` method is the name of the driver and the second is a closure that receives the `$app` and `$config` variables. The resolver closure must return an instance of `League\Flysystem\Filesystem`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
 
 Next, register the service provider in your `config/app.php` configuration file:
 

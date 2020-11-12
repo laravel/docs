@@ -663,7 +663,7 @@ You may execute this method from your component template by invoking the variabl
 <a name="using-attributes-slots-inside-the-class"></a>
 #### Using Attributes & Slots Inside The Class
 
-Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a Closure from your component's `render` method. The Closure will receive a `$data` array as its only argument:
+Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method. The closure will receive a `$data` array as its only argument:
 
     /**
      * Get the view / contents that represent the component.
@@ -683,7 +683,7 @@ Blade components also allow you to access the component name, attributes, and sl
 
 The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is an `Illuminate\Support\HtmlString` instance with the contents of the slot from the component.
 
-The Closure should return a string. If the returned string corresponds to an existing view, that view will be rendered; otherwise, the returned string will be evaluated as an inline Blade view.
+The closure should return a string. If the returned string corresponds to an existing view, that view will be rendered; otherwise, the returned string will be evaluated as an inline Blade view.
 
 <a name="additional-dependencies"></a>
 #### Additional Dependencies
@@ -771,7 +771,7 @@ If you would like an attribute other than `class` to have its values appended to
 <a name="filtering-attributes"></a>
 #### Filtering Attributes
 
-You may filter attributes using the `filter` method. This method accepts a Closure which should return `true` if you wish to retain the attribute in the attribute bag:
+You may filter attributes using the `filter` method. This method accepts a closure which should return `true` if you wish to retain the attribute in the attribute bag:
 
     {{ $attributes->filter(fn ($value, $key) => $key == 'foo') }}
 
@@ -1047,7 +1047,7 @@ As you can see, we will chain the `format` method onto whatever expression is pa
 <a name="custom-if-statements"></a>
 ### Custom If Statements
 
-Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using Closures. For example, let's define a custom conditional that checks the current application cloud provider. We may do this in the `boot` method of our `AppServiceProvider`:
+Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using closures. For example, let's define a custom conditional that checks the current application cloud provider. We may do this in the `boot` method of our `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Blade;
 

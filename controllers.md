@@ -18,7 +18,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Instead of defining all of your request handling logic as Closures in your route files, you may wish to organize this behavior using "controller" classes. Controllers can group related request handling logic into a single class. For example, a `UserController` class might handle all incoming requests related to users, including showing, creating, updating, and deleting users. By default, controllers are stored in the `app/Http/Controllers` directory.
+Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using "controller" classes. Controllers can group related request handling logic into a single class. For example, a `UserController` class might handle all incoming requests related to users, including showing, creating, updating, and deleting users. By default, controllers are stored in the `app/Http/Controllers` directory.
 
 <a name="writing-controllers"></a>
 ## Writing Controllers
@@ -123,7 +123,7 @@ Or, you may find it convenient to specify middleware within your controller's co
         }
     }
 
-Controllers also allow you to register middleware using a Closure. This provides a convenient way to define an inline middleware for a single controller without defining an entire middleware class:
+Controllers also allow you to register middleware using a closure. This provides a convenient way to define an inline middleware for a single controller without defining an entire middleware class:
 
     $this->middleware(function ($request, $next) {
         return $next($request);

@@ -187,7 +187,7 @@ The `throw` method returns the response instance if no error occurred, allowing 
 
     return Http::post(...)->throw()->json();
 
-If you would like to perform some additional logic before the exception is thrown, you may pass a Closure to the `throw` method. The exception will be thrown automatically after the Closure is invoked, so you do not need to re-throw the exception from within the Closure:
+If you would like to perform some additional logic before the exception is thrown, you may pass a closure to the `throw` method. The exception will be thrown automatically after the closure is invoked, so you do not need to re-throw the exception from within the closure:
 
     return Http::post(...)->throw(function ($response, $e) {
         //
@@ -217,7 +217,7 @@ For example, to instruct the HTTP client to return empty, `200` status code resp
     Http::fake();
 
     $response = Http::post(...);
-    
+
 > {note} When faking requests, HTTP client middleware are not executed. You should define expectations for faked responses as if these middleware have run correctly.
 
 <a name="faking-specific-urls"></a>

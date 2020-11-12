@@ -163,7 +163,7 @@ The `migrate:fresh` command will drop all tables from the database and then exec
 <a name="creating-tables"></a>
 ### Creating Tables
 
-To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object that may be used to define the new table:
+To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a closure which receives a `Blueprint` object that may be used to define the new table:
 
     Schema::create('users', function (Blueprint $table) {
         $table->id();
@@ -226,7 +226,7 @@ Before renaming a table, you should verify that any foreign key constraints on t
 <a name="creating-columns"></a>
 ### Creating Columns
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance you may use to add columns to the table:
+The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives a `Blueprint` instance you may use to add columns to the table:
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('email');

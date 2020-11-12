@@ -299,6 +299,6 @@ If you would like to define a custom response that you can re-use in a variety o
         }
     }
 
-The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `ResponseFactory` implementation or the `response` helper:
+The `macro` function accepts a name as its first argument, and a closure as its second. The macro's closure will be executed when calling the macro name from a `ResponseFactory` implementation or the `response` helper:
 
     return response()->caps('foo');

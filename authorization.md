@@ -27,7 +27,7 @@
 
 In addition to providing [authentication](/docs/{{version}}/authentication) services out of the box, Laravel also provides a simple way to authorize user actions against a given resource. Like authentication, Laravel's approach to authorization is simple, and there are two primary ways of authorizing actions: gates and policies.
 
-Think of gates and policies like routes and controllers. Gates provide a simple, Closure based approach to authorization while policies, like controllers, group their logic around a particular model or resource. We'll explore gates first and then examine policies.
+Think of gates and policies like routes and controllers. Gates provide a simple, closure based approach to authorization while policies, like controllers, group their logic around a particular model or resource. We'll explore gates first and then examine policies.
 
 You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain a mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions which are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource.
 
@@ -37,7 +37,7 @@ You do not need to choose between exclusively using gates or exclusively using p
 <a name="writing-gates"></a>
 ### Writing Gates
 
-Gates are Closures that determine if a user is authorized to perform a given action and are typically defined in the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument, and may optionally receive additional arguments such as a relevant Eloquent model:
+Gates are closures that determine if a user is authorized to perform a given action and are typically defined in the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument, and may optionally receive additional arguments such as a relevant Eloquent model:
 
     /**
      * Register any authentication / authorization services.
@@ -76,7 +76,7 @@ Gates may also be defined using a class callback array, like controllers:
 <a name="authorizing-actions-via-gates"></a>
 ### Authorizing Actions
 
-To authorize an action using gates, you should use the `allows` or `denies` methods. Note that you are not required to pass the currently authenticated user to these methods. Laravel will automatically take care of passing the user into the gate Closure:
+To authorize an action using gates, you should use the `allows` or `denies` methods. Note that you are not required to pass the currently authenticated user to these methods. Laravel will automatically take care of passing the user into the gate closure:
 
     if (Gate::allows('edit-settings')) {
         // The current user can edit settings
@@ -402,7 +402,7 @@ The `User` model that is included with your Laravel application includes two hel
         //
     }
 
-If a [policy is registered](#registering-policies) for the given model, the `can` method will automatically call the appropriate policy and return the boolean result. If no policy is registered for the model, the `can` method will attempt to call the Closure based Gate matching the given action name.
+If a [policy is registered](#registering-policies) for the given model, the `can` method will automatically call the appropriate policy and return the boolean result. If no policy is registered for the model, the `can` method will attempt to call the closure based Gate matching the given action name.
 
 <a name="user-model-actions-that-dont-require-models"></a>
 #### Actions That Don't Require Models

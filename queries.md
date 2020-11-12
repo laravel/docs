@@ -107,7 +107,7 @@ If you would like to retrieve a Collection containing the values of a single col
 <a name="chunking-results"></a>
 ### Chunking Results
 
-If you need to work with thousands of database records, consider using the `chunk` method. This method retrieves a small chunk of the results at a time and feeds each chunk into a `Closure` for processing. This method is very useful for writing [Artisan commands](/docs/{{version}}/artisan) that process thousands of records. For example, let's work with the entire `users` table in chunks of 100 records at a time:
+If you need to work with thousands of database records, consider using the `chunk` method. This method retrieves a small chunk of the results at a time and feeds each chunk into a closure for processing. This method is very useful for writing [Artisan commands](/docs/{{version}}/artisan) that process thousands of records. For example, let's work with the entire `users` table in chunks of 100 records at a time:
 
     DB::table('users')->orderBy('id')->chunk(100, function ($users) {
         foreach ($users as $user) {
@@ -115,7 +115,7 @@ If you need to work with thousands of database records, consider using the `chun
         }
     });
 
-You may stop further chunks from being processed by returning `false` from the `Closure`:
+You may stop further chunks from being processed by returning `false` from the closure:
 
     DB::table('users')->orderBy('id')->chunk(100, function ($users) {
         // Process the records...
@@ -285,7 +285,7 @@ To perform a "cross join" use the `crossJoin` method with the name of the table 
 <a name="advanced-join-clauses"></a>
 #### Advanced Join Clauses
 
-You may also specify more advanced join clauses. To get started, pass a `Closure` as the second argument into the `join` method. The `Closure` will receive a `JoinClause` object which allows you to specify constraints on the `join` clause:
+You may also specify more advanced join clauses. To get started, pass a closure as the second argument into the `join` method. The closure will receive a `JoinClause` object which allows you to specify constraints on the `join` clause:
 
     DB::table('users')
             ->join('contacts', function ($join) {
@@ -305,7 +305,7 @@ If you would like to use a "where" style clause on your joins, you may use the `
 <a name="subquery-joins"></a>
 #### Subquery Joins
 
-You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receive three arguments: the subquery, its table alias, and a Closure that defines the related columns:
+You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receive three arguments: the subquery, its table alias, and a closure that defines the related columns:
 
     $latestPosts = DB::table('posts')
                        ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
@@ -379,7 +379,7 @@ You may chain where constraints together as well as add `or` clauses to the quer
                         ->orWhere('name', 'John')
                         ->get();
 
-If you need to group an "or" condition within parentheses, you may pass a Closure as the first argument to the `orWhere` method:
+If you need to group an "or" condition within parentheses, you may pass a closure as the first argument to the `orWhere` method:
 
     $users = DB::table('users')
                 ->where('votes', '>', 100)
@@ -507,7 +507,7 @@ Sometimes you may need to create more advanced where clauses such as "where exis
                })
                ->get();
 
-As you can see, passing a `Closure` into the `where` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
+As you can see, passing a closure into the `where` method instructs the query builder to begin a constraint group. The closure will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
 
     select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 
@@ -516,7 +516,7 @@ As you can see, passing a `Closure` into the `where` method instructs the query 
 <a name="where-exists-clauses"></a>
 ### Where Exists Clauses
 
-The `whereExists` method allows you to write `where exists` SQL clauses. The `whereExists` method accepts a `Closure` argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
+The `whereExists` method allows you to write `where exists` SQL clauses. The `whereExists` method accepts a closure argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
 
     $users = DB::table('users')
                ->whereExists(function ($query) {
@@ -536,7 +536,7 @@ The query above will produce the following SQL:
 <a name="subquery-where-clauses"></a>
 ### Subquery Where Clauses
 
-Sometimes you may need to construct a where clause that compares the results of a subquery to a given value. You may accomplish this by passing a Closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
+Sometimes you may need to construct a where clause that compares the results of a subquery to a given value. You may accomplish this by passing a closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
 
     use App\Models\User;
 
@@ -681,9 +681,9 @@ Sometimes you may want clauses to apply to a query only when something else is t
                     })
                     ->get();
 
-The `when` method only executes the given Closure when the first parameter is `true`. If the first parameter is `false`, the Closure will not be executed.
+The `when` method only executes the given closure when the first parameter is `true`. If the first parameter is `false`, the closure will not be executed.
 
-You may pass another Closure as the third parameter to the `when` method. This Closure will execute if the first parameter evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default sorting of a query:
+You may pass another closure as the third parameter to the `when` method. This closure will execute if the first parameter evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default sorting of a query:
 
     $sortBy = null;
 

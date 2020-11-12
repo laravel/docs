@@ -29,7 +29,7 @@ For local development, you should set the `APP_DEBUG` environment variable to `t
 
 All exceptions are handled by the `App\Exceptions\Handler` class. This class contains a `register` method where you may register custom exception reporter and renderer callbacks. We'll examine each of these concepts in detail. Exception reporting is used to log exceptions or send them to an external service like [Flare](https://flareapp.io), [Bugsnag](https://bugsnag.com) or [Sentry](https://github.com/getsentry/sentry-laravel). By default, exceptions will be logged based on your [logging](/docs/{{version}}/logging) configuration. However, you are free to log exceptions however you wish.
 
-For example, if you need to report different types of exceptions in different ways, you may use the `reportable` method to register a Closure that should be executed when an exception of a given type needs to be reported. Laravel will deduce what type of exception the Closure reports by examining the type-hint of the Closure:
+For example, if you need to report different types of exceptions in different ways, you may use the `reportable` method to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will deduce what type of exception the closure reports by examining the type-hint of the closure:
 
     use App\Exceptions\CustomException;
 
@@ -111,7 +111,7 @@ The `$dontReport` property of the exception handler contains an array of excepti
 <a name="rendering-exceptions"></a>
 ### Rendering Exceptions
 
-By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering Closure for exceptions of a given type. You may accomplish this via the `renderable` method of your exception handler. Laravel will deduce what type of exception the Closure renders by examining the type-hint of the Closure:
+By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this via the `renderable` method of your exception handler. Laravel will deduce what type of exception the closure renders by examining the type-hint of the closure:
 
     use App\Exceptions\CustomException;
 

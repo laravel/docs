@@ -28,7 +28,7 @@
 <a name="basic-routing"></a>
 ## Basic Routing
 
-The most basic Laravel routes accept a URI and a `Closure`, providing a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
+The most basic Laravel routes accept a URI and a closure, providing a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
 
     use Illuminate\Support\Facades\Route;
 
@@ -457,7 +457,7 @@ If a matching model instance is not found in the database, a 404 HTTP response w
 <a name="customizing-the-resolution-logic"></a>
 #### Customizing The Resolution Logic
 
-If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `RouteServiceProvider`:
+If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The closure you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `RouteServiceProvider`:
 
     use App\Models\User;
     use Illuminate\Support\Facades\Route;
@@ -524,7 +524,7 @@ Using the `Route::fallback` method, you may define a route that will be executed
 
 Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs. Typically, this should be done within the `configureRateLimiting` method of your application's `App\Providers\RouteServiceProvider` class.
 
-Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a Closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. Limit configuration are instances of the `Illuminate\Cache\RateLimiting\Limit` class. This class contains helpful "builder" methods so that you can quickly define your limit. The rate limiter name may be any string you wish:
+Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. Limit configuration are instances of the `Illuminate\Cache\RateLimiting\Limit` class. This class contains helpful "builder" methods so that you can quickly define your limit. The rate limiter name may be any string you wish:
 
     use Illuminate\Cache\RateLimiting\Limit;
     use Illuminate\Support\Facades\RateLimiter;

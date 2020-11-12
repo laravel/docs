@@ -404,7 +404,7 @@ Private and presence broadcast channels authenticate the current user via your a
 <a name="defining-channel-classes"></a>
 ### Defining Channel Classes
 
-If your application is consuming many different channels, your `routes/channels.php` file could become bulky. So, instead of using Closures to authorize channels, you may use channel classes. To generate a channel class, use the `make:channel` Artisan command. This command will place a new channel class in the `App/Broadcasting` directory.
+If your application is consuming many different channels, your `routes/channels.php` file could become bulky. So, instead of using closures to authorize channels, you may use channel classes. To generate a channel class, use the `make:channel` Artisan command. This command will place a new channel class in the `App/Broadcasting` directory.
 
     php artisan make:channel OrderChannel
 
@@ -414,7 +414,7 @@ Next, register your channel in your `routes/channels.php` file:
 
     Broadcast::channel('order.{order}', OrderChannel::class);
 
-Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization Closure. You may also take advantage of channel model binding:
+Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization closure. You may also take advantage of channel model binding:
 
     <?php
 
