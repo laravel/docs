@@ -160,7 +160,7 @@ For convenience, some commonly used regular expression patterns have helper meth
 
     Route::get('user/{id}/{name}', function ($id, $name) {
         //
-    })->whereNumeric('id')->whereAlpha('name');
+    })->whereNumber('id')->whereAlpha('name');
 
     Route::get('user/{id}', function ($id) {
         //
