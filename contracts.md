@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
     - [Contracts Vs. Facades](#contracts-vs-facades)
 - [When To Use Contracts](#when-to-use-contracts)
-    - [Loose Coupling](#loose-coupling)
 - [How To Use Contracts](#how-to-use-contracts)
 - [Contract Reference](#contract-reference)
 
@@ -14,7 +13,7 @@ Laravel's "contracts" are a set of interfaces that define the core services prov
 
 Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by [SwiftMailer](https://swiftmailer.symfony.com/).
 
-All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
+All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized when building packages that interact with Laravel services.
 
 <a name="contracts-vs-facades"></a>
 ### Contracts Vs. Facades
@@ -26,87 +25,9 @@ Unlike facades, which do not require you to require them in your class' construc
 <a name="when-to-use-contracts"></a>
 ## When To Use Contracts
 
-As discussed elsewhere, much of the decision to use contracts or facades will come down to personal taste and the tastes of your development team. Both contracts and facades can be used to create robust, well-tested Laravel applications. As long as you are keeping your class' responsibilities focused, you will notice very few practical differences between using contracts and facades.
+The decision to use contracts or facades will come down to personal taste and the tastes of your development team. Both contracts and facades can be used to create robust, well-tested Laravel applications. Contracts and facades are not mutually exclusive. Some parts of your applications may use facades while others depend on contracts. As long as you are keeping your class' responsibilities focused, you will notice very few practical differences between using contracts and facades.
 
-However, you may still have several questions regarding the benefits of contracts. For example, why use interfaces at all? Isn't using interfaces more complicated? Let's distill the reasons for using interfaces to the following headings: loose coupling and simplicity.
-
-<a name="loose-coupling"></a>
-### Loose Coupling
-
-First, let's review some code that is tightly coupled to a cache implementation. Consider the following:
-
-    <?php
-
-    namespace App\Repositories;
-
-    use VendorPackage\Cache\Memcached;
-
-    class OrderRepository
-    {
-        /**
-         * The cache instance.
-         *
-         * @var \VendorPackage\Cache\Memcached
-         */
-        protected $cache;
-
-        /**
-         * Create a new repository instance.
-         *
-         * @param  \VendorPackage\Cache\Memcached  $cache
-         * @return void
-         */
-        public function __construct(Memcached $cache)
-        {
-            $this->cache = $cache;
-        }
-
-        /**
-         * Retrieve an order by ID.
-         *
-         * @param  int  $id
-         * @return \App\Models\Order
-         */
-        public function find($id)
-        {
-            if ($this->cache->has($id)) {
-                //
-            }
-        }
-    }
-
-In this class, the code is tightly coupled to a given cache implementation. It is tightly coupled because we are depending on a concrete cache class from a package vendor. If the API of that package changes our code must change as well.
-
-Likewise, if we want to replace our underlying cache technology (Memcached) with another technology (Redis), we again will have to modify our repository. Our repository should not have so much knowledge regarding who is providing them data or how they are providing it. Instead of this approach, we can improve our code by depending on a simple, vendor agnostic interface:
-
-    <?php
-
-    namespace App\Orders;
-
-    use Illuminate\Contracts\Cache\Repository as Cache;
-
-    class Repository
-    {
-        /**
-         * The cache instance.
-         *
-         * @var \Illuminate\Contracts\Cache\Repository
-         */
-        protected $cache;
-
-        /**
-         * Create a new repository instance.
-         *
-         * @param  \Illuminate\Contracts\Cache\Repository  $cache
-         * @return void
-         */
-        public function __construct(Cache $cache)
-        {
-            $this->cache = $cache;
-        }
-    }
-
-Now the code is not coupled to any specific vendor, or even Laravel. Since the contracts package contains no implementation and no dependencies, you may easily write an alternative implementation of any given contract, allowing you to replace your cache implementation without modifying any of your cache consuming code.
+In general, most applications can use facades without issue during development. If you are building a package that integrates with multiple PHP frameworks you may wish to use the `illuminate/contracts` package to define your integration with Laravel's services without the need to require Laravel's concrete implementations in your package's `composer.json` file.
 
 <a name="how-to-use-contracts"></a>
 ## How To Use Contracts
