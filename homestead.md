@@ -45,8 +45,6 @@ Laravel Homestead is an official, pre-packaged Vagrant box that provides you a w
 
 Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
 
-> {note} If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS. If you are using Hyper-V on a UEFI system you may additionally need to disable Hyper-V in order to access VT-x.
-
 <a name="included-software"></a>
 ### Included Software
 
@@ -129,13 +127,15 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 <a name="first-steps"></a>
 ### First Steps
 
+> {note} If you are using Windows 10 with Hyper-V, ideally you can use VirtualBox 6.x or recent, as it will use Hyper-V as hypervizor and allow you to continue to use Hyper-V for what you needed for without affecting anything. Vagrant with VirtualBox on top of Hyper-V, solves the private host only networking issues that Vagrant can't handle directly with Hyper-V.
+
 Before launching your Homestead environment, you must install [VirtualBox 6.x](https://www.virtualbox.org/wiki/Downloads), [VMWare](https://www.vmware.com), [Parallels](https://www.parallels.com/products/desktop/) or [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v) as well as [Vagrant](https://www.vagrantup.com/downloads.html). All of these software packages provide easy-to-use visual installers for all popular operating systems.
 
 To use the VMware provider, you will need to purchase both VMware Fusion / Workstation and the [VMware Vagrant plug-in](https://www.vagrantup.com/vmware). Though it is not free, VMware can provide faster shared folder performance out of the box.
 
 To use the Parallels provider, you will need to install [Parallels Vagrant plug-in](https://github.com/Parallels/vagrant-parallels). It is free of charge.
 
-Because of [Vagrant limitations](https://www.vagrantup.com/docs/hyperv/limitations.html), the Hyper-V provider ignores all networking settings.
+Because of [Vagrant limitations](https://www.vagrantup.com/docs/hyperv/limitations.html), the Hyper-V provider ignores all networking settings. See above note, suggesting to use VirtualBox 6.x or recent as it is compatible with Hyper-V.
 
 <a name="installing-the-homestead-vagrant-box"></a>
 #### Installing The Homestead Vagrant Box
