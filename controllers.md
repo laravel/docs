@@ -297,12 +297,10 @@ When using a custom keyed implicit binding as a nested route parameter, Laravel 
 <a name="restful-localizing-resource-uris"></a>
 ### Localizing Resource URIs
 
-By default, `Route::resource` will create resource URIs using English verbs. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done in the `boot` method of your `AppServiceProvider`:
-
-    use Illuminate\Support\Facades\Route;
+By default, `Route::resource` will create resource URIs using English verbs. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\Providers\RouteServiceProvider`:
 
     /**
-     * Bootstrap any application services.
+     * Define your route model bindings, pattern filters, etc.
      *
      * @return void
      */
@@ -312,9 +310,11 @@ By default, `Route::resource` will create resource URIs using English verbs. If 
             'create' => 'crear',
             'edit' => 'editar',
         ]);
+
+        // ...
     }
 
-Once the verbs have been customized, a resource route registration such as `Route::resource('fotos', 'PhotoController')` will produce the following URIs:
+Once the verbs have been customized, a resource route registration such as `Route::resource('fotos', PhotoController::class)` will produce the following URIs:
 
     /fotos/crear
 
@@ -323,10 +323,11 @@ Once the verbs have been customized, a resource route registration such as `Rout
 <a name="restful-supplementing-resource-controllers"></a>
 ### Supplementing Resource Controllers
 
-If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to `Route::resource`; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
+If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to the `Route::resource` method; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
 
-    Route::get('photos/popular', [PhotoController::class, 'popular']);
+    use App\Http\Controller\PhotoController;
 
+    Route::get('/photos/popular', [PhotoController::class, 'popular']);
     Route::resource('photos', PhotoController::class);
 
 > {tip} Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
