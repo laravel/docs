@@ -233,7 +233,7 @@ Once you have assigned a name to a given route, you may use the route's name whe
 
 If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the generated URL in their correct positions:
 
-    Route::get('user/{id}/profile', function ($id) {
+    Route::get('/user/{id}/profile', function ($id) {
         //
     })->name('profile');
 
@@ -241,7 +241,7 @@ If the named route defines parameters, you may pass the parameters as the second
 
 If you pass additional parameters in the array, those key / value pairs will automatically be added to the generated URL's query string:
 
-    Route::get('user/{id}/profile', function ($id) {
+    Route::get('/user/{id}/profile', function ($id) {
         //
     })->name('profile');
 
@@ -282,14 +282,14 @@ Nested groups attempt to intelligently "merge" attributes with their parent grou
 <a name="route-group-middleware"></a>
 ### Middleware
 
-To assign middleware to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
+To assign [middleware](/docs/{{version}}/middleware) to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
 
     Route::middleware(['first', 'second'])->group(function () {
         Route::get('/', function () {
             // Uses first & second middleware...
         });
 
-        Route::get('user/profile', function () {
+        Route::get('/user/profile', function () {
             // Uses first & second middleware...
         });
     });
@@ -299,7 +299,7 @@ To assign middleware to all routes within a group, you may use the `middleware` 
 
 Route groups may also be used to handle subdomain routing. Subdomains may be assigned route parameters just like route URIs, allowing you to capture a portion of the subdomain for usage in your route or controller. The subdomain may be specified by calling the `domain` method before defining the group:
 
-    Route::domain('{account}.myapp.com')->group(function () {
+    Route::domain('{account}.example.com')->group(function () {
         Route::get('user/{id}', function ($account, $id) {
             //
         });
@@ -313,7 +313,7 @@ Route groups may also be used to handle subdomain routing. Subdomains may be ass
 The `prefix` method may be used to prefix each route in the group with a given URI. For example, you may want to prefix all route URIs within the group with `admin`:
 
     Route::prefix('admin')->group(function () {
-        Route::get('users', function () {
+        Route::get('/users', function () {
             // Matches The "/admin/users" URL
         });
     });
@@ -324,7 +324,7 @@ The `prefix` method may be used to prefix each route in the group with a given U
 The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix all of the grouped route's names with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
 
     Route::name('admin.')->group(function () {
-        Route::get('users', function () {
+        Route::get('/users', function () {
             // Route assigned name "admin.users"...
         })->name('users');
     });
@@ -332,14 +332,16 @@ The `name` method may be used to prefix each route name in the group with a give
 <a name="route-model-binding"></a>
 ## Route Model Binding
 
-When injecting a model ID to a route or controller action, you will often query to retrieve the model that corresponds to that ID. Laravel route model binding provides a convenient way to automatically inject the model instances directly into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID.
+When injecting a model ID to a route or controller action, you will often query the database to retrieve the model that corresponds to that ID. Laravel route model binding provides a convenient way to automatically inject the model instances directly into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID.
 
 <a name="implicit-binding"></a>
 ### Implicit Binding
 
 Laravel automatically resolves Eloquent models defined in routes or controller actions whose type-hinted variable names match a route segment name. For example:
 
-    Route::get('api/users/{user}', function (App\Models\User $user) {
+    use App\Models\User;
+
+    Route::get('/users/{user}', function (User $user) {
         return $user->email;
     });
 
@@ -350,40 +352,28 @@ Of course, implicit binding is also possible when using controller methods. Agai
     use App\Http\Controllers\UserController;
     use App\Models\User;
 
-    Route::get('users/{user}', [UserController::class, 'show']);
+    // Route definition...
+    Route::get('/users/{user}', [UserController::class, 'show']);
 
+    // Controller method definition...
     public function show(User $user)
     {
         return view('user.profile', ['user' => $user]);
     }
 
 <a name="customizing-the-key"></a>
+<a name="customizing-the-default-key-name"></a>
 #### Customizing The Key
 
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
 
-    Route::get('api/posts/{post:slug}', function (App\Models\Post $post) {
-        return $post;
-    });
-
-<a name="implicit-model-binding-scoping"></a>
-#### Custom Keys & Scoping
-
-Sometimes, when implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the first Eloquent model. For example, consider this situation that retrieves a blog post by slug for a specific user:
-
     use App\Models\Post;
-    use App\Models\User;
 
-    Route::get('api/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
+    Route::get('/posts/{post:slug}', function (Post $post) {
         return $post;
     });
 
-When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural of the route parameter name) which can be used to retrieve the `Post` model.
-
-<a name="customizing-the-default-key-name"></a>
-#### Customizing The Default Key Name
-
-If you would like model binding to use a default database column other than `id` when retrieving a given model class, you may override the `getRouteKeyName` method on the Eloquent model:
+If you would like model binding to always use a database column other than `id` when retrieving a given model class, you may override the `getRouteKeyName` method on the Eloquent model:
 
     /**
      * Get the route key for the model.
@@ -394,6 +384,20 @@ If you would like model binding to use a default database column other than `id`
     {
         return 'slug';
     }
+
+<a name="implicit-model-binding-scoping"></a>
+#### Custom Keys & Scoping
+
+When implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the previous Eloquent model. For example, consider this route definition that retrieves a blog post by slug for a specific user:
+
+    use App\Models\Post;
+    use App\Models\User;
+
+    Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
+        return $post;
+    });
+
+When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural form of the route parameter name) which can be used to retrieve the `Post` model.
 
 <a name="explicit-binding"></a>
 ### Explicit Binding
