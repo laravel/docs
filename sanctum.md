@@ -224,19 +224,27 @@ Finally, you should ensure your application's session cookie domain configuratio
 <a name="spa-authenticating"></a>
 ### Authenticating
 
+<a name="csrf-protection"></a>
+#### CSRF Protection
+
 To authenticate your SPA, your SPA's login page should first make a request to the `/sanctum/csrf-cookie` route to initialize CSRF protection for the application:
 
     axios.get('/sanctum/csrf-cookie').then(response => {
         // Login...
     });
 
-During this request Laravel will set an `XSRF-TOKEN` cookie containing the current CSRF token. This token should then be passed in an `X-XSRF-TOKEN` header on subsequent requests, which libraries like Axios and the Angular HttpClient will do automatically for you.
+During this request Laravel will set an `XSRF-TOKEN` cookie containing the current CSRF token. This token should then be passed in an `X-XSRF-TOKEN` header on subsequent requests, which some HTTP client libraries like Axios and the Angular HttpClient will do automatically for you. If your JavaScript HTTP library does not set the value for you, you will need to manually set the `X-XSRF-TOKEN` header to match the value of the `XSRF-TOKEN` cookie.
+
+<a name="logging-in"></a>
+#### Logging In
 
 Once CSRF protection has been initialized, you should make a `POST` request to the your Laravel application's `/login` route. This `/login` route may be implemented manually or using one of Laravel's [application starter kits](/docs/{{version}}/starter-kits).
 
-If the login request is successful, you will be authenticated and subsequent requests to your API routes will automatically be authenticated via the session cookie that the Laravel backend issued to your client.
+If the login request is successful, you will be authenticated and subsequent requests to your API routes will automatically be authenticated via the session cookie that the Laravel backend issued to your client. In addition, since your application already made a request to the `/sanctum/csrf-cookie` route, subsequent requests should automatically receive CSRF protection as long as your JavaScript HTTP client sends the value of `XSRF-TOKEN` cookie in the `X-XSRF-TOKEN` header.
 
-> {tip} You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users).
+Of course, if your users session expires due to lack of activity, subsequent requests to the Laravel backend may receive a 401 or 419 HTTP error response. In this case, you should redirect the user to your application's login page.
+
+> {note} You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard.
 
 <a name="protecting-spa-routes"></a>
 ### Protecting Routes
