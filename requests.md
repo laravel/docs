@@ -412,7 +412,7 @@ If you do not yet have an instance of the outgoing response, you may use the `Co
 <a name="retrieving-uploaded-files"></a>
 ### Retrieving Uploaded Files
 
-You may access uploaded files from an `Illuminate\Http\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\Http\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:
+You may retrieve uploaded files from an `Illuminate\Http\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\Http\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:
 
     $file = $request->file('photo');
 
@@ -450,7 +450,7 @@ There are a variety of other methods available on `UploadedFile` instances. Chec
 <a name="storing-uploaded-files"></a>
 ### Storing Uploaded Files
 
-To store an uploaded file, you will typically use one of your configured [filesystems](/docs/{{version}}/filesystem). The `UploadedFile` class has a `store` method which will move an uploaded file to one of your disks, which may be a location on your local filesystem or even a cloud storage location like Amazon S3.
+To store an uploaded file, you will typically use one of your configured [filesystems](/docs/{{version}}/filesystem). The `UploadedFile` class has a `store` method that will move an uploaded file to one of your disks, which may be a location on your local filesystem or a cloud storage location like Amazon S3.
 
 The `store` method accepts the path where the file should be stored relative to the filesystem's configured root directory. This path should not contain a file name, since a unique ID will automatically be generated to serve as the file name.
 
@@ -466,10 +466,12 @@ If you do not want a file name to be automatically generated, you may use the `s
 
     $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 
+> {tip} For more information about file storage in Laravel, check out the complete [file storage documentation](/docs/{{version}}/filesystem).
+
 <a name="configuring-trusted-proxies"></a>
 ## Configuring Trusted Proxies
 
-When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
+When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links when using the `url` helper. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
 
 To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the proxy `$headers` that should be trusted:
 
