@@ -168,7 +168,7 @@ For convenience, some commonly used regular expression patterns have helper meth
         //
     })->whereUuid('id');
 
-If the incoming request does not match the route pattern constraints, a `404` HTTP response will be returned.
+If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
 
 <a name="parameters-global-constraints"></a>
 #### Global Constraints
@@ -402,7 +402,10 @@ When using a custom keyed implicit binding as a nested route parameter, Laravel 
 <a name="explicit-binding"></a>
 ### Explicit Binding
 
-To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings at the beginning of the `boot` method of your `RouteServiceProvider` class:
+You are not required to use Laravel's implicit, convention based model resolution in order to use model binding. You can also explicitly define how route parameters correspond to models. To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings at the beginning of the `boot` method of your `RouteServiceProvider` class:
+
+    use App\Models\User;
+    use Illuminate\Support\Facades\Route;
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -411,25 +414,30 @@ To register an explicit binding, use the router's `model` method to specify the 
      */
     public function boot()
     {
-        Route::model('user', \App\Models\User::class);
+        Route::model('user', User::class);
 
         // ...
     }
 
 Next, define a route that contains a `{user}` parameter:
 
-    Route::get('profile/{user}', function (App\Models\User $user) {
+    use App\Models\User;
+
+    Route::get('/users/{user}', function (User $user) {
         //
     });
 
-Since we have bound all `{user}` parameters to the `App\Models\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance from the database which has an ID of `1`.
+Since we have bound all `{user}` parameters to the `App\Models\User` model, an instance of that class will be injected into the route. So, for example, a request to `users/1` will inject the `User` instance from the database which has an ID of `1`.
 
 If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
 <a name="customizing-the-resolution-logic"></a>
 #### Customizing The Resolution Logic
 
-If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
+If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `RouteServiceProvider`:
+
+    use App\Models\User;
+    use Illuminate\Support\Facades\Route;
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -439,7 +447,7 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
     public function boot()
     {
         Route::bind('user', function ($value) {
-            return App\Models\User::where('name', $value)->firstOrFail();
+            return User::where('name', $value)->firstOrFail();
         });
 
         // ...
