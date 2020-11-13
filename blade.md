@@ -5,6 +5,7 @@
     - [Defining A Layout](#defining-a-layout)
     - [Extending A Layout](#extending-a-layout)
 - [Displaying Data](#displaying-data)
+    - [HTML Entity Encoding](#html-entity-encoding)
     - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
 - [Control Structures](#control-structures)
     - [If Statements](#if-statements)
@@ -19,7 +20,7 @@
     - [Method Field](#method-field)
     - [Validation Errors](#validation-errors)
 - [Components](#components)
-    - [Displaying Components](#displaying-components)
+    - [Rendering Components](#rendering-components)
     - [Passing Data To Components](#passing-data-to-components)
     - [Managing Attributes](#managing-attributes)
     - [Slots](#slots)
@@ -39,6 +40,12 @@
 
 Blade is the simple, yet powerful templating engine that is included with Laravel. Unlike some PHP templating engines, Blade does not restrict you from using plain PHP code in your templates. In fact, all Blade templates are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade template files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
 
+Blade views may be returned from routes or controller using the global `view` helper:
+
+    Route::get('/', function () {
+        return view('greeting');
+    });
+
 > {tip} Before digging deeper into Blade, make sure to read the Laravel [view documentation](/docs/{{version}}/views).
 
 <a name="template-inheritance"></a>
@@ -47,7 +54,7 @@ Blade is the simple, yet powerful templating engine that is included with Larave
 <a name="defining-a-layout"></a>
 ### Defining A Layout
 
-Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a "master" page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
+Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
 
     <!-- Stored in resources/views/layouts/app.blade.php -->
 
@@ -73,7 +80,7 @@ Now that we have defined a layout for our application, let's define a child page
 <a name="extending-a-layout"></a>
 ### Extending A Layout
 
-When defining a child view, use the Blade `@extends` directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
+When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
     <!-- Stored in resources/views/child.blade.php -->
 
@@ -97,20 +104,14 @@ In this example, the `sidebar` section is utilizing the `@@parent` directive to 
 
 The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
 
-    @yield('content', View::make('view.name'))
-
-Blade views may be returned from routes using the global `view` helper:
-
-    Route::get('blade', function () {
-        return view('child');
-    });
+    @yield('content', 'Default content')
 
 <a name="displaying-data"></a>
 ## Displaying Data
 
-You may display data passed to your Blade views by wrapping the variable in curly braces. For example, given the following route:
+You may display data that is passed to your Blade views by wrapping the variable in curly braces. For example, given the following route:
 
-    Route::get('greeting', function () {
+    Route::get('/', function () {
         return view('welcome', ['name' => 'Samantha']);
     });
 
@@ -118,20 +119,11 @@ You may display the contents of the `name` variable like so:
 
     Hello, {{ $name }}.
 
-> {tip} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
+> {tip} Blade's `{{ }}` echo statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
 You are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
 
     The current UNIX timestamp is {{ time() }}.
-
-<a name="displaying-unescaped-data"></a>
-#### Displaying Unescaped Data
-
-By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
-
-    Hello, {!! $name !!}.
-
-> {note} Be very careful when echoing content that is supplied by users of your application. Always use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
 
 <a name="rendering-json"></a>
 #### Rendering JSON
@@ -153,7 +145,7 @@ However, instead of manually calling `json_encode`, you may use the `@json` Blad
 > {note} You should only use the `@json` directive to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="html-entity-encoding"></a>
-#### HTML Entity Encoding
+### HTML Entity Encoding
 
 By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
 
@@ -177,6 +169,15 @@ By default, Blade (and the Laravel `e` helper) will double encode HTML entities.
         }
     }
 
+<a name="displaying-unescaped-data"></a>
+#### Displaying Unescaped Data
+
+By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
+
+    Hello, {!! $name !!}.
+
+> {note} Be very careful when echoing content that is supplied by users of your application. You should typically use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
+
 <a name="blade-and-javascript-frameworks"></a>
 ### Blade & JavaScript Frameworks
 
@@ -186,11 +187,11 @@ Since many JavaScript frameworks also use "curly" braces to indicate a given exp
 
     Hello, @{{ name }}.
 
-In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
+In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to be rendered by your JavaScript framework.
 
 The `@` symbol may also be used to escape Blade directives:
 
-    {{-- Blade --}}
+    {{-- Blade template --}}
     @@json()
 
     <!-- HTML output -->
@@ -210,7 +211,7 @@ If you are displaying JavaScript variables in a large portion of your template, 
 <a name="control-structures"></a>
 ## Control Structures
 
-In addition to template inheritance and displaying data, Blade also provides convenient shortcuts for common PHP control structures, such as conditional statements and loops. These shortcuts provide a very clean, terse way of working with PHP control structures, while also remaining familiar to their PHP counterparts.
+In addition to template inheritance and displaying data, Blade also provides convenient shortcuts for common PHP control structures, such as conditional statements and loops. These shortcuts provide a very clean, terse way of working with PHP control structures while also remaining familiar to their PHP counterparts.
 
 <a name="if-statements"></a>
 ### If Statements
@@ -244,7 +245,7 @@ In addition to the conditional directives already discussed, the `@isset` and `@
 <a name="authentication-directives"></a>
 #### Authentication Directives
 
-The `@auth` and `@guest` directives may be used to quickly determine if the current user is authenticated or is a guest:
+The `@auth` and `@guest` directives may be used to quickly determine if the current user is [authenticated](/docs/{{version}}/authentication) or is a guest:
 
     @auth
         // The user is authenticated...
@@ -254,7 +255,7 @@ The `@auth` and `@guest` directives may be used to quickly determine if the curr
         // The user is not authenticated...
     @endguest
 
-If needed, you may specify the [authentication guard](/docs/{{version}}/authentication) that should be checked when using the `@auth` and `@guest` directives:
+If needed, you may specify the authentication guard that should be checked when using the `@auth` and `@guest` directives:
 
     @auth('admin')
         // The user is authenticated...
@@ -263,27 +264,6 @@ If needed, you may specify the [authentication guard](/docs/{{version}}/authenti
     @guest('admin')
         // The user is not authenticated...
     @endguest
-
-<a name="section-directives"></a>
-#### Section Directives
-
-You may check if a section has content using the `@hasSection` directive:
-
-    @hasSection('navigation')
-        <div class="pull-right">
-            @yield('navigation')
-        </div>
-
-        <div class="clearfix"></div>
-    @endif
-
-You may use the `sectionMissing` directive to determine if a section does not have content:
-
-    @sectionMissing('navigation')
-        <div class="pull-right">
-            @include('default-navigation')
-        </div>
-    @endif
 
 <a name="environment-directives"></a>
 #### Environment Directives
@@ -303,6 +283,27 @@ Or, you may determine if the application is running in a specific environment us
     @env(['staging', 'production'])
         // The application is running in "staging" or "production"...
     @endenv
+
+<a name="section-directives"></a>
+#### Section Directives
+
+You may determine if a template inheritance section has content using the `@hasSection` directive:
+
+    @hasSection('navigation')
+        <div class="pull-right">
+            @yield('navigation')
+        </div>
+
+        <div class="clearfix"></div>
+    @endif
+
+You may use the `sectionMissing` directive to determine if a section does not have content:
+
+    @sectionMissing('navigation')
+        <div class="pull-right">
+            @include('default-navigation')
+        </div>
+    @endif
 
 <a name="switch-statements"></a>
 ### Switch Statements
@@ -347,7 +348,7 @@ In addition to conditional statements, Blade provides simple directives for work
 
 > {tip} When looping, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
-When using loops you may also end the loop or skip the current iteration:
+When using loops you may also end the loop or skip the current iteration using the `@continue` and `@break` directives:
 
     @foreach ($users as $user)
         @if ($user->type == 1)
@@ -361,7 +362,7 @@ When using loops you may also end the loop or skip the current iteration:
         @endif
     @endforeach
 
-You may also include the condition with the directive declaration in one line:
+You may also include the continuation or break condition within the directive declaration:
 
     @foreach ($users as $user)
         @continue($user->type == 1)
@@ -426,10 +427,8 @@ Blade also allows you to define comments in your views. However, unlike HTML com
 In some situations, it's useful to embed PHP code into your views. You can use the Blade `@php` directive to execute a block of plain PHP within your template:
 
     @php
-        //
+        $counter = 1;
     @endphp
-
-> {tip} While Blade provides this feature, using it frequently may be a signal that you have too much logic embedded within your template.
 
 <a name="the-once-directive"></a>
 ### The `@once` Directive
@@ -510,11 +509,14 @@ The `make:component` command will also create a view template for the component.
 <a name="manually-registering-package-components"></a>
 #### Manually Registering Package Components
 
+> {note} The following documentation on manually registering components is primarily applicable to those who are writing Laravel packages that include view components. If you are not writing a package, this portion of the component documentation may not be relevant to you.
+
 When writing components for your own application, components are automatically discovered within the `app/View/Components` directory and `resources/views/components` directory.
 
 However, if you are building a package that utilizes Blade components, you will need to manually register your component class and its HTML tag alias. You should typically register your components in the `boot` method of your package's service provider:
 
     use Illuminate\Support\Facades\Blade;
+    use VendorPackage\View\Components\AlertComponent;
 
     /**
      * Bootstrap your package's services.
@@ -527,6 +529,8 @@ However, if you are building a package that utilizes Blade components, you will 
 Once your component has been registered, it may be rendered using its tag alias:
 
     <x-package-alert/>
+
+**Autoloading Package Components**
 
 Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Package\Views\Components` namespace:
 
@@ -547,8 +551,8 @@ This will allow the usage of package components by their vendor namespace using 
 
 Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
 
-<a name="displaying-components"></a>
-### Displaying Components
+<a name="rendering-components"></a>
+### Rendering Components
 
 To display a component, you may use a Blade component tag within one of your Blade templates. Blade component tags start with the string `x-` followed by the kebab case name of the component class:
 
