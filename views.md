@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Creating & Rendering Views](#creating-and-rendering-views)
-    - [Nested Views](#nested-views)
+    - [Nested View Directories](#nested-view-directories)
     - [Creating The First Available View](#creating-the-first-available-view)
     - [Determining If A View Exists](#determining-if-a-view-exists)
 - [Passing Data To Views](#passing-data-to-views)
@@ -51,8 +51,8 @@ Views may also be returned using the `View` facade:
 
 As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view using [Blade syntax](/docs/{{version}}/blade).
 
-<a name="nested-views"></a>
-### Nested Views
+<a name="nested-view-directories"></a>
+### Nested View Directories
 
 Views may also be nested within subdirectories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.blade.php`, you may return it from one of your application's routes / controllers like so:
 
