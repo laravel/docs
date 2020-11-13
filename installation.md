@@ -13,6 +13,7 @@
     - [Starting & Stopping](#starting-and-stopping-sail)
     - [Executing Commands](#executing-sail-commands)
     - [Interacting With Databases](#interacting-with-sail-databases)
+    - [Running Tests](#running-tests)
     - [Adding Additional Services](#adding-additional-sail-services)
     - [Container CLI](#sail-container-cli)
     - [Customization](#sail-customization)
@@ -250,6 +251,42 @@ To connect to your application's MySQL database from your local machine, you may
 Your application's `docker-compose.yml` file also contains an entry for a [Redis](https://redis.io) container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your Redis data is persisted even when stopping and restarting your containers. Once you have started your containers, you may connect to the Redis instance within your application by setting your `REDIS_HOST` environment variable within your application's `.env` file to `redis`.
 
 To connect to your application's Redis database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the Redis database is accessible at `localhost` port `6379`.
+
+<a name="running-tests"></a>
+### Running Tests
+
+Laravel provides amazing testing support out of the box, and you may use Sail's `test` command to run your applications [feature and unit tests](/docs/{{version}}/testing). Any CLI options that are accepted by PHPUnit may also be passed to the `test` command:
+
+    ./sail test
+
+    ./sail test --group orders
+
+The Sail `test` command is equivalent to running the `test` Artisan command:
+
+    ./sail artisan test
+
+<a name="laravel-dusk"></a>
+#### Laravel Dusk
+
+[Laravel Dusk](/docs/{{version}}/dusk) provides an expressive, easy-to-use browser automation and testing API. Thanks to Sail, you may run these tests without ever installing Selenium or other tools on your local computer. To get started, uncomment the Selenium service in your application's `docker-compose.yml` file:
+
+    selenium:
+        image: 'selenium/standalone-chrome'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - sail
+
+Next, ensure that the `laravel.test` service in your application's `docker-compose.yml` file has a `depends_on` entry for `selenium`:
+
+        depends_on:
+            - mysql
+            - redis
+            - selenium
+
+Finally, you may run your Dusk test suite by starting Sail and running the `dusk` command:
+
+    ./sail dusk
 
 <a name="adding-additional-sail-services"></a>
 ### Adding Additional Services
