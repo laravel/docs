@@ -14,8 +14,6 @@
 <a name="introduction"></a>
 ## Introduction
 
-> {tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
-
 Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. A simple view might look something like this:
 
     <!-- View stored in resources/views/greeting.blade.php -->
@@ -31,6 +29,8 @@ Since this view is stored at `resources/views/greeting.blade.php`, we may return
     Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
     });
+
+> {tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
 
 <a name="creating-and-rendering-views"></a>
 ## Creating & Rendering Views

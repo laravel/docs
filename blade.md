@@ -26,6 +26,7 @@
     - [Inline Component Views](#inline-component-views)
     - [Anonymous Components](#anonymous-components)
     - [Dynamic Components](#dynamic-components)
+    - [Components As Layouts](#components-as-layouts)
 - [Including Subviews](#including-subviews)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -36,7 +37,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. In fact, all Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
+Blade is the simple, yet powerful templating engine that is included with Laravel. Unlike some PHP templating engines, Blade does not restrict you from using plain PHP code in your templates. In fact, all Blade templates are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade template files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
+
+> {tip} Before digging deeper into Blade, make sure to read the Laravel [view documentation](/docs/{{version}}/views).
 
 <a name="template-inheritance"></a>
 ## Template Inheritance
@@ -891,6 +894,25 @@ You may specify which attributes should be considered data variables using the `
 Sometimes you may need to render a component but not know which component should be rendered until runtime. In this situation, you may use Laravel's built-in `dynamic-component` component to render the component based on a runtime value or variable:
 
     <x-dynamic-component :component="$componentName" class="mt-4" />
+
+<a name="components-as-layouts"></a>
+### Components As Layouts
+
+We previously discussed [template inheritance](#template-inheritance) in this documentation. However, if you prefer, you may use components to achieve the same goals as template inheritance. For example, imagine a "layout" component that looks like the following:
+
+    <html>
+        <body>
+            <h1>Application</h1>
+            <hr>
+            {{ $slot }}
+        </body>
+    </html>
+
+Once the `layout` component has been defined, we may create a Blade component that utilizes the `layout` component to achieve the same goals as template inheritance:
+
+    <x-layout>
+        Page content...
+    </x-layout>
 
 <a name="including-subviews"></a>
 ## Including Subviews
