@@ -1313,6 +1313,27 @@ In this example, Eloquent will only eager load posts where the post's `title` co
 
 > {note} The `limit` and `take` query builder methods may not be used when constraining eager loads.
 
+<a name="nested-eager-loading-morphto-relationships"></a>
+#### Constraining Eager Loading of `MorphTo` Relationships
+
+If you are eager loading a `MorphTo` relationship, Eloquent will run multiple queries to fetch each different type of related model. You can target conditions to each of these queries using the `MorphTo` relation's `constrain` method. Here's an example:
+
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+
+    $notifications = Notification::with(['subject' => function (MorphTo $morphTo) {
+        $morphTo->constrain([
+            Post::class => function (Builder $query) {
+                $query->whereNull('hidden_at');
+            },
+            Reaction::class => function (Builder $query) {
+                $query->where('type', 'applause');
+            },
+        ]);
+    }])->get();
+
+In this example, Eloquent will only eager load posts that have not been hidden, and reactions that have a `type` equal to `applause`.
+
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
