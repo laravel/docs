@@ -224,7 +224,7 @@ When using Laravel Sail, your application is executing within a Docker container
 ./sail npm run prod
 ```
 
-When reading the Laravel documentation, you will often see references to Artisan and Composer commands that do not reference Sail. Those examples assume that PHP is installed on your local computer. If you are using Sail for your local Laravel development environment, you should execute those commands using Sail:
+**When reading the Laravel documentation, you will often see references to Artisan and Composer commands that do not reference Sail.** Those examples assume that PHP is installed on your local computer. If you are using Sail for your local Laravel development environment, you should execute those commands using Sail:
 
 ```bash
 // Running Artisan commands locally...
