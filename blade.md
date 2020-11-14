@@ -1089,8 +1089,8 @@ Once the custom conditional has been defined, you can use it within your templat
         // The application is using the s3 disk...
     @else
         // The application is using some other disk...
-    @endcloud
+    @enddisk
 
     @unlessdisk('local')
         // The application is not using the local disk...
-    @endcloud
+    @enddisk
