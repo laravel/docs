@@ -1313,6 +1313,27 @@ In this example, Eloquent will only eager load posts where the post's `title` co
 
 > {note} The `limit` and `take` query builder methods may not be used when constraining eager loads.
 
+<a name="constraining-eager-loading-of-morph-to-relationships"></a>
+#### Constraining Eager Loading Of `MorphTo` Relationships
+
+If you are eager loading a `MorphTo` relationship, Eloquent will run multiple queries to fetch each different type of related model. You may target conditions to each of these queries using the `MorphTo` relation's `constrain` method:
+
+    use Illuminate\Database\Eloquent\Builder;
+    use Illuminate\Database\Eloquent\Relations\MorphTo;
+
+    $comments = Comment::with(['commentable' => function (MorphTo $morphTo) {
+        $morphTo->constrain([
+            Post::class => function (Builder $query) {
+                $query->whereNull('hidden_at');
+            },
+            Video::class => function (Builder $query) {
+                $query->where('type', 'educational');
+            },
+        ]);
+    }])->get();
+
+In this example, Eloquent will only eager load posts that have not been hidden and videos have a `type` value of "educational".
+
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
