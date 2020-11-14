@@ -1,26 +1,18 @@
 # Blade Templates
 
 - [Introduction](#introduction)
-- [Template Inheritance](#template-inheritance)
-    - [Defining A Layout](#defining-a-layout)
-    - [Extending A Layout](#extending-a-layout)
 - [Displaying Data](#displaying-data)
     - [HTML Entity Encoding](#html-entity-encoding)
     - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
-- [Control Structures](#control-structures)
+- [Blade Directives](#blade-directives)
     - [If Statements](#if-statements)
     - [Switch Statements](#switch-statements)
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
     - [Comments](#comments)
-    - [PHP](#php)
+    - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
-- [Including Subviews](#including-subviews)
-    - [Rendering Views For Collections](#rendering-views-for-collections)
-- [Forms](#forms)
-    - [CSRF Field](#csrf-field)
-    - [Method Field](#method-field)
-    - [Validation Errors](#validation-errors)
+    - [Raw PHP](#raw-php)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
     - [Passing Data To Components](#passing-data-to-components)
@@ -29,8 +21,14 @@
     - [Inline Component Views](#inline-component-views)
     - [Anonymous Components](#anonymous-components)
     - [Dynamic Components](#dynamic-components)
-    - [Components As Layouts](#components-as-layouts)
     - [Manually Registering Components](#manually-registering-components)
+- [Building Layouts](#building-layouts)
+    - [Layouts Using Components](#layouts-using-components)
+    - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
+- [Forms](#forms)
+    - [CSRF Field](#csrf-field)
+    - [Method Field](#method-field)
+    - [Validation Errors](#validation-errors)
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Extending Blade](#extending-blade)
@@ -41,71 +39,13 @@
 
 Blade is the simple, yet powerful templating engine that is included with Laravel. Unlike some PHP templating engines, Blade does not restrict you from using plain PHP code in your templates. In fact, all Blade templates are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade template files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
 
-Blade views may be returned from routes or controller using the global `view` helper:
+Blade views may be returned from routes or controller using the global `view` helper. Of course, as mentioned in the documentation on [views](/docs/{{version}}/views), data may be passed to the view using the `view` helper's second argument:
 
     Route::get('/', function () {
-        return view('greeting');
+        return view('greeting', ['name' => 'Finn']);
     });
 
 > {tip} Before digging deeper into Blade, make sure to read the Laravel [view documentation](/docs/{{version}}/views).
-
-<a name="template-inheritance"></a>
-## Template Inheritance
-
-<a name="defining-a-layout"></a>
-### Defining A Layout
-
-Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
-
-    <!-- Stored in resources/views/layouts/app.blade.php -->
-
-    <html>
-        <head>
-            <title>App Name - @yield('title')</title>
-        </head>
-        <body>
-            @section('sidebar')
-                This is the master sidebar.
-            @show
-
-            <div class="container">
-                @yield('content')
-            </div>
-        </body>
-    </html>
-
-As you can see, this file contains typical HTML mark-up. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
-
-Now that we have defined a layout for our application, let's define a child page that inherits the layout.
-
-<a name="extending-a-layout"></a>
-### Extending A Layout
-
-When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
-
-    <!-- Stored in resources/views/child.blade.php -->
-
-    @extends('layouts.app')
-
-    @section('title', 'Page Title')
-
-    @section('sidebar')
-        @@parent
-
-        <p>This is appended to the master sidebar.</p>
-    @endsection
-
-    @section('content')
-        <p>This is my body content.</p>
-    @endsection
-
-In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
-
-> {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
-
-The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
-
-    @yield('content', 'Default content')
 
 <a name="displaying-data"></a>
 ## Displaying Data
@@ -209,8 +149,8 @@ If you are displaying JavaScript variables in a large portion of your template, 
         </div>
     @endverbatim
 
-<a name="control-structures"></a>
-## Control Structures
+<a name="blade-directives"></a>
+## Blade Directives
 
 In addition to template inheritance and displaying data, Blade also provides convenient shortcuts for common PHP control structures, such as conditional statements and loops. These shortcuts provide a very clean, terse way of working with PHP control structures while also remaining familiar to their PHP counterparts.
 
@@ -422,30 +362,8 @@ Blade also allows you to define comments in your views. However, unlike HTML com
 
     {{-- This comment will not be present in the rendered HTML --}}
 
-<a name="php"></a>
-### PHP
-
-In some situations, it's useful to embed PHP code into your views. You can use the Blade `@php` directive to execute a block of plain PHP within your template:
-
-    @php
-        $counter = 1;
-    @endphp
-
-<a name="the-once-directive"></a>
-### The `@once` Directive
-
-The `@once` directive allows you to define a portion of the template that will only be evaluated once per rendering cycle. This may be useful for pushing a given piece of JavaScript into the page's header using [stacks](#stacks). For example, if you are rendering a given [component](#components) within a loop, you may wish to only push the JavaScript to the header the first time the component is rendered:
-
-    @once
-        @push('scripts')
-            <script>
-                // Your custom JavaScript...
-            </script>
-        @endpush
-    @endonce
-
 <a name="including-subviews"></a>
-## Including Subviews
+### Including Subviews
 
 > {tip} While you're free to use the `@include` directive, Blade [components](#components) provide similar functionality and offer several benefits over the `@include` directive such as data and attribute binding.
 
@@ -480,7 +398,7 @@ To include the first view that exists from a given array of views, you may use t
 > {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
 <a name="rendering-views-for-collections"></a>
-### Rendering Views For Collections
+#### Rendering Views For Collections
 
 You may combine loops and includes into one line with Blade's `@each` directive:
 
@@ -493,6 +411,99 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
     @each('view.name', $jobs, 'job', 'view.empty')
 
 > {note} Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use the `@foreach` and `@include` directives instead.
+
+<a name="the-once-directive"></a>
+### The `@once` Directive
+
+The `@once` directive allows you to define a portion of the template that will only be evaluated once per rendering cycle. This may be useful for pushing a given piece of JavaScript into the page's header using [stacks](#stacks). For example, if you are rendering a given [component](#components) within a loop, you may wish to only push the JavaScript to the header the first time the component is rendered:
+
+    @once
+        @push('scripts')
+            <script>
+                // Your custom JavaScript...
+            </script>
+        @endpush
+    @endonce
+
+<a name="building-layouts"></a>
+## Building Layouts
+
+<a name="layouts-using-components"></a>
+### Layouts Using Components
+
+We previously discussed [template inheritance](#template-inheritance) in this documentation. However, if you prefer, you may use components to achieve the same goals as template inheritance. For example, imagine a `layout` component that looks like the following:
+
+    <html>
+        <body>
+            <h1>Application</h1>
+            <hr>
+            {{ $slot }}
+        </body>
+    </html>
+
+Once the `layout` component has been defined, we may create a Blade template that utilizes the `layout` component to achieve the same goals as template inheritance:
+
+    <x-layout>
+        Page content...
+    </x-layout>
+
+<a name="layouts-using-template-inheritance"></a>
+### Layouts Using Template Inheritance
+
+<a name="defining-a-layout"></a>
+#### Defining A Layout
+
+Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
+
+    <!-- Stored in resources/views/layouts/app.blade.php -->
+
+    <html>
+        <head>
+            <title>App Name - @yield('title')</title>
+        </head>
+        <body>
+            @section('sidebar')
+                This is the master sidebar.
+            @show
+
+            <div class="container">
+                @yield('content')
+            </div>
+        </body>
+    </html>
+
+As you can see, this file contains typical HTML mark-up. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
+
+Now that we have defined a layout for our application, let's define a child page that inherits the layout.
+
+<a name="extending-a-layout"></a>
+#### Extending A Layout
+
+When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
+
+    <!-- Stored in resources/views/child.blade.php -->
+
+    @extends('layouts.app')
+
+    @section('title', 'Page Title')
+
+    @section('sidebar')
+        @@parent
+
+        <p>This is appended to the master sidebar.</p>
+    @endsection
+
+    @section('content')
+        <p>This is my body content.</p>
+    @endsection
+
+In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
+
+> {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
+
+The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
+
+    @yield('content', 'Default content')
 
 <a name="forms"></a>
 ## Forms
@@ -545,6 +556,15 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
     @error('email', 'login')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
+
+<a name="raw-php"></a>
+### Raw PHP
+
+In some situations, it's useful to embed PHP code into your views. You can use the Blade `@php` directive to execute a block of plain PHP within your template:
+
+    @php
+        $counter = 1;
+    @endphp
 
 <a name="components"></a>
 ## Components
@@ -908,25 +928,6 @@ Given the component definition above, we may render the component like so:
 Sometimes you may need to render a component but not know which component should be rendered until runtime. In this situation, you may use Laravel's built-in `dynamic-component` component to render the component based on a runtime value or variable:
 
     <x-dynamic-component :component="$componentName" class="mt-4" />
-
-<a name="components-as-layouts"></a>
-### Components As Layouts
-
-We previously discussed [template inheritance](#template-inheritance) in this documentation. However, if you prefer, you may use components to achieve the same goals as template inheritance. For example, imagine a `layout` component that looks like the following:
-
-    <html>
-        <body>
-            <h1>Application</h1>
-            <hr>
-            {{ $slot }}
-        </body>
-    </html>
-
-Once the `layout` component has been defined, we may create a Blade template that utilizes the `layout` component to achieve the same goals as template inheritance:
-
-    <x-layout>
-        Page content...
-    </x-layout>
 
 <a name="manually-registering-components"></a>
 ### Manually Registering Components
