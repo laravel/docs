@@ -19,6 +19,8 @@
     - [CSRF Field](#csrf-field)
     - [Method Field](#method-field)
     - [Validation Errors](#validation-errors)
+- [Including Subviews](#including-subviews)
+    - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
     - [Passing Data To Components](#passing-data-to-components)
@@ -29,8 +31,6 @@
     - [Dynamic Components](#dynamic-components)
     - [Components As Layouts](#components-as-layouts)
     - [Manually Registering Components](#manually-registering-components)
-- [Including Subviews](#including-subviews)
-    - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Extending Blade](#extending-blade)
@@ -496,6 +496,56 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
+<a name="including-subviews"></a>
+## Including Subviews
+
+Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
+
+    <div>
+        @include('shared.errors')
+
+        <form>
+            <!-- Form Contents -->
+        </form>
+    </div>
+
+Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
+
+    @include('view.name', ['some' => 'data'])
+
+If you attempt to `@include` a view which does not exist, Laravel will throw an error. If you would like to include a view that may or may not be present, you should use the `@includeIf` directive:
+
+    @includeIf('view.name', ['some' => 'data'])
+
+If you would like to `@include` a view if a given boolean expression evaluates to `true`, you may use the `@includeWhen` directive:
+
+    @includeWhen($boolean, 'view.name', ['some' => 'data'])
+
+If you would like to `@include` a view if a given boolean expression evaluates to `false`, you may use the `@includeUnless` directive:
+
+    @includeUnless($boolean, 'view.name', ['some' => 'data'])
+
+To include the first view that exists from a given array of views, you may use the `includeFirst` directive:
+
+    @includeFirst(['custom.admin', 'admin'], ['some' => 'data'])
+
+> {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
+
+<a name="rendering-views-for-collections"></a>
+### Rendering Views For Collections
+
+You may combine loops and includes into one line with Blade's `@each` directive:
+
+    @each('view.name', $jobs, 'job')
+
+The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial. The key for the current iteration will be available as the `key` variable within your view partial.
+
+You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
+
+    @each('view.name', $jobs, 'job', 'view.empty')
+
+> {note} Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use `@foreach` and `@include` instead.
+
 <a name="components"></a>
 ## Components
 
@@ -922,73 +972,6 @@ This will allow the usage of package components by their vendor namespace using 
     <x-nightshade::color-picker />
 
 Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
-
-<a name="including-subviews"></a>
-## Including Subviews
-
-Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
-
-    <div>
-        @include('shared.errors')
-
-        <form>
-            <!-- Form Contents -->
-        </form>
-    </div>
-
-Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
-
-    @include('view.name', ['some' => 'data'])
-
-If you attempt to `@include` a view which does not exist, Laravel will throw an error. If you would like to include a view that may or may not be present, you should use the `@includeIf` directive:
-
-    @includeIf('view.name', ['some' => 'data'])
-
-If you would like to `@include` a view if a given boolean expression evaluates to `true`, you may use the `@includeWhen` directive:
-
-    @includeWhen($boolean, 'view.name', ['some' => 'data'])
-
-If you would like to `@include` a view if a given boolean expression evaluates to `false`, you may use the `@includeUnless` directive:
-
-    @includeUnless($boolean, 'view.name', ['some' => 'data'])
-
-To include the first view that exists from a given array of views, you may use the `includeFirst` directive:
-
-    @includeFirst(['custom.admin', 'admin'], ['some' => 'data'])
-
-> {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
-
-<a name="aliasing-includes"></a>
-#### Aliasing Includes
-
-If your Blade includes are stored in a subdirectory, you may wish to alias them for easier access. For example, imagine a Blade include that is stored at `resources/views/includes/input.blade.php` with the following content:
-
-    <input type="{{ $type ?? 'text' }}">
-
-You may use the `include` method to alias the include from `includes.input` to `input`. Typically, this should be done in the `boot` method of your `AppServiceProvider`:
-
-    use Illuminate\Support\Facades\Blade;
-
-    Blade::include('includes.input', 'input');
-
-Once the include has been aliased, you may render it using the alias name as the Blade directive:
-
-    @input(['type' => 'email'])
-
-<a name="rendering-views-for-collections"></a>
-### Rendering Views For Collections
-
-You may combine loops and includes into one line with Blade's `@each` directive:
-
-    @each('view.name', $jobs, 'job')
-
-The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial. The key for the current iteration will be available as the `key` variable within your view partial.
-
-You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
-
-    @each('view.name', $jobs, 'job', 'view.empty')
-
-> {note} Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use `@foreach` and `@include` instead.
 
 <a name="stacks"></a>
 ## Stacks
