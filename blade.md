@@ -39,7 +39,7 @@
 
 Blade is the simple, yet powerful templating engine that is included with Laravel. Unlike some PHP templating engines, Blade does not restrict you from using plain PHP code in your templates. In fact, all Blade templates are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade template files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
 
-Blade views may be returned from routes or controller using the global `view` helper. Of course, as mentioned in the documentation on [views](/docs/{{version}}/views), data may be passed to the view using the `view` helper's second argument:
+Blade views may be returned from routes or controller using the global `view` helper. Of course, as mentioned in the documentation on [views](/docs/{{version}}/views), data may be passed to the Blade view using the `view` helper's second argument:
 
     Route::get('/', function () {
         return view('greeting', ['name' => 'Finn']);
@@ -431,21 +431,60 @@ The `@once` directive allows you to define a portion of the template that will o
 <a name="layouts-using-components"></a>
 ### Layouts Using Components
 
-We previously discussed [template inheritance](#template-inheritance) in this documentation. However, if you prefer, you may use components to achieve the same goals as template inheritance. For example, imagine a `layout` component that looks like the following:
+Most web applications maintain the same general layout across various pages. It would be incredibly cumbersome and hard to maintain our application if we had to repeat the entire layout HTML in every view we create. Thankfully, it's convenient to define this layout as a single [Blade component](#components) and then use it throughout our application.
+
+<a name="defining-the-layout-component"></a>
+#### Defining The Layout Component
+
+For example, imagine we are building a "todo" list application. We might define a `layout` component that looks like the following:
+
+    <!-- resources/views/components/layout.blade.php -->
 
     <html>
+        <head>
+            <title>{{ $title ?? 'Todo Manager' }}
+        </head>
         <body>
-            <h1>Application</h1>
-            <hr>
+            <h1>Todos</h1>
+            <hr/>
             {{ $slot }}
         </body>
     </html>
 
-Once the `layout` component has been defined, we may create a Blade template that utilizes the `layout` component to achieve the same goals as template inheritance:
+<a name="applying-the-layout-component"></a>
+#### Applying The Layout Component
+
+Once the `layout` component has been defined, we may create a Blade view that utilizes the component. In this example, we will define a simple view that displays our task list:
+
+    <!-- resources/views/tasks.blade.php -->
 
     <x-layout>
-        Page content...
+        @foreach ($tasks as $task)
+            {{ $task }}
+        @endforeach
     </x-layout>
+
+Remember, content that is injected into a component will be supplied to the default `$slot` variable within our `layout` component. As you may have noticed, our `layout` also respects a `$title` slot if one is provided; otherwise, a default title is shown. We may inject a custom title from our task list view using the standard slot syntax discussed in the [component documentation](#components):
+
+    <!-- resources/views/tasks.blade.php -->
+
+    <x-layout>
+        <x-slot name="title">
+            Custom Title
+        </x-slot>
+
+        @foreach ($tasks as $task)
+            {{ $task }}
+        @endforeach
+    </x-layout>
+
+Now that we have defined our layout and task list views, we just need to return the `task` view from a route:
+
+    use App\Models\Task;
+
+    Route::get('/tasks', function () {
+        return view('tasks', ['tasks' => Task::all()]);
+    });
 
 <a name="layouts-using-template-inheritance"></a>
 ### Layouts Using Template Inheritance
@@ -453,9 +492,11 @@ Once the `layout` component has been defined, we may create a Blade template tha
 <a name="defining-a-layout"></a>
 #### Defining A Layout
 
-Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
+Layouts may also be created via "template inheritance". This was the primary way of building applications prior to the introduction of [components](#components).
 
-    <!-- Stored in resources/views/layouts/app.blade.php -->
+To get started, let's take a look at a simple example. First, we will examine a page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
+
+    <!-- resources/views/layouts/app.blade.php -->
 
     <html>
         <head>
@@ -481,7 +522,7 @@ Now that we have defined a layout for our application, let's define a child page
 
 When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
-    <!-- Stored in resources/views/child.blade.php -->
+    <!-- resources/views/child.blade.php -->
 
     @extends('layouts.app')
 
