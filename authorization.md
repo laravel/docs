@@ -295,6 +295,7 @@ You may continue to define additional methods on the policy as needed for the va
 <a name="policy-responses"></a>
 ### Policy Responses
 
+THIS ITEM IS ABOUT GATES E NOT ABOUT POLICIES
 So far, we have only examined policy methods that return simple boolean values. However, sometimes you may wish to return a more detailed response, including an error message. To do so, you may return an `Illuminate\Auth\Access\Response` from your policy method:
 
     use Illuminate\Auth\Access\Response;
