@@ -57,7 +57,7 @@ Name | Description
 `stack` | A wrapper to facilitate creating "multi-channel" channels
 `syslog` | A `SyslogHandler` based Monolog driver
 
-> {tip} Check out the documentation on [advanced channel customization](#advanced-monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
+> {tip} Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
 <a name="channel-prerequisites"></a>
 ### Channel Prerequisites
