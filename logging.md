@@ -2,6 +2,8 @@
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
+    - [Available Channel Drivers](#available-channel-drivers)
+    - [Channel Prerequisites](#channel-prerequisites)
     - [Building Log Stacks](#building-log-stacks)
 - [Writing Log Messages](#writing-log-messages)
     - [Writing To Specific Channels](#writing-to-specific-channels)
@@ -36,7 +38,9 @@ By default, Monolog is instantiated with a "channel name" that matches the curre
     ],
 
 <a name="available-channel-drivers"></a>
-#### Available Channel Drivers
+### Available Channel Drivers
+
+The following log channel drivers are available in every Laravel application. An entry for most of these drivers is already present in your application's `config/logging.php` configuration file, so be sure to review this file to become familiar with its contents:
 
 Name | Description
 ------------- | -------------
@@ -49,8 +53,12 @@ Name | Description
 `errorlog` | A `ErrorLogHandler` based Monolog driver
 `monolog` | A Monolog factory driver that may use any supported Monolog handler
 `custom` | A driver that calls a specified factory to create a channel
+`null` | A driver that discards all log messages
 
 > {tip} Check out the documentation on [advanced channel customization](#advanced-monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
+
+<a name="channel-prerequisites"></a>
+### Channel Prerequisites
 
 <a name="configuring-the-single-and-daily-channels"></a>
 #### Configuring The Single and Daily Channels
@@ -66,12 +74,12 @@ Name | Description | Default
 <a name="configuring-the-papertrail-channel"></a>
 #### Configuring The Papertrail Channel
 
-The `papertrail` channel requires the `url` and `port` configuration options. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
+The `papertrail` channel requires the `host` and `port` configuration options. You can obtain these values from [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app).
 
 <a name="configuring-the-slack-channel"></a>
 #### Configuring The Slack Channel
 
-The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team. By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this in your `logging` configuration file.
+The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team. By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this in your `config/logging.php` configuration file by modifying the `level` configuration option within your Slack log channel's configuration array.
 
 <a name="building-log-stacks"></a>
 ### Building Log Stacks
@@ -118,6 +126,8 @@ Given our configuration, the `syslog` channel will write the message to the syst
 
 You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades). As previously mentioned, the logger provides the eight logging levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**:
 
+    use Illuminate\Support\Facades\Log;
+
     Log::emergency($message);
     Log::alert($message);
     Log::critical($message);
@@ -127,7 +137,7 @@ You may write information to the logs using the `Log` [facade](/docs/{{version}}
     Log::info($message);
     Log::debug($message);
 
-So, you may call any of these methods to log a message for the corresponding level. By default, the message will be written to the default log channel as configured by your `config/logging.php` configuration file:
+You may call any of these methods to log a message for the corresponding level. By default, the message will be written to the default log channel as configured by your `logging` configuration file:
 
     <?php
 
@@ -143,13 +153,15 @@ So, you may call any of these methods to log a message for the corresponding lev
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
-        public function showProfile($id)
+        public function show($id)
         {
-            Log::info('Showing user profile for user: '.$id);
+            Log::info('Showing the user profile for user: '.$id);
 
-            return view('user.profile', ['user' => User::findOrFail($id)]);
+            return view('user.profile', [
+                'user' => User::findOrFail($id)
+            ]);
         }
     }
 
@@ -164,6 +176,8 @@ An array of contextual data may also be passed to the log methods. This contextu
 ### Writing To Specific Channels
 
 Sometimes you may wish to log a message to a channel other than your application's default channel. You may use the `channel` method on the `Log` facade to retrieve and log to any channel defined in your configuration file:
+
+    use Illuminate\Support\Facades\Log;
 
     Log::channel('slack')->info('Something happened!');
 
@@ -180,7 +194,7 @@ If you would like to create an on-demand logging stack consisting of multiple ch
 
 Sometimes you may need complete control over how Monolog is configured for an existing channel. For example, you may want to configure a custom Monolog `FormatterInterface` implementation for a given channel's handlers.
 
-To get started, define a `tap` array on the channel's configuration. The `tap` array should contain a list of classes that should have an opportunity to customize (or "tap" into) the Monolog instance after it is created:
+To get started, define a `tap` array on the channel's configuration. The `tap` array should contain a list of classes that should have an opportunity to customize (or "tap" into) the Monolog instance after it is created. There is no conventional location where these classes should be placed, so you are free to create a directory within your application to contain these classes:
 
     'single' => [
         'driver' => 'single',
@@ -258,16 +272,16 @@ If you are using a Monolog handler that is capable of providing its own formatte
 <a name="creating-channels-via-factories"></a>
 ### Creating Channels Via Factories
 
-If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Your configuration should include a `via` option to point to the factory class which will be invoked to create the Monolog instance:
+If you would like to define an entirely custom channel in which you have full control over Monolog's instantiation and configuration, you may specify a `custom` driver type in your `config/logging.php` configuration file. Your configuration should include a `via` option that contains the name of the factory class which will be invoked to create the Monolog instance:
 
     'channels' => [
-        'custom' => [
+        'example-custom-channel' => [
             'driver' => 'custom',
             'via' => App\Logging\CreateCustomLogger::class,
         ],
     ],
 
-Once you have configured the `custom` channel, you're ready to define the class that will create your Monolog instance. This class only needs a single method: `__invoke`, which should return the Monolog instance:
+Once you have configured the `custom` driver channel, you're ready to define the class that will create your Monolog instance. This class only needs a single `__invoke` method which should return the Monolog logger instance. The method will receive the channels configuration array as its only argument:
 
     <?php
 
