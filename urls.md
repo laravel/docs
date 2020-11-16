@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [The Basics](#the-basics)
-    - [Generating Basic URLs](#generating-basic-urls)
+    - [Generating URLs](#generating-urls)
     - [Accessing The Current URL](#accessing-the-current-url)
 - [URLs For Named Routes](#urls-for-named-routes)
     - [Signed URLs](#signed-urls)
@@ -12,15 +12,15 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides several helpers to assist you in generating URLs for your application. These are mainly helpful when building links in your templates and API responses, or when generating redirect responses to another part of your application.
+Laravel provides several helpers to assist you in generating URLs for your application. These helpers are primarily helpful when building links in your templates and API responses, or when generating redirect responses to another part of your application.
 
 <a name="the-basics"></a>
 ## The Basics
 
-<a name="generating-basic-urls"></a>
-### Generating Basic URLs
+<a name="generating-urls"></a>
+### Generating URLs
 
-The `url` helper may be used to generate arbitrary URLs for your application. The generated URL will automatically use the scheme (HTTP or HTTPS) and host from the current request:
+The `url` helper may be used to generate arbitrary URLs for your application. The generated URL will automatically use the scheme (HTTP or HTTPS) and host from the current request being handled by the application:
 
     $post = App\Models\Post::find(1);
 
@@ -51,7 +51,7 @@ Each of these methods may also be accessed via the `URL` [facade](/docs/{{versio
 <a name="urls-for-named-routes"></a>
 ## URLs For Named Routes
 
-The `route` helper may be used to generate URLs to named routes. Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your `route` function calls. For example, imagine your application contains a route defined like the following:
+The `route` helper may be used to generate URLs to [named routes](/docs/{{version}}/routing#named-routes). Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your calls to the `route` function. For example, imagine your application contains a route defined like the following:
 
     Route::get('/post/{post}', function () {
         //
@@ -63,17 +63,7 @@ To generate a URL to this route, you may use the `route` helper like so:
 
     // http://example.com/post/1
 
-Any additional array parameters that do not correspond to the route's definition parameters will be added to the URL's query string:
-
-    echo route('post.show', ['post' => 1, 'search' => 'rocket']);
-
-    // http://example.com/post/1?search=rocket
-
-You will often be generating URLs using the primary key of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's primary key:
-
-    echo route('post.show', ['post' => $post]);
-
-The `route` helper may also be used to generate URLs for routes with multiple parameters:
+Of course, the `route` helper may also be used to generate URLs for routes with multiple parameters:
 
     Route::get('/post/{post}/comment/{comment}', function () {
         //
@@ -82,6 +72,19 @@ The `route` helper may also be used to generate URLs for routes with multiple pa
     echo route('comment.show', ['post' => 1, 'comment' => 3]);
 
     // http://example.com/post/1/comment/3
+
+Any additional array elements that do not correspond to the route's definition parameters will be added to the URL's query string:
+
+    echo route('post.show', ['post' => 1, 'search' => 'rocket']);
+
+    // http://example.com/post/1?search=rocket
+
+<a name="eloquent-models"></a>
+#### Eloquent Models
+
+You will often be generating URLs using the primary key of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's primary key:
+
+    echo route('post.show', ['post' => $post]);
 
 <a name="signed-urls"></a>
 ### Signed URLs
@@ -94,7 +97,7 @@ For example, you might use signed URLs to implement a public "unsubscribe" link 
 
     return URL::signedRoute('unsubscribe', ['user' => 1]);
 
-If you would like to generate a temporary signed route URL that expires, you may use the `temporarySignedRoute` method:
+If you would like to generate a temporary signed route URL that expires after a specified amount of time, you may use the `temporarySignedRoute` method. When Laravel validates a temporary signed route URL, it will ensure that the expiration timestamp that is encoded into the signed URL has not elapsed:
 
     use Illuminate\Support\Facades\URL;
 
@@ -117,7 +120,7 @@ To verify that an incoming request has a valid signature, you should call the `h
         // ...
     })->name('unsubscribe');
 
-Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` middleware to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
+Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
 
     /**
      * The application's route middleware.
@@ -130,7 +133,7 @@ Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignatu
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
     ];
 
-Once you have registered the middleware in your kernel, you may attach it to a route. If the incoming request does not have a valid signature, the middleware will automatically return a `403` error response:
+Once you have registered the middleware in your kernel, you may attach it to a route. If the incoming request does not have a valid signature, the middleware will automatically return a `403` HTTP response:
 
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
@@ -145,7 +148,7 @@ The `action` function generates a URL for the given controller action:
 
     $url = action([HomeController::class, 'index']);
 
-If the controller method accepts route parameters, you may pass them as the second argument to the function:
+If the controller method accepts route parameters, you may pass an associative array of route parameters as the second argument to the function:
 
     $url = action([UserController::class, 'profile'], ['id' => 1]);
 
@@ -169,6 +172,13 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
 
     class SetDefaultLocaleForUrls
     {
+        /**
+         * Handle the incoming request.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Closure  $next
+         * @return \Illuminate\Http\Response
+         */
         public function handle($request, Closure $next)
         {
             URL::defaults(['locale' => $request->user()->locale]);
