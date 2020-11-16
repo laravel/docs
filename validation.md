@@ -1191,7 +1191,7 @@ The `column` option may be used to specify the field's corresponding database co
 
     'email' => 'unique:users,email_address'
 
-**Custom Database Connection**
+**Specifying A Custom Database Connection**
 
 Occasionally, you may need to set a custom connection for database queries made by the Validator. To accomplish this, you may prepend the connection name to the table name:
 
