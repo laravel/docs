@@ -7,7 +7,7 @@
 - [Building Log Stacks](#building-log-stacks)
 - [Writing Log Messages](#writing-log-messages)
     - [Writing To Specific Channels](#writing-to-specific-channels)
-- [Advanced Monolog Channel Customization](#advanced-monolog-channel-customization)
+- [Monolog Channel Customization](#monolog-channel-customization)
     - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
     - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
     - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
@@ -190,8 +190,8 @@ If you would like to create an on-demand logging stack consisting of multiple ch
     Log::stack(['single', 'slack'])->info('Something happened!');
 
 
-<a name="advanced-monolog-channel-customization"></a>
-## Advanced Monolog Channel Customization
+<a name="monolog-channel-customization"></a>
+## Monolog Channel Customization
 
 <a name="customizing-monolog-for-channels"></a>
 ### Customizing Monolog For Channels
