@@ -31,12 +31,14 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides several different approaches to validate your application's incoming data. By default, Laravel's base controller class uses a `ValidatesRequests` trait which provides a convenient method to validate incoming HTTP requests with a variety of powerful validation rules.
+Laravel provides several different approaches to validate your application's incoming data. It is most common to use the `validate` method available on all incoming HTTP requests. However, we will discuss other approaches to validation as well.
+
+Laravel includes a wide variety of convenient validation rules that you may apply to data, even providing the ability to validate if values are unique in a given database table. We'll cover each of these validation rules in detail so that you are familiar with all of Laravel's validation features.
 
 <a name="validation-quickstart"></a>
 ## Validation Quickstart
 
-To learn about Laravel's powerful validation features, let's look at a complete example of validating a form and displaying the error messages back to the user.
+To learn about Laravel's powerful validation features, let's look at a complete example of validating a form and displaying the error messages back to the user. By reading this high-level overview, you'll be able to gain a good general understanding of how to validate incoming request data using Laravel:
 
 <a name="quick-defining-the-routes"></a>
 ### Defining The Routes
@@ -45,16 +47,15 @@ First, let's assume we have the following routes defined in our `routes/web.php`
 
     use App\Http\Controllers\PostController;
 
-    Route::get('post/create', [PostController::class, 'create']);
-
-    Route::post('post', [PostController::class, 'store']);
+    Route::get('/post/create', [PostController::class, 'create']);
+    Route::post('/post', [PostController::class, 'store']);
 
 The `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
 
 <a name="quick-creating-the-controller"></a>
 ### Creating The Controller
 
-Next, let's take a look at a simple controller that handles these routes. We'll leave the `store` method empty for now:
+Next, let's take a look at a simple controller that handles incoming requests to these routes. We'll leave the `store` method empty for now:
 
     <?php
 
@@ -68,7 +69,7 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
         /**
          * Show the form to create a new blog post.
          *
-         * @return Response
+         * @return \Illuminate\View\View
          */
         public function create()
         {
@@ -78,8 +79,8 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
         /**
          * Store a new blog post.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -90,19 +91,19 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
 <a name="quick-writing-the-validation-logic"></a>
 ### Writing The Validation Logic
 
-Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an exception will be thrown and the proper error response will automatically be sent back to the user. In the case of a traditional HTTP request, a redirect response will be generated, while a JSON response will be sent for AJAX requests.
+Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an exception will be thrown and the proper error response will automatically be sent back to the user. A redirect response to the previous URL will be generated in the case of a traditional HTTP request. If the incoming request is an XHR request, a JSON response containing the validation error messages will be returned.
 
 To get a better understanding of the `validate` method, let's jump back into the `store` method:
 
     /**
      * Store a new blog post.
      *
-     * @param  Request  $request
-     * @return Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'title' => 'required|unique:posts|max:255',
             'body' => 'required',
         ]);
@@ -110,7 +111,7 @@ To get a better understanding of the `validate` method, let's jump back into the
         // The blog post is valid...
     }
 
-As you can see, we pass the desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
+As you can see, the validation rules are passed into the `validate` method. Don't worry - all available validation rules are [documented](#available-validation-rules). Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
 
 Alternatively, validation rules may be specified as arrays of rules instead of a single `|` delimited string:
 
@@ -119,7 +120,7 @@ Alternatively, validation rules may be specified as arrays of rules instead of a
         'body' => ['required'],
     ]);
 
-You may use the `validateWithBag` method to validate a request and store any error messages within a [named error bag](#named-error-bags):
+In addition, you may use the `validateWithBag` method to validate a request and store any error messages within a [named error bag](#named-error-bags):
 
     $validatedData = $request->validateWithBag('post', [
         'title' => ['required', 'unique:posts', 'max:255'],
@@ -141,7 +142,7 @@ In this example, if the `unique` rule on the `title` attribute fails, the `max` 
 <a name="a-note-on-nested-attributes"></a>
 #### A Note On Nested Attributes
 
-If your HTTP request contains "nested" parameters, you may specify them in your validation rules using "dot" syntax:
+If the incoming HTTP request contains "nested" field data, you may specify these fields in your validation rules using "dot" syntax:
 
     $request->validate([
         'title' => 'required|unique:posts|max:255',
@@ -159,44 +160,53 @@ On the other hand, if your field name contains a literal period, you can explici
 <a name="quick-displaying-the-validation-errors"></a>
 ### Displaying The Validation Errors
 
-So, what if the incoming request parameters do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors will automatically be [flashed to the session](/docs/{{version}}/session#flash-data).
+So, what if the incoming request fields do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors will automatically be [flashed to the session](/docs/{{version}}/session#flash-data).
 
-Again, notice that we did not have to explicitly bind the error messages to the view in our `GET` route. This is because Laravel will check for errors in the session data, and automatically bind them to the view if they are available. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
+Note that we do not have to explicitly bind the error messages to the view in our `GET` route. This is because Laravel will check for errors in the session data, and automatically bind them to the view if they are available. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
 
 > {tip} The `$errors` variable is bound to the view by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. **When this middleware is applied an `$errors` variable will always be available in your views**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used.
 
 So, in our example, the user will be redirected to our controller's `create` method when validation fails, allowing us to display the error messages in the view:
 
-    <!-- /resources/views/post/create.blade.php -->
+```html
+<!-- /resources/views/post/create.blade.php -->
 
-    <h1>Create Post</h1>
+<h1>Create Post</h1>
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-    <!-- Create Post Form -->
+<!-- Create Post Form -->
+```
+
+<a name="quick-xhr-requests-and-validation"></a>
+#### XHR Requests & Validation
+
+In this example, we used a traditional form to send data to the application. However, many applications receive XHR requests from a JavaScript powered frontend. When using the `validate` method during an XHR request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a `422` HTTP status code.
 
 <a name="the-at-error-directive"></a>
 #### The `@error` Directive
 
-You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly check if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
+You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly determine if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
 
-    <!-- /resources/views/post/create.blade.php -->
+```html
+<!-- /resources/views/post/create.blade.php -->
 
-    <label for="title">Post Title</label>
+<label for="title">Post Title</label>
 
-    <input id="title" type="text" class="@error('title') is-invalid @enderror">
+<input id="title" type="text" class="@error('title') is-invalid @enderror">
 
-    @error('title')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
+@error('title')
+    <div class="alert alert-danger">{{ $message }}</div>
+@enderror
+```
 
 <a name="a-note-on-optional-fields"></a>
 ### A Note On Optional Fields
@@ -210,11 +220,6 @@ By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` m
     ]);
 
 In this example, we are specifying that the `publish_at` field may be either `null` or a valid date representation. If the `nullable` modifier is not added to the rule definition, the validator would consider `null` an invalid date.
-
-<a name="quick-ajax-requests-and-validation"></a>
-#### AJAX Requests & Validation
-
-In this example, we used a traditional form to send data to the application. However, many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
 
 <a name="form-request-validation"></a>
 ## Form Request Validation
