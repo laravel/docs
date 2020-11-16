@@ -18,7 +18,9 @@
     - [Customizing The Error Messages](#manual-customizing-the-error-messages)
     - [After Validation Hook](#after-validation-hook)
 - [Working With Error Messages](#working-with-error-messages)
-    - [Specifying Value Replacements In Language Files](#specifying-value-replacements-in-language-files)
+    - [Specifying Custom Messages In Language Files](#specifying-custom-messages-in-language-files)
+    - [Specifying Attributes In Language Files](#specifying-attribute-in-language-files)
+    - [Specifying Values In Language Files](#specifying-values-replacements-in-language-files)
 - [Available Validation Rules](#available-validation-rules)
 - [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Validating Arrays](#validating-arrays)
@@ -464,7 +466,7 @@ You may then access the named `MessageBag` instance from the `$errors` variable:
 
 If needed, you may use custom error messages for a validator instance instead of the default error messages. There are several ways to specify custom messages. First, you may pass the custom messages as the third argument to the `Validator::make` method:
 
-    $validator = Validator::make($input, $rules, [
+    $validator = Validator::make($input, $rules, $messages = [
         'required' => 'The :attribute field is required.',
     ]);
 
@@ -486,27 +488,10 @@ Sometimes you may wish to specify a custom error message only for a specific att
         'email.required' => 'We need to know your email address!',
     ];
 
-<a name="localization"></a>
-#### Specifying Custom Messages In Language Files
-
-In most cases, you will probably specify your custom messages in a language file instead of passing them directly to a validator instance. To do so, add your messages to the `custom` array in the `resources/lang/xx/validation.php` language file:
-
-    'custom' => [
-        'email' => [
-            'required' => 'We need to know your email address!',
-        ],
-    ],
-
 <a name="specifying-custom-attribute-values"></a>
 #### Specifying Custom Attribute Values
 
-If you would like the `:attribute` portion of your validation message to be replaced with a custom attribute name, you may specify the custom name in the `attributes` array of your `resources/lang/xx/validation.php` language file:
-
-    'attributes' => [
-        'email' => 'email address',
-    ],
-
-You may also pass the custom attributes as the fourth argument to the `Validator::make` method:
+Many of Laravel's built-in error messages include an `:attribute:` placeholder that is replaced with the name of the field or attribute under validation. To customize the values used to replace these placeholders for specific fields, you may pass an array of custom attributes as the fourth argument to the `Validator::make` method:
 
     $validator = Validator::make($input, $rules, $messages, [
         'email' => 'email address',
@@ -578,8 +563,36 @@ The `has` method may be used to determine if any error messages exist for a give
         //
     }
 
-<a name="specifying-value-replacements-in-language-files"></a>
-### Specifying Value Replacements In Language Files
+<a name="specifying-custom-messages-in-language-files"></a>
+### Specifying Custom Messages In Language Files
+
+Laravel's built-in validation rules each have an error message that is located in your application's `resources/lang/en/validation.php` file. Within this file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application.
+
+In addition, you may copy this file to another translation language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
+
+<a name="custom-messages-for-specific-attributes"></a>
+#### Custom Messages For Specific Attributes
+
+You may customize the error messages used for specified attribute and rule combinations within your application's validation language files. To do so, add your message customizations to the `custom` array of your application's `resources/lang/xx/validation.php` language file:
+
+    'custom' => [
+        'email' => [
+            'required' => 'We need to know your email address!',
+            'max' => 'Your email address is too long!'
+        ],
+    ],
+
+<a name="specifying-attribute-in-language-files"></a>
+### Specifying Attributes In Language Files
+
+Many of Laravel's built-in error messages include an `:attribute:` placeholder that is replaced with the name of the field or attribute under validation. If you would like the `:attribute` portion of your validation message to be replaced with a custom value, you may specify the custom attribute name in the `attributes` array of your `resources/lang/xx/validation.php` language file:
+
+    'attributes' => [
+        'email' => 'email address',
+    ],
+
+<a name="specifying-values-in-language-files"></a>
+### Specifying Values In Language Files
 
 Some of Laravel's built-in validation rule error messages contain a `:value` placeholder that is replaced with the current value of the request attribute. However, you may occasionally need the `:value` portion of your validation message to be replaced with a custom representation of the value. For example, consider the following rule that specifies that a credit card number is required if the `payment_type` has a value of `cc`:
 
@@ -1253,7 +1266,9 @@ The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) univ
 
 You may occasionally wish to not validate a given field if another field has a given value. You may accomplish this using the `exclude_if` validation rule. In this example, the `appointment_date` and `doctor_name` fields will not be validated if the `has_appointment` field has a value of `false`:
 
-    $v = Validator::make($data, [
+    use Illuminate\Support\Facades\Validator;
+
+    $validator = Validator::make($data, [
         'has_appointment' => 'required|bool',
         'appointment_date' => 'exclude_if:has_appointment,false|required|date',
         'doctor_name' => 'exclude_if:has_appointment,false|required|string',
@@ -1261,7 +1276,7 @@ You may occasionally wish to not validate a given field if another field has a g
 
 Alternatively, you may use the `exclude_unless` rule to not validate a given field unless another field has a given value:
 
-    $v = Validator::make($data, [
+    $validator = Validator::make($data, [
         'has_appointment' => 'required|bool',
         'appointment_date' => 'exclude_unless:has_appointment,true|required|date',
         'doctor_name' => 'exclude_unless:has_appointment,true|required|string',
@@ -1270,9 +1285,9 @@ Alternatively, you may use the `exclude_unless` rule to not validate a given fie
 <a name="validating-when-present"></a>
 #### Validating When Present
 
-In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
+In some situations, you may wish to run validation checks against a field **only** if that field is present in the data being validated. To quickly accomplish this, add the `sometimes` rule to your rule list:
 
-    $v = Validator::make($data, [
+    $v = Validator::make($request->all(), [
         'email' => 'sometimes|required|email',
     ]);
 
@@ -1285,12 +1300,14 @@ In the example above, the `email` field will only be validated if it is present 
 
 Sometimes you may wish to add validation rules based on more complex conditional logic. For example, you may wish to require a given field only if another field has a greater value than 100. Or, you may need two fields to have a given value only when another field is present. Adding these validation rules doesn't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
 
-    $v = Validator::make($data, [
+    use Illuminate\Support\Facades\Validator;
+
+    $validator = Validator::make($request->all(), [
         'email' => 'required|email',
         'games' => 'required|numeric',
     ]);
 
-Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game resale shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
+Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game resale shop, or maybe they just enjoy collecting games. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
 
     $v->sometimes('reason', 'required|max:500', function ($input) {
         return $input->games >= 100;
@@ -1302,12 +1319,14 @@ The first argument passed to the `sometimes` method is the name of the field we 
         return $input->games >= 100;
     });
 
-> {tip} The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files.
+> {tip} The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files under validation.
 
 <a name="validating-arrays"></a>
 ## Validating Arrays
 
 Validating array based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
+
+    use Illuminate\Support\Facades\Validator;
 
     $validator = Validator::make($request->all(), [
         'photos.profile' => 'required|image',
@@ -1320,7 +1339,7 @@ You may also validate each element of an array. For example, to validate that ea
         'person.*.first_name' => 'required_with:person.*.last_name',
     ]);
 
-Likewise, you may use the `*` character when specifying your validation messages in your language files, making it a breeze to use a single validation message for array based fields:
+Likewise, you may use the `*` character when specifying [custom validation messages in your language files](#custom-messages-for-specific-attributes), making it a breeze to use a single validation message for array based fields:
 
     'custom' => [
         'person.*.email' => [
