@@ -670,9 +670,9 @@ By pairing event broadcasting with [notifications](/docs/{{version}}/notificatio
 
 Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:
 
-    Echo.private(`App.User.${userId}`)
+    Echo.private(`App.Models.User.${userId}`)
         .notification((notification) => {
             console.log(notification.type);
         });
 
-In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework.
+In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework.
