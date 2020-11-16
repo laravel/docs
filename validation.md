@@ -483,7 +483,7 @@ In this example, the `:attribute` placeholder will be replaced by the actual nam
 Sometimes you may wish to specify a custom error message only for a specific attribute. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule:
 
     $messages = [
-        'email.required' => 'We need to know your e-mail address!',
+        'email.required' => 'We need to know your email address!',
     ];
 
 <a name="localization"></a>
@@ -493,7 +493,7 @@ In most cases, you will probably specify your custom messages in a language file
 
     'custom' => [
         'email' => [
-            'required' => 'We need to know your e-mail address!',
+            'required' => 'We need to know your email address!',
         ],
     ],
 
@@ -694,7 +694,7 @@ Below is a list of all available validation rules and their function:
 <a name="rule-accepted"></a>
 #### accepted
 
-The field under validation must be _yes_, _on_, _1_, or _true_. This is useful for validating "Terms of Service" acceptance.
+The field under validation must be `"yes"`, `"on"`, `1`, or `true`. This is useful for validating "Terms of Service" acceptance or similar fields.
 
 <a name="rule-active-url"></a>
 #### active_url
@@ -704,7 +704,7 @@ The field under validation must have a valid A or AAAA record according to the `
 <a name="rule-after"></a>
 #### after:_date_
 
-The field under validation must be a value after a given date. The dates will be passed into the `strtotime` PHP function:
+The field under validation must be a value after a given date. The dates will be passed into the `strtotime` PHP function in order to be converted to a valid `DateTime` instance:
 
     'start_date' => 'required|date|after:tomorrow'
 
@@ -745,12 +745,12 @@ Stop running validation rules after the first validation failure.
 <a name="rule-before"></a>
 #### before:_date_
 
-The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
+The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
 <a name="rule-before-or-equal"></a>
 #### before\_or\_equal:_date_
 
-The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
+The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -765,7 +765,7 @@ The field under validation must be able to be cast as a boolean. Accepted input 
 <a name="rule-confirmed"></a>
 #### confirmed
 
-The field under validation must have a matching field of `foo_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
+The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
 
 <a name="rule-date"></a>
 #### date
@@ -775,7 +775,7 @@ The field under validation must be a valid, non-relative date according to the `
 <a name="rule-date-equals"></a>
 #### date_equals:_date_
 
-The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function.
+The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance.
 
 <a name="rule-date-format"></a>
 #### date_format:_format_
@@ -806,12 +806,13 @@ The file under validation must be an image meeting the dimension constraints as 
 
 Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
 
-A _ratio_ constraint should be represented as width divided by height. This can be specified either by a statement like `3/2` or a float like `1.5`:
+A _ratio_ constraint should be represented as width divided by height. This can be specified either by a fraction like `3/2` or a float like `1.5`:
 
     'avatar' => 'dimensions:ratio=3/2'
 
 Since this rule requires several arguments, you may use the `Rule::dimensions` method to fluently construct the rule:
 
+    use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
 
     Validator::make($data, [
@@ -831,7 +832,7 @@ When working with arrays, the field under validation must not have any duplicate
 <a name="rule-email"></a>
 #### email
 
-The field under validation must be formatted as an e-mail address. Under the hood, this validation rule makes use of the [`egulias/email-validator`](https://github.com/egulias/EmailValidator) package for validating the email address. By default the `RFCValidation` validator is applied, but you can apply other validation styles as well:
+The field under validation must be formatted as an email address. This validation rule utilizes the [`egulias/email-validator`](https://github.com/egulias/EmailValidator) package for validating the email address. By default the `RFCValidation` validator is applied, but you can apply other validation styles as well:
 
     'email' => 'email:rfc,dns'
 
@@ -845,7 +846,9 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 - `filter`: `FilterEmailValidation`
 </div>
 
-The `filter` validator, which uses PHP's `filter_var` function under the hood, ships with Laravel and is Laravel's pre-5.8 behavior. The `dns` and `spoof` validators require the PHP `intl` extension.
+The `filter` validator, which uses PHP's `filter_var` function, ships with Laravel and was Laravel's default email validation behavior prior to Laravel version 5.8.
+
+> {note} The `dns` and `spoof` validators require the PHP `intl` extension.
 
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...
@@ -865,21 +868,23 @@ The field under validation will be excluded from the request data returned by th
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
 
-The field under validation must exist on a given database table.
+The field under validation must exist in a given database table.
 
 <a name="basic-usage-of-exists-rule"></a>
 #### Basic Usage Of Exists Rule
 
     'state' => 'exists:states'
 
-If the `column` option is not specified, the field name will be used.
+If the `column` option is not specified, the field name will be used. So, in this case, the rule will validate that the `states` database table contains a record with a `state` column value matching the request's `state` attribute value.
 
 <a name="specifying-a-custom-column-name"></a>
 #### Specifying A Custom Column Name
 
+You may explicitly specify the database column name that should be used by the validation rule by placing it after the database table name:
+
     'state' => 'exists:states,abbreviation'
 
-Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name using "dot" syntax:
+Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name:
 
     'email' => 'exists:connection.staff,email'
 
@@ -889,6 +894,7 @@ Instead of specifying the table name directly, you may specify the Eloquent mode
 
 If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:
 
+    use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
 
     Validator::make($data, [
@@ -923,13 +929,14 @@ The field under validation must be greater than or equal to the given _field_. T
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpeg, png, bmp, gif, svg, or webp)
+The file under validation must be an image (jpeg, png, bmp, gif, svg, or webp).
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
 
 The field under validation must be included in the given list of values. Since this rule often requires you to `implode` an array, the `Rule::in` method may be used to fluently construct the rule:
 
+    use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
 
     Validator::make($data, [
@@ -993,7 +1000,7 @@ The file under validation must match one of the given MIME types:
 
     'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
 
-To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client provided MIME type.
+To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client's provided MIME type.
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
@@ -1005,9 +1012,9 @@ The file under validation must have a MIME type corresponding to one of the list
 
     'photo' => 'mimes:jpeg,bmp,png'
 
-Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
+Even though you only need to specify the extensions, this rule actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:
 
-A full listing of MIME types and their corresponding extensions may be found at the following location: [https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+[https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
 <a name="rule-min"></a>
 #### min:_value_
@@ -1040,12 +1047,12 @@ The field under validation must not match the given regular expression.
 
 Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'not_regex:/^.+$/i'`.
 
-**Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+> {note} When using the `regex` / `not_regex` patterns, it may be necessary to specify your validation rules using an array instead of using `|` delimiters, especially if the regular expression contains a `|` character.
 
 <a name="rule-nullable"></a>
 #### nullable
 
-The field under validation may be `null`. This is particularly useful when validating primitive such as strings and integers that can contain `null` values.
+The field under validation may be `null`.
 
 <a name="rule-numeric"></a>
 #### numeric
@@ -1055,7 +1062,7 @@ The field under validation must be numeric.
 <a name="rule-password"></a>
 #### password
 
-The field under validation must match the authenticated user's password. You may specify an authentication guard using the rule's first parameter:
+The field under validation must match the authenticated user's password. You may specify an [authentication guard](/docs/{{version}}/authentication) using the rule's first parameter:
 
     'password' => 'password:api'
 
@@ -1071,7 +1078,7 @@ The field under validation must match the given regular expression.
 
 Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
 
-**Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+> {note} When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using `|` delimiters, especially if the regular expression contains a `|` character.
 
 <a name="rule-required"></a>
 #### required
@@ -1094,6 +1101,7 @@ The field under validation must be present and not empty if the _anotherfield_ f
 
 If you would like to construct a more complex condition for the `required_if` rule, you may use the `Rule::requiredIf` method. This methods accepts a boolean or a closure. When passed a closure, the closure should return `true` or `false` to indicate if the field under validation is required:
 
+    use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
 
     Validator::make($request->all(), [
@@ -1179,22 +1187,23 @@ Instead of specifying the table name directly, you may specify the Eloquent mode
 
     'email' => 'unique:App\Models\User,email_address'
 
-The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the field name will be used.
+The `column` option may be used to specify the field's corresponding database column. If the `column` option is not specified, the name of the field under validation will be used.
 
     'email' => 'unique:users,email_address'
 
 **Custom Database Connection**
 
-Occasionally, you may need to set a custom connection for database queries made by the Validator. As seen above, setting `unique:users` as a validation rule will use the default database connection to query the database. To override this, specify the connection and the table name using "dot" syntax:
+Occasionally, you may need to set a custom connection for database queries made by the Validator. To accomplish this, you may prepend the connection name to the table name:
 
     'email' => 'unique:connection.users,email_address'
 
 **Forcing A Unique Rule To Ignore A Given ID:**
 
-Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. You will probably want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address.
+Sometimes, you may wish to ignore a given ID during unique validation. For example, consider an "update profile" screen that includes the user's name, email address, and location. You will probably want to verify that the email address is unique. However, if the user only changes the name field and not the email field, you do not want a validation error to be thrown because the user is already the owner of the email address in question.
 
 To instruct the validator to ignore the user's ID, we'll use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit the rules:
 
+    use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
 
     Validator::make($data, [
@@ -1206,7 +1215,7 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
 
 > {note} You should never pass any user controlled request input into the `ignore` method. Instead, you should only pass a system generated unique ID such as an auto-incrementing ID or UUID from an Eloquent model instance. Otherwise, your application will be vulnerable to an SQL injection attack.
 
-Instead of passing the model key's value to the `ignore` method, you may pass the entire model instance. Laravel will automatically extract the key from the model:
+Instead of passing the model key's value to the `ignore` method, you may also pass the entire model instance. Laravel will automatically extract the key from the model:
 
     Rule::unique('users')->ignore($user)
 
@@ -1220,7 +1229,7 @@ By default, the `unique` rule will check the uniqueness of the column matching t
 
 **Adding Additional Where Clauses:**
 
-You may also specify additional query constraints by customizing the query using the `where` method. For example, let's add a constraint that verifies the `account_id` is `1`:
+You may specify additional query conditions by customizing the query using the `where` method. For example, let's add a query condition that scopes the query to only search records that have an `account_id` column value of `1`:
 
     'email' => Rule::unique('users')->where(function ($query) {
         return $query->where('account_id', 1);
@@ -1304,7 +1313,7 @@ Validating array based form input fields doesn't have to be a pain. You may use 
         'photos.profile' => 'required|image',
     ]);
 
-You may also validate each element of an array. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
+You may also validate each element of an array. For example, to validate that each email in a given array input field is unique, you may do the following:
 
     $validator = Validator::make($request->all(), [
         'person.*.email' => 'email|unique:users',
@@ -1315,7 +1324,7 @@ Likewise, you may use the `*` character when specifying your validation messages
 
     'custom' => [
         'person.*.email' => [
-            'unique' => 'Each person must have a unique e-mail address',
+            'unique' => 'Each person must have a unique email address',
         ]
     ],
 
