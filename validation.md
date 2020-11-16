@@ -27,8 +27,7 @@
 - [Custom Validation Rules](#custom-validation-rules)
     - [Using Rule Objects](#using-rule-objects)
     - [Using Closures](#using-closures)
-    - [Using Extensions](#using-extensions)
-    - [Implicit Extensions](#implicit-extensions)
+    - [Implicit Rules](#implicit-rules)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1353,7 +1352,7 @@ Likewise, you may use the `*` character when specifying [custom validation messa
 <a name="using-rule-objects"></a>
 ### Using Rule Objects
 
-Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you may use the `make:rule` Artisan command. Let's use this command to generate a rule that verifies a string is uppercase. Laravel will place the new rule in the `app/Rules` directory:
+Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you may use the `make:rule` Artisan command. Let's use this command to generate a rule that verifies a string is uppercase. Laravel will place the new rule in the `app/Rules` directory. If this directory does not exist, Laravel will create it when you execute the Artisan command to create your rule:
 
     php artisan make:rule Uppercase
 
@@ -1415,92 +1414,26 @@ Once the rule has been defined, you may attach it to a validator by passing an i
 
 If you only need the functionality of a custom rule once throughout your application, you may use a closure instead of a rule object. The closure receives the attribute's name, the attribute's value, and a `$fail` callback that should be called if validation fails:
 
+    use Illuminate\Support\Facades\Validator;
+
     $validator = Validator::make($request->all(), [
         'title' => [
             'required',
             'max:255',
             function ($attribute, $value, $fail) {
                 if ($value === 'foo') {
-                    $fail($attribute.' is invalid.');
+                    $fail('The '.$attribute.' is invalid.');
                 }
             },
         ],
     ]);
 
-<a name="using-extensions"></a>
-### Using Extensions
+<a name="implicit-rules"></a>
+### Implicit Rules
 
-Another method of registering custom validation rules is using the `extend` method on the `Validator` [facade](/docs/{{version}}/facades). Let's use this method within a [service provider](/docs/{{version}}/providers) to register a custom validation rule:
+By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom rules, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:
 
-    <?php
-
-    namespace App\Providers;
-
-    use Illuminate\Support\ServiceProvider;
     use Illuminate\Support\Facades\Validator;
-
-    class AppServiceProvider extends ServiceProvider
-    {
-        /**
-         * Register any application services.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
-        }
-
-        /**
-         * Bootstrap any application services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            Validator::extend('foo', function ($attribute, $value, $parameters, $validator) {
-                return $value == 'foo';
-            });
-        }
-    }
-
-The custom validator closure receives four arguments: the name of the `$attribute` being validated, the `$value` of the attribute, an array of `$parameters` passed to the rule, and the `Validator` instance.
-
-You may also pass a class and method to the `extend` method instead of a closure:
-
-    Validator::extend('foo', 'FooValidator@validate');
-
-<a name="defining-the-error-message"></a>
-#### Defining The Error Message
-
-You will also need to define an error message for your custom rule. You can do so either using an inline custom message array or by adding an entry in the validation language file. This message should be placed in the first level of the array, not within the `custom` array, which is only for attribute-specific error messages:
-
-    "foo" => "Your input was invalid!",
-
-    "accepted" => "The :attribute must be accepted.",
-
-    // The rest of the validation error messages...
-
-When creating a custom validation rule, you may sometimes need to define custom placeholder replacements for error messages. You may do so by creating a custom Validator as described above then making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Validator::extend(...);
-
-        Validator::replacer('foo', function ($message, $attribute, $rule, $parameters) {
-            return str_replace(...);
-        });
-    }
-
-<a name="implicit-extensions"></a>
-### Implicit Extensions
-
-By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom extensions, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:
 
     $rules = ['name' => 'unique:users,name'];
 
@@ -1508,15 +1441,6 @@ By default, when an attribute being validated is not present or contains an empt
 
     Validator::make($input, $rules)->passes(); // true
 
-For a rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create such an "implicit" extension, use the `Validator::extendImplicit()` method:
+For a custom rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create an "implicit" rule, implement the `Illuminate\Contracts\Validation\ImplicitRule` interface. This interface serves as a "marker interface" for the validator; therefore, it does not contain any additional methods you need to implement beyond the methods required by the typical `Rule` interface.
 
-    Validator::extendImplicit('foo', function ($attribute, $value, $parameters, $validator) {
-        return $value == 'foo';
-    });
-
-> {note} An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
-
-<a name="implicit-rule-objects"></a>
-#### Implicit Rule Objects
-
-If you would like a rule object to run when an attribute is empty, you should implement the `Illuminate\Contracts\Validation\ImplicitRule` interface. This interface serves as a "marker interface" for the validator; therefore, it does not contain any methods you need to implement.
+> {note} An "implicit" rule only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
