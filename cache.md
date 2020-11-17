@@ -280,7 +280,7 @@ In contrast, this statement would remove only caches tagged with `authors`, so `
 <a name="atomic-locks"></a>
 ## Atomic Locks
 
-> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb`, `redis`, `database`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb`, `redis`, `database`, `file` or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 <a name="lock-driver-prerequisites"></a>
 ### Driver Prerequisites
