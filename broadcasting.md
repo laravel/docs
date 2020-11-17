@@ -128,16 +128,18 @@ npm install --save-dev laravel-echo pusher-js
 
 Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file - you simply need to uncomment it:
 
-    import Echo from 'laravel-echo';
+```js
+import Echo from 'laravel-echo';
 
-    window.Pusher = require('pusher-js');
+window.Pusher = require('pusher-js');
 
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: process.env.MIX_PUSHER_APP_KEY,
-        cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-        forceTLS: true
-    });
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    forceTLS: true
+});
+```
 
 Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
 
@@ -150,15 +152,17 @@ Once you have uncommented and adjusted the Echo configuration according to your 
 
 If you already have a pre-configured Pusher Channels client instance that you would like Echo to utilize, you may pass it to Echo via the `client` configuration option:
 
-    import Echo from 'laravel-echo';
+```js
+import Echo from 'laravel-echo';
 
-    const client = require('pusher-js');
+const client = require('pusher-js');
 
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: 'your-pusher-channels-key',
-        client: client
-    });
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'your-pusher-channels-key',
+    client: client
+});
+```
 
 <a name="client-ably"></a>
 ### Ably
@@ -175,18 +179,20 @@ npm install --save-dev laravel-echo pusher-js
 
 Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file; however, the default configuration in the `bootstrap.js` file is intended for Pusher. You may copy the configuration below to transition your configuration to Ably:
 
-    import Echo from 'laravel-echo';
+```js
+import Echo from 'laravel-echo';
 
-    window.Pusher = require('pusher-js');
+window.Pusher = require('pusher-js');
 
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: process.env.MIX_ABLY_PUBLIC_KEY,
-        wsHost: 'realtime-pusher.ably.io',
-        wsPort: 443,
-        disableStats: true,
-        encrypted: true,
-    });
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_ABLY_PUBLIC_KEY,
+    wsHost: 'realtime-pusher.ably.io',
+    wsPort: 443,
+    disableStats: true,
+    encrypted: true,
+});
+```
 
 Note that our Ably Echo configuration references a `MIX_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
 
@@ -252,7 +258,7 @@ The `ShouldBroadcast` interface requires our event to define a `broadcastOn` met
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('order.'.$this->order->id);
+        return new PrivateChannel('orders.'.$this->order->id);
     }
 
 <a name="example-application-authorizing-channels"></a>
@@ -262,7 +268,7 @@ Remember, users must be authorized to listen on private channels. We may define 
 
     use App\Models\Order;
 
-    Broadcast::channel('order.{orderId}', function ($user, $orderId) {
+    Broadcast::channel('orders.{orderId}', function ($user, $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
     });
 
@@ -275,10 +281,12 @@ All authorization callbacks receive the currently authenticated user as their fi
 
 Next, all that remains is to listen for the event in our JavaScript application. We can do this using Laravel Echo. First, we'll use the `private` method to subscribe to the private channel. Then, we may use the `listen` method to listen for the `OrderShipmentStatusUpdated` event. By default, all of the event's public properties will be included on the broadcast event:
 
-    Echo.private(`order.${orderId}`)
-        .listen('OrderShipmentStatusUpdated', (e) => {
-            console.log(e.order);
-        });
+```js
+Echo.private(`orders.${orderId}`)
+    .listen('OrderShipmentStatusUpdated', (e) => {
+        console.log(e.order);
+    });
+```
 
 <a name="defining-broadcast-events"></a>
 ## Defining Broadcast Events
@@ -457,7 +465,7 @@ By default, Echo will use the `/broadcasting/auth` endpoint to authorize channel
 
 Next, we need to define the logic that will actually determine if the currently authenticated user can listen to a given channel. This is done in the `routes/channels.php` file that is included with your application. In this file, you may use the `Broadcast::channel` method to register channel authorization callbacks:
 
-    Broadcast::channel('order.{orderId}', function ($user, $orderId) {
+    Broadcast::channel('orders.{orderId}', function ($user, $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
     });
 
@@ -472,7 +480,7 @@ Just like HTTP routes, channel routes may also take advantage of implicit and ex
 
     use App\Models\Order;
 
-    Broadcast::channel('order.{order}', function ($user, Order $order) {
+    Broadcast::channel('orders.{order}', function ($user, Order $order) {
         return $user->id === $order->user_id;
     });
 
@@ -498,7 +506,7 @@ Next, register your channel in your `routes/channels.php` file:
 
     use App\Broadcasting\OrderChannel;
 
-    Broadcast::channel('order.{order}', OrderChannel::class);
+    Broadcast::channel('orders.{order}', OrderChannel::class);
 
 Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization closure. You may also take advantage of channel model binding:
 
@@ -580,53 +588,64 @@ If you are not using a global Axios instance, you will need to manually configur
 <a name="listening-for-events"></a>
 ### Listening For Events
 
-Once you have installed and instantiated Echo, you are ready to start listening for event broadcasts. First, use the `channel` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event:
+Once you have [installed and instantiated Laravel Echo](#client-side-installation), you are ready to start listening for events that are broadcast from your Laravel application. First, use the `channel` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event:
 
-    Echo.channel('orders')
-        .listen('OrderShipped', (e) => {
-            console.log(e.order.name);
-        });
+```js
+Echo.channel(`orders.${this.order.id}`)
+    .listen('OrderShipmentStatusUpdated', (e) => {
+        console.log(e.order.name);
+    });
+```
 
 If you would like to listen for events on a private channel, use the `private` method instead. You may continue to chain calls to the `listen` method to listen for multiple events on a single channel:
 
-    Echo.private('orders')
-        .listen(...)
-        .listen(...)
-        .listen(...);
+```js
+Echo.private(`orders.${this.order.id}`)
+    .listen(...)
+    .listen(...)
+    .listen(...);
+```
 
 <a name="leaving-a-channel"></a>
 ### Leaving A Channel
 
 To leave a channel, you may call the `leaveChannel` method on your Echo instance:
 
-    Echo.leaveChannel('orders');
+```js
+Echo.leaveChannel(`orders.${this.order.id}`);
+```
 
 If you would like to leave a channel and also its associated private and presence channels, you may call the `leave` method:
 
-    Echo.leave('orders');
-
+```js
+Echo.leave(`orders.${this.order.id}`);
+```
 <a name="namespaces"></a>
 ### Namespaces
 
-You may have noticed in the examples above that we did not specify the full namespace for the event classes. This is because Echo will automatically assume the events are located in the `App\Events` namespace. However, you may configure the root namespace when you instantiate Echo by passing a `namespace` configuration option:
+You may have noticed in the examples above that we did not specify the full `App\Events` namespace for the event classes. This is because Echo will automatically assume the events are located in the `App\Events` namespace. However, you may configure the root namespace when you instantiate Echo by passing a `namespace` configuration option:
 
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: 'your-pusher-channels-key',
-        namespace: 'App.Other.Namespace'
-    });
+```js
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    // ...
+    namespace: 'App.Other.Namespace'
+});
+```
 
 Alternatively, you may prefix event classes with a `.` when subscribing to them using Echo. This will allow you to always specify the fully-qualified class name:
 
-    Echo.channel('orders')
-        .listen('.Namespace\\Event\\Class', (e) => {
-            //
-        });
+```js
+Echo.channel('orders')
+    .listen('.Namespace\\Event\\Class', (e) => {
+        //
+    });
+```
 
 <a name="presence-channels"></a>
 ## Presence Channels
 
-Presence channels build on the security of private channels while exposing the additional feature of awareness of who is subscribed to the channel. This makes it easy to build powerful, collaborative application features such as notifying users when another user is viewing the same page.
+Presence channels build on the security of private channels while exposing the additional feature of awareness of who is subscribed to the channel. This makes it easy to build powerful, collaborative application features such as notifying users when another user is viewing the same page or listing the inhabitants of a chat room.
 
 <a name="authorizing-presence-channels"></a>
 ### Authorizing Presence Channels
@@ -674,13 +693,13 @@ Presence channels may receive events just like public or private channels. Using
         return new PresenceChannel('room.'.$this->message->room_id);
     }
 
-Like public or private events, presence channel events may be broadcast using the `broadcast` function. As with other events, you may use the `toOthers` method to exclude the current user from receiving the broadcast:
+As with other events, you may use the `broadcast` helper and the `toOthers` method to exclude the current user from receiving the broadcast:
 
     broadcast(new NewMessage($message));
 
     broadcast(new NewMessage($message))->toOthers();
 
-You may listen for the join event via Echo's `listen` method:
+As typical of other types of events, you may listen for events sent to presence channels using Echo's `listen` method:
 
     Echo.join(`chat.${roomId}`)
         .here(...)
@@ -699,14 +718,14 @@ Sometimes you may wish to broadcast an event to other connected clients without 
 
 To broadcast client events, you may use Echo's `whisper` method:
 
-    Echo.private('chat')
+    Echo.private(`chat.${roomId}`)
         .whisper('typing', {
             name: this.user.name
         });
 
 To listen for client events, you may use the `listenForWhisper` method:
 
-    Echo.private('chat')
+    Echo.private(`chat.${roomId}`)
         .listenForWhisper('typing', (e) => {
             console.log(e.name);
         });
@@ -714,13 +733,13 @@ To listen for client events, you may use the `listenForWhisper` method:
 <a name="notifications"></a>
 ## Notifications
 
-By pairing event broadcasting with [notifications](/docs/{{version}}/notifications), your JavaScript application may receive new notifications as they occur without needing to refresh the page. First, be sure to read over the documentation on using [the broadcast notification channel](/docs/{{version}}/notifications#broadcast-notifications).
+By pairing event broadcasting with [notifications](/docs/{{version}}/notifications), your JavaScript application may receive new notifications as they occur without needing to refresh the page. Before getting started, be sure to read over the documentation on using [the broadcast notification channel](/docs/{{version}}/notifications#broadcast-notifications).
 
 Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:
 
-    Echo.private(`App.User.${userId}`)
+    Echo.private(`App.Models.User.${userId}`)
         .notification((notification) => {
             console.log(notification.type);
         });
 
-In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework.
+In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework.
