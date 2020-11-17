@@ -1,10 +1,13 @@
 # Broadcasting
 
 - [Introduction](#introduction)
-- [Getting Started](#getting-started)
+- [Server Side Installation](#server-side-installation)
     - [Configuration](#configuration)
-    - [Server Side Driver Installation](#driver-installation)
-    - [Laravel Echo Installation](#laravel-echo-installation)
+    - [Pusher Channels](#pusher-channels)
+    - [Ably](#ably)
+- [Client Side Installation](#client-side-installation)
+    - [Pusher Channels](#client-pusher-channels)
+    - [Ably](#client-ably)
 - [Concept Overview](#concept-overview)
     - [Using An Example Application](#using-example-application)
 - [Defining Broadcast Events](#defining-broadcast-events)
@@ -34,21 +37,23 @@
 
 In many modern web applications, WebSockets are used to implement realtime, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a WebSocket connection to be handled by the client. WebSockets provide a more efficient alternative to continually polling your application's server for data changes that should be reflected in your UI.
 
-To assist you in building these types of applications, Laravel makes it easy to "broadcast" your [events](/docs/{{version}}/events) over a WebSocket connection. Broadcasting your Laravel events allows you to share the same event names and data between your server-side Laravel application and your client-side JavaScript application.
+For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch a `App\Events\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page.
+
+To assist you in building these types of features, Laravel makes it easy to "broadcast" your server-side Laravel [events](/docs/{{version}}/events) over a WebSocket connection. Broadcasting your Laravel events allows you to share the same event names and data between your server-side Laravel application and your client-side JavaScript application.
 
 <a name="supported-drivers"></a>
 #### Supported Drivers
 
-By default, Laravel includes two broadcasting drivers for you to choose from: [Pusher Channels](https://pusher.com/channels) and [Socket.io + Redis](https://socket.io). However, community driven packages such as [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) provide additional broadcasting drivers that do not require commercial broadcasting providers.
+By default, Laravel includes two server-side broadcasting drivers for you to choose from: [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.io). However, community driven packages such as [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) provide additional broadcasting drivers that do not require commercial broadcasting providers.
 
 > {tip} Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
 
-<a name="getting-started"></a>
-## Getting Started
+<a name="server-side-installation"></a>
+## Server Side Installation
 
-To get started using Laravel's event broadcasting, we first need to do some configuration within the Laravel application as well as install a few packages.
+To get started using Laravel's event broadcasting, we need to do some configuration within the Laravel application as well as install a few packages.
 
-Event broadcasting is accomplished by a server side broadcasting driver that broadcasts your Laravel events so that Laravel Echo (a JavaScript library) can receive them within the browser client. Don't worry - we'll walk through each part of the installation process step-by-step.
+Event broadcasting is accomplished by a server-side broadcasting driver that broadcasts your Laravel events so that Laravel Echo (a JavaScript library) can receive them within the browser client. Don't worry - we'll walk through each part of the installation process step-by-step.
 
 <a name="configuration"></a>
 ### Configuration
@@ -65,17 +70,14 @@ Before broadcasting any events, you will first need to register the `App\Provide
 
 You will also need to configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
 
-<a name="driver-installation"></a>
-### Server Side Driver Installation
-
 <a name="pusher-channels"></a>
-#### Pusher Channels
+### Pusher Channels
 
 If you plan to broadcast your events using [Pusher Channels](https://pusher.com/channels), you should install the Pusher Channels PHP SDK using the Composer package manager:
 
     composer require pusher/pusher-php-server "~4.0"
 
-Next, you should configure your Channels credentials in the `config/broadcasting.php` configuration file. An example Channels configuration is already included in this file, allowing you to quickly specify your Channels key, secret, and application ID. Typically, these values should be set via the `PUSHER_APP_KEY`, `PUSHER_APP_SECRET`, and `PUSHER_APP_ID` [environment variables](/docs/{{version}}/configuration#environment-configuration):
+Next, you should configure your Pusher Channels credentials in the `config/broadcasting.php` configuration file. An example Pusher Channels configuration is already included in this file, allowing you to quickly specify your key, secret, and application ID. Typically, these values should be set via the `PUSHER_APP_KEY`, `PUSHER_APP_SECRET`, and `PUSHER_APP_ID` [environment variables](/docs/{{version}}/configuration#environment-configuration):
 
     PUSHER_APP_ID=your-pusher-app-id
     PUSHER_APP_KEY=your-pusher-key
@@ -88,52 +90,37 @@ Next, you will need to change your broadcast driver to `pusher` in your `.env` f
 
     BROADCAST_DRIVER=pusher
 
-Finally, you are ready to install and configure [Laravel Echo](#laravel-echo-installation), which will receive the broadcast events on the client-side.
+Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
 <a name="pusher-compatible-laravel-websockets"></a>
 #### Pusher Compatible Laravel Websockets
 
 The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible websocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without an external websocket provider or Node. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
 
-<a name="redis"></a>
-#### Redis
+<a name="ably"></a>
+### Ably
 
-If you plan to use the Redis broadcaster, you should either install the phpredis PHP extension via PECL or install the Predis library via Composer:
+If you plan to broadcast your events using [Ably](https://ably.io), you should install the Ably PHP SDK using the Composer package manager:
 
-    composer require predis/predis
+    composer require ably/ably-php
 
-Next, you should update your broadcast driver to `redis` in your `.env` file:
+Next, you should configure your Ably credentials in the `config/broadcasting.php` configuration file. An example Ably configuration is already included in this file, allowing you to quickly specify your key. Typically, this value should be set via the `ABLY_KEY` [environment variable](/docs/{{version}}/configuration#environment-configuration):
 
-    BROADCAST_DRIVER=redis
+    ABLY_KEY=your-ably-key
 
-The Redis broadcaster will broadcast messages using Redis' pub / sub feature; however, you will need to pair this with a WebSocket server that can receive the messages from Redis and broadcast them to your WebSocket channels.
+Next, you will need to change your broadcast driver to `ably` in your `.env` file:
 
-When the Redis broadcaster publishes an event, it will be published on the event's specified channel names and the payload will be a JSON encoded string containing the event name, a `data` payload, and the user that generated the event's socket ID (if applicable).
+    BROADCAST_DRIVER=ably
 
-<a name="socketio"></a>
-#### Socket.IO
+Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
-If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application. You may install it via the NPM package manager:
+<a name="client-side-installation"></a>
+## Client Side Installation
 
-    npm install --save-dev socket.io-client
+<a name="client-pusher-channels"></a>
+### Pusher Channels
 
-Next, you will need to instantiate Echo with the `socket.io` connector and a `host`.
-
-    import Echo from "laravel-echo"
-
-    window.io = require('socket.io-client');
-
-    window.Echo = new Echo({
-        broadcaster: 'socket.io',
-        host: window.location.hostname + ':6001'
-    });
-
-Finally, you will need to run a compatible Socket.IO server. Laravel does not include a Socket.IO server implementation; however, a community driven Socket.IO server is currently maintained at the [tlaverdure/laravel-echo-server](https://github.com/tlaverdure/laravel-echo-server) GitHub repository.
-
-<a name="laravel-echo-installation"></a>
-### Laravel Echo Installation
-
-Laravel Echo is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since we will be using the Pusher Channels broadcaster:
+Laravel Echo is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since we will be using the Pusher Channels broadcaster:
 
 ```bash
 npm install --save-dev laravel-echo pusher-js
@@ -173,10 +160,46 @@ If you already have a pre-configured Pusher Channels client instance that you wo
         client: client
     });
 
+<a name="client-ably"></a>
+### Ably
+
+Laravel Echo is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package.
+
+You may wonder why we would install the `pusher-js` JavaScript library even though we are using Ably to broadcast our events. Thankfully, Ably includes a Pusher compatibility mode which lets us use the Pusher protocol when listening for events in our client-side application:
+
+```bash
+npm install --save-dev laravel-echo pusher-js
+```
+
+**Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
+
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file; however, the default configuration in the `bootstrap.js` file is intended for Pusher. You may copy the configuration below to transition your configuration to Ably:
+
+    import Echo from 'laravel-echo';
+
+    window.Pusher = require('pusher-js');
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: process.env.MIX_ABLY_PUBLIC_KEY,
+        wsHost: 'realtime-pusher.ably.io',
+        wsPort: 443,
+        disableStats: true,
+        encrypted: true,
+    });
+
+Note that our Ably Echo configuration references a `MIX_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
+
+Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
+
+    npm run dev
+
+> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+
 <a name="concept-overview"></a>
 ## Concept Overview
 
-Laravel's event broadcasting allows you to broadcast your server-side Laravel events to your client-side JavaScript application using a driver-based approach to WebSockets. Currently, Laravel ships with [Pusher Channels](https://pusher.com/channels) and Redis drivers. The events may be easily consumed on the client-side using the [Laravel Echo](#installing-laravel-echo) Javascript package.
+Laravel's event broadcasting allows you to broadcast your server-side Laravel events to your client-side JavaScript application using a driver-based approach to WebSockets. Currently, Laravel ships with [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.io) drivers. The events may be easily consumed on the client-side using the [Laravel Echo](#installing-laravel-echo) JavaScript package.
 
 Events are broadcast over "channels", which may be specified as public or private. Any visitor to your application may subscribe to a public channel without any authentication or authorization; however, in order to subscribe to a private channel, a user must be authenticated and authorized to listen on that channel.
 
@@ -185,11 +208,13 @@ Events are broadcast over "channels", which may be specified as public or privat
 <a name="using-example-application"></a>
 ### Using An Example Application
 
-Before diving into each component of event broadcasting, let's take a high level overview using an e-commerce store as an example. We won't discuss the details of configuring [Pusher Channels](https://pusher.com/channels) or [Laravel Echo](#installing-laravel-echo) since that will be discussed in detail in other sections of this documentation.
+Before diving into each component of event broadcasting, let's take a high level overview using an e-commerce store as an example.
 
 In our application, let's assume we have a page that allows users to view the shipping status for their orders. Let's also assume that a `ShippingStatusUpdated` event is fired when a shipping status update is processed by the application:
 
-    event(new ShippingStatusUpdated($update));
+    use App\Events\ShippingStatusUpdated;
+
+    ShippingStatusUpdated::dispatch($shipment);
 
 <a name="the-shouldbroadcast-interface"></a>
 #### The `ShouldBroadcast` Interface
@@ -200,6 +225,7 @@ When a user is viewing one of their orders, we don't want them to have to refres
 
     namespace App\Events;
 
+    use App\Shipment;
     use Illuminate\Broadcasting\Channel;
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Broadcasting\PresenceChannel;
@@ -210,11 +236,11 @@ When a user is viewing one of their orders, we don't want them to have to refres
     class ShippingStatusUpdated implements ShouldBroadcast
     {
         /**
-         * Information about the shipping status update.
+         * The shipment instance.
          *
-         * @var string
+         * @var \App\Shipment
          */
-        public $update;
+        public $shipment;
     }
 
 The `ShouldBroadcast` interface requires our event to define a `broadcastOn` method. This method is responsible for returning the channels that the event should broadcast on. An empty stub of this method is already defined on generated event classes, so we only need to fill in its details. We only want the creator of the order to be able to view status updates, so we will broadcast the event on a private channel that is tied to the order:
@@ -226,13 +252,15 @@ The `ShouldBroadcast` interface requires our event to define a `broadcastOn` met
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('order.'.$this->update->order_id);
+        return new PrivateChannel('order.'.$this->shipment->order_id);
     }
 
 <a name="example-application-authorizing-channels"></a>
 #### Authorizing Channels
 
-Remember, users must be authorized to listen on private channels. We may define our channel authorization rules in the `routes/channels.php` file. In this example, we need to verify that any user attempting to listen on the private `order.1` channel is actually the creator of the order:
+Remember, users must be authorized to listen on private channels. We may define our channel authorization rules in our application's `routes/channels.php` file. In this example, we need to verify that any user attempting to listen on the private `order.1` channel is actually the creator of the order:
+
+    use App\Models\Order;
 
     Broadcast::channel('order.{orderId}', function ($user, $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
@@ -249,7 +277,7 @@ Next, all that remains is to listen for the event in our JavaScript application.
 
     Echo.private(`order.${orderId}`)
         .listen('ShippingStatusUpdated', (e) => {
-            console.log(e.update);
+            console.log(e.shipment);
         });
 
 <a name="defining-broadcast-events"></a>
