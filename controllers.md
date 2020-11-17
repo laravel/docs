@@ -26,7 +26,7 @@ Instead of defining all of your request handling logic as closures in your route
 <a name="basic-controllers"></a>
 ### Basic Controllers
 
-Below is an example of a basic controller class. Note that the controller extends the base controller class included with Laravel: `App\Http\Controllers\Controller`. The base class provides a few convenience methods such as the `middleware` method, which may be used to attach middleware to controller actions:
+Let's take a look at an example of a basic controller. Note that the controller extends the base controller class included with Laravel: `App\Http\Controllers\Controller`:
 
     <?php
 
@@ -51,13 +51,13 @@ Below is an example of a basic controller class. Note that the controller extend
         }
     }
 
-You can define a route to this controller action like so:
+You can define a route to this controller method like so:
 
     use App\Http\Controllers\UserController;
 
     Route::get('/user/{id}', [UserController::class, 'show']);
 
-When an incoming request matches the specified route URI, the `show` method on the `UserController` class will be invoked and the route parameters will be passed to the method.
+When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
 
 > {tip} Controllers are not **required** to extend a base class. However, you will not have access to convenient features such as the `middleware` and `authorize` methods.
 
@@ -106,7 +106,7 @@ You may generate an invokable controller by using the `--invokable` option of th
 
     Route::get('profile', [UserController::class, 'show'])->middleware('auth');
 
-Or, you may find it convenient to specify middleware within your controller's constructor. Using the `middleware` method from your controller's constructor, you can assign middleware to the controller's actions:
+Or, you may find it convenient to specify middleware within your controller's constructor. Using the `middleware` method within your controller's constructor, you can assign middleware to the controller's actions:
 
     class UserController extends Controller
     {
