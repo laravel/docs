@@ -433,7 +433,7 @@ Private channels require you to authorize that the currently authenticated user 
 <a name="defining-authorization-routes"></a>
 ### Defining Authorization Routes
 
-Thankfully, Laravel makes it easy to define the routes to respond to channel authorization requests. In the `BroadcastServiceProvider` included with your Laravel application, you will see a call to the `Broadcast::routes` method. This method will register the `/broadcasting/auth` route to handle authorization requests:
+Thankfully, Laravel makes it easy to define the routes to respond to channel authorization requests. In the `App\Providers\BroadcastServiceProvider` included with your Laravel application, you will see a call to the `Broadcast::routes` method. This method will register the `/broadcasting/auth` route to handle authorization requests:
 
     Broadcast::routes();
 
@@ -448,14 +448,14 @@ By default, Echo will use the `/broadcasting/auth` endpoint to authorize channel
 
     window.Echo = new Echo({
         broadcaster: 'pusher',
-        key: 'your-pusher-channels-key',
+        // ...
         authEndpoint: '/custom/endpoint/auth'
     });
 
 <a name="defining-authorization-callbacks"></a>
 ### Defining Authorization Callbacks
 
-Next, we need to define the logic that will actually perform the channel authorization. This is done in the `routes/channels.php` file that is included with your application. In this file, you may use the `Broadcast::channel` method to register channel authorization callbacks:
+Next, we need to define the logic that will actually determine if the currently authenticated user can listen to a given channel. This is done in the `routes/channels.php` file that is included with your application. In this file, you may use the `Broadcast::channel` method to register channel authorization callbacks:
 
     Broadcast::channel('order.{orderId}', function ($user, $orderId) {
         return $user->id === Order::findOrNew($orderId)->user_id;
@@ -468,13 +468,15 @@ All authorization callbacks receive the currently authenticated user as their fi
 <a name="authorization-callback-model-binding"></a>
 #### Authorization Callback Model Binding
 
-Just like HTTP routes, channel routes may also take advantage of implicit and explicit [route model binding](/docs/{{version}}/routing#route-model-binding). For example, instead of receiving the string or numeric order ID, you may request an actual `Order` model instance:
+Just like HTTP routes, channel routes may also take advantage of implicit and explicit [route model binding](/docs/{{version}}/routing#route-model-binding). For example, instead of receiving a string or numeric order ID, you may request an actual `Order` model instance:
 
     use App\Models\Order;
 
     Broadcast::channel('order.{order}', function ($user, Order $order) {
         return $user->id === $order->user_id;
     });
+
+> {note} Unlike HTTP route model binding, channel model binding does not support automatic [implicit model binding scoping](/docs/{{version}}/routing#implicit-model-binding-scoping). However, this is rarely a problem because most channels can be scoped based on a single model's unique, primary key.
 
 <a name="authorization-callback-authentication"></a>
 #### Authorization Callback Authentication
