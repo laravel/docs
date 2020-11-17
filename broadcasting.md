@@ -1,8 +1,10 @@
 # Broadcasting
 
 - [Introduction](#introduction)
+- [Getting Started](#getting-started)
     - [Configuration](#configuration)
-    - [Driver Prerequisites](#driver-prerequisites)
+    - [Server Side Driver Installation](#driver-installation)
+    - [Laravel Echo Installation](#laravel-echo-installation)
 - [Concept Overview](#concept-overview)
     - [Using An Example Application](#using-example-application)
 - [Defining Broadcast Events](#defining-broadcast-events)
@@ -17,7 +19,6 @@
 - [Broadcasting Events](#broadcasting-events)
     - [Only To Others](#only-to-others)
 - [Receiving Broadcasts](#receiving-broadcasts)
-    - [Installing Laravel Echo](#installing-laravel-echo)
     - [Listening For Events](#listening-for-events)
     - [Leaving A Channel](#leaving-a-channel)
     - [Namespaces](#namespaces)
@@ -31,70 +32,73 @@
 <a name="introduction"></a>
 ## Introduction
 
-In many modern web applications, WebSockets are used to implement realtime, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a WebSocket connection to be handled by the client. This provides a more robust, efficient alternative to continually polling your application for changes.
+In many modern web applications, WebSockets are used to implement realtime, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a WebSocket connection to be handled by the client. WebSockets provide a more efficient alternative to continually polling your application's server for data changes that should be reflected in your UI.
 
-To assist you in building these types of applications, Laravel makes it easy to "broadcast" your [events](/docs/{{version}}/events) over a WebSocket connection. Broadcasting your Laravel events allows you to share the same event names between your server-side code and your client-side JavaScript application.
+To assist you in building these types of applications, Laravel makes it easy to "broadcast" your [events](/docs/{{version}}/events) over a WebSocket connection. Broadcasting your Laravel events allows you to share the same event names and data between your server-side Laravel application and your client-side JavaScript application.
 
-> {tip} Before diving into event broadcasting, make sure you have read all of the documentation regarding Laravel [events and listeners](/docs/{{version}}/events).
+<a name="supported-drivers"></a>
+#### Supported Drivers
+
+By default, Laravel includes two broadcasting drivers for you to choose from: [Pusher Channels](https://pusher.com/channels) and [Socket.io + Redis](https://socket.io). However, community driven packages such as [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) provide additional broadcasting drivers that do not require commercial broadcasting providers.
+
+> {tip} Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
+
+<a name="getting-started"></a>
+## Getting Started
+
+To get started using Laravel's event broadcasting, we first need to do some configuration within the Laravel application as well as install a few packages.
+
+Event broadcasting is accomplished by a server side broadcasting driver that broadcasts your Laravel events so that Laravel Echo (a JavaScript library) can receive them within the browser client. Don't worry - we'll walk through each part of the installation process step-by-step.
 
 <a name="configuration"></a>
 ### Configuration
 
-All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Laravel supports several broadcast drivers out of the box: [Pusher Channels](https://pusher.com/channels), [Redis](/docs/{{version}}/redis), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to totally disable broadcasting. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
+All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Laravel supports several broadcast drivers out of the box: [Pusher Channels](https://pusher.com/channels), [Redis](/docs/{{version}}/redis), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to totally disable broadcasting during testing. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
 
 <a name="broadcast-service-provider"></a>
 #### Broadcast Service Provider
 
-Before broadcasting any events, you will first need to register the `App\Providers\BroadcastServiceProvider`. In fresh Laravel applications, you only need to uncomment this provider in the `providers` array of your `config/app.php` configuration file. This provider will allow you to register the broadcast authorization routes and callbacks.
+Before broadcasting any events, you will first need to register the `App\Providers\BroadcastServiceProvider`. In a new Laravel applications, you only need to uncomment this provider in the `providers` array of your `config/app.php` configuration file. This `BroadcastServiceProvider` contains the code necessary to register the broadcast authorization routes and callbacks.
 
-<a name="csrf-token"></a>
-#### CSRF Token
+<a name="queue-configuration"></a>
+#### Queue Configuration
 
-[Laravel Echo](#installing-laravel-echo) will need access to the current session's CSRF token. You should verify that your application's `head` HTML element defines a `meta` tag containing the CSRF token:
+You will also need to configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-<a name="driver-prerequisites"></a>
-### Driver Prerequisites
+<a name="driver-installation"></a>
+### Server Side Driver Installation
 
 <a name="pusher-channels"></a>
 #### Pusher Channels
 
-If you are broadcasting your events over [Pusher Channels](https://pusher.com/channels), you should install the Pusher Channels PHP SDK using the Composer package manager:
+If you plan to broadcast your events using [Pusher Channels](https://pusher.com/channels), you should install the Pusher Channels PHP SDK using the Composer package manager:
 
     composer require pusher/pusher-php-server "~4.0"
 
-Next, you should configure your Channels credentials in the `config/broadcasting.php` configuration file. An example Channels configuration is already included in this file, allowing you to quickly specify your Channels key, secret, and application ID. The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster:
+Next, you should configure your Channels credentials in the `config/broadcasting.php` configuration file. An example Channels configuration is already included in this file, allowing you to quickly specify your Channels key, secret, and application ID. Typically, these values should be set via the `PUSHER_APP_KEY`, `PUSHER_APP_SECRET`, and `PUSHER_APP_ID` [environment variables](/docs/{{version}}/configuration#environment-configuration):
 
-    'options' => [
-        'cluster' => 'eu',
-        'useTLS' => true
-    ],
+    PUSHER_APP_ID=your-pusher-app-id
+    PUSHER_APP_KEY=your-pusher-key
+    PUSHER_APP_SECRET=your-pusher-secret
+    PUSHER_APP_CLUSTER=mt1
 
-When using Channels and [Laravel Echo](#installing-laravel-echo), you should specify `pusher` as your desired broadcaster when instantiating the Echo instance in your `resources/js/bootstrap.js` file:
+The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
 
-    import Echo from "laravel-echo";
-
-    window.Pusher = require('pusher-js');
-
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: 'your-pusher-channels-key'
-    });
-
-Finally, you will need to change your broadcast driver to `pusher` in your `.env` file:
+Next, you will need to change your broadcast driver to `pusher` in your `.env` file:
 
     BROADCAST_DRIVER=pusher
+
+Finally, you are ready to install and configure [Laravel Echo](#laravel-echo-installation), which will receive the broadcast events on the client-side.
 
 <a name="pusher-compatible-laravel-websockets"></a>
 #### Pusher Compatible Laravel Websockets
 
-The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) is a pure PHP, Pusher compatible websocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without an external websocket provider or Node. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
+The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible websocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without an external websocket provider or Node. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
 
 <a name="redis"></a>
 #### Redis
 
-If you are using the Redis broadcaster, you should either install the phpredis PHP extension via PECL or install the Predis library via Composer:
+If you plan to use the Redis broadcaster, you should either install the phpredis PHP extension via PECL or install the Predis library via Composer:
 
     composer require predis/predis
 
@@ -126,10 +130,48 @@ Next, you will need to instantiate Echo with the `socket.io` connector and a `ho
 
 Finally, you will need to run a compatible Socket.IO server. Laravel does not include a Socket.IO server implementation; however, a community driven Socket.IO server is currently maintained at the [tlaverdure/laravel-echo-server](https://github.com/tlaverdure/laravel-echo-server) GitHub repository.
 
-<a name="queue-prerequisites"></a>
-#### Queue Prerequisites
+<a name="laravel-echo-installation"></a>
+### Laravel Echo Installation
 
-Before broadcasting events, you will also need to configure and run a [queue listener](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected.
+Laravel Echo is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since we will be using the Pusher Channels broadcaster:
+
+```bash
+npm install --save-dev laravel-echo pusher-js
+```
+
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework. By default, an example Echo configuration is already included in this file - you simply need to uncomment it:
+
+    import Echo from 'laravel-echo';
+
+    window.Pusher = require('pusher-js');
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: process.env.MIX_PUSHER_APP_KEY,
+        cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+        forceTLS: true
+    });
+
+Once you have uncommented and adjusted the Echo configuration according to your needs, you may compile your application's assets:
+
+    npm run dev
+
+> {tip} To learn more about compiling your application's JavaScript assets, please consult the documentation on [Laravel Mix](/docs/{{version}}/mix).
+
+<a name="using-an-existing-client-instance"></a>
+#### Using An Existing Client Instance
+
+If you already have a pre-configured Pusher Channels client instance that you would like Echo to utilize, you may pass it to Echo via the `client` configuration option:
+
+    import Echo from 'laravel-echo';
+
+    const client = require('pusher-js');
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: 'your-pusher-channels-key',
+        client: client
+    });
 
 <a name="concept-overview"></a>
 ## Concept Overview
@@ -490,44 +532,6 @@ If you are not using Vue and Axios, you will need to manually configure your Jav
 
 <a name="receiving-broadcasts"></a>
 ## Receiving Broadcasts
-
-<a name="installing-laravel-echo"></a>
-### Installing Laravel Echo
-
-Laravel Echo is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by Laravel. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since we will be using the Pusher Channels broadcaster:
-
-    npm install --save-dev laravel-echo pusher-js
-
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework:
-
-    import Echo from "laravel-echo"
-
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: 'your-pusher-channels-key'
-    });
-
-When creating an Echo instance that uses the `pusher` connector, you may also specify a `cluster` as well as whether the connection must be made over TLS (by default, when `forceTLS` is `false`, a non-TLS connection will be made if the page was loaded over HTTP, or as a fallback if a TLS connection fails):
-
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: 'your-pusher-channels-key',
-        cluster: 'eu',
-        forceTLS: true
-    });
-
-<a name="using-an-existing-client-instance"></a>
-#### Using An Existing Client Instance
-
-If you already have a Pusher Channels or Socket.io client instance that you would like Echo to utilize, you may pass it to Echo via the `client` configuration option:
-
-    const client = require('pusher-js');
-
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: 'your-pusher-channels-key',
-        client: client
-    });
 
 <a name="listening-for-events"></a>
 ### Listening For Events
