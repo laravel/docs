@@ -24,15 +24,21 @@ php artisan migrate
 
 Once you have created a new Laravel application, you may install Laravel Breeze using Composer:
 
-    composer require laravel/breeze --dev
+```bash
+composer require laravel/breeze --dev
+```
 
 After Composer has installed the Laravel Breeze package, you may run the `breeze:install` Artisan command. This command publishes the authentication views, routes, controllers, and other resources to your application. Laravel Breeze publishes all of its code to your application so that you have full control and visibility over its features and implementation. After Breeze is installed, you should also compile your assets so that your application's CSS file is available:
 
-    php artisan breeze:install
-
-    npm install && npm run dev
+```bash
+php artisan breeze:install
+npm install
+npm run dev
+```
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
+
+> {tip} To learn more about compiling your application's CSS and JavaScript, check out the [Laravel Mix documentation](/docs/{{version}}/mix#running-mix).
 
 <a name="laravel-jetstream"></a>
 ## Laravel Jetstream
