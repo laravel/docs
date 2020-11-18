@@ -3001,7 +3001,6 @@ While the `each` method calls the given callback for each item in the collection
         dump($value);
     });
 
-
     // Three items are dumped...
     $array = $lazyCollection->take(3)->all();
 
