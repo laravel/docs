@@ -2996,12 +2996,13 @@ In addition to the methods defined in the `Enumerable` contract, the `LazyCollec
 
 While the `each` method calls the given callback for each item in the collection right away, the `tapEach` method only calls the given callback as the items are being pulled out of the list one by one:
 
+    // Nothing has been dumped so far...
     $lazyCollection = LazyCollection::times(INF)->tapEach(function ($value) {
         dump($value);
     });
 
-    // Nothing has been dumped so far...
 
+    // Three items are dumped...
     $array = $lazyCollection->take(3)->all();
 
     // 1
