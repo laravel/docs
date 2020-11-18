@@ -296,7 +296,7 @@ In contrast, this statement would remove only cached values tagged with `authors
 <a name="atomic-locks-prerequisites-database"></a>
 #### Database
 
-When using the `database` cache driver, you will need to setup a table to contain the cache locks. You'll find an example `Schema` declaration for the table below:
+When using the `database` cache driver, you will need to setup a table to contain your application's cache locks. You'll find an example `Schema` declaration for the table below:
 
     Schema::create('cache_locks', function ($table) {
         $table->string('key')->primary();
@@ -341,6 +341,8 @@ If the lock is not available at the moment you request it, you may instruct Lara
         optional($lock)->release();
     }
 
+The example above may be simplified by passing a closure to the `block` method. When a closure is passed to this method, Laravel will attempt to acquire the lock for the specified number of seconds and will automatically release the lock once the closure has been executed:
+
     Cache::lock('foo', 10)->block(5, function () {
         // Lock acquired after waiting maximum of 5 seconds...
     });
@@ -348,23 +350,25 @@ If the lock is not available at the moment you request it, you may instruct Lara
 <a name="managing-locks-across-processes"></a>
 ### Managing Locks Across Processes
 
-Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token:
+Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token.
 
-    // Within Controller...
+In the example below, we will dispatch a queued job if a lock is successfully acquired. In addition, we will pass the lock's owner token to the queued job via the lock's `owner` method:
+
     $podcast = Podcast::find($id);
 
-    $lock = Cache::lock('foo', 120);
+    $lock = Cache::lock('processing', 120);
 
     if ($result = $lock->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 
-    // Within ProcessPodcast Job...
-    Cache::restoreLock('foo', $this->owner)->release();
+Within our application's `ProcessPodcast` job, we can restore and release the lock using the owner token:
+
+    Cache::restoreLock('processing', $this->owner)->release();
 
 If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:
 
-    Cache::lock('foo')->forceRelease();
+    Cache::lock('processing')->forceRelease();
 
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
@@ -372,7 +376,7 @@ If you would like to release a lock without respecting its current owner, you ma
 <a name="writing-the-driver"></a>
 ### Writing The Driver
 
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts). So, a MongoDB cache implementation would look something like this:
+To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts). So, a MongoDB cache implementation might look something like this:
 
     <?php
 
@@ -394,7 +398,7 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
         public function getPrefix() {}
     }
 
-We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\Cache\MemcachedStore` in the framework source code. Once our implementation is complete, we can finish our custom driver registration.
+We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\Cache\MemcachedStore` in the [Laravel framework source code](https://github.com/laravel/framework). Once our implementation is complete, we can finish our custom driver registration by calling the `Cache` facade's `extend` method:
 
     Cache::extend('mongo', function ($app) {
         return Cache::repository(new MongoStore);
@@ -447,7 +451,7 @@ Once your extension is registered, update your `config/cache.php` configuration 
 <a name="events"></a>
 ## Events
 
-To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within your `EventServiceProvider`:
+To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within your application's `App\Providers\EventServiceProvider` class:
 
     /**
      * The event listener mappings for the application.
