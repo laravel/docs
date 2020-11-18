@@ -32,7 +32,9 @@ After Composer has installed the Laravel Breeze package, you may run the `breeze
 
 ```bash
 php artisan breeze:install
+
 npm install
+
 npm run dev
 ```
 

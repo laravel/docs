@@ -31,6 +31,8 @@ In other words, Mix makes it a cinch to compile and minify your application's CS
 
 If you've ever been confused and overwhelmed about getting started with webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish, or even none at all.
 
+> {tip} If you need a head start building your application with Laravel and [Tailwind CSS](https://tailwindcss.com), check out one of our [application starter kits](/docs/{{version}}/starter-kits).
+
 <a name="installation"></a>
 ## Installation & Setup
 
