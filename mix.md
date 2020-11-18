@@ -4,11 +4,9 @@
 - [Installation & Setup](#installation)
 - [Running Mix](#running-mix)
 - [Working With Stylesheets](#working-with-stylesheets)
-    - [Less](#less)
-    - [Sass](#sass)
-    - [Stylus](#stylus)
+    - [Tailwind](#tailwind)
     - [PostCSS](#postcss)
-    - [Plain CSS](#plain-css)
+    - [Sass](#sass)
     - [URL Processing](#url-processing)
     - [Source Maps](#css-source-maps)
 - [Working With JavaScript](#working-with-scripts)
@@ -25,12 +23,14 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Mix](https://github.com/JeffreyWay/laravel-mix) provides a fluent API for defining Webpack build steps for your Laravel application using several common CSS and JavaScript pre-processors. Through simple method chaining, you can fluently define your asset pipeline. For example:
+[Laravel Mix](https://github.com/JeffreyWay/laravel-mix), a package developed by [Laracasts](https://laracasts.com) creator Jeffrey Way, provides a fluent API for defining [webpack](https://webpack.js.org) build steps for your Laravel application using several common CSS and JavaScript pre-processors.
+
+In other words, Mix makes it a cinch to compile and minify your application's CSS and JavaScript files. Through simple method chaining, you can fluently define your asset pipeline. For example:
 
     mix.js('resources/js/app.js', 'public/js')
-        .sass('resources/sass/app.scss', 'public/css');
+        .postCss('resources/css/app.css', 'public/css');
 
-If you've ever been confused and overwhelmed about getting started with Webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish, or even none at all.
+If you've ever been confused and overwhelmed about getting started with webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish, or even none at all.
 
 <a name="installation"></a>
 ## Installation & Setup
@@ -38,24 +38,27 @@ If you've ever been confused and overwhelmed about getting started with Webpack 
 <a name="installing-node"></a>
 #### Installing Node
 
-Before triggering Mix, you must first ensure that Node.js and NPM are installed on your machine.
+Before running Mix, you must first ensure that Node.js and NPM are installed on your machine:
 
     node -v
     npm -v
 
-You can easily install the latest version of Node and NPM using simple graphical installers downloaded from [the official Node website](https://nodejs.org/en/download/).
+You can easily install the latest version of Node and NPM using simple graphical installers from [the official Node website](https://nodejs.org/en/download/). Or, if you are using [Laravel Sail](/docs/{{version}}/installation#laravel-sail), you may invoke Node and NPM through Sail:
 
-<a name="laravel-mix"></a>
-#### Laravel Mix
+    ./sail node -v
+    ./sail npm -v
 
-The only remaining step is to install Laravel Mix. Within a fresh installation of Laravel, you'll find a `package.json` file in the root of your directory structure. The default `package.json` file includes everything you need to get started. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
+<a name="installing-laravel-mix"></a>
+#### Installing Laravel Mix
+
+The only remaining step is to install Laravel Mix. Within a fresh installation of Laravel, you'll find a `package.json` file in the root of your directory structure. The default `package.json` file already includes everything you need to get started using Laravel Mix. Think of this file like your `composer.json` file, except it defines Node dependencies instead of PHP dependencies. You may install the dependencies it references by running:
 
     npm install
 
 <a name="running-mix"></a>
 ## Running Mix
 
-Mix is a configuration layer on top of [Webpack](https://webpack.js.org), so to run your Mix tasks you only need to execute one of the NPM scripts that is included with the default Laravel `package.json` file:
+Mix is a configuration layer on top of [webpack](https://webpack.js.org), so to run your Mix tasks you only need to execute one of the NPM scripts that is included in the default Laravel `package.json` file. When you run the `dev` or `production` scripts, all of your application's CSS and JavaScript assets will be compiled and placed in your application's `public` directory:
 
     // Run all Mix tasks...
     npm run dev
@@ -66,100 +69,98 @@ Mix is a configuration layer on top of [Webpack](https://webpack.js.org), so to 
 <a name="watching-assets-for-changes"></a>
 #### Watching Assets For Changes
 
-The `npm run watch` command will continue running in your terminal and watch all relevant files for changes. Webpack will then automatically recompile your assets when it detects a change:
+The `npm run watch` command will continue running in your terminal and watch all relevant CSS and JavaScript files for changes. Webpack will automatically recompile your assets when it detects a change to one of these files:
 
     npm run watch
 
-You may find that in certain environments Webpack isn't updating when your files change. If this is the case on your system, consider using the `watch-poll` command:
+Webpack may not be able to detect your file changes in certain local development environments. If this is the case on your system, consider using the `watch-poll` command:
 
     npm run watch-poll
 
 <a name="working-with-stylesheets"></a>
 ## Working With Stylesheets
 
-The `webpack.mix.js` file is your entry point for all asset compilation. Think of it as a light configuration wrapper around Webpack. Mix tasks can be chained together to define exactly how your assets should be compiled.
+Your application's `webpack.mix.js` file is your entry point for all asset compilation. Think of it as a light configuration wrapper around [webpack](https://webpack.js.org). Mix tasks can be chained together to define exactly how your assets should be compiled.
 
-<a name="less"></a>
-### Less
+<a name="tailwind"></a>
+### Tailwind
 
-The `less` method may be used to compile [Less](http://lesscss.org/) into CSS. Let's compile our primary `app.less` file to `public/css/app.css`.
+[Tailwind CSS](https://tailwindcss.com) is a modern, utility-first framework for building amazing sites without ever leaving your HTML. Let's dig into how to start using it in a Laravel project with Laravel Mix. First, we should install Tailwind using NPM and generate our Tailwind configuration file:
 
-    mix.less('resources/less/app.less', 'public/css');
+    npm install tailwindcss@compat
 
-Multiple calls to the `less` method may be used to compile multiple files:
+    npx tailwindcss init
 
-    mix.less('resources/less/app.less', 'public/css')
-        .less('resources/less/admin.less', 'public/css');
+The `init` command will generate a `tailwind.config.js` file. Within this file, you may configure the paths to all of your application's templates and JavaScript so that Tailwind can tree-shake unused styles when optimizing your CSS for production:
 
-If you wish to customize the file name of the compiled CSS, you may pass a full file path as the second argument to the `less` method:
+```js
+purge: [
+    './storage/framework/views/*.php',
+    './resources/**/*.blade.php',
+    './resources/**/*.js',
+    './resources/**/*.vue',
+],
+```
 
-    mix.less('resources/less/app.less', 'public/stylesheets/styles.css');
+Next, you should add each of Tailwind's "layers" to your application's `resources/css/app.css` file:
 
-If you need to override the [underlying Less plug-in options](https://github.com/webpack-contrib/less-loader#options), you may pass an object as the third argument to `mix.less()`:
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
 
-    mix.less('resources/less/app.less', 'public/css', {
-        strictMath: true
-    });
+Once you have configured Tailwind's layers, you are ready to update your application's `webpack.mix.js` file to compile your Tailwind powered CSS:
 
-<a name="sass"></a>
-### Sass
+```js
+mix.js('resources/js/app.js', 'public/js')
+    .postCss('resources/css/app.css', 'public/css', [
+        require('postcss-import'),
+        require('tailwindcss'),
+    ]);
+```
 
-The `sass` method allows you to compile [Sass](https://sass-lang.com/) into CSS. You may use the method like so:
+Finally, you should reference your stylesheet in your application's primary layout template. Many applications choose to store this template at `resources/views/layouts/app.blade.php`. In addition, ensure you add the responsive viewport `meta` tag if it's not already present:
 
-    mix.sass('resources/sass/app.scss', 'public/css');
-
-Again, like the `less` method, you may compile multiple Sass files into their own respective CSS files and even customize the output directory of the resulting CSS:
-
-    mix.sass('resources/sass/app.sass', 'public/css')
-        .sass('resources/sass/admin.sass', 'public/css/admin');
-
-Additional [Node-Sass plug-in options](https://github.com/sass/node-sass#options) may be provided as the third argument:
-
-    mix.sass('resources/sass/app.sass', 'public/css', {
-        precision: 5
-    });
-
-<a name="stylus"></a>
-### Stylus
-
-Similar to Less and Sass, the `stylus` method allows you to compile [Stylus](http://stylus-lang.com/) into CSS:
-
-    mix.stylus('resources/stylus/app.styl', 'public/css');
-
-You may also install additional Stylus plug-ins, such as [Rupture](https://github.com/jescalan/rupture). First, install the plug-in in question through NPM (`npm install rupture`) and then require it in your call to `mix.stylus()`:
-
-    mix.stylus('resources/stylus/app.styl', 'public/css', {
-        use: [
-            require('rupture')()
-        ]
-    });
+```html
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+</head>
+```
 
 <a name="postcss"></a>
 ### PostCSS
 
-[PostCSS](https://postcss.org/), a powerful tool for transforming your CSS, is included with Laravel Mix out of the box. By default, Mix leverages the popular [Autoprefixer](https://github.com/postcss/autoprefixer) plug-in to automatically apply all necessary CSS3 vendor prefixes. However, you're free to add any additional plug-ins that are appropriate for your application. First, install the desired plug-in through NPM and then reference it in your `webpack.mix.js` file:
+[PostCSS](https://postcss.org/), a powerful tool for transforming your CSS, is included with Laravel Mix out of the box. By default, Mix leverages the popular [Autoprefixer](https://github.com/postcss/autoprefixer) plugin to automatically apply all necessary CSS3 vendor prefixes. However, you're free to add any additional plugins that are appropriate for your application.
 
-    mix.sass('resources/sass/app.scss', 'public/css')
-        .options({
-            postCss: [
-                require('postcss-css-variables')()
-            ]
-        });
+First, install the desired plugin through NPM and include it in your array of plugins when calling Mix's `postCss` method. The `postCss` method accepts the path to your CSS file as its first argument and the directory where the compiled file should be placed as its second argument:
 
-<a name="plain-css"></a>
-### Plain CSS
+    mix.postCss('resources/css/app.css', 'public/css', [
+        require('postcss-custom-properties')
+    ]);
 
-If you would just like to concatenate some plain CSS stylesheets into a single file, you may use the `styles` method.
+Or, you may execute `postCss` with no additional plugins in order to achieve simple CSS compilation and minification:
 
-    mix.styles([
-        'public/css/vendor/normalize.css',
-        'public/css/vendor/videojs.css'
-    ], 'public/css/all.css');
+    mix.postCss('resources/css/app.css', 'public/css');
+
+<a name="sass"></a>
+### Sass
+
+The `sass` method allows you to compile [Sass](https://sass-lang.com/) into CSS that can be understood by web browsers. The `sass` method accepts the path to your Sass file as its first argument and the directory where the compiled file should be placed as its second argument:
+
+    mix.sass('resources/sass/app.scss', 'public/css');
+
+Y may compile multiple Sass files into their own respective CSS files and even customize the output directory of the resulting CSS by calling the `sass` method multiple times:
+
+    mix.sass('resources/sass/app.sass', 'public/css')
+        .sass('resources/sass/admin.sass', 'public/css/admin');
 
 <a name="url-processing"></a>
 ### URL Processing
 
-Because Laravel Mix is built on top of Webpack, it's important to understand a few Webpack concepts. For CSS compilation, Webpack will rewrite and optimize any `url()` calls within your stylesheets. While this might initially sound strange, it's an incredibly powerful piece of functionality. Imagine that we want to compile Sass that includes a relative URL to an image:
+Because Laravel Mix is built on top of webpack, it's important to understand a few webpack concepts. For CSS compilation, webpack will rewrite and optimize any `url()` calls within your stylesheets. While this might initially sound strange, it's an incredibly powerful piece of functionality. Imagine that we want to compile Sass that includes a relative URL to an image:
 
     .example {
         background: url('../images/example.png');
@@ -167,7 +168,7 @@ Because Laravel Mix is built on top of Webpack, it's important to understand a f
 
 > {note} Absolute paths for any given `url()` will be excluded from URL-rewriting. For example, `url('/images/thing.png')` or `url('http://example.com/images/thing.png')` won't be modified.
 
-By default, Laravel Mix and Webpack will find `example.png`, copy it to your `public/images` folder, and then rewrite the `url()` within your generated stylesheet. As such, your compiled CSS will be:
+By default, Laravel Mix and webpack will find `example.png`, copy it to your `public/images` folder, and then rewrite the `url()` within your generated stylesheet. As such, your compiled CSS will be:
 
     .example {
         background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
@@ -175,10 +176,9 @@ By default, Laravel Mix and Webpack will find `example.png`, copy it to your `pu
 
 As useful as this feature may be, it's possible that your existing folder structure is already configured in a way you like. If this is the case, you may disable `url()` rewriting like so:
 
-    mix.sass('resources/sass/app.scss', 'public/css')
-        .options({
-            processCssUrls: false
-        });
+    mix.sass('resources/sass/app.scss', 'public/css').options({
+        processCssUrls: false
+    });
 
 With this addition to your `webpack.mix.js` file, Mix will no longer match any `url()` or copy assets to your public directory. In other words, the compiled CSS will look just like how you originally typed it:
 
@@ -189,7 +189,7 @@ With this addition to your `webpack.mix.js` file, Mix will no longer match any `
 <a name="css-source-maps"></a>
 ### Source Maps
 
-Though disabled by default, source maps may be activated by calling the `mix.sourceMaps()` method in your `webpack.mix.js` file. Though it comes with a compile/performance cost, this will provide extra debugging information to your browser's developer tools when using compiled assets.
+Though disabled by default, source maps may be activated by calling the `mix.sourceMaps()` method in your `webpack.mix.js` file. Though it comes with a compile/performance cost, this will provide extra debugging information to your browser's developer tools when using compiled assets:
 
     mix.js('resources/js/app.js', 'public/js')
         .sourceMaps();
@@ -247,11 +247,11 @@ To avoid JavaScript errors, be sure to load these files in the proper order:
 <a name="react"></a>
 ### React
 
-Mix can automatically install the Babel plug-ins necessary for React support. To get started, replace your `mix.js()` call with `mix.react()`:
+Mix can automatically install the Babel plugins necessary for React support. To get started, replace your `mix.js()` call with `mix.react()`:
 
     mix.react('resources/js/app.jsx', 'public/js');
 
-Behind the scenes, Mix will download and include the appropriate `babel-preset-react` Babel plug-in.
+Behind the scenes, Mix will download and include the appropriate `babel-preset-react` Babel plugin.
 
 <a name="vanilla-js"></a>
 ### Vanilla JS
@@ -270,7 +270,7 @@ This option is particularly useful for legacy projects where you don't require W
 <a name="custom-webpack-configuration"></a>
 ### Custom Webpack Configuration
 
-Behind the scenes, Laravel Mix references a pre-configured `webpack.config.js` file to get you up and running as quickly as possible. Occasionally, you may need to manually modify this file. You might have a special loader or plug-in that needs to be referenced, or maybe you prefer to use Stylus instead of Sass. In such instances, you have two choices:
+Behind the scenes, Laravel Mix references a pre-configured `webpack.config.js` file to get you up and running as quickly as possible. Occasionally, you may need to manually modify this file. You might have a special loader or plugin that needs to be referenced, or maybe you prefer to use Stylus instead of Sass. In such instances, you have two choices:
 
 <a name="merging-custom-configuration"></a>
 #### Merging Custom Configuration
