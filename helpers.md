@@ -280,7 +280,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <a name="method-array-accessible"></a>
 #### `Arr::accessible()` {#collection-method .first-collection-method}
 
-The `Arr::accessible` method checks that the given value is array accessible:
+The `Arr::accessible` method determines if the given value is array accessible:
 
     use Illuminate\Support\Arr;
     use Illuminate\Support\Collection;
@@ -364,7 +364,7 @@ The `Arr::crossJoin` method cross joins the given arrays, returning a Cartesian 
 <a name="method-array-divide"></a>
 #### `Arr::divide()` {#collection-method}
 
-The `Arr::divide` method returns two arrays, one containing the keys, and the other containing the values of the given array:
+The `Arr::divide` method returns two arrays: one containing the keys and the other containing the values of the given array:
 
     use Illuminate\Support\Arr;
 
@@ -477,7 +477,7 @@ The `Arr::get` method retrieves a value from a deeply nested array using "dot" n
 
     // 100
 
-The `Arr::get` method also accepts a default value, which will be returned if the specific key is not found:
+The `Arr::get` method also accepts a default value, which will be returned if the specified key is not present in the array:
 
     use Illuminate\Support\Arr;
 
@@ -647,7 +647,13 @@ The `Arr::query` method converts the array into a query string:
 
     use Illuminate\Support\Arr;
 
-    $array = ['name' => 'Taylor', 'order' => ['column' => 'created_at', 'direction' => 'desc']];
+    $array = [
+        'name' => 'Taylor',
+        'order' => [
+            'column' => 'created_at',
+            'direction' => 'desc'
+        ]
+    ];
 
     Arr::query($array);
 
@@ -666,7 +672,7 @@ The `Arr::random` method returns a random value from an array:
 
     // 4 - (retrieved randomly)
 
-You may also specify the number of items to return as an optional second argument. Note that providing this argument will return an array, even if only one item is desired:
+You may also specify the number of items to return as an optional second argument. Note that providing this argument will return an array even if only one item is desired:
 
     use Illuminate\Support\Arr;
 
@@ -711,7 +717,7 @@ The `Arr::sort` method sorts an array by its values:
 
     // ['Chair', 'Desk', 'Table']
 
-You may also sort the array by the results of the given closure:
+You may also sort the array by the results of a given closure:
 
     use Illuminate\Support\Arr;
 
@@ -736,7 +742,7 @@ You may also sort the array by the results of the given closure:
 <a name="method-array-sort-recursive"></a>
 #### `Arr::sortRecursive()` {#collection-method}
 
-The `Arr::sortRecursive` method recursively sorts an array using the `sort` function for numeric sub=arrays and `ksort` for associative subarrays:
+The `Arr::sortRecursive` method recursively sorts an array using the `sort` function for numerically indexed sub-arrays and the `ksort` function for associative sub-arrays:
 
     use Illuminate\Support\Arr;
 
@@ -774,7 +780,7 @@ The `Arr::where` method filters an array using the given closure:
 <a name="method-array-wrap"></a>
 #### `Arr::wrap()` {#collection-method}
 
-The `Arr::wrap` method wraps the given value in an array. If the given value is already an array it will not be changed:
+The `Arr::wrap` method wraps the given value in an array. If the given value is already an array it be returned without modification:
 
     use Illuminate\Support\Arr;
 
@@ -784,13 +790,11 @@ The `Arr::wrap` method wraps the given value in an array. If the given value is 
 
     // ['Laravel']
 
-If the given value is null, an empty array will be returned:
+If the given value is `null`, an empty array will be returned:
 
     use Illuminate\Support\Arr;
 
-    $nothing = null;
-
-    $array = Arr::wrap($nothing);
+    $array = Arr::wrap(null);
 
     // []
 
@@ -868,7 +872,7 @@ The `data_set` function sets a value within a nested array or object using "dot"
 
     // ['products' => ['desk' => ['price' => 200]]]
 
-This function also accepts wildcards and will set values on the target accordingly:
+This function also accepts wildcards using asterisks and will set values on the target accordingly:
 
     $data = [
         'products' => [
@@ -888,11 +892,11 @@ This function also accepts wildcards and will set values on the target according
         ]
     */
 
-By default, any existing values are overwritten. If you wish to only set a value if it doesn't exist, you may pass `false` as the fourth argument:
+By default, any existing values are overwritten. If you wish to only set a value if it doesn't exist, you may pass `false` as the fourth argument to the function:
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
-    data_set($data, 'products.desk.price', 200, false);
+    data_set($data, 'products.desk.price', 200, $overwrite = false);
 
     // ['products' => ['desk' => ['price' => 100]]]
 
