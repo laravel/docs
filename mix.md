@@ -4,17 +4,16 @@
 - [Installation & Setup](#installation)
 - [Running Mix](#running-mix)
 - [Working With Stylesheets](#working-with-stylesheets)
-    - [Tailwind](#tailwind)
+    - [Tailwind CSS](#tailwindcss)
     - [PostCSS](#postcss)
     - [Sass](#sass)
     - [URL Processing](#url-processing)
     - [Source Maps](#css-source-maps)
 - [Working With JavaScript](#working-with-scripts)
-    - [Vendor Extraction](#vendor-extraction)
+    - [Vue](#vue)
     - [React](#react)
-    - [Vanilla JS](#vanilla-js)
+    - [Vendor Extraction](#vendor-extraction)
     - [Custom Webpack Configuration](#custom-webpack-configuration)
-- [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [Browsersync Reloading](#browsersync-reloading)
 - [Environment Variables](#environment-variables)
@@ -82,8 +81,8 @@ Webpack may not be able to detect your file changes in certain local development
 
 Your application's `webpack.mix.js` file is your entry point for all asset compilation. Think of it as a light configuration wrapper around [webpack](https://webpack.js.org). Mix tasks can be chained together to define exactly how your assets should be compiled.
 
-<a name="tailwind"></a>
-### Tailwind
+<a name="tailwindcss"></a>
+### Tailwind CSS
 
 [Tailwind CSS](https://tailwindcss.com) is a modern, utility-first framework for building amazing sites without ever leaving your HTML. Let's dig into how to start using it in a Laravel project with Laravel Mix. First, we should install Tailwind using NPM and generate our Tailwind configuration file:
 
@@ -126,7 +125,7 @@ Finally, you should reference your stylesheet in your application's primary layo
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
 </head>
 ```
 
@@ -216,21 +215,54 @@ With this single line of code, you may now take advantage of:
 <div class="content-list" markdown="1">
 - ES2015 syntax.
 - Modules
-- Compilation of `.vue` files.
 - Minification for production environments.
 </div>
+
+<a name="vue"></a>
+### Vue
+
+Mix will automatically install the Babel plugins necessary for Vue single-file component compilation support when using the `js` method. No further configuration is required:
+
+    mix.js('resources/js/app.js', 'public/js');
+
+Once your JavaScript has been compiled, you can reference it in your application:
+
+```html
+<head>
+    <!-- ... -->
+
+    <script src="/js/app.js"></script>
+</head>
+```
+
+<a name="react"></a>
+### React
+
+Mix can automatically install the Babel plugins necessary for React support. To get started, replace your call to Mix's `js` method with a call to the `react` method:
+
+    mix.react('resources/js/app.jsx', 'public/js');
+
+Behind the scenes, Mix will download and include the appropriate `babel-preset-react` Babel plugin. Once your JavaScript has been compiled, you can reference it in your application:
+
+```html
+<head>
+    <!-- ... -->
+
+    <script src="/js/app.js"></script>
+</head>
+```
 
 <a name="vendor-extraction"></a>
 ### Vendor Extraction
 
-One potential downside to bundling all application-specific JavaScript with your vendor libraries is that it makes long-term caching more difficult. For example, a single update to your application code will force the browser to re-download all of your vendor libraries even if they haven't changed.
+One potential downside to bundling all of your application-specific JavaScript with your vendor libraries such as React and Vue is that it makes long-term caching more difficult. For example, a single update to your application code will force the browser to re-download all of your vendor libraries even if they haven't changed.
 
 If you intend to make frequent updates to your application's JavaScript, you should consider extracting all of your vendor libraries into their own file. This way, a change to your application code will not affect the caching of your large `vendor.js` file. Mix's `extract` method makes this a breeze:
 
     mix.js('resources/js/app.js', 'public/js')
         .extract(['vue'])
 
-The `extract` method accepts an array of all libraries or modules that you wish to extract into a `vendor.js` file. Using the above snippet as an example, Mix will generate the following files:
+The `extract` method accepts an array of all libraries or modules that you wish to extract into a `vendor.js` file. Using the snippet above as an example, Mix will generate the following files:
 
 <div class="content-list" markdown="1">
 - `public/js/manifest.js`: *The Webpack manifest runtime*
@@ -244,33 +276,10 @@ To avoid JavaScript errors, be sure to load these files in the proper order:
     <script src="/js/vendor.js"></script>
     <script src="/js/app.js"></script>
 
-<a name="react"></a>
-### React
-
-Mix can automatically install the Babel plugins necessary for React support. To get started, replace your `mix.js()` call with `mix.react()`:
-
-    mix.react('resources/js/app.jsx', 'public/js');
-
-Behind the scenes, Mix will download and include the appropriate `babel-preset-react` Babel plugin.
-
-<a name="vanilla-js"></a>
-### Vanilla JS
-
-Similar to combining stylesheets with `mix.styles()`, you may also combine and minify any number of JavaScript files with the `scripts()` method:
-
-    mix.scripts([
-        'public/js/admin.js',
-        'public/js/dashboard.js'
-    ], 'public/js/all.js');
-
-This option is particularly useful for legacy projects where you don't require Webpack compilation for your JavaScript.
-
-> {tip} A slight variation of `mix.scripts()` is `mix.babel()`. Its method signature is identical to `scripts`; however, the concatenated file will receive Babel compilation, which translates any ES2015 code to vanilla JavaScript that all browsers will understand.
-
 <a name="custom-webpack-configuration"></a>
 ### Custom Webpack Configuration
 
-Behind the scenes, Laravel Mix references a pre-configured `webpack.config.js` file to get you up and running as quickly as possible. Occasionally, you may need to manually modify this file. You might have a special loader or plugin that needs to be referenced, or maybe you prefer to use Stylus instead of Sass. In such instances, you have two choices:
+Behind the scenes, Laravel Mix references a pre-configured `webpack.config.js` file to get you up and running as quickly as possible. Occasionally, you may need to manually modify this file. For example, you might have a special loader or plugin that needs to be referenced. In such instances, you have two choices:
 
 <a name="merging-custom-configuration"></a>
 #### Merging Custom Configuration
@@ -290,23 +299,12 @@ Mix provides a useful `webpackConfig` method that allows you to merge any short 
 
 If you would like to completely customize your Webpack configuration, copy the `node_modules/laravel-mix/setup/webpack.config.js` file to your project's root directory. Next, point all of the `--config` references in your `package.json` file to the newly copied configuration file. If you choose to take this approach to customization, any future upstream updates to Mix's `webpack.config.js` must be manually merged into your customized file.
 
-<a name="copying-files-and-directories"></a>
-## Copying Files & Directories
-
-The `copy` method may be used to copy files and directories to new locations. This can be useful when a particular asset within your `node_modules` directory needs to be relocated to your `public` folder.
-
-    mix.copy('node_modules/foo/bar.css', 'public/css/bar.css');
-
-When copying a directory, the `copy` method will flatten the directory's structure. To maintain the directory's original structure, you should use the `copyDirectory` method instead:
-
-    mix.copyDirectory('resources/img', 'public/img');
-
 <a name="versioning-and-cache-busting"></a>
 ## Versioning / Cache Busting
 
-Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Mix can handle this for you using the `version` method.
+Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Mix can automatically handle this for you using the `version` method.
 
-The `version` method will automatically append a unique hash to the filenames of all compiled files, allowing for more convenient cache busting:
+The `version` method will append a unique hash to the filenames of all compiled files, allowing for more convenient cache busting:
 
     mix.js('resources/js/app.js', 'public/js')
         .version();
@@ -326,44 +324,49 @@ Because versioned files are usually unnecessary in development, you may instruct
 <a name="custom-mix-base-urls"></a>
 #### Custom Mix Base URLs
 
-If your Mix compiled assets are deployed to a CDN separate from your application, you will need to change the base URL generated by the `mix` function. You may do so by adding a `mix_url` configuration option to your `config/app.php` configuration file:
+If your Mix compiled assets are deployed to a CDN separate from your application, you will need to change the base URL generated by the `mix` function. You may do so by adding a `mix_url` configuration option to your application's `config/app.php` configuration file:
 
     'mix_url' => env('MIX_ASSET_URL', null)
 
 After configuring the Mix URL, The `mix` function will prefix the configured URL when generating URLs to assets:
 
-    https://cdn.example.com/js/app.js?id=1964becbdd96414518cd
+```bash
+https://cdn.example.com/js/app.js?id=1964becbdd96414518cd
+```
 
 <a name="browsersync-reloading"></a>
 ## Browsersync Reloading
 
-[BrowserSync](https://browsersync.io/) can automatically monitor your files for changes, and inject your changes into the browser without requiring a manual refresh. You may enable support by calling the `mix.browserSync()` method:
+[BrowserSync](https://browsersync.io/) can automatically monitor your files for changes, and inject your changes into the browser without requiring a manual refresh. You may enable support for this by calling the `mix.browserSync()` method:
 
-    mix.browserSync('my-domain.test');
+```js
+mix.browserSync('laravel.test');
+```
 
-    // Or...
+[BrowserSync options](https://browsersync.io/docs/options) may be specified by passing a JavaScript object to the `browserSync` method:
 
-    // https://browsersync.io/docs/options
-    mix.browserSync({
-        proxy: 'my-domain.test'
-    });
+```js
+mix.browserSync({
+    proxy: 'laravel.test'
+});
+```
 
-You may pass either a string (proxy) or object (BrowserSync settings) to this method. Next, start Webpack's dev server using the `npm run watch` command. Now, when you modify a script or PHP file, watch as the browser instantly refreshes the page to reflect your changes.
+Next, start webpack's development server using the `npm run watch` command. Now, when you modify a script or PHP file you can watch as the browser instantly refreshes the page to reflect your changes.
 
 <a name="environment-variables"></a>
 ## Environment Variables
 
-You may inject environment variables into Mix by prefixing a key in your `.env` file with `MIX_`:
+You may inject environment variables into your `webpack.mix.js` script by prefixing one of the environment variables in your `.env` file with `MIX_`:
 
     MIX_SENTRY_DSN_PUBLIC=http://example.com
 
-After the variable has been defined in your `.env` file, you may access it via the `process.env` object. If the value changes while you are running a `watch` task, you will need to restart the task:
+After the variable has been defined in your `.env` file, you may access it via the `process.env` object. However, you will need to restart the task if the environment variable's value changes while the task is running:
 
     process.env.MIX_SENTRY_DSN_PUBLIC
 
 <a name="notifications"></a>
 ## Notifications
 
-When available, Mix will automatically display OS notifications for each bundle. This will give you instant feedback, as to whether the compilation was successful or not. However, there may be instances when you'd prefer to disable these notifications. One such example might be triggering Mix on your production server. Notifications may be deactivated, via the `disableNotifications` method.
+When available, Mix will automatically display OS notifications when compiling, giving you instant feedback as to whether the compilation was successful or not. However, there may be instances when you would prefer to disable these notifications. One such example might be triggering Mix on your production server. Notifications may be deactivated using the `disableNotifications` method:
 
     mix.disableNotifications();
