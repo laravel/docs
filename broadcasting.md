@@ -5,6 +5,7 @@
     - [Configuration](#configuration)
     - [Pusher Channels](#pusher-channels)
     - [Ably](#ably)
+    - [Open Source Alternatives](#open-source-alternatives)
 - [Client Side Installation](#client-side-installation)
     - [Pusher Channels](#client-pusher-channels)
     - [Ably](#client-ably)
@@ -95,7 +96,7 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 <a name="pusher-compatible-laravel-websockets"></a>
 #### Pusher Compatible Laravel Websockets
 
-The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible websocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without an external websocket provider or Node. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
+The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible WebSocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
 
 <a name="ably"></a>
 ### Ably
@@ -113,6 +114,11 @@ Next, you will need to change your broadcast driver to `ably` in your `.env` fil
     BROADCAST_DRIVER=ably
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
+
+<a name="open-source-alternatives"></a>
+### Open Source Alternatives
+
+The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible WebSocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
 
 <a name="client-side-installation"></a>
 ## Client Side Installation
