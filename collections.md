@@ -18,8 +18,7 @@ The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper 
 
     $collection = collect(['taylor', 'abigail', null])->map(function ($name) {
         return strtoupper($name);
-    })
-    ->reject(function ($name) {
+    })->reject(function ($name) {
         return empty($name);
     });
 
@@ -37,7 +36,7 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 <a name="extending-collections"></a>
 ### Extending Collections
 
-Collections are "macroable", which allows you to add additional methods to the `Collection` class at run time. For example, the following code adds a `toUpper` method to the `Collection` class:
+Collections are "macroable", which allows you to add additional methods to the `Collection` class at run time. The `Illuminate\Support\Collection` class' `macro` method accepts a closure that will be executed when your macro is called. The macro closure may access the collection's other methods via `$this`, just as if it were a real method of the collection class. For example, the following code adds a `toUpper` method to the `Collection` class:
 
     use Illuminate\Support\Collection;
     use Illuminate\Support\Str;
@@ -54,12 +53,31 @@ Collections are "macroable", which allows you to add additional methods to the `
 
     // ['FIRST', 'SECOND']
 
-Typically, you should declare collection macros in a [service provider](/docs/{{version}}/providers).
+Typically, you should declare collection macros in the `boot` method of a [service provider](/docs/{{version}}/providers).
+
+<a name="macro-arguments"></a>
+#### Macro Arguments
+
+If necessary, you may define macros that accept additional arguments:
+
+    use Illuminate\Support\Collection;
+    use Illuminate\Support\Facades\Lang;
+    use Illuminate\Support\Str;
+
+    Collection::macro('toLocale', function ($locale) {
+        return $this->map(function ($value) use ($locale) {
+            return Lang::get($value, $locale);
+        });
+    });
+
+    $collection = collect(['first', 'second']);
+
+    $translated = $collection->toLocale('es');
 
 <a name="available-methods"></a>
 ## Available Methods
 
-For the remainder of this documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulate the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
+For the majority of the remaining collection documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulate the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
 
 <style>
     #collection-method-list > p {
