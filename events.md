@@ -444,6 +444,45 @@ Sometimes your queued event listeners may fail. If queued listener exceeds the m
         }
     }
 
+<a name="specifying-queued-listener-maximum-attempts"></a>
+#### Specifying Queued Listener Maximum Attempts
+
+If one of your queued listener is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a listener may be attempted.
+
+You may define `$tries` property on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
+
+    <?php
+
+    namespace App\Listeners;
+
+    use App\Events\OrderShipped;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Queue\InteractsWithQueue;
+
+    class SendShipmentNotification implements ShouldQueue
+    {
+        use InteractsWithQueue;
+
+        /**
+         * The number of times the queued listener may be attempted.
+         *
+         * @var int
+         */
+        public $tries = 5;
+    }
+
+As an alternative to defining how many times a listener may be attempted before it fails, you may define a time at which the listener should no longer be attempted. This allows a listener to be attempted any number of times within a given time frame. To define the time at which a listener should no longer be attempted, add a `retryUntil` method to your listener class. This method should return a `DateTime` instance:
+
+    /**
+     * Determine the time at which the listener should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return now()->addMinutes(5);
+    }
+
 <a name="dispatching-events"></a>
 ## Dispatching Events
 

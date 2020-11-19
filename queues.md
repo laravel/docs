@@ -481,6 +481,7 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
 
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
+    use App\Models\Podcast;
     use Illuminate\Http\Request;
 
     class PodcastController extends Controller
@@ -488,12 +489,14 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
-            // Create podcast...
+            $podcast = Podcast::create(...);
+
+            // ...
 
             ProcessPodcast::dispatch($podcast);
         }
@@ -501,14 +504,14 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
 
 If you would like to conditionally dispatch a job, you may use the `dispatchIf` and `dispatchUnless` methods:
 
-    ProcessPodcast::dispatchIf($accountActive === true, $podcast);
+    ProcessPodcast::dispatchIf($accountActive, $podcast);
 
-    ProcessPodcast::dispatchUnless($accountSuspended === false, $podcast);
+    ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
 
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
 
-If you would like to delay the execution of a queued job, you may use the `delay` method when dispatching a job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:
+If you would like to specify that a job should not be immediately available for processing by a queue worker, you may use the `delay` method when dispatching the job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:
 
     <?php
 
@@ -516,6 +519,7 @@ If you would like to delay the execution of a queued job, you may use the `delay
 
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
+    use App\Models\Podcast;
     use Illuminate\Http\Request;
 
     class PodcastController extends Controller
@@ -523,15 +527,17 @@ If you would like to delay the execution of a queued job, you may use the `delay
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
-            // Create podcast...
+            Podcast::create(...);
+
+            // ...
 
             ProcessPodcast::dispatch($podcast)
-                    ->delay(now()->addMinutes(10));
+                        ->delay(now()->addMinutes(10));
         }
     }
 
@@ -540,25 +546,25 @@ If you would like to delay the execution of a queued job, you may use the `delay
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 #### Dispatching After The Response Is Sent To Browser
 
-Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the response is sent to the user's browser. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email:
+Alternatively, the `dispatchAfterResponse` method delays dispatching a job until after the HTTP response is sent to the user's browser. This will still allow the user to begin using the application even though a queued job is still executing. This should typically only be used for jobs that take about a second, such as sending an email. Since they are processed within the current HTTP request, jobs dispatched in this fashion do not require a queue worker to be running in order for them to be processed:
 
     use App\Jobs\SendNotification;
 
     SendNotification::dispatchAfterResponse();
 
-You may `dispatch` a closure and chain the `afterResponse` method onto the helper to execute a closure after the response has been sent to the browser:
+You may also `dispatch` a closure and chain the `afterResponse` method onto the `dispatch` helper to execute a closure after the HTTP response has been sent to the browser:
 
     use App\Mail\WelcomeMessage;
     use Illuminate\Support\Facades\Mail;
 
     dispatch(function () {
-        Mail::to('taylor@laravel.com')->send(new WelcomeMessage);
+        Mail::to('taylor@example.com')->send(new WelcomeMessage);
     })->afterResponse();
 
 <a name="synchronous-dispatching"></a>
 ### Synchronous Dispatching
 
-If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be run immediately within the current process:
+If you would like to dispatch a job immediately (synchronously), you may use the `dispatchSync` method. When using this method, the job will not be queued and will be executed immediately within the current process:
 
     <?php
 
@@ -566,6 +572,7 @@ If you would like to dispatch a job immediately (synchronously), you may use the
 
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
+    use App\Models\Podcast;
     use Illuminate\Http\Request;
 
     class PodcastController extends Controller
@@ -573,11 +580,13 @@ If you would like to dispatch a job immediately (synchronously), you may use the
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
+            $podcast = Podcast::create(...);
+
             // Create podcast...
 
             ProcessPodcast::dispatchSync($podcast);
@@ -587,8 +596,11 @@ If you would like to dispatch a job immediately (synchronously), you may use the
 <a name="job-chaining"></a>
 ### Job Chaining
 
-Job chaining allows you to specify a list of queued jobs that should be run in sequence after the primary job has executed successfully. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `chain` method provided by the `Bus` facade:
+Job chaining allows you to specify a list of queued jobs that should be run in sequence after the primary job has executed successfully. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `chain` method provided by the `Bus` facade. Laravel's command bus is a lower level component that queued job dispatching is built on top of:
 
+    use App\Jobs\OptimizePodcast;
+    use App\Jobs\ProcessPodcast;
+    use App\Jobs\ReleasePodcast;
     use Illuminate\Support\Facades\Bus;
 
     Bus::chain([
@@ -607,7 +619,7 @@ In addition to chaining job class instances, you may also chain closures:
         },
     ])->dispatch();
 
-> {note} Deleting jobs using the `$this->delete()` method will not prevent chained jobs from being processed. The chain will only stop executing if a job in the chain fails.
+> {note} Deleting jobs using the `$this->delete()` method within the job will not prevent chained jobs from being processed. The chain will only stop executing if a job in the chain fails.
 
 <a name="chain-connection-queue"></a>
 #### Chain Connection & Queue
@@ -623,7 +635,7 @@ If you would like to specify the connection and queue that should be used for th
 <a name="chain-failures"></a>
 #### Chain Failures
 
-When chaining jobs, you may use the `catch` method to specify a closure that should be invoked if a job within the chain fails. The given callback will receive the exception instance that caused the job failure:
+When chaining jobs, you may use the `catch` method to specify a closure that should be invoked if a job within the chain fails. The given callback will receive the `Throwable` instance that caused the job failure:
 
     use Illuminate\Support\Facades\Bus;
     use Throwable;
@@ -650,6 +662,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
 
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
+    use App\Models\Podcast;
     use Illuminate\Http\Request;
 
     class PodcastController extends Controller
@@ -657,11 +670,13 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
+            $podcast = Podcast::create(...);
+
             // Create podcast...
 
             ProcessPodcast::dispatch($podcast)->onQueue('processing');
@@ -671,7 +686,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
 <a name="dispatching-to-a-particular-connection"></a>
 #### Dispatching To A Particular Connection
 
-If you are working with multiple queue connections, you may specify which connection to push a job to. To specify the connection, use the `onConnection` method when dispatching the job:
+If your application interacts with multiple queue connections, you may specify which connection to push a job to using the `onConnection` method:
 
     <?php
 
@@ -679,6 +694,7 @@ If you are working with multiple queue connections, you may specify which connec
 
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
+    use App\Models\Podcast;
     use Illuminate\Http\Request;
 
     class PodcastController extends Controller
@@ -686,18 +702,20 @@ If you are working with multiple queue connections, you may specify which connec
         /**
          * Store a new podcast.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
+            $podcast = Podcast::create(...);
+
             // Create podcast...
 
             ProcessPodcast::dispatch($podcast)->onConnection('sqs');
         }
     }
 
-You may chain the `onConnection` and `onQueue` methods to specify the connection and the queue for a job:
+You may chain the `onConnection` and `onQueue` methods together to specify the connection and the queue for a job:
 
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
@@ -709,11 +727,15 @@ You may chain the `onConnection` and `onQueue` methods to specify the connection
 <a name="max-attempts"></a>
 #### Max Attempts
 
-One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line:
+If one of your queued jobs is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a job may be attempted.
+
+One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies a more specific number of times it may be attempted:
 
     php artisan queue:work --tries=3
 
-However, you may take a more granular approach by defining the maximum number of attempts on the job class itself. If the maximum number of attempts is specified on the job, it will take precedence over the value provided on the command line:
+If a job exceeds its maximum number of attempts, it will be considered a "failed" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs).
+
+You may take a more granular approach by defining the maximum number of times a job may be attempted on the job class itself. If the maximum number of attempts is specified on the job, it will take precedence over the `--tries` value provided on the command line:
 
     <?php
 
@@ -732,7 +754,7 @@ However, you may take a more granular approach by defining the maximum number of
 <a name="time-based-attempts"></a>
 #### Time Based Attempts
 
-As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should timeout. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should timeout, add a `retryUntil` method to your job class:
+As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should no longer be attempted. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should no longer be attempted, add a `retryUntil` method to your job class. This method should return a `DateTime` instance:
 
     /**
      * Determine the time at which the job should timeout.
@@ -741,10 +763,10 @@ As an alternative to defining how many times a job may be attempted before it fa
      */
     public function retryUntil()
     {
-        return now()->addSeconds(5);
+        return now()->addMinutes(10);
     }
 
-> {tip} You may also define a `retryUntil` method on your queued event listeners.
+> {tip} You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners).
 
 <a name="max-exceptions"></a>
 #### Max Exceptions
