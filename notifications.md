@@ -767,19 +767,19 @@ If you would like to customize which channel that an entity's broadcast notifica
 <a name="sms-prerequisites"></a>
 ### Prerequisites
 
-Sending SMS notifications in Laravel is powered by [Nexmo](https://www.nexmo.com/). Before you can send notifications via Nexmo, you need to install the `laravel/nexmo-notification-channel` Composer package:
+Sending SMS notifications in Laravel is powered by [Vonage](https://www.vonage.com/) (formerly known as Nexmo). Before you can send notifications via Vonage, you need to install the `laravel/nexmo-notification-channel` and `nexmo/laravel` Composer packages
 
-    composer require laravel/nexmo-notification-channel
+    composer require laravel/nexmo-notification-channel nexmo/laravel
 
-This will also install the [`nexmo/laravel`](https://github.com/Nexmo/nexmo-laravel) package. This package includes [its own configuration file](https://github.com/Nexmo/nexmo-laravel/blob/master/config/nexmo.php). You can use the `NEXMO_KEY` and `NEXMO_SECRET` environment variables to set your Nexmo public and secret key.
+The `nexmo/laravel` package includes [its own configuration file](https://github.com/Nexmo/nexmo-laravel/blob/master/config/nexmo.php). However, you are not required to export this configuration file to your own application. You can simply use the `NEXMO_KEY` and `NEXMO_SECRET` environment variables to set your Vonage public and secret key.
 
-Next, you will need to add a configuration option to your `config/services.php` configuration file. You may copy the example configuration below to get started:
+Next, you will need to add a `nexmo` configuration entry to your `config/services.php` configuration file. You may copy the example configuration below to get started:
 
     'nexmo' => [
         'sms_from' => '15556666666',
     ],
 
-The `sms_from` option is the phone number that your SMS messages will be sent from. You should generate a phone number for your application in the Nexmo control panel.
+The `sms_from` option is the phone number that your SMS messages will be sent from. You should generate a phone number for your application in the Vonage control panel.
 
 <a name="formatting-sms-notifications"></a>
 ### Formatting SMS Notifications
@@ -787,10 +787,10 @@ The `sms_from` option is the phone number that your SMS messages will be sent fr
 If a notification supports being sent as an SMS, you should define a `toNexmo` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Messages\NexmoMessage` instance:
 
     /**
-     * Get the Nexmo / SMS representation of the notification.
+     * Get the Vonage / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return NexmoMessage
+     * @return \Illuminate\Notifications\Messages\NexmoMessage
      */
     public function toNexmo($notifiable)
     {
@@ -798,13 +798,31 @@ If a notification supports being sent as an SMS, you should define a `toNexmo` m
                     ->content('Your SMS message content');
     }
 
+<a name="unicode-content"></a>
+#### Unicode Content
+
+If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `NexmoMessage` instance:
+
+    /**
+     * Get the Vonage / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\NexmoMessage
+     */
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage)
+                    ->content('Your unicode message')
+                    ->unicode();
+    }
+
 <a name="formatting-shortcode-notifications"></a>
 ### Formatting Shortcode Notifications
 
-Laravel also supports sending shortcode notifications, which are pre-defined message templates in your Nexmo account. You may specify the type of notification (`alert`, `2fa`, or `marketing`), as well as the custom values that will populate the template:
+Laravel also supports sending shortcode notifications, which are pre-defined message templates in your Vonage account. To send a shortcode SMS notification, you should define a `toShortcode` method on your notification class. From within this method, you may return an array specifying the type of notification (`alert`, `2fa`, or `marketing`) as well as the custom values that will populate the template:
 
     /**
-     * Get the Nexmo / Shortcode representation of the notification.
+     * Get the Vonage / Shortcode representation of the notification.
      *
      * @param  mixed  $notifiable
      * @return array
@@ -821,31 +839,13 @@ Laravel also supports sending shortcode notifications, which are pre-defined mes
 
 > {tip} Like [routing SMS Notifications](#routing-sms-notifications), you should implement the `routeNotificationForShortcode` method on your notifiable model.
 
-<a name="unicode-content"></a>
-#### Unicode Content
-
-If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `NexmoMessage` instance:
-
-    /**
-     * Get the Nexmo / SMS representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return NexmoMessage
-     */
-    public function toNexmo($notifiable)
-    {
-        return (new NexmoMessage)
-                    ->content('Your unicode message')
-                    ->unicode();
-    }
-
 <a name="customizing-the-from-number"></a>
 ### Customizing The "From" Number
 
-If you would like to send some notifications from a phone number that is different from the phone number specified in your `config/services.php` file, you may use the `from` method on a `NexmoMessage` instance:
+If you would like to send some notifications from a phone number that is different from the phone number specified in your `config/services.php` file, you may call the `from` method on a `NexmoMessage` instance:
 
     /**
-     * Get the Nexmo / SMS representation of the notification.
+     * Get the Vonage / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
      * @return NexmoMessage
@@ -860,7 +860,7 @@ If you would like to send some notifications from a phone number that is differe
 <a name="routing-sms-notifications"></a>
 ### Routing SMS Notifications
 
-To route Nexmo notifications to the proper phone number, define a `routeNotificationForNexmo` method on your notifiable entity:
+To route Vonage notifications to the proper phone number, define a `routeNotificationForNexmo` method on your notifiable entity:
 
     <?php
 
@@ -891,7 +891,7 @@ To route Nexmo notifications to the proper phone number, define a `routeNotifica
 <a name="slack-prerequisites"></a>
 ### Prerequisites
 
-Before you can send notifications via Slack, you must install the notification channel via Composer:
+Before you can send notifications via Slack, you must install the Slack notification channel via Composer:
 
     composer require laravel/slack-notification-channel
 
@@ -906,7 +906,7 @@ If a notification supports being sent as a Slack message, you should define a `t
      * Get the Slack representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return SlackMessage
+     * @return \Illuminate\Notifications\Message\SlackMessage
      */
     public function toSlack($notifiable)
     {
@@ -923,23 +923,23 @@ You may use the `from` and `to` methods to customize the sender and recipient. T
      * Get the Slack representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return SlackMessage
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
                     ->from('Ghost', ':ghost:')
-                    ->to('#other')
-                    ->content('This will be sent to #other');
+                    ->to('#bots')
+                    ->content('This will be sent to #bots');
     }
 
-You may also use an image as your logo instead of an emoji:
+You may also use an image as your from "logo" instead of an emoji:
 
     /**
      * Get the Slack representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return SlackMessage
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
@@ -958,7 +958,7 @@ You may also add "attachments" to Slack messages. Attachments provide richer for
      * Get the Slack representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return SlackMessage
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
@@ -1027,7 +1027,7 @@ If some of your attachment fields contain Markdown, you may use the `markdown` m
 <a name="routing-slack-notifications"></a>
 ### Routing Slack Notifications
 
-To route Slack notifications to the proper location, define a `routeNotificationForSlack` method on your notifiable entity. This should return the webhook URL to which the notification should be delivered. Webhook URLs may be generated by adding an "Incoming Webhook" service to your Slack team:
+To route Slack notifications to the proper Slack team and channel, define a `routeNotificationForSlack` method on your notifiable entity. This should return the webhook URL to which the notification should be delivered. Webhook URLs may be generated by adding an "Incoming Webhook" service to your Slack team:
 
     <?php
 
@@ -1055,15 +1055,17 @@ To route Slack notifications to the proper location, define a `routeNotification
 <a name="localizing-notifications"></a>
 ## Localizing Notifications
 
-Laravel allows you to send notifications in a locale other than the current language, and will even remember this locale if the notification is queued.
+Laravel allows you to send notifications in a locale other than the HTTP request's current locale, and will even remember this locale if the notification is queued.
 
-To accomplish this, the `Illuminate\Notifications\Notification` class offers a `locale` method to set the desired language. The application will change into this locale when the notification is being formatted and then revert back to the previous locale when formatting is complete:
+To accomplish this, the `Illuminate\Notifications\Notification` class offers a `locale` method to set the desired language. The application will change into this locale when the notification is being evaluated and then revert back to the previous locale when evaluation is complete:
 
     $user->notify((new InvoicePaid($invoice))->locale('es'));
 
 Localization of multiple notifiable entries may also be achieved via the `Notification` facade:
 
-    Notification::locale('es')->send($users, new InvoicePaid($invoice));
+    Notification::locale('es')->send(
+        $users, new InvoicePaid($invoice)
+    );
 
 <a name="user-preferred-locales"></a>
 ### User Preferred Locales
@@ -1092,7 +1094,7 @@ Once you have implemented the interface, Laravel will automatically use the pref
 <a name="notification-events"></a>
 ## Notification Events
 
-When a notification is sent, the `Illuminate\Notifications\Events\NotificationSent` event is fired by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register listeners for this event in your `EventServiceProvider`:
+When a notification is sent, the `Illuminate\Notifications\Events\NotificationSent` [event](/docs/{{version}}/events) is fired by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register listeners for this event in your `EventServiceProvider`:
 
     /**
      * The event listener mappings for the application.
@@ -1112,7 +1114,7 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
     /**
      * Handle the event.
      *
-     * @param  NotificationSent  $event
+     * @param  \Illuminate\Notifications\Events\NotificationSent  $event
      * @return void
      */
     public function handle(NotificationSent $event)
@@ -1126,7 +1128,9 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
 <a name="custom-channels"></a>
 ## Custom Channels
 
-Laravel ships with a handful of notification channels, but you may want to write your own drivers to deliver notifications via other channels. Laravel makes it simple. To get started, define a class that contains a `send` method. The method should receive two arguments: a `$notifiable` and a `$notification`:
+Laravel ships with a handful of notification channels, but you may want to write your own drivers to deliver notifications via other channels. Laravel makes it simple. To get started, define a class that contains a `send` method. The method should receive two arguments: a `$notifiable` and a `$notification`.
+
+Within the `send` method, you may call methods on the notification to retrieve a message object understood by your channel and then send the notification to the `$notifiable` instance however you wish:
 
     <?php
 
@@ -1151,7 +1155,7 @@ Laravel ships with a handful of notification channels, but you may want to write
         }
     }
 
-Once your notification channel class has been defined, you may return the class name from the `via` method of any of your notifications:
+Once your notification channel class has been defined, you may return the class name from the `via` method of any of your notifications. In this example, the `toVoice` method of your notification can return whatever object you choose to represent voice messages. For example, you might define your own `VoiceMessage` class to represent these messages:
 
     <?php
 
