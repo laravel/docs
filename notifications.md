@@ -148,6 +148,15 @@ If you would like to delay the delivery of the notification, you may chain the `
 
     $user->notify((new InvoicePaid($invoice))->delay($when));
 
+You may pass an array to the `delay` method to specify the delay of the given channels:
+
+    $when = now()->addMinutes(10);
+
+    $user->notify((new InvoicePaid($invoice))->delay([
+        'sms' => $when,
+        'mail' => $when->addDay(),
+    ]));
+
 <a name="customizing-notification-channel-queues"></a>
 #### Customizing Notification Channel Queues
 
