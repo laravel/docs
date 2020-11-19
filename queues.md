@@ -129,7 +129,7 @@ The following dependencies are needed for the listed queue drivers. These depend
 <a name="generating-job-classes"></a>
 ### Generating Job Classes
 
-By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command. You may generate a new queued job using the Artisan CLI:
+By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command:
 
     php artisan make:job ProcessPodcast
 
@@ -140,7 +140,7 @@ The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` 
 <a name="class-structure"></a>
 ### Class Structure
 
-Job classes are very simple, normally containing only a `handle` method which is called when the job is processed by the queue. To get started, let's take a look at an example job class. In this example, we'll pretend we manage a podcast publishing service and need to process the uploaded podcast files before they are published:
+Job classes are very simple, normally containing only a `handle` method that is invoked when the job is processed by the queue. To get started, let's take a look at an example job class. In this example, we'll pretend we manage a podcast publishing service and need to process the uploaded podcast files before they are published:
 
     <?php
 
@@ -158,12 +158,17 @@ Job classes are very simple, normally containing only a `handle` method which is
     {
         use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+        /**
+         * The podcast instance.
+         *
+         * @var \App\Models\Podcast
+         */
         protected $podcast;
 
         /**
          * Create a new job instance.
          *
-         * @param  Podcast  $podcast
+         * @param  App\Models\Podcast  $podcast
          * @return void
          */
         public function __construct(Podcast $podcast)
@@ -174,7 +179,7 @@ Job classes are very simple, normally containing only a `handle` method which is
         /**
          * Execute the job.
          *
-         * @param  AudioProcessor  $processor
+         * @param  App\Services\AudioProcessor  $processor
          * @return void
          */
         public function handle(AudioProcessor $processor)
@@ -183,15 +188,21 @@ Job classes are very simple, normally containing only a `handle` method which is
         }
     }
 
-In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing. If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance and its loaded relationships from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
+In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models and their loaded relationships will be gracefully serialized and unserialized when the job is processing.
 
-The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
+If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance and its loaded relationships from the database. This approach to model serialization allows for much smaller job payloads to be sent to your queue driver.
 
-If you would like to take total control over how the container injects dependencies into the `handle` method, you may use the container's `bindMethod` method. The `bindMethod` method accepts a callback which receives the job and the container. Within the callback, you are free to invoke the `handle` method however you wish. Typically, you should call this method from a [service provider](/docs/{{version}}/providers):
+<a name="handle-method-dependency-injection"></a>
+#### `handle` Method Dependency Injection
+
+The `handle` method is invoked when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
+
+If you would like to take total control over how the container injects dependencies into the `handle` method, you may use the container's `bindMethod` method. The `bindMethod` method accepts a callback which receives the job and the container. Within the callback, you are free to invoke the `handle` method however you wish. Typically, you should call this method from the `boot` method of your `App\Providers\AppServiceProvider` [service provider](/docs/{{version}}/providers):
 
     use App\Jobs\ProcessPodcast;
+    use App\Services\AudioProcessor;
 
-    $this->app->bindMethod(ProcessPodcast::class.'@handle', function ($job, $app) {
+    $this->app->bindMethod([ProcessPodcast::class, 'handle'], function ($job, $app) {
         return $job->handle($app->make(AudioProcessor::class));
     });
 
@@ -200,7 +211,7 @@ If you would like to take total control over how the container injects dependenc
 <a name="handling-relationships"></a>
 #### Handling Relationships
 
-Because loaded relationships also get serialized, the serialized job string can become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model with no loaded relationships:
+Because loaded relationships also get serialized, the serialized job string can sometimes become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model without its loaded relationships:
 
     /**
      * Create a new job instance.
@@ -216,7 +227,7 @@ Because loaded relationships also get serialized, the serialized job string can 
 <a name="unique-jobs"></a>
 ### Unique Jobs
 
-> {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks).
+> {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
 
 Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class:
 
