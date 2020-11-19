@@ -144,17 +144,15 @@ Once the `ShouldQueue` interface has been added to your notification, you may se
 
 If you would like to delay the delivery of the notification, you may chain the `delay` method onto your notification instantiation:
 
-    $when = now()->addMinutes(10);
+    $delay = now()->addMinutes(10);
 
-    $user->notify((new InvoicePaid($invoice))->delay($when));
+    $user->notify((new InvoicePaid($invoice))->delay($delay));
 
-You may pass an array to the `delay` method to specify the delay of the given channels:
-
-    $when = now()->addMinutes(10);
+You may pass an array to the `delay` method to specify the delay amount for specific channels:
 
     $user->notify((new InvoicePaid($invoice))->delay([
-        'sms' => $when,
-        'mail' => $when->addDay(),
+        'mail' => now()->addMinutes(5),
+        'sms' => now()->addMinutes(10),
     ]));
 
 <a name="customizing-notification-channel-queues"></a>
