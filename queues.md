@@ -26,6 +26,7 @@
     - [Batch Failures](#batch-failures)
 - [Queueing Closures](#queueing-closures)
 - [Running The Queue Worker](#running-the-queue-worker)
+    - [The `queue:work` Command](#the-queue-work-command)
     - [Queue Priorities](#queue-priorities)
     - [Queue Workers & Deployment](#queue-workers-and-deployment)
     - [Job Expirations & Timeouts](#job-expirations-and-timeouts)
@@ -1118,7 +1119,7 @@ php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 <a name="queueing-closures"></a>
 ## Queueing Closures
 
-Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code contents is cryptographically signed so it can not be modified in transit:
+Instead of dispatching a job class to the queue, you may also dispatch a closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle. When dispatching closures to the queue, the closure's code content is cryptographically signed so that it can not be modified in transit:
 
     $podcast = App\Podcast::find(1);
 
@@ -1126,7 +1127,7 @@ Instead of dispatching a job class to the queue, you may also dispatch a closure
         $podcast->publish();
     });
 
-Using the `catch` method, you may provide a closure that should be executed if the queued closure fails to complete successfully after exhausting all of your queue's configured retry attempts:
+Using the `catch` method, you may provide a closure that should be executed if the queued closure fails to complete successfully after exhausting all of your queue's [configured retry attempts](#max-job-attempts-and-timeout):
 
     use Throwable;
 
@@ -1139,7 +1140,10 @@ Using the `catch` method, you may provide a closure that should be executed if t
 <a name="running-the-queue-worker"></a>
 ## Running The Queue Worker
 
-Laravel includes a queue worker that will process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:
+<a name="the-queue-work-command"></a>
+### The `queue:work` Command
+
+Laravel includes an Artisan command that will start a queue worker and process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:
 
     php artisan queue:work
 
@@ -1147,9 +1151,14 @@ Laravel includes a queue worker that will process new jobs as they are pushed on
 
 Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment). In addition, remember that any static state created or modified by your application will not be automatically reset between jobs.
 
-Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker when you want to reload your updated code or reset the application state; however, this command is not as efficient as `queue:work`:
+Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker when you want to reload your updated code or reset the application state; however, this command is significantly less efficient than the `queue:work` command:
 
     php artisan queue:listen
+
+<a name="running-multiple-queue-workers"></a>
+#### Running Multiple Queue Workers
+
+To assign multiple workers to a queue and process jobs concurrently, you should simply start multiple `queue:work` processes. This can either be done locally via multiple tabs in your terminal or in production using your process manager's configuration settings. [When using Supervisor](#supervisor-configuration), you may use the `numprocs` configuration value.
 
 <a name="specifying-the-connection-queue"></a>
 #### Specifying The Connection & Queue
@@ -1169,34 +1178,41 @@ The `--once` option may be used to instruct the worker to only process a single 
 
     php artisan queue:work --once
 
-The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs:
+The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs, releasing any memory they may have accumulated:
 
     php artisan queue:work --max-jobs=1000
 
 <a name="processing-all-queued-jobs-then-exiting"></a>
 #### Processing All Queued Jobs & Then Exiting
 
-The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when working Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
+The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when processing Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
 
     php artisan queue:work --stop-when-empty
 
 <a name="processing-jobs-for-a-given-number-of-seconds"></a>
 #### Processing Jobs For A Given Number Of Seconds
 
-The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time:
+The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time, releasing any memory they may have accumulated:
 
     // Process jobs for one hour and then exit...
     php artisan queue:work --max-time=3600
 
+<a name="worker-sleep-duration"></a>
+#### Worker Sleep Duration
+
+When jobs are available on the queue, the worker will keep processing jobs with no delay in between them. However, the `sleep` option determines how any seconds the worker will "sleep" if there are no new jobs available. While sleeping, the worker will not process any new jobs - the jobs will be processed after the worker wakes up again.
+
+    php artisan queue:work --sleep=3
+
 <a name="resource-considerations"></a>
 #### Resource Considerations
 
-Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should free any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
+Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should release any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done processing the image.
 
 <a name="queue-priorities"></a>
 ### Queue Priorities
 
-Sometimes you may wish to prioritize how your queues are processed. For example, in your `config/queue.php` you may set the default `queue` for your `redis` connection to `low`. However, occasionally you may wish to push a job to a `high` priority queue like so:
+Sometimes you may wish to prioritize how your queues are processed. For example, in your `config/queue.php` configuration file you may set the default `queue` for your `redis` connection to `low`. However, occasionally you may wish to push a job to a `high` priority queue like so:
 
     dispatch((new Job)->onQueue('high'));
 
@@ -1207,13 +1223,13 @@ To start a worker that verifies that all of the `high` queue jobs are processed 
 <a name="queue-workers-and-deployment"></a>
 ### Queue Workers & Deployment
 
-Since queue workers are long-lived processes, they will not pick up changes to your code without being restarted. So, the simplest way to deploy an application using queue workers is to restart the workers during your deployment process. You may gracefully restart all of the workers by issuing the `queue:restart` command:
+Since queue workers are long-lived processes, they will not notice changes to your code without being restarted. So, the simplest way to deploy an application using queue workers is to restart the workers during your deployment process. You may gracefully restart all of the workers by issuing the `queue:restart` command:
 
     php artisan queue:restart
 
-This command will instruct all queue workers to gracefully "die" after they finish processing their current job so that no existing jobs are lost. Since the queue workers will die when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
+This command will instruct all queue workers to gracefully exit after they finish processing their current job so that no existing jobs are lost. Since the queue workers will exit when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
 
-> {tip} The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify a cache driver is properly configured for your application before using this feature.
+> {tip} The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a name="job-expirations-and-timeouts"></a>
 ### Job Expirations & Timeouts
@@ -1221,27 +1237,22 @@ This command will instruct all queue workers to gracefully "die" after they fini
 <a name="job-expiration"></a>
 #### Job Expiration
 
-In your `config/queue.php` configuration file, each queue connection defines a `retry_after` option. This option specifies how many seconds the queue connection should wait before retrying a job that is being processed. For example, if the value of `retry_after` is set to `90`, the job will be released back onto the queue if it has been processing for 90 seconds without being deleted. Typically, you should set the `retry_after` value to the maximum number of seconds your jobs should reasonably take to complete processing.
+In your `config/queue.php` configuration file, each queue connection defines a `retry_after` option. This option specifies how many seconds the queue connection should wait before retrying a job that is being processed. For example, if the value of `retry_after` is set to `90`, the job will be released back onto the queue if it has been processing for 90 seconds without being released or deleted. Typically, you should set the `retry_after` value to the maximum number of seconds your jobs should reasonably take to complete processing.
 
 > {note} The only queue connection which does not contain a `retry_after` value is Amazon SQS. SQS will retry the job based on the [Default Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) which is managed within the AWS console.
 
 <a name="worker-timeouts"></a>
 #### Worker Timeouts
 
-The `queue:work` Artisan command exposes a `--timeout` option. The `--timeout` option specifies how long the Laravel queue master process will wait before killing off a child queue worker that is processing a job. Sometimes a child queue process can become "frozen" for various reasons. The `--timeout` option removes frozen processes that have exceeded that specified time limit:
+The `queue:work` Artisan command exposes a `--timeout` option. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):
 
-    php artisan queue:work --timeout=60
+```bash
+php artisan queue:work --timeout=60
+```
 
 The `retry_after` configuration option and the `--timeout` CLI option are different, but work together to ensure that jobs are not lost and that jobs are only successfully processed once.
 
-> {note} The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a given job is always killed before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice.
-
-<a name="worker-sleep-duration"></a>
-#### Worker Sleep Duration
-
-When jobs are available on the queue, the worker will keep processing jobs with no delay in between them. However, the `sleep` option determines how long (in seconds) the worker will "sleep" if there are no new jobs available. While sleeping, the worker will not process any new jobs - the jobs will be processed after the worker wakes up again.
-
-    php artisan queue:work --sleep=3
+> {note} The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a frozen job is always terminated before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice.
 
 <a name="supervisor-configuration"></a>
 ## Supervisor Configuration
