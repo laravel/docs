@@ -48,18 +48,18 @@
 <a name="introduction"></a>
 ## Introduction
 
-In addition to support for [sending email](/docs/{{version}}/mail), Laravel provides support for sending notifications across a variety of delivery channels, including mail, SMS (via [Vonage](https://www.vonage.com/communications-apis/), formerly known as Nexmo), and [Slack](https://slack.com). Notifications may also be stored in a database so they may be displayed in your web interface.
+In addition to support for [sending email](/docs/{{version}}/mail), Laravel provides support for sending notifications across a variety of delivery channels, including email, SMS (via [Vonage](https://www.vonage.com/communications-apis/), formerly known as Nexmo), and [Slack](https://slack.com). In addition, a variety of [community built notification channels](https://laravel-notification-channels.com/about/#suggesting-a-new-channel) have been created to send notification over dozens of different channels! Notifications may also be stored in a database so they may be displayed in your web interface.
 
 Typically, notifications should be short, informational messages that notify users of something that occurred in your application. For example, if you are writing a billing application, you might send an "Invoice Paid" notification to your users via the email and SMS channels.
 
 <a name="creating-notifications"></a>
 ## Creating Notifications
 
-In Laravel, each notification is represented by a single class (typically stored in the `app/Notifications` directory). Don't worry if you don't see this directory in your application, it will be created for you when you run the `make:notification` Artisan command:
+In Laravel, each notification is represented by a single class that is typically stored in the `app/Notifications` directory. Don't worry if you don't see this directory in your application - it will be created for you when you run the `make:notification` Artisan command:
 
     php artisan make:notification InvoicePaid
 
-This command will place a fresh notification class in your `app/Notifications` directory. Each notification class contains a `via` method and a variable number of message building methods (such as `toMail` or `toDatabase`) that convert the notification to a message optimized for that particular channel.
+This command will place a fresh notification class in your `app/Notifications` directory. Each notification class contains a `via` method and a variable number of message building methods, such as `toMail` or `toDatabase`, that convert the notification to a message tailored for that particular channel.
 
 <a name="sending-notifications"></a>
 ## Sending Notifications
@@ -67,7 +67,7 @@ This command will place a fresh notification class in your `app/Notifications` d
 <a name="using-the-notifiable-trait"></a>
 ### Using The Notifiable Trait
 
-Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` [facade](/docs/{{version}}/facades). First, let's explore using the trait:
+Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` [facade](/docs/{{version}}/facades). The `Notifiable` trait is included on your application's `App\Models\User` model by default:
 
     <?php
 
@@ -81,18 +81,20 @@ Notifications may be sent in two ways: using the `notify` method of the `Notifia
         use Notifiable;
     }
 
-This trait is utilized by the default `App\Models\User` model and contains one method that may be used to send notifications: `notify`. The `notify` method expects to receive a notification instance:
+The `notify` method that is provided by this trait expects to receive a notification instance:
 
     use App\Notifications\InvoicePaid;
 
     $user->notify(new InvoicePaid($invoice));
 
-> {tip} Remember, you may use the `Illuminate\Notifications\Notifiable` trait on any of your models. You are not limited to only including it on your `User` model.
+> {tip} Remember, you may use the `Notifiable` trait on any of your models. You are not limited to only including it on your `User` model.
 
 <a name="using-the-notification-facade"></a>
 ### Using The Notification Facade
 
-Alternatively, you may send notifications via the `Notification` [facade](/docs/{{version}}/facades). This is useful primarily when you need to send a notification to multiple notifiable entities such as a collection of users. To send notifications using the facade, pass all of the notifiable entities and the notification instance to the `send` method:
+Alternatively, you may send notifications via the `Notification` [facade](/docs/{{version}}/facades). This approach is useful when you need to send a notification to multiple notifiable entities such as a collection of users. To send notifications using the facade, pass all of the notifiable entities and the notification instance to the `send` method:
+
+    use Illuminate\Support\Facades\Notification;
 
     Notification::send($users, new InvoicePaid($invoice));
 
@@ -121,7 +123,7 @@ The `via` method receives a `$notifiable` instance, which will be an instance of
 
 > {note} Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues).
 
-Sending notifications can take time, especially if the channel needs an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using `make:notification`, so you may immediately add them to your notification class:
+Sending notifications can take time, especially if the channel needs to make an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using the `make:notification` command, so you may immediately add them to your notification class:
 
     <?php
 
@@ -148,6 +150,18 @@ If you would like to delay the delivery of the notification, you may chain the `
 
     $user->notify((new InvoicePaid($invoice))->delay($when));
 
+<a name="customizing-the-notification-queue-connection"></a>
+#### Customizing The Notification Queue Connection
+
+By default, queued notifications will be queued using your application's default queue connection. If you would like to specify a different connection that should be used for a particular notification, you may define a `$connection` property on the notification class:
+
+    /**
+     * The name of the queue connection to use when queueing the notification.
+     *
+     * @var string
+     */
+    public $connection = 'redis';
+
 <a name="customizing-notification-channel-queues"></a>
 #### Customizing Notification Channel Queues
 
@@ -169,7 +183,7 @@ If you would like to specify a specific queue that should be used for each notif
 <a name="on-demand-notifications"></a>
 ### On-Demand Notifications
 
-Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the `Notification::route` facade method, you may specify ad-hoc notification routing information before sending the notification:
+Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the `Notification` facade's `route` method, you may specify ad-hoc notification routing information before sending the notification:
 
     Notification::route('mail', 'taylor@example.com')
                 ->route('nexmo', '5555555555')
@@ -182,7 +196,9 @@ Sometimes you may need to send a notification to someone who is not stored as a 
 <a name="formatting-mail-messages"></a>
 ### Formatting Mail Messages
 
-If a notification supports being sent as an email, you should define a `toMail` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Messages\MailMessage` instance. Mail messages may contain lines of text as well as a "call to action". Let's take a look at an example `toMail` method:
+If a notification supports being sent as an email, you should define a `toMail` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Messages\MailMessage` instance.
+
+The `MailMessage` class contains a few simple methods to help you build transactional email messages. Mail messages may contain lines of text as well as a "call to action". Let's take a look at an example `toMail` method:
 
     /**
      * Get the mail representation of the notification.
@@ -203,14 +219,14 @@ If a notification supports being sent as an email, you should define a `toMail` 
 
 > {tip} Note we are using `$this->invoice->id` in our `toMail` method. You may pass any data your notification needs to generate its message into the notification's constructor.
 
-In this example, we register a greeting, a line of text, a call to action, and then another line of text. These methods provided by the `MailMessage` object make it simple and fast to format small transactional emails. The mail channel will then translate the message components into a nice, responsive HTML email template with a plain-text counterpart. Here is an example of an email generated by the `mail` channel:
+In this example, we register a greeting, a line of text, a call to action, and then another line of text. These methods provided by the `MailMessage` object make it simple and fast to format small transactional emails. The mail channel will then translate the message components into a beautiful, responsive HTML email template with a plain-text counterpart. Here is an example of an email generated by the `mail` channel:
 
 <img src="https://laravel.com/img/docs/notification-example-2.png">
 
-> {tip} When sending mail notifications, be sure to set the `name` value in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
+> {tip} When sending mail notifications, be sure to set the `name` configuration option in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
 
-<a name="other-notification-formatting-options"></a>
-#### Other Notification Formatting Options
+<a name="other-mail-notification-formatting-options"></a>
+#### Other Mail Notification Formatting Options
 
 Instead of defining the "lines" of text in the notification class, you may use the `view` method to specify a custom template that should be used to render the notification email:
 
@@ -227,7 +243,7 @@ Instead of defining the "lines" of text in the notification class, you may use t
         );
     }
 
-You may specify a plain-text view for the mail message by passing the view name as the second element of an array that is given to the `view` method of the `MailMessage`:
+You may specify a plain-text view for the mail message by passing the view name as the second element of an array that is given to the `view` method:
 
     /**
      * Get the mail representation of the notification.
@@ -245,7 +261,7 @@ You may specify a plain-text view for the mail message by passing the view name 
 
 In addition, you may return a full [mailable object](/docs/{{version}}/mail) from the `toMail` method:
 
-    use App\Mail\InvoicePaid as Mailable;
+    use App\Mail\InvoicePaid as InvoicePaidMailable;
 
     /**
      * Get the mail representation of the notification.
@@ -255,13 +271,14 @@ In addition, you may return a full [mailable object](/docs/{{version}}/mail) fro
      */
     public function toMail($notifiable)
     {
-        return (new Mailable($this->invoice))->to($notifiable->email);
+        return (new InvoicePaidMailable($this->invoice))
+                    ->to($notifiable->email);
     }
 
 <a name="error-messages"></a>
 #### Error Messages
 
-Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of blue:
+Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of black:
 
     /**
      * Get the mail representation of the notification.
@@ -291,14 +308,14 @@ By default, the email's sender / from address is defined in the `config/mail.php
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->from('test@example.com', 'Example')
+                    ->from('barrett@example.com', 'Barrett Blair')
                     ->line('...');
     }
 
 <a name="customizing-the-recipient"></a>
 ### Customizing The Recipient
 
-When sending notifications via the `mail` channel, the notification system will automatically look for an `email` property on your notifiable entity. You may customize which email address is used to deliver the notification by defining a `routeNotificationForMail` method on the entity:
+When sending notifications via the `mail` channel, the notification system will automatically look for an `email` property on your notifiable entity. You may customize which email address is used to deliver the notification by defining a `routeNotificationForMail` method on the notifiable entity:
 
     <?php
 
@@ -322,7 +339,7 @@ When sending notifications via the `mail` channel, the notification system will 
             // Return email address only...
             return $this->email_address;
 
-            // Return name and email address...
+            // Return email address and name...
             return [$this->email_address => $this->name];
         }
     }
@@ -330,7 +347,7 @@ When sending notifications via the `mail` channel, the notification system will 
 <a name="customizing-the-subject"></a>
 ### Customizing The Subject
 
-By default, the email's subject is the class name of the notification formatted to "title case". So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If you would like to specify an explicit subject for the message, you may call the `subject` method when building your message:
+By default, the email's subject is the class name of the notification formatted to "Title Case". So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If you would like to specify an different subject for the message, you may call the `subject` method when building your message:
 
     /**
      * Get the mail representation of the notification.
@@ -348,7 +365,7 @@ By default, the email's subject is the class name of the notification formatted 
 <a name="customizing-the-mailer"></a>
 ### Customizing The Mailer
 
-By default, the email notification will be sent using the default driver defined in the `config/mail.php` configuration file. However, you may specify a different mailer at runtime by calling the `mailer` method when building your message:
+By default, the email notification will be sent using the default mailer defined in the `config/mail.php` configuration file. However, you may specify a different mailer at runtime by calling the `mailer` method when building your message:
 
     /**
      * Get the mail representation of the notification.
@@ -373,7 +390,7 @@ You can modify the HTML and plain-text template used by mail notifications by pu
 <a name="mail-attachments"></a>
 ### Attachments
 
-To add attachments to an email notification, use the `attach` method while building your message. The `attach` method accepts the full (absolute) path to the file as its first argument:
+To add attachments to an email notification, use the `attach` method while building your message. The `attach` method accepts the absolute path to the file as its first argument:
 
     /**
      * Get the mail representation of the notification.
@@ -406,12 +423,27 @@ When attaching files to a message, you may also specify the display name and / o
                     ]);
     }
 
-> {tip} Unlike attaching files in mailable objects, you may not attach a file directly from the storage disk using `attachFromStorage`. You should rather use the `attach` method with an absolute path to the file on the storage disk. Alternatively, you could return a [mailable](/docs/{{version}}/mail#generating-mailables) from the `toMail` method.
+Unlike attaching files in mailable objects, you may not attach a file directly from a storage disk using `attachFromStorage`. You should rather use the `attach` method with an absolute path to the file on the storage disk. Alternatively, you could return a [mailable](/docs/{{version}}/mail#generating-mailables) from the `toMail` method:
+
+    use App\Mail\InvoicePaid as InvoicePaidMailable;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return Mailable
+     */
+    public function toMail($notifiable)
+    {
+        return (new InvoicePaidMailable($this->invoice))
+                    ->to($notifiable->email)
+                    ->attachFromStorage('/path/to/file');
+    }
 
 <a name="raw-data-attachments"></a>
 #### Raw Data Attachments
 
-The `attachData` method may be used to attach a raw string of bytes as an attachment:
+The `attachData` method may be used to attach a raw string of bytes as an attachment. When calling the `attachData` method, you should provide the filename that should be assigned to the attachment:
 
     /**
      * Get the mail representation of the notification.
@@ -433,10 +465,13 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
 
 When designing a mail notification template, it is convenient to quickly preview the rendered mail message in your browser like a typical Blade template. For this reason, Laravel allows you to return any mail message generated by a mail notification directly from a route closure or controller. When a `MailMessage` is returned, it will be rendered and displayed in the browser, allowing you to quickly preview its design without needing to send it to an actual email address:
 
-    Route::get('mail', function () {
-        $invoice = App\Invoice::find(1);
+    use App\Invoice;
+    use App\Notifications\InvoicePaid;
 
-        return (new App\Notifications\InvoicePaid($invoice))
+    Route::get('/notification', function () {
+        $invoice = Invoice::find(1);
+
+        return (new InvoicePaid($invoice))
                     ->toMail($invoice->user);
     });
 
@@ -452,7 +487,7 @@ To generate a notification with a corresponding Markdown template, you may use t
 
     php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
 
-Like all other mail notifications, notifications that use Markdown templates should define a `toMail` method on their notification class. However, instead of using the `line` and `action` methods to construct the notification, use the `markdown` method to specify the name of the Markdown template that should be used:
+Like all other mail notifications, notifications that use Markdown templates should define a `toMail` method on their notification class. However, instead of using the `line` and `action` methods to construct the notification, use the `markdown` method to specify the name of the Markdown template that should be used. An array of data you wish to make available to the template may be passed as the method's second argument:
 
     /**
      * Get the mail representation of the notification.
@@ -490,7 +525,7 @@ Markdown mail notifications use a combination of Blade components and Markdown s
 <a name="button-component"></a>
 #### Button Component
 
-The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`. You may add as many button components to a notification as you wish:
+The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `green`, and `red`. You may add as many button components to a notification as you wish:
 
     @component('mail::button', ['url' => $url, 'color' => 'green'])
     View Invoice
