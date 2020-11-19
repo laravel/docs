@@ -1257,32 +1257,40 @@ The `retry_after` configuration option and the `--timeout` CLI option are differ
 <a name="supervisor-configuration"></a>
 ## Supervisor Configuration
 
+In production, you need a way to keep your `queue:work` processes running. A `queue:work` process may stop running for a variety of reasons, such as an exceeded worker timeout or the execution of the `queue:restart` command.
+
+For this reason, you need to configure a process monitor that can detect when your `queue:work` processes exit and automatically restart them. In addition, process monitors can allow you to specify how many `queue:work` processes you would like to run concurrently. Supervisor is a process monitor commonly used in Linux environments and we will discuss how to configure it in the following documentation.
+
 <a name="installing-supervisor"></a>
 #### Installing Supervisor
 
-Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:work` process if it fails. To install Supervisor on Ubuntu, you may use the following command:
+Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:work` processes if they fail. To install Supervisor on Ubuntu, you may use the following command:
 
     sudo apt-get install supervisor
 
-> {tip} If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
+> {tip} If configuring and managing Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your production Laravel projects.
 
 <a name="configuring-supervisor"></a>
 #### Configuring Supervisor
 
-Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors a `queue:work` process:
+Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors `queue:work` processes:
 
-    [program:laravel-worker]
-    process_name=%(program_name)s_%(process_num)02d
-    command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3 --max-time=3600
-    autostart=true
-    autorestart=true
-    user=forge
-    numprocs=8
-    redirect_stderr=true
-    stdout_logfile=/home/forge/app.com/worker.log
-    stopwaitsecs=3600
+```ini
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=forge
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/home/forge/app.com/worker.log
+stopwaitsecs=3600
+```
 
-In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `queue:work sqs` portion of the `command` directive to reflect your desired queue connection.
+In this example, the `numprocs` directive will instruct Supervisor to run eight `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `command` directive of the configuration to reflect your desired queue connection and worker options.
 
 > {note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
@@ -1291,11 +1299,13 @@ In this example, the `numprocs` directive will instruct Supervisor to run 8 `que
 
 Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
 
-    sudo supervisorctl reread
+```bash
+sudo supervisorctl reread
 
-    sudo supervisorctl update
+sudo supervisorctl update
 
-    sudo supervisorctl start laravel-worker:*
+sudo supervisorctl start laravel-worker:*
+```
 
 For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
 
