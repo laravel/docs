@@ -771,11 +771,13 @@ As an alternative to defining how many times a job may be attempted before it fa
 <a name="max-exceptions"></a>
 #### Max Exceptions
 
-Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of exceptions. To accomplish this, you may define a `maxExceptions` property on your job class:
+Sometimes you may wish to specify that a job may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `maxExceptions` property on your job class:
 
     <?php
 
     namespace App\Jobs;
+
+    use Illuminate\Support\Facades\Redis;
 
     class ProcessPodcast implements ShouldQueue
     {
@@ -787,7 +789,7 @@ Sometimes you may wish to specify that a job may be attempted many times, but sh
         public $tries = 25;
 
         /**
-         * The maximum number of exceptions to allow before failing.
+         * The maximum number of unhandled exceptions to allow before failing.
          *
          * @var int
          */
@@ -816,11 +818,15 @@ In this example, the job is released for ten seconds if the application is unabl
 
 > {note} The `pcntl` PHP extension must be installed in order to specify job timeouts.
 
-Likewise, the maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
+Often, you know roughly how long you expect your queued jobs to take. For this reason, Laravel allows you to specify a "timeout" value. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration).
+
+The maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
 
     php artisan queue:work --timeout=30
 
-However, you may also define the maximum number of seconds a job should be allowed to run on the job class itself. If the timeout is specified on the job, it will take precedence over any timeout specified on the command line:
+If the job exceeds its maximum attempts by continually timing out, it will be marked as failed.
+
+You may also define the maximum number of seconds a job should be allowed to run on the job class itself. If the timeout is specified on the job, it will take precedence over any timeout specified on the command line:
 
     <?php
 
