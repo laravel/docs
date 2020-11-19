@@ -41,24 +41,28 @@
 <a name="introduction"></a>
 ## Introduction
 
+While building your web application, you may have some tasks, such as parsing and storing an uploaded CSV file, that take too long to perform during a typical web request. Thankfully, Laravel allows you to easily create queued jobs that may be processed in the background. By moving time intensive tasks to a queue, your application can respond to web requests with blazing speed and provide a better user experience to your customers.
+
+Laravel queues provide a unified queueing API across a variety of different queue backends, such as [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io), or even a relational database.
+
+Laravel's queue configuration options are stored in your application's `config/queue.php` configuration file. In this file you will find connection configurations for each of the queue drivers that are included with the framework, including the database, [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io), and [Beanstalkd](https://beanstalkd.github.io/) drivers, as well as a synchronous driver that will execute jobs immediately (for use during local development). A `null` queue driver is also included which discards queued jobs.
+
 > {tip} Laravel now offers Horizon, a beautiful dashboard and configuration system for your Redis powered queues. Check out the full [Horizon documentation](/docs/{{version}}/horizon) for more information.
-
-Laravel queues provide a unified API across a variety of different queue backends, such as Beanstalk, Amazon SQS, Redis, or even a relational database. Queues allow you to defer the processing of a time consuming task, such as sending an email, until a later time. Deferring these time consuming tasks drastically speeds up web requests to your application.
-
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](https://beanstalkd.github.io/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io),  and a synchronous driver that will execute jobs immediately (for local use). A `null` queue driver is also included which discards queued jobs.
 
 <a name="connections-vs-queues"></a>
 ### Connections Vs. Queues
 
-Before getting started with Laravel queues, it is important to understand the distinction between "connections" and "queues". In your `config/queue.php` configuration file, there is a `connections` configuration option. This option defines a particular connection to a backend service such as Amazon SQS, Beanstalk, or Redis. However, any given queue connection may have multiple "queues" which may be thought of as different stacks or piles of queued jobs.
+Before getting started with Laravel queues, it is important to understand the distinction between "connections" and "queues". In your `config/queue.php` configuration file, there is a `connections` configuration array. This option defines the connections to backend queue services such as Amazon SQS, Beanstalk, or Redis. However, any given queue connection may have multiple "queues" which may be thought of as different stacks or piles of queued jobs.
 
 Note that each connection configuration example in the `queue` configuration file contains a `queue` attribute. This is the default queue that jobs will be dispatched to when they are sent to a given connection. In other words, if you dispatch a job without explicitly defining which queue it should be dispatched to, the job will be placed on the queue that is defined in the `queue` attribute of the connection configuration:
 
-    // This job is sent to the default queue...
-    Job::dispatch();
+    use App\Jobs\ProcessPodcast;
 
-    // This job is sent to the "emails" queue...
-    Job::dispatch()->onQueue('emails');
+    // This job is sent to the default connection's default queue...
+    ProcessPodcast::dispatch();
+
+    // This job is sent to the default connection's "emails" queue...
+    ProcessPodcast::dispatch()->onQueue('emails');
 
 Some applications may not need to ever push jobs onto multiple queues, instead preferring to have one simple queue. However, pushing jobs to multiple queues can be especially useful for applications that wish to prioritize or segment how jobs are processed, since the Laravel queue worker allows you to specify which queues it should process by priority. For example, if you push jobs to a `high` queue, you may run a worker that gives them higher processing priority:
 
@@ -111,7 +115,7 @@ Adjusting this value based on your queue load can be more efficient than continu
 <a name="other-driver-prerequisites"></a>
 #### Other Driver Prerequisites
 
-The following dependencies are needed for the listed queue drivers:
+The following dependencies are needed for the listed queue drivers. These dependencies may be installed via the Composer package manager:
 
 <div class="content-list" markdown="1">
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
