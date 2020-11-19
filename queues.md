@@ -229,7 +229,7 @@ Because loaded relationships also get serialized, the serialized job string can 
 
 > {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
 
-Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class:
+Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class. This interface does not require you to define any additional methods on your class:
 
     <?php
 
@@ -241,7 +241,7 @@ Sometimes, you may want to ensure that only one instance of a specific job is on
         ...
     }
 
-In the example above, the `UpdateSearchIndex` job is unique. So, new dispatches of the job will be ignored if another instance of the job is already on the queue and has not finished processing.
+In the example above, the `UpdateSearchIndex` job is unique. So, the job will not be dispatched if another instance of the job is already on the queue and has not finished processing.
 
 In certain cases, you may want to define a specific "key" that makes the job unique or you may want to specify a timeout beyond which the job no longer stays unique. To accomplish this, you may define `uniqueId` and `uniqueFor` properties or methods on your job class:
 
@@ -283,7 +283,7 @@ In the example above, the `UpdateSearchIndex` job is unique by a product ID. So,
 <a name="unique-job-locks"></a>
 #### Unique Job Locks
 
-Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is not acquired, the dispatch is ignored. This lock is released when the job completes processing or fails all of its retry attempts. By default, Laravel will use the default cache driver to obtain this lock. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method the returns the cache driver that should be used:
+Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is not acquired, the job is not dispatched. This lock is released when the job completes processing or fails all of its retry attempts. By default, Laravel will use the default cache driver to obtain this lock. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method the returns the cache driver that should be used:
 
     use Illuminate\Support\Facades\Cache;
 
@@ -309,6 +309,8 @@ Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts t
 
 Job middleware allow you to wrap custom logic around the execution of queued jobs, reducing boilerplate in the jobs themselves. For example, consider the following `handle` method which leverages Laravel's Redis rate limiting features to allow only one job to process every five seconds:
 
+    use Illuminate\Support\Facades\Redis;
+
     /**
      * Execute the job.
      *
@@ -327,7 +329,7 @@ Job middleware allow you to wrap custom logic around the execution of queued job
         });
     }
 
-While this code is valid, the structure of the `handle` method becomes noisy since it is cluttered with Redis rate limiting logic. In addition, this rate limiting logic must be duplicated for any other jobs that we want to rate limit.
+While this code is valid, the implementation of the `handle` method becomes noisy since it is cluttered with Redis rate limiting logic. In addition, this rate limiting logic must be duplicated for any other jobs that we want to rate limit.
 
 Instead of rate limiting in the handle method, we could define a job middleware that handles rate limiting. Laravel does not have a default location for job middleware, so you are welcome to place job middleware anywhere in your application. In this example, we will place the middleware in a `app/Jobs/Middleware` directory:
 
@@ -364,7 +366,7 @@ Instead of rate limiting in the handle method, we could define a job middleware 
 
 As you can see, like [route middleware](/docs/{{version}}/middleware), job middleware receive the job being processed and a callback that should be invoked to continue processing the job.
 
-After creating job middleware, they may be attached to a job by returning them from the job's `middleware` method. This method does not exist on jobs scaffolded by the `make:job` Artisan command, so you will need to add it to your own job class definition:
+After creating job middleware, they may be attached to a job by returning them from the job's `middleware` method. This method does not exist on jobs scaffolded by the `make:job` Artisan command, so you will need to manually add it to your job class:
 
     use App\Jobs\Middleware\RateLimited;
 
@@ -381,19 +383,31 @@ After creating job middleware, they may be attached to a job by returning them f
 <a name="rate-limiting"></a>
 ### Rate Limiting
 
-Although we just demonstrated how to write your own rate limiting job middleware, Laravel includes a rate limiting middleware that you may utilize to rate limit jobs. Like [route rate limiters](/docs/{{version}}/routing#defining-rate-limiter), job rate limiters are defined using the `RateLimiter` facade's `for` method.
+Although we just demonstrated how to write your own rate limiting job middleware, Laravel actually includes a rate limiting middleware that you may utilize to rate limit jobs. Like [route rate limiters](/docs/{{version}}/routing#defining-rate-limiter), job rate limiters are defined using the `RateLimiter` facade's `for` method.
 
-For example, you may wish to allow users to backup their data once per hour while imposing no such limit on premium customers. To accomplish this, you may define a `RateLimiter` in your `AppServiceProvider`:
+For example, you may wish to allow users to backup their data once per hour while imposing no such limit on premium customers. To accomplish this, you may define a `RateLimiter` in the `boot` method of your `AppServiceProvider`:
 
     use Illuminate\Support\Facades\RateLimiter;
 
-    RateLimiter::for('backups', function ($job) {
-        return $job->user->vipCustomer()
-                    ? Limit::none()
-                    : Limit::perHour(1)->by($job->user->id);
-    });
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        RateLimiter::for('backups', function ($job) {
+            return $job->user->vipCustomer()
+                        ? Limit::none()
+                        : Limit::perHour(1)->by($job->user->id);
+        });
+    }
 
-You may then attach the rate limiter to your backup job using the `RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration.
+In the example above, we defined an hourly rate limit; however, you may easily define a rate limit based on minutes using the `perMinute` method. In addition, you may pass any value you wish to the `by` method of the rate limit; however, this value is most often used to segment rate limits by customer:
+
+    return Limit::perMinute(50)->by($job->user->id);
+
+Once you have defined your rate limit, you may attach the rate limiter to your backup job using the `Illuminate\Queue\Middleware\RateLimited` middleware. Each time the job exceeds the rate limit, this middleware will release the job back to the queue with an appropriate delay based on the rate limit duration.
 
     use Illuminate\Queue\Middleware\RateLimited;
 
@@ -409,14 +423,14 @@ You may then attach the rate limiter to your backup job using the `RateLimited` 
 
 Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [`retryUntil` method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
 
-> {tip} If you are using Redis, you may use the `RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware.
+> {tip} If you are using Redis, you may use the `Illuminate\Queue\Middleware\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware.
 
 <a name="preventing-job-overlaps"></a>
 ### Preventing Job Overlaps
 
-Laravel includes a `WithoutOverlapping` middleware that allows you to prevent job overlaps based on an arbitrary key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time.
+Laravel includes an `Illuminate\Queue\Middleware\WithoutOverlapping` middleware that allows you to prevent job overlaps based on an arbitrary key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time.
 
-For example, let's imagine you have a refund processing job and you want to prevent refund job overlaps for the same order ID. To accomplish this, you can return the `WithoutOverlapping` middleware from your refund processing job's `middleware` method:
+For example, let's imagine you have a queued job that updates a user's credit score and you want to prevent credit score update job overlaps for the same user ID. To accomplish this, you can return the `WithoutOverlapping` middleware from your job's `middleware` method:
 
     use Illuminate\Queue\Middleware\WithoutOverlapping;
 
@@ -427,10 +441,10 @@ For example, let's imagine you have a refund processing job and you want to prev
      */
     public function middleware()
     {
-        return [new WithoutOverlapping($this->order->id)];
+        return [new WithoutOverlapping($this->user->id)];
     }
 
-Any overlapping jobs will be released back to the queue. You may also specify the number of seconds that must elapse before the job will be attempted again:
+Any overlapping jobs will be released back to the queue. You may also specify the number of seconds that must elapse before the released job will be attempted again:
 
     /**
      * Get the middleware the job should pass through.
@@ -442,7 +456,7 @@ Any overlapping jobs will be released back to the queue. You may also specify th
         return [(new WithoutOverlapping($this->order->id))->releaseAfter(60)];
     }
 
-If you wish to immediately delete any overlapping jobs, you may use the `dontRelease` method:
+If you wish to immediately delete any overlapping jobs so that they will not be retried, you may use the `dontRelease` method:
 
     /**
      * Get the middleware the job should pass through.
@@ -454,7 +468,7 @@ If you wish to immediately delete any overlapping jobs, you may use the `dontRel
         return [(new WithoutOverlapping($this->order->id))->dontRelease()];
     }
 
-> {note} The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks).
+> {note} The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
