@@ -111,7 +111,7 @@ When the Redis broadcaster publishes an event, it will be published on the event
 
 If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application. You may install it via the NPM package manager:
 
-    npm install --save-dev socket.io-client
+    npm install --save-dev socket.io-client@2
 
 Next, you will need to instantiate Echo with the `socket.io` connector and a `host`.
 
