@@ -17,8 +17,8 @@
     - [Policy Filters](#policy-filters)
 - [Authorizing Actions Using Policies](#authorizing-actions-using-policies)
     - [Via The User Model](#via-the-user-model)
-    - [Via Middleware](#via-middleware)
     - [Via Controller Helpers](#via-controller-helpers)
+    - [Via Middleware](#via-middleware)
     - [Via Blade Templates](#via-blade-templates)
     - [Supplying Additional Context](#supplying-additional-context)
 
@@ -36,6 +36,8 @@ You do not need to choose between exclusively using gates or exclusively using p
 
 <a name="writing-gates"></a>
 ### Writing Gates
+
+> {note} Gates are a great way to learn the basics of Laravel's authorization features; however, when building robust Laravel applications you should consider using [policies](#creating-policies) to organize your authorization rules.
 
 Gates are closures that determine if a user is authorized to perform a given action. Typically, gates are defined within the `boot` method of the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument and may optionally receive additional arguments such as a relevant Eloquent model.
 
@@ -503,28 +505,6 @@ Remember, some actions may correspond to policy methods like `create` that do no
         }
     }
 
-<a name="via-middleware"></a>
-### Via Middleware
-
-Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware is assigned the `can` key in your `App\Http\Kernel` class. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
-
-    use App\Models\Post;
-
-    Route::put('/post/{post}', function (Post $post) {
-        // The current user may update the post...
-    })->middleware('can:update,post');
-
-In this example, we're passing the `can` middleware two arguments. The first is the name of the action we wish to authorize and the second is the route parameter we wish to pass to the policy method. In this case, since we are using [implicit model binding](/docs/{{version}}/routing#implicit-binding), a `App\Models\Post` model will be passed to the policy method. If the user is not authorized to perform the given action, an HTTP response with a 403 status code will be returned by the middleware.
-
-<a name="middleware-actions-that-dont-require-models"></a>
-#### Actions That Don't Require Models
-
-Again, some policy methods like `create` do not require a model instance. In these situations, you may pass a class name to the middleware. The class name will be used to determine which policy to use when authorizing the action:
-
-    Route::post('/post', function () {
-        // The current user may create posts...
-    })->middleware('can:create,App\Models\Post');
-
 <a name="via-controller-helpers"></a>
 ### Via Controller Helpers
 
@@ -623,6 +603,28 @@ The following controller methods will be mapped to their corresponding policy me
 | destroy | delete |
 
 > {tip} You may use the `make:policy` command with the `--model` option to quickly generate a policy class for a given model: `php artisan make:policy PostPolicy --model=Post`.
+
+<a name="via-middleware"></a>
+### Via Middleware
+
+Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware is assigned the `can` key in your `App\Http\Kernel` class. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
+
+    use App\Models\Post;
+
+    Route::put('/post/{post}', function (Post $post) {
+        // The current user may update the post...
+    })->middleware('can:update,post');
+
+In this example, we're passing the `can` middleware two arguments. The first is the name of the action we wish to authorize and the second is the route parameter we wish to pass to the policy method. In this case, since we are using [implicit model binding](/docs/{{version}}/routing#implicit-binding), a `App\Models\Post` model will be passed to the policy method. If the user is not authorized to perform the given action, an HTTP response with a 403 status code will be returned by the middleware.
+
+<a name="middleware-actions-that-dont-require-models"></a>
+#### Actions That Don't Require Models
+
+Again, some policy methods like `create` do not require a model instance. In these situations, you may pass a class name to the middleware. The class name will be used to determine which policy to use when authorizing the action:
+
+    Route::post('/post', function () {
+        // The current user may create posts...
+    })->middleware('can:create,App\Models\Post');
 
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
