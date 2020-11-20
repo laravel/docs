@@ -312,16 +312,14 @@ In addition to calling the `logout` method, it is recommended that you invalidat
 <a name="remembering-users"></a>
 ### Remembering Users
 
-If you would like to provide "remember me" functionality in your application, you may pass a boolean value as the second argument to the `attempt` method, which will keep the user authenticated indefinitely, or until they manually logout. Your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
+Many web applications provide a "remember me" checkbox on their login form. If you would like to provide "remember me" functionality in your application, you may pass a boolean value as the second argument to the `attempt` method.
+
+When this value is `true`, Laravel will keep the user authenticated indefinitely or until they manually logout. Your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token. The `users` table migration included with new Laravel applications already includes this column:
+
+    use Illuminate\Support\Facades\Auth;
 
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
         // The user is being remembered...
-    }
-
-If you are "remembering" users, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
-
-    if (Auth::viaRemember()) {
-        //
     }
 
 <a name="other-authentication-methods"></a>
@@ -330,31 +328,35 @@ If you are "remembering" users, you may use the `viaRemember` method to determin
 <a name="authenticate-a-user-instance"></a>
 #### Authenticate A User Instance
 
-If you need to log an existing user instance into your application, you may call the `login` method with the user instance. The given object must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). The `App\Models\User` model included with Laravel already implements this interface. This method of authentication is useful when you already have a valid user instance, such as directly after a user registers with your application:
+If you need to set an existing user instance as the currently authenticated user, you may pass the user instance to the `Auth` facade's `login` method. The given user instance must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). The `App\Models\User` model included with Laravel already implements this interface. This method of authentication is useful when you already have a valid user instance, such as directly after a user registers with your application:
+
+    use Illuminate\Support\Facades\Auth;
 
     Auth::login($user);
 
-    // Login and "remember" the given user...
-    Auth::login($user, true);
+You may pass a boolean value as the second argument to the `login` method. This value indicates if "remember me" functionality is desired for the authenticated session. Remember, this means that the session will be authenticated indefinitely or until the user manually logs out of the application:
 
-You may specify the guard instance you would like to use:
+    Auth::login($user, $remember = true);
+
+If needed, you may specify an authentication guard before calling the `login` method:
 
     Auth::guard('admin')->login($user);
 
 <a name="authenticate-a-user-by-id"></a>
 #### Authenticate A User By ID
 
-To log a user into the application by their ID, you may use the `loginUsingId` method. This method accepts the primary key of the user you wish to authenticate:
+To authenticate a user using their database record's primary key, you may use the `loginUsingId` method. This method accepts the primary key of the user you wish to authenticate:
 
     Auth::loginUsingId(1);
 
-    // Login and "remember" the given user...
-    Auth::loginUsingId(1, true);
+You may pass a boolean value as the second argument to the `loginUsingId` method. This value indicates if "remember me" functionality is desired for the authenticated session. Remember, this means that the session will be authenticated indefinitely or until the user manually logs out of the application:
+
+    Auth::loginUsingId(1, $remember = true);
 
 <a name="authenticate-a-user-once"></a>
 #### Authenticate A User Once
 
-You may use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized, which means this method may be helpful when building a stateless API:
+You may use the `once` method to authenticate a user with the application for a single request. No sessions or cookies will be utilized when calling this method:
 
     if (Auth::once($credentials)) {
         //
@@ -363,18 +365,18 @@ You may use the `once` method to log a user into the application for a single re
 <a name="http-basic-authentication"></a>
 ## HTTP Basic Authentication
 
-[HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` [middleware](/docs/{{version}}/middleware) to your route. The `auth.basic` middleware is included with the Laravel framework, so you do not need to define it:
+[HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` [middleware](/docs/{{version}}/middleware) to a route. The `auth.basic` middleware is included with the Laravel framework, so you do not need to define it:
 
-    Route::get('profile', function () {
-        // Only authenticated users may enter...
+    Route::get('/profile', function () {
+        // Only authenticated users may access this route...
     })->middleware('auth.basic');
 
-Once the middleware has been attached to the route, you will automatically be prompted for credentials when accessing the route in your browser. By default, the `auth.basic` middleware will use the `email` column on the user record as the "username".
+Once the middleware has been attached to the route, you will automatically be prompted for credentials when accessing the route in your browser. By default, the `auth.basic` middleware will assume the `email` column on your `users` database table is the user's "username".
 
 <a name="a-note-on-fastcgi"></a>
 #### A Note On FastCGI
 
-If you are using PHP FastCGI, HTTP Basic authentication may not work correctly out of the box. The following lines should be added to your `.htaccess` file:
+If you are using PHP FastCGI and Apache to serve your Laravel application, HTTP Basic authentication may not work correctly. To correct these problems, the following lines may be added to your application's `.htaccess` file:
 
     RewriteCond %{HTTP:Authorization} ^(.+)$
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -382,7 +384,7 @@ If you are using PHP FastCGI, HTTP Basic authentication may not work correctly o
 <a name="stateless-http-basic-authentication"></a>
 ### Stateless HTTP Basic Authentication
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/{{version}}/middleware) that calls the `onceBasic` method. If no response is returned by the `onceBasic` method, the request may be passed further into the application:
+You may also use HTTP Basic Authentication without setting a user identifier cookie in the session. This is primarily helpful if you choose to use HTTP Authentication to authenticate requests to your application's API. To accomplish this, [define a middleware](/docs/{{version}}/middleware) that calls the `onceBasic` method. If no response is returned by the `onceBasic` method, the request may be passed further into the application:
 
     <?php
 
@@ -408,25 +410,43 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 
 Next, [register the route middleware](/docs/{{version}}/middleware#registering-middleware) and attach it to a route:
 
-    Route::get('api/user', function () {
-        // Only authenticated users may enter...
+    Route::get('/api/user', function () {
+        // Only authenticated users may access this route...
     })->middleware('auth.basic.once');
 
 <a name="logging-out"></a>
 ## Logging Out
 
-To manually log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session:
+To manually log users out of your application, you may use the `logout` method provided by the `Auth` facade. This will remove the authentication information from the user's session so that subsequent requests are not authenticated.
 
+In addition to calling the `logout` method, it is recommended that you invalidate the user's session and regenerate their [CSRF token](/docs/{{version}}/csrf). After logging the user out, you would typically redirect the user to the root of your application:
+
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
 
-    Auth::logout();
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
 
 <a name="invalidating-sessions-on-other-devices"></a>
 ### Invalidating Sessions On Other Devices
 
 Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. This feature is typically utilized when a user is changing or updating their password and you would like to invalidate sessions on other devices while keeping the current device authenticated.
 
-Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is present and un-commented in your `app/Http/Kernel.php` class' `web` middleware group:
+Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is present and un-commented in your `App\Http\Kernel` class' `web` middleware group:
 
     'web' => [
         // ...
@@ -434,15 +454,13 @@ Before getting started, you should make sure that the `Illuminate\Session\Middle
         // ...
     ],
 
-Then, you may use the `logoutOtherDevices` method on the `Auth` facade. This method requires the user to provide their current password, which your application should accept through an input form:
+Then, you may use the `logoutOtherDevices` method provided by the `Auth` facade. This method requires the user to confirm their current password, which your application should accept through an input form:
 
     use Illuminate\Support\Facades\Auth;
 
-    Auth::logoutOtherDevices($password);
+    Auth::logoutOtherDevices($currentPassword);
 
 When the `logoutOtherDevices` method is invoked, the user's other sessions will be invalidated entirely, meaning they will be "logged out" of all guards they were previously authenticated by.
-
-> {note} When using the `AuthenticateSession` middleware in combination with a custom route name for the `login` route, you must override the `unauthenticated` method on your application's exception handler to properly redirect users to your login page.
 
 <a name="password-confirmation"></a>
 ## Password Confirmation
