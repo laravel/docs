@@ -225,8 +225,6 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
 
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
-    use Illuminate\Support\Facades\Redirect;
-    use Illuminate\Validation\ValidationException;
 
     class LoginController extends Controller
     {
@@ -243,10 +241,10 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
 
-                return Redirect::intended('dashboard');
+                return redirect()->intended('dashboard');
             }
 
-            throw ValidationException::withMessages([
+            return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
             ]);
         }
@@ -258,7 +256,7 @@ Remember, Laravel's authentication services will retrieve users from your databa
 
 The `attempt` method will return `true` if authentication was successful. Otherwise, `false` will be returned.
 
-The `intended` method on the `Redirect` facade will redirect the user to the URL they were attempting to access before being intercepted by the authentication middleware. A fallback URI may be given to this method in case the intended destination is not available.
+The `intended` method provided by Laravel's redirector will redirect the user to the URL they were attempting to access before being intercepted by the authentication middleware. A fallback URI may be given to this method in case the intended destination is not available.
 
 <a name="specifying-additional-conditions"></a>
 #### Specifying Additional Conditions
@@ -465,14 +463,14 @@ When the `logoutOtherDevices` method is invoked, the user's other sessions will 
 <a name="password-confirmation"></a>
 ## Password Confirmation
 
-While building your application, you may occasionally have actions that should require the user to confirm their password before the action is performed. Laravel includes built-in middleware to make this process a breeze. Implementing this feature will require you to define two routes: one route to display a view asking the user to confirm their password, and one route to confirm that the password is valid and redirect the user to their intended destination.
+While building your application, you may occasionally have actions that should require the user to confirm their password before the action is performed or before the user is redirected to a sensitive area of the application. Laravel includes built-in middleware to make this process a breeze. Implementing this feature will require you to define two routes: one route to display a view asking the user to confirm their password and another route to confirm that the password is valid and redirect the user to their intended destination.
 
 > {tip} The following documentation discusses how to integrate with Laravel's password confirmation features directly; however, if you would like to get started more quickly, the [Laravel application starter kits](/docs/{{version}}/starter-kits) include support for this feature!
 
 <a name="password-confirmation-configuration"></a>
 ### Configuration
 
-After confirming their password, a user will not be asked to confirm their password again for three hours. However, you may configure the length of time before the user is re-prompted for their password by changing the value of the `password_timeout` configuration value within your `auth` configuration file.
+After confirming their password, a user will not be asked to confirm their password again for three hours. However, you may configure the length of time before the user is re-prompted for their password by changing the value of the `password_timeout` configuration value within your application's `config/auth.php` configuration file.
 
 <a name="password-confirmation-routing"></a>
 ### Routing
@@ -480,11 +478,11 @@ After confirming their password, a user will not be asked to confirm their passw
 <a name="the-password-confirmation-form"></a>
 #### The Password Confirmation Form
 
-First, we will define the route that is needed to display a view requesting that the user confirm their password:
+First, we will define a route to display a view that requests that the user confirm their password:
 
     Route::get('/confirm-password', function () {
         return view('auth.confirm-password');
-    })->middleware(['auth'])->name('password.confirm');
+    })->middleware('auth')->name('password.confirm');
 
 As you might expect, the view that is returned by this route should have a form containing a `password` field. In addition, feel free to include text within the view that explains that the user is entering a protected area of the application and must confirm their password.
 
@@ -495,6 +493,7 @@ Next, we will define a route that will handle the form request from the "confirm
 
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
+    use Illuminate\Support\Facades\Redirect;
 
     Route::post('/confirm-password', function (Request $request) {
         if (! Hash::check($request->password, $request->user()->password)) {
@@ -508,12 +507,12 @@ Next, we will define a route that will handle the form request from the "confirm
         return redirect()->intended();
     })->middleware(['auth', 'throttle:6,1'])->name('password.confirm');
 
-Before moving on, let's examine this route in more detail. First, the request's `password` attribute is determined to actually match the authenticated user's password. If the password is valid, we need to inform Laravel's session that the user has confirmed their password. The `passwordConfirmed` method will set a timestamp in the user's session that Laravel can use to determine when the user last confirmed their password. Finally, we can redirect the user to their intended destination.
+Before moving on, let's examine this route in more detail. First, the request's `password` field is determined to actually match the authenticated user's password. If the password is valid, we need to inform Laravel's session that the user has confirmed their password. The `passwordConfirmed` method will set a timestamp in the user's session that Laravel can use to determine when the user last confirmed their password. Finally, we can redirect the user to their intended destination.
 
 <a name="password-confirmation-protecting-routes"></a>
 ### Protecting Routes
 
-You should ensure that any route that performs an action that should require recent password confirmation is assigned the `password.confirm` middleware. This middleware is included with the default installation of Laravel and will automatically store the user's intended destination in the session so that the user may be redirected to that location after confirming their password. After storing the user's intended destination in the session, the middleware will redirect the user to the `password.confirm` [named route](/docs/{{version}}/routing#named-routes):
+You should ensure that any route that performs an action which requires recent password confirmation is assigned the `password.confirm` middleware. This middleware is included with the default installation of Laravel and will automatically store the user's intended destination in the session so that the user may be redirected to that location after confirming their password. After storing the user's intended destination in the session, the middleware will redirect the user to the `password.confirm` [named route](/docs/{{version}}/routing#named-routes):
 
     Route::get('/settings', function () {
         // ...
@@ -526,7 +525,7 @@ You should ensure that any route that performs an action that should require rec
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards
 
-You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers). Since Laravel already ships with an `AuthServiceProvider`, we can place the code in that provider:
+You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place your call to the `extend` method within a [service provider](/docs/{{version}}/providers). Since Laravel already ships with an `AuthServiceProvider`, we can place the code in that provider:
 
     <?php
 
@@ -555,7 +554,7 @@ You may define your own authentication guards using the `extend` method on the `
         }
     }
 
-As you can see in the example above, the callback passed to the `extend` method should return an implementation of `Illuminate\Contracts\Auth\Guard`. This interface contains a few methods you will need to implement to define a custom guard. Once your custom guard has been defined, you may use this guard in the `guards` configuration of your `auth.php` configuration file:
+As you can see in the example above, the callback passed to the `extend` method should return an implementation of `Illuminate\Contracts\Auth\Guard`. This interface contains a few methods you will need to implement to define a custom guard. Once your custom guard has been defined, you may reference the guard in the `guards` configuration of your `auth.php` configuration file:
 
     'guards' => [
         'api' => [
@@ -584,12 +583,12 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
     {
         $this->registerPolicies();
 
-        Auth::viaRequest('custom-token', function ($request) {
+        Auth::viaRequest('custom-token', function (Request $request) {
             return User::where('token', $request->token)->first();
         });
     }
 
-Once your custom authentication driver has been defined, you use it as a driver within the `guards` configuration of your `auth.php` configuration file:
+Once your custom authentication driver has been defined, you may configure it as a driver within the `guards` configuration of your `auth.php` configuration file:
 
     'guards' => [
         'api' => [
@@ -600,13 +599,13 @@ Once your custom authentication driver has been defined, you use it as a driver 
 <a name="adding-custom-user-providers"></a>
 ## Adding Custom User Providers
 
-If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication user provider. We will use the `provider` method on the `Auth` facade to define a custom user provider:
+If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication user provider. We will use the `provider` method on the `Auth` facade to define a custom user provider. The user provider resolver should return an implementation of `Illuminate\Contracts\Auth\UserProvider`:
 
     <?php
 
     namespace App\Providers;
 
-    use App\Extensions\RiakUserProvider;
+    use App\Extensions\MongoUserProvider;
     use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
     use Illuminate\Support\Facades\Auth;
 
@@ -621,10 +620,10 @@ If you are not using a traditional relational database to store your users, you 
         {
             $this->registerPolicies();
 
-            Auth::provider('riak', function ($app, array $config) {
+            Auth::provider('mongo', function ($app, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\UserProvider...
 
-                return new RiakUserProvider($app->make('riak.connection'));
+                return new MongoUserProvider($app->make('mongo.connection'));
             });
         }
     }
@@ -633,11 +632,11 @@ After you have registered the provider using the `provider` method, you may swit
 
     'providers' => [
         'users' => [
-            'driver' => 'riak',
+            'driver' => 'mongo',
         ],
     ],
 
-Finally, you may use this provider in your `guards` configuration:
+Finally, you may reference this provider in your `guards` configuration:
 
     'guards' => [
         'web' => [
@@ -649,7 +648,7 @@ Finally, you may use this provider in your `guards` configuration:
 <a name="the-user-provider-contract"></a>
 ### The User Provider Contract
 
-The `Illuminate\Contracts\Auth\UserProvider` implementations are only responsible for fetching an `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
+`Illuminate\Contracts\Auth\UserProvider` implementations are responsible for fetching an `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, MongoDB, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent the authenticated user:
 
 Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 
@@ -668,18 +667,18 @@ Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 
 The `retrieveById` function typically receives a key representing the user, such as an auto-incrementing ID from a MySQL database. The `Authenticatable` implementation matching the ID should be retrieved and returned by the method.
 
-The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, stored in a field `remember_token`. As with the previous method, the `Authenticatable` implementation should be returned.
+The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, typically stored in a database column like `remember_token`. As with the previous method, the `Authenticatable` implementation with a matching token value should be returned by this method.
 
-The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. A fresh token is assigned on a successful "remember me" login attempt or when the user is logging out.
+The `updateRememberToken` method updates the `$user` instance's `remember_token` with the new `$token`. A fresh token is assigned to users on a successful "remember me" authentication attempt or when the user is logging out.
 
-The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to sign into an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition on `$credentials['username']`. The method should then return an implementation of `Authenticatable`. **This method should not attempt to do any password validation or authentication.**
+The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to authenticate with an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition that searches for a user record with a "username" matching the value of `$credentials['username']`. The method should return an implementation of `Authenticatable`. **This method should not attempt to do any password validation or authentication.**
 
-The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method should probably use `Hash::check` to compare the value of `$user->getAuthPassword()` to the value of `$credentials['password']`. This method should return `true` or `false` indicating on whether the password is valid.
+The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method will typically use the `Hash::check` method to compare the value of `$user->getAuthPassword()` to the value of `$credentials['password']`. This method should return `true` or `false` indicating whether the password is valid.
 
 <a name="the-authenticatable-contract"></a>
 ### The Authenticatable Contract
 
-Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, the provider should return implementations of this interface from the `retrieveById`, `retrieveByToken`, and `retrieveByCredentials` methods:
+Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, user providers should return implementations of this interface from the `retrieveById`, `retrieveByToken`, and `retrieveByCredentials` methods:
 
     <?php
 
@@ -695,12 +694,14 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
         public function getRememberTokenName();
     }
 
-This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" field of the user and the `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app/Models` directory which implements this interface, so you may consult this class for an implementation example.
+This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" field of the user and the `getAuthIdentifier` method should return the "primary key" of the user. When using a MySQL back-end, this would likely be the auto-incrementing primary key assigned to the user record. The `getAuthPassword` method should return the user's hashed password.
+
+This interface allows the authentication system to work with any "user" class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `App\Models\User` class in the `app/Models` directory which implements this interface.
 
 <a name="events"></a>
 ## Events
 
-Laravel raises a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
+Laravel dispatches a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
 
     /**
      * The event listener mappings for the application.
