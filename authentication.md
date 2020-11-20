@@ -19,12 +19,12 @@
     - [Configuration](#password-confirmation-configuration)
     - [Routing](#password-confirmation-routing)
     - [Protecting Routes](#password-confirmation-protecting-routes)
-- [Social Authentication](/docs/{{version}}/socialite)
 - [Adding Custom Guards](#adding-custom-guards)
     - [Closure Request Guards](#closure-request-guards)
 - [Adding Custom User Providers](#adding-custom-user-providers)
     - [The User Provider Contract](#the-user-provider-contract)
     - [The Authenticatable Contract](#the-authenticatable-contract)
+- [Social Authentication](/docs/{{version}}/socialite)
 - [Events](#events)
 
 <a name="introduction"></a>
