@@ -86,9 +86,9 @@ Next, we will define the routes necessary to actually reset the password once th
 
     Route::get('/reset-password/{token}', function ($token) {
         return view('auth.reset-password', ['token' => $token]);
-    })->middleware(['guest'])->name('password.reset');
+    })->middleware('guest')->name('password.reset');
 
-The view that is returned by this route should have a form containing an `email` field, a `password` field, a `password_confirmation` field, and a hidden `token` field, which should contain the value of the secret token received by our route.
+The view that is returned by this route should display a form containing an `email` field, a `password` field, a `password_confirmation` field, and a hidden `token` field, which should contain the value of the secret `$token` received by our route.
 
 <a name="password-reset-handling-the-form-submission"></a>
 #### Handling The Form Submission
@@ -123,14 +123,16 @@ Of course, we need to define a route to actually handle the password reset form 
 
         return $status == Password::PASSWORD_RESET
                     ? redirect()->route('login')->with('status', __($status))
-                    : back()->withErrors(['email' => __($status)]);
-    })->middleware(['guest'])->name('password.update');
+                    : back()->withErrors(['email' => [__($status)]]);
+    })->middleware('guest')->name('password.update');
 
 Before moving on, let's examine this route in more detail. First, the request's `token`, `email`, and `password` attributes are validated. Next, we will use Laravel's built-in "password broker" (via the `Password` facade) to validate the password reset request credentials.
 
-If the token, email address, and password given to the password broker are valid, the closure passed to the `reset` method will be invoked. Within this closure, which receives the user instance and the plain-text password, we may update the user's password in the database.
+If the token, email address, and password given to the password broker are valid, the closure passed to the `reset` method will be invoked. Within this closure, which receives the user instance and the plain-text password provided to the password reset form, we may update the user's password in the database.
 
 The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
+
+Before moving on, you may wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `reset` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers)
 
 <a name="password-customization"></a>
 ## Customization
@@ -138,34 +140,40 @@ The `reset` method returns a "status" slug. This status may be translated using 
 <a name="reset-link-customization"></a>
 #### Reset Link Customization
 
-You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from a service provider's `boot` method:
+You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from your `App\Providers\AuthServiceProvider` service provider's `boot` method:
 
     use Illuminate\Auth\Notifications\ResetPassword;
 
     /**
-     * Bootstrap any application services.
+     * Register any authentication / authorization services.
      *
      * @return void
      */
     public function boot()
     {
-        ResetPassword::createUrlUsing(function ($notifiable, string $token) {
-            return 'https://example.com/auth/reset-password?token='.$token;
+        $this->registerPolicies();
+
+        ResetPassword::createUrlUsing(function ($user, string $token) {
+            return 'https://example.com/reset-password?token='.$token;
         });
     }
 
 <a name="reset-email-customization"></a>
 #### Reset Email Customization
 
-You may easily modify the notification class used to send the password reset link to the user. To get started, override the `sendPasswordResetNotification` method on your `User` model. Within this method, you may send the notification using any notification class you choose. The password reset `$token` is the first argument received by the method:
+You may easily modify the notification class used to send the password reset link to the user. To get started, override the `sendPasswordResetNotification` method on your `App\Models\User` model. Within this method, you may send the notification using any [notification class](/docs/{{version}}/notifications) of your own creation. The password reset `$token` is the first argument received by the method. You may use this `$token` to build the password reset URL of your choice and send your notification to the user:
+
+    use App\Notifications\ResetPasswordNotification;
 
     /**
-     * Send the password reset notification.
+     * Send a password reset notification to the user.
      *
      * @param  string  $token
      * @return void
      */
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new ResetPasswordNotification($token));
+        $url = 'https://example.com/reset-password?token='.$token;
+
+        $this->notify(new ResetPasswordNotification($url));
     }
