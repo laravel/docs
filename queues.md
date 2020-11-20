@@ -33,9 +33,9 @@
 - [Supervisor Configuration](#supervisor-configuration)
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
-    - [Failed Job Events](#failed-job-events)
     - [Retrying Failed Jobs](#retrying-failed-jobs)
     - [Ignoring Missing Models](#ignoring-missing-models)
+    - [Failed Job Events](#failed-job-events)
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
 - [Job Events](#job-events)
 
@@ -1312,21 +1312,21 @@ For more information on Supervisor, consult the [Supervisor documentation](http:
 <a name="dealing-with-failed-jobs"></a>
 ## Dealing With Failed Jobs
 
-Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into the `failed_jobs` database table. To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
+Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After a job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. Of course, we will need to create that table if it does not already exist. To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
 
     php artisan queue:failed-table
 
     php artisan migrate
 
-Then, when running your [queue worker](#running-the-queue-worker), you can specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will only be attempted once:
+When running a [queue worker](#running-the-queue-worker) process, you may specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will only be attempted once or as many times as specified by the job class' `$tries` property:
 
     php artisan queue:work redis --tries=3
 
-In addition, you may specify how many seconds Laravel should wait before retrying a job that has failed using the `--backoff` option. By default, a job is retried immediately:
+Using the `--backoff` option, you may specify how many seconds Laravel should wait before retrying a job that has encountered an exception. By default, a job is immediately released back onto the queue so that it may be attempted again:
 
     php artisan queue:work redis --tries=3 --backoff=3
 
-If you would like to configure the failed job retry delay on a per-job basis, you may do so by defining a `backoff` property on your queued job class:
+If you would like to configure how many seconds Laravel should wait before retrying a job that has encountered an exception on a per-job basis, you may do so by defining a `backoff` property on your job class:
 
     /**
      * The number of seconds to wait before retrying the job.
@@ -1335,7 +1335,7 @@ If you would like to configure the failed job retry delay on a per-job basis, yo
      */
     public $backoff = 3;
 
-If you require more complex logic for determining the retry delay, you may define a `backoff` method on your queued job class:
+If you require more complex logic for determining the job's backoff time, you may define a `backoff` method on your job class:
 
     /**
     * Calculate the number of seconds to wait before retrying the job.
@@ -1347,7 +1347,7 @@ If you require more complex logic for determining the retry delay, you may defin
         return 3;
     }
 
-You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 seconds for the first retry, 5 seconds for the second retry, and 10 seconds for the third retry:
+You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, and 10 seconds for the third retry:
 
     /**
     * Calculate the number of seconds to wait before retrying the job.
@@ -1362,7 +1362,7 @@ You may easily configure "exponential" backoffs by returning an array of backoff
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Cleaning Up After Failed Jobs
 
-You may define a `failed` method directly on your job class, allowing you to perform job specific clean-up when a failure occurs. This is the perfect location to send an alert to your users or revert any actions performed by the job. The `Throwable` exception that caused the job to fail will be passed to the `failed` method:
+When a particular job fails, you may want to send an alert to your users or revert any actions that were partially completed by the job. To accomplish this, you may define a `failed` method on your job class. The `Throwable` instance that caused the job to fail will be passed to the `failed` method:
 
     <?php
 
@@ -1380,6 +1380,11 @@ You may define a `failed` method directly on your job class, allowing you to per
     {
         use InteractsWithQueue, Queueable, SerializesModels;
 
+        /**
+         * The podcast instance.
+         *
+         * @var \App\Podcast
+         */
         protected $podcast;
 
         /**
@@ -1416,10 +1421,55 @@ You may define a `failed` method directly on your job class, allowing you to per
         }
     }
 
+<a name="retrying-failed-jobs"></a>
+### Retrying Failed Jobs
+
+To view all of the failed jobs that have been inserted into your `failed_jobs` database table, you may use the `queue:failed` Artisan command:
+
+    php artisan queue:failed
+
+The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
+
+    php artisan queue:retry 5
+
+If necessary, you may pass multiple IDs or an ID range (when using numeric IDs) to the command:
+
+    php artisan queue:retry 5 6 7 8 9 10
+
+    php artisan queue:retry --range=5-10
+
+To retry all of your failed jobs, execute the `queue:retry` command and pass `all` as the ID:
+
+    php artisan queue:retry all
+
+If you would like to delete a failed job, you may use the `queue:forget` command:
+
+    php artisan queue:forget 5
+
+> {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
+
+To delete all of your failed jobs from the `failed_jobs` table, you may use the `queue:flush` command:
+
+    php artisan queue:flush
+
+<a name="ignoring-missing-models"></a>
+### Ignoring Missing Models
+
+When injecting an Eloquent model into a job, the model is automatically serialized before being placed on the queue and re-retrieved from the database when the job is processed. However, if the model has been deleted while the job was waiting to be processed by a worker, your job may fail with a `ModelNotFoundException`.
+
+For convenience, you may choose to automatically delete jobs with missing models by setting your job's `deleteWhenMissingModels` property to `true`. When this model is set to `true`, Laravel will quietly discard the job without raising an exception:
+
+    /**
+     * Delete the job if its models no longer exist.
+     *
+     * @var bool
+     */
+    public $deleteWhenMissingModels = true;
+
 <a name="failed-job-events"></a>
 ### Failed Job Events
 
-If you would like to register an event that will be called when a job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via email or [Slack](https://www.slack.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+If you would like to register an event listener that will be invoked when a job fails, you may use the `Queue` facade's `failing` method. For example, we may attach a closure to this event from the `boot` method of the `AppServiceProvider` that is included with Laravel:
 
     <?php
 
@@ -1456,51 +1506,6 @@ If you would like to register an event that will be called when a job fails, you
         }
     }
 
-<a name="retrying-failed-jobs"></a>
-### Retrying Failed Jobs
-
-To view all of your failed jobs that have been inserted into your `failed_jobs` database table, you may use the `queue:failed` Artisan command:
-
-    php artisan queue:failed
-
-The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
-
-    php artisan queue:retry 5
-
-If necessary, you may pass multiple IDs or an ID range (when using numeric IDs) to the command:
-
-    php artisan queue:retry 5 6 7 8 9 10
-
-    php artisan queue:retry --range=5-10
-
-To retry all of your failed jobs, execute the `queue:retry` command and pass `all` as the ID:
-
-    php artisan queue:retry all
-
-If you would like to delete a failed job, you may use the `queue:forget` command:
-
-    php artisan queue:forget 5
-
-> {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
-
-To delete all of your failed jobs, you may use the `queue:flush` command:
-
-    php artisan queue:flush
-
-<a name="ignoring-missing-models"></a>
-### Ignoring Missing Models
-
-When injecting an Eloquent model into a job, it is automatically serialized before being placed on the queue and restored when the job is processed. However, if the model has been deleted while the job was waiting to be processed by a worker, your job may fail with a `ModelNotFoundException`.
-
-For convenience, you may choose to automatically delete jobs with missing models by setting your job's `deleteWhenMissingModels` property to `true`:
-
-    /**
-     * Delete the job if its models no longer exist.
-     *
-     * @var bool
-     */
-    public $deleteWhenMissingModels = true;
-
 <a name="clearing-jobs-from-queues"></a>
 ## Clearing Jobs From Queues
 
@@ -1519,7 +1524,7 @@ You may also provide the `connection` argument and `queue` option to delete jobs
 <a name="job-events"></a>
 ## Job Events
 
-Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks to be executed before or after a queued job is processed. These callbacks are a great opportunity to perform additional logging or increment statistics for a dashboard. Typically, you should call these methods from a [service provider](/docs/{{version}}/providers). For example, we may use the `AppServiceProvider` that is included with Laravel:
+Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks to be executed before or after a queued job is processed. These callbacks are a great opportunity to perform additional logging or increment statistics for a dashboard. Typically, you should call these methods from the `boot` method of a [service provider](/docs/{{version}}/providers). For example, we may use the `AppServiceProvider` that is included with Laravel:
 
     <?php
 
@@ -1564,6 +1569,9 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
     }
 
 Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks that execute before the worker attempts to fetch a job from a queue. For example, you might register a closure to rollback any transactions that were left open by a previously failed job:
+
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Facades\Queue;
 
     Queue::looping(function () {
         while (DB::transactionLevel() > 0) {
