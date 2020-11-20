@@ -25,9 +25,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-In addition to providing [authentication](/docs/{{version}}/authentication) services out of the box, Laravel also provides a simple way to authorize user actions against a given resource. Like authentication, Laravel's approach to authorization is simple, and there are two primary ways of authorizing actions: gates and policies.
+In addition to providing built-in [authentication](/docs/{{version}}/authentication) services, Laravel also provides a simple way to authorize user actions against a given resource. For example, even though a user is authenticated, they may not be authorized to update or delete certain Eloquent models or database records managed by your application.
 
-Think of gates and policies like routes and controllers. Gates provide a simple, closure based approach to authorization while policies, like controllers, group their logic around a particular model or resource. We'll explore gates first and then examine policies.
+Laravel provides two primary ways of authorizing actions: gates and policies. Think of gates and policies like routes and controllers. Gates provide a simple, closure based approach to authorization while policies, like controllers, group logic around a particular model or resource. In this documentation, we'll explore gates first and then examine policies.
 
 You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain a mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions which are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource.
 
@@ -37,7 +37,13 @@ You do not need to choose between exclusively using gates or exclusively using p
 <a name="writing-gates"></a>
 ### Writing Gates
 
-Gates are closures that determine if a user is authorized to perform a given action and are typically defined in the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument, and may optionally receive additional arguments such as a relevant Eloquent model:
+Gates are closures that determine if a user is authorized to perform a given action. Typically, gates are defined within the `boot` method of the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument and may optionally receive additional arguments such as a relevant Eloquent model.
+
+In this example, we'll define a gate to determine if a user can update a given `App\Models\Post` model. The gate will accomplish this may comparing the user's `id` against the `user_id` of the user that created the post:
+
+    use App\Models\Post;
+    use App\Models\User;
+    use Illuminate\Support\Facades\Gate;
 
     /**
      * Register any authentication / authorization services.
@@ -48,18 +54,15 @@ Gates are closures that determine if a user is authorized to perform a given act
     {
         $this->registerPolicies();
 
-        Gate::define('edit-settings', function ($user) {
-            return $user->isAdmin;
-        });
-
-        Gate::define('update-post', function ($user, $post) {
+        Gate::define('update-post', function (User $user, Post $post) {
             return $user->id === $post->user_id;
         });
     }
 
-Gates may also be defined using a class callback array, like controllers:
+Like controllers, gates may also be defined using a class callback array:
 
     use App\Policies\PostPolicy;
+    use Illuminate\Support\Facades\Gate;
 
     /**
      * Register any authentication / authorization services.
@@ -76,21 +79,37 @@ Gates may also be defined using a class callback array, like controllers:
 <a name="authorizing-actions-via-gates"></a>
 ### Authorizing Actions
 
-To authorize an action using gates, you should use the `allows` or `denies` methods. Note that you are not required to pass the currently authenticated user to these methods. Laravel will automatically take care of passing the user into the gate closure:
+To authorize an action using gates, you should use the `allows` or `denies` methods provided by the `Gate` facade. Note that you are not required to pass the currently authenticated user to these methods. Laravel will automatically take care of passing the user into the gate closure. It is typical to call the gate authorization methods within your application's controllers before performing an action that requires authorization:
 
-    if (Gate::allows('edit-settings')) {
-        // The current user can edit settings
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Http\Controllers\Controller;
+    use App\Models\Post;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Gate;
+
+    class PostController extends Controller
+    {
+        /**
+         * Update the given post.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \App\Models\Post  $post
+         * @return \Illuminate\Http\Response
+         */
+        public function update(Request $request, Post $post)
+        {
+            if (! Gate::allows('update-post', $post)) {
+                abort(403);
+            }
+
+            // Update the post...
+        }
     }
 
-    if (Gate::allows('update-post', $post)) {
-        // The current user can update the post...
-    }
-
-    if (Gate::denies('update-post', $post)) {
-        // The current user can't update the post...
-    }
-
-If you would like to determine if a particular user is authorized to perform an action, you may use the `forUser` method on the `Gate` facade:
+If you would like to determine if a user other than the currently authenticated user is authorized to perform an action, you may use the `forUser` method on the `Gate` facade:
 
     if (Gate::forUser($user)->allows('update-post', $post)) {
         // The user can update the post...
@@ -100,20 +119,20 @@ If you would like to determine if a particular user is authorized to perform an 
         // The user can't update the post...
     }
 
-You may authorize multiple actions at a time with the `any` or `none` methods:
+You may authorize multiple actions at a time using the `any` or `none` methods:
 
     if (Gate::any(['update-post', 'delete-post'], $post)) {
-        // The user can update or delete the post
+        // The user can update or delete the post...
     }
 
     if (Gate::none(['update-post', 'delete-post'], $post)) {
-        // The user cannot update or delete the post
+        // The user can't update or delete the post...
     }
 
 <a name="authorizing-or-throwing-exceptions"></a>
 #### Authorizing Or Throwing Exceptions
 
-If you would like to attempt to authorize an action and automatically throw an `Illuminate\Auth\Access\AuthorizationException` if the user is not allowed to perform the given action, you may use the `Gate::authorize` method. Instances of `AuthorizationException` are automatically converted to `403` HTTP response:
+If you would like to attempt to authorize an action and automatically throw an `Illuminate\Auth\Access\AuthorizationException` if the user is not allowed to perform the given action, you may use the `Gate` facade's `authorize` method. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler:
 
     Gate::authorize('update-post', $post);
 
@@ -122,13 +141,23 @@ If you would like to attempt to authorize an action and automatically throw an `
 <a name="gates-supplying-additional-context"></a>
 #### Supplying Additional Context
 
-The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, `none`, `authorize`, `can`, `cannot`) and the authorization [Blade directives](#via-blade-templates) (`@can`, `@cannot`, `@canany`) can receive an array as the second argument. These array elements are passed as parameters to gate, and can be used for additional context when making authorization decisions:
+The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, `none`, `authorize`, `can`, `cannot`) and the authorization [Blade directives](#via-blade-templates) (`@can`, `@cannot`, `@canany`) can receive an array as their second argument. These array elements are passed as parameters to the gate closure, and can be used for additional context when making authorization decisions:
 
-    Gate::define('create-post', function ($user, $category, $extraFlag) {
-        return $category->group > 3 && $extraFlag === true;
+    use App\Models\Category;
+    use App\Models\User;
+    use Illuminate\Support\Facades\Gate;
+
+    Gate::define('create-post', function (User $user, Category $category, $pinned) {
+        if (! $user->canPublishToGroup($category->group)) {
+            return false;
+        } elseif ($pinned && ! $user->canPinPosts()) {
+            return false;
+        }
+
+        return true;
     });
 
-    if (Gate::check('create-post', [$category, $extraFlag])) {
+    if (Gate::check('create-post', [$category, $pinned])) {
         // The user can create the post...
     }
 
@@ -137,18 +166,19 @@ The gate methods for authorizing abilities (`allows`, `denies`, `check`, `any`, 
 
 So far, we have only examined gates that return simple boolean values. However, sometimes you may wish to return a more detailed response, including an error message. To do so, you may return an `Illuminate\Auth\Access\Response` from your gate:
 
+    use App\Models\User;
     use Illuminate\Auth\Access\Response;
     use Illuminate\Support\Facades\Gate;
 
-    Gate::define('edit-settings', function ($user) {
+    Gate::define('edit-settings', function (User $user) {
         return $user->isAdmin
                     ? Response::allow()
-                    : Response::deny('You must be a super administrator.');
+                    : Response::deny('You must be an administrator.');
     });
 
-When returning an authorization response from your gate, the `Gate::allows` method will still return a simple boolean value; however, you may use the `Gate::inspect` method to get the full authorization response returned by the gate:
+Even when you return an authorization response from your gate, the `Gate::allows` method will still return a simple boolean value; however, you may use the `Gate::inspect` method to get the full authorization response returned by the gate:
 
-    $response = Gate::inspect('edit-settings', $post);
+    $response = Gate::inspect('edit-settings');
 
     if ($response->allowed()) {
         // The action is authorized...
@@ -156,16 +186,18 @@ When returning an authorization response from your gate, the `Gate::allows` meth
         echo $response->message();
     }
 
-Of course, when using the `Gate::authorize` method to throw an `AuthorizationException` if the action is not authorized, the error message provided by the authorization response will be propagated to the HTTP response:
+When using the `Gate::authorize` method, which throws an `AuthorizationException` if the action is not authorized, the error message provided by the authorization response will be propagated to the HTTP response:
 
-    Gate::authorize('edit-settings', $post);
+    Gate::authorize('edit-settings');
 
     // The action is authorized...
 
 <a name="intercepting-gate-checks"></a>
 ### Intercepting Gate Checks
 
-Sometimes, you may wish to grant all abilities to a specific user. You may use the `before` method to define a callback that is run before all other authorization checks:
+Sometimes, you may wish to grant all abilities to a specific user. You may use the `before` method to define a closure that is run before all other authorization checks:
+
+    use Illuminate\Support\Facades\Gate;
 
     Gate::before(function ($user, $ability) {
         if ($user->isSuperAdmin()) {
@@ -173,9 +205,9 @@ Sometimes, you may wish to grant all abilities to a specific user. You may use t
         }
     });
 
-If the `before` callback returns a non-null result that result will be considered the result of the check.
+If the `before` closure returns a non-null result that result will be considered the result of the authorization check.
 
-You may use the `after` method to define a callback to be executed after all other authorization checks:
+You may use the `after` method to define a closure to be executed after all other authorization checks:
 
     Gate::after(function ($user, $ability, $result, $arguments) {
         if ($user->isSuperAdmin()) {
@@ -183,7 +215,7 @@ You may use the `after` method to define a callback to be executed after all oth
         }
     });
 
-Similar to the `before` check, if the `after` callback returns a non-null result that result will be considered the result of the check.
+Similar to the `before` method, if the `after` closure returns a non-null result that result will be considered the result of the authorization check.
 
 <a name="creating-policies"></a>
 ## Creating Policies
