@@ -289,6 +289,44 @@ Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts t
 
 > {tip} If only need to limit the concurrent processing of a job, use the [`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
 
+<a name="unique-job-unlock-policy"></a>
+#### Unique Job Unlock Policy
+
+By default, unique jobs are "unlocked" after the job completes processing or fails all of its retry attempts. However, there might be situations when you need your job to unlock right before it starts processing. If you wish to release your job lock before processing, have your job class implement the `ShouldBeUniqueUntilProcessing` interface instead:
+
+    <?php
+
+    use App\Product;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeUniqueUntilProcessing
+    {
+        /**
+         * The product instance.
+         *
+         * @var \App\Product
+         */
+        public $product;
+
+        /**
+        * The number of seconds after which the job's unique lock will be released.
+        *
+        * @var int
+        */
+        public $uniqueFor = 3600;
+
+        /**
+        * The unique ID of the job.
+        *
+        * @return string
+        */
+        public function uniqueId()
+        {
+            return $this->product->id;
+        }
+    }
+
 <a name="job-middleware"></a>
 ## Job Middleware
 
