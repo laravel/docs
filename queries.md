@@ -1,7 +1,7 @@
 # Database: Query Builder
 
 - [Introduction](#introduction)
-- [Retrieving Results](#retrieving-results)
+- [Running Database Queries](#running-database-queries)
     - [Chunking Results](#chunking-results)
     - [Aggregates](#aggregates)
 - [Selects](#selects)
@@ -26,19 +26,19 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel's database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application and works on all supported database systems.
+Laravel's database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application and works perfectly with all of Laravel's supported database systems.
 
-The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
+The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean or sanitize strings passed to the query builder as query bindings.
 
-> {note} PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns, etc. If you must allow the user to select certain columns to query against, always validate the column names against a white-list of allowed columns.
+> {note} PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
 
-<a name="retrieving-results"></a>
-## Retrieving Results
+<a name="running-database-queries"></a>
+## Running Database Queries
 
 <a name="retrieving-all-rows-from-a-table"></a>
 #### Retrieving All Rows From A Table
 
-You may use the `table` method on the `DB` facade to begin a query. The `table` method returns a fluent query builder instance for the given table, allowing you to chain more constraints onto the query and then finally get the results using the `get` method:
+You may use the `table` method provided by the `DB` facade to begin a query. The `table` method returns a fluent query builder instance for the given table, allowing you to chain more constraints onto the query and then finally retrieve the results of the query using the `get` method:
 
     <?php
 
@@ -52,7 +52,7 @@ You may use the `table` method on the `DB` facade to begin a query. The `table` 
         /**
          * Show a list of all of the application's users.
          *
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
         public function index()
         {
@@ -62,22 +62,28 @@ You may use the `table` method on the `DB` facade to begin a query. The `table` 
         }
     }
 
-The `get` method returns an `Illuminate\Support\Collection` containing the results where each result is an instance of the PHP `stdClass` object. You may access each column's value by accessing the column as a property of the object:
+The `get` method returns an `Illuminate\Support\Collection` containing the results of the query where each result is an instance of the PHP `stdClass` object. You may access each column's value by accessing the column as a property of the object:
+
+    use Illuminate\Support\Facades\DB;
+
+    $users = DB::table('users')->get();
 
     foreach ($users as $user) {
         echo $user->name;
     }
 
+> {tip} Laravel collections provide a variety of extremely powerful methods for mapping and reducing data. For more information on Laravel colletions, check out the [collection documentation](/docs/{{version}}/collections).
+
 <a name="retrieving-a-single-row-column-from-a-table"></a>
 #### Retrieving A Single Row / Column From A Table
 
-If you just need to retrieve a single row from the database table, you may use the `first` method. This method will return a single `stdClass` object:
+If you just need to retrieve a single row from a database table, you may use the `DB` facade's `first` method. This method will return a single `stdClass` object:
 
     $user = DB::table('users')->where('name', 'John')->first();
 
-    echo $user->name;
+    return $user->email;
 
-If you don't even need an entire row, you may extract a single value from a record using the `value` method. This method will return the value of the column directly:
+If you don't need an entire row, you may extract a single value from a record using the `value` method. This method will return the value of the column directly:
 
     $email = DB::table('users')->where('name', 'John')->value('email');
 
@@ -88,26 +94,30 @@ To retrieve a single row by its `id` column value, use the `find` method:
 <a name="retrieving-a-list-of-column-values"></a>
 #### Retrieving A List Of Column Values
 
-If you would like to retrieve a Collection containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a Collection of role titles:
+If you would like to retrieve an `Illuminate\Support\Collection` instance containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a collection of role titles:
 
-    $titles = DB::table('roles')->pluck('title');
+    use Illuminate\Support\Facades\DB;
+
+    $titles = DB::table('users')->pluck('title');
 
     foreach ($titles as $title) {
         echo $title;
     }
 
- You may also specify a custom key column for the returned Collection:
+ You may specify the column that the resulting collection should use as its keys by providing a second argument to the `pluck` method:
 
-    $roles = DB::table('roles')->pluck('title', 'name');
+    $titles = DB::table('users')->pluck('title', 'name');
 
-    foreach ($roles as $name => $title) {
+    foreach ($titles as $name => $title) {
         echo $title;
     }
 
 <a name="chunking-results"></a>
 ### Chunking Results
 
-If you need to work with thousands of database records, consider using the `chunk` method. This method retrieves a small chunk of the results at a time and feeds each chunk into a closure for processing. This method is very useful for writing [Artisan commands](/docs/{{version}}/artisan) that process thousands of records. For example, let's work with the entire `users` table in chunks of 100 records at a time:
+If you need to work with thousands of database records, consider using the `chunk` method provided by the `DB` facade. This method retrieves a small chunk of results at a time and feeds each chunk into a closure for processing. For example, let's retrieve the entire `users` table in chunks of 100 records at a time:
+
+    use Illuminate\Support\Facades\DB;
 
     DB::table('users')->orderBy('id')->chunk(100, function ($users) {
         foreach ($users as $user) {
@@ -123,7 +133,7 @@ You may stop further chunks from being processed by returning `false` from the c
         return false;
     });
 
-If you are updating database records while chunking results, your chunk results could change in unexpected ways. So, when updating records while chunking, it is always best to use the `chunkById` method instead. This method will automatically paginate the results based on the record's primary key:
+If you are updating database records while chunking results, your chunk results could change in unexpected ways. If you plan to update the retrieved records while chunking, it is always best to use the `chunkById` method instead. This method will automatically paginate the results based on the record's primary key:
 
     DB::table('users')->where('active', false)
         ->chunkById(100, function ($users) {
@@ -139,13 +149,15 @@ If you are updating database records while chunking results, your chunk results 
 <a name="aggregates"></a>
 ### Aggregates
 
-The query builder also provides a variety of aggregate methods such as `count`, `max`, `min`, `avg`, and `sum`. You may call any of these methods after constructing your query:
+The query builder also provides a variety of methods for retrieving aggregate values like `count`, `max`, `min`, `avg`, and `sum`. You may call any of these methods after constructing your query:
+
+    use Illuminate\Support\Facades\DB;
 
     $users = DB::table('users')->count();
 
     $price = DB::table('orders')->max('price');
 
-You may combine these methods with other clauses:
+Of course, you may combine these methods with other clauses to fine-tune how your aggregate value is calculated:
 
     $price = DB::table('orders')
                     ->where('finalized', 1)
@@ -156,9 +168,13 @@ You may combine these methods with other clauses:
 
 Instead of using the `count` method to determine if any records exist that match your query's constraints, you may use the `exists` and `doesntExist` methods:
 
-    return DB::table('orders')->where('finalized', 1)->exists();
+    if (DB::table('orders')->where('finalized', 1)->exists()) {
+        // ...
+    }
 
-    return DB::table('orders')->where('finalized', 1)->doesntExist();
+    if (DB::table('orders')->where('finalized', 1)->doesntExist()) {
+        // ...
+    }
 
 <a name="selects"></a>
 ## Selects
