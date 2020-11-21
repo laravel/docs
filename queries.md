@@ -184,6 +184,8 @@ Instead of using the `count` method to determine if any records exist that match
 
 You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom `select` clause for the query:
 
+    use Illuminate\Support\Facades\DB;
+
     $users = DB::table('users')->select('name', 'email as user_email')->get();
 
 The `distinct` method allows you to force the query to return distinct results:
@@ -199,20 +201,20 @@ If you already have a query builder instance and you wish to add a column to its
 <a name="raw-expressions"></a>
 ## Raw Expressions
 
-Sometimes you may need to use a raw expression in a query. To create a raw expression, you may use the `DB::raw` method:
+Sometimes you may need to insert an arbitrary string into a query. To create a raw string expression, you may use the `raw` method provided by the `DB` facade:
 
     $users = DB::table('users')
-                         ->select(DB::raw('count(*) as user_count, status'))
-                         ->where('status', '<>', 1)
-                         ->groupBy('status')
-                         ->get();
+                 ->select(DB::raw('count(*) as user_count, status'))
+                 ->where('status', '<>', 1)
+                 ->groupBy('status')
+                 ->get();
 
-> {note} Raw statements will be injected into the query as strings, so you should be extremely careful to not create SQL injection vulnerabilities.
+> {note} Raw statements will be injected into the query as strings, so you should be extremely careful to avoid creating SQL injection vulnerabilities.
 
 <a name="raw-methods"></a>
 ### Raw Methods
 
-Instead of using `DB::raw`, you may also use the following methods to insert a raw expression into various parts of your query.
+Instead of using the `DB::raw` method, you may also use the following methods to insert a raw expression into various parts of your query. **Remember, Laravel can not guarantee that any query using raw expressions is protected against SQL injection vulnerabilities.**
 
 <a name="selectraw"></a>
 #### `selectRaw`
@@ -235,7 +237,7 @@ The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clau
 <a name="havingraw-orhavingraw"></a>
 #### `havingRaw / orHavingRaw`
 
-The `havingRaw` and `orHavingRaw` methods may be used to set a raw string as the value of the `having` clause. These methods accept an optional array of bindings as their second argument:
+The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as the value of the `having` clause. These methods accept an optional array of bindings as their second argument:
 
     $orders = DB::table('orders')
                     ->select('department', DB::raw('SUM(price) as total_sales'))
@@ -246,7 +248,7 @@ The `havingRaw` and `orHavingRaw` methods may be used to set a raw string as the
 <a name="orderbyraw"></a>
 #### `orderByRaw`
 
-The `orderByRaw` method may be used to set a raw string as the value of the `order by` clause:
+The `orderByRaw` method may be used to provide a raw string as the value of the `order by` clause:
 
     $orders = DB::table('orders')
                     ->orderByRaw('updated_at - created_at DESC')
@@ -255,7 +257,7 @@ The `orderByRaw` method may be used to set a raw string as the value of the `ord
 <a name="groupbyraw"></a>
 ### `groupByRaw`
 
-The `groupByRaw` method may be used to set a raw string as the value of the `group by` clause:
+The `groupByRaw` method may be used to provide a raw string as the value of the `group by` clause:
 
     $orders = DB::table('orders')
                     ->select('city', 'state')
