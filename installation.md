@@ -14,6 +14,7 @@
     - [Executing Commands](#executing-sail-commands)
     - [Interacting With Databases](#interacting-with-sail-databases)
     - [Running Tests](#running-tests)
+    - [Previewing Emails](#previewing-emails)
     - [Adding Additional Services](#adding-additional-sail-services)
     - [Container CLI](#sail-container-cli)
     - [Customization](#sail-customization)
@@ -287,6 +288,13 @@ Next, ensure that the `laravel.test` service in your application's `docker-compo
 Finally, you may run your Dusk test suite by starting Sail and running the `dusk` command:
 
     ./sail dusk
+
+<a name="previewing-emails"></a>
+### Previewing Emails
+
+Laravel Sail's default `docker-compose.yml` file contains a service entry for [MailHog](https://github.com/mailhog/MailHog). MailHog intercepts emails sent by your application during local development and provides a convenient web interface so that you can preview your email messages in your browser.
+
+When Sail is running, you may access the MailHog web interface at: `http://localhost:8025`. MailHog's default SMTP port is `1025`.
 
 <a name="adding-additional-sail-services"></a>
 ### Adding Additional Services

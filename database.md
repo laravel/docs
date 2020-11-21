@@ -11,7 +11,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel makes interacting with databases extremely simple across a variety of database backends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four databases:
+Almost every modern web application interacts with a database. Laravel makes interacting with databases extremely simple across a variety of supported databases using raw SQL, a [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel provides first-party support for four databases:
 
 <div class="content-list" markdown="1">
 - MySQL 5.6+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
@@ -23,9 +23,9 @@ Laravel makes interacting with databases extremely simple across a variety of da
 <a name="configuration"></a>
 ### Configuration
 
-The database configuration for your application is located at `config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for most of the supported database systems are provided in this file.
+The configuration for Laravel's database services is located in your application's `config/database.php` configuration file. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for most of Laravel's supported database systems are provided in this file.
 
-By default, Laravel's sample [environment configuration](/docs/{{version}}/configuration#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. You are free to modify this configuration as needed for your local database.
+By default, Laravel's sample [environment configuration](/docs/{{version}}/configuration#environment-configuration) is ready to use with [Laravel Sail](/docs/{{version}}/installation#laravel-sail), which is a convenient Docker configuration for doing Laravel development on your local machine. However, you are free to modify this configuration as needed for your local database.
 
 <a name="sqlite-configuration"></a>
 #### SQLite Configuration
