@@ -270,7 +270,9 @@ The `groupByRaw` method may be used to provide a raw string as the value of the 
 <a name="inner-join-clause"></a>
 #### Inner Join Clause
 
-The query builder may also be used to write join statements. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You can even join to multiple tables in a single query:
+The query builder may also be used to add join clauses to your queries. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You may even join to multiple tables in a single query:
+
+    use Illuminate\Support\Facades\DB;
 
     $users = DB::table('users')
                 ->join('contacts', 'users.id', '=', 'contacts.user_id')
@@ -294,7 +296,7 @@ If you would like to perform a "left join" or "right join" instead of an "inner 
 <a name="cross-join-clause"></a>
 #### Cross Join Clause
 
-To perform a "cross join" use the `crossJoin` method with the name of the table you wish to cross join to. Cross joins generate a cartesian product between the first table and the joined table:
+You may use the `crossJoin` method to perform a "cross join". Cross joins generate a cartesian product between the first table and the joined table:
 
     $sizes = DB::table('sizes')
                 ->crossJoin('colors')
@@ -303,7 +305,7 @@ To perform a "cross join" use the `crossJoin` method with the name of the table 
 <a name="advanced-join-clauses"></a>
 #### Advanced Join Clauses
 
-You may also specify more advanced join clauses. To get started, pass a closure as the second argument into the `join` method. The closure will receive a `JoinClause` object which allows you to specify constraints on the `join` clause:
+You may also specify more advanced join clauses. To get started, pass a closure as the second argument to the `join` method. The closure will receive a `Illuminate\Database\Query\JoinClause` instance which allows you to specify constraints on the `join` clause:
 
     DB::table('users')
             ->join('contacts', function ($join) {
@@ -311,7 +313,7 @@ You may also specify more advanced join clauses. To get started, pass a closure 
             })
             ->get();
 
-If you would like to use a "where" style clause on your joins, you may use the `where` and `orWhere` methods on a join. Instead of comparing two columns, these methods will compare the column against a value:
+If you would like to use a "where" clause on your joins, you may use the `where` and `orWhere` methods provided by the `JoinClause` instance. Instead of comparing two columns, these methods will compare the column against a value:
 
     DB::table('users')
             ->join('contacts', function ($join) {
@@ -323,7 +325,7 @@ If you would like to use a "where" style clause on your joins, you may use the `
 <a name="subquery-joins"></a>
 #### Subquery Joins
 
-You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receive three arguments: the subquery, its table alias, and a closure that defines the related columns:
+You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receive three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:
 
     $latestPosts = DB::table('posts')
                        ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
@@ -338,7 +340,9 @@ You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a q
 <a name="unions"></a>
 ## Unions
 
-The query builder also provides a quick way to "union" two or more queries together. For example, you may create an initial query and use the `union` method to union it with more queries:
+The query builder also provides a convenient method to "union" two or more queries together. For example, you may create an initial query and use the `union` method to union it with more queries:
+
+    use Illuminate\Support\Facades\DB;
 
     $first = DB::table('users')
                 ->whereNull('first_name');
@@ -348,7 +352,7 @@ The query builder also provides a quick way to "union" two or more queries toget
                 ->union($first)
                 ->get();
 
-> {tip} The `unionAll` method is also available and has the same method signature as `union`.
+In addition to the `union` method, the query builder provides a `unionAll` method. Queries that are combined using the `unionAll` method will not have their duplicate results removed. The `unionAll` method has the same method signature as the `union` method.
 
 <a name="where-clauses"></a>
 ## Where Clauses
@@ -356,9 +360,9 @@ The query builder also provides a quick way to "union" two or more queries toget
 <a name="simple-where-clauses"></a>
 #### Simple Where Clauses
 
-You may use the `where` method on a query builder instance to add `where` clauses to the query. The most basic call to `where` requires three arguments. The first argument is the name of the column. The second argument is an operator, which can be any of the database's supported operators. Finally, the third argument is the value to evaluate against the column.
+You may use the query builder's `where` method to add "where" clauses to the query. The most basic call to the `where` method requires three arguments. The first argument is the name of the column. The second argument is an operator, which can be any of the database's supported operators. The third argument is the value to evaluate against the column.
 
-For example, here is a query that verifies the value of the "votes" column is equal to 100:
+For example, the following query retrieves users where the value of the "votes" column is equal to 100:
 
     $users = DB::table('users')->where('votes', '=', 100)->get();
 
