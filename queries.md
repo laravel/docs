@@ -4,7 +4,7 @@
 - [Running Database Queries](#running-database-queries)
     - [Chunking Results](#chunking-results)
     - [Aggregates](#aggregates)
-- [Selects](#selects)
+- [Select Statements](#selects)
 - [Raw Expressions](#raw-expressions)
 - [Joins](#joins)
 - [Unions](#unions)
@@ -22,12 +22,12 @@
     - [Grouping](#grouping)
     - [Limit & Offset](#limit-and-offset)
 - [Conditional Clauses](#conditional-clauses)
-- [Inserts](#inserts)
+- [Insert Statements](#inserts)
     - [Upserts](#upserts)
-- [Updates](#updates)
+- [Update Statements](#updates)
     - [Updating JSON Columns](#updating-json-columns)
     - [Increment & Decrement](#increment-and-decrement)
-- [Deletes](#deletes)
+- [Delete Statements](#deletes)
 - [Pessimistic Locking](#pessimistic-locking)
 - [Debugging](#debugging)
 
@@ -185,7 +185,7 @@ Instead of using the `count` method to determine if any records exist that match
     }
 
 <a name="selects"></a>
-## Selects
+## Select Statements
 
 <a name="specifying-a-select-clause"></a>
 #### Specifying A Select Clause
@@ -749,7 +749,7 @@ You may pass another closure as the third argument to the `when` method. This cl
                     ->get();
 
 <a name="inserts"></a>
-## Inserts
+## Insert Statements
 
 The query builder also provides an `insert` method that may be used to insert records into the database table. The `insert` method accepts an array of column names and values:
 
@@ -798,9 +798,9 @@ In the example above, Laravel will attempt to insert two records. If a record al
 > {note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index.
 
 <a name="updates"></a>
-## Updates
+## Update Statements
 
-In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated. You may constrain the `update` query using `where` clauses:
+In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. You may constrain the `update` query using `where` clauses:
 
     $affected = DB::table('users')
                   ->where('id', 1)
@@ -809,9 +809,9 @@ In addition to inserting records into the database, the query builder can also u
 <a name="update-or-insert"></a>
 #### Update Or Insert
 
-Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs containing the columns to be updated.
+Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs indicating the columns to be updated.
 
-The `updateOrInsert` method will first attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new record will be inserted with the merged attributes of both arguments:
+The `updateOrInsert` method will attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new record will be inserted with the merged attributes of both arguments:
 
     DB::table('users')
         ->updateOrInsert(
@@ -822,7 +822,7 @@ The `updateOrInsert` method will first attempt to locate a matching database rec
 <a name="updating-json-columns"></a>
 ### Updating JSON Columns
 
-When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:
+When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:
 
     $affected = DB::table('users')
                   ->where('id', 1)
@@ -831,9 +831,7 @@ When updating a JSON column, you should use `->` syntax to access the appropriat
 <a name="increment-and-decrement"></a>
 ### Increment & Decrement
 
-The query builder also provides convenient methods for incrementing or decrementing the value of a given column. This is a shortcut, providing a more expressive and terse interface compared to manually writing the `update` statement.
-
-Both of these methods accept at least one argument: the column to modify. A second argument may optionally be passed to control the amount by which the column should be incremented or decremented:
+The query builder also provides convenient methods for incrementing or decrementing the value of a given column. Both of these methods accept at least one argument: the column to modify. A second argument may be provided to specify the amount by which the column should be incremented or decremented:
 
     DB::table('users')->increment('votes');
 
@@ -847,18 +845,16 @@ You may also specify additional columns to update during the operation:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
-> {note} Model events are not fired when using the `increment` and `decrement` methods.
-
 <a name="deletes"></a>
-## Deletes
+## Delete Statements
 
-The query builder may also be used to delete records from the table via the `delete` method. You may constrain `delete` statements by adding `where` clauses before calling the `delete` method:
+The query builder's `delete` method may be used to delete records from the table. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
 
     DB::table('users')->delete();
 
     DB::table('users')->where('votes', '>', 100)->delete();
 
-If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to zero, you may use the `truncate` method:
+If you wish to truncate an entire table, which will remove all records from the table and reset the auto-incrementing ID to zero, you may use the `truncate` method:
 
     DB::table('users')->truncate();
 
@@ -870,18 +866,24 @@ When truncating a PostgreSQL database, the `CASCADE` behavior will be applied. T
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
 
-The query builder also includes a few functions to help you do "pessimistic locking" on your `select` statements. To run the statement with a "shared lock", you may use the `sharedLock` method on a query. A shared lock prevents the selected rows from being modified until your transaction commits:
+The query builder also includes a few functions to help you achieve "pessimistic locking" when executing your `select` statements. To execute a statement with a "shared lock", you may call the `sharedLock` method. A shared lock prevents the selected rows from being modified until your transaction is committed:
 
-    DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
+    DB::table('users')
+            ->where('votes', '>', 100)
+            ->sharedLock()
+            ->get();
 
-Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the rows from being modified or from being selected with another shared lock:
+Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the selected records from being modified or from being selected with another shared lock:
 
-    DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
+    DB::table('users')
+            ->where('votes', '>', 100)
+            ->lockForUpdate()
+            ->get();
 
 <a name="debugging"></a>
 ## Debugging
 
-You may use the `dd` or `dump` methods while building a query to dump the query bindings and SQL. The `dd` method will display the debug information and then stop executing the request. The `dump` method will display the debug information but allow the request to keep executing:
+You may use the `dd` and `dump` methods while building a query to dump the current query bindings and SQL. The `dd` method will display the debug information and then stop executing the request. The `dump` method will display the debug information but allow the request to continue executing:
 
     DB::table('users')->where('votes', '>', 100)->dd();
 
