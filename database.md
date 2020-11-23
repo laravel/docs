@@ -4,6 +4,7 @@
     - [Configuration](#configuration)
     - [Read & Write Connections](#read-and-write-connections)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
+- [Connecting To The Database CLI](#connecting-to-the-database-cli)
 - [Running Raw SQL Queries](#running-queries)
 - [Listening For Query Events](#listening-for-query-events)
 - [Database Transactions](#database-transactions)
@@ -102,6 +103,17 @@ When using multiple connections, you may access each connection via the `connect
 You may also access the raw, underlying PDO instance using the `getPdo` method on a connection instance:
 
     $pdo = DB::connection()->getPdo();
+
+<a name="connecting-to-the-database-cli"></a>
+## Connecting To The Database CLI
+
+If you wish to connect to the database CLI, you may use the `db` Artisan command. This command figures out which database you're using and starts a database CLI session based on your database configuration parameters.
+
+    php artisan db
+
+You may also specify an optional connection argument to connect to a non-default database connection:
+
+    php artisan db mysql
 
 <a name="running-queries"></a>
 ## Running Raw SQL Queries
