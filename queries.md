@@ -190,11 +190,13 @@ Instead of using the `count` method to determine if any records exist that match
 <a name="specifying-a-select-clause"></a>
 #### Specifying A Select Clause
 
-You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom `select` clause for the query:
+You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom "select" clause for the query:
 
     use Illuminate\Support\Facades\DB;
 
-    $users = DB::table('users')->select('name', 'email as user_email')->get();
+    $users = DB::table('users')
+                ->select('name', 'email as user_email')
+                ->get();
 
 The `distinct` method allows you to force the query to return distinct results:
 
@@ -236,7 +238,7 @@ The `selectRaw` method can be used in place of `addSelect(DB::raw(...))`. This m
 <a name="whereraw-orwhereraw"></a>
 #### `whereRaw / orWhereRaw`
 
-The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clause into your query. These methods accept an optional array of bindings as their second argument:
+The `whereRaw` and `orWhereRaw` methods can be used to inject a raw "where" clause into your query. These methods accept an optional array of bindings as their second argument:
 
     $orders = DB::table('orders')
                     ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
@@ -245,7 +247,7 @@ The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clau
 <a name="havingraw-orhavingraw"></a>
 #### `havingRaw / orHavingRaw`
 
-The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as the value of the `having` clause. These methods accept an optional array of bindings as their second argument:
+The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as the value of the "having" clause. These methods accept an optional array of bindings as their second argument:
 
     $orders = DB::table('orders')
                     ->select('department', DB::raw('SUM(price) as total_sales'))
@@ -256,7 +258,7 @@ The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as
 <a name="orderbyraw"></a>
 #### `orderByRaw`
 
-The `orderByRaw` method may be used to provide a raw string as the value of the `order by` clause:
+The `orderByRaw` method may be used to provide a raw string as the value of the "order by" clause:
 
     $orders = DB::table('orders')
                     ->orderByRaw('updated_at - created_at DESC')
@@ -313,7 +315,7 @@ You may use the `crossJoin` method to perform a "cross join". Cross joins genera
 <a name="advanced-join-clauses"></a>
 #### Advanced Join Clauses
 
-You may also specify more advanced join clauses. To get started, pass a closure as the second argument to the `join` method. The closure will receive a `Illuminate\Database\Query\JoinClause` instance which allows you to specify constraints on the `join` clause:
+You may also specify more advanced join clauses. To get started, pass a closure as the second argument to the `join` method. The closure will receive a `Illuminate\Database\Query\JoinClause` instance which allows you to specify constraints on the "join" clause:
 
     DB::table('users')
             ->join('contacts', function ($join) {
