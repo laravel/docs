@@ -360,17 +360,20 @@ In addition to the `union` method, the query builder provides a `unionAll` metho
 <a name="simple-where-clauses"></a>
 #### Simple Where Clauses
 
-You may use the query builder's `where` method to add "where" clauses to the query. The most basic call to the `where` method requires three arguments. The first argument is the name of the column. The second argument is an operator, which can be any of the database's supported operators. The third argument is the value to evaluate against the column.
+You may use the query builder's `where` method to add "where" clauses to the query. The most basic call to the `where` method requires three arguments. The first argument is the name of the column. The second argument is an operator, which can be any of the database's supported operators. The third argument is the value to compare against the column's value.
 
-For example, the following query retrieves users where the value of the "votes" column is equal to 100:
+For example, the following query retrieves users where the value of the `votes` column is equal to `100` and the value of the `age` column is greater than `35`:
 
-    $users = DB::table('users')->where('votes', '=', 100)->get();
+    $users = DB::table('users')
+                    ->where('votes', '=', 100)
+                    ->where('age', '>', 35)
+                    ->get();
 
-For convenience, if you want to verify that a column is equal to a given value, you may pass the value directly as the second argument to the `where` method:
+For convenience, if you want to verify that a column is `=` to a given value, you may pass the value as the second argument to the `where` method. Laravel will assume you would like to use the `=` operator:
 
     $users = DB::table('users')->where('votes', 100)->get();
 
-You may use a variety of other operators when writing a `where` clause:
+As previously mentioned, you may use any operator that is supported by your database system:
 
     $users = DB::table('users')
                     ->where('votes', '>=', 100)
@@ -384,7 +387,7 @@ You may use a variety of other operators when writing a `where` clause:
                     ->where('name', 'like', 'T%')
                     ->get();
 
-You may also pass an array of conditions to the `where` function:
+You may also pass an array of conditions to the `where` function. Each element of the array should be an array containing the three arguments typically passed to the `where` method:
 
     $users = DB::table('users')->where([
         ['status', '=', '1'],
@@ -394,7 +397,7 @@ You may also pass an array of conditions to the `where` function:
 <a name="or-statements"></a>
 #### Or Statements
 
-You may chain where constraints together as well as add `or` clauses to the query. The `orWhere` method accepts the same arguments as the `where` method:
+When chaining together calls to the query builder's `where` method, the "where" clauses will be joined together using the `and` operator. However, you may use the `orWhere` method to join a clause to the query using the `or` operator. The `orWhere` method accepts the same arguments as the `where` method:
 
     $users = DB::table('users')
                         ->where('votes', '>', 100)
@@ -411,7 +414,13 @@ If you need to group an "or" condition within parentheses, you may pass a closur
                 })
                 ->get();
 
-    // SQL: select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
+The example above will produce the following SQL:
+
+```sql
+select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
+```
+
+> {note} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
 
 <a name="additional-where-clauses"></a>
 #### Additional Where Clauses
@@ -440,27 +449,27 @@ The `whereIn` method verifies that a given column's value is contained within th
                         ->whereIn('id', [1, 2, 3])
                         ->get();
 
-The `whereNotIn` method verifies that the given column's value is **not** contained in the given array:
+The `whereNotIn` method verifies that the given column's value is not contained in the given array:
 
     $users = DB::table('users')
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
 
-> {note} If you are adding a huge array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage.
+> {note} If you are adding a large array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage.
 
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
 The `whereNull` method verifies that the value of the given column is `NULL`:
 
     $users = DB::table('users')
-                        ->whereNull('updated_at')
-                        ->get();
+                    ->whereNull('updated_at')
+                    ->get();
 
 The `whereNotNull` method verifies that the column's value is not `NULL`:
 
     $users = DB::table('users')
-                        ->whereNotNull('updated_at')
-                        ->get();
+                    ->whereNotNull('updated_at')
+                    ->get();
 
 **whereDate / whereMonth / whereDay / whereYear / whereTime**
 
@@ -470,13 +479,13 @@ The `whereDate` method may be used to compare a column's value against a date:
                     ->whereDate('created_at', '2016-12-31')
                     ->get();
 
-The `whereMonth` method may be used to compare a column's value against a specific month of a year:
+The `whereMonth` method may be used to compare a column's value against a specific month:
 
     $users = DB::table('users')
                     ->whereMonth('created_at', '12')
                     ->get();
 
-The `whereDay` method may be used to compare a column's value against a specific day of a month:
+The `whereDay` method may be used to compare a column's value against a specific day of the month:
 
     $users = DB::table('users')
                     ->whereDay('created_at', '31')
@@ -502,13 +511,13 @@ The `whereColumn` method may be used to verify that two columns are equal:
                     ->whereColumn('first_name', 'last_name')
                     ->get();
 
-You may also pass a comparison operator to the method:
+You may also pass a comparison operator to the `whereColumn` method:
 
     $users = DB::table('users')
                     ->whereColumn('updated_at', '>', 'created_at')
                     ->get();
 
-The `whereColumn` method can also be passed an array of multiple conditions. These conditions will be joined using the `and` operator:
+You may also pass an array of column comparisons to the `whereColumn` method. These conditions will be joined using the `and` operator:
 
     $users = DB::table('users')
                     ->whereColumn([
@@ -519,7 +528,7 @@ The `whereColumn` method can also be passed an array of multiple conditions. The
 <a name="parameter-grouping"></a>
 ### Parameter Grouping
 
-Sometimes you may need to create more advanced where clauses such as "where exists" clauses or nested parameter groupings. The Laravel query builder can handle these as well. To get started, let's look at an example of grouping constraints within parenthesis:
+Sometimes you may need to group several "where" clauses within parentheses in order to achieve your query's desired logical grouping. In fact, you should generally always group calls to the `orWhere` method in parentheses in order to avoid unexpected query behavior. To accomplish this, you may pass a closure to the `where` method:
 
     $users = DB::table('users')
                ->where('name', '=', 'John')
@@ -531,71 +540,73 @@ Sometimes you may need to create more advanced where clauses such as "where exis
 
 As you can see, passing a closure into the `where` method instructs the query builder to begin a constraint group. The closure will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
 
-    select * from users where name = 'John' and (votes > 100 or title = 'Admin')
+```sql
+select * from users where name = 'John' and (votes > 100 or title = 'Admin')
+```
 
-> {tip} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
+> {note} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
 
 <a name="where-exists-clauses"></a>
 ### Where Exists Clauses
 
-The `whereExists` method allows you to write `where exists` SQL clauses. The `whereExists` method accepts a closure argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
+The `whereExists` method allows you to write "where exists" SQL clauses. The `whereExists` method accepts a closure which will receive a query builder instance, allowing you to define the query that should be placed inside of the "exists" clause:
 
     $users = DB::table('users')
                ->whereExists(function ($query) {
                    $query->select(DB::raw(1))
                          ->from('orders')
-                         ->whereRaw('orders.user_id = users.id');
+                         ->whereColumn('orders.user_id', 'users.id');
                })
                ->get();
 
 The query above will produce the following SQL:
 
-    select * from users
-    where exists (
-        select 1 from orders where orders.user_id = users.id
-    )
+```sql
+select * from users
+where exists (
+    select 1
+    from orders
+    where orders.user_id = users.id
+)
+```
 
 <a name="subquery-where-clauses"></a>
 ### Subquery Where Clauses
 
-Sometimes you may need to construct a where clause that compares the results of a subquery to a given value. You may accomplish this by passing a closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
+Sometimes you may need to construct a "where" clause that compares the results of a subquery to a given value. You may accomplish this by passing a closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
 
     use App\Models\User;
 
     $users = User::where(function ($query) {
         $query->select('type')
             ->from('membership')
-            ->whereColumn('user_id', 'users.id')
-            ->orderByDesc('start_date')
+            ->whereColumn('membership.user_id', 'users.id')
+            ->orderByDesc('membership.start_date')
             ->limit(1);
     }, 'Pro')->get();
 
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7, PostgreSQL, SQL Server 2016, and SQLite 3.9.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
-
-    $users = DB::table('users')
-                    ->where('options->language', 'en')
-                    ->get();
+Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7+, PostgreSQL, SQL Server 2016, and SQLite 3.9.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
 
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
 
-You may use `whereJsonContains` to query JSON arrays (not supported on SQLite):
+You may use `whereJsonContains` to query JSON arrays. This feature is not supported by the SQLite database:
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', 'en')
                     ->get();
 
-MySQL and PostgreSQL support `whereJsonContains` with multiple values:
+If your application uses the MySQL or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', ['en', 'de'])
                     ->get();
 
-You may use `whereJsonLength` to query JSON arrays by their length:
+You may use `whereJsonLength` method to query JSON arrays by their length:
 
     $users = DB::table('users')
                     ->whereJsonLength('options->languages', 0)
