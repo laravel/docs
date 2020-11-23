@@ -18,8 +18,12 @@
     - [Where Exists Clauses](#where-exists-clauses)
     - [Subquery Where Clauses](#subquery-where-clauses)
 - [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit-and-offset)
+    - [Ordering](#ordering)
+    - [Grouping](#grouping)
+    - [Limit & Offset](#limit-and-offset)
 - [Conditional Clauses](#conditional-clauses)
 - [Inserts](#inserts)
+    - [Upserts](#upserts)
 - [Updates](#updates)
     - [Updating JSON Columns](#updating-json-columns)
     - [Increment & Decrement](#increment-and-decrement)
@@ -626,16 +630,19 @@ Sometimes you may need to construct a "where" clause that compares the results o
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit & Offset
 
-<a name="orderby"></a>
-#### orderBy
+<a name="ordering"></a>
+### Ordering
 
-The `orderBy` method allows you to sort the result of the query by a given column. The first argument to the `orderBy` method should be the column you wish to sort by, while the second argument controls the direction of the sort and may be either `asc` or `desc`:
+<a name="orderby"></a>
+#### The `orderBy` Method
+
+The `orderBy` method allows you to sort the results of the query by a given column. The first argument accepted by the `orderBy` method should be the column you wish to sort by, while the second argument determines the direction of the sort and may be either `asc` or `desc`:
 
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->get();
 
-If you need to sort by multiple columns, you may invoke `orderBy` as many times as needed:
+To sort by multiple columns, you may simply invoke `orderBy` as many times as necessary:
 
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
@@ -643,16 +650,16 @@ If you need to sort by multiple columns, you may invoke `orderBy` as many times 
                     ->get();
 
 <a name="latest-oldest"></a>
-#### latest / oldest
+#### The `latest` & `oldest` Methods
 
-The `latest` and `oldest` methods allow you to easily order results by date. By default, result will be ordered by the `created_at` column. Or, you may pass the column name that you wish to sort by:
+The `latest` and `oldest` methods allow you to easily order results by date. By default, result will be ordered by the table's `created_at` column. Or, you may pass the column name that you wish to sort by:
 
     $user = DB::table('users')
                     ->latest()
                     ->first();
 
-<a name="inrandomorder"></a>
-#### inRandomOrder
+<a name="random-ordering"></a>
+#### Random Ordering
 
 The `inRandomOrder` method may be used to sort the query results randomly. For example, you may use this method to fetch a random user:
 
@@ -660,25 +667,28 @@ The `inRandomOrder` method may be used to sort the query results randomly. For e
                     ->inRandomOrder()
                     ->first();
 
-<a name="reorder"></a>
-#### reorder
+<a name="removing-existing-orderings"></a>
+#### Removing Existing Orderings
 
-The `reorder` method allows you to remove all the existing orders and optionally apply a new order. For example, you can remove all the existing orders:
+The `reorder` method removes all of the "order by" clauses that have previously been applied to the query:
 
     $query = DB::table('users')->orderBy('name');
 
     $unorderedUsers = $query->reorder()->get();
 
-To remove all existing orders and apply a new order, provide the column and direction as arguments to the method:
+You may pass a column and direction when calling the `reorder` method in order to remove all existing "order by "clauses" and apply an entirely new order to the query:
 
     $query = DB::table('users')->orderBy('name');
 
     $usersOrderedByEmail = $query->reorder('email', 'desc')->get();
 
-<a name="groupby-having"></a>
-#### groupBy / having
+<a name="grouping"></a>
+### Grouping
 
-The `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
+<a name="groupby-having"></a>
+#### The `groupBy` & `having` Methods
+
+As you might expect, the `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
 
     $users = DB::table('users')
                     ->groupBy('account_id')
@@ -692,16 +702,19 @@ You may pass multiple arguments to the `groupBy` method to group by multiple col
                     ->having('account_id', '>', 100)
                     ->get();
 
-For more advanced `having` statements, see the [`havingRaw`](#raw-methods) method.
+To build more advanced `having` statements, see the [`havingRaw`](#raw-methods) method.
+
+<a name="limit-and-offset"></a>
+### Limit & Offset
 
 <a name="skip-take"></a>
-#### skip / take
+#### The `skip` & `take` Methods
 
-To limit the number of results returned from the query, or to skip a given number of results in the query, you may use the `skip` and `take` methods:
+You may use the `skip` and `take` methods to limit the number of results returned from the query or to skip a given number of results in the query:
 
     $users = DB::table('users')->skip(10)->take(5)->get();
 
-Alternatively, you may use the `limit` and `offset` methods:
+Alternatively, you may use the `limit` and `offset` methods. These methods are functionally equivalent to the `take` and `skip` methods, respectively:
 
     $users = DB::table('users')
                     ->offset(10)
@@ -711,7 +724,7 @@ Alternatively, you may use the `limit` and `offset` methods:
 <a name="conditional-clauses"></a>
 ## Conditional Clauses
 
-Sometimes you may want clauses to apply to a query only when something else is true. For instance you may only want to apply a `where` statement if a given input value is present on the incoming request. You may accomplish this using the `when` method:
+Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:
 
     $role = $request->input('role');
 
@@ -721,15 +734,15 @@ Sometimes you may want clauses to apply to a query only when something else is t
                     })
                     ->get();
 
-The `when` method only executes the given closure when the first parameter is `true`. If the first parameter is `false`, the closure will not be executed.
+The `when` method only executes the given closure when the first argument is `true`. If the first argument is `false`, the closure will not be executed. So, in the example above, the closure given to the `when` method will only be invoked if the `role` field is present on the incoming request and evaluates to `true`.
 
-You may pass another closure as the third parameter to the `when` method. This closure will execute if the first parameter evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default sorting of a query:
+You may pass another closure as the third argument to the `when` method. This closure will only execute if the first argument evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default ordering of a query:
 
-    $sortBy = null;
+    $sortByVotes = $request->input('sort_by_votes');
 
     $users = DB::table('users')
-                    ->when($sortBy, function ($query, $sortBy) {
-                        return $query->orderBy($sortBy);
+                    ->when($sortByVotes, function ($query, $sortByVotes) {
+                        return $query->orderBy('votes');
                     }, function ($query) {
                         return $query->orderBy('name');
                     })
@@ -738,34 +751,26 @@ You may pass another closure as the third parameter to the `when` method. This c
 <a name="inserts"></a>
 ## Inserts
 
-The query builder also provides an `insert` method for inserting records into the database table. The `insert` method accepts an array of column names and values:
-
-    DB::table('users')->insert(
-        ['email' => 'john@example.com', 'votes' => 0]
-    );
-
-You may even insert several records into the table with a single call to `insert` by passing an array of arrays. Each array represents a row to be inserted into the table:
+The query builder also provides an `insert` method that may be used to insert records into the database table. The `insert` method accepts an array of column names and values:
 
     DB::table('users')->insert([
-        ['email' => 'taylor@example.com', 'votes' => 0],
-        ['email' => 'dayle@example.com', 'votes' => 0],
+        'email' => 'kayla@example.com',
+        'votes' => 0
+    ]);
+
+You may insert several records at once by passing an array of arrays. Each array represents a record that should be inserted into the table:
+
+    DB::table('users')->insert([
+        ['email' => 'picard@example.com', 'votes' => 0],
+        ['email' => 'janeway@example.com', 'votes' => 0],
     ]);
 
 The `insertOrIgnore` method will ignore duplicate record errors while inserting records into the database:
 
     DB::table('users')->insertOrIgnore([
-        ['id' => 1, 'email' => 'taylor@example.com'],
-        ['id' => 2, 'email' => 'dayle@example.com'],
+        ['id' => 1, 'email' => 'sisko@example.com'],
+        ['id' => 2, 'email' => 'archer@example.com'],
     ]);
-
-The `upsert` method will insert rows that do not exist and update the rows that already exist with the new values. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of columns that should be updated if a matching record already exists in the database:
-
-    DB::table('flights')->upsert([
-        ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
-        ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
-    ], ['departure', 'destination'], ['price']);
-
-> {note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index.
 
 <a name="auto-incrementing-ids"></a>
 #### Auto-Incrementing IDs
@@ -777,6 +782,20 @@ If the table has an auto-incrementing id, use the `insertGetId` method to insert
     );
 
 > {note} When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the column name as the second parameter to the `insertGetId` method.
+
+<a name="upserts"></a>
+### Upserts
+
+The `upsert` method will insert records that do not exist and update the records that already exist with new values that you may specify. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of columns that should be updated if a matching record already exists in the database:
+
+    DB::table('flights')->upsert([
+        ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
+        ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
+    ], ['departure', 'destination'], ['price']);
+
+In the example above, Laravel will attempt to insert two records. If a record already exists with the same `departure` and `destination` column values, Laravel will update that record's `price` column.
+
+> {note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index.
 
 <a name="updates"></a>
 ## Updates
