@@ -7,6 +7,7 @@
 - [Running Raw SQL Queries](#running-queries)
 - [Listening For Query Events](#listening-for-query-events)
 - [Database Transactions](#database-transactions)
+- [Connecting To The Database CLI](#connecting-to-the-database-cli)
 
 <a name="introduction"></a>
 ## Introduction
@@ -255,3 +256,14 @@ Lastly, you can commit a transaction via the `commit` method:
     DB::commit();
 
 > {tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+
+<a name="connecting-to-the-database-cli"></a>
+## Connecting To The Database CLI
+
+If you would like to connect to your database's CLI, you may use the `db` Artisan command:
+
+    php artisan db
+
+If needed, you may specify a database connection name to connect to a database connection that is not the default connection:
+
+    php artisan db mysql
