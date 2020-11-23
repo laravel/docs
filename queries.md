@@ -8,11 +8,15 @@
 - [Raw Expressions](#raw-expressions)
 - [Joins](#joins)
 - [Unions](#unions)
-- [Where Clauses](#where-clauses)
-    - [Parameter Grouping](#parameter-grouping)
+- [Basic Where Clauses](#basic-where-clauses)
+    - [Where Clauses](#where-clauses)
+    - [Or Where Clauses](#or-where-clauses)
+    - [JSON Where Clauses](#json-where-clauses)
+    - [Additional Where Clauses](#additional-where-clauses)
+    - [Logical Grouping](#logical-grouping)
+- [Advanced Where Clauses](#advanced-where-clauses)
     - [Where Exists Clauses](#where-exists-clauses)
     - [Subquery Where Clauses](#subquery-where-clauses)
-    - [JSON Where Clauses](#json-where-clauses)
 - [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit-and-offset)
 - [Conditional Clauses](#conditional-clauses)
 - [Inserts](#inserts)
@@ -354,11 +358,11 @@ The query builder also provides a convenient method to "union" two or more queri
 
 In addition to the `union` method, the query builder provides a `unionAll` method. Queries that are combined using the `unionAll` method will not have their duplicate results removed. The `unionAll` method has the same method signature as the `union` method.
 
-<a name="where-clauses"></a>
-## Where Clauses
+<a name="basic-where-clauses"></a>
+## Basic Where Clauses
 
-<a name="simple-where-clauses"></a>
-#### Simple Where Clauses
+<a name="where-clauses"></a>
+### Where Clauses
 
 You may use the query builder's `where` method to add "where" clauses to the query. The most basic call to the `where` method requires three arguments. The first argument is the name of the column. The second argument is an operator, which can be any of the database's supported operators. The third argument is the value to compare against the column's value.
 
@@ -394,8 +398,8 @@ You may also pass an array of conditions to the `where` function. Each element o
         ['subscribed', '<>', '1'],
     ])->get();
 
-<a name="or-statements"></a>
-#### Or Statements
+<a name="or-where-clauses"></a>
+### Or Where Clauses
 
 When chaining together calls to the query builder's `where` method, the "where" clauses will be joined together using the `and` operator. However, you may use the `orWhere` method to join a clause to the query using the `or` operator. The `orWhere` method accepts the same arguments as the `where` method:
 
@@ -422,8 +426,39 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 
 > {note} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
 
+<a name="json-where-clauses"></a>
+### JSON Where Clauses
+
+Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7+, PostgreSQL, SQL Server 2016, and SQLite 3.9.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
+
+    $users = DB::table('users')
+                    ->where('preferences->dining->meal', 'salad')
+                    ->get();
+
+You may use `whereJsonContains` to query JSON arrays. This feature is not supported by the SQLite database:
+
+    $users = DB::table('users')
+                    ->whereJsonContains('options->languages', 'en')
+                    ->get();
+
+If your application uses the MySQL or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
+
+    $users = DB::table('users')
+                    ->whereJsonContains('options->languages', ['en', 'de'])
+                    ->get();
+
+You may use `whereJsonLength` method to query JSON arrays by their length:
+
+    $users = DB::table('users')
+                    ->whereJsonLength('options->languages', 0)
+                    ->get();
+
+    $users = DB::table('users')
+                    ->whereJsonLength('options->languages', '>', 1)
+                    ->get();
+
 <a name="additional-where-clauses"></a>
-#### Additional Where Clauses
+### Additional Where Clauses
 
 **whereBetween / orWhereBetween**
 
@@ -525,8 +560,8 @@ You may also pass an array of column comparisons to the `whereColumn` method. Th
                         ['updated_at', '>', 'created_at'],
                     ])->get();
 
-<a name="parameter-grouping"></a>
-### Parameter Grouping
+<a name="logical-grouping"></a>
+### Logical Grouping
 
 Sometimes you may need to group several "where" clauses within parentheses in order to achieve your query's desired logical grouping. In fact, you should generally always group calls to the `orWhere` method in parentheses in order to avoid unexpected query behavior. To accomplish this, you may pass a closure to the `where` method:
 
@@ -545,6 +580,9 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 ```
 
 > {note} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
+
+<a name="advanced-where-clauses"></a>
+### Advanced Where Clauses
 
 <a name="where-exists-clauses"></a>
 ### Where Exists Clauses
@@ -584,37 +622,6 @@ Sometimes you may need to construct a "where" clause that compares the results o
             ->orderByDesc('membership.start_date')
             ->limit(1);
     }, 'Pro')->get();
-
-<a name="json-where-clauses"></a>
-### JSON Where Clauses
-
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7+, PostgreSQL, SQL Server 2016, and SQLite 3.9.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
-
-    $users = DB::table('users')
-                    ->where('preferences->dining->meal', 'salad')
-                    ->get();
-
-You may use `whereJsonContains` to query JSON arrays. This feature is not supported by the SQLite database:
-
-    $users = DB::table('users')
-                    ->whereJsonContains('options->languages', 'en')
-                    ->get();
-
-If your application uses the MySQL or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
-
-    $users = DB::table('users')
-                    ->whereJsonContains('options->languages', ['en', 'de'])
-                    ->get();
-
-You may use `whereJsonLength` method to query JSON arrays by their length:
-
-    $users = DB::table('users')
-                    ->whereJsonLength('options->languages', 0)
-                    ->get();
-
-    $users = DB::table('users')
-                    ->whereJsonLength('options->languages', '>', 1)
-                    ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit & Offset
