@@ -639,6 +639,43 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
         }
     }
 
+You may also define the queue directly on the job:
+
+    <?php
+    
+    namespace App\Jobs;
+    
+    use App\Podcast;
+    use Illuminate\Bus\Queueable;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Foundation\Bus\Dispatchable;
+    use Illuminate\Queue\InteractsWithQueue;
+    use Illuminate\Queue\SerializesModels;
+    
+    class ProcessPodcast implements ShouldQueue
+    {
+        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+        
+        /**
+         * @var \App\Podcast
+         */
+        protected Podcast $podcast;
+        
+        /**
+         * Create a new job instance.
+         *
+         * @param  \App\Podcast  $podcast
+         */
+        public function __construct(Podcast $podcast)
+        {
+            //
+            $this->podcast = $podcast;
+            
+            //
+            $this->onQueue('processing');
+        }
+    }
+
 <a name="dispatching-to-a-particular-connection"></a>
 #### Dispatching To A Particular Connection
 
