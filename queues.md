@@ -700,6 +700,33 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
         }
     }
 
+Alternatively, you may specify the job's queue by calling the `onQueue` method within the job's constructor:
+
+    <?php
+
+    namespace App\Jobs;
+
+     use Illuminate\Bus\Queueable;
+     use Illuminate\Contracts\Queue\ShouldQueue;
+     use Illuminate\Foundation\Bus\Dispatchable;
+     use Illuminate\Queue\InteractsWithQueue;
+     use Illuminate\Queue\SerializesModels;
+
+    class ProcessPodcast implements ShouldQueue
+    {
+        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+        /**
+         * Create a new job instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            $this->onQueue('processing');
+        }
+    }
+
 <a name="dispatching-to-a-particular-connection"></a>
 #### Dispatching To A Particular Connection
 
@@ -737,6 +764,33 @@ You may chain the `onConnection` and `onQueue` methods together to specify the c
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
                   ->onQueue('processing');
+
+Alternatively, you may specify the job's connection by calling the `onConnection` method within the job's constructor:
+
+    <?php
+
+    namespace App\Jobs;
+
+     use Illuminate\Bus\Queueable;
+     use Illuminate\Contracts\Queue\ShouldQueue;
+     use Illuminate\Foundation\Bus\Dispatchable;
+     use Illuminate\Queue\InteractsWithQueue;
+     use Illuminate\Queue\SerializesModels;
+
+    class ProcessPodcast implements ShouldQueue
+    {
+        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+        /**
+         * Create a new job instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            $this->onConnection('sqs');
+        }
+    }
 
 <a name="max-job-attempts-and-timeout"></a>
 ### Specifying Max Job Attempts / Timeout Values
