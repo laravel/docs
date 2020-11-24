@@ -7,6 +7,7 @@
 - [Upgrading Horizon](#upgrading-horizon)
 - [Running Horizon](#running-horizon)
     - [Deploying Horizon](#deploying-horizon)
+    - [Queue worker](#queue-worker)
 - [Tags](#tags)
 - [Notifications](#notifications)
 - [Metrics](#metrics)
@@ -192,6 +193,10 @@ Once the configuration file has been created, you may update the Supervisor conf
     sudo supervisorctl start horizon
 
 For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
+
+<a name="queue-worker"></a>
+### Queue worker
+As Horizon completely takes over processing jobs as they are pushed onto the queue, you don’t need to run a separate [queue worker](/docs/{{version}}/queues#running-the-queue-worker).
 
 <a name="tags"></a>
 ## Tags
