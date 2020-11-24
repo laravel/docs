@@ -642,6 +642,32 @@ To create a class based component, you may use the `make:component` Artisan comm
 
 The `make:component` command will also create a view template for the component. The view will be placed in the `resources/views/components` directory. When writing components for your own application, components are automatically discovered within the `app/View/Components` directory and `resources/views/components` directory, so no further component registration is typically required.
 
+You may also create components within subdirectories:
+
+    php artisan make:component Forms/Input
+
+The command above will create an `Input` component in the `App\View\Components\Forms` directory and the view will be placed in the `resources/views/components/forms` directory.
+
+<a name="manually-registering-package-components"></a>
+#### Manually Registering Package Components
+
+When writing components for your own application, components are automatically discovered within the `app/View/Components` directory and `resources/views/components` directory.
+
+However, if you are building a package that utilizes Blade components, you will need to manually register your component class and its HTML tag alias. You should typically register your components in the `boot` method of your package's service provider:
+
+    use Illuminate\Support\Facades\Blade;
+
+    /**
+     * Bootstrap your package's services.
+     */
+    public function boot()
+    {
+        Blade::component('package-alert', AlertComponent::class);
+    }
+
+Once your component has been registered, it may be rendered using its tag alias:
+>>>>>>> 8.x
+
 <a name="rendering-components"></a>
 ### Rendering Components
 
