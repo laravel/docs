@@ -1999,6 +1999,56 @@ Alternatively, you may pass your own closure to determine how to sort the collec
         ]
     */
 
+If you would like to sort your collection by multiple attributes, you may pass an array of sort operations to the `sortBy` method. Each sort operation should be an array consisting of the attribute that you wish to sort by and the direction of the desired sort:
+
+    $collection = collect([
+        ['name' => 'Taylor Otwell', 'age' => 34],
+        ['name' => 'Abigail Otwell', 'age' => 30],
+        ['name' => 'Taylor Otwell', 'age' => 36],
+        ['name' => 'Abigail Otwell', 'age' => 32],
+    ]);
+
+    $sorted = $collection->sortBy([
+        ['name', 'asc'],
+        ['age', 'desc'],
+    ]);
+
+    $sorted->values()->all();
+
+    /*
+        [
+            ['name' => 'Abigail Otwell', 'age' => 32],
+            ['name' => 'Abigail Otwell', 'age' => 30],
+            ['name' => 'Taylor Otwell', 'age' => 36],
+            ['name' => 'Taylor Otwell', 'age' => 34],
+        ]
+    */
+
+When sorting a collection by multiple attributes, you may also provide closures that define each sort operation:
+
+    $collection = collect([
+        ['name' => 'Taylor Otwell', 'age' => 34],
+        ['name' => 'Abigail Otwell', 'age' => 30],
+        ['name' => 'Taylor Otwell', 'age' => 36],
+        ['name' => 'Abigail Otwell', 'age' => 32],
+    ]);
+
+    $sorted = $collection->sortBy([
+        fn ($a, $b) => $a['name'] <=> $b['name'],
+        fn ($a, $b) => $b['age'] <=> $a['age'],
+    ]);
+
+    $sorted->values()->all();
+
+    /*
+        [
+            ['name' => 'Abigail Otwell', 'age' => 32],
+            ['name' => 'Abigail Otwell', 'age' => 30],
+            ['name' => 'Taylor Otwell', 'age' => 36],
+            ['name' => 'Taylor Otwell', 'age' => 34],
+        ]
+    */
+
 <a name="method-sortbydesc"></a>
 #### `sortByDesc()` {#collection-method}
 
