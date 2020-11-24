@@ -6,6 +6,7 @@
     - [Predis](#predis)
     - [phpredis](#phpredis)
 - [Interacting With Redis](#interacting-with-redis)
+    - [Transactions](#transactions)
     - [Pipelining Commands](#pipelining-commands)
 - [Pub / Sub](#pubsub)
 
@@ -226,10 +227,46 @@ To obtain an instance of the default Redis connection, you may call the `connect
 
     $redis = Redis::connection();
 
+<a name="transactions"></a>
+### Transactions
+
+The `Redis` facade's `transaction` method provides a convenient wrapper around Redis' native `MULTI` and `EXEC` commands. The `transaction` method accepts a closure as its only argument. This closure will receive a Redis connection instance and may issue any commands it would like to this instance. All of the Redis commands issued within the closure will be executed in a single, atomic transaction:
+
+    use Illuminate\Support\Facades\Redis;
+
+    Redis::transaction(function ($redis) {
+        $redis->incr('user_visits', 1);
+        $redis->incr('total_visits', 1);
+    });
+
+> {note} When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
+
+#### Lua Scripts
+
+The `eval` method provides another method of executing multiple Redis commands in a single, atomic operation. However, the `eval` method has the benefit of being able to interact with and inspect Redis key values during that operation. Redis scripts are written in the [Lua programming language](https://www.lua.org).
+
+The `eval` method can be a bit scary at first, but we'll explore a basic example to break the ice. The `eval` method expects several arguments. First, you should pass the Lua script (as a string) to the method. Secondly, you should pass the number of keys (as an integer) that the script interacts with. Thirdly, you should pass the names of those keys. Finally, you may pass any other additional arguments that you need to access within your script.
+
+In this example, we will increment a counter, inspect its new value, and increment a second counter if the first counter's value is greater than five. Finally, we will return the value of the first counter:
+
+    $value = Redis::eval(<<<'LUA'
+        local counter = redis.call("incr", KEYS[1])
+
+        if counter > 5 then
+            redis.call("incr", KEYS[2])
+        end
+
+        return counter
+    LUA, 2, 'first-counter', 'second-counter');
+
+> {note} Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
+
 <a name="pipelining-commands"></a>
 ### Pipelining Commands
 
 Sometimes you may need to execute dozens of Redis commands. Instead of making a network trip to your Redis server for each command, you may use the `pipeline` method. The `pipeline` method accepts one argument: a closure that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be sent to the Redis server at the same time to reduce network trips to the server. The commands will still be executed in the order they were issued:
+
+    use Illuminate\Support\Facades\Redis;
 
     Redis::pipeline(function ($pipe) {
         for ($i = 0; $i < 1000; $i++) {
