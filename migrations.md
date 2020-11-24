@@ -12,6 +12,7 @@
     - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
 - [Columns](#columns)
     - [Creating Columns](#creating-columns)
+    - [Available Column Types](#available-column-types)
     - [Column Modifiers](#column-modifiers)
     - [Modifying Columns](#modifying-columns)
     - [Dropping Columns](#dropping-columns)
@@ -255,73 +256,515 @@ The `table` method on the `Schema` facade may be used to update existing tables.
     });
 
 <a name="available-column-types"></a>
-#### Available Column Types
+### Available Column Types
 
 The schema builder blueprint offers a variety of methods that correspond to the different types of columns you can add to your database tables. Each of the available methods are listed in the table below:
 
-Command  |  Description
--------  |  -----------
-`$table->id();`  |  Alias of `$table->bigIncrements('id')`.
-`$table->foreignId('user_id');`  |  Alias of `$table->unsignedBigInteger('user_id')`.
-`$table->bigIncrements('id');`  |  Auto-incrementing UNSIGNED BIGINT (primary key) equivalent column.
-`$table->bigInteger('votes');`  |  BIGINT equivalent column.
-`$table->binary('data');`  |  BLOB equivalent column.
-`$table->boolean('confirmed');`  |  BOOLEAN equivalent column.
-`$table->char('name', 100);`  |  CHAR equivalent column with a length.
-`$table->date('created_at');`  |  DATE equivalent column.
-`$table->dateTime('created_at', 0);`  |  DATETIME equivalent column with precision (total digits).
-`$table->dateTimeTz('created_at', 0);`  |  DATETIME (with timezone) equivalent column with precision (total digits).
-`$table->decimal('amount', 8, 2);`  |  DECIMAL equivalent column with precision (total digits) and scale (decimal digits).
-`$table->double('amount', 8, 2);`  |  DOUBLE equivalent column with precision (total digits) and scale (decimal digits).
-`$table->enum('level', ['easy', 'hard']);`  |  ENUM equivalent column.
-`$table->float('amount', 8, 2);`  |  FLOAT equivalent column with a precision (total digits) and scale (decimal digits).
-`$table->geometry('positions');`  |  GEOMETRY equivalent column.
-`$table->geometryCollection('positions');`  |  GEOMETRYCOLLECTION equivalent column.
-`$table->increments('id');`  |  Auto-incrementing UNSIGNED INTEGER (primary key) equivalent column.
-`$table->integer('votes');`  |  INTEGER equivalent column.
-`$table->ipAddress('visitor');`  |  IP address equivalent column.
-`$table->json('options');`  |  JSON equivalent column.
-`$table->jsonb('options');`  |  JSONB equivalent column.
-`$table->lineString('positions');`  |  LINESTRING equivalent column.
-`$table->longText('description');`  |  LONGTEXT equivalent column.
-`$table->macAddress('device');`  |  MAC address equivalent column.
-`$table->mediumIncrements('id');`  |  Auto-incrementing UNSIGNED MEDIUMINT (primary key) equivalent column.
-`$table->mediumInteger('votes');`  |  MEDIUMINT equivalent column.
-`$table->mediumText('description');`  |  MEDIUMTEXT equivalent column.
-`$table->morphs('taggable');`  |  Adds `taggable_id` UNSIGNED BIGINT and `taggable_type` VARCHAR equivalent columns.
-`$table->uuidMorphs('taggable');`  |  Adds `taggable_id` CHAR(36) and `taggable_type` VARCHAR(255) UUID equivalent columns.
-`$table->multiLineString('positions');`  |  MULTILINESTRING equivalent column.
-`$table->multiPoint('positions');`  |  MULTIPOINT equivalent column.
-`$table->multiPolygon('positions');`  |  MULTIPOLYGON equivalent column.
-`$table->nullableMorphs('taggable');`  |  Adds nullable versions of `morphs()` columns.
-`$table->nullableUuidMorphs('taggable');`  |  Adds nullable versions of `uuidMorphs()` columns.
-`$table->nullableTimestamps(0);`  |  Alias of `timestamps()` method.
-`$table->point('position');`  |  POINT equivalent column.
-`$table->polygon('positions');`  |  POLYGON equivalent column.
-`$table->rememberToken();`  |  Adds a nullable `remember_token` VARCHAR(100) equivalent column.
-`$table->set('flavors', ['strawberry', 'vanilla']);`  |  SET equivalent column.
-`$table->smallIncrements('id');`  |  Auto-incrementing UNSIGNED SMALLINT (primary key) equivalent column.
-`$table->smallInteger('votes');`  |  SMALLINT equivalent column.
-`$table->softDeletes('deleted_at', 0);`  |  Adds a nullable `deleted_at` TIMESTAMP equivalent column for soft deletes with precision (total digits).
-`$table->softDeletesTz('deleted_at', 0);`  |  Adds a nullable `deleted_at` TIMESTAMP (with timezone) equivalent column for soft deletes with precision (total digits).
-`$table->string('name', 100);`  |  VARCHAR equivalent column with a length.
-`$table->text('description');`  |  TEXT equivalent column.
-`$table->time('sunrise', 0);`  |  TIME equivalent column with precision (total digits).
-`$table->timeTz('sunrise', 0);`  |  TIME (with timezone) equivalent column with precision (total digits).
-`$table->timestamp('added_on', 0);`  |  TIMESTAMP equivalent column with precision (total digits).
-`$table->timestampTz('added_on', 0);`  |  TIMESTAMP (with timezone) equivalent column with precision (total digits).
-`$table->timestamps(0);`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP equivalent columns with precision (total digits).
-`$table->timestampsTz(0);`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP (with timezone) equivalent columns with precision (total digits).
-`$table->tinyIncrements('id');`  |  Auto-incrementing UNSIGNED TINYINT (primary key) equivalent column.
-`$table->tinyInteger('votes');`  |  TINYINT equivalent column.
-`$table->unsignedBigInteger('votes');`  |  UNSIGNED BIGINT equivalent column.
-`$table->unsignedDecimal('amount', 8, 2);`  |  UNSIGNED DECIMAL equivalent column with a precision (total digits) and scale (decimal digits).
-`$table->unsignedInteger('votes');`  |  UNSIGNED INTEGER equivalent column.
-`$table->unsignedMediumInteger('votes');`  |  UNSIGNED MEDIUMINT equivalent column.
-`$table->unsignedSmallInteger('votes');`  |  UNSIGNED SMALLINT equivalent column.
-`$table->unsignedTinyInteger('votes');`  |  UNSIGNED TINYINT equivalent column.
-`$table->uuid('id');`  |  UUID equivalent column.
-`$table->year('birth_year');`  |  YEAR equivalent column.
+<style>
+    #collection-method-list > p {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    }
+
+    #collection-method-list a {
+        display: block;
+    }
+</style>
+
+<div id="collection-method-list" markdown="1">
+[bigIncrements](#column-method-bigIncrements)
+[bigInteger](#column-method-bigInteger)
+[binary](#column-method-binary)
+[boolean](#column-method-boolean)
+[char](#column-method-char)
+[dateTimeTz](#column-method-dateTimeTz)
+[dateTime](#column-method-dateTime)
+[date](#column-method-date)
+[decimal](#column-method-decimal)
+[double](#column-method-double)
+[enum](#column-method-enum)
+[float](#column-method-float)
+[foreignId](#column-method-foreignId)
+[geometryCollection](#column-method-geometryCollection)
+[geometry](#column-method-geometry)
+[id](#column-method-id)
+[increments](#column-method-increments)
+[integer](#column-method-integer)
+[ipAddress](#column-method-ipAddress)
+[json](#column-method-json)
+[jsonb](#column-method-jsonb)
+[lineString](#column-method-lineString)
+[longText](#column-method-longText)
+[macAddress](#column-method-macAddress)
+[mediumIncrements](#column-method-mediumIncrements)
+[mediumInteger](#column-method-mediumInteger)
+[mediumText](#column-method-mediumText)
+[morphs](#column-method-morphs)
+[multiLineString](#column-method-multiLineString)
+[multiPoint](#column-method-multiPoint)
+[multiPolygon](#column-method-multiPolygon)
+[nullableMorphs](#column-method-nullableMorphs)
+[nullableTimestamps](#column-method-nullableTimestamps)
+[nullableUuidMorphs](#column-method-nullableUuidMorphs)
+[point](#column-method-point)
+[polygon](#column-method-polygon)
+[rememberToken](#column-method-rememberToken)
+[set](#column-method-set)
+[smallIncrements](#column-method-smallIncrements)
+[smallInteger](#column-method-smallInteger)
+[softDeletesTz](#column-method-softDeletesTz)
+[softDeletes](#column-method-softDeletes)
+[string](#column-method-string)
+[text](#column-method-text)
+[timeTz](#column-method-timeTz)
+[time](#column-method-time)
+[timestampTz](#column-method-timestampTz)
+[timestamp](#column-method-timestamp)
+[timestampsTz](#column-method-timestampsTz)
+[timestamps](#column-method-timestamps)
+[tinyIncrements](#column-method-tinyIncrements)
+[tinyInteger](#column-method-tinyInteger)
+[unsignedBigInteger](#column-method-unsignedBigInteger)
+[unsignedDecimal](#column-method-unsignedDecimal)
+[unsignedInteger](#column-method-unsignedInteger)
+[unsignedMediumInteger](#column-method-unsignedMediumInteger)
+[unsignedSmallInteger](#column-method-unsignedSmallInteger)
+[unsignedTinyInteger](#column-method-unsignedTinyInteger)
+[uuidMorphs](#column-method-uuidMorphs)
+[uuid](#column-method-uuid)
+[year](#column-method-year)
+</div>
+
+<a name="column-method-bigIncrements"></a>
+#### `bigIncrements()` {#collection-method .first-collection-method}
+
+The `bigIncrements` method creates an auto-incrementing `UNSIGNED BIGINT` (primary key) equivalent column:
+
+    $table->bigIncrements('id');
+
+<a name="column-method-bigInteger"></a>
+#### `bigInteger()` {#collection-method}
+
+The `bigInteger` method creates a `BIGINT` equivalent column:
+
+    $table->bigInteger('votes');
+
+<a name="column-method-binary"></a>
+#### `binary()` {#collection-method}
+
+The `binary` method creates a `BLOB` equivalent column:
+
+    $table->binary('photo');
+
+<a name="column-method-boolean"></a>
+#### `boolean()` {#collection-method}
+
+The `boolean` method creates a `BOOLEAN` equivalent column:
+
+    $table->boolean('confirmed');
+
+<a name="column-method-char"></a>
+#### `char()` {#collection-method}
+
+The `char` method creates a `CHAR` equivalent column with of a given length:
+
+    $table->char('name', 100);
+
+<a name="column-method-dateTimeTz"></a>
+#### `dateTimeTz()` {#collection-method}
+
+The `dateTimeTz` method creates a `DATETIME` (with timezone) equivalent column with an optional precision (total digits):
+
+    $table->dateTimeTz('created_at', $precision = 0);
+
+<a name="column-method-dateTime"></a>
+#### `dateTime()` {#collection-method}
+
+The `dateTime` method creates a `DATETIME` equivalent column with an optional precision (total digits):
+
+    $table->dateTime('created_at', $precision = 0);
+
+<a name="column-method-date"></a>
+#### `date()` {#collection-method}
+
+The `date` method creates a `DATE` equivalent column:
+
+    $table->date('created_at');
+
+<a name="column-method-decimal"></a>
+#### `decimal()` {#collection-method}
+
+The `decimal` method creates a `DECIMAL` equivalent column with the given precision (total digits) and scale (decimal digits):
+
+    $table->decimal('amount', $precision = 8, $scale = 2);
+
+<a name="column-method-double"></a>
+#### `double()` {#collection-method}
+
+The `double` method creates a `DOUBLE` equivalent column with the given precision (total digits) and scale (decimal digits):
+
+    $table->double('amount', 8, 2);
+
+<a name="column-method-enum"></a>
+#### `enum()` {#collection-method}
+
+The `enum` method creates a `ENUM` equivalent column with the given valid values:
+
+    $table->enum('difficulty', ['easy', 'hard']);
+
+<a name="column-method-float"></a>
+#### `float()` {#collection-method}
+
+The `float` method creates a `FLOAT` equivalent column with the given precision (total digits) and scale (decimal digits):
+
+    $table->float('amount', 8, 2);
+
+<a name="column-method-foreignId"></a>
+#### `foreignId()` {#collection-method}
+
+The `foreignId` method is an alias of the `unsignedBigInteger` method:
+
+    $table->foreignId('user_id');
+
+<a name="column-method-geometryCollection"></a>
+#### `geometryCollection()` {#collection-method}
+
+The `geometryCollection` method creates a `GEOMETRYCOLLECTION` equivalent column:
+
+    $table->geometryCollection('positions');
+
+<a name="column-method-geometry"></a>
+#### `geometry()` {#collection-method}
+
+The `geometry` method creates a `GEOMETRY` equivalent column:
+
+    $table->geometry('positions');
+
+<a name="column-method-id"></a>
+#### `id()` {#collection-method}
+
+The `id` method is an alias of the `bigIncrements` method. By default, the method will create an `id` column; however, you may pass a column name if you would like to assign a different name to the column:
+
+    $table->id();
+
+<a name="column-method-increments"></a>
+#### `increments()` {#collection-method}
+
+The `increments` method creates an auto-incrementing `UNSIGNED INTEGER` equivalent column as a primary key:
+
+    $table->increments('id');
+
+<a name="column-method-integer"></a>
+#### `integer()` {#collection-method}
+
+The `integer` method creates an `INTEGER` equivalent column:
+
+    $table->integer('votes');
+
+<a name="column-method-ipAddress"></a>
+#### `ipAddress()` {#collection-method}
+
+The `ipAddress` method creates an `INTEGER` equivalent column:
+
+    $table->ipAddress('visitor');
+
+<a name="column-method-json"></a>
+#### `json()` {#collection-method}
+
+The `json` method creates an `JSON` equivalent column:
+
+    $table->json('options');
+
+<a name="column-method-jsonb"></a>
+#### `jsonb()` {#collection-method}
+
+The `jsonb` method creates an `JSONB` equivalent column:
+
+    $table->jsonb('options');
+
+<a name="column-method-lineString"></a>
+#### `lineString()` {#collection-method}
+
+The `lineString` method creates an `LINESTRING` equivalent column:
+
+    $table->lineString('positions');
+
+<a name="column-method-longText"></a>
+#### `longText()` {#collection-method}
+
+The `longText` method creates an `LONGTEXT` equivalent column:
+
+    $table->longText('description');
+
+<a name="column-method-macAddress"></a>
+#### `macAddress()` {#collection-method}
+
+The `macAddress` method creates a column that is intended to hold a MAC address. Some database systems, such as PostgreSQL, have a dedicated column type for this type of data. Other database systems will use a string equivalent column:
+
+    $table->macAddress('device');
+
+<a name="column-method-mediumIncrements"></a>
+#### `mediumIncrements()` {#collection-method}
+
+The `mediumIncrements` method creates an auto-incrementing `UNSIGNED MEDIUMINT` equivalent column as a primary key:
+
+    $table->mediumIncrements('id');
+
+<a name="column-method-mediumInteger"></a>
+#### `mediumInteger()` {#collection-method}
+
+The `mediumInteger` method creates an `MEDIUMINT` equivalent column:
+
+    $table->mediumInteger('votes');
+
+<a name="column-method-mediumText"></a>
+#### `mediumText()` {#collection-method}
+
+The `mediumText` method creates an `MEDIUMTEXT` equivalent column:
+
+    $table->mediumText('description');
+
+<a name="column-method-morphs"></a>
+#### `morphs()` {#collection-method}
+
+The `morphs` method is a convenience method that adds a `{column}_id` `UNSIGNED BIGINT` equivalent column and a `{column}_type` `VARCHAR` equivalent column.
+
+This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships). In the following example, `taggable_id` and `taggable_type` columns would be created:
+
+    $table->morphs('taggable');
+
+<a name="column-method-multiLineString"></a>
+#### `multiLineString()` {#collection-method}
+
+The `multiLineString` method creates an `MULTILINESTRING` equivalent column:
+
+    $table->multiLineString('positions');
+
+<a name="column-method-multiPoint"></a>
+#### `multiPoint()` {#collection-method}
+
+The `multiPoint` method creates an `MULTIPOINT` equivalent column:
+
+    $table->multiPoint('positions');
+
+<a name="column-method-multiPolygon"></a>
+#### `multiPolygon()` {#collection-method}
+
+The `multiPolygon` method creates an `MULTIPOLYGON` equivalent column:
+
+    $table->multiPolygon('positions');
+
+<a name="column-method-nullableTimestamps"></a>
+#### `nullableTimestamps()` {#collection-method}
+
+The method is similar to the [timestamps](#column-method-timestamps) method; however, the column that is created will be "nullable":
+
+    $table->nullableTimestamps(0);
+
+<a name="column-method-nullableMorphs"></a>
+#### `nullableMorphs()` {#collection-method}
+
+The method is similar to the [morphs](#column-method-morphs) method; however, the columns that are created will be "nullable":
+
+    $table->nullableMorphs('taggable');
+
+<a name="column-method-nullableUuidMorphs"></a>
+#### `nullableUuidMorphs()` {#collection-method}
+
+The method is similar to the [uuidMorphs](#column-method-uuidMorphs) method; however, the columns that are created will be "nullable":
+
+    $table->nullableUuidMorphs('taggable');
+
+<a name="column-method-point"></a>
+#### `point()` {#collection-method}
+
+The `point` method creates an `POINT` equivalent column:
+
+    $table->point('position');
+
+<a name="column-method-polygon"></a>
+#### `polygon()` {#collection-method}
+
+The `polygon` method creates an `POLYGON` equivalent column:
+
+    $table->polygon('position');
+
+<a name="column-method-rememberToken"></a>
+#### `rememberToken()` {#collection-method}
+
+The `rememberToken` method creates a nullable, `VARCHAR(100)` equivalent column that is intended to store the current "remember me" [authentication token](/docs/{{version}}/authentication#remembering-users):
+
+    $table->rememberToken();
+
+<a name="column-method-set"></a>
+#### `set()` {#collection-method}
+
+The `set` method creates an `SET` equivalent column with the given list of valid values:
+
+    $table->set('flavors', ['strawberry', 'vanilla']);
+
+<a name="column-method-smallIncrements"></a>
+#### `smallIncrements()` {#collection-method}
+
+The `smallIncrements` method creates an auto-incrementing `UNSIGNED SMALLINT` equivalent column as a primary key:
+
+    $table->smallIncrements('id');
+
+<a name="column-method-smallInteger"></a>
+#### `smallInteger()` {#collection-method}
+
+The `smallInteger` method creates an `SMALLINT` equivalent column:
+
+    $table->smallInteger('votes');
+
+<a name="column-method-softDeletesTz"></a>
+#### `softDeletesTz()` {#collection-method}
+
+The `softDeletesTz` method adds a nullable `deleted_at` `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits). This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
+
+    $table->softDeletesTz($column = 'deleted_at', $precision = 0);
+
+<a name="column-method-softDeletes"></a>
+#### `softDeletes()` {#collection-method}
+
+The `softDeletes` method adds a nullable `deleted_at` `TIMESTAMP` equivalent column with an optional precision (total digits). This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
+
+    $table->softDeletes($column = 'deleted_at', $precision = 0);
+
+<a name="column-method-string"></a>
+#### `string()` {#collection-method}
+
+The `string` method creates an `VARCHAR` equivalent column of the given length:
+
+    $table->string('name', 100);
+
+<a name="column-method-text"></a>
+#### `text()` {#collection-method}
+
+The `text` method creates an `TEXT` equivalent column:
+
+    $table->text('description');
+
+<a name="column-method-timeTz"></a>
+#### `timeTz()` {#collection-method}
+
+The `timeTz` method creates an `TIME` (with timezone) equivalent column with an optional precision (total digits):
+
+    $table->timeTz('sunrise', $precision = 0);
+
+<a name="column-method-time"></a>
+#### `time()` {#collection-method}
+
+The `time` method creates an `TIME` equivalent column with an optional precision (total digits):
+
+    $table->time('sunrise', $precision = 0);
+
+<a name="column-method-timestampTz"></a>
+#### `timestampTz()` {#collection-method}
+
+The `timestampTz` method creates an `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits):
+
+    $table->timestampTz('added_at', $precision = 0);
+
+<a name="column-method-timestamp"></a>
+#### `timestamp()` {#collection-method}
+
+The `timestamp` method creates an `TIMESTAMP` equivalent column with an optional precision (total digits):
+
+    $table->timestamp('added_at', $precision = 0);
+
+<a name="column-method-timestampsTz"></a>
+#### `timestampsTz()` {#collection-method}
+
+The `timestampsTz` method creates `created_at` and `updated_at` `TIMESTAMP` (with timezone) equivalent columns with an optional precision (total digits):
+
+    $table->timestampsTz($precision = 0);
+
+<a name="column-method-timestamps"></a>
+#### `timestamps()` {#collection-method}
+
+The `timestamps` method creates `created_at` and `updated_at` `TIMESTAMP` equivalent columns with an optional precision (total digits):
+
+    $table->timestamps($precision = 0);
+
+<a name="column-method-tinyIncrements"></a>
+#### `tinyIncrements()` {#collection-method}
+
+The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equivalent column as a primary key:
+
+    $table->tinyIncrements('id');
+
+<a name="column-method-tinyInteger"></a>
+#### `tinyInteger()` {#collection-method}
+
+The `tinyInteger` method creates an `TINYINT` equivalent column:
+
+    $table->tinyInteger('votes');
+
+<a name="column-method-unsignedBigInteger"></a>
+#### `unsignedBigInteger()` {#collection-method}
+
+The `unsignedBigInteger` method creates an `UNSIGNED BIGINT` equivalent column:
+
+    $table->unsignedBigInteger('votes');
+
+<a name="column-method-unsignedDecimal"></a>
+#### `unsignedDecimal()` {#collection-method}
+
+The `unsignedDecimal` method creates an `UNSIGNED DECIMAL` equivalent column with an optinoal precision (total digits) and scale (decimal digits):
+
+    $table->unsignedDecimal('amount', $precision = 8, $scale = 2);
+
+<a name="column-method-unsignedInteger"></a>
+#### `unsignedInteger()` {#collection-method}
+
+The `unsignedInteger` method creates an `UNSIGNED INTEGER` equivalent column:
+
+    $table->unsignedInteger('votes');
+
+<a name="column-method-unsignedMediumInteger"></a>
+#### `unsignedMediumInteger()` {#collection-method}
+
+The `unsignedMediumInteger` method creates an `UNSIGNED MEDIUMINT` equivalent column:
+
+    $table->unsignedMediumInteger('votes');
+
+<a name="column-method-unsignedSmallInteger"></a>
+#### `unsignedSmallInteger()` {#collection-method}
+
+The `unsignedSmallInteger` method creates an `UNSIGNED SMALLINT` equivalent column:
+
+    $table->unsignedSmallInteger('votes');
+
+<a name="column-method-unsignedTinyInteger"></a>
+#### `unsignedTinyInteger()` {#collection-method}
+
+The `unsignedTinyInteger` method creates an `UNSIGNED TINYINT` equivalent column:
+
+    $table->unsignedTinyInteger('votes');
+
+<a name="column-method-uuidMorphs"></a>
+#### `uuidMorphs()` {#collection-method}
+
+The `uuidMorphs` method is a convenience method that adds a `{column}_id` `CHAR(36)` equivalent column and a `{column}_type` `VARCHAR` equivalent column.
+
+This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that use UUID identifiers. In the following example, `taggable_id` and `taggable_type` columns would be created:
+
+    $table->uuidMorphs('taggable');
+
+<a name="column-method-uuid"></a>
+#### `uuid()` {#collection-method}
+
+The `uuid` method creates an `UUID` equivalent column:
+
+    $table->uuid('id');
+
+<a name="column-method-year"></a>
+#### `year()` {#collection-method}
+
+The `year` method creates an `YEAR` equivalent column:
+
+    $table->year('birth_year');
 
 <a name="column-modifiers"></a>
 ### Column Modifiers
