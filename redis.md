@@ -1,9 +1,10 @@
 # Redis
 
 - [Introduction](#introduction)
-    - [Configuration](#configuration)
+- [Configuration](#configuration)
+    - [Clusters](#clusters)
     - [Predis](#predis)
-    - [PhpRedis](#phpredis)
+    - [phpredis](#phpredis)
 - [Interacting With Redis](#interacting-with-redis)
     - [Pipelining Commands](#pipelining-commands)
 - [Pub / Sub](#pubsub)
@@ -13,16 +14,18 @@
 
 [Redis](https://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](https://redis.io/topics/data-types#strings), [hashes](https://redis.io/topics/data-types#hashes), [lists](https://redis.io/topics/data-types#lists), [sets](https://redis.io/topics/data-types#sets), and [sorted sets](https://redis.io/topics/data-types#sorted-sets).
 
-Before using Redis with Laravel, we encourage you to install and use the [PhpRedis](https://github.com/phpredis/phpredis) PHP extension via PECL. The extension is more complex to install but may yield better performance for applications that make heavy use of Redis.
+Before using Redis with Laravel, we encourage you to install and use the [phpredis](https://github.com/phpredis/phpredis) PHP extension via PECL. The extension is more complex to install compared to "user-land" PHP packages but may yield better performance for applications that make heavy use of Redis. If you are using [Laravel Sail](/docs/{{version}}/installation#laravel-sail), this extension is already installed in your application's Docker container.
 
-Alternatively, you can install the `predis/predis` package via Composer:
+If you are unable to install the phpredis extension, you may install the `predis/predis` package via Composer. Predis is a Redis client written entirely in PHP and does not require any additional extensions:
 
-    composer require predis/predis
+```bash
+composer require predis/predis
+```
 
 <a name="configuration"></a>
-### Configuration
+## Configuration
 
-The Redis configuration for your application is located in the `config/database.php` configuration file. Within this file, you will see a `redis` array containing the Redis servers utilized by your application:
+You may configure your application's Redis settings via the `config/database.php` configuration file. Within this file, you will see a `redis` array containing the Redis servers utilized by your application:
 
     'redis' => [
 
@@ -44,7 +47,7 @@ The Redis configuration for your application is located in the `config/database.
 
     ],
 
-The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Each Redis server defined in your configuration file is required to have a name, host, and port unless you define a single URL to represent the Redis connection:
+Each Redis server defined in your configuration file is required to have a name, host, and a port unless you define a single URL to represent the Redis connection:
 
     'redis' => [
 
@@ -63,7 +66,7 @@ The default server configuration should suffice for development. However, you ar
 <a name="configuring-the-connection-scheme"></a>
 #### Configuring The Connection Scheme
 
-By default, Redis clients will use the `tcp` scheme when connecting to your Redis servers; however, you may use TLS / SSL encryption by specifying a `scheme` configuration option in your Redis server configuration:
+By default, Redis clients will use the `tcp` scheme when connecting to your Redis servers; however, you may use TLS / SSL encryption by specifying a `scheme` configuration option in your Redis server's configuration array:
 
     'redis' => [
 
@@ -79,10 +82,10 @@ By default, Redis clients will use the `tcp` scheme when connecting to your Redi
 
     ],
 
-<a name="configuring-clusters"></a>
-#### Configuring Clusters
+<a name="clusters"></a>
+### Clusters
 
-If your application is utilizing a cluster of Redis servers, you should define these clusters within a `clusters` key of your Redis configuration:
+If your application is utilizing a cluster of Redis servers, you should define these clusters within a `clusters` key of your Redis configuration. This configuration key does not exist by default so you will need to create it within your application's `config/database.php` configuration file:
 
     'redis' => [
 
@@ -101,7 +104,9 @@ If your application is utilizing a cluster of Redis servers, you should define t
 
     ],
 
-By default, clusters will perform client-side sharding across your nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, it is primarily suited for cached data that is available from another primary data store. If you would like to use native Redis clustering, you should specify this in the `options` key of your Redis configuration:
+By default, clusters will perform client-side sharding across your nodes, allowing you to pool nodes and create a large amount of available RAM. However, client-side sharding does not handle failover; therefore, it is primarily suited for transient cached data that is available from another primary data store.
+
+If you would like to use native Redis clustering instead of client-side sharding, you may specify this by setting the `options.cluster` configuration value to `redis` within your application's `config/database.php` configuration file:
 
     'redis' => [
 
@@ -120,7 +125,7 @@ By default, clusters will perform client-side sharding across your nodes, allowi
 <a name="predis"></a>
 ### Predis
 
-To utilize the Predis extension, you should change the `REDIS_CLIENT` environment variable from `phpredis` to `predis`:
+If you would like your application to interact with Redis via the Predis package, you should ensure the `REDIS_CLIENT` environment variable's value is `predis`:
 
     'redis' => [
 
@@ -129,7 +134,7 @@ To utilize the Predis extension, you should change the `REDIS_CLIENT` environmen
         // Rest of Redis configuration...
     ],
 
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in the `config/database.php` configuration file:
+In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in your application's `config/database.php` configuration file:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -139,10 +144,15 @@ In addition to the default `host`, `port`, `database`, and `password` server con
         'read_write_timeout' => 60,
     ],
 
-<a name="phpredis"></a>
-### PhpRedis
+<a name="the-redis-facade-alias"></a>
+#### The Redis Facade Alias
 
-The PhpRedis extension is configured as default at `REDIS_CLIENT` env and in your `config/database.php`:
+Laravel's `config/app.php` configuration file contains an `aliases` array which defines all of the class aliases that will be registered by the framework. For convenience, an alias entry is included for each [facade](/docs/{{version}}/facades) offered by Laravel; however, the `Redis` alias is disabled because it conflicts with the `Redis` class name provided by the phpredis extension. If you are using the Predis client and would like to enable this alias, you may un-comment the alias in your application's `config/app.php` configuration file.
+
+<a name="phpredis"></a>
+### phpredis
+
+By default, Laravel will use the phpredis extension to communicate with Redis. The client that Laravel will use to communicate with Redis is dictated by the value of the `redis.client` configuration option, which typically reflects the value of the `REDIS_CLIENT` environment variable:
 
     'redis' => [
 
@@ -151,11 +161,7 @@ The PhpRedis extension is configured as default at `REDIS_CLIENT` env and in you
         // Rest of Redis configuration...
     ],
 
-If you plan to use PhpRedis extension along with the `Redis` Facade alias, you should rename it to something else, like `RedisManager`, to avoid a collision with the Redis class. You can do that in the aliases section of your `app.php` config file.
-
-    'RedisManager' => Illuminate\Support\Facades\Redis::class,
-
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, PhpRedis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
+In addition to the default `host`, `port`, `database`, and `password` server configuration options, phpredis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -168,11 +174,6 @@ In addition to the default `host`, `port`, `database`, and `password` server con
             // 'stream' => ['verify_peer' => false],
         ],
     ],
-
-<a name="the-redis-facade"></a>
-#### The Redis Facade
-
-To avoid class naming collisions with the Redis PHP extension itself, you will need to delete or rename the `Illuminate\Support\Facades\Redis` facade alias from your `app` configuration file's `aliases` array. Generally, you should remove this alias entirely and only reference the facade by its fully qualified class name while using the Redis PHP extension.
 
 <a name="interacting-with-redis"></a>
 ## Interacting With Redis
@@ -192,41 +193,43 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return Response
+         * @return \Illuminate\Http\Response
          */
-        public function showProfile($id)
+        public function show($id)
         {
-            $user = Redis::get('user:profile:'.$id);
-
-            return view('user.profile', ['user' => $user]);
+            return view('user.profile', [
+                'user' => Redis::get('user:profile:'.$id)
+            ]);
         }
     }
 
-As mentioned above, you may call any of the Redis commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server, so pass the arguments the Redis command expects:
+As mentioned above, you may call any of Redis' commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server. If a Redis command expects arguments, you should pass those to the facade's corresponding method:
+
+    use Illuminate\Support\Facades\Redis;
 
     Redis::set('name', 'Taylor');
 
     $values = Redis::lrange('names', 5, 10);
 
-Alternatively, you may also pass commands to the server using the `command` method, which accepts the name of the command as its first argument, and an array of values as its second argument:
+Alternatively, you may pass commands to the server using the `Redis` facade's `command` method, which accepts the name of the command as its first argument and an array of values as its second argument:
 
     $values = Redis::command('lrange', ['name', 5, 10]);
 
 <a name="using-multiple-redis-connections"></a>
 #### Using Multiple Redis Connections
 
-You may get a Redis instance by calling the `Redis::connection` method:
+Your application's `config/database.php` configuration file allows you to define multiple Redis connections / servers. You may obtain a connection to a specific Redis connection using the `Redis` facade's `connection` method:
+
+    $redis = Redis::connection('connection-name');
+
+To obtain an instance of the default Redis connection, you may call the `connection` method without any additional arguments:
 
     $redis = Redis::connection();
-
-This will give you an instance of the default Redis server. You may also pass the connection or cluster name to the `connection` method to get a specific server or cluster as defined in your Redis configuration:
-
-    $redis = Redis::connection('my-connection');
 
 <a name="pipelining-commands"></a>
 ### Pipelining Commands
 
-Pipelining should be used when you need to send many commands to the server. The `pipeline` method accepts one argument: a closure that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be streamed to the server thus providing better performance:
+Sometimes you may need to execute dozens of Redis commands. Instead of making a network trip to your Redis server for each command, you may use the `pipeline` method. The `pipeline` method accepts one argument: a closure that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be sent to the Redis server at the same time to reduce network trips to the server. The commands will still be executed in the order they were issued:
 
     Redis::pipeline(function ($pipe) {
         for ($i = 0; $i < 1000; $i++) {
@@ -279,16 +282,20 @@ First, let's setup a channel listener using the `subscribe` method. We'll place 
 
 Now we may publish messages to the channel using the `publish` method:
 
-    Route::get('publish', function () {
-        // Route logic...
+    use Illuminate\Support\Facades\Redis;
 
-        Redis::publish('test-channel', json_encode(['foo' => 'bar']));
+    Route::get('/publish', function () {
+        // ...
+
+        Redis::publish('test-channel', json_encode([
+            'name' => 'Adam Wathan'
+        ]));
     });
 
 <a name="wildcard-subscriptions"></a>
 #### Wildcard Subscriptions
 
-Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The `$channel` name will be passed as the second argument to the provided callback closure:
+Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The channel name will be passed as the second argument to the provided closure:
 
     Redis::psubscribe(['*'], function ($message, $channel) {
         echo $message;
