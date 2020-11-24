@@ -8,6 +8,7 @@
     - [Rolling Back Migrations](#rolling-back-migrations)
 - [Tables](#tables)
     - [Creating Tables](#creating-tables)
+    - [Updating Tables](#updating-tables)
     - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
 - [Columns](#columns)
     - [Creating Columns](#creating-columns)
@@ -118,7 +119,7 @@ Some migration operations are destructive, which means they may cause you to los
 <a name="rolling-back-migrations"></a>
 ### Rolling Back Migrations
 
-To roll back the latest migration operation, you may use the `rollback` command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
+To roll back the latest migration operation, you may use the `rollback` Artisan command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
 
     php artisan migrate:rollback
 
@@ -163,8 +164,14 @@ The `migrate:fresh` command will drop all tables from the database and then exec
 
 To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a closure which receives a `Blueprint` object that may be used to define the new table:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::create('users', function (Blueprint $table) {
         $table->id();
+        $table->string('name');
+        $table->string('email');
+        $table->timestamps();
     });
 
 When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
@@ -175,23 +182,23 @@ When creating the table, you may use any of the schema builder's [column methods
 You may check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
 
     if (Schema::hasTable('users')) {
-        //
+        // The "users" table exists...
     }
 
     if (Schema::hasColumn('users', 'email')) {
-        //
+        // The "users" table exists and has an "email" column...
     }
 
 <a name="database-connection-table-options"></a>
 #### Database Connection & Table Options
 
-If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
+If you want to perform a schema operation on a database connection that is not your application's default connection, use the `connection` method:
 
-    Schema::connection('foo')->create('users', function (Blueprint $table) {
+    Schema::connection('sqlite')->create('users', function (Blueprint $table) {
         $table->id();
     });
 
-You may use the following commands on the schema builder to define the table's options:
+You may use the following properties and methods on the schema builder to define the table's options:
 
 Command  |  Description
 -------  |  -----------
@@ -200,10 +207,24 @@ Command  |  Description
 `$table->collation = 'utf8mb4_unicode_ci';`  |  Specify a default collation for the table (MySQL).
 `$table->temporary();`  |  Create a temporary table (except SQL Server).
 
+<a name="updating-tables"></a>
+### Updating Tables
+
+The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives a `Blueprint` instance you may use to add columns or indexes to the table:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
+    Schema::table('users', function (Blueprint $table) {
+        $table->integer('votes');
+    });
+
 <a name="renaming-and-dropping-tables"></a>
 ### Renaming / Dropping Tables
 
 To rename an existing database table, use the `rename` method:
+
+    use Illuminate\Support\Facades\Schema;
 
     Schema::rename($from, $to);
 
@@ -224,16 +245,19 @@ Before renaming a table, you should verify that any foreign key constraints on t
 <a name="creating-columns"></a>
 ### Creating Columns
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives a `Blueprint` instance you may use to add columns to the table:
+The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives an `Illuminate\Database\Schema\Blueprint` instance you may use to add columns to the table:
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('users', function (Blueprint $table) {
-        $table->string('email');
+        $table->integer('votes');
     });
 
 <a name="available-column-types"></a>
 #### Available Column Types
 
-The schema builder contains a variety of column types that you may specify when building your tables:
+The schema builder blueprint offers a variety of methods that correspond to the different types of columns you can add to your database tables. Each of the available methods are listed in the table below:
 
 Command  |  Description
 -------  |  -----------
@@ -302,13 +326,13 @@ Command  |  Description
 <a name="column-modifiers"></a>
 ### Column Modifiers
 
-In addition to the column types listed above, there are several column "modifiers" you may use while adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
+In addition to the column types listed above, there are several column "modifiers" you may use when adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('email')->nullable();
     });
 
-The following list contains all available column modifiers. This list does not include the [index modifiers](#creating-indexes):
+The following table contains all of the available column modifiers. This list does not include [index modifiers](#creating-indexes):
 
 Modifier  |  Description
 --------  |  -----------
@@ -332,7 +356,7 @@ Modifier  |  Description
 <a name="default-expressions"></a>
 #### Default Expressions
 
-The `default` modifier accepts a value or an `\Illuminate\Database\Query\Expression` instance. Using an `Expression` instance will prevent wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is when you need to assign default values to JSON columns:
+The `default` modifier accepts a value or an `Illuminate\Database\Query\Expression` instance. Using an `Expression` instance will prevent Laravel from wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is when you need to assign default values to JSON columns:
 
     <?php
 
@@ -358,7 +382,7 @@ The `default` modifier accepts a value or an `\Illuminate\Database\Query\Express
         }
     }
 
-> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to the appropriate documentation for compatibility. Also note that using database specific functions may tightly couple you to a specific driver.
+> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
 
 <a name="modifying-columns"></a>
 ### Modifying Columns
@@ -366,14 +390,14 @@ The `default` modifier accepts a value or an `\Illuminate\Database\Query\Express
 <a name="prerequisites"></a>
 #### Prerequisites
 
-Before modifying a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file. The Doctrine DBAL library is used to determine the current state of the column and create the SQL queries needed to make the required adjustments:
+Before modifying a column, you must install the `doctrine/dbal` package using the Composer package manager. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
 
     composer require doctrine/dbal
 
 <a name="updating-column-attributes"></a>
 #### Updating Column Attributes
 
-The `change` method allows you to modify type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
+The `change` method allows you to modify the type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50. To accomplish this, we simply define the new state of the column and then call the `change` method:
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->change();
@@ -385,12 +409,12 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} Only the following column types can be "changed": bigInteger, binary, boolean, date, dateTime, dateTimeTz, decimal, integer, json, longText, mediumText, smallInteger, string, text, time, unsignedBigInteger, unsignedInteger, unsignedSmallInteger and uuid.
+> {note} The following column types can be modified: `bigInteger`, `binary`, `boolean`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.
 
 <a name="renaming-columns"></a>
 #### Renaming Columns
 
-To rename a column, you may use the `renameColumn` method on the schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file:
+To rename a column, you may use the `renameColumn` method provided by the schema builder blueprint. Before renaming a column, ensure that you have installed the `doctrine/dbal` library via the Composer package manager:
 
     Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
@@ -401,7 +425,7 @@ To rename a column, you may use the `renameColumn` method on the schema builder.
 <a name="dropping-columns"></a>
 ### Dropping Columns
 
-To drop a column, use the `dropColumn` method on the schema builder. Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library:
+To drop a column, you may use the `dropColumn` method on the schema builder blueprint. If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package via the Composer package manager before the `dropColumn` method may be used:
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
@@ -417,6 +441,8 @@ You may drop multiple columns from a table by passing an array of column names t
 
 <a name="available-command-aliases"></a>
 #### Available Command Aliases
+
+Laravel provides several convenient methods related to dropping common types of columns. Each of these methods is described in the table below:
 
 Command  |  Description
 -------  |  -----------
