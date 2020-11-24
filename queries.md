@@ -184,7 +184,7 @@ Instead of using the `count` method to determine if any records exist that match
         // ...
     }
 
-<a name="selects"></a>
+<a name="select-statements"></a>
 ## Select Statements
 
 <a name="specifying-a-select-clause"></a>
@@ -750,7 +750,7 @@ You may pass another closure as the third argument to the `when` method. This cl
                     })
                     ->get();
 
-<a name="inserts"></a>
+<a name="insert-statements"></a>
 ## Insert Statements
 
 The query builder also provides an `insert` method that may be used to insert records into the database table. The `insert` method accepts an array of column names and values:
@@ -799,7 +799,7 @@ In the example above, Laravel will attempt to insert two records. If a record al
 
 > {note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index.
 
-<a name="updates"></a>
+<a name="update-statements"></a>
 ## Update Statements
 
 In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. You may constrain the `update` query using `where` clauses:
@@ -847,7 +847,7 @@ You may also specify additional columns to update during the operation:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
-<a name="deletes"></a>
+<a name="delete-statements"></a>
 ## Delete Statements
 
 The query builder's `delete` method may be used to delete records from the table. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
