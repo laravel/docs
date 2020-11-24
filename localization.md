@@ -111,7 +111,7 @@ For this reason, Laravel also provides support for defining translation strings 
 
 #### Key / File Conflicts
 
-You should not define translation string keys that conflict with other translation file names. For example, translating `__('Action')` for the "NL" locale while a `nl/action.php` file exists but a `nl.json` file does not exist will result in the translator returning the contents of `nl/action.php`.
+You should not define translation string keys that conflict with other translation filenames. For example, translating `__('Action')` for the "NL" locale while a `nl/action.php` file exists but a `nl.json` file does not exist will result in the translator returning the contents of `nl/action.php`.
 
 <a name="retrieving-translation-strings"></a>
 ## Retrieving Translation Strings
