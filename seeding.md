@@ -9,7 +9,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel includes a simple method of seeding your database with test data using seed classes. All seed classes are stored in the `database/seeders` directory. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
+Laravel includes the ability to seed your database with test data using seed classes. All seed classes are stored in the `database/seeders` directory. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
+
+> {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled during database seeding.
 
 <a name="writing-seeders"></a>
 ## Writing Seeders
@@ -19,8 +21,6 @@ To generate a seeder, execute the `make:seeder` [Artisan command](/docs/{{versio
     php artisan make:seeder UserSeeder
 
 A seeder class only contains one method by default: `run`. This method is called when the `db:seed` [Artisan command](/docs/{{version}}/artisan) is executed. Within the `run` method, you may insert data into your database however you wish. You may use the [query builder](/docs/{{version}}/queries) to manually insert data or you may use [Eloquent model factories](/docs/{{version}}/database-testing#writing-factories).
-
-> {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled during database seeding.
 
 As an example, let's modify the default `DatabaseSeeder` class and add a database insert statement to the `run` method:
 
@@ -57,7 +57,7 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
 
 Of course, manually specifying the attributes for each model seed is cumbersome. Instead, you can use [model factories](/docs/{{version}}/database-testing#writing-factories) to conveniently generate large amounts of database records. First, review the [model factory documentation](/docs/{{version}}/database-testing#writing-factories) to learn how to define your factories.
 
-For example, let's create 50 users and attach a relationship to each user:
+For example, let's create 50 users that each have one related post:
 
     use App\Models\User;
 
@@ -77,7 +77,7 @@ For example, let's create 50 users and attach a relationship to each user:
 <a name="calling-additional-seeders"></a>
 ### Calling Additional Seeders
 
-Within the `DatabaseSeeder` class, you may use the `call` method to execute additional seed classes. Using the `call` method allows you to break up your database seeding into multiple files so that no single seeder class becomes overwhelmingly large. Pass the name of the seeder class you wish to run:
+Within the `DatabaseSeeder` class, you may use the `call` method to execute additional seed classes. Using the `call` method allows you to break up your database seeding into multiple files so that no single seeder class becomes too large. The `call` method accepts an array of seeder classes that should be executed:
 
     /**
      * Run the database seeders.
@@ -96,19 +96,19 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
 <a name="running-seeders"></a>
 ## Running Seeders
 
-You may use the `db:seed` Artisan command to seed your database. By default, the `db:seed` command runs the `DatabaseSeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
+You may execute the `db:seed` Artisan command to seed your database. By default, the `db:seed` command runs the `Database\Seeders\DatabaseSeeder` class, which may in turn invoke other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
 
     php artisan db:seed
 
     php artisan db:seed --class=UserSeeder
 
-You may also seed your database using the `migrate:fresh` command, which will drop all tables and re-run all of your migrations. This command is useful for completely re-building your database:
+You may also seed your database using the `migrate:fresh` command in combination with the `--seed` option, which will drop all tables and re-run all of your migrations. This command is useful for completely re-building your database:
 
     php artisan migrate:fresh --seed
 
 <a name="forcing-seeding-production"></a>
 #### Forcing Seeders To Run In Production
 
-Some seeding operations may cause you to alter or lose data. In order to protect you from running seeding commands against your production database, you will be prompted for confirmation before the seeders are executed. To force the seeders to run without a prompt, use the `--force` flag:
+Some seeding operations may cause you to alter or lose data. In order to protect you from running seeding commands against your production database, you will be prompted for confirmation before the seeders are executed in the `production` environment. To force the seeders to run without a prompt, use the `--force` flag:
 
     php artisan db:seed --force
