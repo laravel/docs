@@ -160,6 +160,8 @@ To protect routes so that all incoming requests must be authenticated, you shoul
         return $request->user();
     });
 
+> {tip} For the `sanctum` authentication guard to work, remember to include the `Accept` HTTP header value to `application/json`.
+
 <a name="revoking-tokens"></a>
 ### Revoking Tokens
 
