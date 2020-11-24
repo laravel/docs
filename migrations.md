@@ -199,14 +199,30 @@ If you want to perform a schema operation on a database connection that is not y
         $table->id();
     });
 
-You may use the following properties and methods on the schema builder to define the table's options:
+In addition, a few other properties and methods may be used to define other aspects of the table's creation. The `engine` property may be used to specify the table's storage engine when using MySQL:
 
-Command  |  Description
--------  |  -----------
-`$table->engine = 'InnoDB';`  |  Specify the table storage engine (MySQL).
-`$table->charset = 'utf8mb4';`  |  Specify a default character set for the table (MySQL).
-`$table->collation = 'utf8mb4_unicode_ci';`  |  Specify a default collation for the table (MySQL).
-`$table->temporary();`  |  Create a temporary table (except SQL Server).
+    Schema::create('users', function (Blueprint $table) {
+        $table->engine = 'InnoDB';
+
+        // ...
+    });
+
+The `charset` and `collation` properties may be used to specify the character set and collation for the created table when using MySQL:
+
+    Schema::create('users', function (Blueprint $table) {
+        $table->charset = 'utf8mb4';
+        $table->collation = 'utf8mb4_unicode_ci';
+
+        // ...
+    });
+
+The `temporary` method may be used to indicate that the table should be "temporary". Temporary tables are only visible to the current connection's database session and are dropped automatically when the connection is closed:
+
+    Schema::create('calculations', function (Blueprint $table) {
+        $table->temporary();
+
+        // ...
+    });
 
 <a name="updating-tables"></a>
 ### Updating Tables
@@ -771,6 +787,9 @@ The `year` method creates an `YEAR` equivalent column:
 
 In addition to the column types listed above, there are several column "modifiers" you may use when adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
 
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
     Schema::table('users', function (Blueprint $table) {
         $table->string('email')->nullable();
     });
@@ -779,22 +798,22 @@ The following table contains all of the available column modifiers. This list do
 
 Modifier  |  Description
 --------  |  -----------
-`->after('column')`  |  Place the column "after" another column (MySQL)
-`->autoIncrement()`  |  Set INTEGER columns as auto-increment (primary key)
-`->charset('utf8mb4')`  |  Specify a character set for the column (MySQL)
-`->collation('utf8mb4_unicode_ci')`  |  Specify a collation for the column (MySQL/PostgreSQL/SQL Server)
-`->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL)
-`->default($value)`  |  Specify a "default" value for the column
-`->first()`  |  Place the column "first" in the table (MySQL)
-`->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL)
-`->nullable($value = true)`  |  Allows (by default) NULL values to be inserted into the column
-`->storedAs($expression)`  |  Create a stored generated column (MySQL)
-`->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL)
-`->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value
-`->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated
-`->virtualAs($expression)`  |  Create a virtual generated column (MySQL)
-`->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL)
-`->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL)
+`->after('column')`  |  Place the column "after" another column (MySQL).
+`->autoIncrement()`  |  Set INTEGER columns as auto-incrementing (primary key).
+`->charset('utf8mb4')`  |  Specify a character set for the column (MySQL).
+`->collation('utf8mb4_unicode_ci')`  |  Specify a collation for the column (MySQL/PostgreSQL/SQL Server).
+`->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL).
+`->default($value)`  |  Specify a "default" value for the column.
+`->first()`  |  Place the column "first" in the table (MySQL).
+`->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).
+`->nullable($value = true)`  |  Allow NULL values to be inserted into the column.
+`->storedAs($expression)`  |  Create a stored generated column (MySQL).
+`->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
+`->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
+`->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated.
+`->virtualAs($expression)`  |  Create a virtual generated column (MySQL).
+`->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
+`->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
 
 <a name="default-expressions"></a>
 #### Default Expressions
