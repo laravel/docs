@@ -1248,6 +1248,14 @@ When a customer clicks this button they'll be redirected to Stripe's checkout pa
         'cancel_url' => route('your-cancel-route'),
     ]);
 
+#### Promotion Codes
+
+By default, Stripe disables [user redeemable promotion codes](https://stripe.com/docs/billing/subscriptions/discounts/codes). Luckily there's an easy way to enable these for your Checkout page. Simply make use of the `allowPromotionCodes` method:
+
+    $checkout = $user->allowPromotionCodes()->checkout('price_12345');
+
+This will enable the input field where customers can enter their promotion codes.
+
 <a name="simple-charge-checkouts"></a>
 ### Simple Charge Checkouts
 
@@ -1276,7 +1284,13 @@ Just as with product checkouts, you can customize the success and cancellation u
         'success_url' => route('your-success-route'),
         'cancel_url' => route('your-cancel-route'),
     ]);
-    
+
+Of course, you can also enable promotion codes for subscription checkouts:
+
+    $checkout = Auth::user()->newSubscription('default', 'price_xxx')
+        ->allowPromotionCodes()
+        ->checkout();
+
 > {note} Unfortunately Stripe Checkout doesn't yet supports all parameters when starting subscriptions. Using the `anchorBillingCycleOn` method on the subscription builder, setting proration behavior or setting payment behavior won't have any effect. Please consult [the Stripe Checkout Session API docs](https://stripe.com/docs/api/checkout/sessions/create) to know which parameters are available.
 
 #### Webhooks
