@@ -504,6 +504,12 @@ To create a class based component, you may use the `make:component` Artisan comm
 
 The `make:component` command will also create a view template for the component. The view will be placed in the `resources/views/components` directory.
 
+If you'd like to create a component within a subdirectory you can use the following style:
+
+    php artisan make:component Forms/Input
+    
+This will create an `Input` component in the `App\View\Components\Forms` directory and the view will be placed in the `resources/views/components/forms` directory.
+
 <a name="manually-registering-package-components"></a>
 #### Manually Registering Package Components
 
