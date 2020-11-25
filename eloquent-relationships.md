@@ -1056,7 +1056,7 @@ Instead of passing an array of possible polymorphic models, you may provide `*` 
     })->get();
 
 <a name="counting-related-models"></a>
-<a name="aggregating-related-models-related-models"></a>
+<a name="aggregating-related-models"></a>
 ### Aggregating Related Models
 
 #### Counting Related Models
