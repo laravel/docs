@@ -450,7 +450,7 @@ When interacting with Eloquent models, you may also use the `count`, `sum`, `max
 <a name="inserts"></a>
 ### Inserts
 
-To create a new record in the database, create a new model instance, set attributes on the model, then call the `save` method:
+Of course, when using Eloquent, we don't only need to retrieve models from the database. We also need to insert new records. Thankfully, Eloquent makes it simple. To insert a new record into the database, you should instantiate a new model instance and set attributes on the model. Then, call the `save` method on the model instance:
 
     <?php
 
@@ -463,10 +463,10 @@ To create a new record in the database, create a new model instance, set attribu
     class FlightController extends Controller
     {
         /**
-         * Create a new flight instance.
+         * Store a new flight in the database.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
@@ -480,27 +480,29 @@ To create a new record in the database, create a new model instance, set attribu
         }
     }
 
-In this example, we assign the `name` parameter from the incoming HTTP request to the `name` attribute of the `App\Models\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually.
+In this example, we assign the `name` field from the incoming HTTP request to the `name` attribute of the `App\Models\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The model's `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually.
 
 <a name="updates"></a>
 ### Updates
 
-The `save` method may also be used to update models that already exist in the database. To update a model, you should retrieve it, set any attributes you wish to update, and then call the `save` method. Again, the `updated_at` timestamp will automatically be updated, so there is no need to manually set its value:
+The `save` method may also be used to update models that already exist in the database. To update a model, you should retrieve it and set any attributes you wish to update. Then, you should call the model's `save` method. Again, the `updated_at` timestamp will automatically be updated, so there is no need to manually set its value:
 
-    $flight = App\Models\Flight::find(1);
+    use App\Models\Flight;
 
-    $flight->name = 'New Flight Name';
+    $flight = Flight::find(1);
+
+    $flight->name = 'Paris to London';
 
     $flight->save();
 
 <a name="mass-updates"></a>
 #### Mass Updates
 
-Updates can also be performed against any number of models that match a given query. In this example, all flights that are `active` and have a `destination` of `San Diego` will be marked as delayed:
+Updates can also be performed against models that match a given query. In this example, all flights that are `active` and have a `destination` of `San Diego` will be marked as delayed:
 
-    App\Models\Flight::where('active', 1)
-              ->where('destination', 'San Diego')
-              ->update(['delayed' => 1]);
+    Flight::where('active', 1)
+          ->where('destination', 'San Diego')
+          ->update(['delayed' => 1]);
 
 The `update` method expects an array of column and value pairs representing the columns that should be updated.
 
@@ -509,9 +511,11 @@ The `update` method expects an array of column and value pairs representing the 
 <a name="examining-attribute-changes"></a>
 #### Examining Attribute Changes
 
-Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how its attributes have changed from when they were originally loaded.
+Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how its attributes have changed from when the model was originally retrieved.
 
-The `isDirty` method determines if any attributes have been changed since the model was loaded. You may pass a specific attribute name to determine if a particular attribute is dirty. The `isClean` method is the opposite of `isDirty` and also accepts an optional attribute argument:
+The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name to the `isDirty` method to determine if a particular attribute is dirty. The `isClean` will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:
+
+    use App\Models\User;
 
     $user = User::create([
         'first_name' => 'Taylor',
@@ -534,7 +538,7 @@ The `isDirty` method determines if any attributes have been changed since the mo
     $user->isDirty(); // false
     $user->isClean(); // true
 
-The `wasChanged` method determines if any attributes were changed when the model was last saved within the current request cycle. You may also pass an attribute name to see if a particular attribute was changed:
+The `wasChanged` method determines if any attributes were changed when the model was last saved within the current request cycle. If needed, you may pass an attribute name to see if a particular attribute was changed:
 
     $user = User::create([
         'first_name' => 'Taylor',
@@ -543,13 +547,14 @@ The `wasChanged` method determines if any attributes were changed when the model
     ]);
 
     $user->title = 'Painter';
+
     $user->save();
 
     $user->wasChanged(); // true
     $user->wasChanged('title'); // true
     $user->wasChanged('first_name'); // false
 
-The `getOriginal` method returns an array containing the original attributes of the model regardless of any changes since the model was loaded. You may pass a specific attribute name to get the original value of a particular attribute:
+The `getOriginal` method returns an array containing the original attributes of the model regardless of any changes to the model since it was retrieved. If needed, you may pass a specific attribute name to get the original value of a particular attribute:
 
     $user = User::find(1);
 
