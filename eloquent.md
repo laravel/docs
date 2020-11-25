@@ -14,12 +14,13 @@
     - [Cursors](#cursors)
     - [Advanced Subqueries](#advanced-subqueries)
 - [Retrieving Single Models / Aggregates](#retrieving-single-models)
+    - [Retrieving Or Creating Models](#retrieving-or-creating-models)
     - [Retrieving Aggregates](#retrieving-aggregates)
 - [Inserting & Updating Models](#inserting-and-updating-models)
     - [Inserts](#inserts)
     - [Updates](#updates)
     - [Mass Assignment](#mass-assignment)
-    - [Other Creation Methods](#other-creation-methods)
+    - [Upserts](#upserts)
 - [Deleting Models](#deleting-models)
     - [Soft Deleting](#soft-deleting)
     - [Querying Soft Deleted Models](#querying-soft-deleted-models)
@@ -435,6 +436,37 @@ If the `ModelNotFoundException` is not caught, a 404 HTTP response is automatica
         return Flight::findOrFail($id);
     });
 
+<a name="retrieving-or-creating-models"></a>
+### Retrieving Or Creating Models
+
+The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the attributes resulting from merging the first array argument with the optional second array argument:
+
+The `firstOrNew` method, like `firstOrCreate`, will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to manually call the `save` method to persist it:
+
+    use App\Models\Flight;
+
+    // Retrieve flight by name or create it if it doesn't exist...
+    $flight = Flight::firstOrCreate([
+        'name' => 'London to Paris'
+    ]);
+
+    // Retrieve flight by name or create it with the name, delayed, and arrival_time attributes...
+    $flight = Flight::firstOrCreate(
+        ['name' => 'London to Paris'],
+        ['delayed' => 1, 'arrival_time' => '11:30']
+    );
+
+    // Retrieve flight by name or instantiate a new Flight instance...
+    $flight = Flight::firstOrNew([
+        'name' => 'London to Paris'
+    ]);
+
+    // Retrieve flight by name or instantiate with the name, delayed, and arrival_time attributes...
+    $flight = Flight::firstOrNew(
+        ['name' => 'Tokyo to Sydney'],
+        ['delayed' => 1, 'arrival_time' => '11:30']
+    );
+
 <a name="retrieving-aggregates"></a>
 ### Retrieving Aggregates
 
@@ -570,9 +602,17 @@ The `getOriginal` method returns an array containing the original attributes of 
 <a name="mass-assignment"></a>
 ### Mass Assignment
 
-You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method. However, before doing so, you will need to specify either a `fillable` or `guarded` attribute on the model, as all Eloquent models protect against mass-assignment by default.
+You may use the `create` method to save a new model using a single PHP statement. The inserted model instance will be returned to you from the method:
 
-A mass-assignment vulnerability occurs when a user passes an unexpected HTTP parameter through a request, and that parameter changes a column in your database you did not expect. For example, a malicious user might send an `is_admin` parameter through an HTTP request, which is then passed into your model's `create` method, allowing the user to escalate themselves to an administrator.
+    use App\Models\Flight;
+
+    $flight = Flight::create([
+        'name' => 'London to Paris',
+    ]);
+
+However, before using the `create` method, you will need to specify either a `fillable` or `guarded` property on your model class. These properties are required because all Eloquent models are protected against mass assignment vulnerabilities by default.
+
+A mass assignment vulnerability occurs when a user passes an unexpected HTTP request field and that field changes a column in your database that you did not expect. For example, a malicious user might send an `is_admin` parameter through an HTTP request, which is then passed to your model's `create` method, allowing the user to escalate themselves to an administrator.
 
 So, to get started, you should define which model attributes you want to make mass assignable. You may do this using the `$fillable` property on the model. For example, let's make the `name` attribute of our `Flight` model mass assignable:
 
@@ -592,18 +632,18 @@ So, to get started, you should define which model attributes you want to make ma
         protected $fillable = ['name'];
     }
 
-Once we have made the attributes mass assignable, we can use the `create` method to insert a new record in the database. The `create` method returns the saved model instance:
+Once you have specified which attributes are mass assignable, you may use the `create` method to insert a new record in the database. The `create` method returns the newly created model instance:
 
-    $flight = App\Models\Flight::create(['name' => 'Flight 10']);
+    $flight = Flight::create(['name' => 'London to Paris']);
 
 If you already have a model instance, you may use the `fill` method to populate it with an array of attributes:
 
-    $flight->fill(['name' => 'Flight 22']);
+    $flight->fill(['name' => 'Amsterdam to Frankfurt']);
 
 <a name="mass-assignment-json-columns"></a>
 #### Mass Assignment & JSON Columns
 
-When assigning JSON columns, each column's mass-assignable key must be specified in your model's `$fillable` array. For security, Laravel does not support updating nested JSON attributes when using the `guarded` property:
+When assigning JSON columns, each column's mass assignable key must be specified in your model's `$fillable` array. For security, Laravel does not support updating nested JSON attributes when using the `guarded` property:
 
     /**
      * The attributes that are mass assignable.
@@ -617,7 +657,7 @@ When assigning JSON columns, each column's mass-assignable key must be specified
 <a name="allowing-mass-assignment"></a>
 #### Allowing Mass Assignment
 
-If you would like to make all attributes mass assignable, you may define the `$guarded` property as an empty array:
+If you would like to make all of your attributes mass assignable, you may define your model's `$guarded` property as an empty array. If you choose to unguard your model, you should take special care to always hand-craft the arrays passed to Eloquent's `fill`, `create`, and `update` methods:
 
     /**
      * The attributes that aren't mass assignable.
@@ -626,92 +666,66 @@ If you would like to make all attributes mass assignable, you may define the `$g
      */
     protected $guarded = [];
 
-<a name="other-creation-methods"></a>
-### Other Creation Methods
+<a name="upserts"></a>
+### Upserts
 
-<a name="firstorcreate-firstornew"></a>
-#### `firstOrCreate`/ `firstOrNew`
+Occasionally, you may need to update an existing model or create a new model if no matching model exists. Like the `firstOrCreate` method, the `updateOrCreate` method persists the model, so there's no need to manually call the `save` method.
 
-There are two other methods you may use to create models by mass assigning attributes: `firstOrCreate` and `firstOrNew`. The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the attributes from the first parameter, along with those in the optional second parameter.
+In the example below, if a flight exists with a `departure` location of `Oakland` and a `destination` location of `San Diego`, it's `price` and `discounted` columns will be updated. If no such flight exists, a new flight will be created which has the attributes resulting from merging the first argument array with the second argument array:
 
-The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to call `save` manually to persist it:
-
-    // Retrieve flight by name, or create it if it doesn't exist...
-    $flight = App\Models\Flight::firstOrCreate(['name' => 'Flight 10']);
-
-    // Retrieve flight by name, or create it with the name, delayed, and arrival_time attributes...
-    $flight = App\Models\Flight::firstOrCreate(
-        ['name' => 'Flight 10'],
-        ['delayed' => 1, 'arrival_time' => '11:30']
-    );
-
-    // Retrieve by name, or instantiate...
-    $flight = App\Models\Flight::firstOrNew(['name' => 'Flight 10']);
-
-    // Retrieve by name, or instantiate with the name, delayed, and arrival_time attributes...
-    $flight = App\Models\Flight::firstOrNew(
-        ['name' => 'Flight 10'],
-        ['delayed' => 1, 'arrival_time' => '11:30']
-    );
-
-<a name="updateorcreate"></a>
-#### `updateOrCreate`
-
-You may also come across situations where you want to update an existing model or create a new model if none exists. Laravel provides an `updateOrCreate` method to do this in one step. Like the `firstOrCreate` method, `updateOrCreate` persists the model, so there's no need to call `save()`:
-
-    // If there's a flight from Oakland to San Diego, set the price to $99...
-    // If no matching model exists, create one...
-    $flight = App\Models\Flight::updateOrCreate(
+    $flight = Flight::updateOrCreate(
         ['departure' => 'Oakland', 'destination' => 'San Diego'],
         ['price' => 99, 'discounted' => 1]
     );
 
 If you would like to perform multiple "upserts" in a single query, then you should use the `upsert` method instead. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of the columns that should be updated if a matching record already exists in the database. The `upsert` method will automatically set the `created_at` and `updated_at` timestamps if timestamps are enabled on the model:
 
-    App\Models\Flight::upsert([
+    Flight::upsert([
         ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
     ], ['departure', 'destination'], ['price']);
 
-> {note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index.
+> {note} All databases systems except SQL Server require the columns in the second argument provided to the `upsert` method to have a "primary" or "unique" index.
 
 <a name="deleting-models"></a>
 ## Deleting Models
 
-To delete a model, call the `delete` method on a model instance:
+To delete a model, you may call the `delete` method on the model instance:
 
-    $flight = App\Models\Flight::find(1);
+    use App\Models\Flight;
+
+    $flight = Flight::find(1);
 
     $flight->delete();
 
-<a name="deleting-an-existing-model-by-key"></a>
-#### Deleting An Existing Model By Key
+<a name="deleting-an-existing-model-by-its-primary-key"></a>
+#### Deleting An Existing Model By Its Primary Key
 
-In the example above, we are retrieving the model from the database before calling the `delete` method. However, if you know the primary key of the model, you may delete the model without explicitly retrieving it by calling the `destroy` method.  In addition to a single primary key as its argument, the `destroy` method will accept multiple primary keys, an array of primary keys, or a [collection](/docs/{{version}}/collections) of primary keys:
+In the example above, we are retrieving the model from the database before calling the `delete` method. However, if you know the primary key of the model, you may delete the model without explicitly retrieving it by calling the `destroy` method.  In addition to accepting the single primary key, the `destroy` method will accept multiple primary keys, an array of primary keys, or a [collection](/docs/{{version}}/collections) of primary keys:
 
-    App\Models\Flight::destroy(1);
+    Flight::destroy(1);
 
-    App\Models\Flight::destroy(1, 2, 3);
+    Flight::destroy(1, 2, 3);
 
-    App\Models\Flight::destroy([1, 2, 3]);
+    Flight::destroy([1, 2, 3]);
 
-    App\Models\Flight::destroy(collect([1, 2, 3]));
+    Flight::destroy(collect([1, 2, 3]));
 
-> {note} The `destroy` method loads each model individually and calls the `delete` method on them so that the `deleting` and `deleted` events are fired.
+> {note} The `destroy` method loads each model individually and calls the `delete` method so that the `deleting` and `deleted` events are properly dispatched for each model.
 
-<a name="deleting-models-by-query"></a>
-#### Deleting Models By Query
+<a name="deleting-models-using-queries"></a>
+#### Deleting Models Using Queries
 
-You can also run a delete statement on a set of models. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not fire any model events for the models that are deleted:
+Of course, you may build an Eloquent query to delete all models matching your query's criteria. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not dispatch model events for the models that are deleted:
 
-    $deletedRows = App\Models\Flight::where('active', 0)->delete();
+    $deletedRows = Flight::where('active', 0)->delete();
 
-> {note} When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be fired for the deleted models. This is because the models are never actually retrieved when executing the delete statement.
+> {note} When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be dispatched for the deleted models. This is because the models are never actually retrieved when executing the delete statement.
 
 <a name="soft-deleting"></a>
 ### Soft Deleting
 
-In addition to actually removing records from your database, Eloquent can also "soft delete" models. When models are soft deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model and inserted into the database. If a model has a non-null `deleted_at` value, the model has been soft deleted. To enable soft deletes for a model, use the `Illuminate\Database\Eloquent\SoftDeletes` trait on the model:
+In addition to actually removing records from your database, Eloquent can also "soft delete" models. When models are soft deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model indicating the date and time at which the model was "deleted". To enable soft deletes for a model, add the `Illuminate\Database\Eloquent\SoftDeletes` trait to the model:
 
     <?php
 
@@ -729,27 +743,52 @@ In addition to actually removing records from your database, Eloquent can also "
 
 You should also add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
-    public function up()
-    {
-        Schema::table('flights', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-    }
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Facades\Schema;
 
-    public function down()
-    {
-        Schema::table('flights', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
-    }
+    Schema::table('flights', function (Blueprint $table) {
+        $table->softDeletes();
+    });
 
-Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current date and time. And, when querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
+    Schema::table('flights', function (Blueprint $table) {
+        $table->dropSoftDeletes();
+    });
 
-To determine if a given model instance has been soft deleted, use the `trashed` method:
+Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current date and time. However, the model's database record will be left in the table. When querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
+
+To determine if a given model instance has been soft deleted, you may use the `trashed` method:
 
     if ($flight->trashed()) {
         //
     }
+
+<a name="restoring-soft-deleted-models"></a>
+#### Restoring Soft Deleted Models
+
+Sometimes you may wish to "un-delete" a soft deleted model. To restore a soft deleted model, you may call the `restore` method on a model instance. The `restore` method will set the model's `deleted_at` column to `null`:
+
+    $flight->restore();
+
+You may also use the `restore` method in a query to restore multiple models. Again, like other "mass" operations, this will not dispatch any model events for the models that are restored:
+
+    Flight::withTrashed()
+            ->where('airline_id', 1)
+            ->restore();
+
+The `restore` method may also be used when building [relationship](/docs/{{version}}/eloquent-relationships) queries:
+
+    $flight->history()->restore();
+
+<a name="permanently-deleting-models"></a>
+#### Permanently Deleting Models
+
+Sometimes you may need to truly remove a model from your database. You may use the `forceDelete` method to permanently remove a soft deleted model from the database table:
+
+    $flight->forceDelete();
+
+You may also use the `forceDelete` method when building Eloquent relationship queries:
+
+    $flight->history()->forceDelete();
 
 <a name="querying-soft-deleted-models"></a>
 ### Querying Soft Deleted Models
@@ -757,13 +796,15 @@ To determine if a given model instance has been soft deleted, use the `trashed` 
 <a name="including-soft-deleted-models"></a>
 #### Including Soft Deleted Models
 
-As noted above, soft deleted models will automatically be excluded from query results. However, you may force soft deleted models to appear in a result set using the `withTrashed` method on the query:
+As noted above, soft deleted models will automatically be excluded from query results. However, you may force soft deleted models to be included in a query's results by calling the `withTrashed` method on the query:
 
-    $flights = App\Models\Flight::withTrashed()
+    use App\Models\Flight;
+
+    $flights = Flight::withTrashed()
                     ->where('account_id', 1)
                     ->get();
 
-The `withTrashed` method may also be used on a [relationship](/docs/{{version}}/eloquent-relationships) query:
+The `withTrashed` method may also be called when building a [relationship](/docs/{{version}}/eloquent-relationships) query:
 
     $flight->history()->withTrashed()->get();
 
@@ -772,37 +813,9 @@ The `withTrashed` method may also be used on a [relationship](/docs/{{version}}/
 
 The `onlyTrashed` method will retrieve **only** soft deleted models:
 
-    $flights = App\Models\Flight::onlyTrashed()
+    $flights = Flight::onlyTrashed()
                     ->where('airline_id', 1)
                     ->get();
-
-<a name="restoring-soft-deleted-models"></a>
-#### Restoring Soft Deleted Models
-
-Sometimes you may wish to "un-delete" a soft deleted model. To restore a soft deleted model into an active state, use the `restore` method on a model instance:
-
-    $flight->restore();
-
-You may also use the `restore` method in a query to quickly restore multiple models. Again, like other "mass" operations, this will not fire any model events for the models that are restored:
-
-    App\Models\Flight::withTrashed()
-            ->where('airline_id', 1)
-            ->restore();
-
-Like the `withTrashed` method, the `restore` method may also be used on [relationships](/docs/{{version}}/eloquent-relationships):
-
-    $flight->history()->restore();
-
-<a name="permanently-deleting-models"></a>
-#### Permanently Deleting Models
-
-Sometimes you may need to truly remove a model from your database. To permanently remove a soft deleted model from the database, use the `forceDelete` method:
-
-    // Force deleting a single model instance...
-    $flight->forceDelete();
-
-    // Force deleting all related models...
-    $flight->history()->forceDelete();
 
 <a name="replicating-models"></a>
 ## Replicating Models
