@@ -820,9 +820,11 @@ The `onlyTrashed` method will retrieve **only** soft deleted models:
 <a name="replicating-models"></a>
 ## Replicating Models
 
-You may create an unsaved copy of a model instance using the `replicate` method. This is particularly useful when you have model instances that share many of the same attributes:
+You may create an unsaved copy of an existing model instance using the `replicate` method. This method is particularly useful when you have model instances that share many of the same attributes:
 
-    $shipping = App\Models\Address::create([
+    use App\Models\Address;
+
+    $shipping = Address::create([
         'type' => 'shipping',
         'line_1' => '123 Example Street',
         'city' => 'Victorville',
@@ -842,12 +844,14 @@ You may create an unsaved copy of a model instance using the `replicate` method.
 <a name="global-scopes"></a>
 ### Global Scopes
 
-Global scopes allow you to add constraints to all queries for a given model. Laravel's own [soft delete](#soft-deleting) functionality utilizes global scopes to only pull "non-deleted" models from the database. Writing your own global scopes can provide a convenient, easy way to make sure every query for a given model receives certain constraints.
+Global scopes allow you to add constraints to all queries for a given model. Laravel's own [soft delete](#soft-deleting) functionality utilizes global scopes to only retrieve "non-deleted" models from the database. Writing your own global scopes can provide a convenient, easy way to make sure every query for a given model receives certain constraints.
 
 <a name="writing-global-scopes"></a>
 #### Writing Global Scopes
 
-Writing a global scope is simple. Define a class that implements the `Illuminate\Database\Eloquent\Scope` interface. This interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints to the query as needed:
+Writing a global scope is simple. First, define a class that implements the `Illuminate\Database\Eloquent\Scope` interface. Laravel does not have a conventional location that you should place scope classes, so you are free to place this class in any directory that you wish.
+
+The `Scope` interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints or other types of clauses to the query as needed:
 
     <?php
 
@@ -857,7 +861,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Scope;
 
-    class AgeScope implements Scope
+    class AncientScope implements Scope
     {
         /**
          * Apply the scope to a given Eloquent query builder.
@@ -868,7 +872,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
          */
         public function apply(Builder $builder, Model $model)
         {
-            $builder->where('age', '>', 200);
+            $builder->where('created_at', '<', now()->subYears(2000));
         }
     }
 
@@ -877,13 +881,13 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
 <a name="applying-global-scopes"></a>
 #### Applying Global Scopes
 
-To assign a global scope to a model, you should override a given model's `booted` method and use the `addGlobalScope` method:
+To assign a global scope to a model, you should override the model's `booted` method and invoke the model's `addGlobalScope` method. The `addGlobalScope` method accepts an instance of your scope as its only argument:
 
     <?php
 
     namespace App\Models;
 
-    use App\Scopes\AgeScope;
+    use App\Scopes\AncientScope;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -895,18 +899,20 @@ To assign a global scope to a model, you should override a given model's `booted
          */
         protected static function booted()
         {
-            static::addGlobalScope(new AgeScope);
+            static::addGlobalScope(new AncientScope);
         }
     }
 
-After adding the scope, a query to `User::all()` will produce the following SQL:
+After adding the scope in the example above to the `App\Models\User` model, a call to the `User::all()` method will execute the following SQL query:
 
-    select * from `users` where `age` > 200
+```sql
+select * from `users` where `age` > 200
+```
 
 <a name="anonymous-global-scopes"></a>
 #### Anonymous Global Scopes
 
-Eloquent also allows you to define global scopes using closures, which is particularly useful for simple scopes that do not warrant a separate class:
+Eloquent also allows you to define global scopes using closures, which is particularly useful for simple scopes that do not warrant a separate class of their own. When defining a global scope using a closure, you should provide a scope name of your own choosing as the first argument to the `addGlobalScope` method:
 
     <?php
 
@@ -924,8 +930,8 @@ Eloquent also allows you to define global scopes using closures, which is partic
          */
         protected static function booted()
         {
-            static::addGlobalScope('age', function (Builder $builder) {
-                $builder->where('age', '>', 200);
+            static::addGlobalScope('ancient', function (Builder $builder) {
+                $builder->where('created_at', '<', now()->subYears(2000));
             });
         }
     }
@@ -933,15 +939,15 @@ Eloquent also allows you to define global scopes using closures, which is partic
 <a name="removing-global-scopes"></a>
 #### Removing Global Scopes
 
-If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method. The method accepts the class name of the global scope as its only argument:
+If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method. This method accepts the class name of the global scope as its only argument:
 
-    User::withoutGlobalScope(AgeScope::class)->get();
+    User::withoutGlobalScope(AncientScope::class)->get();
 
-Or, if you defined the global scope using a closure:
+Or, if you defined the global scope using a closure, you should pass the string name that you assigned to the global scope:
 
-    User::withoutGlobalScope('age')->get();
+    User::withoutGlobalScope('ancient')->get();
 
-If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
+If you would like to remove several or even all of the query's global scopes, you may use the `withoutGlobalScopes` method:
 
     // Remove all of the global scopes...
     User::withoutGlobalScopes()->get();
@@ -954,7 +960,7 @@ If you would like to remove several or even all of the global scopes, you may us
 <a name="local-scopes"></a>
 ### Local Scopes
 
-Local scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, prefix an Eloquent model method with `scope`.
+Local scopes allow you to define common sets of query constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, prefix an Eloquent model method with `scope`.
 
 Scopes should always return a query builder instance:
 
@@ -992,24 +998,26 @@ Scopes should always return a query builder instance:
 <a name="utilizing-a-local-scope"></a>
 #### Utilizing A Local Scope
 
-Once the scope has been defined, you may call the scope methods when querying the model. However, you should not include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
+Once the scope has been defined, you may call the scope methods when querying the model. However, you should not include the `scope` prefix when calling the method. You can even chain calls to various scopes:
 
-    $users = App\Models\User::popular()->active()->orderBy('created_at')->get();
+    use App\Models\User;
 
-Combining multiple Eloquent model scopes via an `or` query operator may require the use of closure callbacks:
+    $users = User::popular()->active()->orderBy('created_at')->get();
 
-    $users = App\Models\User::popular()->orWhere(function (Builder $query) {
+Combining multiple Eloquent model scopes via an `or` query operator may require the use of closures to achieve the correct [logical grouping](/docs/{{version}}/queries#logical-grouping):
+
+    $users = User::popular()->orWhere(function (Builder $query) {
         $query->active();
     })->get();
 
-However, since this can be cumbersome, Laravel provides a "higher order" `orWhere` method that allows you to fluently chain these scopes together without the use of closures:
+However, since this can be cumbersome, Laravel provides a "higher order" `orWhere` method that allows you to fluently chain scopes together without the use of closures:
 
     $users = App\Models\User::popular()->orWhere->active()->get();
 
 <a name="dynamic-scopes"></a>
 #### Dynamic Scopes
 
-Sometimes you may wish to define a scope that accepts parameters. To get started, just add your additional parameters to your scope. Scope parameters should be defined after the `$query` parameter:
+Sometimes you may wish to define a scope that accepts parameters. To get started, just add your additional parameters to your scope method's signature. Scope parameters should be defined after the `$query` parameter:
 
     <?php
 
@@ -1032,9 +1040,9 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
         }
     }
 
-Now, you may pass the parameters when calling the scope:
+Once the expected arguments have been added to your scope method's signature, you may pass the arguments when calling the scope:
 
-    $users = App\Models\User::ofType('admin')->get();
+    $users = User::ofType('admin')->get();
 
 <a name="comparing-models"></a>
 ## Comparing Models
@@ -1045,7 +1053,7 @@ Sometimes you may need to determine if two models are the "same". The `is` metho
         //
     }
 
-The `is` method is also available when using the `belongsTo`, `hasOne`, `morphTo`, and `morphOne` relationships. This method is particularly helpful when you would like to compare a related model without issuing a query to retrieve that model:
+The `is` method is also available when using the `belongsTo`, `hasOne`, `morphTo`, and `morphOne` [relationships](/docs/{{version}}/eloquent-relationships). This method is particularly helpful when you would like to compare a related model without issuing a query to retrieve that model:
 
     if ($post->author()->is($user)) {
         //
@@ -1054,13 +1062,11 @@ The `is` method is also available when using the `belongsTo`, `hasOne`, `morphTo
 <a name="events"></a>
 ## Events
 
-Eloquent models fire several events, allowing you to hook into the following points in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, `replicating`. Events allow you to easily execute code each time a specific model class is saved or updated in the database. Each event receives the instance of the model through its constructor.
+Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, and `replicating`.
 
-The `retrieved` event will fire when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will fire. The `updating` / `updated` events will fire when an existing model is modified and the `save` method is called. The `saving` / `saved` events will fire when a model is created or updated.
+The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated.
 
-> {note} When issuing a mass update or delete via Eloquent, the `saved`, `updated`, `deleting`, and `deleted` model events will not be fired for the affected models. This is because the models are never actually retrieved when issuing a mass update or delete.
-
-To get started, define a `$dispatchesEvents` property on your Eloquent model that maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events):
+To start listening to model events, define a `$dispatchesEvents` property on your Eloquent model. This property maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events). Each model event class should expect to receive an instance of the affected model via its constructor:
 
     <?php
 
@@ -1087,10 +1093,12 @@ To get started, define a `$dispatchesEvents` property on your Eloquent model tha
 
 After defining and mapping your Eloquent events, you may use [event listeners](https://laravel.com/docs/{{version}}/events#defining-listeners) to handle the events.
 
+> {note} When issuing a mass update or delete query via Eloquent, the `saved`, `updated`, `deleting`, and `deleted` model events will not be dispatched for the affected models. This is because the models are never actually retrieved when performing a mass updates or deletes.
+
 <a name="events-using-closures"></a>
 ### Using Closures
 
-Instead of using custom event classes, you may register closures that execute when various model events are fired. Typically, you should register these closures in the `booted` method of your model:
+Instead of using custom event classes, you may register closures that execute when various model events are dispatched. Typically, you should register these closures in the `booted` method of your model:
 
     <?php
 
@@ -1113,7 +1121,7 @@ Instead of using custom event classes, you may register closures that execute wh
         }
     }
 
-If needed, you may utilize [queueable anonymous event listeners](/docs/{{version}}/events#queuable-anonymous-event-listeners) when registering model events. This will instruct Laravel to execute the model event listener using the [queue](/docs/{{version}}/queues):
+If needed, you may utilize [queueable anonymous event listeners](/docs/{{version}}/events#queuable-anonymous-event-listeners) when registering model events. This will instruct Laravel to execute the model event listener in the background using your application's [queue](/docs/{{version}}/queues):
 
     use function Illuminate\Events\queueable;
 
@@ -1127,7 +1135,7 @@ If needed, you may utilize [queueable anonymous event listeners](/docs/{{version
 <a name="defining-observers"></a>
 #### Defining Observers
 
-If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
     php artisan make:observer UserObserver --model=User
 
@@ -1186,43 +1194,25 @@ This command will place the new observer in your `App/Observers` directory. If t
         }
     }
 
-To register an observer, use the `observe` method on the model you wish to observe. You may register observers in the `boot` method of one of your service providers. In this example, we'll register the observer in the `AppServiceProvider`:
+To register an observer, you need to call the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\EventServiceProvider` service provider:
 
-    <?php
-
-    namespace App\Providers;
-
-    use App\Observers\UserObserver;
     use App\Models\User;
-    use Illuminate\Support\ServiceProvider;
+    use App\Observers\UserObserver;
 
-    class AppServiceProvider extends ServiceProvider
+    /**
+     * Register any events for your application.
+     *
+     * @return void
+     */
+    public function boot()
     {
-        /**
-         * Register any application services.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
-        }
-
-        /**
-         * Bootstrap any application services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            User::observe(UserObserver::class);
-        }
+        User::observe(UserObserver::class);
     }
 
 <a name="muting-events"></a>
 ### Muting Events
 
-You may occasionally wish to temporarily "mute" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a closure as its only argument. Any code executed within this closure will not fire model events. For example, the following will fetch and delete an `App\Models\User` instance without firing any model events. Any value returned by the given closure will be returned by the `withoutEvents` method:
+You may occasionally need to temporarily "mute" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a closure as its only argument. Any code executed within this closure will not dispatch model events. For example, the following example will fetch and delete an `App\Models\User` instance without dispatching any model events. Any value returned by the closure will be returned by the `withoutEvents` method:
 
     use App\Models\User;
 
@@ -1235,7 +1225,7 @@ You may occasionally wish to temporarily "mute" all events fired by a model. You
 <a name="saving-a-single-model-without-events"></a>
 #### Saving A Single Model Without Events
 
-Sometimes you may wish to "save" a given model without raising any events. You may accomplish this using the `saveQuietly` method:
+Sometimes you may wish to "save" a given model without dispatching any events. You may accomplish this using the `saveQuietly` method:
 
     $user = User::findOrFail(1);
 
