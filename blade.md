@@ -139,7 +139,7 @@ Sometimes you may pass an array to your view with the intention of rendering it 
         var app = <?php echo json_encode($array); ?>;
     </script>
 
-However, instead of manually calling `json_encode`, you may use the `@json` Blade directive. The `@json` directive accepts the same arguments as PHP's `json_encode` function:
+However, instead of manually calling `json_encode`, you may use the `@json` Blade directive. The `@json` directive accepts the same arguments as PHP's `json_encode` function. By default, the `@json` directive calls the `json_encode` function with the `JSON_HEX_TAG`, `JSON_HEX_APOS`, `JSON_HEX_AMP`, and `JSON_HEX_QUOT` flags:
 
     <script>
         var app = @json($array);
