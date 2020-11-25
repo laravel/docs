@@ -21,7 +21,7 @@
     - [Querying Relationship Absence](#querying-relationship-absence)
     - [Querying Polymorphic Relationships](#querying-polymorphic-relationships)
     - [Aggregating Related Models](#aggregating-related-models)
-    - [Aggregating Related Models On Polymorphic Relationships](#aggregating-related-models-on-polymorphic-relationships)
+    - [Counting Related Models On Polymorphic Relationships](#counting-related-models-on-polymorphic-relationships)
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
     - [Lazy Eager Loading](#lazy-eager-loading)
@@ -1131,7 +1131,7 @@ These additional aggregate operations may also be performed on Eloquent models t
 
     $post->loadSum('comments', 'votes');
 
-<a name="aggregating-related-models-on-polymorphic-relationships"></a>
+<a name="counting-related-models-on-polymorphic-relationships"></a>
 ### Counting Related Models On Polymorphic Relationships
 
 If you would like to eager load a `morphTo` relationship, as well as nested relationship counts on the various entities that may be returned by that relationship, you may use the `with` method in combination with the `morphTo` relationship's `morphWithCount` method.
