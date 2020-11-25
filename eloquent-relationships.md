@@ -21,7 +21,7 @@
     - [Querying Relationship Absence](#querying-relationship-absence)
     - [Querying Polymorphic Relationships](#querying-polymorphic-relationships)
     - [Aggregating Related Models](#aggregating-related-models)
-    - [Aggregating Related Models On Polymorphic Relationships](#aggregating-related-models-on-polymorphic-relationships)
+    - [Counting Related Models On Polymorphic Relationships](#counting-related-models-on-polymorphic-relationships)
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
     - [Lazy Eager Loading](#lazy-eager-loading)
@@ -1055,10 +1055,10 @@ Instead of passing an array of possible polymorphic models, you may provide `*` 
         $query->where('title', 'like', 'foo%');
     })->get();
 
-<a name="counting-related-models"></a>
-<a name="aggregating-related-models-related-models"></a>
+<a name="aggregating-related-models"></a>
 ### Aggregating Related Models
 
+<a name="counting-related-models"></a>
 #### Counting Related Models
 
 If you want to count the number of results from a relationship without actually loading them you may use the `withCount` method, which will place a `{relation}_count` column on your resulting models. For example:
