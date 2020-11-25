@@ -5,10 +5,12 @@
     - [One To One](#one-to-one)
     - [One To Many](#one-to-many)
     - [One To Many (Inverse) / Belongs To](#one-to-many-inverse)
-    - [Many To Many](#many-to-many)
-    - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
+- [Many To Many Relationships](#many-to-many)
+    - [Retrieving Intermediate Table Columns](#retrieving-intermediate-table-columns)
+    - [Filtering Queries Via Intermediate Table Columns](#filtering-queries-via-intermediate-table-columns)
+    - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
 - [Polymorphic Relationships](#polymorphic-relationships)
     - [One To One](#one-to-one-polymorphic-relations)
     - [One To Many](#one-to-many-polymorphic-relations)
@@ -235,220 +237,6 @@ If your parent model does not use `id` as its primary key, or you wish to find t
         return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
     }
 
-<a name="many-to-many"></a>
-### Many To Many
-
-Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of such a relationship is a user with many roles, where the roles are also shared by other users. For example, many users may have the role of "Admin".
-
-<a name="many-to-many-table-structure"></a>
-#### Table Structure
-
-To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names, and contains the `user_id` and `role_id` columns:
-
-    users
-        id - integer
-        name - string
-
-    roles
-        id - integer
-        name - string
-
-    role_user
-        user_id - integer
-        role_id - integer
-
-<a name="many-to-many-model-structure"></a>
-#### Model Structure
-
-Many-to-many relationships are defined by writing a method that returns the result of the `belongsToMany` method. For example, let's define the `roles` method on our `User` model:
-
-    <?php
-
-    namespace App\Models;
-
-    use Illuminate\Database\Eloquent\Model;
-
-    class User extends Model
-    {
-        /**
-         * The roles that belong to the user.
-         */
-        public function roles()
-        {
-            return $this->belongsToMany('App\Models\Role');
-        }
-    }
-
-Once the relationship is defined, you may access the user's roles using the `roles` dynamic property:
-
-    $user = App\Models\User::find(1);
-
-    foreach ($user->roles as $role) {
-        //
-    }
-
-Like all other relationship types, you may call the `roles` method to continue chaining query constraints onto the relationship:
-
-    $roles = App\Models\User::find(1)->roles()->orderBy('name')->get();
-
-As mentioned previously, to determine the table name of the relationship's joining table, Eloquent will join the two related model names in alphabetical order. However, you are free to override this convention. You may do so by passing a second argument to the `belongsToMany` method:
-
-    return $this->belongsToMany('App\Models\Role', 'role_user');
-
-In addition to customizing the name of the joining table, you may also customize the column names of the keys on the table by passing additional arguments to the `belongsToMany` method. The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:
-
-    return $this->belongsToMany('App\Models\Role', 'role_user', 'user_id', 'role_id');
-
-<a name="many-to-many-defining-the-inverse-of-the-relationship"></a>
-#### Defining The Inverse Of The Relationship
-
-To define the inverse of a many-to-many relationship, you place another call to `belongsToMany` on your related model. To continue our user roles example, let's define the `users` method on the `Role` model:
-
-    <?php
-
-    namespace App\Models;
-
-    use Illuminate\Database\Eloquent\Model;
-
-    class Role extends Model
-    {
-        /**
-         * The users that belong to the role.
-         */
-        public function users()
-        {
-            return $this->belongsToMany('App\Models\User');
-        }
-    }
-
-As you can see, the relationship is defined exactly the same as its `User` counterpart, with the exception of referencing the `App\Models\User` model. Since we're reusing the `belongsToMany` method, all of the usual table and key customization options are available when defining the inverse of many-to-many relationships.
-
-<a name="retrieving-intermediate-table-columns"></a>
-#### Retrieving Intermediate Table Columns
-
-As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` object has many `Role` objects that it is related to. After accessing this relationship, we may access the intermediate table using the `pivot` attribute on the models:
-
-    $user = App\Models\User::find(1);
-
-    foreach ($user->roles as $role) {
-        echo $role->pivot->created_at;
-    }
-
-Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table, and may be used like any other Eloquent model.
-
-By default, only the model keys will be present on the `pivot` object. If your pivot table contains extra attributes, you must specify them when defining the relationship:
-
-    return $this->belongsToMany('App\Models\Role')->withPivot('column1', 'column2');
-
-If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
-
-    return $this->belongsToMany('App\Models\Role')->withTimestamps();
-
-> {note} When using timestamps on pivot tables, the table is required to have both `created_at` and `updated_at` timestamp columns.
-
-<a name="customizing-the-pivot-attribute-name"></a>
-#### Customizing The `pivot` Attribute Name
-
-As noted earlier, attributes from the intermediate table may be accessed on models using the `pivot` attribute. However, you are free to customize the name of this attribute to better reflect its purpose within your application.
-
-For example, if your application contains users that may subscribe to podcasts, you probably have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table accessor to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship:
-
-    return $this->belongsToMany('App\Models\Podcast')
-                    ->as('subscription')
-                    ->withTimestamps();
-
-Once this is done, you may access the intermediate table data using the customized name:
-
-    $users = User::with('podcasts')->get();
-
-    foreach ($users->flatMap->podcasts as $podcast) {
-        echo $podcast->subscription->created_at;
-    }
-
-<a name="filtering-relationships-via-intermediate-table-columns"></a>
-#### Filtering Relationships Via Intermediate Table Columns
-
-You can also filter the results returned by `belongsToMany` using the `wherePivot`, `wherePivotIn`, and `wherePivotNotIn` methods when defining the relationship:
-
-    return $this->belongsToMany('App\Models\Role')->wherePivot('approved', 1);
-
-    return $this->belongsToMany('App\Models\Role')->wherePivotIn('priority', [1, 2]);
-
-    return $this->belongsToMany('App\Models\Role')->wherePivotNotIn('priority', [1, 2]);
-
-<a name="defining-custom-intermediate-table-models"></a>
-### Defining Custom Intermediate Table Models
-
-If you would like to define a custom model to represent the intermediate table of your relationship, you may call the `using` method when defining the relationship. Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` which uses a custom `RoleUser` pivot model:
-
-    <?php
-
-    namespace App\Models;
-
-    use Illuminate\Database\Eloquent\Model;
-
-    class Role extends Model
-    {
-        /**
-         * The users that belong to the role.
-         */
-        public function users()
-        {
-            return $this->belongsToMany('App\Models\User')->using('App\Models\RoleUser');
-        }
-    }
-
-When defining the `RoleUser` model, we will extend the `Pivot` class:
-
-    <?php
-
-    namespace App\Models;
-
-    use Illuminate\Database\Eloquent\Relations\Pivot;
-
-    class RoleUser extends Pivot
-    {
-        //
-    }
-
-You can combine `using` and `withPivot` in order to retrieve columns from the intermediate table. For example, you may retrieve the `created_by` and `updated_by` columns from the `RoleUser` pivot table by passing the column names to the `withPivot` method:
-
-    <?php
-
-    namespace App\Models;
-
-    use Illuminate\Database\Eloquent\Model;
-
-    class Role extends Model
-    {
-        /**
-         * The users that belong to the role.
-         */
-        public function users()
-        {
-            return $this->belongsToMany('App\Models\User')
-                            ->using('App\Models\RoleUser')
-                            ->withPivot([
-                                'created_by',
-                                'updated_by',
-                            ]);
-        }
-    }
-
-> **Note:** Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model.
-
-<a name="custom-pivot-models-and-incrementing-ids"></a>
-#### Custom Pivot Models And Incrementing IDs
-
-If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`.
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = true;
-
 <a name="has-one-through"></a>
 ### Has One Through
 
@@ -569,6 +357,207 @@ Typical Eloquent foreign key conventions will be used when performing the relati
             );
         }
     }
+
+<a name="many-to-many"></a>
+## Many To Many Relationships
+
+Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of a many-to-many relationship is a user that has many roles and those roles are also shared by other users in the application. For example, a user may be assigned the role of "Author" and "Editor"; however, those roles may also be assigned to other users as well. So, a user has many roles and a role has many users.
+
+<a name="many-to-many-table-structure"></a>
+#### Table Structure
+
+To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names and contains `user_id` and `role_id` columns. This table is used as an intermediate table linking the users and roles.
+
+Remember, since a role can belong to many users, we cannot simply place a `user_id` column on the `roles` table. This would mean that a role could only belong to a single user. In order to provide support for roles being assigned to multiple users, the `role_user` table is needed. We can summarize the relationship's table structure like so:
+
+    users
+        id - integer
+        name - string
+
+    roles
+        id - integer
+        name - string
+
+    role_user
+        user_id - integer
+        role_id - integer
+
+<a name="many-to-many-model-structure"></a>
+#### Model Structure
+
+Many-to-many relationships are defined by writing a method that returns the result of the `belongsToMany` method. The `belongsToMany` method is provided by the `Illuminate\Database\Eloquent\Model` base class that is used by all of your application's Eloquent models. For example, let's define a `roles` method on our `User` model. The first argument passed to this method is the name of the related model class:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        /**
+         * The roles that belong to the user.
+         */
+        public function roles()
+        {
+            return $this->belongsToMany(Role::class);
+        }
+    }
+
+Once the relationship is defined, you may access the user's roles using the `roles` dynamic relationship property:
+
+    use App\Models\User;
+
+    $user = User::find(1);
+
+    foreach ($user->roles as $role) {
+        //
+    }
+
+Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `roles` method and continuing to chain conditions onto the query:
+
+    $roles = User::find(1)->roles()->orderBy('name')->get();
+
+To determine the table name of the relationship's intermediate table, Eloquent will join the two related model names in alphabetical order. However, you are free to override this convention. You may do so by passing a second argument to the `belongsToMany` method:
+
+    return $this->belongsToMany(Role::class, 'role_user');
+
+In addition to customizing the name of the intermediate table, you may also customize the column names of the keys on the table by passing additional arguments to the `belongsToMany` method. The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:
+
+    return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+
+<a name="many-to-many-defining-the-inverse-of-the-relationship"></a>
+#### Defining The Inverse Of The Relationship
+
+To define the "inverse" of a many-to-many relationship, you should define a method on the related model which also returns the result of the `belongsToMany` method. To complete our user / role example, let's define the `users` method on the `Role` model:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Role extends Model
+    {
+        /**
+         * The users that belong to the role.
+         */
+        public function users()
+        {
+            return $this->belongsToMany(User::class);
+        }
+    }
+
+As you can see, the relationship is defined exactly the same as its `User` model counterpart with the exception of referencing the `App\Models\User` model. Since we're reusing the `belongsToMany` method, all of the usual table and key customization options are available when defining the "inverse" of many-to-many relationships.
+
+<a name="retrieving-intermediate-table-columns"></a>
+### Retrieving Intermediate Table Columns
+
+As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` model has many `Role` models that it is related to. After accessing this relationship, we may access the intermediate table using the `pivot` attribute on the models:
+
+    use App\Models\User;
+
+    $user = User::find(1);
+
+    foreach ($user->roles as $role) {
+        echo $role->pivot->created_at;
+    }
+
+Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table.
+
+By default, only the model keys will be present on the `pivot` model. If your intermediate table contains extra attributes, you must specify them when defining the relationship:
+
+    return $this->belongsToMany(Role::class)->withPivot('active', 'created_by');
+
+If you would like your intermediate table to have `created_at` and `updated_at` timestamps that are automatically maintained by Eloquent, call the `withTimestamps` method when defining the relationship:
+
+    return $this->belongsToMany(Role::class)->withTimestamps();
+
+> {note} Intermediate tables that utilize Eloquent's automatically maintained timestamps are required to have both `created_at` and `updated_at` timestamp columns.
+
+<a name="customizing-the-pivot-attribute-name"></a>
+#### Customizing The `pivot` Attribute Name
+
+As noted previously, attributes from the intermediate table may be accessed on models via the `pivot` attribute. However, you are free to customize the name of this attribute to better reflect its purpose within your application.
+
+For example, if your application contains users that may subscribe to podcasts, you likely have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table attribute to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship:
+
+    return $this->belongsToMany(Podcast::class)
+                    ->as('subscription')
+                    ->withTimestamps();
+
+Once the custom intermediate table attribute has been specified, you may access the intermediate table data using the customized name:
+
+    $users = User::with('podcasts')->get();
+
+    foreach ($users->flatMap->podcasts as $podcast) {
+        echo $podcast->subscription->created_at;
+    }
+
+<a name="filtering-queries-via-intermediate-table-columns"></a>
+### Filtering Queries Via Intermediate Table Columns
+
+You can also filter the results returned by `belongsToMany` relationship queries using the `wherePivot`, `wherePivotIn`, and `wherePivotNotIn` methods when defining the relationship:
+
+    return $this->belongsToMany(Role::class)
+                    ->wherePivot('approved', 1);
+
+    return $this->belongsToMany(Role::class)
+                    ->wherePivotIn('priority', [1, 2]);
+
+    return $this->belongsToMany(Role::class)
+                    ->wherePivotNotIn('priority', [1, 2]);
+
+<a name="defining-custom-intermediate-table-models"></a>
+### Defining Custom Intermediate Table Models
+
+If you would like to define a custom model to represent the intermediate table of your many-to-many relationship, you may call the `using` method when defining the relationship. Custom pivot models give you the opportunity to define additional methods on the pivot model.
+
+Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` model which uses a custom `RoleUser` pivot model:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Role extends Model
+    {
+        /**
+         * The users that belong to the role.
+         */
+        public function users()
+        {
+            return $this->belongsToMany(User::class)->using(RoleUser::class);
+        }
+    }
+
+When defining the `RoleUser` model, you should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Relations\Pivot;
+
+    class RoleUser extends Pivot
+    {
+        //
+    }
+
+> {note} Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model.
+
+<a name="custom-pivot-models-and-incrementing-ids"></a>
+#### Custom Pivot Models And Incrementing IDs
+
+If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`.
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
 
 <a name="polymorphic-relationships"></a>
 ## Polymorphic Relationships
