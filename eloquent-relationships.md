@@ -1055,10 +1055,10 @@ Instead of passing an array of possible polymorphic models, you may provide `*` 
         $query->where('title', 'like', 'foo%');
     })->get();
 
-<a name="counting-related-models"></a>
 <a name="aggregating-related-models"></a>
 ### Aggregating Related Models
 
+<a name="counting-related-models"></a>
 #### Counting Related Models
 
 If you want to count the number of results from a relationship without actually loading them you may use the `withCount` method, which will place a `{relation}_count` column on your resulting models. For example:
