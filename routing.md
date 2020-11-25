@@ -151,6 +151,10 @@ You may constrain the format of your route parameters using the `where` method o
     Route::get('user/{id}', function ($id) {
         //
     })->where('id', '[0-9]+');
+    
+    Route::get('user/{name}', function ($name) {
+        //
+    })->where('name', '[a-zA-Z0-9]+');
 
     Route::get('user/{id}/{name}', function ($id, $name) {
         //
@@ -161,6 +165,10 @@ For convenience, some commonly used regular expression patterns have helper meth
     Route::get('user/{id}/{name}', function ($id, $name) {
         //
     })->whereNumber('id')->whereAlpha('name');
+    
+    Route::get('user/{name}', function ($name) {
+        //
+    })->whereAlphaNumeric('name');
 
     Route::get('user/{id}', function ($id) {
         //
