@@ -514,6 +514,16 @@ Of course, when using Eloquent, we don't only need to retrieve models from the d
 
 In this example, we assign the `name` field from the incoming HTTP request to the `name` attribute of the `App\Models\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The model's `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually.
 
+Alternatively, you may use the `create` method to "save" a new model using a single PHP statement. The inserted model instance will be returned to you by the `create` method:
+
+    use App\Models\Flight;
+
+    $flight = Flight::create([
+        'name' => 'London to Paris',
+    ]);
+
+However, before using the `create` method, you will need to specify either a `fillable` or `guarded` property on your model class. These properties are required because all Eloquent models are protected against mass assignment vulnerabilities by default. To learn more about mass assignment, please consult the [mass assignment documentation](#mass-assignment).
+
 <a name="updates"></a>
 ### Updates
 
@@ -602,7 +612,7 @@ The `getOriginal` method returns an array containing the original attributes of 
 <a name="mass-assignment"></a>
 ### Mass Assignment
 
-You may use the `create` method to save a new model using a single PHP statement. The inserted model instance will be returned to you from the method:
+You may use the `create` method to "save" a new model using a single PHP statement. The inserted model instance will be returned to you by the method:
 
     use App\Models\Flight;
 
