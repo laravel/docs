@@ -4,7 +4,7 @@
 - [Defining Relationships](#defining-relationships)
     - [One To One](#one-to-one)
     - [One To Many](#one-to-many)
-    - [One To Many (Inverse)](#one-to-many-inverse)
+    - [One To Many (Inverse) / Belongs To](#one-to-many-inverse)
     - [Many To Many](#many-to-many)
     - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
     - [Has One Through](#has-one-through)
@@ -87,14 +87,14 @@ Eloquent determines the foreign key of the relationship based on the parent mode
 
     return $this->hasOne(Phone::class, 'foreign_key');
 
-Additionally, Eloquent assumes that the foreign key should have a value matching the primary key column of the parent. In other words, Eloquent will look for the value of the user's `id` column in the `user_id` column of the `Phone` record. If you would like the relationship to use a value other than `id` or your model's `$primaryKey` property, you may pass a third argument to the `hasOne` method:
+Additionally, Eloquent assumes that the foreign key should have a value matching the primary key column of the parent. In other words, Eloquent will look for the value of the user's `id` column in the `user_id` column of the `Phone` record. If you would like the relationship to use a primary key value other than `id` or your model's `$primaryKey` property, you may pass a third argument to the `hasOne` method:
 
     return $this->hasOne(Phone::class, 'foreign_key', 'local_key');
 
 <a name="one-to-one-defining-the-inverse-of-the-relationship"></a>
 #### Defining The Inverse Of The Relationship
 
-So, we can access the `Phone` model from our `User` model. Next, let's define a relationship on the `Phone` model that will let us access the `User` that owns the phone. We can define the inverse of a `hasOne` relationship using the `belongsTo` method:
+So, we can access the `Phone` model from our `User` model. Next, let's define a relationship on the `Phone` model that will let us access the user that owns the phone. We can define the inverse of a `hasOne` relationship using the `belongsTo` method:
 
     <?php
 
@@ -138,7 +138,7 @@ If the parent model does not use `id` as its primary key, or you wish to find th
 <a name="one-to-many"></a>
 ### One To Many
 
-A one-to-many relationship is used to define relationships where a single model owns any amount of other models. For example, a blog post may have an infinite number of comments. Like all other Eloquent relationships, one-to-many relationships are defined by placing a function on your Eloquent model:
+A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. Like all other Eloquent relationships, one-to-many relationships are defined by defining a method on your Eloquent model:
 
     <?php
 
@@ -153,34 +153,38 @@ A one-to-many relationship is used to define relationships where a single model 
          */
         public function comments()
         {
-            return $this->hasMany('App\Models\Comment');
+            return $this->hasMany(Comment::class);
         }
     }
 
-Remember, Eloquent will automatically determine the proper foreign key column on the `Comment` model. By convention, Eloquent will take the "snake case" name of the owning model and suffix it with `_id`. So, for this example, Eloquent will assume the foreign key on the `Comment` model is `post_id`.
+Remember, Eloquent will automatically determine the proper foreign key column for the `Comment` model. By convention, Eloquent will take the "snake case" name of the parent model and suffix it with `_id`. So, in this example, Eloquent will assume the foreign key column on the `Comment` model is `post_id`.
 
-Once the relationship has been defined, we can access the collection of comments by accessing the `comments` property. Remember, since Eloquent provides "dynamic properties", we can access relationship methods as if they were defined as properties on the model:
+Once the relationship method has been defined, we can access the [collection](/docs/{{version}}/eloquent-collections) of related comments by accessing the `comments` property. Remember, since Eloquent provides "dynamic relationship properties", we can access relationship methods as if they were defined as properties on the model:
 
-    $comments = App\Models\Post::find(1)->comments;
+    use App\Models\Post;
+
+    $comments = Post::find(1)->comments;
 
     foreach ($comments as $comment) {
         //
     }
 
-Since all relationships also serve as query builders, you can add further constraints to which comments are retrieved by calling the `comments` method and continuing to chain conditions onto the query:
+Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `comments` method and continuing to chain conditions onto the query:
 
-    $comment = App\Models\Post::find(1)->comments()->where('title', 'foo')->first();
+    $comment = Post::find(1)->comments()
+                        ->where('title', 'foo')
+                        ->first();
 
 Like the `hasOne` method, you may also override the foreign and local keys by passing additional arguments to the `hasMany` method:
 
-    return $this->hasMany('App\Models\Comment', 'foreign_key');
+    return $this->hasMany(Comment::class, 'foreign_key');
 
-    return $this->hasMany('App\Models\Comment', 'foreign_key', 'local_key');
+    return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
 
 <a name="one-to-many-inverse"></a>
-### One To Many (Inverse)
+### One To Many (Inverse) / Belongs To
 
-Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `hasMany` relationship, define a relationship function on the child model which calls the `belongsTo` method:
+Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `hasMany` relationship, define a relationship method on the child model which calls the `belongsTo` method:
 
     <?php
 
@@ -195,34 +199,40 @@ Now that we can access all of a post's comments, let's define a relationship to 
          */
         public function post()
         {
-            return $this->belongsTo('App\Models\Post');
+            return $this->belongsTo(Post::class);
         }
     }
 
-Once the relationship has been defined, we can retrieve the `Post` model for a `Comment` by accessing the `post` "dynamic property":
+Once the relationship has been defined, we can retrieve a comment's parent post by accessing the `post` "dynamic relationship property":
 
-    $comment = App\Models\Comment::find(1);
+    use App\Models\Comment;
 
-    echo $comment->post->title;
+    $comment = Comment::find(1);
 
-In the example above, Eloquent will try to match the `post_id` from the `Comment` model to an `id` on the `Post` model. Eloquent determines the default foreign key name by examining the name of the relationship method and suffixing the method name with a `_` followed by the name of the primary key column. However, if the foreign key on the `Comment` model is not `post_id`, you may pass a custom key name as the second argument to the `belongsTo` method:
+    return $comment->post->title;
+
+In the example above, Eloquent will attempt to find a `Post` model that has an `id` which matches the `post_id` column on the `Comment` model.
+
+Eloquent determines the default foreign key name by examining the name of the relationship method and suffixing the method name with a `_` followed by the name of the parent model's primary key column. So, in this example, Eloquent will assume the `Post` model's foreign key on the `comments` table is `post_id`.
+
+However, if the foreign key for your relationship does not follow these conventions, you may pass a custom foreign key name as the second argument to the `belongsTo` method:
 
     /**
      * Get the post that owns the comment.
      */
     public function post()
     {
-        return $this->belongsTo('App\Models\Post', 'foreign_key');
+        return $this->belongsTo(Post::class, 'foreign_key');
     }
 
-If your parent model does not use `id` as its primary key, or you wish to join the child model to a different column, you may pass a third argument to the `belongsTo` method specifying your parent table's custom key:
+If your parent model does not use `id` as its primary key, or you wish to find the associated model using a different column, you may pass a third argument to the `belongsTo` method specifying your parent table's custom key:
 
     /**
      * Get the post that owns the comment.
      */
     public function post()
     {
-        return $this->belongsTo('App\Models\Post', 'foreign_key', 'owner_key');
+        return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
     }
 
 <a name="many-to-many"></a>
