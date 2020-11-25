@@ -1131,7 +1131,7 @@ These additional aggregate operations may also be performed on Eloquent models t
 
     $post->loadSum('comments', 'votes');
 
-<a name="counting-related-models-on-polymorphic-relationships"></a>
+<a name="aggregating-related-models-on-polymorphic-relationships"></a>
 ### Counting Related Models On Polymorphic Relationships
 
 If you would like to eager load a `morphTo` relationship, as well as nested relationship counts on the various entities that may be returned by that relationship, you may use the `with` method in combination with the `morphTo` relationship's `morphWithCount` method.
