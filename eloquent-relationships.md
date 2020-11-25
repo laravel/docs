@@ -240,9 +240,9 @@ If your parent model does not use `id` as its primary key, or you wish to find t
 <a name="has-one-through"></a>
 ### Has One Through
 
-The "has-one-through" relationship links models through a single intermediate relation.
+The "has-one-through" relationship defines a one-to-one relationship with another model. However, this relationship indicates that the declaring model can be matched with one instance of another model by proceeding _through_ a third model.
 
-For example, in a vehicle repair shop application, each `Mechanic` may have one `Car`, and each `Car` may have one `Owner`. While the `Mechanic` and the `Owner` have no direct connection, the `Mechanic` can access the `Owner` _through_ the `Car` itself. Let's look at the tables necessary to define this relationship:
+For example, in a vehicle repair shop application, each `Mechanic` model may be associated with one `Car` model, and each `Car` model may be associated with one `Owner` model. While the `Mechanic` and the `Owner` have no direct connection, the `Mechanic` can access the `Owner` _through_ the `Car` model. Let's look at the tables necessary to define this relationship:
 
     mechanics
         id - integer
@@ -273,11 +273,14 @@ Now that we have examined the table structure for the relationship, let's define
          */
         public function carOwner()
         {
-            return $this->hasOneThrough('App\Models\Owner', 'App\Models\Car');
+            return $this->hasOneThrough(Owner::class, Car::class);
         }
     }
 
 The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+
+<a name="has-one-through-key-conventions"></a>
+#### Key Conventions
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
 
@@ -289,12 +292,12 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         public function carOwner()
         {
             return $this->hasOneThrough(
-                'App\Models\Owner',
-                'App\Models\Car',
-                'mechanic_id', // Foreign key on cars table...
-                'car_id', // Foreign key on owners table...
-                'id', // Local key on mechanics table...
-                'id' // Local key on cars table...
+                Owner::class,
+                Car::class,
+                'mechanic_id', // Foreign key on the cars table...
+                'car_id', // Foreign key on the owners table...
+                'id', // Local key on the mechanics table...
+                'id' // Local key on the cars table...
             );
         }
     }
@@ -302,7 +305,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 <a name="has-many-through"></a>
 ### Has Many Through
 
-The "has-many-through" relationship provides a convenient shortcut for accessing distant relations via an intermediate relation. For example, a `Country` model might have many `Post` models through an intermediate `User` model. In this example, you could easily gather all blog posts for a given country. Let's look at the tables required to define this relationship:
+The "has-many-through" relationship provides a convenient shortcut for accessing distant relations via an intermediate relation. For example, a `Country` model might have many `Post` models through an intermediate `User` model. Using this example, you could easily gather all blog posts for a given country. Let's look at the tables required to define this relationship:
 
     countries
         id - integer
@@ -318,9 +321,7 @@ The "has-many-through" relationship provides a convenient shortcut for accessing
         user_id - integer
         title - string
 
-Though `posts` does not contain a `country_id` column, the `hasManyThrough` relation provides access to a country's posts via `$country->posts`. To perform this query, Eloquent inspects the `country_id` on the intermediate `users` table. After finding the matching user IDs, they are used to query the `posts` table.
-
-Now that we have examined the table structure for the relationship, let's define it on the `Country` model:
+Now that we have examined the table structure for the relationship, let's define the relationship on the `Country` model:
 
     <?php
 
@@ -335,11 +336,16 @@ Now that we have examined the table structure for the relationship, let's define
          */
         public function posts()
         {
-            return $this->hasManyThrough('App\Models\Post', 'App\Models\User');
+            return $this->hasManyThrough(Post::class, User::class);
         }
     }
 
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+
+Though the `Post` model's table does not contain a `country_id` column, the `hasManyThrough` relation provides access to a country's posts via `$country->posts`. To retrieve these models, Eloquent inspects the `country_id` column on the intermediate `User` model's table. After finding the relevant user IDs, they are used to query the `Post` model's table.
+
+<a name="has-many-through-key-conventions"></a>
+#### Key Conventions
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
 
@@ -348,12 +354,12 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         public function posts()
         {
             return $this->hasManyThrough(
-                'App\Models\Post',
-                'App\Models\User',
-                'country_id', // Foreign key on users table...
-                'user_id', // Foreign key on posts table...
-                'id', // Local key on countries table...
-                'id' // Local key on users table...
+                Post::class,
+                User::class,
+                'country_id', // Foreign key on the users table...
+                'user_id', // Foreign key on the posts table...
+                'id', // Local key on the countries table...
+                'id' // Local key on the users table...
             );
         }
     }
