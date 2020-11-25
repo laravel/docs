@@ -399,57 +399,50 @@ In addition, the query builder's `orderBy` function supports subqueries. Continu
 <a name="retrieving-single-models"></a>
 ## Retrieving Single Models / Aggregates
 
-In addition to retrieving all of the records for a given table, you may also retrieve single records using `find`, `first`, or `firstWhere`. Instead of returning a collection of models, these methods return a single model instance:
+In addition to retrieving all of the records matching a given query, you may also retrieve single records using the `find`, `first`, or `firstWhere` methods. Instead of returning a collection of models, these methods return a single model instance:
+
+    use App\Models\Flight;
 
     // Retrieve a model by its primary key...
-    $flight = App\Models\Flight::find(1);
+    $flight = Flight::find(1);
 
     // Retrieve the first model matching the query constraints...
-    $flight = App\Models\Flight::where('active', 1)->first();
+    $flight = Flight::where('active', 1)->first();
 
-    // Shorthand for retrieving the first model matching the query constraints...
-    $flight = App\Models\Flight::firstWhere('active', 1);
+    // Alternative to retrieving the first model matching the query constraints...
+    $flight = Flight::firstWhere('active', 1);
 
-You may also call the `find` method with an array of primary keys, which will return a collection of the matching records:
+Sometimes you may wish to retrieve the first result of a query or perform some other action if no results are found. The `firstOr` method will return the first result matching the query or, if no results are found, execute the given closure. The value returned by the closure will be considered the result of the `firstOr` method:
 
-    $flights = App\Models\Flight::find([1, 2, 3]);
-
-Sometimes you may wish to retrieve the first result of a query or perform some other action if no results are found. The `firstOr` method will return the first result that is found or, if no results are found, execute the given callback. The result of the callback will be considered the result of the `firstOr` method:
-
-    $model = App\Models\Flight::where('legs', '>', 100)->firstOr(function () {
-            // ...
+    $model = Flight::where('legs', '>', 3)->firstOr(function () {
+        // ...
     });
-
-The `firstOr` method also accepts an array of columns to retrieve:
-
-    $model = App\Models\Flight::where('legs', '>', 100)
-                ->firstOr(['id', 'legs'], function () {
-                    // ...
-                });
 
 <a name="not-found-exceptions"></a>
 #### Not Found Exceptions
 
 Sometimes you may wish to throw an exception if a model is not found. This is particularly useful in routes or controllers. The `findOrFail` and `firstOrFail` methods will retrieve the first result of the query; however, if no result is found, an `Illuminate\Database\Eloquent\ModelNotFoundException` will be thrown:
 
-    $model = App\Models\Flight::findOrFail(1);
+    $flight = Flight::findOrFail(1);
 
-    $model = App\Models\Flight::where('legs', '>', 100)->firstOrFail();
+    $flight = Flight::where('legs', '>', 3)->firstOrFail();
 
-If the exception is not caught, a `404` HTTP response is automatically sent back to the user. It is not necessary to write explicit checks to return `404` responses when using these methods:
+If the `ModelNotFoundException` is not caught, a 404 HTTP response is automatically sent back to the client:
+
+    use App\Models\Flight;
 
     Route::get('/api/flights/{id}', function ($id) {
-        return App\Models\Flight::findOrFail($id);
+        return Flight::findOrFail($id);
     });
 
 <a name="retrieving-aggregates"></a>
 ### Retrieving Aggregates
 
-You may also use the `count`, `sum`, `max`, and other [aggregate methods](/docs/{{version}}/queries#aggregates) provided by the [query builder](/docs/{{version}}/queries). These methods return the appropriate scalar value instead of a full model instance:
+When interacting with Eloquent models, you may also use the `count`, `sum`, `max`, and other [aggregate methods](/docs/{{version}}/queries#aggregates) provided by the Laravel [query builder](/docs/{{version}}/queries). As you might expect, these methods return a scalar value instead of an Eloquent model instance:
 
-    $count = App\Models\Flight::where('active', 1)->count();
+    $count = Flight::where('active', 1)->count();
 
-    $max = App\Models\Flight::where('active', 1)->max('price');
+    $max = Flight::where('active', 1)->max('price');
 
 <a name="inserting-and-updating-models"></a>
 ## Inserting & Updating Models
