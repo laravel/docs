@@ -155,6 +155,8 @@ You may pass an array to the `delay` method to specify the delay amount for spec
         'sms' => now()->addMinutes(10),
     ]));
 
+When queueing notifications, a queued job will be created for each recipient and channel combination. For example, six jobs will be dispatched to the queue if your notification has three recipients and two channels.
+
 <a name="customizing-notification-channel-queues"></a>
 #### Customizing Notification Channel Queues
 
