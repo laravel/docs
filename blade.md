@@ -147,6 +147,8 @@ However, instead of manually calling `json_encode`, you may use the `@json` Blad
         var app = @json($array, JSON_PRETTY_PRINT);
     </script>
 
+By default the flags it uses are JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT.
+
 > {note} You should only use the `@json` directive to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="html-entity-encoding"></a>
