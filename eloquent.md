@@ -11,6 +11,7 @@
 - [Retrieving Models](#retrieving-models)
     - [Collections](#collections)
     - [Chunking Results](#chunking-results)
+    - [Cursors](#cursors)
     - [Advanced Subqueries](#advanced-subqueries)
 - [Retrieving Single Models / Aggregates](#retrieving-single-models)
     - [Retrieving Aggregates](#retrieving-aggregates)
@@ -318,7 +319,11 @@ Since all of Laravel's collections implement PHP's iterable interfaces, you may 
 <a name="chunking-results"></a>
 ### Chunking Results
 
-If you need to process thousands of Eloquent records, use the `chunk` command. The `chunk` method will retrieve a "chunk" of Eloquent models, feeding them to a given closure for processing. Using the `chunk` method will conserve memory when working with large result sets:
+Your application may run out of memory if you attempt to load tens of thousands of Eloquent records via the `all` or `get` methods. Instead of using these methods, the `chunk` method may be used to process large numbers of models more efficiently.
+
+The `chunk` method will retrieve a subset of Eloquent models, passing them to a closure for processing. Since only the current chunk of Eloquent models is retrieved at a time, the `chunk` method will provide significantly reduced memory usage when working with a large amount of models:
+
+    use App\Models\Flight;
 
     Flight::chunk(200, function ($flights) {
         foreach ($flights as $flight) {
@@ -326,26 +331,33 @@ If you need to process thousands of Eloquent records, use the `chunk` command. T
         }
     });
 
-The first argument passed to the method is the number of records you wish to receive per "chunk". The closure passed as the second argument will be called for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the closure.
+The first argument passed to the `chunk` method is the number of records you wish to receive per "chunk". The closure passed as the second argument will be invoked for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the closure.
 
-If you are filtering the results of the `chunk` method based on a column that you will also be updating while iterating over the results, you should use the `chunkById` method. Using the `chunk` method in these scenarios could lead to unexpected and inconsistent results:
+If you are filtering the results of the `chunk` method based on a column that you will also be updating while iterating over the results, you should use the `chunkById` method. Using the `chunk` method in these scenarios could lead to unexpected and inconsistent results. Internally, the `chunkById` method will always retrieve models with an `id` column greater than the last model in the previous chunk:
 
-    Flight::where('departed', true)->chunkById(200, function ($flights) {
-        $flights->each->update(['departed' => false]);
-    });
+    Flight::where('departed', true)
+            ->chunkById(200, function ($flights) {
+                $flights->each->update(['departed' => false]);
+            }, $column = 'id');
 
-<a name="using-cursors"></a>
-#### Using Cursors
+<a name="cursors"></a>
+### Cursors
 
-The `cursor` method allows you to iterate through your database records using a cursor, which will only execute a single query. When processing large amounts of data, the `cursor` method may be used to greatly reduce your memory usage:
+Similar to the `chunk` method, the `cursor` method may be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records.
 
-    foreach (Flight::where('foo', 'bar')->cursor() as $flight) {
+The `cursor` method will only execute a single database query; however, the individual Eloquent models will not be hydrated until they are actually iterated over. Therefore, only one Eloquent model is kept in memory at any given time while iterating over the cursor. Internally, the `cursor` method uses PHP [generators](https://www.php.net/manual/en/language.generators.overview.php) to implement this functionality:
+
+    use App\Models\Flight;
+
+    foreach (Flight::where('destination', 'Zurich')->cursor() as $flight) {
         //
     }
 
 The `cursor` returns an `Illuminate\Support\LazyCollection` instance. [Lazy collections](/docs/{{version}}/collections#lazy-collections) allow you to use many of the collection methods available on typical Laravel collections while only loading a single model into memory at a time:
 
-    $users = App\Models\User::cursor()->filter(function ($user) {
+    use App\Models\User;
+
+    $users = User::cursor()->filter(function ($user) {
         return $user->id > 500;
     });
 
