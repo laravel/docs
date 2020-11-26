@@ -876,26 +876,28 @@ You may retrieve the parent of a polymorphic relation from the polymorphic child
 <a name="custom-polymorphic-types"></a>
 ### Custom Polymorphic Types
 
-By default, Laravel will use the fully qualified class name to store the type of the related model. For instance, given the one-to-many example above where a `Comment` may belong to a `Post` or a `Video`, the default `commentable_type` would be either `App\Models\Post` or `App\Models\Video`, respectively. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a "morph map" to instruct Eloquent to use a custom name for each model instead of the class name:
+By default, Laravel will use the fully qualified class name to store the "type" of the related model. For instance, given the one-to-many relationship example above where a `Comment` model may belong to a `Post` or a `Video` model, the default `commentable_type` would be either `App\Models\Post` or `App\Models\Video`, respectively. However, you may wish to decouple these values from your application's internal structure.
+
+For example, instead of using the model names as the "type", we may use simple strings such as `post` and `video`. By doing so, the polymorphic "type" column values in our database will remain valid even if the models are renamed:
 
     use Illuminate\Database\Eloquent\Relations\Relation;
 
     Relation::morphMap([
-        'posts' => 'App\Models\Post',
-        'videos' => 'App\Models\Video',
+        'post' => 'App\Models\Post',
+        'video' => 'App\Models\Video',
     ]);
 
-You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
+You may register the `morphMap` in the `boot` function of your `App\Providers\AppServiceProvider` class or create a separate service provider if you wish.
 
-> {note} When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
-
-You may determine the morph alias of a given model at runtime using the `getMorphClass` method. Conversely, you may determine the fully-qualified class name associated with a morph alias using the `Relation::getMorphedModel` method:
+You may determine the morph alias of a given model at runtime using the model's `getMorphClass` method. Conversely, you may determine the fully-qualified class name associated with a morph alias using the `Relation::getMorphedModel` method:
 
     use Illuminate\Database\Eloquent\Relations\Relation;
 
     $alias = $post->getMorphClass();
 
     $class = Relation::getMorphedModel($alias);
+
+> {note} When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
 
 <a name="dynamic-relationships"></a>
 ### Dynamic Relationships
