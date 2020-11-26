@@ -568,7 +568,7 @@ If you have defined a many-to-many relationship that uses a custom pivot model, 
 <a name="polymorphic-relationships"></a>
 ## Polymorphic Relationships
 
-A polymorphic relationship allows the target model to belong to more than one type of model using a single association.
+A polymorphic relationship allows the child model to belong to more than one type of model using a single association. For example, imagine you are building an application that allows users to share blog posts and videos. a `Comment` model might belong to both the `Post` and `Video` models.
 
 <a name="one-to-one-polymorphic-relations"></a>
 ### One To One (Polymorphic)
@@ -576,7 +576,7 @@ A polymorphic relationship allows the target model to belong to more than one ty
 <a name="one-to-one-polymorphic-table-structure"></a>
 #### Table Structure
 
-A one-to-one polymorphic relation is similar to a simple one-to-one relation; however, the target model can belong to more than one type of model on a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a one-to-one polymorphic relation allows you to have a single list of unique images that are used for both blog posts and user accounts. First, let's examine the table structure:
+A one-to-one polymorphic relation is similar to a typical one-to-one relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a one-to-one polymorphic relation allows you to have a single list of unique images that are used for both blog posts and user accounts. First, let's examine the table structure:
 
     posts
         id - integer
@@ -592,7 +592,7 @@ A one-to-one polymorphic relation is similar to a simple one-to-one relation; ho
         imageable_id - integer
         imageable_type - string
 
-Take note of the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Eloquent to determine which "type" of parent model to return when accessing the `imageable` relation.
+Note the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Eloquent to determine which "type" of parent model to return when accessing the `imageable` relation.
 
 <a name="one-to-one-polymorphic-model-structure"></a>
 #### Model Structure
@@ -608,7 +608,7 @@ Next, let's examine the model definitions needed to build this relationship:
     class Image extends Model
     {
         /**
-         * Get the owning imageable model.
+         * Get the parent imageable model (user or post).
          */
         public function imageable()
         {
@@ -623,7 +623,7 @@ Next, let's examine the model definitions needed to build this relationship:
          */
         public function image()
         {
-            return $this->morphOne('App\Models\Image', 'imageable');
+            return $this->morphOne(Image::class, 'imageable');
         }
     }
 
@@ -634,26 +634,35 @@ Next, let's examine the model definitions needed to build this relationship:
          */
         public function image()
         {
-            return $this->morphOne('App\Models\Image', 'imageable');
+            return $this->morphOne(Image::class, 'imageable');
         }
     }
 
 <a name="one-to-one-polymorphic-retrieving-the-relationship"></a>
 #### Retrieving The Relationship
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to retrieve the image for a post, we can use the `image` dynamic property:
+Once your database table and models are defined, you may access the relationships via your models. For example, to retrieve the image for a post, we can access the `image` dynamic relationship property:
 
-    $post = App\Models\Post::find(1);
+    use App\Models\Post;
+
+    $post = Post::find(1);
 
     $image = $post->image;
 
-You may also retrieve the parent from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `imageable` method on the `Image` model. So, we will access that method as a dynamic property:
+You may retrieve the parent of the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `imageable` method on the `Image` model. So, we will access that method as a dynamic relationship property:
 
-    $image = App\Models\Image::find(1);
+    use App\Models\Image;
+
+    $image = Image::find(1);
 
     $imageable = $image->imageable;
 
-The `imageable` relation on the `Image` model will return either a `Post` or `User` instance, depending on which type of model owns the image. If you need to specify custom `type` and `id` columns for the `morphTo` relation, always ensure you pass the relationship name (which should exactly match the method name) as the first parameter:
+The `imageable` relation on the `Image` model will return either a `Post` or `User` instance, depending on which type of model owns the image.
+
+<a name="morph-one-to-one-key-conventions"></a>
+#### Key Conventions
+
+If necessary, you may specify the name of the "id" and "type" columns utilized by your polymorphic child model. If you do so, ensure that you always pass the name of the relationship as the first argument to the `morphTo` method. Typically, this value should match the method name, so you may use PHP's `__FUNCTION__` constant:
 
     /**
      * Get the model that the image belongs to.
@@ -669,7 +678,7 @@ The `imageable` relation on the `Image` model will return either a `Post` or `Us
 <a name="one-to-many-polymorphic-table-structure"></a>
 #### Table Structure
 
-A one-to-many polymorphic relation is similar to a simple one-to-many relation; however, the target model can belong to more than one type of model on a single association. For example, imagine users of your application can "comment" on both posts and videos. Using polymorphic relationships, you may use a single `comments` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
+A one-to-many polymorphic relation is similar to a typical one-to-many relation; however, the child model can belong to more than one type of model using a single association. For example, imagine users of your application can "comment" on posts and videos. Using polymorphic relationships, you may use a single `comments` table to contain comments for both posts and videos. First, let's examine the table structure required to build this relationship:
 
     posts
         id - integer
@@ -701,7 +710,7 @@ Next, let's examine the model definitions needed to build this relationship:
     class Comment extends Model
     {
         /**
-         * Get the owning commentable model.
+         * Get the parent commentable model (post or video).
          */
         public function commentable()
         {
@@ -716,7 +725,7 @@ Next, let's examine the model definitions needed to build this relationship:
          */
         public function comments()
         {
-            return $this->morphMany('App\Models\Comment', 'commentable');
+            return $this->morphMany(Comment::class, 'commentable');
         }
     }
 
@@ -727,28 +736,32 @@ Next, let's examine the model definitions needed to build this relationship:
          */
         public function comments()
         {
-            return $this->morphMany('App\Models\Comment', 'commentable');
+            return $this->morphMany(Comment::class, 'commentable');
         }
     }
 
 <a name="one-to-many-polymorphic-retrieving-the-relationship"></a>
 #### Retrieving The Relationship
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the comments for a post, we can use the `comments` dynamic property:
+Once your database table and models are defined, you may access the relationships via your model's dynamic relationship properties. For example, to access all of the comments for a post, we can use the `comments` dynamic property:
 
-    $post = App\Models\Post::find(1);
+    use App\Models\Post;
+
+    $post = Post::find(1);
 
     foreach ($post->comments as $comment) {
         //
     }
 
-You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `commentable` method on the `Comment` model. So, we will access that method as a dynamic property:
+You may also retrieve the parent of a polymorphic child model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `commentable` method on the `Comment` model. So, we will access that method as a dynamic relationship property:
 
-    $comment = App\Models\Comment::find(1);
+    use App\Models\Comment;
+
+    $comment = Comment::find(1);
 
     $commentable = $comment->commentable;
 
-The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model owns the comment.
+The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model is the comment's parent.
 
 <a name="many-to-many-polymorphic-relations"></a>
 ### Many To Many (Polymorphic)
@@ -756,7 +769,7 @@ The `commentable` relation on the `Comment` model will return either a `Post` or
 <a name="many-to-many-polymorphic-table-structure"></a>
 #### Table Structure
 
-Many-to-many polymorphic relations are slightly more complicated than `morphOne` and `morphMany` relationships. For example, a blog `Post` and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation allows you to have a single list of unique tags that are shared across blog posts and videos. First, let's examine the table structure:
+Many-to-many polymorphic relations are slightly more complicated than `morphOne` and `morphMany` relationships. For example, a blog `Post` and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation in this situation would allow your application to have a single list of unique tags that are shared across blog posts and videos. First, let's examine the table structure required to build this relationship:
 
     posts
         id - integer
@@ -775,10 +788,14 @@ Many-to-many polymorphic relations are slightly more complicated than `morphOne`
         taggable_id - integer
         taggable_type - string
 
+> {tip} Before diving into polymorphic many-to-many relationships, you may benefit from reading the documentation on typical [many-to-many relationships](#many-to-many).
+
 <a name="many-to-many-polymorphic-model-structure"></a>
 #### Model Structure
 
-Next, we're ready to define the relationships on the model. The `Post` and `Video` models will both have a `tags` method that calls the `morphToMany` method on the base Eloquent class:
+Next, we're ready to define the relationships on the models. The `Post` and `Video` models will both have a `tags` method that calls the `morphToMany` method provided by the base Eloquent model class.
+
+The `morphToMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we are referring to the relationship as "taggable":
 
     <?php
 
@@ -793,14 +810,16 @@ Next, we're ready to define the relationships on the model. The `Post` and `Vide
          */
         public function tags()
         {
-            return $this->morphToMany('App\Models\Tag', 'taggable');
+            return $this->morphToMany(Tag::class, 'taggable');
         }
     }
 
 <a name="many-to-many-polymorphic-defining-the-inverse-of-the-relationship"></a>
 #### Defining The Inverse Of The Relationship
 
-Next, on the `Tag` model, you should define a method for each of its related models. So, for this example, we will define a `posts` method and a `videos` method:
+Next, on the `Tag` model, you should define a method for each of its related models. So, for this example, we will define a `posts` method and a `videos` method. Both of these methods should return the result of the `morphedByMany` method.
+
+The `morphedByMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we are referring to the relationship as "taggable":
 
     <?php
 
@@ -815,7 +834,7 @@ Next, on the `Tag` model, you should define a method for each of its related mod
          */
         public function posts()
         {
-            return $this->morphedByMany('App\Models\Post', 'taggable');
+            return $this->morphedByMany(Post::class, 'taggable');
         }
 
         /**
@@ -823,24 +842,32 @@ Next, on the `Tag` model, you should define a method for each of its related mod
          */
         public function videos()
         {
-            return $this->morphedByMany('App\Models\Video', 'taggable');
+            return $this->morphedByMany(Video::class, 'taggable');
         }
     }
 
 <a name="many-to-many-polymorphic-retrieving-the-relationship"></a>
 #### Retrieving The Relationship
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you can use the `tags` dynamic property:
+Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you can use the `tags` dynamic relationship property:
 
-    $post = App\Models\Post::find(1);
+    use App\Models\Post;
+
+    $post = Post::find(1);
 
     foreach ($post->tags as $tag) {
         //
     }
 
-You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphedByMany`. In our case, that is the `posts` or `videos` methods on the `Tag` model. So, you will access those methods as dynamic properties:
+You may retrieve the parent of a polymorphic relation from the polymorphic child model by accessing the name of the method that performs the call to `morphedByMany`. In this case, that is the `posts` or `videos` methods on the `Tag` model. So, you may access those methods as dynamic relationship properties:
 
-    $tag = App\Models\Tag::find(1);
+    use App\Models\Tag;
+
+    $tag = Tag::find(1);
+
+    foreach ($tag->posts as $post) {
+        //
+    }
 
     foreach ($tag->videos as $video) {
         //
