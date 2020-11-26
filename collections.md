@@ -184,6 +184,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [sortKeysDesc](#method-sortkeysdesc)
 [splice](#method-splice)
 [split](#method-split)
+[splitIn](#method-splitin)
 [sum](#method-sum)
 [take](#method-take)
 [takeUntil](#method-takeuntil)
@@ -2154,6 +2155,19 @@ The `split` method breaks a collection into the given number of groups:
     $groups->all();
 
     // [[1, 2], [3, 4], [5]]
+
+<a name="method-splitin"></a>
+#### `splitIn()` {#collection-method}
+
+The `splitIn` method breaks a collection into the given number of groups, filling non-terminal groups completely before allocating the remainder to the final group:
+
+    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+    $groups = $collection->split(3);
+
+    $groups->all();
+
+    // [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10]]
 
 <a name="method-sum"></a>
 #### `sum()` {#collection-method}
