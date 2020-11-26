@@ -22,8 +22,10 @@
     - [Querying Relationship Existence](#querying-relationship-existence)
     - [Querying Relationship Absence](#querying-relationship-absence)
     - [Querying `morphTo` Relationships](#querying-morph-to-relationships)
-    - [Aggregating Related Models](#aggregating-related-models)
-    - [Counting Related Models On Polymorphic Relationships](#counting-related-models-on-polymorphic-relationships)
+- [Aggregating Related Models](#aggregating-related-models)
+    - [Counting Related Models](#counting-related-models)
+    - [Other Aggregate Functions](#other-aggregate-functions)
+    - [Counting Related Models On `morphTo` Relationships](#counting-related-models-on-morph-to-relationships)
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
     - [Lazy Eager Loading](#lazy-eager-loading)
@@ -1114,25 +1116,27 @@ Instead of passing an array of possible polymorphic models, you may provide `*` 
     })->get();
 
 <a name="aggregating-related-models"></a>
-### Aggregating Related Models
+## Aggregating Related Models
 
 <a name="counting-related-models"></a>
-#### Counting Related Models
+### Counting Related Models
 
-If you want to count the number of results from a relationship without actually loading them you may use the `withCount` method, which will place a `{relation}_count` column on your resulting models. For example:
+Sometimes you may want to count the number of related models for a given relationship without actually loading the models. To accomplish this, you may use the `withCount` method. The `withCount` method which will place a `{relation}_count` attribute on the resulting models:
 
-    $posts = App\Models\Post::withCount('comments')->get();
+    use App\Models\Post;
+
+    $posts = Post::withCount('comments')->get();
 
     foreach ($posts as $post) {
         echo $post->comments_count;
     }
 
-You may add the "counts" for multiple relations as well as add constraints to the queries:
+By passing an array to the `withCount` method, you may add the "counts" for multiple relations as well as add additional constraints to the queries:
 
     use Illuminate\Database\Eloquent\Builder;
 
-    $posts = App\Models\Post::withCount(['votes', 'comments' => function (Builder $query) {
-        $query->where('content', 'like', 'foo%');
+    $posts = Post::withCount(['votes', 'comments' => function (Builder $query) {
+        $query->where('content', 'like', 'code%');
     }])->get();
 
     echo $posts[0]->votes_count;
@@ -1142,7 +1146,7 @@ You may also alias the relationship count result, allowing multiple counts on th
 
     use Illuminate\Database\Eloquent\Builder;
 
-    $posts = App\Models\Post::withCount([
+    $posts = Post::withCount([
         'comments',
         'comments as pending_comments_count' => function (Builder $query) {
             $query->where('approved', false);
@@ -1150,72 +1154,81 @@ You may also alias the relationship count result, allowing multiple counts on th
     ])->get();
 
     echo $posts[0]->comments_count;
-
     echo $posts[0]->pending_comments_count;
 
-If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
+<a name="deferred-count-loading"></a>
+#### Deferred Count Loading
 
-    $posts = App\Models\Post::select(['title', 'body'])->withCount('comments')->get();
+Using the `loadCount` method, you may load a relationship count after the parent model has already been retrieved:
 
-    echo $posts[0]->title;
-    echo $posts[0]->body;
-    echo $posts[0]->comments_count;
-
-In addition, using the `loadCount` method, you may load a relationship count after the parent model has already been retrieved:
-
-    $book = App\Models\Book::first();
+    $book = Book::first();
 
     $book->loadCount('genres');
 
-If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be closure instances which receive the query builder instance:
+If you need to set additional query constraints on the count query, you may pass an array keyed by the relationships you wish to count. The array values should be closures which receive the query builder instance:
 
     $book->loadCount(['reviews' => function ($query) {
         $query->where('rating', 5);
     }])
 
-#### Other Aggregate Functions
+<a name="relationship-counting-and-custom-select-statements"></a>
+#### Relationship Counting & Custom Select Statements
 
-In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `withAvg`, and `withSum`. These methods will place a `{relation}_{function}_{column}` column on your resulting models. For example:
+If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
 
-    $posts = App\Models\Post::withSum('comments', 'votes')->get();
+    $posts = Post::select(['title', 'body'])
+                    ->withCount('comments')
+                    ->get();
+
+<a name="other-aggregate-functions"></a>
+### Other Aggregate Functions
+
+In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `withAvg`, and `withSum` methods. These methods will place a `{relation}_{function}_{column}` attribute on your resulting models:
+
+    use App\Models\Post;
+
+    $posts = Post::withSum('comments', 'votes')->get();
 
     foreach ($posts as $post) {
         echo $post->comments_sum_votes;
     }
 
-These additional aggregate operations may also be performed on Eloquent models that have already been retrieved:
+Like the `loadCount` method, deferred versions of these methods are also available. These additional aggregate operations may be performed on Eloquent models that have already been retrieved:
 
-    $post = App\Models\Post::first();
+    $post = Post::first();
 
     $post->loadSum('comments', 'votes');
 
-<a name="counting-related-models-on-polymorphic-relationships"></a>
-### Counting Related Models On Polymorphic Relationships
+<a name="counting-related-models-on-morph-to-relationships"></a>
+### Counting Related Models On `morphTo` Relationships
 
-If you would like to eager load a `morphTo` relationship, as well as nested relationship counts on the various entities that may be returned by that relationship, you may use the `with` method in combination with the `morphTo` relationship's `morphWithCount` method.
+If you would like to eager load a "morph to" relationship, as well as related model counts for the various entities that may be returned by that relationship, you may utilize the `with` method in combination with the `morphTo` relationship's `morphWithCount` method.
 
-In this example, let's assume `Photo` and `Post` models may create `ActivityFeed` models. Additionally, let's assume that `Photo` models are associated with `Tag` models, and `Post` models are associated with `Comment` models.
+In this example, let's assume that `Photo` and `Post` models may create `ActivityFeed` models. We will assume the `ActivityFeed` model defines a "morph to" relationship named `parentable` that allows us to retrieve the parent `Photo` or `Post` model for a given `ActivityFeed` instance. Additionally, let's assume that `Photo` models "have many" `Tag` models and `Post` models "have many" `Comment` models.
 
-Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationship counts:
+Now, let's imagine we want to retrieve `ActivityFeed` instances and eager load the `parentable` parent models for each `ActivityFeed` instance. In addition, we want to retrieve the number of tags that are associated with each parent photo and the number of comments that are associated with each parent post:
 
     use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-    $activities = ActivityFeed::query()
-        ->with(['parentable' => function (MorphTo $morphTo) {
+    $activities = ActivityFeed::with([
+        'parentable' => function (MorphTo $morphTo) {
             $morphTo->morphWithCount([
                 Photo::class => ['tags'],
                 Post::class => ['comments'],
             ]);
         }])->get();
 
-In addition, you may use the `loadMorphCount` method to eager load all nested relationship counts on the various entities of the polymorphic relation if the `ActivityFeed` models have already been retrieved:
+<a name="morph-to-deferred-count-loading"></a>
+#### Deferred Count Loading
 
-    $activities = ActivityFeed::with('parentable')
-        ->get()
-        ->loadMorphCount('parentable', [
-            Photo::class => ['tags'],
-            Post::class => ['comments'],
-        ]);
+Let's assume we have already retrieved a set of `ActivityFeed` models and now we would like to load the nested relationship counts for the various `parentable` models associated with the activity feeds. You may use the `loadMorphCount` method to accomplish this:
+
+    $activities = ActivityFeed::with('parentable')->get();
+
+    $activities->loadMorphCount('parentable', [
+        Photo::class => ['tags'],
+        Post::class => ['comments'],
+    ]);
 
 <a name="eager-loading"></a>
 ## Eager Loading
