@@ -96,7 +96,7 @@ The `sticky` option is an *optional* value that can be used to allow the immedia
 <a name="using-multiple-database-connections"></a>
 ### Using Multiple Database Connections
 
-When using multiple connections, you may access each connection via the `connection` method on the `DB` facade. The `name` passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file:
+When using multiple connections, you may access each connection via the `connection` method on the `DB` facade. The `name` passed to the `connection` method should correspond to one of the connections either listed your `config/database.php` configuration file, or set at runtime using the [config](/docs/{{version}}/helpers#method-config) helper function:
 
     $users = DB::connection('foo')->select(...);
 
