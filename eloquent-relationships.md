@@ -21,11 +21,11 @@
     - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
     - [Querying Relationship Existence](#querying-relationship-existence)
     - [Querying Relationship Absence](#querying-relationship-absence)
-    - [Querying `morphTo` Relationships](#querying-morph-to-relationships)
+    - [Querying Morph To Relationships](#querying-morph-to-relationships)
 - [Aggregating Related Models](#aggregating-related-models)
     - [Counting Related Models](#counting-related-models)
     - [Other Aggregate Functions](#other-aggregate-functions)
-    - [Counting Related Models On `morphTo` Relationships](#counting-related-models-on-morph-to-relationships)
+    - [Counting Related Models On Morph To Relationships](#counting-related-models-on-morph-to-relationships)
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
     - [Lazy Eager Loading](#lazy-eager-loading)
@@ -237,6 +237,41 @@ If your parent model does not use `id` as its primary key, or you wish to find t
     public function post()
     {
         return $this->belongsTo(Post::class, 'foreign_key', 'owner_key');
+    }
+
+<a name="default-models"></a>
+#### Default Models
+
+The `belongsTo`, `hasOne`, `hasOneThrough`, and `morphOne` relationships allow you to define a default model that will be returned if the given relationship is `null`. This pattern is often referred to as the [Null Object pattern](https://en.wikipedia.org/wiki/Null_Object_pattern) and can help remove conditional checks in your code. In the following example, the `user` relation will return an empty `App\Models\User` model if no user is attached to the `Post` model:
+
+    /**
+     * Get the author of the post.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class)->withDefault();
+    }
+
+To populate the default model with attributes, you may pass an array or closure to the `withDefault` method:
+
+    /**
+     * Get the author of the post.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class)->withDefault([
+            'name' => 'Guest Author',
+        ]);
+    }
+
+    /**
+     * Get the author of the post.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class)->withDefault(function ($user, $post) {
+            $user->name = 'Guest Author';
+        });
     }
 
 <a name="has-one-through"></a>
@@ -1063,7 +1098,7 @@ You may use "dot" notation to execute a query against a nested relationship. For
     })->get();
 
 <a name="querying-morph-to-relationships"></a>
-### Querying `morphTo` Relationships
+### Querying Morph To Relationships
 
 To query the existence of "morph to" relationships, you may use the `whereHasMorph` and `whereDoesntHaveMorph` methods. These methods accept the name of the relationship as their first argument. Next, the methods accept the names of the related models that you wish to include in the query. Finally, you may provide a closure which customizes the relationship query:
 
@@ -1200,7 +1235,7 @@ Like the `loadCount` method, deferred versions of these methods are also availab
     $post->loadSum('comments', 'votes');
 
 <a name="counting-related-models-on-morph-to-relationships"></a>
-### Counting Related Models On `morphTo` Relationships
+### Counting Related Models On Morph To Relationships
 
 If you would like to eager load a "morph to" relationship, as well as related model counts for the various entities that may be returned by that relationship, you may utilize the `with` method in combination with the `morphTo` relationship's `morphWithCount` method.
 
@@ -1233,7 +1268,7 @@ Let's assume we have already retrieved a set of `ActivityFeed` models and now we
 <a name="eager-loading"></a>
 ## Eager Loading
 
-When accessing Eloquent relationships as properties, the relationship data is "lazy loaded". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can "eager load" relationships at the time you query the parent model. Eager loading alleviates the N + 1 query problem. To illustrate the N + 1 query problem, consider a `Book` model that is related to `Author`:
+When accessing Eloquent relationships as properties, the related models are "lazy loaded". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can "eager load" relationships at the time you query the parent model. Eager loading alleviates the "N + 1" query problem. To illustrate the N + 1 query problem, consider a `Book` model that "belongs to" to an `Author` model:
 
     <?php
 
@@ -1248,47 +1283,51 @@ When accessing Eloquent relationships as properties, the relationship data is "l
          */
         public function author()
         {
-            return $this->belongsTo('App\Models\Author');
+            return $this->belongsTo(Author::class);
         }
     }
 
 Now, let's retrieve all books and their authors:
 
-    $books = App\Models\Book::all();
+    use App\Models\Book;
+
+    $books = Book::all();
 
     foreach ($books as $book) {
         echo $book->author->name;
     }
 
-This loop will execute 1 query to retrieve all of the books on the table, then another query for each book to retrieve the author. So, if we have 25 books, the code above would run 26 queries: 1 for the original book, and 25 additional queries to retrieve the author of each book.
+This loop will execute one query to retrieve all of the books within the database table, then another query for each book in order to retrieve the book's author. So, if we have 25 books, the code above would run 26 queries: one for the original book, and 25 additional queries to retrieve the author of each book.
 
-Thankfully, we can use eager loading to reduce this operation to just 2 queries. When querying, you may specify which relationships should be eager loaded using the `with` method:
+Thankfully, we can use eager loading to reduce this operation to just two queries. When building a query, you may specify which relationships should be eager loaded using the `with` method:
 
-    $books = App\Models\Book::with('author')->get();
+    $books = Book::with('author')->get();
 
     foreach ($books as $book) {
         echo $book->author->name;
     }
 
-For this operation, only two queries will be executed:
+For this operation, only two queries will be executed - one query to retrieve all of the books and one query to retrieve all of the authors for all of the books:
 
-    select * from books
+```sql
+select * from books
 
-    select * from authors where id in (1, 2, 3, 4, 5, ...)
+select * from authors where id in (1, 2, 3, 4, 5, ...)
+```
 
 <a name="eager-loading-multiple-relationships"></a>
 #### Eager Loading Multiple Relationships
 
-Sometimes you may need to eager load several different relationships in a single operation. To do so, just pass additional arguments to the `with` method:
+Sometimes you may need to eager load several different relationships. To do so, just pass an array of relationships to the `with` method:
 
-    $books = App\Models\Book::with(['author', 'publisher'])->get();
+    $books = Book::with(['author', 'publisher'])->get();
 
 <a name="nested-eager-loading"></a>
 #### Nested Eager Loading
 
-To eager load nested relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts in one Eloquent statement:
+To eager a relationship's relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts:
 
-    $books = App\Models\Book::with('author.contacts')->get();
+    $books = Book::with('author.contacts')->get();
 
 <a name="nested-eager-loading-morphto-relationships"></a>
 #### Nested Eager Loading `morphTo` Relationships
@@ -1330,7 +1369,7 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
 
 You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve:
 
-    $books = App\Models\Book::with('author:id,name')->get();
+    $books = Book::with('author:id,name')->get();
 
 > {note} When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
 
@@ -1359,35 +1398,37 @@ Sometimes you might want to always load some relationships when retrieving a mod
          */
         public function author()
         {
-            return $this->belongsTo('App\Models\Author');
+            return $this->belongsTo(Author::class);
         }
     }
 
 If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:
 
-    $books = App\Models\Book::without('author')->get();
+    $books = Book::without('author')->get();
 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
 
-Sometimes you may wish to eager load a relationship, but also specify additional query conditions for the eager loading query. Here's an example:
+Sometimes you may wish to eager load a relationship but also specify additional query conditions for the eager loading query. You can accomplish this by passing an array of relationships to the `with` method where the array key is a relationship name and the array value is a closure that adds additional constraints to the eager loading query:
 
-    $users = App\Models\User::with(['posts' => function ($query) {
-        $query->where('title', 'like', '%first%');
+    use App\Models\User;
+
+    $users = User::with(['posts' => function ($query) {
+        $query->where('title', 'like', '%code%');
     }])->get();
 
-In this example, Eloquent will only eager load posts where the post's `title` column contains the word `first`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
+In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
 
-    $users = App\Models\User::with(['posts' => function ($query) {
+    $users = User::with(['posts' => function ($query) {
         $query->orderBy('created_at', 'desc');
     }])->get();
 
 > {note} The `limit` and `take` query builder methods may not be used when constraining eager loads.
 
 <a name="constraining-eager-loading-of-morph-to-relationships"></a>
-#### Constraining Eager Loading Of `MorphTo` Relationships
+#### Constraining Eager Loading Of `morphTo` Relationships
 
-If you are eager loading a `MorphTo` relationship, Eloquent will run multiple queries to fetch each different type of related model. You may target conditions to each of these queries using the `MorphTo` relation's `constrain` method:
+If you are eager loading a `morphTo` relationship, Eloquent will run multiple queries to fetch each type of related model. You may add additional constraints to each of these queries using the `MorphTo` relation's `constrain` method:
 
     use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -1410,7 +1451,9 @@ In this example, Eloquent will only eager load posts that have not been hidden a
 
 Sometimes you may need to eager load a relationship after the parent model has already been retrieved. For example, this may be useful if you need to dynamically decide whether to load related models:
 
-    $books = App\Models\Book::all();
+    use App\Models\Book;
+
+    $books = Book::all();
 
     if ($someCondition) {
         $books->load('author', 'publisher');
@@ -1424,15 +1467,7 @@ If you need to set additional query constraints on the eager loading query, you 
 
 To load a relationship only when it has not already been loaded, use the `loadMissing` method:
 
-    public function format(Book $book)
-    {
-        $book->loadMissing('author');
-
-        return [
-            'name' => $book->name,
-            'author' => $book->author->name,
-        ];
-    }
+    $book->loadMissing('author');
 
 <a name="nested-lazy-eager-loading-morphto"></a>
 #### Nested Lazy Eager Loading & `morphTo`
@@ -1472,25 +1507,28 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
 ## Inserting & Updating Related Models
 
 <a name="the-save-method"></a>
-### The Save Method
+### The `save` Method
 
-Eloquent provides convenient methods for adding new models to relationships. For example, perhaps you need to insert a new `Comment` for a `Post` model. Instead of manually setting the `post_id` attribute on the `Comment`, you may insert the `Comment` directly from the relationship's `save` method:
+Eloquent provides convenient methods for adding new models to relationships. For example, perhaps you need to add a new comment to a post. Instead of manually setting the `post_id` attribute on the `Comment` model you may insert the comment using the relationship's `save` method:
 
-    $comment = new App\Models\Comment(['message' => 'A new comment.']);
+    use App\Models\Comment;
+    use App\Models\Post;
 
-    $post = App\Models\Post::find(1);
+    $comment = new Comment(['message' => 'A new comment.']);
+
+    $post = Post::find(1);
 
     $post->comments()->save($comment);
 
-Notice that we did not access the `comments` relationship as a dynamic property. Instead, we called the `comments` method to obtain an instance of the relationship. The `save` method will automatically add the appropriate `post_id` value to the new `Comment` model.
+Note that we did not access the `comments` relationship as a dynamic property. Instead, we called the `comments` method to obtain an instance of the relationship. The `save` method will automatically add the appropriate `post_id` value to the new `Comment` model.
 
 If you need to save multiple related models, you may use the `saveMany` method:
 
-    $post = App\Models\Post::find(1);
+    $post = Post::find(1);
 
     $post->comments()->saveMany([
-        new App\Models\Comment(['message' => 'A new comment.']),
-        new App\Models\Comment(['message' => 'Another comment.']),
+        new Comment(['message' => 'A new comment.']),
+        new Comment(['message' => 'Another new comment.']),
     ]);
 
 The `save` and `saveMany` methods will not add the new models to any in-memory relationships that are already loaded onto the parent model. If you plan on accessing the relationship after using the `save` or `saveMany` methods, you may wish to use the `refresh` method to reload the model and its relationships:
@@ -1505,9 +1543,9 @@ The `save` and `saveMany` methods will not add the new models to any in-memory r
 <a name="the-push-method"></a>
 #### Recursively Saving Models & Relationships
 
-If you would like to `save` your model and all of its associated relationships, you may use the `push` method:
+If you would like to `save` your model and all of its associated relationships, you may use the `push` method. In this example, the `Post` model will be saved as well as its comments and the comment's authors:
 
-    $post = App\Models\Post::find(1);
+    $post = Post::find(1);
 
     $post->comments[0]->message = 'Message';
     $post->comments[0]->author->name = 'Author Name';
@@ -1515,84 +1553,49 @@ If you would like to `save` your model and all of its associated relationships, 
     $post->push();
 
 <a name="the-create-method"></a>
-### The Create Method
+### The `create` Method
 
-In addition to the `save` and `saveMany` methods, you may also use the `create` method, which accepts an array of attributes, creates a model, and inserts it into the database. Again, the difference between `save` and `create` is that `save` accepts a full Eloquent model instance while `create` accepts a plain PHP `array`:
+In addition to the `save` and `saveMany` methods, you may also use the `create` method, which accepts an array of attributes, creates a model, and inserts it into the database. The difference between `save` and `create` is that `save` accepts a full Eloquent model instance while `create` accepts a plain PHP `array`. The newly created model will be returned by the `create` method:
 
-    $post = App\Models\Post::find(1);
+    use App\Models\Post;
+
+    $post = Post::find(1);
 
     $comment = $post->comments()->create([
         'message' => 'A new comment.',
     ]);
 
-> {tip} Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent#mass-assignment).
-
 You may use the `createMany` method to create multiple related models:
 
-    $post = App\Models\Post::find(1);
+    $post = Post::find(1);
 
     $post->comments()->createMany([
-        [
-            'message' => 'A new comment.',
-        ],
-        [
-            'message' => 'Another new comment.',
-        ],
+        ['message' => 'A new comment.'],
+        ['message' => 'Another new comment.'],
     ]);
 
-You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate` and `updateOrCreate` methods to [create and update models on relationships](https://laravel.com/docs/{{version}}/eloquent#other-creation-methods).
+You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](https://laravel.com/docs/{{version}}/eloquent#other-creation-methods).
+
+> {tip} Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation.
 
 <a name="updating-belongs-to-relationships"></a>
 ### Belongs To Relationships
 
-When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
+If you would like to assign a child model to a new parent model, you may use the `associate` method. In this example, the `User` model defines a `belongsTo` relationship to the `Account` model. This `associate` method will set the foreign key on the child model:
 
-    $account = App\Models\Account::find(10);
+    use App\Models\Account;
+
+    $account = Account::find(10);
 
     $user->account()->associate($account);
 
     $user->save();
 
-When removing a `belongsTo` relationship, you may use the `dissociate` method. This method will set the relationship's foreign key to `null`:
+To remove a parent model from a child model, you may use the `dissociate` method. This method will set the relationship's foreign key to `null`:
 
     $user->account()->dissociate();
 
     $user->save();
-
-<a name="default-models"></a>
-#### Default Models
-
-The `belongsTo`, `hasOne`, `hasOneThrough`, and `morphOne` relationships allow you to define a default model that will be returned if the given relationship is `null`. This pattern is often referred to as the [Null Object pattern](https://en.wikipedia.org/wiki/Null_Object_pattern) and can help remove conditional checks in your code. In the following example, the `user` relation will return an empty `App\Models\User` model if no `user` is attached to the post:
-
-    /**
-     * Get the author of the post.
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User')->withDefault();
-    }
-
-To populate the default model with attributes, you may pass an array or closure to the `withDefault` method:
-
-    /**
-     * Get the author of the post.
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User')->withDefault([
-            'name' => 'Guest Author',
-        ]);
-    }
-
-    /**
-     * Get the author of the post.
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User')->withDefault(function ($user, $post) {
-            $user->name = 'Guest Author';
-        });
-    }
 
 <a name="updating-many-to-many-relationships"></a>
 ### Many To Many Relationships
@@ -1600,9 +1603,11 @@ To populate the default model with attributes, you may pass an array or closure 
 <a name="attaching-detaching"></a>
 #### Attaching / Detaching
 
-Eloquent also provides a few additional helper methods to make working with related models more convenient. For example, let's imagine a user can have many roles and a role can have many users. To attach a role to a user by inserting a record in the intermediate table that joins the models, use the `attach` method:
+Eloquent also provides methods to make working with many-to-many relationships more convenient. For example, let's imagine a user can have many roles and a role can have many users. You may use the `attach` method to attach a role to a user by inserting a record in the relationship's intermediate table:
 
-    $user = App\Models\User::find(1);
+    use App\Models\User;
+
+    $user = User::find(1);
 
     $user->roles()->attach($roleId);
 
@@ -1620,7 +1625,7 @@ Sometimes it may be necessary to remove a role from a user. To remove a many-to-
 
 For convenience, `attach` and `detach` also accept arrays of IDs as input:
 
-    $user = App\Models\User::find(1);
+    $user = User::find(1);
 
     $user->roles()->detach([1, 2, 3]);
 
@@ -1640,37 +1645,34 @@ You may also pass additional intermediate table values with the IDs:
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
 
-If you do not want to detach existing IDs, you may use the `syncWithoutDetaching` method:
+If you do not want to detach existing IDs that are missing from the given array, you may use the `syncWithoutDetaching` method:
 
     $user->roles()->syncWithoutDetaching([1, 2, 3]);
 
 <a name="toggling-associations"></a>
 #### Toggling Associations
 
-The many-to-many relationship also provides a `toggle` method which "toggles" the attachment status of the given IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:
+The many-to-many relationship also provides a `toggle` method which "toggles" the attachment status of the given related model IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:
 
     $user->roles()->toggle([1, 2, 3]);
 
-<a name="saving-additional-data-on-a-pivot-table"></a>
-#### Saving Additional Data On A Pivot Table
+<a name="updating-a-record-on-the-intermediate-table"></a>
+#### Updating A Record On The Intermediate Table
 
-When working with a many-to-many relationship, the `save` method accepts an array of additional intermediate table attributes as its second argument:
+If you need to update an existing row in your relationship's intermediate table, you may use the `updateExistingPivot` method. This method accepts the intermediate record foreign key and an array of attributes to update:
 
-    App\Models\User::find(1)->roles()->save($role, ['expires' => $expires]);
+    $user = User::find(1);
 
-<a name="updating-a-record-on-a-pivot-table"></a>
-#### Updating A Record On A Pivot Table
-
-If you need to update an existing row in your pivot table, you may use `updateExistingPivot` method. This method accepts the pivot record foreign key and an array of attributes to update:
-
-    $user = App\Models\User::find(1);
-
-    $user->roles()->updateExistingPivot($roleId, $attributes);
+    $user->roles()->updateExistingPivot($roleId, [
+        'active' => false,
+    ]);
 
 <a name="touching-parent-timestamps"></a>
 ## Touching Parent Timestamps
 
-When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` which belongs to a `Post`, it is sometimes helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically "touch" the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
+When a model defines a `belongsTo` or `belongsToMany` relationship to another model, such as a `Comment` which belongs to a `Post`, it is sometimes helpful to update the parent's timestamp when the child model is updated.
+
+For example, when a `Comment` model is updated, you may want to automatically "touch" the `updated_at` timestamp of the owning `Post` so that it is set to the current date and time. To accomplish this, you may add a `touches` property to your child model containing the names of the relationships that should have their `updated_at` timestamps updated when the child model is updated:
 
     <?php
 
@@ -1692,14 +1694,8 @@ When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` w
          */
         public function post()
         {
-            return $this->belongsTo('App\Models\Post');
+            return $this->belongsTo(Post::class);
         }
     }
 
-Now, when you update a `Comment`, the owning `Post` will have its `updated_at` column updated as well, making it more convenient to know when to invalidate a cache of the `Post` model:
-
-    $comment = App\Models\Comment::find(1);
-
-    $comment->text = 'Edit to this comment!';
-
-    $comment->save();
+> {note} Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method.
