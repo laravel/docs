@@ -92,7 +92,9 @@ Next, let's take a look at a simple controller that handles incoming requests to
 <a name="quick-writing-the-validation-logic"></a>
 ### Writing The Validation Logic
 
-Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an exception will be thrown and the proper error response will automatically be sent back to the user. A redirect response to the previous URL will be generated in the case of a traditional HTTP request. If the incoming request is an XHR request, a JSON response containing the validation error messages will be returned.
+Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an exception will be thrown and the proper error response will automatically be sent back to the user.
+
+If validation fails, a redirect response to the previous URL will be generated in the case of a traditional HTTP request. If the incoming request is an XHR request, a JSON response containing the validation error messages will be returned.
 
 To get a better understanding of the `validate` method, let's jump back into the `store` method:
 
@@ -161,7 +163,7 @@ On the other hand, if your field name contains a literal period, you can explici
 <a name="quick-displaying-the-validation-errors"></a>
 ### Displaying The Validation Errors
 
-So, what if the incoming request fields do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors will automatically be [flashed to the session](/docs/{{version}}/session#flash-data).
+So, what if the incoming request fields do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors and [request input](/docs/{{version}}/requests#retrieving-old-input) will automatically be [flashed to the session](/docs/{{version}}/session#flash-data).
 
 Note that we do not have to explicitly bind the error messages to the view in our `GET` route. This is because Laravel will check for errors in the session data, and automatically bind them to the view if they are available. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
 
@@ -453,8 +455,7 @@ You may use the `validateWithBag` method to store the error messages in a [named
 
 If you have multiple forms on a single page, you may wish to name the `MessageBag` containing the validation errors, allowing you to retrieve the error messages for a specific form. To achieve this, pass a name as the second argument to `withErrors`:
 
-    return redirect('register')
-                ->withErrors($validator, 'login');
+    return redirect('register')->withErrors($validator, 'login');
 
 You may then access the named `MessageBag` instance from the `$errors` variable:
 

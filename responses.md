@@ -240,6 +240,10 @@ After the user is redirected, you may display the flashed message from the [sess
         </div>
     @endif
 
+You may use the `withInput` method provided by the `RedirectResponse` instance to flash the current request's input data to the session before redirecting the user to a new location. This is typically done if the user has encountered a validation error. Once the input has been flashed to the session, you may easily [retrieve it](/docs/{{version}}/requests#retrieving-old-input) during the next request to re-populate the form:
+
+    return back()->withInput();
+
 <a name="other-response-types"></a>
 ## Other Response Types
 
