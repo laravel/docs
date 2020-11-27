@@ -179,6 +179,24 @@ Some database statements do not return any value. For these types of operations,
 
     DB::statement('drop table users');
 
+<a name="running-an-unprepared-statement"></a>
+#### Running An Unprepared Statement
+
+Sometimes you may want to execute an SQL statement without binding any values. You may use the `DB` facade's `unprepared` method to accomplish this:
+
+    DB::unprepared('update users set votes = 100 where name = "Dries"');
+
+> {note} Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
+
+<a name="implicit-commits-in-transactions"></a>
+#### Implicit Commits
+
+When using the `DB` facade's `statement` and `unprepared` methods within transactions you must be careful to avoid statements that cause [implicit commits](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html). These statements will cause the database engine to indirectly commit the entire transaction, leaving Laravel unaware of the database's transaction level. An example of such a statement is creating a database table:
+
+    DB::unprepared('create table a (col varchar(1) null)');
+
+Please refer to the MySQL manual for [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) that trigger implicit commits.
+
 <a name="listening-for-query-events"></a>
 ## Listening For Query Events
 
