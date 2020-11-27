@@ -182,22 +182,20 @@ Some database statements do not return any value. For these types of operations,
 <a name="running-an-unprepared-statement"></a>
 #### Running An Unprepared Statement
 
-Sometimes you may want to run a statement without binding any value. For these types of operations, you may use the `unprepared` method on the `DB` facade:
+Sometimes you may want to execute an SQL statement without binding any values. You may use the `DB` facade's `unprepared` method to accomplish this:
 
-    DB::unprepared('update users set votes = 100 where name = "john"');
-    
-Please note that these statements don't bind values like their counterparts above. They could open up your app to SQL injection and should be used very carefully.
+    DB::unprepared('update users set votes = 100 where name = "Dries"');
+
+> {note} Since unprepared statements do not bind parameters, they may be vulnerable to SQL injection. You should never allow user controlled values within an unprepared statement.
 
 <a name="implicit-commits-in-transactions"></a>
-#### Implicit Commits In Transactions
+#### Implicit Commits
 
-When running raw queries in transactions it's important to note that you must be careful to not use statements that cause [implicit commits](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) from happening. These sort of statements will cause the database engine to indirectly commit your your entire transaction, leaving your app in an invalid state. This can also cause tests that rely on the `DatabaseTransactions` trait to be broken. 
-
-An example of such a statement could be:
+When using the `DB` facade's `statement` and `unprepared` methods within transactions you must be careful to avoid statements that cause [implicit commits](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html). These statements will cause the database engine to indirectly commit the entire transaction, leaving Laravel unaware of the database's transaction level. An example of such a statement is creating a database table:
 
     DB::unprepared('create table a (col varchar(1) null)');
 
-Please reference the MySQL manual for [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) that can cause implicit commits from happening.
+Please refer to the MySQL manual for [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) that trigger implicit commits.
 
 <a name="listening-for-query-events"></a>
 ## Listening For Query Events
