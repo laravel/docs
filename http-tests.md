@@ -47,7 +47,7 @@ The `get` method makes a `GET` request into the application, while the `assertSt
 <a name="making-requests"></a>
 ## Making Requests
 
-To make a request to your application, you may invoke the `get`, `post`, `put`, `patch`, or `delete` methods within your test. These methods do not actually issue a network request to your application. Instead, the entire request is processed internally.
+To make a request to your application, you may invoke the `get`, `post`, `put`, `patch`, or `delete` methods within your test. These methods do not actually issue a "real" HTTP request to your application. Instead, the entire network request is simulated internally.
 
 Instead of returning an `Illuminate\Http\Response` instance, test request methods return an instance of `Illuminate\Testing\TestResponse`, which provides a [variety of helpful assertions](#available-assertions) that allow you to inspect your application's responses:
 
