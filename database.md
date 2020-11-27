@@ -188,6 +188,17 @@ Sometimes you may want to run a statement without binding any value. For these t
     
 Please note that these statements don't bind values like their counterparts above. They could open up your app to SQL injection and should be used very carefully.
 
+<a name="implicit-commits-in-transactions"></a>
+#### Implicit Commits In Transactions
+
+When running raw queries in transactions it's important to note that you must be careful to not use statements that cause [implicit commits](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) from happening. These sort of statements will cause the database engine to indirectly commit your your entire transaction, leaving your app in an invalid state. This can also cause tests that rely on the `DatabaseTransactions` trait to be broken. 
+
+An example of such a statement could be:
+
+    DB::unprepared('create table a (col varchar(1) null)');
+
+Please reference the MySQL manual for [a list of all statements](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html) that can cause implicit commits from happening.
+
 <a name="listening-for-query-events"></a>
 ## Listening For Query Events
 
