@@ -279,7 +279,7 @@ To populate the default model with attributes, you may pass an array or closure 
 
 The "has-one-through" relationship defines a one-to-one relationship with another model. However, this relationship indicates that the declaring model can be matched with one instance of another model by proceeding _through_ a third model.
 
-For example, in a vehicle repair shop application, each `Mechanic` model may be associated with one `Car` model, and each `Car` model may be associated with one `Owner` model. While the `Mechanic` and the `Owner` have no direct connection, the `Mechanic` can access the `Owner` _through_ the `Car` model. Let's look at the tables necessary to define this relationship:
+For example, in a vehicle repair shop application, each `Mechanic` model may be associated with one `Car` model, and each `Car` model may be associated with one `Owner` model. While the mechanic and the owner have no direct relationship within the database, the mechanic can access the owner _through_ the `Car` model. Let's look at the tables necessary to define this relationship:
 
     mechanics
         id - integer
@@ -790,7 +790,7 @@ Once your database table and models are defined, you may access the relationship
         //
     }
 
-You may also retrieve the parent of a polymorphic child model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `commentable` method on the `Comment` model. So, we will access that method as a dynamic relationship property:
+You may also retrieve the parent of a polymorphic child model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `commentable` method on the `Comment` model. So, we will access that method as a dynamic relationship property in order to access the comment's parent model:
 
     use App\Models\Comment;
 
@@ -806,7 +806,7 @@ The `commentable` relation on the `Comment` model will return either a `Post` or
 <a name="many-to-many-polymorphic-table-structure"></a>
 #### Table Structure
 
-Many-to-many polymorphic relations are slightly more complicated than `morphOne` and `morphMany` relationships. For example, a blog `Post` and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation in this situation would allow your application to have a single list of unique tags that are shared across blog posts and videos. First, let's examine the table structure required to build this relationship:
+Many-to-many polymorphic relations are slightly more complicated than "morph one" and "morph many" relationships. For example, a `Post` model and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation in this situation would allow your application to have a single table of unique tags that may be associated with posts or videos. First, let's examine the table structure required to build this relationship:
 
     posts
         id - integer
@@ -830,9 +830,9 @@ Many-to-many polymorphic relations are slightly more complicated than `morphOne`
 <a name="many-to-many-polymorphic-model-structure"></a>
 #### Model Structure
 
-Next, we're ready to define the relationships on the models. The `Post` and `Video` models will both have a `tags` method that calls the `morphToMany` method provided by the base Eloquent model class.
+Next, we're ready to define the relationships on the models. The `Post` and `Video` models will both contain a `tags` method that calls the `morphToMany` method provided by the base Eloquent model class.
 
-The `morphToMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we are referring to the relationship as "taggable":
+The `morphToMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as "taggable":
 
     <?php
 
@@ -854,9 +854,9 @@ The `morphToMany` method accepts the name of the related model as well as the "r
 <a name="many-to-many-polymorphic-defining-the-inverse-of-the-relationship"></a>
 #### Defining The Inverse Of The Relationship
 
-Next, on the `Tag` model, you should define a method for each of its related models. So, for this example, we will define a `posts` method and a `videos` method. Both of these methods should return the result of the `morphedByMany` method.
+Next, on the `Tag` model, you should define a method for each of its possible parent models. So, in this example, we will define a `posts` method and a `videos` method. Both of these methods should return the result of the `morphedByMany` method.
 
-The `morphedByMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we are referring to the relationship as "taggable":
+The `morphedByMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as "taggable":
 
     <?php
 
@@ -886,7 +886,7 @@ The `morphedByMany` method accepts the name of the related model as well as the 
 <a name="many-to-many-polymorphic-retrieving-the-relationship"></a>
 #### Retrieving The Relationship
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you can use the `tags` dynamic relationship property:
+Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you may use the `tags` dynamic relationship property:
 
     use App\Models\Post;
 
@@ -896,7 +896,7 @@ Once your database table and models are defined, you may access the relationship
         //
     }
 
-You may retrieve the parent of a polymorphic relation from the polymorphic child model by accessing the name of the method that performs the call to `morphedByMany`. In this case, that is the `posts` or `videos` methods on the `Tag` model. So, you may access those methods as dynamic relationship properties:
+You may retrieve the parent of a polymorphic relation from the polymorphic child model by accessing the name of the method that performs the call to `morphedByMany`. In this case, that is the `posts` or `videos` methods on the `Tag` model:
 
     use App\Models\Tag;
 
