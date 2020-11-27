@@ -532,7 +532,7 @@ When using `Castable` classes, you may still provide arguments in the `$casts` d
     ];
 
 <a name="anonymous-cast-classes"></a>
-#### Anonymous Cast Classes
+#### Castables & Anonymous Cast Classes
 
 By combining "castables" with PHP's [anonymous classes](https://www.php.net/manual/en/language.oop5.anonymous.php), you may define a value object and its casting logic as a single castable object. To accomplish this, return an anonymous class from your value object's `castUsing` method. The anonymous class should implement the `CastsAttributes` interface:
 
