@@ -179,6 +179,15 @@ Some database statements do not return any value. For these types of operations,
 
     DB::statement('drop table users');
 
+<a name="running-an-unprepared-statement"></a>
+#### Running An Unprepared Statement
+
+Sometimes you may want to run a statement without binding any value. For these types of operations, you may use the `unprepared` method on the `DB` facade:
+
+    DB::unprepared('update users set votes = 100 where name = "john"');
+    
+Please note that these statements don't bind values like their counterparts above. They could open up your app to SQL injection and should be used very carefully.
+
 <a name="listening-for-query-events"></a>
 ## Listening For Query Events
 
