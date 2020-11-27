@@ -67,7 +67,7 @@ However, you may extend Valet with your own [custom drivers](#custom-valet-drive
 
 <div class="content-list" markdown="1">
 - Install or update [Homebrew](https://brew.sh/) to the latest version using `brew update`.
-- Install PHP 7.4 using Homebrew via `brew install php`.
+- Install PHP 8.0 using Homebrew via `brew install php`.
 - Install [Composer](https://getcomposer.org).
 - Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/vendor/bin` directory is in your system's "PATH".
 - Run the `valet install` command. This will configure and install Valet and DnsMasq, and register Valet's daemon to launch when your system starts.
