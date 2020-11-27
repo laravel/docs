@@ -492,7 +492,7 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
 <a name="castables"></a>
 ### Castables
 
-Instead of attaching the custom cast to your model, you may alternatively attach a class that implements the `Illuminate\Contracts\Database\Eloquent\Castable` interface:
+You may want to allow your application's value objects to define their own custom cast classes. Instead of attaching the custom cast class to your model, you may alternatively attach a value object class that implements the `Illuminate\Contracts\Database\Eloquent\Castable` interface:
 
     use App\Models\Address;
 
@@ -523,7 +523,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
         }
     }
 
-When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed directly to the caster class:
+When using `Castable` classes, you may still provide arguments in the `$casts` definition. The arguments will be passed to the `castUsing` method:
 
     use App\Models\Address;
 
@@ -534,7 +534,7 @@ When using `Castable` classes, you may still provide arguments in the `$casts` d
 <a name="anonymous-cast-classes"></a>
 #### Anonymous Cast Classes
 
-By combining "castables" with PHP's [anonymous classes](https://www.php.net/manual/en/language.oop5.anonymous.php), you may define a value object and its casting logic within a single castable object. To accomplish this, return an anonymous class from your value object's `castUsing` method. The anonymous class should implement the `CastsAttributes` interface:
+By combining "castables" with PHP's [anonymous classes](https://www.php.net/manual/en/language.oop5.anonymous.php), you may define a value object and its casting logic as a single castable object. To accomplish this, return an anonymous class from your value object's `castUsing` method. The anonymous class should implement the `CastsAttributes` interface:
 
     <?php
 
