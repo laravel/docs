@@ -152,7 +152,9 @@ You may gracefully terminate the master Horizon process on your machine using th
 <a name="deploying-horizon"></a>
 ### Deploying Horizon
 
-If you are deploying Horizon to a live server, you should configure a process monitor to monitor the `php artisan horizon` command and restart it if it quits unexpectedly. When deploying fresh code to your server, you will need to instruct the master Horizon process to terminate so it can be restarted by your process monitor and receive your code changes.
+If you are deploying Horizon to a live server, you should configure a process monitor to monitor the `php artisan horizon` command and restart it if it quits unexpectedly. When deploying fresh code to your server, you will need to instruct the master Horizon process to terminate so it can be restarted by your process monitor and receive your code changes:
+
+    php artisan horizon:terminate
 
 <a name="installing-supervisor"></a>
 #### Installing Supervisor
