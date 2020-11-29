@@ -126,6 +126,7 @@ You may use the `validateWithBag` method to validate a request and store any err
         'body' => ['required'],
     ]);
 
+<a name="stopping-on-first-validation-failure"></a>
 #### Stopping On First Validation Failure
 
 Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
@@ -137,6 +138,7 @@ Sometimes you may wish to stop running validation rules on an attribute after th
 
 In this example, if the `unique` rule on the `title` attribute fails, the `max` rule will not be checked. Rules will be validated in the order they are assigned.
 
+<a name="a-note-on-nested-attributes"></a>
 #### A Note On Nested Attributes
 
 If your HTTP request contains "nested" parameters, you may specify them in your validation rules using "dot" syntax:
@@ -145,6 +147,13 @@ If your HTTP request contains "nested" parameters, you may specify them in your 
         'title' => 'required|unique:posts|max:255',
         'author.name' => 'required',
         'author.description' => 'required',
+    ]);
+
+On the other hand, if your field name contains a literal period, you can explicitly prevent this from being interpreted as "dot" syntax by escaping the period with a backslash:
+
+    $request->validate([
+        'title' => 'required|unique:posts|max:255',
+        'v1\.0' => 'required',
     ]);
 
 <a name="quick-displaying-the-validation-errors"></a>
@@ -174,6 +183,7 @@ So, in our example, the user will be redirected to our controller's `create` met
 
     <!-- Create Post Form -->
 
+<a name="the-at-error-directive"></a>
 #### The `@error` Directive
 
 You may also use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly check if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
@@ -249,8 +259,9 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
         $validated = $request->validated();
     }
 
-If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
+If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, an HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
 
+<a name="adding-after-hooks-to-form-requests"></a>
 #### Adding After Hooks To Form Requests
 
 If you would like to add an "after" hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods before the validation rules are actually evaluated:
@@ -291,7 +302,7 @@ Since all form requests extend the base Laravel request class, we may use the `u
 
     Route::post('comment/{comment}');
 
-If the `authorize` method returns `false`, a HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
+If the `authorize` method returns `false`, an HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
 
 If you plan to have authorization logic in another part of your application, return `true` from the `authorize` method:
 
@@ -399,7 +410,7 @@ If you do not want to use the `validate` method on the request, you may create a
         }
     }
 
-The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
+The first argument passed to the `make` method is the data under validation. The second argument is an array of the validation rules that should be applied to the data.
 
 After checking if the request validation failed, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
 
@@ -454,6 +465,7 @@ The validator also allows you to attach callbacks to be run after validation is 
 
 After calling the `errors` method on a `Validator` instance, you will receive an `Illuminate\Support\MessageBag` instance, which has a variety of convenient methods for working with error messages. The `$errors` variable that is automatically made available to all views is also an instance of the `MessageBag` class.
 
+<a name="retrieving-the-first-error-message-for-a-field"></a>
 #### Retrieving The First Error Message For A Field
 
 To retrieve the first error message for a given field, use the `first` method:
@@ -462,6 +474,7 @@ To retrieve the first error message for a given field, use the `first` method:
 
     echo $errors->first('email');
 
+<a name="retrieving-all-error-messages-for-a-field"></a>
 #### Retrieving All Error Messages For A Field
 
 If you need to retrieve an array of all the messages for a given field, use the `get` method:
@@ -476,6 +489,7 @@ If you are validating an array form field, you may retrieve all of the messages 
         //
     }
 
+<a name="retrieving-all-error-messages-for-all-fields"></a>
 #### Retrieving All Error Messages For All Fields
 
 To retrieve an array of all messages for all fields, use the `all` method:
@@ -484,6 +498,7 @@ To retrieve an array of all messages for all fields, use the `all` method:
         //
     }
 
+<a name="determining-if-messages-exist-for-a-field"></a>
 #### Determining If Messages Exist For A Field
 
 The `has` method may be used to determine if any error messages exist for a given field:
@@ -512,6 +527,7 @@ In this example, the `:attribute` placeholder will be replaced by the actual nam
         'in' => 'The :attribute must be one of the following types: :values',
     ];
 
+<a name="specifying-a-custom-message-for-a-given-attribute"></a>
 #### Specifying A Custom Message For A Given Attribute
 
 Sometimes you may wish to specify a custom error message only for a specific field. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule:
@@ -531,6 +547,7 @@ In most cases, you will probably specify your custom messages in a language file
         ],
     ],
 
+<a name="specifying-custom-attribute-values"></a>
 #### Specifying Custom Attribute Values
 
 If you would like the `:attribute` portion of your validation message to be replaced with a custom attribute name, you may specify the custom name in the `attributes` array of your `resources/lang/xx/validation.php` language file:
@@ -547,6 +564,7 @@ You may also pass the custom attributes as the fourth argument to the `Validator
 
     $validator = Validator::make($input, $rules, $messages, $customAttributes);
 
+<a name="specifying-custom-values-in-language-files"></a>
 #### Specifying Custom Values In Language Files
 
 Sometimes you may need the `:value` portion of your validation message to be replaced with a custom representation of the value. For example, consider the following rule that specifies that a credit card number is required if the `payment_type` has a value of `cc`:
@@ -632,6 +650,7 @@ Below is a list of all available validation rules and their function:
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
+[Multiple Of](#multiple-of)
 [Not In](#rule-not-in)
 [Not Regex](#rule-not-regex)
 [Nullable](#rule-nullable)
@@ -834,12 +853,14 @@ The field under validation will be excluded from the request data returned by th
 
 The field under validation must exist on a given database table.
 
+<a name="basic-usage-of-exists-rule"></a>
 #### Basic Usage Of Exists Rule
 
     'state' => 'exists:states'
 
 If the `column` option is not specified, the field name will be used.
 
+<a name="specifying-a-custom-column-name"></a>
 #### Specifying A Custom Column Name
 
     'state' => 'exists:states,abbreviation'
@@ -921,10 +942,12 @@ The field under validation must be an integer.
 
 The field under validation must be an IP address.
 
+<a name="ipv4"></a>
 #### ipv4
 
 The field under validation must be an IPv4 address.
 
+<a name="ipv6"></a>
 #### ipv6
 
 The field under validation must be an IPv6 address.
@@ -963,6 +986,7 @@ To determine the MIME type of the uploaded file, the file's contents will be rea
 
 The file under validation must have a MIME type corresponding to one of the listed extensions.
 
+<a name="basic-usage-of-mime-rule"></a>
 #### Basic Usage Of MIME Rule
 
     'photo' => 'mimes:jpeg,bmp,png'
@@ -975,6 +999,11 @@ A full listing of MIME types and their corresponding extensions may be found at 
 #### min:_value_
 
 The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+
+<a name="multiple-of"></a>
+#### multiple_of:_value_
+
+The field under validation must be a multiple of _value_.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
@@ -1196,6 +1225,7 @@ The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) univ
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules
 
+<a name="skipping-validation-when-fields-have-certain-values"></a>
 #### Skipping Validation When Fields Have Certain Values
 
 You may occasionally wish to not validate a given field if another field has a given value. You may accomplish this using the `exclude_if` validation rule. In this example, the `appointment_date` and `doctor_name` fields will not be validated if the `has_appointment` field has a value of `false`:
@@ -1214,6 +1244,7 @@ Alternatively, you may use the `exclude_unless` rule to not validate a given fie
         'doctor_name' => 'exclude_unless:has_appointment,true|required|string',
     ]);
 
+<a name="validating-when-present"></a>
 #### Validating When Present
 
 In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
@@ -1226,6 +1257,7 @@ In the example above, the `email` field will only be validated if it is present 
 
 > {tip} If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields)
 
+<a name="complex-conditional-validation"></a>
 #### Complex Conditional Validation
 
 Sometimes you may wish to add validation rules based on more complex conditional logic. For example, you may wish to require a given field only if another field has a greater value than 100. Or, you may need two fields to have a given value only when another field is present. Adding these validation rules doesn't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
@@ -1241,7 +1273,7 @@ Let's assume our web application is for game collectors. If a game collector reg
         return $input->games >= 100;
     });
 
-The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
+The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is a list of the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
 
     $v->sometimes(['reason', 'cost'], 'required', function ($input) {
         return $input->games >= 100;
@@ -1396,6 +1428,7 @@ You may also pass a class and method to the `extend` method instead of a Closure
 
     Validator::extend('foo', 'FooValidator@validate');
 
+<a name="defining-the-error-message"></a>
 #### Defining The Error Message
 
 You will also need to define an error message for your custom rule. You can do so either using an inline custom message array or by adding an entry in the validation language file. This message should be placed in the first level of the array, not within the `custom` array, which is only for attribute-specific error messages:
@@ -1441,6 +1474,7 @@ For a rule to run even when an attribute is empty, the rule must imply that the 
 
 > {note} An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
 
+<a name="implicit-rule-objects"></a>
 #### Implicit Rule Objects
 
 If you would like a rule object to run when an attribute is empty, you should implement the `Illuminate\Contracts\Validation\ImplicitRule` interface. This interface serves as a "marker interface" for the validator; therefore, it does not contain any methods you need to implement.

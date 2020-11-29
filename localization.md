@@ -51,6 +51,7 @@ You may configure a "fallback language", which will be used when the active lang
 
     'fallback_locale' => 'en',
 
+<a name="determining-the-current-locale"></a>
 #### Determining The Current Locale
 
 You may use the `getLocale` and `isLocale` methods on the `App` facade to determine the current locale or check if the locale is a given value:
@@ -89,13 +90,17 @@ All language files return an array of keyed strings. For example:
 <a name="using-translation-strings-as-keys"></a>
 ### Using Translation Strings As Keys
 
-For applications with heavy translation requirements, defining every string with a "short key" can become quickly confusing when referencing them in your views. For this reason, Laravel also provides support for defining translation strings using the "default" translation of the string as the key.
+For applications with heavy translation requirements, defining every string with a "short key" can become confusing when referencing the keys in your views. For this reason, Laravel also provides support for defining translation strings using the "default" translation of the string as the key.
 
 Translation files that use translation strings as keys are stored as JSON files in the `resources/lang` directory. For example, if your application has a Spanish translation, you should create a `resources/lang/es.json` file:
 
     {
         "I love programming.": "Me encanta programar."
     }
+
+#### Key / File Conflicts
+
+You should not define translation string keys that conflict with other translation file names. For example, translating `__('Action')` for the "NL" locale while a `nl/action.php` file exists but a `nl.json` file does not exist will result in the translator returning the contents of `nl/action.php`.
 
 <a name="retrieving-translation-strings"></a>
 ## Retrieving Translation Strings

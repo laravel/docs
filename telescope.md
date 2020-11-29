@@ -12,6 +12,7 @@
     - [Batches](#filtering-batches)
 - [Tagging](#tagging)
 - [Available Watchers](#available-watchers)
+    - [Batch Watcher](#batch-watcher)
     - [Cache Watcher](#cache-watcher)
     - [Command Watcher](#command-watcher)
     - [Dump Watcher](#dump-watcher)
@@ -27,6 +28,7 @@
     - [Redis Watcher](#redis-watcher)
     - [Request Watcher](#request-watcher)
     - [Schedule Watcher](#schedule-watcher)
+    - [View Watcher](#view-watcher)
 - [Displaying User Avatars](#displaying-user-avatars)
 
 <a name="introduction"></a>
@@ -34,9 +36,7 @@
 
 Laravel Telescope is an elegant debug assistant for the Laravel framework. Telescope provides insight into the requests coming into your application, exceptions, log entries, database queries, queued jobs, mail, notifications, cache operations, scheduled tasks, variable dumps and more. Telescope makes a wonderful companion to your local Laravel development environment.
 
-<p align="center">
-<img src="https://laravel.com/assets/img/examples/Screen_Shot_2018-10-09_at_1.47.23_PM.png" width="600">
-</p>
+<img src="https://laravel.com/img/docs/telescope-example.png">
 
 <a name="installation"></a>
 ## Installation
@@ -51,6 +51,7 @@ After installing Telescope, publish its assets using the `telescope:install` Art
 
     php artisan migrate
 
+<a name="installing-only-in-specific-environments"></a>
 ### Installing Only In Specific Environments
 
 If you plan to only use Telescope to assist your local development, you may install Telescope using the `--dev` flag:
@@ -66,7 +67,7 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
      */
     public function register()
     {
-        if ($this->app->isLocal()) {
+        if ($this->app->environment('local')) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
@@ -167,7 +168,7 @@ You may filter the data that is recorded by Telescope via the `filter` callback 
         $this->hideSensitiveRequestDetails();
 
         Telescope::filter(function (IncomingEntry $entry) {
-            if ($this->app->isLocal()) {
+            if ($this->app->environment('local')) {
                 return true;
             }
 
@@ -195,7 +196,7 @@ While the `filter` callback filters data for individual entries, you may use the
         $this->hideSensitiveRequestDetails();
 
         Telescope::filterBatch(function (Collection $entries) {
-            if ($this->app->isLocal()) {
+            if ($this->app->environment('local')) {
                 return true;
             }
 
@@ -253,6 +254,11 @@ Some watchers also allow you to provide additional customization options:
         ],
         ...
     ],
+
+<a name="batch-watcher"></a>
+### Batch Watcher
+
+The batch watcher records information about queued batches, including the job and connection information.
 
 <a name="cache-watcher"></a>
 ### Cache Watcher
@@ -368,6 +374,11 @@ The request watcher records the request, headers, session, and response data ass
 ### Schedule Watcher
 
 The schedule watcher records the command and output of any scheduled tasks run by your application.
+
+<a name="view-watcher"></a>
+### View Watcher
+
+The view watcher records the view name, path, data, and "composers" used when rendering views.
 
 <a name="displaying-user-avatars"></a>
 ## Displaying User Avatars

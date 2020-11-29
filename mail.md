@@ -40,23 +40,25 @@ The API based drivers such as Mailgun and Postmark are often simpler and faster 
 
     composer require guzzlehttp/guzzle
 
+<a name="mailgun-driver"></a>
 #### Mailgun Driver
 
 To use the Mailgun driver, first install Guzzle, then set the `default` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file contains the following options:
 
     'mailgun' => [
-        'domain' => 'your-mailgun-domain',
-        'secret' => 'your-mailgun-key',
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
     ],
 
 If you are not using the "US" [Mailgun region](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions), you may define your region's endpoint in the `services` configuration file:
 
     'mailgun' => [
-        'domain' => 'your-mailgun-domain',
-        'secret' => 'your-mailgun-key',
-        'endpoint' => 'api.eu.mailgun.net',
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.eu.mailgun.net'),
     ],
 
+<a name="postmark-driver"></a>
 #### Postmark Driver
 
 To use the Postmark driver, install Postmark's SwiftMailer transport via Composer:
@@ -66,9 +68,10 @@ To use the Postmark driver, install Postmark's SwiftMailer transport via Compose
 Next, install Guzzle and set the `default` option in your `config/mail.php` configuration file to `postmark`. Finally, verify that your `config/services.php` configuration file contains the following options:
 
     'postmark' => [
-        'token' => 'your-postmark-token',
+        'token' => env('POSTMARK_TOKEN'),
     ],
 
+<a name="ses-driver"></a>
 #### SES Driver
 
 To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. You may install this library by adding the following line to your `composer.json` file's `require` section and running the `composer update` command:
@@ -78,17 +81,17 @@ To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. 
 Next, set the `default` option in your `config/mail.php` configuration file to `ses` and verify that your `config/services.php` configuration file contains the following options:
 
     'ses' => [
-        'key' => 'your-ses-key',
-        'secret' => 'your-ses-secret',
-        'region' => 'ses-region',  // e.g. us-east-1
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
 If you need to include [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-email-2010-12-01.html#sendrawemail) when executing the SES `SendRawEmail` request, you may define an `options` array within your `ses` configuration:
 
     'ses' => [
-        'key' => 'your-ses-key',
-        'secret' => 'your-ses-secret',
-        'region' => 'ses-region',  // e.g. us-east-1
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
         'options' => [
             'ConfigurationSetName' => 'MyConfigurationSet',
             'Tags' => [
@@ -115,6 +118,7 @@ All of a mailable class' configuration is done in the `build` method. Within thi
 <a name="configuring-the-sender"></a>
 ### Configuring The Sender
 
+<a name="using-the-from-method"></a>
 #### Using The `from` Method
 
 First, let's explore configuring the sender of the email. Or, in other words, who the email is going to be "from". There are two ways to configure the sender. First, you may use the `from` method within your mailable class' `build` method:
@@ -130,6 +134,7 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
                     ->view('emails.orders.shipped');
     }
 
+<a name="using-a-global-from-address"></a>
 #### Using A Global `from` Address
 
 However, if your application uses the same "from" address for all of its emails, it can become cumbersome to call the `from` method in each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
@@ -157,6 +162,7 @@ Within a mailable class' `build` method, you may use the `view` method to specif
 
 > {tip} You may wish to create a `resources/views/emails` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory.
 
+<a name="plain-text-emails"></a>
 #### Plain Text Emails
 
 If you would like to define a plain-text version of your email, you may use the `text` method. Like the `view` method, the `text` method accepts a template name which will be used to render the contents of the email. You are free to define both an HTML and plain-text version of your message:
@@ -175,6 +181,7 @@ If you would like to define a plain-text version of your email, you may use the 
 <a name="view-data"></a>
 ### View Data
 
+<a name="via-public-properties"></a>
 #### Via Public Properties
 
 Typically, you will want to pass some data to your view that you can utilize when rendering the email's HTML. There are two ways you may make data available to your view. First, any public property defined on your mailable class will automatically be made available to the view. So, for example, you may pass data into your mailable class' constructor and set that data to public properties defined on the class:
@@ -227,6 +234,7 @@ Once the data has been set to a public property, it will automatically be availa
         Price: {{ $order->price }}
     </div>
 
+<a name="via-the-with-method"></a>
 #### Via The `with` Method:
 
 If you would like to customize the format of your email's data before it is sent to the template, you may manually pass your data to the view via the `with` method. Typically, you will still pass data via the mailable class' constructor; however, you should set this data to `protected` or `private` properties so the data is not automatically made available to the template. Then, when calling the `with` method, pass an array of data that you wish to make available to the template:
@@ -315,6 +323,7 @@ When attaching files to a message, you may also specify the display name and / o
                     ]);
     }
 
+<a name="attaching-files-from-disk"></a>
 #### Attaching Files from Disk
 
 If you have stored a file on one of your [filesystem disks](/docs/{{version}}/filesystem), you may attach it to the email using the `attachFromStorage` method:
@@ -358,6 +367,7 @@ The `attachFromStorageDisk` method may be used if you need to specify a storage 
                    ->attachFromStorageDisk('s3', '/path/to/file');
     }
 
+<a name="raw-data-attachments"></a>
 #### Raw Data Attachments
 
 The `attachData` method may be used to attach a raw string of bytes as an attachment. For example, you might use this method if you have generated a PDF in memory and want to attach it to the email without writing it to disk. The `attachData` method accepts the raw data bytes as its first argument, the name of the file as its second argument, and an array of options as its third argument:
@@ -388,6 +398,7 @@ Embedding inline images into your emails is typically cumbersome; however, Larav
 
 > {note} `$message` variable is not available in plain-text messages since plain-text messages do not utilize inline attachments.
 
+<a name="embedding-raw-data-attachments"></a>
 #### Embedding Raw Data Attachments
 
 If you already have a raw data string you wish to embed into an email template, you may use the `embedData` method on the `$message` variable:
@@ -463,6 +474,7 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
 
 > {tip} Do not use excess indentation when writing Markdown emails. Markdown parsers will render indented content as code blocks.
 
+<a name="button-component"></a>
 #### Button Component
 
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:
@@ -471,6 +483,7 @@ The button component renders a centered button link. The component accepts two a
     View Order
     @endcomponent
 
+<a name="panel-component"></a>
 #### Panel Component
 
 The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the message. This allows you to draw attention to a given block of text:
@@ -479,6 +492,7 @@ The panel component renders the given block of text in a panel that has a slight
     This is the panel content.
     @endcomponent
 
+<a name="table-component"></a>
 #### Table Component
 
 The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
@@ -499,6 +513,7 @@ You may export all of the Markdown mail components to your own application for c
 
 This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain an `html` and a `text` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
 
+<a name="customizing-the-css"></a>
 #### Customizing The CSS
 
 After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown mail messages.
@@ -550,6 +565,7 @@ You are not limited to just specifying the "to" recipients when sending a messag
         ->bcc($evenMoreUsers)
         ->send(new OrderShipped($order));
 
+<a name="looping-over-recipients"></a>
 #### Looping Over Recipients
 
 Occasionally, you may need to send a mailable to a list of recipients by iterating over an array of recipients / email addresses. Since the `to` method appends email addresses to the mailable's list of recipients, you should always re-create the mailable instance for each recipient:
@@ -558,6 +574,7 @@ Occasionally, you may need to send a mailable to a list of recipients by iterati
         Mail::to($recipient)->send(new OrderShipped($order));
     }
 
+<a name="sending-mail-via-a-specific-mailer"></a>
 #### Sending Mail Via A Specific Mailer
 
 By default, Laravel will use the mailer configured as the `default` mailer in your `mail` configuration file. However, you may use the `mailer` method to send a message using a specific mailer configuration:
@@ -569,6 +586,7 @@ By default, Laravel will use the mailer configured as the `default` mailer in yo
 <a name="queueing-mail"></a>
 ### Queueing Mail
 
+<a name="queueing-a-mail-message"></a>
 #### Queueing A Mail Message
 
 Since sending email messages can drastically lengthen the response time of your application, many developers choose to queue email messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/{{version}}/queues). To queue a mail message, use the `queue` method on the `Mail` facade after specifying the message's recipients:
@@ -580,6 +598,7 @@ Since sending email messages can drastically lengthen the response time of your 
 
 This method will automatically take care of pushing a job onto the queue so the message is sent in the background. You will need to [configure your queues](/docs/{{version}}/queues) before using this feature.
 
+<a name="delayed-message-queueing"></a>
 #### Delayed Message Queueing
 
 If you wish to delay the delivery of a queued email message, you may use the `later` method. As its first argument, the `later` method accepts a `DateTime` instance indicating when the message should be sent:
@@ -591,6 +610,7 @@ If you wish to delay the delivery of a queued email message, you may use the `la
         ->bcc($evenMoreUsers)
         ->later($when, new OrderShipped($order));
 
+<a name="pushing-to-specific-queues"></a>
 #### Pushing To Specific Queues
 
 Since all mailable classes generated using the `make:mail` command make use of the `Illuminate\Bus\Queueable` trait, you may call the `onQueue` and `onConnection` methods on any mailable class instance, allowing you to specify the connection and queue name for the message:
@@ -604,6 +624,7 @@ Since all mailable classes generated using the `make:mail` command make use of t
         ->bcc($evenMoreUsers)
         ->queue($message);
 
+<a name="queueing-by-default"></a>
 #### Queueing By Default
 
 If you have mailable classes that you want to always be queued, you may implement the `ShouldQueue` contract on the class. Now, even if you call the `send` method when mailing, the mailable will still be queued since it implements the contract:
@@ -635,6 +656,8 @@ When designing a mailable's template, it is convenient to quickly preview the re
         return new App\Mail\InvoicePaid($invoice);
     });
 
+> {note} [Inline attachements](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com).
+
 <a name="localizing-mailables"></a>
 ## Localizing Mailables
 
@@ -646,6 +669,7 @@ To accomplish this, the `Mail` facade offers a `locale` method to set the desire
         new OrderShipped($order)
     );
 
+<a name="user-preferred-locales"></a>
 ### User Preferred Locales
 
 Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on one or more of your models, you may instruct Laravel to use this stored locale when sending mail:
@@ -674,10 +698,12 @@ Once you have implemented the interface, Laravel will automatically use the pref
 
 When developing an application that sends email, you probably don't want to actually send emails to live email addresses. Laravel provides several ways to "disable" the actual sending of emails during local development.
 
+<a name="log-driver"></a>
 #### Log Driver
 
 Instead of sending your emails, the `log` mail driver will write all email messages to your log files for inspection. For more information on configuring your application per environment, check out the [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
 
+<a name="universal-to"></a>
 #### Universal To
 
 Another solution provided by Laravel is to set a universal recipient of all emails sent by the framework. This way, all the emails generated by your application will be sent to a specific address, instead of the address actually specified when sending the message. This can be done via the `to` option in your `config/mail.php` configuration file:
@@ -687,6 +713,7 @@ Another solution provided by Laravel is to set a universal recipient of all emai
         'name' => 'Example'
     ],
 
+<a name="mailtrap"></a>
 #### Mailtrap
 
 Finally, you may use a service like [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer.

@@ -24,13 +24,14 @@ To generate a resource class, you may use the `make:resource` Artisan command. B
 
     php artisan make:resource User
 
+<a name="generating-resource-collections"></a>
 #### Resource Collections
 
 In addition to generating resources that transform individual models, you may generate resources that are responsible for transforming collections of models. This allows your response to include links and other meta information that is relevant to an entire collection of a given resource.
 
 To create a resource collection, you should use the `--collection` flag when creating the resource. Or, including the word `Collection` in the resource name will indicate to Laravel that it should create a collection resource. Collection resources extend the `Illuminate\Http\Resources\Json\ResourceCollection` class:
 
-    php artisan make:resource Users --collection
+    php artisan make:resource User --collection
 
     php artisan make:resource UserCollection
 
@@ -128,6 +129,7 @@ After defining your resource collection, it may be returned from a route or cont
         return new UserCollection(User::all());
     });
 
+<a name="preserving-collection-keys"></a>
 #### Preserving Collection Keys
 
 When returning a resource collection from a route, Laravel resets the collection's keys so that they are in simple numerical order. However, you may add a `preserveKeys` property to your resource class indicating if collection keys should be preserved:
@@ -157,6 +159,7 @@ When the `preserveKeys` property is set to `true`, collection keys will be prese
         return UserResource::collection(User::all()->keyBy->id);
     });
 
+<a name="customizing-the-underlying-resource-class"></a>
 #### Customizing The Underlying Resource Class
 
 Typically, the `$this->collection` property of a resource collection is automatically populated with the result of mapping each item of the collection to its singular resource class. The singular resource class is assumed to be the collection's class name without the trailing `Collection` string.
@@ -221,6 +224,7 @@ Once a resource has been defined, it may be returned directly from a route or co
         return new UserResource(User::find(1));
     });
 
+<a name="relationships"></a>
 #### Relationships
 
 If you would like to include related resources in your response, you may add them to the array returned by your `toArray` method. In this example, we will use the `Post` resource's `collection` method to add the user's blog posts to the resource response:
@@ -245,6 +249,7 @@ If you would like to include related resources in your response, you may add the
 
 > {tip} If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships).
 
+<a name="writing-resource-collections"></a>
 #### Resource Collections
 
 While resources translate a single model into an array, resource collections translate a collection of models into an array. It is not absolutely necessary to define a resource collection class for each one of your model types since all resources provide a `collection` method to generate an "ad-hoc" resource collection on the fly:
@@ -364,6 +369,7 @@ If you would like to disable the wrapping of the outermost resource, you may use
 
 > {note} The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections.
 
+<a name="wrapping-nested-resources"></a>
 ### Wrapping Nested Resources
 
 You have total freedom to determine how your resource's relationships are wrapped. If you would like all resource collections to be wrapped in a `data` key, regardless of their nesting, you should define a resource collection class for each resource and return the collection within a `data` key.
@@ -390,6 +396,7 @@ You may be wondering if this will cause your outermost resource to be wrapped in
         }
     }
 
+<a name="data-wrapping-and-pagination"></a>
 ### Data Wrapping And Pagination
 
 When returning paginated collections in a resource response, Laravel will wrap your resource data in a `data` key even if the `withoutWrapping` method has been called. This is because paginated responses always contain `meta` and `links` keys with information about the paginator's state:
@@ -499,6 +506,7 @@ The `when` method also accepts a Closure as its second argument, allowing you to
         return 'secret-value';
     }),
 
+<a name="merging-conditional-attributes"></a>
 #### Merging Conditional Attributes
 
 Sometimes you may have several attributes that should only be included in the resource response based on the same condition. In this case, you may use the `mergeWhen` method to include the attributes in the response only when the given condition is `true`:
@@ -555,6 +563,7 @@ Ultimately, this makes it easier to avoid "N+1" query problems within your resou
 
 In this example, if the relationship has not been loaded, the `posts` key will be removed from the resource response entirely before it is sent to the client.
 
+<a name="conditional-pivot-information"></a>
 #### Conditional Pivot Information
 
 In addition to conditionally including relationship information in your resource responses, you may conditionally include data from the intermediate tables of many-to-many relationships using the `whenPivotLoaded` method. The `whenPivotLoaded` method accepts the name of the pivot table as its first argument. The second argument should be a Closure that defines the value to be returned if the pivot information is available on the model:
@@ -618,6 +627,7 @@ Some JSON API standards require the addition of meta data to your resource and r
 
 When returning additional meta data from your resources, you never have to worry about accidentally overriding the `links` or `meta` keys that are automatically added by Laravel when returning paginated responses. Any additional `links` you define will be merged with the links provided by the paginator.
 
+<a name="top-level-meta-data"></a>
 #### Top Level Meta Data
 
 Sometimes you may wish to only include certain meta data with a resource response if the resource is the outermost resource being returned. Typically, this includes meta information about the response as a whole. To define this meta data, add a `with` method to your resource class. This method should return an array of meta data to be included with the resource response only when the resource is the outermost resource being rendered:
@@ -657,6 +667,7 @@ Sometimes you may wish to only include certain meta data with a resource respons
         }
     }
 
+<a name="adding-meta-data-when-constructing-resources"></a>
 #### Adding Meta Data When Constructing Resources
 
 You may also add top-level data when constructing resource instances in your route or controller. The `additional` method, which is available on all resources, accepts an array of data that should be added to the resource response:

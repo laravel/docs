@@ -19,6 +19,7 @@
 - [Programmatically Executing Commands](#programmatically-executing-commands)
     - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
 - [Stub Customization](#stub-customization)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -36,12 +37,16 @@ Every command also includes a "help" screen which displays and describes the com
 
 Laravel Tinker is a powerful REPL for the Laravel framework, powered by the [PsySH](https://github.com/bobthecow/psysh) package.
 
+<a name="installation"></a>
 #### Installation
 
 All Laravel applications include Tinker by default. However, you may install it manually if needed using Composer:
 
     composer require laravel/tinker
 
+> {tip} Looking for a graphical UI for interacting with your Laravel application? Check out [Tinkerwell](https://tinkerwell.app)!
+
+<a name="usage"></a>
 #### Usage
 
 Tinker allows you to interact with your entire Laravel application on the command line, including the Eloquent ORM, jobs, events, and more. To enter the Tinker environment, run the `tinker` Artisan command:
@@ -54,6 +59,7 @@ You can publish Tinker's configuration file using the `vendor:publish` command:
 
 > {note} The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. Therefore, when using tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs.
 
+<a name="command-whitelist"></a>
 #### Command Whitelist
 
 Tinker utilizes a white-list to determine which Artisan commands are allowed to be run within its shell. By default, you may run the `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize`, and `up` commands. If you would like to white-list more commands you may add them to the `commands` array in your `tinker.php` configuration file:
@@ -62,6 +68,7 @@ Tinker utilizes a white-list to determine which Artisan commands are allowed to 
         // App\Console\Commands\ExampleCommand::class,
     ],
 
+<a name="classes-that-should-not-be-aliased"></a>
 #### Classes That Should Not Be Aliased
 
 Typically, Tinker automatically aliases classes as you require them in Tinker. However, you may wish to never alias some classes. You may accomplish this by listing the classes in the `dont_alias` array of your `tinker.php` configuration file:
@@ -160,6 +167,7 @@ Even though this file does not define HTTP routes, it defines console based entr
 
 The Closure is bound to the underlying command instance, so you have full access to all of the helper methods you would typically be able to access on a full command class.
 
+<a name="type-hinting-dependencies"></a>
 #### Type-Hinting Dependencies
 
 In addition to receiving your command's arguments and options, command Closures may also type-hint additional dependencies that you would like resolved out of the [service container](/docs/{{version}}/container):
@@ -171,6 +179,7 @@ In addition to receiving your command's arguments and options, command Closures 
         $drip->send(User::find($user));
     });
 
+<a name="closure-command-descriptions"></a>
 #### Closure Command Descriptions
 
 When defining a Closure based command, you may use the `describe` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
@@ -331,6 +340,7 @@ The `secret` method is similar to `ask`, but the user's input will not be visibl
 
     $password = $this->secret('What is the password?');
 
+<a name="asking-for-confirmation"></a>
 #### Asking For Confirmation
 
 If you need to ask the user for a simple confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` or `yes` in response to the prompt, the method will return `true`.
@@ -339,6 +349,7 @@ If you need to ask the user for a simple confirmation, you may use the `confirm`
         //
     }
 
+<a name="auto-completion"></a>
 #### Auto-Completion
 
 The `anticipate` method can be used to provide auto-completion for possible choices. The user can still choose any answer, regardless of the auto-completion hints:
@@ -351,6 +362,7 @@ Alternatively, you may pass a Closure as the second argument to the `anticipate`
         // Return auto-completion options...
     });
 
+<a name="multiple-choice-questions"></a>
 #### Multiple Choice Questions
 
 If you need to give the user a predefined set of choices, you may use the `choice` method. You may set the array index of the default value to be returned if no option is chosen:
@@ -390,6 +402,14 @@ If you would like to display plain, uncolored console output, use the `line` met
 
     $this->line('Display this on the screen');
 
+You may use the `newLine` method to display a blank line:
+
+    $this->newLine();
+
+    // Write three blank lines...
+    $this->newLine(3);
+
+<a name="table-layouts"></a>
 #### Table Layouts
 
 The `table` method makes it easy to correctly format multiple rows / columns of data. Just pass in the headers and rows to the method. The width and height will be dynamically calculated based on the given data:
@@ -400,6 +420,7 @@ The `table` method makes it easy to correctly format multiple rows / columns of 
 
     $this->table($headers, $users);
 
+<a name="progress-bars"></a>
 #### Progress Bars
 
 For long running tasks, it could be helpful to show a progress indicator. Using the output object, we can start, advance and stop the Progress Bar. First, define the total number of steps the process will iterate through. Then, advance the Progress Bar after processing each item:
@@ -477,6 +498,7 @@ You may also specify the connection or queue the Artisan command should be dispa
         'user' => 1, '--queue' => 'default'
     ])->onConnection('redis')->onQueue('commands');
 
+<a name="passing-array-values"></a>
 #### Passing Array Values
 
 If your command defines an option that accepts an array, you may pass an array of values to that option:
@@ -487,6 +509,7 @@ If your command defines an option that accepts an array, you may pass an array o
         ]);
     });
 
+<a name="passing-boolean-values"></a>
 #### Passing Boolean Values
 
 If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you should pass `true` or `false`:
@@ -528,3 +551,8 @@ The Artisan console's `make` commands are used to create a variety of classes, s
     php artisan stub:publish
 
 The published stubs will be located within a `stubs` directory in the root of your application. Any changes you make to these stubs will be reflected when you generate their corresponding classes using Artisan `make` commands.
+
+<a name="events"></a>
+## Events
+
+Artisan dispatches three events when running commands: `Illuminate\Console\Events\ArtisanStarting`, `Illuminate\Console\Events\CommandStarting`, and `Illuminate\Console\Events\CommandFinished`. The `ArtisanStarting` event is dispatched immediately when Artisan starts running. Next, the `CommandStarting` event is dispatched immediately before a command runs. Finally, the `CommandFinished` event is dispatched once a command finishes executing.

@@ -24,13 +24,14 @@
 <a name="configuration"></a>
 ## Configuration
 
-Laravel provides an expressive, unified API for various caching backends. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like to be used by default throughout your application. Laravel supports popular caching backends like [Memcached](https://memcached.org) and [Redis](https://redis.io) out of the box.
+Laravel provides an expressive, unified API for various caching backends. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like to be used by default throughout your application. Laravel supports popular caching backends like [Memcached](https://memcached.org), [Redis](https://redis.io), and [DynamoDB](https://aws.amazon.com/dynamodb) out of the box. Laravel also supports an APC, Array, Database, File, and `null` cache driver.
 
 The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use a more robust driver such as Memcached or Redis. You may even configure multiple cache configurations for the same driver.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
+<a name="prerequisites-database"></a>
 #### Database
 
 When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
@@ -43,6 +44,7 @@ When using the `database` cache driver, you will need to setup a table to contai
 
 > {tip} You may also use the `php artisan cache:table` Artisan command to generate a migration with the proper schema.
 
+<a name="memcached"></a>
 #### Memcached
 
 Using the Memcached driver requires the [Memcached PECL package](https://pecl.php.net/package/memcached) to be installed. You may list all of your Memcached servers in the `config/cache.php` configuration file:
@@ -65,6 +67,7 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
         ],
     ],
 
+<a name="redis"></a>
 #### Redis
 
 Before using a Redis cache with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer.
@@ -102,6 +105,7 @@ However, you may also use the `Cache` facade, which is what we will use througho
         }
     }
 
+<a name="accessing-multiple-cache-stores"></a>
 #### Accessing Multiple Cache Stores
 
 Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
@@ -125,6 +129,7 @@ You may even pass a `Closure` as the default value. The result of the `Closure` 
         return DB::table(...)->get();
     });
 
+<a name="checking-for-item-existence"></a>
 #### Checking For Item Existence
 
 The `has` method may be used to determine if an item exists in the cache. This method will return `false` if the value is `null`:
@@ -133,6 +138,7 @@ The `has` method may be used to determine if an item exists in the cache. This m
         //
     }
 
+<a name="incrementing-decrementing-values"></a>
 #### Incrementing / Decrementing Values
 
 The `increment` and `decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods accept an optional second argument indicating the amount by which to increment or decrement the item's value:
@@ -142,6 +148,7 @@ The `increment` and `decrement` methods may be used to adjust the value of integ
     Cache::decrement('key');
     Cache::decrement('key', $amount);
 
+<a name="retrieve-store"></a>
 #### Retrieve & Store
 
 Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
@@ -158,6 +165,7 @@ You may use the `rememberForever` method to retrieve an item from the cache or s
         return DB::table('users')->get();
     });
 
+<a name="retrieve-delete"></a>
 #### Retrieve & Delete
 
 If you need to retrieve an item from the cache and then delete the item, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
@@ -179,12 +187,14 @@ Instead of passing the number of seconds as an integer, you may also pass a `Dat
 
     Cache::put('key', 'value', now()->addMinutes(10));
 
+<a name="store-if-not-present"></a>
 #### Store If Not Present
 
 The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
 
     Cache::add('key', 'value', $seconds);
 
+<a name="storing-items-forever"></a>
 #### Storing Items Forever
 
 The `forever` method may be used to store an item in the cache permanently. Since these items will not expire, they must be manually removed from the cache using the `forget` method:
@@ -270,11 +280,12 @@ In contrast, this statement would remove only caches tagged with `authors`, so `
 <a name="atomic-locks"></a>
 ## Atomic Locks
 
-> {note} To utilize this feature, your application must be using the `memcached`, `dynamodb`, `redis`, `database`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+> {note} To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
 
 <a name="lock-driver-prerequisites"></a>
 ### Driver Prerequisites
 
+<a name="atomic-locks-prerequisites-database"></a>
 #### Database
 
 When using the `database` cache driver, you will need to setup a table to contain the cache locks. You'll find an example `Schema` declaration for the table below:

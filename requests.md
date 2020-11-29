@@ -39,6 +39,7 @@ To obtain an instance of the current HTTP request via dependency injection, you 
         }
     }
 
+<a name="dependency-injection-route-parameters"></a>
 #### Dependency Injection & Route Parameters
 
 If your controller method is also expecting input from a route parameter you should list your route parameters after your other dependencies. For example, if your route is defined like so:
@@ -70,6 +71,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
         }
     }
 
+<a name="accessing-the-request-via-route-closures"></a>
 #### Accessing The Request Via Route Closures
 
 You may also type-hint the `Illuminate\Http\Request` class on a route Closure. The service container will automatically inject the incoming request into the Closure when it is executed:
@@ -85,6 +87,7 @@ You may also type-hint the `Illuminate\Http\Request` class on a route Closure. T
 
 The `Illuminate\Http\Request` instance provides a variety of methods for examining the HTTP request for your application and extends the `Symfony\Component\HttpFoundation\Request` class. We will discuss a few of the most important methods below.
 
+<a name="retrieving-the-request-path"></a>
 #### Retrieving The Request Path
 
 The `path` method returns the request's path information. So, if the incoming request is targeted at `http://domain.com/foo/bar`, the `path` method will return `foo/bar`:
@@ -97,6 +100,7 @@ The `is` method allows you to verify that the incoming request path matches a gi
         //
     }
 
+<a name="retrieving-the-request-url"></a>
 #### Retrieving The Request URL
 
 To retrieve the full URL for the incoming request you may use the `url` or `fullUrl` methods. The `url` method will return the URL without the query string, while the `fullUrl` method includes the query string:
@@ -107,6 +111,7 @@ To retrieve the full URL for the incoming request you may use the `url` or `full
     // With Query String...
     $url = $request->fullUrl();
 
+<a name="retrieving-the-request-method"></a>
 #### Retrieving The Request Method
 
 The `method` method will return the HTTP verb for the request. You may use the `isMethod` method to verify that the HTTP verb matches a given string:
@@ -145,12 +150,14 @@ If you would like to disable this behavior, you may remove the two middleware fr
 <a name="retrieving-input"></a>
 ## Retrieving Input
 
+<a name="retrieving-all-input-data"></a>
 #### Retrieving All Input Data
 
 You may also retrieve all of the input data as an `array` using the `all` method:
 
     $input = $request->all();
 
+<a name="retrieving-an-input-value"></a>
 #### Retrieving An Input Value
 
 Using a few simple methods, you may access all of the user input from your `Illuminate\Http\Request` instance without worrying about which HTTP verb was used for the request. Regardless of the HTTP verb, the `input` method may be used to retrieve user input:
@@ -171,9 +178,10 @@ You may call the `input` method without any arguments in order to retrieve all o
 
     $input = $request->input();
 
+<a name="retrieving-input-from-the-query-string"></a>
 #### Retrieving Input From The Query String
 
-While the `input` method retrieves values from entire request payload (including the query string), the `query` method will only retrieve values from the query string:
+While the `input` method retrieves values from the entire request payload (including the query string), the `query` method will only retrieve values from the query string:
 
     $name = $request->query('name');
 
@@ -185,6 +193,7 @@ You may call the `query` method without any arguments in order to retrieve all o
 
     $query = $request->query();
 
+<a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input Via Dynamic Properties
 
 You may also access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
@@ -193,18 +202,21 @@ You may also access user input using dynamic properties on the `Illuminate\Http\
 
 When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the route parameters.
 
+<a name="retrieving-json-input-values"></a>
 #### Retrieving JSON Input Values
 
 When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to dig into JSON arrays:
 
     $name = $request->input('user.name');
 
+<a name="retrieving-boolean-input-values"></a>
 #### Retrieving Boolean Input Values
 
 When dealing with HTML elements like checkboxes, your application may receive "truthy" values that are actually strings. For example, "true" or "on". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for 1, "1", true, "true", "on", and "yes". All other values will return `false`:
 
     $archived = $request->boolean('archived');
 
+<a name="retrieving-a-portion-of-the-input-data"></a>
 #### Retrieving A Portion Of The Input Data
 
 If you need to retrieve a subset of the input data, you may use the `only` and `except` methods. Both of these methods accept a single `array` or a dynamic list of arguments:
@@ -219,6 +231,7 @@ If you need to retrieve a subset of the input data, you may use the `only` and `
 
 > {tip} The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
 
+<a name="determining-if-an-input-value-is-present"></a>
 #### Determining If An Input Value Is Present
 
 You should use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:
@@ -233,6 +246,12 @@ When given an array, the `has` method will determine if all of the specified val
         //
     }
 
+The `whenHas` method will execute the given callback if a value is present on the request:
+
+    $request->whenHas('name', function ($input) {
+        //
+    });
+
 The `hasAny` method returns `true` if any of the specified values are present:
 
     if ($request->hasAny(['name', 'email'])) {
@@ -245,6 +264,12 @@ If you would like to determine if a value is present on the request and is not e
         //
     }
 
+The `whenFilled` method will execute the given callback if a value is present on the request and is not empty:
+
+    $request->whenFilled('name', function ($input) {
+        //
+    });
+
 To determine if a given key is absent from the request, you may use the `missing` method:
 
     if ($request->missing('name')) {
@@ -256,6 +281,7 @@ To determine if a given key is absent from the request, you may use the `missing
 
 Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation features](/docs/{{version}}/validation), it is unlikely you will need to manually use these methods, as some of Laravel's built-in validation facilities will call them automatically.
 
+<a name="flashing-input-to-the-session"></a>
 #### Flashing Input To The Session
 
 The `flash` method on the `Illuminate\Http\Request` class will flash the current input to the [session](/docs/{{version}}/session) so that it is available during the user's next request to the application:
@@ -268,6 +294,7 @@ You may also use the `flashOnly` and `flashExcept` methods to flash a subset of 
 
     $request->flashExcept('password');
 
+<a name="flashing-input-then-redirecting"></a>
 #### Flashing Input Then Redirecting
 
 Since you often will want to flash input to the session and then redirect to the previous page, you may easily chain input flashing onto a redirect using the `withInput` method:
@@ -278,6 +305,7 @@ Since you often will want to flash input to the session and then redirect to the
         $request->except('password')
     );
 
+<a name="retrieving-old-input"></a>
 #### Retrieving Old Input
 
 To retrieve flashed input from the previous request, use the `old` method on the `Request` instance. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):
@@ -291,9 +319,10 @@ Laravel also provides a global `old` helper. If you are displaying old input wit
 <a name="cookies"></a>
 ### Cookies
 
+<a name="retrieving-cookies-from-requests"></a>
 #### Retrieving Cookies From Requests
 
-All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on a `Illuminate\Http\Request` instance:
+All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on an `Illuminate\Http\Request` instance:
 
     $value = $request->cookie('name');
 
@@ -303,6 +332,7 @@ Alternatively, you may use the `Cookie` facade to access cookie values:
 
     $value = Cookie::get('name');
 
+<a name="attaching-cookies-to-responses"></a>
 #### Attaching Cookies To Responses
 
 You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and number of minutes the cookie should be considered valid to this method:
@@ -323,6 +353,7 @@ Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment
 
     Cookie::queue('name', 'value', $minutes);
 
+<a name="generating-cookie-instances"></a>
 #### Generating Cookie Instances
 
 If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be given to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
@@ -331,6 +362,7 @@ If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instan
 
     return response('Hello World')->cookie($cookie);
 
+<a name="expiring-cookies-early"></a>
 #### Expiring Cookies Early
 
 You may remove a cookie by expiring it via the `forget` method of the `Cookie` facade:
@@ -349,7 +381,7 @@ Alternatively, you may attach the expired cookie to a response instance:
 <a name="retrieving-uploaded-files"></a>
 ### Retrieving Uploaded Files
 
-You may access uploaded files from a `Illuminate\Http\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\Http\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:
+You may access uploaded files from an `Illuminate\Http\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\Http\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:
 
     $file = $request->file('photo');
 
@@ -361,6 +393,7 @@ You may determine if a file is present on the request using the `hasFile` method
         //
     }
 
+<a name="validating-successful-uploads"></a>
 #### Validating Successful Uploads
 
 In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:
@@ -369,6 +402,7 @@ In addition to checking if the file is present, you may verify that there were n
         //
     }
 
+<a name="file-paths-extensions"></a>
 #### File Paths & Extensions
 
 The `UploadedFile` class also contains methods for accessing the file's fully-qualified path and its extension. The `extension` method will attempt to guess the file's extension based on its contents. This extension may be different from the extension that was supplied by the client:
@@ -377,6 +411,7 @@ The `UploadedFile` class also contains methods for accessing the file's fully-qu
 
     $extension = $request->photo->extension();
 
+<a name="other-file-methods"></a>
 #### Other File Methods
 
 There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](https://api.symfony.com/master/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
@@ -436,6 +471,7 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
 
 > {tip} If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
 
+<a name="trusting-all-proxies"></a>
 #### Trusting All Proxies
 
 If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:

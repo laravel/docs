@@ -96,11 +96,7 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
 <a name="running-seeders"></a>
 ## Running Seeders
 
-Once you have written your seeder, you may need to regenerate Composer's autoloader using the `dump-autoload` command:
-
-    composer dump-autoload
-
-Now you may use the `db:seed` Artisan command to seed your database. By default, the `db:seed` command runs the `DatabaseSeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
+You may use the `db:seed` Artisan command to seed your database. By default, the `db:seed` command runs the `DatabaseSeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
 
     php artisan db:seed
 

@@ -31,7 +31,7 @@ The `url` helper may be used to generate arbitrary URLs for your application. Th
 <a name="accessing-the-current-url"></a>
 ### Accessing The Current URL
 
-If no path is provided to the `url` helper, a `Illuminate\Routing\UrlGenerator` instance is returned, allowing you to access information about the current URL:
+If no path is provided to the `url` helper, an `Illuminate\Routing\UrlGenerator` instance is returned, allowing you to access information about the current URL:
 
     // Get the current URL without the query string...
     echo url()->current();
@@ -62,6 +62,12 @@ To generate a URL to this route, you may use the `route` helper like so:
     echo route('post.show', ['post' => 1]);
 
     // http://example.com/post/1
+
+Any additional array parameters that do not correspond to the route's definition parameters will be added to the URL's query string:
+
+    echo route('post.show', ['post' => 1, 'search' => 'rocket']);
+
+    // http://example.com/post/1?search=rocket
 
 You will often be generating URLs using the primary key of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's primary key:
 
@@ -96,6 +102,7 @@ If you would like to generate a temporary signed route URL that expires, you may
         'unsubscribe', now()->addMinutes(30), ['user' => 1]
     );
 
+<a name="validating-signed-route-requests"></a>
 #### Validating Signed Route Requests
 
 To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Request`:
@@ -172,6 +179,7 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
 
 Once the default value for the `locale` parameter has been set, you are no longer required to pass its value when generating URLs via the `route` helper.
 
+<a name="url-defaults-middleware-priority"></a>
 #### URL Defaults & Middleware Priority
 
 Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](https://laravel.com/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this by making sure your middleware occurs before the `SubstituteBindings` middleware within the `$middlewarePriority` property of your application's HTTP kernel.
@@ -187,7 +195,7 @@ The `$middlewarePriority` property is defined in the base `Illuminate\Foundation
      */
     protected $middlewarePriority = [
         // ...
-         \App\Http\MiddlewareSetDefaultLocaleForUrls::class,
+         \App\Http\Middleware\SetDefaultLocaleForUrls::class,
          \Illuminate\Routing\Middleware\SubstituteBindings::class,
          // ...
     ];

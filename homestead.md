@@ -25,6 +25,7 @@
     - [Multiple PHP Versions](#multiple-php-versions)
     - [Web Servers](#web-servers)
     - [Mail](#mail)
+    - [Laravel Dusk](#laravel-dusk)
 - [Debugging & Profiling](#debugging-and-profiling)
     - [Debugging Web Requests With Xdebug](#debugging-web-requests)
     - [Debugging CLI Applications](#debugging-cli-applications)
@@ -58,8 +59,10 @@ Homestead runs on any Windows, Mac, or Linux system, and includes Nginx, PHP, My
 </style>
 
 <div id="software-list" markdown="1">
-- Ubuntu 18.04
+- Ubuntu 18.04 (`master` branch)
+- Ubuntu 20.04 (`20.04` branch)
 - Git
+- PHP 8.0
 - PHP 7.4
 - PHP 7.3
 - PHP 7.2
@@ -136,6 +139,7 @@ To use the Parallels provider, you will need to install [Parallels Vagrant plug-
 
 Because of [Vagrant limitations](https://www.vagrantup.com/docs/hyperv/limitations.html), the Hyper-V provider ignores all networking settings.
 
+<a name="installing-the-homestead-vagrant-box"></a>
 #### Installing The Homestead Vagrant Box
 
 Once VirtualBox / VMware and Vagrant have been installed, you should add the `laravel/homestead` box to your Vagrant installation using the following command in your terminal. It will take a few minutes to download the box, depending on your Internet connection speed:
@@ -146,6 +150,7 @@ If this command fails, make sure your Vagrant installation is up to date.
 
 > {note} Homestead periodically issues "alpha" / "beta" boxes for testing, which may interfere with the `vagrant box add` command. If you are having issues running `vagrant box add`, you may run the `vagrant up` command and the correct box will be downloaded when Vagrant attempts to start the virtual machine.
 
+<a name="installing-homestead"></a>
 #### Installing Homestead
 
 You may install Homestead by cloning the repository onto your host machine. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel projects:
@@ -169,12 +174,14 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
 <a name="configuring-homestead"></a>
 ### Configuring Homestead
 
+<a name="setting-your-provider"></a>
 #### Setting Your Provider
 
 The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion`, `vmware_workstation`, `parallels` or `hyperv`. You may set this to the provider you prefer:
 
     provider: virtualbox
 
+<a name="configuring-shared-folders"></a>
 #### Configuring Shared Folders
 
 The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary:
@@ -215,6 +222,7 @@ You may also pass any options supported by Vagrant's [Synced Folders](https://ww
               rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
               rsync__exclude: ["node_modules"]
 
+<a name="configuring-nginx-sites"></a>
 #### Configuring Nginx Sites
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on:
@@ -227,6 +235,7 @@ If you change the `sites` property after provisioning the Homestead box, you sho
 
 > {note} Homestead scripts are built to be as idempotent as possible. However, if you are experiencing issues while provisioning you should destroy and rebuild the machine via `vagrant destroy && vagrant up`.
 
+<a name="enable-disable-services"></a>
 #### Enable / Disable Services
 
 Homestead starts several services by default; however, you may customize which services are enabled or disabled during provisioning. For example, you may enable PostgreSQL and disable MySQL:
@@ -315,20 +324,24 @@ Optional software is installed using the "features" setting in your Homestead co
         - solr: true
         - webdriver: true
 
+<a name="mariadb"></a>
 #### MariaDB
 
 Enabling MariaDB will remove MySQL and install MariaDB. MariaDB serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration.
 
+<a name="mongodb"></a>
 #### MongoDB
 
 The default MongoDB installation will set the database username to `homestead` and the corresponding password to `secret`.
 
+<a name="elasticsearch"></a>
 #### Elasticsearch
 
-You may specify a supported version of Elasticsearch, which may be a major version or an exact version number (major.minor.patch). The default installation will create a cluster named 'homestead'. You should never give Elasticsearch more than half of the operating system's memory, so make sure your Homestead machine has at least twice the Elasticsearch allocation.
+You may specify a supported version of Elasticsearch, which must be an exact version number (major.minor.patch). The default installation will create a cluster named 'homestead'. You should never give Elasticsearch more than half of the operating system's memory, so make sure your Homestead machine has at least twice the Elasticsearch allocation.
 
 > {tip} Check out the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current) to learn how to customize your configuration.
 
+<a name="neo4j"></a>
 #### Neo4j
 
 The default Neo4j installation will set the database username to `homestead` and corresponding password to `secret`. To access the Neo4j browser, visit `http://homestead.test:7474` via your web browser. The ports `7687` (Bolt), `7474` (HTTP), and `7473` (HTTPS) are ready to serve requests from the Neo4j client.
@@ -351,6 +364,7 @@ After you have updated the `aliases` file, you should re-provision the Homestead
 
 Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this on Mac / Linux systems by adding a Bash function to your Bash profile. On Windows, you may accomplish this by adding a "batch" file to your `PATH`. These scripts will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
 
+<a name="mac-linux"></a>
 #### Mac / Linux
 
     function homestead() {
@@ -359,6 +373,7 @@ Sometimes you may want to `vagrant up` your Homestead machine from anywhere on y
 
 Make sure to tweak the `~/Homestead` path in the function to the location of your actual Homestead installation. Once the function is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
 
+<a name="windows"></a>
 #### Windows
 
 Create a `homestead.bat` batch file anywhere on your machine with the following contents:
@@ -568,6 +583,7 @@ By default, the following ports are forwarded to your Homestead environment:
 - **Minio:** 9600 &rarr; Forwards To 9600
 </div>
 
+<a name="forwarding-additional-ports"></a>
 #### Forwarding Additional Ports
 
 If you wish, you may forward additional ports to the Vagrant box, as well as specify their protocol:
@@ -634,6 +650,16 @@ Homestead uses the Nginx web server by default. However, it can install Apache i
 
 Homestead includes the Postfix mail transfer agent, which is listening on port `1025` by default. So, you may instruct your application to use the `smtp` mail driver on `localhost` port `1025`. Then, all sent mail will be handled by Postfix and caught by Mailhog. To view your sent emails, open [http://localhost:8025](http://localhost:8025) in your web browser.
 
+<a name="laravel-dusk"></a>
+### Laravel Dusk
+
+In order to run [Laravel Dusk](/docs/{{version}}/dusk) tests within Homestead, you should enable the [`webdriver` feature](#installing-optional-features) in your Homestead configuration:
+
+      features:
+          - webdriver: true
+
+ Do not forget to provision your Homestead virtual machine afterwards to ensure the `webdriver` feature is fully installed.
+
 <a name="debugging-and-profiling"></a>
 ## Debugging & Profiling
 
@@ -653,6 +679,7 @@ To debug a PHP CLI application, use the `xphp` shell alias inside your Vagrant b
 
     xphp path/to/script
 
+<a name="autostarting-xdebug"></a>
 #### Autostarting Xdebug
 
 When debugging functional tests that make requests to the web server, it is easier to autostart debugging rather than modifying tests to pass through a custom header or cookie to trigger debugging. To force Xdebug to start automatically, modify `/etc/php/7.x/fpm/conf.d/20-xdebug.ini` inside your Vagrant box and add the following configuration:
@@ -679,6 +706,7 @@ To enable Blackfire, use the "features" setting in your Homestead configuration 
 
 Blackfire server credentials and client credentials [require a user account](https://blackfire.io/signup). Blackfire offers various options to profile an application, including a CLI tool and browser extension. Please [review the Blackfire documentation for more details](https://blackfire.io/docs/cookbooks/index).
 
+<a name="profiling-php-performance-using-xhgui"></a>
 ### Profiling PHP Performance Using XHGui
 
 [XHGui](https://www.github.com/perftools/xhgui) is a user interface for exploring the performance of your PHP applications. To enable XHGui, add `xhgui: 'true'` to your site configuration:
@@ -738,6 +766,7 @@ When customizing Homestead, Ubuntu may ask you if you would like to keep a packa
         -o Dpkg::Options::="--force-confold" \
         install your-package
 
+<a name="user-customizations"></a>
 ### User Customizations
 
 When using Homestead in a team setting, you may want to tweak Homestead to better fit your personal development style. You may create a `user-customizations.sh` file in the root of your Homestead directory (The same directory containing your `Homestead.yaml`). Within this file, you may make any customization you would like; however, the `user-customizations.sh` should not be version controlled.
@@ -783,6 +812,7 @@ Finally, you will need to regenerate your Homestead box to utilize the latest Va
 <a name="provider-specific-virtualbox"></a>
 ### VirtualBox
 
+<a name="natdnshostresolver"></a>
 #### `natdnshostresolver`
 
 By default, Homestead configures the `natdnshostresolver` setting to `on`. This allows Homestead to use your host operating system's DNS settings. If you would like to override this behavior, add the following lines to your `Homestead.yaml` file:
@@ -790,6 +820,7 @@ By default, Homestead configures the `natdnshostresolver` setting to `on`. This 
     provider: virtualbox
     natdnshostresolver: 'off'
 
+<a name="symbolic-links-on-windows"></a>
 #### Symbolic Links On Windows
 
 If symbolic links are not working properly on your Windows machine, you may need to add the following block to your `Vagrantfile`:

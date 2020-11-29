@@ -137,6 +137,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [pad](#method-pad)
 [partition](#method-partition)
 [pipe](#method-pipe)
+[pipeInto](#method-pipeinto)
 [pluck](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
@@ -165,6 +166,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [sortKeysDesc](#method-sortkeysdesc)
 [splice](#method-splice)
 [split](#method-split)
+[splitIn](#method-splitin)
 [sum](#method-sum)
 [take](#method-take)
 [takeUntil](#method-takeuntil)
@@ -250,7 +252,7 @@ The `chunk` method breaks the collection into multiple, smaller collections of a
 
     $chunks = $collection->chunk(4);
 
-    $chunks->toArray();
+    $chunks->all();
 
     // [[1, 2, 3, 4], [5, 6, 7]]
 
@@ -271,11 +273,11 @@ The `chunkWhile` method breaks the collection into multiple, smaller collections
 
     $collection = collect(str_split('AABBCCCD'));
 
-    $chunks = $collection->chunkWhile(function($current, $key, $chunk) {
+    $chunks = $collection->chunkWhile(function ($current, $key, $chunk) {
         return $current === $chunk->last();
     });
 
-    $chunks->toArray();
+    $chunks->all();
 
     // [['A', 'A'], ['B', 'B'], ['C', 'C', 'C'], ['D']]
 
@@ -879,7 +881,7 @@ The `groupBy` method groups the collection's items by a given key:
 
     $grouped = $collection->groupBy('account_id');
 
-    $grouped->toArray();
+    $grouped->all();
 
     /*
         [
@@ -899,7 +901,7 @@ Instead of passing a string `key`, you may pass a callback. The callback should 
         return substr($item['account_id'], -3);
     });
 
-    $grouped->toArray();
+    $grouped->all();
 
     /*
         [
@@ -1218,7 +1220,7 @@ The `mapToGroups` method groups the collection's items by the given callback. Th
         return [$item['department'] => $item['name']];
     });
 
-    $grouped->toArray();
+    $grouped->all();
 
     /*
         [
@@ -1436,6 +1438,38 @@ The `pipe` method passes the collection to the given callback and returns the re
     });
 
     // 6
+
+<a name="method-pipeinto"></a>
+#### `pipeInto()` {#collection-method}
+
+The `pipeInto` method creates a new instance of the given class and passes the collection into the constructor:
+
+    class ResourceCollection
+    {
+        /**
+         * The Collection instance.
+         */
+        public $collection;
+
+        /**
+         * Create a new ResourceCollection instance.
+         *
+         * @param  Collection  $resource
+         * @return void
+         */
+        public function __construct(Collection $collection)
+        {
+            $this->collection = $collection;
+        }
+    }
+
+    $collection = collect([1, 2, 3]);
+
+    $resource = $collection->pipeInto(ResourceCollection::class);
+
+    $resource->collection->all();
+
+    // [1, 2, 3]
 
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
@@ -1856,7 +1890,27 @@ The `sortBy` method sorts the collection by the given key. The sorted collection
         ]
     */
 
-You can also pass your own callback to determine how to sort the collection values:
+This method accepts [sort flags](https://www.php.net/manual/en/function.sort.php) as its second argument:
+
+    $collection = collect([
+        ['title' => 'Item 1'],
+        ['title' => 'Item 12'],
+        ['title' => 'Item 3'],
+    ]);
+
+    $sorted = $collection->sortBy('title', SORT_NATURAL);
+
+    $sorted->values()->all();
+
+    /*
+        [
+            ['title' => 'Item 1'],
+            ['title' => 'Item 3'],
+            ['title' => 'Item 12'],
+        ]
+    */
+
+Alternatively, you may pass your own callback to determine how to sort the collection's values:
 
     $collection = collect([
         ['name' => 'Desk', 'colors' => ['Black', 'Mahogany']],
@@ -1980,9 +2034,22 @@ The `split` method breaks a collection into the given number of groups:
 
     $groups = $collection->split(3);
 
-    $groups->toArray();
+    $groups->all();
 
     // [[1, 2], [3, 4], [5]]
+
+<a name="method-splitin"></a>
+#### `splitIn()` {#collection-method}
+
+The `splitIn` method breaks a collection into the given number of groups, filling non-terminal groups completely before allocating the remainder to the final group:
+
+    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+    $groups = $collection->splitIn(3);
+
+    $groups->all();
+
+    // [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10]]
 
 <a name="method-sum"></a>
 #### `sum()` {#collection-method}
@@ -2093,7 +2160,7 @@ The `tap` method passes the collection to the given callback, allowing you to "t
     collect([2, 4, 3, 1, 5])
         ->sort()
         ->tap(function ($collection) {
-            Log::debug('Values after sorting', $collection->values()->toArray());
+            Log::debug('Values after sorting', $collection->values()->all());
         })
         ->shift();
 

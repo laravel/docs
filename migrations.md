@@ -60,7 +60,7 @@ When you execute this command, Laravel will write a "schema" file to your `datab
 
 You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
 
-> {note} Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases.
+> {note} Migration squashing is only available for the MySQL, PostgreSQL, and SQLite databases. However, database dumps may not be restored to in-memory SQLite databases.
 
 <a name="migration-structure"></a>
 ## Migration Structure
@@ -112,6 +112,7 @@ To run all of your outstanding migrations, execute the `migrate` Artisan command
 
 > {note} If you are using the [Homestead virtual machine](/docs/{{version}}/homestead), you should run this command from within your virtual machine.
 
+<a name="forcing-migrations-to-run-in-production"></a>
 #### Forcing Migrations To Run In Production
 
 Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:
@@ -133,6 +134,7 @@ The `migrate:reset` command will roll back all of your application's migrations:
 
     php artisan migrate:reset
 
+<a name="roll-back-migrate-using-a-single-command"></a>
 #### Roll Back & Migrate Using A Single Command
 
 The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
@@ -146,6 +148,7 @@ You may roll back & re-migrate a limited number of migrations by providing the `
 
     php artisan migrate:refresh --step=5
 
+<a name="drop-all-tables-migrate"></a>
 #### Drop All Tables & Migrate
 
 The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
@@ -153,6 +156,8 @@ The `migrate:fresh` command will drop all tables from the database and then exec
     php artisan migrate:fresh
 
     php artisan migrate:fresh --seed
+
+> {note} The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
 
 <a name="tables"></a>
 ## Tables
@@ -168,6 +173,7 @@ To create a new database table, use the `create` method on the `Schema` facade. 
 
 When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
 
+<a name="checking-for-table-column-existence"></a>
 #### Checking For Table / Column Existence
 
 You may check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
@@ -180,6 +186,7 @@ You may check for the existence of a table or column using the `hasTable` and `h
         //
     }
 
+<a name="database-connection-table-options"></a>
 #### Database Connection & Table Options
 
 If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
@@ -210,6 +217,7 @@ To drop an existing table, you may use the `drop` or `dropIfExists` methods:
 
     Schema::dropIfExists('users');
 
+<a name="renaming-tables-with-foreign-keys"></a>
 #### Renaming Tables With Foreign Keys
 
 Before renaming a table, you should verify that any foreign key constraints on the table have an explicit name in your migration files instead of letting Laravel assign a convention based name. Otherwise, the foreign key constraint name will refer to the old table name.
@@ -226,6 +234,7 @@ The `table` method on the `Schema` facade may be used to update existing tables.
         $table->string('email');
     });
 
+<a name="available-column-types"></a>
 #### Available Column Types
 
 The schema builder contains a variety of column types that you may specify when building your tables:
@@ -319,10 +328,12 @@ Modifier  |  Description
 `->storedAs($expression)`  |  Create a stored generated column (MySQL)
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL)
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value
+`->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated
 `->virtualAs($expression)`  |  Create a virtual generated column (MySQL)
 `->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL)
 `->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL)
 
+<a name="default-expressions"></a>
 #### Default Expressions
 
 The `default` modifier accepts a value or an `\Illuminate\Database\Query\Expression` instance. Using an `Expression` instance will prevent wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is when you need to assign default values to JSON columns:
@@ -356,12 +367,14 @@ The `default` modifier accepts a value or an `\Illuminate\Database\Query\Express
 <a name="modifying-columns"></a>
 ### Modifying Columns
 
+<a name="prerequisites"></a>
 #### Prerequisites
 
 Before modifying a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file. The Doctrine DBAL library is used to determine the current state of the column and create the SQL queries needed to make the required adjustments:
 
     composer require doctrine/dbal
 
+<a name="updating-column-attributes"></a>
 #### Updating Column Attributes
 
 The `change` method allows you to modify type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
@@ -378,6 +391,7 @@ We could also modify a column to be nullable:
 
 > {note} Only the following column types can be "changed": bigInteger, binary, boolean, date, dateTime, dateTimeTz, decimal, integer, json, longText, mediumText, smallInteger, string, text, time, unsignedBigInteger, unsignedInteger, unsignedSmallInteger and uuid.
 
+<a name="renaming-columns"></a>
 #### Renaming Columns
 
 To rename a column, you may use the `renameColumn` method on the schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file:
@@ -386,7 +400,7 @@ To rename a column, you may use the `renameColumn` method on the schema builder.
         $table->renameColumn('from', 'to');
     });
 
-> {note} Renaming any column in a table that also has a column of type `enum` is not currently supported.
+> {note} Renaming an `enum` column is not currently supported.
 
 <a name="dropping-columns"></a>
 ### Dropping Columns
@@ -405,6 +419,7 @@ You may drop multiple columns from a table by passing an array of column names t
 
 > {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
 
+<a name="available-command-aliases"></a>
 #### Available Command Aliases
 
 Command  |  Description
@@ -438,6 +453,7 @@ Laravel will automatically generate an index name based on the table, column nam
 
     $table->unique('email', 'unique_email');
 
+<a name="available-index-types"></a>
 #### Available Index Types
 
 Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s) used for the index, as well as the index type.
@@ -450,6 +466,7 @@ Command  |  Description
 `$table->index('state');`  |  Adds a plain index.
 `$table->spatialIndex('location');`  |  Adds a spatial index. (except SQLite)
 
+<a name="index-lengths-mysql-mariadb"></a>
 #### Index Lengths & MySQL / MariaDB
 
 Laravel uses the `utf8mb4` character set by default, which includes support for storing "emojis" in the database. If you are running a version of MySQL older than the 5.7.7 release or MariaDB older than the 10.2.2 release, you may need to manually configure the default string length generated by migrations in order for MySQL to create indexes for them. You may configure this by calling the `Schema::defaultStringLength` method within your `AppServiceProvider`:

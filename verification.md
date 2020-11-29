@@ -37,7 +37,13 @@ To get started, verify that your `App\Models\User` model implements the `Illumin
         // ...
     }
 
-Once this interface has been added to your model, newly registered users will automatically be sent an email containing an email verification link. As you can see by examining your `EventServiceProvider`, Laravel already contains a `SendEmailVerificationNotification` listener that is attached to the `Illuminate\Auth\Events\Registered` event.
+Once this interface has been added to your model, newly registered users will automatically be sent an email containing an email verification link. As you can see by examining your `EventServiceProvider`, Laravel already contains a `SendEmailVerificationNotification` [listener](/docs/{{version}}/events) that is attached to the `Illuminate\Auth\Events\Registered` event.
+
+If you are manually implementing registration within your application instead of using [Laravel Jetstream](https://jetstream.laravel.com), you should ensure that you are dispatching the `Illuminate\Auth\Events\Registered` event after a user's registration is successful:
+
+    use Illuminate\Auth\Events\Registered;
+
+    event(new Registered($user));
 
 <a name="database-preparation"></a>
 ### Database Preparation
@@ -49,53 +55,43 @@ Next, your `user` table must contain an `email_verified_at` column to store the 
 <a name="verification-routing"></a>
 ## Routing
 
-To properly implement email verification, three routes will need to be defined. First, a route will be needed to display a notice to the user that they should click the email verification link in the email verification that Laravel sent them after registration. Second, a route will be needed to handle requests generated when the user clicks the email verification link in the email. Third, a route will be needed to resend a verification link if the user accidentally loses the first one.
+To properly implement email verification, three routes will need to be defined. First, a route will be needed to display a notice to the user that they should click the email verification link in the verification email that Laravel sent them after registration. Second, a route will be needed to handle requests generated when the user clicks the email verification link in the email. Third, a route will be needed to resend a verification link if the user accidentally loses the first one.
 
 <a name="the-email-verification-notice"></a>
 ### The Email Verification Notice
 
-As mentioned previously, a route should be defined that will return a view instructing the user to click the email verification link that was emailed to them by Laravel. Remember, the link is automatically emailed to the user as long as your `App\Models\User` model implements the `MustVerifyEmail` interface:
+As mentioned previously, a route should be defined that will return a view instructing the user to click the email verification link that was emailed to them by Laravel. This view will be displayed to users when they try to access other parts of the application without verifying their email address first. Remember, the link is automatically emailed to the user as long as your `App\Models\User` model implements the `MustVerifyEmail` interface:
 
     Route::get('/email/verify', function () {
         return view('auth.verify-email');
     })->middleware(['auth'])->name('verification.notice');
 
-The route that returns the email verification notice should be named `verification.notice`. It is important that the route have this exact name since the `verified` middleware [included with Laravel](#protecting-routes) will automatically redirect to this route name if a user has not verified their email address.
+The route that returns the email verification notice should be named `verification.notice`. It is important that the route be assigned this exact name since the `verified` middleware [included with Laravel](#protecting-routes) will automatically redirect to this route name if a user has not verified their email address.
 
-When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out [Laravel Jetstream](https://jetstream.laravel.com).
+> {tip} When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out [Laravel Jetstream](https://jetstream.laravel.com).
 
 <a name="the-email-verification-handler"></a>
 ### The Email Verification Handler
 
-Next, we need a route that will handle requests generated when the user clicks the email verification link that was emailed to them. This route should be named `verification.verify` and be assigned the `auth` and `signed` middlewares.
+Next, we need a route that will handle requests generated when the user clicks the email verification link that was emailed to them. This route should be named `verification.verify` and be assigned the `auth` and `signed` middlewares:
 
-In addition, the route should verify the route's `id` and `hash` parameters are valid. If these values are valid, you may mark the user's email address as verified. The `markEmailAsVerified` method is available to the default `App\Models\User` model via the `Illuminate\Foundation\Auth\User` base class. Once the user's email address has been verified, you may redirect them wherever you wish. A sample implementation of this route can be found below:
-
-    use Illuminate\Auth\Events\Verified;
+    use Illuminate\Foundation\Auth\EmailVerificationRequest;
     use Illuminate\Http\Request;
 
-    Route::get('/email/verify/{id}/{hash}', function (Request $request) {
-        if (! hash_equals((string) $request->route('id'),
-                          (string) $request->user()->getKey())) {
-            abort(403);
-        }
-
-        if (! hash_equals((string) $this->route('hash'),
-                          sha1($this->user()->getEmailForVerification()))) {
-            abort(403);
-        }
-
-        $request->user()->markEmailAsVerified();
-
-        event(new Verified($request->user()));
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
 
         return redirect('/home');
     })->middleware(['auth', 'signed'])->name('verification.verify');
 
+Before moving on, let's take a closer look at this route. First, you'll notice we are using an `EmailVerificationRequest` request type instead of the typical `Illuminate\Http\Request` instance. The `EmailVerificationRequest` is a [form request](/docs/{{version}}/validation#form-request-validation) that is included with Laravel. This request will take care of automatically validating the request's `id` and `hash` parameters.
+
+Next, we can proceed directly to calling the `fulfill` method on the request. This method will call the `markEmailAsVerified` method on the authenticated user and dispatch the `Illuminate\Auth\Events\Verified` event. The `markEmailAsVerified` method is available to the default `App\Models\User` model via the `Illuminate\Foundation\Auth\User` base class. Once the user's email address has been verified, you may redirect them wherever you wish.
+
 <a name="resending-the-verification-email"></a>
 ### Resending The Verification Email
 
-Sometimes a user may misplace or accidentally delete the email address verification email. To accommodate this, you may wish to define a route to allow the user to request that the verification email be resent. You may then make a request to this route by placing a simple form submission button within your verification notice view:
+Sometimes a user may misplace or accidentally delete the email address verification email. To accommodate this, you may wish to define a route to allow the user to request that the verification email be resent. You may then make a request to this route by placing a simple form submission button within your [verification notice view](#the-email-verification-notice):
 
     use Illuminate\Http\Request;
 

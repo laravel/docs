@@ -35,6 +35,7 @@ The Laravel query builder uses PDO parameter binding to protect your application
 <a name="retrieving-results"></a>
 ## Retrieving Results
 
+<a name="retrieving-all-rows-from-a-table"></a>
 #### Retrieving All Rows From A Table
 
 You may use the `table` method on the `DB` facade to begin a query. The `table` method returns a fluent query builder instance for the given table, allowing you to chain more constraints onto the query and then finally get the results using the `get` method:
@@ -67,6 +68,7 @@ The `get` method returns an `Illuminate\Support\Collection` containing the resul
         echo $user->name;
     }
 
+<a name="retrieving-a-single-row-column-from-a-table"></a>
 #### Retrieving A Single Row / Column From A Table
 
 If you just need to retrieve a single row from the database table, you may use the `first` method. This method will return a single `stdClass` object:
@@ -83,6 +85,7 @@ To retrieve a single row by its `id` column value, use the `find` method:
 
     $user = DB::table('users')->find(3);
 
+<a name="retrieving-a-list-of-column-values"></a>
 #### Retrieving A List Of Column Values
 
 If you would like to retrieve a Collection containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a Collection of role titles:
@@ -148,6 +151,7 @@ You may combine these methods with other clauses:
                     ->where('finalized', 1)
                     ->avg('price');
 
+<a name="determining-if-records-exist"></a>
 #### Determining If Records Exist
 
 Instead of using the `count` method to determine if any records exist that match your query's constraints, you may use the `exists` and `doesntExist` methods:
@@ -159,6 +163,7 @@ Instead of using the `count` method to determine if any records exist that match
 <a name="selects"></a>
 ## Selects
 
+<a name="specifying-a-select-clause"></a>
 #### Specifying A Select Clause
 
 You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom `select` clause for the query:
@@ -193,6 +198,7 @@ Sometimes you may need to use a raw expression in a query. To create a raw expre
 
 Instead of using `DB::raw`, you may also use the following methods to insert a raw expression into various parts of your query.
 
+<a name="selectraw"></a>
 #### `selectRaw`
 
 The `selectRaw` method can be used in place of `addSelect(DB::raw(...))`. This method accepts an optional array of bindings as its second argument:
@@ -201,6 +207,7 @@ The `selectRaw` method can be used in place of `addSelect(DB::raw(...))`. This m
                     ->selectRaw('price * ? as price_with_tax', [1.0825])
                     ->get();
 
+<a name="whereraw-orwhereraw"></a>
 #### `whereRaw / orWhereRaw`
 
 The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clause into your query. These methods accept an optional array of bindings as their second argument:
@@ -209,6 +216,7 @@ The `whereRaw` and `orWhereRaw` methods can be used to inject a raw `where` clau
                     ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
                     ->get();
 
+<a name="havingraw-orhavingraw"></a>
 #### `havingRaw / orHavingRaw`
 
 The `havingRaw` and `orHavingRaw` methods may be used to set a raw string as the value of the `having` clause. These methods accept an optional array of bindings as their second argument:
@@ -219,6 +227,7 @@ The `havingRaw` and `orHavingRaw` methods may be used to set a raw string as the
                     ->havingRaw('SUM(price) > ?', [2500])
                     ->get();
 
+<a name="orderbyraw"></a>
 #### `orderByRaw`
 
 The `orderByRaw` method may be used to set a raw string as the value of the `order by` clause:
@@ -227,6 +236,7 @@ The `orderByRaw` method may be used to set a raw string as the value of the `ord
                     ->orderByRaw('updated_at - created_at DESC')
                     ->get();
 
+<a name="groupbyraw"></a>
 ### `groupByRaw`
 
 The `groupByRaw` method may be used to set a raw string as the value of the `group by` clause:
@@ -239,6 +249,7 @@ The `groupByRaw` method may be used to set a raw string as the value of the `gro
 <a name="joins"></a>
 ## Joins
 
+<a name="inner-join-clause"></a>
 #### Inner Join Clause
 
 The query builder may also be used to write join statements. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You can even join to multiple tables in a single query:
@@ -249,6 +260,7 @@ The query builder may also be used to write join statements. To perform a basic 
                 ->select('users.*', 'contacts.phone', 'orders.price')
                 ->get();
 
+<a name="left-join-right-join-clause"></a>
 #### Left Join / Right Join Clause
 
 If you would like to perform a "left join" or "right join" instead of an "inner join", use the `leftJoin` or `rightJoin` methods. These methods have the same signature as the `join` method:
@@ -261,6 +273,7 @@ If you would like to perform a "left join" or "right join" instead of an "inner 
                 ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
                 ->get();
 
+<a name="cross-join-clause"></a>
 #### Cross Join Clause
 
 To perform a "cross join" use the `crossJoin` method with the name of the table you wish to cross join to. Cross joins generate a cartesian product between the first table and the joined table:
@@ -269,6 +282,7 @@ To perform a "cross join" use the `crossJoin` method with the name of the table 
                 ->crossJoin('colors')
                 ->get();
 
+<a name="advanced-join-clauses"></a>
 #### Advanced Join Clauses
 
 You may also specify more advanced join clauses. To get started, pass a `Closure` as the second argument into the `join` method. The `Closure` will receive a `JoinClause` object which allows you to specify constraints on the `join` clause:
@@ -288,6 +302,7 @@ If you would like to use a "where" style clause on your joins, you may use the `
             })
             ->get();
 
+<a name="subquery-joins"></a>
 #### Subquery Joins
 
 You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receive three arguments: the subquery, its table alias, and a Closure that defines the related columns:
@@ -305,7 +320,7 @@ You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a q
 <a name="unions"></a>
 ## Unions
 
-The query builder also provides a quick way to "union" two queries together. For example, you may create an initial query and use the `union` method to union it with a second query:
+The query builder also provides a quick way to "union" two or more queries together. For example, you may create an initial query and use the `union` method to union it with more queries:
 
     $first = DB::table('users')
                 ->whereNull('first_name');
@@ -320,6 +335,7 @@ The query builder also provides a quick way to "union" two queries together. For
 <a name="where-clauses"></a>
 ## Where Clauses
 
+<a name="simple-where-clauses"></a>
 #### Simple Where Clauses
 
 You may use the `where` method on a query builder instance to add `where` clauses to the query. The most basic call to `where` requires three arguments. The first argument is the name of the column. The second argument is an operator, which can be any of the database's supported operators. Finally, the third argument is the value to evaluate against the column.
@@ -353,6 +369,7 @@ You may also pass an array of conditions to the `where` function:
         ['subscribed', '<>', '1'],
     ])->get();
 
+<a name="or-statements"></a>
 #### Or Statements
 
 You may chain where constraints together as well as add `or` clauses to the query. The `orWhere` method accepts the same arguments as the `where` method:
@@ -374,6 +391,7 @@ If you need to group an "or" condition within parentheses, you may pass a Closur
 
     // SQL: select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 
+<a name="additional-where-clauses"></a>
 #### Additional Where Clauses
 
 **whereBetween / orWhereBetween**
@@ -568,6 +586,7 @@ You may use `whereJsonLength` to query JSON arrays by their length:
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit & Offset
 
+<a name="orderby"></a>
 #### orderBy
 
 The `orderBy` method allows you to sort the result of the query by a given column. The first argument to the `orderBy` method should be the column you wish to sort by, while the second argument controls the direction of the sort and may be either `asc` or `desc`:
@@ -575,14 +594,15 @@ The `orderBy` method allows you to sort the result of the query by a given colum
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->get();
-                    
+
 If you need to sort by multiple columns, you may invoke `orderBy` as many times as needed:
-                                         
+
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->orderBy('email', 'asc')
                     ->get();
 
+<a name="latest-oldest"></a>
 #### latest / oldest
 
 The `latest` and `oldest` methods allow you to easily order results by date. By default, result will be ordered by the `created_at` column. Or, you may pass the column name that you wish to sort by:
@@ -591,6 +611,7 @@ The `latest` and `oldest` methods allow you to easily order results by date. By 
                     ->latest()
                     ->first();
 
+<a name="inrandomorder"></a>
 #### inRandomOrder
 
 The `inRandomOrder` method may be used to sort the query results randomly. For example, you may use this method to fetch a random user:
@@ -599,6 +620,7 @@ The `inRandomOrder` method may be used to sort the query results randomly. For e
                     ->inRandomOrder()
                     ->first();
 
+<a name="reorder"></a>
 #### reorder
 
 The `reorder` method allows you to remove all the existing orders and optionally apply a new order. For example, you can remove all the existing orders:
@@ -613,6 +635,7 @@ To remove all existing orders and apply a new order, provide the column and dire
 
     $usersOrderedByEmail = $query->reorder('email', 'desc')->get();
 
+<a name="groupby-having"></a>
 #### groupBy / having
 
 The `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
@@ -631,6 +654,7 @@ You may pass multiple arguments to the `groupBy` method to group by multiple col
 
 For more advanced `having` statements, see the [`havingRaw`](#raw-methods) method.
 
+<a name="skip-take"></a>
 #### skip / take
 
 To limit the number of results returned from the query, or to skip a given number of results in the query, you may use the `skip` and `take` methods:
@@ -694,6 +718,16 @@ The `insertOrIgnore` method will ignore duplicate record errors while inserting 
         ['id' => 2, 'email' => 'dayle@example.com'],
     ]);
 
+The `upsert` method will insert rows that do not exist and update the rows that already exist with the new values. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of columns that should be updated if a matching record already exists in the database:
+
+    DB::table('flights')->upsert([
+        ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
+        ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
+    ], ['departure', 'destination'], ['price']);
+
+> {note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index.
+
+<a name="auto-incrementing-ids"></a>
 #### Auto-Incrementing IDs
 
 If the table has an auto-incrementing id, use the `insertGetId` method to insert a record and then retrieve the ID:
@@ -713,6 +747,7 @@ In addition to inserting records into the database, the query builder can also u
                   ->where('id', 1)
                   ->update(['votes' => 1]);
 
+<a name="update-or-insert"></a>
 #### Update Or Insert
 
 Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs containing the columns to be updated.
@@ -767,6 +802,11 @@ The query builder may also be used to delete records from the table via the `del
 If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to zero, you may use the `truncate` method:
 
     DB::table('users')->truncate();
+
+<a name="table-truncation-and-postgresql"></a>
+#### Table Truncation & PostgreSQL
+
+When truncating a PostgreSQL database, the `CASCADE` behavior will be applied. This means that all foreign key related records in other tables will be deleted as well.
 
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking

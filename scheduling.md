@@ -21,13 +21,21 @@ In the past, you may have generated a Cron entry for each task you needed to sch
 
 Laravel's command scheduler allows you to fluently and expressively define your command schedule within Laravel itself. When using the scheduler, only a single Cron entry is needed on your server. Your task schedule is defined in the `app/Console/Kernel.php` file's `schedule` method. To help you get started, a simple example is defined within the method.
 
+<a name="starting-the-scheduler"></a>
 ### Starting The Scheduler
 
 When using the scheduler, you only need to add the following Cron entry to your server. If you do not know how to add Cron entries to your server, consider using a service such as [Laravel Forge](https://forge.laravel.com) which can manage the Cron entries for you:
 
     * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 
-This Cron will call the Laravel command scheduler every minute. When the `schedule:run` command is executed, Laravel will evaluate your scheduled tasks and runs the tasks that are due.
+This Cron will call the Laravel command scheduler every minute. When the `schedule:run` command is executed, Laravel will evaluate your scheduled tasks and run the tasks that are due.
+
+<a name="starting-the-scheduler-locally"></a>
+### Starting The Scheduler Locally
+
+Typically, you would not add a scheduler Cron entry to your local development machine. Instead you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you exit the command:
+
+    php artisan schedule:work
 
 <a name="defining-schedules"></a>
 ## Defining Schedules
@@ -122,13 +130,15 @@ Method  | Description
 `->daily();`  |  Run the task every day at midnight
 `->dailyAt('13:00');`  |  Run the task every day at 13:00
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
-`->weekly();`  |  Run the task every sunday at 00:00
+`->weekly();`  |  Run the task every Sunday at 00:00
 `->weeklyOn(1, '8:00');`  |  Run the task every week on Monday at 8:00
 `->monthly();`  |  Run the task on the first day of every month at 00:00
 `->monthlyOn(4, '15:00');`  |  Run the task every month on the 4th at 15:00
+`->twiceMonthly(1, 16, '13:00');`  |  Run the task monthly on the 1st and 16th at 13:00
 `->lastDayOfMonth('15:00');` | Run the task on the last day of the month at 15:00
 `->quarterly();` |  Run the task on the first day of every quarter at 00:00
 `->yearly();`  |  Run the task on the first day of every year at 00:00
+`->yearlyOn(6, 1, '17:00');`  |  Run the task every year on June 1st at 17:00
 `->timezone('America/New_York');` | Set the timezone
 
 These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, to schedule a command to run weekly on Monday:
@@ -159,10 +169,12 @@ Method  | Description
 `->fridays();`  |  Limit the task to Friday
 `->saturdays();`  |  Limit the task to Saturday
 `->days(array|mixed);`  |  Limit the task to specific days
-`->between($start, $end);`  |  Limit the task to run between start and end times
+`->between($startTime, $endTime);`  |  Limit the task to run between start and end times
+`->unlessBetween($startTime, $endTime);`  |  Limit the task to not run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
 `->environments($env);`  |  Limit the task to specific environments
 
+<a name="day-constraints"></a>
 #### Day Constraints
 
 The `days` method may be used to limit the execution of a task to specific days of the week. For example, you may schedule a command to run hourly on Sundays and Wednesdays:
@@ -171,6 +183,7 @@ The `days` method may be used to limit the execution of a task to specific days 
                     ->hourly()
                     ->days([0, 3]);
 
+<a name="between-time-constraints"></a>
 #### Between Time Constraints
 
 The `between` method may be used to limit the execution of a task based on the time of day:
@@ -185,6 +198,7 @@ Similarly, the `unlessBetween` method can be used to exclude the execution of a 
                         ->hourly()
                         ->unlessBetween('23:00', '4:00');
 
+<a name="truth-test-constraints"></a>
 #### Truth Test Constraints
 
 The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given `Closure` returns `true`, the task will execute as long as no other constraining conditions prevent the task from running:
@@ -201,6 +215,7 @@ The `skip` method may be seen as the inverse of `when`. If the `skip` method ret
 
 When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
 
+<a name="environment-constraints"></a>
 #### Environment Constraints
 
 The `environments` method may be used to execute tasks only on the given environments:
@@ -345,6 +360,7 @@ If output is available from your command, you may access it in your `after`, `on
                  // The task failed...
              });
 
+<a name="pinging-urls"></a>
 #### Pinging URLs
 
 Using the `pingBefore` and `thenPing` methods, the scheduler can automatically ping a given URL before or after a task is complete. This method is useful for notifying an external service, such as [Laravel Envoyer](https://envoyer.io), that your scheduled task is commencing or has finished execution:

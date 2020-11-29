@@ -3,6 +3,8 @@
 - [Introduction](#introduction)
     - [How It Works](#how-it-works)
 - [Installation](#installation)
+- [Configuration](#configuration)
+    - [Overriding Default Models](#overriding-default-models)
 - [API Token Authentication](#api-token-authentication)
     - [Issuing API Tokens](#issuing-api-tokens)
     - [Token Abilities](#token-abilities)
@@ -29,12 +31,14 @@ Laravel Sanctum provides a featherweight authentication system for SPAs (single 
 
 Laravel Sanctum exists to solve two separate problems.
 
+<a name="how-it-works-api-tokens"></a>
 #### API Tokens
 
 First, it is a simple package to issue API tokens to your users without the complication of OAuth. This feature is inspired by GitHub "access tokens". For example, imagine the "account settings" of your application has a screen where a user may generate an API token for their account. You may use Sanctum to generate and manage those tokens. These tokens typically have a very long expiration time (years), but may be manually revoked by the user at anytime.
 
 Laravel Sanctum offers this feature by storing user API tokens in a single database table and authenticating incoming requests via the `Authorization` header which should contain a valid API token.
 
+<a name="how-it-works-spa-authentication"></a>
 #### SPA Authentication
 
 Second, Sanctum exists to offer a simple way to authenticate single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository, such as a SPA created using Vue CLI.
@@ -60,17 +64,46 @@ Finally, you should run your database migrations. Sanctum will create one databa
 
 Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanctum's middleware to your `api` middleware group within your `app/Http/Kernel.php` file:
 
-    use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
-
     'api' => [
-        EnsureFrontendRequestsAreStateful::class,
-        'throttle:60,1',
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        'throttle:api',
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 
+<a name="migration-customization"></a>
 #### Migration Customization
 
 If you are not going to use Sanctum's default migrations, you should call the `Sanctum::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=sanctum-migrations`.
+
+<a name="configuration"></a>
+## Configuration
+
+<a name="overriding-default-models"></a>
+### Overriding Default Models
+
+You are free to extend the `PersonalAccessToken` model used internally by Sanctum:
+
+    use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
+
+    class PersonalAccessToken extends SanctumPersonalAccessToken
+    {
+        // ...
+    }
+
+Then, you may instruct Sanctum to use your custom model via the `usePersonalAccessTokenModel` method provided by Sanctum. Typically, you should call this method in the `boot` method of one of your service providers:
+
+    use App\Models\Passport\PersonalAccessToken;
+    use Laravel\Sanctum\Sanctum;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+    }
 
 <a name="api-token-authentication"></a>
 ## API Token Authentication
@@ -88,7 +121,7 @@ To begin issuing tokens for users, your User model should use the `HasApiTokens`
 
     class User extends Authenticatable
     {
-        use HasApiTokens, Notifiable;
+        use HasApiTokens, HasFactory, Notifiable;
     }
 
 To issue a token, you may use the `createToken` method. The `createToken` method returns a `Laravel\Sanctum\NewAccessToken` instance. API tokens are hashed using SHA-256 hashing before being stored in your database, but you may access the plain-text value of the token using the `plainTextToken` property of the `NewAccessToken` instance. You should display this value to the user immediately after the token has been created:
@@ -153,12 +186,14 @@ For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses
 <a name="spa-configuration"></a>
 ### Configuration
 
+<a name="configuring-your-first-party-domains"></a>
 #### Configuring Your First-Party Domains
 
 First, you should configure which domains your SPA will be making requests from. You may configure these domains using the `stateful` configuration option in your `sanctum` configuration file. This configuration setting determines which domains will maintain "stateful" authentication using Laravel session cookies when making requests to your API.
 
 > {note} If you are accessing your application via a URL that includes the port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain.
 
+<a name="sanctum-middleware"></a>
 #### Sanctum Middleware
 
 Next, you should add Sanctum's middleware to your `api` middleware group within your `app/Http/Kernel.php` file. This middleware is responsible for ensuring that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens:
@@ -167,7 +202,7 @@ Next, you should add Sanctum's middleware to your `api` middleware group within 
 
     'api' => [
         EnsureFrontendRequestsAreStateful::class,
-        'throttle:60,1',
+        'throttle:api',
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 

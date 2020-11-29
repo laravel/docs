@@ -19,6 +19,7 @@
 <a name="creating-responses"></a>
 ## Creating Responses
 
+<a name="strings-arrays"></a>
 #### Strings & Arrays
 
 All routes and controllers should return a response to be sent back to the user's browser. Laravel provides several different ways to return responses. The most basic response is returning a string from a route or controller. The framework will automatically convert the string into a full HTTP response:
@@ -35,6 +36,7 @@ In addition to returning strings from your routes and controllers, you may also 
 
 > {tip} Did you know you can also return [Eloquent collections](/docs/{{version}}/eloquent-collections) from your routes or controllers? They will automatically be converted to JSON. Give it a shot!
 
+<a name="response-objects"></a>
 #### Response Objects
 
 Typically, you won't just be returning simple strings or arrays from your route actions. Instead, you will be returning full `Illuminate\Http\Response` instances or [views](/docs/{{version}}/views).
@@ -65,6 +67,7 @@ Or, you may use the `withHeaders` method to specify an array of headers to be ad
                     'X-Header-Two' => 'Header Value',
                 ]);
 
+<a name="cache-control-middleware"></a>
 #### Cache Control Middleware
 
 Laravel includes a `cache.headers` middleware, which may be used to quickly set the `Cache-Control` header for a group of routes. If `etag` is specified in the list of directives, an MD5 hash of the response content will automatically be set as the ETag identifier:
@@ -142,6 +145,7 @@ If your route has parameters, you may pass them as the second argument to the `r
 
     return redirect()->route('profile', ['id' => 1]);
 
+<a name="populating-parameters-via-eloquent-models"></a>
 #### Populating Parameters Via Eloquent Models
 
 If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may pass the model itself. The ID will be extracted automatically:
@@ -248,6 +252,7 @@ The `download` method may be used to generate a response that forces the user's 
 
 > {note} Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
 
+<a name="streamed-downloads"></a>
 #### Streamed Downloads
 
 Sometimes you may wish to turn the string response of a given operation into a downloadable response without having to write the contents of the operation to disk. You may use the `streamDownload` method in this scenario. This method accepts a callback, file name, and an optional array of headers as its arguments:

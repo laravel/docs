@@ -28,6 +28,7 @@
 <a name="upgrade-8.0"></a>
 ## Upgrading To 8.0 From 7.x
 
+<a name="estimated-upgrade-time-15-minutes"></a>
 #### Estimated Upgrade Time: 15 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
@@ -59,15 +60,17 @@ The following first-party packages have new major releases to support Laravel 8.
 - [Horizon v5.0](https://github.com/laravel/horizon/blob/master/UPGRADE.md)
 - [Passport v10.0](https://github.com/laravel/passport/blob/master/UPGRADE.md)
 - [Socialite v5.0](https://github.com/laravel/socialite/blob/master/UPGRADE.md)
-- [Telescope v4.0](https://github.com/laravel/telescope/releases)
+- [Telescope v4.0](https://github.com/laravel/telescope/blob/master/UPGRADE.md)
 </div>
 
 In addition, the Laravel installer has been updated to support `composer create-project` and Laravel Jetstream. Any installer older than 4.0 will cease to work after October 2020. You should upgrade your global installer to `^4.0` as soon as possible.
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 8 support.
 
+<a name="collections"></a>
 ### Collections
 
+<a name="the-isset-method"></a>
 #### The `isset` Method
 
 **Likelihood Of Impact: Low**
@@ -82,6 +85,7 @@ To be consistent with typical PHP behavior, the `offsetExists` method of `Illumi
     // Laravel 8.x - false
     isset($collection[0]);
 
+<a name="database"></a>
 ### Database
 
 <a name="seeder-factory-namespaces"></a>
@@ -123,6 +127,7 @@ Next, in your `composer.json` file, remove `classmap` block from the `autoload` 
         }
     },
 
+<a name="eloquent"></a>
 ### Eloquent
 
 <a name="model-factories"></a>
@@ -134,6 +139,7 @@ Laravel's [model factories](/docs/{{version}}/database-testing#creating-factorie
 
     composer require laravel/legacy-factories
 
+<a name="the-castable-interface"></a>
 #### The `Castable` Interface
 
 **Likelihood Of Impact: Low**
@@ -142,14 +148,17 @@ The `castUsing` method of the `Castable` interface has been updated to accept an
 
     public static function castUsing(array $arguments);
 
+<a name="increment-decrement-events"></a>
 #### Increment / Decrement Events
 
 **Likelihood Of Impact: Low**
 
 Proper "update" and "save" related model events will now be dispatched when executing the `increment` or `decrement` methods on Eloquent model instances.
 
+<a name="events"></a>
 ### Events
 
+<a name="the-dispatcher-contract"></a>
 #### The `Dispatcher` Contract
 
 **Likelihood Of Impact: Low**
@@ -158,6 +167,7 @@ The `listen` method of the `Illuminate\Contracts\Events\Dispatcher` contract has
 
     public function listen($events, $listener = null);
 
+<a name="framework"></a>
 ### Framework
 
 <a name="maintenance-mode-updates"></a>
@@ -180,26 +190,38 @@ The [maintenance mode](/docs/{{version}}/configuration#maintenance-mode) feature
 
 The `--message` option of the `php artisan down` command has been removed. As an alternative, consider [pre-rendering your maintenance mode views](/docs/{{version}}/configuration#maintenance-mode) with the message of your choice.
 
+<a name="php-artisan-serve-no-reload-option"></a>
+#### The `php artisan serve --no-reload` Option
+
+**Likelihood Of Impact: Low**
+
+A `--no-reload` option has been added to the `php artisan serve` command. This will instruct the built-in server to not reload the server when environment file changes are detected. This option is primarily helpful when running Laravel Dusk tests in a CI environment.
+
+<a name="manager-app-property"></a>
 #### Manager `$app` Property
 
 **Likelihood Of Impact: Low**
 
 The previously deprecated `$app` property of the `Illuminate\Support\Manager` class has been removed. If you were relying on this property, you should use the `$container` property instead.
 
+<a name="the-elixir-helper"></a>
 #### The `elixir` Helper
 
 **Likelihood Of Impact: Low**
 
 The previously deprecated `elixir` helper has been removed. Applications still using this method are encouraged to upgrade to [Laravel Mix](https://github.com/JeffreyWay/laravel-mix).
 
+<a name="mail"></a>
 ### Mail
 
+<a name="the-sendnow-method"></a>
 #### The `sendNow` Method
 
 **Likelihood Of Impact: Low**
 
 The previously deprecated `sendNow` method has been removed. Instead, please use the `send` method.
 
+<a name="pagination"></a>
 ### Pagination
 
 <a name="pagination-defaults"></a>
@@ -213,6 +235,7 @@ The paginator now uses the [Tailwind CSS framework](https://tailwindcss.com) for
 
     Paginator::useBootstrap();
 
+<a name="queue"></a>
 ### Queue
 
 <a name="queue-retry-after-method"></a>
@@ -241,6 +264,8 @@ For consistency with other dispatching methods, the `allOnQueue()` and `allOnCon
         new ReleasePodcast
     ])->onConnection('redis')->onQueue('podcasts')->dispatch();
 
+Note that this change only affects code using the `withChain` method. The `allOnQueue()` and `allOnConnection()` are still available when using the global `dispatch()` helper.
+
 <a name="failed-jobs-table-batch-support"></a>
 #### Failed Jobs Table Batch Support
 
@@ -257,8 +282,18 @@ If you plan to use the [job batching](/docs/{{version}}/queues#job-batching) fea
 
 Next, the `failed.driver` configuration option within your `queue` configuration file should be updated to `database-uuids`.
 
+In addition, you may wish to generate UUIDs for your existing failed jobs:
+
+    DB::table('failed_jobs')->whereNull('uuid')->cursor()->each(function ($job) {
+        DB::table('failed_jobs')
+            ->where('id', $job->id)
+            ->update(['uuid' => (string) Illuminate\Support\Str::uuid()]);
+    });
+
+<a name="routing"></a>
 ### Routing
 
+<a name="automatic-controller-namespace-prefixing"></a>
 #### Automatic Controller Namespace Prefixing
 
 **Likelihood Of Impact: Optional**
@@ -282,7 +317,16 @@ If you would like to continue using the original auto-prefixed controller routin
     class RouteServiceProvider extends ServiceProvider
     {
         /**
-         * This namespace is applied to your controller routes.
+         * The path to the "home" route for your application.
+         *
+         * This is used by Laravel authentication to redirect users after login.
+         *
+         * @var string
+         */
+        public const HOME = '/home';
+
+        /**
+         * If specified, this namespace is automatically applied to your controller routes.
          *
          * In addition, it is set as the URL generator's root namespace.
          *
@@ -308,19 +352,36 @@ If you would like to continue using the original auto-prefixed controller routin
                     ->middleware('api')
                     ->namespace($this->namespace)
                     ->group(base_path('routes/api.php'));
-        });
+            });
+        }
+
+        /**
+         * Configure the rate limiters for the application.
+         *
+         * @return void
+         */
+        protected function configureRateLimiting()
+        {
+            RateLimiter::for('api', function (Request $request) {
+                return Limit::perMinute(60);
+            });
+        }
     }
 
+<a name="scheduling"></a>
 ### Scheduling
 
+<a name="the-cron-expression-library"></a>
 #### The `cron-expression` Library
 
 **Likelihood Of Impact: Low**
 
 Laravel's dependency on `dragonmantank/cron-expression` has been updated from `2.x` to `3.x`. This should not cause any breaking change in your application unless you are interacting with the `cron-expression` library directly. If you are interacting with this library directly, please review its [change log](https://github.com/dragonmantank/cron-expression/blob/master/CHANGELOG.md).
 
+<a name="session"></a>
 ### Session
 
+<a name="the-session-contract"></a>
 #### The `Session` Contract
 
 **Likelihood Of Impact: Low**
@@ -336,7 +397,15 @@ The `Illuminate\Contracts\Session\Session` contract has received a new `pull` me
      */
     public function pull($key, $default = null);
 
+<a name="testing"></a>
 ### Testing
+
+<a name="decode-response-json-method"></a>
+#### The `decodeResponseJson` Method
+
+**Likelihood Of Impact: Low**
+
+The `decodeResponseJson` method that belongs to the `Illuminate\Testing\TestResponse` class no longer accepts any arguments. Please consider using the `json` method instead.
 
 <a name="assert-exact-json-method"></a>
 #### The `assertExactJson` Method
@@ -345,8 +414,10 @@ The `Illuminate\Contracts\Session\Session` contract has received a new `pull` me
 
 The `assertExactJson` method now requires numeric keys of compared arrays to match and be in the same order. If you would like to compare JSON against an array without requiring numerically keyed arrays to have the same order, you may use the `assertSimilarJson` method instead.
 
+<a name="validation"></a>
 ### Validation
 
+<a name="database-rule-connections"></a>
 ### Database Rule Connections
 
 **Likelihood Of Impact: Low**

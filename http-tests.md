@@ -240,7 +240,7 @@ If you would like to verify that the JSON response contains some given data at a
 
             $response
                 ->assertStatus(201)
-                ->assertJsonPath('team.owner.name', 'foo')
+                ->assertJsonPath('team.owner.name', 'foo');
         }
     }
 
@@ -279,6 +279,7 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
         }
     }
 
+<a name="fake-file-customization"></a>
 #### Fake File Customization
 
 When creating files using the `fake` method, you may specify the width, height, and size of the image in order to better test your validation rules:
@@ -311,6 +312,7 @@ If needed, you may get the raw, rendered view contents by casting the `TestView`
 
     $contents = (string) $this->view('welcome');
 
+<a name="sharing-errors"></a>
 #### Sharing Errors
 
 Some views may depend on errors shared in the global error bag provided by Laravel. To hydrate the error bag with error messages, you may use the `withViewErrors` method:
@@ -321,7 +323,8 @@ Some views may depend on errors shared in the global error bag provided by Larav
 
     $view->assertSee('Please provide a valid name.');
 
-#### Rendering Raw Blade
+<a name="rendering-blade-components"></a>
+#### Rendering Blade & Components
 
 If necessary, you may use the `blade` method to evaluate and render a raw Blade string. Like the `view` method, the `blade` method returns an instance of `Illuminate\Testing\TestView`:
 
@@ -329,6 +332,12 @@ If necessary, you may use the `blade` method to evaluate and render a raw Blade 
         '<x-component :name="$name" />',
         ['name' => 'Taylor']
     );
+
+    $view->assertSee('Taylor');
+
+You may use the `component` method to evaluate and render a blade component. Like the `view` method, the `component` method returns an instance of `Illuminate\Testing\TestView`:
+
+    $view = $this->component(Profile::class, ['name' => 'Taylor']);
 
     $view->assertSee('Taylor');
 
@@ -525,7 +534,7 @@ Assert that the response has no JSON validation errors for the given keys:
 
 Assert that the response contains the given data at the specified path:
 
-    $response->assertJsonPath($path, array $data, $strict = false);
+    $response->assertJsonPath($path, array $data, $strict = true);
 
 <a name="assert-json-structure"></a>
 #### assertJsonStructure

@@ -73,6 +73,7 @@ First, require the Cashier package for Stripe with Composer:
 
 > {note} To ensure Cashier properly handles all Stripe events, remember to [set up Cashier's webhook handling](#handling-stripe-webhooks).
 
+<a name="database-migrations"></a>
 #### Database Migrations
 
 The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table as well as create a new `subscriptions` table to hold all of your customer's subscriptions:
@@ -213,6 +214,7 @@ If you would like to only generate the URL to the billing portal, you may use th
 
 In order to create subscriptions or perform "one off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
 
+<a name="payment-methods-for-subscriptions"></a>
 #### Payment Methods For Subscriptions
 
 When storing credit cards to a customer for future use, the Stripe Setup Intents API must be used to securely gather the customer's payment method details. A "Setup Intent" indicates to Stripe the intention to charge a customer's payment method. Cashier's `Billable` trait includes the `createSetupIntent` to easily create a new Setup Intent. You should call this method from the route or controller that will render the form which gathers your customer's payment method details:
@@ -272,6 +274,7 @@ After the card has been verified by Stripe, you may pass the resulting `setupInt
 
 > {tip} If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/save-and-reuse#php).
 
+<a name="payment-methods-for-single-charges"></a>
 #### Payment Methods For Single Charges
 
 Of course, when making a single charge against a customer's payment method we'll only need to use a payment method identifier a single time. Due to Stripe limitations, you may not use the stored default payment method of a customer for single charges. You must allow the customer to enter their payment method details using the Stripe.js library. For example, consider the following form:
@@ -387,6 +390,8 @@ The `deletePaymentMethods` method will delete all of the payment method informat
 <a name="subscriptions"></a>
 ## Subscriptions
 
+Subscriptions provide a way to set up recurring payments for your customers and support multiple subscription plans, subscription quantities, trials, and more.
+
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
 
@@ -402,6 +407,7 @@ The `create` method, which accepts [a Stripe payment method identifier](#storing
 
 > {note} Passing a payment method identifier directly to the `create()` subscription method will also automatically add it to the user's stored payment methods.
 
+<a name="subscription-quantities"></a>
 #### Quantities
 
 If you would like to set a specific quantity for the plan when creating the subscription, you may use the `quantity` method:
@@ -410,6 +416,7 @@ If you would like to set a specific quantity for the plan when creating the subs
          ->quantity(5)
          ->create($paymentMethod);
 
+<a name="additional-details"></a>
 #### Additional Details
 
 If you would like to specify additional customer or subscription details, you may do so by passing them as the second and third arguments to the `create` method:
@@ -422,6 +429,7 @@ If you would like to specify additional customer or subscription details, you ma
 
 To learn more about the additional fields supported by Stripe, check out Stripe's documentation on [customer creation](https://stripe.com/docs/api#create_customer) and [subscription creation](https://stripe.com/docs/api/subscriptions/create).
 
+<a name="coupons"></a>
 #### Coupons
 
 If you would like to apply a coupon when creating the subscription, you may use the `withCoupon` method:
@@ -430,6 +438,7 @@ If you would like to apply a coupon when creating the subscription, you may use 
          ->withCoupon('code')
          ->create($paymentMethod);
 
+<a name="adding-subscriptions"></a>
 #### Adding Subscriptions
 
 If you would like to add a subscription to a customer who already has a default payment method set you can use the `add` method when using the `newSubscription` method:
@@ -483,6 +492,9 @@ The `recurring` method may be used to determine if the user is currently subscri
         //
     }
 
+> {note} If a user has two subscriptions with the same name, the most recent subscription will always be returned by the `subscription` method. For example, a user might have two subscription records named `default`; however, one of the subscriptions may be an old, expired subscription, while the other is the current, active subscription. The most recent subscription will always be returned while older subscriptions are kept in the database for historical review.
+
+<a name="cancelled-subscription-status"></a>
 #### Cancelled Subscription Status
 
 To determine if the user was once an active subscriber, but has cancelled their subscription, you may use the `cancelled` method:
@@ -503,6 +515,7 @@ To determine if the user has cancelled their subscription and is no longer withi
         //
     }
 
+<a name="subscription-scopes"></a>
 #### Subscription Scopes
 
 Most subscription states are also available as query scopes so that you may easily query your database for subscriptions that are in a given state:
@@ -587,6 +600,7 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice('provider-price-id');
 
+<a name="prorations"></a>
 #### Prorations
 
 By default, Stripe prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
@@ -676,6 +690,7 @@ You may remove plans from subscriptions using the `removePlan` method:
 
 > {note} You may not remove the last plan on a subscription. Instead, you should simply cancel the subscription.
 
+<a name="swapping"></a>
 ### Swapping
 
 You may also change the plans attached to a multiplan subscription. For example, imagine you're on a `basic-plan` subscription with a `chat-plan` add-on and you want to upgrade to the `pro-plan` plan:
@@ -703,12 +718,14 @@ If you want to swap a single plan on a subscription, you may do so using the `sw
             ->findItemOrFail('basic-plan')
             ->swap('pro-plan');
 
+<a name="proration"></a>
 #### Proration
 
 By default, Stripe will prorate charges when adding or removing plans from a subscription. If you would like to make a plan adjustment without proration, you should chain the `noProrate` method onto your plan operation:
 
     $user->subscription('default')->noProrate()->removePlan('chat-plan');
 
+<a name="swapping-quantities"></a>
 #### Quantities
 
 If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](#subscription-quantity) and passing the name of the plan as an additional argument to the method:
@@ -723,6 +740,7 @@ If you would like to update quantities on individual subscription plans, you may
 
 > {note} When you have multiple plans set on a subscription the `stripe_plan` and `quantity` attributes on the `Subscription` model will be `null`. To access the individual plans, you should use the `items` relationship available on the `Subscription` model.
 
+<a name="subscription-items"></a>
 #### Subscription Items
 
 When a subscription has multiple plans, it will have multiple subscription "items" stored in your database's `subscription_items` table. You may access these via the `items` relationship on the subscription:
@@ -762,6 +780,7 @@ The `taxRates` method enables you to apply a tax rate on a model-by-model basis,
 
 > {note} The `taxRates` method only applies to subscription charges. If you use Cashier to make "one off" charges, you will need to manually specify the tax rate at that time.
 
+<a name="syncing-tax-rates"></a>
 #### Syncing Tax Rates
 
 When changing the hard-coded Tax Rate IDs returned by the `taxRates` method, the tax settings on any existing subscriptions for the user will remain the same. If you wish to update the tax value for existing subscriptions with the returned `taxTaxRates` values, you should call the `syncTaxRates` method on the user's subscription instance:
@@ -770,6 +789,7 @@ When changing the hard-coded Tax Rate IDs returned by the `taxRates` method, the
 
 This will also sync any subscription item tax rates so make sure you also properly change the `planTaxRates` method.
 
+<a name="tax-exemption"></a>
 #### Tax Exemption
 
 Cashier also offers methods to determine if the customer is tax exempt by calling the Stripe API. The `isNotTaxExempt`, `isTaxExempt`, and `reverseChargeApplies` methods are available on the billable model:
@@ -864,6 +884,7 @@ You may determine if the user is within their trial period using either the `onT
         //
     }
 
+<a name="defining-trial-days-in-stripe-cashier"></a>
 #### Defining Trial Days In Stripe / Cashier
 
 You may choose to define how many trial days your plan's receive in the Stripe dashboard or always pass them explicitly using Cashier. If you choose to define your plan's trial days in Stripe you should be aware that new subscriptions, including new subscriptions for a customer that had a subscription in the past, will always receive a trial period unless you explicitly call the `trialDays(0)` method.
@@ -886,17 +907,23 @@ Cashier refers to this type of trial as a "generic trial", since it is not attac
         // User is within their trial period...
     }
 
-You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
-
-    if ($user->onGenericTrial()) {
-        // User is within their "generic" trial period...
-    }
-
 Once you are ready to create an actual subscription for the user, you may use the `newSubscription` method as usual:
 
     $user = User::find(1);
 
     $user->newSubscription('default', 'price_monthly')->create($paymentMethod);
+
+To retrieve the user's trial ending date, you may use the `trialEndsAt` method. This method will return a Carbon date instance if a user is on a trial or `null` if they aren't. You may also pass an optional subscription name parameter if you would like to get the trial ending date for a specific subscription other than the default one:
+
+    if ($user->onTrial()) {
+        $trialEndsAt = $user->trialEndsAt('main');
+    }
+
+You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
+
+    if ($user->onGenericTrial()) {
+        // User is within their "generic" trial period...
+    }
 
 <a name="extending-trials"></a>
 ### Extending Trials
@@ -934,6 +961,7 @@ To ensure your application can handle Stripe webhooks, be sure to configure the 
 
 > {note} Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/billing#verifying-webhook-signatures) middleware.
 
+<a name="webhooks-csrf-protection"></a>
 #### Webhooks & CSRF Protection
 
 Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
@@ -1067,6 +1095,7 @@ You may use the `findInvoice` method to retrieve a specific invoice:
 
     $invoice = $user->findInvoice($invoiceId);
 
+<a name="displaying-invoice-information"></a>
 #### Displaying Invoice Information
 
 When listing the invoices for the customer, you may use the invoice's helper methods to display the relevant invoice information. For example, you may wish to list every invoice in a table, allowing the user to easily download any of them:
@@ -1123,7 +1152,7 @@ First, you could redirect your customer to the dedicated payment confirmation pa
 
 On the payment confirmation page, the customer will be prompted to enter their credit card info again and perform any additional actions required by Stripe, such as "3D Secure" confirmation. After confirming their payment, the user will be redirected to the URL provided by the `redirect` parameter specified above. Upon redirection, `message` (string) and `success` (integer) query string variables will be added to the URL.
 
-Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if a `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
+Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if an `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
 
 Payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on the `Billable` user. When handling subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Subscription` model may throw exceptions.
 
@@ -1146,6 +1175,7 @@ If your business is based in Europe you will need to abide by the Strong Custome
 
 SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw a `PaymentActionRequired` exception that informs you that this extra verification is needed. More info on how to handle these exceptions be found [here](#handling-failed-payments).
 
+<a name="incomplete-and-past-due-state"></a>
 #### Incomplete and Past Due State
 
 When a payment needs additional confirmation, the subscription will remain in an `incomplete` or `past_due` state as indicated by its `stripe_status` database column. Cashier will automatically activate the customer's subscription via a webhook as soon as payment confirmation is complete.

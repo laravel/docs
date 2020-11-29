@@ -138,6 +138,7 @@ As noted above, when retrieving attributes that are listed in your `$dates` prop
 
     return $user->deleted_at->getTimestamp();
 
+<a name="date-formats"></a>
 #### Date Formats
 
 By default, timestamps are formatted as `'Y-m-d H:i:s'`. If you need to customize the timestamp format, set the `$dateFormat` property on your model. This property determines how date attributes are stored in the database:
@@ -161,7 +162,7 @@ By default, timestamps are formatted as `'Y-m-d H:i:s'`. If you need to customiz
 <a name="attribute-casting"></a>
 ## Attribute Casting
 
-The `$casts` property on your model provides a convenient method of converting attributes to common data types. The `$casts` property should be an array where the key is the name of the attribute being cast and the value is the type you wish to cast the column to. The supported cast types are: `integer`, `real`, `float`, `double`, `decimal:<digits>`, `string`, `boolean`, `object`, `array`, `collection`, `date`, `datetime`, and `timestamp`. When casting to `decimal`, you must define the number of digits (`decimal:2`).
+The `$casts` property on your model provides a convenient method of converting attributes to common data types. The `$casts` property should be an array where the key is the name of the attribute being cast and the value is the type you wish to cast the column to. The supported cast types are: `integer`, `real`, `float`, `double`, `decimal:<digits>`, `string`, `boolean`, `object`, `array`, `collection`, `date`, `datetime`, `timestamp`, `encrypted`, `encrypted:object`, `encrypted:array`, and `encrypted:collection`. When casting to `decimal`, you must define the number of digits (`decimal:2`).
 
 To demonstrate attribute casting, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:
 
@@ -258,6 +259,7 @@ Once you have defined a custom cast type, you may attach it to a model attribute
         ];
     }
 
+<a name="value-object-casting"></a>
 #### Value Object Casting
 
 You are not limited to casting values to primitive types. You may also cast values to objects. Defining custom casts that cast values to objects is very similar to casting to primitive types; however, the `set` method should return an array of key / value pairs that will be used to set raw, storable values on the model.
@@ -323,6 +325,28 @@ When casting to value objects, any changes made to the value object will automat
 
 > {tip} If you plan to serialize your Eloquent models containing value objects to JSON or arrays, you should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces on the value object.
 
+<a name="array-json-serialization"></a>
+#### Array / JSON Serialization
+
+When an Eloquent model is converted to an array or JSON using the `toArray` method, your custom cast value objects will typically be serialized as well as long as they implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces. However, when using value objects provided by third-party libraries, you may not have the ability to add these interfaces to the object.
+
+Therefore, you may specify that your custom cast class will be responsible for serializing the value object. To do so, your custom class cast should implement the `Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes` interface. This interface states that your class should contain a `serialize` method which should return the serialized form of your value object:
+
+    /**
+     * Get the serialized representation of the value.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array  $attributes
+     * @return mixed
+     */
+    public function serialize($model, string $key, $value, array $attributes)
+    {
+        return (string) $value;
+    }
+
+<a name="inbound-casting"></a>
 #### Inbound Casting
 
 Occasionally, you may need to write a custom cast that only transforms values that are being set on the model and does not perform any operations when attributes are being retrieved from the model. A classic example of an inbound only cast is a "hashing" cast. Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined.
@@ -370,6 +394,7 @@ Occasionally, you may need to write a custom cast that only transforms values th
         }
     }
 
+<a name="cast-parameters"></a>
 #### Cast Parameters
 
 When attaching a custom cast to a model, cast parameters may be specified by separating them from the class name using a `:` character and comma-delimiting multiple parameters. The parameters will be passed to the constructor of the cast class:
@@ -383,6 +408,7 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
         'secret' => Hash::class.':sha256',
     ];
 
+<a name="castables"></a>
 #### Castables
 
 Instead of attaching the custom cast to your model, you may alternatively attach a class that implements the `Illuminate\Contracts\Database\Eloquent\Castable` interface:
@@ -405,9 +431,10 @@ Objects that implement the `Castable` interface must define a `castUsing` method
         /**
          * Get the name of the caster class to use when casting from / to this cast target.
          *
+         * @param  array  $arguments
          * @return string
          */
-        public static function castUsing()
+        public static function castUsing(array $arguments)
         {
             return AddressCast::class;
         }

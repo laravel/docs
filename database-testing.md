@@ -121,28 +121,14 @@ To get started, take a look at the `database/factories/UserFactory.php` file in 
 
 As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `model` property and `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory.
 
-Via the `faker` property, factories have access to the [Faker](https://github.com/fzaninotto/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
+Via the `faker` property, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
 > {tip} You can set the Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
 
 <a name="factory-states"></a>
 ### Factory States
 
-State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `suspended` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like. After all, it's just a typical PHP method:
-
-    /**
-     * Indicate that the user is suspended.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function suspended()
-    {
-        return $this->state([
-            'account_status' => 'suspended',
-        ]);
-    }
-
-If your state transformation requires access to the other attributes defined by the factory, you may pass a callback to the `state` method. The callback will receive the array of raw attributes defined for the factory:
+State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `suspended` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like. After all, it's just a typical PHP method. The provided state manipulation callback will receive the array of raw attributes defined for the factory and should return an array of attributes to modify:
 
     /**
      * Indicate that the user is suspended.
@@ -241,12 +227,14 @@ The `HasFactory` trait's `factory` method will use conventions to determine the 
         return \Database\Factories\Administration\FlightFactory::new();
     }
 
+<a name="applying-states"></a>
 #### Applying States
 
 You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you may simply call state methods directly:
 
     $users = User::factory()->count(5)->suspended()->make();
 
+<a name="overriding-attributes"></a>
 #### Overriding Attributes
 
 If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified values will be replaced while the rest of the values remain set to their default values as specified by the factory:
@@ -356,19 +344,19 @@ Next, let's explore building Eloquent model relationships using Laravel's fluent
     use App\Models\Post;
     use App\Models\User;
 
-    $users = User::factory()
+    $user = User::factory()
                 ->has(Post::factory()->count(3))
                 ->create();
 
 By convention, when passing a `Post` model to the `has` method, Laravel will assume that the `User` model must have a `posts` method that defines the relationship. If necessary, you may explicitly specify the name of the relationship that you would like to manipulate:
 
-    $users = User::factory()
+    $user = User::factory()
                 ->has(Post::factory()->count(3), 'posts')
                 ->create();
 
 Of course, you may perform state manipulations on the related models. In addition, you may pass a Closure based state transformation if your state change requires access to the parent model:
 
-    $users = User::factory()
+    $user = User::factory()
                 ->has(
                     Post::factory()
                             ->count(3)
@@ -378,17 +366,18 @@ Of course, you may perform state manipulations on the related models. In additio
                 )
                 ->create();
 
+<a name="has-many-relationships-using-magic-methods"></a>
 #### Using Magic Methods
 
 For convenience, you may use the factory's magic relationship methods to define relationships. For example, the following example will use convention to determine that the related models should be created via a `posts` relationship method on the `User` model:
 
-    $users = User::factory()
+    $user = User::factory()
                 ->hasPosts(3)
                 ->create();
 
 When using magic methods to create factory relationships, you may pass an array of attributes to override on the related models:
 
-    $users = User::factory()
+    $user = User::factory()
                 ->hasPosts(3, [
                     'published' => false,
                 ])
@@ -396,7 +385,7 @@ When using magic methods to create factory relationships, you may pass an array 
 
 You may provide a Closure based state transformation if your state change requires access to the parent model:
 
-    $users = User::factory()
+    $user = User::factory()
                 ->hasPosts(3, function (array $attributes, User $user) {
                     return ['user_type' => $user->type];
                 })
@@ -417,6 +406,7 @@ Now that we have explored how to build "has many" relationships using factories,
                 ]))
                 ->create();
 
+<a name="belongs-to-relationships-using-magic-methods"></a>
 #### Using Magic Methods
 
 For convenience, you may use the factory's magic relationship methods to define "belongs to" relationships. For example, the following example will use convention to determine that the three posts should belong to the `user` relationship on the `Post` model:
@@ -440,6 +430,7 @@ Like [has many relationships](#has-many-relationships), "many to many" relations
                 ->has(Role::factory()->count(3))
                 ->create();
 
+<a name="pivot-table-attributes"></a>
 #### Pivot Table Attributes
 
 If you need to define attributes that should be set on the pivot / intermediate table linking the models, you may use the `hasAttached` method. This method accepts an array of pivot table attribute names and values as its second argument:
@@ -467,6 +458,7 @@ You may provide a Closure based state transformation if your state change requir
                 )
                 ->create();
 
+<a name="many-to-many-relationships-using-magic-methods"></a>
 #### Using Magic Methods
 
 For convenience, you may use the factory's magic relationship methods to define many to many relationships. For example, the following example will use convention to determine that the related models should be created via a `roles` relationship method on the `User` model:
@@ -486,6 +478,7 @@ For convenience, you may use the factory's magic relationship methods to define 
 
     $post = Post::factory()->hasComments(3)->create();
 
+<a name="morph-to-relationships"></a>
 #### Morph To Relationships
 
 Magic methods may not be used to create `morphTo` relationships. Instead, the `for` method must be used directly and the name of the relationship must be explicitly provided. For example, imagine that the `Comment` model has a `commentable` method that defines a `morphTo` relationship. In this situation, we may create three comments that belong to a single post using the `for` method directly:
@@ -494,6 +487,7 @@ Magic methods may not be used to create `morphTo` relationships. Instead, the `f
         Post::factory(), 'commentable'
     )->create();
 
+<a name="polymorphic-many-to-many-relationships"></a>
 #### Polymorphic Many To Many Relationships
 
 Polymorphic "many to many" relationships may be created just like non-polymorphic "many to many" relationships:
@@ -501,7 +495,7 @@ Polymorphic "many to many" relationships may be created just like non-polymorphi
     use App\Models\Tag;
     use App\Models\Video;
 
-    $users = Video::factory()
+    $videos = Video::factory()
                 ->hasAttached(
                     Tag::factory()->count(3),
                     ['public' => true]
@@ -510,7 +504,7 @@ Polymorphic "many to many" relationships may be created just like non-polymorphi
 
 Of course, the magic `has` method may also be used to create polymorphic "many to many" relationships:
 
-    $users = Video::factory()
+    $videos = Video::factory()
                 ->hasTags(3, ['public' => true])
                 ->create();
 
@@ -547,6 +541,27 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
 
             // ...
         }
+    }
+
+Alternatively, you may instruct the `RefreshDatabase` trait to automatically seed the database before each test. You may accomplish this by defining a `$seed` property on your test class:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Tests\TestCase;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * Indicates whether the database should be seeded before each test.
+         *
+         * @var bool
+         */
+        protected $seed = true;
+        
+        // ...
     }
 
 <a name="available-assertions"></a>

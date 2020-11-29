@@ -29,7 +29,7 @@ To make requests, you may use the `get`, `post`, `put`, `patch`, and `delete` me
 
     use Illuminate\Support\Facades\Http;
 
-    $response = Http::get('http://test.com');
+    $response = Http::get('http://example.com');
 
 The `get` method returns an instance of `Illuminate\Http\Client\Response`, which provides a variety of methods that may be used to inspect the response:
 
@@ -46,51 +46,55 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
 
 The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
 
-    return Http::get('http://test.com/users/1')['name'];
+    return Http::get('http://example.com/users/1')['name'];
 
 <a name="request-data"></a>
 ### Request Data
 
 Of course, it is common when using `POST`, `PUT`, and `PATCH` to send additional data with your request. So, these methods accept an array of data as their second argument. By default, data will be sent using the `application/json` content type:
 
-    $response = Http::post('http://test.com/users', [
+    $response = Http::post('http://example.com/users', [
         'name' => 'Steve',
         'role' => 'Network Administrator',
     ]);
 
+<a name="get-request-query-parameters"></a>
 #### GET Request Query Parameters
 
 When making `GET` requests, you may either append a query string to the URL directly or pass an array of key / value pairs as the second argument to the `get` method:
 
-    $response = Http::get('http://test.com/users', [
+    $response = Http::get('http://example.com/users', [
         'name' => 'Taylor',
         'page' => 1,
     ]);
 
+<a name="sending-form-url-encoded-requests"></a>
 #### Sending Form URL Encoded Requests
 
 If you would like to send data using the `application/x-www-form-urlencoded` content type, you should call the `asForm` method before making your request:
 
-    $response = Http::asForm()->post('http://test.com/users', [
+    $response = Http::asForm()->post('http://example.com/users', [
         'name' => 'Sara',
         'role' => 'Privacy Consultant',
     ]);
 
+<a name="sending-a-raw-request-body"></a>
 #### Sending A Raw Request Body
 
 You may use the `withBody` method if you would like to provide a raw request body when making a request:
 
     $response = Http::withBody(
         base64_encode($photo), 'image/jpeg'
-    )->post('http://test.com/photo');
+    )->post('http://example.com/photo');
 
+<a name="multi-part-requests"></a>
 #### Multi-Part Requests
 
 If you would like to send files as multi-part requests, you should call the `attach` method before making your request. This method accepts the name of the file and its contents. Optionally, you may provide a third argument which will be considered the file's filename:
 
     $response = Http::attach(
         'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
-    )->post('http://test.com/attachments');
+    )->post('http://example.com/attachments');
 
 Instead of passing the raw contents of a file, you may also pass a stream resource:
 
@@ -98,7 +102,7 @@ Instead of passing the raw contents of a file, you may also pass a stream resour
 
     $response = Http::attach(
         'attachment', $photo, 'photo.jpg'
-    )->post('http://test.com/attachments');
+    )->post('http://example.com/attachments');
 
 <a name="headers"></a>
 ### Headers
@@ -108,7 +112,7 @@ Headers may be added to requests using the `withHeaders` method. This `withHeade
     $response = Http::withHeaders([
         'X-First' => 'foo',
         'X-Second' => 'bar'
-    ])->post('http://test.com/users', [
+    ])->post('http://example.com/users', [
         'name' => 'Taylor',
     ]);
 
@@ -123,6 +127,7 @@ You may specify basic and digest authentication credentials using the `withBasic
     // Digest authentication...
     $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(...);
 
+<a name="bearer-tokens"></a>
 #### Bearer Tokens
 
 If you would like to quickly add an `Authorization` bearer token header to the request, you may use the `withToken` method:
@@ -164,6 +169,7 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
     // Determine if the response has a 500 level status code...
     $response->serverError();
 
+<a name="throwing-exceptions"></a>
 #### Throwing Exceptions
 
 If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response is a client or server error, you may use the `throw` method:
@@ -181,6 +187,12 @@ The `throw` method returns the response instance if no error occurred, allowing 
 
     return Http::post(...)->throw()->json();
 
+If you would like to perform some additional logic before the exception is thrown, you may pass a Closure to the `throw` method. The exception will be thrown automatically after the Closure is invoked, so you do not need to re-throw the exception from within the Closure:
+
+    return Http::post(...)->throw(function ($response, $e) {
+        //
+    })->json();
+
 <a name="guzzle-options"></a>
 ### Guzzle Options
 
@@ -188,7 +200,7 @@ You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en
 
     $response = Http::withOptions([
         'debug' => true,
-    ])->get('http://test.com/users');
+    ])->get('http://example.com/users');
 
 <a name="testing"></a>
 ## Testing
@@ -205,7 +217,10 @@ For example, to instruct the HTTP client to return empty, `200` status code resp
     Http::fake();
 
     $response = Http::post(...);
+    
+> {note} When faking requests, HTTP client middleware are not executed. You should define expectations for faked responses as if these middleware have run correctly.
 
+<a name="faking-specific-urls"></a>
 #### Faking Specific URLs
 
 Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the `response` method to construct stub / fake responses for these endpoints:
@@ -228,6 +243,7 @@ If you would like to specify a fallback URL pattern that will stub all unmatched
         '*' => Http::response('Hello World', 200, ['Headers']),
     ]);
 
+<a name="faking-response-sequences"></a>
 #### Faking Response Sequences
 
 Sometimes you may need to specify that a single URL should return a series of fake responses in a specific order. You may accomplish this using the `Http::sequence` method to build the responses:
@@ -256,6 +272,7 @@ If you would like to fake a sequence of responses but do not need to specify a s
             ->push('Hello World', 200)
             ->whenEmpty(Http::response());
 
+<a name="fake-callback"></a>
 #### Fake Callback
 
 If you require more complicated logic to determine what responses to return for certain endpoints, you may pass a callback to the `fake` method. This callback will receive an instance of `Illuminate\Http\Client\Request` and should return a response instance:
@@ -275,14 +292,14 @@ The `assertSent` method accepts a callback which will be given an `Illuminate\Ht
 
     Http::withHeaders([
         'X-First' => 'foo',
-    ])->post('http://test.com/users', [
+    ])->post('http://example.com/users', [
         'name' => 'Taylor',
         'role' => 'Developer',
     ]);
 
     Http::assertSent(function ($request) {
         return $request->hasHeader('X-First', 'foo') &&
-               $request->url() == 'http://test.com/users' &&
+               $request->url() == 'http://example.com/users' &&
                $request['name'] == 'Taylor' &&
                $request['role'] == 'Developer';
     });
@@ -291,13 +308,13 @@ If needed, you may assert that a specific request was not sent using the `assert
 
     Http::fake();
 
-    Http::post('http://test.com/users', [
+    Http::post('http://example.com/users', [
         'name' => 'Taylor',
         'role' => 'Developer',
     ]);
 
     Http::assertNotSent(function (Request $request) {
-        return $request->url() === 'http://test.com/posts';
+        return $request->url() === 'http://example.com/posts';
     });
 
 Or, if you would like to assert that no requests were sent, you may use the `assertNothingSent` method:

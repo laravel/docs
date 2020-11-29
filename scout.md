@@ -68,6 +68,7 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
+<a name="algolia"></a>
 #### Algolia
 
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
@@ -195,6 +196,22 @@ The `flush` command may be used to remove all of a model's records from your sea
 
     php artisan scout:flush "App\Models\Post"
 
+<a name="modifying-the-import-query"></a>
+#### Modifying The Import Query
+
+If you would like to modify the query that is used to retrieve all of your models for batch importing, you may define a `makeAllSearchableUsing` method on your model. This is a great place to add any eager relationship loading that may be necessary before importing your models:
+
+    /**
+     * Modify the query used to retrieve models when making all of the models searchable.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function makeAllSearchableUsing($query)
+    {
+        return $query->with('author');
+    }
+
 <a name="adding-records"></a>
 ### Adding Records
 
@@ -206,6 +223,7 @@ Once you have added the `Laravel\Scout\Searchable` trait to a model, all you nee
 
     $order->save();
 
+<a name="adding-via-query"></a>
 #### Adding Via Query
 
 If you would like to add a collection of models to your search index via an Eloquent query, you may chain the `searchable` method onto an Eloquent query. The `searchable` method will [chunk the results](/docs/{{version}}/eloquent#chunking-results) of the query and add the records to your search index. Again, if you have configured Scout to use queues, all of the chunks will be added in the background by your queue workers:
@@ -385,6 +403,7 @@ If you need to customize the search behavior of an engine you may pass a callbac
 <a name="custom-engines"></a>
 ## Custom Engines
 
+<a name="writing-the-engine"></a>
 #### Writing The Engine
 
 If one of the built-in Scout search engines doesn't fit your needs, you may write your own custom engine and register it with Scout. Your engine should extend the `Laravel\Scout\Engines\Engine` abstract class. This abstract class contains eight methods your custom engine must implement:
@@ -402,6 +421,7 @@ If one of the built-in Scout search engines doesn't fit your needs, you may writ
 
 You may find it helpful to review the implementations of these methods on the `Laravel\Scout\Engines\AlgoliaEngine` class. This class will provide you with a good starting point for learning how to implement each of these methods in your own engine.
 
+<a name="registering-the-engine"></a>
 #### Registering The Engine
 
 Once you have written your custom engine, you may register it with Scout using the `extend` method of the Scout engine manager. You should call the `extend` method from the `boot` method of your `AppServiceProvider` or any other service provider used by your application. For example, if you have written a `MySqlSearchEngine`, you may register it like so:

@@ -42,7 +42,7 @@ Below is an example of a basic controller class. Note that the controller extend
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return View
+         * @return \Illuminate\View\View
          */
         public function show($id)
         {
@@ -78,7 +78,7 @@ If you would like to define a controller that only handles a single action, you 
          * Show the profile for the given user.
          *
          * @param  int  $id
-         * @return View
+         * @return \Illuminate\View\View
          */
         public function __invoke($id)
         {
@@ -156,10 +156,11 @@ You may register many resource controllers at once by passing an array to the `r
         'posts' => PostController::class,
     ]);
 
+<a name="actions-handled-by-resource-controller"></a>
 #### Actions Handled By Resource Controller
 
-Verb      | URI                  | Action       | Route Name
-----------|-----------------------|--------------|---------------------
+Verb      | URI                    | Action       | Route Name
+----------|------------------------|--------------|---------------------
 GET       | `/photos`              | index        | photos.index
 GET       | `/photos/create`       | create       | photos.create
 POST      | `/photos`              | store        | photos.store
@@ -168,6 +169,7 @@ GET       | `/photos/{photo}/edit` | edit         | photos.edit
 PUT/PATCH | `/photos/{photo}`      | update       | photos.update
 DELETE    | `/photos/{photo}`      | destroy      | photos.destroy
 
+<a name="specifying-the-resource-model"></a>
 #### Specifying The Resource Model
 
 If you are using route model binding and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
@@ -187,6 +189,7 @@ When declaring a resource route, you may specify a subset of actions the control
         'create', 'store', 'update', 'destroy'
     ]);
 
+<a name="api-resource-routes"></a>
 #### API Resource Routes
 
 When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
@@ -215,9 +218,10 @@ This route will register a nested resource that may be accessed with URIs like t
 
     /photos/{photo}/comments/{comment}
 
+<a name="scoping-nested-resources"></a>
 #### Scoping Nested Resources
 
-Laravel's [implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enabling automatic scoping as well as instruct Laravel which field the child resource should be retrieved by:
+Laravel's [implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by:
 
     Route::resource('photos.comments', PhotoCommentController::class)->scoped([
         'comment' => 'slug',
@@ -227,9 +231,10 @@ This route will register a scoped nested resource that may be accessed with URIs
 
     /photos/{photo}/comments/{comment:slug}
 
+<a name="shallow-nesting"></a>
 #### Shallow Nesting
 
-Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifier such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use "shallow nesting":
+Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifiers such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use "shallow nesting":
 
     Route::resource('photos.comments', CommentController::class)->shallow();
 
@@ -326,6 +331,7 @@ If you need to add additional routes to a resource controller beyond the default
 <a name="dependency-injection-and-controllers"></a>
 ## Dependency Injection & Controllers
 
+<a name="constructor-injection"></a>
 #### Constructor Injection
 
 The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
@@ -357,6 +363,7 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
 
 You may also type-hint any [Laravel contract](/docs/{{version}}/contracts). If the container can resolve it, you can type-hint it. Depending on your application, injecting your dependencies into your controller may provide better testability.
 
+<a name="method-injection"></a>
 #### Method Injection
 
 In addition to constructor injection, you may also type-hint dependencies on your controller's methods. A common use-case for method injection is injecting the `Illuminate\Http\Request` instance into your controller methods:

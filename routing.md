@@ -33,6 +33,7 @@ The most basic Laravel routes accept a URI and a `Closure`, providing a very sim
         return 'Hello World';
     });
 
+<a name="the-default-route-files"></a>
 #### The Default Route Files
 
 All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by the framework. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection. The routes in `routes/api.php` are stateless and are assigned the `api` middleware group.
@@ -45,6 +46,7 @@ For most applications, you will begin by defining routes in your `routes/web.php
 
 Routes defined in the `routes/api.php` file are nested within a route group by the `RouteServiceProvider`. Within this group, the `/api` URI prefix is automatically applied so you do not need to manually apply it to every route in the file. You may modify the prefix and other route group options by modifying your `RouteServiceProvider` class.
 
+<a name="available-router-methods"></a>
 #### Available Router Methods
 
 The router allows you to register routes that respond to any HTTP verb:
@@ -66,6 +68,7 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
         //
     });
 
+<a name="csrf-protection"></a>
 #### CSRF Protection
 
 Any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](/docs/{{version}}/csrf):
@@ -90,6 +93,8 @@ You may use the `Route::permanentRedirect` method to return a `301` status code:
 
     Route::permanentRedirect('/here', '/there');
 
+> {note} When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`.
+
 <a name="view-routes"></a>
 ### View Routes
 
@@ -98,6 +103,8 @@ If your route only needs to return a view, you may use the `Route::view` method.
     Route::view('/welcome', 'welcome');
 
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
+
+> {note} When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
 
 <a name="route-parameters"></a>
 ## Route Parameters
@@ -149,6 +156,20 @@ You may constrain the format of your route parameters using the `where` method o
         //
     })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 
+For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:
+
+    Route::get('user/{id}/{name}', function ($id, $name) {
+        //
+    })->whereNumber('id')->whereAlpha('name');
+
+    Route::get('user/{name}', function ($name) {
+        //
+    })->whereAlphaNumeric('name');
+
+    Route::get('user/{id}', function ($id) {
+        //
+    })->whereUuid('id');
+
 <a name="parameters-global-constraints"></a>
 #### Global Constraints
 
@@ -196,6 +217,7 @@ You may also specify route names for controller actions:
 
 > {note} Route names should always be unique.
 
+<a name="generating-urls-to-named-routes"></a>
 #### Generating URLs To Named Routes
 
 Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the global `route` function:
@@ -226,6 +248,7 @@ If you pass additional parameters in the array, those key / value pairs will aut
 
 > {tip} Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
 
+<a name="inspecting-the-current-route"></a>
 #### Inspecting The Current Route
 
 If you would like to determine if the current request was routed to a given named route, you may use the `named` method on a Route instance. For example, you may check the current route name from a route middleware:
@@ -249,7 +272,7 @@ If you would like to determine if the current request was routed to a given name
 <a name="route-groups"></a>
 ## Route Groups
 
-Route groups allow you to share route attributes, such as middleware, across a large number of routes without needing to define those attributes on each individual route. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
+Route groups allow you to share route attributes, such as middleware, across a large number of routes without needing to define those attributes on each individual route.
 
 Nested groups attempt to intelligently "merge" attributes with their parent group. Middleware and `where` conditions are merged while names and prefixes are appended. Namespace delimiters and slashes in URI prefixes are automatically added where appropriate.
 
@@ -319,6 +342,19 @@ Laravel automatically resolves Eloquent models defined in routes or controller a
 
 Since the `$user` variable is type-hinted as the `App\Models\User` Eloquent model and the variable name matches the `{user}` URI segment, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
 
+Of course, implicit binding is also possible when using controller methods. Again, note the `{user}` URI segment matches the `$user` variable in the controller which contains an `App\Models\User` type-hint:
+
+    use App\Http\Controllers\UserController;
+    use App\Models\User;
+
+    Route::get('users/{user}', [UserController::class, 'show']);
+
+    public function show(User $user)
+    {
+        return view('user.profile', ['user' => $user]);
+    }
+
+<a name="customizing-the-key"></a>
 #### Customizing The Key
 
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
@@ -341,6 +377,7 @@ Sometimes, when implicitly binding multiple Eloquent models in a single route de
 
 When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural of the route parameter name) which can be used to retrieve the `Post` model.
 
+<a name="customizing-the-default-key-name"></a>
 #### Customizing The Default Key Name
 
 If you would like model binding to use a default database column other than `id` when retrieving a given model class, you may override the `getRouteKeyName` method on the Eloquent model:
@@ -367,7 +404,7 @@ To register an explicit binding, use the router's `model` method to specify the 
      */
     public function boot()
     {
-        Route::model('user', App\Models\User::class);
+        Route::model('user', \App\Models\User::class);
 
         // ...
     }
@@ -382,6 +419,7 @@ Since we have bound all `{user}` parameters to the `App\Models\User` model, a `U
 
 If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
+<a name="customizing-the-resolution-logic"></a>
 #### Customizing The Resolution Logic
 
 If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
@@ -412,6 +450,21 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('name', $value)->firstOrFail();
+    }
+
+If a route is utilizing [implicit binding scoping](#implicit-model-binding-scoping), the `resolveChildRouteBinding` method will be used to resolve the child binding of the parent model:
+
+    /**
+     * Retrieve the child model for a bound value.
+     *
+     * @param  string  $childType
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveChildRouteBinding($childType, $value, $field)
+    {
+        return parent::resolveChildRouteBinding($childType, $value, $field);
     }
 
 <a name="fallback-routes"></a>
@@ -458,6 +511,7 @@ Since rate limiter callbacks receive the incoming HTTP request instance, you may
                     : Limit::perMinute(100);
     });
 
+<a name="segmenting-rate-limits"></a>
 #### Segmenting Rate Limits
 
 Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `by` method when building your rate limit:
@@ -468,6 +522,7 @@ Sometimes you may wish to segment rate limits by some arbitrary value. For examp
                     : Limit::perMinute(100)->by($request->ip());
     });
 
+<a name="multiple-rate-limits"></a>
 #### Multiple Rate Limits
 
 If needed, you may return an array of rate limits for a given rate limiter configuration. Each rate limit will be evaluated for the route based on the order they are placed within the array:
@@ -493,6 +548,13 @@ Rate limiters may be attached to routes or route groups using the `throttle` [mi
             //
         });
     });
+
+<a name="throttling-with-redis"></a>
+#### Throttling With Redis
+
+Typically, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. This mapping is defined in your application's HTTP kernel. However, if you are using Redis as your application's cache driver, you may wish to change this mapping to use the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` class. This class is more efficient at managing rate limiting using Redis:
+
+    'throttle' => \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
 
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing

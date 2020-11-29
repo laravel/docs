@@ -45,14 +45,19 @@ For example, if you need to report different types of exceptions in different wa
         });
     }
 
-When you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback:
+When you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback or return `false` from the callback:
 
     $this->reportable(function (CustomException $e) {
         //
     })->stop();
 
+    $this->reportable(function (CustomException $e) {
+        return false;
+    });
+
 > {tip} To customize the exception reporting for a given exception, you may also consider using [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions)
 
+<a name="global-log-context"></a>
 #### Global Log Context
 
 If available, Laravel automatically adds the current user's ID to every exception's log message as contextual data. You may define your own global contextual data by overriding the `context` method of your application's `App\Exceptions\Handler` class. This information will be included in every exception's log message written by your application:
@@ -69,6 +74,7 @@ If available, Laravel automatically adds the current user's ID to every exceptio
         ]);
     }
 
+<a name="the-report-helper"></a>
 #### The `report` Helper
 
 Sometimes you may need to report an exception but continue handling the current request. The `report` helper function allows you to quickly report an exception using your exception handler without rendering an error page:
@@ -84,6 +90,7 @@ Sometimes you may need to report an exception but continue handling the current 
         }
     }
 
+<a name="ignoring-exceptions-by-type"></a>
 #### Ignoring Exceptions By Type
 
 The `$dontReport` property of the exception handler contains an array of exception types that will not be logged. For example, exceptions resulting from 404 errors, as well as several other types of errors, are not written to your log files. You may add other exception types to this array as needed:

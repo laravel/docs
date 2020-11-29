@@ -25,7 +25,7 @@ Events serve as a great way to decouple various aspects of your application, sin
 <a name="registering-events-and-listeners"></a>
 ## Registering Events & Listeners
 
-The `EventServiceProvider` included with your Laravel application provides a convenient place to register all of your application's event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add a `OrderShipped` event:
+The `EventServiceProvider` included with your Laravel application provides a convenient place to register all of your application's event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). You may add as many events to this array as your application requires. For example, let's add an `OrderShipped` event:
 
     /**
      * The event listener mappings for the application.
@@ -104,6 +104,7 @@ If you would like to handle anonymous queued listener failures, you may provide 
         // The queued listener failed...
     }));
 
+<a name="wildcard-event-listeners"></a>
 #### Wildcard Event Listeners
 
 You may even register listeners using the `*` as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the event name as their first argument, and the entire event data array as their second argument:
@@ -236,6 +237,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
 
 > {tip} Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
 
+<a name="stopping-the-propagation-of-an-event"></a>
 #### Stopping The Propagation Of An Event
 
 Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning `false` from your listener's `handle` method.
@@ -261,6 +263,7 @@ To specify that a listener should be queued, add the `ShouldQueue` interface to 
 
 That's it! Now, when this listener is called for an event, it will be automatically queued by the event dispatcher using Laravel's [queue system](/docs/{{version}}/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has finished processing.
 
+<a name="customizing-the-queue-connection-queue-name"></a>
 #### Customizing The Queue Connection & Queue Name
 
 If you would like to customize the queue connection, queue name, or queue delay time of an event listener, you may define the `$connection`, `$queue`, or `$delay` properties on your listener class:
@@ -308,6 +311,7 @@ If you would like to define the listener's queue at runtime, you may define a `v
         return 'listeners';
     }
 
+<a name="conditionally-queueing-listeners"></a>
 #### Conditionally Queueing Listeners
 
 Sometimes, you may need to determine whether a listener should be queued based on some data that's only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be executed:
@@ -510,8 +514,13 @@ Alternatively, your subscriber's `subscribe` method may return an array of event
     public function subscribe()
     {
         return [
-            Login::class => [UserEventSubscriber::class, 'handleUserLogin'],
-            Logout::class => [UserEventSubscriber::class, 'handleUserLogout'],
+            Login::class => [
+                [UserEventSubscriber::class, 'handleUserLogin']
+            ],
+
+            Logout::class => [
+                [UserEventSubscriber::class, 'handleUserLogout']
+            ],
         ];
     }
 

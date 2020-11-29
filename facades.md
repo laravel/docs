@@ -60,8 +60,9 @@ We can write the following test to verify that the `Cache::get` method was calle
              ->with('key')
              ->andReturn('value');
 
-        $this->visit('/cache')
-             ->see('value');
+        $response = $this->get('/cache');
+
+        $response->assertSee('value');
     }
 
 <a name="facades-vs-helper-functions"></a>
@@ -94,8 +95,9 @@ Under the hood, the `cache` helper is going to call the `get` method on the clas
              ->with('key')
              ->andReturn('value');
 
-        $this->visit('/cache')
-             ->see('value');
+        $response = $this->get('/cache');
+
+        $response->assertSee('value');
     }
 
 <a name="how-facades-work"></a>
@@ -218,7 +220,7 @@ When the real-time facade is used, the publisher implementation will be resolved
          */
         public function test_podcast_can_be_published()
         {
-            $podcast = factory(Podcast::class)->create();
+            $podcast = Podcast::factory()->create();
 
             Publisher::shouldReceive('publish')->once()->with($podcast);
 

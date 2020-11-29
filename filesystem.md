@@ -10,6 +10,7 @@
 - [Retrieving Files](#retrieving-files)
     - [Downloading Files](#downloading-files)
     - [File URLs](#file-urls)
+    - [File Paths](#file-paths)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
     - [File Uploads](#file-uploads)
@@ -57,6 +58,7 @@ When using the `local` driver, all file operations are relative to the `root` di
 
     Storage::disk('local')->put('file.txt', 'Contents');
 
+<a name="permissions"></a>
 #### Permissions
 
 The `public` [visibility](#file-visibility) translates to `0755` for directories and `0644` for files. You can modify the permissions mappings in your `filesystems` configuration file:
@@ -79,6 +81,7 @@ The `public` [visibility](#file-visibility) translates to `0755` for directories
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
+<a name="composer-packages"></a>
 #### Composer Packages
 
 Before using the SFTP or S3 drivers, you will need to install the appropriate package via Composer:
@@ -90,10 +93,12 @@ An absolute must for performance is to use a cached adapter. You will need an ad
 
 - CachedAdapter: `league/flysystem-cached-adapter ~1.0`
 
+<a name="s3-driver-configuration"></a>
 #### S3 Driver Configuration
 
 The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
 
+<a name="ftp-driver-configuration"></a>
 #### FTP Driver Configuration
 
 Laravel's Flysystem integrations works great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a FTP filesystem, you may use the example configuration below:
@@ -112,6 +117,7 @@ Laravel's Flysystem integrations works great with FTP; however, a sample configu
         // 'timeout' => 30,
     ],
 
+<a name="sftp-driver-configuration"></a>
 #### SFTP Driver Configuration
 
 Laravel's Flysystem integrations works great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a SFTP filesystem, you may use the example configuration below:
@@ -199,6 +205,7 @@ When using the `local` driver, all files that should be publicly accessible shou
 
 > {note} When using the `local` driver, the return value of `url` is not URL encoded. For this reason, we recommend always storing your files using names that will create valid URLs.
 
+<a name="temporary-urls"></a>
 #### Temporary URLs
 
 For files stored using the `s3` you may create a temporary URL to a given file using the `temporaryUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire:
@@ -218,6 +225,7 @@ If you need to specify additional [S3 request parameters](https://docs.aws.amazo
         ]
     );
 
+<a name="url-host-customization"></a>
 #### URL Host Customization
 
 If you would like to pre-define the host for file URLs generated using the `Storage` facade, you may add a `url` option to the disk's configuration array:
@@ -228,6 +236,15 @@ If you would like to pre-define the host for file URLs generated using the `Stor
         'url' => env('APP_URL').'/storage',
         'visibility' => 'public',
     ],
+
+<a name="file-paths"></a>
+### File Paths
+
+You may use the `path` method to get the path for a given file. If you are using the `local` driver, this will return the absolute path to the file. If you are using the `s3` driver, this method will return the relative path to the file in the S3 bucket:
+
+    use Illuminate\Support\Facades\Storage;
+
+    $path = Storage::path('file.jpg');
 
 <a name="file-metadata"></a>
 ### File Metadata
@@ -253,9 +270,10 @@ The `put` method may be used to store raw file contents on a disk. You may also 
 
     Storage::put('file.jpg', $resource);
 
+<a name="automatic-streaming"></a>
 #### Automatic Streaming
 
-If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either a `Illuminate\Http\File` or `Illuminate\Http\UploadedFile` instance and will automatically stream the file to your desired location:
+If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either an `Illuminate\Http\File` or `Illuminate\Http\UploadedFile` instance and will automatically stream the file to your desired location:
 
     use Illuminate\Http\File;
     use Illuminate\Support\Facades\Storage;
@@ -272,6 +290,7 @@ The `putFile` and `putFileAs` methods also accept an argument to specify the "vi
 
     Storage::putFile('photos', new File('/path/to/photo'), 'public');
 
+<a name="prepending-appending-to-files"></a>
 #### Prepending & Appending To Files
 
 The `prepend` and `append` methods allow you to write to the beginning or end of a file:
@@ -280,6 +299,7 @@ The `prepend` and `append` methods allow you to write to the beginning or end of
 
     Storage::append('file.log', 'Appended Text');
 
+<a name="copying-moving-files"></a>
 #### Copying & Moving Files
 
 The `copy` method may be used to copy an existing file to a new location on the disk, while the `move` method may be used to rename or move an existing file to a new location:
@@ -322,6 +342,7 @@ You may also call the `putFile` method on the `Storage` facade to perform the sa
 
     $path = Storage::putFile('avatars', $request->file('avatar'));
 
+<a name="specifying-a-file-name"></a>
 #### Specifying A File Name
 
 If you would not like a file name to be automatically assigned to your stored file, you may use the `storeAs` method, which receives the path, the file name, and the (optional) disk as its arguments:
@@ -338,6 +359,7 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
 
 > {note} Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\Util::normalizePath` method.
 
+<a name="specifying-a-disk"></a>
 #### Specifying A Disk
 
 By default, this method will use your default disk. If you would like to specify another disk, pass the disk name as the second argument to the `store` method:
@@ -354,6 +376,7 @@ If you are using the `storeAs` method, you may pass the disk name as the third a
         's3'
     );
 
+<a name="other-file-information"></a>
 #### Other File Information
 
 If you would like to get original name of the uploaded file, you may do so using the `getClientOriginalName` method:
@@ -411,6 +434,7 @@ If necessary, you may specify the disk that the file should be deleted from:
 <a name="directories"></a>
 ## Directories
 
+<a name="get-all-files-within-a-directory"></a>
 #### Get All Files Within A Directory
 
 The `files` method returns an array of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all subdirectories, you may use the `allFiles` method:
@@ -421,6 +445,7 @@ The `files` method returns an array of all of the files in a given directory. If
 
     $files = Storage::allFiles($directory);
 
+<a name="get-all-directories-within-a-directory"></a>
 #### Get All Directories Within A Directory
 
 The `directories` method returns an array of all the directories within a given directory. Additionally, you may use the `allDirectories` method to get a list of all directories within a given directory and all of its subdirectories:
@@ -430,12 +455,14 @@ The `directories` method returns an array of all the directories within a given 
     // Recursive...
     $directories = Storage::allDirectories($directory);
 
+<a name="create-a-directory"></a>
 #### Create A Directory
 
 The `makeDirectory` method will create the given directory, including any needed subdirectories:
 
     Storage::makeDirectory($directory);
 
+<a name="delete-a-directory"></a>
 #### Delete A Directory
 
 Finally, the `deleteDirectory` method may be used to remove a directory and all of its files:

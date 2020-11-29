@@ -61,6 +61,7 @@ First, require the Cashier package for Paddle with Composer:
 
 > {note} To ensure Cashier properly handles all Paddle events, remember to [set up Cashier's webhook handling](#handling-paddle-webhooks).
 
+<a name="database-migrations"></a>
 #### Database Migrations
 
 The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table. In addition, a new `subscriptions` table will be created to store all of your customer's subscriptions. Finally, a new `receipts` table will be created to store all of your receipt information:
@@ -181,6 +182,7 @@ To adjust the height of the inline checkout component, you may pass the `height`
 
     <x-paddle-checkout :override="$payLink" class="w-full" height="500" />
 
+<a name="inline-checkout-without-pay-links"></a>
 #### Inline Checkout Without Pay Links
 
 Alternatively, you may customize the widget with custom options instead of using a pay link:
@@ -258,6 +260,7 @@ If you retrieved prices for subscription plans you can display their initial and
 
 For more information, [check Paddle's API documentation on prices](https://developer.paddle.com/api-reference/checkout-api/prices/getprices).
 
+<a name="prices-customers"></a>
 #### Customers
 
 If a user is already a customer and you would like to display the prices that apply to that customer, you may do so by retrieving the prices directly from the customer instance:
@@ -269,6 +272,7 @@ If a user is already a customer and you would like to display the prices that ap
 
 Internally, Cashier will use the user's [`paddleCountry` method](#customer-defaults) to retrieve the prices in their currency. So, for example, a user living in the United States will see prices in USD while a user in Belgium will see prices in EUR. If no matching currency can be found the default currency of the product will be used. You can customize all prices of a product or subscription plan in the Paddle control panel.
 
+<a name="prices-coupons"></a>
 #### Coupons
 
 You may also choose to display prices after a coupon reduction. When calling the `productPrices` method, coupons may be passed as a comma delimited string:
@@ -367,6 +371,7 @@ The `create` method will create a pay link which you can use to generate a payme
 
 After the user has finished their checkout, a `subscription_created` webhook will be dispatched from Paddle. Cashier will receive this webhook and setup the subscription for your customer. In order to make sure all webhooks are properly received and handled by your application, ensure you have properly [setup webhook handling](#handling-paddle-webhooks).
 
+<a name="additional-details"></a>
 #### Additional Details
 
 If you would like to specify additional customer or subscription details, you may do so by passing them as a key / value array to the `create` method:
@@ -379,6 +384,7 @@ If you would like to specify additional customer or subscription details, you ma
 
 To learn more about the additional fields supported by Paddle, check out Paddle's documentation on [generating pay links](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink).
 
+<a name="subscriptions-coupons"></a>
 #### Coupons
 
 If you would like to apply a coupon when creating the subscription, you may use the `withCoupon` method:
@@ -388,6 +394,7 @@ If you would like to apply a coupon when creating the subscription, you may use 
         ->withCoupon('code')
         ->create();
 
+<a name="metadata"></a>
 #### Metadata
 
 You can also pass an array of metadata using the `withMetadata` method:
@@ -444,6 +451,7 @@ The `recurring` method may be used to determine if the user is currently subscri
         //
     }
 
+<a name="cancelled-subscription-status"></a>
 #### Cancelled Subscription Status
 
 To determine if the user was once an active subscriber, but has cancelled their subscription, you may use the `cancelled` method:
@@ -464,6 +472,7 @@ To determine if the user has cancelled their subscription and is no longer withi
         //
     }
 
+<a name="subscription-scopes"></a>
 #### Subscription Scopes
 
 Most subscription states are also available as query scopes so that you may easily query your database for subscriptions that are in a given state:
@@ -491,6 +500,7 @@ A complete list of available scopes is available below:
     Subscription::query()->onGracePeriod();
     Subscription::query()->notOnGracePeriod();
 
+<a name="past-due-status"></a>
 #### Past Due Status
 
 If a payment fails for a subscription, it will be marked as `past_due`. When your subscription is in this state it will not be active until the customer has updated their payment information. You may determine if a subscription is past due using the `pastDue` method on the subscription instance:
@@ -566,6 +576,7 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice($premium = 34567);
 
+<a name="prorations"></a>
 #### Prorations
 
 By default, Paddle prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
@@ -672,6 +683,7 @@ You may determine if the user is within their trial period using either the `onT
         //
     }
 
+<a name="defining-trial-days-in-paddle-cashier"></a>
 #### Defining Trial Days In Paddle / Cashier
 
 You may choose to define how many trial days your plan's receive in the Paddle dashboard or always pass them explicitly using Cashier. If you choose to define your plan's trial days in Paddle you should be aware that new subscriptions, including new subscriptions for a customer that had a subscription in the past, will always receive a trial period unless you explicitly call the `trialDays(0)` method.
@@ -695,12 +707,6 @@ Cashier refers to this type of trial as a "generic trial", since it is not attac
         // User is within their trial period...
     }
 
-You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
-
-    if ($user->onGenericTrial()) {
-        // User is within their "generic" trial period...
-    }
-
 Once you are ready to create an actual subscription for the user, you may use the `newSubscription` method as usual:
 
     $user = User::find(1);
@@ -708,6 +714,18 @@ Once you are ready to create an actual subscription for the user, you may use th
     $payLink = $user->newSubscription('default', $monthly = 12345)
         ->returnTo(route('home'))
         ->create();
+
+To retrieve the user's trial ending date, you may use the `trialEndsAt` method. This method will return a Carbon date instance if a user is on a trial or `null` if they aren't. You may also pass an optional subscription name parameter if you would like to get the trial ending date for a specific subscription other than the default one:
+
+    if ($user->onTrial()) {
+        $trialEndsAt = $user->trialEndsAt('main');
+    }
+
+You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
+
+    if ($user->onGenericTrial()) {
+        // User is within their "generic" trial period...
+    }
 
 > {note} There is no way to extend or modify a trial period on a Paddle subscription after it has been created.
 
@@ -724,12 +742,13 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 
 - Subscription Created
 - Subscription Updated
-- Subscription Deleted
+- Subscription Cancelled
 - Payment Succeeded
 - Subscription Payment Succeeded
 
 > {note} Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/cashier-paddle#verifying-webhook-signatures) middleware.
 
+<a name="webhooks-csrf-protection"></a>
 #### Webhooks & CSRF Protection
 
 Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
