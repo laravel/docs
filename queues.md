@@ -920,6 +920,50 @@ Sometimes, IO blocking processes such as sockets or outgoing HTTP connections ma
 
 If an exception is thrown while the job is being processed, the job will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The maximum number of attempts is defined by the `--tries` switch used on the `queue:work` Artisan command. Alternatively, the maximum number of attempts may be defined on the job class itself. More information on running the queue worker [can be found below](#running-the-queue-worker).
 
+<a name="manually-releasing-a-job"></a>
+#### Manually Releasing A Job
+
+Sometimes you may wish to manually release a job back onto the queue so that it can be attempted again at a later time. You may accomplish this by calling the `release` method:
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        // ...
+
+        $this->release();
+    }
+
+By default, the `release` method will release the job back onto the queue for immediate processing. However, by passing an integer to the `release` method you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed:
+
+    $this->release(10)
+
+<a name="manually-failing-a-job"></a>
+#### Manually Failing A Job
+
+Occasionally you may need to manually mark a job as "failed". To do so, you may call the `fail` method:
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        // ...
+
+        $this->fail();
+    }
+
+If you would like to mark your job as failed because of an exception that you have caught, you may pass the exception to the `fail` method:
+
+    $this->fail($exception);
+
+> {tip} For more information on failed jobs, check out the [documentation on dealing with job failures](#dealing-with-failed-jobs).
+
 <a name="job-batching"></a>
 ## Job Batching
 
