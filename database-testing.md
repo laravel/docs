@@ -1,7 +1,7 @@
 # Database Testing
 
 - [Introduction](#introduction)
-- [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
+    - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
 - [Creating Factories](#creating-factories)
 - [Writing Factories](#writing-factories)
     - [Factory States](#factory-states)
@@ -22,25 +22,14 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides a variety of helpful tools to make it easier to test your database driven applications. First, you may use the `assertDatabaseHas` helper to assert that data exists in the database matching a given set of criteria. For example, if you would like to verify that there is a record in the `users` table with the `email` value of `sally@example.com`, you can do the following:
-
-    public function testDatabase()
-    {
-        // Make call to application...
-
-        $this->assertDatabaseHas('users', [
-            'email' => 'sally@example.com',
-        ]);
-    }
-
-You can also use the `assertDatabaseMissing` helper to assert that data does not exist in the database.
-
-The `assertDatabaseHas` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your feature tests.
+Laravel provides a variety of helpful tools and assertions to make it easier to test your database driven applications. In addition, Laravel model factories and seeders make it painless to create test database records using your application's Eloquent models and relationships. We'll discuss all of these powerful features in the following documentation.
 
 <a name="resetting-the-database-after-each-test"></a>
-## Resetting The Database After Each Test
+### Resetting The Database After Each Test
 
-It is often useful to reset your database after each test so that data from a previous test does not interfere with subsequent tests. The `RefreshDatabase` trait takes the most optimal approach to migrating your test database depending on if you are using an in-memory database or a traditional database. Use the trait on your test class and everything will be handled for you:
+Before proceeding much further, let's discuss how to reset your database after each of your tests since it is often useful to reset your database after each test so that data from a previous test does not interfere with subsequent tests.
+
+Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of resetting your database after each test. Simply use the trait on your test class and everything will be handled for you:
 
     <?php
 
@@ -70,7 +59,7 @@ It is often useful to reset your database after each test so that data from a pr
 <a name="creating-factories"></a>
 ## Creating Factories
 
-When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories.
+First, let's talk about Eloquent model factories. When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories.
 
 To create a factory, use the `make:factory` [Artisan command](/docs/{{version}}/artisan):
 
