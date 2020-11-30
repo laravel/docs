@@ -28,9 +28,7 @@ Laravel provides a variety of helpful tools and assertions to make it easier to 
 <a name="resetting-the-database-after-each-test"></a>
 ### Resetting The Database After Each Test
 
-Before proceeding much further, let's discuss how to reset your database after each of your tests since it is often useful to reset your database after each test so that data from a previous test does not interfere with subsequent tests.
-
-Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of resetting your database after each test. Simply use the trait on your test class and everything will be handled for you:
+Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of this for you. Simply use the trait on your test class:
 
     <?php
 
