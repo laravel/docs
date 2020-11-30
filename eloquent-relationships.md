@@ -982,6 +982,8 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
     $posts = App\Models\Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     }, '>=', 10)->get();
+    
+> {note} Because `has` uses joins to compare relationship columns to determine the existence of records, it is impossible to use this in combination with multiple database connections on Eloquent models.
 
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
