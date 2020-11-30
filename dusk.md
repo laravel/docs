@@ -962,7 +962,7 @@ Assert that the current URL port does not match the given port:
 
 Assert that the current URL path begins with the given path:
 
-    $browser->assertPathBeginsWith($path);
+    $browser->assertPathBeginsWith('/home');
 
 <a name="assert-path-is"></a>
 #### assertPathIs
@@ -981,7 +981,7 @@ Assert that the current path does not match the given path:
 <a name="assert-route-is"></a>
 #### assertRouteIs
 
-Assert that the current URL matches the given named route's URL:
+Assert that the current URL matches the given [named route's](/docs/{{version}}/routing#named-routes) URL:
 
     $browser->assertRouteIs($name, $parameters);
 
@@ -1006,21 +1006,21 @@ Assert that the given query string parameter is missing:
 <a name="assert-fragment-is"></a>
 #### assertFragmentIs
 
-Assert that the current fragment matches the given fragment:
+Assert that the URL's current hash fragment matches the given fragment:
 
     $browser->assertFragmentIs('anchor');
 
 <a name="assert-fragment-begins-with"></a>
 #### assertFragmentBeginsWith
 
-Assert that the current fragment begins with the given fragment:
+Assert that the URL's current hash fragment begins with the given fragment:
 
     $browser->assertFragmentBeginsWith('anchor');
 
 <a name="assert-fragment-is-not"></a>
 #### assertFragmentIsNot
 
-Assert that the current fragment does not match the given fragment:
+Assert that the URL's current hash fragment does not match the given fragment:
 
     $browser->assertFragmentIsNot('anchor');
 
