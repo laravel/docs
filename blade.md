@@ -531,7 +531,7 @@ Once your component has been registered, it may be rendered using its tag alias:
 
     <x-package-alert/>
 
-Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Package\Views\Components` namespace:
+Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Nightshade\Views\Components` namespace:
 
     use Illuminate\Support\Facades\Blade;
 
