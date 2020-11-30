@@ -477,7 +477,7 @@ You may clear the value of an input using the `clear` method:
 
     $browser->clear('email');
 
-You can instruct Dusk to type slowly using the `typeSlowly` method. By default, Dusk will pause for 100 milliseconds between key presses. To customize the amount of time between key presses, you may pass the appropriate number of milliseconds as the second argument to the method:
+You can instruct Dusk to type slowly using the `typeSlowly` method. By default, Dusk will pause for 100 milliseconds between key presses. To customize the amount of time between key presses, you may pass the appropriate number of milliseconds as the third argument to the method:
 
     $browser->typeSlowly('mobile', '+1 (202) 555-5555');
 
