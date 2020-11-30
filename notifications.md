@@ -1,7 +1,7 @@
 # Notifications
 
 - [Introduction](#introduction)
-- [Creating Notifications](#creating-notifications)
+- [Generating Notifications](#generating-notifications)
 - [Sending Notifications](#sending-notifications)
     - [Using The Notifiable Trait](#using-the-notifiable-trait)
     - [Using The Notification Facade](#using-the-notification-facade)
@@ -52,8 +52,8 @@ In addition to support for [sending email](/docs/{{version}}/mail), Laravel prov
 
 Typically, notifications should be short, informational messages that notify users of something that occurred in your application. For example, if you are writing a billing application, you might send an "Invoice Paid" notification to your users via the email and SMS channels.
 
-<a name="creating-notifications"></a>
-## Creating Notifications
+<a name="generating-notifications"></a>
+## Generating Notifications
 
 In Laravel, each notification is represented by a single class that is typically stored in the `app/Notifications` directory. Don't worry if you don't see this directory in your application - it will be created for you when you run the `make:notification` Artisan command:
 
