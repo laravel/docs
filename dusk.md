@@ -11,6 +11,7 @@
     - [Environment Handling](#environment-handling)
 - [Browser Basics](#browser-basics)
     - [Creating Browsers](#creating-browsers)
+    - [Navigation](#navigation)
     - [Resizing Browser Windows](#resizing-browser-windows)
     - [Browser Macros](#browser-macros)
     - [Authentication](#authentication)
@@ -43,8 +44,6 @@
     - [Generating Components](#generating-components)
     - [Using Components](#using-components)
 - [Continuous Integration](#continuous-integration)
-    - [CircleCI](#running-tests-on-circle-ci)
-    - [Codeship](#running-tests-on-codeship)
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
     - [GitHub Actions](#running-tests-on-github-actions)
@@ -270,6 +269,27 @@ Sometimes you may need multiple browsers in order to properly carry out a test. 
         $first->waitForText('Hey Taylor')
               ->assertSee('Jeffrey Way');
     });
+
+<a name="navigation"></a>
+### Navigation
+
+The `visit` method may be used to navigate to a given URI within your application:
+
+    $browser->visit('/login');
+
+You may use the `visitRoute` method to navigate to a [named route](/docs/{{version}}/routing#named-routes):
+
+    $browser->visitRoute('login');
+
+You may navigate "back" and "forward" using the `back` and `forward` methods:
+
+    $browser->back();
+
+    $browser->forward();
+
+You may use the `refresh` method to refresh the page:
+
+    $browser->refresh();
 
 <a name="resizing-browser-windows"></a>
 ### Resizing Browser Windows
@@ -1403,12 +1423,12 @@ Assert that a given Vue component data property is an array and does not contain
 <a name="pages"></a>
 ## Pages
 
-Sometimes, tests require several complicated actions to be performed in sequence. This can make your tests harder to read and understand. Pages allow you to define expressive actions that may then be performed on a given page using a single method. Pages also allow you to define short-cuts to common selectors for your application or a single page.
+Sometimes, tests require several complicated actions to be performed in sequence. This can make your tests harder to read and understand. Dusk Pages allow you to define expressive actions that may then be performed on a given page via a single method. Pages also allow you to define short-cuts to common selectors for your application or for a single page.
 
 <a name="generating-pages"></a>
 ### Generating Pages
 
-To generate a page object, use the `dusk:page` Artisan command. All page objects will be placed in the `tests/Browser/Pages` directory:
+To generate a page object, execute the `dusk:page` Artisan command. All page objects will be placed in your application's `tests/Browser/Pages` directory:
 
     php artisan dusk:page Login
 
@@ -1435,7 +1455,7 @@ The `url` method should return the path of the URL that represents the page. Dus
 <a name="the-assert-method"></a>
 #### The `assert` Method
 
-The `assert` method may make any assertions necessary to verify that the browser is actually on the given page. Completing this method is not necessary; however, you are free to make these assertions if you wish. These assertions will be run automatically when navigating to the page:
+The `assert` method may make any assertions necessary to verify that the browser is actually on the given page. It is not actually necessary to place anything within this method; however, you are free to make these assertions if you wish. These assertions will be run automatically when navigating to the page:
 
     /**
      * Assert that the browser is on the page.
@@ -1450,25 +1470,11 @@ The `assert` method may make any assertions necessary to verify that the browser
 <a name="navigating-to-pages"></a>
 ### Navigating To Pages
 
-Once a page has been configured, you may navigate to it using the `visit` method:
+Once a page has been defined, you may navigate to it using the `visit` method:
 
     use Tests\Browser\Pages\Login;
 
     $browser->visit(new Login);
-
-You may use the `visitRoute` method to navigate to a named route:
-
-    $browser->visitRoute('login');
-
-You may navigate "back" and "forward" using the `back` and `forward` methods:
-
-    $browser->back();
-
-    $browser->forward();
-
-You may use the `refresh` method to refresh the page:
-
-    $browser->refresh();
 
 Sometimes you may already be on a given page and need to "load" the page's selectors and methods into the current test context. This is common when pressing a button and being redirected to a given page without explicitly navigating to it. In this situation, you may use the `on` method to load the page:
 
@@ -1482,7 +1488,7 @@ Sometimes you may already be on a given page and need to "load" the page's selec
 <a name="shorthand-selectors"></a>
 ### Shorthand Selectors
 
-The `elements` method of pages allows you to define quick, easy-to-remember shortcuts for any CSS selector on your page. For example, let's define a shortcut for the "email" input field of the application's login page:
+The `elements` method within page classes allow you to define quick, easy-to-remember shortcuts for any CSS selector on your page. For example, let's define a shortcut for the "email" input field of the application's login page:
 
     /**
      * Get the element shortcuts for the page.
@@ -1496,7 +1502,7 @@ The `elements` method of pages allows you to define quick, easy-to-remember shor
         ];
     }
 
-Now, you may use this shorthand selector anywhere you would use a full CSS selector:
+Once the shortcut has been defined, you may use the shorthand selector anywhere you would typically use a full CSS selector:
 
     $browser->type('@email', 'taylor@laravel.com');
 
@@ -1547,7 +1553,7 @@ In addition to the default methods defined on pages, you may define additional m
         }
     }
 
-Once the method has been defined, you may use it within any test that utilizes the page. The browser instance will automatically be passed to the page method:
+Once the method has been defined, you may use it within any test that utilizes the page. The browser instance will automatically be passed as the first argument to custom page methods:
 
     use Tests\Browser\Pages\Dashboard;
 
@@ -1563,7 +1569,7 @@ Components are similar to Dusk’s “page objects”, but are intended for piec
 <a name="generating-components"></a>
 ### Generating Components
 
-To generate a component, use the `dusk:component` Artisan command. New components are placed in the `tests/Browser/Components` directory:
+To generate a component, execute the `dusk:component` Artisan command. New components are placed in the `tests/Browser/Components` directory:
 
     php artisan dusk:component DatePicker
 
@@ -1623,7 +1629,7 @@ As shown above, a "date picker" is an example of a component that might exist th
          * @param  int  $day
          * @return void
          */
-        public function selectDate($browser, $year, $month, $day)
+        public function selectDate(Browser $browser, $year, $month, $day)
         {
             $browser->click('@date-field')
                     ->within('@year-list', function ($browser) use ($year) {
@@ -1674,63 +1680,7 @@ Once the component has been defined, we can easily select a date within the date
 <a name="continuous-integration"></a>
 ## Continuous Integration
 
-> {note} Before adding a continous integration configuration file, ensure that your `.env.testing` file contains an `APP_URL` entry with a value of `http://127.0.0.1:8000`.
-
-<a name="running-tests-on-circle-ci"></a>
-### CircleCI
-
-If you are using CircleCI to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
-
-    version: 2
-    jobs:
-        build:
-            steps:
-                - run: sudo apt-get install -y libsqlite3-dev
-                - run: cp .env.testing .env
-                - run: composer install -n --ignore-platform-reqs
-                - run: php artisan key:generate
-                - run: php artisan dusk:chrome-driver
-                - run: npm install
-                - run: npm run production
-                - run: vendor/bin/phpunit
-
-                - run:
-                    name: Start Chrome Driver
-                    command: ./vendor/laravel/dusk/bin/chromedriver-linux
-                    background: true
-
-                - run:
-                    name: Run Laravel Server
-                    command: php artisan serve
-                    background: true
-
-                - run:
-                    name: Run Laravel Dusk Tests
-                    command: php artisan dusk
-
-                - store_artifacts:
-                    path: tests/Browser/screenshots
-
-                - store_artifacts:
-                    path: tests/Browser/console
-
-                - store_artifacts:
-                    path: storage/logs
-
-
-<a name="running-tests-on-codeship"></a>
-### Codeship
-
-To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. These commands are just a starting point and you are free to add additional commands as needed:
-
-    phpenv local 7.3
-    cp .env.testing .env
-    mkdir -p ./bootstrap/cache
-    composer install --no-interaction --prefer-dist
-    php artisan key:generate
-    php artisan dusk:chrome-driver
-    nohup bash -c "php artisan serve 2>&1 &" && sleep 5
-    php artisan dusk
+> {note} Most Dusk continuous integration configurations expect your Laravel application to be served using the built-in PHP development server on port 8000. Therefore, before continuing, you should ensure that your continous integration environment has an `APP_URL` environment variable value of `http://127.0.0.1:8000`.
 
 <a name="running-tests-on-heroku-ci"></a>
 ### Heroku CI
@@ -1781,7 +1731,7 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
-If you are using [Github Actions](https://github.com/features/actions) to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
+If you are using [Github Actions](https://github.com/features/actions) to run your Dusk tests, you may use the following configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
     name: CI
     on: [push]
