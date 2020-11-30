@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Mocking Objects](#mocking-objects)
+- [Mocking Facades](#mocking-facades)
 - [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
     - [Scoped Event Fakes](#scoped-event-fakes)
@@ -12,7 +13,6 @@
     - [Job Chains](#job-chains)
 - [Storage Fake](#storage-fake)
 - [Interacting With Time](#interacting-with-time)
-- [Facades](#mocking-facades)
 
 <a name="introduction"></a>
 ## Introduction
@@ -64,6 +64,60 @@ Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies
     // ...
 
     $spy->shouldHaveReceived('process')
+
+<a name="mocking-facades"></a>
+## Mocking Facades
+
+Unlike traditional static method calls, [facades](/docs/{{version}}/facades) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability that you would have if you were using traditional dependency injection. When testing, you may often want to mock a call to a Laravel facade that occurs in one of your controllers. For example, consider the following controller action:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Support\Facades\Cache;
+
+    class UserController extends Controller
+    {
+        /**
+         * Retrieve a list of all users of the application.
+         *
+         * @return \Illuminate\Http\Response
+         */
+        public function index()
+        {
+            $value = Cache::get('key');
+
+            //
+        }
+    }
+
+We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Support\Facades\Cache;
+    use Tests\TestCase;
+
+    class UserControllerTest extends TestCase
+    {
+        public function testGetIndex()
+        {
+            Cache::shouldReceive('get')
+                        ->once()
+                        ->with('key')
+                        ->andReturn('value');
+
+            $response = $this->get('/users');
+
+            // ...
+        }
+    }
+
+> {note} You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
 
 <a name="bus-fake"></a>
 ## Bus Fake
@@ -158,7 +212,7 @@ If you only want to fake event listeners for a specific set of events, you may p
     /**
      * Test order process.
      */
-    public function testOrderProcess()
+    public function test_orders_can_be_processed()
     {
         Event::fake([
             OrderCreated::class,
@@ -193,7 +247,7 @@ If you only want to fake event listeners for a portion of your test, you may use
         /**
          * Test order process.
          */
-        public function testOrderProcess()
+        public function test_orders_can_be_processed()
         {
             $order = Event::fakeFor(function () {
                 $order = Order::factory()->create();
@@ -232,7 +286,7 @@ After calling the `Mail` facade's `fake` method, you may then assert that [maila
 
     class ExampleTest extends TestCase
     {
-        public function testOrderShipping()
+        public function test_orders_can_be_shipped()
         {
             Mail::fake();
 
@@ -291,7 +345,7 @@ After calling the `Notification` facade's `fake` method, you may then assert tha
 
     class ExampleTest extends TestCase
     {
-        public function testOrderShipping()
+        public function test_orders_can_be_shipped()
         {
             Notification::fake();
 
@@ -363,7 +417,7 @@ After calling the `Queue` facade's `fake` method, you may then assert that the a
 
     class ExampleTest extends TestCase
     {
-        public function testOrderShipping()
+        public function test_orders_can_be_shipped()
         {
             Queue::fake();
 
@@ -413,7 +467,7 @@ You may use the `assertPushedWithoutChain` method to assert that a job was pushe
 <a name="storage-fake"></a>
 ## Storage Fake
 
-The `Storage` facade's `fake` method allows you to easily generate a fake disk that, combined with the file generation utilities of the `UploadedFile` class, greatly simplifies the testing of file uploads. For example:
+The `Storage` facade's `fake` method allows you to easily generate a fake disk that, combined with the file generation utilities of the `Illuminate\Http\UploadedFile` class, greatly simplifies the testing of file uploads. For example:
 
     <?php
 
@@ -427,7 +481,7 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
 
     class ExampleTest extends TestCase
     {
-        public function testAlbumUpload()
+        public function test_albums_can_be_uploaded()
         {
             Storage::fake('photos');
 
@@ -445,6 +499,8 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
             Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
         }
     }
+
+For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
 
 > {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
 
@@ -473,57 +529,3 @@ When testing, you may occasionally need to modify the time returned by helpers s
         // Return back to the present time...
         $this->travelBack();
     }
-
-<a name="mocking-facades"></a>
-## Facades
-
-Unlike traditional static method calls, [facades](/docs/{{version}}/facades) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability you would have if you were using dependency injection. When testing, you may often want to mock a call to a Laravel facade in one of your controllers. For example, consider the following controller action:
-
-    <?php
-
-    namespace App\Http\Controllers;
-
-    use Illuminate\Support\Facades\Cache;
-
-    class UserController extends Controller
-    {
-        /**
-         * Show a list of all users of the application.
-         *
-         * @return Response
-         */
-        public function index()
-        {
-            $value = Cache::get('key');
-
-            //
-        }
-    }
-
-We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:
-
-    <?php
-
-    namespace Tests\Feature;
-
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Support\Facades\Cache;
-    use Tests\TestCase;
-
-    class UserControllerTest extends TestCase
-    {
-        public function testGetIndex()
-        {
-            Cache::shouldReceive('get')
-                        ->once()
-                        ->with('key')
-                        ->andReturn('value');
-
-            $response = $this->get('/users');
-
-            // ...
-        }
-    }
-
-> {note} You should not mock the `Request` facade. Instead, pass the input you desire into the HTTP helper methods such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
