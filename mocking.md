@@ -9,6 +9,7 @@
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
+    - [Job Chains](#job-chains)
 - [Storage Fake](#storage-fake)
 - [Interacting With Time](#interacting-with-time)
 - [Facades](#mocking-facades)
@@ -346,7 +347,9 @@ By passing a closure as the third argument to the notification assertion methods
 
 > {note} The `Queue` fake should only be used when queuing jobs using the `Queue` facade directly. If you are queueing jobs using the job's `dispatch` method, you should use the [`Bus` fake](#bus-fake).
 
-As an alternative to mocking, you may use the `Queue` facade's `fake` method to prevent jobs from being queued. You may then assert that jobs were pushed to the queue and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+You may use the `Queue` facade's `fake` method to prevent queued jobs from being pushed to the queue. Most likely, it is sufficient to simply assert that Laravel was instructed to push a given job to the queue since the queued jobs themselves may be tested in another test class.
+
+After calling the `Queue` facade's `fake` method, you may then assert that the application attempted to push jobs to the queue:
 
     <?php
 
@@ -366,15 +369,10 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
         {
             Queue::fake();
 
-            // Assert that no jobs were pushed...
-            Queue::assertNothingPushed();
-
             // Perform order shipping...
 
-            // Assert a specific type of job was pushed meeting the given truth test...
-            Queue::assertPushed(function (ShipOrder $job) use ($order) {
-                return $job->order->id === $order->id;
-            });
+            // Assert that no jobs were pushed...
+            Queue::assertNothingPushed();
 
             // Assert a job was pushed to a given queue...
             Queue::assertPushedOn('queue-name', ShipOrder::class);
@@ -384,23 +382,35 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
 
             // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
-
-            // Assert a job was pushed with a given chain of jobs, matching by class...
-            Queue::assertPushedWithChain(ShipOrder::class, [
-                AnotherJob::class,
-                FinalJob::class
-            ]);
-
-            // Assert a job was pushed with a given chain of jobs, matching by both class and properties...
-            Queue::assertPushedWithChain(ShipOrder::class, [
-                new AnotherJob('foo'),
-                new FinalJob('bar'),
-            ]);
-
-            // Assert a job was pushed without a chain of jobs...
-            Queue::assertPushedWithoutChain(ShipOrder::class);
         }
     }
+
+You may pass a closure to the `assertPushed` or `assertNotPushed` methods in order to assert that a job was pushed that passes a given "truth test". If at least one job was pushed that passes the given truth test then the assertion will be successful:
+
+    Queue::assertPushed(function (ShipOrder $job) use ($order) {
+        return $job->order->id === $order->id;
+    });
+
+<a name="job-chains"></a>
+### Job Chains
+
+The `Queue` facade's `assertPushedWithChain` and `assertPushedWithoutChain` methods may be used to inspect the job chain of a pushed job. The `assertPushedWithChain` method accepts the primary job as its first argument and an array of chained jobs as its second argument:
+
+    Queue::assertPushedWithChain(ShipOrder::class, [
+        RecordShipment::class,
+        UpdateInventory::class
+    ]);
+
+As you can see in the example above, the array of chained jobs may be an array of the job's class names. However, you may also provide an array of actual job instances. When doing so, Laravel will ensure that the job instances are of the same class and have the same property values of the chained jobs dispatched by your application:
+
+    Queue::assertPushedWithChain(ShipOrder::class, [
+        new RecordShipment,
+        new UpdateInventory,
+    ]);
+
+You may use the `assertPushedWithoutChain` method to assert that a job was pushed without a chain of jobs:
+
+    Queue::assertPushedWithoutChain(ShipOrder::class);
 
 <a name="storage-fake"></a>
 ## Storage Fake
