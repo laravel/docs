@@ -16,27 +16,33 @@
 <a name="introduction"></a>
 ## Introduction
 
-When testing Laravel applications, you may wish to "mock" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that dispatches an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners, since the event listeners can be tested in their own test case.
+When testing Laravel applications, you may wish to "mock" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that dispatches an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners since the event listeners can be tested in their own test case.
 
-Laravel provides helpers for mocking events, jobs, and facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls. You can also use [Mockery](http://docs.mockery.io/en/latest/) or PHPUnit to create your own mocks or spies.
+Laravel provides helpful methods for mocking events, jobs, and other facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls.
 
 <a name="mocking-objects"></a>
 ## Mocking Objects
 
-When mocking an object that is going to be injected into your application via Laravel's service container, you will need to bind your mocked instance into the container as an `instance` binding. This will instruct the container to use your mocked instance of the object instead of constructing the object itself:
+When mocking an object that is going to be injected into your application via Laravel's [service container](/docs/{{version}}/container), you will need to bind your mocked instance into the container as an `instance` binding. This will instruct the container to use your mocked instance of the object instead of constructing the object itself:
 
     use App\Service;
     use Mockery;
 
-    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
-        $mock->shouldReceive('process')->once();
-    }));
+    public function test_something_can_be_mocked()
+    {
+         $this->instance(
+            Service::class,
+            Mockery::mock(Service::class, function ($mock) {
+                $mock->shouldReceive('process')->once();
+            })
+        );
+    }
 
-In order to make this more convenient, you may use the `mock` method, which is provided by Laravel's base test case class:
+In order to make this more convenient, you may use the `mock` method that is provided by Laravel's base test case class. For example, the following example is equivalent to the example above:
 
     use App\Service;
 
-    $this->mock(Service::class, function ($mock) {
+    $mock = $this->mock(Service::class, function ($mock) {
         $mock->shouldReceive('process')->once();
     });
 
@@ -44,22 +50,26 @@ You may use the `partialMock` method when you only need to mock a few methods of
 
     use App\Service;
 
-    $this->partialMock(Service::class, function ($mock) {
+    $mock = $this->partialMock(Service::class, function ($mock) {
         $mock->shouldReceive('process')->once();
     });
 
-Similarly, if you want to spy on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method:
+Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method:
 
     use App\Service;
 
-    $this->spy(Service::class, function ($mock) {
-        $mock->shouldHaveReceived('process');
-    });
+    $spy = $this->spy(Service::class;
+
+    // ...
+
+    $spy->shouldHaveReceived('process')
 
 <a name="bus-fake"></a>
 ## Bus Fake
 
-As an alternative to mocking, you may use the `Bus` facade's `fake` method to prevent jobs from being dispatched. When using fakes, assertions are made after the code under test is executed:
+When testing code that dispatches jobs, you typically want to assert that a given job was dispatched but not actually queue or execute the job. This is because the job's execution can normally be tested in a separate test class.
+
+You may use the `Bus` facade's `fake` method to prevent jobs from being dispatched to the queue. Then, after executing the code under test, you may inspect which jobs the application attempted to dispatch using the `assertDispatched` and `assertNotDispatched` methods:
 
     <?php
 
@@ -73,26 +83,30 @@ As an alternative to mocking, you may use the `Bus` facade's `fake` method to pr
 
     class ExampleTest extends TestCase
     {
-        public function testOrderShipping()
+        public function test_orders_can_be_shipped()
         {
             Bus::fake();
 
             // Perform order shipping...
 
-            // Assert a specific type of job was dispatched meeting the given truth test...
-            Bus::assertDispatched(function (ShipOrder $job) use ($order) {
-                return $job->order->id === $order->id;
-            });
+            // Assert that a job was dispatched...
+            Bus::assertDispatched(ShipOrder::class);
 
             // Assert a job was not dispatched...
             Bus::assertNotDispatched(AnotherJob::class);
         }
     }
 
+You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that a job was dispatched that passes a given "truth test". If at least one job was dispatched that passes the given truth test then the assertion will be successful. For example, you may wish to assert that a job was dispatched for a specific order:
+
+    Bus::assertDispatched(function (ShipOrder $job) use ($order) {
+        return $job->order->id === $order->id;
+    });
+
 <a name="event-fake"></a>
 ## Event Fake
 
-As an alternative to mocking, you may use the `Event` facade's `fake` method to prevent all event listeners from executing. You may then assert that events were dispatched and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners. Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched` and `assertNotDispatched` methods:
 
     <?php
 
@@ -110,16 +124,14 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
         /**
          * Test order shipping.
          */
-        public function testOrderShipping()
+        public function test_orders_can_be_shipped()
         {
             Event::fake();
 
             // Perform order shipping...
 
-            // Assert a specific type of event was dispatched meeting the given truth test...
-            Event::assertDispatched(function (OrderShipped $event) use ($order) {
-                return $event->order->id === $order->id;
-            });
+            // Assert that an event was dispatched...
+            Event::assertDispatched(OrderShipped::class);
 
             // Assert an event was dispatched twice...
             Event::assertDispatched(OrderShipped::class, 2);
@@ -128,6 +140,12 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
             Event::assertNotDispatched(OrderFailedToShip::class);
         }
     }
+
+You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given "truth test". If at least one event was dispatched that passes the given truth test then the assertion will be successful:
+
+    Event::assertDispatched(function (OrderShipped $event) use ($order) {
+        return $event->order->id === $order->id;
+    });
 
 > {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
 
@@ -197,7 +215,9 @@ The `Http` facade's `fake` method allows you to instruct the HTTP client to retu
 <a name="mail-fake"></a>
 ## Mail Fake
 
-You may use the `Mail` facade's `fake` method to prevent mail from being sent. You may then assert that [mailables](/docs/{{version}}/mail) were sent to users and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+You may use the `Mail` facade's `fake` method to prevent mail from being sent. Typically, sending mail is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given mailable.
+
+After calling the `Mail` facade's `fake` method, you may then assert that [mailables](/docs/{{version}}/mail) were instructed to be sent to users and even inspect the data the mailables received:
 
     <?php
 
@@ -215,22 +235,13 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
         {
             Mail::fake();
 
+            // Perform order shipping...
+
             // Assert that no mailables were sent...
             Mail::assertNothingSent();
 
-            // Perform order shipping...
-
-            // Assert a specific type of mailable was dispatched meeting the given truth test...
-            Mail::assertSent(function (OrderShipped $mail) use ($order) {
-                return $mail->order->id === $order->id;
-            });
-
-            // Assert a message was sent to the given users...
-            Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
-                return $mail->hasTo($user->email) &&
-                       $mail->hasCc('...') &&
-                       $mail->hasBcc('...');
-            });
+            // Assert that a mailable was sent...
+            Mail::assertSent(OrderShipped::class);
 
             // Assert a mailable was sent twice...
             Mail::assertSent(OrderShipped::class, 2);
@@ -242,13 +253,30 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
 
 If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:
 
-    Mail::assertQueued(...);
-    Mail::assertNotQueued(...);
+    Mail::assertQueued(OrderShipped::class);
+
+    Mail::assertNotQueued(OrderShipped::class);
+
+You may pass a closure to the `assertSent` or `assertNotSent` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
+
+    Mail::assertSent(function (OrderShipped $mail) use ($order) {
+        return $mail->order->id === $order->id;
+    });
+
+When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the recipients of the mailable:
+
+    Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
+        return $mail->hasTo($user->email) &&
+               $mail->hasCc('...') &&
+               $mail->hasBcc('...');
+    });
 
 <a name="notification-fake"></a>
 ## Notification Fake
 
-You may use the `Notification` facade's `fake` method to prevent notifications from being sent. You may then assert that [notifications](/docs/{{version}}/notifications) were sent to users and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+You may use the `Notification` facade's `fake` method to prevent notifications from being sent. Typically, sending notifications is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given notification.
+
+After calling the `Notification` facade's `fake` method, you may then assert that [notifications](/docs/{{version}}/notifications) were instructed to be sent to users and even inspect the data the notifications received:
 
     <?php
 
@@ -257,7 +285,6 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
     use App\Notifications\OrderShipped;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Notifications\AnonymousNotifiable;
     use Illuminate\Support\Facades\Notification;
     use Tests\TestCase;
 
@@ -267,18 +294,10 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
         {
             Notification::fake();
 
-            // Assert that no notifications were sent...
-            Notification::assertNothingSent();
-
             // Perform order shipping...
 
-            // Assert a specific type of notification was sent meeting the given truth test...
-            Notification::assertSentTo(
-                $user,
-                function (OrderShipped $notification, $channels) use ($order) {
-                    return $notification->order->id === $order->id;
-                }
-            );
+            // Assert that no notifications were sent...
+            Notification::assertNothingSent();
 
             // Assert a notification was sent to the given users...
             Notification::assertSentTo(
@@ -289,25 +308,43 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
-
-            // Assert a notification was sent via Notification::route() method...
-            Notification::assertSentTo(
-                new AnonymousNotifiable, OrderShipped::class
-            );
-
-            // Assert Notification::route() method sent notification to the correct user...
-            Notification::assertSentTo(
-                new AnonymousNotifiable,
-                OrderShipped::class,
-                function ($notification, $channels, $notifiable) use ($user) {
-                    return $notifiable->routes['mail'] === $user->email;
-                }
-            );
         }
     }
 
+You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in order to assert that a notification was sent that passes a given "truth test". If at least one notification was sent that passes the given truth test then the assertion will be successful:
+
+    Notification::assertSentTo(
+        $user,
+        function (OrderShipped $notification, $channels) use ($order) {
+            return $notification->order->id === $order->id;
+        }
+    );
+
+<a name="on-demand-notifications"></a>
+#### On-Demand Notifications
+
+If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you will need to assert that the notification was sent to an `Illuminate\Notifications\AnonymousNotifiable` instance:
+
+    use Illuminate\Notifications\AnonymousNotifiable;
+
+    Notification::assertSentTo(
+        new AnonymousNotifiable, OrderShipped::class
+    );
+
+By passing a closure as the third argument to the notification assertion methods, you may determine if an on-demand notification was sent to the correct "route" address:
+
+    Notification::assertSentTo(
+        new AnonymousNotifiable,
+        OrderShipped::class,
+        function ($notification, $channels, $notifiable) use ($user) {
+            return $notifiable->routes['mail'] === $user->email;
+        }
+    );
+
 <a name="queue-fake"></a>
 ## Queue Fake
+
+> {note} The `Queue` fake should only be used when queuing jobs using the `Queue` facade directly. If you are queueing jobs using the job's `dispatch` method, you should use the [`Bus` fake](#bus-fake).
 
 As an alternative to mocking, you may use the `Queue` facade's `fake` method to prevent jobs from being queued. You may then assert that jobs were pushed to the queue and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
 
