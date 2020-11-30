@@ -479,84 +479,84 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 </div>
 
 <a name="assert-cookie"></a>
-#### `assertCookie`
+#### assertCookie
 
 Assert that the response contains the given cookie:
 
     $response->assertCookie($cookieName, $value = null);
 
 <a name="assert-cookie-expired"></a>
-#### `assertCookieExpired`
+#### assertCookieExpired
 
 Assert that the response contains the given cookie and it is expired:
 
     $response->assertCookieExpired($cookieName);
 
 <a name="assert-cookie-not-expired"></a>
-#### `assertCookieNotExpired`
+#### assertCookieNotExpired
 
 Assert that the response contains the given cookie and it is not expired:
 
     $response->assertCookieNotExpired($cookieName);
 
 <a name="assert-cookie-missing"></a>
-#### `assertCookieMissing`
+#### assertCookieMissing
 
 Assert that the response does not contains the given cookie:
 
     $response->assertCookieMissing($cookieName);
 
 <a name="assert-created"></a>
-#### `assertCreated`
+#### assertCreated
 
 Assert that the response has a 201 HTTP status code:
 
     $response->assertCreated();
 
 <a name="assert-dont-see"></a>
-#### `assertDontSee`
+#### assertDontSee
 
 Assert that the given string is not contained within the response returned by the application. This assertion will automatically escape the given string unless you pass a second argument of `false`:
 
     $response->assertDontSee($value, $escaped = true);
 
 <a name="assert-dont-see-text"></a>
-#### `assertDontSeeText`
+#### assertDontSeeText
 
 Assert that the given string is not contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. This method will pass the response content to the `strip_tags` PHP function before making the assertion:
 
     $response->assertDontSeeText($value, $escaped = true);
 
 <a name="assert-exact-json"></a>
-#### `assertExactJson`
+#### assertExactJson
 
 Assert that the response contains an exact match of the given JSON data:
 
     $response->assertExactJson(array $data);
 
 <a name="assert-forbidden"></a>
-#### `assertForbidden`
+#### assertForbidden
 
 Assert that the response has a forbidden (403) HTTP status code:
 
     $response->assertForbidden();
 
 <a name="assert-header"></a>
-#### `assertHeader`
+#### assertHeader
 
 Assert that the given header and value is present on the response:
 
     $response->assertHeader($headerName, $value = null);
 
 <a name="assert-header-missing"></a>
-#### `assertHeaderMissing`
+#### assertHeaderMissing
 
 Assert that the given header is not present on the response:
 
     $response->assertHeaderMissing($headerName);
 
 <a name="assert-json"></a>
-#### `assertJson`
+#### assertJson
 
 Assert that the response contains the given JSON data:
 
@@ -565,35 +565,35 @@ Assert that the response contains the given JSON data:
 The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
 <a name="assert-json-count"></a>
-#### `assertJsonCount`
+#### assertJsonCount
 
 Assert that the response JSON has an array with the expected number of items at the given key:
 
     $response->assertJsonCount($count, $key = null);
 
 <a name="assert-json-missing"></a>
-#### `assertJsonMissing`
+#### assertJsonMissing
 
 Assert that the response does not contain the given JSON data:
 
     $response->assertJsonMissing(array $data);
 
 <a name="assert-json-missing-exact"></a>
-#### `assertJsonMissingExact`
+#### assertJsonMissingExact
 
 Assert that the response does not contain the exact JSON data:
 
     $response->assertJsonMissingExact(array $data);
 
 <a name="assert-json-missing-validation-errors"></a>
-#### `assertJsonMissingValidationErrors`
+#### assertJsonMissingValidationErrors
 
 Assert that the response has no JSON validation errors for the given keys:
 
     $response->assertJsonMissingValidationErrors($keys);
 
 <a name="assert-json-path"></a>
-#### `assertJsonPath`
+#### assertJsonPath
 
 Assert that the response contains the given data at the specified path:
 
@@ -614,7 +614,7 @@ You may assert that the `name` property of the `user` object matches a given val
     $response->assertJsonPath('user.name', 'Steve Schoger');
 
 <a name="assert-json-structure"></a>
-#### `assertJsonStructure`
+#### assertJsonStructure
 
 Assert that the response has a given JSON structure:
 
@@ -639,98 +639,98 @@ You may assert that the JSON structure matches your expectations like so:
     ]);
 
 <a name="assert-json-validation-errors"></a>
-#### `assertJsonValidationErrors`
+#### assertJsonValidationErrors
 
 Assert that the response has the given JSON validation errors for the given keys. This method should be used when asserting against responses where the validation errors are returned as a JSON structure instead of being flashed to the session:
 
     $response->assertJsonValidationErrors(array $data);
 
 <a name="assert-location"></a>
-#### `assertLocation`
+#### assertLocation
 
 Assert that the response has the given URI value in the `Location` header:
 
     $response->assertLocation($uri);
 
 <a name="assert-no-content"></a>
-#### `assertNoContent`
+#### assertNoContent
 
 Assert that the response has the given HTTP status code and no content:
 
     $response->assertNoContent($status = 204);
 
 <a name="assert-not-found"></a>
-#### `assertNotFound`
+#### assertNotFound
 
 Assert that the response has a not found (404) HTTP status code:
 
     $response->assertNotFound();
 
 <a name="assert-ok"></a>
-#### `assertOk`
+#### assertOk
 
 Assert that the response has a 200 HTTP status code:
 
     $response->assertOk();
 
 <a name="assert-plain-cookie"></a>
-#### `assertPlainCookie`
+#### assertPlainCookie
 
 Assert that the response contains the given unencrypted cookie:
 
     $response->assertPlainCookie($cookieName, $value = null);
 
 <a name="assert-redirect"></a>
-#### `assertRedirect`
+#### assertRedirect
 
 Assert that the response is a redirect to the given URI:
 
     $response->assertRedirect($uri);
 
 <a name="assert-see"></a>
-#### `assertSee`
+#### assertSee
 
 Assert that the given string is contained within the response. This assertion will automatically escape the given string unless you pass a second argument of `false`:
 
     $response->assertSee($value, $escaped = true);
 
 <a name="assert-see-in-order"></a>
-#### `assertSeeInOrder`
+#### assertSeeInOrder
 
 Assert that the given strings are contained in order within the response. This assertion will automatically escape the given strings unless you pass a second argument of `false`:
 
     $response->assertSeeInOrder(array $values, $escaped = true);
 
 <a name="assert-see-text"></a>
-#### `assertSeeText`
+#### assertSeeText
 
 Assert that the given string is contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. The response content will be passed to the `strip_tags` PHP function before the assertion is made:
 
     $response->assertSeeText($value, $escaped = true);
 
 <a name="assert-see-text-in-order"></a>
-#### `assertSeeTextInOrder`
+#### assertSeeTextInOrder
 
 Assert that the given strings are contained in order within the response text. This assertion will automatically escape the given strings unless you pass a second argument of `false`. The response content will be passed to the `strip_tags` PHP function before the assertion is made:
 
     $response->assertSeeTextInOrder(array $values, $escaped = true);
 
 <a name="assert-session-has"></a>
-#### `assertSessionHas`
+#### assertSessionHas
 
 Assert that the session contains the given piece of data:
 
     $response->assertSessionHas($key, $value = null);
 
 <a name="assert-session-has-input"></a>
-#### `assertSessionHasInput`
+#### assertSessionHasInput
 
 Assert that the session has a given value in the [flashed input array](/docs/{{version}}/responses#redirecting-with-flashed-session-data):
 
     $response->assertSessionHasInput($key, $value = null);
 
 <a name="assert-session-has-all"></a>
-#### `assertSessionHasAll`
+#### assertSessionHasAll
 
 Assert that the session contains a given array of key / value pairs:
 
@@ -744,7 +744,7 @@ For example, if your application's session contains `name` and `status` keys, yo
     ]);
 
 <a name="assert-session-has-errors"></a>
-#### `assertSessionHasErrors`
+#### assertSessionHasErrors
 
 Assert that the session contains an error for the given `$keys`. If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key). This method should be used when testing routes that flash validation errors to the session instead of returning them as a JSON structure:
 
@@ -763,56 +763,56 @@ Or, you may assert that a given field has a particular validation error message:
     ]);
 
 <a name="assert-session-has-errors-in"></a>
-#### `assertSessionHasErrorsIn`
+#### assertSessionHasErrorsIn
 
 Assert that the session contains an error for the given `$keys` within a specific [error bag](/docs/{{version}}/validation#named-error-bags). If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key), within the error bag:
 
     $response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);
 
 <a name="assert-session-has-no-errors"></a>
-#### `assertSessionHasNoErrors`
+#### assertSessionHasNoErrors
 
 Assert that the session has no validation errors:
 
     $response->assertSessionHasNoErrors();
 
 <a name="assert-session-doesnt-have-errors"></a>
-#### `assertSessionDoesntHaveErrors`
+#### assertSessionDoesntHaveErrors
 
 Assert that the session has no validation errors for the given keys:
 
     $response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
 
 <a name="assert-session-missing"></a>
-#### `assertSessionMissing`
+#### assertSessionMissing
 
 Assert that the session does not contain the given key:
 
     $response->assertSessionMissing($key);
 
 <a name="assert-status"></a>
-#### `assertStatus`
+#### assertStatus
 
 Assert that the response has a given HTTP status code:
 
     $response->assertStatus($code);
 
 <a name="assert-successful"></a>
-#### `assertSuccessful`
+#### assertSuccessful
 
 Assert that the response has a successful (>= 200 and < 300) HTTP status code:
 
     $response->assertSuccessful();
 
 <a name="assert-unauthorized"></a>
-#### `assertUnauthorized`
+#### assertUnauthorized
 
 Assert that the response has an unauthorized (401) HTTP status code:
 
     $response->assertUnauthorized();
 
 <a name="assert-view-has"></a>
-#### `assertViewHas`
+#### assertViewHas
 
 Assert that the response view contains given a piece of data:
 
@@ -823,7 +823,7 @@ In addition, view data may be accessed as array variables on the response, allow
     $this->assertEquals('Taylor', $response['name']);
 
 <a name="assert-view-has-all"></a>
-#### `assertViewHasAll`
+#### assertViewHasAll
 
 Assert that the response view has a given list of data:
 
@@ -844,14 +844,14 @@ Or, you may assert that the view data is present and has specific values:
     ]);
 
 <a name="assert-view-is"></a>
-#### `assertViewIs`
+#### assertViewIs
 
 Assert that the given view was returned by the route:
 
     $response->assertViewIs($value);
 
 <a name="assert-view-missing"></a>
-#### `assertViewMissing`
+#### assertViewMissing
 
 Assert that the given data key was not made available to the view returned in the application's response:
 
@@ -863,21 +863,21 @@ Assert that the given data key was not made available to the view returned in th
 Laravel also provides a variety of authentication related assertions that you may utilize within your application's feature tests. Note that these methods are invoked on the test class itself and not the `Illuminate\Testing\TestResponse` instance returned by methods such as `get` and `post`.
 
 <a name="assert-authenticated"></a>
-#### `assertAuthenticated`
+#### assertAuthenticated
 
 Assert that a user is authenticated:
 
     $this->assertAuthenticated($guard = null);
 
 <a name="assert-guest"></a>
-#### `assertGuest`
+#### assertGuest
 
 Assert that a user is not authenticated:
 
     $this->assertGuest($guard = null);
 
 <a name="assert-authenticated-as"></a>
-#### `assertAuthenticatedAs`
+#### assertAuthenticatedAs
 
 Assert that a specific user is authenticated:
 
