@@ -6,6 +6,7 @@
     - [Creating The Controller](#quick-creating-the-controller)
     - [Writing The Validation Logic](#quick-writing-the-validation-logic)
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
+    - [Repopulating Forms](#repopulating-forms)
     - [A Note On Optional Fields](#a-note-on-optional-fields)
 - [Form Request Validation](#form-request-validation)
     - [Creating Form Requests](#creating-form-requests)
@@ -94,7 +95,7 @@ Next, let's take a look at a simple controller that handles incoming requests to
 
 Now we are ready to fill in our `store` method with the logic to validate the new blog post. To do this, we will use the `validate` method provided by the `Illuminate\Http\Request` object. If the validation rules pass, your code will keep executing normally; however, if validation fails, an exception will be thrown and the proper error response will automatically be sent back to the user.
 
-If validation fails, a redirect response to the previous URL will be generated in the case of a traditional HTTP request. If the incoming request is an XHR request, a JSON response containing the validation error messages will be returned.
+If validation fails during a traditional HTTP request, a redirect response to the previous URL will be generated. If the incoming request is an XHR request, a JSON response containing the validation error messages will be returned.
 
 To get a better understanding of the `validate` method, let's jump back into the `store` method:
 
@@ -165,9 +166,7 @@ On the other hand, if your field name contains a literal period, you can explici
 
 So, what if the incoming request fields do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors and [request input](/docs/{{version}}/requests#retrieving-old-input) will automatically be [flashed to the session](/docs/{{version}}/session#flash-data).
 
-Note that we do not have to explicitly bind the error messages to the view in our `GET` route. This is because Laravel will check for errors in the session data, and automatically bind them to the view if they are available. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
-
-> {tip} The `$errors` variable is bound to the view by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. **When this middleware is applied an `$errors` variable will always be available in your views**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used.
+An `$errors` variable is shared with all of your application's views by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. When this middleware is applied an `$errors` variable will always be available in your views, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
 
 So, in our example, the user will be redirected to our controller's `create` method when validation fails, allowing us to display the error messages in the view:
 
@@ -217,6 +216,19 @@ You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly d
     <div class="alert alert-danger">{{ $message }}</div>
 @enderror
 ```
+
+<a name="repopulating-forms"></a>
+### Repopulating Forms
+
+When Laravel generates a redirect response due to a validation error, the framework will automatically [flash all of the request's input to the session](/docs/{{version}}/session#flash-data). This is done so that you may conveniently access the input during the next request and repopulate the form that the user attempted to submit.
+
+To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\Http\Request`. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):
+
+    $title = $request->old('title');
+
+Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:
+
+    <input type="text" name="title" value="{{ old('title') }}">
 
 <a name="a-note-on-optional-fields"></a>
 ### A Note On Optional Fields

@@ -347,11 +347,11 @@ Since you often will want to flash input to the session and then redirect to the
 <a name="retrieving-old-input"></a>
 #### Retrieving Old Input
 
-To retrieve flashed input from the previous request, use the `old` method on the `Request` instance. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):
+To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\Http\Request`. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):
 
     $username = $request->old('username');
 
-Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to re-populate the form. If no old input exists for the given field, `null` will be returned:
+Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:
 
     <input type="text" name="username" value="{{ old('username') }}">
 
