@@ -1071,6 +1071,8 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
     $posts = Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'code%');
     }, '>=', 10)->get();
+    
+> {note} Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database.
 
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
