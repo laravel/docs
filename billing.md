@@ -407,12 +407,14 @@ The `deletePaymentMethods` method will delete all of the payment method informat
 <a name="subscriptions"></a>
 ## Subscriptions
 
-Subscriptions provide a way to set up recurring payments for your customers and support multiple subscription plans, subscription quantities, trials, and more.
+Subscriptions provide a way to set up recurring payments for your customers. Stripe subscriptions managed by Cashier provide support for multiple subscription plans, subscription quantities, trials, and more.
 
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
 
 To create a subscription, first retrieve an instance of your billable model, which typically will be an instance of `App\Models\User`. Once you have retrieved the model instance, you may use the `newSubscription` method to create the model's subscription:
+
+    use App\Models\User;
 
     $user = User::find(1);
 
@@ -420,14 +422,14 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
 The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's price identifier in Stripe.
 
-The `create` method, which accepts [a Stripe payment method identifier](#storing-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the customer ID and other relevant billing information.
+The `create` method, which accepts [a Stripe payment method identifier](#storing-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the billable model's Stripe customer ID and other relevant billing information.
 
-> {note} Passing a payment method identifier directly to the `create()` subscription method will also automatically add it to the user's stored payment methods.
+> {note} Passing a payment method identifier directly to the `create` subscription method will also automatically add it to the user's stored payment methods.
 
 <a name="subscription-quantities"></a>
 #### Quantities
 
-If you would like to set a specific quantity for the plan when creating the subscription, you may use the `quantity` method:
+If you would like to set a specific [quantity](https://stripe.com/docs/billing/subscriptions/quantities) for the plan when creating the subscription, you should invoke the `quantity` method on the subscription builder before creating the subscription:
 
     $user->newSubscription('default', 'price_monthly')
          ->quantity(5)
@@ -436,15 +438,13 @@ If you would like to set a specific quantity for the plan when creating the subs
 <a name="additional-details"></a>
 #### Additional Details
 
-If you would like to specify additional customer or subscription details, you may do so by passing them as the second and third arguments to the `create` method:
+If you would like to specify additional [customer](https://stripe.com/docs/api/customers/create) or [subscription](https://stripe.com/docs/api/subscriptions/create) options supported by Stripe, you may do so by passing them as the second and third arguments to the `create` method:
 
     $user->newSubscription('default', 'price_monthly')->create($paymentMethod, [
         'email' => $email,
     ], [
         'metadata' => ['note' => 'Some extra information.'],
     ]);
-
-To learn more about the additional fields supported by Stripe, check out Stripe's documentation on [customer creation](https://stripe.com/docs/api#create_customer) and [subscription creation](https://stripe.com/docs/api/subscriptions/create).
 
 <a name="coupons"></a>
 #### Coupons
@@ -458,7 +458,9 @@ If you would like to apply a coupon when creating the subscription, you may use 
 <a name="adding-subscriptions"></a>
 #### Adding Subscriptions
 
-If you would like to add a subscription to a customer who already has a default payment method set you can use the `add` method when using the `newSubscription` method:
+If you would like to add a subscription to a customer who already has a default payment method you may invoke the `add` method on the subscription builder:
+
+    use App\Models\User;
 
     $user = User::find(1);
 
@@ -467,7 +469,7 @@ If you would like to add a subscription to a customer who already has a default 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
 
-Once a user is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an active subscription, even if the subscription is currently within its trial period:
+Once a customer is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the customer has an active subscription, even if the subscription is currently within its trial period. The `subscribed` method accepts the name of the subscription as its first argument:
 
     if ($user->subscribed('default')) {
         //
@@ -475,29 +477,45 @@ Once a user is subscribed to your application, you may easily check their subscr
 
 The `subscribed` method also makes a great candidate for a [route middleware](/docs/{{version}}/middleware), allowing you to filter access to routes and controllers based on the user's subscription status:
 
-    public function handle($request, Closure $next)
-    {
-        if ($request->user() && ! $request->user()->subscribed('default')) {
-            // This user is not a paying customer...
-            return redirect('billing');
-        }
+    <?php
 
-        return $next($request);
+    namespace App\Http\Middleware;
+
+    use Closure;
+
+    class EnsureUserIsSubscribed
+    {
+        /**
+         * Handle an incoming request.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Closure  $next
+         * @return mixed
+         */
+        public function handle($request, Closure $next)
+        {
+            if ($request->user() && ! $request->user()->subscribed('default')) {
+                // This user is not a paying customer...
+                return redirect('billing');
+            }
+
+            return $next($request);
+        }
     }
 
-If you would like to determine if a user is still within their trial period, you may use the `onTrial` method. This method can be useful for displaying a warning to the user that they are still on their trial period:
+If you would like to determine if a user is still within their trial period, you may use the `onTrial` method. This method can be useful for determining if you should display a warning to the user that they are still on their trial period:
 
     if ($user->subscription('default')->onTrial()) {
         //
     }
 
-The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Stripe Price ID. In this example, we will determine if the user's `default` subscription is actively subscribed to the `monthly` plan:
+The `subscribedToPlan` method may be used to determine if the user is subscribed to a given plan based on a given Stripe plan's price identifier. In this example, we will determine if the user's `default` subscription is actively subscribed to the application's "monthly" plan. The given Stripe plan price identifier should correspond to one of your plan's price identifiers in the Stripe dashboard:
 
     if ($user->subscribedToPlan('price_monthly', 'default')) {
         //
     }
 
-By passing an array to the `subscribedToPlan` method, you may determine if the user's `default` subscription is actively subscribed to the `monthly` or the `yearly` plan:
+By passing an array to the `subscribedToPlan` method, you may determine if the user's `default` subscription is actively subscribed to the application's "monthly" or "yearly" plan:
 
     if ($user->subscribedToPlan(['price_monthly', 'price_yearly'], 'default')) {
         //
@@ -514,13 +532,13 @@ The `recurring` method may be used to determine if the user is currently subscri
 <a name="cancelled-subscription-status"></a>
 #### Cancelled Subscription Status
 
-To determine if the user was once an active subscriber, but has cancelled their subscription, you may use the `cancelled` method:
+To determine if the user was once an active subscriber but has cancelled their subscription, you may use the `cancelled` method:
 
     if ($user->subscription('default')->cancelled()) {
         //
     }
 
-You may also determine if a user has cancelled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
+You may also determine if a user has cancelled their subscription but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
 
     if ($user->subscription('default')->onGracePeriod()) {
         //
@@ -531,6 +549,45 @@ To determine if the user has cancelled their subscription and is no longer withi
     if ($user->subscription('default')->ended()) {
         //
     }
+
+<a name="incomplete-and-past-due-status"></a>
+#### Incomplete and Past Due Status
+
+If a subscription requires a secondary payment action after creation the subscription will be marked as `incomplete`. Subscription statuses are stored in the `stripe_status` column of Cashier's `subscriptions` database table.
+
+Similarly, if a secondary payment action is required when swapping plans the subscription will be marked as `past_due`. When your subscription is in either of these states it will not be active until the customer has confirmed their payment. Checking if a subscription has an incomplete payment can be done using the `hasIncompletePayment` method on the Billable model or a subscription instance:
+
+    if ($user->hasIncompletePayment('default')) {
+        //
+    }
+
+    if ($user->subscription('default')->hasIncompletePayment()) {
+        //
+    }
+
+When a subscription has an incomplete payment, you should direct the user to Cashier's payment confirmation page, passing the `latestPayment` identifier. You may use the `latestPayment` method available on subscription instance to retrieve this identifier:
+
+```html
+<a href="{{ route('cashier.payment', $subscription->latestPayment()->id) }}">
+    Please confirm your payment.
+</a>
+```
+
+If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `App\Providers\AppServiceProvider`:
+
+    use Laravel\Cashier\Cashier;
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Cashier::keepPastDueSubscriptionsActive();
+    }
+
+> {note} When a subscription is in an `incomplete` state it cannot be changed until the payment is confirmed. Therefore, the `swap` and `updateQuantity` methods will throw an exception when the subscription is in an `incomplete` state.
 
 <a name="subscription-scopes"></a>
 #### Subscription Scopes
@@ -556,43 +613,6 @@ A complete list of available scopes is available below:
     Subscription::query()->onTrial();
     Subscription::query()->pastDue();
     Subscription::query()->recurring();
-
-<a name="incomplete-and-past-due-status"></a>
-#### Incomplete and Past Due Status
-
-If a subscription requires a secondary payment action after creation the subscription will be marked as `incomplete`. Subscription statuses are stored in the `stripe_status` column of Cashier's `subscriptions` database table.
-
-Similarly, if a secondary payment action is required when swapping plans the subscription will be marked as `past_due`. When your subscription is in either of these states it will not be active until the customer has confirmed their payment. Checking if a subscription has an incomplete payment can be done using the `hasIncompletePayment` method on the Billable model or a subscription instance:
-
-    if ($user->hasIncompletePayment('default')) {
-        //
-    }
-
-    if ($user->subscription('default')->hasIncompletePayment()) {
-        //
-    }
-
-When a subscription has an incomplete payment, you should direct the user to Cashier's payment confirmation page, passing the `latestPayment` identifier. You may use the `latestPayment` method available on subscription instance to retrieve this identifier:
-
-    <a href="{{ route('cashier.payment', $subscription->latestPayment()->id) }}">
-        Please confirm your payment.
-    </a>
-
-If you would like the subscription to still be considered active when it's in a `past_due` state, you may use the `keepPastDueSubscriptionsActive` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
-
-    use Laravel\Cashier\Cashier;
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        Cashier::keepPastDueSubscriptionsActive();
-    }
-
-> {note} When a subscription is in an `incomplete` state it cannot be changed until the payment is confirmed. Therefore, the `swap` and `updateQuantity` methods will throw an exception when the subscription is in an `incomplete` state.
 
 <a name="changing-plans"></a>
 ### Changing Plans
