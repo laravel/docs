@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Upgrading Cashier](#upgrading-cashier)
 - [Installation](#installation)
+    - [Database Migrations](#database-migrations)
 - [Configuration](#configuration)
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
@@ -67,30 +68,38 @@ When upgrading to a new version of Cashier, it's important that you carefully re
 <a name="installation"></a>
 ## Installation
 
-First, require the Cashier package for Stripe with Composer:
+First, install the Cashier package for Stripe using the Composer package manager:
 
     composer require laravel/cashier
 
 > {note} To ensure Cashier properly handles all Stripe events, remember to [set up Cashier's webhook handling](#handling-stripe-webhooks).
 
 <a name="database-migrations"></a>
-#### Database Migrations
+### Database Migrations
 
-The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table as well as create a new `subscriptions` table to hold all of your customer's subscriptions:
+Cashier's service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will add several columns to your `users` table as well as create a new `subscriptions` table to hold all of your customer's subscriptions:
 
     php artisan migrate
 
-If you need to overwrite the migrations that ship with the Cashier package, you can publish them using the `vendor:publish` Artisan command:
+If you need to overwrite the migrations that ship with Cashier, you can publish them using the `vendor:publish` Artisan command:
 
     php artisan vendor:publish --tag="cashier-migrations"
 
-If you would like to prevent Cashier's migrations from running entirely, you may use the `ignoreMigrations` provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
+If you would like to prevent Cashier's migrations from running entirely, you may use the `ignoreMigrations` method provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
 
     use Laravel\Cashier\Cashier;
 
-    Cashier::ignoreMigrations();
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Cashier::ignoreMigrations();
+    }
 
-> {note} Stripe recommends that any column used for storing Stripe identifiers should be case-sensitive. Therefore, you should ensure the column collation for the `stripe_id` column is set to, for example, `utf8_bin` in MySQL. More info can be found [in the Stripe documentation](https://stripe.com/docs/upgrades#what-changes-does-stripe-consider-to-be-backwards-compatible).
+> {note} Stripe recommends that any column used for storing Stripe identifiers should be case-sensitive. Therefore, you should ensure the column collation for the `stripe_id` column is set to `utf8_bin` when using MySQL. More information regarding this can be found in the [Stripe documentation](https://stripe.com/docs/upgrades#what-changes-does-stripe-consider-to-be-backwards-compatible).
 
 <a name="configuration"></a>
 ## Configuration
@@ -98,7 +107,7 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 <a name="billable-model"></a>
 ### Billable Model
 
-Before using Cashier, add the `Billable` trait to your model definition. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons, and updating payment method information:
+Before using Cashier, add the `Billable` trait to your billable model definition. Typically, this will be the `App\Models\User` model. This trait provides various methods to allow you to perform common billing tasks, such as creating subscriptions, applying coupons, and updating payment method information:
 
     use Laravel\Cashier\Billable;
 
@@ -111,12 +120,12 @@ Cashier assumes your Billable model will be the `App\Models\User` class that shi
 
     CASHIER_MODEL=App\Models\User
 
-> {note} If you're using a model other than Laravel's supplied `App\Models\User` model, you'll need to publish and alter the [migrations](#installation) provided to match your alternative model's table name.
+> {note} If you're using a model other than Laravel's supplied `App\Models\User` model, you'll need to publish and alter the [Cashier migrations](#installation) provided to match your alternative model's table name.
 
 <a name="api-keys"></a>
 ### API Keys
 
-Next, you should configure your Stripe keys in your `.env` file. You can retrieve your Stripe API keys from the Stripe control panel.
+Next, you should configure your Stripe API keys in your application's `.env` file. You can retrieve your Stripe API keys from the Stripe control panel:
 
     STRIPE_KEY=your-stripe-key
     STRIPE_SECRET=your-stripe-secret
@@ -124,7 +133,7 @@ Next, you should configure your Stripe keys in your `.env` file. You can retriev
 <a name="currency-configuration"></a>
 ### Currency Configuration
 
-The default Cashier currency is United States Dollars (USD). You can change the default currency by setting the `CASHIER_CURRENCY` environment variable:
+The default Cashier currency is United States Dollars (USD). You can change the default currency by setting the `CASHIER_CURRENCY` environment variable within your application's `.env` file:
 
     CASHIER_CURRENCY=eur
 
@@ -135,9 +144,9 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
 > {note} In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
 
 <a name="logging"></a>
-#### Logging
+### Logging
 
-Cashier allows you to specify the log channel to be used when logging all Stripe related exceptions. You may specify the log channel using the `CASHIER_LOGGER` environment variable:
+Cashier allows you to specify the log channel to be used when logging all Stripe related exceptions. You may specify the log channel by defining the `CASHIER_LOGGER` environment variable within your application's `.env` file:
 
     CASHIER_LOGGER=stack
 
@@ -147,7 +156,7 @@ Cashier allows you to specify the log channel to be used when logging all Stripe
 <a name="retrieving-customers"></a>
 ### Retrieving Customers
 
-You can retrieve a customer by their Stripe ID using the `Cashier::findBillable` method. This will return an instance of the Billable model:
+You can retrieve a customer by their Stripe ID using the `Cashier::findBillable` method. This method will return an instance of the billable model:
 
     use Laravel\Cashier\Cashier;
 
@@ -160,51 +169,47 @@ Occasionally, you may wish to create a Stripe customer without beginning a subsc
 
     $stripeCustomer = $user->createAsStripeCustomer();
 
-Once the customer has been created in Stripe, you may begin a subscription at a later date. You can also use an optional `$options` array to pass in any additional parameters which are supported by the Stripe API:
+Once the customer has been created in Stripe, you may begin a subscription at a later date. You may provide an optional `$options` array to pass in any additional [customer creation parameters that are supported by the Stripe API](https://stripe.com/docs/api/customers/create):
 
     $stripeCustomer = $user->createAsStripeCustomer($options);
 
-You may use the `asStripeCustomer` method if you want to return the customer object if the billable entity is already a customer within Stripe:
+You may use the `asStripeCustomer` method if you want to return the Stripe customer object for a billable model:
 
     $stripeCustomer = $user->asStripeCustomer();
 
-The `createOrGetStripeCustomer` method may be used if you want to return the customer object but are not sure whether the billable entity is already a customer within Stripe. This method will create a new customer in Stripe if one does not already exist:
+The `createOrGetStripeCustomer` method may be used if you would like to retrieve the Stripe customer object for a given billable model but are not sure whether the billable model is already a customer within Stripe. This method will create a new customer in Stripe if one does not already exist:
 
     $stripeCustomer = $user->createOrGetStripeCustomer();
 
 <a name="updating-customers"></a>
 ### Updating Customers
 
-Occasionally, you may wish to update the Stripe customer directly with additional information. You may accomplish this using the `updateStripeCustomer` method:
+Occasionally, you may wish to update the Stripe customer directly with additional information. You may accomplish this using the `updateStripeCustomer` method. This method accepts an array of [customer update options supported by the Stripe API](https://stripe.com/docs/api/customers/update):
 
     $stripeCustomer = $user->updateStripeCustomer($options);
 
 <a name="billing-portal"></a>
 ### Billing Portal
 
-Stripe offers [an easy way to set up a billing portal](https://stripe.com/docs/billing/subscriptions/customer-portal) so your customer can manage their subscription, payment methods, and view their billing history. You can redirect your users to the billing portal using the `redirectToBillingPortal` method from a controller or route:
+Stripe offers [an easy way to set up a billing portal](https://stripe.com/docs/billing/subscriptions/customer-portal) so that your customer can manage their subscription, payment methods, and view their billing history. You can redirect your users to the billing portal by invoking the `redirectToBillingPortal` method on the billable model from a controller or route:
 
     use Illuminate\Http\Request;
 
-    public function billingPortal(Request $request)
-    {
+    Route::get('/billing-portal', function (Request $request) {
         return $request->user()->redirectToBillingPortal();
-    }
+    });
 
-By default, when the user is finished managing their subscription, they can return to the `home` route of your application. You may provide a custom URL the user should return to by passing the URL as an argument to the `redirectToBillingPortal` method:
+By default, when the user is finished managing their subscription, they will be able to return to the `home` route of your application via a link within the Stripe billing portal. You may provide a custom URL that the user should return to by passing the URL as an argument to the `redirectToBillingPortal` method:
 
     use Illuminate\Http\Request;
 
-    public function billingPortal(Request $request)
-    {
-        return $request->user()->redirectToBillingPortal(
-            route('billing')
-        );
-    }
+    Route::get('/billing-portal', function (Request $request) {
+        return $request->user()->redirectToBillingPortal(route('billing'));
+    });
 
-If you would like to only generate the URL to the billing portal, you may use the `billingPortalUrl` method:
+If you would like to generate the URL to the billing portal without generating an HTTP redirect response, you may invoke the `billingPortalUrl` method:
 
-    $url = $user->billingPortalUrl(route('billing'));
+    $url = $request->user()->billingPortalUrl(route('billing'));
 
 <a name="payment-methods"></a>
 ## Payment Methods
@@ -212,12 +217,12 @@ If you would like to only generate the URL to the billing portal, you may use th
 <a name="storing-payment-methods"></a>
 ### Storing Payment Methods
 
-In order to create subscriptions or perform "one off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
+In order to create subscriptions or perform "one off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish this differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
 
 <a name="payment-methods-for-subscriptions"></a>
 #### Payment Methods For Subscriptions
 
-When storing credit cards to a customer for future use, the Stripe Setup Intents API must be used to securely gather the customer's payment method details. A "Setup Intent" indicates to Stripe the intention to charge a customer's payment method. Cashier's `Billable` trait includes the `createSetupIntent` to easily create a new Setup Intent. You should call this method from the route or controller that will render the form which gathers your customer's payment method details:
+When storing a customer's credit card information for future use by a subscription, the Stripe "Setup Intents" API must be used to securely gather the customer's payment method details. A "Setup Intent" indicates to Stripe the intention to charge a customer's payment method. Cashier's `Billable` trait includes the `createSetupIntent` method to easily create a new Setup Intent. You should invoke this method from the route or controller that will render the form which gathers your customer's payment method details:
 
     return view('update-payment-method', [
         'intent' => $user->createSetupIntent()
@@ -225,50 +230,56 @@ When storing credit cards to a customer for future use, the Stripe Setup Intents
 
 After you have created the Setup Intent and passed it to the view, you should attach its secret to the element that will gather the payment method. For example, consider this "update payment method" form:
 
-    <input id="card-holder-name" type="text">
+```html
+<input id="card-holder-name" type="text">
 
-    <!-- Stripe Elements Placeholder -->
-    <div id="card-element"></div>
+<!-- Stripe Elements Placeholder -->
+<div id="card-element"></div>
 
-    <button id="card-button" data-secret="{{ $intent->client_secret }}">
-        Update Payment Method
-    </button>
+<button id="card-button" data-secret="{{ $intent->client_secret }}">
+    Update Payment Method
+</button>
+```
 
-Next, the Stripe.js library may be used to attach a Stripe Element to the form and securely gather the customer's payment details:
+Next, the Stripe.js library may be used to attach a [Stripe Element](https://stripe.com/docs/stripe-js) to the form and securely gather the customer's payment details:
 
-    <script src="https://js.stripe.com/v3/"></script>
+```html
+<script src="https://js.stripe.com/v3/"></script>
 
-    <script>
-        const stripe = Stripe('stripe-public-key');
+<script>
+    const stripe = Stripe('stripe-public-key');
 
-        const elements = stripe.elements();
-        const cardElement = elements.create('card');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
 
-        cardElement.mount('#card-element');
-    </script>
+    cardElement.mount('#card-element');
+</script>
+```
 
 Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `confirmCardSetup` method](https://stripe.com/docs/js/setup_intents/confirm_card_setup):
 
-    const cardHolderName = document.getElementById('card-holder-name');
-    const cardButton = document.getElementById('card-button');
-    const clientSecret = cardButton.dataset.secret;
+```js
+const cardHolderName = document.getElementById('card-holder-name');
+const cardButton = document.getElementById('card-button');
+const clientSecret = cardButton.dataset.secret;
 
-    cardButton.addEventListener('click', async (e) => {
-        const { setupIntent, error } = await stripe.confirmCardSetup(
-            clientSecret, {
-                payment_method: {
-                    card: cardElement,
-                    billing_details: { name: cardHolderName.value }
-                }
+cardButton.addEventListener('click', async (e) => {
+    const { setupIntent, error } = await stripe.confirmCardSetup(
+        clientSecret, {
+            payment_method: {
+                card: cardElement,
+                billing_details: { name: cardHolderName.value }
             }
-        );
-
-        if (error) {
-            // Display "error.message" to the user...
-        } else {
-            // The card has been verified successfully...
         }
-    });
+    );
+
+    if (error) {
+        // Display "error.message" to the user...
+    } else {
+        // The card has been verified successfully...
+    }
+});
+```
 
 After the card has been verified by Stripe, you may pass the resulting `setupIntent.payment_method` identifier to your Laravel application, where it can be attached to the customer. The payment method can either be [added as a new payment method](#adding-payment-methods) or [used to update the default payment method](#updating-the-default-payment-method). You can also immediately use the payment method identifier to [create a new subscription](#creating-subscriptions).
 
@@ -277,76 +288,82 @@ After the card has been verified by Stripe, you may pass the resulting `setupInt
 <a name="payment-methods-for-single-charges"></a>
 #### Payment Methods For Single Charges
 
-Of course, when making a single charge against a customer's payment method we'll only need to use a payment method identifier a single time. Due to Stripe limitations, you may not use the stored default payment method of a customer for single charges. You must allow the customer to enter their payment method details using the Stripe.js library. For example, consider the following form:
+Of course, when making a single charge against a customer's payment method, we will only need to use a payment method identifier once. Due to Stripe limitations, you may not use the stored default payment method of a customer for single charges. You must allow the customer to enter their payment method details using the Stripe.js library. For example, consider the following form:
 
-    <input id="card-holder-name" type="text">
+```html
+<input id="card-holder-name" type="text">
 
-    <!-- Stripe Elements Placeholder -->
-    <div id="card-element"></div>
+<!-- Stripe Elements Placeholder -->
+<div id="card-element"></div>
 
-    <button id="card-button">
-        Process Payment
-    </button>
+<button id="card-button">
+    Process Payment
+</button>
+```
 
-Next, the Stripe.js library may be used to attach a Stripe Element to the form and securely gather the customer's payment details:
+After defining such a form, the Stripe.js library may be used to attach a [Stripe Element](https://stripe.com/docs/stripe-js) to the form and securely gather the customer's payment details:
 
-    <script src="https://js.stripe.com/v3/"></script>
+```html
+<script src="https://js.stripe.com/v3/"></script>
 
-    <script>
-        const stripe = Stripe('stripe-public-key');
+<script>
+    const stripe = Stripe('stripe-public-key');
 
-        const elements = stripe.elements();
-        const cardElement = elements.create('card');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
 
-        cardElement.mount('#card-element');
-    </script>
+    cardElement.mount('#card-element');
+</script>
+```
 
 Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `createPaymentMethod` method](https://stripe.com/docs/stripe-js/reference#stripe-create-payment-method):
 
-    const cardHolderName = document.getElementById('card-holder-name');
-    const cardButton = document.getElementById('card-button');
+```js
+const cardHolderName = document.getElementById('card-holder-name');
+const cardButton = document.getElementById('card-button');
 
-    cardButton.addEventListener('click', async (e) => {
-        const { paymentMethod, error } = await stripe.createPaymentMethod(
-            'card', cardElement, {
-                billing_details: { name: cardHolderName.value }
-            }
-        );
-
-        if (error) {
-            // Display "error.message" to the user...
-        } else {
-            // The card has been verified successfully...
+cardButton.addEventListener('click', async (e) => {
+    const { paymentMethod, error } = await stripe.createPaymentMethod(
+        'card', cardElement, {
+            billing_details: { name: cardHolderName.value }
         }
-    });
+    );
+
+    if (error) {
+        // Display "error.message" to the user...
+    } else {
+        // The card has been verified successfully...
+    }
+});
+```
 
 If the card is verified successfully, you may pass the `paymentMethod.id` to your Laravel application and process a [single charge](#simple-charge).
 
 <a name="retrieving-payment-methods"></a>
 ### Retrieving Payment Methods
 
-The `paymentMethods` method on the Billable model instance returns a collection of `Laravel\Cashier\PaymentMethod` instances:
+The `paymentMethods` method on the billable model instance returns a collection of `Laravel\Cashier\PaymentMethod` instances:
 
     $paymentMethods = $user->paymentMethods();
 
-To retrieve the default payment method, the `defaultPaymentMethod` method may be used:
+To retrieve the customer's default payment method, the `defaultPaymentMethod` method may be used:
 
     $paymentMethod = $user->defaultPaymentMethod();
 
-You can also retrieve a specific payment method that is owned by the Billable model using the `findPaymentMethod` method:
+You can retrieve a specific payment method that is attached to the billable model using the `findPaymentMethod` method:
 
     $paymentMethod = $user->findPaymentMethod($paymentMethodId);
 
 <a name="check-for-a-payment-method"></a>
 ### Determining If A User Has A Payment Method
 
-To determine if a Billable model has a default payment method attached to their account, use the `hasDefaultPaymentMethod` method:
+To determine if a billable model has a default payment method attached to their account, invoke the `hasDefaultPaymentMethod` method:
 
     if ($user->hasDefaultPaymentMethod()) {
         //
     }
 
-To determine if a Billable model has at least one payment method attached to their account, use the `hasPaymentMethod` method:
+You may use the `hasPaymentMethod` method to determine if a billable model has at least one payment method attached to their account:
 
     if ($user->hasPaymentMethod()) {
         //
@@ -363,12 +380,12 @@ To sync your default payment method information with the customer's default paym
 
     $user->updateDefaultPaymentMethodFromStripe();
 
-> {note} The default payment method on a customer can only be used for invoicing and creating new subscriptions. Due to limitations from Stripe, it may not be used for single charges.
+> {note} The default payment method on a customer can only be used for invoicing and creating new subscriptions. Due to limitations imposed by Stripe, it may not be used for single charges.
 
 <a name="adding-payment-methods"></a>
 ### Adding Payment Methods
 
-To add a new payment method, you may call the `addPaymentMethod` method on the billable user, passing the payment method identifier:
+To add a new payment method, you may call the `addPaymentMethod` method on the billable model, passing the payment method identifier:
 
     $user->addPaymentMethod($paymentMethod);
 
@@ -381,11 +398,11 @@ To delete a payment method, you may call the `delete` method on the `Laravel\Cas
 
     $paymentMethod->delete();
 
-The `deletePaymentMethods` method will delete all of the payment method information for the Billable model:
+The `deletePaymentMethods` method will delete all of the payment method information for the billable model:
 
     $user->deletePaymentMethods();
 
-> {note} If a user has an active subscription, you should prevent them from deleting their default payment method.
+> {note} If a user has an active subscription, your application should not allow them to delete their default payment method.
 
 <a name="subscriptions"></a>
 ## Subscriptions
