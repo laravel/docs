@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Upgrading Cashier](#upgrading-cashier)
 - [Installation](#installation)
+    - [Database Migrations](#database-migrations)
 - [Configuration](#configuration)
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
@@ -45,7 +46,7 @@
 
 Laravel Cashier Paddle provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods, and more.
 
-While working with Cashier we recommend you also refer to Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference/intro).
+While working with Cashier we recommend you also review Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference/intro).
 
 <a name="upgrading-cashier"></a>
 ## Upgrading Cashier
@@ -55,20 +56,20 @@ When upgrading to a new version of Cashier, it's important that you carefully re
 <a name="installation"></a>
 ## Installation
 
-First, require the Cashier package for Paddle with Composer:
+First, install the Cashier package for Paddle using the Composer package manager:
 
     composer require laravel/cashier-paddle
 
 > {note} To ensure Cashier properly handles all Paddle events, remember to [set up Cashier's webhook handling](#handling-paddle-webhooks).
 
 <a name="database-migrations"></a>
-#### Database Migrations
+### Database Migrations
 
-The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table. In addition, a new `subscriptions` table will be created to store all of your customer's subscriptions. Finally, a new `receipts` table will be created to store all of your receipt information:
+The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table. In addition, a new `subscriptions` table will be created to store all of your customer's subscriptions. Finally, a new `receipts` table will be created to store all of your application's receipt information:
 
     php artisan migrate
 
-If you need to overwrite the migrations that ship with the Cashier package, you can publish them using the `vendor:publish` Artisan command:
+If you need to overwrite the migrations that are included with Cashier, you can publish them using the `vendor:publish` Artisan command:
 
     php artisan vendor:publish --tag="cashier-migrations"
 
@@ -76,7 +77,15 @@ If you would like to prevent Cashier's migrations from running entirely, you may
 
     use Laravel\Paddle\Cashier;
 
-    Cashier::ignoreMigrations();
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Cashier::ignoreMigrations();
+    }
 
 <a name="configuration"></a>
 ## Configuration
@@ -95,6 +104,7 @@ Before using Cashier, you must add the `Billable` trait to your user model defin
 
 If you have billable entities that are not users, you may also add the trait to those classes:
 
+    use Illuminate\Database\Eloquent\Model;
     use Laravel\Paddle\Billable;
 
     class Team extends Model
@@ -105,7 +115,7 @@ If you have billable entities that are not users, you may also add the trait to 
 <a name="api-keys"></a>
 ### API Keys
 
-Next, you should configure your Paddle keys in your `.env` file. You can retrieve your Paddle API keys from the Paddle control panel:
+Next, you should configure your Paddle keys in your application's `.env` file. You can retrieve your Paddle API keys from the Paddle control panel:
 
     PADDLE_VENDOR_ID=your-paddle-vendor-id
     PADDLE_VENDOR_AUTH_CODE=your-paddle-vendor-auth-code
@@ -114,7 +124,7 @@ Next, you should configure your Paddle keys in your `.env` file. You can retriev
 <a name="paddle-js"></a>
 ### Paddle JS
 
-Paddle relies on its own JavaScript library to initiate the Paddle checkout widget. You can load the JavaScript library by placing the `@paddleJS` directive right before your application layout's closing `</head>` tag:
+Paddle relies on its own JavaScript library to initiate the Paddle checkout widget. You can load the JavaScript library by placing the `@paddleJS` Blade directive right before your application layout's closing `</head>` tag:
 
     <head>
         ...
@@ -125,7 +135,7 @@ Paddle relies on its own JavaScript library to initiate the Paddle checkout widg
 <a name="currency-configuration"></a>
 ### Currency Configuration
 
-The default Cashier currency is United States Dollars (USD). You can change the default currency by setting the `CASHIER_CURRENCY` environment variable:
+The default Cashier currency is United States Dollars (USD). You can change the default currency by defining a `CASHIER_CURRENCY` environment variable within your application's `.env` file:
 
     CASHIER_CURRENCY=EUR
 
