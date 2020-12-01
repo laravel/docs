@@ -648,7 +648,7 @@ Sometimes subscriptions are affected by "quantity". For example, a project manag
 
     $user->subscription('default')->decrementQuantity();
 
-    // Subtract five to the subscription's current quantity...
+    // Subtract five from the subscription's current quantity...
     $user->subscription('default')->decrementQuantity(5);
 
 Alternatively, you may set a specific quantity using the `updateQuantity` method:

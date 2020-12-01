@@ -413,11 +413,15 @@ Subscriptions provide a way to set up recurring payments for your customers. Str
 
 To create a subscription, first retrieve an instance of your billable model, which typically will be an instance of `App\Models\User`. Once you have retrieved the model instance, you may use the `newSubscription` method to create the model's subscription:
 
-    use App\Models\User;
+    use Illuminate\Http\Request;
 
-    $user = User::find(1);
+    Route::post('/user/subscribe', function (Request $request) {
+        $request->user()->newSubscription(
+            'default', 'price_premium'
+        )->create($request->paymentMethodId);
 
-    $user->newSubscription('default', 'price_premium')->create($paymentMethod);
+        // ...
+    });
 
 The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's price identifier in Stripe.
 
@@ -665,7 +669,7 @@ Sometimes subscriptions are affected by "quantity". For example, a project manag
 
     $user->subscription('default')->decrementQuantity();
 
-    // Subtract five to the subscription's current quantity...
+    // Subtract five from the subscription's current quantity...
     $user->subscription('default')->decrementQuantity(5);
 
 Alternatively, you may set a specific quantity using the `updateQuantity` method:
@@ -692,14 +696,16 @@ If your subscription is a [multiplan subscription](#multiplan-subscriptions), yo
 
 You may specify multiple plans for a given subscription by passing an array of plans as the second argument to the `newSubscription` method:
 
-    use App\Models\User;
+    use Illuminate\Http\Request;
 
-    $user = User::find(1);
+    Route::post('/user/subscribe', function (Request $request) {
+        $request->user()->newSubscription('default', [
+            'price_monthly',
+            'chat-plan',
+        ])->create($request->paymentMethodId);
 
-    $user->newSubscription('default', [
-        'price_monthly',
-        'chat-plan',
-    ])->create($paymentMethod);
+        // ...
+    });
 
 In the example above, the customer will have two plans attached to their `default` subscription. Both plans will be charged on their respective billing intervals. If necessary, you may use the `quantity` method to indicate a specific quantity for each plan:
 
@@ -866,16 +872,17 @@ Cashier also offers the `isNotTaxExempt`, `isTaxExempt`, and `reverseChargeAppli
 
 By default, the billing cycle anchor is the date the subscription was created or, if a trial period is used, the date that the trial ends. If you would like to modify the billing anchor date, you may use the `anchorBillingCycleOn` method:
 
-    use App\Models\User;
-    use Carbon\Carbon;
+    use Illuminate\Http\Request;
 
-    $user = User::find(1);
+    Route::post('/user/subscribe', function (Request $request) {
+        $anchor = Carbon::parse('first day of next month');
 
-    $anchor = Carbon::parse('first day of next month');
+        $request->user()->newSubscription('default', 'price_premium')
+                    ->anchorBillingCycleOn($anchor->startOfDay())
+                    ->create($request->paymentMethodId);
 
-    $user->newSubscription('default', 'price_premium')
-                ->anchorBillingCycleOn($anchor->startOfDay())
-                ->create($paymentMethod);
+        // ...
+    });
 
 For more information on managing subscription billing cycles, consult the [Stripe billing cycle documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle)
 
@@ -917,13 +924,15 @@ If the customer cancels a subscription and then resumes that subscription before
 
 If you would like to offer trial periods to your customers while still collecting payment method information up front, you should use the `trialDays` method when creating your subscriptions:
 
-    use App\Models\User;
+    use Illuminate\Http\Request;
 
-    $user = User::find(1);
+    Route::post('/user/subscribe', function (Request $request) {
+        $request->user()->newSubscription('default', 'price_monthly')
+                    ->trialDays(10)
+                    ->create($request->paymentMethodId);
 
-    $user->newSubscription('default', 'price_monthly')
-                ->trialDays(10)
-                ->create($paymentMethod);
+        // ...
+    });
 
 This method will set the trial period ending date on the subscription record within the database and instruct Stripe to not begin billing the customer until after this date. When using the `trialDays` method, Cashier will overwrite any default trial period configured for the plan in Stripe.
 
@@ -1092,7 +1101,15 @@ To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environm
 
 If you would like to make a one-time charge against a customer, you may use the `charge` method on a billable model instance. You will need to [provide a payment method identifier](#payment-methods-for-single-charges) as the second argument to the `charge` method:
 
-    $stripeCharge = $user->charge(100, $paymentMethod);
+    use Illuminate\Http\Request;
+
+    Route::post('/purchase', function (Request $request) {
+        $stripeCharge = $request->user()->charge(
+            100, $request->paymentMethodId
+        );
+
+        // ...
+    });
 
 The `charge` method accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe charge creation. More information regarding the options available to you when creating charges may be found in the [Stripe documentation](https://stripe.com/docs/api/charges/create):
 
@@ -1136,7 +1153,7 @@ The invoice will be charged immediately against the user's default payment metho
 
 If you need to refund a Stripe charge, you may use the `refund` method. This method accepts the Stripe [payment intent ID](#payment-methods-for-single-charges) as its first argument:
 
-    $payment = $user->charge(100, $paymentMethod);
+    $payment = $user->charge(100, $paymentMethodId);
 
     $user->refund($payment->id);
 
