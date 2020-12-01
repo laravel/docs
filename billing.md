@@ -679,12 +679,21 @@ The `noProrate` method may be used to update the subscription's quantity without
 
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
 
-> {note} Please note that when working with multiplan subscriptions, an extra "plan" parameter is required for the above quantity methods.
+<a name="multiplan-subscription-quantities"></a>
+#### Multiplan Subscription Quantities
+
+If your subscription is a [multiplan subscription](#multiplan-subscriptions), you should pass the name of the plan whose quantity you wish to increment or decrement as the second argument to the increment / decrement methods:
+
+    $user->subscription('default')->incrementQuantity(1, 'chat-plan');
 
 <a name="multiplan-subscriptions"></a>
 ### Multiplan Subscriptions
 
-[Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan) allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription of $10 per month, but offers a live chat add-on plan for an additional $15 per month:
+[Multiplan subscriptions](https://stripe.com/docs/billing/subscriptions/multiplan) allow you to assign multiple billing plans to a single subscription. For example, imagine you are building a customer service "helpdesk" application that has a base subscription plan of $10 per month but offers a live chat add-on plan for an additional $15 per month. Multiplan subscription information is stored in Cashier's `subscription_items` database table.
+
+You may specify multiple plans for a given subscription by passing an array of plans as the second argument to the `newSubscription` method:
+
+    use App\Models\User;
 
     $user = User::find(1);
 
@@ -693,7 +702,7 @@ For more information on subscription quantities, consult the [Stripe documentati
         'chat-plan',
     ])->create($paymentMethod);
 
-Now the customer will have two plans on their `default` subscription. Both plans will be charged for on their respective billing intervals. You can also use the `quantity` method to indicate the specific quantity for each plan:
+In the example above, the customer will have two plans attached to their `default` subscription. Both plans will be charged on their respective billing intervals. If necessary, you may use the `quantity` method to indicate a specific quantity for each plan:
 
     $user = User::find(1);
 
@@ -701,15 +710,7 @@ Now the customer will have two plans on their `default` subscription. Both plans
         ->quantity(5, 'chat-plan')
         ->create($paymentMethod);
 
-Or, you may dynamically add the extra plan and its quantity using the `plan` method:
-
-    $user = User::find(1);
-
-    $user->newSubscription('default', 'price_monthly')
-        ->plan('chat-plan', 5)
-        ->create($paymentMethod);
-
-Alternatively, you may add a new plan to an existing subscription at a later time:
+If you would like to add another plan to an existing subscription, you may invoke the subscription's `addPlan` method:
 
     $user = User::find(1);
 
@@ -719,7 +720,7 @@ The example above will add the new plan and the customer will be billed for it o
 
     $user->subscription('default')->addPlanAndInvoice('chat-plan');
 
-If you would like to add a plan with a specific quantity, you can pass the quantity as the second parameter of the `addPlan` or `addPlanAndInvoice` methods:
+If you would like to add a plan with a specific quantity, you can pass the quantity as the second argument of the `addPlan` or `addPlanAndInvoice` methods:
 
     $user = User::find(1);
 
@@ -731,18 +732,20 @@ You may remove plans from subscriptions using the `removePlan` method:
 
 > {note} You may not remove the last plan on a subscription. Instead, you should simply cancel the subscription.
 
-<a name="swapping"></a>
-### Swapping
+<a name="swapping-multiplan-plans"></a>
+#### Swapping Plans
 
-You may also change the plans attached to a multiplan subscription. For example, imagine you're on a `basic-plan` subscription with a `chat-plan` add-on and you want to upgrade to the `pro-plan` plan:
+You may also change the plans attached to a multiplan subscription. For example, imagine a customer has a `basic-plan` subscription with a `chat-plan` add-on plan and you want to upgrade the customer from the `basic-plan` to the `pro-plan` plan:
+
+    use App\Models\User;
 
     $user = User::find(1);
 
     $user->subscription('default')->swap(['pro-plan', 'chat-plan']);
 
-When executing the code above, the underlying subscription item with the `basic-plan` is deleted and the one with the `chat-plan` is preserved. Additionally, a new subscription item for the new `pro-plan` is created.
+When executing the example above, the underlying subscription item with the `basic-plan` is deleted and the one with the `chat-plan` is preserved. Additionally, a new subscription item for the `pro-plan` is created.
 
-You can also specify subscription item options. For example, you may need to specify the subscription plan quantities:
+You can also specify subscription item options by passing an array of key / value pairs to the `swap` method. For example, you may need to specify the subscription plan quantities:
 
     $user = User::find(1);
 
@@ -751,7 +754,7 @@ You can also specify subscription item options. For example, you may need to spe
         'chat-plan'
     ]);
 
-If you want to swap a single plan on a subscription, you may do so using the `swap` method on the subscription item itself. This approach is useful if you, for example, want to preserve all of the existing metadata on the subscription item.
+If you want to swap a single plan on a subscription, you may do so using the `swap` method on the subscription item itself. This approach is particularly useful if you would like to preserve all of the existing metadata on the subscription's other plans:
 
     $user = User::find(1);
 
@@ -762,14 +765,14 @@ If you want to swap a single plan on a subscription, you may do so using the `sw
 <a name="proration"></a>
 #### Proration
 
-By default, Stripe will prorate charges when adding or removing plans from a subscription. If you would like to make a plan adjustment without proration, you should chain the `noProrate` method onto your plan operation:
+By default, Stripe will prorate charges when adding or removing plans from a multiplan subscription. If you would like to make a plan adjustment without proration, you should chain the `noProrate` method onto your plan operation:
 
     $user->subscription('default')->noProrate()->removePlan('chat-plan');
 
 <a name="swapping-quantities"></a>
 #### Quantities
 
-If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](#subscription-quantity) and passing the name of the plan as an additional argument to the method:
+If you would like to update quantities on individual subscription plans, you may do so using the [existing quantity methods](#subscription-quantity) by passing the name of the plan as an additional argument to the method:
 
     $user = User::find(1);
 
@@ -779,12 +782,14 @@ If you would like to update quantities on individual subscription plans, you may
 
     $user->subscription('default')->updateQuantity(10, 'chat-plan');
 
-> {note} When you have multiple plans set on a subscription the `stripe_plan` and `quantity` attributes on the `Subscription` model will be `null`. To access the individual plans, you should use the `items` relationship available on the `Subscription` model.
+> {note} When a subscription has multiple plans the `stripe_plan` and `quantity` attributes on the `Subscription` model will be `null`. To access the individual plan attributes, you should use the `items` relationship available on the `Subscription` model.
 
 <a name="subscription-items"></a>
 #### Subscription Items
 
 When a subscription has multiple plans, it will have multiple subscription "items" stored in your database's `subscription_items` table. You may access these via the `items` relationship on the subscription:
+
+    use App\Models\User;
 
     $user = User::find(1);
 
