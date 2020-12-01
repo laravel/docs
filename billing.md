@@ -37,7 +37,6 @@
     - [Extending Trials](#extending-trials)
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
-    - [Failed Subscriptions](#handling-failed-subscriptions)
     - [Verifying Webhook Signatures](#verifying-webhook-signatures)
 - [Single Charges](#single-charges)
     - [Simple Charge](#simple-charge)
@@ -808,15 +807,27 @@ You can also retrieve a specific plan using the `findItemOrFail` method:
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
 
-To specify the tax rates a user pays on a subscription, implement the `taxRates` method on your billable model, and return an array with the Tax Rate IDs. You can define these tax rates in [your Stripe dashboard](https://dashboard.stripe.com/test/tax-rates):
+To specify the tax rates a user pays on a subscription, you should implement the `taxRates` method on your billable model and return an array containing the Stripe tax rate IDs. You can define these tax rates in [your Stripe dashboard](https://dashboard.stripe.com/test/tax-rates):
 
+    /**
+     * The tax rates that should apply to the customer's subscriptions.
+     *
+     * @return array
+     */
     public function taxRates()
     {
         return ['tax-rate-id'];
     }
 
-The `taxRates` method enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries and tax rates. If you're working with multiplan subscriptions you can define different tax rates for each plan by implementing a `planTaxRates` method on your billable model:
+The `taxRates` method enables you to apply a tax rate on a customer-by-customer basis, which may be helpful for a user base that spans multiple countries and tax rates.
 
+If you're offering multiplan subscriptions, you may define different tax rates for each plan by implementing a `planTaxRates` method on your billable model:
+
+    /**
+     * The tax rates that should apply to the customer's subscriptions.
+     *
+     * @return array
+     */
     public function planTaxRates()
     {
         return [
@@ -829,16 +840,18 @@ The `taxRates` method enables you to apply a tax rate on a model-by-model basis,
 <a name="syncing-tax-rates"></a>
 #### Syncing Tax Rates
 
-When changing the hard-coded Tax Rate IDs returned by the `taxRates` method, the tax settings on any existing subscriptions for the user will remain the same. If you wish to update the tax value for existing subscriptions with the returned `taxTaxRates` values, you should call the `syncTaxRates` method on the user's subscription instance:
+When changing the hard-coded tax rate IDs returned by the `taxRates` method, the tax settings on any existing subscriptions for the user will remain the same. If you wish to update the tax value for existing subscriptions with the new `taxRates` values, you should call the `syncTaxRates` method on the user's subscription instance:
 
     $user->subscription('default')->syncTaxRates();
 
-This will also sync any subscription item tax rates so make sure you also properly change the `planTaxRates` method.
+This will also sync any multiplan subscription item tax rates. If your application is offering multiplan subscriptions, you should ensure that your billable model implements the `planTaxRates` method [discussed above](#subscription-taxes).
 
 <a name="tax-exemption"></a>
 #### Tax Exemption
 
-Cashier also offers methods to determine if the customer is tax exempt by calling the Stripe API. The `isNotTaxExempt`, `isTaxExempt`, and `reverseChargeApplies` methods are available on the billable model:
+Cashier also offers the `isNotTaxExempt`, `isTaxExempt`, and `reverseChargeApplies` methods to determine if the customer is tax exempt. These methods will call the Stripe API to determine a customer's tax exemption status:
+
+    use App\Models\User;
 
     $user = User::find(1);
 
@@ -846,12 +859,12 @@ Cashier also offers methods to determine if the customer is tax exempt by callin
     $user->isNotTaxExempt();
     $user->reverseChargeApplies();
 
-These methods are also available on any `Laravel\Cashier\Invoice` object. However, when calling these methods on an `Invoice` object the methods will determine the exemption status at the time the invoice was created.
+> {note} These methods are also available on any `Laravel\Cashier\Invoice` object. However, when invoked on an `Invoice` object, the methods will determine the exemption status at the time the invoice was created.
 
 <a name="subscription-anchor-date"></a>
 ### Subscription Anchor Date
 
-By default, the billing cycle anchor is the date the subscription was created, or if a trial period is used, the date that the trial ends. If you would like to modify the billing anchor date, you may use the `anchorBillingCycleOn` method:
+By default, the billing cycle anchor is the date the subscription was created or, if a trial period is used, the date that the trial ends. If you would like to modify the billing anchor date, you may use the `anchorBillingCycleOn` method:
 
     use App\Models\User;
     use Carbon\Carbon;
@@ -873,7 +886,9 @@ To cancel a subscription, call the `cancel` method on the user's subscription:
 
     $user->subscription('default')->cancel();
 
-When a subscription is cancelled, Cashier will automatically set the `ends_at` column in your database. This column is used to know when the `subscribed` method should begin returning `false`. For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th.
+When a subscription is cancelled, Cashier will automatically set the `ends_at` column in your `subscriptions` database table. This column is used to know when the `subscribed` method should begin returning `false`.
+
+For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th. This is done because a user is typically allowed to continue using an application until the end of their billing cycle.
 
 You may determine if a user has cancelled their subscription but are still on their "grace period" using the `onGracePeriod` method:
 
@@ -888,11 +903,11 @@ If you wish to cancel a subscription immediately, call the `cancelNow` method on
 <a name="resuming-subscriptions"></a>
 ### Resuming Subscriptions
 
-If a user has cancelled their subscription and you wish to resume it, use the `resume` method. The user **must** still be on their grace period in order to resume a subscription:
+If a customer has cancelled their subscription and you wish to resume it, you may invoke the `resume` method on the subscription. The customer must still be within their "grace period" in order to resume a subscription:
 
     $user->subscription('default')->resume();
 
-If the user cancels a subscription and then resumes that subscription before the subscription has fully expired, they will not be billed immediately. Instead, their subscription will be re-activated, and they will be billed on the original billing cycle.
+If the customer cancels a subscription and then resumes that subscription before the subscription has fully expired the customer will not be billed immediately. Instead, their subscription will be re-activated and they will be billed on the original billing cycle.
 
 <a name="subscription-trials"></a>
 ## Subscription Trials
@@ -902,17 +917,19 @@ If the user cancels a subscription and then resumes that subscription before the
 
 If you would like to offer trial periods to your customers while still collecting payment method information up front, you should use the `trialDays` method when creating your subscriptions:
 
+    use App\Models\User;
+
     $user = User::find(1);
 
     $user->newSubscription('default', 'price_monthly')
                 ->trialDays(10)
                 ->create($paymentMethod);
 
-This method will set the trial period ending date on the subscription record within the database, as well as instruct Stripe to not begin billing the customer until after this date. When using the `trialDays` method, Cashier will overwrite any default trial period configured for the plan in Stripe.
+This method will set the trial period ending date on the subscription record within the database and instruct Stripe to not begin billing the customer until after this date. When using the `trialDays` method, Cashier will overwrite any default trial period configured for the plan in Stripe.
 
 > {note} If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
-The `trialUntil` method allows you to provide a `DateTime` instance to specify when the trial period should end:
+The `trialUntil` method allows you to provide a `DateTime` instance that specifies when the trial period should end:
 
     use Carbon\Carbon;
 
@@ -920,7 +937,7 @@ The `trialUntil` method allows you to provide a `DateTime` instance to specify w
                 ->trialUntil(Carbon::now()->addDays(10))
                 ->create($paymentMethod);
 
-You may determine if the user is within their trial period using either the `onTrial` method of the user instance, or the `onTrial` method of the subscription instance. The two examples below are identical:
+You may determine if a user is within their trial period using either the `onTrial` method of the user instance or the `onTrial` method of the subscription instance. The two examples below are equivalent:
 
     if ($user->onTrial('default')) {
         //
@@ -940,14 +957,16 @@ You may choose to define how many trial days your plan's receive in the Stripe d
 
 If you would like to offer trial periods without collecting the user's payment method information up front, you may set the `trial_ends_at` column on the user record to your desired trial ending date. This is typically done during user registration:
 
+    use App\Models\User;
+
     $user = User::create([
-        // Populate other user properties...
+        // ...
         'trial_ends_at' => now()->addDays(10),
     ]);
 
-> {note} Be sure to add a [date mutator](/docs/{{version}}/eloquent-mutators#date-mutators) for `trial_ends_at` to your model definition.
+> {note} Be sure to add a [date cast](/docs/{{version}}/eloquent-mutators##date-casting) for the `trial_ends_at` attribute within your billable model's class definition.
 
-Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the `User` instance will return `true` if the current date is not past the value of `trial_ends_at`:
+Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the billable model instance will return `true` if the current date is not past the value of `trial_ends_at`:
 
     if ($user->onTrial()) {
         // User is within their trial period...
@@ -965,7 +984,7 @@ To retrieve the user's trial ending date, you may use the `trialEndsAt` method. 
         $trialEndsAt = $user->trialEndsAt('main');
     }
 
-You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
+You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not yet created an actual subscription:
 
     if ($user->onGenericTrial()) {
         // User is within their "generic" trial period...
@@ -974,7 +993,11 @@ You may also use the `onGenericTrial` method if you wish to know specifically th
 <a name="extending-trials"></a>
 ### Extending Trials
 
-The `extendTrial` method allows you to extend the trial period of a subscription after it's been created:
+The `extendTrial` method allows you to extend the trial period of a subscription after the subscription has been created. If the trial has already expired and the customer is already being billed for the subscription, you can still offer them an extended trial. The time spent within the trial period will be deducted from the customer's next invoice:
+
+    use App\Models\User;
+
+    $subscription = User::find(1)->subscription('default');
 
     // End the trial 7 days from now...
     $subscription->extendTrial(
@@ -986,18 +1009,16 @@ The `extendTrial` method allows you to extend the trial period of a subscription
         $subscription->trial_ends_at->addDays(5)
     );
 
-If the trial has already expired and the customer is already being billed for the subscription, you can still offer them an extended trial. The time spent within the trial period will be deducted from the customer's next invoice.
-
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
 
 > {tip} You may use [the Stripe CLI](https://stripe.com/docs/stripe-cli) to help test webhooks during local development.
 
-Stripe can notify your application of a variety of events via webhooks. By default, a route that points to Cashier's webhook controller is configured through the Cashier service provider. This controller will handle all incoming webhook requests.
+Stripe can notify your application of a variety of events via webhooks. By default, a route that points to Cashier's webhook controller is automatically registered by the Cashier service provider. This controller will handle all incoming webhook requests.
 
-By default, this controller will automatically handle cancelling subscriptions that have too many failed charges (as defined by your Stripe settings), customer updates, customer deletions, subscription updates, and payment method changes; however, as we'll soon discover, you can extend this controller to handle any webhook event you like.
+By default, the Cashier webhook controller will automatically handle cancelling subscriptions that have too many failed charges (as defined by your Stripe settings), customer updates, customer deletions, subscription updates, and payment method changes; however, as we'll soon discover, you can extend this controller to handle any Stripe webhook event you like.
 
-To ensure your application can handle Stripe webhooks, be sure to configure the webhook URL in the Stripe control panel. By default, Cashier's webhook controller listens to the `/stripe/webhook` URL path. The full list of all webhooks you should configure in the Stripe control panel are:
+To ensure your application can handle Stripe webhooks, be sure to configure the webhook URL in the Stripe control panel. By default, Cashier's webhook controller responds to the `/stripe/webhook` URL path. The full list of all webhooks you should enable in the Stripe control panel are:
 
 - `customer.subscription.updated`
 - `customer.subscription.deleted`
@@ -1005,12 +1026,12 @@ To ensure your application can handle Stripe webhooks, be sure to configure the 
 - `customer.deleted`
 - `invoice.payment_action_required`
 
-> {note} Make sure you protect incoming requests with Cashier's included [webhook signature verification](/docs/{{version}}/billing#verifying-webhook-signatures) middleware.
+> {note} Make sure you protect incoming Stripe webhook requests with Cashier's included [webhook signature verification](/docs/{{version}}/billing#verifying-webhook-signatures) middleware.
 
 <a name="webhooks-csrf-protection"></a>
 #### Webhooks & CSRF Protection
 
-Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
+Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your application's `App\Http\Middleware\VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
 
     protected $except = [
         'stripe/*',
@@ -1019,7 +1040,9 @@ Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellation on failed charges, but if you have additional webhook events you would like to handle, extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you should add a `handleInvoicePaymentSucceeded` method to the controller:
+Cashier automatically handles subscription cancellations for failed charges and other common Stripe webhook events. However, if you have additional webhook events you would like to handle, you may do so by extending the Cashier webhook controller.
+
+Your controller's method names should correspond to Cashier's controller conventions. Specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you should add a `handleInvoicePaymentSucceeded` method to the controller:
 
     <?php
 
@@ -1037,32 +1060,27 @@ Cashier automatically handles subscription cancellation on failed charges, but i
          */
         public function handleInvoicePaymentSucceeded($payload)
         {
-            // Handle The Event
+            // Handle the incoming event...
         }
     }
 
-Next, define a route to your Cashier controller within your `routes/web.php` file. This will overwrite the default shipped route:
+Next, define a route to your Cashier webhook controller within your application's `routes/web.php` file. This will overwrite the default route registered by Cashier's service provider:
 
     use App\Http\Controllers\WebhookController;
 
     Route::post(
-        'stripe/webhook',
+        '/stripe/webhook',
         [WebhookController::class, 'handleWebhook']
     );
 
-Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received, and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Stripe webhook.
-
-<a name="handling-failed-subscriptions"></a>
-### Failed Subscriptions
-
-What if a customer's credit card expires? No worries - Cashier's Webhook controller will cancel the customer's subscription for you. Failed payments will automatically be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts).
+> {tip} Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Stripe webhook.
 
 <a name="verifying-webhook-signatures"></a>
 ### Verifying Webhook Signatures
 
 To secure your webhooks, you may use [Stripe's webhook signatures](https://stripe.com/docs/webhooks/signatures). For convenience, Cashier automatically includes a middleware which validates that the incoming Stripe webhook request is valid.
 
-To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environment variable is set in your `.env` file. The webhook `secret` may be retrieved from your Stripe account dashboard.
+To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environment variable is set in your application's `.env` file. The webhook `secret` may be retrieved from your Stripe account dashboard.
 
 <a name="single-charges"></a>
 ## Single Charges
@@ -1070,20 +1088,19 @@ To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environm
 <a name="simple-charge"></a>
 ### Simple Charge
 
-> {note} The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**.
+> {note} The `charge` method accepts the amount you would like to charge in the lowest denominator of the currency used by your application. For example, when using United States Dollars, amounts should be specified in pennies.
 
-If you would like to make a "one off" charge against a subscribed customer's payment method, you may use the `charge` method on a billable model instance. You'll need to [provide a payment method identifier](#storing-payment-methods) as the second argument:
+If you would like to make a one-time charge against a customer, you may use the `charge` method on a billable model instance. You will need to [provide a payment method identifier](#payment-methods-for-single-charges) as the second argument to the `charge` method:
 
-    // Stripe Accepts Charges In Cents...
     $stripeCharge = $user->charge(100, $paymentMethod);
 
-The `charge` method accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe charge creation. Consult the Stripe documentation regarding the options available to you when creating charges:
+The `charge` method accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe charge creation. More information regarding the options available to you when creating charges may be found in the [Stripe documentation](https://stripe.com/docs/api/charges/create):
 
     $user->charge(100, $paymentMethod, [
         'custom_option' => $value,
     ]);
 
-You may also use the `charge` method without an underlying customer or user:
+You may also use the `charge` method without an underlying customer or user. To accomplish this, invoke the `charge` method on an new instance of your application's billable model:
 
     use App\Models\User;
 
@@ -1100,12 +1117,11 @@ The `charge` method will throw an exception if the charge fails. If the charge i
 <a name="charge-with-invoice"></a>
 ### Charge With Invoice
 
-Sometimes you may need to make a one-time charge but also generate an invoice for the charge so that you may offer a PDF receipt to your customer. The `invoiceFor` method lets you do just that. For example, let's invoice the customer $5.00 for a "One Time Fee":
+Sometimes you may need to make a one-time charge and offer a PDF receipt to your customer. The `invoiceFor` method lets you do just that. For example, let's invoice a customer $5.00 for a "Maintenance Fee":
 
-    // Stripe Accepts Charges In Cents...
     $user->invoiceFor('One Time Fee', 500);
 
-The invoice will be charged immediately against the user's default payment method. The `invoiceFor` method also accepts an array as its third argument. This array contains the billing options for the invoice item. The fourth argument accepted by the method is also an array. This final argument accepts the billing options for the invoice itself:
+The invoice will be charged immediately against the user's default payment method. The `invoiceFor` method also accepts an array as its third argument. This array contains the billing options for the invoice item. The fourth argument accepted by the method is also an array which should contain the billing options for the invoice itself:
 
     $user->invoiceFor('Stickers', 500, [
         'quantity' => 50,
@@ -1118,7 +1134,7 @@ The invoice will be charged immediately against the user's default payment metho
 <a name="refunding-charges"></a>
 ### Refunding Charges
 
-If you need to refund a Stripe charge, you may use the `refund` method. This method accepts the Stripe Payment Intent ID as its first argument:
+If you need to refund a Stripe charge, you may use the `refund` method. This method accepts the Stripe [payment intent ID](#payment-methods-for-single-charges) as its first argument:
 
     $payment = $user->charge(100, $paymentMethod);
 
