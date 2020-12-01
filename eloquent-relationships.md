@@ -983,7 +983,7 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
         $query->where('content', 'like', 'foo%');
     }, '>=', 10)->get();
     
-> {note} Because `has` uses joins to compare relationship columns to determine the existence of records, it is impossible to use this in combination with multiple database connections on Eloquent models.
+> {note} Because `has` uses joins to compare relationship columns to determine the existence of records, it is not possible at this time to use this in combination with multiple database connections on Eloquent models.
 
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
