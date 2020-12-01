@@ -642,9 +642,9 @@ If you would like to swap plans and immediately invoice the customer instead of 
 <a name="prorations"></a>
 #### Prorations
 
-By default, Stripe prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's without prorating the charges:
+By default, Stripe prorates charges when swapping between plans. The `noProrate` method may be used to update the subscription's plan without prorating the charges:
 
-    $user->subscription('default')->noProrate()->swap('provider-price-id');
+    $user->subscription('default')->noProrate()->swap('price_id');
 
 For more information on subscription proration, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/prorations).
 
@@ -653,7 +653,9 @@ For more information on subscription proration, consult the [Stripe documentatio
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
 
-Sometimes subscriptions are affected by "quantity". For example, your application might charge $10 per month **per user** on an account. To easily increment or decrement your subscription quantity, use the `incrementQuantity` and `decrementQuantity` methods:
+Sometimes subscriptions are affected by "quantity". For example, a project management application might charge $10 per month per project. You may use the `incrementQuantity` and `decrementQuantity` methods to easily increment or decrement your subscription quantity:
+
+    use App\Models\User;
 
     $user = User::find(1);
 
