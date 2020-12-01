@@ -617,25 +617,27 @@ A complete list of available scopes is available below:
 <a name="changing-plans"></a>
 ### Changing Plans
 
-After a user is subscribed to your application, they may occasionally want to change to a new subscription plan. To swap a user to a new subscription, pass the plan's price identifier to the `swap` method:
+After a customer is subscribed to your application, they may occasionally want to change to a new subscription plan. To swap a customer to a new plan, pass the Stripe plan's price identifier to the `swap` method. The given price identifier should correspond to a Stripe plan price identifier available in the Stripe dashboard:
+
+    use App\Models\User;
 
     $user = App\Models\User::find(1);
 
-    $user->subscription('default')->swap('provider-price-id');
+    $user->subscription('default')->swap('price_id');
 
-If the user is on trial, the trial period will be maintained. Also, if a "quantity" exists for the subscription, that quantity will also be maintained.
+If the customer is on trial, the trial period will be maintained. Also, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
-If you would like to swap plans and cancel any trial period the user is currently on, you may use the `skipTrial` method:
+If you would like to swap plans and cancel any trial period the customer is currently on, you may invoke the `skipTrial` method:
 
     $user->subscription('default')
             ->skipTrial()
-            ->swap('provider-price-id');
+            ->swap('price_id');
 
-If you would like to swap plans and immediately invoice the user instead of waiting for their next billing cycle, you may use the `swapAndInvoice` method:
+If you would like to swap plans and immediately invoice the customer instead of waiting for their next billing cycle, you may use the `swapAndInvoice` method:
 
-    $user = App\Models\User::find(1);
+    $user = User::find(1);
 
-    $user->subscription('default')->swapAndInvoice('provider-price-id');
+    $user->subscription('default')->swapAndInvoice('price_id');
 
 <a name="prorations"></a>
 #### Prorations
