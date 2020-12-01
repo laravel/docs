@@ -4,6 +4,7 @@
 - [Mocking Objects](#mocking-objects)
 - [Mocking Facades](#mocking-facades)
 - [Bus Fake](#bus-fake)
+    - [Job Batches](#job-batches)
 - [Event Fake](#event-fake)
     - [Scoped Event Fakes](#scoped-event-fakes)
 - [HTTP Fake](#http-fake)
@@ -156,6 +157,19 @@ You may pass a closure to the `assertDispatched` or `assertNotDispatched` method
 
     Bus::assertDispatched(function (ShipOrder $job) use ($order) {
         return $job->order->id === $order->id;
+    });
+
+<a name="job-batches"></a>
+### Job Batches
+
+The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batches) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\Bus\PendingBatch`, which may be used to inspect the jobs within the batch:
+
+    use Illuminate\Bus\PendingBatch;
+    use Illuminate\Support\Facades\Bus;
+
+    Bus::assertBatched(function (PendingBatch $batch) {
+        return $batch->name == 'import-csv' &&
+               $batch->jobs->count() === 10;
     });
 
 <a name="event-fake"></a>
