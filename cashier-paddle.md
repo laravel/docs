@@ -151,42 +151,51 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
 <a name="pay-links"></a>
 ### Pay Links
 
-Paddle lacks an extensive CRUD API to perform state changes. Therefore, most interactions with Paddle are done through [its checkout widget](https://developer.paddle.com/guides/how-tos/checkout/paddle-checkout). Before we can display the checkout widget, we will generate a "pay link" using Cashier:
+Paddle lacks an extensive CRUD API to perform subscription state changes. Therefore, most interactions with Paddle are done through its [checkout widget](https://developer.paddle.com/guides/how-tos/checkout/paddle-checkout). Before we can display the checkout widget, we must generate a "pay link" using Cashier. A "pay link" will inform the checkout widget of the billing operation we wish to perform:
 
-    $user = User::find(1);
+    use App\Models\User;
+    use Illuminate\Http\Request;
 
-    $payLink = $user->newSubscription('default', $premium = 34567)
-        ->returnTo(route('home'))
-        ->create();
+    Route::get('/user/subscribe', function (Request $request) {
+        $payLink = $request->user()->newSubscription('default', $premium = 34567)
+            ->returnTo(route('home'))
+            ->create();
 
-    return view('billing', ['payLink' => $payLink]);
+        return view('billing', ['payLink' => $payLink]);
+    });
 
-Cashier includes a `paddle-button` Blade component. We may pass the pay link URL to this component as a "prop". When this button is clicked, Paddle's checkout widget will be displayed:
+Cashier includes a `paddle-button` [Blade component](/docs/{{version}}/blade#components). We may pass the pay link URL to this component as a "prop". When this button is clicked, Paddle's checkout widget will be displayed:
 
-    <x-paddle-button :url="$payLink" class="px-8 py-4">
-        Subscribe
-    </x-paddle-button>
+```html
+<x-paddle-button :url="$payLink" class="px-8 py-4">
+    Subscribe
+</x-paddle-button>
+```
 
 By default, this will display a button with the standard Paddle styling. You can remove all Paddle styling by adding the `data-theme="none"` attribute to the component:
 
-    <x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="none">
-        Subscribe
-    </x-paddle-button>
+```html
+<x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="none">
+    Subscribe
+</x-paddle-button>
+```
 
-The Paddle checkout widget is asynchronous. Once the user creates or updates a subscription within the widget, Paddle will send our application webhooks so that we may properly update the subscription state in our own database. Therefore, it's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
+The Paddle checkout widget is asynchronous. Once the user creates or updates a subscription within the widget, Paddle will send your application webhooks so that you may properly update the subscription state in our own database. Therefore, it's important that you properly [set up webhooks](#handling-paddle-webhooks) to accommodate for state changes from Paddle.
 
-After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
+For more information on pay links, you may review [the Paddle API documentation on pay link generation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink).
 
-For more information, you may review [the Paddle API documentation on pay link generation](https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink).
+> {note} After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
 
 <a name="inline-checkout"></a>
 ### Inline Checkout
 
-If you don't want to make use of the "overlay" style checkout widget, Paddle also has an option to display the widget inline. While this approach does not allow you to adjust any of the checkout's HTML fields, it allows you to embed the widget within your application.
+If you don't want to make use of Paddle's "overlay" style checkout widget, Paddle also provides the option to display the widget inline. While this approach does not allow you to adjust any of the checkout's HTML fields, it allows you to embed the widget within your application.
 
 To make it easy for you to get started with inline checkout, Cashier includes a `paddle-checkout` Blade component. To get started, you should [generate a pay link](#pay-links) and pass the pay link to the component's `override` attribute:
 
-    <x-paddle-checkout :override="$payLink" class="w-full" />
+```html
+<x-paddle-checkout :override="$payLink" class="w-full" />
+```
 
 To adjust the height of the inline checkout component, you may pass the `height` attribute to the Blade component:
 
@@ -204,26 +213,26 @@ Alternatively, you may customize the widget with custom options instead of using
 
     <x-paddle-checkout :options="$options" class="w-full" />
 
-Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [Parameter Reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details on available options.
+Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [parameter reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details on the inline checkout's available options.
 
-> {note} If you would like to also use the `passthrough` option when specifying custom options, you should provide a key / value array since Cashier will automatically handle converting the array to a JSON string. In addition, the `customer_id` passthrough option is reserved for internal Cashier usage.
+> {note} If you would like to also use the `passthrough` option when specifying custom options, you should provide a key / value array as its value. Cashier will automatically handle converting the array to a JSON string. In addition, the `customer_id` passthrough option is reserved for internal Cashier usage.
 
 <a name="user-identification"></a>
 ### User Identification
 
-In contrast to Stripe, Paddle users are unique across the whole of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to update a user's details such as their email address. When generating pay links, Paddle identifies users using the `customer_email` parameter. When creating a subscription, Paddle will try to match the user provided email to an existing Paddle user.
+In contrast to Stripe, Paddle users are unique across all of Paddle, not unique per Paddle account. Because of this, Paddle's API's do not currently provide a method to update a user's details such as their email address. When generating pay links, Paddle identifies users using the `customer_email` parameter. When creating a subscription, Paddle will try to match the user provided email to an existing Paddle user.
 
 In light of this behavior, there are some important things to keep in mind when using Cashier and Paddle. First, you should be aware that even though subscriptions in Cashier are tied to the same application user, **they could be tied to different users within Paddle's internal systems**. Secondly, each subscription has its own connected payment method information and could also have different email addresses within Paddle's internal systems (depending on which email was assigned to the user when the subscription was created).
 
-Therefore, when displaying subscriptions you should always inform the user which email address or payment method information is connected to the subscription on a per-subscription basis. Retrieving this information can be done with the following methods on the `Subscription` model:
+Therefore, when displaying subscriptions you should always inform the user which email address or payment method information is connected to the subscription on a per-subscription basis. Retrieving this information can be done with the following methods provided by the `Laravel\Paddle\Subscription` model:
 
     $subscription = $user->subscription('default');
 
-    $customerEmailAddress = $subscription->paddleEmail();
-    $paymentMethod = $subscription->paymentMethod();
-    $cardBrand = $subscription->cardBrand();
-    $cardLastFour = $subscription->cardLastFour();
-    $cardExpirationDate = $subscription->cardExpirationDate();
+    $subscription->paddleEmail();
+    $subscription->paymentMethod();
+    $subscription->cardBrand();
+    $subscription->cardLastFour();
+    $subscription->cardExpirationDate();
 
 There is currently no way to modify a user's email address through the Paddle API. When a user wants to update their email address within Paddle, the only way for them to do so is to contact Paddle customer support. When communicating with Paddle, they need to provide the `paddleEmail` value of the subscription to assist Paddle in updating the correct user.
 
