@@ -1,4 +1,4 @@
-# Laravel Cashier Paddle
+# Laravel Cashier (Paddle)
 
 - [Introduction](#introduction)
 - [Upgrading Cashier](#upgrading-cashier)

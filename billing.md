@@ -1,4 +1,4 @@
-# Laravel Cashier
+# Laravel Cashier (Stripe)
 
 - [Introduction](#introduction)
 - [Upgrading Cashier](#upgrading-cashier)
