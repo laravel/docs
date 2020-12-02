@@ -11,12 +11,11 @@
     - [Installing Optional Features](#installing-optional-features)
     - [Aliases](#aliases)
 - [Daily Usage](#daily-usage)
-    - [Accessing Homestead Globally](#accessing-homestead-globally)
     - [Connecting Via SSH](#connecting-via-ssh)
+    - [Adding Additional Sites](#adding-additional-sites)
     - [Connecting To Databases](#connecting-to-databases)
     - [Database Backups](#database-backups)
     - [Database Snapshots](#database-snapshots)
-    - [Adding Additional Sites](#adding-additional-sites)
     - [Environment Variables](#environment-variables)
     - [Wildcard SSL](#wildcard-ssl)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
@@ -45,7 +44,7 @@ Laravel strives to make the entire PHP development experience delightful, includ
 
 [Vagrant](https://www.vagrantup.com) provides a simple, elegant way to manage and provision Virtual Machines. Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
-Homestead runs on any Windows, Mac, or Linux system and includes Nginx, PHP, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other software you need to develop amazing Laravel applications.
+Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, MySQL, PostgreSQL, Redis, Memcached, Node, and all of the other software you need to develop amazing Laravel applications.
 
 > {note} If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS. If you are using Hyper-V on a UEFI system you may additionally need to disable Hyper-V in order to access VT-x.
 
@@ -169,7 +168,7 @@ After cloning the Laravel Homestead repository, you should checkout the `release
 
 Next, execute the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file is where you will configure all of the settings for your Homestead installation. This file will be placed in the Homestead directory:
 
-    // Mac / Linux...
+    // macOS / Linux...
     bash init.sh
 
     // Windows...
@@ -190,20 +189,23 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 
 The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead virtual environment. You may configure as many shared folders as necessary:
 
-    folders:
-        - map: ~/code/project1
-          to: /home/vagrant/project1
+```yaml
+folders:
+    - map: ~/code/project1
+      to: /home/vagrant/project1
+```
 
 > {note} Windows users should not use the `~/` path syntax and instead should use the full path to their project, such as `C:\Users\user\Code\project1`.
 
 You should always map individual applications to their own folder mapping instead of mapping a single large directory that contains all of your applications. When you map a folder, the virtual machine must keep track of all disk IO for *every* file in the folder. You may experience reduced performance if you have a large number of files in a folder:
 
-    folders:
-        - map: ~/code/project1
-          to: /home/vagrant/project1
-
-        - map: ~/code/project2
-          to: /home/vagrant/project2
+```yaml
+folders:
+    - map: ~/code/project1
+      to: /home/vagrant/project1
+    - map: ~/code/project2
+      to: /home/vagrant/project2
+```
 
 > {note} You should never mount `.` (the current directory) when using Homestead. This causes Vagrant to not map the current folder to `/vagrant` and will break optional features and cause unexpected results while provisioning.
 
@@ -244,7 +246,7 @@ If you change the `sites` property after provisioning the Homestead box, you sho
 
 Homestead publishes hostnames using `mDNS` for automatic host resolution. If you set `hostname: homestead` in your `Homestead.yaml` file, the host will be available at `homestead.local`. macOS, iOS, and Linux desktop distributions include `mDNS` support by default. If you are using Windows, you must install [Bonjour Print Services for Windows](https://support.apple.com/kb/DL999?viewlocale=en_US&locale=en_US).
 
-Using automatic hostnames works best for [per project installations](#per-project-installation) of Homestead. If you host multiple sites on a single Homestead instance, you may add the "domains" for your web sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
+Using automatic hostnames works best for [per project installations](#per-project-installation) of Homestead. If you host multiple sites on a single Homestead instance, you may add the "domains" for your web sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead machine. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
     192.168.10.10  homestead.test
 
@@ -367,51 +369,63 @@ After you have updated the `aliases` file, you should re-provision the Homestead
 <a name="daily-usage"></a>
 ## Daily Usage
 
-<a name="accessing-homestead-globally"></a>
-### Accessing Homestead Globally
-
-Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this on Mac / Linux systems by adding a Bash function to your Bash profile. On Windows, you may accomplish this by adding a "batch" file to your `PATH`. These scripts will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
-
-<a name="mac-linux"></a>
-#### Mac / Linux
-
-    function homestead() {
-        ( cd ~/Homestead && vagrant $* )
-    }
-
-Make sure to tweak the `~/Homestead` path in the function to the location of your actual Homestead installation. Once the function is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
-
-<a name="windows"></a>
-#### Windows
-
-Create a `homestead.bat` batch file anywhere on your machine with the following contents:
-
-    @echo off
-
-    set cwd=%cd%
-    set homesteadVagrant=C:\Homestead
-
-    cd /d %homesteadVagrant% && vagrant %*
-    cd /d %cwd%
-
-    set cwd=
-    set homesteadVagrant=
-
-Make sure to tweak the example `C:\Homestead` path in the script to the actual location of your Homestead installation. After creating the file, add the file location to your `PATH`. You may then run commands like `homestead up` or `homestead ssh` from anywhere on your system.
-
 <a name="connecting-via-ssh"></a>
 ### Connecting Via SSH
 
-You can SSH into your virtual machine by issuing the `vagrant ssh` terminal command from your Homestead directory.
+You can SSH into your virtual machine by executing the `vagrant ssh` terminal command from your Homestead directory.
 
-But, since you will probably need to SSH into your Homestead machine frequently, consider adding the "function" described above to your host machine to quickly SSH into the Homestead box.
+<a name="adding-additional-sites"></a>
+### Adding Additional Sites
+
+Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your other Laravel projects. You can run as many Laravel projects as you wish on a single Homestead environment. To add an additional site, add the site to your `Homestead.yaml` file.
+
+    sites:
+        - map: homestead.test
+          to: /home/vagrant/project1/public
+        - map: another.test
+          to: /home/vagrant/project2/public
+
+> {note} You should ensure that you have configured a [folder mapping](#configuring-shared-folders) for the project's directory before adding the site.
+
+If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`:
+
+    192.168.10.10  homestead.test
+    192.168.10.10  another.test
+
+Once the site has been added, execute the `vagrant reload --provision` terminal command from your Homestead directory.
+
+<a name="site-types"></a>
+#### Site Types
+
+Homestead supports several "types" of sites which allow you to easily run projects that are not based on Laravel. For example, we may easily add a Statamic application to Homestead using the `statamic` site type:
+
+```yaml
+sites:
+    - map: statamic.test
+      to: /home/vagrant/my-symfony-project/web
+      type: "statamic"
+```
+
+The available site types are: `apache`, `apigility`, `expressive`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, `symfony4`, and `zf`.
+
+<a name="site-parameters"></a>
+#### Site Parameters
+
+You may add additional Nginx `fastcgi_param` values to your site via the `params` site directive:
+
+    sites:
+        - map: homestead.test
+          to: /home/vagrant/project1/public
+          params:
+              - key: FOO
+                value: BAR
 
 <a name="connecting-to-databases"></a>
 ### Connecting To Databases
 
-A `homestead` database is configured for both MySQL and PostgreSQL out of the box. To connect to your MySQL or PostgreSQL database from your host machine's database client, you should connect to `127.0.0.1` and port `33060` (MySQL) or `54320` (PostgreSQL). The username and password for both databases is `homestead` / `secret`.
+A `homestead` database is configured for both MySQL and PostgreSQL out of the box. To connect to your MySQL or PostgreSQL database from your host machine's database client, you should connect to `127.0.0.1` on port `33060` (MySQL) or `54320` (PostgreSQL). The username and password for both databases is `homestead` / `secret`.
 
-> {note} You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel database configuration file since Laravel is running _within_ the virtual machine.
+> {note} You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel application's `database` configuration file since Laravel is running _within_ the virtual machine.
 
 <a name="database-backups"></a>
 ### Database Backups
@@ -420,7 +434,7 @@ Homestead can automatically backup your database when your Vagrant box is destro
 
     backup: true
 
-Once configured, Homestead will export your databases to `mysql_backup` and `postgres_backup` directories when the `vagrant destroy` command is executed. These directories can be found in the folder where you cloned Homestead or in the root of your project if you are using the [per project installation](#per-project-installation) method.
+Once configured, Homestead will export your databases to `mysql_backup` and `postgres_backup` directories when the `vagrant destroy` command is executed. These directories can be found in the folder where you installed Homestead or in the root of your project if you are using the [per project installation](#per-project-installation) method.
 
 <a name="database-snapshots"></a>
 ### Database Snapshots
@@ -429,55 +443,13 @@ Homestead supports freezing the state of MySQL and MariaDB databases and branchi
 
 Under the hood, LMM uses LVM's thin snapshot functionality with copy-on-write support. In practice, this means that changing a single row in a table will only cause the changes you made to be written to disk, saving significant time and disk space during restores.
 
-Since `lmm` interacts with LVM, it must be run as `root`. To see all available commands, run `sudo lmm` inside your Vagrant box. A common workflow looks like the following:
+Since LMM interacts with LVM, it must be run as `root`. To see all available commands, run the `sudo lmm` command within Vagrant box. A common workflow looks like the following:
 
-1. Import a database into the default `master` lmm branch.
-1. Save a snapshot of the unchanged database using `sudo lmm branch prod-YYYY-MM-DD`.
-1. Modify the database.
-1. Run `sudo lmm merge prod-YYYY-MM-DD` to undo all changes.
-1. Run `sudo lmm delete <branch>` to delete unneeded branches.
-
-<a name="adding-additional-sites"></a>
-### Adding Additional Sites
-
-Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, add the site to your `Homestead.yaml` file:
-
-    sites:
-        - map: homestead.test
-          to: /home/vagrant/project1/public
-        - map: another.test
-          to: /home/vagrant/project2/public
-
-If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well:
-
-    192.168.10.10  homestead.test
-    192.168.10.10  another.test
-
-Once the site has been added, run the `vagrant reload --provision` command from your Homestead directory.
-
-<a name="site-types"></a>
-#### Site Types
-
-Homestead supports several types of sites which allow you to easily run projects that are not based on Laravel. For example, we may easily add a Symfony application to Homestead using the `symfony2` site type:
-
-    sites:
-        - map: symfony2.test
-          to: /home/vagrant/my-symfony-project/web
-          type: "symfony2"
-
-The available site types are: `apache`, `apigility`, `expressive`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, `symfony4`, and `zf`.
-
-<a name="site-parameters"></a>
-#### Site Parameters
-
-You may add additional Nginx `fastcgi_param` values to your site via the `params` site directive. For example, we'll add a `FOO` parameter with a value of `BAR`:
-
-    sites:
-        - map: homestead.test
-          to: /home/vagrant/project1/public
-          params:
-              - key: FOO
-                value: BAR
+- Import a database into the default `master` lmm branch.
+- Save a snapshot of the unchanged database using `sudo lmm branch prod-YYYY-MM-DD`.
+- Modify the database.
+- Run `sudo lmm merge prod-YYYY-MM-DD` to undo all changes.
+- Run `sudo lmm delete <branch>` to delete unneeded branches.
 
 <a name="environment-variables"></a>
 ### Environment Variables
@@ -804,7 +776,7 @@ Then, you should update the Vagrant box using the `vagrant box update` command:
 
 Next, you should run the `bash init.sh` command from the Homestead directory in order to update some additional configuration files. You will be asked whether you wish to overwrite your existing `Homestead.yaml`, `after.sh`, and `aliases` files:
 
-    // Mac / Linux...
+    // macOS / Linux...
     bash init.sh
 
     // Windows...
