@@ -965,7 +965,29 @@ Scopes allow your API clients to request a specific set of permissions when requ
 <a name="defining-scopes"></a>
 ### Defining Scopes
 
-You may define your API's scopes using the `Passport::tokensCan` method in the `boot` method of your `AuthServiceProvider`. The `tokensCan` method accepts an array of scope names and scope descriptions. The scope description may be anything you wish and will be displayed to users on the authorization approval screen:
+You may define your API's scopes using the `Passport::tokensCan` method in the `boot` method of your application's `App\Providers\AuthServiceProvider` class. The `tokensCan` method accepts an array of scope names and scope descriptions. The scope description may be anything you wish and will be displayed to users on the authorization approval screen:
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::tokensCan([
+            'place-orders' => 'Place orders',
+            'check-status' => 'Check order status',
+        ]);
+    }
+
+<a name="default-scope"></a>
+### Default Scope
+
+If a client does not request any specific scopes, you may configure your Passport server to attach default scope(s) to the token using the `setDefaultScope` method. Typically, you should call this method from the `boot` method of your application's `App\Providers\AuthServiceProvider` class:
 
     use Laravel\Passport\Passport;
 
@@ -973,13 +995,6 @@ You may define your API's scopes using the `Passport::tokensCan` method in the `
         'place-orders' => 'Place orders',
         'check-status' => 'Check order status',
     ]);
-
-<a name="default-scope"></a>
-### Default Scope
-
-If a client does not request any specific scopes, you may configure your Passport server to attach a default scope to the token using the `setDefaultScope` method. Typically, you should call this method from the `boot` method of your `AuthServiceProvider`:
-
-    use Laravel\Passport\Passport;
 
     Passport::setDefaultScope([
         'check-status',
@@ -1002,13 +1017,13 @@ When requesting an access token using the authorization code grant, consumers sh
             'scope' => 'place-orders check-status',
         ]);
 
-        return redirect('http://your-app.com/oauth/authorize?'.$query);
+        return redirect('http://passport-app.com/oauth/authorize?'.$query);
     });
 
 <a name="when-issuing-personal-access-tokens"></a>
 #### When Issuing Personal Access Tokens
 
-If you are issuing personal access tokens using the `User` model's `createToken` method, you may pass the array of desired scopes as the second argument to the method:
+If you are issuing personal access tokens using the `App\Models\User` model's `createToken` method, you may pass the array of desired scopes as the second argument to the method:
 
     $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
@@ -1023,7 +1038,7 @@ Passport includes two middleware that may be used to verify that an incoming req
 <a name="check-for-all-scopes"></a>
 #### Check For All Scopes
 
-The `scopes` middleware may be assigned to a route to verify that the incoming request's access token has *all* of the listed scopes:
+The `scopes` middleware may be assigned to a route to verify that the incoming request's access token has all of the listed scopes:
 
     Route::get('/orders', function () {
         // Access token has both "check-status" and "place-orders" scopes...
@@ -1041,7 +1056,7 @@ The `scope` middleware may be assigned to a route to verify that the incoming re
 <a name="checking-scopes-on-a-token-instance"></a>
 #### Checking Scopes On A Token Instance
 
-Once an access token authenticated request has entered your application, you may still check if the token has a given scope using the `tokenCan` method on the authenticated `User` instance:
+Once an access token authenticated request has entered your application, you may still check if the token has a given scope using the `tokenCan` method on the authenticated `App\Models\User` instance:
 
     use Illuminate\Http\Request;
 
@@ -1056,19 +1071,21 @@ Once an access token authenticated request has entered your application, you may
 
 The `scopeIds` method will return an array of all defined IDs / names:
 
-    Laravel\Passport\Passport::scopeIds();
+    use Laravel\Passport\Passport;
+
+    Passport::scopeIds();
 
 The `scopes` method will return an array of all defined scopes as instances of `Laravel\Passport\Scope`:
 
-    Laravel\Passport\Passport::scopes();
+    Passport::scopes();
 
 The `scopesFor` method will return an array of `Laravel\Passport\Scope` instances matching the given IDs / names:
 
-    Laravel\Passport\Passport::scopesFor(['place-orders', 'check-status']);
+    Passport::scopesFor(['place-orders', 'check-status']);
 
 You may determine if a given scope has been defined using the `hasScope` method:
 
-    Laravel\Passport\Passport::hasScope('place-orders');
+    Passport::hasScope('place-orders');
 
 <a name="consuming-your-api-with-javascript"></a>
 ## Consuming Your API With JavaScript
@@ -1084,7 +1101,7 @@ Typically, if you want to consume your API from your JavaScript application, you
 
 > {note} You should ensure that the `CreateFreshApiToken` middleware is the last middleware listed in your middleware stack.
 
-This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. The JWT has a lifetime equal to your `session.lifetime` configuration value. Now, you may make requests to your application's API without explicitly passing an access token:
+This middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. The JWT has a lifetime equal to your `session.lifetime` configuration value. Now, since the browser will automatically send the cookie with all subsequent requests, you may make requests to your application's API without explicitly passing an access token:
 
     axios.get('/api/user')
         .then(response => {
@@ -1094,7 +1111,7 @@ This Passport middleware will attach a `laravel_token` cookie to your outgoing r
 <a name="customizing-the-cookie-name"></a>
 #### Customizing The Cookie Name
 
-If needed, you can customize the `laravel_token` cookie's name using the `Passport::cookie` method. Typically, this method should be called from the `boot` method of your `AuthServiceProvider`:
+If needed, you can customize the `laravel_token` cookie's name using the `Passport::cookie` method. Typically, this method should be called from the `boot` method of your application's `App\Providers\AuthServiceProvider` class:
 
     /**
      * Register any authentication / authorization services.
@@ -1120,7 +1137,7 @@ When using this method of authentication, you will need to ensure a valid CSRF t
 <a name="events"></a>
 ## Events
 
-Passport raises events when issuing access tokens and refresh tokens. You may use these events to prune or revoke other access tokens in your database. You may attach listeners to these events in your application's `EventServiceProvider`:
+Passport raises events when issuing access tokens and refresh tokens. You may use these events to prune or revoke other access tokens in your database. If you would like, you may attach listeners to these events in your application's `App\Providers\EventServiceProvider` class:
 
     /**
      * The event listener mappings for the application.
@@ -1145,7 +1162,7 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
     use App\Models\User;
     use Laravel\Passport\Passport;
 
-    public function testServerCreation()
+    public function test_servers_can_be_created()
     {
         Passport::actingAs(
             User::factory()->create(),
@@ -1162,7 +1179,7 @@ Passport's `actingAsClient` method may be used to specify the currently authenti
     use Laravel\Passport\Client;
     use Laravel\Passport\Passport;
 
-    public function testGetOrders()
+    public function test_orders_can_be_retrieved()
     {
         Passport::actingAsClient(
             Client::factory()->create(),
