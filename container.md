@@ -164,7 +164,7 @@ Sometimes you may have a class that receives some injected classes, but also nee
               ->needs('$variableName')
               ->give($value);
 
-Sometimes a class may depend on an array of tagged instances. Using the `giveTagged` method, you may easily inject all of the container bindings with that tag:
+Sometimes a class may depend on an array of [tagged](#tagging) instances. Using the `giveTagged` method, you may easily inject all of the container bindings with that tag:
 
     $this->app->when(ReportAggregator::class)
         ->needs('$reports')
@@ -212,7 +212,7 @@ For convenience, you may also just provide an array of class names to be resolve
 <a name="variadic-tag-dependencies"></a>
 #### Variadic Tag Dependencies
 
-Sometimes a class may have a variadic dependency that is type-hinted as a given class (`Report ...$reports`). Using the `needs` and `giveTagged` methods, you may easily inject all of the container bindings with that tag for the given dependency:
+Sometimes a class may have a variadic dependency that is type-hinted as a given class (`Report ...$reports`). Using the `needs` and `giveTagged` methods, you may easily inject all of the container bindings with that [tag](#tagging) for the given dependency:
 
     $this->app->when(ReportAggregator::class)
         ->needs(Report::class)
