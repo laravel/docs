@@ -538,6 +538,7 @@ You may also specify the desired action for the "on delete" and "on update" prop
 
     $table->foreignId('user_id')
           ->constrained()
+          ->onUpdate('cascade')
           ->onDelete('cascade');
 
 Any additional [column modifiers](#column-modifiers) must be called before `constrained`:
