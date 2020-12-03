@@ -31,6 +31,8 @@ However, if you are not using Homestead, you will need to make sure your server 
 - XML PHP Extension
 </div>
 
+If you are using Laravel with a Microsoft SQL Server database, it is highly recommended that you install the sqlsrv and pdo_sqlsrv drivers as well as the Microsoft SQL ODBC driver. While Laravel will work out of the box without these drivers, you will likely run into issues if you don't use these drivers.
+
 <a name="installing-laravel"></a>
 ### Installing Laravel
 
