@@ -115,9 +115,9 @@ Then, you may instruct Sanctum to use your custom model via the `usePersonalAcce
 <a name="issuing-api-tokens"></a>
 ### Issuing API Tokens
 
-Sanctum allows you to issue API tokens / personal access tokens that may be used to authenticate API requests. When making requests using API tokens, the token should be included in the `Authorization` header as a `Bearer` token.
+Sanctum allows you to issue API tokens / personal access tokens that may be used to authenticate API requests to your application. When making requests using API tokens, the token should be included in the `Authorization` header as a `Bearer` token.
 
-To begin issuing tokens for users, your User model should use the `HasApiTokens` trait:
+To begin issuing tokens for users, your User model should use the `Laravel\Sanctum\HasApiTokens` trait:
 
     use Laravel\Sanctum\HasApiTokens;
 
@@ -128,9 +128,13 @@ To begin issuing tokens for users, your User model should use the `HasApiTokens`
 
 To issue a token, you may use the `createToken` method. The `createToken` method returns a `Laravel\Sanctum\NewAccessToken` instance. API tokens are hashed using SHA-256 hashing before being stored in your database, but you may access the plain-text value of the token using the `plainTextToken` property of the `NewAccessToken` instance. You should display this value to the user immediately after the token has been created:
 
-    $token = $user->createToken('token-name');
+    use Illuminate\Http\Request;
 
-    return $token->plainTextToken;
+    Route::post('/tokens/create', function (Request $request) {
+        $token = $request->user()->createToken($request->token_name);
+
+        return ['token' => $token->plainTextToken];
+    });
 
 You may access all of the user's tokens using the `tokens` Eloquent relationship provided by the `HasApiTokens` trait:
 
@@ -141,7 +145,7 @@ You may access all of the user's tokens using the `tokens` Eloquent relationship
 <a name="token-abilities"></a>
 ### Token Abilities
 
-Sanctum allows you to assign "abilities" to tokens, similar to OAuth "scopes". You may pass an array of string abilities as the second argument to the `createToken` method:
+Sanctum allows you to assign "abilities" to tokens. Abilities serve a similar purpose as OAuth's "scopes". You may pass an array of string abilities as the second argument to the `createToken` method:
 
     return $user->createToken('token-name', ['server:update'])->plainTextToken;
 
@@ -156,7 +160,11 @@ When handling an incoming request authenticated by Sanctum, you may determine if
 <a name="protecting-routes"></a>
 ### Protecting Routes
 
-To protect routes so that all incoming requests must be authenticated, you should attach the `sanctum` authentication guard to your API routes within your `routes/api.php` file. This guard will ensure that incoming requests are authenticated as either a stateful authenticated requests from your SPA or contain a valid API token header if the request is from a third party:
+To protect routes so that all incoming requests must be authenticated, you should attach the `sanctum` authentication guard to your protected routes within your `routes/web.php` and `routes/api.php` route files. This guard will ensure that incoming requests are authenticated as either stateful, cookie authenticated requests or contain a valid API token header if the request is from a third party.
+
+You may be wondering why we suggest that you authenticate the routes within your application's `routes/web.php` file using the `sanctum` guard. Remember, Sanctum will first attempt to authenticate incoming requests using Laravel's typical session authentication cookie. If that cookie is not present then Sanctum will attempt to authenticate the request using a token in the request's `Authorization` header. In addition, authenticating all requests using Sanctum ensures that we may always call the `tokenCan` method on the currently authenticated user instance:
+
+    use Illuminate\Http\Request;
 
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
@@ -165,16 +173,16 @@ To protect routes so that all incoming requests must be authenticated, you shoul
 <a name="revoking-tokens"></a>
 ### Revoking Tokens
 
-You may "revoke" tokens by deleting them from your database using the `tokens` relationship that is provided by the `HasApiTokens` trait:
+You may "revoke" tokens by deleting them from your database using the `tokens` relationship that is provided by the `Laravel\Sanctum\HasApiTokens` trait:
 
     // Revoke all tokens...
     $user->tokens()->delete();
 
-    // Revoke the user's current token...
+    // Revoke the token that was used to authenticate the current request...
     $request->user()->currentAccessToken()->delete();
 
     // Revoke a specific token...
-    $user->tokens()->where('id', $id)->delete();
+    $user->tokens()->where('id', $tokenId)->delete();
 
 <a name="spa-authentication"></a>
 ## SPA Authentication
