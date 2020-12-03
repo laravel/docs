@@ -29,32 +29,34 @@ Laravel Sanctum provides a featherweight authentication system for SPAs (single 
 <a name="how-it-works"></a>
 ### How It Works
 
-Laravel Sanctum exists to solve two separate problems.
+Laravel Sanctum exists to solve two separate problems. Let's discuss each before digging deeper into the library.
 
 <a name="how-it-works-api-tokens"></a>
 #### API Tokens
 
-First, it is a simple package to issue API tokens to your users without the complication of OAuth. This feature is inspired by GitHub "access tokens". For example, imagine the "account settings" of your application has a screen where a user may generate an API token for their account. You may use Sanctum to generate and manage those tokens. These tokens typically have a very long expiration time (years), but may be manually revoked by the user at anytime.
+First, Sanctum is a simple package you may use to issue API tokens to your users without the complication of OAuth. This feature is inspired by GitHub and other applications which issue "personal access tokens". For example, imagine the "account settings" of your application has a screen where a user may generate an API token for their account. You may use Sanctum to generate and manage those tokens. These tokens typically have a very long expiration time (years), but may be manually revoked by the user at anytime.
 
-Laravel Sanctum offers this feature by storing user API tokens in a single database table and authenticating incoming requests via the `Authorization` header which should contain a valid API token.
+Laravel Sanctum offers this feature by storing user API tokens in a single database table and authenticating incoming HTTP requests via the `Authorization` header which should contain a valid API token.
 
 <a name="how-it-works-spa-authentication"></a>
 #### SPA Authentication
 
-Second, Sanctum exists to offer a simple way to authenticate single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository, such as a SPA created using Vue CLI.
+Second, Sanctum exists to offer a simple way to authenticate single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository, such as a SPA created using Vue CLI or a Next.js application.
 
-For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses Laravel's built-in cookie based session authentication services. This provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS. Sanctum will only attempt to authenticate using cookies when the incoming request originates from your own SPA frontend.
+For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses Laravel's built-in cookie based session authentication services. This provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS.
+
+Sanctum will only attempt to authenticate using cookies when the incoming request originates from your own SPA frontend. When Sanctum examines an incoming HTTP request, it will first check for an authentication cookie and, if none is present, Sanctum will then examine the `Authorization` header for a valid API token.
 
 > {tip} It is perfectly fine to use Sanctum only for API token authentication or only for SPA authentication. Just because you use Sanctum does not mean you are required to use both features it offers.
 
 <a name="installation"></a>
 ## Installation
 
-You may install Laravel Sanctum via Composer:
+You may install Laravel Sanctum via the Composer package manager:
 
     composer require laravel/sanctum
 
-Next, you should publish the Sanctum configuration and migration files using the `vendor:publish` Artisan command. The `sanctum` configuration file will be placed in your `config` directory:
+Next, you should publish the Sanctum configuration and migration files using the `vendor:publish` Artisan command. The `sanctum` configuration file will be placed in your application's `config` directory:
 
     php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 
@@ -62,7 +64,7 @@ Finally, you should run your database migrations. Sanctum will create one databa
 
     php artisan migrate
 
-Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanctum's middleware to your `api` middleware group within your `app/Http/Kernel.php` file:
+Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanctum's middleware to your `api` middleware group within your application's `app/Http/Kernel.php` file:
 
     'api' => [
         \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
@@ -73,7 +75,7 @@ Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanc
 <a name="migration-customization"></a>
 #### Migration Customization
 
-If you are not going to use Sanctum's default migrations, you should call the `Sanctum::ignoreMigrations` method in the `register` method of your `AppServiceProvider`. You may export the default migrations using `php artisan vendor:publish --tag=sanctum-migrations`.
+If you are not going to use Sanctum's default migrations, you should call the `Sanctum::ignoreMigrations` method in the `register` method of your `App\Providers\AppServiceProvider` class. You may export the default migrations by executing the following command: `php artisan vendor:publish --tag=sanctum-migrations`
 
 <a name="configuration"></a>
 ## Configuration
@@ -81,7 +83,7 @@ If you are not going to use Sanctum's default migrations, you should call the `S
 <a name="overriding-default-models"></a>
 ### Overriding Default Models
 
-You are free to extend the `PersonalAccessToken` model used internally by Sanctum:
+Although not typically required, you are free to extend the `PersonalAccessToken` model used internally by Sanctum:
 
     use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
 
@@ -90,7 +92,7 @@ You are free to extend the `PersonalAccessToken` model used internally by Sanctu
         // ...
     }
 
-Then, you may instruct Sanctum to use your custom model via the `usePersonalAccessTokenModel` method provided by Sanctum. Typically, you should call this method in the `boot` method of one of your service providers:
+Then, you may instruct Sanctum to use your custom model via the `usePersonalAccessTokenModel` method provided by Sanctum. Typically, you should call this method in the `boot` method of one of your application's service providers:
 
     use App\Models\Passport\PersonalAccessToken;
     use Laravel\Sanctum\Sanctum;
@@ -108,7 +110,7 @@ Then, you may instruct Sanctum to use your custom model via the `usePersonalAcce
 <a name="api-token-authentication"></a>
 ## API Token Authentication
 
-> {tip} You should not use API tokens to authenticate your own first-party SPA. Instead, use Sanctum's built-in [SPA authentication](#spa-authentication).
+> {tip} You should not use API tokens to authenticate your own first-party SPA. Instead, use Sanctum's built-in [SPA authentication features](#spa-authentication).
 
 <a name="issuing-api-tokens"></a>
 ### Issuing API Tokens
