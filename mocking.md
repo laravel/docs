@@ -84,6 +84,13 @@ As an alternative to mocking, you may use the `Bus` facade's `fake` method to pr
                 return $job->order->id === $order->id;
             });
 
+            // Assert a specific batch was dispatched meeting the given truth test...
+            Bus::assertBatched(function (Batch $batch) use ($order) {
+                return count($batch->jobs) == 2
+                    && $batch->allowsFailures() 
+                    && $batch->name === 'my-batch';
+            });
+
             // Assert a job was not dispatched...
             Bus::assertNotDispatched(AnotherJob::class);
         }
