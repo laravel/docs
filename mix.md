@@ -65,7 +65,7 @@ Mix is a configuration layer on top of [webpack](https://webpack.js.org), so to 
     npm run dev
 
     // Run all Mix tasks and minify output...
-    npm run production
+    npm run prod
 
 <a name="watching-assets-for-changes"></a>
 #### Watching Assets For Changes
@@ -315,7 +315,7 @@ After generating the versioned file, you won't know the exact filename. So, you 
 
     <script src="{{ mix('/js/app.js') }}"></script>
 
-Because versioned files are usually unnecessary in development, you may instruct the versioning process to only run during `npm run production`:
+Because versioned files are usually unnecessary in development, you may instruct the versioning process to only run during `npm run prod`:
 
     mix.js('resources/js/app.js', 'public/js');
 
