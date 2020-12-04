@@ -15,7 +15,6 @@
     - [Interacting With Databases](#interacting-with-sail-databases)
     - [Running Tests](#running-tests)
     - [Previewing Emails](#previewing-emails)
-    - [Adding Additional Services](#adding-additional-sail-services)
     - [Container CLI](#sail-container-cli)
     - [Customization](#sail-customization)
 - [Next Steps](#next-steps)
@@ -82,6 +81,8 @@ cd example-app
 ./sail up
 ```
 
+The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost. To continue learning more about Laravel Sail, review its [complete documentation](#laravel-sail).
 
 <a name="getting-started-on-windows"></a>
@@ -106,6 +107,8 @@ cd example-app
 
 ./sail up
 ```
+
+The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost. To continue learning more about Laravel Sail, review its [complete documentation](#laravel-sail).
 
@@ -133,6 +136,8 @@ cd example-app
 
 ./sail up
 ```
+
+The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost. To continue learning more about Laravel Sail, review its [complete documentation](#laravel-sail).
 
@@ -203,7 +208,7 @@ To start all of the Docker containers defined in your `docker-compose.yml` file,
 
 Once the application's containers have been started, you may access the project in your web browser at: http://localhost.
 
-To stop all of the containers, you may simply use Control + C to stop the container's execution. Or, if the containers are running in the background, you may use the `down` command:
+To stop all of the containers, you may simply press Control + C to stop the container's execution. Or, if the containers are running in the background, you may use the `down` command:
 
 ```bash
 ./sail down
@@ -229,10 +234,10 @@ When using Laravel Sail, your application is executing within a Docker container
 **When reading the Laravel documentation, you will often see references to Artisan and Composer commands that do not reference Sail.** Those examples assume that PHP is installed on your local computer. If you are using Sail for your local Laravel development environment, you should execute those commands using Sail:
 
 ```bash
-// Running Artisan commands locally...
+# Running Artisan commands locally...
 php artisan queue:work
 
-// Running Artisan commands within Laravel Sail...
+# Running Artisan commands within Laravel Sail...
 ./sail artisan queue:work
 ```
 
@@ -296,41 +301,6 @@ Laravel Sail's default `docker-compose.yml` file contains a service entry for [M
 
 When Sail is running, you may access the MailHog web interface at: `http://localhost:8025`. MailHog's default SMTP port is `1025`.
 
-<a name="adding-additional-sail-services"></a>
-### Adding Additional Services
-
-Since Laravel Sail is built using a standard `docker-compose.yml` file, you are free to add additional services to your container configuration based on your application's own needs.
-
-<a name="sharing-services-across-projects"></a>
-#### Sharing Services Across Projects
-
-Sometimes you may wish to share a single service such as MySQL across multiple projects. To accomplish this, we recommend using [Takeout](https://github.com/tighten/takeout), an open source tool developed by Tighten. After enabling a Takeout service, you should add the `takeout` network to your `laravel.test` container definition within your `docker-compose.yml` file:
-
-```yaml
-networks:
-    - sail
-    - takeout
-```
-
-In addition, you will need to add the `takeout` network to the root level `networks` entry in your `docker-compose.yml` file:
-
-```yaml
-networks:
-    sail:
-        driver: bridge
-    takeout:
-        external:
-            name: takeout
-```
-
-Once you have added your container to the `takeout` network, you may start Sail:
-
-```bash
-./sail up
-```
-
-For more information on using Takeout services and connecting them to Sail, please consult the [official Takeout documentation](https://github.com/tighten/takeout).
-
 <a name="sail-container-cli"></a>
 ### Container CLI
 
@@ -340,19 +310,25 @@ Sometimes you may wish to start a Bash session within your application's contain
 ./sail ssh
 ```
 
+To start a new [Laravel Tinker](https://github.com/laravel/tinker) session, you may execute the `tinker` command:
+
+```bash
+./sail tinker
+```
+
 <a name="sail-customization"></a>
 ### Sail Customization
 
-Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:install` Artisan command and publish the resources exported by the `Laravel\Sail\SailServiceProvider` service provider:
+Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` Artisan command and publish the resources exported by the `Laravel\Sail\SailServiceProvider` service provider:
 
 ```bash
-./sail artisan sail:install
+./sail artisan sail:publish
 ```
 
 After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may rebuild your application's containers using the `build` command:
 
 ```bash
-./sail build
+./sail build --no-cache
 ```
 
 <a name="next-steps"></a>
