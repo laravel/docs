@@ -370,6 +370,7 @@ Although we just demonstrated how to write your own rate limiting job middleware
 
 For example, you may wish to allow users to backup their data once per hour while imposing no such limit on premium customers. To accomplish this, you may define a `RateLimiter` in your `AppServiceProvider`:
 
+    use Illuminate\Cache\RateLimiting\Limit;
     use Illuminate\Support\Facades\RateLimiter;
 
     RateLimiter::for('backups', function ($job) {
