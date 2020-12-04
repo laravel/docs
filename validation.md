@@ -810,9 +810,13 @@ Since this rule requires several arguments, you may use the `Rule::dimensions` m
 <a name="rule-distinct"></a>
 #### distinct
 
-When working with arrays, the field under validation must not have any duplicate values.
+When validating arrays, the field under validation must not have any duplicate values:
 
     'foo.*.id' => 'distinct'
+    
+You may add `ignore_case` to the validation rule's arguments to make the rule ignore capitalization differences:
+    
+    'foo.*.id' => 'distinct:ignore_case'
 
 <a name="rule-email"></a>
 #### email
