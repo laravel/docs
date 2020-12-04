@@ -52,18 +52,18 @@ empty | (string) ''
 null | (null) null
 (null) | (null) null
 
-If you need to define an environment variable with a value that contains spaces, you may do so by enclosing the value in double quotes.
+If you need to define an environment variable with a value that contains spaces, you may do so by enclosing the value in double quotes:
 
     APP_NAME="My Application"
 
 <a name="retrieving-environment-configuration"></a>
 ### Retrieving Environment Configuration
 
-All of the variables listed in this file will be loaded into the `$_ENV` PHP super-global when your application receives a request. However, you may use the `env` helper to retrieve values from these variables in your configuration files. In fact, if you review the Laravel configuration files, you will notice several of the options already using this helper:
+All of the variables listed in this file will be loaded into the `$_ENV` PHP super-global when your application receives a request. However, you may use the `env` helper to retrieve values from these variables in your configuration files. In fact, if you review the Laravel configuration files, you will notice many of the options are already using this helper:
 
     'debug' => env('APP_DEBUG', false),
 
-The second value passed to the `env` function is the "default value". This value will be used if no environment variable exists for the given key.
+The second value passed to the `env` function is the "default value". This value will be returned if no environment variable exists for the given key.
 
 <a name="determining-the-current-environment"></a>
 ### Determining The Current Environment
