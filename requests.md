@@ -1,23 +1,34 @@
 # HTTP Requests
 
-- [Accessing The Request](#accessing-the-request)
+- [Introduction](#introduction)
+- [Interacting With The Request](#interacting-with-the-request)
+    - [Accessing The Request](#accessing-the-request)
     - [Request Path & Method](#request-path-and-method)
     - [Request Headers](#request-headers)
     - [Request IP Address](#request-ip)
+    - [Content Negotiation](#content-negotiation)
     - [PSR-7 Requests](#psr7-requests)
-- [Input Trimming & Normalization](#input-trimming-and-normalization)
 - [Input](#input)
     - [Retrieving Input](#retrieving-input)
     - [Determining If Input Is Present](#determining-if-input-is-present)
     - [Old Input](#old-input)
     - [Cookies](#cookies)
+    - [Input Trimming & Normalization](#input-trimming-and-normalization)
 - [Files](#files)
     - [Retrieving Uploaded Files](#retrieving-uploaded-files)
     - [Storing Uploaded Files](#storing-uploaded-files)
 - [Configuring Trusted Proxies](#configuring-trusted-proxies)
 
+<a name="introduction"></a>
+## Introduction
+
+Laravel's `Illuminate\Http\Request` class provides an object-oriented way to interact with the current HTTP request being handled by your application as well retrieve the input, cookies, and files that were submitted with the request.
+
+<a name="interacting-with-the-request"></a>
+## Interacting With The Request
+
 <a name="accessing-the-request"></a>
-## Accessing The Request
+### Accessing The Request
 
 To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your route closure or controller method. The incoming request instance will automatically be injected by the Laravel [service container](/docs/{{version}}/container):
 
@@ -156,6 +167,29 @@ The `ip` method may be used to retrieve the IP address of the client that made t
 
     $ipAddress = $request->ip();
 
+<a name="content-negotiation"></a>
+### Content Negotiation
+
+Laravel provides several methods for inspecting the incoming request's requested content types via the `Accept` header. First, the `getAcceptableContentTypes` method will return an array containing all of the content types accepted by the request:
+
+    $contentTypes = $request->getAcceptableContentTypes();
+
+The `accepts` method accepts an array of content types and returns `true` if any of the content types are accepted by the request. Otherwise, `false` will be returned:
+
+    if ($request->accepts(['text/html', 'application/json'])) {
+        // ...
+    }
+
+You may use the `prefers` method to determine which content type out of a given array of content types is most preferred by the request. If none of the provided content types are accepted by the request, `null` will be returned:
+
+    $preferred = $request->prefers(['text/html', 'application/json']);
+
+Since many applications only serve HTML or JSON, you may use the `expectsJson` method to quickly determine if the incoming request expects a JSON response:
+
+    if ($request->expectsJson()) {
+        // ...
+    }
+
 <a name="psr7-requests"></a>
 ### PSR-7 Requests
 
@@ -173,13 +207,6 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
     });
 
 > {tip} If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
-
-<a name="input-trimming-and-normalization"></a>
-## Input Trimming & Normalization
-
-By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `App\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
-
-If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
 
 <a name="input"></a>
 ## Input
@@ -364,6 +391,13 @@ Laravel also provides a global `old` helper. If you are displaying old input wit
 All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on an `Illuminate\Http\Request` instance:
 
     $value = $request->cookie('name');
+
+<a name="input-trimming-and-normalization"></a>
+## Input Trimming & Normalization
+
+By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `App\Http\Middleware\ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the global middleware stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
+
+If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
 
 <a name="files"></a>
 ## Files
