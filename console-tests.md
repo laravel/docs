@@ -11,7 +11,7 @@ In addition to simplifying HTTP testing, Laravel provides a simple API for testi
 <a name="expecting-input-and-output"></a>
 ## Expecting Input / Output
 
-Laravel allows you to easily "mock" user input for your console commands using the `expectsQuestion` method. In addition, you may specify the exit code and text that you expect to be output by the console command using the `assertExitCode` and `expectsOutput` methods. For example, consider the following console command:
+Laravel allows you to easily "mock" user input for your console commands using the `expectsQuestion` method. In addition, you may specify the exit code and text that you expect to be output by the console command using the `assertExitCode`, `expectsOutput` and `doesntExpectOutput ` methods. For example, consider the following console command:
 
     Artisan::command('question', function () {
         $name = $this->ask('What is your name?');
@@ -22,10 +22,14 @@ Laravel allows you to easily "mock" user input for your console commands using t
             'Python',
         ]);
 
+        if ($language === 'ruby') {
+            $this->line('You program in Ruby.');
+        }
+
         $this->line('Your name is '.$name.' and you program in '.$language.'.');
     });
 
-You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, and `assertExitCode` methods:
+You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, `doesntExpectOutput ` and `assertExitCode` methods:
 
     /**
      * Test a console command.
@@ -38,6 +42,7 @@ You may test this command with the following test which utilizes the `expectsQue
              ->expectsQuestion('What is your name?', 'Taylor Otwell')
              ->expectsQuestion('Which language do you program in?', 'PHP')
              ->expectsOutput('Your name is Taylor Otwell and you program in PHP.')
+             ->doesntExpectOutput('You program in Ruby.')
              ->assertExitCode(0);
     }
 
