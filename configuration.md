@@ -70,6 +70,8 @@ The second value passed to the `env` function is the "default value". This value
 
 The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
 
+    use Illuminate\Support\Facades\App;
+
     $environment = App::environment();
 
 You may also pass arguments to the `environment` method to determine if the environment matches a given value. The method will return `true` if the environment matches any of the given values:
