@@ -217,7 +217,7 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
 <a name="retrieving-all-input-data"></a>
 #### Retrieving All Input Data
 
-You may also retrieve all of the incoming request's input data as an `array` using the `all` method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:
+You may retrieve all of the incoming request's input data as an `array` using the `all` method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:
 
     $input = $request->all();
 
