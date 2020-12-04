@@ -1,8 +1,16 @@
 # Starter Kits
 
+- [Introduction](#introduction)
 - [Laravel Breeze](#laravel-breeze)
     - [Installation](#laravel-breeze-installation)
 - [Laravel Jetstream](#laravel-jetstream)
+
+<a name="introduction"></a>
+## Introduction
+
+To give you a head start building your new Laravel application, we are happy to offer authentication and application starter kits. These kits automatically scaffold your application with the routes, controllers, and views you need to register and authenticate your application's users.
+
+While you are welcome to use these starter kits, they are not required. You are free to build your own application from the ground up by simply installing a fresh copy of Laravel. Either way, we know you will build something great!
 
 <a name="laravel-breeze"></a>
 ## Laravel Breeze
@@ -15,9 +23,9 @@ Laravel Breeze is a minimal, simple implementation of all of Laravel's [authenti
 First, you should [create a new Laravel application](/docs/{{version}}/installation), configure your database, and run your [database migrations](/docs/{{version}}/migrations):
 
 ```bash
-curl -s https://laravel.build/my-app | bash
+curl -s https://laravel.build/example-app | bash
 
-cd my-app
+cd example-app
 
 php artisan migrate
 ```
