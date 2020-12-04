@@ -8,6 +8,9 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
+    - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
+    - [Sharing Sites Via Expose](#sharing-sites-via-expose)
+    - [Sharing Sites On Your Local Network](#sharing-sites-on-your-local-network)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Proxying Services](#proxying-services)
 - [Custom Valet Drivers](#custom-valet-drivers)
@@ -117,7 +120,7 @@ Once Valet is installed, you're ready to start serving your Laravel applications
 <a name="the-park-command"></a>
 ### The `park` Command
 
-The `park` command registers a directory on your machine that contains all of your applications. Once the directory has been "parked" with Valet, all of the directories within that directory will be accessible in your web browser at `http://<directory-name>.test`:
+The `park` command registers a directory on your machine that contains your applications. Once the directory has been "parked" with Valet, all of the directories within that directory will be accessible in your web browser at `http://<directory-name>.test`:
 
     cd ~/Sites
 
@@ -128,7 +131,7 @@ That's all there is to it. Now, any application you create within your "parked" 
 <a name="the-link-command"></a>
 ### The `link` Command
 
-The `link` command can also be used to serve your Laravel applications. This command is useful if you want to serve a single site in a directory and not the entire directory.
+The `link` command can also be used to serve your Laravel applications. This command is useful if you want to serve a single site in a directory and not the entire directory:
 
     cd ~/Sites/laravel
 
@@ -155,7 +158,7 @@ The `unlink` command may be used to destroy the symbolic link for a site:
 <a name="securing-sites"></a>
 ### Securing Sites With TLS
 
-By default, Valet serves sites over plain HTTP. However, if you would like to serve a site over encrypted TLS using HTTP/2, you may use the `secure` command. For example, if your site is being served by Valet on the `laravel.test` domain, you should run the following command to secure it:
+By default, Valet serves sites over HTTP. However, if you would like to serve a site over encrypted TLS using HTTP/2, you may use the `secure` command. For example, if your site is being served by Valet on the `laravel.test` domain, you should run the following command to secure it:
 
     valet secure laravel
 
