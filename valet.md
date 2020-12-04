@@ -97,7 +97,7 @@ Valet allows you to switch PHP versions using the `valet use php@version` comman
 <a name="database"></a>
 #### Database
 
-If your application needs a database, check out [DBngin](https://dbngin.com). DBngin provides a free, all-on-one database management tool that includes MySQL, PostgreSQL, and Redis. After DBngin has been installed, you can connect to your database at `127.0.0.1` using the `root` username and an empty string for the password.
+If your application needs a database, check out [DBngin](https://dbngin.com). DBngin provides a free, all-in-one database management tool that includes MySQL, PostgreSQL, and Redis. After DBngin has been installed, you can connect to your database at `127.0.0.1` using the `root` username and an empty string for the password.
 
 <a name="resetting-your-installation"></a>
 #### Resetting Your Installation
