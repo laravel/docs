@@ -16,6 +16,7 @@
     - [Running Tests](#running-tests)
     - [Previewing Emails](#previewing-emails)
     - [Container CLI](#sail-container-cli)
+    - [PHP Versions](#sail-php-versions)
     - [Customization](#sail-customization)
 - [Next Steps](#next-steps)
     - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
@@ -315,6 +316,31 @@ To start a new [Laravel Tinker](https://github.com/laravel/tinker) session, you 
 ```bash
 ./sail tinker
 ```
+
+<a name="sail-php-versions"></a>
+### PHP Versions
+
+Sail currently supports serving your application via PHP 8.0 or PHP 7.4. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
+
+```yaml
+# PHP 8.0
+context: ./vendor/laravel/sail/runtimes/8.0
+
+# PHP 7.4
+context: ./vendor/laravel/sail/runtimes/7.4
+```
+
+In addition, you may wish to update your `image` name to reflect the version of PHP being used by your application. Like the `context` option, this option is also defined in your application's `docker-compose.yml` file:
+
+```yaml
+image: sail-8.0/app
+```
+
+After updating your application's `docker-compose.yml` file, you should rebuild your container images:
+
+    ./sail build --no-cache
+
+    ./sail up
 
 <a name="sail-customization"></a>
 ### Sail Customization
