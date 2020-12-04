@@ -40,6 +40,11 @@ To enable foreign key constraints for SQLite connections, you should set the `DB
 
     DB_FOREIGN_KEYS=true
 
+<a name="mssql-configuration"></a>
+#### Microsoft SQL Server Configuration
+
+To use a Microsoft SQL Server database, you should ensure that you have the `sqlsrv` and `pdo_sqlsrv` PHP extensions installed as well as any dependencies they may require such as the Microsoft SQL ODBC driver.
+
 <a name="configuration-using-urls"></a>
 #### Configuration Using URLs
 
