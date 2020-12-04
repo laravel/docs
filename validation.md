@@ -814,7 +814,7 @@ When working with arrays, the field under validation must not have any duplicate
 
     'foo.*.id' => 'distinct'
     
-You can use `ignore_case`
+You can use ignore_case to check case insensitively.
     
     'foo.*.id' => 'distinct:ignore_case'
 
