@@ -19,6 +19,13 @@ Anytime you define an HTML form in your application, you should include a hidden
         ...
     </form>
 
+This would generate HTML that looked something like this:
+
+    <form method="POST" action="/profile">
+        <input type="hidden" name="_token" value="AlYuGT1qsC9hjxnwcXBVKn9LpCQUZxDItzzv0mkN">
+        ...
+    </form>
+
 The `VerifyCsrfToken` [middleware](/docs/{{version}}/middleware), which is included in the `web` middleware group, will automatically verify that the token in the request input matches the token stored in the session.
 
 <a name="csrf-tokens-javascript"></a>
