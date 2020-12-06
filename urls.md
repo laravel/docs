@@ -149,6 +149,8 @@ If the controller method accepts route parameters, you may pass them as the seco
 
     $url = action([UserController::class, 'profile'], ['id' => 1]);
 
+> {note} Routes need to be registered for the `action` to generate the URL.
+
 <a name="default-values"></a>
 ## Default Values
 
