@@ -8,7 +8,7 @@
     - [Executing PHP Commands](#executing-php-commands)
     - [Executing Composer Commands](#executing-composer-commands)
     - [Executing Artisan Commands](#executing-artisan-commands)
-    - [Executing Node/ NPM Commands](#executing-node-npm-commands)
+    - [Executing Node / NPM Commands](#executing-node-npm-commands)
 - [Interacting With Databases](#interacting-with-sail-databases)
     - [MySQL](#mysql)
     - [Redis](#redis)
