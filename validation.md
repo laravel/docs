@@ -913,7 +913,7 @@ The field under validation must be greater than or equal to the given _field_. T
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpeg, png, bmp, gif, svg, or webp)
+The file under validation must be an image (jpg, jpeg, png, bmp, gif, svg, or webp)
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
@@ -993,7 +993,7 @@ The file under validation must have a MIME type corresponding to one of the list
 <a name="basic-usage-of-mime-rule"></a>
 #### Basic Usage Of MIME Rule
 
-    'photo' => 'mimes:jpeg,bmp,png'
+    'photo' => 'mimes:jpg,bmp,png'
 
 Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
 
