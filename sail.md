@@ -1,7 +1,8 @@
 # Laravel Sail
 
 - [Introduction](#introduction)
-- [Configuration](#introduction)
+- [Installation & Setup](#installation)
+    - [Configuring A Bash Alias](#configuring-a-bash-alias)
 - [Starting & Stopping](#starting-and-stopping-sail)
 - [Executing Commands](#executing-sail-commands)
     - [Executing PHP Commands](#executing-php-commands)
@@ -25,18 +26,27 @@ Laravel Sail is a light-weight command-line interface for interacting with Larav
 
 At its heart, Sail is the `docker-compose.yml` file and the `sail` script that is stored at the root of your project. The `sail` script provides a CLI with convenient methods for interacting with the Docker containers defined by the `docker-compose.yml` file.
 
-<a name="configuration"></a>
-## Configuration
+<a name="installation"></a>
+## Installation & Setup
 
-#### Configuring A Bash Alias
+Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation).
 
-Instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a Bash alias that allows you to execute Sail's commands more easily:
+<a name="configuring-a-bash-alias"></a>
+### Configuring A Bash Alias
+
+By default, Sail commands are invoked using the `vendor/bin/sail` script that is included with all new Laravel applications:
+
+```bash
+./vendor/bin/sail up
+```
+
+However, instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a Bash alias that allows you to execute Sail's commands more easily:
 
 ```bash
 alias sail='bash vendor/bin/sail'
 ```
 
-Once the Bash alias has been configured, you may execute Sail commands by simply typing `sail`
+Once the Bash alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:
 
 ```bash
 sail up
@@ -45,7 +55,7 @@ sail up
 <a name="starting-and-stopping-sail"></a>
 ## Starting & Stopping
 
-To start all of the Docker containers defined in your application's `docker-compose.yml` file, you should run the `up` command:
+To start all of the Docker containers defined in your application's `docker-compose.yml` file, you should execute the `up` command:
 
 ```bash
 sail up
@@ -94,7 +104,7 @@ sail php --version
 
 Composer commands may be executed using the `composer` command. Laravel Sail's application container includes a Composer 2.x installation:
 
-```bash
+```nothing
 sail composer require laravel/sanctum
 ```
 
@@ -112,7 +122,7 @@ sail artisan queue:work
 
 Node commands may be executed using the `npm` command while NPM commands may be executed using the `npm` command:
 
-```bash
+```nothing
 sail node --version
 
 sail npm run prod
@@ -183,7 +193,7 @@ When Sail is running, you may access the MailHog web interface at: `http://local
 
 Sometimes you may wish to start a Bash session within your application's container. You may use the `ssh` command to connect to your application's container, allowing you to inspect its file and installed services:
 
-```bash
+```nothing
 sail ssh
 ```
 

@@ -45,7 +45,7 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 <a name="your-first-laravel-project"></a>
 ## Your First Laravel Project
 
-We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your own computer. While you may wish to explore these options at a later time, Laravel provides [Sail](https://github.com/laravel/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
+We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your own computer. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
 
 Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local computer's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your personal computer. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
@@ -58,7 +58,7 @@ Laravel Sail is a light-weight command-line interface for interacting with Larav
 
 If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
-```bash
+```nothing
 curl -s https://laravel.build/example-app | bash
 ```
 
@@ -66,7 +66,7 @@ Of course, you can change `example-app` in this URL to anything you like. The La
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
-```bash
+```nothing
 cd example-app
 
 ./vendor/bin/sail up
@@ -87,7 +87,7 @@ Before we create a new Laravel application on your Windows machine, make sure to
 
 Next, you are ready to create your first Laravel project. Launch [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) and begin a new terminal session for your WSL2 Linux operating system. Next, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
-```bash
+```nothing
 curl -s https://laravel.build/example-app | bash
 ```
 
@@ -95,7 +95,7 @@ Of course, you can change `example-app` in this URL to anything you like. The La
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
-```bash
+```nothing
 cd example-app
 
 ./vendor/bin/sail up
@@ -118,7 +118,7 @@ Once these tools are installed, you may open any Laravel project by executing th
 
 If you're developing on Linux and [Docker](https://www.docker.com) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
-```bash
+```nothing
 curl -s https://laravel.build/example-app | bash
 ```
 
@@ -126,7 +126,7 @@ Of course, you can change `example-app` in this URL to anything you like. The La
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
-```bash
+```nothing
 cd example-app
 
 ./vendor/bin/sail up
@@ -154,11 +154,13 @@ If your computer already has PHP and Composer installed, you may create a new La
 
 Or, you may install the Laravel Installer as a global Composer dependency:
 
-    composer global require laravel/installer
+```nothing
+composer global require laravel/installer
 
-    laravel new example-app
+laravel new example-app
 
-    php artisan serve
+php artisan serve
+```
 
 Make sure to place Composer's system-wide vendor bin directory in your `$PATH` so the `laravel` executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
 
