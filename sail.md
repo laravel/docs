@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Installation & Setup](#installation)
     - [Configuring A Bash Alias](#configuring-a-bash-alias)
-- [Starting & Stopping](#starting-and-stopping-sail)
+- [Starting & Stopping Sail](#starting-and-stopping-sail)
 - [Executing Commands](#executing-sail-commands)
     - [Executing PHP Commands](#executing-php-commands)
     - [Executing Composer Commands](#executing-composer-commands)
@@ -22,14 +22,14 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
+Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience. Laravel Sail is supported on macOS, Linux, and Windows (via WSL2).
 
 At its heart, Sail is the `docker-compose.yml` file and the `sail` script that is stored at the root of your project. The `sail` script provides a CLI with convenient methods for interacting with the Docker containers defined by the `docker-compose.yml` file.
 
 <a name="installation"></a>
 ## Installation & Setup
 
-Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation).
+Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation) for your operating system.
 
 <a name="configuring-a-bash-alias"></a>
 ### Configuring A Bash Alias
@@ -53,7 +53,9 @@ sail up
 ```
 
 <a name="starting-and-stopping-sail"></a>
-## Starting & Stopping
+## Starting & Stopping Sail
+
+Laravel Sail's `docker-compose.yml` file defines a Docker variety of containers that work together to help you build Laravel applications. Each of these containers is an entry within the `services` configuration of your `docker-compose.yml` file. The `laravel.test` container is the primary application container that will be serving your application.
 
 To start all of the Docker containers defined in your application's `docker-compose.yml` file, you should execute the `up` command:
 
@@ -80,7 +82,7 @@ sail down
 
 When using Laravel Sail, your application is executing within a Docker container and is isolated from your local computer. However, Sail provides a convenient way to run various commands against your application such as arbitrary PHP commands, Artisan commands, Composer commands, and Node / NPM commands.
 
-**When reading the Laravel documentation, you will often see references to Artisan and Composer commands that do not reference Sail.** Those examples assume that PHP is installed on your local computer. If you are using Sail for your local Laravel development environment, you should execute those commands using Sail:
+**When reading the Laravel documentation, you will often see references to Composer, Artisan, and Node / NPM commands that do not reference Sail.** Those examples assume that these tools are installed on your local computer. If you are using Sail for your local Laravel development environment, you should execute those commands using Sail:
 
 ```bash
 # Running Artisan commands locally...
@@ -97,6 +99,8 @@ PHP commands may be executed using the `php` command. Of course, these commands 
 
 ```bash
 sail php --version
+
+sail php script.php
 ```
 
 <a name="executing-composer-commands"></a>
@@ -184,14 +188,18 @@ Finally, you may run your Dusk test suite by starting Sail and running the `dusk
 <a name="previewing-emails"></a>
 ## Previewing Emails
 
-Laravel Sail's default `docker-compose.yml` file contains a service entry for [MailHog](https://github.com/mailhog/MailHog). MailHog intercepts emails sent by your application during local development and provides a convenient web interface so that you can preview your email messages in your browser.
+Laravel Sail's default `docker-compose.yml` file contains a service entry for [MailHog](https://github.com/mailhog/MailHog). MailHog intercepts emails sent by your application during local development and provides a convenient web interface so that you can preview your email messages in your browser. MailHog's default SMTP port is `1025`:
 
-When Sail is running, you may access the MailHog web interface at: `http://localhost:8025`. MailHog's default SMTP port is `1025`.
+```bash
+MAIL_PORT=1025
+```
+
+When Sail is running, you may access the MailHog web interface at: http://localhost:8025
 
 <a name="sail-container-cli"></a>
 ## Container CLI
 
-Sometimes you may wish to start a Bash session within your application's container. You may use the `ssh` command to connect to your application's container, allowing you to inspect its file and installed services:
+Sometimes you may wish to start a Bash session within your application's container. You may use the `ssh` command to connect to your application's container, allowing you to inspect its files and installed services as well execute arbitrary shell commands within the container:
 
 ```nothing
 sail ssh
@@ -216,7 +224,7 @@ context: ./vendor/laravel/sail/runtimes/8.0
 context: ./vendor/laravel/sail/runtimes/7.4
 ```
 
-In addition, you may wish to update your `image` name to reflect the version of PHP being used by your application. Like the `context` option, this option is also defined in your application's `docker-compose.yml` file:
+In addition, you may wish to update your `image` name to reflect the version of PHP being used by your application. This option is also defined in your application's `docker-compose.yml` file:
 
 ```yaml
 image: sail-8.0/app
@@ -231,7 +239,7 @@ After updating your application's `docker-compose.yml` file, you should rebuild 
 <a name="sail-customization"></a>
 ## Sail Customization
 
-Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` Artisan command and publish the resources exported by the `Laravel\Sail\SailServiceProvider` service provider:
+Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` command:
 
 ```bash
 sail artisan sail:publish
