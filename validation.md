@@ -853,9 +853,9 @@ Since this rule requires several arguments, you may use the `Rule::dimensions` m
 When validating arrays, the field under validation must not have any duplicate values:
 
     'foo.*.id' => 'distinct'
-    
+
 You may add `ignore_case` to the validation rule's arguments to make the rule ignore capitalization differences:
-    
+
     'foo.*.id' => 'distinct:ignore_case'
 
 <a name="rule-email"></a>
@@ -958,7 +958,7 @@ The field under validation must be greater than or equal to the given _field_. T
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpeg, png, bmp, gif, svg, or webp).
+The file under validation must be an image (jpg, jpeg, png, bmp, gif, svg, or webp).
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
@@ -1039,7 +1039,7 @@ The file under validation must have a MIME type corresponding to one of the list
 <a name="basic-usage-of-mime-rule"></a>
 #### Basic Usage Of MIME Rule
 
-    'photo' => 'mimes:jpeg,bmp,png'
+    'photo' => 'mimes:jpg,bmp,png'
 
 Even though you only need to specify the extensions, this rule actually validates the MIME type of the file by reading the file's contents and guessing its MIME type. A full listing of MIME types and their corresponding extensions may be found at the following location:
 

@@ -47,12 +47,12 @@ The session `driver` configuration option defines where session data will be sto
 When using the `database` session driver, you will need to create a table to contain the session records. An example `Schema` declaration for the table may be found below:
 
     Schema::create('sessions', function ($table) {
-        $table->string('id')->unique();
-        $table->foreignId('user_id')->nullable();
+        $table->string('id')->primary();
+        $table->foreignId('user_id')->nullable()->index();
         $table->string('ip_address', 45)->nullable();
         $table->text('user_agent')->nullable();
         $table->text('payload');
-        $table->integer('last_activity');
+        $table->integer('last_activity')->index();
     });
 
 You may use the `session:table` Artisan command to generate this migration. To learn more about database migrations, you may consult the complete [migration documentation](/docs/{{version}}/migrations):
