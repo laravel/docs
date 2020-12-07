@@ -46,6 +46,13 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
 If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
 
+<a name="pivot-migrations"></a>
+### Pivot Migrations
+
+For pivot migration we have both names of the tables. The order of the tables is alphabetical and in singular.
+
+	php artisan make:migration create_post_tag_table
+
 <a name="squashing-migrations"></a>
 ### Squashing Migrations
 
