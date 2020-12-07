@@ -79,7 +79,7 @@ After the project has been created, you can navigate to the application director
 ```bash
 cd example-app
 
-./sail up
+./vendor/bin/sail up
 ```
 
 The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
@@ -106,7 +106,7 @@ After the project has been created, you can navigate to the application director
 ```bash
 cd example-app
 
-./sail up
+./vendor/bin/sail up
 ```
 
 The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
@@ -135,7 +135,7 @@ After the project has been created, you can navigate to the application director
 ```bash
 cd example-app
 
-./sail up
+./vendor/bin/sail up
 ```
 
 The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
@@ -204,7 +204,7 @@ At its heart, Sail is the `docker-compose.yml` file and the `sail` script that i
 To start all of the Docker containers defined in your `docker-compose.yml` file, you may run the `up` command:
 
 ```bash
-./sail up
+./vendor/bin/sail up
 ```
 
 Once the application's containers have been started, you may access the project in your web browser at: http://localhost.
@@ -212,7 +212,21 @@ Once the application's containers have been started, you may access the project 
 To stop all of the containers, you may simply press Control + C to stop the container's execution. Or, if the containers are running in the background, you may use the `down` command:
 
 ```bash
-./sail down
+./vendor/bin/sail down
+```
+
+#### Configuring A Bash Alias
+
+Instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a Bash alias that allows you to execute Sail's commands more easily:
+
+```bash
+alias sail='bash vendor/bin/sail'
+```
+
+Once the Bash alias has been configured, you may execute Sail commands by simply typing `sail`
+
+```bash
+sail up
 ```
 
 <a name="executing-sail-commands"></a>
@@ -221,15 +235,15 @@ To stop all of the containers, you may simply press Control + C to stop the cont
 When using Laravel Sail, your application is executing within a Docker container and is isolated from your local computer. However, Sail provides a convenient way to run various commands against your application such as arbitrary PHP commands, Artisan commands, Composer commands, and NPM / Node commands:
 
 ```bash
-./sail php --version
+./vendor/bin/sail php --version
 
-./sail artisan queue:work
+./vendor/bin/sail artisan queue:work
 
-./sail composer require laravel/sanctum
+./vendor/bin/sail composer require laravel/sanctum
 
-./sail node --version
+./vendor/bin/sail node --version
 
-./sail npm run prod
+./vendor/bin/sail npm run prod
 ```
 
 **When reading the Laravel documentation, you will often see references to Artisan and Composer commands that do not reference Sail.** Those examples assume that PHP is installed on your local computer. If you are using Sail for your local Laravel development environment, you should execute those commands using Sail:
@@ -239,7 +253,7 @@ When using Laravel Sail, your application is executing within a Docker container
 php artisan queue:work
 
 # Running Artisan commands within Laravel Sail...
-./sail artisan queue:work
+./vendor/bin/sail artisan queue:work
 ```
 
 <a name="interacting-with-sail-databases"></a>
@@ -264,13 +278,13 @@ To connect to your application's Redis database from your local machine, you may
 
 Laravel provides amazing testing support out of the box, and you may use Sail's `test` command to run your applications [feature and unit tests](/docs/{{version}}/testing). Any CLI options that are accepted by PHPUnit may also be passed to the `test` command:
 
-    ./sail test
+    ./vendor/bin/sail test
 
-    ./sail test --group orders
+    ./vendor/bin/sail test --group orders
 
 The Sail `test` command is equivalent to running the `test` Artisan command:
 
-    ./sail artisan test
+    ./vendor/bin/sail artisan test
 
 <a name="laravel-dusk"></a>
 #### Laravel Dusk
@@ -293,7 +307,7 @@ Next, ensure that the `laravel.test` service in your application's `docker-compo
 
 Finally, you may run your Dusk test suite by starting Sail and running the `dusk` command:
 
-    ./sail dusk
+    ./vendor/bin/sail dusk
 
 <a name="previewing-emails"></a>
 ### Previewing Emails
@@ -308,13 +322,13 @@ When Sail is running, you may access the MailHog web interface at: `http://local
 Sometimes you may wish to start a Bash session within your application's container. You may use the `ssh` command to connect to your application's container, allowing you to inspect its file and installed services:
 
 ```bash
-./sail ssh
+./vendor/bin/sail ssh
 ```
 
 To start a new [Laravel Tinker](https://github.com/laravel/tinker) session, you may execute the `tinker` command:
 
 ```bash
-./sail tinker
+./vendor/bin/sail tinker
 ```
 
 <a name="sail-php-versions"></a>
@@ -338,9 +352,9 @@ image: sail-8.0/app
 
 After updating your application's `docker-compose.yml` file, you should rebuild your container images:
 
-    ./sail build --no-cache
+    ./vendor/bin/sail build --no-cache
 
-    ./sail up
+    ./vendor/bin/sail up
 
 <a name="sail-customization"></a>
 ### Sail Customization
@@ -348,13 +362,13 @@ After updating your application's `docker-compose.yml` file, you should rebuild 
 Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` Artisan command and publish the resources exported by the `Laravel\Sail\SailServiceProvider` service provider:
 
 ```bash
-./sail artisan sail:publish
+./vendor/bin/sail artisan sail:publish
 ```
 
 After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may rebuild your application's containers using the `build` command:
 
 ```bash
-./sail build --no-cache
+./vendor/bin/sail build --no-cache
 ```
 
 <a name="next-steps"></a>
