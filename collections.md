@@ -2943,6 +2943,37 @@ Almost all methods available on the `Collection` class are also available on the
 
 In addition to the methods defined in the `Enumerable` contract, the `LazyCollection` class contains the following methods:
 
+<a name="method-takeUntilTimeout"></a>
+#### `takeUntilTimeout()` {#collection-method}
+
+The `takeUntilTimeout` method returns a new lazy collection that will enumerate values until the specified time, and will then stop enumerating:
+
+    $lazyCollection = LazyCollection::times(INF)
+        ->takeUntilTimeout(now()->addMinute());
+
+    $lazyCollection->each(function ($number) {
+        dump($number);
+
+        sleep(1);
+    });
+
+    // 1
+    // 2
+    // ...
+    // 58
+    // 59
+
+This is especially useful for [Laravel Vapor](https://vapor.laravel.com/) apps, since AWS will kill any long-running processes after 15 minutes.
+
+Imagine a system that submits invoices from the DB, one by one. You could set up a schedule that runs every 15 minutes, and only processes invoices for a maximum of 14 minutes:
+
+    Invoice::pending()->cursor()
+        ->takeUntilTimeout(
+            Carbon::createFromTimestamp(LARAVEL_START)->add(14, 'minutes')
+        )
+        ->each(fn ($invoice) => $invoice->submit());
+
+
 <a name="method-tapEach"></a>
 #### `tapEach()` {#collection-method}
 
