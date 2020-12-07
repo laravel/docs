@@ -8,16 +8,6 @@
     - [Getting Started On Linux](#getting-started-on-linux)
     - [Installation Via Composer](#installation-via-composer)
 - [Initial Configuration](#initial-configuration)
-- [Laravel Sail](#laravel-sail)
-    - [Introduction](#laravel-sail-introduction)
-    - [Starting & Stopping](#starting-and-stopping-sail)
-    - [Executing Commands](#executing-sail-commands)
-    - [Interacting With Databases](#interacting-with-sail-databases)
-    - [Running Tests](#running-tests)
-    - [Previewing Emails](#previewing-emails)
-    - [Container CLI](#sail-container-cli)
-    - [PHP Versions](#sail-php-versions)
-    - [Customization](#sail-customization)
 - [Next Steps](#next-steps)
     - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
     - [Laravel The API Backend](#laravel-the-api-backend)
@@ -84,7 +74,9 @@ cd example-app
 
 The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
-Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost. To continue learning more about Laravel Sail, review its [complete documentation](#laravel-sail).
+Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+
+> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
 
 <a name="getting-started-on-windows"></a>
 ### Getting Started On Windows
@@ -111,7 +103,9 @@ cd example-app
 
 The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
-Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost. To continue learning more about Laravel Sail, review its [complete documentation](#laravel-sail).
+Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+
+> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
 
 #### Developing Within WSL2
 
@@ -140,7 +134,9 @@ cd example-app
 
 The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
 
-Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost. To continue learning more about Laravel Sail, review its [complete documentation](#laravel-sail).
+Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+
+> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
 
 <a name="installation-via-composer"></a>
 ### Installation Via Composer
@@ -187,189 +183,6 @@ Since many of Laravel's configuration option values may vary depending on whethe
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 
 > {tip} For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
-
-<a name="laravel-sail"></a>
-## Laravel Sail
-
-<a name="laravel-sail-introduction"></a>
-### Introduction
-
-Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
-
-At its heart, Sail is the `docker-compose.yml` file and the `sail` script that is stored at the root of your project. The `sail` script provides a CLI with convenient methods for interacting with the Docker containers defined by the `docker-compose.yml` file.
-
-<a name="starting-and-stopping-sail"></a>
-### Starting & Stopping
-
-To start all of the Docker containers defined in your `docker-compose.yml` file, you may run the `up` command:
-
-```bash
-./vendor/bin/sail up
-```
-
-Once the application's containers have been started, you may access the project in your web browser at: http://localhost.
-
-To stop all of the containers, you may simply press Control + C to stop the container's execution. Or, if the containers are running in the background, you may use the `down` command:
-
-```bash
-./vendor/bin/sail down
-```
-
-#### Configuring A Bash Alias
-
-Instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a Bash alias that allows you to execute Sail's commands more easily:
-
-```bash
-alias sail='bash vendor/bin/sail'
-```
-
-Once the Bash alias has been configured, you may execute Sail commands by simply typing `sail`
-
-```bash
-sail up
-```
-
-<a name="executing-sail-commands"></a>
-### Executing Commands
-
-When using Laravel Sail, your application is executing within a Docker container and is isolated from your local computer. However, Sail provides a convenient way to run various commands against your application such as arbitrary PHP commands, Artisan commands, Composer commands, and NPM / Node commands:
-
-```bash
-./vendor/bin/sail php --version
-
-./vendor/bin/sail artisan queue:work
-
-./vendor/bin/sail composer require laravel/sanctum
-
-./vendor/bin/sail node --version
-
-./vendor/bin/sail npm run prod
-```
-
-**When reading the Laravel documentation, you will often see references to Artisan and Composer commands that do not reference Sail.** Those examples assume that PHP is installed on your local computer. If you are using Sail for your local Laravel development environment, you should execute those commands using Sail:
-
-```bash
-# Running Artisan commands locally...
-php artisan queue:work
-
-# Running Artisan commands within Laravel Sail...
-./vendor/bin/sail artisan queue:work
-```
-
-<a name="interacting-with-sail-databases"></a>
-### Interacting With Databases
-
-<a name="interacting-with-sail-databases-mysql"></a>
-#### MySQL
-
-As you may have noticed, your application's `docker-compose.yml` file contains an entry for a MySQL container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your database is persisted even when stopping and restarting your containers. Once you have started your containers, you may connect to the MySQL instance within your application by setting your `DB_HOST` environment variable within your application's `.env` file to `mysql`.
-
-To connect to your application's MySQL database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the MySQL database is accessible at `localhost` port 3306.
-
-<a name="interacting-with-sail-databases-redis"></a>
-#### Redis
-
-Your application's `docker-compose.yml` file also contains an entry for a [Redis](https://redis.io) container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your Redis data is persisted even when stopping and restarting your containers. Once you have started your containers, you may connect to the Redis instance within your application by setting your `REDIS_HOST` environment variable within your application's `.env` file to `redis`.
-
-To connect to your application's Redis database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the Redis database is accessible at `localhost` port 6379.
-
-<a name="running-tests"></a>
-### Running Tests
-
-Laravel provides amazing testing support out of the box, and you may use Sail's `test` command to run your applications [feature and unit tests](/docs/{{version}}/testing). Any CLI options that are accepted by PHPUnit may also be passed to the `test` command:
-
-    ./vendor/bin/sail test
-
-    ./vendor/bin/sail test --group orders
-
-The Sail `test` command is equivalent to running the `test` Artisan command:
-
-    ./vendor/bin/sail artisan test
-
-<a name="laravel-dusk"></a>
-#### Laravel Dusk
-
-[Laravel Dusk](/docs/{{version}}/dusk) provides an expressive, easy-to-use browser automation and testing API. Thanks to Sail, you may run these tests without ever installing Selenium or other tools on your local computer. To get started, uncomment the Selenium service in your application's `docker-compose.yml` file:
-
-    selenium:
-        image: 'selenium/standalone-chrome'
-        volumes:
-            - '/dev/shm:/dev/shm'
-        networks:
-            - sail
-
-Next, ensure that the `laravel.test` service in your application's `docker-compose.yml` file has a `depends_on` entry for `selenium`:
-
-        depends_on:
-            - mysql
-            - redis
-            - selenium
-
-Finally, you may run your Dusk test suite by starting Sail and running the `dusk` command:
-
-    ./vendor/bin/sail dusk
-
-<a name="previewing-emails"></a>
-### Previewing Emails
-
-Laravel Sail's default `docker-compose.yml` file contains a service entry for [MailHog](https://github.com/mailhog/MailHog). MailHog intercepts emails sent by your application during local development and provides a convenient web interface so that you can preview your email messages in your browser.
-
-When Sail is running, you may access the MailHog web interface at: `http://localhost:8025`. MailHog's default SMTP port is `1025`.
-
-<a name="sail-container-cli"></a>
-### Container CLI
-
-Sometimes you may wish to start a Bash session within your application's container. You may use the `ssh` command to connect to your application's container, allowing you to inspect its file and installed services:
-
-```bash
-./vendor/bin/sail ssh
-```
-
-To start a new [Laravel Tinker](https://github.com/laravel/tinker) session, you may execute the `tinker` command:
-
-```bash
-./vendor/bin/sail tinker
-```
-
-<a name="sail-php-versions"></a>
-### PHP Versions
-
-Sail currently supports serving your application via PHP 8.0 or PHP 7.4. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
-
-```yaml
-# PHP 8.0
-context: ./vendor/laravel/sail/runtimes/8.0
-
-# PHP 7.4
-context: ./vendor/laravel/sail/runtimes/7.4
-```
-
-In addition, you may wish to update your `image` name to reflect the version of PHP being used by your application. Like the `context` option, this option is also defined in your application's `docker-compose.yml` file:
-
-```yaml
-image: sail-8.0/app
-```
-
-After updating your application's `docker-compose.yml` file, you should rebuild your container images:
-
-    ./vendor/bin/sail build --no-cache
-
-    ./vendor/bin/sail up
-
-<a name="sail-customization"></a>
-### Sail Customization
-
-Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` Artisan command and publish the resources exported by the `Laravel\Sail\SailServiceProvider` service provider:
-
-```bash
-./vendor/bin/sail artisan sail:publish
-```
-
-After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may rebuild your application's containers using the `build` command:
-
-```bash
-./vendor/bin/sail build --no-cache
-```
 
 <a name="next-steps"></a>
 ## Next Steps

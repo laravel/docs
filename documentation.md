@@ -81,6 +81,7 @@
     - [Horizon](/docs/{{version}}/horizon)
     - [Jetstream](https://jetstream.laravel.com)
     - [Passport](/docs/{{version}}/passport)
+    - [Sail](/docs/{{version}}/sail)
     - [Sanctum](/docs/{{version}}/sanctum)
     - [Scout](/docs/{{version}}/scout)
     - [Socialite](/docs/{{version}}/socialite)
