@@ -172,7 +172,7 @@ So, in our example, the user will be redirected to our controller's `create` met
     <h1>Create Post</h1>
 
     @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="bg-red-500 text-sm rounded shadow p-4 text-white">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
