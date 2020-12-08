@@ -351,6 +351,15 @@ Now that we have explored how to build "has many" relationships using factories,
                 ]))
                 ->create();
 
+If you already have a parent model instance that should be associated with the models you are creating, you may pass the model instance to the `for` method:
+
+    $user = User::factory()->create();
+
+    $posts = Post::factory()
+                ->count(3)
+                ->for($user)
+                ->create();
+
 <a name="belongs-to-relationships-using-magic-methods"></a>
 #### Using Magic Methods
 
@@ -401,6 +410,15 @@ You may provide a closure based state transformation if your state change requir
                         }),
                     ['active' => true]
                 )
+                ->create();
+
+If you already have model instances that you would like to attached to the models you are creating, you may pass the model instances to the `hasAttached` method. In this example, the same three roles will be attached to all three users:
+
+    $roles = Role::factory()->count(3)->create();
+
+    $users = User::factory()
+                ->count(3)
+                ->hasAttached($roles, ['active' => true])
                 ->create();
 
 <a name="many-to-many-relationships-using-magic-methods"></a>
