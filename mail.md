@@ -20,6 +20,7 @@
 - [Rendering Mailables](#rendering-mailables)
     - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
 - [Localizing Mailables](#localizing-mailables)
+- [Testing Mailables](#testing-mailables)
 - [Mail & Local Development](#mail-and-local-development)
 - [Events](#events)
 
@@ -694,6 +695,34 @@ Sometimes, applications store each user's preferred locale. By implementing the 
 Once you have implemented the interface, Laravel will automatically use the preferred locale when sending mailables and notifications to the model. Therefore, there is no need to call the `locale` method when using this interface:
 
     Mail::to($request->user())->send(new OrderShipped($order));
+
+<a name="testing-mailables"></a>
+## Testing Mailables
+
+Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInText`, and `assertDontSeeInText`.
+
+As you might expect, the "HTML" assertions assert that the HTML version of your mailable contains a given string, while the "text" assertions assert that the plain-text version of your mailable contains a given string:
+
+    use App\Mail\InvoicePaid;
+    use App\Models\User;
+
+    public function test_mailable_content()
+    {
+        $user = User::factory()->create();
+
+        $mailable = new InvoicePaid($user);
+
+        $mailable->assertSeeInHtml($user->email);
+        $mailable->assertSeeInHtml('Invoice Paid');
+
+        $mailable->assertSeeInText($user->email);
+        $mailable->assertSeeInText('Invoice Paid');
+    }
+
+<a name="testing-mailable-sending"></a>
+#### Testing Mailable Sending
+
+We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. To learn how to test that mailables were sent, check out our documentation on the [Mail fake](/docs/{{version}}/mocking#mail-fake).
 
 <a name="mail-and-local-development"></a>
 ## Mail & Local Development
