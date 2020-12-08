@@ -126,7 +126,7 @@ sail artisan queue:work
 <a name="executing-node-npm-commands"></a>
 ### Executing Node / NPM Commands
 
-Node commands may be executed using the `npm` command while NPM commands may be executed using the `npm` command:
+Node commands may be executed using the `node` command while NPM commands may be executed using the `npm` command:
 
 ```nothing
 sail node --version
