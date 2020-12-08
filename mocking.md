@@ -4,6 +4,7 @@
 - [Mocking Objects](#mocking-objects)
 - [Mocking Facades](#mocking-facades)
 - [Bus Fake](#bus-fake)
+    - [Job Chains](#bus-job-chains)
     - [Job Batches](#job-batches)
 - [Event Fake](#event-fake)
     - [Scoped Event Fakes](#scoped-event-fakes)
@@ -158,6 +159,30 @@ You may pass a closure to the `assertDispatched` or `assertNotDispatched` method
     Bus::assertDispatched(function (ShipOrder $job) use ($order) {
         return $job->order->id === $order->id;
     });
+
+<a name="bus-job-chains"></a>
+### Job Chains
+
+The `Bus` facade's `assertChained` method may be used to assert that a [chain of jobs](/docs/{{version}}/queues#job-chaining) was dispatched. The `assertChained` method accepts an array of chained jobs as its first argument:
+
+    use App\Jobs\RecordShipment;
+    use App\Jobs\ShipOrder;
+    use App\Jobs\UpdateInventory;
+    use Illuminate\Support\Facades\Bus;
+
+    Bus::assertChained([
+        ShipOrder::class,
+        RecordShipment::class,
+        UpdateInventory::class
+    ]);
+
+As you can see in the example above, the array of chained jobs may be an array of the job's class names. However, you may also provide an array of actual job instances. When doing so, Laravel will ensure that the job instances are of the same class and have the same property values of the chained jobs dispatched by your application:
+
+    Bus::assertChained([
+        new ShipOrder,
+        new RecordShipment,
+        new UpdateInventory,
+    ]);
 
 <a name="job-batches"></a>
 ### Job Batches
@@ -461,6 +486,11 @@ You may pass a closure to the `assertPushed` or `assertNotPushed` methods in ord
 ### Job Chains
 
 The `Queue` facade's `assertPushedWithChain` and `assertPushedWithoutChain` methods may be used to inspect the job chain of a pushed job. The `assertPushedWithChain` method accepts the primary job as its first argument and an array of chained jobs as its second argument:
+
+    use App\Jobs\RecordShipment;
+    use App\Jobs\ShipOrder;
+    use App\Jobs\UpdateInventory;
+    use Illuminate\Support\Facades\Queue;
 
     Queue::assertPushedWithChain(ShipOrder::class, [
         RecordShipment::class,
