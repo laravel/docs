@@ -203,10 +203,10 @@ When Sail is running, you may access the MailHog web interface at: http://localh
 <a name="sail-container-cli"></a>
 ## Container CLI
 
-Sometimes you may wish to start a Bash session within your application's container. You may use the `ssh` command to connect to your application's container, allowing you to inspect its files and installed services as well execute arbitrary shell commands within the container:
+Sometimes you may wish to start a Bash session within your application's container. You may use the `shell` command to connect to your application's container, allowing you to inspect its files and installed services as well execute arbitrary shell commands within the container:
 
 ```nothing
-sail ssh
+sail shell
 ```
 
 To start a new [Laravel Tinker](https://github.com/laravel/tinker) session, you may execute the `tinker` command:
