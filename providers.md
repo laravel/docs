@@ -14,9 +14,11 @@ Service providers are the central place of all Laravel application bootstrapping
 
 But, what do we mean by "bootstrapped"? In general, we mean **registering** things, including registering service container bindings, event listeners, middleware, and even routes. Service providers are the central place to configure your application.
 
-If you open the `config/app.php` file included with Laravel, you will see a `providers` array. These are all of the service provider classes that will be loaded for your application. Note that many of these are "deferred" providers, meaning they will not be loaded on every request, but only when the services they provide are actually needed.
+If you open the `config/app.php` file included with Laravel, you will see a `providers` array. These are all of the service provider classes that will be loaded for your application. By default, a set of Laravel core service providers are listed in this array. These providers bootstrap the core Laravel components, such as the mailer, queue, cache, and others. Many of these providers are "deferred" providers, meaning they will not be loaded on every request, but only when the services they provide are actually needed.
 
 In this overview you will learn how to write your own service providers and register them with your Laravel application.
+
+> {tip} If you would like to learn more about how Laravel handles requests and works internally, check out our documentation on the Laravel [request lifecycle](/docs/{{version}}/lifecycle).
 
 <a name="writing-service-providers"></a>
 ## Writing Service Providers
@@ -38,8 +40,8 @@ Let's take a look at a basic service provider. Within any of your service provid
 
     namespace App\Providers;
 
+    use App\Services\Riak\Connection;
     use Illuminate\Support\ServiceProvider;
-    use Riak\Connection;
 
     class RiakServiceProvider extends ServiceProvider
     {
@@ -56,7 +58,7 @@ Let's take a look at a basic service provider. Within any of your service provid
         }
     }
 
-This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Connection` in the service container. If you don't understand how the service container works, check out [its documentation](/docs/{{version}}/container).
+This service provider only defines a `register` method, and uses that method to define an implementation of `App\Services\Riak\Connection` in the service container. If you you're not yet familiar with Laravel's service container, check out [its documentation](/docs/{{version}}/container).
 
 <a name="the-bindings-and-singletons-properties"></a>
 #### The `bindings` And `singletons` Properties
@@ -105,6 +107,7 @@ So, what if we need to register a [view composer](/docs/{{version}}/views#view-c
 
     namespace App\Providers;
 
+    use Illuminate\Support\Facades\View;
     use Illuminate\Support\ServiceProvider;
 
     class ComposerServiceProvider extends ServiceProvider
@@ -116,7 +119,7 @@ So, what if we need to register a [view composer](/docs/{{version}}/views#view-c
          */
         public function boot()
         {
-            view()->composer('view', function () {
+            View::composer('view', function () {
                 //
             });
         }
@@ -129,9 +132,15 @@ You may type-hint dependencies for your service provider's `boot` method. The [s
 
     use Illuminate\Contracts\Routing\ResponseFactory;
 
+    /**
+     * Bootstrap any application services.
+     *
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory
+     * @return void
+     */
     public function boot(ResponseFactory $response)
     {
-        $response->macro('caps', function ($value) {
+        $response->macro('serialized', function ($value) {
             //
         });
     }
@@ -162,9 +171,9 @@ To defer the loading of a provider, implement the `\Illuminate\Contracts\Support
 
     namespace App\Providers;
 
+    use App\Services\Riak\Connection;
     use Illuminate\Contracts\Support\DeferrableProvider;
     use Illuminate\Support\ServiceProvider;
-    use Riak\Connection;
 
     class RiakServiceProvider extends ServiceProvider implements DeferrableProvider
     {

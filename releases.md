@@ -176,7 +176,7 @@ _Rate limiting improvements were contributed by [Taylor Otwell](https://github.c
 
 Laravel's request rate limiter feature has been augmented with more flexibility and power, while still maintaining backwards compatibility with previous release's `throttle` middleware API.
 
-Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a Closure that returns the limit configuration that should apply to routes that are assigned this rate limiter:
+Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned this rate limiter:
 
     use Illuminate\Cache\RateLimiting\Limit;
     use Illuminate\Support\Facades\RateLimiter;
@@ -246,7 +246,7 @@ For this reason, Laravel now allows you to pre-render a maintenance mode view th
 
 _Catch improvements were contributed by [Mohamed Said](https://github.com/themsaid)_.
 
-Using the new `catch` method, you may now provide a Closure that should be executed if a queued Closure fails to complete successfully after exhausting all of your queue's configured retry attempts:
+Using the new `catch` method, you may now provide a closure that should be executed if a queued closure fails to complete successfully after exhausting all of your queue's configured retry attempts:
 
     use Throwable;
 
@@ -272,7 +272,7 @@ To learn more about Blade components, please consult the [Blade documentation](/
 
 _Event listener improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-Closure based event listeners may now be registered by only passing the Closure to the `Event::listen` method. Laravel will inspect the Closure to determine which type of event the listener handles:
+Closure based event listeners may now be registered by only passing the closure to the `Event::listen` method. Laravel will inspect the closure to determine which type of event the listener handles:
 
     use App\Events\PodcastProcessed;
     use Illuminate\Support\Facades\Event;
@@ -281,7 +281,7 @@ Closure based event listeners may now be registered by only passing the Closure 
         //
     });
 
-In addition, Closure based event listeners may now be marked as queueable using the `Illuminate\Events\queueable` function:
+In addition, closure based event listeners may now be marked as queueable using the `Illuminate\Events\queueable` function:
 
     use App\Events\PodcastProcessed;
     use function Illuminate\Events\queueable;
@@ -297,7 +297,7 @@ Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods
         //
     })->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
 
-If you would like to handle anonymous queued listener failures, you may provide a Closure to the `catch` method while defining the `queueable` listener:
+If you would like to handle anonymous queued listener failures, you may provide a closure to the `catch` method while defining the `queueable` listener:
 
     use App\Events\PodcastProcessed;
     use function Illuminate\Events\queueable;

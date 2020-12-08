@@ -1,5 +1,6 @@
 # Cache
 
+- [Introduction](#introduction)
 - [Configuration](#configuration)
     - [Driver Prerequisites](#driver-prerequisites)
 - [Cache Usage](#cache-usage)
@@ -21,12 +22,19 @@
     - [Registering The Driver](#registering-the-driver)
 - [Events](#events)
 
+<a name="introduction"></a>
+## Introduction
+
+Some of the data retrieval or processing tasks performed by your application could be CPU intensive or take several seconds to complete. When this is the case, it is common to cache the retrieved data for a time so it can retrieved quickly on subsequent requests for the same data. The cached data is usually stored in a very fast data store such as [Memcached](https://memcached.org) or [Redis](https://redis.io).
+
+Thankfully, Laravel provides an expressive, unified API for various cache backends, allowing you to take advantage of their blazing fast data retrieval and speed up your web application.
+
 <a name="configuration"></a>
 ## Configuration
 
-Laravel provides an expressive, unified API for various caching backends. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like to be used by default throughout your application. Laravel supports popular caching backends like [Memcached](https://memcached.org), [Redis](https://redis.io), and [DynamoDB](https://aws.amazon.com/dynamodb) out of the box. Laravel also supports an APC, Array, Database, File, and `null` cache driver.
+Your application's cache configuration file is located at `config/cache.php`. In this file you may specify which cache driver you would like to be used by default throughout your application. Laravel supports popular caching backends like [Memcached](https://memcached.org), [Redis](https://redis.io), [DynamoDB](https://aws.amazon.com/dynamodb), and relational databases out of the box. In addition, a file based cache driver is available, while `array` and "null" cache drivers provide convenient cache backends for your automated tests.
 
-The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use a more robust driver such as Memcached or Redis. You may even configure multiple cache configurations for the same driver.
+The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects on the server's filesystem. For larger applications, it is recommended that you use a more robust driver such as Memcached or Redis. You may even configure multiple cache configurations for the same driver.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
@@ -47,17 +55,19 @@ When using the `database` cache driver, you will need to setup a table to contai
 <a name="memcached"></a>
 #### Memcached
 
-Using the Memcached driver requires the [Memcached PECL package](https://pecl.php.net/package/memcached) to be installed. You may list all of your Memcached servers in the `config/cache.php` configuration file:
+Using the Memcached driver requires the [Memcached PECL package](https://pecl.php.net/package/memcached) to be installed. You may list all of your Memcached servers in the `config/cache.php` configuration file. This file already contains a `memcached.servers` entry to get you started:
 
     'memcached' => [
-        [
-            'host' => '127.0.0.1',
-            'port' => 11211,
-            'weight' => 100
+        'servers' => [
+            [
+                'host' => env('MEMCACHED_HOST', '127.0.0.1'),
+                'port' => env('MEMCACHED_PORT', 11211),
+                'weight' => 100,
+            ],
         ],
     ],
 
-You may also set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
+If needed, you may set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
 
     'memcached' => [
         [
@@ -70,7 +80,7 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
 <a name="redis"></a>
 #### Redis
 
-Before using a Redis cache with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer.
+Before using a Redis cache with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~1.0) via Composer. [Laravel Sail](/docs/{{version}}/sail) already includes this extension. In addition, official Laravel deployment platforms such as [Laravel Forge](https://forge.laravel.com) and [Laravel Vapor](https://vapor.laravel.com) have the PhpRedis extension installed by default.
 
 For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
 
@@ -80,9 +90,7 @@ For more information on configuring Redis, consult its [Laravel documentation pa
 <a name="obtaining-a-cache-instance"></a>
 ### Obtaining A Cache Instance
 
-The `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
-
-However, you may also use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts:
+To obtain a cache store instance, you may use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts:
 
     <?php
 
@@ -117,13 +125,13 @@ Using the `Cache` facade, you may access various cache stores via the `store` me
 <a name="retrieving-items-from-the-cache"></a>
 ### Retrieving Items From The Cache
 
-The `get` method on the `Cache` facade is used to retrieve items from the cache. If the item does not exist in the cache, `null` will be returned. If you wish, you may pass a second argument to the `get` method specifying the default value you wish to be returned if the item doesn't exist:
+The `Cache` facade's `get` method is used to retrieve items from the cache. If the item does not exist in the cache, `null` will be returned. If you wish, you may pass a second argument to the `get` method specifying the default value you wish to be returned if the item doesn't exist:
 
     $value = Cache::get('key');
 
     $value = Cache::get('key', 'default');
 
-You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
+You may even pass a closure as the default value. The result of the closure will be returned if the specified item does not exist in the cache. Passing a closure allows you to defer the retrieval of default values from a database or other external service:
 
     $value = Cache::get('key', function () {
         return DB::table(...)->get();
@@ -132,7 +140,7 @@ You may even pass a `Closure` as the default value. The result of the `Closure` 
 <a name="checking-for-item-existence"></a>
 #### Checking For Item Existence
 
-The `has` method may be used to determine if an item exists in the cache. This method will return `false` if the value is `null`:
+The `has` method may be used to determine if an item exists in the cache. This method will also return `false` if the item exists but its value is `null`:
 
     if (Cache::has('key')) {
         //
@@ -157,9 +165,9 @@ Sometimes you may wish to retrieve an item from the cache, but also store a defa
         return DB::table('users')->get();
     });
 
-If the item does not exist in the cache, the `Closure` passed to the `remember` method will be executed and its result will be placed in the cache.
+If the item does not exist in the cache, the closure passed to the `remember` method will be executed and its result will be placed in the cache.
 
-You may use the `rememberForever` method to retrieve an item from the cache or store it forever:
+You may use the `rememberForever` method to retrieve an item from the cache or store it forever if it does not exist:
 
     $value = Cache::rememberForever('users', function () {
         return DB::table('users')->get();
@@ -177,20 +185,20 @@ If you need to retrieve an item from the cache and then delete the item, you may
 
 You may use the `put` method on the `Cache` facade to store items in the cache:
 
-    Cache::put('key', 'value', $seconds);
+    Cache::put('key', 'value', $seconds = 10);
 
 If the storage time is not passed to the `put` method, the item will be stored indefinitely:
 
     Cache::put('key', 'value');
 
-Instead of passing the number of seconds as an integer, you may also pass a `DateTime` instance representing the expiration time of the cached item:
+Instead of passing the number of seconds as an integer, you may also pass a `DateTime` instance representing the desired expiration time of the cached item:
 
     Cache::put('key', 'value', now()->addMinutes(10));
 
 <a name="store-if-not-present"></a>
 #### Store If Not Present
 
-The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
+The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`. The `add` method is an atomic operation:
 
     Cache::add('key', 'value', $seconds);
 
@@ -210,7 +218,7 @@ You may remove items from the cache using the `forget` method:
 
     Cache::forget('key');
 
-You may also remove items by providing a zero or negative TTL:
+You may also remove items by providing a zero or negative number of expiration seconds:
 
     Cache::put('key', 'value', 0);
 
@@ -220,12 +228,12 @@ You may clear the entire cache using the `flush` method:
 
     Cache::flush();
 
-> {note} Flushing the cache does not respect the cache prefix and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
+> {note} Flushing the cache does not respect your configured cache "prefix" and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
 
 <a name="the-cache-helper"></a>
 ### The Cache Helper
 
-In addition to using the `Cache` facade or [cache contract](/docs/{{version}}/contracts), you may also use the global `cache` function to retrieve and store data via the cache. When the `cache` function is called with a single, string argument, it will return the value of the given key:
+In addition to using the `Cache` facade, you may also use the global `cache` function to retrieve and store data via the cache. When the `cache` function is called with a single, string argument, it will return the value of the given key:
 
     $value = cache('key');
 
@@ -241,7 +249,7 @@ When the `cache` function is called without any arguments, it returns an instanc
         return DB::table('users')->get();
     });
 
-> {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing a facade](/docs/{{version}}/mocking#mocking-facades).
+> {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing the facade](/docs/{{version}}/mocking#mocking-facades).
 
 <a name="cache-tags"></a>
 ## Cache Tags
@@ -251,7 +259,7 @@ When the `cache` function is called without any arguments, it returns an instanc
 <a name="storing-tagged-cache-items"></a>
 ### Storing Tagged Cache Items
 
-Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
+Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` a value into the cache:
 
     Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
 
@@ -273,7 +281,7 @@ You may flush all items that are assigned a tag or list of tags. For example, th
 
     Cache::tags(['people', 'authors'])->flush();
 
-In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`:
+In contrast, this statement would remove only cached values tagged with `authors`, so `Anne` would be removed, but not `John`:
 
     Cache::tags('authors')->flush();
 
@@ -288,7 +296,7 @@ In contrast, this statement would remove only caches tagged with `authors`, so `
 <a name="atomic-locks-prerequisites-database"></a>
 #### Database
 
-When using the `database` cache driver, you will need to setup a table to contain the cache locks. You'll find an example `Schema` declaration for the table below:
+When using the `database` cache driver, you will need to setup a table to contain your application's cache locks. You'll find an example `Schema` declaration for the table below:
 
     Schema::create('cache_locks', function ($table) {
         $table->string('key')->primary();
@@ -311,7 +319,7 @@ Atomic locks allow for the manipulation of distributed locks without worrying ab
         $lock->release();
     }
 
-The `get` method also accepts a Closure. After the Closure is executed, Laravel will automatically release the lock:
+The `get` method also accepts a closure. After the closure is executed, Laravel will automatically release the lock:
 
     Cache::lock('foo')->get(function () {
         // Lock acquired indefinitely and automatically released...
@@ -333,6 +341,8 @@ If the lock is not available at the moment you request it, you may instruct Lara
         optional($lock)->release();
     }
 
+The example above may be simplified by passing a closure to the `block` method. When a closure is passed to this method, Laravel will attempt to acquire the lock for the specified number of seconds and will automatically release the lock once the closure has been executed:
+
     Cache::lock('foo', 10)->block(5, function () {
         // Lock acquired after waiting maximum of 5 seconds...
     });
@@ -340,23 +350,25 @@ If the lock is not available at the moment you request it, you may instruct Lara
 <a name="managing-locks-across-processes"></a>
 ### Managing Locks Across Processes
 
-Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token:
+Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token.
 
-    // Within Controller...
+In the example below, we will dispatch a queued job if a lock is successfully acquired. In addition, we will pass the lock's owner token to the queued job via the lock's `owner` method:
+
     $podcast = Podcast::find($id);
 
-    $lock = Cache::lock('foo', 120);
+    $lock = Cache::lock('processing', 120);
 
     if ($result = $lock->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 
-    // Within ProcessPodcast Job...
-    Cache::restoreLock('foo', $this->owner)->release();
+Within our application's `ProcessPodcast` job, we can restore and release the lock using the owner token:
+
+    Cache::restoreLock('processing', $this->owner)->release();
 
 If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:
 
-    Cache::lock('foo')->forceRelease();
+    Cache::lock('processing')->forceRelease();
 
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
@@ -364,7 +376,7 @@ If you would like to release a lock without respecting its current owner, you ma
 <a name="writing-the-driver"></a>
 ### Writing The Driver
 
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts). So, a MongoDB cache implementation would look something like this:
+To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts). So, a MongoDB cache implementation might look something like this:
 
     <?php
 
@@ -386,7 +398,7 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
         public function getPrefix() {}
     }
 
-We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\Cache\MemcachedStore` in the framework source code. Once our implementation is complete, we can finish our custom driver registration.
+We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\Cache\MemcachedStore` in the [Laravel framework source code](https://github.com/laravel/framework). Once our implementation is complete, we can finish our custom driver registration by calling the `Cache` facade's `extend` method:
 
     Cache::extend('mongo', function ($app) {
         return Cache::repository(new MongoStore);
@@ -397,7 +409,7 @@ We just need to implement each of these methods using a MongoDB connection. For 
 <a name="registering-the-driver"></a>
 ### Registering The Driver
 
-To register the custom cache driver with Laravel, we will use the `extend` method on the `Cache` facade. The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array:
+To register the custom cache driver with Laravel, we will use the `extend` method on the `Cache` facade. Since other service providers may attempt to read cached values within their `boot` method, we will register our custom driver within a `booting` callback. By using the `booting` callback, we can ensure that the custom driver is registered just before the `boot` method is called on our application's service providers but after the `register` method is called on all of the service providers. We will register our `booting` callback within the `register` method of our application's `App\Providers\AppServiceProvider` class:
 
     <?php
 
@@ -416,7 +428,11 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
          */
         public function register()
         {
-            //
+            $this->app->booting(function () {
+                 Cache::extend('mongo', function ($app) {
+                     return Cache::repository(new MongoStore);
+                 });
+             });
         }
 
         /**
@@ -426,20 +442,18 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
          */
         public function boot()
         {
-            Cache::extend('mongo', function ($app) {
-                return Cache::repository(new MongoStore);
-            });
+            //
         }
     }
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
+The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a closure that should return an `Illuminate\Cache\Repository` instance. The closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
 
 Once your extension is registered, update your `config/cache.php` configuration file's `driver` option to the name of your extension.
 
 <a name="events"></a>
 ## Events
 
-To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within your `EventServiceProvider`:
+To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within your application's `App\Providers\EventServiceProvider` class:
 
     /**
      * The event listener mappings for the application.
