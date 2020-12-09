@@ -61,7 +61,7 @@ Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies
 
     use App\Service;
 
-    $spy = $this->spy(Service::class;
+    $spy = $this->spy(Service::class);
 
     // ...
 
