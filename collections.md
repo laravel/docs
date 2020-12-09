@@ -2035,8 +2035,12 @@ When sorting a collection by multiple attributes, you may also provide closures 
     ]);
 
     $sorted = $collection->sortBy([
-        fn ($a, $b) => $a['name'] <=> $b['name'],
-        fn ($a, $b) => $b['age'] <=> $a['age'],
+        function ($a, $b) {
+            return $a['name'] <=> $b['name'];
+        },
+        function ($a, $b) {
+            return $b['age'] <=> $a['age'];
+        },
     ]);
 
     $sorted->values()->all();
