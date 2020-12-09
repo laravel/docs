@@ -5,7 +5,7 @@
     - [Accessing The Request](#accessing-the-request)
     - [Request Path & Method](#request-path-and-method)
     - [Request Headers](#request-headers)
-    - [Request IP Address](#request-ip)
+    - [Request IP Address](#request-ip-address)
     - [Content Negotiation](#content-negotiation)
     - [PSR-7 Requests](#psr7-requests)
 - [Input](#input)
