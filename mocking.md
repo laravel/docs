@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Mocking Objects](#mocking-objects)
 - [Mocking Facades](#mocking-facades)
+    - [Facade Spies](#facade-spies)
 - [Bus Fake](#bus-fake)
     - [Job Chains](#bus-job-chains)
     - [Job Batches](#job-batches)
@@ -57,7 +58,7 @@ You may use the `partialMock` method when you only need to mock a few methods of
         $mock->shouldReceive('process')->once();
     });
 
-Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method:
+Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:
 
     use App\Service;
 
@@ -70,7 +71,7 @@ Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies
 <a name="mocking-facades"></a>
 ## Mocking Facades
 
-Unlike traditional static method calls, [facades](/docs/{{version}}/facades) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability that you would have if you were using traditional dependency injection. When testing, you may often want to mock a call to a Laravel facade that occurs in one of your controllers. For example, consider the following controller action:
+Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (including [real-time facades](/docs/{{version}}/facades#real-time-facades)) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability that you would have if you were using traditional dependency injection. When testing, you may often want to mock a call to a Laravel facade that occurs in one of your controllers. For example, consider the following controller action:
 
     <?php
 
@@ -120,6 +121,24 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
     }
 
 > {note} You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
+
+<a name="facade-spies"></a>
+### Facade Spies
+
+If you would like to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on a facade, you may call the `spy` method on the corresponding facade. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:
+
+    use Illuminate\Support\Facades\Cache;
+
+    public function test_values_are_be_stored_in_cache()
+    {
+        Cache::spy();
+
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+
+        Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
+    }
 
 <a name="bus-fake"></a>
 ## Bus Fake
