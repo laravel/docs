@@ -17,6 +17,7 @@
 - [Previewing Emails](#previewing-emails)
 - [Container CLI](#sail-container-cli)
 - [PHP Versions](#sail-php-versions)
+- [Publicly Sharing Your Site](#publicly-sharing-your-site)
 - [Customization](#sail-customization)
 
 <a name="introduction"></a>
@@ -240,8 +241,21 @@ After updating your application's `docker-compose.yml` file, you should rebuild 
 
     sail up
 
+<a name="publicly-sharing-your-site"></a>
+## Publicly Sharing Your Site
+
+Sometimes you may need to share your site publicly in order to preview your site for a colleague or to test webhook integrations with your application. To share your site, you may use the `share` command. After executing this command, you will be issued a random `laravel-sail.site` URL that you may use to access your application:
+
+    sail share
+
+If you would like to choose the subdomain for your shared site, you may provide the `subdomain` option when executing the `share` command:
+
+    sail share --subdomain=my-sail-site
+
+> {tip} The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de).
+
 <a name="sail-customization"></a>
-## Sail Customization
+## Customization
 
 Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` command:
 
