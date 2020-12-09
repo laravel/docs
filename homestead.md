@@ -130,6 +130,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 ### First Steps
 
 Before launching your Homestead environment, you must install [Vagrant](https://www.vagrantup.com/downloads.html) as well as one of the following supported virtualizers:
+
 - [VirtualBox 6.x](https://www.virtualbox.org/wiki/Downloads)
 - [VMWare](https://www.vmware.com)
 - [Parallels](https://www.parallels.com/products/desktop/)
