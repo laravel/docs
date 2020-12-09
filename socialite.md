@@ -37,7 +37,7 @@ Before using Socialite, you will need to add credentials for the OAuth providers
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
-        'redirect' => 'http://your-app.test/callback-url',
+        'redirect' => 'http://example.com/callback-url',
     ],
 
 > {tip} If the `redirect` option contains a relative path, it will automatically be resolved to a fully qualified URL.
