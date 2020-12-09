@@ -21,7 +21,7 @@
 - [Working With Error Messages](#working-with-error-messages)
     - [Specifying Custom Messages In Language Files](#specifying-custom-messages-in-language-files)
     - [Specifying Attributes In Language Files](#specifying-attribute-in-language-files)
-    - [Specifying Values In Language Files](#specifying-values-replacements-in-language-files)
+    - [Specifying Values In Language Files](#specifying-values-in-language-files)
 - [Available Validation Rules](#available-validation-rules)
 - [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Validating Arrays](#validating-arrays)
