@@ -1244,6 +1244,8 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
 
 > {note} You should never pass any user controlled request input into the `ignore` method. Instead, you should only pass a system generated unique ID such as an auto-incrementing ID or UUID from an Eloquent model instance. Otherwise, your application will be vulnerable to an SQL injection attack.
 
+> {tip} If you are using the `unique` rule in a Form Request you may access the route's parameters using the `route` method as mentioned in the [documentation above](/docs/{{version}}/validation#authorizing-form-requests). `Rule::unique('comments')->ignore($this->route('comment')->id)`  
+
 Instead of passing the model key's value to the `ignore` method, you may also pass the entire model instance. Laravel will automatically extract the key from the model:
 
     Rule::unique('users')->ignore($user)
