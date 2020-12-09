@@ -10,13 +10,13 @@
 
 Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL. There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the global `redirect` helper:
 
-    Route::get('dashboard', function () {
-        return redirect('home/dashboard');
+    Route::get('/dashboard', function () {
+        return redirect('/home/dashboard');
     });
 
 Sometimes you may wish to redirect the user to their previous location, such as when a submitted form is invalid. You may do so by using the global `back` helper function. Since this feature utilizes the [session](/docs/{{version}}/session), make sure the route calling the `back` function is using the `web` middleware group or has all of the session middleware applied:
 
-    Route::post('user/profile', function () {
+    Route::post('/user/profile', function () {
         // Validate the request...
 
         return back()->withInput();
@@ -79,7 +79,7 @@ Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/se
     Route::post('user/profile', function () {
         // Update the user's profile...
 
-        return redirect('dashboard')->with('status', 'Profile updated!');
+        return redirect('/dashboard')->with('status', 'Profile updated!');
     });
 
 You may use the `withInput` method provided by the `RedirectResponse` instance to flash the current request's input data to the session before redirecting the user to a new location. Once the input has been flashed to the session, you may easily [retrieve it](/docs/{{version}}/requests#retrieving-old-input) during the next request:
