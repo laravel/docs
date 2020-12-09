@@ -69,7 +69,7 @@ If your controller method is also expecting input from a route parameter you sho
 
     use App\Http\Controllers\UserController;
 
-    Route::put('user/{id}', [UserController::class, 'update']);
+    Route::put('/user/{id}', [UserController::class, 'update']);
 
 You may still type-hint the `Illuminate\Http\Request` and access your `id` route parameter by defining your controller method as follows:
 
