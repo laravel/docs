@@ -443,7 +443,7 @@ If you would like to deny all authorization checks for a particular type of user
 <a name="via-the-user-model"></a>
 ### Via The User Model
 
-The `App\Models\User` model that is included with your Laravel application includes two helpful methods for authorizing actions: `can` and `cannot` (aliased as `cant`). The `can` and `cannot` methods receive the name of the action you wish to authorize and the relevant model. For example, let's determine if a user is not authorized to update a given `App\Models\Post` model. Typically, this will be done within a controller method:
+The `App\Models\User` model that is included with your Laravel application includes two helpful methods for authorizing actions: `can` and `cannot`. The `can` and `cannot` methods receive the name of the action you wish to authorize and the relevant model. For example, let's determine if a user is authorized to update a given `App\Models\Post` model. Typically, this will be done within a controller method:
 
     <?php
 
