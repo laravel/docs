@@ -17,7 +17,7 @@
 - [Previewing Emails](#previewing-emails)
 - [Container CLI](#sail-container-cli)
 - [PHP Versions](#sail-php-versions)
-- [Publicly Sharing Your Site](#publicly-sharing-your-site)
+- [Sharing Your Site](#sharing-your-site)
 - [Customization](#sail-customization)
 
 <a name="introduction"></a>
@@ -241,8 +241,8 @@ After updating your application's `docker-compose.yml` file, you should rebuild 
 
     sail up
 
-<a name="publicly-sharing-your-site"></a>
-## Publicly Sharing Your Site
+<a name="sharing-your-site"></a>
+## Sharing Your Site
 
 Sometimes you may need to share your site publicly in order to preview your site for a colleague or to test webhook integrations with your application. To share your site, you may use the `share` command. After executing this command, you will be issued a random `laravel-sail.site` URL that you may use to access your application:
 
