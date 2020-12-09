@@ -67,8 +67,10 @@ php artisan make:model Flight -s
 php artisan make:model Flight --controller
 php artisan make:model Flight -c
 
-# Generate a model and a migration, factory, seeder, and controller...
-php artisan make:model Flight -mfsc
+# Generate a migration, seeder, factory, and resource controller for the model...
+php artisan make:model Flight --all
+php artisan make:model Flight -a
+
 ```
 
 <a name="eloquent-model-conventions"></a>
