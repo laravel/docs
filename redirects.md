@@ -76,7 +76,7 @@ If your controller route requires parameters, you may pass them as the second ar
 
 Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/session#flash-data) are usually done at the same time. Typically, this is done after successfully performing an action when you flash a success message to the session. For convenience, you may create a `RedirectResponse` instance and flash data to the session in a single, fluent method chain:
 
-    Route::post('user/profile', function () {
+    Route::post('/user/profile', function () {
         // Update the user's profile...
 
         return redirect('/dashboard')->with('status', 'Profile updated!');
