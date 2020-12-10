@@ -380,7 +380,7 @@ Like [has many relationships](#has-many-relationships), "many to many" relations
     use App\Models\Role;
     use App\Models\User;
 
-    $users = User::factory()
+    $user = User::factory()
                 ->has(Role::factory()->count(3))
                 ->create();
 
@@ -392,7 +392,7 @@ If you need to define attributes that should be set on the pivot / intermediate 
     use App\Models\Role;
     use App\Models\User;
 
-    $users = User::factory()
+    $user = User::factory()
                 ->hasAttached(
                     Role::factory()->count(3),
                     ['active' => true]
@@ -401,7 +401,7 @@ If you need to define attributes that should be set on the pivot / intermediate 
 
 You may provide a closure based state transformation if your state change requires access to the related model:
 
-    $users = User::factory()
+    $user = User::factory()
                 ->hasAttached(
                     Role::factory()
                         ->count(3)
@@ -416,7 +416,7 @@ If you already have model instances that you would like to attached to the model
 
     $roles = Role::factory()->count(3)->create();
 
-    $users = User::factory()
+    $user = User::factory()
                 ->count(3)
                 ->hasAttached($roles, ['active' => true])
                 ->create();
@@ -426,7 +426,7 @@ If you already have model instances that you would like to attached to the model
 
 For convenience, you may use Laravel's magic factory relationship methods to define many to many relationships. For example, the following example will use convention to determine that the related models should be created via a `roles` relationship method on the `User` model:
 
-    $users = User::factory()
+    $user = User::factory()
                 ->hasRoles(1, [
                     'name' => 'Editor'
                 ])
