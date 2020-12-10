@@ -633,10 +633,10 @@ Sometimes you may need to construct a "where" clause that compares a column to t
 
     use App\Models\Income;
 
-    $users = Income::where('amount', '<', function ($query) {
+    $incomes = Income::where('amount', '<', function ($query) {
         $query->selectRaw('avg(i.amount)')
             ->from('incomes as i');
-    }, 'Pro')->get();
+    })->get();
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit & Offset
 
