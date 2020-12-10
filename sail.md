@@ -115,6 +115,21 @@ Composer commands may be executed using the `composer` command. Laravel Sail's a
 sail composer require laravel/sanctum
 ```
 
+<a name="installing-composer-dependencies-for-existing-projects"></a>
+#### Installing Composer Dependencies For Existing Projects
+
+If you are developing an application with a team, you may not be the one that initially creates the Laravel application. Therefore, none of the application's Composer dependencies, including Sail, will be installed after you clone the application's repository to your local computer.
+
+You may install the application's dependencies by navigating to the application's directory and executing the following command. This command uses a small Docker container containing PHP and Composer to install the application's dependencies:
+
+```nothing
+docker run --rm \
+    -v $(pwd):/opt \
+    -w /opt \
+    laravelsail/php80-composer:latest \
+    composer install
+```
+
 <a name="executing-artisan-commands"></a>
 ### Executing Artisan Commands
 
