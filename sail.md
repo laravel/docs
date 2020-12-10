@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Installation & Setup](#installation)
+    - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Configuring A Bash Alias](#configuring-a-bash-alias)
 - [Starting & Stopping Sail](#starting-and-stopping-sail)
 - [Executing Commands](#executing-sail-commands)
@@ -33,6 +34,21 @@ Laravel Sail is supported on macOS, Linux, and Windows (via WSL2).
 ## Installation & Setup
 
 Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation) for your operating system.
+
+<a name="installing-sail-into-existing-applications"></a>
+### Installing Sail Into Existing Applications
+
+If you are interested in using Sail with an existing Laravel application, you may simply install Sail using the Composer package manager. Of course, these steps assume that your existing local development environment allows you to install Composer dependencies:
+
+    composer install laravel/sail
+
+After Sail has been installed, you may run the `sail:install` Artisan command. This command will publish Sail's `docker-compose.yml` file to the root of your application:
+
+    php artisan sail:install
+
+Finally, you may start Sail. To continue learning how to use Sail, please continue reading the remainder of this documentation:
+
+    ./vendor/bin/sail up
 
 <a name="configuring-a-bash-alias"></a>
 ### Configuring A Bash Alias
