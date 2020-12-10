@@ -132,7 +132,7 @@ sail composer require laravel/sanctum
 ```
 
 <a name="installing-composer-dependencies-for-existing-projects"></a>
-#### Installing Composer Dependencies For Existing Projects
+#### Installing Composer Dependencies For Existing Applications
 
 If you are developing an application with a team, you may not be the one that initially creates the Laravel application. Therefore, none of the application's Composer dependencies, including Sail, will be installed after you clone the application's repository to your local computer.
 
