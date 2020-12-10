@@ -40,7 +40,7 @@ Laravel Sail is automatically installed with all new Laravel applications so you
 
 If you are interested in using Sail with an existing Laravel application, you may simply install Sail using the Composer package manager. Of course, these steps assume that your existing local development environment allows you to install Composer dependencies:
 
-    composer require laravel/sail
+    composer require laravel/sail --dev
 
 After Sail has been installed, you may run the `sail:install` Artisan command. This command will publish Sail's `docker-compose.yml` file to the root of your application:
 
