@@ -448,8 +448,7 @@ The `foreignId` method is an alias of the `unsignedBigInteger` method:
 
 The `foreignIdFor()` method creates a foreign ID column for the given model:
 
-    $table->foreignIdFor(App\Models\User::class)
-          ->constrained();
+    $table->foreignIdFor(App\Models\User::class);
 
 <a name="column-method-geometryCollection"></a>
 #### `geometryCollection()` {#collection-method}
