@@ -1039,6 +1039,11 @@ Any additional [column modifiers](#column-modifiers) must be called before the `
           ->nullable()
           ->constrained();
 
+You may also create foreign ID column for the given model:
+
+    $table->foreignIdFor(App\Models\User::class)
+          ->constrained();
+
 <a name="dropping-foreign-keys"></a>
 #### Dropping Foreign Keys
 
