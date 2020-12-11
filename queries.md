@@ -629,6 +629,14 @@ Sometimes you may need to construct a "where" clause that compares the results o
             ->limit(1);
     }, 'Pro')->get();
 
+Or, you may need to construct a "where" clause that compares a column to the results of a subquery. You may accomplish this by passing a column, operator, and closure to the `where` method. For example, the following query will retrieve all income records where the amount is less than average;
+
+    use App\Models\Income;
+
+    $incomes = Income::where('amount', '<', function ($query) {
+        $query->selectRaw('avg(i.amount)')->from('incomes as i');
+    })->get();
+
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit & Offset
 
