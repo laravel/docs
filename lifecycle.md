@@ -51,7 +51,7 @@ You may be wondering why the `register` method of every service provider is call
 <a name="routing"></a>
 ### Routing
 
-One of the most important service providers in your application is the `App\Providers\RouteServiceProvider`. This service provider loads the route files containing within your application's `routes` directory. Go ahead, crack open the `RouteServiceProvider` code and take look at how it works!
+One of the most important service providers in your application is the `App\Providers\RouteServiceProvider`. This service provider loads the route files containing within your application's `routes` directory. Go ahead, crack open the `RouteServiceProvider` code and take a look at how it works!
 
 Once the application has been bootstrapped and all service providers have been registered, the `Request` will be handed off to the router for dispatching. The router will dispatch the request to a route or controller, as well as run any route specific middleware.
 
