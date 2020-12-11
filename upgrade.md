@@ -127,6 +127,17 @@ Next, in your `composer.json` file, remove `classmap` block from the `autoload` 
         }
     },
 
+<a name="postgres-configuration"></a>
+#### PostgreSQL Configuration Changes
+
+**Likelihood Of Impact: Low**
+
+In previous Laravel versions, the term "schema" (a single schema) was used when "search path" (a list of schemas) was intended. Accordingly, variable names, comments, and configuration directives were updated to correct the terminology and intent.
+
+This change will not affect most users, however, the `schema` configuration key on PostgreSQL database connections has been renamed to `search_path`, so if you are not using the default `pgsql` connection, exclusively, you will need to update your database configuration(s) accordingly.
+
+Finally, you may now specify a `search_path` that contains more than one schema in your `.env` file using a comma-separated string, e.g., `DB_SEARCH_PATH='"$user", "laravel"'`. (In previous Laravel versions, this was possible only by adding parsing logic to the array in your configuration file.) 
+
 <a name="eloquent"></a>
 ### Eloquent
 
