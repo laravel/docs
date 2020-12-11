@@ -675,6 +675,8 @@ Alternatively, you may use the `componentNamespace` method to autoload component
 
     /**
      * Bootstrap your package's services.
+     *
+     * @return void
      */
     public function boot()
     {
