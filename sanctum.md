@@ -237,7 +237,7 @@ Finally, you should ensure your application's session cookie domain configuratio
 <a name="csrf-protection"></a>
 #### CSRF Protection
 
-To authenticate your SPA, your SPA's "login: page should first make a request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection for the application:
+To authenticate your SPA, your SPA's "login" page should first make a request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection for the application:
 
     axios.get('/sanctum/csrf-cookie').then(response => {
         // Login...
