@@ -298,10 +298,29 @@ Since Sail is just Docker, you are free to customize nearly everything about it.
 php artisan sail:publish
 ```
 
-You can also customize the ports sail uses directly from your `.env` file. Some keys you can use includes, `APP_PORT` to change the Http port, `FORWARD_DB_PORT` to change the mysql port and `FORWARD_REDIS_PORT` to change the Redis port. You can look through the `docker-compose.yml` file for the other configuration keys available.
-
 After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may rebuild your application's containers using the `build` command:
 
 ```bash
 sail build --no-cache
 ```
+
+
+You can also customize some configurations for Laravel Sail directly in your `.env` file. Here are some of the configuration keys you can use:
+
+
+```
+...
+
+# Change the default HTTP port 
+APP_PORT=8080
+
+# Change the default mysql port
+FORWARD_DB_PORT=30661
+
+# Change the default Redis port
+FORWARD_REDIS_PORT=63791
+
+...
+```
+
+You should look through the `docker-compose.yml` file for the other configuration keys available. Remember to run the `sail build --no-cache` command after you make your changes.
