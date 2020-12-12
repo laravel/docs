@@ -203,19 +203,23 @@ The Sail `test` command is equivalent to running the `test` Artisan command:
 
 [Laravel Dusk](/docs/{{version}}/dusk) provides an expressive, easy-to-use browser automation and testing API. Thanks to Sail, you may run these tests without ever installing Selenium or other tools on your local computer. To get started, uncomment the Selenium service in your application's `docker-compose.yml` file:
 
-    selenium:
-        image: 'selenium/standalone-chrome'
-        volumes:
-            - '/dev/shm:/dev/shm'
-        networks:
-            - sail
+```yaml
+selenium:
+    image: 'selenium/standalone-chrome'
+    volumes:
+        - '/dev/shm:/dev/shm'
+    networks:
+        - sail
+```
 
 Next, ensure that the `laravel.test` service in your application's `docker-compose.yml` file has a `depends_on` entry for `selenium`:
 
-        depends_on:
-            - mysql
-            - redis
-            - selenium
+```yaml
+depends_on:
+    - mysql
+    - redis
+    - selenium
+```
 
 Finally, you may run your Dusk test suite by starting Sail and running the `dusk` command:
 
