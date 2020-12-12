@@ -1216,6 +1216,8 @@ To register an observer, you need to call the `observe` method on the model you 
      */
     public function boot()
     {
+        parent::boot();
+        
         User::observe(UserObserver::class);
     }
 
