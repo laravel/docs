@@ -36,7 +36,7 @@ When mocking an object that is going to be injected into your application via La
     {
          $this->instance(
             Service::class,
-            Mockery::mock(Service::class, function ($mock) {
+            Mockery::mock(Service::class, function (\Mockery\MockInterface $mock) {
                 $mock->shouldReceive('process')->once();
             })
         );
@@ -46,7 +46,7 @@ In order to make this more convenient, you may use the `mock` method that is pro
 
     use App\Service;
 
-    $mock = $this->mock(Service::class, function ($mock) {
+    $mock = $this->mock(Service::class, function (\Mockery\MockInterface $mock) {
         $mock->shouldReceive('process')->once();
     });
 
@@ -54,7 +54,7 @@ You may use the `partialMock` method when you only need to mock a few methods of
 
     use App\Service;
 
-    $mock = $this->partialMock(Service::class, function ($mock) {
+    $mock = $this->partialMock(Service::class, function (\Mockery\MockInterface $mock) {
         $mock->shouldReceive('process')->once();
     });
 
