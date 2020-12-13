@@ -31,12 +31,13 @@ When mocking an object that is going to be injected into your application via La
 
     use App\Service;
     use Mockery;
+    use Mockery\MockInterface;
 
     public function test_something_can_be_mocked()
     {
          $this->instance(
             Service::class,
-            Mockery::mock(Service::class, function ($mock) {
+            Mockery::mock(Service::class, function (MockInterface $mock) {
                 $mock->shouldReceive('process')->once();
             })
         );
@@ -45,16 +46,18 @@ When mocking an object that is going to be injected into your application via La
 In order to make this more convenient, you may use the `mock` method that is provided by Laravel's base test case class. For example, the following example is equivalent to the example above:
 
     use App\Service;
+    use Mockery\MockInterface;
 
-    $mock = $this->mock(Service::class, function ($mock) {
+    $mock = $this->mock(Service::class, function (MockInterface $mock) {
         $mock->shouldReceive('process')->once();
     });
 
 You may use the `partialMock` method when you only need to mock a few methods of an object. The methods that are not mocked will be executed normally when called:
 
     use App\Service;
+    use Mockery\MockInterface;
 
-    $mock = $this->partialMock(Service::class, function ($mock) {
+    $mock = $this->partialMock(Service::class, function (MockInterface $mock) {
         $mock->shouldReceive('process')->once();
     });
 
