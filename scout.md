@@ -495,7 +495,7 @@ If you would like to define a custom Scout search builder method, you may use th
     public function boot()
     {
         Builder::macro('count', function () {
-            return $this->engine->getTotalCount(
+            return $this->engine()->getTotalCount(
                 $this->engine()->search($this)
             );
         });
