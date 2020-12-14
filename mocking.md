@@ -35,7 +35,7 @@ When mocking an object that is going to be injected into your application via La
 
     public function test_something_can_be_mocked()
     {
-         $this->instance(
+        $this->instance(
             Service::class,
             Mockery::mock(Service::class, function (MockInterface $mock) {
                 $mock->shouldReceive('process')->once();
