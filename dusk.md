@@ -1119,14 +1119,14 @@ Assert that the given text is not present within the selector:
 <a name="assert-see-anything-in"></a>
 #### assertSeeAnythingIn
 
-Assert that the given selector has some text:
+Assert that any text is present within the selector:
 
     $browser->assertSeeAnythingIn($selector);
 
 <a name="assert-see-nothing-in"></a>
 #### assertSeeNothingIn
 
-Assert that the given selector has no text:
+Assert that no text is present within the selector:
 
     $browser->assertSeeNothingIn($selector);
 
