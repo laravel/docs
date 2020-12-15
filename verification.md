@@ -8,6 +8,7 @@
     - [The Email Verification Handler](#the-email-verification-handler)
     - [Resending The Verification Email](#resending-the-verification-email)
     - [Protecting Routes](#protecting-routes)
+- [Customization](#customization)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -115,6 +116,38 @@ Sometimes a user may misplace or accidentally delete the email address verificat
     })->middleware('verified');
 
 If an unverified user attempts to access a route that has been assigned this middleware, they will automatically be redirected to the `verification.notice` [named route](/docs/{{version}}/routing#named-routes).
+
+<a name="customization"></a>
+## Customization
+
+<a name="verification-email-customization"></a>
+#### Verification Email Customization
+
+Although the default email verification notification should satisfy the requirements of most applications, Laravel allows you to customize how the email verification mail message is constructed.
+
+To get started, pass a closure to the `toMailUsing` method provided by the `Illuminate\Auth\Notifications\VerifyEmail` notification. The closure will receive the notifiable model instance that is receiving the notification as well as the signed email verification URL that the user must visit to verify their email address. The closure should return an instance of `Illuminate\Notifications\Messages\MailMessage`. Typically, you should call the `toMailUsing` method from the `boot` method of your application's `App\Providers\AuthServiceProvider` class:
+
+    use Illuminate\Auth\Notifications\VerifyEmail;
+    use Illuminate\Notifications\Messages\MailMessage;
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // ...
+
+        VerifyEmail::toMailUsing(function ($notifiable, $url) {
+            return (new MailMessage)
+                ->subject('Verify Email Address')
+                ->line('Click the button below to verify your email address.')
+                ->action('Verify Email Address', $url)
+        });
+    }
+
+> {tip} To learn more about mail notifications, please consult the [mail notification documentation](/docs/{{version}}/notifications#mail-notifications).
 
 <a name="events"></a>
 ## Events
