@@ -632,7 +632,7 @@ For example, if the JSON response returned by your application contains the foll
 
 You may assert that the JSON structure matches your expectations like so:
 
-    $response->assertJsonStruture([
+    $response->assertJsonStructure([
         'user' => [
             'name',
         ]
