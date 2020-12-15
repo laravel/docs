@@ -13,6 +13,7 @@
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
+    - [Jobs & Database Transactions](#jobs-and-database-transactions)
     - [Job Chaining](#job-chaining)
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
@@ -610,6 +611,38 @@ If you would like to dispatch a job immediately (synchronously), you may use the
             ProcessPodcast::dispatchSync($podcast);
         }
     }
+
+<a name="jobs-and-database-transactions"></a>
+### Jobs & Database Transactions
+
+While it is perfectly fine to dispatch jobs within database transactions, you should take special care to ensure that your job will actually be able to execute successfully. When dispatching a job within a transaction, it is possible that the job will be processed by a worker before the transaction has committed. When this happens, the database models the job expects to interact will not exist in the database.
+
+Thankfully, Laravel provides several methods of working around this problem. First, you may set the `after_commit` connection option in your queue connection's configuration array:
+
+    'redis' => [
+        'driver' => 'redis',
+        // ...
+        'after_commit' => true,
+    ],
+
+When the `after_commit` option is `true`, you may dispatch jobs within database transactions; however, Laravel will wait until all open database transactions have been committed before actually dispatching the job. Of course, if no database transactions are currently open, the job will be dispatched immediately.
+
+If a transaction is rolled back due to an exception that occurs during the transaction, the dispatched jobs that were dispatched during that transaction will be discarded.
+
+> {tip} Setting the `after_commit` configuration option to `true` will also cause any queued event listeners, mailables, notifications, and broadcast events to be dispatched after all open database transactions have been committed.
+
+<a name="specifying-commit-dispatch-behavior-inline"></a>
+#### Specifying Commit Dispatch Behavior Inline
+
+If you do not set the `after_commit` queue connection configuration option to `true`, you may still indicate that a specific job should be dispatched after all open database transactions have been committed. To accomplish this, you may chain the `afterCommit` method onto your dispatch operation:
+
+    use App\Jobs\ProcessPodcast;
+
+    ProcessPodcast::dispatch($podcast)->afterCommit();
+
+Likewise, if the `after_commit` configuration option is set to `true`, you may indicate that a specific job should be dispatched immediately without waiting for any open database transactions to commit:
+
+    ProcessPodcast::dispatch($podcast)->beforeCommit();
 
 <a name="job-chaining"></a>
 ### Job Chaining
