@@ -65,6 +65,12 @@ In addition to scheduling using closures, you may also schedule [invokable objec
 
     $schedule->call(new DeleteRecentUsers)->daily();
 
+If you would like to view an overview of your scheduled tasks and the next time they are scheduled to run, you may use the `schedule:list` Artisan command:
+
+```nothing
+php artisan schedule:list
+```
+
 <a name="scheduling-artisan-commands"></a>
 ### Scheduling Artisan Commands
 
