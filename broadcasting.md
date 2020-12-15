@@ -16,6 +16,7 @@
     - [Broadcast Data](#broadcast-data)
     - [Broadcast Queue](#broadcast-queue)
     - [Broadcast Conditions](#broadcast-conditions)
+    - [Broadcasting & Database Transactions](#broadcasting-and-database-transactions)
 - [Authorizing Channels](#authorizing-channels)
     - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
@@ -438,6 +439,29 @@ Sometimes you want to broadcast your event only if a given condition is true. Yo
     {
         return $this->order->value > 100;
     }
+
+<a name="broadcasting-and-database-transactions"></a>
+#### Broadcasting & Database Transactions
+
+When broadcast events are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your event depends on these models, unexpected errors can occur when the job that broadcasts the event is processed.
+
+If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the event class:
+
+    <?php
+
+    namespace App\Events;
+
+    use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+    use Illuminate\Queue\SerializesModels;
+
+    class ServerCreated implements ShouldBroadcast
+    {
+        use SerializesModels;
+
+        public $afterCommit = true;
+    }
+
+> {tip} To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="authorizing-channels"></a>
 ## Authorizing Channels
