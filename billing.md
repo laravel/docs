@@ -458,10 +458,10 @@ If you would like to apply a coupon when creating the subscription, you may use 
          ->withCoupon('code')
          ->create($paymentMethod);
          
-In addition, if you'd like to apply [a Stripe promotion code](https://stripe.com/docs/billing/subscriptions/discounts/codes), you may use the `withPromotionCode` method:
+Or, if you would like to apply a [Stripe promotion code](https://stripe.com/docs/billing/subscriptions/discounts/codes), you may use the `withPromotionCode` method:
 
     $user->newSubscription('default', 'price_monthly')
-         ->withPromotionCode('promo_xxx')
+         ->withPromotionCode('promo_code')
          ->create($paymentMethod);
 
 <a name="adding-subscriptions"></a>
