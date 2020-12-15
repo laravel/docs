@@ -341,6 +341,17 @@ The model watcher records model changes whenever an Eloquent [model event](/docs
         ...
     ],
 
+If you would like to record the number of models hydrated during a given request, enable the `hydrations` option:
+
+    'watchers' => [
+        Watchers\ModelWatcher::class => [
+            'enabled' => env('TELESCOPE_MODEL_WATCHER', true),
+            'events' => ['eloquent.created*', 'eloquent.updated*'],
+            'hydrations' => true,
+        ],
+        ...
+    ],
+
 <a name="notification-watcher"></a>
 ### Notification Watcher
 
