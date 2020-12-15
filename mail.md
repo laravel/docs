@@ -636,6 +636,22 @@ If you have mailable classes that you want to always be queued, you may implemen
         //
     }
 
+<a name="queued-mailables-and-database-transactions"></a>
+#### Queued Mailables & Database Transactions
+
+When queued mailables are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your mailable depends on these models, unexpected errors can occur when the job that sends the queued mailable is processed.
+
+To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
+
+If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued mailable should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the mailable class:
+
+    use Illuminate\Contracts\Queue\ShouldQueue;
+
+    class OrderShipped extends Mailable implements ShouldQueue
+    {
+        public $afterCommit = true;
+    }
+
 <a name="rendering-mailables"></a>
 ## Rendering Mailables
 
