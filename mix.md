@@ -88,7 +88,9 @@ Your application's `webpack.mix.js` file is your entry point for all asset compi
 
 [Tailwind CSS](https://tailwindcss.com) is a modern, utility-first framework for building amazing sites without ever leaving your HTML. Let's dig into how to start using it in a Laravel project with Laravel Mix. First, we should install Tailwind using NPM and generate our Tailwind configuration file:
 
-    npm install tailwindcss@compat
+    npm install
+
+    npm install -D tailwindcss@npm:@tailwindcss/postcss7-compat @tailwindcss/postcss7-compat postcss@^7
 
     npx tailwindcss init
 
@@ -116,7 +118,6 @@ Once you have configured Tailwind's layers, you are ready to update your applica
 ```js
 mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
-        require('postcss-import'),
         require('tailwindcss'),
     ]);
 ```
