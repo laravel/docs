@@ -153,7 +153,7 @@ The `sass` method allows you to compile [Sass](https://sass-lang.com/) into CSS 
 
     mix.sass('resources/sass/app.scss', 'public/css');
 
-Y may compile multiple Sass files into their own respective CSS files and even customize the output directory of the resulting CSS by calling the `sass` method multiple times:
+You may compile multiple Sass files into their own respective CSS files and even customize the output directory of the resulting CSS by calling the `sass` method multiple times:
 
     mix.sass('resources/sass/app.sass', 'public/css')
         .sass('resources/sass/admin.sass', 'public/css/admin');
