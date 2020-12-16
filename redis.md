@@ -162,7 +162,7 @@ By default, Laravel will use the phpredis extension to communicate with Redis. T
         // Rest of Redis configuration...
     ],
 
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, phpredis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
+In addition to the default `host`, `port`, `database`, and `password` server configuration options, phpredis supports the following additional connection parameters: `name`, `persistent`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
