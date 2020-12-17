@@ -449,7 +449,7 @@ For example, imagine we are building a "todo" list application. We might define 
 
 <html>
     <head>
-        <title>{{ $title ?? 'Todo Manager' }}
+        <title>{{ $title ?? 'Todo Manager' }}</title>
     </head>
     <body>
         <h1>Todos</h1>
