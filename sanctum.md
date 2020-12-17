@@ -330,7 +330,7 @@ Typically, you will make a request to the token endpoint from your mobile applic
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Validation\ValidationException;
 
-    Route::post('/sanctum/token', function (Request $request) {
+    Route::get('/sanctum/token', function (Request $request) {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
