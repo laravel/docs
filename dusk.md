@@ -68,7 +68,7 @@ After installing the Dusk package, execute the `dusk:install` Artisan command. T
 
 Next, set the `APP_URL` environment variable in your application's `.env` file. This value should match the URL you use to access your application in a browser.
 
-> {tip} If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please also consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/installation#laravel-dusk).
+> {tip} If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please also consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
 
 <a name="managing-chromedriver-installations"></a>
 ### Managing ChromeDriver Installations
