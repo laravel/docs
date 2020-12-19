@@ -228,9 +228,12 @@ Finally, you may run your Dusk test suite by starting Sail and running the `dusk
 <a name="previewing-emails"></a>
 ## Previewing Emails
 
-Laravel Sail's default `docker-compose.yml` file contains a service entry for [MailHog](https://github.com/mailhog/MailHog). MailHog intercepts emails sent by your application during local development and provides a convenient web interface so that you can preview your email messages in your browser. MailHog's default SMTP port is `1025`:
+Laravel Sail's default `docker-compose.yml` file contains a service entry for [MailHog](https://github.com/mailhog/MailHog). MailHog intercepts emails sent by your application during local development and provides a convenient web interface so that you can preview your email messages in your browser. 
+
+MailHog's default SMTP port is `1025` and the host should be set to `mailhog`:
 
 ```bash
+MAIL_HOST=mailhog
 MAIL_PORT=1025
 ```
 
