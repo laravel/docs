@@ -388,7 +388,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 
     class Project extends Model
     {
-        public function posts()
+        public function deployments()
         {
             return $this->hasManyThrough(
                 Deployment::class,
