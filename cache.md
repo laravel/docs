@@ -173,6 +173,8 @@ You may use the `rememberForever` method to retrieve an item from the cache or s
         return DB::table('users')->get();
     });
 
+> {tip} If the value (null) is stored in the cache, the callback is executed every time.
+
 <a name="retrieve-delete"></a>
 #### Retrieve & Delete
 
