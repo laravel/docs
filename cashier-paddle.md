@@ -20,6 +20,7 @@
     - [Creating Subscriptions](#creating-subscriptions)
     - [Checking Subscription Status](#checking-subscription-status)
     - [Subscription Single Charges](#subscription-single-charges)
+    - [Subscription Modifiers](#subscription-modifiers)
     - [Updating Payment Information](#updating-payment-information)
     - [Changing Plans](#changing-plans)
     - [Subscription Quantity](#subscription-quantity)
@@ -580,6 +581,43 @@ Subscription single charges allow you to charge subscribers with a one-time char
     $response = $user->subscription('default')->charge(12.99, 'Support Add-on');
 
 In contrast to [single charges](#single-charges), this method will immediately charge the customer's stored payment method for the subscription. The charge amount should always be defined in the currency of the subscription.
+
+<a name="subscription-modifiers"></a>
+### Subscription Modifiers
+
+Subscription modifiers allow you to implement a way of performing [Metered Billing with Paddle](https://developer.paddle.com/guides/how-tos/subscriptions/metered-billing#using-subscription-price-modifiers) or to extend subscriptions with add-ons. By adding amounts through modifiers you can increment the subscription amount over time until the next billing interval. 
+
+For example, you might want to offer a "Premium Support" add-on to go along with your subscription. You can create this modifier like so:
+
+    $modifier = $user->subscription->newModifier(12.99)->create();
+
+This will add a $12.99 add-on to your subscription. By default this will recur on every interval you've set up for your subscription. You can add a readable description to the modifier if you want:
+
+    $modifier = $user->subscription->newModifier(12.99)
+        ->description('Premium Support')
+        ->create();
+
+In a scenario for metered billing you might want to set up a text message subscription service. You need to start off with creating a $0 base plan in your Paddle dashboard and subscribe your user to it. After that, you can add modifiers with specific amounts like this:
+
+    $modifier = $user->subscription->newModifier(0.99)
+        ->description('New text message.')
+        ->oneTime()
+        ->create();
+
+Notice that we added the `oneTime` method call to make sure this modifier is only added once and doesn't recurs every billing interval. 
+
+We can also retrieve a list of all modifiers for a subscription and display their amount and description:
+
+    $modifiers = $user->subscription->modifiers();
+
+    foreach ($modifiers as $modifier) {
+        $modifier->amount(); // $0.99
+        $modifier->description; // "New text message."
+    }
+
+And we can delete specific modifiers using the `delete` method on a `Laravel\Paddle\Modifier` object:
+
+    $modifier->delete();
 
 <a name="updating-payment-information"></a>
 ### Updating Payment Information
