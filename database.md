@@ -315,3 +315,15 @@ If you would like to connect to your database's CLI, you may use the `db` Artisa
 If needed, you may specify a database connection name to connect to a database connection that is not the default connection:
 
     php artisan db mysql
+    
+## Database timzones
+They MYSQL and Postgres driver's support specifing a timezone in the config.
+
+The following example would configure MYSQL to send you timestamps in the same timezone as used by the rest of your apiclation.
+
+    'mysql' => [
+        'driver' => 'mysql',
+        'timezone' => Carbon::now(config('app.timezone', null))->timezone->toOffsetName(),   //Note that `config('app.timezone')` is needed becuase Carbon has not yet been configured to use 'app.timezone' at this time
+        // rest of your conection config
+ 
+
