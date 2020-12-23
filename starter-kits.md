@@ -41,9 +41,7 @@ After Composer has installed the Laravel Breeze package, you may run the `breeze
 ```bash
 php artisan breeze:install
 
-npm install
-
-npm run dev
+npm install && npm run dev
 ```
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
