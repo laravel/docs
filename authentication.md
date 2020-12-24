@@ -280,33 +280,6 @@ The guard name passed to the `guard` method should correspond to one of the guar
         // ...
     }
 
-<a name="manually-logging-out"></a>
-#### Logging Out
-
-To log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session so that subsequent requests to the application are not authenticated.
-
-In addition to calling the `logout` method, it is recommended that you invalidate the user's session and regenerate their [CSRF token](/docs/{{version}}/csrf). After logging the user out, you would typically redirect the user to the root of your application:
-
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Auth;
-
-    /**
-     * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function logout(Request $request)
-    {
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return redirect('/');
-    }
-
 <a name="remembering-users"></a>
 ### Remembering Users
 
