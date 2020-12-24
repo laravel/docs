@@ -577,9 +577,9 @@ Sometimes you may wish to call other commands from an existing Artisan command. 
         //
     }
 
-If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:
+If you would like to call another console command and suppress all of its output, you may use the `callSilent` method. The `callSilent` method has the same signature as the `call` method:
 
-    $this->callSilently('mail:send', [
+    $this->callSilent('mail:send', [
         'user' => 1, '--queue' => 'default'
     ]);
 
