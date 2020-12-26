@@ -871,7 +871,7 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} The following column types can be modified: `bigInteger`, `binary`, `boolean`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.
+> {note} The following column types can be modified: `bigInteger`, `binary`, `boolean`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.  To modify from or to a `timestamp` column type [special handling is required](#modifying-timestamps).
 
 <a name="renaming-columns"></a>
 #### Renaming Columns
@@ -883,6 +883,28 @@ To rename a column, you may use the `renameColumn` method provided by the schema
     });
 
 > {note} Renaming an `enum` column is not currently supported.
+
+<a name="modifying-timestamps"></a>
+#### Modifying Timestamps
+
+Timestamps are a common field type in Laravel but in `doctrine/dbal` they are
+not supported by a default installation.  To allow
+all `timestamp` fields to be altered you must add some configuration to
+your `config/database.php` file:
+
+Add this line to the top of the file:
+```php
+use Illuminate\Database\DBAL\TimestampType;
+```
+
+Then inside your database configuration array add:
+```php
+'dbal' => [
+    'types' => [
+        'timestamp' => TimestampType::class,
+    ],
+],
+```
 
 <a name="dropping-columns"></a>
 ### Dropping Columns
