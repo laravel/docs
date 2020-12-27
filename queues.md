@@ -25,6 +25,7 @@
     - [Inspecting Batches](#inspecting-batches)
     - [Cancelling Batches](#cancelling-batches)
     - [Batch Failures](#batch-failures)
+    - [Data Pruning] (#batch-data-pruning)
 - [Queueing Closures](#queueing-closures)
 - [Running The Queue Worker](#running-the-queue-worker)
     - [The `queue:work` Command](#the-queue-work-command)
@@ -1263,6 +1264,17 @@ For convenience, Laravel provides a `queue:retry-batch` Artisan command that all
 ```bash
 php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 ```
+
+<a name="data-pruning"></a>
+### Data Pruning
+
+Without pruning, the `job_batches` table can accumulate records very quickly. To mitigate this, you should [schedule](/docs/{{version}}/scheduling) the `queue:prune-batches` Artisan command to run daily:
+
+    $schedule->command('queue:prune-batches')->daily();
+
+By default, all finished batches older than 24 hours will be pruned. You may use the `hours` option when calling the command to determine how long to retain batch data. For example, the following command will delete all batches finished over 48 hours ago:
+
+    $schedule->command('queue:prune-batches --hours=48')->daily();
 
 <a name="queueing-closures"></a>
 ## Queueing Closures
