@@ -363,7 +363,7 @@ If you would like to continue using the original auto-prefixed controller routin
         protected function configureRateLimiting()
         {
             RateLimiter::for('api', function (Request $request) {
-                return Limit::perMinute(60);
+                return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
             });
         }
     }
