@@ -232,7 +232,7 @@ To get started, let's write a test that verifies we can log into our application
          *
          * @return void
          */
-        public function testBasicExample()
+        public function test_basic_example()
         {
             $user = User::factory()->create([
                 'email' => 'taylor@laravel.com',

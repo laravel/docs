@@ -192,7 +192,7 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
          *
          * @return void
          */
-        public function testBasicTest()
+        public function test_basic_test()
         {
             $response = $this->get('/');
 

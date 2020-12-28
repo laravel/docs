@@ -47,7 +47,7 @@ Before proceeding much further, let's discuss how to reset your database after e
          *
          * @return void
          */
-        public function testBasicExample()
+        public function test_basic_example()
         {
             $response = $this->get('/');
 
