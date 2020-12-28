@@ -933,6 +933,21 @@ Using the `first` method, you may render the first attribute in a given attribut
 
     {{ $attributes->whereStartsWith('wire:model')->first() }}
 
+<a name="checking-or-getting-attributes"></a>
+#### Checking or Getting Attributes
+
+If you would like to check if an attribute is present on the component, you may use the `has` method. This method accepts the attribute name as a parameter and
+returns a boolean indicating whether or not the attribute is present.
+
+    @if ($attributes->has('class'))
+        <div>Class attribute is present</div>
+    @endif
+
+In addition to checking if the attribute is present, you can also get the specific attribute value by using the `get` method. This method does also accept the attribute
+name as the first parameter and will return its value.
+
+    {{ $attributes->get('class') }}
+
 <a name="slots"></a>
 ### Slots
 
