@@ -919,7 +919,7 @@ If you would like an attribute other than `class` to have its default value and 
     </div>
 
 <a name="filtering-attributes"></a>
-#### Filtering Attributes
+#### Retrieving & Filtering Attributes
 
 You may filter attributes using the `filter` method. This method accepts a closure which should return `true` if you wish to retain the attribute in the attribute bag:
 
@@ -933,18 +933,13 @@ Using the `first` method, you may render the first attribute in a given attribut
 
     {{ $attributes->whereStartsWith('wire:model')->first() }}
 
-<a name="checking-or-getting-attributes"></a>
-#### Checking or Getting Attributes
-
-If you would like to check if an attribute is present on the component, you may use the `has` method. This method accepts the attribute name as a parameter and
-returns a boolean indicating whether or not the attribute is present.
+If you would like to check if an attribute is present on the component, you may use the `has` method. This method accepts the attribute name as its only argument and returns a boolean indicating whether or not the attribute is present:
 
     @if ($attributes->has('class'))
         <div>Class attribute is present</div>
     @endif
 
-In addition to checking if the attribute is present, you can also get the specific attribute value by using the `get` method. This method does also accept the attribute
-name as the first parameter and will return its value.
+You may retrieve a specific attribute's value using the `get` method:
 
     {{ $attributes->get('class') }}
 
