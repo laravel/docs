@@ -138,28 +138,46 @@ Once the application's Docker containers have been started, you can access the a
 
 > {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
 
-<a name="installation-via-composer"></a>
-### Installation Via Composer
 
-If your computer already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
+<a name="installing-laravel-without-docker"></a>
+## Installing Laravel Without Docker
+
+To run Laravel on your machine, you'll need to ensure you're using <strong>PHP 7.3 or higher</strong>, with the following extensions enabled:
+
+<div class="content-list">
+- BCMath
+- Ctype
+- Fileinfo
+- JSON
+- Mbstring
+- OpenSSL
+- PDO
+- Tokenizer
+- XML
+</div>
+
+You'll also need to have Composer installed as a global dependency.
+
+<a name="via-composer-create-project"></a>
+### Via Composer Create-Project
+
+You may create a new Laravel project by using Composer directly.
 
     composer create-project laravel/laravel example-app
 
+After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
+ 
     cd example-app
 
     php artisan serve
 
-<a name="the-laravel-installer"></a>
-#### The Laravel Installer
+<a name="via-the-laravel-installer"></a>
+### Via The Laravel Installer
 
-Or, you may install the Laravel Installer as a global Composer dependency:
+Alternatively, you may install the Laravel Installer as a global Composer dependency:
 
 ```nothing
 composer global require laravel/installer
-
-laravel new example-app
-
-php artisan serve
 ```
 
 Make sure to place Composer's system-wide vendor bin directory in your `$PATH` so the `laravel` executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
@@ -169,6 +187,14 @@ Make sure to place Composer's system-wide vendor bin directory in your `$PATH` s
 - Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
 - GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin`
 </div>
+
+Once installed, the `laravel new` command will create a fresh Laravel installation in the directory you specify and install any dependencies:
+
+```nothing
+laravel new example-app
+
+php artisan serve
+```
 
 <a name="initial-configuration"></a>
 ## Initial Configuration
