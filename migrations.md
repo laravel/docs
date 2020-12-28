@@ -856,6 +856,18 @@ Before modifying a column, you must install the `doctrine/dbal` package using th
 
     composer require doctrine/dbal
 
+If you plan to modify columns created using the `timestamp` method, you must also add the following configuration to your application's `config/database.php` configuration file:
+
+```php
+use Illuminate\Database\DBAL\TimestampType;
+
+'dbal' => [
+    'types' => [
+        'timestamp' => TimestampType::class,
+    ],
+],
+```
+
 <a name="updating-column-attributes"></a>
 #### Updating Column Attributes
 
@@ -871,7 +883,7 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} The following column types can be modified: `bigInteger`, `binary`, `boolean`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.
+> {note} The following column types can be modified: `bigInteger`, `binary`, `boolean`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, and `uuid`.  To modify a `timestamp` column type a [Doctrine type must be registered](#prerequisites).
 
 <a name="renaming-columns"></a>
 #### Renaming Columns
