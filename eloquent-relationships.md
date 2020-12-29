@@ -4,7 +4,6 @@
 - [Defining Relationships](#defining-relationships)
     - [One To One](#one-to-one)
     - [One To Many](#one-to-many)
-    - [One To Many (Inverse) / Belongs To](#one-to-many-inverse)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
 - [Many To Many Relationships](#many-to-many)
