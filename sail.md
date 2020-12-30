@@ -4,6 +4,7 @@
 - [Installation & Setup](#installation)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Configuring A Bash Alias](#configuring-a-bash-alias)
+    - [Configuring A PowerShell Alias](#configuring-a-power-shell-alias)
 - [Starting & Stopping Sail](#starting-and-stopping-sail)
 - [Executing Commands](#executing-sail-commands)
     - [Executing PHP Commands](#executing-php-commands)
@@ -66,6 +67,27 @@ alias sail='bash vendor/bin/sail'
 ```
 
 Once the Bash alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:
+
+```bash
+sail up
+```
+
+<a name="configuring-a-power-shell-alias"></a>
+### Configuring A PowerShell Alias
+
+If you are developing Laravel application on your Windows machine, probubly you are using [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab). By default, Sail commands are invoked using the `vendor/bin/sail` script that is included with all new Laravel applications:
+
+```bash
+./vendor/bin/sail up
+```
+
+However, instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a PowerShell Alias that allows you to execute Sail's commands more easily. Open the Windows Terminal/ PowerShell and run the following command and an alias will be created.
+
+```bash
+function sail {bash vendor/bin/sail @args}
+```
+
+Once the Power Shell alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:
 
 ```bash
 sail up
