@@ -469,7 +469,7 @@ The `subscribed` method also makes a great candidate for a [route middleware](/d
                 return redirect('billing');
             }
 
-            return $next($request)
+            return $next($request);
         }
     }
 
