@@ -90,7 +90,7 @@ Your application's `webpack.mix.js` file is your entry point for all asset compi
 
     npm install
 
-    npm install -D tailwindcss@npm:@tailwindcss/postcss7-compat @tailwindcss/postcss7-compat postcss@^7
+    npm install -D tailwindcss
 
     npx tailwindcss init
 
@@ -209,14 +209,14 @@ Webpack offers a variety of [source mapping styles](https://webpack.js.org/confi
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
 
-Mix provides several features to help you work with your JavaScript files, such as compiling ECMAScript 2015, module bundling, minification, and concatenating plain JavaScript files. Even better, this all works seamlessly, without requiring an ounce of custom configuration:
+Mix provides several features to help you work with your JavaScript files, such as compiling modern ECMAScript, module bundling, minification, and concatenating plain JavaScript files. Even better, this all works seamlessly, without requiring an ounce of custom configuration:
 
     mix.js('resources/js/app.js', 'public/js');
 
 With this single line of code, you may now take advantage of:
 
 <div class="content-list" markdown="1">
-- ES2015 syntax.
+- The latest EcmaScript syntax.
 - Modules
 - Minification for production environments.
 </div>
@@ -224,9 +224,10 @@ With this single line of code, you may now take advantage of:
 <a name="vue"></a>
 ### Vue
 
-Mix will automatically install the Babel plugins necessary for Vue single-file component compilation support when using the `js` method. No further configuration is required:
+Mix will automatically install the Babel plugins necessary for Vue single-file component compilation support when using the `vue` method. No further configuration is required:
 
-    mix.js('resources/js/app.js', 'public/js');
+    mix.js('resources/js/app.js', 'public/js')
+       .vue();
 
 Once your JavaScript has been compiled, you can reference it in your application:
 
@@ -241,9 +242,10 @@ Once your JavaScript has been compiled, you can reference it in your application
 <a name="react"></a>
 ### React
 
-Mix can automatically install the Babel plugins necessary for React support. To get started, replace your call to Mix's `js` method with a call to the `react` method:
+Mix can automatically install the Babel plugins necessary for React support. To get started, add a call to the `react` method:
 
-    mix.react('resources/js/app.jsx', 'public/js');
+    mix.js('resources/js/app.jsx', 'public/js')
+       .react();
 
 Behind the scenes, Mix will download and include the appropriate `babel-preset-react` Babel plugin. Once your JavaScript has been compiled, you can reference it in your application:
 
@@ -282,12 +284,9 @@ To avoid JavaScript errors, be sure to load these files in the proper order:
 <a name="custom-webpack-configuration"></a>
 ### Custom Webpack Configuration
 
-Behind the scenes, Laravel Mix references a pre-configured `webpack.config.js` file to get you up and running as quickly as possible. Occasionally, you may need to manually modify this file. For example, you might have a special loader or plugin that needs to be referenced. In such instances, you have two choices:
+Occasionally, you may need to manually modify the underlying Webpack configuration. For example, you might have a special loader or plugin that needs to be referenced.
 
-<a name="merging-custom-configuration"></a>
-#### Merging Custom Configuration
-
-Mix provides a useful `webpackConfig` method that allows you to merge any short Webpack configuration overrides. This is a particularly appealing choice, as it doesn't require you to copy and maintain your own copy of the `webpack.config.js` file. The `webpackConfig` method accepts an object, which should contain any [Webpack-specific configuration](https://webpack.js.org/configuration/) that you wish to apply.
+Mix provides a useful `webpackConfig` method that allows you to merge any short Webpack configuration overrides. This is particularly appealing, as it doesn't require you to copy and maintain your own copy of the `webpack.config.js` file. The `webpackConfig` method accepts an object, which should contain any [Webpack-specific configuration](https://webpack.js.org/configuration/) that you wish to apply.
 
     mix.webpackConfig({
         resolve: {
@@ -296,11 +295,6 @@ Mix provides a useful `webpackConfig` method that allows you to merge any short 
             ]
         }
     });
-
-<a name="custom-configuration-files"></a>
-#### Custom Configuration Files
-
-If you would like to completely customize your Webpack configuration, copy the `node_modules/laravel-mix/setup/webpack.config.js` file to your project's root directory. Next, point all of the `--config` references in your `package.json` file to the newly copied configuration file. If you choose to take this approach to customization, any future upstream updates to Mix's `webpack.config.js` must be manually merged into your customized file.
 
 <a name="versioning-and-cache-busting"></a>
 ## Versioning / Cache Busting
