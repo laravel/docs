@@ -74,6 +74,15 @@ Next, install the Guzzle HTTP library and set the `default` option in your `conf
         'token' => env('POSTMARK_TOKEN'),
     ],
 
+If you would like to specify the Postmark message stream that should be used by a given mailer, you may add the `message_stream_id` configuration option to the mailer's configuration array. This configuration array can be found in your application's `config/mail.php` configuration file:
+
+    'postmark' => [
+        'transport' => 'postmark',
+        'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
+    ],
+
+This way you are also able to set up multiple Postmark mailers with different message streams.
+
 <a name="ses-driver"></a>
 #### SES Driver
 
