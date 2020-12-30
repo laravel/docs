@@ -74,7 +74,7 @@ Next, install the Guzzle HTTP library and set the `default` option in your `conf
         'token' => env('POSTMARK_TOKEN'),
     ],
 
-Postmark also lets you use different `message streams`. If you'd like to use a specific one, you can define that in your `postmark` mailer in your `config/mail.php` file:
+If you would like to specify the Postmark message stream that should be used by a given mailer, you may add the `message_stream_id` configuration option to the mailer's configuration array. This configuration array can be found in your application's `config/mail.php` configuration file:
 
     'postmark' => [
         'transport' => 'postmark',
