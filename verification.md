@@ -103,7 +103,7 @@ Sometimes a user may misplace or accidentally delete the email address verificat
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('message', 'Verification link sent!');
+        return back()->with('status', 'verification-link-sent');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 <a name="protecting-routes"></a>
