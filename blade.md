@@ -648,48 +648,6 @@ You may also create components within subdirectories:
 
 The command above will create an `Input` component in the `App\View\Components\Forms` directory and the view will be placed in the `resources/views/components/forms` directory.
 
-<a name="manually-registering-package-components"></a>
-#### Manually Registering Package Components
-
-When writing components for your own application, components are automatically discovered within the `app/View/Components` directory and `resources/views/components` directory.
-
-However, if you are building a package that utilizes Blade components, you will need to manually register your component class and its HTML tag alias. You should typically register your components in the `boot` method of your package's service provider:
-
-    use Illuminate\Support\Facades\Blade;
-
-    /**
-     * Bootstrap your package's services.
-     */
-    public function boot()
-    {
-        Blade::component('package-alert', AlertComponent::class);
-    }
-
-Once your component has been registered, it may be rendered using its tag alias:
-
-    <x-package-alert/>
-
-Alternatively, you may use the `componentNamespace` method to autoload component classes by convention. For example, a `Nightshade` package might have `Calendar` and `ColorPicker` components that reside within the `Package\Views\Components` namespace:
-
-    use Illuminate\Support\Facades\Blade;
-
-    /**
-     * Bootstrap your package's services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
-    }
-
-This will allow the usage of package components by their vendor namespace using the `package-name::` syntax:
-
-    <x-nightshade::calendar />
-    <x-nightshade::color-picker />
-
-Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
-
 <a name="rendering-components"></a>
 ### Rendering Components
 
