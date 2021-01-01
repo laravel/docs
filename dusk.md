@@ -690,9 +690,9 @@ You may occasionally need to execute assertions outside of the current scope. Yo
             $title->assertSee('Hello World');
         });
 
-        $browser->elsewhereWhenAvailable('.page-text', function ($text) {
-            // Current scope is `body .page-text`...
-            $text->assertSee('Laravel Dusk');
+        $browser->elsewhereWhenAvailable('.page-title', function ($title) {
+            // Current scope is `body .page-title`...
+            $title->assertSee('Hello World');
         });
      });
 
