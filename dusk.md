@@ -680,7 +680,7 @@ Sometimes you may wish to perform several operations while scoping all of the op
               ->clickLink('Delete');
     });
 
-You may occasionally need to execute assertions outside of the current scope. You may use the `elsewhere` method to accomplish this:
+You may occasionally need to execute assertions outside of the current scope. You may use the `elsewhere` and `elsewhereWhenAvailable` methods to accomplish this:
 
      $browser->with('.table', function ($table) {
         // Current scope is `body .table`...
@@ -688,6 +688,11 @@ You may occasionally need to execute assertions outside of the current scope. Yo
         $browser->elsewhere('.page-title', function ($title) {
             // Current scope is `body .page-title`...
             $title->assertSee('Hello World');
+        });
+
+        $browser->elsewhereWhenAvailable('.page-text', function ($text) {
+            // Current scope is `body .page-text`...
+            $text->assertSee('Laravel Dusk');
         });
      });
 
