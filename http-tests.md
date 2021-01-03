@@ -849,14 +849,14 @@ Assert that the response view has a given list of data:
 
 This method may be used to assert that the view simply contains data matching the given keys:
 
-    $rseponse->assertViewHasAll([
+    $response->assertViewHasAll([
         'name',
         'email',
     ]);
 
 Or, you may assert that the view data is present and has specific values:
 
-    $rseponse->assertViewHasAll([
+    $response->assertViewHasAll([
         'name' => 'Taylor Otwell',
         'email' => 'taylor@example.com,',
     ]);
