@@ -24,7 +24,7 @@ Of course, you may always convert Eloquent models or collections to JSON using t
 
 To generate a resource class, you may use the `make:resource` Artisan command. By default, resources will be placed in the `app/Http/Resources` directory of your application. Resources extend the `Illuminate\Http\Resources\Json\JsonResource` class:
 
-    php artisan make:resource User
+    php artisan make:resource UserResource
 
 <a name="generating-resource-collections"></a>
 #### Resource Collections
