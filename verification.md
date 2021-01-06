@@ -143,7 +143,7 @@ To get started, pass a closure to the `toMailUsing` method provided by the `Illu
             return (new MailMessage)
                 ->subject('Verify Email Address')
                 ->line('Click the button below to verify your email address.')
-                ->action('Verify Email Address', $url)
+                ->action('Verify Email Address', $url);
         });
     }
 
