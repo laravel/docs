@@ -519,6 +519,7 @@ Homestead 6 introduced support for running multiple versions of PHP on the same 
     php7.2 artisan list
     php7.3 artisan list
     php7.4 artisan list
+    php8.0 artisan list
 
 You may change the default version of PHP used by the CLI by issuing the following commands from within your Homestead virtual machine:
 
@@ -528,6 +529,7 @@ You may change the default version of PHP used by the CLI by issuing the followi
     php72
     php73
     php74
+    php80
 
 <a name="connecting-to-databases"></a>
 ### Connecting To Databases
