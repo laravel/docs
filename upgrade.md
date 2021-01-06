@@ -139,6 +139,25 @@ Laravel's [model factories](/docs/{{version}}/database-testing#creating-factorie
 
     composer require laravel/legacy-factories
 
+In the event that you are upgrading to class based factories, you will need to add the `HasFactory` trait to the applicable models, and adjust your factories directory to match and Model folder structure changes. 
+
+```
+<?php
+
+namespace App\Models;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class User extends Authenticatable
+{
+    use HasFactory, Notifiable;
+    ...  
+ }
+```
+
 <a name="the-castable-interface"></a>
 #### The `Castable` Interface
 
