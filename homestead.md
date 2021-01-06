@@ -531,8 +531,6 @@ You may change the default version of PHP used by the CLI by issuing the followi
     php74
     php80
 
-If the command is not found you may need to rebuild your `aliases` file. If you have modified your `aliases` file back it up before proceeding, then rebuild it by running `bash init.sh` (macOS / Linux) or `init.bat` (Windows). After rebuilding you should run `vagrant destroy && vagrant up`.
-
 <a name="connecting-to-databases"></a>
 ### Connecting To Databases
 
