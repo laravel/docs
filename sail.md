@@ -59,10 +59,16 @@ By default, Sail commands are invoked using the `vendor/bin/sail` script that is
 ./vendor/bin/sail up
 ```
 
-However, instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a Bash alias that allows you to execute Sail's commands more easily:
+However, instead of repeatedly typing `vendor/bin/sail` to execute Sail commands, you may wish to configure a Bash alias in `~/.bashrc` that allows you to execute Sail's commands more easily:
 
 ```bash
 alias sail='bash vendor/bin/sail'
+```
+
+Tell Bash to re-read the startup file:
+
+```bash
+source ~/.bashrc
 ```
 
 Once the Bash alias has been configured, you may execute Sail commands by simply typing `sail`. The remainder of this documentation's examples will assume that you have configured this alias:
