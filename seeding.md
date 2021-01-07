@@ -50,6 +50,34 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
         }
     }
 
+You can also add the seeder using model rather calling the database insert (N.B: This will help when table name is different):
+
+    <?php
+
+    namespace Database\Seeders;
+
+    use App\Models\User;
+    use Illuminate\Database\Seeder;
+    use Illuminate\Support\Facades\Hash;
+    use Illuminate\Support\Str;
+
+    class UserSeeder extends Seeder
+    {
+        /**
+        * Run the database seeds.
+        *
+        * @return void
+        */
+        public function run()
+        {
+            $user = new User();
+            $user->name = Str::random(10);
+            $user->email = Str::random(10).'@gmail.com';
+            $user->password = Hash::make('password');
+            $user->save();
+        }
+    }
+
 > {tip} You may type-hint any dependencies you need within the `run` method's signature. They will automatically be resolved via the Laravel [service container](/docs/{{version}}/container).
 
 <a name="using-model-factories"></a>
