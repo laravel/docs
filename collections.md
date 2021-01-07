@@ -2770,7 +2770,7 @@ This method has the same signature as the [`whereNotIn`](#method-wherenotin) met
 <a name="method-wherenotnull"></a>
 #### `whereNotNull()` {#collection-method}
 
-The `whereNotNull` method removes items from the collection where the given key is not `null`:
+The `whereNotNull` method returns items from the collection where the given key is not `null`:
 
     $collection = collect([
         ['name' => 'Desk'],
@@ -2792,7 +2792,7 @@ The `whereNotNull` method removes items from the collection where the given key 
 <a name="method-wherenull"></a>
 #### `whereNull()` {#collection-method}
 
-The `whereNull` method removes items from the collection where the given key is `null`:
+The `whereNull` method returns items from the collection where the given key is `null`:
 
     $collection = collect([
         ['name' => 'Desk'],
