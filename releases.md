@@ -46,7 +46,7 @@ By overwhelming community demand, the default Laravel application skeleton now c
 
 _Model factory classes were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-Eloquent [model factories](/docs/{{version}}/database-testing#creating-factories) have been entirely re-written as class based factories and improved to have first-class relationship support. For example, the `UserFactory` included with Laravel is written like so:
+Eloquent [model factories](/docs/{{version}}/database-testing#defining-model-factories) have been entirely re-written as class based factories and improved to have first-class relationship support. For example, the `UserFactory` included with Laravel is written like so:
 
     <?php
 
@@ -120,7 +120,7 @@ As mentioned, Laravel 8's model factories contain first class support for relati
 
 To ease the upgrade process, the [laravel/legacy-factories](https://github.com/laravel/legacy-factories) package has been released to provide support for the previous iteration of model factories within Laravel 8.x.
 
-Laravel's re-written factories contain many more features that we think you will love. To learn more about model factories, please consult the [database testing documentation](/docs/{{version}}/database-testing#creating-factories).
+Laravel's re-written factories contain many more features that we think you will love. To learn more about model factories, please consult the [database testing documentation](/docs/{{version}}/database-testing#defining-model-factories).
 
 <a name="migration-squashing"></a>
 ### Migration Squashing
