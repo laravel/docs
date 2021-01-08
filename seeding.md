@@ -20,7 +20,7 @@ To generate a seeder, execute the `make:seeder` [Artisan command](/docs/{{versio
 
     php artisan make:seeder UserSeeder
 
-A seeder class only contains one method by default: `run`. This method is called when the `db:seed` [Artisan command](/docs/{{version}}/artisan) is executed. Within the `run` method, you may insert data into your database however you wish. You may use the [query builder](/docs/{{version}}/queries) to manually insert data or you may use [Eloquent model factories](/docs/{{version}}/database-testing#writing-factories).
+A seeder class only contains one method by default: `run`. This method is called when the `db:seed` [Artisan command](/docs/{{version}}/artisan) is executed. Within the `run` method, you may insert data into your database however you wish. You may use the [query builder](/docs/{{version}}/queries) to manually insert data or you may use [Eloquent model factories](/docs/{{version}}/database-testing#defining-model-factories).
 
 As an example, let's modify the default `DatabaseSeeder` class and add a database insert statement to the `run` method:
 
@@ -55,7 +55,7 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
 <a name="using-model-factories"></a>
 ### Using Model Factories
 
-Of course, manually specifying the attributes for each model seed is cumbersome. Instead, you can use [model factories](/docs/{{version}}/database-testing#writing-factories) to conveniently generate large amounts of database records. First, review the [model factory documentation](/docs/{{version}}/database-testing#writing-factories) to learn how to define your factories.
+Of course, manually specifying the attributes for each model seed is cumbersome. Instead, you can use [model factories](/docs/{{version}}/database-testing#defining-model-factories) to conveniently generate large amounts of database records. First, review the [model factory documentation](/docs/{{version}}/database-testing#defining-model-factories) to learn how to define your factories.
 
 For example, let's create 50 users that each have one related post:
 
