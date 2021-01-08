@@ -75,7 +75,9 @@ Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanc
 <a name="migration-customization"></a>
 #### Migration Customization
 
-If you are not going to use Sanctum's default migrations, you should call the `Sanctum::ignoreMigrations` method in the `register` method of your `App\Providers\AppServiceProvider` class. You may export the default migrations by executing the following command: `php artisan vendor:publish --tag=sanctum-migrations`
+If you are not going to use Sanctum's default migrations, you should call the `Sanctum::ignoreMigrations` method in the `register` method of your `App\Providers\AppServiceProvider` class. You may export the default migrations by executing the following command:
+
+    php artisan vendor:publish --tag=sanctum-migrations
 
 <a name="configuration"></a>
 ## Configuration
