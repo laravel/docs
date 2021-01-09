@@ -1086,7 +1086,7 @@ The field under validation may be `null`.
 <a name="rule-numeric"></a>
 #### numeric
 
-The field under validation must be numeric.
+The field under validation must be [numeric](https://www.php.net/manual/en/function.is-numeric.php).
 
 <a name="rule-password"></a>
 #### password
