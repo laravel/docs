@@ -262,7 +262,7 @@ During this request Laravel will set an `XSRF-TOKEN` cookie containing the curre
 <a name="logging-in"></a>
 #### Logging In
 
-Once CSRF protection has been initialized, you should make a `POST` request to the your Laravel application's `/login` route. This `/login` route may be [implemented manually](/docs/{{version}}/authentication#authenticating-users) or using a headless authentication package like [Laravel Fortify](/docs/{{version}}/fortify).
+Once CSRF protection has been initialized, you should make a `POST` request to your Laravel application's `/login` route. This `/login` route may be [implemented manually](/docs/{{version}}/authentication#authenticating-users) or using a headless authentication package like [Laravel Fortify](/docs/{{version}}/fortify).
 
 If the login request is successful, you will be authenticated and subsequent requests to your application's routes will automatically be authenticated via the session cookie that the Laravel application issued to your client. In addition, since your application already made a request to the `/sanctum/csrf-cookie` route, subsequent requests should automatically receive CSRF protection as long as your JavaScript HTTP client sends the value of the `XSRF-TOKEN` cookie in the `X-XSRF-TOKEN` header.
 
