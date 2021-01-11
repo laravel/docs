@@ -504,7 +504,7 @@ If you wish, you may forward additional ports to the Vagrant box by defining a `
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", and "7.4" (the default):
+Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4" (the default), and "8.0":
 
     sites:
         - map: homestead.test
