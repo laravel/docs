@@ -338,7 +338,7 @@ You may use the `make` method to resolve a class instance from the container. Th
 
     $api = $this->app->make(Transistor::class);
 
-If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `HelpSpot\API` service:
+If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:
 
     use App\Services\Transistor;
 
@@ -419,7 +419,7 @@ The service container fires an event each time it resolves an object. You may li
     use App\Services\Transistor;
 
     $this->app->resolving(Transistor::class, function ($api, $app) {
-        // Called when container resolves objects of type "HelpSpot\API"...
+        // Called when container resolves objects of type "Transistor"...
     });
 
     $this->app->resolving(function ($object, $app) {
