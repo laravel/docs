@@ -7,35 +7,37 @@
 <a name="introduction"></a>
 ## Introduction
 
-All multi-result sets returned by Eloquent are instances of the `Illuminate\Database\Eloquent\Collection` object, including results retrieved via the `get` method or accessed via a relationship. The Eloquent collection object extends the Laravel [base collection](/docs/{{version}}/collections), so it naturally inherits dozens of methods used to fluently work with the underlying array of Eloquent models.
+All Eloquent methods that return more than one model result will return instances of the `Illuminate\Database\Eloquent\Collection` class, including results retrieved via the `get` method or accessed via a relationship. The Eloquent collection object extends Laravel's [base collection](/docs/{{version}}/collections), so it naturally inherits dozens of methods used to fluently work with the underlying array of Eloquent models. Be sure to review the Laravel collection documentation to learn all about these helpful methods!
 
 All collections also serve as iterators, allowing you to loop over them as if they were simple PHP arrays:
 
-    $users = App\Models\User::where('active', 1)->get();
+    use App\Models\User;
+
+    $users = User::where('active', 1)->get();
 
     foreach ($users as $user) {
         echo $user->name;
     }
 
-However, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:
+However, as previously mentioned, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, we may remove all inactive models and then gather the first name for each remaining user:
 
-    $users = App\Models\User::all();
-
-    $names = $users->reject(function ($user) {
+    $names = User::all()->reject(function ($user) {
         return $user->active === false;
-    })
-    ->map(function ($user) {
+    })->map(function ($user) {
         return $user->name;
     });
 
-> {note} While most Eloquent collection methods return a new instance of an Eloquent collection, the `pluck`, `keys`, `zip`, `collapse`, `flatten` and `flip` methods return a [base collection](/docs/{{version}}/collections) instance. Likewise, if a `map` operation returns a collection that does not contain any Eloquent models, it will be automatically cast to a base collection.
+<a name="eloquent-collection-conversion"></a>
+#### Eloquent Collection Conversion
+
+While most Eloquent collection methods return a new instance of an Eloquent collection, the `collapse`, `flatten`, `flip`, `keys`, `pluck`, and `zip` methods return a [base collection](/docs/{{version}}/collections) instance. Likewise, if a `map` operation returns a collection that does not contain any Eloquent models, it will be converted to a base collection instance.
 
 <a name="available-methods"></a>
 ## Available Methods
 
 All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections#available-methods) object; therefore, they inherit all of the powerful methods provided by the base collection class.
 
-In addition, the `Illuminate\Database\Eloquent\Collection` class provides a superset of methods to aid with managing your model collections. Most methods return `Illuminate\Database\Eloquent\Collection` instances; however, some methods return a base `Illuminate\Support\Collection` instance.
+In addition, the `Illuminate\Database\Eloquent\Collection` class provides a superset of methods to aid with managing your model collections. Most methods return `Illuminate\Database\Eloquent\Collection` instances; however, some methods, like `modelKeys`, return an `Illuminate\Support\Collection` instance.
 
 <style>
     #collection-method-list > p {
@@ -95,7 +97,7 @@ The `except` method returns all of the models that do not have the given primary
 <a name="method-find"></a>
 #### `find($key)` {#collection-method .first-collection-method}
 
-The `find` method finds a model that has a given primary key. If `$key` is a model instance, `find` will attempt to return a model matching the primary key. If `$key` is an array of keys, `find` will return all models which match the `$keys` using `whereIn()`:
+The `find` method returns the model that has a primary key matching the given key. If `$key` is a model instance, `find` will attempt to return a model matching the primary key. If `$key` is an array of keys, `find` will return all models which have a primary key in the given array:
 
     $users = User::all();
 
@@ -124,7 +126,7 @@ The `intersect` method returns all of the models that are also present in the gi
 
 The `load` method eager loads the given relationships for all models in the collection:
 
-    $users->load('comments', 'posts');
+    $users->load(['comments', 'posts']);
 
     $users->load('comments.author');
 
@@ -133,7 +135,7 @@ The `load` method eager loads the given relationships for all models in the coll
 
 The `loadMissing` method eager loads the given relationships for all models in the collection if the relationships are not already loaded:
 
-    $users->loadMissing('comments', 'posts');
+    $users->loadMissing(['comments', 'posts']);
 
     $users->loadMissing('comments.author');
 
@@ -149,14 +151,14 @@ The `modelKeys` method returns the primary keys for all models in the collection
 <a name="method-makeVisible"></a>
 #### `makeVisible($attributes)`
 
-The `makeVisible` method makes attributes visible that are typically "hidden" on each model in the collection:
+The `makeVisible` method [makes attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically "hidden" on each model in the collection:
 
     $users = $users->makeVisible(['address', 'phone_number']);
 
 <a name="method-makeHidden"></a>
 #### `makeHidden($attributes)`
 
-The `makeHidden` method hides attributes that are typically "visible" on each model in the collection:
+The `makeHidden` method [hides attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically "visible" on each model in the collection:
 
     $users = $users->makeHidden(['address', 'phone_number']);
 
@@ -172,7 +174,9 @@ The `only` method returns all of the models that have the given primary keys:
 
 The `toQuery` method returns an Eloquent query builder instance containing a `whereIn` constraint on the collection model's primary keys:
 
-    $users = App\Models\User::where('status', 'VIP')->get();
+    use App\Models\User;
+
+    $users = User::where('status', 'VIP')->get();
 
     $users->toQuery()->update([
         'status' => 'Administrator',
@@ -181,20 +185,20 @@ The `toQuery` method returns an Eloquent query builder instance containing a `wh
 <a name="method-unique"></a>
 #### `unique($key = null, $strict = false)`
 
-The `unique` method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed.
+The `unique` method returns all of the unique models in the collection. Any models of the same type with the same primary key as another model in the collection are removed:
 
     $users = $users->unique();
 
 <a name="custom-collections"></a>
 ## Custom Collections
 
-If you need to use a custom `Collection` object with your own extension methods, you may override the `newCollection` method on your model:
+If you would like to use a custom `Collection` object when interacting with a given model, you may define a `newCollection` method on your model:
 
     <?php
 
     namespace App\Models;
 
-    use App\Support\CustomCollection;
+    use App\Support\UserCollection;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -207,8 +211,8 @@ If you need to use a custom `Collection` object with your own extension methods,
          */
         public function newCollection(array $models = [])
         {
-            return new CustomCollection($models);
+            return new UserCollection($models);
         }
     }
 
-Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent returns a `Collection` instance of that model. If you would like to use a custom collection for every model in your application, you should override the `newCollection` method on a base model class that is extended by all of your models.
+Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance. If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models.

@@ -135,7 +135,7 @@ Next, in your `composer.json` file, remove `classmap` block from the `autoload` 
 
 **Likelihood Of Impact: High**
 
-Laravel's [model factories](/docs/{{version}}/database-testing#creating-factories) feature has been totally rewritten to support classes and is not compatible with Laravel 7.x style factories. However, to ease the upgrade process, a new `laravel/legacy-factories` package has been created to continue using your existing factories with Laravel 8.x. You may install this package via Composer:
+Laravel's [model factories](/docs/{{version}}/database-testing#defining-model-factories) feature has been totally rewritten to support classes and is not compatible with Laravel 7.x style factories. However, to ease the upgrade process, a new `laravel/legacy-factories` package has been created to continue using your existing factories with Laravel 8.x. You may install this package via Composer:
 
     composer require laravel/legacy-factories
 
@@ -363,7 +363,7 @@ If you would like to continue using the original auto-prefixed controller routin
         protected function configureRateLimiting()
         {
             RateLimiter::for('api', function (Request $request) {
-                return Limit::perMinute(60);
+                return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
             });
         }
     }
@@ -427,4 +427,4 @@ The `unique` and `exists` rules will now respect the specified connection name (
 <a name="miscellaneous"></a>
 ### Miscellaneous
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/7.x...master) and choose which updates are important to you.
+We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/7.x...8.x) and choose which updates are important to you.
