@@ -222,7 +222,7 @@ The `Bus` facade's `assertBatched` method may be used to assert that a [batch of
 <a name="event-fake"></a>
 ## Event Fake
 
-When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners. Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched` and `assertNotDispatched` methods:
+When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners. Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched`, `assertNotDispatched`, and `assertNothingDispatched` methods:
 
     <?php
 
@@ -254,6 +254,9 @@ When testing code that dispatches events, you may wish to instruct Laravel to no
 
             // Assert an event was not dispatched...
             Event::assertNotDispatched(OrderFailedToShip::class);
+            
+            // Assert that no events were dispatched...
+            Event::assertNothingDispatched();
         }
     }
 
