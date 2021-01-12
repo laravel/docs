@@ -2693,6 +2693,10 @@ The `report` function will report an exception using your [exception handler](/d
 
     report($e);
 
+The `report` function also accepts a string as an argument. When a string is given to the function, the function will create an exception with the given string as its message:
+
+    report('Something went wrong.');
+
 <a name="method-request"></a>
 #### `request()` {#collection-method}
 
