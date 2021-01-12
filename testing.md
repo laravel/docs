@@ -83,7 +83,7 @@ The `test` Artisan command also provides the `--parallel` option that you may us
 
     php artisan test --parallel
 
-By default, the number of processes equal to the number of available cores on the machine. You may adjust the number of processes by using the `--processes` option:
+By default, the number of processes is equal to the number of available cores on the machine. You may adjust the number of processes by using the `--processes` option:
 
     php artisan test --parallel --processes=4
 
@@ -122,6 +122,7 @@ Using the `ParallelTesting` facade you may specify code to be executed on the `s
             });
 
             ParallelTesting::tearDownTestCase(function ($token, $testCase) {
+                // ..
             });
 
             ParallelTesting::tearDownProcess(function ($token) {
