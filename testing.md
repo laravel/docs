@@ -79,23 +79,29 @@ Any arguments that can be passed to the `phpunit` command may also be passed to 
 <a name="running-tests-in-parallel"></a>
 ### Running Tests In Parallel
 
-The `test` Artisan command also provides the `--parallel` option that you may use to speed up your tests by running tests in parallel:
+By default, Laravel and PHPUnit execute your tests sequentially within a single process. However, you may greatly reduce the amount of time it takes to run your tests by running tests simultaneously across multiple processes. To get started, include the `--parallel` option when executing the `test` Artisan command:
 
     php artisan test --parallel
 
-By default, the number of processes is equal to the number of available cores on the machine. You may adjust the number of processes by using the `--processes` option:
+By default, Laravel will create as many processes as there are available CPU cores on your machine. However, you may adjust the number of processes using the `--processes` option:
 
     php artisan test --parallel --processes=4
 
-When using database traits in your tests, Laravel automatically handles creating and migrating a test database for each process. The test databases will be suffixed with the process token, which is unique per process. For example, if you have 2 processes, Laravel will create and use the `your_db_test_1` and `your_db_test_2` test databases.
+<a name="parallel-testing-and-databases"></a>
+#### Parallel Testing & Databases
 
-By default, the test databases persist between `test` runs, but you may re-create them using the `--refresh-databases` option:
+Laravel automatically handles creating and migrating a test database for each parallel process that is running your tests. The test databases will be suffixed with a process token which is unique per process. For example, if you have two parallel test processes, Laravel will create and use `your_db_test_1` and `your_db_test_2` test databases.
 
-    php artisan test --parallel --refresh-databases
+By default, test databases persist between calls to the `test` Artisan command so that they can be used again by subsequent `test` invocations. However, you may re-create them using the `--recreate-databases` option:
 
-While Laravel works out of the box with parallel testing, you may need to prepare certain resources in your application so they can be used in parallel.
+    php artisan test --parallel --recreate-databases
 
-Using the `ParallelTesting` facade you may specify code to be executed on the `setUp` and `tearDown` of a process or a test case. The given closures receive the `$token` and `$testCase` variables that contain the process token and the current test case, respectively.
+<a name="parallel-testing-hooks"></a>
+#### Parallel Testing Hooks
+
+Occasionally, you may need to prepare certain resources used by your application's tests so they may be safely used by multiple test processes.
+
+Using the `ParallelTesting` facade, you may specify code to be executed on the `setUp` and `tearDown` of a process or test case. The given closures receive the `$token` and `$testCase` variables that contain the process token and the current test case, respectively:
 
     <?php
 
@@ -131,6 +137,6 @@ Using the `ParallelTesting` facade you may specify code to be executed on the `s
         }
     }
 
-If you would like to access to current process token from any other place in your code, you may use the `token` method.
+If you would like to access to current process token from any other place in your application's test code, you may use the `token` method:
 
     $token = ParallelTesting::token();
