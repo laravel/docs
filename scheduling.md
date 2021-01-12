@@ -78,11 +78,11 @@ In addition to scheduling closures, you may also schedule [Artisan commands](/do
 
 When scheduling Artisan commands using the command's class name, you may pass an array of additional command-line arguments that should be provided to the command when it is invoked:
 
-    use App\Console\Commands\SendEmailCommand;
+    use App\Console\Commands\SendEmailsCommand;
 
     $schedule->command('emails:send Taylor --force')->daily();
 
-    $schedule->command(EmailsCommand::class, ['Taylor', '--force'])->daily();
+    $schedule->command(SendEmailsCommand::class, ['Taylor', '--force'])->daily();
 
 <a name="scheduling-queued-jobs"></a>
 ### Scheduling Queued Jobs
