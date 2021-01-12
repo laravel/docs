@@ -24,7 +24,7 @@ Of course, you may always convert Eloquent models or collections to JSON using t
 
 To generate a resource class, you may use the `make:resource` Artisan command. By default, resources will be placed in the `app/Http/Resources` directory of your application. Resources extend the `Illuminate\Http\Resources\Json\JsonResource` class:
 
-    php artisan make:resource User
+    php artisan make:resource UserResource
 
 <a name="generating-resource-collections"></a>
 #### Resource Collections
@@ -42,7 +42,7 @@ To create a resource collection, you should use the `--collection` flag when cre
 
 > {tip} This is a high-level overview of resources and resource collections. You are highly encouraged to read the other sections of this documentation to gain a deeper understanding of the customization and power offered to you by resources.
 
-Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `User` resource class:
+Before diving into all of the options available to you when writing resources, let's first take a high-level look at how resources are used within Laravel. A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `UserResource` resource class:
 
     <?php
 
@@ -50,7 +50,7 @@ Before diving into all of the options available to you when writing resources, l
 
     use Illuminate\Http\Resources\Json\JsonResource;
 
-    class User extends JsonResource
+    class UserResource extends JsonResource
     {
         /**
          * Transform the resource into an array.
@@ -74,7 +74,7 @@ Every resource class defines a `toArray` method which returns the array of attri
 
 Note that we can access model properties directly from the `$this` variable. This is because a resource class will automatically proxy property and method access down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller. The resource accepts the underlying model instance via its constructor:
 
-    use App\Http\Resources\User as UserResource;
+    use App\Http\Resources\UserResource;
     use App\Models\User;
 
     Route::get('/user/{id}', function ($id) {
@@ -86,7 +86,7 @@ Note that we can access model properties directly from the `$this` variable. Thi
 
 If you are returning a collection of resources or a paginated response, you should use the `collection` method provided by your resource class when creating the resource instance in your route or controller:
 
-    use App\Http\Resources\User as UserResource;
+    use App\Http\Resources\UserResource;
     use App\Models\User;
 
     Route::get('/users', function () {
@@ -144,7 +144,7 @@ When returning a resource collection from a route, Laravel resets the collection
 
     use Illuminate\Http\Resources\Json\JsonResource;
 
-    class User extends JsonResource
+    class UserResource extends JsonResource
     {
         /**
          * Indicates if the resource's collection keys should be preserved.
@@ -156,7 +156,7 @@ When returning a resource collection from a route, Laravel resets the collection
 
 When the `preserveKeys` property is set to `true`, collection keys will be preserved when the collection is returned from a route or controller:
 
-    use App\Http\Resources\User as UserResource;
+    use App\Http\Resources\UserResource;
     use App\Models\User;
 
     Route::get('/users', function () {
@@ -166,9 +166,9 @@ When the `preserveKeys` property is set to `true`, collection keys will be prese
 <a name="customizing-the-underlying-resource-class"></a>
 #### Customizing The Underlying Resource Class
 
-Typically, the `$this->collection` property of a resource collection is automatically populated with the result of mapping each item of the collection to its singular resource class. The singular resource class is assumed to be the collection's class name without the trailing `Collection` portion of the class name.
+Typically, the `$this->collection` property of a resource collection is automatically populated with the result of mapping each item of the collection to its singular resource class. The singular resource class is assumed to be the collection's class name without the trailing `Collection` portion of the class name. In addition, depending on your personal preference, the singular resource class may or may not be suffixed with `Resource`. 
 
-For example, `UserCollection` will attempt to map the given user instances into the `User` resource. To customize this behavior, you may override the `$collects` property of your resource collection:
+For example, `UserCollection` will attempt to map the given user instances into the `UserResource` resource. To customize this behavior, you may override the `$collects` property of your resource collection:
 
     <?php
 
@@ -199,7 +199,7 @@ In essence, resources are simple. They only need to transform a given model into
 
     use Illuminate\Http\Resources\Json\JsonResource;
 
-    class User extends JsonResource
+    class UserResource extends JsonResource
     {
         /**
          * Transform the resource into an array.
@@ -221,7 +221,7 @@ In essence, resources are simple. They only need to transform a given model into
 
 Once a resource has been defined, it may be returned directly from a route or controller:
 
-    use App\Http\Resources\User as UserResource;
+    use App\Http\Resources\UserResource;
     use App\Models\User;
 
     Route::get('/user/{id}', function ($id) {
@@ -231,9 +231,9 @@ Once a resource has been defined, it may be returned directly from a route or co
 <a name="relationships"></a>
 #### Relationships
 
-If you would like to include related resources in your response, you may add them to the array returned by your resource's `toArray` method. In this example, we will use the `Post` resource's `collection` method to add the user's blog posts to the resource response:
+If you would like to include related resources in your response, you may add them to the array returned by your resource's `toArray` method. In this example, we will use the `PostResource` resource's `collection` method to add the user's blog posts to the resource response:
 
-    use App\Http\Resources\Post;
+    use App\Http\Resources\PostResource;
 
     /**
      * Transform the resource into an array.
@@ -247,7 +247,7 @@ If you would like to include related resources in your response, you may add the
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'posts' => Post::collection($this->posts),
+            'posts' => PostResource::collection($this->posts),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
@@ -260,7 +260,7 @@ If you would like to include related resources in your response, you may add the
 
 While resources transform a single model into an array, resource collections transform a collection of models into an array. However, it is not absolutely necessary to define a resource collection class for each one of your models since all resources provide a `collection` method to generate an "ad-hoc" resource collection on the fly:
 
-    use App\Http\Resources\User as UserResource;
+    use App\Http\Resources\UserResource;
     use App\Models\User;
 
     Route::get('/users', function () {
@@ -331,7 +331,7 @@ If you would like to use a custom key instead of `data`, you may define a `$wrap
 
     use Illuminate\Http\Resources\Json\JsonResource;
 
-    class User extends JsonResource
+    class UserResource extends JsonResource
     {
         /**
          * The "data" wrapper that should be applied.
@@ -551,7 +551,7 @@ In addition to conditionally loading attributes, you may conditionally include r
 
 The `whenLoaded` method may be used to conditionally load a relationship. In order to avoid unnecessarily loading relationships, this method accepts the name of the relationship instead of the relationship itself:
 
-    use App\Http\Resources\Post;
+    use App\Http\Resources\PostResource;
 
     /**
      * Transform the resource into an array.
@@ -698,7 +698,7 @@ You may also add top-level data when constructing resource instances in your rou
 
 As you have already read, resources may be returned directly from routes and controllers:
 
-    use App\Http\Resources\User as UserResource;
+    use App\Http\Resources\UserResource;
     use App\Models\User;
 
     Route::get('/user/{id}', function ($id) {
@@ -707,7 +707,7 @@ As you have already read, resources may be returned directly from routes and con
 
 However, sometimes you may need to customize the outgoing HTTP response before it is sent to the client. There are two ways to accomplish this. First, you may chain the `response` method onto the resource. This method will return an `Illuminate\Http\JsonResponse` instance, giving you full control over the response's headers:
 
-    use App\Http\Resources\User as UserResource;
+    use App\Http\Resources\UserResource;
     use App\Models\User;
 
     Route::get('/user', function () {
@@ -724,7 +724,7 @@ Alternatively, you may define a `withResponse` method within the resource itself
 
     use Illuminate\Http\Resources\Json\JsonResource;
 
-    class User extends JsonResource
+    class UserResource extends JsonResource
     {
         /**
          * Transform the resource into an array.
