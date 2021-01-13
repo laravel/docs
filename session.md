@@ -181,13 +181,15 @@ Sometimes you may wish to store items in the session for the next request. You m
 
     $request->session()->flash('status', 'Task was successful!');
 
-If you need to persist your flash data for just the current request, you may use the `now` method. If you need to persist your flash data for several requests, you may use the `reflash` method, which will keep all of the flash data for an additional request. If you only need to keep specific flash data, you may use the `keep` method:
+If you need to persist your flash data for several requests, you may use the `reflash` method, which will keep all of the flash data for an additional request. If you only need to keep specific flash data, you may use the `keep` method:
 
-    $request->session()->now('status', 'Task was successful!');
-    
     $request->session()->reflash();
 
     $request->session()->keep(['username', 'email']);
+
+To persist your flash data only for the current request, you may use the `now` method:
+
+    $request->session()->now('status', 'Task was successful!');
 
 <a name="deleting-data"></a>
 ### Deleting Data
