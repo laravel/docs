@@ -1716,6 +1716,7 @@ The `reduceWithKeys` method reduces an associative collection to a single value,
         'gbp' => 1200,
         'eur' => 1000,
     ]);
+
     $ratio = [
         'usd' => 1,
         'gbp' => 1.37,
@@ -1723,7 +1724,7 @@ The `reduceWithKeys` method reduces an associative collection to a single value,
     ];
 
     $collection->reduceWithKeys(function ($carry, $value, $key) use ($ratio) {
-        return $carry + $value * $ratio[$key];
+        return $carry + ($value * $ratio[$key]);
     }, 0);
 
     // 4264
