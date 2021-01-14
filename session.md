@@ -222,9 +222,13 @@ The `forget` method will remove a piece of data from the session. If you would l
 
 Regenerating the session ID is often done in order to prevent malicious users from exploiting a [session fixation](https://owasp.org/www-community/attacks/Session_fixation) attack on your application.
 
-Laravel automatically regenerates the session ID during authentication if you are using one of the Laravel [application starter kits](/docs/{{version}}/starter-kits) or [Laravel Fortify](/docs/{{version}}/fortify); however, if you need to manually regenerate the session ID, you may use the `regenerate` method.
+Laravel automatically regenerates the session ID during authentication if you are using one of the Laravel [application starter kits](/docs/{{version}}/starter-kits) or [Laravel Fortify](/docs/{{version}}/fortify); however, if you need to manually regenerate the session ID, you may use the `regenerate` method:
 
     $request->session()->regenerate();
+
+If you need to regenerate the session ID and remove all data from the session in a single statement, you may use the `invalidate` method:
+
+    $request->session()->invalidate();
 
 <a name="session-blocking"></a>
 ## Session Blocking
