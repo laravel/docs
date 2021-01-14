@@ -226,6 +226,10 @@ Laravel automatically regenerates the session ID during authentication if you ar
 
     $request->session()->regenerate();
 
+If you need to regenerate the session ID and remove all data from the session in a single statement, you may use the `invalidate` method:
+
+    $request->session()->invalidate();
+
 <a name="session-blocking"></a>
 ## Session Blocking
 
