@@ -164,7 +164,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [put](#method-put)
 [random](#method-random)
 [reduce](#method-reduce)
-[reduceWithKeys](#method-reducewithkeys)
 [reject](#method-reject)
 [replace](#method-replace)
 [replaceRecursive](#method-replacerecursive)
