@@ -1706,16 +1706,14 @@ The value for `$carry` on the first iteration is `null`; however, you may specif
 
     // 10
 
-<a name="method-reducewithkeys"></a>
-#### `reduceWithKeys()` {#collection-method}
-
-The `reduceWithKeys` method reduces an associative collection to a single value, passing the result of previous iterations along with each key / value pair to the given callback:
+The `reduce` method also passes array keys in associative collections to the given callback:
 
     $collection = collect([
         'usd' => 1400,
         'gbp' => 1200,
         'eur' => 1000,
     ]);
+
     $ratio = [
         'usd' => 1,
         'gbp' => 1.37,
@@ -1723,8 +1721,8 @@ The `reduceWithKeys` method reduces an associative collection to a single value,
     ];
 
     $collection->reduceWithKeys(function ($carry, $value, $key) use ($ratio) {
-        return $carry + $value * $ratio[$key];
-    }, 0);
+        return $carry + ($value * $ratio[$key]);
+    });
 
     // 4264
 
