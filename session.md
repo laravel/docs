@@ -187,6 +187,10 @@ If you need to persist your flash data for several requests, you may use the `re
 
     $request->session()->keep(['username', 'email']);
 
+To persist your flash data only for the current request, you may use the `now` method:
+
+    $request->session()->now('status', 'Task was successful!');
+
 <a name="deleting-data"></a>
 ### Deleting Data
 

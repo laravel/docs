@@ -487,28 +487,28 @@ The `ipAddress` method creates an `INTEGER` equivalent column:
 <a name="column-method-json"></a>
 #### `json()` {#collection-method}
 
-The `json` method creates an `JSON` equivalent column:
+The `json` method creates a `JSON` equivalent column:
 
     $table->json('options');
 
 <a name="column-method-jsonb"></a>
 #### `jsonb()` {#collection-method}
 
-The `jsonb` method creates an `JSONB` equivalent column:
+The `jsonb` method creates a `JSONB` equivalent column:
 
     $table->jsonb('options');
 
 <a name="column-method-lineString"></a>
 #### `lineString()` {#collection-method}
 
-The `lineString` method creates an `LINESTRING` equivalent column:
+The `lineString` method creates a `LINESTRING` equivalent column:
 
     $table->lineString('positions');
 
 <a name="column-method-longText"></a>
 #### `longText()` {#collection-method}
 
-The `longText` method creates an `LONGTEXT` equivalent column:
+The `longText` method creates a `LONGTEXT` equivalent column:
 
     $table->longText('description');
 
@@ -529,14 +529,14 @@ The `mediumIncrements` method creates an auto-incrementing `UNSIGNED MEDIUMINT` 
 <a name="column-method-mediumInteger"></a>
 #### `mediumInteger()` {#collection-method}
 
-The `mediumInteger` method creates an `MEDIUMINT` equivalent column:
+The `mediumInteger` method creates a `MEDIUMINT` equivalent column:
 
     $table->mediumInteger('votes');
 
 <a name="column-method-mediumText"></a>
 #### `mediumText()` {#collection-method}
 
-The `mediumText` method creates an `MEDIUMTEXT` equivalent column:
+The `mediumText` method creates a `MEDIUMTEXT` equivalent column:
 
     $table->mediumText('description');
 
@@ -552,21 +552,21 @@ This method is intended to be used when defining the columns necessary for a pol
 <a name="column-method-multiLineString"></a>
 #### `multiLineString()` {#collection-method}
 
-The `multiLineString` method creates an `MULTILINESTRING` equivalent column:
+The `multiLineString` method creates a `MULTILINESTRING` equivalent column:
 
     $table->multiLineString('positions');
 
 <a name="column-method-multiPoint"></a>
 #### `multiPoint()` {#collection-method}
 
-The `multiPoint` method creates an `MULTIPOINT` equivalent column:
+The `multiPoint` method creates a `MULTIPOINT` equivalent column:
 
     $table->multiPoint('positions');
 
 <a name="column-method-multiPolygon"></a>
 #### `multiPolygon()` {#collection-method}
 
-The `multiPolygon` method creates an `MULTIPOLYGON` equivalent column:
+The `multiPolygon` method creates a `MULTIPOLYGON` equivalent column:
 
     $table->multiPolygon('positions');
 
@@ -594,14 +594,14 @@ The method is similar to the [uuidMorphs](#column-method-uuidMorphs) method; how
 <a name="column-method-point"></a>
 #### `point()` {#collection-method}
 
-The `point` method creates an `POINT` equivalent column:
+The `point` method creates a `POINT` equivalent column:
 
     $table->point('position');
 
 <a name="column-method-polygon"></a>
 #### `polygon()` {#collection-method}
 
-The `polygon` method creates an `POLYGON` equivalent column:
+The `polygon` method creates a `POLYGON` equivalent column:
 
     $table->polygon('position');
 
@@ -615,7 +615,7 @@ The `rememberToken` method creates a nullable, `VARCHAR(100)` equivalent column 
 <a name="column-method-set"></a>
 #### `set()` {#collection-method}
 
-The `set` method creates an `SET` equivalent column with the given list of valid values:
+The `set` method creates a `SET` equivalent column with the given list of valid values:
 
     $table->set('flavors', ['strawberry', 'vanilla']);
 
@@ -629,7 +629,7 @@ The `smallIncrements` method creates an auto-incrementing `UNSIGNED SMALLINT` eq
 <a name="column-method-smallInteger"></a>
 #### `smallInteger()` {#collection-method}
 
-The `smallInteger` method creates an `SMALLINT` equivalent column:
+The `smallInteger` method creates a `SMALLINT` equivalent column:
 
     $table->smallInteger('votes');
 
@@ -650,42 +650,42 @@ The `softDeletes` method adds a nullable `deleted_at` `TIMESTAMP` equivalent col
 <a name="column-method-string"></a>
 #### `string()` {#collection-method}
 
-The `string` method creates an `VARCHAR` equivalent column of the given length:
+The `string` method creates a `VARCHAR` equivalent column of the given length:
 
     $table->string('name', 100);
 
 <a name="column-method-text"></a>
 #### `text()` {#collection-method}
 
-The `text` method creates an `TEXT` equivalent column:
+The `text` method creates a `TEXT` equivalent column:
 
     $table->text('description');
 
 <a name="column-method-timeTz"></a>
 #### `timeTz()` {#collection-method}
 
-The `timeTz` method creates an `TIME` (with timezone) equivalent column with an optional precision (total digits):
+The `timeTz` method creates a `TIME` (with timezone) equivalent column with an optional precision (total digits):
 
     $table->timeTz('sunrise', $precision = 0);
 
 <a name="column-method-time"></a>
 #### `time()` {#collection-method}
 
-The `time` method creates an `TIME` equivalent column with an optional precision (total digits):
+The `time` method creates a `TIME` equivalent column with an optional precision (total digits):
 
     $table->time('sunrise', $precision = 0);
 
 <a name="column-method-timestampTz"></a>
 #### `timestampTz()` {#collection-method}
 
-The `timestampTz` method creates an `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits):
+The `timestampTz` method creates a `TIMESTAMP` (with timezone) equivalent column with an optional precision (total digits):
 
     $table->timestampTz('added_at', $precision = 0);
 
 <a name="column-method-timestamp"></a>
 #### `timestamp()` {#collection-method}
 
-The `timestamp` method creates an `TIMESTAMP` equivalent column with an optional precision (total digits):
+The `timestamp` method creates a `TIMESTAMP` equivalent column with an optional precision (total digits):
 
     $table->timestamp('added_at', $precision = 0);
 
@@ -713,7 +713,7 @@ The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equi
 <a name="column-method-tinyInteger"></a>
 #### `tinyInteger()` {#collection-method}
 
-The `tinyInteger` method creates an `TINYINT` equivalent column:
+The `tinyInteger` method creates a `TINYINT` equivalent column:
 
     $table->tinyInteger('votes');
 
@@ -771,14 +771,14 @@ This method is intended to be used when defining the columns necessary for a pol
 <a name="column-method-uuid"></a>
 #### `uuid()` {#collection-method}
 
-The `uuid` method creates an `UUID` equivalent column:
+The `uuid` method creates a `UUID` equivalent column:
 
     $table->uuid('id');
 
 <a name="column-method-year"></a>
 #### `year()` {#collection-method}
 
-The `year` method creates an `YEAR` equivalent column:
+The `year` method creates a `YEAR` equivalent column:
 
     $table->year('birth_year');
 
