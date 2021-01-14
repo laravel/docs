@@ -7,7 +7,6 @@
     - [Retrieving Data](#retrieving-data)
     - [Storing Data](#storing-data)
     - [Flash Data](#flash-data)
-    - [Incrementing And Decrementing Data](#incrementing-and-decrementing-data)
     - [Deleting Data](#deleting-data)
     - [Regenerating The Session ID](#regenerating-the-session-id)
 - [Session Blocking](#session-blocking)
@@ -175,6 +174,19 @@ The `pull` method will retrieve and delete an item from the session in a single 
 
     $value = $request->session()->pull('key', 'default');
 
+<a name="#incrementing-and-decrementing-session-values"></a>
+#### Incrementing & Decrementing Session Values
+
+If your session data contains an integer you wish to increment or decrement, you may use the `increment` and `decrement` methods:
+
+    $request->session()->increment('count'); 
+
+    $request->session()->increment('count', $incrementBy = 2);
+
+    $request->session()->decrement('count');
+
+    $request->session()->decrement('count', $decrementBy = 2);
+
 <a name="flash-data"></a>
 ### Flash Data
 
@@ -191,19 +203,6 @@ If you need to persist your flash data for several requests, you may use the `re
 To persist your flash data only for the current request, you may use the `now` method:
 
     $request->session()->now('status', 'Task was successful!');
-
-<a name="#incrementing-and-decrementing-data"></a>
-### Incrementing And Decrementing Data
-
-If your session data contains an integer you wish to increment by 1 or more, you may use the `increment` method:
-
-    $request->session()->increment('count'); // Increment by 1
-    $request->session()->increment('count', 2);
-
-If your session data contains an integer you wish to decrement by 1 or more, you may use the `decrement` method:
-
-    $request->session()->decrement('count'); // Decrement by 1
-    $request->session()->decrement('count', 2);
 
 <a name="deleting-data"></a>
 ### Deleting Data
