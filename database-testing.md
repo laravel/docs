@@ -520,9 +520,9 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
 
     namespace Tests\Feature;
 
+    use Database\Seeders\OrderStatusSeeder;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use OrderStatusSeeder;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -546,23 +546,31 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
         }
     }
 
-Alternatively, you may instruct the `RefreshDatabase` trait to automatically seed the database before each test. You may accomplish this by defining a `$seed` property on your test class:
+Alternatively, you may instruct the `RefreshDatabase` trait to automatically seed the database before each test. You may accomplish this by defining a `$seed` property on your test class, or use a specific seeder using the `$seeder` property:
 
     <?php
 
     namespace Tests\Feature;
 
+    use Database\Seeders\OrderStatusSeeder;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
     {
         /**
-         * Indicates whether the database should be seeded before each test.
+         * Indicates whether the default seeder should run before each test.
          *
          * @var bool
          */
         protected $seed = true;
+
+        /**
+         * Run a specific seeder before each test.
+         *
+         * @var string
+         */
+        protected $seeder = OrderStatusSeeder::class;
 
         // ...
     }
