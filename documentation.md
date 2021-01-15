@@ -88,9 +88,5 @@
     - [Scout](/docs/{{version}}/scout)
     - [Socialite](/docs/{{version}}/socialite)
     - [Telescope](/docs/{{version}}/telescope)
-<<<<<<< HEAD
-- [API Documentation](/api/9.x)
-=======
     - [Valet](/docs/{{version}}/valet)
-- [API Documentation](/api/8.x)
->>>>>>> 8.x
+- [API Documentation](/api/9.x)
