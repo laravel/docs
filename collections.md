@@ -164,7 +164,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [put](#method-put)
 [random](#method-random)
 [reduce](#method-reduce)
-[reduceWithKeys](#method-reducewithkeys)
 [reject](#method-reject)
 [replace](#method-replace)
 [replaceRecursive](#method-replacerecursive)
@@ -1706,10 +1705,7 @@ The value for `$carry` on the first iteration is `null`; however, you may specif
 
     // 10
 
-<a name="method-reducewithkeys"></a>
-#### `reduceWithKeys()` {#collection-method}
-
-The `reduceWithKeys` method reduces an associative collection to a single value, passing the result of previous iterations along with each key / value pair to the given callback:
+The `reduce` method also passes array keys in associative collections to the given callback:
 
     $collection = collect([
         'usd' => 1400,
@@ -1725,7 +1721,7 @@ The `reduceWithKeys` method reduces an associative collection to a single value,
 
     $collection->reduceWithKeys(function ($carry, $value, $key) use ($ratio) {
         return $carry + ($value * $ratio[$key]);
-    }, 0);
+    });
 
     // 4264
 
