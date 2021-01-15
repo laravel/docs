@@ -546,13 +546,12 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
         }
     }
 
-Alternatively, you may instruct the `RefreshDatabase` trait to automatically seed the database before each test. You may accomplish this by defining a `$seed` property on your test class, or use a specific seeder using the `$seeder` property:
+Alternatively, you may instruct the `RefreshDatabase` trait to automatically seed the database before each test. You may accomplish this by defining a `$seed` property on your test class:
 
     <?php
 
     namespace Tests\Feature;
 
-    use Database\Seeders\OrderStatusSeeder;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Tests\TestCase;
 
@@ -565,15 +564,19 @@ Alternatively, you may instruct the `RefreshDatabase` trait to automatically see
          */
         protected $seed = true;
 
-        /**
-         * Run a specific seeder before each test.
-         *
-         * @var string
-         */
-        protected $seeder = OrderStatusSeeder::class;
-
         // ...
     }
+
+When the `$seed` property is `true`, the test will run the `Database\Seeders\DatabaseSeeder` class before each test. However, you may specify a specific seeder that should be executed by defining a `$seeder` property on your test class:
+
+    use Database\Seeders\OrderStatusSeeder;
+
+    /**
+     * Run a specific seeder before each test.
+     *
+     * @var string
+     */
+    protected $seeder = OrderStatusSeeder::class;
 
 <a name="available-assertions"></a>
 ## Available Assertions
