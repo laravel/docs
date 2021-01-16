@@ -567,7 +567,7 @@ Alternatively, you may instruct the `RefreshDatabase` trait to automatically see
         // ...
     }
 
-When the `$seed` property is `true`, the test will run the `Database\Seeders\DatabaseSeeder` class before each test. However, you may specify a specific seeder that should be executed by defining a `$seeder` property on your test class:
+When the `$seed` property is `true`, the test will run the `Database\Seeders\DatabaseSeeder` class before each test. However, you may specify a specific seeder that should be executed by defining a `$seed` property on your test class:
 
     use Database\Seeders\OrderStatusSeeder;
 
@@ -576,7 +576,7 @@ When the `$seed` property is `true`, the test will run the `Database\Seeders\Dat
      *
      * @var string
      */
-    protected $seeder = OrderStatusSeeder::class;
+    protected $seed = OrderStatusSeeder::class;
 
 <a name="available-assertions"></a>
 ## Available Assertions
