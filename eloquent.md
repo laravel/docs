@@ -660,7 +660,7 @@ When assigning JSON columns, each column's mass assignable key must be specified
      *
      * @var array
      */
-    $fillable = [
+    protected $fillable = [
         'options->enabled',
     ];
 
