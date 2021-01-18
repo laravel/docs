@@ -449,7 +449,7 @@ Dusk selectors allow you to focus on writing effective tests rather than remembe
 <a name="retrieving-setting-values"></a>
 #### Retrieving & Setting Values
 
-Dusk provides several methods for interacting with the current display text, value, and attributes of elements on the page. For example, to get the "value" of an element that matches a given CSS or Dusk selector, use the `value` method:
+Dusk provides several methods for interacting with the current value, display text, and attributes of elements on the page. For example, to get the "value" of an element that matches a given CSS or Dusk selector, use the `value` method:
 
     // Retrieve the value...
     $value = $browser->value('selector');
