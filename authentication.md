@@ -39,6 +39,8 @@ Providers define how users are retrieved from your persistent storage. Laravel s
 
 Your application's authentication configuration file is located at `config/auth.php`. This file contains several well documented options for tweaking the behavior of Laravel's authentication services.
 
+> {tip} Guards and providers should not be confused with "roles" and "permissions". To learn more about these topics, please refer to the [authorization](/docs/{{version}}/authorization) documentation.
+
 <a name="starter-kits"></a>
 ### Starter Kits
 
