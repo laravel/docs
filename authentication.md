@@ -37,6 +37,8 @@ At its core, Laravel's authentication facilities are made up of "guards" and "pr
 
 Providers define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using [Eloquent](/docs/{{version}}/eloquent) and the database query builder. However, you are free to define additional providers as needed for your application.
 
+Do not confuse guards and providers with "roles" and "permissions". For those topics, refer to [Authorization](/docs/{{version}}/authorization) documentation, with Gates (synonym to "permissions") and Policies. You may group Gates into Roles manually, and/or use an external community package on top of default Laravel Authorization layer, to handle permissions more conveniently.
+
 Your application's authentication configuration file is located at `config/auth.php`. This file contains several well documented options for tweaking the behavior of Laravel's authentication services.
 
 <a name="starter-kits"></a>
