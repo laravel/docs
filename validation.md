@@ -930,7 +930,7 @@ If you would like to customize the query executed by the validation rule, you ma
         'email' => [
             'required',
             Rule::exists('staff')->where(function ($query) {
-                $query->where('account_id', 1);
+                return $query->where('account_id', 1);
             }),
         ],
     ]);
