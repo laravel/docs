@@ -57,7 +57,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 </style>
 
 <div id="software-list" markdown="1">
-- Ubuntu 18.04 (`master` branch)
+- Ubuntu 18.04 (`main` branch)
 - Ubuntu 20.04 (`20.04` branch)
 - Git
 - PHP 8.0
