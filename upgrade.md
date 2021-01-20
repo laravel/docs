@@ -167,7 +167,7 @@ The `listen` method of the `Illuminate\Contracts\Events\Dispatcher` contract has
 
     public function listen($events, $listener = null);
 
-#### The `EventServiceProvider` Contract
+#### The `EventServiceProvider` Class
 
 **Likelihood Of Impact: High**
 
