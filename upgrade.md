@@ -167,7 +167,16 @@ The `listen` method of the `Illuminate\Contracts\Events\Dispatcher` contract has
 
     public function listen($events, $listener = null);
 
+#### The `EventServiceProvider` Contract
+
+**Likelihood Of Impact: High**
+
+The registering of event listeners has been moved from `Illuminate\Foundation\Support\Providers::boot` to `Illuminate\Foundation\Support\Providers::register`. If the EventServiceProvider implements a `register` function it must call the `parent::register()` as well to make sure
+event listeners are registered properly.
+
 <a name="framework"></a>
+
+
 ### Framework
 
 <a name="maintenance-mode-updates"></a>
