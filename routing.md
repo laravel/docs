@@ -520,6 +520,18 @@ Using the `Route::fallback` method, you may define a route that will be executed
 
 > {note} The fallback route should always be the last route registered by your application.
 
+You can also mark defined routes as fallbacks. These routes will be checked in last when the router tries to match a route with the current request. You can just use the `->fallback()` method like this :
+
+    Route::get('{wildcard}', function ($wildcard) {
+        return 'Just caught '.$wildcard;
+    })->fallback();
+
+    Route::get('hello', function () {
+        return 'Hey you!';
+    });
+
+This way, the first route will match everytime except when you reach the `/hello` url.
+
 <a name="rate-limiting"></a>
 ## Rate Limiting
 
