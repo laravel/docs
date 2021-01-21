@@ -868,6 +868,8 @@ use Illuminate\Database\DBAL\TimestampType;
 ],
 ```
 
+> {note} If your application is using Microsoft SQL Server, please ensure that you install `doctrine/dbal:^3.0`.
+
 <a name="updating-column-attributes"></a>
 #### Updating Column Attributes
 
