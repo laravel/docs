@@ -158,6 +158,8 @@ If your model's primary key is not an integer, you should define a protected `$k
          */
         protected $keyType = 'string';
     }
+    
+> {note} Please note that composite primary keys are not supported for Eloquent models.
 
 <a name="timestamps"></a>
 ### Timestamps
