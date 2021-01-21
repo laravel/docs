@@ -71,6 +71,9 @@ In addition to the `phpunit` command, you may use the `test` Artisan command to 
 
     php artisan test
 
+Run a single test:
+    ```php artisan test --filter ExampleTest ```
+
 Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
 
     php artisan test --testsuite=Feature --stop-on-failure
