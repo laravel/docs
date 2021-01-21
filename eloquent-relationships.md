@@ -936,6 +936,20 @@ You may determine the morph alias of a given model at runtime using the model's 
 
 > {note} When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
 
+Furthermore, you may use an anonymous PHP class when giving a Model to your relation definition.
+
+```
+    use Illuminate\Database\Eloquent\Model;
+    
+    $customerModel = new class extends Model {
+        protected $table = 'customers';
+    }
+    
+    Order::resolveRelationUsing('customer', function ($orderModel) use ($customerModel) {
+        return $orderModel->belongsTo($customerModel, 'customer_id');
+    });
+```
+
 <a name="dynamic-relationships"></a>
 ### Dynamic Relationships
 
