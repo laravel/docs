@@ -153,6 +153,8 @@ To keep the assets up-to-date and avoid issues in future updates, you may add th
         }
     }
 
+> {note} Please note that all code related to Horizon's UI is not part of the public API and does not fall under Laravel's SemVer policy. Customizing this is at your own risk and you should verify your UI is still working after updating.
+
 <a name="running-horizon"></a>
 ## Running Horizon
 
