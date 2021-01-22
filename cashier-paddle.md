@@ -186,41 +186,20 @@ For more information on pay links, you may review [the Paddle API documentation 
 
 > {note} After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
 
-<a name="pay-links-in-an-spa"></a>
-#### Pay Links in an SPA
+<a name="manually-rendering-pay-links"></a>
+#### Manually Rendering Pay Links
 
-If you're using Cashier Paddle in an SPA like Vue.js you'll need to write an endpoint that retrieves a pay link URL:
+You may also manually render a pay link without using Laravel's built-in Blade components. To get started, generate the pay link URL as demonstrated in previous examples:
 
-    use App\Models\User;
-    use Illuminate\Http\Request;
+    $payLink = $request->user()->newSubscription('default', $premium = 34567)
+        ->returnTo(route('home'))
+        ->create();
 
-    Route::get('/user/subscribe-link', function (Request $request) {
-        $payLink = $request->user()->newSubscription('default', $premium = 34567)
-            ->returnTo(route('home'))
-            ->create();
+Next, simply attach the pay link URL to an `a` element in your HTML:
 
-        return response()->json(['payLink' => $payLink]);
-    });
-
-Make sure you have a place in your HTML where to render the button:
-
-```html
-<div id="subscribeButton"></div>
-```
-
-Then retrieve it through, for example, an axios call and attach it to the DOM:
-
-```js
-axios.get('/user/subscribe-link')
-    .then((response) => {
-        const payLink = response.data.payLink;
-
-        document.getElementById('subscribeButton').innerHTML =
-            `<a href="#!" class="ml-4 paddle_button" data-override="' + payLink + '">
-                Paddle Checkout
-            </a>`
-    });
-```
+    <a href="#!" class="ml-4 paddle_button" data-override="{{ $payLink }}">
+        Paddle Checkout
+    </a>
 
 <a name="inline-checkout"></a>
 ### Inline Checkout
@@ -253,47 +232,24 @@ Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/
 
 > {note} If you would like to also use the `passthrough` option when specifying custom options, you should provide a key / value array as its value. Cashier will automatically handle converting the array to a JSON string. In addition, the `customer_id` passthrough option is reserved for internal Cashier usage.
 
-<a name="inline-checkout-in-an-spa"></a>
-#### Inline Checkout in an SPA
+<a name="manually-rendering-an-inline-checkout"></a>
+#### Manually Rendering An Inline Checkout
 
-If you're using Cashier Paddle in an SPA like Vue.js you'll need to write a `PaddleCheckout.vue` component that renders the inline checkout:
+You may also manually render an inline checkout without using Laravel's built-in Blade components. To get started, generate the pay link URL [as demonstrated in previous examples](#pay-links).
 
-```js
-<template>
-    <div :class="identifier"></div>
-</template>
+Next, you may use Paddle.js to initialize the checkout. To keep this example simple, we will demonstrate this using [Alpine.js](https://github.com/alpinejs/alpine); however, you are free to translate this example to your own frontend stack:
 
-<script>
-export default {
-    props: ['id', 'options'],
-
-    data() {
-        return {
-            identifier: this.id ?? 'paddle-checkout'
-        }
-    },
-
-    mounted: function () {
-        axios.get('/pay-link')
-            .then((response) => {
-                Paddle.Checkout.open({
-                    override: response.data.payLink,
-                    method: 'inline',
-                    frameTarget: this.identifier,
-                    frameInitialHeight: 366,
-                    frameStyle: 'width: 100%; background-color: transparent; border: none;',
-                    ...this.options
-                });
-            });
-    }
-}
-</script>
-```
-
-Then render the inline checkout like so:
-
-```js
-<paddle-checkout />
+```html
+<div class="paddle-checkout" x-init="
+    Paddle.Checkout.open({
+        override: {{ $payLink }},
+        method: 'inline',
+        frameTarget: 'paddle-checkout',
+        frameInitialHeight: 366,
+        frameStyle: 'width: 100%; background-color: transparent; border: none;'
+    });
+">
+</div>
 ```
 
 <a name="user-identification"></a>
