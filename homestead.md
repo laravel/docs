@@ -158,7 +158,7 @@ If this command fails, make sure your Vagrant installation is up to date.
 <a name="installing-homestead"></a>
 #### Installing Homestead
 
-You may install Homestead by cloning the Homstead repository onto your host machine. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead virtual machine will serve as the host to all of your Laravel applications. Throughout this documentation, we will refer to this directory as your "Homestead directory":
+You may install Homestead by cloning the Homestead repository onto your host machine. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead virtual machine will serve as the host to all of your Laravel applications. Throughout this documentation, we will refer to this directory as your "Homestead directory":
 
 ```bash
 git clone https://github.com/laravel/homestead.git ~/Homestead
@@ -235,7 +235,7 @@ You may also pass any options supported by Vagrant's [Synced Folders](https://ww
 <a name="configuring-nginx-sites"></a>
 ### Configuring Nginx Sites
 
-Not familiar with Nginx? No problem. Your `Homstead.yaml` file's `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel application you are working on:
+Not familiar with Nginx? No problem. Your `Homestead.yaml` file's `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel application you are working on:
 
     sites:
         - map: homestead.test
