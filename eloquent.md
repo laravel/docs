@@ -159,7 +159,8 @@ If your model's primary key is not an integer, you should define a protected `$k
         protected $keyType = 'string';
     }
 
-#### "Composite Primary Keys"
+<a name="composite-primary-keys"></a>
+#### "Composite" Primary Keys
 
 Eloquent requires each model to have at least one uniquely identifying "ID" that can serve as its primary key. "Composite" primary keys are not supported by Eloquent models. However, you are free to add additional multi-column, unique indexes to your database tables in addition to the table's uniquely identifying primary key.
 
