@@ -240,7 +240,7 @@ You may also manually render an inline checkout without using Laravel's built-in
 Next, you may use Paddle.js to initialize the checkout. To keep this example simple, we will demonstrate this using [Alpine.js](https://github.com/alpinejs/alpine); however, you are free to translate this example to your own frontend stack:
 
 ```html
-<div class="paddle-checkout" x-init="
+<div class="paddle-checkout" x-data="{}" x-init="
     Paddle.Checkout.open({
         override: {{ $payLink }},
         method: 'inline',
