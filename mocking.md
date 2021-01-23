@@ -69,7 +69,7 @@ Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies
 
     // ...
 
-    $spy->shouldHaveReceived('process')
+    $spy->shouldHaveReceived('process');
 
 <a name="mocking-facades"></a>
 ## Mocking Facades
