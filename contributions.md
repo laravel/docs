@@ -1,6 +1,7 @@
 # Contribution Guide
 
 - [Bug Reports](#bug-reports)
+- [Support Questions](#support-questions)
 - [Core Development Discussion](#core-development-discussion)
 - [Which Branch?](#which-branch)
 - [Compiled Assets](#compiled-assets)
@@ -8,6 +9,7 @@
 - [Coding Style](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
+- [Code of Conduct](#code-of-conduct)
 
 <a name="bug-reports"></a>
 ## Bug Reports
@@ -16,7 +18,7 @@ To encourage active collaboration, Laravel strongly encourages pull requests, no
 
 However, if you file a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself - and others - to replicate the bug and develop a fix.
 
-Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem.
+Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem. If you want to chip in, you can help out by fixing [any bugs listed in our issue trackers](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel). You must be authenticated with GitHub to view all of Laravel's issues.
 
 The Laravel source code is managed on GitHub, and there are repositories for each of the Laravel projects:
 
@@ -24,18 +26,37 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Application](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
 - [Laravel Documentation](https://github.com/laravel/docs)
-- [Laravel Cashier](https://github.com/laravel/cashier)
-- [Laravel Cashier for Braintree](https://github.com/laravel/cashier-braintree)
+- [Laravel Dusk](https://github.com/laravel/dusk)
+- [Laravel Cashier Stripe](https://github.com/laravel/cashier)
+- [Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle)
+- [Laravel Echo](https://github.com/laravel/echo)
 - [Laravel Envoy](https://github.com/laravel/envoy)
 - [Laravel Framework](https://github.com/laravel/framework)
 - [Laravel Homestead](https://github.com/laravel/homestead)
 - [Laravel Homestead Build Scripts](https://github.com/laravel/settler)
 - [Laravel Horizon](https://github.com/laravel/horizon)
+- [Laravel Jetstream](https://github.com/laravel/jetstream)
 - [Laravel Passport](https://github.com/laravel/passport)
+- [Laravel Sanctum](https://github.com/laravel/sanctum)
 - [Laravel Scout](https://github.com/laravel/scout)
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
-- [Laravel Website](https://github.com/laravel/laravel.com)
+- [Laravel Website](https://github.com/laravel/laravel.com-next)
+</div>
+
+<a name="support-questions"></a>
+## Support Questions
+
+Laravel's GitHub issue trackers are not intended to provide Laravel help or support. Instead, use one of the following channels:
+
+<div class="content-list" markdown="1">
+- [GitHub Discussions](https://github.com/laravel/framework/discussions)
+- [Laracasts Forums](https://laracasts.com/discuss)
+- [Laravel.io Forums](https://laravel.io/forum)
+- [StackOverflow](https://stackoverflow.com/questions/tagged/laravel)
+- [Discord](https://discordapp.com/invite/KxwQuKb)
+- [Larachat](https://larachat.co)
+- [IRC](https://webchat.freenode.net/?nick=artisan&channels=%23laravel&prompt=1)
 </div>
 
 <a name="core-development-discussion"></a>
@@ -50,7 +71,7 @@ Informal discussion regarding bugs, new features, and implementation of existing
 
 **All** bug fixes should be sent to the latest stable branch or to the [current LTS branch](/docs/{{version}}/releases#support-policy). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
-**Minor** features that are **fully backwards compatible** with the current release may be sent to the latest stable branch.
+**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch.
 
 **Major** new features should always be sent to the `master` branch, which contains the upcoming release.
 
@@ -59,7 +80,7 @@ If you are unsure if your feature qualifies as a major or minor, please ask Tayl
 <a name="compiled-assets"></a>
 ## Compiled Assets
 
-If you are submitting a change that will affect a compiled file, such as most of the files in `resources/sass` or `resources/js` of the `laravel/laravel` repository, do not commit the compiled files. Due to their large size, they cannot realistically be reviewed by a maintainer. This could be exploited as a way to inject malicious code into Laravel. In order to defensively prevent this, all compiled files will be generated and committed by Laravel maintainers.
+If you are submitting a change that will affect a compiled file, such as most of the files in `resources/css` or `resources/js` of the `laravel/laravel` repository, do not commit the compiled files. Due to their large size, they cannot realistically be reviewed by a maintainer. This could be exploited as a way to inject malicious code into Laravel. In order to defensively prevent this, all compiled files will be generated and committed by Laravel maintainers.
 
 <a name="security-vulnerabilities"></a>
 ## Security Vulnerabilities
@@ -83,6 +104,7 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
      * @param  \Closure|string|null  $concrete
      * @param  bool  $shared
      * @return void
+     *
      * @throws \Exception
      */
     public function bind($abstract, $concrete = null, $shared = false)
@@ -94,3 +116,15 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
 ### StyleCI
 
 Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
+
+<a name="code-of-conduct"></a>
+## Code of Conduct
+
+The Laravel code of conduct is derived from the Ruby code of conduct. Any violations of the code of conduct may be reported to Taylor Otwell (taylor@laravel.com):
+
+<div class="content-list" markdown="1">
+- Participants will be tolerant of opposing views.
+- Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
+- When interpreting the words and actions of others, participants should always assume good intentions.
+- Behavior that can be reasonably considered harassment will not be tolerated.
+</div>
