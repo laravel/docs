@@ -228,7 +228,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [cookie](#method-cookie)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
+[encrypt](#method-encrypt)
 [dd](#method-dd)
+[decrypt](#method-decrypt)
 [dispatch](#method-dispatch)
 [dispatch_now](#method-dispatch-now)
 [dump](#method-dump)
@@ -2553,6 +2555,13 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 
     $token = csrf_token();
 
+<a name="method-encrypt"></a>
+#### `encrypt()` {#collection-method}
+
+The `encrypt` function [encrypts](/docs/{{version}}/encryption#encrypting-a-value) the given value:
+
+    encrypt($value);
+
 <a name="method-dd"></a>
 #### `dd()` {#collection-method}
 
@@ -2563,6 +2572,13 @@ The `dd` function dumps the given variables and ends execution of the script:
     dd($value1, $value2, $value3, ...);
 
 If you do not want to halt the execution of your script, use the [`dump`](#method-dump) function instead.
+
+<a name="method-decrypt"></a>
+#### `decrypt()` {#collection-method}
+
+The `decrypt` function [decrypts](/docs/{{version}}/encryption#decrypting-a-value) the given value:
+
+    decrypt($value);
 
 <a name="method-dispatch"></a>
 #### `dispatch()` {#collection-method}
