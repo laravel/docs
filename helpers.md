@@ -240,6 +240,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [old](#method-old)
 [optional](#method-optional)
 [policy](#method-policy)
+[queueable](#method-queueable)
 [redirect](#method-redirect)
 [report](#method-report)
 [request](#method-request)
@@ -2674,6 +2675,17 @@ The `optional` function also accepts a closure as its second argument. The closu
 The `policy` method retrieves a [policy](/docs/{{version}}/authorization#creating-policies) instance for a given class:
 
     $policy = policy(App\Models\User::class);
+
+<a name="method-queueable"></a>
+#### `queueable()` {#collection-method}
+
+The `queueable` method creates a new [queued closure event listener](/docs/{{version}}/events#queuable-anonymous-event-listeners):
+
+    $listener = queueable(function (PodcastProcessed $event) {
+        //
+    }));
+
+> {note} Unlike most other helpers, `queueable` is not registered globally. To use it in your application, you must import it with `use function Illuminate\Events\queueable;`.
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
