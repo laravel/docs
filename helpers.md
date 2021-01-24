@@ -2721,11 +2721,13 @@ The `policy` method retrieves a [policy](/docs/{{version}}/authorization#creatin
 
 The `queueable` method creates a new [queued closure event listener](/docs/{{version}}/events#queuable-anonymous-event-listeners):
 
+    use function Illuminate\Events\queueable;
+
     $listener = queueable(function (PodcastProcessed $event) {
         //
     }));
 
-> {note} Unlike most other helpers, `queueable` is not registered globally. To use it in your application, you must import it with `use function Illuminate\Events\queueable;`.
+> {note} Unlike most other helpers, `queueable` is not registered globally. To use it, you must import it as shown above.
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
