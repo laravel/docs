@@ -109,6 +109,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
 [Str::padRight](#method-str-padright)
+[Str::parseCallback](#method-str-parsecallback)
 [Str::plural](#method-str-plural)
 [Str::random](#method-str-random)
 [Str::replaceArray](#method-str-replace-array)
@@ -1335,6 +1336,17 @@ The `Str::padRight` method wraps PHP's `str_pad` function, padding the right sid
     $padded = Str::padRight('James', 10);
 
     // 'James     '
+
+<a name="method-str-parsecallback"></a>
+#### `Str::parseCallback()` {#collection-method}
+
+The `Str::parseCallback` method parses a `Class@method` style callback into a class name and method name:
+
+    use Illuminate\Support\Str;
+
+    $callback = Str::parseCallback('UserController@show');
+
+    // ['UserController', 'show']
 
 <a name="method-str-plural"></a>
 #### `Str::plural()` {#collection-method}
