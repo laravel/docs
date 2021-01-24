@@ -122,6 +122,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
 [Str::substr](#method-str-substr)
+[Str::substrCount](#method-str-substrcount)
 [Str::title](#method-title-case)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
@@ -1503,6 +1504,17 @@ The `Str::substr` method returns the portion of string specified by the start an
     $converted = Str::substr('The Laravel Framework', 4, 7);
 
     // Laravel
+
+<a name="method-str-substrcount"></a>
+#### `Str::substrCount()` {#collection-method}
+
+The `Str::substrCount` method returns the number of occurrences of the given value in the given string:
+
+    use Illuminate\Support\Str;
+
+    $count = Str::substrCount('If you never did, you should. These things are fun and fun is good.', 'fun');
+
+    // 2
 
 <a name="method-title-case"></a>
 #### `Str::title()` {#collection-method}
