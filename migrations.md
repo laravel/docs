@@ -727,7 +727,7 @@ The `unsignedBigInteger` method creates an `UNSIGNED BIGINT` equivalent column:
 <a name="column-method-unsignedDecimal"></a>
 #### `unsignedDecimal()` {#collection-method}
 
-The `unsignedDecimal` method creates an `UNSIGNED DECIMAL` equivalent column with an optinoal precision (total digits) and scale (decimal digits):
+The `unsignedDecimal` method creates an `UNSIGNED DECIMAL` equivalent column with an optional precision (total digits) and scale (decimal digits):
 
     $table->unsignedDecimal('amount', $precision = 8, $scale = 2);
 
