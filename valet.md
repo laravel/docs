@@ -13,6 +13,7 @@
     - [Sharing Sites On Your Local Network](#sharing-sites-on-your-local-network)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Proxying Services](#proxying-services)
+- [Intercepting Mail](#intercepting-mail)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
@@ -243,6 +244,27 @@ You may remove a proxy using the `unproxy` command:
 You may use the `proxies` command to list all site configurations that are proxied:
 
     valet proxies
+
+<a name="intercepting-mail"></a>
+## Intercepting Mail
+
+By default Valet sites will attempt to deliver email normally. If you are developing and testing sites with real data, this could result in unwanted messages going to real users.
+
+To address this, use [MailHog](https://github.com/mailhog/MailHog), which allows you to intercept your outgoing email and examine it without actually sending the mail to its recipients.
+
+```
+brew install mailhog
+brew services start mailhog
+```
+
+Individual sites can then be configured to use `localhost:1025` for delivering mail. Or, configure PHP to use MailHog for all mail delivery by creating a custom `smtp-mailhog.ini` file in `/usr/local/etc/php/X.X/conf.d`:
+
+```
+; Use Mailhog for mail delivery
+sendmail_path=mailhog sendmail
+```
+
+Then run `valet restart` and test message interception by visiting `http://127.0.0.1:8025`.
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
