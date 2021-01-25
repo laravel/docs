@@ -35,12 +35,16 @@ The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnos
 You may use the `make:migration` [Artisan command](/docs/{{version}}/artisan) to generate a database migration. The new migration will be placed in your `database/migrations` directory. Each migration filename contains a timestamp that allows Laravel to determine the order of the migrations:
 
     php artisan make:migration create_flights_table
+    
+> {tip} The migration class and file names are prepared via [string helpers](https://laravel.com/docs/8.x/helpers#strings-method-list) so feel free to specify `CreateFlightsTable` or `"create flights table"` instead.
 
-The `--table` and `--create` options may be used to indicate the name of the table and whether or not the migration will be creating a new table. These options pre-fill the generated migration file with the specified table:
+Laravel will use the name of the migration to guess the name of the table and whether or not the migration will be creating a new table. These options pre-fill the generated migration file with the specified table. If you don't follow the word `create`, `to`, `from` or `in` with the table name, you should supply a suggestion. These pairs create the same migrations:
 
-    php artisan make:migration create_flights_table --create=flights
+    php artisan make:migration create_flights_table
+    php artisan make:migration flights --create=flights
 
-    php artisan make:migration add_destination_to_flights_table --table=flights
+    php artisan make:migration add_destination_to_flights_table
+    php artisan make:migration add_flight_destination --table=flights
 
 If you would like to specify a custom path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
 
