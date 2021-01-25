@@ -80,7 +80,7 @@ The `get` method returns an `Illuminate\Support\Collection` containing the resul
         echo $user->name;
     }
 
-> {tip} Laravel collections provide a variety of extremely powerful methods for mapping and reducing data. For more information on Laravel colletions, check out the [collection documentation](/docs/{{version}}/collections).
+> {tip} Laravel collections provide a variety of extremely powerful methods for mapping and reducing data. For more information on Laravel collections, check out the [collection documentation](/docs/{{version}}/collections).
 
 <a name="retrieving-a-single-row-column-from-a-table"></a>
 #### Retrieving A Single Row / Column From A Table

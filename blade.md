@@ -808,7 +808,7 @@ You may execute this method from your component template by invoking the variabl
         {{ $label }}
     </option>
 
-<a name="using-attributes-slots-wthin-component-class"></a>
+<a name="using-attributes-slots-within-component-class"></a>
 #### Accessing Attributes & Slots Within Component Classes
 
 Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method. The closure will receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:
