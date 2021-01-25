@@ -287,7 +287,7 @@ To destroy the machine, you may use the `vagrant destroy --force` command.
 
 Instead of installing Homestead globally and sharing the same Homestead virtual machine across all of your projects, you may instead configure a Homestead instance for each project you manage. Installing Homestead per project may be beneficial if you wish to ship a `Vagrantfile` with your project, allowing others working on the project to `vagrant up` immediately after cloning the project's repository.
 
-You may install Homestead into your project using the Composer package manger:
+You may install Homestead into your project using the Composer package manager:
 
 ```bash
 composer require laravel/homestead --dev
