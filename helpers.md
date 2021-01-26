@@ -2223,14 +2223,14 @@ The `substr` method returns the portion of the string specified by the given sta
 <a name="method-fluent-str-tap"></a>
 #### `tap` {#collection-method}
 
-The `tap` method passes the string to the given callback, allowing you to "tap" into the string at a specific point and do something with the items while not affecting the string itself. The fluent string is then returned by the `tap` method:
+The `tap` method passes the string to the given closure, allowing you to examine and interact with the string while not affecting the string itself. The original string is returned by the `tap` method regardless of what is returned by the closure:
 
     use Illuminate\Support\Str;
 
     $string = Str::of('Laravel')
         ->append(' Framework')
         ->tap(function ($string) {
-            Log::info('String after append: ' . $string);
+            dump('String after append: ' . $string);
         })
         ->upper();
     
