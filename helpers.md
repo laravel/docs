@@ -1986,13 +1986,13 @@ The `padRight` method wraps PHP's `str_pad` function, padding the right side of 
 <a name="method-fluent-str-pipe">
 #### `pipe` {#collection-method}
 
-The `pipe` method allows you to transform the string by passing current value to the given callback. The result is then returned in the form of fluent string. It accepts a PHP callable syntax, and expected a string or stringable as the return value:
+The `pipe` method allows you to transform the string by passing its current value to the given callable:
 
     use Illuminate\Support\Str;
 
     $hash = Str::of('Laravel')->pipe('md5')->prepend('Checksum: ');
 
-    // Checksum: a5c95b86291ea299fcbe64458ed12702
+    // 'Checksum: a5c95b86291ea299fcbe64458ed12702'
 
     $closure = Str::of('foo')->pipe(function ($str) {
         return 'bar';
