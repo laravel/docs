@@ -165,6 +165,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
 [padRight](#method-fluent-str-padright)
+[pipe](#method-fluent-str-pipe)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [replace](#method-fluent-str-replace)
@@ -181,6 +182,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
+[tap](#method-fluent-str-tap)
 [title](#method-fluent-str-title)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
@@ -1981,6 +1983,23 @@ The `padRight` method wraps PHP's `str_pad` function, padding the right side of 
 
     // 'James     '
 
+<a name="method-fluent-str-pipe">
+#### `pipe` {#collection-method}
+
+The `pipe` method allows you to transform the string by passing current value to the given callback. The result is then returned in the form of fluent string. It accepts a PHP callable syntax, and expected a string or stringable as the return value:
+
+    use Illuminate\Support\Str;
+
+    $hash = Str::of('Laravel')->pipe('md5')->prepend('Checksum: ');
+
+    // Checksum: a5c95b86291ea299fcbe64458ed12702
+
+    $closure = Str::of('foo')->pipe(function ($str) {
+        return 'bar';
+    });
+
+    // 'bar'
+
 <a name="method-fluent-str-plural"></a>
 #### `plural` {#collection-method}
 
@@ -2200,6 +2219,22 @@ The `substr` method returns the portion of the string specified by the given sta
     $string = Str::of('Laravel Framework')->substr(8, 5);
 
     // Frame
+
+<a name="method-fluent-str-tap"></a>
+#### `tap` {#collection-method}
+
+The `tap` method passes the string to the given callback, allowing you to "tap" into the string at a specific point and do something with the items while not affecting the string itself. The fluent string is then returned by the `tap` method:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Laravel')
+        ->append(' Framework')
+        ->tap(function ($string) {
+            Log::info('String after append: ' . $string);
+        })
+        ->upper();
+    
+    // LARAVEL FRAMEWORK
 
 <a name="method-fluent-str-title"></a>
 #### `title` {#collection-method}
