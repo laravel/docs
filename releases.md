@@ -33,6 +33,8 @@ For LTS releases, such as Laravel 6, bug fixes are provided for 2 years and secu
 | 9 (LTS) | September, 2021 | September, 2023 | September, 2024 |
 | 10 | September, 2022 | March, 2024 | September, 2024 |
 
+You can find a complete overview of all current and previous versions at [www.laravelversions.com](https://laravelversions.com).
+
 <a name="laravel-8"></a>
 ## Laravel 8
 
