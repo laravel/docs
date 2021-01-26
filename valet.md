@@ -7,6 +7,7 @@
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
+    - [Changing Sites TLS](#changing-sites-tld)
 - [Sharing Sites](#sharing-sites)
     - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
     - [Sharing Sites Via Expose](#sharing-sites-via-expose)
@@ -165,6 +166,13 @@ By default, Valet serves sites over HTTP. However, if you would like to serve a 
 To "unsecure" a site and revert back to serving its traffic over plain HTTP, use the `unsecure` command. Like the `secure` command, this command accepts the hostname that you wish to unsecure:
 
     valet unsecure laravel
+
+<a name="changing-sites-tld"></a>
+### Securing Sites With TLS
+
+By default, Valet serves sites over `.test` TLD. However, if you would like to change the deafult TLD, you may use the `tld` command. For example, if you want to switch to `.wip` domain, you should run the following command:
+
+    valet tld wip
 
 <a name="sharing-sites"></a>
 ## Sharing Sites
