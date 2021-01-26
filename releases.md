@@ -1,6 +1,7 @@
 # Release Notes
 
 - [Versioning Scheme](#versioning-scheme)
+    - [Exceptions](#exceptions)
 - [Support Policy](#support-policy)
 - [Laravel 8](#laravel-8)
 
@@ -10,6 +11,14 @@
 Laravel and its other first-party packages follow [Semantic Versioning](https://semver.org). Major framework releases are released every six months (~March and ~September), while minor and patch releases may be released as often as every week. Minor and patch releases should **never** contain breaking changes.
 
 When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `^8.0`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
+
+<a name="exceptions"></a>
+### Exceptions
+
+<a name="named-parameters"></a>
+#### Named Parameters
+
+At this time, PHP's named parameters functionality does not fall under Laravel's BC promise. We may choose to renamed function parameters when we deem necessary. In the situation where you're using named parameters we encourage to properly test your application when updating Laravel.
 
 <a name="support-policy"></a>
 ## Support Policy
