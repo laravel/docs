@@ -22,6 +22,7 @@
     - [Anonymous Components](#anonymous-components)
     - [Dynamic Components](#dynamic-components)
     - [Manually Registering Components](#manually-registering-components)
+    - [Escaping Blade Attributes for JavaScript Frameworks](#escaping-blade-attributes-for-javascript-frameworks)
 - [Building Layouts](#building-layouts)
     - [Layouts Using Components](#layouts-using-components)
     - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
@@ -942,6 +943,21 @@ If you would like to check if an attribute is present on the component, you may 
 You may retrieve a specific attribute's value using the `get` method:
 
     {{ $attributes->get('class') }}
+
+<a name="escaping-blade-attributes-for-javascript-frameworks"></a>
+#### Escaping Blade Attributes for JavaScript Frameworks
+
+Since some JavaScript frameworks (like [Alpine.js](https://github.com/alpinejs/alpine)) also use colon-prefixed attributes, you may use a double colon `::` prefix to inform the Blade rendering engine that the attribute is not a PHP expression. For example, using the [button component from earlier](#non-class-attribute-merging):
+
+    <x-button ::class="{ danger: isDeleting }">
+      Submit
+    </x-button>
+
+Would pass a `:class` attribute along as-is:
+
+    <button :class="{ danger: isDeleting }">
+      Submit
+    </button>
 
 <a name="slots"></a>
 ### Slots
