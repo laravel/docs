@@ -1497,11 +1497,11 @@ The `Str::substr` method returns the portion of string specified by the start an
 <a name="method-str-substrcount"></a>
 #### `Str::substrCount()` {#collection-method}
 
-The `Str::substrCount` method returns the number of occurrences of the given value in the given string:
+The `Str::substrCount` method returns the number of occurrences of a given value in the given string:
 
     use Illuminate\Support\Str;
 
-    $count = Str::substrCount('If you never did, you should. These things are fun and fun is good.', 'fun');
+    $count = Str::substrCount('If you like ice cream, you will like snow cones.', 'like');
 
     // 2
 
