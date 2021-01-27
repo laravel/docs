@@ -39,6 +39,9 @@ The session `driver` configuration option defines where session data will be sto
 
 > {tip} The array driver is primarily used during [testing](/docs/{{version}}/testing) and prevents the data stored in the session from being persisted.
 
+
+> {note} The `cookie` driver has a maximum allowed size that is determined by the browser itself. Storing too much data into the session, e.g. [flashing the input](/docs/{{version}}/requests#flashing-input-then-redirecting) on a large form, will result in an empty session.
+
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
