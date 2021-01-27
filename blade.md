@@ -786,6 +786,21 @@ The `$alertType` argument may be provided to the component like so:
 
     <x-alert alert-type="danger" />
 
+<a name="escaping-attribute-rendering"></a>
+#### Escaping Attribute Rendering
+
+Since some JavaScript frameworks such as Alpine.js also use colon-prefixed attributes, you may use a double colon (`::`) prefix to inform Blade that the attribute is not a PHP expression. For example, given the following component:
+
+    <x-button ::class="{ danger: isDeleting }">
+        Submit
+    </x-button>
+
+The following HTML will be rendered by Blade:
+
+    <button :class="{ danger: isDeleting }">
+        Submit
+    </button>
+
 <a name="component-methods"></a>
 #### Component Methods
 
