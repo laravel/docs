@@ -22,7 +22,6 @@
     - [Anonymous Components](#anonymous-components)
     - [Dynamic Components](#dynamic-components)
     - [Manually Registering Components](#manually-registering-components)
-    - [Escaping Blade Attributes for JavaScript Frameworks](#escaping-blade-attributes-for-javascript-frameworks)
 - [Building Layouts](#building-layouts)
     - [Layouts Using Components](#layouts-using-components)
     - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
@@ -787,6 +786,21 @@ The `$alertType` argument may be provided to the component like so:
 
     <x-alert alert-type="danger" />
 
+<a name="escaping-attribute-rendering"></a>
+#### Escaping Attribute Rendering
+
+Since some JavaScript frameworks such as Alpine.js also use colon-prefixed attributes, you may use a double colon (`::`) prefix to inform Blade that the attribute is not a PHP expression. For example, given the following component:
+
+    <x-button ::class="{ danger: isDeleting }">
+        Submit
+    </x-button>
+
+The following HTML will be rendered by Blade:
+
+    <button :class="{ danger: isDeleting }">
+        Submit
+    </button>
+
 <a name="component-methods"></a>
 #### Component Methods
 
@@ -943,21 +957,6 @@ If you would like to check if an attribute is present on the component, you may 
 You may retrieve a specific attribute's value using the `get` method:
 
     {{ $attributes->get('class') }}
-
-<a name="escaping-blade-attributes-for-javascript-frameworks"></a>
-#### Escaping Blade Attributes for JavaScript Frameworks
-
-Since some JavaScript frameworks (like [Alpine.js](https://github.com/alpinejs/alpine)) also use colon-prefixed attributes, you may use a double colon `::` prefix to inform the Blade rendering engine that the attribute is not a PHP expression. For example, using the [button component from earlier](#non-class-attribute-merging):
-
-    <x-button ::class="{ danger: isDeleting }">
-      Submit
-    </x-button>
-
-Would pass a `:class` attribute along as-is:
-
-    <button :class="{ danger: isDeleting }">
-      Submit
-    </button>
 
 <a name="slots"></a>
 ### Slots
