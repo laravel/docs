@@ -1983,7 +1983,7 @@ The `padRight` method wraps PHP's `str_pad` function, padding the right side of 
 
     // 'James     '
 
-<a name="method-fluent-str-pipe">
+<a name="method-fluent-str-pipe"></a>
 #### `pipe` {#collection-method}
 
 The `pipe` method allows you to transform the string by passing its current value to the given callable:
