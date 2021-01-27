@@ -1121,7 +1121,7 @@ To query the existence of "morph to" relationships, you may use the `whereHasMor
     // Retrieve comments associated to posts with a title not like code%...
     $comments = Comment::whereDoesntHaveMorph(
         'commentable',
-        Post::class
+        Post::class,
         function (Builder $query) {
             $query->where('title', 'like', 'code%');
         }
