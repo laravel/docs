@@ -1361,7 +1361,7 @@ You may provide an integer as a second argument to the function to retrieve the 
 
     // children
 
-    $plural = Str::plural('child', 1);
+    $singular = Str::plural('child', 1);
 
     // child
 
