@@ -174,6 +174,19 @@ The `pull` method will retrieve and delete an item from the session in a single 
 
     $value = $request->session()->pull('key', 'default');
 
+<a name="#incrementing-and-decrementing-session-values"></a>
+#### Incrementing & Decrementing Session Values
+
+If your session data contains an integer you wish to increment or decrement, you may use the `increment` and `decrement` methods:
+
+    $request->session()->increment('count'); 
+
+    $request->session()->increment('count', $incrementBy = 2);
+
+    $request->session()->decrement('count');
+
+    $request->session()->decrement('count', $decrementBy = 2);
+
 <a name="flash-data"></a>
 ### Flash Data
 
@@ -186,6 +199,10 @@ If you need to persist your flash data for several requests, you may use the `re
     $request->session()->reflash();
 
     $request->session()->keep(['username', 'email']);
+
+To persist your flash data only for the current request, you may use the `now` method:
+
+    $request->session()->now('status', 'Task was successful!');
 
 <a name="deleting-data"></a>
 ### Deleting Data
@@ -205,9 +222,13 @@ The `forget` method will remove a piece of data from the session. If you would l
 
 Regenerating the session ID is often done in order to prevent malicious users from exploiting a [session fixation](https://owasp.org/www-community/attacks/Session_fixation) attack on your application.
 
-Laravel automatically regenerates the session ID during authentication if you are using one of the Laravel [application starter kits](/docs/{{version}}/starter-kits) or [Laravel Fortify](/docs/{{version}}/fortify); however, if you need to manually regenerate the session ID, you may use the `regenerate` method.
+Laravel automatically regenerates the session ID during authentication if you are using one of the Laravel [application starter kits](/docs/{{version}}/starter-kits) or [Laravel Fortify](/docs/{{version}}/fortify); however, if you need to manually regenerate the session ID, you may use the `regenerate` method:
 
     $request->session()->regenerate();
+
+If you need to regenerate the session ID and remove all data from the session in a single statement, you may use the `invalidate` method:
+
+    $request->session()->invalidate();
 
 <a name="session-blocking"></a>
 ## Session Blocking

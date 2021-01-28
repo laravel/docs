@@ -662,7 +662,7 @@ However, if you are building a package that utilizes Blade components, you will 
      */
     public function boot()
     {
-        Blade::component('package-alert', AlertComponent::class);
+        Blade::component('package-alert', Alert::class);
     }
 
 Once your component has been registered, it may be rendered using its tag alias:
@@ -786,6 +786,21 @@ The `$alertType` argument may be provided to the component like so:
 
     <x-alert alert-type="danger" />
 
+<a name="escaping-attribute-rendering"></a>
+#### Escaping Attribute Rendering
+
+Since some JavaScript frameworks such as Alpine.js also use colon-prefixed attributes, you may use a double colon (`::`) prefix to inform Blade that the attribute is not a PHP expression. For example, given the following component:
+
+    <x-button ::class="{ danger: isDeleting }">
+        Submit
+    </x-button>
+
+The following HTML will be rendered by Blade:
+
+    <button :class="{ danger: isDeleting }">
+        Submit
+    </button>
+
 <a name="component-methods"></a>
 #### Component Methods
 
@@ -808,7 +823,7 @@ You may execute this method from your component template by invoking the variabl
         {{ $label }}
     </option>
 
-<a name="using-attributes-slots-wthin-component-class"></a>
+<a name="using-attributes-slots-within-component-class"></a>
 #### Accessing Attributes & Slots Within Component Classes
 
 Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method. The closure will receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:

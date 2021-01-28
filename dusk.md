@@ -449,7 +449,7 @@ Dusk selectors allow you to focus on writing effective tests rather than remembe
 <a name="retrieving-setting-values"></a>
 #### Retrieving & Setting Values
 
-Dusk provides several methods for interacting with the current display text, value, and attributes of elements on the page. For example, to get the "value" of an element that matches a given CSS or Dusk selector, use the `value` method:
+Dusk provides several methods for interacting with the current value, display text, and attributes of elements on the page. For example, to get the "value" of an element that matches a given CSS or Dusk selector, use the `value` method:
 
     // Retrieve the value...
     $value = $browser->value('selector');
@@ -1701,7 +1701,7 @@ Once the component has been defined, we can easily select a date within the date
 <a name="continuous-integration"></a>
 ## Continuous Integration
 
-> {note} Most Dusk continuous integration configurations expect your Laravel application to be served using the built-in PHP development server on port 8000. Therefore, before continuing, you should ensure that your continous integration environment has an `APP_URL` environment variable value of `http://127.0.0.1:8000`.
+> {note} Most Dusk continuous integration configurations expect your Laravel application to be served using the built-in PHP development server on port 8000. Therefore, before continuing, you should ensure that your continuous integration environment has an `APP_URL` environment variable value of `http://127.0.0.1:8000`.
 
 <a name="running-tests-on-heroku-ci"></a>
 ### Heroku CI

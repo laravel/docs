@@ -520,9 +520,9 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
 
     namespace Tests\Feature;
 
+    use Database\Seeders\OrderStatusSeeder;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use OrderStatusSeeder;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -558,7 +558,7 @@ Alternatively, you may instruct the `RefreshDatabase` trait to automatically see
     class ExampleTest extends TestCase
     {
         /**
-         * Indicates whether the database should be seeded before each test.
+         * Indicates whether the default seeder should run before each test.
          *
          * @var bool
          */
@@ -566,6 +566,17 @@ Alternatively, you may instruct the `RefreshDatabase` trait to automatically see
 
         // ...
     }
+
+When the `$seed` property is `true`, the test will run the `Database\Seeders\DatabaseSeeder` class before each test. However, you may specify a specific seeder that should be executed by defining a `$seeder` property on your test class:
+
+    use Database\Seeders\OrderStatusSeeder;
+
+    /**
+     * Run a specific seeder before each test.
+     *
+     * @var string
+     */
+    protected $seeder = OrderStatusSeeder::class;
 
 <a name="available-assertions"></a>
 ## Available Assertions

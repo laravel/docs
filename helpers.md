@@ -121,6 +121,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
 [Str::substr](#method-str-substr)
+[Str::substrCount](#method-str-substrcount)
 [Str::title](#method-title-case)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
@@ -165,6 +166,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
 [padRight](#method-fluent-str-padright)
+[pipe](#method-fluent-str-pipe)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [replace](#method-fluent-str-replace)
@@ -181,6 +183,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
+[tap](#method-fluent-str-tap)
 [title](#method-fluent-str-title)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
@@ -1491,6 +1494,17 @@ The `Str::substr` method returns the portion of string specified by the start an
 
     // Laravel
 
+<a name="method-str-substrcount"></a>
+#### `Str::substrCount()` {#collection-method}
+
+The `Str::substrCount` method returns the number of occurrences of a given value in the given string:
+
+    use Illuminate\Support\Str;
+
+    $count = Str::substrCount('If you like ice cream, you will like snow cones.', 'like');
+
+    // 2
+
 <a name="method-title-case"></a>
 #### `Str::title()` {#collection-method}
 
@@ -1981,6 +1995,23 @@ The `padRight` method wraps PHP's `str_pad` function, padding the right side of 
 
     // 'James     '
 
+<a name="method-fluent-str-pipe"></a>
+#### `pipe` {#collection-method}
+
+The `pipe` method allows you to transform the string by passing its current value to the given callable:
+
+    use Illuminate\Support\Str;
+
+    $hash = Str::of('Laravel')->pipe('md5')->prepend('Checksum: ');
+
+    // 'Checksum: a5c95b86291ea299fcbe64458ed12702'
+
+    $closure = Str::of('foo')->pipe(function ($str) {
+        return 'bar';
+    });
+
+    // 'bar'
+
 <a name="method-fluent-str-plural"></a>
 #### `plural` {#collection-method}
 
@@ -2200,6 +2231,22 @@ The `substr` method returns the portion of the string specified by the given sta
     $string = Str::of('Laravel Framework')->substr(8, 5);
 
     // Frame
+
+<a name="method-fluent-str-tap"></a>
+#### `tap` {#collection-method}
+
+The `tap` method passes the string to the given closure, allowing you to examine and interact with the string while not affecting the string itself. The original string is returned by the `tap` method regardless of what is returned by the closure:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Laravel')
+        ->append(' Framework')
+        ->tap(function ($string) {
+            dump('String after append: ' . $string);
+        })
+        ->upper();
+    
+    // LARAVEL FRAMEWORK
 
 <a name="method-fluent-str-title"></a>
 #### `title` {#collection-method}
@@ -2692,6 +2739,10 @@ The `redirect` function returns a [redirect HTTP response](/docs/{{version}}/res
 The `report` function will report an exception using your [exception handler](/docs/{{version}}/errors#the-exception-handler):
 
     report($e);
+
+The `report` function also accepts a string as an argument. When a string is given to the function, the function will create an exception with the given string as its message:
+
+    report('Something went wrong.');
 
 <a name="method-request"></a>
 #### `request()` {#collection-method}

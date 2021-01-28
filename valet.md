@@ -78,13 +78,13 @@ After installing PHP, you are ready to install the [Composer package manager](ht
 
     composer global require laravel/valet
 
-Finally, you may execute Valet's `install` command. This will configure and install Valet and DnsMasq. In addition, the Valet daemon will be configured to launch when your system starts:
+Finally, you may execute Valet's `install` command. This will configure and install Valet and DnsMasq. In addition, the daemons Valet depends on will be configured to launch when your system starts:
 
     valet install
 
 Once Valet is installed, try pinging any `*.test` domain on your terminal using a command such as `ping foobar.test`. If Valet is installed correctly you should see this domain responding on `127.0.0.1`.
 
-Valet will automatically start its daemon each time your machine boots. There is no need to run `valet start` or `valet install` ever again once the initial Valet installation is complete.
+Valet will automatically start its required services each time your machine boots.
 
 <a name="php-versions"></a>
 #### PHP Versions
@@ -359,9 +359,9 @@ Command  | Description
 `valet forget` | Run this command from a "parked" directory to remove it from the parked directory list.
 `valet log` | View a list of logs which are written by Valet's services.
 `valet paths` | View all of your "parked" paths.
-`valet restart` | Restart the Valet daemon.
-`valet start` | Start the Valet daemon.
-`valet stop` | Stop the Valet daemon.
+`valet restart` | Restart the Valet daemons.
+`valet start` | Start the Valet daemons.
+`valet stop` | Stop the Valet daemons.
 `valet trust` | Add sudoers files for Brew and Valet to allow Valet commands to be run without prompting for your password.
 `valet uninstall` | Uninstall Valet: shows instructions for manual uninstall. Pass the `--force` option to aggressively delete all of Valet's resources.
 

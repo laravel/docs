@@ -158,6 +158,13 @@ Proper "update" and "save" related model events will now be dispatched when exec
 <a name="events"></a>
 ### Events
 
+<a name="the-event-service-provider-class"></a>
+#### The `EventServiceProvider` Class
+
+**Likelihood Of Impact: Low**
+
+If your `App\Providers\EventServiceProvider` class contains a `register` function, you should ensure that you call `parent::register` at the beginning of this method. Otherwise, your application's events will not be registered.
+
 <a name="the-dispatcher-contract"></a>
 #### The `Dispatcher` Contract
 

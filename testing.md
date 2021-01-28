@@ -2,8 +2,9 @@
 
 - [Introduction](#introduction)
 - [Environment](#environment)
-- [Creating & Running Tests](#creating-and-running-tests)
-    - [Artisan Test Runner](#artisan-test-runner)
+- [Creating Tests](#creating-tests)
+- [Running Tests](#running-tests)
+    - [Running Tests In Parallel](#running-tests-in-parallel)
 
 <a name="introduction"></a>
 ## Introduction
@@ -19,7 +20,7 @@ An `ExampleTest.php` file is provided in both the `Feature` and `Unit` test dire
 <a name="environment"></a>
 ## Environment
 
-When running tests via `vendor/bin/phpunit`, Laravel will automatically set the [configuration environment](/docs/{{version}}/configuration#environment-configuration) to `testing` because of the environment variables defined in the `phpunit.xml` file. Laravel also automatically configures the session and cache to the `array` driver while testing, meaning no session or cache data will be persisted while testing.
+When running tests, Laravel will automatically set the [configuration environment](/docs/{{version}}/configuration#environment-configuration) to `testing` because of the environment variables defined in the `phpunit.xml` file. Laravel also automatically configures the session and cache to the `array` driver while testing, meaning no session or cache data will be persisted while testing.
 
 You are free to define other testing environment configuration values as necessary. The `testing` environment variables may be configured in your application's `phpunit.xml` file, but make sure to clear your configuration cache using the `config:clear` Artisan command before running your tests!
 
@@ -28,8 +29,8 @@ You are free to define other testing environment configuration values as necessa
 
 In addition, you may create a `.env.testing` file in the root of your project. This file will be used instead of the `.env` file when running PHPUnit tests or executing Artisan commands with the `--env=testing` option.
 
-<a name="creating-and-running-tests"></a>
-## Creating & Running Tests
+<a name="creating-tests"></a>
+## Creating Tests
 
 To create a new test case, use the `make:test` Artisan command. By default, tests will be placed in the `tests/Feature` directory:
 
@@ -64,8 +65,12 @@ Once the test has been generated, you may define test methods as you normally wo
 
 > {note} If you define your own `setUp` / `tearDown` methods within a test class, be sure to call the respective `parent::setUp()` / `parent::tearDown()` methods on the parent class.
 
-<a name="artisan-test-runner"></a>
-### Artisan Test Runner
+<a name="running-tests"></a>
+## Running Tests
+
+As mentioned previously, once you've written tests, you may run them using `phpunit`:
+
+    ./vendor/bin/phpunit
 
 In addition to the `phpunit` command, you may use the `test` Artisan command to run your tests. The Artisan test runner provides verbose test reports in order to ease development and debugging:
 
@@ -74,3 +79,69 @@ In addition to the `phpunit` command, you may use the `test` Artisan command to 
 Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
 
     php artisan test --testsuite=Feature --stop-on-failure
+
+
+<a name="running-tests-in-parallel"></a>
+### Running Tests In Parallel
+
+By default, Laravel and PHPUnit execute your tests sequentially within a single process. However, you may greatly reduce the amount of time it takes to run your tests by running tests simultaneously across multiple processes. To get started, include the `--parallel` option when executing the `test` Artisan command:
+
+    php artisan test --parallel
+
+By default, Laravel will create as many processes as there are available CPU cores on your machine. However, you may adjust the number of processes using the `--processes` option:
+
+    php artisan test --parallel --processes=4
+
+<a name="parallel-testing-and-databases"></a>
+#### Parallel Testing & Databases
+
+Laravel automatically handles creating and migrating a test database for each parallel process that is running your tests. The test databases will be suffixed with a process token which is unique per process. For example, if you have two parallel test processes, Laravel will create and use `your_db_test_1` and `your_db_test_2` test databases.
+
+By default, test databases persist between calls to the `test` Artisan command so that they can be used again by subsequent `test` invocations. However, you may re-create them using the `--recreate-databases` option:
+
+    php artisan test --parallel --recreate-databases
+
+<a name="parallel-testing-hooks"></a>
+#### Parallel Testing Hooks
+
+Occasionally, you may need to prepare certain resources used by your application's tests so they may be safely used by multiple test processes.
+
+Using the `ParallelTesting` facade, you may specify code to be executed on the `setUp` and `tearDown` of a process or test case. The given closures receive the `$token` and `$testCase` variables that contain the process token and the current test case, respectively:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\Facades\ParallelTesting;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            ParallelTesting::setUpProcess(function ($token) {
+                // ..
+            });
+
+            ParallelTesting::setUpTestCase(function ($token, $testCase) {
+                // ..
+            });
+
+            ParallelTesting::tearDownTestCase(function ($token, $testCase) {
+                // ..
+            });
+
+            ParallelTesting::tearDownProcess(function ($token) {
+                // ..
+            });
+        }
+    }
+
+If you would like to access to current process token from any other place in your application's test code, you may use the `token` method:
+
+    $token = ParallelTesting::token();

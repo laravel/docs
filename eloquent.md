@@ -159,6 +159,11 @@ If your model's primary key is not an integer, you should define a protected `$k
         protected $keyType = 'string';
     }
 
+<a name="composite-primary-keys"></a>
+#### "Composite" Primary Keys
+
+Eloquent requires each model to have at least one uniquely identifying "ID" that can serve as its primary key. "Composite" primary keys are not supported by Eloquent models. However, you are free to add additional multi-column, unique indexes to your database tables in addition to the table's uniquely identifying primary key.
+
 <a name="timestamps"></a>
 ### Timestamps
 
@@ -660,7 +665,7 @@ When assigning JSON columns, each column's mass assignable key must be specified
      *
      * @var array
      */
-    $fillable = [
+    protected $fillable = [
         'options->enabled',
     ];
 
@@ -681,7 +686,7 @@ If you would like to make all of your attributes mass assignable, you may define
 
 Occasionally, you may need to update an existing model or create a new model if no matching model exists. Like the `firstOrCreate` method, the `updateOrCreate` method persists the model, so there's no need to manually call the `save` method.
 
-In the example below, if a flight exists with a `departure` location of `Oakland` and a `destination` location of `San Diego`, it's `price` and `discounted` columns will be updated. If no such flight exists, a new flight will be created which has the attributes resulting from merging the first argument array with the second argument array:
+In the example below, if a flight exists with a `departure` location of `Oakland` and a `destination` location of `San Diego`, its `price` and `discounted` columns will be updated. If no such flight exists, a new flight will be created which has the attributes resulting from merging the first argument array with the second argument array:
 
     $flight = Flight::updateOrCreate(
         ['departure' => 'Oakland', 'destination' => 'San Diego'],

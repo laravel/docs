@@ -57,7 +57,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 </style>
 
 <div id="software-list" markdown="1">
-- Ubuntu 18.04 (`master` branch)
+- Ubuntu 18.04 (`main` branch)
 - Ubuntu 20.04 (`20.04` branch)
 - Git
 - PHP 8.0
@@ -158,7 +158,7 @@ If this command fails, make sure your Vagrant installation is up to date.
 <a name="installing-homestead"></a>
 #### Installing Homestead
 
-You may install Homestead by cloning the Homstead repository onto your host machine. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead virtual machine will serve as the host to all of your Laravel applications. Throughout this documentation, we will refer to this directory as your "Homestead directory":
+You may install Homestead by cloning the Homestead repository onto your host machine. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead virtual machine will serve as the host to all of your Laravel applications. Throughout this documentation, we will refer to this directory as your "Homestead directory":
 
 ```bash
 git clone https://github.com/laravel/homestead.git ~/Homestead
@@ -235,7 +235,7 @@ You may also pass any options supported by Vagrant's [Synced Folders](https://ww
 <a name="configuring-nginx-sites"></a>
 ### Configuring Nginx Sites
 
-Not familiar with Nginx? No problem. Your `Homstead.yaml` file's `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel application you are working on:
+Not familiar with Nginx? No problem. Your `Homestead.yaml` file's `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel application you are working on:
 
     sites:
         - map: homestead.test
@@ -287,7 +287,7 @@ To destroy the machine, you may use the `vagrant destroy --force` command.
 
 Instead of installing Homestead globally and sharing the same Homestead virtual machine across all of your projects, you may instead configure a Homestead instance for each project you manage. Installing Homestead per project may be beneficial if you wish to ship a `Vagrantfile` with your project, allowing others working on the project to `vagrant up` immediately after cloning the project's repository.
 
-You may install Homestead into your project using the Composer package manger:
+You may install Homestead into your project using the Composer package manager:
 
 ```bash
 composer require laravel/homestead --dev
@@ -504,7 +504,7 @@ If you wish, you may forward additional ports to the Vagrant box by defining a `
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", and "7.4" (the default):
+Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4" (the default), and "8.0":
 
     sites:
         - map: homestead.test

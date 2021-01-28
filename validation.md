@@ -476,7 +476,7 @@ You may then access the named `MessageBag` instance from the `$errors` variable:
 <a name="manual-customizing-the-error-messages"></a>
 ### Customizing The Error Messages
 
-If needed, you may use custom error messages for a validator instance instead of the default error messages. There are several ways to specify custom messages. First, you may pass the custom messages as the third argument to the `Validator::make` method:
+If needed, you may provide custom error messages that a validator instance should use instead of the default error messages provided by Laravel. There are several ways to specify custom messages. First, you may pass the custom messages as the third argument to the `Validator::make` method:
 
     $validator = Validator::make($input, $rules, $messages = [
         'required' => 'The :attribute field is required.',
@@ -930,7 +930,7 @@ If you would like to customize the query executed by the validation rule, you ma
         'email' => [
             'required',
             Rule::exists('staff')->where(function ($query) {
-                $query->where('account_id', 1);
+                return $query->where('account_id', 1);
             }),
         ],
     ]);
@@ -1086,7 +1086,7 @@ The field under validation may be `null`.
 <a name="rule-numeric"></a>
 #### numeric
 
-The field under validation must be numeric.
+The field under validation must be [numeric](https://www.php.net/manual/en/function.is-numeric.php).
 
 <a name="rule-password"></a>
 #### password
