@@ -1243,7 +1243,7 @@ Once you have passed the Checkout session instance to your view, a button that d
 
     {!! $checkout->button() !!}
 
-When a customer clicks this button they will be redirected to Stripe's Checkout page. By default, when a user successfully completes a purchase or cancels a purchase they will be redirected to your `home` route location, but you may specify custom callback URLs using the `success_url` and `cancel_url` parameters:
+When a customer clicks this button they will be redirected to Stripe's Checkout page. By default, when a user successfully completes a purchase or cancels a purchase they will be redirected to your `home` route location, but you may specify custom callback URLs using the `success_url` and `cancel_url` options:
 
     $checkout = $user->checkout('price_12345', 1, [
         'success_url' => route('your-success-route'),
