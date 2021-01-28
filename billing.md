@@ -46,7 +46,7 @@
     - [Product Checkouts](#product-checkouts)
     - [Single Charge Checkouts](#single-charge-checkouts)
     - [Subscription Checkouts](#subscription-checkouts)
-    - [Customizing The Checkout Button](#customizing-the-checkout-button)
+    - [Styling The Checkout Button](#styling-the-checkout-button)
 - [Invoices](#invoices)
     - [Retrieving Invoices](#retrieving-invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
@@ -1328,8 +1328,8 @@ However, the trial period must be at least 48 hours, which is the minimum amount
 
 Remember, Stripe and Cashier update subscription statuses via webhooks, so there's a possibility a subscription might not yet be active when the customer returns to the application after entering their payment information. To handle this scenario, you may wish to display a message informing the user that their payment or subscription is pending.
 
-<a name="customizing-the-checkout-button"></a>
-### Customizing The Checkout Button
+<a name="styling-the-checkout-button"></a>
+### Styling The Checkout Button
 
 When rendering the checkout button, you may customize the button's styling using the `class` and `style` options. These options should be passed within an associative array as the second argument to the `button` method:
 
