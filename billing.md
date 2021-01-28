@@ -42,14 +42,14 @@
     - [Simple Charge](#simple-charge)
     - [Charge With Invoice](#charge-with-invoice)
     - [Refunding Charges](#refunding-charges)
+- [Checkout](#checkout)
+    - [Product Checkouts](#product-checkouts)
+    - [Single Charge Checkouts](#single-charge-checkouts)
+    - [Subscription Checkouts](#subscription-checkouts)
+    - [Customizing The Checkout Button](#customizing-the-checkout-button)
 - [Invoices](#invoices)
     - [Retrieving Invoices](#retrieving-invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
-- [Checkout](#checkout)
-    - [Product Checkouts](#product-checkouts)
-    - [Simple Charge Checkouts](#simple-charge-checkouts)
-    - [Subscription Checkouts](#subscription-checkouts)
-    - [Customizing The Checkout Button](#customizing-the-checkout-button)
 - [Handling Failed Payments](#handling-failed-payments)
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
     - [Payments Requiring Additional Confirmation](#payments-requiring-additional-confirmation)
@@ -1216,32 +1216,34 @@ The `downloadInvoice` method also allows for a custom filename via its third arg
         'vendor' => 'Your Company',
         'product' => 'Your Product',
     ], 'my-invoice');
-    
+
 <a name="checkout"></a>
 ## Checkout
 
-Cashier Stripe provides support for [Stripe's Checkout feature](https://stripe.com/en-be/payments/checkout). Stripe Checkout takes the pain away for implementing custom pages to accept payments by providing a prebuilt, hosted payment page.
+Cashier Stripe also provides support for [Stripe Checkout](https://stripe.com/en-be/payments/checkout). Stripe Checkout takes the pain out of implementing custom pages to accept payments by providing a pre-built, hosted payment page.
 
-These docs contain information on how to get started using Stripe Checkout with Cashier. For more information on how to use Checkout please refer to [the Stripe documentation](https://stripe.com/docs/payments/checkout).
+The following documentation contains information on how to get started using Stripe Checkout with Cashier. To learn more about Stripe Checkout, you should also consider reviewing [Stripe's own documentation on Checkout](https://stripe.com/docs/payments/checkout).
 
 <a name="product-checkouts"></a>
 ### Product Checkouts
 
-You may perform a checkout for a price of an existing product from your Stripe dashboard by using the `checkout` method on a billable model. This will initiate a new Stripe Checkout Session. By default, you're required to pass a Price ID:
+You may perform a checkout for an existing product that has been created within your Stripe dashboard using the `checkout` method on a billable model. The `checkout` method will initiate a new Stripe Checkout session. By default, you're required to pass a Stripe Price ID:
 
     $checkout = $user->checkout('price_12345');
-    
-    return view('your-app-checkout-view', compact('checkout'));
 
-It's also possible to pass a specific quantity for the product:
+    return view('your-checkout-view', [
+        'checkout' => $checkout,
+    ]);
+
+If needed, you may also specify a product quantity:
 
     $checkout = $user->checkout('price_12345', 15);
 
-You can pass this session to the view and generate a button for it:
+Once you have passed the Checkout session instance to your view, a button that directs the user to Stripe Checkout may be rendered using the `button` method:
 
     {!! $checkout->button() !!}
 
-When a customer clicks this button they'll be redirected to Stripe's checkout page. By default, when a user successfully completes a purchase or cancels a purchase they'll be redirected to your `home` route location. But you can easily overwrite this by passing the `success_url` & `cancel_url` parameters:
+When a customer clicks this button they will be redirected to Stripe's Checkout page. By default, when a user successfully completes a purchase or cancels a purchase they will be redirected to your `home` route location, but you may specify custom callback URLs using the `success_url` and `cancel_url` parameters:
 
     $checkout = $user->checkout('price_12345', 1, [
         'success_url' => route('your-success-route'),
@@ -1262,10 +1264,10 @@ This will enable the input field where customers can enter their promotion codes
 Like the `checkout` method above, you can also perform a simple charge for a non-existing product. To do so you may use the `checkoutCharge` method on a billable model and pass it a chargeable amount, a product name and an optional quantity:
 
     $checkout = $user->checkoutCharge(1200, 'T-Shirt', 5);
-    
+
     return view('your-app-checkout-view', compact('checkout'));
 
-> {note} When using the `checkoutCharge` method, Stripe will always create a new product and price in your Stripe dashboard. Therefor we recommend to create the products up front in your Stripe dashboard and make more use of the `checkout` method. 
+> {note} When using the `checkoutCharge` method, Stripe will always create a new product and price in your Stripe dashboard. Therefor we recommend to create the products up front in your Stripe dashboard and make more use of the `checkout` method.
 
 <a name="subscription-checkouts"></a>
 ### Subscription Checkouts
@@ -1273,7 +1275,7 @@ Like the `checkout` method above, you can also perform a simple charge for a non
 Checkout also works for subscriptions. You can just start new subscriptions like you're used to but instead of creating them immediately you use the `checkout` method to initiate a new Stripe Checkout Session:
 
     $checkout = Auth::user()->newSubscription('default', 'price_xxx')->checkout();
-    
+
     return view('your-app-checkout-view', compact('checkout'));
 
 Instead of a single charge payment page, the customer will see a checkout page with the recurring subscription plan(s) and things like trial days.
@@ -1305,7 +1307,7 @@ For more information on fulfilling orders with Stripe Checkout, see [the Stripe 
 
 #### Trial Periods
 
-You can of course also set a trial period with Stripe Checkout: 
+You can of course also set a trial period with Stripe Checkout:
 
     $checkout = Auth::user()->newSubscription('default', 'price_xxx')
         ->trialDays(1)
