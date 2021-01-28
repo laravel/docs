@@ -15,10 +15,10 @@ When referencing the Laravel framework or its components from your application o
 <a name="exceptions"></a>
 ### Exceptions
 
-<a name="named-parameters"></a>
-#### Named Parameters
+<a name="named-arguments"></a>
+#### Named Arguments
 
-At this time, PHP's named parameters functionality are not covered by Laravel's backwards compatibility guidelines. We may choose to rename function parameters when necessary in order to improve the Laravel codebase. Therefore, using named parameters when calling Laravel methods should be done cautiously and with the understanding that the parameter names may change in the future.
+At this time, PHP's [named arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments) functionality are not covered by Laravel's backwards compatibility guidelines. We may choose to rename function parameters when necessary in order to improve the Laravel codebase. Therefore, using named arguments when calling Laravel methods should be done cautiously and with the understanding that the parameter names may change in the future.
 
 <a name="support-policy"></a>
 ## Support Policy
