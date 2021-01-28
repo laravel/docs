@@ -30,7 +30,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
 [Arr::collapse](#method-array-collapse)
-[Arr::crossJoin](#method-array-crossjoin)
+[Arr::crossJoin](#method-array-cross-join)
 [Arr::divide](#method-array-divide)
 [Arr::dot](#method-array-dot)
 [Arr::except](#method-array-except)
@@ -40,8 +40,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::forget](#method-array-forget)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
-[Arr::hasAny](#method-array-hasany)
-[Arr::isAssoc](#method-array-isassoc)
+[Arr::hasAny](#method-array-has-any)
+[Arr::isAssoc](#method-array-is-assoc)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
@@ -106,9 +106,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
 [Str::orderedUuid](#method-str-ordered-uuid)
-[Str::padBoth](#method-str-padboth)
-[Str::padLeft](#method-str-padleft)
-[Str::padRight](#method-str-padright)
+[Str::padBoth](#method-str-pad-both)
+[Str::padLeft](#method-str-pad-left)
+[Str::padRight](#method-str-pad-right)
 [Str::plural](#method-str-plural)
 [Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
@@ -122,7 +122,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
 [Str::substr](#method-str-substr)
-[Str::substrCount](#method-str-substrcount)
+[Str::substrCount](#method-str-substr-count)
 [Str::title](#method-title-case)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
@@ -164,9 +164,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [ltrim](#method-fluent-str-ltrim)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
-[padBoth](#method-fluent-str-padboth)
-[padLeft](#method-fluent-str-padleft)
-[padRight](#method-fluent-str-padright)
+[padBoth](#method-fluent-str-pad-both)
+[padLeft](#method-fluent-str-pad-left)
+[padRight](#method-fluent-str-pad-right)
 [pipe](#method-fluent-str-pipe)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
@@ -332,7 +332,7 @@ The `Arr::collapse` method collapses an array of arrays into a single array:
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-<a name="method-array-crossjoin"></a>
+<a name="method-array-cross-join"></a>
 #### `Arr::crossJoin()` {#collection-method}
 
 The `Arr::crossJoin` method cross joins the given arrays, returning a Cartesian product with all possible permutations:
@@ -506,7 +506,7 @@ The `Arr::has` method checks whether a given item or items exists in an array us
 
     // false
 
-<a name="method-array-hasany"></a>
+<a name="method-array-has-any"></a>
 #### `Arr::hasAny()` {#collection-method}
 
 The `Arr::hasAny` method checks whether any item in a given set exists in an array using "dot" notation:
@@ -527,7 +527,7 @@ The `Arr::hasAny` method checks whether any item in a given set exists in an arr
 
     // false
 
-<a name="method-array-isassoc"></a>
+<a name="method-array-is-assoc"></a>
 #### `Arr::isAssoc()` {#collection-method}
 
 The `Arr::isAssoc` returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
@@ -1294,7 +1294,7 @@ The `Str::orderedUuid` method generates a "timestamp first" UUID that may be eff
 
     return (string) Str::orderedUuid();
 
-<a name="method-str-padboth"></a>
+<a name="method-str-pad-both"></a>
 #### `Str::padBoth()` {#collection-method}
 
 The `Str::padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another string until the final string reaches a desired length:
@@ -1309,7 +1309,7 @@ The `Str::padBoth` method wraps PHP's `str_pad` function, padding both sides of 
 
     // '  James   '
 
-<a name="method-str-padleft"></a>
+<a name="method-str-pad-left"></a>
 #### `Str::padLeft()` {#collection-method}
 
 The `Str::padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another string until the final string reaches a desired length:
@@ -1324,7 +1324,7 @@ The `Str::padLeft` method wraps PHP's `str_pad` function, padding the left side 
 
     // '     James'
 
-<a name="method-str-padright"></a>
+<a name="method-str-pad-right"></a>
 #### `Str::padRight()` {#collection-method}
 
 The `Str::padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another string until the final string reaches a desired length:
@@ -1522,7 +1522,7 @@ The `Str::substr` method returns the portion of string specified by the start an
 
     // Laravel
 
-<a name="method-str-substrcount"></a>
+<a name="method-str-substr-count"></a>
 #### `Str::substrCount()` {#collection-method}
 
 The `Str::substrCount` method returns the number of occurrences of a given value in the given string:
@@ -1978,7 +1978,7 @@ If you specify a matching group within the expression, Laravel will return a col
 
 If no matches are found, an empty collection will be returned.
 
-<a name="method-fluent-str-padboth"></a>
+<a name="method-fluent-str-pad-both"></a>
 #### `padBoth` {#collection-method}
 
 The `padBoth` method wraps PHP's `str_pad` function, padding both sides of a string with another string until the final string reaches the desired length:
@@ -1993,7 +1993,7 @@ The `padBoth` method wraps PHP's `str_pad` function, padding both sides of a str
 
     // '  James   '
 
-<a name="method-fluent-str-padleft"></a>
+<a name="method-fluent-str-pad-left"></a>
 #### `padLeft` {#collection-method}
 
 The `padLeft` method wraps PHP's `str_pad` function, padding the left side of a string with another string until the final string reaches the desired length:
@@ -2008,7 +2008,7 @@ The `padLeft` method wraps PHP's `str_pad` function, padding the left side of a 
 
     // '     James'
 
-<a name="method-fluent-str-padright"></a>
+<a name="method-fluent-str-pad-right"></a>
 #### `padRight` {#collection-method}
 
 The `padRight` method wraps PHP's `str_pad` function, padding the right side of a string with another string until the final string reaches the desired length:
