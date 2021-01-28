@@ -110,6 +110,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::padLeft](#method-str-padleft)
 [Str::padRight](#method-str-padright)
 [Str::plural](#method-str-plural)
+[Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
@@ -1361,9 +1362,36 @@ You may provide an integer as a second argument to the function to retrieve the 
 
     // children
 
-    $plural = Str::plural('child', 1);
+    $singular = Str::plural('child', 1);
 
     // child
+
+<a name="method-str-plural-studly"></a>
+#### `Str::pluralStudly()` {#collection-method}
+
+The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function currently only supports the English language:
+
+    use Illuminate\Support\Str;
+
+    $plural = Str::pluralStudly('VerifiedHuman');
+
+    // VerifiedHumans
+
+    $plural = Str::pluralStudly('UserFeedback');
+
+    // UserFeedback
+
+You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
+
+    use Illuminate\Support\Str;
+
+    $plural = Str::pluralStudly('VerifiedHuman', 2);
+
+    // VerifiedHumans
+
+    $singular = Str::pluralStudly('VerifiedHuman', 1);
+
+    // VerifiedHuman
 
 <a name="method-str-random"></a>
 #### `Str::random()` {#collection-method}
