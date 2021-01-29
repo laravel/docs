@@ -31,7 +31,7 @@
 The most basic Laravel routes accept a URI and a closure, providing a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
 
     use Illuminate\Support\Facades\Route;
-
+    
     Route::get('/greeting', function () {
         return 'Hello World';
     });
@@ -44,7 +44,7 @@ All Laravel routes are defined in your route files, which are located in the `ro
 For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://example.com/user` in your browser:
 
     use App\Http\Controllers\UserController;
-
+    
     Route::get('/user', [UserController::class, 'index']);
 
 Routes defined in the `routes/api.php` file are nested within a route group by the `RouteServiceProvider`. Within this group, the `/api` URI prefix is automatically applied so you do not need to manually apply it to every route in the file. You may modify the prefix and other route group options by modifying your `RouteServiceProvider` class.
@@ -66,7 +66,7 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
     Route::match(['get', 'post'], '/', function () {
         //
     });
-
+    
     Route::any('/', function () {
         //
     });
@@ -77,7 +77,7 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
 You may type-hint any dependencies required by your route in your route's callback signature. The declared dependencies will automatically be resolved and injected into the callback by the Laravel [service container](/docs/{{version}}/container). For example, you may type-hint the `Illuminate\Http\Request` class to have the current HTTP request automatically injected into your route callback:
 
     use Illuminate\Http\Request;
-
+    
     Route::get('/users', function (Request $request) {
         // ...
     });
@@ -115,7 +115,7 @@ Or, you may use the `Route::permanentRedirect` method to return a `301` status c
 If your route only needs to return a [view](/docs/{{version}}/views), you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
 
     Route::view('/welcome', 'welcome');
-
+    
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 
 > {note} When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
@@ -146,7 +146,7 @@ Route parameters are always encased within `{}` braces and should consist of alp
 If your route has dependencies that you would like the Laravel service container to automatically inject into your route's callback, you should list your route parameters after your dependencies:
 
     use Illuminate\Http\Request;
-
+    
     Route::get('/user/{id}', function (Request $request, $id) {
         return 'User '.$id;
     });
@@ -159,7 +159,7 @@ Occasionally you may need to specify a route parameter that may not always be pr
     Route::get('/user/{name?}', function ($name = null) {
         return $name;
     });
-
+    
     Route::get('/user/{name?}', function ($name = 'John') {
         return $name;
     });
@@ -172,11 +172,11 @@ You may constrain the format of your route parameters using the `where` method o
     Route::get('/user/{name}', function ($name) {
         //
     })->where('name', '[A-Za-z]+');
-
+    
     Route::get('/user/{id}', function ($id) {
         //
     })->where('id', '[0-9]+');
-
+    
     Route::get('/user/{id}/{name}', function ($id, $name) {
         //
     })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
@@ -186,11 +186,11 @@ For convenience, some commonly used regular expression patterns have helper meth
     Route::get('/user/{id}/{name}', function ($id, $name) {
         //
     })->whereNumber('id')->whereAlpha('name');
-
+    
     Route::get('/user/{name}', function ($name) {
         //
     })->whereAlphaNumeric('name');
-
+    
     Route::get('/user/{id}', function ($id) {
         //
     })->whereUuid('id');
@@ -254,7 +254,7 @@ Once you have assigned a name to a given route, you may use the route's name whe
 
     // Generating URLs...
     $url = route('profile');
-
+    
     // Generating Redirects...
     return redirect()->route('profile');
 
@@ -263,7 +263,7 @@ If the named route defines parameters, you may pass the parameters as the second
     Route::get('/user/{id}/profile', function ($id) {
         //
     })->name('profile');
-
+    
     $url = route('profile', ['id' => 1]);
 
 If you pass additional parameters in the array, those key / value pairs will automatically be added to the generated URL's query string:
@@ -271,9 +271,9 @@ If you pass additional parameters in the array, those key / value pairs will aut
     Route::get('/user/{id}/profile', function ($id) {
         //
     })->name('profile');
-
+    
     $url = route('profile', ['id' => 1, 'photos' => 'yes']);
-
+    
     // /user/1/profile?photos=yes
 
 > {tip} Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/{{version}}/urls#default-values).
@@ -295,7 +295,7 @@ If you would like to determine if the current request was routed to a given name
         if ($request->route()->named('profile')) {
             //
         }
-
+    
         return $next($request);
     }
 
@@ -315,7 +315,7 @@ To assign [middleware](/docs/{{version}}/middleware) to all routes within a grou
         Route::get('/', function () {
             // Uses first & second middleware...
         });
-
+    
         Route::get('/user/profile', function () {
             // Uses first & second middleware...
         });
@@ -367,7 +367,7 @@ When injecting a model ID to a route or controller action, you will often query 
 Laravel automatically resolves Eloquent models defined in routes or controller actions whose type-hinted variable names match a route segment name. For example:
 
     use App\Models\User;
-
+    
     Route::get('/users/{user}', function (User $user) {
         return $user->email;
     });
@@ -378,10 +378,10 @@ Of course, implicit binding is also possible when using controller methods. Agai
 
     use App\Http\Controllers\UserController;
     use App\Models\User;
-
+    
     // Route definition...
     Route::get('/users/{user}', [UserController::class, 'show']);
-
+    
     // Controller method definition...
     public function show(User $user)
     {
@@ -395,7 +395,7 @@ Of course, implicit binding is also possible when using controller methods. Agai
 Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
 
     use App\Models\Post;
-
+    
     Route::get('/posts/{post:slug}', function (Post $post) {
         return $post;
     });
@@ -419,7 +419,7 @@ When implicitly binding multiple Eloquent models in a single route definition, y
 
     use App\Models\Post;
     use App\Models\User;
-
+    
     Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
         return $post;
     });
@@ -433,7 +433,7 @@ You are not required to use Laravel's implicit, convention based model resolutio
 
     use App\Models\User;
     use Illuminate\Support\Facades\Route;
-
+    
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -442,14 +442,14 @@ You are not required to use Laravel's implicit, convention based model resolutio
     public function boot()
     {
         Route::model('user', User::class);
-
+    
         // ...
     }
 
 Next, define a route that contains a `{user}` parameter:
 
     use App\Models\User;
-
+    
     Route::get('/users/{user}', function (User $user) {
         //
     });
@@ -465,7 +465,7 @@ If you wish to define your own model binding resolution logic, you may use the `
 
     use App\Models\User;
     use Illuminate\Support\Facades\Route;
-
+    
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -476,7 +476,7 @@ If you wish to define your own model binding resolution logic, you may use the `
         Route::bind('user', function ($value) {
             return User::where('name', $value)->firstOrFail();
         });
-
+    
         // ...
     }
 
@@ -532,7 +532,19 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
 
     use Illuminate\Cache\RateLimiting\Limit;
     use Illuminate\Support\Facades\RateLimiter;
-
+    
+    /**
+     * Define your route model bindings, pattern filters, etc.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+    
+        $this->configureRateLimiting();
+    }
+        
     /**
      * Configure the rate limiters for the application.
      *
@@ -593,7 +605,7 @@ Rate limiters may be attached to routes or route groups using the `throttle` [mi
         Route::post('/audio', function () {
             //
         });
-
+    
         Route::post('/video', function () {
             //
         });
@@ -629,7 +641,7 @@ For convenience, you may use the `@method` [Blade directive](/docs/{{version}}/b
 You may use the `current`, `currentRouteName`, and `currentRouteAction` methods on the `Route` facade to access information about the route handling the incoming request:
 
     use Illuminate\Support\Facades\Route;
-
+    
     $route = Route::current(); // Illuminate\Routing\Route
     $name = Route::currentRouteName(); // string
     $action = Route::currentRouteAction(); // string
