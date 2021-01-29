@@ -1298,6 +1298,11 @@ The `Str::markdown` method converts GitHub flavored markdown into html:
 
     // <h1>Laravel</h1>
 
+    $options = ['html_input' => 'strip'];
+    $html = Str::markdown('# Taylor <b>Otwell</b>', $options);
+
+    // <h1>Taylor Otwell</h1>
+
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {#collection-method}
 
@@ -1965,6 +1970,11 @@ The `markdown` method converts GitHub flavored markdown into html:
     $html = Str::of('# Laravel')->markdown();
 
     // <h1>Laravel</h1>
+
+    $options = ['html_input' => 'strip'];
+    $html = Str::of('# Taylor <b>Otwell</b>')->markdown($options);
+
+    // <h1>Taylor Otwell</h1>
 
 <a name="method-fluent-str-match"></a>
 #### `match` {#collection-method}
