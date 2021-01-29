@@ -105,6 +105,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::length](#method-str-length)
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
+[Str::markdown](#method-str-markdown)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -1285,6 +1286,17 @@ The `Str::lower` method converts the given string to lowercase:
 
     // laravel
 
+<a name="method-str-markdown"></a>
+#### `Str::markdown()` {#collection-method}
+
+The `Str::markdown` method converts GitHub flavored markdown into html:
+
+    use Illuminate\Support\Str;
+
+    $html = Str::markdown('# Laravel');
+
+    // <h1>Laravel</h1>
+
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {#collection-method}
 
@@ -2273,7 +2285,7 @@ The `tap` method passes the string to the given closure, allowing you to examine
             dump('String after append: ' . $string);
         })
         ->upper();
-    
+
     // LARAVEL FRAMEWORK
 
 <a name="method-fluent-str-title"></a>
