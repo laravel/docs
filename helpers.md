@@ -163,6 +163,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
 [ltrim](#method-fluent-str-ltrim)
+[markdown](#method-fluent-str-markdown)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
 [padBoth](#method-fluent-str-padboth)
@@ -1953,6 +1954,17 @@ The `ltrim` method trims the left side of the string:
     $string = Str::of('/Laravel/')->ltrim('/');
 
     // 'Laravel/'
+
+<a name="method-fluent-str-markdown"></a>
+#### `markdown` {#collection-method}
+
+The `markdown` method converts GitHub flavored markdown into html:
+
+    use Illuminate\Support\Str;
+
+    $html = Str::of('# Laravel')->markdown();
+
+    // <h1>Laravel</h1>
 
 <a name="method-fluent-str-match"></a>
 #### `match` {#collection-method}
