@@ -552,7 +552,7 @@ If you would like to specify that a job should not be immediately available for 
          */
         public function store(Request $request)
         {
-            Podcast::create(...);
+            $podcast = Podcast::create(...);
 
             // ...
 
