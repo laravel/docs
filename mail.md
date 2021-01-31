@@ -596,6 +596,7 @@ By default, Laravel will send email using the mailer configured as the `default`
 
 <a name="queueing-mail"></a>
 ### Queueing Mail
+> {note} Before queueing mail you should configure your queue and [start a worker](/docs/{{version}}/queues).
 
 <a name="queueing-a-mail-message"></a>
 #### Queueing A Mail Message
