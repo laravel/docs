@@ -706,7 +706,7 @@ Below is a list of all available validation rules and their function:
 [Required Without All](#rule-required-without-all)
 [Same](#rule-same)
 [Size](#rule-size)
-[Sometimes](#conditionally-adding-rules)
+[Sometimes](#rule-sometimes)
 [Starts With](#rule-starts-with)
 [String](#rule-string)
 [Timezone](#rule-timezone)
@@ -1189,6 +1189,11 @@ The field under validation must have a size matching the given _value_. For stri
 
     // Validate that an uploaded file is exactly 512 kilobytes...
     'image' => 'file|size:512';
+
+<a name="rule-sometimes"></a>
+#### sometimes
+
+In some situations, you may wish to run validation checks against a field **only** if that field is present in the data being validated. To quickly accomplish this, add the `sometimes` rule to your rule list. See the [Validating When Present](#validating-when-present) section for examples and more information.
 
 <a name="rule-starts-with"></a>
 #### starts_with:_foo_,_bar_,...
