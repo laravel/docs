@@ -9,6 +9,7 @@
     - [API Keys](#api-keys)
     - [Paddle JS](#paddle-js)
     - [Currency Configuration](#currency-configuration)
+    - [Approve your domains](#approve-domains)
 - [Core Concepts](#core-concepts)
     - [Pay Links](#pay-links)
     - [Inline Checkout](#inline-checkout)
@@ -144,6 +145,10 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
     CASHIER_CURRENCY_LOCALE=nl_BE
 
 > {note} In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
+
+<a name="approve-domains"></a>
+### Approve your domains
+In order to use Paddle checkout, you have to [approve your app's domain](https://vendors.paddle.com/checkout-settings) or test in localhost, otherwise you'll receive a 404 error with "Simple Charge The checkout id must be a valid checkout id" message.
 
 <a name="core-concepts"></a>
 ## Core Concepts
