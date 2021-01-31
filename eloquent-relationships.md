@@ -865,7 +865,7 @@ As demonstrated in the example above, you are free to add additional constraints
             ->get();
 
     // select * from posts
-    // where user_id = ? and active = 1 or votes >= 100
+    // where active = 1 or votes >= 100
 
 In most situations, you likely intend to use [constraint groups](/docs/{{version}}/queries#parameter-grouping) to logically group the conditional checks between parentheses:
 
