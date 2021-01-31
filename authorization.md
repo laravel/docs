@@ -433,9 +433,11 @@ For certain users, you may wish to authorize all actions within a given policy. 
         }
     }
 
-If you would like to deny all authorization checks for a particular type of user then you may return `false` from the `before` method. If `null` is returned, the authorization check will fall through to the policy method.
+If you would like to deny all authorization checks for a particular type of user then you may return `false` from the `before` method. If `null` is returned, the authorization check will fall through to the policy method. 
 
 > {note} The `before` method of a policy class will not be called if the class doesn't contain a method with a name matching the name of the ability being checked.
+
+> {tip} When in local development be sure the user you are acting as is not contained in the `before` method. It is easy to forget authorization calls will not work as expected. For example, with blade directive `@can ('viewAny', Payment::class)`, a user _you intend_ cannot view payments will see payment information.
 
 <a name="authorizing-actions-using-policies"></a>
 ## Authorizing Actions Using Policies
