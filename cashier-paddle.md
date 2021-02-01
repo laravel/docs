@@ -702,17 +702,17 @@ Subscription modifiers allow you to implement [metered billing](https://develope
 
 For example, you might want to offer a "Premium Support" add-on with your standard subscription. You can create this modifier like so:
 
-    $modifier = $user->subscription->newModifier(12.99)->create();
+    $modifier = $user->subscription('default')->newModifier(12.99)->create();
 
 The example above will add a $12.99 add-on to the subscription. By default, this charge will recur on every interval you have configured for the subscription. If you would like, you can add a readable description to the modifier using the modifier's `description` method:
 
-    $modifier = $user->subscription->newModifier(12.99)
+    $modifier = $user->subscription('default')->newModifier(12.99)
         ->description('Premium Support')
         ->create();
 
 To illustrate how to implement metered billing using modifiers, imagine your application charges per SMS message sent by the user. First, you should create a $0 plan in your Paddle dashboard. Once the user has been subscribed to this plan, you can add modifiers representing each individual charge to the subscription:
 
-    $modifier = $user->subscription->newModifier(0.99)
+    $modifier = $user->subscription('default')->newModifier(0.99)
         ->description('New text message')
         ->oneTime()
         ->create();
@@ -724,11 +724,11 @@ As you can see, we invoked the `oneTime` method when creating this modifier. Thi
 
 You may retrieve a list of all modifiers for a subscription via the `modifiers` method:
 
-    $modifiers = $user->subscription->modifiers();
+    $modifiers = $user->subscription('default')->modifiers();
 
     foreach ($modifiers as $modifier) {
         $modifier->amount(); // $0.99
-        $modifier->description; // "New text message."
+        $modifier->description; // New text message.
     }
 
 <a name="deleting-modifiers"></a>
