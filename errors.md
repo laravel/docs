@@ -146,7 +146,7 @@ Instead of type-checking exceptions in the exception handler's `register` method
         /**
          * Report the exception.
          *
-         * @return void
+         * @return bool|null
          */
         public function report()
         {
@@ -170,7 +170,7 @@ If your exception contains custom reporting logic that is only necessary when ce
     /**
      * Report the exception.
      *
-     * @return bool|void
+     * @return bool|null
      */
     public function report()
     {
