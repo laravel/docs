@@ -165,7 +165,7 @@ Next, execute the `bash init.sh` command from the Homestead directory to create 
 <a name="setting-your-provider"></a>
 #### Setting Your Provider
 
-The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `parallels`:
+The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `parallels`:
 
     provider: virtualbox
 
