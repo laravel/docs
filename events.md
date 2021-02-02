@@ -339,7 +339,7 @@ If you would like to define the listener's queue at runtime, you may define a `v
 <a name="conditionally-queueing-listeners"></a>
 #### Conditionally Queueing Listeners
 
-Sometimes, you may need to determine whether a listener should be queued based on some data that's only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be executed:
+Sometimes, you may need to determine whether a listener should be queued based on some data that are only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be executed:
 
     <?php
 
@@ -471,7 +471,7 @@ Sometimes your queued event listeners may fail. If queued listener exceeds the m
 <a name="specifying-queued-listener-maximum-attempts"></a>
 #### Specifying Queued Listener Maximum Attempts
 
-If one of your queued listener is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a listener may be attempted.
+If one of your queued listeners is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a listener may be attempted.
 
 You may define `$tries` property on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
 

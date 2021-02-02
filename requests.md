@@ -22,7 +22,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel's `Illuminate\Http\Request` class provides an object-oriented way to interact with the current HTTP request being handled by your application as well retrieve the input, cookies, and files that were submitted with the request.
+Laravel's `Illuminate\Http\Request` class provides an object-oriented way to interact with the current HTTP request being handled by your application as well as retrieve the input, cookies, and files that were submitted with the request.
 
 <a name="interacting-with-the-request"></a>
 ## Interacting With The Request
@@ -492,7 +492,7 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
          *
          * @var int
          */
-        protected $headers = Request::HEADER_X_FORWARDED_ALL;
+        protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
     }
 
 > {tip} If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).

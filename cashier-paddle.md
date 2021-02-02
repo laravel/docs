@@ -186,6 +186,21 @@ For more information on pay links, you may review [the Paddle API documentation 
 
 > {note} After a subscription state change, the delay for receiving the corresponding webhook is typically minimal but you should account for this in your application by considering that your user's subscription might not be immediately available after completing the checkout.
 
+<a name="manually-rendering-pay-links"></a>
+#### Manually Rendering Pay Links
+
+You may also manually render a pay link without using Laravel's built-in Blade components. To get started, generate the pay link URL as demonstrated in previous examples:
+
+    $payLink = $request->user()->newSubscription('default', $premium = 34567)
+        ->returnTo(route('home'))
+        ->create();
+
+Next, simply attach the pay link URL to an `a` element in your HTML:
+
+    <a href="#!" class="ml-4 paddle_button" data-override="{{ $payLink }}">
+        Paddle Checkout
+    </a>
+
 <a name="inline-checkout"></a>
 ### Inline Checkout
 
@@ -216,6 +231,26 @@ Alternatively, you may customize the widget with custom options instead of using
 Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [parameter reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details on the inline checkout's available options.
 
 > {note} If you would like to also use the `passthrough` option when specifying custom options, you should provide a key / value array as its value. Cashier will automatically handle converting the array to a JSON string. In addition, the `customer_id` passthrough option is reserved for internal Cashier usage.
+
+<a name="manually-rendering-an-inline-checkout"></a>
+#### Manually Rendering An Inline Checkout
+
+You may also manually render an inline checkout without using Laravel's built-in Blade components. To get started, generate the pay link URL [as demonstrated in previous examples](#pay-links).
+
+Next, you may use Paddle.js to initialize the checkout. To keep this example simple, we will demonstrate this using [Alpine.js](https://github.com/alpinejs/alpine); however, you are free to translate this example to your own frontend stack:
+
+```html
+<div class="paddle-checkout" x-data="{}" x-init="
+    Paddle.Checkout.open({
+        override: {{ $payLink }},
+        method: 'inline',
+        frameTarget: 'paddle-checkout',
+        frameInitialHeight: 366,
+        frameStyle: 'width: 100%; background-color: transparent; border: none;'
+    });
+">
+</div>
+```
 
 <a name="user-identification"></a>
 ### User Identification
@@ -325,7 +360,7 @@ You may display the original listed prices (without coupon discounts) using the 
 </ul>
 ```
 
-> {note} When using the prices API, Paddle only allows to apply coupons to one-time purchase products and not to subscription plans.
+> {note} When using the prices API, Paddle only allows applying coupons to one-time purchase products and not to subscription plans.
 
 <a name="customers"></a>
 ## Customers
@@ -614,7 +649,7 @@ After a user has subscribed to your application, they may occasionally want to c
 
     $user->subscription('default')->swap($premium = 34567);
 
-If the user is on a trial, the trial period will be maintained. Also, if a "quantity" exists for the subscription, that quantity will also be maintained.
+If the user is on a trial, the trial period will be maintained. Additionally, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
 If you would like to swap plans and cancel any trial period the user is currently on, you may use the `skipTrial` method:
 
@@ -667,17 +702,17 @@ Subscription modifiers allow you to implement [metered billing](https://develope
 
 For example, you might want to offer a "Premium Support" add-on with your standard subscription. You can create this modifier like so:
 
-    $modifier = $user->subscription->newModifier(12.99)->create();
+    $modifier = $user->subscription('default')->newModifier(12.99)->create();
 
 The example above will add a $12.99 add-on to the subscription. By default, this charge will recur on every interval you have configured for the subscription. If you would like, you can add a readable description to the modifier using the modifier's `description` method:
 
-    $modifier = $user->subscription->newModifier(12.99)
+    $modifier = $user->subscription('default')->newModifier(12.99)
         ->description('Premium Support')
         ->create();
 
 To illustrate how to implement metered billing using modifiers, imagine your application charges per SMS message sent by the user. First, you should create a $0 plan in your Paddle dashboard. Once the user has been subscribed to this plan, you can add modifiers representing each individual charge to the subscription:
 
-    $modifier = $user->subscription->newModifier(0.99)
+    $modifier = $user->subscription('default')->newModifier(0.99)
         ->description('New text message')
         ->oneTime()
         ->create();
@@ -689,11 +724,11 @@ As you can see, we invoked the `oneTime` method when creating this modifier. Thi
 
 You may retrieve a list of all modifiers for a subscription via the `modifiers` method:
 
-    $modifiers = $user->subscription->modifiers();
+    $modifiers = $user->subscription('default')->modifiers();
 
     foreach ($modifiers as $modifier) {
         $modifier->amount(); // $0.99
-        $modifier->description; // "New text message."
+        $modifier->description; // New text message.
     }
 
 <a name="deleting-modifiers"></a>

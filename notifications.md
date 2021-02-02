@@ -380,7 +380,7 @@ When sending notifications via the `mail` channel, the notification system will 
 <a name="customizing-the-subject"></a>
 ### Customizing The Subject
 
-By default, the email's subject is the class name of the notification formatted to "Title Case". So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If you would like to specify an different subject for the message, you may call the `subject` method when building your message:
+By default, the email's subject is the class name of the notification formatted to "Title Case". So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If you would like to specify a different subject for the message, you may call the `subject` method when building your message:
 
     /**
      * Get the mail representation of the notification.

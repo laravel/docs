@@ -65,7 +65,7 @@ All of your application's event broadcasting configuration is stored in the `con
 <a name="broadcast-service-provider"></a>
 #### Broadcast Service Provider
 
-Before broadcasting any events, you will first need to register the `App\Providers\BroadcastServiceProvider`. In a new Laravel applications, you only need to uncomment this provider in the `providers` array of your `config/app.php` configuration file. This `BroadcastServiceProvider` contains the code necessary to register the broadcast authorization routes and callbacks.
+Before broadcasting any events, you will first need to register the `App\Providers\BroadcastServiceProvider`. In new Laravel applications, you only need to uncomment this provider in the `providers` array of your `config/app.php` configuration file. This `BroadcastServiceProvider` contains the code necessary to register the broadcast authorization routes and callbacks.
 
 <a name="queue-configuration"></a>
 #### Queue Configuration
