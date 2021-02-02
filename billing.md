@@ -42,6 +42,11 @@
     - [Simple Charge](#simple-charge)
     - [Charge With Invoice](#charge-with-invoice)
     - [Refunding Charges](#refunding-charges)
+- [Checkout](#checkout)
+    - [Product Checkouts](#product-checkouts)
+    - [Single Charge Checkouts](#single-charge-checkouts)
+    - [Subscription Checkouts](#subscription-checkouts)
+    - [Styling The Checkout Button](#styling-the-checkout-button)
 - [Invoices](#invoices)
     - [Retrieving Invoices](#retrieving-invoices)
     - [Generating Invoice PDFs](#generating-invoice-pdfs)
@@ -1035,6 +1040,7 @@ By default, the Cashier webhook controller will automatically handle cancelling 
 
 To ensure your application can handle Stripe webhooks, be sure to configure the webhook URL in the Stripe control panel. By default, Cashier's webhook controller responds to the `/stripe/webhook` URL path. The full list of all webhooks you should enable in the Stripe control panel are:
 
+- `customer.subscription.created`
 - `customer.subscription.updated`
 - `customer.subscription.deleted`
 - `customer.updated`
@@ -1216,6 +1222,124 @@ The `downloadInvoice` method also allows for a custom filename via its third arg
         'vendor' => 'Your Company',
         'product' => 'Your Product',
     ], 'my-invoice');
+
+<a name="checkout"></a>
+## Checkout
+
+Cashier Stripe also provides support for [Stripe Checkout](https://stripe.com/en-be/payments/checkout). Stripe Checkout takes the pain out of implementing custom pages to accept payments by providing a pre-built, hosted payment page.
+
+The following documentation contains information on how to get started using Stripe Checkout with Cashier. To learn more about Stripe Checkout, you should also consider reviewing [Stripe's own documentation on Checkout](https://stripe.com/docs/payments/checkout).
+
+<a name="product-checkouts"></a>
+### Product Checkouts
+
+You may perform a checkout for an existing product that has been created within your Stripe dashboard using the `checkout` method on a billable model. The `checkout` method will initiate a new Stripe Checkout session. By default, you're required to pass a Stripe Price ID:
+
+    $checkout = $user->checkout('price_12345');
+
+    return view('your-checkout-view', [
+        'checkout' => $checkout,
+    ]);
+
+If needed, you may also specify a product quantity:
+
+    $checkout = $user->checkout('price_12345', 15);
+
+Once you have passed the Checkout session instance to your view, a button that directs the user to Stripe Checkout may be rendered using the `button` method:
+
+    {{ $checkout->button('Buy') }}
+
+When a customer clicks this button they will be redirected to Stripe's Checkout page. By default, when a user successfully completes a purchase or cancels a purchase they will be redirected to your `home` route location, but you may specify custom callback URLs using the `success_url` and `cancel_url` options:
+
+    $checkout = $user->checkout('price_12345', 1, [
+        'success_url' => route('your-success-route'),
+        'cancel_url' => route('your-cancel-route'),
+    ]);
+
+<a name="checkout-promotion-codes"></a>
+#### Promotion Codes
+
+By default, Stripe Checkout does not allow [user redeemable promotion codes](https://stripe.com/docs/billing/subscriptions/discounts/codes). Luckily, there's an easy way to enable these for your Checkout page. To do so, you may invoke the `allowPromotionCodes` method:
+
+    $checkout = $user->allowPromotionCodes()->checkout('price_12345');
+
+<a name="single-charge-checkouts"></a>
+### Single Charge Checkouts
+
+You can also perform a simple charge for an ad-hoc product that has not been created in your Stripe dashboard. To do so you may use the `checkoutCharge` method on a billable model and pass it a chargeable amount, a product name, and an optional quantity:
+
+    $checkout = $user->checkoutCharge(1200, 'T-Shirt', 5);
+
+    return view('your-checkout-view', [
+        'checkout' => $checkout,
+    ]);
+
+Once you have passed the Checkout session instance to your view, a button that directs the user to Stripe Checkout may be rendered using the `button` method:
+
+    {{ $checkout->button('Buy') }}
+
+When a customer clicks this button they will be redirected to Stripe's Checkout page.
+
+> {note} When using the `checkoutCharge` method, Stripe will always create a new product and price in your Stripe dashboard. Therefore, we recommend that you create the products up front in your Stripe dashboard and use of the `checkout` method instead.
+
+<a name="subscription-checkouts"></a>
+### Subscription Checkouts
+
+> {note} Using Stripe Checkout for subscriptions requires you to enable the `customer.subscription.created` webhook in your Stripe dashboard. This webhook will create the subscription record in your database and store all of the relevant subscription items.
+
+You may also use Stripe Checkout to initiate subscriptions. After defining your subscription with Cashier's subscription builder methods, you may call the `checkout `method:
+
+    $checkout = Auth::user()
+            ->newSubscription('default', 'price_xxx')
+            ->checkout();
+
+    return view('your-checkout-view', [
+        'checkout' => $checkout,
+    ]);
+
+Just as with product checkouts, you may customize the success and cancellation URLs:
+
+    $checkout = Auth::user()->newSubscription('default', 'price_xxx')->checkout([
+        'success_url' => route('your-success-route'),
+        'cancel_url' => route('your-cancel-route'),
+    ]);
+
+Of course, you can also enable promotion codes for subscription checkouts:
+
+    $checkout = Auth::user()->newSubscription('default', 'price_xxx')
+        ->allowPromotionCodes()
+        ->checkout();
+
+Once you have passed the Checkout session instance to your view, a button that directs the user to Stripe Checkout may be rendered using the `button` method:
+
+    {{ $checkout->button('Subscribe') }}
+
+When a customer clicks this button they will be redirected to Stripe's Checkout page.
+
+> {note} Unfortunately Stripe Checkout does not support all subscription billing options when starting subscriptions. Using the `anchorBillingCycleOn` method on the subscription builder, setting proration behavior, or setting payment behavior will not have any effect during Stripe Checkout sessions. Please consult [the Stripe Checkout Session API documentation](https://stripe.com/docs/api/checkout/sessions/create) to review which parameters are available.
+
+<a name="stripe-checkout-trial-periods"></a>
+#### Stripe Checkout & Trial Periods
+
+Of course, you can define a trial period when building a subscription that will be completed using Stripe Checkout:
+
+    $checkout = Auth::user()->newSubscription('default', 'price_xxx')
+        ->trialDays(3)
+        ->checkout();
+
+However, the trial period must be at least 48 hours, which is the minimum amount of trial time supported by Stripe Checkout.
+
+<a name="stripe-checkout-subscriptions-and-webhooks"></a>
+#### Subscriptions & Webhooks
+
+Remember, Stripe and Cashier update subscription statuses via webhooks, so there's a possibility a subscription might not yet be active when the customer returns to the application after entering their payment information. To handle this scenario, you may wish to display a message informing the user that their payment or subscription is pending.
+
+<a name="styling-the-checkout-button"></a>
+### Styling The Checkout Button
+
+When rendering the checkout button, you may customize the button's styling using the `class` and `style` options. These options should be passed within an associative array as the second argument to the `button` method:
+
+    {{ $checkout->button('Buy', ['class' => 'p-4 bg-blue-500 text-white']) }}
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
