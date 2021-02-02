@@ -280,7 +280,7 @@ The `groupByRaw` method may be used to provide a raw string as the value of the 
 <a name="inner-join-clause"></a>
 #### Inner Join Clause
 
-The query builder may also be used to add join clauses to your queries. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You may even join to multiple tables in a single query:
+The query builder may also be used to add join clauses to your queries. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You may even join multiple tables in a single query:
 
     use Illuminate\Support\Facades\DB;
 
@@ -335,7 +335,7 @@ If you would like to use a "where" clause on your joins, you may use the `where`
 <a name="subquery-joins"></a>
 #### Subquery Joins
 
-You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receive three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:
+You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receives three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:
 
     $latestPosts = DB::table('posts')
                        ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
@@ -662,7 +662,7 @@ To sort by multiple columns, you may simply invoke `orderBy` as many times as ne
 <a name="latest-oldest"></a>
 #### The `latest` & `oldest` Methods
 
-The `latest` and `oldest` methods allow you to easily order results by date. By default, result will be ordered by the table's `created_at` column. Or, you may pass the column name that you wish to sort by:
+The `latest` and `oldest` methods allow you to easily order results by date. By default, the result will be ordered by the table's `created_at` column. Or, you may pass the column name that you wish to sort by:
 
     $user = DB::table('users')
                     ->latest()

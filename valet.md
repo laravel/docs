@@ -105,7 +105,7 @@ If your application needs a database, check out [DBngin](https://dbngin.com). DB
 <a name="resetting-your-installation"></a>
 #### Resetting Your Installation
 
-If you are having trouble getting your Valet installation to run properly, executing the `composer global update` command followed by `valet install` will reset your installation and can solve a variety of problems. In rare cases it may be necessary to "hard reset" Valet by executing `valet uninstall --force` followed by `valet install`.
+If you are having trouble getting your Valet installation to run properly, executing the `composer global update` command followed by `valet install` will reset your installation and can solve a variety of problems. In rare cases, it may be necessary to "hard reset" Valet by executing `valet uninstall --force` followed by `valet install`.
 
 <a name="upgrading-valet"></a>
 ### Upgrading Valet
@@ -258,7 +258,7 @@ Let's take a look at a sample implementation of each method your custom Valet dr
 <a name="the-serves-method"></a>
 #### The `serves` Method
 
-The `serves` method should return `true` if your driver should handle the incoming request. Otherwise, the method should return `false`. So, within this method you should attempt to determine if the given `$sitePath` contains a project of the type you are trying to serve.
+The `serves` method should return `true` if your driver should handle the incoming request. Otherwise, the method should return `false`. So, within this method, you should attempt to determine if the given `$sitePath` contains a project of the type you are trying to serve.
 
 For example, let's imagine we are writing a `WordPressValetDriver`. Our `serves` method might look something like this:
 

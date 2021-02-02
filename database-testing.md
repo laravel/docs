@@ -412,7 +412,7 @@ You may provide a closure based state transformation if your state change requir
                 )
                 ->create();
 
-If you already have model instances that you would like to attached to the models you are creating, you may pass the model instances to the `hasAttached` method. In this example, the same three roles will be attached to all three users:
+If you already have model instances that you would like to be attached to the models you are creating, you may pass the model instances to the `hasAttached` method. In this example, the same three roles will be attached to all three users:
 
     $roles = Role::factory()->count(3)->create();
 

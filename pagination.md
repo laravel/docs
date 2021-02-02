@@ -260,7 +260,7 @@ Method  |  Description
 `$paginator->getOptions()`  |  Get the paginator options.
 `$paginator->getUrlRange($start, $end)`  |  Create a range of pagination URLs.
 `$paginator->hasPages()`  |  Determine if there are enough items to split into multiple pages.
-`$paginator->hasMorePages()`  |  Determine if there is more items in the data store.
+`$paginator->hasMorePages()`  |  Determine if there are more items in the data store.
 `$paginator->items()`  |  Get the items for the current page.
 `$paginator->lastItem()`  |  Get the result number of the last item in the results.
 `$paginator->lastPage()`  |  Get the page number of the last available page. (Not available when using `simplePaginate`).

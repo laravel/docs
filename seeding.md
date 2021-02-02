@@ -57,7 +57,7 @@ As an example, let's modify the default `DatabaseSeeder` class and add a databas
 
 Of course, manually specifying the attributes for each model seed is cumbersome. Instead, you can use [model factories](/docs/{{version}}/database-testing#defining-model-factories) to conveniently generate large amounts of database records. First, review the [model factory documentation](/docs/{{version}}/database-testing#defining-model-factories) to learn how to define your factories.
 
-For example, let's create 50 users that each have one related post:
+For example, let's create 50 users that each has one related post:
 
     use App\Models\User;
 

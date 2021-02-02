@@ -639,7 +639,7 @@ After a customer is subscribed to your application, they may occasionally want t
 
     $user->subscription('default')->swap('price_id');
 
-If the customer is on trial, the trial period will be maintained. Also, if a "quantity" exists for the subscription, that quantity will also be maintained.
+If the customer is on trial, the trial period will be maintained. Additionally, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
 If you would like to swap plans and cancel any trial period the customer is currently on, you may invoke the `skipTrial` method:
 
@@ -662,7 +662,7 @@ By default, Stripe prorates charges when swapping between plans. The `noProrate`
 
 For more information on subscription proration, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/prorations).
 
-> {note} Executing the `noProrate` method before the `swapAndInvoice` method will have no affect on proration. An invoice will always be issued.
+> {note} Executing the `noProrate` method before the `swapAndInvoice` method will have no effect on proration. An invoice will always be issued.
 
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
@@ -1129,7 +1129,7 @@ The `charge` method accepts an array as its third argument, allowing you to pass
         'custom_option' => $value,
     ]);
 
-You may also use the `charge` method without an underlying customer or user. To accomplish this, invoke the `charge` method on an new instance of your application's billable model:
+You may also use the `charge` method without an underlying customer or user. To accomplish this, invoke the `charge` method on a new instance of your application's billable model:
 
     use App\Models\User;
 
