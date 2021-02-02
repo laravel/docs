@@ -329,7 +329,7 @@ The form request class also contains an `authorize` method. Within this method, 
         return $comment && $this->user()->can('update', $comment);
     }
 
-Since all form requests extend the base Laravel request class, we may use the `user` method to access the currently authenticated user. Also note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:
+Since all form requests extend the base Laravel request class, we may use the `user` method to access the currently authenticated user. Also, note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:
 
     Route::post('/comment/{comment}');
 
@@ -861,7 +861,7 @@ You may add `ignore_case` to the validation rule's arguments to make the rule ig
 <a name="rule-email"></a>
 #### email
 
-The field under validation must be formatted as an email address. This validation rule utilizes the [`egulias/email-validator`](https://github.com/egulias/EmailValidator) package for validating the email address. By default the `RFCValidation` validator is applied, but you can apply other validation styles as well:
+The field under validation must be formatted as an email address. This validation rule utilizes the [`egulias/email-validator`](https://github.com/egulias/EmailValidator) package for validating the email address. By default, the `RFCValidation` validator is applied, but you can apply other validation styles as well:
 
     'email' => 'email:rfc,dns'
 

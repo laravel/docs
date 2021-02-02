@@ -314,7 +314,7 @@ So, when using Laravel's scheduler, we only need to add a single cron configurat
 <a name="running-the-scheduler-locally"></a>
 ## Running The Scheduler Locally
 
-Typically, you would not add a scheduler cron entry to your local development machine. Instead you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:
+Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:
 
     php artisan schedule:work
 

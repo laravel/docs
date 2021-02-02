@@ -317,7 +317,7 @@ In Laravel 8, this property is set to `null` by default. This allows your contro
     // Using string syntax...
     Route::get('/users', 'App\Http\Controllers\UserController@index');
 
-In most cases this won't impact applications that are being upgraded because your `RouteServiceProvider` will still contain the `$namespace` property with its previous value. However, if you upgrade your application by creating a brand new Laravel project, you may encounter this as a breaking change.
+In most cases, this won't impact applications that are being upgraded because your `RouteServiceProvider` will still contain the `$namespace` property with its previous value. However, if you upgrade your application by creating a brand new Laravel project, you may encounter this as a breaking change.
 
 If you would like to continue using the original auto-prefixed controller routing, you can simply set the value of the `$namespace` property within your `RouteServiceProvider` and update the route registrations within the `boot` method to use the `$namespace` property:
 
