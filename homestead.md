@@ -57,8 +57,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 </style>
 
 <div id="software-list" markdown="1">
-- Ubuntu 18.04 (`main` branch)
-- Ubuntu 20.04 (`20.04` branch)
+- Ubuntu 20.04
 - Git
 - PHP 8.0
 - PHP 7.4
@@ -71,7 +70,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - MySQL
 - lmm
 - Sqlite3
-- PostgreSQL (9.6, 10, 11, 12)
+- PostgreSQL (9.6, 10, 11, 12, 13)
 - Composer
 - Node (With Yarn, Bower, Grunt, and Gulp)
 - Redis
@@ -112,7 +111,6 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - MariaDB
 - MinIO
 - MongoDB
-- MySQL 8
 - Neo4j
 - Oh My Zsh
 - Open Resty
@@ -132,28 +130,11 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 Before launching your Homestead environment, you must install [Vagrant](https://www.vagrantup.com/downloads.html) as well as one of the following supported providers:
 
 - [VirtualBox 6.1.x](https://www.virtualbox.org/wiki/Downloads)
-- [VMWare](https://www.vmware.com)
 - [Parallels](https://www.parallels.com/products/desktop/)
-- [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
 
 All of these software packages provide easy-to-use visual installers for all popular operating systems.
 
-To use the VMware provider, you will need to purchase both VMware Fusion / Workstation and the [VMware Vagrant plug-in](https://www.vagrantup.com/vmware). Though it is not free, VMware can provide faster shared folder performance out of the box.
-
 To use the Parallels provider, you will need to install [Parallels Vagrant plug-in](https://github.com/Parallels/vagrant-parallels). It is free of charge.
-
-Because of [Vagrant limitations](https://www.vagrantup.com/docs/hyperv/limitations.html), the Hyper-V provider ignores all networking settings.
-
-<a name="installing-the-homestead-vagrant-box"></a>
-#### Installing The Homestead Vagrant Box
-
-Once VirtualBox / VMware and Vagrant have been installed, you should add the `laravel/homestead` box to your Vagrant installation by executing the following command in your terminal. It will take a few minutes to download the box, depending on your Internet connection speed:
-
-    vagrant box add laravel/homestead
-
-If this command fails, make sure your Vagrant installation is up to date.
-
-> {note} Homestead periodically issues "alpha" / "beta" boxes for testing, which may interfere with the `vagrant box add` command. If you are having issues running `vagrant box add`, you may run the `vagrant up` command and the correct box will be downloaded when Vagrant attempts to start the virtual machine.
 
 <a name="installing-homestead"></a>
 #### Installing Homestead
@@ -184,7 +165,7 @@ Next, execute the `bash init.sh` command from the Homestead directory to create 
 <a name="setting-your-provider"></a>
 #### Setting Your Provider
 
-The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion`, `vmware_workstation`, `parallels`, or `hyperv`:
+The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `parallels`:
 
     provider: virtualbox
 
@@ -280,7 +261,7 @@ The specified services will be started or stopped based on their order in the `e
 
 Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from your Homestead directory. Vagrant will boot the virtual machine and automatically configure your shared folders and Nginx sites.
 
-To destroy the machine, you may use the `vagrant destroy --force` command.
+To destroy the machine, you may use the `vagrant destroy` command.
 
 <a name="per-project-installation"></a>
 ### Per Project Installation
@@ -328,7 +309,6 @@ Optional software is installed using the `features` option within your `Homestea
         - mariadb: true
         - minio: true
         - mongodb: true
-        - mysql8: true
         - neo4j: true
         - ohmyzsh: true
         - openresty: true
@@ -385,7 +365,7 @@ Next, you need to update the Homestead source code. If you cloned the repository
 
 These commands pull the latest Homestead code from the GitHub repository, fetch the latest tags, and then check out the latest tagged release. You can find the latest stable release version on Homestead's [GitHub releases page](https://github.com/laravel/homestead/releases).
 
-If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^11"` and update your dependencies:
+If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^12"` and update your dependencies:
 
     composer update
 
@@ -504,7 +484,7 @@ If you wish, you may forward additional ports to the Vagrant box by defining a `
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4" (the default), and "8.0":
+Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", and "8.0" (the default):
 
     sites:
         - map: homestead.test
