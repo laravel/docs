@@ -230,7 +230,7 @@ Because loaded relationships also get serialized, the serialized job string can 
 <a name="unique-jobs"></a>
 ### Unique Jobs
 
-> {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
+> {note} Unique jobs require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks. In addition, unique job constraints do not apply to jobs within batches.
 
 Sometimes, you may want to ensure that only one instance of a specific job is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your job class. This interface does not require you to define any additional methods on your class:
 
