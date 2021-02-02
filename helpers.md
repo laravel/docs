@@ -1290,7 +1290,7 @@ The `Str::lower` method converts the given string to lowercase:
 <a name="method-str-markdown"></a>
 #### `Str::markdown()` {#collection-method}
 
-The `Str::markdown` method converts GitHub flavored markdown into html:
+The `Str::markdown` method converts GitHub flavored Markdown into HTML:
 
     use Illuminate\Support\Str;
 
@@ -1298,8 +1298,9 @@ The `Str::markdown` method converts GitHub flavored markdown into html:
 
     // <h1>Laravel</h1>
 
-    $options = ['html_input' => 'strip'];
-    $html = Str::markdown('# Taylor <b>Otwell</b>', $options);
+    $html = Str::markdown('# Taylor <b>Otwell</b>', [
+        'html_input' => 'strip',
+    ]);
 
     // <h1>Taylor Otwell</h1>
 
@@ -1963,7 +1964,7 @@ The `ltrim` method trims the left side of the string:
 <a name="method-fluent-str-markdown"></a>
 #### `markdown` {#collection-method}
 
-The `markdown` method converts GitHub flavored markdown into html:
+The `markdown` method converts GitHub flavored Markdown into HTML:
 
     use Illuminate\Support\Str;
 
@@ -1971,8 +1972,9 @@ The `markdown` method converts GitHub flavored markdown into html:
 
     // <h1>Laravel</h1>
 
-    $options = ['html_input' => 'strip'];
-    $html = Str::of('# Taylor <b>Otwell</b>')->markdown($options);
+    $html = Str::of('# Taylor <b>Otwell</b>')->markdown([
+        'html_input' => 'strip',
+    ]);
 
     // <h1>Taylor Otwell</h1>
 
