@@ -96,7 +96,7 @@ Laravel includes a `cache.headers` middleware, which may be used to quickly set 
 <a name="attaching-cookies-to-responses"></a>
 ### Attaching Cookies To Responses
 
-You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and number of minutes the cookie should be considered valid to this method:
+You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and the number of minutes the cookie should be considered valid to this method:
 
     return response('Hello World')->cookie(
         'name', 'value', $minutes

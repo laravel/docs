@@ -22,7 +22,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel's `Illuminate\Http\Request` class provides an object-oriented way to interact with the current HTTP request being handled by your application as well retrieve the input, cookies, and files that were submitted with the request.
+Laravel's `Illuminate\Http\Request` class provides an object-oriented way to interact with the current HTTP request being handled by your application as well as retrieve the input, cookies, and files that were submitted with the request.
 
 <a name="interacting-with-the-request"></a>
 ## Interacting With The Request

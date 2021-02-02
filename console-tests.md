@@ -45,7 +45,7 @@ You may test this command with the following test which utilizes the `expectsQue
 <a name="confirmation-expectations"></a>
 #### Confirmation Expectations
 
-When writing a command which expects a confirmation in the form of a "yes" or "no" answer, you may utilize the `expectsConfirmation` method:
+When writing a command which expects confirmation in the form of a "yes" or "no" answer, you may utilize the `expectsConfirmation` method:
 
     $this->artisan('module:import')
         ->expectsConfirmation('Do you really wish to run this command?', 'no')

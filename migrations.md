@@ -909,7 +909,7 @@ You may drop multiple columns from a table by passing an array of column names t
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
+> {note} Dropping or modifying multiple columns within a single migration while using an SQLite database is not supported.
 
 <a name="available-command-aliases"></a>
 #### Available Command Aliases
@@ -940,7 +940,7 @@ The Laravel schema builder supports several types of indexes. The following exam
         $table->string('email')->unique();
     });
 
-Alternatively, you may create the index after defining the column. To do so, you should call the `unique` method on the schema builder blueprint. This methods accepts the name of the column that should receive a unique index:
+Alternatively, you may create the index after defining the column. To do so, you should call the `unique` method on the schema builder blueprint. This method accepts the name of the column that should receive a unique index:
 
     $table->unique('email');
 
@@ -955,7 +955,7 @@ When creating an index, Laravel will automatically generate an index name based 
 <a name="available-index-types"></a>
 #### Available Index Types
 
-Laravel's schema builder blueprint class provides methods for creating each type of index supported by Laravel. Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s) used for the index, as well as the index type. Each of the available index methods are described in the table below:
+Laravel's schema builder blueprint class provides methods for creating each type of index supported by Laravel. Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s) used for the index, as well as the index type. Each of the available index methods is described in the table below:
 
 Command  |  Description
 -------  |  -----------

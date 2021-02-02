@@ -360,7 +360,7 @@ You may display the original listed prices (without coupon discounts) using the 
 </ul>
 ```
 
-> {note} When using the prices API, Paddle only allows to apply coupons to one-time purchase products and not to subscription plans.
+> {note} When using the prices API, Paddle only allows applying coupons to one-time purchase products and not to subscription plans.
 
 <a name="customers"></a>
 ## Customers
@@ -649,7 +649,7 @@ After a user has subscribed to your application, they may occasionally want to c
 
     $user->subscription('default')->swap($premium = 34567);
 
-If the user is on a trial, the trial period will be maintained. Also, if a "quantity" exists for the subscription, that quantity will also be maintained.
+If the user is on a trial, the trial period will be maintained. Additionally, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
 If you would like to swap plans and cancel any trial period the user is currently on, you may use the `skipTrial` method:
 

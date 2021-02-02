@@ -59,7 +59,7 @@ The only remaining step is to install Laravel Mix. Within a fresh installation o
 <a name="running-mix"></a>
 ## Running Mix
 
-Mix is a configuration layer on top of [webpack](https://webpack.js.org), so to run your Mix tasks you only need to execute one of the NPM scripts that is included in the default Laravel `package.json` file. When you run the `dev` or `production` scripts, all of your application's CSS and JavaScript assets will be compiled and placed in your application's `public` directory:
+Mix is a configuration layer on top of [webpack](https://webpack.js.org), so to run your Mix tasks you only need to execute one of the NPM scripts that are included in the default Laravel `package.json` file. When you run the `dev` or `production` scripts, all of your application's CSS and JavaScript assets will be compiled and placed in your application's `public` directory:
 
     // Run all Mix tasks...
     npm run dev
@@ -176,7 +176,7 @@ By default, Laravel Mix and webpack will find `example.png`, copy it to your `pu
         background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
     }
 
-As useful as this feature may be, it's possible that your existing folder structure is already configured in a way you like. If this is the case, you may disable `url()` rewriting like so:
+As useful as this feature may be, your existing folder structure may already be configured in a way you like. If this is the case, you may disable `url()` rewriting like so:
 
     mix.sass('resources/sass/app.scss', 'public/css').options({
         processCssUrls: false

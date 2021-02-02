@@ -334,7 +334,7 @@ If the lock is not available at the moment you request it, you may instruct Lara
     try {
         $lock->block(5);
 
-        // Lock acquired after waiting maximum of 5 seconds...
+        // Lock acquired after waiting a maximum of 5 seconds...
     } catch (LockTimeoutException $e) {
         // Unable to acquire lock...
     } finally {
@@ -344,7 +344,7 @@ If the lock is not available at the moment you request it, you may instruct Lara
 The example above may be simplified by passing a closure to the `block` method. When a closure is passed to this method, Laravel will attempt to acquire the lock for the specified number of seconds and will automatically release the lock once the closure has been executed:
 
     Cache::lock('foo', 10)->block(5, function () {
-        // Lock acquired after waiting maximum of 5 seconds...
+        // Lock acquired after waiting a maximum of 5 seconds...
     });
 
 <a name="managing-locks-across-processes"></a>

@@ -86,7 +86,7 @@ The S3 driver configuration information is located in your `config/filesystems.p
 <a name="ftp-driver-configuration"></a>
 #### FTP Driver Configuration
 
-Laravel's Flysystem integrations works great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a FTP filesystem, you may use the configuration example below:
+Laravel's Flysystem integrations work great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an FTP filesystem, you may use the configuration example below:
 
     'ftp' => [
         'driver' => 'ftp',
@@ -105,7 +105,7 @@ Laravel's Flysystem integrations works great with FTP; however, a sample configu
 <a name="sftp-driver-configuration"></a>
 #### SFTP Driver Configuration
 
-Laravel's Flysystem integrations works great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a SFTP filesystem, you may use the configuration example below:
+Laravel's Flysystem integrations work great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an SFTP filesystem, you may use the configuration example below:
 
     'sftp' => [
         'driver' => 'sftp',
@@ -370,7 +370,7 @@ If you are using the `storeAs` method, you may pass the disk name as the third a
 <a name="other-uploaded-file-information"></a>
 #### Other Uploaded File Information
 
-If you would like to get original name of the uploaded file, you may do so using the `getClientOriginalName` method:
+If you would like to get the original name of the uploaded file, you may do so using the `getClientOriginalName` method:
 
     $name = $request->file('avatar')->getClientOriginalName();
 

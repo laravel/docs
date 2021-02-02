@@ -93,7 +93,7 @@ The `job` method may be used to schedule a [queued job](/docs/{{version}}/queues
 
     $schedule->job(new Heartbeat)->everyFiveMinutes();
 
-Optional second and third arguments may be provided to the `job` method which specify the queue name and queue connection that should be used to queue the job:
+Optional second and third arguments may be provided to the `job` method which specifies the queue name and queue connection that should be used to queue the job:
 
     use App\Jobs\Heartbeat;
 

@@ -339,7 +339,7 @@ If you are in a nested loop, you may access the parent loop's `$loop` variable v
     @foreach ($users as $user)
         @foreach ($user->posts as $post)
             @if ($loop->parent->first)
-                This is first iteration of the parent loop.
+                This is the first iteration of the parent loop.
             @endif
         @endforeach
     @endforeach
@@ -804,10 +804,10 @@ The following HTML will be rendered by Blade:
 <a name="component-methods"></a>
 #### Component Methods
 
-In addition to public variables being available to your component template, any public methods on the component may be invoked. For example, imagine a component that has a `isSelected` method:
+In addition to public variables being available to your component template, any public methods on the component may be invoked. For example, imagine a component that has an `isSelected` method:
 
     /**
-     * Determine if the given option is the current selected option.
+     * Determine if the given option is the currently selected option.
      *
      * @param  string  $option
      * @return bool
@@ -888,7 +888,7 @@ All of the attributes that are not part of the component's constructor will auto
 <a name="default-merged-attributes"></a>
 #### Default / Merged Attributes
 
-Sometimes you may need to specify default values for attributes or merge additional values into some of the component's attributes. To accomplish this, you may use the attribute bag's `merge` method. This method is particularly useful for defining a set a default CSS classes that should always be applied to a component:
+Sometimes you may need to specify default values for attributes or merge additional values into some of the component's attributes. To accomplish this, you may use the attribute bag's `merge` method. This method is particularly useful for defining a set of default CSS classes that should always be applied to a component:
 
     <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
         {{ $message }}
@@ -909,7 +909,7 @@ The final, rendered HTML of the component will appear like the following:
 <a name="non-class-attribute-merging"></a>
 #### Non-Class Attribute Merging
 
-When merging attributes that are not `class` attributes, the values provided to the `merge` method will be considered the "default" values of attribute. However, unlike the `class` attribute, these attributes will not be merged with injected attribute values. Instead, they will be overwritten. For example, a `button` component's implementation may look like the following:
+When merging attributes that are not `class` attributes, the values provided to the `merge` method will be considered the "default" values of the attribute. However, unlike the `class` attribute, these attributes will not be merged with injected attribute values. Instead, they will be overwritten. For example, a `button` component's implementation may look like the following:
 
     <button {{ $attributes->merge(['type' => 'button']) }}>
         {{ $slot }}
