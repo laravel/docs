@@ -426,6 +426,20 @@ When implicitly binding multiple Eloquent models in a single route definition, y
 
 When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural form of the route parameter name) which can be used to retrieve the `Post` model.
 
+<a name="customizing-missing-model-behavior"></a>
+#### Customizing Missing Model Behavior
+
+Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` methods accepts a closure that will be invoked if an implicitly bound model can not be found:
+
+    use App\Http\Controllers\LocationsController;
+    use Illuminate\Http\Request;
+
+    Route::get('/locations/{location:slug}', [LocationsController::class, 'show'])
+            ->name('locations.view')
+            ->missing(function (Request $request) {
+                return Redirect::route('locations.index');
+            });
+
 <a name="explicit-binding"></a>
 ### Explicit Binding
 
