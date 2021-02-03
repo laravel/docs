@@ -652,7 +652,7 @@ Sometimes you may want clauses to apply to a query only when something else is t
     $role = $request->input('role');
 
     $users = DB::table('users')
-                    ->when($role, function ($query, $role) {
+                    ->when($role, function ($query) use ($role) {
                         return $query->where('role_id', $role);
                     })
                     ->get();
@@ -664,7 +664,7 @@ You may pass another Closure as the third parameter to the `when` method. This C
     $sortBy = null;
 
     $users = DB::table('users')
-                    ->when($sortBy, function ($query, $sortBy) {
+                    ->when($sortBy, function ($query) use ($sortBy) {
                         return $query->orderBy($sortBy);
                     }, function ($query) {
                         return $query->orderBy('name');
