@@ -41,7 +41,7 @@ You do not need to choose between exclusively using gates or exclusively using p
 
 Gates are simply closures that determine if a user is authorized to perform a given action. Typically, gates are defined within the `boot` method of the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument and may optionally receive additional arguments such as a relevant Eloquent model.
 
-In this example, we'll define a gate to determine if a user can update a given `App\Models\Post` model. The gate will accomplish this may comparing the user's `id` against the `user_id` of the user that created the post:
+In this example, we'll define a gate to determine if a user can update a given `App\Models\Post` model. The gate will accomplish this by comparing the user's `id` against the `user_id` of the user that created the post:
 
     use App\Models\Post;
     use App\Models\User;
