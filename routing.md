@@ -429,7 +429,7 @@ When using a custom keyed implicit binding as a nested route parameter, Laravel 
 <a name="customizing-missing-model-behavior"></a>
 #### Customizing Missing Model Behavior
 
-Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` methods accepts a closure that will be invoked if an implicitly bound model can not be found:
+Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` method accepts a closure that will be invoked if an implicitly bound model can not be found:
 
     use App\Http\Controllers\LocationsController;
     use Illuminate\Http\Request;
