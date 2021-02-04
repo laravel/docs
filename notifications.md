@@ -16,6 +16,7 @@
     - [Customizing The Mailer](#customizing-the-mailer)
     - [Customizing The Templates](#customizing-the-templates)
     - [Attachments](#mail-attachments)
+    - [Using Mailables](#using-mailables)
     - [Previewing Mail Notifications](#previewing-mail-notifications)
 - [Markdown Mail Notifications](#markdown-mail-notifications)
     - [Generating The Message](#generating-the-message)
@@ -292,45 +293,6 @@ You may specify a plain-text view for the mail message by passing the view name 
         );
     }
 
-In addition, you may return a full [mailable object](/docs/{{version}}/mail) from the `toMail` method:
-
-    use App\Mail\InvoicePaid as InvoicePaidMailable;
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return Mailable
-     */
-    public function toMail($notifiable)
-    {
-        return (new InvoicePaidMailable($this->invoice))
-                    ->to($notifiable->email);
-    }
-
-When using a `Mailable` instead of a `MailMessage`, the receiver should be explicitly defined on the `Mailable` itself. [Overwriting `routeNotificationForMail`](#customizing-the-recipient) on an Eloquent model or using [on-demand notifications](#on-demand-notifications) don't allow you to specify the receiver in this case. Instead you should always use the `to` method on the `Mailable` to define the receiver based on the `$notifiable`.
-
-The above example already shows how this can be done for regular notifiable models. For on-demand notifications you may derive the email address(es) by checking the `AnonymousNotifiable` type:
-    
-    use App\Mail\InvoicePaid as InvoicePaidMailable;
-    use Illuminate\Notifications\AnonymousNotifiable;
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return Mailable
-     */
-    public function toMail($notifiable)
-    {
-        $recipient = $notifiable instanceof AnonymousNotifiable
-            ? $notifiable->routeNotificationFor('mail')
-            : $notifiable->email;
-
-        return (new InvoicePaidMailable($this->invoice))
-                    ->to($recipient);
-    }
-
 <a name="error-messages"></a>
 #### Error Messages
 
@@ -514,6 +476,49 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
                     ->attachData($this->pdf, 'name.pdf', [
                         'mime' => 'application/pdf',
                     ]);
+    }
+
+<a name="using-mailables"></a>
+### Using Mailables
+
+If needed, you may return a full [mailable object](/docs/{{version}}/mail) from your notification's `toMail` method. When returning a `Mailable` instead of a `MailMessage`, you will need to specify the message recipient using the mailable object's `to` method:
+
+    use App\Mail\InvoicePaid as InvoicePaidMailable;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return Mailable
+     */
+    public function toMail($notifiable)
+    {
+        return (new InvoicePaidMailable($this->invoice))
+                    ->to($notifiable->email);
+    }
+
+<a name="mailables-and-on-demand-notifications"></a>
+#### Mailables & On-Demand Notifications
+
+If you are sending an [on-demand notification](#on-demand-notifications), the `$notifiable` instance given to the `toMail` method will be an instance of `Illuminate\Notifications\AnonymousNotifiable`, which offers a `routeNotificationFor` method that may be used to retrieve the email address the on-demand notification should be sent to:
+
+    use App\Mail\InvoicePaid as InvoicePaidMailable;
+    use Illuminate\Notifications\AnonymousNotifiable;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return Mailable
+     */
+    public function toMail($notifiable)
+    {
+        $address = $notifiable instanceof AnonymousNotifiable
+                ? $notifiable->routeNotificationFor('mail')
+                : $notifiable->email;
+
+        return (new InvoicePaidMailable($this->invoice))
+                    ->to($address);
     }
 
 <a name="previewing-mail-notifications"></a>
