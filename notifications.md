@@ -308,6 +308,29 @@ In addition, you may return a full [mailable object](/docs/{{version}}/mail) fro
                     ->to($notifiable->email);
     }
 
+When using a `Mailable` instead of a `MailMessage`, the receiver should be explicitly defined on the `Mailable` itself. [Overwriting `routeNotificationForMail`](#customizing-the-recipient) on an Eloquent model or using [on-demand notifications](#on-demand-notifications) don't allow you to specify the receiver in this case. Instead you should always use the `to` method on the `Mailable` to define the receiver based on the `$notifiable`.
+
+The above example already shows how this can be done for regular notifiable models. For on-demand notifications you may derive the email address(es) by checking the `AnonymousNotifiable` type:
+    
+    use App\Mail\InvoicePaid as InvoicePaidMailable;
+    use Illuminate\Notifications\AnonymousNotifiable;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return Mailable
+     */
+    public function toMail($notifiable)
+    {
+        $recipient = $notifiable instanceof AnonymousNotifiable
+            ? $notifiable->routeNotificationFor('mail')
+            : $notifiable->email;
+
+        return (new InvoicePaidMailable($this->invoice))
+                    ->to($recipient);
+    }
+
 <a name="error-messages"></a>
 #### Error Messages
 
