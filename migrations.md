@@ -153,6 +153,11 @@ The `migrate:fresh` command will drop all tables from the database and then exec
 
 > {note} The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
 
+<a name="check-status-of-migrations"></a>
+#### Check Status of Migrations
+
+If you want to check which migration files have been executed so far, you may manually check database table `migrations` or use artisan command `migrate:status`, which will show you the contents of that database table.
+
 <a name="tables"></a>
 ## Tables
 
