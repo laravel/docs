@@ -751,7 +751,7 @@ You may pass another closure as the third argument to the `when` method. This cl
     $sortByVotes = $request->input('sort_by_votes');
 
     $users = DB::table('users')
-                    ->when($sortByVotes, function ($query, $sortByVotes) {
+                    ->when($sortByVotes, function ($query) {
                         return $query->orderBy('votes');
                     }, function ($query) {
                         return $query->orderBy('name');
