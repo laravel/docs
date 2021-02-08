@@ -130,7 +130,7 @@ Next, you should configure your Paddle keys in your application's `.env` file. Y
     PADDLE_PUBLIC_KEY="your-paddle-public-key"
     PADDLE_SANDBOX=true
 
-The `PADDLE_SANDBOX` is set to true when you're making use of [Paddle's Sandbox environment](#paddle-sandbox). If you're deploying your app to production and making use of Paddle's live vendor environment you don't need to enable this environment variable.
+The `PADDLE_SANDBOX` env variable is set to `true` when you're making use of [Paddle's Sandbox environment](#paddle-sandbox). If you're deploying your app to production and making use of Paddle's live vendor environment you don't need to enable this environment variable.
 
 <a name="paddle-js"></a>
 ### Paddle JS
