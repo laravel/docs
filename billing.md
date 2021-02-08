@@ -27,6 +27,7 @@
     - [Changing Plans](#changing-plans)
     - [Subscription Quantity](#subscription-quantity)
     - [Multiplan Subscriptions](#multiplan-subscriptions)
+    - [Metered Billing](#metered-billing)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
@@ -820,6 +821,86 @@ You can also retrieve a specific plan using the `findItemOrFail` method:
     $user = User::find(1);
 
     $subscriptionItem = $user->subscription('default')->findItemOrFail('chat-plan');
+
+<a name="metered-billing"></a>
+### Metered Billing
+
+[Metered Billing](https://stripe.com/docs/billing/subscriptions/metered-billing) allows you to charge customers based on their usage during a billing cycle, for example, when a user consumes a specific amount of resources like text messages, emails sent, etc.
+
+To get started with metered billing you'll need to create a new product in your Stripe dashboard with a metered price. Then use the `meteredPlan` to add the metered price ID:
+
+    use Illuminate\Http\Request;
+
+    Route::post('/user/subscribe', function (Request $request) {
+        $request->user()->newSubscription('default', [])
+            ->meteredPlan('price_metered')
+            ->create($request->paymentMethodId);
+
+        // ...
+    });
+
+You can also start a metered subscription with [Stripe Checkout](#checkout):
+
+    $checkout = Auth::user()
+            ->newSubscription('default', [])
+            ->meteredPlan('price_metered')
+            ->checkout();
+
+    return view('your-checkout-view', [
+        'checkout' => $checkout,
+    ]);
+
+<a name="usage-reporting"></a>
+#### Usage Reporting
+
+For metered plans we do not define any quantities. The quantity value for your metered subscription will be `null`. Instead we report usage to Stripe based on the resources used by your customer. To report usage to Stripe you can make use of the `reportUsage` method on a subscription:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->reportUsage();
+
+By default a usage quantity of 1 is passed. Or you can pass a specific number:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->reportUsage(15);
+
+If you're using multiple plans on a single subscription you'll need to use the `reportUsageFor` method to specify the metered price you want to report usage for:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->reportUsageFor('price_metered', 15);
+
+Sometimes you'd need to update usage which you reported before. To do this you can pass the specific timestamp or a `DateTimeInterface` instance as the second parameter for `reportUsage`:
+
+    $user = User::find(1);
+
+    $user->subscription('default')->reportUsage(5, $timestamp);
+
+This will update the usage that was reported at that exact time. You can update previous usage records as long as the current billing period isn't over yet.
+
+<a name="retrieving-usage-records"></a>
+#### Retrieving Usage Records
+
+In order to display past usage you may use the `usageRecords` method on a subscription to retrieve previous reported usage records:
+
+    $user = User::find(1);
+
+    $usageRecords = $user->subscription('default')->usageRecords();
+
+If you're working with multiple plans on a single subscription you can use the `usageRecordsFor` method to specify the metered price you want to return usage records for:
+
+    $user = User::find(1);
+
+    $usageRecords = $user->subscription('default')->usageRecordsFor('price_metered');
+
+This will return a collection with an associative array of usage records. You can iterate over this array and display total usages:
+
+    @foreach ($usageRecords as $usageRecord) {
+        - Total usage: {{ $usageRecord['total_usage'] }}
+    @endforeach
+
+For a full reference of all data returned and how to use Stripe's curser based pagination we recommend you to [check out the official Stripe API documentation](https://stripe.com/docs/api/usage_records/subscription_item_summary_list).
 
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
