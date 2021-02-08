@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Upgrading Cashier](#upgrading-cashier)
 - [Installation](#installation)
+    - [Paddle Sandbox](#paddle-sandbox)
     - [Database Migrations](#database-migrations)
 - [Configuration](#configuration)
     - [Billable Model](#billable-model)
@@ -62,6 +63,13 @@ First, install the Cashier package for Paddle using the Composer package manager
 
 > {note} To ensure Cashier properly handles all Paddle events, remember to [set up Cashier's webhook handling](#handling-paddle-webhooks).
 
+<a name="paddle-sandbox"></a>
+### Paddle Sandbox
+
+To get started with developing your app, [register a Paddle Sandbox account](https://developer.paddle.com/getting-started/sandbox). This will give you a sandboxed environment to test and develop your apps without making actual payments. You can make use of some of the [test cards](https://developer.paddle.com/getting-started/sandbox#test-cards) for different payment scenarios.
+
+After you're done developing your app you can [apply for a Paddle vendor account on their website](https://paddle.com).
+
 <a name="database-migrations"></a>
 ### Database Migrations
 
@@ -120,6 +128,9 @@ Next, you should configure your Paddle keys in your application's `.env` file. Y
     PADDLE_VENDOR_ID=your-paddle-vendor-id
     PADDLE_VENDOR_AUTH_CODE=your-paddle-vendor-auth-code
     PADDLE_PUBLIC_KEY="your-paddle-public-key"
+    PADDLE_SANDBOX=true
+
+The `PADDLE_SANDBOX` is set to true when you're making use of [Paddle's Sandbox environment](#paddle-sandbox). If you're deploying your app to production and making use of Paddle's live vendor environment you don't need to enable this environment variable.
 
 <a name="paddle-js"></a>
 ### Paddle JS
@@ -1117,4 +1128,6 @@ Alternatively, you can perform more precise customization by catching the [`subs
 <a name="testing"></a>
 ## Testing
 
-Paddle currently lacks a proper CRUD API so you will need to manually test your billing flow. Paddle also lacks a sandboxed developer environment so any card charges you make are live charges. In order to work around this, we recommend you use coupons with a 100% discount or free products during testing.
+Paddle currently lacks a proper CRUD API so you will need to manually test your billing flow to make sure the integration works as expected.
+
+For a automated tests, including a CI environment, you can make use of [Laravel's HTTP Client](/docs//{{version}}/http-client#testing) to fake HTTP calls made to Paddle. Although this doesn't tests the actual integration it does give you a way to automate your tests as well as possible. For an example on how to write such tests you can have a look at [Cashier Paddle's test suite](https://github.com/laravel/cashier-paddle/blob/master/tests/Feature/ModifiersTest.php).
