@@ -16,6 +16,7 @@
     - [Billing Portal](#billing-portal)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
+    - [Creating Payment Method](#creating-payment-method)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
     - [Determining If A User Has A Payment Method](#check-for-a-payment-method)
     - [Updating The Default Payment Method](#updating-the-default-payment-method)
@@ -353,10 +354,32 @@ The `paymentMethods` method on the billable model instance returns a collection 
 To retrieve the customer's default payment method, the `defaultPaymentMethod` method may be used:
 
     $paymentMethod = $user->defaultPaymentMethod();
+    
+To retrieve the customer's default payment method, as Stripe PaymentMethod use:
+
+    $paymentMethod = $user->defaultPaymentMethod()->asStripePaymentMethod();
+    
 
 You can retrieve a specific payment method that is attached to the billable model using the `findPaymentMethod` method:
 
     $paymentMethod = $user->findPaymentMethod($paymentMethodId);
+
+
+<a name="creating-payment-method"></a>
+### Creating Payment Method
+
+To Create a `paymentMethod` Payment method :
+
+        $method = Stripe\PaymentMethod::create([
+            'type' => 'card',
+            'card' => [
+                'number' => '4242424242424242',
+                'exp_month' => 2,
+                'exp_year' => 2022,
+                'cvc' => '314',
+            ],
+        ]);
+
 
 <a name="check-for-a-payment-method"></a>
 ### Determining If A User Has A Payment Method
