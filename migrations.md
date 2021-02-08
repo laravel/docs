@@ -106,6 +106,10 @@ To run all of your outstanding migrations, execute the `migrate` Artisan command
 
     php artisan migrate
 
+If you would like to see which migrations have run thus far, you may use the `migrate:status` Artisan command:
+
+    php artisan migrate:status
+
 <a name="forcing-migrations-to-run-in-production"></a>
 #### Forcing Migrations To Run In Production
 
@@ -152,11 +156,6 @@ The `migrate:fresh` command will drop all tables from the database and then exec
     php artisan migrate:fresh --seed
 
 > {note} The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
-
-<a name="check-status-of-migrations"></a>
-#### Check Status of Migrations
-
-If you want to check which migration files have been executed so far, you may manually check database table `migrations` or use artisan command `migrate:status`, which will show you the contents of that database table.
 
 <a name="tables"></a>
 ## Tables
