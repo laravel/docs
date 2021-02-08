@@ -130,7 +130,7 @@ Next, you should configure your Paddle keys in your application's `.env` file. Y
     PADDLE_PUBLIC_KEY="your-paddle-public-key"
     PADDLE_SANDBOX=true
 
-The `PADDLE_SANDBOX` env variable is set to `true` when you're making use of [Paddle's Sandbox environment](#paddle-sandbox). If you're deploying your app to production and are making use of Paddle's live vendor environment you don't need to enable this environment variable.
+The `PADDLE_SANDBOX` environment variable is set to `true` when you're making use of [Paddle's Sandbox environment](#paddle-sandbox). If you're deploying your app to production and are making use of Paddle's live vendor environment you don't need to enable this environment variable.
 
 <a name="paddle-js"></a>
 ### Paddle JS
@@ -1128,6 +1128,6 @@ Alternatively, you can perform more precise customization by catching the [`subs
 <a name="testing"></a>
 ## Testing
 
-Paddle currently lacks a proper CRUD API so you will need to manually test your billing flow to make sure the integration works as expected.
+Paddle currently lacks a proper CRUD API so you will need to manually test your billing flow to make sure your integration works as expected.
 
 For a automated tests, including a CI environment, you can make use of [Laravel's HTTP Client](/docs//{{version}}/http-client#testing) to fake HTTP calls made to Paddle. Although this doesn't tests the actual integration it does give you a way to automate your tests as well as possible. For an example on how to write such tests you can have a look at [Cashier Paddle's test suite](https://github.com/laravel/cashier-paddle/blob/master/tests/Feature/ModifiersTest.php).
