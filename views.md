@@ -205,7 +205,7 @@ Now that we have registered the composer, the `compose` method of the `App\Http\
          */
         public function __construct(UserRepository $users)
         {
-            // Dependencies automatically resolved by service container...
+            // Dependencies are automatically resolved by the service container...
             $this->users = $users;
         }
 
