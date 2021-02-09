@@ -413,6 +413,8 @@ The `deletePaymentMethods` method will delete all of the payment method informat
 
 Subscriptions provide a way to set up recurring payments for your customers. Stripe subscriptions managed by Cashier provide support for multiple subscription plans, subscription quantities, trials, and more.
 
+> {note} When using Cashier, it's not possible to use the Stripe dashboard to start new subscriptions for customers as there's no way for Cashier to add these to existing customers.
+
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
 
