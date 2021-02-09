@@ -909,29 +909,17 @@ The final, rendered HTML of the component will appear like the following:
 <a name="conditionally-merge-classes"></a>
 #### Conditionally Merge Classes
 
-You may conditionally merge a set of classes with the `class` method by passing an array of classes.
-
-    <div {{ $attributes->class(['p-4', 'mb-4']) }}>
-        {{ $message }}
-    </div>
-
-Sometimes you may wish to merge classes by specifying conditions. You can accomplish this by passing an array of classes where the array value evaluates to `true`.
+Sometimes you may wish to merge classes if a given condition is `true`. You can accomplish this via the `class` method, which accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
     <div {{ $attributes->class(['p-4', 'bg-red' => $hasError]) }}>
         {{ $message }}
     </div>
 
-If you need to pass other attributes, you can chain the `merge` method.
+If you need to merge other attributes onto your component, you can chain the `merge` method onto the `class` method:
 
     <button {{ $attributes->class(['p-4'])->merge(['type' => 'button']) }}>
         {{ $slot }}
     </button>
-
-For convenience, the `class` method accepts a string as well.
-
-    <div {{ $attributes->class('p-4') }}>
-        {{ $message }}
-    </div>
 
 <a name="non-class-attribute-merging"></a>
 #### Non-Class Attribute Merging
