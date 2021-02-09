@@ -581,7 +581,7 @@ Once you have defined an event and marked it with the `ShouldBroadcast` interfac
 
     use App\Events\OrderShipmentStatusUpdated;
 
-    OrderShipmentStatusUpdated::dispatch($order));
+    OrderShipmentStatusUpdated::dispatch($order);
 
 <a name="only-to-others"></a>
 ### Only To Others
