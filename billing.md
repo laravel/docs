@@ -479,6 +479,17 @@ If you would like to add a subscription to a customer who already has a default 
     $user = User::find(1);
 
     $user->newSubscription('default', 'price_premium')->add();
+    
+<a name="creating-subscriptions-from-the-stripe-dashboard"></a>
+#### Creating Subscriptions from the Stripe Dashoard
+
+You can also create subscriptions from the Stripe dashboard itself. When doing this there's a couple of things to keep in mind.
+
+First of all, by default, Cashier will sync newly added subscriptions under the `default` name. To customize what the default name is that's used you may [override the `WebhookController`](/docs/{{version}}/billing#defining-webhook-event-handlers) and modify the `newSubscriptionName` method to adjust this default name.
+
+Secondly, you may create one type of subscription. If you use subscriptions with multiple names only one type of subscription can be added through the Stripe dashboard. For all other type of subscriptions you'll need to add them through Cashier itself.
+
+Thirdly, you should always make sure to only add one active subscription of one type. If a customer would, for example, have two `default` subscriptions only the latest one that was added will be used in Cashier even though both get synced.
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
