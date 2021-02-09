@@ -187,3 +187,5 @@ If you would like to display the integer value that was passed to the `trans_cho
 Some packages may ship with their own language files. Instead of changing the package's core files to tweak these lines, you may override them by placing files in the `resources/lang/vendor/{package}/{locale}` directory.
 
 So, for example, if you need to override the English translation strings in `messages.php` for a package named `skyrim/hearthfire`, you should place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. Within this file, you should only define the translation strings you wish to override. Any translation strings you don't override will still be loaded from the package's original language files.
+
+Some packages may use a different namespace than the package name. For example the package `skyrim/hearthfire` may use the `namespace skyrim\Dragonborn;` in its service provider. In this case you should place a language file at `resources/lang/vendor/Dragonborn/en/messages.php`.
