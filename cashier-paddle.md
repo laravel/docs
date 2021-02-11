@@ -909,7 +909,7 @@ Your controller's method names should correspond to Cashier's controller method 
     class WebhookController extends CashierController
     {
         /**
-         * Handle payment succeeded.
+         * Handle the payment succeeded webhook.
          *
          * @param  array  $payload
          * @return void
