@@ -156,7 +156,7 @@ The `hasHeader` method may be used to determine if the request contains a given 
         //
     }
 
-For convenience, the `bearerToken` may be used to retreive a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:
+For convenience, the `bearerToken` method may be used to retrieve a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:
 
     $token = $request->bearerToken();
 
