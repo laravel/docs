@@ -766,6 +766,47 @@ When your component is rendered, you may display the contents of your component'
 </div>
 ```
 
+<a name="reserved-keywords"></a>
+#### Reserved Keywords
+
+By default, some keywords are resered for Blade's internals in order to render the components. The following keywords cannot be defined as public property or method name:
+
+<div class="content-list" markdown="1">
+- `data`
+- `render`
+- `resolveView`
+- `shouldRender`
+- `view`
+- `withName`
+- `withAttributes`
+</div>
+
+If you'd also like to prevent other public methods or properties to be exposed as variables you can add them to the `$except` array on a component:
+
+    <?php
+
+    namespace App\View\Components;
+
+    use Illuminate\View\Component;
+
+    class Alert extends Component
+    {
+        /**
+         * The alert type.
+         *
+         * @var string
+         */
+        public $type;
+
+        /**
+         * The properties / methods that should not be exposed to the component.
+         *
+         * @var array
+         */
+        protected $except = ['type'];
+
+Now `$type` won't be added as a variable to the component.
+
 <a name="casing"></a>
 #### Casing
 
