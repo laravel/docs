@@ -1117,4 +1117,8 @@ Alternatively, you can perform more precise customization by catching the [`subs
 <a name="testing"></a>
 ## Testing
 
-Paddle currently lacks a proper CRUD API so you will need to manually test your billing flow. Paddle also lacks a sandboxed developer environment so any card charges you make are live charges. In order to work around this, we recommend you use coupons with a 100% discount or free products during testing.
+Paddle supports a sandboxed developer environment. In order to use it you need to create an account on [Paddle Sandbox](https://sandbox-vendors.paddle.com/signup) and replace the Paddle environment variables in your `.env` file. You can then retrieve your **Sandbox** Paddle API keys from the  control panel. Don't forget to set  the `PADDLE_SANDBOX` environment variable to `true` within your application's .env file:
+
+```
+PADDLE_SANDBOX=true
+```
