@@ -17,6 +17,7 @@
     - [Rendering Components](#rendering-components)
     - [Passing Data To Components](#passing-data-to-components)
     - [Component Attributes](#component-attributes)
+    - [Reserved Keywords](#reserved-keywords)
     - [Slots](#slots)
     - [Inline Component Views](#inline-component-views)
     - [Anonymous Components](#anonymous-components)
@@ -766,47 +767,6 @@ When your component is rendered, you may display the contents of your component'
 </div>
 ```
 
-<a name="reserved-keywords"></a>
-#### Reserved Keywords
-
-By default, some keywords are resered for Blade's internals in order to render the components. The following keywords cannot be defined as public property or method name:
-
-<div class="content-list" markdown="1">
-- `data`
-- `render`
-- `resolveView`
-- `shouldRender`
-- `view`
-- `withName`
-- `withAttributes`
-</div>
-
-If you'd also like to prevent other public methods or properties to be exposed as variables you can add them to the `$except` array on a component:
-
-    <?php
-
-    namespace App\View\Components;
-
-    use Illuminate\View\Component;
-
-    class Alert extends Component
-    {
-        /**
-         * The alert type.
-         *
-         * @var string
-         */
-        public $type;
-
-        /**
-         * The properties / methods that should not be exposed to the component.
-         *
-         * @var array
-         */
-        protected $except = ['type'];
-
-Now `$type` won't be added as a variable to the component.
-
 <a name="casing"></a>
 #### Casing
 
@@ -911,6 +871,34 @@ If your component requires dependencies from Laravel's [service container](/docs
         $this->message = $message;
     }
 
+<a name="hiding-attributes-and-methods"></a>
+#### Hiding Attributes / Methods
+
+If you would like to prevent some public methods or properties from being exposed as variables to your component template, you may add them to an `$except` array property on your component:
+
+    <?php
+
+    namespace App\View\Components;
+
+    use Illuminate\View\Component;
+
+    class Alert extends Component
+    {
+        /**
+         * The alert type.
+         *
+         * @var string
+         */
+        public $type;
+
+        /**
+         * The properties / methods that should not be exposed to the component template.
+         *
+         * @var array
+         */
+        protected $except = ['type'];
+    }
+
 <a name="component-attributes"></a>
 ### Component Attributes
 
@@ -1013,6 +1001,21 @@ If you would like to check if an attribute is present on the component, you may 
 You may retrieve a specific attribute's value using the `get` method:
 
     {{ $attributes->get('class') }}
+
+<a name="reserved-keywords"></a>
+### Reserved Keywords
+
+By default, some keywords are reserved for Blade's internal use in order to render components. The following keywords cannot be defined as public properties or method names within your components:
+
+<div class="content-list" markdown="1">
+- `data`
+- `render`
+- `resolveView`
+- `shouldRender`
+- `view`
+- `withAttributes`
+- `withName`
+</div>
 
 <a name="slots"></a>
 ### Slots
