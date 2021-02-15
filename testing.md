@@ -97,6 +97,8 @@ By default, Laravel will create as many processes as there are available CPU cor
 
     php artisan test --parallel --processes=4
 
+> {note} When running tests in parallel, some PHPUnit options — such us `--do-not-cache-result` — may not be available.
+
 <a name="parallel-testing-and-databases"></a>
 #### Parallel Testing & Databases
 
