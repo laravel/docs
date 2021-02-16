@@ -209,6 +209,41 @@ To update a single field of a JSON attribute with a more terse syntax, you may u
 
     $user->update(['options->key' => 'value']);
 
+<a name="array-object-and-collection-casting"></a>
+#### Array Object & Collection Casting
+
+Although the standard `array` cast is sufficient for many applications, it does have some disadvantages. Since the `array` cast returns a primitive type, it is not possible to mutate an offset of the array directly. For example, the following code will trigger a PHP error:
+
+    $user = User::find(1);
+
+    $user->options['key'] = $value;
+
+To solve this, Laravel offers an `AsArrayObject` cast that casts your JSON attribute to an [ArrayObject](https://www.php.net/manual/en/class.arrayobject.php) class. This feature is implemented using Laravel's [custom cast](#custom-casts) implementation, which allows Laravel to intelligently cache and transform the mutated object such that individual offsets may be modified without triggering a PHP error. To use the `AsArrayObject` cast, simply assign it to an attribute:
+
+    use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'options' => AsArrayObject::class,
+    ];
+
+Similarly, Laravel offers an `AsCollection` cast that casts your JSON attribute to a Laravel [Collection](/docs/{{version}}/collections) instance:
+
+    use Illuminate\Database\Eloquent\Casts\AsCollection;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'options' => AsCollection::class,
+    ];
+
 <a name="date-casting"></a>
 ### Date Casting
 
