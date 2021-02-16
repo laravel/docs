@@ -225,6 +225,12 @@ Sometimes a class may depend on an array of [tagged](#tagging) instances. Using 
         ->needs('$reports')
         ->giveTagged('reports');
 
+If you need to inject a value from one of your application's configuration files, you may use the `giveConfig` method:
+
+    $this->app->when(ReportAggregator::class)
+        ->needs('$timezone')
+        ->giveConfig('app.timezone');
+
 <a name="binding-typed-variadics"></a>
 ### Binding Typed Variadics
 
