@@ -126,7 +126,7 @@ The `park` command registers a directory on your machine that contains your appl
 
     valet park
 
-That's all there is to it. Now, any application you create within your "parked" directory will automatically be served using the `http://<directory-name>.test` convention. So, if your parked directory contains a directory named "laravel", the application within that directory will be accessible at `http://laravel.test`.
+That's all there is to it. Now, any application you create within your "parked" directory will automatically be served using the `http://<directory-name>.test` convention. So, if your parked directory contains a directory named "laravel", the application within that directory will be accessible at `http://laravel.test`. Additionally, Valet automatically allows you to use any wildcard subdomain like `http://www.laravel.test`.
 
 <a name="the-link-command"></a>
 ### The `link` Command
@@ -137,7 +137,7 @@ The `link` command can also be used to serve your Laravel applications. This com
 
     valet link
 
-Once an application has been linked to Valet using the `link` command, you may access the application using its directory name. So, the site that was linked in the example above may be accessed at `http://laravel.test`.
+Once an application has been linked to Valet using the `link` command, you may access the application using its directory name. So, the site that was linked in the example above may be accessed at `http://laravel.test`. Additionally, Valet automatically allows you to use any wildcard subdomain like `http://www.laravel.test`.
 
 If you would like to serve the application at a different hostname, you may pass the hostname to the `link` command. For example, you may run the following command to make an application available at `http://application.test`:
 
