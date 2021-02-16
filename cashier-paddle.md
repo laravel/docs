@@ -66,9 +66,9 @@ First, install the Cashier package for Paddle using the Composer package manager
 <a name="paddle-sandbox"></a>
 ### Paddle Sandbox
 
-To get started with developing your app, [register a Paddle Sandbox account](https://developer.paddle.com/getting-started/sandbox). This will give you a sandboxed environment to test and develop your apps without making actual payments. You can make use of some of the [test cards](https://developer.paddle.com/getting-started/sandbox#test-cards) for different payment scenarios.
+During local and staging development, you should [register a Paddle Sandbox account](https://developer.paddle.com/getting-started/sandbox). This account will give you a sandboxed environment to test and develop your applications without making actual payments. You may use Paddle's [test card numbers](https://developer.paddle.com/getting-started/sandbox#test-cards) to simulate various payment scenarios.
 
-After you're done developing your app you can [apply for a Paddle vendor account on their website](https://paddle.com).
+After you have finished developing your application you may [apply for a Paddle vendor account](https://paddle.com).
 
 <a name="database-migrations"></a>
 ### Database Migrations
@@ -130,7 +130,7 @@ Next, you should configure your Paddle keys in your application's `.env` file. Y
     PADDLE_PUBLIC_KEY="your-paddle-public-key"
     PADDLE_SANDBOX=true
 
-The `PADDLE_SANDBOX` environment variable is set to `true` when you're making use of [Paddle's Sandbox environment](#paddle-sandbox). If you're deploying your app to production and are making use of Paddle's live vendor environment you don't need to enable this environment variable.
+The `PADDLE_SANDBOX` environment variable should be set to `true` when you are using [Paddle's Sandbox environment](#paddle-sandbox). The `PADDLE_SANDBOX` variable should be set to `false` if you are deploying your application to production and are using Paddle's live vendor environment.
 
 <a name="paddle-js"></a>
 ### Paddle JS
