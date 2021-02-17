@@ -274,6 +274,10 @@ When calling this method, the `user` arguments may be passed in order to the com
 
     php artisan mail:send foo bar
 
+This can be combined with the optional argument definition to allow zero or more instances of the argument:
+
+    mail:send {user?*}
+
 <a name="option-arrays"></a>
 #### Option Arrays
 
