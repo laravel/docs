@@ -15,7 +15,7 @@ While you are welcome to use these starter kits, they are not required. You are 
 <a name="laravel-breeze"></a>
 ## Laravel Breeze
 
-Laravel Breeze is a minimal, simple implementation of all of Laravel's [authentication features](/docs/{{version}}/authentication), including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Breeze provides a wonderful starting point for beginning a fresh Laravel application.
+Laravel Breeze is a minimal, simple implementation of all of Laravel's [authentication features](/docs/{{version}}/authentication), including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's default view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Breeze provides a wonderful starting point for beginning a fresh Laravel application.
 
 <a name="laravel-breeze-installation"></a>
 ### Installation
@@ -49,6 +49,19 @@ npm run dev
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
 
 > {tip} To learn more about compiling your application's CSS and JavaScript, check out the [Laravel Mix documentation](/docs/{{version}}/mix#running-mix).
+
+<a name="breeze-and-inertia"></a>
+#### Breeze & Inertia
+
+Laravel Breeze also offers an [Inertia.js](https://inertiajs.com) frontend implementation powered by Vue. To use the Inertia stack, pass the `--inertia` option when executing the `breeze:install` Artisan command:
+
+```bash
+php artisan breeze:install --inertia
+
+npm install
+
+npm run dev
+```
 
 <a name="laravel-jetstream"></a>
 ## Laravel Jetstream
