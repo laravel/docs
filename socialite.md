@@ -29,7 +29,7 @@ To get started with Socialite, use Composer to add the package to your project's
 
     composer require laravel/socialite:4.4.1
 
-> {note} The latest version Socialite doesn't support Laravel 5.7. The last supported version is 4.4.1.
+> {note} The latest version Socialite does not support Laravel 5.7. The last supported version is Socialite 4.4.1.
 
 <a name="configuration"></a>
 ## Configuration
