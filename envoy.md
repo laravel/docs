@@ -206,6 +206,13 @@ You should pass the entire webhook URL as the first argument given to the `@slac
         @slack('webhook-url', '#bots')
     @endfinished
 
+By default, `@slack` sends the default message like `User ran a task.`
+You may overwrite the default message using the optional third parameter.
+
+    @finished
+        @slack('webhook-url', '#bots', 'Hello, Slack')
+    @endfinished
+
 <a name="discord"></a>
 ### Discord
 
