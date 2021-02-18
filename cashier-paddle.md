@@ -1058,13 +1058,13 @@ You may optionally specify a specific amount to refund as well as a reason for t
 <a name="receipts"></a>
 ## Receipts
 
-You may easily retrieve an array of a billable model's receipts using the `receipts` method:
+You may easily retrieve an array of a billable model's receipts using the `receipts` call:
 
     use App\Models\User;
 
     $user = User::find(1);
 
-    $receipts = $user->receipts();
+    $receipts = $user->receipts;
 
 When listing the receipts for the customer, you may use the receipt instance's methods to display the relevant receipt information. For example, you may wish to list every receipt in a table, allowing the user to easily download any of the receipts:
 
