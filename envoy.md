@@ -198,12 +198,12 @@ If you would like to be prompted for confirmation before running a given task on
 <a name="slack"></a>
 ### Slack
 
-Envoy supports sending notifications to [Slack](https://slack.com) after each task is executed. The `@slack` directive accepts a Slack hook URL and a channel / user name. You may retrieve your webhook URL by creating an "Incoming WebHooks" integration in your Slack control panel.
+Envoy supports sending notifications to [Slack](https://slack.com) after each task is executed. The `@slack` directive accepts a Slack hook URL, a channel / user name, and a message. You may retrieve your webhook URL by creating an "Incoming WebHooks" integration in your Slack control panel.
 
-You should pass the entire webhook URL as the first argument given to the `@slack` directive. The second argument given to the `@slack` directive should be a channel name (`#channel`) or a user name (`@user`):
+You should pass the entire webhook URL as the first argument given to the `@slack` directive. The second argument given to the `@slack` directive should be a channel name (`#channel`) or a user name (`@user`). The third argument given to the `@slack` directive should be a message:
 
     @finished
-        @slack('webhook-url', '#bots')
+        @slack('webhook-url', '#bots', 'Hello, Slack')
     @endfinished
 
 <a name="discord"></a>
@@ -212,14 +212,14 @@ You should pass the entire webhook URL as the first argument given to the `@slac
 Envoy also supports sending notifications to [Discord](https://discord.com) after each task is executed. The `@discord` directive accepts a Discord hook URL and a message. You may retrieve your webhook URL by creating a "Webhook" in your Server Settings and choosing which channel the webhook should post to. You should pass the entire Webhook URL into the `@discord` directive:
 
     @finished
-        @discord('discord-webhook-url')
+        @discord('discord-webhook-url', 'Hello, Discord')
     @endfinished
 
 <a name="telegram"></a>
 ### Telegram
 
-Envoy also supports sending notifications to [Telegram](https://telegram.org) after each task is executed. The `@telegram` directive accepts a Telegram Bot ID and a Chat ID. You may retrieve your Bot ID by creating a new bot using [BotFather](https://t.me/botfather). You can retrieve a valid Chat ID using [@username_to_id_bot](https://t.me/username_to_id_bot). You should pass the entire Bot ID and Chat ID into the `@telegram` directive:
+Envoy also supports sending notifications to [Telegram](https://telegram.org) after each task is executed. The `@telegram` directive accepts a Telegram Bot ID, a Chat ID, and a message. You may retrieve your Bot ID by creating a new bot using [BotFather](https://t.me/botfather). You can retrieve a valid Chat ID using [@username_to_id_bot](https://t.me/username_to_id_bot). You should pass the entire Bot ID and Chat ID into the `@telegram` directive:
 
     @finished
-        @telegram('bot-id','chat-id')
+        @telegram('bot-id','chat-id', 'Hello, Telegram')
     @endfinished
