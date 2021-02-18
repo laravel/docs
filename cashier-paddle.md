@@ -1058,7 +1058,7 @@ You may optionally specify a specific amount to refund as well as a reason for t
 <a name="receipts"></a>
 ## Receipts
 
-You may easily retrieve an array of a billable model's receipts using the `receipts` call:
+You may easily retrieve an array of a billable model's receipts via the `receipts` property:
 
     use App\Models\User;
 
