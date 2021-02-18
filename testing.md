@@ -139,6 +139,10 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
                 // ..
             });
 
+            ParallelTesting::setUpTestDatabase(function ($database, $token) {
+                // ..
+            });
+
             ParallelTesting::tearDownTestCase(function ($token, $testCase) {
                 // ..
             });
@@ -148,6 +152,12 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
             });
         }
     }
+
+When including `Illuminate\Foundation\Testing\DatabaseTransactions` in your test cases, it may want to use database seeders to populate your test databases:
+
+    ParallelTesting::setUpTestDatabase(function () {
+        Artisan::call('db:seed');
+    });
 
 If you would like to access to current process token from any other place in your application's test code, you may use the `token` method:
 
