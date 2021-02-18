@@ -206,11 +206,10 @@ You should pass the entire webhook URL as the first argument given to the `@slac
         @slack('webhook-url', '#bots')
     @endfinished
 
-By default, `@slack` sends the default message like `User ran a task.`
-You may overwrite the default message using the optional third parameter.
+By default, Envoy notifications will send a message to the notification channel describing the task that was executed. However, you may overwrite this message with your own custom message by passing a third argument to the `@slack` directive:
 
     @finished
-        @slack('webhook-url', '#bots', 'Hello, Slack')
+        @slack('webhook-url', '#bots', 'Hello, Slack.')
     @endfinished
 
 <a name="discord"></a>
