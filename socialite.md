@@ -27,7 +27,9 @@ When upgrading to a new major version of Socialite, it's important that you care
 
 To get started with Socialite, use Composer to add the package to your project's dependencies:
 
-    composer require laravel/socialite
+    composer require laravel/socialite:4.4.1
+
+> {note} The latest version Socialite doesn't support Laravel 5.7. The last supported version is 4.4.1.
 
 <a name="configuration"></a>
 ## Configuration
