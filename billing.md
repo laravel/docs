@@ -1060,6 +1060,10 @@ You may determine if a user is within their trial period using either the `onTri
     if ($user->subscription('default')->onTrial()) {
         //
     }
+    
+You may use the `endTrial` method to immediately end a subscription trial:
+
+    $user->subscription('default')->endTrial();
 
 <a name="defining-trial-days-in-stripe-cashier"></a>
 #### Defining Trial Days In Stripe / Cashier
