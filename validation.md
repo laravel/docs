@@ -251,7 +251,7 @@ If validation fails, a redirect response will be generated to send the user back
 
 #### Adding After Hooks To Form Requests
 
-If you would like to add an "after" hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods before the validation rules are actually evaluated:
+If you would like to add an "after" hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods after the validation rules are actually evaluated:
 
     /**
      * Configure the validator instance.
