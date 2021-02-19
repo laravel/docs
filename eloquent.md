@@ -1062,18 +1062,15 @@ Once the expected arguments have been added to your scope method's signature, yo
 <a name="comparing-models"></a>
 ## Comparing Models
 
-Sometimes you may need to determine if two models are the "same" or "not same". The `is` method may be used to quickly verify two models have the same primary key, table, and database connection:
+Sometimes you may need to determine if two models are the "same" or not. The `is` and `isNot` methods may be used to quickly verify two models have the same primary key, table, and database connection or not:
 
     if ($post->is($anotherPost)) {
         //
     }
 
-The `isNot` method used to determine if two models are "not same":
-
     if ($post->isNot($anotherPost)) {
         //
     }
- 
 
 The `is` and `isNot` methods are also available when using the `belongsTo`, `hasOne`, `morphTo`, and `morphOne` [relationships](/docs/{{version}}/eloquent-relationships). This method is particularly helpful when you would like to compare a related model without issuing a query to retrieve that model:
 
