@@ -1061,7 +1061,7 @@ You may determine if a user is within their trial period using either the `onTri
         //
     }
     
-If you'd like to end a subscription trial immediately you may call the `endTrial` method:
+You may use the `endTrial` method to immediately end a subscription trial:
 
     $user->subscription('default')->endTrial();
 
