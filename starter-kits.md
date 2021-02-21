@@ -44,6 +44,8 @@ php artisan breeze:install
 npm install
 
 npm run dev
+
+php artisan migrate
 ```
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
@@ -61,6 +63,8 @@ php artisan breeze:install --inertia
 npm install
 
 npm run dev
+
+php artisan migrate
 ```
 
 <a name="laravel-jetstream"></a>
