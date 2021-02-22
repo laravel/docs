@@ -288,6 +288,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </style>
 
 <div id="collection-method-list" markdown="1">
+[after](#column-method-after)
 [bigIncrements](#column-method-bigIncrements)
 [bigInteger](#column-method-bigInteger)
 [binary](#column-method-binary)
@@ -351,8 +352,18 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [year](#column-method-year)
 </div>
 
+<a name="column-method-after"></a>
+#### `after()` {#collection-method .first-collection-method}
+The `after` method add multiple new columns after an existing column.
+
+    $table->after('password', function ($table) {
+        $table->string('address_line1');
+        $table->string('address_line2');
+        $table->string('city');
+    });
+
 <a name="column-method-bigIncrements"></a>
-#### `bigIncrements()` {#collection-method .first-collection-method}
+#### `bigIncrements()` {#collection-method}
 
 The `bigIncrements` method creates an auto-incrementing `UNSIGNED BIGINT` (primary key) equivalent column:
 
