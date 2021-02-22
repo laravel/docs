@@ -28,6 +28,7 @@
 - [Custom Validation Rules](#custom-validation-rules)
     - [Using Rule Objects](#using-rule-objects)
     - [Using Closures](#using-closures)
+    - [Using Extensions](#using-extensions)
     - [Implicit Rules](#implicit-rules)
 
 <a name="introduction"></a>
@@ -1444,6 +1445,75 @@ If you only need the functionality of a custom rule once throughout your applica
             },
         ],
     ]);
+
+<a name="using-extensions"></a>
+### Using Extensions
+
+Another method of registering custom validation rules is using the `extend` method on the `Validator` [facade](/docs/{{version}}/facades). Let's use this method within a [service provider](/docs/{{version}}/providers) to register a custom validation rule:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\Facades\Validator;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register any application services.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Validator::extend('foo', function ($attribute, $value, $parameters, $validator) {
+                return $value == 'foo';
+            });
+        }
+    }
+
+The custom validator Closure receives four arguments: the name of the `$attribute` being validated, the `$value` of the attribute, an array of `$parameters` passed to the rule, and the `Validator` instance.
+
+You may also pass a class and method to the `extend` method instead of a Closure:
+
+    Validator::extend('foo', 'FooValidator@validate');
+
+#### Defining The Error Message
+
+You will also need to define an error message for your custom rule. You can do so either using an inline custom message array or by adding an entry in the validation language file. This message should be placed in the first level of the array, not within the `custom` array, which is only for attribute-specific error messages:
+
+    "foo" => "Your input was invalid!",
+
+    "accepted" => "The :attribute must be accepted.",
+
+    // The rest of the validation error messages...
+
+When creating a custom validation rule, you may sometimes need to define custom placeholder replacements for error messages. You may do so by creating a custom Validator as described above then making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Validator::extend(...);
+
+        Validator::replacer('foo', function ($message, $attribute, $rule, $parameters) {
+            return str_replace(...);
+        });
+    }
 
 <a name="implicit-rules"></a>
 ### Implicit Rules
