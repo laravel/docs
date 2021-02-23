@@ -120,7 +120,9 @@ Next, you should call the `Passport::routes` method within the `boot` method of 
         {
             $this->registerPolicies();
 
-            Passport::routes();
+            if (! $this->app->routesAreCached()) {
+                Passport::routes();
+            }
         }
     }
 

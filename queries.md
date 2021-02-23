@@ -102,7 +102,7 @@ To retrieve a single row by its `id` column value, use the `find` method:
 <a name="retrieving-a-list-of-column-values"></a>
 #### Retrieving A List Of Column Values
 
-If you would like to retrieve an `Illuminate\Support\Collection` instance containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a collection of role titles:
+If you would like to retrieve an `Illuminate\Support\Collection` instance containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a collection of user titles:
 
     use Illuminate\Support\Facades\DB;
 

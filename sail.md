@@ -13,6 +13,7 @@
 - [Interacting With Databases](#interacting-with-sail-databases)
     - [MySQL](#mysql)
     - [Redis](#redis)
+    - [MeiliSearch](#meilisearch)
 - [Running Tests](#running-tests)
     - [Laravel Dusk](#laravel-dusk)
 - [Previewing Emails](#previewing-emails)
@@ -33,7 +34,7 @@ Laravel Sail is supported on macOS, Linux, and Windows (via WSL2).
 <a name="installation"></a>
 ## Installation & Setup
 
-Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation) for your operating system.
+Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation) for your operating system. During installation, you will be asked to choose which Sail supported services your application will be interacting with.
 
 <a name="installing-sail-into-existing-applications"></a>
 ### Installing Sail Into Existing Applications
@@ -184,6 +185,13 @@ To connect to your application's MySQL database from your local machine, you may
 Your application's `docker-compose.yml` file also contains an entry for a [Redis](https://redis.io) container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your Redis data is persisted even when stopping and restarting your containers. Once you have started your containers, you may connect to the Redis instance within your application by setting your `REDIS_HOST` environment variable within your application's `.env` file to `redis`.
 
 To connect to your application's Redis database from your local machine, you may use a graphical database management application such as [TablePlus](https://tableplus.com). By default, the Redis database is accessible at `localhost` port 6379.
+
+<a name="meilisearch"></a>
+### MeiliSearch
+
+If you chose to install the [MeiliSearch](https://www.meilisearch.com) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this powerful search-engine that is [compatible](https://github.com/meilisearch/meilisearch-laravel-scout) with [Laravel Scout](/docs/{{version}}/scout). Once you have started your containers, you may connect to the MeiliSearch instance within your application by setting your `MEILISEARCH_HOST` environment variable to `http://meilisearch:7700`.
+
+From your local machine, you may access MeiliSearch's web based administration panel by navigating to `http://localhost:7700` in your web browser.
 
 <a name="running-tests"></a>
 ## Running Tests

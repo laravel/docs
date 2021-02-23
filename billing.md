@@ -9,6 +9,7 @@
     - [API Keys](#api-keys)
     - [Currency Configuration](#currency-configuration)
     - [Logging](#logging)
+    - [Using Custom Models](#using-custom-models)
 - [Customers](#customers)
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
@@ -154,6 +155,34 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
 Cashier allows you to specify the log channel to be used when logging all Stripe related exceptions. You may specify the log channel by defining the `CASHIER_LOGGER` environment variable within your application's `.env` file:
 
     CASHIER_LOGGER=stack
+
+<a name="using-custom-models"></a>
+### Using Custom Models
+
+You are free to extend the models used internally by Cashier by defining your own model and extending the corresponding Cashier model:
+
+    use Laravel\Cashier\Subscription as CashierSubscription;
+
+    class Subscription extends CashierSubscription
+    {
+        // ...
+    }
+
+After defining your model, you may instruct Cashier to use your custom model via the `Laravel\Cashier\Cashier` class. Typically, you should inform Cashier about your custom models in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+
+    use App\Models\Cashier\Subscription;
+    use App\Models\Cashier\SubscriptionItem;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Cashier::useSubscriptionModel(Subscription::class);
+        Cashier::useSubscriptionItemModel(SubscriptionItem::class);
+    }
 
 <a name="customers"></a>
 ## Customers
@@ -1060,7 +1089,7 @@ You may determine if a user is within their trial period using either the `onTri
     if ($user->subscription('default')->onTrial()) {
         //
     }
-    
+
 You may use the `endTrial` method to immediately end a subscription trial:
 
     $user->subscription('default')->endTrial();

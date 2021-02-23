@@ -352,7 +352,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="column-method-bigIncrements"></a>
-#### `bigIncrements()` {#collection-method .first-collection-method}
+#### `bigIncrements()` {#collection-method}
 
 The `bigIncrements` method creates an auto-incrementing `UNSIGNED BIGINT` (primary key) equivalent column:
 
@@ -845,6 +845,17 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
     }
 
 > {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+
+<a name="column-order"></a>
+#### Column Order
+
+When using the MySQL database, the `after` method may be used to add columns after an existing column in the schema:
+
+    $table->after('password', function ($table) {
+        $table->string('address_line1');
+        $table->string('address_line2');
+        $table->string('city');
+    });
 
 <a name="modifying-columns"></a>
 ### Modifying Columns

@@ -278,6 +278,15 @@ Sometimes you may wish to alternate the value of a given model attribute for eac
 
 In this example, five users will be created with an `admin` value of `Y` and five users will be created with an `admin` value of `N`.
 
+If necessary, you may include a closure as a sequence value. The closure will be invoked each time the sequence needs a new value:
+
+    $users = User::factory()
+                    ->count(10)
+                    ->state(new Sequence(
+                        fn () => ['role' => UserRoles::all()->random()],
+                    ))
+                    ->create();
+
 <a name="factory-relationships"></a>
 ## Factory Relationships
 

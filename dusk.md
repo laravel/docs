@@ -904,6 +904,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertDataAttribute](#assert-data-attribute)
 [assertVisible](#assert-visible)
 [assertPresent](#assert-present)
+[assertNotPresent](#assert-not-present)
 [assertMissing](#assert-missing)
 [assertDialogOpened](#assert-dialog-opened)
 [assertEnabled](#assert-enabled)
@@ -1304,6 +1305,13 @@ Assert that the element matching the given selector is visible:
 Assert that the element matching the given selector is present:
 
     $browser->assertPresent($selector);
+
+<a name="assert-not-present"></a>
+#### assertNotPresent
+
+Assert that the element matching the given selector is not present in the source:
+
+    $browser->assertNotPresent($selector);
 
 <a name="assert-missing"></a>
 #### assertMissing
