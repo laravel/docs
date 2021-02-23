@@ -1285,7 +1285,7 @@ You may occasionally wish to not validate a given field if another field has a g
     use Illuminate\Support\Facades\Validator;
 
     $validator = Validator::make($data, [
-        'has_appointment' => 'required|bool',
+        'has_appointment' => 'required|boolean',
         'appointment_date' => 'exclude_if:has_appointment,false|required|date',
         'doctor_name' => 'exclude_if:has_appointment,false|required|string',
     ]);
@@ -1293,7 +1293,7 @@ You may occasionally wish to not validate a given field if another field has a g
 Alternatively, you may use the `exclude_unless` rule to not validate a given field unless another field has a given value:
 
     $validator = Validator::make($data, [
-        'has_appointment' => 'required|bool',
+        'has_appointment' => 'required|boolean',
         'appointment_date' => 'exclude_unless:has_appointment,true|required|date',
         'doctor_name' => 'exclude_unless:has_appointment,true|required|string',
     ]);
