@@ -667,6 +667,16 @@ You may also determine if a user is authorized to perform any action from a give
 @endcanany
 ```
 
+Because the `@can` and `@cannot` directives are a repalcement for `@if` and `@unless` statements, you may also use `@else`:
+
+```html
+@can('update', $post)
+    <!-- The current user can update the post -->
+@else
+    <!-- The current user cannot update the post -->
+@endcan
+```
+
 <a name="blade-actions-that-dont-require-models"></a>
 #### Actions That Don't Require Models
 
