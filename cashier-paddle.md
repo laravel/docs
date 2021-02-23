@@ -10,6 +10,7 @@
     - [API Keys](#api-keys)
     - [Paddle JS](#paddle-js)
     - [Currency Configuration](#currency-configuration)
+    - [Overriding Default Models](#overriding-default-models)
 - [Core Concepts](#core-concepts)
     - [Pay Links](#pay-links)
     - [Inline Checkout](#inline-checkout)
@@ -155,6 +156,34 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
     CASHIER_CURRENCY_LOCALE=nl_BE
 
 > {note} In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
+
+<a name="overriding-default-models"></a>
+### Overriding Default Models
+
+You are free to extend the models used internally by Cashier by defining your own model and extending the corresponding Cashier model:
+
+    use Laravel\Paddle\Subscription as CashierSubscription;
+
+    class Subscription extends CashierSubscription
+    {
+        // ...
+    }
+
+After defining your model, you may instruct Cashier to use your custom model via the `Laravel\Paddle\Cashier` class. Typically, you should inform Cashier about your custom models in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+
+    use App\Models\Cashier\Receipt;
+    use App\Models\Cashier\Subscription;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Cashier::useReceiptModel(Receipt::class);
+        Cashier::useSubscriptionModel(Subscription::class);
+    }
 
 <a name="core-concepts"></a>
 ## Core Concepts
