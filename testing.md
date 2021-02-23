@@ -119,6 +119,7 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
 
     namespace App\Providers;
 
+    use Illuminate\Support\Facades\Artisan;
     use Illuminate\Support\Facades\ParallelTesting;
     use Illuminate\Support\ServiceProvider;
 
@@ -132,23 +133,31 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
         public function boot()
         {
             ParallelTesting::setUpProcess(function ($token) {
-                // ..
+                // ...
             });
 
             ParallelTesting::setUpTestCase(function ($token, $testCase) {
-                // ..
+                // ...
+            });
+
+            // Executed when a test database is created...
+            ParallelTesting::setUpTestDatabase(function ($database, $token) {
+                Artisan::call('db:seed');
             });
 
             ParallelTesting::tearDownTestCase(function ($token, $testCase) {
-                // ..
+                // ...
             });
 
             ParallelTesting::tearDownProcess(function ($token) {
-                // ..
+                // ...
             });
         }
     }
 
-If you would like to access to current process token from any other place in your application's test code, you may use the `token` method:
+<a name="accessing-the-parallel-testing-token"></a>
+#### Accessing The Parallel Testing Token
+
+If you would like to access to current parallel process "token" from any other location in your application's test code, you may use the `token` method. This token is a unique, integer identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:
 
     $token = ParallelTesting::token();
