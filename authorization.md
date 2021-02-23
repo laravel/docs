@@ -636,6 +636,8 @@ When writing Blade templates, you may wish to display a portion of the page only
     <!-- The current user can update the post... -->
 @elsecan('create', App\Models\Post::class)
     <!-- The current user can create new posts... -->
+@else
+    <!-- ... -->
 @endcan
 
 @cannot('update', $post)
@@ -665,16 +667,6 @@ You may also determine if a user is authorized to perform any action from a give
 @elsecanany(['create'], \App\Models\Post::class)
     <!-- The current user can create a post... -->
 @endcanany
-```
-
-Because the `@can` and `@cannot` directives are a repalcement for `@if` and `@unless` statements, you may also use `@else`:
-
-```html
-@can('update', $post)
-    <!-- The current user can update the post -->
-@else
-    <!-- The current user cannot update the post -->
-@endcan
 ```
 
 <a name="blade-actions-that-dont-require-models"></a>
