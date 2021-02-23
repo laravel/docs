@@ -288,7 +288,6 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </style>
 
 <div id="collection-method-list" markdown="1">
-[after](#column-method-after)
 [bigIncrements](#column-method-bigIncrements)
 [bigInteger](#column-method-bigInteger)
 [binary](#column-method-binary)
@@ -351,16 +350,6 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [uuid](#column-method-uuid)
 [year](#column-method-year)
 </div>
-
-<a name="column-method-after"></a>
-#### `after()` {#collection-method .first-collection-method}
-The `after` method add multiple new columns after an existing column.
-
-    $table->after('password', function ($table) {
-        $table->string('address_line1');
-        $table->string('address_line2');
-        $table->string('city');
-    });
 
 <a name="column-method-bigIncrements"></a>
 #### `bigIncrements()` {#collection-method}
@@ -856,6 +845,17 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
     }
 
 > {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+
+<a name="column-order"></a>
+#### Column Order
+
+When using the MySQL database, the `after` method may be used to add columns after an existing column in the schema:
+
+    $table->after('password', function ($table) {
+        $table->string('address_line1');
+        $table->string('address_line2');
+        $table->string('city');
+    });
 
 <a name="modifying-columns"></a>
 ### Modifying Columns
