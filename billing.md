@@ -9,7 +9,7 @@
     - [API Keys](#api-keys)
     - [Currency Configuration](#currency-configuration)
     - [Logging](#logging)
-    - [Overriding Default Models](#overriding-default-models)
+    - [Using Custom Models](#using-custom-models)
 - [Customers](#customers)
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
@@ -156,8 +156,8 @@ Cashier allows you to specify the log channel to be used when logging all Stripe
 
     CASHIER_LOGGER=stack
 
-<a name="overriding-default-models"></a>
-### Overriding Default Models
+<a name="using-custom-models"></a>
+### Using Custom Models
 
 You are free to extend the models used internally by Cashier by defining your own model and extending the corresponding Cashier model:
 
@@ -1089,7 +1089,7 @@ You may determine if a user is within their trial period using either the `onTri
     if ($user->subscription('default')->onTrial()) {
         //
     }
-    
+
 You may use the `endTrial` method to immediately end a subscription trial:
 
     $user->subscription('default')->endTrial();
