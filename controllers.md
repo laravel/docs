@@ -78,7 +78,6 @@ If a controller action is particularly complex, you might find it convenient to 
         /**
          * Provision a new web server.
          *
-         * @param  int  $id
          * @return \Illuminate\Http\Response
          */
         public function __invoke()
