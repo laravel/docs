@@ -379,8 +379,8 @@ In addition to constructor injection, you may also type-hint dependencies on you
         /**
          * Store a new user.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {
