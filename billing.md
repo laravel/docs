@@ -1228,7 +1228,7 @@ Next, define a route to your Cashier webhook controller within your application'
 
 To secure your webhooks, you may use [Stripe's webhook signatures](https://stripe.com/docs/webhooks/signatures). For convenience, Cashier automatically includes a middleware which validates that the incoming Stripe webhook request is valid.
 
-To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environment variable is set in your application's `.env` file. The webhook `secret` may be retrieved from your Stripe account dashboard.
+To enable webhook verification, ensure that the `CASHIER_WEBHOOK_SECRET` environment variable is set in your application's `.env` file. The webhook `secret` may be retrieved from your Stripe account dashboard.
 
 <a name="single-charges"></a>
 ## Single Charges
