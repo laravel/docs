@@ -8,7 +8,7 @@
     - [Setup](#setup)
     - [Variables](#variables)
     - [Stories](#stories)
-    - [Completion](#completion)
+    - [Completion Hooks](#completion-hooks)
 - [Running Tasks](#running-tasks)
     - [Confirming Task Execution](#confirming-task-execution)
 - [Notifications](#notifications)
@@ -173,24 +173,22 @@ Once the story has been written, you may invoke it in the same way you would inv
 
     php vendor/bin/envoy run deploy
 
-<a name="completion"></a>
-### Completion
+<a name="completion-hooks"></a>
+### Completion Hooks
 
-When tasks and stories finish, a number of callbacks can be executed depending on your needs: `@after`, `@error`, `@success`, and `@finished`.
+When tasks and stories finish, a number of hooks are executed. The hook types supported by Envoy are `@after`, `@error`, `@success`, and `@finished`. All of the code in these hooks is interpreted as PHP and executed locally, not on the remote servers that your tasks interact with.
 
-All code in these callbacks is interpreted as PHP and executed locally, not on any servers.
-
-> {tip} You can define as many of each of these functions as you like. They will be executed in the order that they appear in your Envoy script.
+You may define as many of each of these hooks as you like. They will be executed in the order that they appear in your Envoy script.
 
 <a name="completion-after"></a>
 #### `@after`
 
-After every _task_ that succeeds, whether part of a story or not, all `@after` functions registered in your Envoy script will run. `@after` functions receive the name of the task that was `run`, which is available in a variable named `$task`.
+After each task execution, all of the `@after` hooks registered in your Envoy script will execute. The `@after` hooks receive the name of the task that was executed:
 
-```bash
+```php
 @after
     if ($task === 'deploy') {
-        // Your post-deploy actions here
+        // ...
     }
 @endafter
 ```
@@ -198,12 +196,12 @@ After every _task_ that succeeds, whether part of a story or not, all `@after` f
 <a name="completion-error"></a>
 #### `@error`
 
-After every _task_ that fails (i.e. returns with an exit code greater than `0`), whether part of a story or not, all `@error` functions registered in your Envoy script will run. `@error` functions receive the name of the task that was `run` in a variable named `$task`, which is a `string`.
+After every task failure (exits with a status code greater than `0`), all of the `@error` hooks registered in your Envoy script will execute. The `@error` hooks receive the name of the task that was executed:
 
-```bash
+```php
 @error
     if ($task === 'deploy') {
-        // Your post-deploy actions here
+        // ...
     }
 @enderror
 ```
@@ -211,23 +209,23 @@ After every _task_ that fails (i.e. returns with an exit code greater than `0`),
 <a name="completion-success"></a>
 #### `@success`
 
-After all tasks have been run (either a single task or a story), if there were no errors, all `@success` functions registered in your Envoy script will run.
+If all tasks have executed without errors, all of the `@success` hooks registered in your Envoy script will execute:
 
 ```bash
 @success
-    // Your success actions here
+    // ...
 @endsuccess
 ```
 
 <a name="completion-finished"></a>
 #### `@finished`
 
-Also after all tasks have been run, all registered `@finished` functions will be executed. `@finished` functions run at the end of any task or story. `@finished` functions receive the exit code of the run in a variable named `$exitCode`, which could be `null` or an `integer` greater than or equal to `0`.
+After all tasks have been executed (regardless of exit status), all of the `@finished` hooks will be executed. The `@finished` hooks receive the status code of the completed task, which may be `null` or an `integer` greater than or equal to `0`:
 
 ```bash
 @finished
     if ($exitCode > 0) {
-        // There were errors in a task, but it doesn't matter which one
+        // There were errors in one of the tasks...
     }
 @endfinished
 ```
