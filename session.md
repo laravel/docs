@@ -281,7 +281,7 @@ If none of the existing session drivers fit your application's needs, Laravel ma
 
 > {tip} Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`.
 
-Since the purpose of these methods is not readily understandable, let's quickly cover what each of the methods do:
+Since the purpose of these methods is not readily understandable, let's quickly cover what each of the methods does:
 
 <div class="content-list" markdown="1">
 - The `open` method would typically be used in file based session store systems. Since Laravel ships with a `file` session driver, you will rarely need to put anything in this method. You can simply leave this method empty.
