@@ -241,6 +241,8 @@ You should also display the user's two factor recovery codes. These recovery cod
 (array) $request->user()->two_factor_recovery_codes
 ```
 
+This will return the recovery codes as an encrypted string. To view the recovery codes as an array, you can decrypt the string, for example, using the `decrypt()` helper method.
+
 If you are building a JavaScript powered frontend, you may make an XHR GET request to the `/user/two-factor-recovery-codes` endpoint. This endpoint will return a JSON array containing the user's recovery codes.
 
 To regenerate the user's recovery codes, your application should make a POST request to the `/user/two-factor-recovery-codes` endpoint.
