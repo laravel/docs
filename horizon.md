@@ -38,6 +38,16 @@ After installing Horizon, publish its assets using the `horizon:install` Artisan
 
     php artisan horizon:install
 
+Register the Horizon Service provider in `config/app.php` 
+
+ ```   'providers' => [
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\HorizonServiceProvider::class,
+    ],
+```
+
 <a name="configuration"></a>
 ### Configuration
 
