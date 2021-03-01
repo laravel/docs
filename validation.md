@@ -1309,7 +1309,7 @@ In some situations, you may wish to run validation checks against a field **only
 
 In the example above, the `email` field will only be validated if it is present in the `$data` array.
 
-> {tip} If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields)
+> {tip} If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields).
 
 <a name="complex-conditional-validation"></a>
 #### Complex Conditional Validation
