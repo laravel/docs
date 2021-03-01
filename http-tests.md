@@ -770,7 +770,7 @@ Assert that the session contains an error for the given `$keys`. If `$keys` is a
         array $keys, $format = null, $errorBag = 'default'
     );
 
-For example, to assert that the `name` and `email` field have validation error messages that were flashed to the session, you may invoke the `assertSessionHasErrors` method like so:
+For example, to assert that the `name` and `email` fields have validation error messages that were flashed to the session, you may invoke the `assertSessionHasErrors` method like so:
 
     $response->assertSessionHasErrors(['name', 'email']);
 
