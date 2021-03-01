@@ -56,7 +56,7 @@ When you register a custom exception reporting callback using the `reportable` m
         return false;
     });
 
-> {tip} To customize the exception reporting for a given exception, you may also consider using [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions).
+> {tip} To customize the exception reporting for a given exception, you may also utilize [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions).
 
 <a name="global-log-context"></a>
 #### Global Log Context
