@@ -1178,22 +1178,22 @@ The field under validation must be present and not empty unless the _anotherfiel
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only if_ any of the other specified fields are present.
+The field under validation must be present and not empty _only if_ any of the other specified fields are present and not empty.
 
 <a name="rule-required-with-all"></a>
 #### required_with_all:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only if_ all of the other specified fields are present.
+The field under validation must be present and not empty _only if_ all of the other specified fields are present and not empty.
 
 <a name="rule-required-without"></a>
 #### required_without:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only when_ any of the other specified fields are not present.
+The field under validation must be present and not empty _only when_ any of the other specified fields are empty or not present.
 
 <a name="rule-required-without-all"></a>
 #### required_without_all:_foo_,_bar_,...
 
-The field under validation must be present and not empty _only when_ all of the other specified fields are not present.
+The field under validation must be present and not empty _only when_ all of the other specified fields are empty or not present.
 
 <a name="rule-same"></a>
 #### same:_field_
