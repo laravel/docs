@@ -8,6 +8,7 @@
     - [Setup](#setup)
     - [Variables](#variables)
     - [Stories](#stories)
+    - [Completion Hooks](#completion-hooks)
 - [Running Tasks](#running-tasks)
     - [Confirming Task Execution](#confirming-task-execution)
 - [Notifications](#notifications)
@@ -171,6 +172,63 @@ Stories group a set of tasks under a single, convenient name. For instance, a `d
 Once the story has been written, you may invoke it in the same way you would invoke a task:
 
     php vendor/bin/envoy run deploy
+
+<a name="completion-hooks"></a>
+### Completion Hooks
+
+When tasks and stories finish, a number of hooks are executed. The hook types supported by Envoy are `@after`, `@error`, `@success`, and `@finished`. All of the code in these hooks is interpreted as PHP and executed locally, not on the remote servers that your tasks interact with.
+
+You may define as many of each of these hooks as you like. They will be executed in the order that they appear in your Envoy script.
+
+<a name="completion-after"></a>
+#### `@after`
+
+After each task execution, all of the `@after` hooks registered in your Envoy script will execute. The `@after` hooks receive the name of the task that was executed:
+
+```php
+@after
+    if ($task === 'deploy') {
+        // ...
+    }
+@endafter
+```
+
+<a name="completion-error"></a>
+#### `@error`
+
+After every task failure (exits with a status code greater than `0`), all of the `@error` hooks registered in your Envoy script will execute. The `@error` hooks receive the name of the task that was executed:
+
+```php
+@error
+    if ($task === 'deploy') {
+        // ...
+    }
+@enderror
+```
+
+<a name="completion-success"></a>
+#### `@success`
+
+If all tasks have executed without errors, all of the `@success` hooks registered in your Envoy script will execute:
+
+```bash
+@success
+    // ...
+@endsuccess
+```
+
+<a name="completion-finished"></a>
+#### `@finished`
+
+After all tasks have been executed (regardless of exit status), all of the `@finished` hooks will be executed. The `@finished` hooks receive the status code of the completed task, which may be `null` or an `integer` greater than or equal to `0`:
+
+```bash
+@finished
+    if ($exitCode > 0) {
+        // There were errors in one of the tasks...
+    }
+@endfinished
+```
 
 <a name="running-tasks"></a>
 ## Running Tasks

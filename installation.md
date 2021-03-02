@@ -6,6 +6,7 @@
     - [Getting Started On macOS](#getting-started-on-macos)
     - [Getting Started On Windows](#getting-started-on-windows)
     - [Getting Started On Linux](#getting-started-on-linux)
+    - [Choosing Your Sail Services](#choosing-your-sail-services)
     - [Installation Via Composer](#installation-via-composer)
 - [Initial Configuration](#initial-configuration)
 - [Next Steps](#next-steps)
@@ -59,7 +60,7 @@ Laravel Sail is a light-weight command-line interface for interacting with Larav
 If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
 ```nothing
-curl -s https://laravel.build/example-app | bash
+curl -s "https://laravel.build/example-app" | bash
 ```
 
 Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
@@ -137,6 +138,17 @@ The first time you run the Sail `up` command, Sail's application containers will
 Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
 
 > {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+
+<a name="choosing-your-sail-services"></a>
+### Choosing Your Sail Services
+
+When creating a new Laravel application via Sail, you may use the `with` query string variable to choose which services should be configured in your new application's `docker-compose.yml` file. Available services include `mysql`, `pgsql`, `redis`, `memcached`, `meilisearch`, `selenium`, and `mailhog`:
+
+```nothing
+curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
+```
+
+If you do not specify which services you would like configured, a default stack of `mysql`, `redis`, `meilisearch`, `mailhog`, and `selenium` will be configured.
 
 <a name="installation-via-composer"></a>
 ### Installation Via Composer

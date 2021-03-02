@@ -78,7 +78,6 @@ If a controller action is particularly complex, you might find it convenient to 
         /**
          * Provision a new web server.
          *
-         * @param  int  $id
          * @return \Illuminate\Http\Response
          */
         public function __invoke()
@@ -380,8 +379,8 @@ In addition to constructor injection, you may also type-hint dependencies on you
         /**
          * Store a new user.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {

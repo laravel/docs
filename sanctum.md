@@ -94,7 +94,7 @@ Although not typically required, you are free to extend the `PersonalAccessToken
 
 Then, you may instruct Sanctum to use your custom model via the `usePersonalAccessTokenModel` method provided by Sanctum. Typically, you should call this method in the `boot` method of one of your application's service providers:
 
-    use App\Models\Passport\PersonalAccessToken;
+    use App\Models\Sanctum\PersonalAccessToken;
     use Laravel\Sanctum\Sanctum;
 
     /**

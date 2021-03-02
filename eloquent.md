@@ -713,6 +713,10 @@ To delete a model, you may call the `delete` method on the model instance:
 
     $flight->delete();
 
+You may call the `truncate` method to delete all of the model's associated database records. The `truncate` operation will also reset any auto-incrementing IDs on the model's associated table:
+   
+    Flight::truncate();
+
 <a name="deleting-an-existing-model-by-its-primary-key"></a>
 #### Deleting An Existing Model By Its Primary Key
 

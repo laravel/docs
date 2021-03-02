@@ -433,6 +433,7 @@ Typically, a 404 HTTP response will be generated if an implicitly bound model is
 
     use App\Http\Controllers\LocationsController;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Redirect;
 
     Route::get('/locations/{location:slug}', [LocationsController::class, 'show'])
             ->name('locations.view')

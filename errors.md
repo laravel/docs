@@ -56,7 +56,7 @@ When you register a custom exception reporting callback using the `reportable` m
         return false;
     });
 
-> {tip} To customize the exception reporting for a given exception, you may also consider using [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions)
+> {tip} To customize the exception reporting for a given exception, you may also utilize [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions).
 
 <a name="global-log-context"></a>
 #### Global Log Context
@@ -73,6 +73,32 @@ If available, Laravel automatically adds the current user's ID to every exceptio
         return array_merge(parent::context(), [
             'foo' => 'bar',
         ]);
+    }
+
+<a name="exception-log-context"></a>
+#### Exception Log Context
+
+While adding context to every log message can be useful, sometimes a particular exception may have unique context that you would like to include in your logs. By defining a `context` method on one of your application's custom exceptions, you may specify any data relevant to that exception that should be added to the exception's log entry:
+
+    <?php
+
+    namespace App\Exceptions;
+
+    use Exception;
+
+    class InvalidOrderException extends Exception
+    {
+        // ...
+
+        /**
+         * Get the exception's context information.
+         *
+         * @return array
+         */
+        public function context()
+        {
+            return ['order_id' => $this->orderId];
+        }
     }
 
 <a name="the-report-helper"></a>

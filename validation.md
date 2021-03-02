@@ -458,6 +458,14 @@ The first argument passed to the `make` method is the data under validation. The
 
 After determining whether the request validation failed, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
 
+#### Stopping On First Validation Failure
+
+The `stopOnFirstFailure` method will inform the validator that it should stop validating all attributes once a single validation failure has occurred:
+
+    if ($validator->stopOnFirstFailure()->fails()) {
+        // ...
+    }
+
 <a name="automatic-redirection"></a>
 ### Automatic Redirection
 
@@ -778,7 +786,13 @@ The field under validation must be a PHP `array`.
 <a name="rule-bail"></a>
 #### bail
 
-Stop running validation rules after the first validation failure.
+Stop running validation rules for the field after the first validation failure.
+
+While the `bail` rule will only stop validating a specific field when it encounters a validation failure, the `stopOnFirstFailure` method will inform the validator that it should stop validating all attributes once a single validation failure has occurred:
+
+    if ($validator->stopOnFirstFailure()->fails()) {
+        // ...
+    }
 
 <a name="rule-before"></a>
 #### before:_date_
@@ -1322,7 +1336,7 @@ In some situations, you may wish to run validation checks against a field **only
 
 In the example above, the `email` field will only be validated if it is present in the `$data` array.
 
-> {tip} If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields)
+> {tip} If you are attempting to validate a field that should always be present but may be empty, check out [this note on optional fields](#a-note-on-optional-fields).
 
 <a name="complex-conditional-validation"></a>
 #### Complex Conditional Validation
