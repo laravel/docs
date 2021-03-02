@@ -713,7 +713,7 @@ To delete a model, you may call the `delete` method on the model instance:
 
     $flight->delete();
     
-YOu may also call the `truncate` method to delete all the models at once.
+You may also call the `truncate` method to delete all the models at once.
 
     use App\Models\Flight;
     
