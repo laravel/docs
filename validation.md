@@ -311,10 +311,10 @@ If you would like to add an "after" validation hook to a form request, you may u
     }
 
 
-<a name="stopping-on-first-validation-failure-attribute"></a>
+<a name="request-stopping-on-first-validation-rule-failure"></a>
 #### Stopping On First Validation Failure Attribute
 
-Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so in `Request` class:
+By adding a `stopOnFirstFailure` property to your request class, you may inform the validator that it should stop validating all attributes once a single validation failure has occurred:
 
     /**
      * Indicates if the validator should stop on the first rule failure.
