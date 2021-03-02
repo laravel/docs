@@ -712,6 +712,12 @@ To delete a model, you may call the `delete` method on the model instance:
     $flight = Flight::find(1);
 
     $flight->delete();
+    
+YOu may also call the `truncate` method to delete all the models at once.
+
+    use App\Models\Flight;
+    
+    Flight::truncate();
 
 <a name="deleting-an-existing-model-by-its-primary-key"></a>
 #### Deleting An Existing Model By Its Primary Key
