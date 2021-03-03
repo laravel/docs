@@ -143,7 +143,7 @@ This command will generate a controller at `app/Http/Controllers/PhotoController
 
     Route::resource('photos', PhotoController::class);
 
-This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions. Remember, you can always get a quick overview of your application's by running the `route:list` Artisan command.
+This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions. Remember, you can always get a quick overview of your application's routes by running the `route:list` Artisan command.
 
 You may even register many resource controllers at once by passing an array to the `resources` method:
 
