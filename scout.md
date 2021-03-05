@@ -66,6 +66,7 @@ When using the Algolia driver, you should configure your Algolia `id` and `secre
 
     composer require algolia/algoliasearch-client-php
 
+<a name="meilisearch"></a>
 #### MeiliSearch
 
 MeiliSearch is a powerful, open source search-engine that may be run locally using [Laravel Sail](/docs/{{version}}/sail). MeiliSearch provides and maintains an [official MeiliSearch driver for Laravel Scout](https://github.com/meilisearch/meilisearch-laravel-scout). Please consult this package's documentation to learn how to use MeiliSearch with Laravel Scout.
