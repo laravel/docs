@@ -615,7 +615,7 @@ Assert that the response has no JSON validation errors for the given keys:
 
 Assert that the response contains the given data at the specified path:
 
-    $response->assertJsonPath($path, array $data, $strict = true);
+    $response->assertJsonPath($path, $expect);
 
 For example, if the JSON response returned by your application contains the following data:
 
