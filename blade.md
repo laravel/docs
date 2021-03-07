@@ -13,6 +13,13 @@
     - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
     - [Raw PHP](#raw-php)
+- [Building Layouts](#building-layouts)
+    - [Layouts Using Components](#layouts-using-components)
+    - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
+- [Forms](#forms)
+    - [CSRF Field](#csrf-field)
+    - [Method Field](#method-field)
+    - [Validation Errors](#validation-errors)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
     - [Passing Data To Components](#passing-data-to-components)
@@ -23,13 +30,7 @@
     - [Anonymous Components](#anonymous-components)
     - [Dynamic Components](#dynamic-components)
     - [Manually Registering Components](#manually-registering-components)
-- [Building Layouts](#building-layouts)
-    - [Layouts Using Components](#layouts-using-components)
-    - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
-- [Forms](#forms)
-    - [CSRF Field](#csrf-field)
-    - [Method Field](#method-field)
-    - [Validation Errors](#validation-errors)
+
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Extending Blade](#extending-blade)
@@ -432,6 +433,15 @@ The `@once` directive allows you to define a portion of the template that will o
         @endpush
     @endonce
 
+<a name="raw-php"></a>
+### Raw PHP
+
+In some situations, it's useful to embed PHP code into your views. You can use the Blade `@php` directive to execute a block of plain PHP within your template:
+
+    @php
+        $counter = 1;
+    @endphp
+
 <a name="building-layouts"></a>
 ## Building Layouts
 
@@ -622,15 +632,6 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
     <div class="alert alert-danger">{{ $message }}</div>
 @enderror
 ```
-
-<a name="raw-php"></a>
-### Raw PHP
-
-In some situations, it's useful to embed PHP code into your views. You can use the Blade `@php` directive to execute a block of plain PHP within your template:
-
-    @php
-        $counter = 1;
-    @endphp
 
 <a name="components"></a>
 ## Components
