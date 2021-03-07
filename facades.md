@@ -18,7 +18,8 @@ Laravel facades serve as "static proxies" to underlying classes in the service c
 All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespace. So, we can easily access a facade like so:
 
     use Illuminate\Support\Facades\Cache;
-
+    use Illuminate\Support\Facades\Route;
+    
     Route::get('/cache', function () {
         return Cache::get('key');
     });
