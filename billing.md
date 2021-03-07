@@ -932,7 +932,7 @@ If your application offers multiple plans on a single subscription, you may use 
 
 The `usageRecords` and `usageRecordsFor` methods return a Collection instance containing an associative array of usage records. You may iterate over this array to display a customer's total usage:
 
-    @foreach ($usageRecords as $usageRecord) {
+    @foreach ($usageRecords as $usageRecord)
         - Period Starting: {{ $usageRecord['period']['start'] }}
         - Period Ending: {{ $usageRecord['period']['end'] }}
         - Total Usage: {{ $usageRecord['total_usage'] }}
