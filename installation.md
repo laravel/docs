@@ -184,6 +184,36 @@ Make sure to place Composer's system-wide vendor bin directory in your `$PATH` s
 - GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin`
 </div>
 
+##### Git Support
+
+The installer also offers support to easily get started with a Git repository. To use this, pass the `--git` flag when setting up a new project:
+
+```bash
+laravel new my-app.com --git
+```
+
+This will initialize a new repository in your project and automatically commit the base Laravel skeleton so you're immediately ready to get started adding commits for our new app. The `git` flag assumes you've properly installed and configured Git.
+
+Alternatively, you can use `--github` to also automatically create a private repository on GitHub:
+
+```bash
+laravel new my-app.com --github
+```
+
+The repo will then be available at `github.com/<your-account/my-app.com`. The `github` flag assumes you've properly installed the `gh` CLI tool and are authenticated with GitHub. Additionally, you should have `git` installed and properly configured.
+
+When installing Jetstream as well using the `--jet` flag in combination with `--git` or `--github`, the installer will commit Jetstream in a separate commit:
+
+```bash
+laravel new my-app.com --jet --github
+```
+
+You can also pass flags for `gh repo create` as follows:
+
+```bash
+laravel new my-app.com --github="--public --team laravel"
+```
+
 <a name="initial-configuration"></a>
 ## Initial Configuration
 
