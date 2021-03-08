@@ -204,7 +204,7 @@ The created repository will then be available at `https://github.com/<your-accou
 laravel new example-app --github="--public --team laravel"
 ```
 
-> {note} You may experience issues with the `github` flag if yout Git protocol is set to `https`. If you're prompted for your GitHub username and password during the installation, try setting the Git protocol to `ssh` instead by running `gh config set git_protocol ssh --host github.com`.
+> {note} You may experience issues with the `github` flag if your system's Git protocol is set to `https`. If you're prompted for your GitHub username and password during the installation, try setting your system's Git protocol to `ssh` by running `gh config set git_protocol ssh --host github.com`.
 
 <a name="initial-configuration"></a>
 ## Initial Configuration
