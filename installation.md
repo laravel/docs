@@ -184,31 +184,21 @@ Make sure to place Composer's system-wide vendor bin directory in your `$PATH` s
 - GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin`
 </div>
 
-##### Git Support
-
-The installer also offers support to easily get started with a Git repository. To use this, pass the `--git` flag when setting up a new project:
+For convenience, the Laravel installer can also create a Git repository for your new project. To indicate that you want a Git repository to be created, pass the `--git` flag when creating a new project:
 
 ```bash
 laravel new my-app.com --git
 ```
 
-This will initialize a new repository in your project and automatically commit the base Laravel skeleton so you're immediately ready to get started adding commits for our new app. The `git` flag assumes you've properly installed and configured Git.
+This command will initialize a new Git repository for your project and automatically commit the base Laravel skeleton. The `git` flag assumes you have properly installed and configured Git.
 
-Alternatively, you can use `--github` to also automatically create a private repository on GitHub:
+Or, instead of using the `--git` flag, you may use the `--github` flag to create a Git repository and also create a corresponding private repository on GitHub:
 
 ```bash
 laravel new my-app.com --github
 ```
 
-The repo will then be available at `github.com/<your-account/my-app.com`. The `github` flag assumes you've properly installed the `gh` CLI tool and are authenticated with GitHub. Additionally, you should have `git` installed and properly configured.
-
-When installing Jetstream as well using the `--jet` flag in combination with `--git` or `--github`, the installer will commit Jetstream in a separate commit:
-
-```bash
-laravel new my-app.com --jet --github
-```
-
-You can also pass flags for `gh repo create` as follows:
+The created repository will then be available at `https://github.com/<your-account/my-app.com`. The `github` flag assumes you have properly installed the [`gh` CLI tool](https://cli.github.com) and are authenticated with GitHub. Additionally, you should have `git` installed and properly configured. If needed, you can pass additional flags that supported by the GitHub CLI:
 
 ```bash
 laravel new my-app.com --github="--public --team laravel"
