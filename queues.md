@@ -494,11 +494,9 @@ If you wish to immediately delete any overlapping jobs so that they will not be 
 <a name="throttling-exceptions"></a>
 ### Throttling Exceptions
 
-Laravel includes a `Illuminate\Queue\Middleware\ThrottlesExceptions` middleware that allows you to throttle exceptions. This is particularly useful for jobs that interact with third party services that are unstable.
+Laravel includes a `Illuminate\Queue\Middleware\ThrottlesExceptions` middleware that allows you to throttle exceptions. Once the job throws a given number of exceptions, all further attempts to execute the job are delayed until a specified time interval lapses. This middleware is particularly useful for jobs that interact with third-party services that are unstable.
 
-Once the job exceptions reach a certain threshold, all further jobs with the same key are delayed until a certain time interval lapses. This is based off the circuit breaker design pattern.
-
-For example, let's imagine you have a queued job that interacts with an unstable third party API. To throttle exceptions, you can return the `ThrottlesExceptions` middleware from your job's `middleware` method:
+For example, let's imagine a queued job that interacts with an third-party API that begins throwing exceptions. To throttle exceptions, you can return the `ThrottlesExceptions` middleware from your job's `middleware` method. Typically, this middleware should be paired with a job that implements [time based attempts](#time-based-attempts):
 
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
 
@@ -509,12 +507,22 @@ For example, let's imagine you have a queued job that interacts with an unstable
      */
     public function middleware()
     {
-        return [new ThrottlesExceptions(10, 10)];
+        return [new ThrottlesExceptions(10, 5)];
     }
 
-The first argument of the middleware is the maximum number of consecutive attempts and the second argument is the time interval. For the job above, if there are 10 failed attempts (exceptions) in 10 minutes, we want to wait for another 10 minutes before retrying or attempting a new job with the same "key".
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return now()->addMinutes(30);
+    }
 
-By default, if the failure threshold is not met, the jobs are retried immediately. You may override this by using the third argument of the middleware constructor. For example, to retry the job after 1 minute:
+The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again.
+
+When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of seconds such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:
 
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
 
@@ -525,10 +533,10 @@ By default, if the failure threshold is not met, the jobs are retried immediatel
      */
     public function middleware()
     {
-        return [new ThrottlesExceptions(10, 10, 1)];
+        return [(new ThrottlesExceptions(10, 5)->backoff(5)];
     }
 
-By default, the job class is used as the key. You may override this by providing the fourth argument of the middleware constructor:
+Internally, this middleware uses Laravel's cache system to implement rate limiting, and the job's unique UUID is utilized as the cache "key". You may override this key by calling the `by` method when attaching the middleware to your job. This may be useful if you have multiple jobs interacting with the same third-party service and you would like them to share a common throttling "bucket":
 
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
 
@@ -539,10 +547,8 @@ By default, the job class is used as the key. You may override this by providing
      */
     public function middleware()
     {
-        return [new ThrottlesExceptions(10, 10, 1, 'custom-key')];
+        return [(new ThrottlesExceptions(10, 10))->by('key')];
     }
-
-This may be useful if you have multiple jobs interacting with the same third party service, and you wish to share a common throttling "bucket" for all such jobs.
 
 > {tip} If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
 
