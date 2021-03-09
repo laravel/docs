@@ -533,7 +533,7 @@ When a job throws an exception but the exception threshold has not yet been reac
      */
     public function middleware()
     {
-        return [(new ThrottlesExceptions(10, 5)->backoff(5)];
+        return [(new ThrottlesExceptions(10, 5))->backoff(5)];
     }
 
 Internally, this middleware uses Laravel's cache system to implement rate limiting, and the job's class name is utilized as the cache "key". You may override this key by calling the `by` method when attaching the middleware to your job. This may be useful if you have multiple jobs interacting with the same third-party service and you would like them to share a common throttling "bucket":
