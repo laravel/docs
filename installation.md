@@ -184,6 +184,28 @@ Make sure to place Composer's system-wide vendor bin directory in your `$PATH` s
 - GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin` or `$HOME/.composer/vendor/bin`
 </div>
 
+For convenience, the Laravel installer can also create a Git repository for your new project. To indicate that you want a Git repository to be created, pass the `--git` flag when creating a new project:
+
+```bash
+laravel new example-app --git
+```
+
+This command will initialize a new Git repository for your project and automatically commit the base Laravel skeleton. The `git` flag assumes you have properly installed and configured Git.
+
+Or, instead of using the `--git` flag, you may use the `--github` flag to create a Git repository and also create a corresponding private repository on GitHub:
+
+```bash
+laravel new example-app --github
+```
+
+The created repository will then be available at `https://github.com/<your-account/my-app.com`. The `github` flag assumes you have properly installed the [`gh` CLI tool](https://cli.github.com) and are authenticated with GitHub. Additionally, you should have `git` installed and properly configured. If needed, you can pass additional flags that supported by the GitHub CLI:
+
+```bash
+laravel new example-app --github="--public --team laravel"
+```
+
+> {note} You may experience issues with the `github` flag if your system's Git protocol is set to `https`. If you're prompted for your GitHub username and password during the installation, try setting your system's Git protocol to `ssh` by running `gh config set git_protocol ssh --host github.com`.
+
 <a name="initial-configuration"></a>
 ## Initial Configuration
 
