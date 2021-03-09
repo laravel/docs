@@ -786,7 +786,7 @@ The `Arr::where` method filters an array using the given closure:
 <a name="method-array-wrap"></a>
 #### `Arr::wrap()` {#collection-method}
 
-The `Arr::wrap` method wraps the given value in an array. If the given value is already an array it be returned without modification:
+The `Arr::wrap` method wraps the given value in an array. If the given value is already an array it will be returned without modification:
 
     use Illuminate\Support\Arr;
 
