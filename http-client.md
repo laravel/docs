@@ -49,6 +49,13 @@ The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAcces
 
     return Http::get('http://example.com/users/1')['name'];
 
+<a name="dumping-requests"></a>
+#### Dumping Requests
+
+If you would like to dump the outgoing request instance before it is sent and terminate the script's execution, you may add the `dd` method to the beginning of your request definition:
+
+    return Http::dd()->get('http://example.com');
+
 <a name="request-data"></a>
 ### Request Data
 
