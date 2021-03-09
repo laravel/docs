@@ -129,6 +129,10 @@ To retrieve the full URL for the incoming request you may use the `url` or `full
     $url = $request->url();
 
     $urlWithQueryString = $request->fullUrl();
+    
+If you want to append data to the current URL, you may use the `fullUrlWithQuery` method with an array. This method merges the given data with the current query string. 
+
+    $request->fullUrlWithQuery(['type' => 'phone']);
 
 <a name="retrieving-the-request-method"></a>
 #### Retrieving The Request Method
