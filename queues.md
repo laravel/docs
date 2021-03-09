@@ -10,6 +10,7 @@
 - [Job Middleware](#job-middleware)
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
+    - [Throttling Exceptions](#throttling-exceptions)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
@@ -489,6 +490,61 @@ If you wish to immediately delete any overlapping jobs so that they will not be 
     }
 
 > {note} The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
+
+<a name="throttling-exceptions"></a>
+### Throttling Exceptions
+
+Laravel includes a `Illuminate\Queue\Middleware\ThrottlesExceptions` middleware that allows you to throttle exceptions. This is particularly useful for jobs that interact with third party services that are unstable.
+
+Once the job exceptions reach a certain threshold, all further jobs with the same key are delayed until a certain time interval lapses. This is based off the circuit breaker design pattern.
+
+For example, let's imagine you have a queued job that interacts with an unstable third party API. To throttle exceptions, you can return the `ThrottlesExceptions` middleware from your job's `middleware` method:
+
+    use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [new ThrottlesExceptions(10, 10)];
+    }
+
+The first argument of the middleware is the maximum number of consecutive attempts and the second argument is the time interval. For the job above, if there are 10 failed attempts (exceptions) in 10 minutes, we want to wait for another 10 minutes before retrying or attempting a new job with the same "key".
+
+By default, if the failure threshold is not met, the jobs are retried immediately. You may override this by using the third argument of the middleware constructor. For example, to retry the job after 1 minute:
+
+    use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [new ThrottlesExceptions(10, 10, 1)];
+    }
+
+By default, the job class is used as the key. You may override this by providing the fourth argument of the middleware constructor:
+
+    use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [new ThrottlesExceptions(10, 10, 1, 'custom-key')];
+    }
+
+This may be useful if you have multiple jobs interacting with the same third party service, and you wish to share a common throttling "bucket" for all such jobs.
+
+> {tip} If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
