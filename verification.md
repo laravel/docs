@@ -65,20 +65,20 @@ Third, a route will be needed to resend a verification link if the user accident
 <a name="the-email-verification-notice"></a>
 ### The Email Verification Notice
 
-As mentioned previously, a route should be defined that will return a view instructing the user to click the email verification link that was emailed to them by Laravel after registration. This view will be displayed to users when they try to access other parts of the application without verifying their email address first. Remember, the link is automatically emailed to the user as long as your `App\Models\User` model implements the `MustVerifyEmail` interface:
+As mentioned previously, a route should be defined that will return a view instructing the users to click the email verification link that was emailed to them by Laravel after registration. This view will be displayed to users when they try to access other parts of the application without verifying their email address first. Remember, the link is automatically emailed to the user as long as your `App\Models\User` model implements the `MustVerifyEmail` interface:
 
     Route::get('/email/verify', function () {
         return view('auth.verify-email');
     })->middleware('auth')->name('verification.notice');
 
-The route that returns the email verification notice should be named `verification.notice`. It is important that the route is assigned this exact name since the `verified` middleware [included with Laravel](#protecting-routes) will automatically redirect to this route name if a user has not verified their email address.
+The route that returns the email verification notice should be named `verification.notice`. It is important that the route is assigned this exact name since the `verified` middleware [included with Laravel](#protecting-routes) will automatically redirect to this route name if a user has not verified his email address.
 
 > {tip} When manually implementing email verification, you are required to define the contents of the verification notice view yourself. If you would like scaffolding that includes all necessary authentication and verification views, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits).
 
 <a name="the-email-verification-handler"></a>
 ### The Email Verification Handler
 
-Next, we need to define a route that will handle requests generated when the user clicks the email verification link that was emailed to them. This route should be named `verification.verify` and be assigned the `auth` and `signed` middlewares:
+Next, we need to define a route that will handle requests generated when the user clicks the email verification link that was emailed to him. This route should be named `verification.verify` and be assigned the `auth` and `signed` middlewares:
 
     use Illuminate\Foundation\Auth\EmailVerificationRequest;
     use Illuminate\Http\Request;
@@ -91,7 +91,7 @@ Next, we need to define a route that will handle requests generated when the use
 
 Before moving on, let's take a closer look at this route. First, you'll notice we are using an `EmailVerificationRequest` request type instead of the typical `Illuminate\Http\Request` instance. The `EmailVerificationRequest` is a [form request](/docs/{{version}}/validation#form-request-validation) that is included with Laravel. This request will automatically take care of validating the request's `id` and `hash` parameters.
 
-Next, we can proceed directly to calling the `fulfill` method on the request. This method will call the `markEmailAsVerified` method on the authenticated user and dispatch the `Illuminate\Auth\Events\Verified` event. The `markEmailAsVerified` method is available to the default `App\Models\User` model via the `Illuminate\Foundation\Auth\User` base class. Once the user's email address has been verified, you may redirect them wherever you wish.
+Next, we can proceed directly to calling the `fulfill` method on the request. This method will call the `markEmailAsVerified` method on the authenticated user and dispatch the `Illuminate\Auth\Events\Verified` event. The `markEmailAsVerified` method is available to the default `App\Models\User` model via the `Illuminate\Foundation\Auth\User` base class. Once the user's email address has been verified, you may redirect him wherever you wish.
 
 <a name="resending-the-verification-email"></a>
 ### Resending The Verification Email
@@ -115,7 +115,7 @@ Sometimes a user may misplace or accidentally delete the email address verificat
         // Only verified users may access this route...
     })->middleware('verified');
 
-If an unverified user attempts to access a route that has been assigned this middleware, they will automatically be redirected to the `verification.notice` [named route](/docs/{{version}}/routing#named-routes).
+If an unverified user attempts to access a route that has been assigned this middleware, he will automatically be redirected to the `verification.notice` [named route](/docs/{{version}}/routing#named-routes).
 
 <a name="customization"></a>
 ## Customization
