@@ -85,6 +85,7 @@ Any arguments that can be passed to the `phpunit` command may also be passed to 
 
     php artisan test --testsuite=Feature --stop-on-failure
 
+> {note} When running the `test` Artisan command your service providers will NOT have access to any server variables set in your `phpunit.xml` file.
 
 <a name="running-tests-in-parallel"></a>
 ### Running Tests In Parallel
