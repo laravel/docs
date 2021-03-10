@@ -187,6 +187,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
 [tap](#method-fluent-str-tap)
+[test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
@@ -2311,6 +2312,17 @@ The `tap` method passes the string to the given closure, allowing you to examine
         ->upper();
 
     // LARAVEL FRAMEWORK
+
+<a name="method-fluent-str-test"></a>
+#### `test` {#collection-method}
+
+The `test` method determines if a string matches the given regular expression pattern:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('Laravel Framework')->test('/Laravel/');
+
+    // true
 
 <a name="method-fluent-str-title"></a>
 #### `title` {#collection-method}
