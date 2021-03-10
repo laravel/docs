@@ -2316,14 +2316,13 @@ The `tap` method passes the string to the given closure, allowing you to examine
 <a name="method-fluent-str-test"></a>
 #### `test` {#collection-method}
 
-The `test` method checks whether the string matches a particular pattern.
+The `test` method determines if a string matches the given regular expression pattern:
 
     use Illuminate\Support\Str;
 
-    $result = Str::of('foo bar')->test('/bar/');
+    $result = Str::of('Laravel Framework')->test('/Laravel/');
 
     // true
-
 
 <a name="method-fluent-str-title"></a>
 #### `title` {#collection-method}
