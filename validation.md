@@ -717,6 +717,8 @@ Below is a list of all available validation rules and their function:
 [Numeric](#rule-numeric)
 [Password](#rule-password)
 [Present](#rule-present)
+[Prohibited If](#rule-prohibited-if)
+[Prohibited Unless](#rule-prohibited-unless)
 [Regular Expression](#rule-regex)
 [Required](#rule-required)
 [Required If](#rule-required-if)
@@ -1126,6 +1128,16 @@ The field under validation must match the authenticated user's password. You may
 #### present
 
 The field under validation must be present in the input data but can be empty.
+
+<a name="rule-prohibited-if"></a>
+#### prohibited_if:_anotherfield_,_value_,...
+
+The field under validation must be empty or not present if the _anotherfield_ field is equal to any _value_.
+
+<a name="rule-prohibited-unless"></a>
+#### prohibited_unless:_anotherfield_,_value_,...
+
+The field under validation must be empty or not present unless the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-regex"></a>
 #### regex:_pattern_
