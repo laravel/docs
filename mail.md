@@ -335,7 +335,7 @@ When attaching files to a message, you may also specify the display name and / o
     }
 
 <a name="attaching-files-from-disk"></a>
-#### Attaching Files from Disk
+#### Attaching Files From Disk
 
 If you have stored a file on one of your [filesystem disks](/docs/{{version}}/filesystem), you may attach it to the email using the `attachFromStorage` method:
 
