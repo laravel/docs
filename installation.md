@@ -9,6 +9,8 @@
     - [Choosing Your Sail Services](#choosing-your-sail-services)
     - [Installation Via Composer](#installation-via-composer)
 - [Initial Configuration](#initial-configuration)
+    - [Environment Based Configuration](#environment-based-configuration)
+    - [Directory Configuration](#directory-configuration)
 - [Next Steps](#next-steps)
     - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
     - [Laravel The API Backend](#laravel-the-api-backend)
@@ -214,13 +216,18 @@ All of the configuration files for the Laravel framework are stored in the `conf
 Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
 
 <a name="environment-configuration"></a>
-#### Environment Based Configuration
+### Environment Based Configuration
 
 Since many of Laravel's configuration option values may vary depending on whether your application is running on your local computer or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
 
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 
 > {tip} For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+
+<a name="directory-configuration"></a>
+### Directory Configuration
+
+Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files that exist within your application.
 
 <a name="next-steps"></a>
 ## Next Steps
