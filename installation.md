@@ -9,6 +9,8 @@
     - [Choosing Your Sail Services](#choosing-your-sail-services)
     - [Installation Via Composer](#installation-via-composer)
 - [Initial Configuration](#initial-configuration)
+    - [Environment Based Configuration](#environment-based-configuration)
+    - [Directory Configuration](#directory-configuration)
 - [Next Steps](#next-steps)
     - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
     - [Laravel The API Backend](#laravel-the-api-backend)
@@ -225,7 +227,7 @@ Your `.env` file should not be committed to your application's source control, s
 <a name="directory-configuration"></a>
 ### Directory Configuration
 
-Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
+Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files that exist within your application.
 
 <a name="next-steps"></a>
 ## Next Steps
