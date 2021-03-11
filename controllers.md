@@ -96,7 +96,7 @@ You may generate an invokable controller by using the `--invokable` option of th
 
     php artisan make:controller ProvisionServer --invokable
 
-> {tip} Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+> {tip} Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="controller-middleware"></a>
 ## Controller Middleware
