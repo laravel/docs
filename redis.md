@@ -210,7 +210,7 @@ As mentioned above, you may call any of Redis' commands on the `Redis` facade. L
 
     Redis::set('name', 'Taylor');
 
-    $values = Redis::lrange('names', 5, 10);
+    $values = Redis::lrange('name', 5, 10);
 
 Alternatively, you may pass commands to the server using the `Redis` facade's `command` method, which accepts the name of the command as its first argument and an array of values as its second argument:
 
