@@ -40,7 +40,7 @@ Laravel will use the name of the migration to attempt to guess the name of the t
 
 If you would like to specify a custom path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
 
-> {tip} Migration stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+> {tip} Migration stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="squashing-migrations"></a>
 ### Squashing Migrations
