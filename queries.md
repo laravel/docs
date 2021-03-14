@@ -70,7 +70,7 @@ You may use the `table` method provided by the `DB` facade to begin a query. The
         }
     }
 
-The `get` method returns an `Illuminate\Support\Collection` containing the results of the query where each result is an instance of the PHP `stdClass` object. You may access each column's value by accessing the column as a property of the object:
+The `get` method returns an `Illuminate\Support\Collection` instance containing the results of the query where each result is an instance of the PHP `stdClass` object. You may access each column's value by accessing the column as a property of the object:
 
     use Illuminate\Support\Facades\DB;
 
