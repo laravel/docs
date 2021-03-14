@@ -1327,7 +1327,7 @@ Sometimes you may need to eager load several different relationships. To do so, 
 <a name="nested-eager-loading"></a>
 #### Nested Eager Loading
 
-To eager a relationship's relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts:
+To eager load a relationship's relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts:
 
     $books = Book::with('author.contacts')->get();
 
