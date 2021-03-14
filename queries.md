@@ -686,7 +686,7 @@ The `reorder` method removes all of the "order by" clauses that have previously 
 
     $unorderedUsers = $query->reorder()->get();
 
-You may pass a column and direction when calling the `reorder` method in order to remove all existing "order by "clauses" and apply an entirely new order to the query:
+You may pass a column and direction when calling the `reorder` method in order to remove all existing "order by" clauses and apply an entirely new order to the query:
 
     $query = DB::table('users')->orderBy('name');
 
