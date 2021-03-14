@@ -171,7 +171,7 @@ Instead, the `Cache` facade extends the base `Facade` class and defines the meth
 <a name="real-time-facades"></a>
 ## Real-Time Facades
 
-Using real-time facades, you may treat any class in your application as if it were a facade. To illustrate how this can be used, let's first examine some code that does not use real-time facades. For example, let's assume our `Podcast` model has a `publish` method. However, in order to publish the podcast, we need to inject a `Publisher` instance:
+Using real-time facades, you may treat any class in your application as if it was a facade. To illustrate how this can be used, let's first examine some code that does not use real-time facades. For example, let's assume our `Podcast` model has a `publish` method. However, in order to publish the podcast, we need to inject a `Publisher` instance:
 
     <?php
 
