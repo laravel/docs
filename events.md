@@ -8,7 +8,7 @@
 - [Defining Events](#defining-events)
 - [Defining Listeners](#defining-listeners)
 - [Queued Event Listeners](#queued-event-listeners)
-    - [Manually Interacting The Queue](#manually-interacting-the-queue)
+    - [Manually Interacting With The Queue](#manually-interacting-with-the-queue)
     - [Queued Event Listeners & Database Transactions](#queued-event-listeners-and-database-transactions)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
@@ -373,8 +373,8 @@ Sometimes, you may need to determine whether a listener should be queued based o
         }
     }
 
-<a name="manually-interacting-the-queue"></a>
-### Manually Interacting The Queue
+<a name="manually-interacting-with-the-queue"></a>
+### Manually Interacting With The Queue
 
 If you need to manually access the listener's underlying queue job's `delete` and `release` methods, you may do so using the `Illuminate\Queue\InteractsWithQueue` trait. This trait is imported by default on generated listeners and provides access to these methods:
 
