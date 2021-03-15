@@ -99,6 +99,28 @@ Within both of these methods, you may use the Laravel schema builder to expressi
         }
     }
 
+<a name="setting-the-migration-connection"></a>
+#### Setting The Migration Connection
+
+If your migration will be interacting with a database connection other than your application's default database connection, you should set the `$connection` property of your migration:
+
+    /**
+     * The database connection that should be used by the migration.
+     *
+     * @var string
+     */
+    protected $connection = 'pgsql';
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        //
+    }
+
 <a name="running-migrations"></a>
 ## Running Migrations
 
