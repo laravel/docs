@@ -106,6 +106,8 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
         ],
     ],
 
+> {note} The minimum value for `minProceesses` is `1`. Especially if you are going to dispatch a delayed task
+
 The `balanceMaxShift` and `balanceCooldown` configuration values to determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
 
 When the `balance` option is set to `false`, the default Laravel behavior will be used, which processes queues in the order they are listed in your configuration.
