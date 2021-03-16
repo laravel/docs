@@ -343,7 +343,7 @@ In these situations, we may use the fluent JSON object's `has` method to make as
 
     $response
         ->assertJson(fn (AssertableJson $json) =>
-            $json->count(3)
+            $json->has(3)
                  ->first(fn ($json) =>
                     $json->where('id', 1)
                          ->where('name', 'Victoria Faith')
