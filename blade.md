@@ -1101,7 +1101,7 @@ Now that we have defined a layout for our application, let's define a child page
 <a name="extending-a-layout"></a>
 #### Extending A Layout
 
-When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
+When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directive. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
 ```html
 <!-- resources/views/child.blade.php -->
