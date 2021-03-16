@@ -7,6 +7,7 @@
     - [Session / Authentication](#session-and-authentication)
     - [Debugging Responses](#debugging-responses)
 - [Testing JSON APIs](#testing-json-apis)
+    - [Fluent JSON Testing](#fluent-json-testing)
 - [Testing File Uploads](#testing-file-uploads)
 - [Testing Views](#testing-views)
     - [Rendering Blade & Components](#rendering-blade-and-components)
@@ -297,6 +298,99 @@ If you would like to verify that the JSON response contains the given data at a 
                 ->assertJsonPath('team.owner.name', 'Darian');
         }
     }
+
+<a name="fluent-json-testing"></a>
+### Fluent JSON Testing
+
+Laravel also offers a beautiful way to fluently test your application's JSON responses. To get started, pass a closure to the `assertJson` method. This closure will be invoked with an instance of `Illuminate\Testing\Fluent\AssertableJson` which can be used to make assertions against the JSON that was returned by your application. The `where` method may be used to make assertions against a particular attribute of the JSON, while the `missing` method may be used to assert that a particular attribute is missing from the JSON:
+
+    use Illuminate\Testing\Fluent\AssertableJson;
+
+    /**
+     * A basic functional test example.
+     *
+     * @return void
+     */
+    public function test_fluent_json()
+    {
+        $response = $this->json('GET', '/users/1');
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->where('id', 1)
+                     ->where('name', 'Victoria Faith')
+                     ->missing('password')
+                     ->etc()
+            );
+    }
+
+#### Understanding The `etc` Method
+
+In the example above, you may have noticed we invoked the `etc` method at the end of our assertion chain. This method informs Laravel that there may be other attributes present on the JSON object. If the `etc` method is not used, the test will fail if other attributes that you did not make assertions against exist on the JSON object.
+
+The intention behind this behavior is to protect you from unintentionally exposing sensitive information in your JSON responses by forcing you to either explicitly make an assertion against the attribute or explicitly allow additional attributes via the `etc` method.
+
+<a name="asserting-against-json-collections"></a>
+#### Asserting Against JSON Collections
+
+Often, your route will return a JSON response that contains multiple items, such as multiple users:
+
+    Route::get('/users', function () {
+        return User::all();
+    });
+
+In these situations, we may use the fluent JSON object's `has` method to make assertions against the users included in the response. For example, let's assert that the JSON response contains three users. Next, we'll make some assertions about the first user in the collection using the `first` method. The `first` method accepts a closure which receives another assertable JSON string that we can use to make assertions about the first object in the JSON collection:
+
+    $response
+        ->assertJson(fn (AssertableJson $json) =>
+            $json->count(3)
+                 ->first(fn ($json) =>
+                    $json->where('id', 1)
+                         ->where('name', 'Victoria Faith')
+                         ->missing('password')
+                         ->etc()
+                 )
+        );
+
+<a name="scoping-json-collection-assertions"></a>
+#### Scoping JSON Collection Assertions
+
+Sometimes, your application's routes will return JSON collections that are assigned named keys:
+
+    Route::get('/users', function () {
+        return [
+            'meta' => [...],
+            'users' => User::all(),
+        ];
+    })
+
+When testing these routes, you may use the `has` method to assert against the number of items in the collection. In addition, you may use the `has` method to scope a chain of assertions:
+
+    $response
+        ->assertJson(fn (AssertableJson $json) =>
+            $json->has('meta')
+                 ->has('users', 3)
+                 ->has('users.0', fn ($json) =>
+                    $json->where('id', 1)
+                         ->where('name', 'Victoria Faith')
+                         ->missing('password')
+                         ->etc()
+                 )
+        );
+
+However, instead of making two separate calls to the `has` method to assert against the `users` collection, you may make a single call which provides a closure as its third parameter. When doing so, the closure will automatically be invoked and scoped to the first item in the collection:
+
+
+    $response
+        ->assertJson(fn (AssertableJson $json) =>
+            $json->has('meta')
+                 ->has('users', 3, fn ($json) =>
+                    $json->where('id', 1)
+                         ->where('name', 'Victoria Faith')
+                         ->missing('password')
+                         ->etc()
+                 )
+        );
 
 <a name="testing-file-uploads"></a>
 ## Testing File Uploads
