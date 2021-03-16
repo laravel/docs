@@ -139,7 +139,7 @@ By default, all of the queueable jobs for your application are stored in the `ap
 
 The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
 
-> {tip} Job stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+> {tip} Job stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="class-structure"></a>
 ### Class Structure
