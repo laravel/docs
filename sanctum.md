@@ -350,7 +350,7 @@ Typically, you will make a request to the token endpoint from your mobile applic
 
 When the mobile application uses the token to make an API request to your application, it should pass the token in the `Authorization` header as a `Bearer` token.
 
-> {tip} When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities)
+> {tip} When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities).
 
 <a name="protecting-mobile-api-routes"></a>
 ### Protecting Routes
