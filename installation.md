@@ -215,7 +215,7 @@ All of the configuration files for the Laravel framework are stored in the `conf
 
 Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
 
-<a name="environment-configuration"></a>
+<a name="environment-based-configuration"></a>
 ### Environment Based Configuration
 
 Since many of Laravel's configuration option values may vary depending on whether your application is running on your local computer or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
