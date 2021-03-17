@@ -17,6 +17,8 @@ While you are welcome to use these starter kits, they are not required. You are 
 
 Laravel Breeze is a minimal, simple implementation of all of Laravel's [authentication features](/docs/{{version}}/authentication), including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's default view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Breeze provides a wonderful starting point for beginning a fresh Laravel application.
 
+> {note} Laravel Breeze is intended for new apps only and not for existing apps. Breeze publishes authentication controllers and views to your application: installing Laravel Breeze on an existing app will replace some of your existing files.
+
 <a name="laravel-breeze-installation"></a>
 ### Installation
 
