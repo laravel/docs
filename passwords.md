@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Model Preparation](#model-preparation)
     - [Database Preparation](#database-preparation)
+    - [Configuring Trusted Hosts](#configuring-trusted-hosts)
 - [Routing](#routing)
     - [Requesting The Password Reset Link](#requesting-the-password-reset-link)
     - [Resetting The Password](#resetting-the-password)
@@ -28,6 +29,15 @@ Next, verify that your `App\Models\User` model implements the `Illuminate\Contra
 A table must be created to store your application's password reset tokens. The migration for this table is included in the default Laravel application, so you only need to migrate your database to create this table:
 
     php artisan migrate
+
+<a name="configuring-trusted-hosts"></a>
+### Configuring Trusted Hosts
+
+By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request.
+
+Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\Http\Middleware\TrustHosts` middleware for your application. This is particular important when your application offers password reset functionality.
+
+To learn more about this middleware, please consult the [`TrustHosts` middleware documentation](/docs/{{version}}/requests#configuring-trusted-hosts).
 
 <a name="routing"></a>
 ## Routing
