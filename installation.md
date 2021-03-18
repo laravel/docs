@@ -200,7 +200,13 @@ Or, instead of using the `--git` flag, you may use the `--github` flag to create
 laravel new example-app --github
 ```
 
-The created repository will then be available at `https://github.com/<your-account>/my-app.com`. The `github` flag assumes you have properly installed the [`gh` CLI tool](https://cli.github.com) and are authenticated with GitHub. Additionally, you should have `git` installed and properly configured. If needed, you can pass additional flags that supported by the GitHub CLI. Or use the `--organisation` flag to create the repository under a specific GitHub organization:
+The created repository will then be available at `https://github.com/<your-account>/my-app.com`. The `github` flag assumes you have properly installed the [`gh` CLI tool](https://cli.github.com) and are authenticated with GitHub. Additionally, you should have `git` installed and properly configured. If needed, you can pass additional flags that supported by the GitHub CLI:
+
+```bash
+laravel new example-app --github="--public"
+```
+
+You may use the `--organization` flag to create the repository under a specific GitHub organization:
 
 ```bash
 laravel new example-app --github="--public" --organization="laravel"
