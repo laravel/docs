@@ -395,14 +395,14 @@ However, instead of making two separate calls to the `has` method to assert agai
 <a name="asserting-json-types"></a>
 #### Asserting JSON Types
 
-You may only want to assert that the properties in the JSON response are of a certain type. The `Illuminate\Testing\Fluent\AssertableJson` class provides the `whereType` and `whereAllType` methods for that.
+You may only want to assert that the properties in the JSON response are of a certain type. The `Illuminate\Testing\Fluent\AssertableJson` class provides the `whereType` and `whereAllType` methods for doing just that.
 
     $response->assertJson(fn (AssertableJson $json) => 
         $json->whereType('id', 'integer')
              ->whereAllType(['users.0.name' => 'string', 'meta' => 'array'])
     );
     
-Instead of asserting just _one_ type, this also gives you the option to use union types by either seperating the types with a `|` character, or passing an array of types as the second parameter:
+Instead of asserting just _one_ type, these methods also give you the option to use union types by either seperating the types with a `|` character, or passing an array of types as the second parameter:
 
     $response->assertJson(fn (AssertableJson $json) =>
         $json->whereType('name', 'string|null')
