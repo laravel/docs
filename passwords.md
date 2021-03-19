@@ -123,9 +123,9 @@ Of course, we need to define a route to actually handle the password reset form 
             function ($user, $password) use ($request) {
                 $user->forceFill([
                     'password' => Hash::make($password)
-                ])->save();
+                ])->setRememberToken(Str::random(60));
 
-                $user->setRememberToken(Str::random(60));
+                $user->save();
 
                 event(new PasswordReset($user));
             }
