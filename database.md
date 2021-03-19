@@ -253,9 +253,9 @@ If you would like to specify a closure that is invoked for each SQL query execut
         public function boot()
         {
             DB::listen(function ($query) {
-                // $query->sql
-                // $query->bindings
-                // $query->time
+                // $query->sql;
+                // $query->bindings;
+                // $query->time;
             });
         }
     }
