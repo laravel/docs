@@ -113,6 +113,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::plural](#method-str-plural)
 [Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
+[Str::remove](#method-str-remove)
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
@@ -172,6 +173,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [pipe](#method-fluent-str-pipe)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
+[remove](#method-fluent-str-remove)
 [replace](#method-fluent-str-replace)
 [replaceArray](#method-fluent-str-replace-array)
 [replaceFirst](#method-fluent-str-replace-first)
@@ -1422,6 +1424,21 @@ The `Str::random` method generates a random string of the specified length. This
 
     $random = Str::random(40);
 
+<a name="method-str-remove"></a>
+#### `Str::remove()` {#collection-method}
+
+The `Str::remove` method removes the given value or array of values in the string:
+
+    use Illuminate\Support\Str;
+
+    $string = 'Peter Piper picked a peck of pickled peppers.';
+
+    $removed = Str::remove('e', $string);
+
+    // Ptr Pipr pickd a pck of pickld ppprs.
+
+You may also pass `false` as a third parameter to ignore case when removing.
+
 <a name="method-str-replace-array"></a>
 #### `Str::replaceArray()` {#collection-method}
 
@@ -2114,6 +2131,19 @@ The `prepend` method prepends the given values onto the string:
     $string = Str::of('Framework')->prepend('Laravel ');
 
     // Laravel Framework
+
+<a name="method-fluent-str-remove"></a>
+#### `remove` {#collection-method}
+
+The `remove` method removes the given value or array of values from the string:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Laravel Octane is quite beautiful!')->remove('quite');
+
+    // Laravel Octane is beautiful
+
+You may also pass `false` as a second parameter to ignore case when removing.
 
 <a name="method-fluent-str-replace"></a>
 #### `replace` {#collection-method}
