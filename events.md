@@ -146,7 +146,7 @@ Laravel finds event listeners by scanning the listener classes using PHP's refle
         /**
          * Handle the given event.
          *
-         * @param  \App\Events\PodcastProcessed
+         * @param  \App\Events\PodcastProcessed  $event
          * @return void
          */
         public function handle(PodcastProcessed $event)
