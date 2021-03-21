@@ -234,7 +234,7 @@ If you need to inject a value from one of your application's configuration files
 <a name="binding-typed-variadics"></a>
 ### Binding Typed Variadics
 
-Occasionally you may have a class that receives an array of typed objects using a variadic constructor argument:
+Occasionally, you may have a class that receives an array of typed objects using a variadic constructor argument:
 
     <?php
 
@@ -364,7 +364,7 @@ If you would like to have the Laravel container instance itself injected into a 
     /**
      * Create a new class instance.
      *
-     * @param  \Illuminate\Container\Container
+     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function __construct(Container $container)
