@@ -1515,7 +1515,7 @@ The `pipeInto` method creates a new instance of the given class and passes the c
         /**
          * Create a new ResourceCollection instance.
          *
-         * @param  Collection  $resource
+         * @param  Collection  $collection
          * @return void
          */
         public function __construct(Collection $collection)
