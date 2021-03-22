@@ -1232,6 +1232,37 @@ To register an observer, you need to call the `observe` method on the model you 
         User::observe(UserObserver::class);
     }
 
+When models are being created inside a database transaction, you may want to instruct an observer to only run these event handlers after the database transaction (if any) is committed:
+
+    <?php
+
+    namespace App\Observers;
+
+    use App\Models\User;
+
+    class UserObserver
+    {
+        /**
+         * Indicates if the model events should be fired
+         * after database transactions are committed.
+         *
+         * @var bool
+         */
+        public $afterCommit = true;
+
+        /**
+         * Handle the User "created" event.
+         *
+         * @param  \App\Models\User  $user
+         * @return void
+         */
+        public function created(User $user)
+        {
+            //
+        }
+    }
+
+
 <a name="muting-events"></a>
 ### Muting Events
 
