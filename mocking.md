@@ -254,7 +254,7 @@ When testing code that dispatches events, you may wish to instruct Laravel to no
 
             // Assert an event was not dispatched...
             Event::assertNotDispatched(OrderFailedToShip::class);
-            
+
             // Assert that no events were dispatched...
             Event::assertNothingDispatched();
         }
@@ -265,6 +265,13 @@ You may pass a closure to the `assertDispatched` or `assertNotDispatched` method
     Event::assertDispatched(function (OrderShipped $event) use ($order) {
         return $event->order->id === $order->id;
     });
+
+If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:
+
+    Event::assertListening(
+        OrderShipped::class,
+        [SendShipmentNotification::class, 'handle']
+    );
 
 > {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
 
