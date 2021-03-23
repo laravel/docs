@@ -380,7 +380,6 @@ When testing these routes, you may use the `has` method to assert against the nu
 
 However, instead of making two separate calls to the `has` method to assert against the `users` collection, you may make a single call which provides a closure as its third parameter. When doing so, the closure will automatically be invoked and scoped to the first item in the collection:
 
-
     $response
         ->assertJson(fn (AssertableJson $json) =>
             $json->has('meta')
@@ -391,6 +390,28 @@ However, instead of making two separate calls to the `has` method to assert agai
                          ->etc()
                  )
         );
+
+<a name="asserting-json-types"></a>
+#### Asserting JSON Types
+
+You may only want to assert that the properties in the JSON response are of a certain type. The `Illuminate\Testing\Fluent\AssertableJson` class provides the `whereType` and `whereAllType` methods for doing just that:
+
+    $response->assertJson(fn (AssertableJson $json) =>
+        $json->whereType('id', 'integer')
+             ->whereAllType([
+                'users.0.name' => 'string',
+                'meta' => 'array'
+            ])
+    );
+
+You may specify multiple types using the `|` character, or passing an array of types as the second parameter to the `whereType` method. The assertion will be successful if the response value is any of the listed types:
+
+    $response->assertJson(fn (AssertableJson $json) =>
+        $json->whereType('name', 'string|null')
+             ->whereType('id', ['string', 'integer'])
+    );
+
+The `whereType` and `whereTypeAll` methods recognize the following types: `string`, `integer`, `double`, `boolean`, `array`, and `null`.
 
 <a name="testing-file-uploads"></a>
 ## Testing File Uploads
