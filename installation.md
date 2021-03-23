@@ -192,9 +192,13 @@ For convenience, the Laravel installer can also create a Git repository for your
 laravel new example-app --git
 ```
 
-This command will initialize a new Git repository for your project and automatically commit the base Laravel skeleton. The `git` flag assumes you have properly installed and configured Git.
+This command will initialize a new Git repository for your project and automatically commit the base Laravel skeleton. The `git` flag assumes you have properly installed and configured Git. You can also use the `--branch` flag to set the initial branch name:
 
-Or, instead of using the `--git` flag, you may use the `--github` flag to create a Git repository and also create a corresponding private repository on GitHub:
+```bash
+laravel new example-app --git --branch="main"
+```
+
+Instead of using the `--git` flag, you may also use the `--github` flag to create a Git repository and also create a corresponding private repository on GitHub:
 
 ```bash
 laravel new example-app --github
