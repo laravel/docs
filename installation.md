@@ -212,8 +212,6 @@ You may use the `--organization` flag to create the repository under a specific 
 laravel new example-app --github="--public" --organization="laravel"
 ```
 
-> {note} You may experience issues with the `github` flag if your system's Git protocol is set to `https`. If you're prompted for your GitHub username and password during the installation, try setting your system's Git protocol to `ssh` by running `gh config set git_protocol ssh --host github.com`.
-
 <a name="initial-configuration"></a>
 ## Initial Configuration
 
