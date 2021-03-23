@@ -714,7 +714,7 @@ To delete a model, you may call the `delete` method on the model instance:
     $flight->delete();
 
 You may call the `truncate` method to delete all of the model's associated database records. The `truncate` operation will also reset any auto-incrementing IDs on the model's associated table:
-   
+
     Flight::truncate();
 
 <a name="deleting-an-existing-model-by-its-primary-key"></a>
@@ -1230,6 +1230,38 @@ To register an observer, you need to call the `observe` method on the model you 
     public function boot()
     {
         User::observe(UserObserver::class);
+    }
+
+<a name="observers-and-database-transactions"></a>
+#### Observers & Database Transactions
+
+When models are being created within a database transaction, you may want to instruct an observer to only execute its event handlers after the database transaction is committed. You may accomplish this by defining an `$afterCommit` property on the observer. If a database transaction is not in progress, the event handlers will execute immediately:
+
+    <?php
+
+    namespace App\Observers;
+
+    use App\Models\User;
+
+    class UserObserver
+    {
+        /**
+         * Handle events after all transactions are committed.
+         *
+         * @var bool
+         */
+        public $afterCommit = true;
+
+        /**
+         * Handle the User "created" event.
+         *
+         * @param  \App\Models\User  $user
+         * @return void
+         */
+        public function created(User $user)
+        {
+            //
+        }
     }
 
 <a name="muting-events"></a>
