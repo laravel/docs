@@ -1427,7 +1427,7 @@ The `Str::random` method generates a random string of the specified length. This
 <a name="method-str-remove"></a>
 #### `Str::remove()` {#collection-method}
 
-The `Str::remove` method removes the given value or array of values in the string:
+The `Str::remove` method removes the given value or array of values from the string:
 
     use Illuminate\Support\Str;
 
@@ -1437,7 +1437,7 @@ The `Str::remove` method removes the given value or array of values in the strin
 
     // Ptr Pipr pickd a pck of pickld ppprs.
 
-You may also pass `false` as a third parameter to ignore case when removing.
+You may also pass `false` as a third argument to the `remove` method to ignore case when removing strings.
 
 <a name="method-str-replace-array"></a>
 #### `Str::replaceArray()` {#collection-method}
@@ -2139,9 +2139,9 @@ The `remove` method removes the given value or array of values from the string:
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('Laravel Octane is quite beautiful!')->remove('quite');
+    $string = Str::of('Arkansas is quite beautiful!')->remove('quite');
 
-    // Laravel Octane is beautiful
+    // Arkansas is beautiful!
 
 You may also pass `false` as a second parameter to ignore case when removing.
 
