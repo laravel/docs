@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Running Database Queries](#running-database-queries)
     - [Chunking Results](#chunking-results)
+    - [Streaming Results Lazily](#streaming-results-lazily)
     - [Aggregates](#aggregates)
 - [Select Statements](#select-statements)
 - [Raw Expressions](#raw-expressions)
@@ -153,6 +154,32 @@ If you are updating database records while chunking results, your chunk results 
         });
 
 > {note} When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
+
+<a name="streaming-results-lazily"></a>
+### Streaming Results Lazily
+
+The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns a [`LazyCollection`](/docs/{{version}}/collections#lazy-collections), which lets you interact with the results as a single stream:
+
+```php
+use Illuminate\Support\Facades\DB;
+
+DB::table('users')->lazy()->each(function ($user) {
+    //
+});
+```
+
+Once again, if you plan to update the retrieved records while iterating over them, it is best to use the `lazyById` method instead. This method will automatically paginate the results based on the record's primary key:
+
+```php
+DB::table('users')->where('active', false)
+    ->lazyById()->each(function ($user) {
+        DB::table('users')
+            ->where('id', $user->id)
+            ->update(['active' => true]);
+    });
+```
+
+> {note} When updating or deleting records while iterating over them, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the results.
 
 <a name="aggregates"></a>
 ### Aggregates
