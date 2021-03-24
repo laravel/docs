@@ -1038,6 +1038,23 @@ By default, the `release` method will release the job back onto the queue for im
 
     $this->release(10)
 
+Releasing a job back onto the queue does not halt execution of the current job. If you wish to `release` and halt execution without failing the current job you should also `return`. You may want to do this in the case that the job checks for a condition that has not yet been met and therefore needs to be returned to the queue to try again later.
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        // A condition for continuing has not been met.
+
+        $this->release(10);
+        return;
+
+    }
+
+
 <a name="manually-failing-a-job"></a>
 #### Manually Failing A Job
 
