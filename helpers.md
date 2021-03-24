@@ -108,6 +108,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::studly](#method-studly-case)
 [Str::title](#method-title-case)
 [Str::ucfirst](#method-str-ucfirst)
+[Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
 [Str::words](#method-str-words)
 [trans](#method-trans)
@@ -1046,6 +1047,17 @@ The `Str::ucfirst` method returns the given string with the first character capi
     $string = Str::ucfirst('foo bar');
 
     // Foo bar
+
+<a name="method-str-upper"></a>
+#### `Str::upper()` {#collection-method}
+
+The `Str::upper` method converts the given string to uppercase:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::upper('laravel');
+
+    // LARAVEL
 
 <a name="method-str-is-uuid"></a>
 #### `Str::isUuid()` {#collection-method}
