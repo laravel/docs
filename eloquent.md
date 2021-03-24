@@ -356,7 +356,7 @@ Flight::where('departed', true)
 <a name="streaming-results-lazily"></a>
 ### Streaming Results Lazily
 
-The `lazy()` method works similarly to [the `chunk` method](#chunking-results), executing the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns [a `LazyCollection`](/docs/{{version}}/collections#lazy-collections) of Eloquent models, which lets you interact with the results as a single stream:
+The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy` method returns a [`LazyCollection`](/docs/{{version}}/collections#lazy-collections) of Eloquent models, which lets you interact with the results as a single stream:
 
 ```php
 use App\Models\Flight;
@@ -366,7 +366,7 @@ foreach (Flight::lazy() as $flight) {
 }
 ```
 
-Once again, if you are filtering the results based on a column that you will also be updating while iterating over the results, you should use the `lazyById` method. Internally, the `lazyById` method will always retrieve models with an `id` column greater than the last model in the previous chunk:
+If you are filtering the results of the `lazy` method based on a column that you will also be updating while iterating over the results, you should use the `lazyById` method. Internally, the `lazyById` method will always retrieve models with an `id` column greater than the last model in the previous chunk:
 
 ```php
 Flight::where('departed', true)
@@ -381,7 +381,7 @@ Similar to the `lazy` method, the `cursor` method may be used to significantly r
 
 The `cursor` method will only execute a single database query; however, the individual Eloquent models will not be hydrated until they are actually iterated over. Therefore, only one Eloquent model is kept in memory at any given time while iterating over the cursor.
 
-> {note} Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load models, consider using [the `lazy` method](#streaming-results-lazily) instead.
+> {note} Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships, consider using [the `lazy` method](#streaming-results-lazily) instead.
 
 Internally, the `cursor` method uses PHP [generators](https://www.php.net/manual/en/language.generators.overview.php) to implement this functionality:
 
@@ -407,9 +407,7 @@ foreach ($users as $user) {
 }
 ```
 
-> {note} Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php).
-> 
-> If you're dealing with an enormous amount of data, consider using [the `lazy` method](#streaming-results-lazily) instead.
+Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with an very large number of Eloquent records, consider using [the `lazy` method](#streaming-results-lazily) instead.
 
 <a name="advanced-subqueries"></a>
 ### Advanced Subqueries

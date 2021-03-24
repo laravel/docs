@@ -158,7 +158,7 @@ If you are updating database records while chunking results, your chunk results 
 <a name="streaming-results-lazily"></a>
 ### Streaming Results Lazily
 
-The `lazy()` method works similarly to [the `chunk` method](#chunking-results), executing the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns [a `LazyCollection`](/docs/{{version}}/collections#lazy-collections), which lets you interact with the results as a single stream:
+The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns a [`LazyCollection`](/docs/{{version}}/collections#lazy-collections), which lets you interact with the results as a single stream:
 
 ```php
 use Illuminate\Support\Facades\DB;
