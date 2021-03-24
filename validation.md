@@ -883,7 +883,7 @@ When validating arrays, the field under validation must not have any duplicate v
 
     'foo.*.id' => 'distinct'
 
-Distinct uses non-strict comparison, if you want to make it strict you can add `strict` to the validation rule's arguments:
+Distinct uses loose variable comparisons by default. To use strict comparisons, you may add the `strict` parameter to your validation rule definition:
 
     'foo.*.id' => 'distinct:strict'
 
