@@ -883,6 +883,10 @@ When validating arrays, the field under validation must not have any duplicate v
 
     'foo.*.id' => 'distinct'
 
+Distinct uses loose variable comparisons by default. To use strict comparisons, you may add the `strict` parameter to your validation rule definition:
+
+    'foo.*.id' => 'distinct:strict'
+
 You may add `ignore_case` to the validation rule's arguments to make the rule ignore capitalization differences:
 
     'foo.*.id' => 'distinct:ignore_case'
