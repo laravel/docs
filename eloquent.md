@@ -407,7 +407,7 @@ foreach ($users as $user) {
 }
 ```
 
-Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with an very large number of Eloquent records, consider using [the `lazy` method](#streaming-results-lazily) instead.
+Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with a very large number of Eloquent records, consider using [the `lazy` method](#streaming-results-lazily) instead.
 
 <a name="advanced-subqueries"></a>
 ### Advanced Subqueries
