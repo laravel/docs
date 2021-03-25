@@ -265,17 +265,17 @@ In certain cases, you may want to define a specific "key" that makes the job uni
         public $product;
 
         /**
-        * The number of seconds after which the job's unique lock will be released.
-        *
-        * @var int
-        */
+         * The number of seconds after which the job's unique lock will be released.
+         *
+         * @var int
+         */
         public $uniqueFor = 3600;
 
         /**
-        * The unique ID of the job.
-        *
-        * @return string
-        */
+         * The unique ID of the job.
+         *
+         * @return string
+         */
         public function uniqueId()
         {
             return $this->product->id;
@@ -312,10 +312,10 @@ Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts t
         ...
 
         /**
-        * Get the cache driver for the unique job lock.
-        *
-        * @return \Illuminate\Contracts\Cache\Repository
-        */
+         * Get the cache driver for the unique job lock.
+         *
+         * @return \Illuminate\Contracts\Cache\Repository
+         */
         public function uniqueVia()
         {
             return Cache::driver('redis');
