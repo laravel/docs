@@ -84,6 +84,15 @@ Before using a Redis cache with Laravel, you will need to either install the Php
 
 For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
 
+<a name="dynamodb"></a>
+#### DynamoDB
+
+The DynamoDB driver requires you to set up a table to store all of the cached data. Luckily there's an easy way with Laravel to set up one. Simply run the following command to create the cache table in DynamoDB:
+
+    php artisan cache:dynamodb
+
+This command will use your settings for the `dynamodb` store in your `cache.php` config file to make the connection and create the table for you. After it's set up you can use your DynamoDB driver for caching.
+
 <a name="cache-usage"></a>
 ## Cache Usage
 
