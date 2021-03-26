@@ -191,7 +191,7 @@ If you have [Expose](https://beyondco.de/docs/expose) installed, you can share y
 
     cd ~/Sites/laravel
 
-    valet expose
+    expose
 
 To stop sharing your site, you may press `Control + C`.
 
