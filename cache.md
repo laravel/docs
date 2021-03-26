@@ -95,7 +95,7 @@ This command will use your settings for the `dynamodb` store in your `cache.php`
 
 If you don't want to use a command to set this up but rather something like AWS CloudFormation you should create the table with the following configuration:
 
-```json
+```
 {
     TableName : "cache",
     KeySchema: [
