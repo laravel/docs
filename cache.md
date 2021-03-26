@@ -93,6 +93,32 @@ The DynamoDB driver requires you to set up a table to store all of the cached da
 
 This command will use your settings for the `dynamodb` store in your `cache.php` config file to make the connection and create the table for you. After it's set up you can use your DynamoDB driver for caching.
 
+If you don't want to use a command to set this up but rather something like AWS CloudFormation you should create the table with the following configuration:
+
+```json
+{
+    TableName : "cache",
+    KeySchema: [
+        {
+            AttributeName: "key",
+            KeyType: "HASH",
+        }
+    ],
+    AttributeDefinitions: [
+        {
+            AttributeName: "key",
+            AttributeType: "S"
+        }
+    ],
+    ProvisionedThroughput: { // Only specified if using provisioned mode
+        ReadCapacityUnits: 1,
+        WriteCapacityUnits: 1
+    }
+}
+```
+
+The `TableName` and `AttributeName` values should match the `table` and `key` config values from `cache.stores.dynamodb` respectively.
+
 <a name="cache-usage"></a>
 ## Cache Usage
 
