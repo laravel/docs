@@ -800,6 +800,10 @@ For convenience, you may use the `whereStartsWith` method to retrieve all attrib
 Using the `first` method, you may render the first attribute in a given attribute bag:
 
     {{ $attributes->whereStartsWith('wire:model')->first() }}
+    
+For completeness, you may also use `whereDoesntStartWith` to exclude all attributes whose keys begin with a given string:
+
+    {{ $attributes->whereDoesntStartWith('wire:model') }}
 
 If you would like to check if an attribute is present on the component, you may use the `has` method. This method accepts the attribute name as its only argument and returns a boolean indicating whether or not the attribute is present:
 
