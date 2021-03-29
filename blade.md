@@ -797,6 +797,10 @@ For convenience, you may use the `whereStartsWith` method to retrieve all attrib
 
     {{ $attributes->whereStartsWith('wire:model') }}
 
+Conversely, the `whereDoesntStartWith` method may be used to exclude all attributes whose keys begin with a given string:
+
+    {{ $attributes->whereDoesntStartWith('wire:model') }}
+
 Using the `first` method, you may render the first attribute in a given attribute bag:
 
     {{ $attributes->whereStartsWith('wire:model')->first() }}
