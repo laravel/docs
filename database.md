@@ -18,7 +18,7 @@ Almost every modern web application interacts with a database. Laravel makes int
 - MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
 - PostgreSQL 9.6+ ([Version Policy](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
-- SQL Server 2017+ ([Version Policy](https://support.microsoft.com/en-us/lifecycle/search))
+- SQL Server 2017+ ([Version Policy](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 </div>
 
 <a name="configuration"></a>
