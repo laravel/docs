@@ -7,6 +7,7 @@
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
+    - [Serving a Default Site](#serving-a-default-site)
 - [Sharing Sites](#sharing-sites)
     - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
     - [Sharing Sites Via Expose](#sharing-sites-via-expose)
@@ -165,6 +166,13 @@ By default, Valet serves sites over HTTP. However, if you would like to serve a 
 To "unsecure" a site and revert back to serving its traffic over plain HTTP, use the `unsecure` command. Like the `secure` command, this command accepts the hostname that you wish to unsecure:
 
     valet unsecure laravel
+
+<a name="serving-a-default-site"></a>
+### Serving A Default Site
+
+Sometimes, you may wish to configure Valet to serve a "default" site instead of a `404` when visiting an unknown `test` domain. To accomplish this, you may add a `default` option to your `~/.config/valet/config.json` configuration file containing the path to the site that should serve as your default site:
+
+    "default": "/Users/Sally/Sites/foo",
 
 <a name="sharing-sites"></a>
 ## Sharing Sites
