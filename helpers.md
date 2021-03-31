@@ -1537,6 +1537,8 @@ The `Str::startsWith` method determines if the given string begins with the give
 
     // true
 
+If an array of possible values is passed, the `startsWith` method will return `true` if the string begins with any of the given values:
+
     $result = Str::startsWith('This is my name', ['This', 'That', 'There']);
 
     // true
