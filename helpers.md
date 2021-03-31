@@ -237,7 +237,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
-[dispatch_now](#method-dispatch-now)
 [dump](#method-dump)
 [env](#method-env)
 [event](#method-event)
@@ -2704,13 +2703,6 @@ If you do not want to halt the execution of your script, use the [`dump`](#metho
 The `dispatch` function pushes the given [job](/docs/{{version}}/queues#creating-jobs) onto the Laravel [job queue](/docs/{{version}}/queues):
 
     dispatch(new App\Jobs\SendEmails);
-
-<a name="method-dispatch-now"></a>
-#### `dispatch_now()` {#collection-method}
-
-The `dispatch_now` function runs the given [job](/docs/{{version}}/queues#creating-jobs) immediately and returns the value from its `handle` method:
-
-    $result = dispatch_now(new App\Jobs\SendEmails);
 
 <a name="method-dump"></a>
 #### `dump()` {#collection-method}
