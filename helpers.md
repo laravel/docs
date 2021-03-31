@@ -1537,6 +1537,10 @@ The `Str::startsWith` method determines if the given string begins with the give
 
     // true
 
+    $result = Str::startsWith('This is my name', ['This', 'That', 'There']);
+
+    // true
+
 <a name="method-studly-case"></a>
 #### `Str::studly()` {#collection-method}
 
