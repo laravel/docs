@@ -1040,6 +1040,12 @@ If you wish to cancel a subscription immediately, call the `cancelNow` method on
 If you wish to cancel a subscription immediately and invoice any remaining un-invoiced metered usage or new / pending proration invoice items, call the `cancelNowAndInvoice` method on the user's subscription:
 
     $user->subscription('default')->cancelNowAndInvoice();
+    
+You may also choose to cancel the subscription at a specific moment in time:
+
+    $user->subscription('default')->cancelAt(
+        now()->addDays(10)
+    );
 
 <a name="resuming-subscriptions"></a>
 ### Resuming Subscriptions
