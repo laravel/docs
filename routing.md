@@ -587,6 +587,8 @@ Sometimes you may wish to segment rate limits by some arbitrary value. For examp
                     : Limit::perMinute(100)->by($request->ip());
     });
 
+> {tip} Setting rate limit per user (or ip), can be accomplished using `by` with `optional($request->user())->id ?: $request->ip()`
+
 <a name="multiple-rate-limits"></a>
 #### Multiple Rate Limits
 
