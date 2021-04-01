@@ -18,6 +18,7 @@
 - [Registering Commands](#registering-commands)
 - [Programmatically Executing Commands](#programmatically-executing-commands)
     - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
+- [Signal Handling](#signal-handling)
 - [Stub Customization](#stub-customization)
 - [Events](#events)
 
@@ -586,6 +587,51 @@ If you would like to call another console command and suppress all of its output
     $this->callSilently('mail:send', [
         'user' => 1, '--queue' => 'default'
     ]);
+
+<a name="signal-handling"></a>
+## Signal Handling
+
+The Symfony Console component, which powers the Artisan console, allows you to indicate which process signals (if any) your command handles. For example, you may indicate that your command handles the `SIGINT` and `SIGTERM` signals.
+
+To get started, you should implement the `Symfony\Component\Console\Command\SignalableCommandInterface` interface on your Artisan command class. This interface requires you to define two methods: `getSubscribedSignals` and `handleSignal`:
+
+```php
+<?php
+
+use Symfony\Component\Console\Command\SignalableCommandInterface;
+
+class StartServer extends Command implements SignalableCommandInterface
+{
+    // ...
+
+    /**
+     * Get the list of signals handled by the command.
+     *
+     * @return array
+     */
+    public function getSubscribedSignals(): array
+    {
+        return [SIGINT, SIGTERM];
+    }
+
+    /**
+     * Handle an incoming signal.
+     *
+     * @param  int  $signal
+     * @return void
+     */
+    public function handleSignal(int $signal): void
+    {
+        if ($signal === SIGINT) {
+            $this->stopServer();
+
+            return;
+        }
+    }
+}
+```
+
+As you might expect, the `getSubscribedSignals` method should return an array of the signals that your command can handle, while the `handleSignal` method receives the signal and can respond accordingly.
 
 <a name="stub-customization"></a>
 ## Stub Customization
