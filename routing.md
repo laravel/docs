@@ -587,7 +587,13 @@ Sometimes you may wish to segment rate limits by some arbitrary value. For examp
                     : Limit::perMinute(100)->by($request->ip());
     });
 
-> {tip} Setting rate limit per user (or ip), can be accomplished using `by` with `optional($request->user())->id ?: $request->ip()`
+To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:
+
+    RateLimiter::for('uploads', function (Request $request) {
+        return $request->user()
+                    ? Limit::perMinute(100)->by($request->user()->id)
+                    : Limit::perMinute(10)->by($request->ip());
+    });
 
 <a name="multiple-rate-limits"></a>
 #### Multiple Rate Limits
