@@ -1471,7 +1471,7 @@ To pad to the left, you should specify a negative size. No padding will take pla
 <a name="method-partition"></a>
 #### `partition()` {#collection-method}
 
-The `partition` method may be combined with the array destructuring PHP feature to separate elements that pass a given truth test from those that do not:
+The `partition` method may be combined with PHP array destructuring to separate elements that pass a given truth test from those that do not:
 
     $collection = collect([1, 2, 3, 4, 5, 6]);
 
