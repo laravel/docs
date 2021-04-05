@@ -109,6 +109,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Grafana
 - InfluxDB
 - MariaDB
+- Meilisearch
 - MinIO
 - MongoDB
 - Neo4j
@@ -307,6 +308,7 @@ Optional software is installed using the `features` option within your `Homestea
         - grafana: true
         - influxdb: true
         - mariadb: true
+        - meilisearch: true
         - minio: true
         - mongodb: true
         - neo4j: true
