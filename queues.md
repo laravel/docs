@@ -1337,8 +1337,10 @@ Without pruning, the `job_batches` table can accumulate records very quickly. To
 By default, all finished batches that are more than 24 hours old will be pruned. You may use the `hours` option when calling the command to determine how long to retain batch data. For example, the following command will delete all batches that finished over 48 hours ago:
 
     $schedule->command('queue:prune-batches --hours=48')->daily();
-    
-> {note} You cannot prune job batches until all jobs have successfully run because their `finished_at` won't be filled in.
+
+Sometimes, your `jobs_batches` table may accumulate batch records for batches that never completed successfully, such as batches where a job failed and that job was never retried successfully. You may instruct the `queue:prune-batches` command to prune these unfinished batch records using the `unfinished` option:
+
+    $schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();
 
 <a name="queueing-closures"></a>
 ## Queueing Closures
