@@ -801,7 +801,7 @@ In addition to actually removing records from your database, Eloquent can also "
 You should also add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
     use Illuminate\Database\Schema\Blueprint;
-    use Illuminate\Facades\Schema;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('flights', function (Blueprint $table) {
         $table->softDeletes();
