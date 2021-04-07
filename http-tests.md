@@ -771,6 +771,37 @@ You may assert that the JSON structure matches your expectations like so:
         ]
     ]);
 
+For example, if the JSON response returned by your application contains array of objects such as:
+
+```js
+{
+    "user": [
+        {
+            "name": "Steve Schoger",
+            "age": 55,
+            "location": "Earth"
+        },  
+        {
+            "name": "Mary Schoger",
+            "age": 60,
+            "location": "Earth"
+        }
+    ]
+}
+```
+
+You may assert that the JSON structure matches your expectations like so:
+
+    $response->assertJsonStructure([
+        'user' => [
+            '*' => [
+                 'name',
+                 'age',
+                 'location'
+            ]
+        ]
+    ]);
+
 <a name="assert-json-validation-errors"></a>
 #### assertJsonValidationErrors
 
