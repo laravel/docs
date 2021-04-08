@@ -771,7 +771,7 @@ You may assert that the JSON structure matches your expectations like so:
         ]
     ]);
 
-For example, if the JSON response returned by your application contains array of objects such as:
+Sometimes, JSON responses returned by your application may contain arrays of objects:
 
 ```js
 {
@@ -790,7 +790,7 @@ For example, if the JSON response returned by your application contains array of
 }
 ```
 
-You may assert that the JSON structure matches your expectations like so:
+In this situation, you may use the `*` character to assert against the structure of all of the objects in the array:
 
     $response->assertJsonStructure([
         'user' => [
