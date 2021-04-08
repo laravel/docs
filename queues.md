@@ -522,7 +522,7 @@ For example, let's imagine a queued job that interacts with an third-party API t
 
 The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again.
 
-When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of seconds such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:
+When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of minutes such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:
 
     use Illuminate\Queue\Middleware\ThrottlesExceptions;
 
