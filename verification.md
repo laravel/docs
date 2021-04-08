@@ -81,7 +81,6 @@ The route that returns the email verification notice should be named `verificati
 Next, we need to define a route that will handle requests generated when the user clicks the email verification link that was emailed to them. This route should be named `verification.verify` and be assigned the `auth` and `signed` middlewares:
 
     use Illuminate\Foundation\Auth\EmailVerificationRequest;
-    use Illuminate\Http\Request;
 
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
         $request->fulfill();
