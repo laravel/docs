@@ -70,6 +70,9 @@ php artisan make:model Flight -c
 
 # Generate a model and a migration, factory, seeder, and controller...
 php artisan make:model Flight -mfsc
+
+# Generate a pivot model...
+php artisan make:model Member --pivot
 ```
 
 <a name="eloquent-model-conventions"></a>
