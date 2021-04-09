@@ -405,7 +405,7 @@ In addition, the `choice` method accepts optional fourth and fifth arguments for
 <a name="writing-output"></a>
 ### Writing Output
 
-To send output to the console, you may use the `line`, `info`, `comment`, `question` and `error` methods. Each of these methods will use appropriate ANSI colors for their purpose. For example, let's display some general information to the user. Typically, the `info` method will display in the console as green colored text:
+To send output to the console, you may use the `line`, `info`, `comment`, `question`, `warn`, and `error` methods. Each of these methods will use appropriate ANSI colors for their purpose. For example, let's display some general information to the user. Typically, the `info` method will display in the console as green colored text:
 
     /**
      * Execute the console command.
