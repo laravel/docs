@@ -1747,6 +1747,8 @@ You may also provide the `connection` argument and `queue` option to delete jobs
 
 > {note} Clearing jobs from queues is only available for the SQS, Redis, and database queue drivers. In addition, the SQS message deletion process takes up to 60 seconds, so jobs sent to the SQS queue up to 60 seconds after you clear the queue might also be deleted.
 
+> {note} If you use unique jobs, the locks will not be cleared. You have to remove the locks manually by [clearing your cache](/docs/{{version}}/cache). You may use cache tags to do this in a more targeted way.
+
 <a name="job-events"></a>
 ## Job Events
 
