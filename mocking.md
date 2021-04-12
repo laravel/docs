@@ -270,7 +270,7 @@ If you would simply like to assert that an event listener is listening to a give
 
     Event::assertListening(
         OrderShipped::class,
-        [SendShipmentNotification::class, 'handle']
+        SendShipmentNotification::class
     );
 
 > {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
