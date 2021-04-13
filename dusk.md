@@ -1725,7 +1725,7 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
           ],
           "scripts": {
             "test-setup": "cp .env.testing .env",
-            "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve > /dev/null 2>&1 &' && php artisan dusk"
+            "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve --no-reload > /dev/null 2>&1 &' && php artisan dusk"
           }
         }
       }
@@ -1752,7 +1752,7 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
 
     before_script:
       - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      - php artisan serve &
+      - php artisan serve --no-reload &
 
     script:
       - php artisan dusk
@@ -1785,7 +1785,7 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
           - name: Start Chrome Driver
             run: ./vendor/laravel/dusk/bin/chromedriver-linux &
           - name: Run Laravel Server
-            run: php artisan serve &
+            run: php artisan serve --no-reload &
           - name: Run Dusk Tests
             env:
               APP_URL: "http://127.0.0.1:8000"
