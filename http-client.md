@@ -9,6 +9,7 @@
     - [Retries](#retries)
     - [Error Handling](#error-handling)
     - [Guzzle Options](#guzzle-options)
+- [Concurrent Requests](#concurrent-requests)
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
     - [Inspecting Requests](#inspecting-requests)
@@ -211,6 +212,39 @@ You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en
     $response = Http::withOptions([
         'debug' => true,
     ])->get('http://example.com/users');
+
+<a name="concurrent-requests"></a>
+## Concurrent Requests
+
+Sometimes, you may wish to make multiple HTTP requests concurrently. In other words, you want several requests to be dispatched at the same time instead of issuing the requests sequentially. This can lead to substantial performance improvements when interacting with slow HTTP APIs.
+
+Thankfully, you may accomplish this using the `pool` method. The `pool` method accepts a closure which receives an `Illuminate\Http\Client\Pool` instance, allowing you to easily add requests to the request pool for dispatching:
+
+    use Illuminate\Http\Client\Pool;
+    use Illuminate\Support\Facades\Http;
+
+    $responses = Http::pool(fn (Pool $pool) => [
+        $pool->get('http://localhost/first'),
+        $pool->get('http://localhost/second'),
+        $pool->get('http://localhost/third'),
+    ]);
+
+    return $responses[0]->ok() &&
+           $responses[1]->ok() &&
+           $responses[2]->ok();
+
+As you can see, each response instance can be accessed based on the order it was added to the pool. If you wish, you can name the requests using the `as` method, which allows you to access the corresponding responses by name:
+
+    use Illuminate\Http\Client\Pool;
+    use Illuminate\Support\Facades\Http;
+
+    $responses = Http::pool(fn (Pool $pool) => [
+        $pool->as('first')->get('http://localhost/first'),
+        $pool->as('second')->get('http://localhost/second'),
+        $pool->as('third')->get('http://localhost/third'),
+    ]);
+
+    return $responses['first']->ok();
 
 <a name="testing"></a>
 ## Testing
