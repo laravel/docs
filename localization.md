@@ -145,8 +145,15 @@ To replace the placeholders when retrieving a translation string, you may pass a
 
 If your placeholder contains all capital letters, or only has its first letter capitalized, the translated value will be capitalized accordingly:
 
+    // resources/lang/en/messages.php
+
     'welcome' => 'Welcome, :NAME', // Welcome, DAYLE
     'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle
+
+    // resources/lang/en.json
+
+    'welcome' : 'Welcome, :NAME' // Welcome, DAYLE
+    'goodbye' : 'Goodbye, :Name' // Goodbye, DAYLE
 
 <a name="pluralization"></a>
 ### Pluralization
