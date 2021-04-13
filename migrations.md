@@ -362,6 +362,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [timestamps](#column-method-timestamps)
 [tinyIncrements](#column-method-tinyIncrements)
 [tinyInteger](#column-method-tinyInteger)
+[tinyText](#column-method-tinyText)
 [unsignedBigInteger](#column-method-unsignedBigInteger)
 [unsignedDecimal](#column-method-unsignedDecimal)
 [unsignedInteger](#column-method-unsignedInteger)
@@ -738,6 +739,13 @@ The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equi
 The `tinyInteger` method creates a `TINYINT` equivalent column:
 
     $table->tinyInteger('votes');
+    
+<a name="column-method-tinyText"></a>
+#### `tinyText()` {#collection-method}
+
+The `tinyText` method creates a `TINYTEXT` equivalent column:
+
+    $table->tinyText('notes');
 
 <a name="column-method-unsignedBigInteger"></a>
 #### `unsignedBigInteger()` {#collection-method}
