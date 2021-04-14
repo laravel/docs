@@ -1646,6 +1646,19 @@ The `trans_choice` function translates the given translation key with inflection
 
 If the specified translation key does not exist, the `trans_choice` function will return the given key. So, using the example above, the `trans_choice` function would return `messages.notifications` if the translation key does not exist.
 
+<a name="method-word-count"></a>
+### `wordCount`
+
+The `wordCount` function returns the number of words that a string contains:
+
+```php
+use Illuminate\Support\Str;
+
+Str::wordCount('Hello, world!'); // 2
+```
+
+Under the hood this function uses PHP's `str_word_count` function.
+
 <a name="fluent-strings"></a>
 ## Fluent Strings
 
@@ -2435,6 +2448,19 @@ The `whenEmpty` method invokes the given closure if the string is empty. If the 
     });
 
     // 'Laravel'
+
+<a name="method-fluent-str-word-count"></a>
+### `wordCount`
+
+The `wordCount` function returns the number of words that a string contains:
+
+```php
+use Illuminate\Support\Str;
+
+Str::of('Hello, world!')->wordCount(); // 2
+```
+
+Under the hood this function uses PHP's `str_word_count` function.
 
 <a name="method-fluent-str-words"></a>
 #### `words` {#collection-method}
