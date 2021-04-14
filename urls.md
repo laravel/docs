@@ -120,6 +120,10 @@ To verify that an incoming request has a valid signature, you should call the `h
         // ...
     })->name('unsubscribe');
 
+If your temporary signed route url has extra query parameters like the page number for pagination appended to it, you need to ignore those extra query parameters during the signature validation. You can do that by passing an array of query parameter names to be ignored to the `hasValidSignature` method:
+
+    $request->hasValidSignature(true, ['page']);
+
 Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
 
     /**
