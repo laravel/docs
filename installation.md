@@ -59,6 +59,8 @@ Laravel Sail is a light-weight command-line interface for interacting with Larav
 <a name="getting-started-on-macos"></a>
 ### Getting Started On macOS
 
+> {tip} This method of getting started relies on Laravel Sail, which is not supported on M1/Apple Silicon-based Macs.  If you are using this hardware then please use another method for local development, such as [Laravel Valet](https://laravel.com/docs/8.x/valet)
+
 If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
 ```nothing
