@@ -753,7 +753,7 @@ The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equi
 The `tinyInteger` method creates a `TINYINT` equivalent column:
 
     $table->tinyInteger('votes');
-    
+
 <a name="column-method-tinyText"></a>
 #### `tinyText()` {#collection-method}
 
@@ -1107,6 +1107,12 @@ Any additional [column modifiers](#column-modifiers) must be called before the `
     $table->foreignId('user_id')
           ->nullable()
           ->constrained();
+
+Laravel also provide an alternate method for creating foreign keys based on a model. Basically, it creates a foreign key based on the class's snake case appended by the primary key column. The `foreignIdFor` method makes our migrations really readable as well.
+
+    Schema::table('posts', function (Blueprint $table) {
+        $table->foreignIdFor(\App\Models\User::class);
+    });
 
 <a name="dropping-foreign-keys"></a>
 #### Dropping Foreign Keys
