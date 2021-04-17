@@ -1664,7 +1664,7 @@ If necessary, you may pass multiple IDs or an ID range (when using numeric IDs) 
 
     php artisan queue:retry --range=5-10
 
-Also, you can retry failed jobs by queue name:
+You may also retry all of the failed jobs for a particular queue:
 
     php artisan:retry --queue=name
 
