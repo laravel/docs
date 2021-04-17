@@ -743,7 +743,7 @@ Below is a list of all available validation rules and their function:
 <a name="rule-accepted"></a>
 #### accepted
 
-The field under validation must be `"yes"`, `"on"`, `1`, or `true`. This is useful for validating "Terms of Service" acceptance or similar fields.
+The field under validation must be `"yes"`, `"on"`, `1`, or `true`. This is useful for validating "Terms of Service" acceptance or similar fields. Regarding its nature, `accepted` rule should not be used alonside `nullable` otherwise it makes `nullable` rule ineffective.
 
 <a name="rule-active-url"></a>
 #### active_url
