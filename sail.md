@@ -313,3 +313,23 @@ After running this command, the Dockerfiles and other configuration files used b
 ```bash
 sail build --no-cache
 ```
+
+If you wish to change docker service name from `laravel.test` which is default.
+
+from
+```yaml
+services:
+  laravel.test:
+```
+
+to
+```yaml
+services:
+  octane.test:
+```
+
+then you need to set `APP_SERVICE` environment variable into `.env` file like below.
+
+```dotenv
+APP_SERVICE=octane.test
+```
