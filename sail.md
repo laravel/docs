@@ -253,6 +253,8 @@ Sometimes you may wish to start a Bash session within your application's contain
 
 ```nothing
 sail shell
+
+sail root-shell
 ```
 
 To start a new [Laravel Tinker](https://github.com/laravel/tinker) session, you may execute the `tinker` command:
