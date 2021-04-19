@@ -149,7 +149,7 @@ To determine if an item is present in the session, even if its value is `null`, 
         //
     }
 
-To determine if an item is not present in the session, you may use the `missing` method. The `missing` method returns `true` if the item is not present and is not `null`:
+To determine if an item is not present in the session, you may use the `missing` method. The `missing` method returns `true` if the item is `null` or if the item is not present:
 
     if ($request->session()->missing('users')) {
         //
