@@ -196,7 +196,7 @@ You may "revoke" tokens by deleting them from your database using the `tokens` r
     $request->user()->currentAccessToken()->delete();
 
     // Revoke a specific token...
-    $user->tokens()->where('id', $tokenId)->delete();
+    $user->tokens()->where('token', $tokenId)->delete();
 
 <a name="spa-authentication"></a>
 ## SPA Authentication
@@ -370,7 +370,7 @@ To allow users to revoke API tokens issued to mobile devices, you may list them 
     $user->tokens()->delete();
 
     // Revoke a specific token...
-    $user->tokens()->where('id', $tokenId)->delete();
+    $user->tokens()->where('token', $tokenId)->delete();
 
 <a name="testing"></a>
 ## Testing
