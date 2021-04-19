@@ -1528,6 +1528,8 @@ If your business is based in Europe you will need to abide by the EU's Strong Cu
 
 SCA regulations often require extra verification in order to confirm and process a payment. When this happens, Cashier will throw a `Laravel\Cashier\Exceptions\PaymentActionRequired` exception that informs you that extra verification is needed. More information on how to handle these exceptions be found can be found in the documentation on [handling failed payments](#handling-failed-payments).
 
+Payment confirmation screens presented by Stripe or Cashier may be tailored to a specific bank or card issuer's payment flow and can include additional card confirmation, a temporary small charge, separate device authentication, or other forms of verification.
+
 <a name="incomplete-and-past-due-state"></a>
 #### Incomplete and Past Due State
 
