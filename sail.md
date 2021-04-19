@@ -253,11 +253,7 @@ Sometimes you may wish to start a Bash session within your application's contain
 
 ```nothing
 sail shell
-```
 
-Similarly, you may connect as the root user by executing:
-
-```nothing
 sail root-shell
 ```
 
