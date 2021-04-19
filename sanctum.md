@@ -64,14 +64,6 @@ Finally, you should run your database migrations. Sanctum will create one databa
 
     php artisan migrate
 
-Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanctum's middleware to your `api` middleware group within your application's `app/Http/Kernel.php` file:
-
-    'api' => [
-        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        'throttle:api',
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
-    ],
-
 <a name="migration-customization"></a>
 #### Migration Customization
 
@@ -222,10 +214,8 @@ First, you should configure which domains your SPA will be making requests from.
 
 Next, you should add Sanctum's middleware to your `api` middleware group within your `app/Http/Kernel.php` file. This middleware is responsible for ensuring that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens:
 
-    use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
-
     'api' => [
-        EnsureFrontendRequestsAreStateful::class,
+	\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         'throttle:api',
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
