@@ -21,6 +21,7 @@
 - [PHP Versions](#sail-php-versions)
 - [Sharing Your Site](#sharing-your-site)
 - [Customization](#sail-customization)
+- [Permissions and user mapping](#sail-user-permissions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -315,3 +316,15 @@ After running this command, the Dockerfiles and other configuration files used b
 ```bash
 sail build --no-cache
 ```
+
+<a name="sail-user-permissions"></a>
+## Permissions and user mapping
+
+Sail provides two parameters `WWWUSER` and `WWWGROUP` to set the IDs of the `sail` user and group inside the container. Those parameters shall be set with numerical values inside your `.env` file : 
+
+```
+WWWGROUP=1000
+WWWUSER=1000
+```
+
+The above example is a good way to map the container `sail` user/group with your local Ubuntu user/group (usually 1000). Then, you gain full access to resources created by the webserver running inside the caontainer and shared through the Docker volume.
