@@ -197,8 +197,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
 [whenEmpty](#method-fluent-str-when-empty)
-[words](#method-fluent-str-words)
 [wordCount](#method-fluent-str-word-count)
+[words](#method-fluent-str-words)
 
 </div>
 
@@ -1619,6 +1619,19 @@ The `Str::uuid` method generates a UUID (version 4):
 
     return (string) Str::uuid();
 
+<a name="method-word-count"></a>
+### `wordCount`
+
+The `wordCount` function returns the number of words that a string contains:
+
+```php
+use Illuminate\Support\Str;
+
+Str::wordCount('Hello, world!'); // 2
+```
+
+Under the hood this function uses PHP's `str_word_count` function.
+
 <a name="method-str-words"></a>
 #### `Str::words()` {#collection-method}
 
@@ -1647,19 +1660,6 @@ The `trans_choice` function translates the given translation key with inflection
     echo trans_choice('messages.notifications', $unreadCount);
 
 If the specified translation key does not exist, the `trans_choice` function will return the given key. So, using the example above, the `trans_choice` function would return `messages.notifications` if the translation key does not exist.
-
-<a name="method-word-count"></a>
-### `wordCount`
-
-The `wordCount` function returns the number of words that a string contains:
-
-```php
-use Illuminate\Support\Str;
-
-Str::wordCount('Hello, world!'); // 2
-```
-
-Under the hood this function uses PHP's `str_word_count` function.
 
 <a name="fluent-strings"></a>
 ## Fluent Strings
