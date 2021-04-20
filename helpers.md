@@ -129,6 +129,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
+[Str::wordCount](#method-word-count)
 [Str::words](#method-str-words)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
@@ -197,6 +198,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [when](#method-fluent-str-when)
 [whenEmpty](#method-fluent-str-when-empty)
 [words](#method-fluent-str-words)
+[wordCount](#method-fluent-str-word-count)
 
 </div>
 
