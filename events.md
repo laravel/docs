@@ -78,7 +78,7 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
             [SendPodcastNotification::class, 'handle']
         );
 
-        Event::listen(function (PodcastProcessed $event) {
+        Event::listen(PodcastProcessed::class, function (PodcastProcessed $event) {
             //
         });
     }
