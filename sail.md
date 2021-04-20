@@ -327,4 +327,4 @@ WWWGROUP=1000
 WWWUSER=1000
 ```
 
-The above example is a good way to map the container `sail` user/group with your local Ubuntu user/group (usually 1000). Then, you gain full access to resources created by the webserver running inside the caontainer and shared through the Docker volume.
+The above example is a good way to map the container `sail` user/group with your local Ubuntu user/group (usually 1000). Then, you gain full access to resources created by the webserver running inside the container and shared through the Docker volume.
