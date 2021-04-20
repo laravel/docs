@@ -244,7 +244,7 @@ Next, simply attach the pay link URL to an `a` element in your HTML:
 <a name="payments-requiring-additional-confirmation"></a>
 #### Payments Requiring Additional Confirmation
 
-Often extra verification is required in order to confirm and process a payment. When this happens, Paddle will present a payment confirmation screen. Payment confirmation screens presented by Paddle or Cashier may be tailored to a specific bank or card issuer's payment flow and can include additional card confirmation, a temporary small charge, separate device authentication, or other forms of verification.
+Sometimes additional verification is required in order to confirm and process a payment. When this happens, Paddle will present a payment confirmation screen. Payment confirmation screens presented by Paddle or Cashier may be tailored to a specific bank or card issuer's payment flow and can include additional card confirmation, a temporary small charge, separate device authentication, or other forms of verification.
 
 <a name="inline-checkout"></a>
 ### Inline Checkout
