@@ -1511,7 +1511,7 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
 <a name="the-save-method"></a>
 ### The `save` Method
 
-Eloquent provides convenient methods for adding new models to relationships. For example, perhaps you need to add a new comment to a post. Instead of manually setting the `post_id` attribute on the `Comment` model you may insert the comment using the relationship's `save` method:
+Eloquent provides convenient methods for adding new models to `hasMany` and `hasOne` relationships. For example, perhaps you need to add a new comment to a post. Instead of manually setting the `post_id` attribute on the `Comment` model you may insert the comment using the relationship's `save` method:
 
     use App\Models\Comment;
     use App\Models\Post;
@@ -1557,7 +1557,7 @@ If you would like to `save` your model and all of its associated relationships, 
 <a name="the-create-method"></a>
 ### The `create` Method
 
-In addition to the `save` and `saveMany` methods, you may also use the `create` method, which accepts an array of attributes, creates a model, and inserts it into the database. The difference between `save` and `create` is that `save` accepts a full Eloquent model instance while `create` accepts a plain PHP `array`. The newly created model will be returned by the `create` method:
+In addition to the `save` and `saveMany` methods, you may also use the `create` method for `hasMany` and `hasOne` relationships, which accepts an array of attributes, creates a model, and inserts it into the database. The difference between `save` and `create` is that `save` accepts a full Eloquent model instance while `create` accepts a plain PHP `array`. The newly created model will be returned by the `create` method:
 
     use App\Models\Post;
 
