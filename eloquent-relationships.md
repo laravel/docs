@@ -1533,7 +1533,7 @@ If you need to save multiple related models, you may use the `saveMany` method:
         new Comment(['message' => 'Another new comment.']),
     ]);
 
-The `save` and `saveMany` methods will persist the model instances along with any changes made to them, but will not add the newly persisted models to any in-memory relationships that are already loaded onto the parent model. If you plan on accessing the relationship after using the `save` or `saveMany` methods, you may wish to use the `refresh` method to reload the model and its relationships:
+The `save` and `saveMany` methods will persist the given model instances, but will not add the newly persisted models to any in-memory relationships that are already loaded onto the parent model. If you plan on accessing the relationship after using the `save` or `saveMany` methods, you may wish to use the `refresh` method to reload the model and its relationships:
 
     $post->comments()->save($comment);
 
