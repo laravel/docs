@@ -129,6 +129,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
+[Str::wordCount](#method-str-word-count)
 [Str::words](#method-str-words)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
@@ -196,6 +197,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
 [whenEmpty](#method-fluent-str-when-empty)
+[wordCount](#method-fluent-str-word-count)
 [words](#method-fluent-str-words)
 
 </div>
@@ -1617,6 +1619,17 @@ The `Str::uuid` method generates a UUID (version 4):
 
     return (string) Str::uuid();
 
+<a name="method-str-word-count"></a>
+### `wordCount`
+
+The `wordCount` function returns the number of words that a string contains:
+
+```php
+use Illuminate\Support\Str;
+
+Str::wordCount('Hello, world!'); // 2
+```
+
 <a name="method-str-words"></a>
 #### `Str::words()` {#collection-method}
 
@@ -2435,6 +2448,17 @@ The `whenEmpty` method invokes the given closure if the string is empty. If the 
     });
 
     // 'Laravel'
+
+<a name="method-fluent-str-word-count"></a>
+### `wordCount`
+
+The `wordCount` function returns the number of words that a string contains:
+
+```php
+use Illuminate\Support\Str;
+
+Str::of('Hello, world!')->wordCount(); // 2
+```
 
 <a name="method-fluent-str-words"></a>
 #### `words` {#collection-method}
