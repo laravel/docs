@@ -305,7 +305,7 @@ In addition, you may wish to generate UUIDs for your existing failed jobs:
 
 **Likelihood Of Impact: Optional**
 
-In previous releases of Laravel, the `RouteServiceProvider` class contained a `$namespace` property with a value of `App\Http\Controllers`. This value of this property was used to automatically prefix controller route declarations and controller route URL generation such as when calling the `action` helper.
+In previous releases of Laravel, the `RouteServiceProvider` class contained a `$namespace` property with a value of `App\Http\Controllers`. The value of this property was used to automatically prefix controller route declarations and controller route URL generation such as when calling the `action` helper.
 
 In Laravel 8, this property is set to `null` by default. This allows your controller route declarations to use the standard PHP callable syntax, which provides better support for jumping to the controller class in many IDEs:
 
