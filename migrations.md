@@ -517,7 +517,7 @@ The `integer` method creates an `INTEGER` equivalent column:
 <a name="column-method-ipAddress"></a>
 #### `ipAddress()` {#collection-method}
 
-The `ipAddress` method creates an `INTEGER` equivalent column:
+The `ipAddress` method creates a `VARCHAR` equivalent column:
 
     $table->ipAddress('visitor');
 
