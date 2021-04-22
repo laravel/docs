@@ -294,6 +294,15 @@ After updating your application's `docker-compose.yml` file, you should rebuild 
 Sometimes you may need to share your site publicly in order to preview your site for a colleague or to test webhook integrations with your application. To share your site, you may use the `share` command. After executing this command, you will be issued a random `laravel-sail.site` URL that you may use to access your application:
 
     sail share
+    
+In addition, in order to make sure links from helpers like `route`, etc to work properly you should configure trusted proxies in your `TrustProxies` middleware:
+
+    /**
+     * The trusted proxies for this application.
+     *
+     * @var array|string|null
+     */
+    protected $proxies = '*';
 
 If you would like to choose the subdomain for your shared site, you may provide the `subdomain` option when executing the `share` command:
 
