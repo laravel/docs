@@ -1581,12 +1581,14 @@ You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCr
 > {tip} Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation.
 
 <a name="updating-belongs-to-relationships"></a>
-### Belongs To Relationships
+### Belongs To / Morph To Relationships
 
 If you would like to assign a child model to a new parent model, you may use the `associate` method. In this example, the `User` model defines a `belongsTo` relationship to the `Account` model. This `associate` method will set the foreign key on the child model:
 
     use App\Models\Account;
+    use App\Models\User;
 
+    $user = User::find(1);
     $account = Account::find(10);
 
     $user->account()->associate($account);
@@ -1598,6 +1600,22 @@ To remove a parent model from a child model, you may use the `dissociate` method
     $user->account()->dissociate();
 
     $user->save();
+    
+These methods are also available for `morphTo` relationships. When using it on a `morphTo` relationship it's required that you first `dissociate` the previous relationship before `associating` a new one:
+
+    use App\Models\Image;
+    use App\Models\Post;
+    
+    $post = Post::find(1);
+    $image = Image::find(10);
+    
+    $post->image()->dissociate();
+
+    $post->image()->associate($image);
+
+    $post->save();
+    
+This is to make sure no state for the previous associated polymorphic model keeps lingering.
 
 <a name="updating-many-to-many-relationships"></a>
 ### Many To Many Relationships
