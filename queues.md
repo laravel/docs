@@ -346,6 +346,8 @@ Any overlapping jobs will be released back to the queue. You may also specify th
         return [(new WithoutOverlapping($this->order->id))->releaseAfter(60)];
     }
 
+> {note} If releaseAfter is not defined, the exceptions thrown by the job itself will release the lock but for example MaxAttemptsExceededException thrown by the queue handler do not. You can either release the lock manually and retry the job or set the releaseAfter to value that is equal to the jobs timeout value so it will be released automatically.
+
 If you wish to immediately delete any overlapping jobs, you may use the `dontRelease` method:
 
     /**
