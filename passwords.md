@@ -110,13 +110,12 @@ Of course, we need to define a route to actually handle the password reset form 
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Facades\Password;
     use Illuminate\Support\Str;
-    use Illuminate\Validation\Rules\Password;
 
     Route::post('/reset-password', function (Request $request) {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->symbols()],
+            'password' => 'required|min:8|confirmed',
         ]);
 
         $status = Password::reset(
