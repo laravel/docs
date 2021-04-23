@@ -489,6 +489,20 @@ If you wish to immediately delete any overlapping jobs so that they will not be 
         return [(new WithoutOverlapping($this->order->id))->dontRelease()];
     }
 
+You may also set an expiry by using the `expireAfter` method:
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [(new WithoutOverlapping($this->order->id))->expireAfter(180)];
+    }
+
+In the code above, any jobs that are picked up by the queue worker 3 minutes after this job starts processing, will be allowed to be processed. If your jobs are timing out, you should set an expiry slightly above the job timeout, so that subsequent jobs are not prevented from processing.
+
 > {note} The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
 
 <a name="throttling-exceptions"></a>
