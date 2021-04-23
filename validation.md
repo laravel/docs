@@ -1453,7 +1453,7 @@ By default, if a password appears at least once in a data leak, it will be consi
     // Ensure the given password has not been compromised 3 times in the same data leak
     Password::min(8)->uncompromised(3);
 
-Of course, may chain all the methods specified above:
+Of course, you may chain all the methods specified above:
 
     Password::min(8)
         ->letters()
