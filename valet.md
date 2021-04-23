@@ -14,6 +14,8 @@
     - [Sharing Sites On Your Local Network](#sharing-sites-on-your-local-network)
 - [Site Specific Environment Variables](#site-specific-environment-variables)
 - [Proxying Services](#proxying-services)
+- [Customizing loopback](#customizing-loopback)
+    - [Trust Valet CA certificate](#trust-valet-ca-certificate)
 - [Custom Valet Drivers](#custom-valet-drivers)
     - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
@@ -238,7 +240,7 @@ Some applications using other frameworks may depend on server environment variab
 
 Sometimes you may wish to proxy a Valet domain to another service on your local machine. For example, you may occasionally need to run Valet while also running a separate site in Docker; however, Valet and Docker can't both bind to port 80 at the same time.
 
-To solve this, you may use the `proxy` command to generate a proxy. For example, you may proxy all traffic from `http://elasticsearch.test` to `http://127.0.0.1:9200`:
+To solve this, you may use the `proxy` command to generate a proxy. For example, you may proxy all traffic from `https://elasticsearch.test` to `http://127.0.0.1:9200`:
 
 ```bash
 valet proxy elasticsearch http://127.0.0.1:9200
@@ -251,6 +253,42 @@ You may remove a proxy using the `unproxy` command:
 You may use the `proxies` command to list all site configurations that are proxied:
 
     valet proxies
+
+<a name="customizing-loopback"></a>
+## Customizing loopback
+
+Using both Valet and Docker you may wish your Docker containers to be able to resolve Valet sites or proxies. You may use the `loopback` command to add a loopback interface alias and configure both Nginx and DnsMasq to listen to the custom loopback address. The loopback interface alias may be an unsused private IP address. For example, you may use the `10.254.254.254` address.
+
+```bash
+valet loopback 10.254.254.254
+```
+
+You may rollback to default loopback address using `127.0.0.1`:
+
+```
+valet loopback 127.0.0.1
+```
+
+<a name="trust-valet-ca-certificate"></a>
+#### Trust Valet CA certificate
+
+You may wish your Docker containers to be able to trust Valet CA certificate. If you are using Docker Compose, you may consider adding a volume to point Valet CA certificate to the container certificates folder.
+
+    version: "3.8"
+
+    services:
+      one:
+        build:
+          dockerfile: Dockerfile
+          context: ./
+        ports:
+          - 8180:80
+        networks:
+          - test
+        volumes:
+          - '~/.config/valet/CA/LaravelValetCASelfSigned.pem:/usr/local/share/ca-certificates/extra/LaravelValetCASelfSigned.crt'
+
+You may also update the container's certificates using `update-ca-certificates`.
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
