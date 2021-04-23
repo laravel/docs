@@ -107,6 +107,7 @@ Of course, we need to define a route to actually handle the password reset form 
 
     use Illuminate\Auth\Events\PasswordReset;
     use Illuminate\Http\Request;
+    use Illuminate\Validation\Rules\Password;
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Facades\Password;
     use Illuminate\Support\Str;
@@ -115,7 +116,7 @@ Of course, we need to define a route to actually handle the password reset form 
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->symbols()],
         ]);
 
         $status = Password::reset(

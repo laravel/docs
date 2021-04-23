@@ -25,6 +25,7 @@
 - [Available Validation Rules](#available-validation-rules)
 - [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Validating Arrays](#validating-arrays)
+- [Validating Passwords](#validating-passwords)
 - [Custom Validation Rules](#custom-validation-rules)
     - [Using Rule Objects](#using-rule-objects)
     - [Using Closures](#using-closures)
@@ -1411,6 +1412,55 @@ Likewise, you may use the `*` character when specifying [custom validation messa
             'unique' => 'Each person must have a unique email address',
         ]
     ],
+
+<a name="validating-passwords"></a>
+## Validating Passwords
+
+To ensure that passwords have an adequate level of complexity, you may use Laravel's `Password` rule object:
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rules\Password;
+
+    $validator = Validator::make($request->all(), [
+        'password' => ['required', 'confirmed', Password::min(8)],
+    ]);
+
+The `Password` rule object allows you to easily customize the password complexity requirements for your application:
+
+    // Require at least 8 characters...
+    Password::min(8)
+
+    // Require at least one letter...
+    Password::min(8)->letters()
+
+    // Require at least one uppercase and one lowercase letter...
+    Password::min(8)->mixedCase()
+
+    // Require at least one number...
+    Password::min(8)->numbers()
+
+    // Require at least one symbol...
+    Password::min(8)->symbols()
+
+In addition, you may also want to ensure a password has not been compromised in data leaks by using the `uncompromised` method:
+
+    Password::min(8)->uncompromised()
+
+Internally, the `Password` rule object uses what is known as a [k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity) model that allows for the password to be looked up on the [haveibeenpwned.com](https://haveibeenpwned.com) service without giving up the user's privacy or security.
+
+By default, if a password appears at least once in a data leak, it will be considered compromised. You can customize this threshold by using the first argument of the `uncompromised` method:
+
+    // Ensure the given password has not been compromised 3 times in the same data leak
+    Password::min(8)->uncompromised(3);
+
+Of course, may chain all the methods specified above:
+
+    Password::min(8)
+        ->letters()
+        ->mixedCase()
+        ->numbers()
+        ->symbols()
+        ->uncompromised()
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
