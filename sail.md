@@ -34,6 +34,9 @@ Laravel Sail is supported on macOS, Linux, and Windows (via WSL2).
 <a name="installation"></a>
 ## Installation & Setup
 
+<a name="for-new-application"></a>
+### For New Application
+
 Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately. To learn how to create a new Laravel application, please consult Laravel's [installation documentation](/docs/{{version}}/installation) for your operating system. During installation, you will be asked to choose which Sail supported services your application will be interacting with.
 
 <a name="installing-sail-into-existing-applications"></a>
