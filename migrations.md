@@ -843,21 +843,28 @@ The following table contains all of the available column modifiers. This list do
 Modifier  |  Description
 --------  |  -----------
 `->after('column')`  |  Place the column "after" another column (MySQL).
+`->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
 `->autoIncrement()`  |  Set INTEGER columns as auto-incrementing (primary key).
+`->change()` | Change the column.
 `->charset('utf8mb4')`  |  Specify a character set for the column (MySQL).
 `->collation('utf8mb4_unicode_ci')`  |  Specify a collation for the column (MySQL/PostgreSQL/SQL Server).
 `->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL).
 `->default($value)`  |  Specify a "default" value for the column.
 `->first()`  |  Place the column "first" in the table (MySQL).
-`->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).
+`->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
+`->index($indexName)`  |  Add an index.
 `->nullable($value = true)`  |  Allow NULL values to be inserted into the column.
-`->storedAs($expression)`  |  Create a stored generated column (MySQL).
+`->persisted()`  |  Mark the computed generated column as persistent (SQL Server).
+`->primary()`  |  Add a primary index.
+`->spatialIndex()`  |  Add a spatial index.
+`->startingValue($startingValue)`  |  Set the starting value of an auto-incrementing field (MySQL/PostgreSQL).
+`->storedAs($expression)`  |  Create a stored generated column (MySQL/PostgreSQL/SQLite).
+`->type($type)`  |  Specify a type for the column.
+`->unique($indexName)`  |  Add a unique index.
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
 `->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated.
-`->virtualAs($expression)`  |  Create a virtual generated column (MySQL).
-`->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
-`->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
+`->virtualAs($expression)`  |  Create a virtual generated column (MySQL/PostgreSQL/SQLite).
 
 <a name="default-expressions"></a>
 #### Default Expressions
