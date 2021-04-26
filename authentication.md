@@ -233,7 +233,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
         /**
          * Handle an authentication attempt.
          *
-         * @param  \Illuminate\Http\Request $request
+         * @param  \Illuminate\Http\Request  $request
          * @return \Illuminate\Http\Response
          */
         public function authenticate(Request $request)

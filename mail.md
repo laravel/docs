@@ -273,7 +273,7 @@ If you would like to customize the format of your email's data before it is sent
         /**
          * Create a new message instance.
          *
-         * @param  \App\Models\Order $order
+         * @param  \App\Models\Order  $order
          * @return void
          */
         public function __construct(Order $order)
