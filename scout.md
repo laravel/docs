@@ -29,7 +29,7 @@
 
 Laravel Scout provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
-Currently, Scout ships with an [Algolia](https://www.algolia.com/) driver; however, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
+Currently, Scout ships with an [Algolia](https://www.algolia.com/) and [Meilisearch](https://www.meilisearch.com) driver; however, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
 <a name="installation"></a>
 ## Installation
@@ -69,7 +69,19 @@ When using the Algolia driver, you should configure your Algolia `id` and `secre
 <a name="meilisearch"></a>
 #### MeiliSearch
 
-MeiliSearch is a powerful, open source search-engine that may be run locally using [Laravel Sail](/docs/{{version}}/sail). MeiliSearch provides and maintains an [official MeiliSearch driver for Laravel Scout](https://github.com/meilisearch/meilisearch-laravel-scout). Please consult this package's documentation to learn how to use MeiliSearch with Laravel Scout.
+When using the Meilisearch driver you will need to install the Meilisearch PHP SDK via the Composer package manager:
+
+    composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
+    
+Then, set the `SCOUT_DRIVER` environment variable, as well as your Meilisearch `host` and `key` credentials, in your `.env` file:
+
+    SCOUT_DRIVER=meilisearch
+    MEILISEARCH_HOST=http://127.0.0.1:7700
+    MEILISEARCH_KEY=masterKey
+
+The easiest way to get up an running with Meilisearch is with [Laravel Sail](https://laravel.com/docs/{{version}}/sail#meilisearch).
+
+For more info, refer to [the Meilisearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
 
 <a name="queueing"></a>
 ### Queueing
