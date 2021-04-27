@@ -130,9 +130,9 @@ You may remove a cookie by expiring it via the `withoutCookie` method of an outg
 
     return response('Hello World')->withoutCookie('name');
 
-If you do not yet have an instance of the outgoing response, you may use the `Cookie` facade's `queue` method to expire a cookie:
+If you do not yet have an instance of the outgoing response, you may use the `Cookie` facade's `expire` method to expire a cookie:
 
-    Cookie::queue(Cookie::forget('name'));
+    Cookie::expire('name');
 
 <a name="cookies-and-encryption"></a>
 ### Cookies & Encryption
