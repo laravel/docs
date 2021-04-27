@@ -1425,7 +1425,7 @@ To ensure that passwords have an adequate level of complexity, you may use Larav
         'password' => ['required', 'confirmed', Password::min(8)],
     ]);
 
-The `Password` rule object allows you to easily customize the password complexity requirements for your application:
+The `Password` rule object allows you to easily customize the password complexity requirements for your application, such as specifying that passwords require at least one letter, number, symbol, or characters with mixed casing:
 
     // Require at least 8 characters...
     Password::min(8)
@@ -1442,18 +1442,18 @@ The `Password` rule object allows you to easily customize the password complexit
     // Require at least one symbol...
     Password::min(8)->symbols()
 
-In addition, you may also want to ensure a password has not been compromised in data leaks by using the `uncompromised` method:
+In addition, you may ensure that a password has not been compromised in a public password data breach leak using the `uncompromised` method:
 
     Password::min(8)->uncompromised()
 
-Internally, the `Password` rule object uses what is known as a [k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity) model that allows for the password to be looked up on the [haveibeenpwned.com](https://haveibeenpwned.com) service without giving up the user's privacy or security.
+Internally, the `Password` rule object uses the [k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity) model to determine if a password has been leaked via the [haveibeenpwned.com](https://haveibeenpwned.com) service without sacrificing the user's privacy or security.
 
-By default, if a password appears at least once in a data leak, it will be considered compromised. You can customize this threshold by using the first argument of the `uncompromised` method:
+By default, if a password appears at least once in a data leak, it will be considered compromised. You can customize this threshold using the first argument of the `uncompromised` method:
 
-    // Ensure the given password has not been compromised 3 times in the same data leak
+    // Ensure the password appears less than 3 times in the same data leak...
     Password::min(8)->uncompromised(3);
 
-Of course, you may chain all the methods specified above:
+Of course, you may chain all the methods in the examples above:
 
     Password::min(8)
         ->letters()
