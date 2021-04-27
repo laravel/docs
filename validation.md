@@ -347,6 +347,10 @@ Since all form requests extend the base Laravel request class, we may use the `u
 
     Route::post('/comment/{comment}');
 
+Therefore, if your application is taking advantage of [route model binding](/docs/{{version}}/routing#route-model-binding), your code may be made even more succinct by accessing the resolved model as a property of the request:
+
+    return $this->user()->can('update', $this->comment);
+
 If the `authorize` method returns `false`, an HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
 
 If you plan to handle authorization logic for the request in another part of your application, you may simply return `true` from the `authorize` method:
