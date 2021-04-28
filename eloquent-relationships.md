@@ -1402,11 +1402,23 @@ Sometimes you might want to always load some relationships when retrieving a mod
         {
             return $this->belongsTo(Author::class);
         }
+
+        /**
+        * Get the genre of the book.
+        */
+        public function genre()
+        {
+            return $this->belongsTo(Genre::class);
+        }
     }
 
 If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:
 
     $books = Book::without('author')->get();
+
+If you would like to override all items from the `$with` property for a single query, you may use the `withOnly` method:
+
+    $books = Book::withOnly('genre')->get();
 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
