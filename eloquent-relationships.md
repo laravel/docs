@@ -1404,8 +1404,8 @@ Sometimes you might want to always load some relationships when retrieving a mod
         }
 
         /**
-        * Get the genre of the book.
-        */
+         * Get the genre of the book.
+         */
         public function genre()
         {
             return $this->belongsTo(Genre::class);
