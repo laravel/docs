@@ -1416,7 +1416,7 @@ If you would like to remove an item from the `$with` property for a single query
 
     $books = Book::without('author')->get();
 
-If you would like to override all items from the `$with` property for a single query, you may use the `withOnly` method:
+If you would like to override all items within the `$with` property for a single query, you may use the `withOnly` method:
 
     $books = Book::withOnly('genre')->get();
 
