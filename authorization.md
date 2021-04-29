@@ -693,7 +693,7 @@ When authorizing actions using policies, you may pass an array as the second arg
      * Determine if the given post can be updated by the user.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\  $post
+     * @param  \App\Models\Post  $post
      * @param  int  $category
      * @return bool
      */
