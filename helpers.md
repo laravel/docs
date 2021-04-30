@@ -114,6 +114,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
 [Str::remove](#method-str-remove)
+[Str::replace](#method-str-replace)
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
@@ -1439,6 +1440,19 @@ The `Str::remove` method removes the given value or array of values from the str
     // Ptr Pipr pickd a pck of pickld ppprs.
 
 You may also pass `false` as a third argument to the `remove` method to ignore case when removing strings.
+
+<a name="method-str-replace"></a>
+#### `Str::replace()` {#collection-method}
+
+The `Str::replace` method replaces a given string within the string:
+
+    use Illuminate\Support\Str;
+
+    $string = 'Laravel 8.x';
+
+    $replaced = Str::replace('8.x', '9.x', $string);
+
+    // Laravel 9.x
 
 <a name="method-str-replace-array"></a>
 #### `Str::replaceArray()` {#collection-method}
