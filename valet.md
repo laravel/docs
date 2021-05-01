@@ -252,6 +252,8 @@ You may use the `proxies` command to list all site configurations that are proxi
 
     valet proxies
 
+> {tip} By default, Valet proxy over HTTP. However, if you would like to proxy over encrypted TLS using HTTP/2, you may use the  `--secure` option, such as `valet proxy elasticsearch http://127.0.0.1:9200 --secure`. You may rollback to a non-secure proxy using the same command without the secure option.
+
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
 
