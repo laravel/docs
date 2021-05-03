@@ -241,7 +241,11 @@ Sometimes you may wish to proxy a Valet domain to another service on your local 
 To solve this, you may use the `proxy` command to generate a proxy. For example, you may proxy all traffic from `http://elasticsearch.test` to `http://127.0.0.1:9200`:
 
 ```bash
+// Proxy over HTTP...
 valet proxy elasticsearch http://127.0.0.1:9200
+
+// Proxy over TLS + HTTP/2...
+valet proxy elasticsearch http://127.0.0.1:9200 --secure
 ```
 
 You may remove a proxy using the `unproxy` command:
@@ -251,8 +255,6 @@ You may remove a proxy using the `unproxy` command:
 You may use the `proxies` command to list all site configurations that are proxied:
 
     valet proxies
-
-> {tip} By default, Valet proxy over HTTP. However, if you would like to proxy over encrypted TLS using HTTP/2, you may use the  `--secure` option, such as `valet proxy elasticsearch http://127.0.0.1:9200 --secure`. You may rollback to a non-secure proxy using the same command without the secure option.
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
