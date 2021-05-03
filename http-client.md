@@ -127,6 +127,24 @@ Headers may be added to requests using the `withHeaders` method. This `withHeade
         'name' => 'Taylor',
     ]);
 
+You may also conditionally add headers using the `withHeadersIf` method. This `withHeadersIf` method accepts either an expression that evaluates to a boolean, or a callback that returns a boolean. The second paramater should contain an array of key / value pairs:
+
+    // Simple
+    $response = Http::withHeadersIf(true, [
+        'X-First' => 'foo',
+    ])->post('http://example.com/users', [
+        'name' => 'Taylor',
+    ]);
+    
+    // Using a callback 
+    $response = Http::withHeadersIf(function() {
+        return true;
+    }, [
+        'X-First' => 'foo',
+    ])->post('http://example.com/users', [
+        'name' => 'Taylor',
+    ]);
+
 <a name="authentication"></a>
 ### Authentication
 
