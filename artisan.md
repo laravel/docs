@@ -356,15 +356,15 @@ The `secret` method is similar to `ask`, but the user's input will not be visibl
 <a name="asking-for-confirmation"></a>
 #### Asking For Confirmation
 
-If you need to ask the user for a simple "yes or no" confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` or `yes` in response to the prompt, the method will return `true`.
+If you need to ask the user for a simple "yes or no" confirmation, you may use the `confirm` method. By default, this method will return `true`. However, if the user enters `n` or `no` in response to the prompt, the method will return `false`.
 
     if ($this->confirm('Do you wish to continue?')) {
         //
     }
 
-If necessary, you may specify that the confirmation prompt should return `true` by default by passing `true` as the second argument to the `confirm` method:
+If necessary, you may specify that the confirmation prompt should return `false` by default by passing `false` as the second argument to the `confirm` method:
 
-    if ($this->confirm('Do you wish to continue?', true)) {
+    if ($this->confirm('Do you wish to continue?', false)) {
         //
     }
 
