@@ -368,6 +368,9 @@ If necessary, you may specify that the confirmation prompt should return `true` 
         //
     }
 
+> {note} If you are using `$this->output->confirm()` this behavior is the opposite in Symfony and it will default to `true`
+
+
 <a name="auto-completion"></a>
 #### Auto-Completion
 
