@@ -496,8 +496,8 @@ To define a relationship within your model factory, you will typically assign a 
     {
         return [
             'user_id' => User::factory(),
-            'title' => $this->faker->title,
-            'content' => $this->faker->paragraph,
+            'title' => $this->faker->title(),
+            'content' => $this->faker->paragraph(),
         ];
     }
 
@@ -515,8 +515,8 @@ If the relationship's columns depend on the factory that defines it you may assi
             'user_type' => function (array $attributes) {
                 return User::find($attributes['user_id'])->type;
             },
-            'title' => $this->faker->title,
-            'content' => $this->faker->paragraph,
+            'title' => $this->faker->title(),
+            'content' => $this->faker->paragraph(),
         ];
     }
 
