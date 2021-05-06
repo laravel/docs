@@ -1659,6 +1659,8 @@ When a particular job fails, you may want to send an alert to your users or reve
         }
     }
 
+> {note} If some property's value was changed during job processing, the new value won't be available in `failed` method, only the value at the moment when job had been dispatched.
+
 <a name="retrying-failed-jobs"></a>
 ### Retrying Failed Jobs
 
