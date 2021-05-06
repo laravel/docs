@@ -81,7 +81,7 @@ Then, set the `SCOUT_DRIVER` environment variable as well as your MeiliSearch `h
 
 For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
 
-> {tip} If you aren't sure how to install MeiliSearch on your local machine, you may use [Laravel Sail](https://laravel.com/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
+> {tip} If you aren't sure how to install MeiliSearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
 
 <a name="queueing"></a>
 ### Queueing
