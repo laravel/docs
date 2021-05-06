@@ -139,20 +139,23 @@ Once you have registered the middleware in your kernel, you may attach it to a r
         // ...
     })->name('unsubscribe')->middleware('signed');
     
-<a name="rendering-signed-route-failures"></a>
-#### Rendering Signed Route Failures
+<a name="responding-to-invalid-signed-routes"></a>
+#### Responding To Invalid Signed Routes
 
-When a person hits a signed url that has expired they'll be greeted with a 403 error page. You can customize how this page looks by catching the `InvalidSignatureException` exception in your exception handler and returning a custom view like so:
+When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom "renderable" closure for the `InvalidSignatureException` exception in your exception handler. This closure should return an HTTP response:
 
     use Illuminate\Routing\Exceptions\InvalidSignatureException;
 
-    public function render($request, Throwable $exception)
+    /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function register()
     {
-        if ($exception instanceof InvalidSignatureException) {
-            return response()->view('errors.link-expired')->setStatusCode(Response::HTTP_FORBIDDEN);
-        }
-
-        // ...
+        $this->renderable(function (InvalidSignatureException $e) {
+            return response()->view('error.link-expired', [], 403);
+        });
     }
 
 <a name="urls-for-controller-actions"></a>
