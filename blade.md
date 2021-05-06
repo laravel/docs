@@ -1193,6 +1193,16 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
 @enderror
 ```
 
+You can also use `@else` if you want to output something different when there is no error for a specific field:
+
+```html
+<!-- /resources/views/auth.blade.php -->
+
+<label for="email">Email address</label>
+
+<input id="email" type="email" class="@error('email') is-invalid @else is-valid @enderror">
+```
+
 <a name="stacks"></a>
 ## Stacks
 
