@@ -3,7 +3,9 @@
 - [Introduction](#introduction)
 - [Basic Usage](#basic-usage)
     - [Paginating Query Builder Results](#paginating-query-builder-results)
+    - [Cursor vs Offset Pagination](#cursor-vs-offset-pagination)
     - [Paginating Eloquent Results](#paginating-eloquent-results)
+    - [The Cursor Instance](#the-cursor-instance)
     - [Manually Creating A Paginator](#manually-creating-a-paginator)
     - [Customizing Pagination URLs](#customizing-pagination-urls)
 - [Displaying Pagination Results](#displaying-pagination-results)
@@ -11,7 +13,8 @@
     - [Converting Results To JSON](#converting-results-to-json)
 - [Customizing The Pagination View](#customizing-the-pagination-view)
     - [Using Bootstrap](#using-bootstrap)
-- [Paginator Instance Methods](#paginator-instance-methods)
+- [Paginator and LengthAwarePaginator Instance Methods](#paginator-instance-methods)
+- [Cursor Paginator Instance Methods](#cursor-paginator-instance-methods)
 
 <a name="introduction"></a>
 ## Introduction
@@ -53,13 +56,47 @@ In this example, the only argument passed to the `paginate` method is the number
     }
 
 <a name="simple-pagination"></a>
-#### "Simple Pagination"
+#### Simple Pagination
 
 The `paginate` method counts the total number of records matched by the query before retrieving the records from the database. This is done so that the paginator knows how many pages of records there are in total. However, if you do not plan to show the total number of pages in your application's UI then the record count query is unnecessary.
 
 Therefore, if you only need to display simple "Next" and "Previous" links in your application's UI, you may use the `simplePaginate` method to perform a single, efficient query:
 
     $users = DB::table('users')->simplePaginate(15);
+
+<a name="cursor-pagination"></a>
+#### Cursor Pagination
+
+While `paginate` and `simplePaginate` create queries using `offset`, cursor pagination works by constructing `where` clauses that compare the values of the ordered columns. This can be really helpful for large data-sets, infinite scrolling and APIs.
+
+Similar to `simplePaginate`, `cursorPaginate` displays "Next" and "Previous" links in your application's UI. You may use the `cursorPaginate` method like so:
+
+    $users = DB::table('users')->orderBy('id')->cursorPaginate(15);
+
+An order by clause is required for cursor pagination to work for the Database Query Builder.
+
+<a name="cursor-vs-offset-pagination"></a>
+### Cursor vs Offset Pagination
+
+To illustrate the difference between offset pagination and cursor pagination, mentioned below are the SQL queries constructed by both to view the "second page" of a `users` table ordered by `id`:
+
+```sql
+# Offset Pagination
+select * from users order by id asc limit 15 offset 15;
+
+# Cursor Pagination
+select * from users where id > 15 order by id asc limit 15;
+```
+
+Cursor pagination offers the following advantages over offset pagination:
+1. For large data-sets, cursor pagination will perform better if the "order by" columns are indexed. This is because offset scans through all the previous data unlike comparison queries.
+2. For data-sets with frequent writes, offset pagination may skip records or show duplicates if results have been added to or deleted from the previous page.
+
+Cursor pagination, however, has the following limitations:
+1. Like `simplePaginate`, it can only be used to display "Next" and "Previous" links and does not support page numbers.
+2. It requires that the ordering is based on at least one unique column (or a combination of columns that are unique).
+3. It requires that the "order by" directions (desc/asc) are the same if there are multiple "order by" clauses.
+4. Query expressions in "order by" clauses are supported only if they are aliased and added to the select clause as well.
 
 <a name="paginating-eloquent-results"></a>
 ### Paginating Eloquent Results
@@ -78,14 +115,47 @@ You may also use the `simplePaginate` method when paginating Eloquent models:
 
     $users = User::where('votes', '>', 100)->simplePaginate(15);
 
+Similarly, you may use the `cursorPaginate` method to cursor paginate Eloquent models:
+
+    $users = User::where('votes', '>', 100)->cursorPaginate(15);
+
+<a name="the-cursor-instance"></a>
+### The Cursor Instance
+
+Offset pagination determines which items to show using the page number. Cursor pagination instead uses what is called a "cursor" to determine which items to display.
+
+The cursor is an instance of `Illuminate\Pagination\Cursor`, which includes values that identify a specific record, from where to start paginating, along with the direction to paginate.
+
+So, for instance, if we were paginating records from the `users` table in ascending order of the `id`, a cursor can be instantiated like so:
+
+```php
+use Illuminate\Pagination\Cursor;
+
+$cursor = new Cursor(['id' => 10], true);
+```
+
+The first argument of the constructor identifies the record after which we need to start paginating and the second argument refers to the direction (`true` being forwards). The cursor above indicates that the pagination should start from an `id` greater than 10.
+
+The `cursorPaginate` methods on the Eloquent and Database query builders will automatically instantiate the cursors for the next and previous pages, json encode them, and then base64 safe URL encode the values as a query parameter.
+
+However, in case you need to manually supply a cursor, you may do so using the `cursorPaginate` method on the Eloquent or Database query builder:
+
+```php
+use App\Models\User;
+use Illuminate\Pagination\Cursor;
+
+$cursor = new Cursor(['id' => 10, true]);
+$users = User::cursorPaginate(15, ['*'], 'cursor', $cursor);
+```
+
 <a name="manually-creating-a-paginator"></a>
 ### Manually Creating A Paginator
 
-Sometimes you may wish to create a pagination instance manually, passing it an array of items that you already have in memory. You may do so by creating either an `Illuminate\Pagination\Paginator` or `Illuminate\Pagination\LengthAwarePaginator` instance, depending on your needs.
+Sometimes you may wish to create a pagination instance manually, passing it an array of items that you already have in memory. You may do so by creating either an `Illuminate\Pagination\Paginator`, `Illuminate\Pagination\LengthAwarePaginator` or `Illuminate\Pagination\CursorPaginator` instance, depending on your needs.
 
-The `Paginator` class does not need to know the total number of items in the result set; however, because of this, the class does not have methods for retrieving the index of the last page. The `LengthAwarePaginator` accepts almost the same arguments as the `Paginator`; however, it requires a count of the total number of items in the result set.
+The `Paginator` and `CursorPaginator` classes do not need to know the total number of items in the result set; however, because of this, these classes do not have methods for retrieving the index of the last page. The `LengthAwarePaginator` accepts almost the same arguments as the `Paginator`; however, it requires a count of the total number of items in the result set.
 
-In other words, the `Paginator` corresponds to the `simplePaginate` method on the query builder, while the `LengthAwarePaginator` corresponds to the `paginate` method.
+In other words, the `Paginator` corresponds to the `simplePaginate` method on the query builder, the `CursorPaginator` corresponds to the `cursorPaginate` method and the `LengthAwarePaginator` corresponds to the `paginate` method.
 
 > {note} When manually creating a paginator instance, you should manually "slice" the array of results you pass to the paginator. If you're unsure how to do this, check out the [array_slice](https://secure.php.net/manual/en/function.array-slice.php) PHP function.
 
@@ -133,7 +203,9 @@ If you need to append a "hash fragment" to URLs generated by the paginator, you 
 <a name="displaying-pagination-results"></a>
 ## Displaying Pagination Results
 
-When calling the `paginate` method, you will receive an instance of `Illuminate\Pagination\LengthAwarePaginator`. When calling the `simplePaginate` method, you will receive an instance of `Illuminate\Pagination\Paginator`. These objects provide several methods that describe the result set. In addition to these helpers methods, the paginator instances are iterators and may be looped as an array. So, once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/blade):
+When calling the `paginate` method, you will receive an instance of `Illuminate\Pagination\LengthAwarePaginator`. When calling the `simplePaginate` method, you will receive an instance of `Illuminate\Pagination\Paginator`. When calling the `cursorPaginate` method, you will receive an instance of `Illuminate\Pagination\CursorPaginator`.
+
+These objects provide several methods that describe the result set. In addition to these helpers methods, the paginator instances are iterators and may be looped as an array. So, once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/blade):
 
 ```html
 <div class="container">
@@ -248,7 +320,7 @@ Laravel includes pagination views built using [Bootstrap CSS](https://getbootstr
     }
 
 <a name="paginator-instance-methods"></a>
-## Paginator Instance Methods
+## Paginator and LengthAwarePaginator Instance Methods
 
 Each paginator instance provides additional pagination information via the following methods:
 
@@ -272,3 +344,26 @@ Method  |  Description
 `$paginator->url($page)`  |  Get the URL for a given page number.
 `$paginator->getPageName()`  |  Get the query string variable used to store the page.
 `$paginator->setPageName($name)`  |  Set the query string variable used to store the page.
+
+<a name="cursor-paginator-instance-methods"></a>
+## Cursor Paginator Instance Methods
+
+Each cursor paginator instance provides additional pagination information via the following methods:
+
+Method  |  Description
+-------  |  -----------
+`$paginator->count()`  |  Get the number of items for the current page.
+`$paginator->cursor()`  |  Get the current cursor instance.
+`$paginator->getOptions()`  |  Get the paginator options.
+`$paginator->hasPages()`  |  Determine if there are enough items to split into multiple pages.
+`$paginator->hasMorePages()`  |  Determine if there are more items in the data store.
+`$paginator->getCursorName()`  |  Get the query string variable used to store the cursor.
+`$paginator->items()`  |  Get the items for the current page.
+`$paginator->nextCursor()`  |  Get the cursor instance for the next set of items.
+`$paginator->nextPageUrl()`  |  Get the URL for the next page.
+`$paginator->onFirstPage()`  |  Determine if the paginator is on the first page.
+`$paginator->perPage()`  |  The number of items to be shown per page.
+`$paginator->previousCursor()`  |  Get the cursor instance for the previous set of items.
+`$paginator->previousPageUrl()`  |  Get the URL for the previous page.
+`$paginator->setCursorName()`  |  Set the query string variable used to store the cursor.
+`$paginator->url($cursor)`  |  Get the URL for a given cursor instance.
