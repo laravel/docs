@@ -1179,6 +1179,16 @@ The `@error` directive may be used to quickly check if [validation error message
 @enderror
 ```
 
+Since the `@error` directive compiles to an "if" statement, you may use the `@else` directive to render content when there is not an error for an attribute:
+
+```html
+<!-- /resources/views/auth.blade.php -->
+
+<label for="email">Email address</label>
+
+<input id="email" type="email" class="@error('email') is-invalid @else is-valid @enderror">
+```
+
 You may pass [the name of a specific error bag](/docs/{{version}}/validation#named-error-bags) as the second parameter to the `@error` directive to retrieve validation error messages on pages containing multiple forms:
 
 ```html
@@ -1191,16 +1201,6 @@ You may pass [the name of a specific error bag](/docs/{{version}}/validation#nam
 @error('email', 'login')
     <div class="alert alert-danger">{{ $message }}</div>
 @enderror
-```
-
-You can also use `@else` if you want to output something different when there is no error for a specific field:
-
-```html
-<!-- /resources/views/auth.blade.php -->
-
-<label for="email">Email address</label>
-
-<input id="email" type="email" class="@error('email') is-invalid @else is-valid @enderror">
 ```
 
 <a name="stacks"></a>
