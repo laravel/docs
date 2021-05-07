@@ -47,7 +47,7 @@ The current session's CSRF token can be accessed via the request's session or vi
         // ...
     });
 
-Anytime you define an HTML form in your application, you should include a hidden CSRF `_token` field in the form so that the CSRF protection middleware can validate the request. For convenience, you may use the `@csrf` Blade directive to generate the hidden token input field:
+Anytime you define a "POST", "PUT", "PATCH", or "DELETE" HTML form in your application, you should include a hidden CSRF `_token` field in the form so that the CSRF protection middleware can validate the request. For convenience, you may use the `@csrf` Blade directive to generate the hidden token input field:
 
     <form method="POST" action="/profile">
         @csrf
