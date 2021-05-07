@@ -1659,6 +1659,8 @@ When a particular job fails, you may want to send an alert to your users or reve
         }
     }
 
+> {note} A new instance of the job is instantiated before invoking the `failed` method; therefore, any class property modifications that may have occurred within the `handle` method will be lost.
+
 <a name="retrying-failed-jobs"></a>
 ### Retrying Failed Jobs
 
