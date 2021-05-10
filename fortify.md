@@ -353,6 +353,20 @@ Fortify will take care of defining the `/forgot-password` endpoint that returns 
 
 The `/forgot-password` endpoint expects a string `email` field. The name of this field / database column should match the `email` configuration value within your application's `fortify` configuration file.
 
+#### Password Reset for SPA Application
+If you use single page applications (SPAs) that need resetting password, you should add this on your `App\Providers\AuthServiceProvider` class:
+
+```php
+public function boot()
+{
+    ResetPassword::createUrlUsing(function ($user, string $token) {
+        return env('SPA_URL') . '/reset-password?token=' . $token . '&email=' . $user->email;
+    });
+
+    // ...
+}
+```
+
 <a name="handling-the-password-reset-link-request-response"></a>
 #### Handling The Password Reset Link Request Response
 
