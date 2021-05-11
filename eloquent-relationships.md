@@ -271,6 +271,7 @@ To populate the default model with attributes, you may pass an array or closure 
     {
         return $this->belongsTo(User::class)->withDefault(function ($user, $post) {
             $user->name = 'Guest Author';
+            return $user;
         });
     }
 
