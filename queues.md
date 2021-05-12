@@ -1724,7 +1724,7 @@ In addition, ensure that you install the AWS SDK so that your Laravel applicatio
 composer require aws/aws-sdk-php
 ```
 
-Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. In addition, you should define a `key`, `secret`, and `region` configuration option within the failed job configuration array. These options will be used to authenticate with AWS. When using the `dynamodb` driver, the `queue.failed.database` configuration option is unnecessary:
+Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. In addition, you should define `key`, `secret`, and `region` configuration options within the failed job configuration array. These options will be used to authenticate with AWS. When using the `dynamodb` driver, the `queue.failed.database` configuration option is unnecessary:
 
 ```php
 'failed' => [
