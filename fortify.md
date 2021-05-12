@@ -9,7 +9,7 @@
     - [Disabling Views](#disabling-views)
 - [Authentication](#authentication)
     - [Customizing User Authentication](#customizing-user-authentication)
-    - [Customizing Authentication Pipeline](#customizing-authentication-pipeline)
+    - [Customizing The Authentication Pipeline](#customizing-the-authentication-pipeline)
 - [Two Factor Authentication](#two-factor-authentication)
     - [Enabling Two Factor Authentication](#enabling-two-factor-authentication)
     - [Authenticating With Two Factor Authentication](#authenticating-with-two-factor-authentication)
@@ -188,12 +188,10 @@ public function boot()
 
 You may customize the authentication guard used by Fortify within your application's `fortify` configuration file. However, you should ensure that the configured guard is an implementation of `Illuminate\Contracts\Auth\StatefulGuard`. If you are attempting to use Laravel Fortify to authenticate an SPA, you should use Laravel's default `web` guard in combination with [Laravel Sanctum](https://laravel.com/docs/sanctum).
 
-<a name="customizing-authentication-pipeline"></a>
+<a name="customizing-the-authentication-pipeline"></a>
 ### Customizing The Authentication Pipeline
 
-Laravel Fortify authenticates login requests through a pipeline of invokable classes.
-
-If you would like, you may define a custom pipeline of classes that login requests should be piped through. Each class should have an `__invoke` method which receives the incoming `Illuminate\Http\Request` instance and, like middleware, a `$next` variable that is invoked in order to pass the request to the next class in the pipeline.
+Laravel Fortify authenticates login requests through a pipeline of invokable classes. If you would like, you may define a custom pipeline of classes that login requests should be piped through. Each class should have an `__invoke` method which receives the incoming `Illuminate\Http\Request` instance and, like [middleware](/docs/{{version}}/middleware), a `$next` variable that is invoked in order to pass the request to the next class in the pipeline.
 
 To define your custom pipeline, you may use the `Fortify::authenticateThrough` method. This method accepts a closure which should return the array of classes to pipe the login request through. Typically, this method should be called from the `boot` method of your `App\Providers\FortifyServiceProvider` class.
 
@@ -331,7 +329,7 @@ use Laravel\Fortify\Fortify;
 public function boot()
 {
     Fortify::registerView(function () {
-        return view('auth.register'); 
+        return view('auth.register');
     });
 
     // ...
