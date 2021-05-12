@@ -1714,11 +1714,27 @@ For convenience, you may choose to automatically delete jobs with missing models
 <a name="storing-failed-jobs-in-dynamodb"></a>
 ### Storing Failed Jobs In DynamoDB
 
-Laravel also provides support for storing your failed job records in [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database table. However, you must create a DynamoDB table to store all of the failed job records. Typically, this table should be named `failed_jobs`. However, you should name the table based on the value of the `queue.failed.table` configuration value within your application's `queue` configuration file.
+Laravel also provides support for storing your failed job records in [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database table. However, you must create a DynamoDB table to store all of the failed job records. Typically, this table should be named `failed_jobs`, but you should name the table based on the value of the `queue.failed.table` configuration value within your application's `queue` configuration file.
 
-This table should have a string primary partition key named `application` and a string primary sort key named `uuid`. The `application` portion of the key will contain your application's name as defined by the `name` configuration value within your application's `app` configuration file. Since the application name is part of the DynamoDB table's key, you can use the same table to store failed jobs for multiple Laravel applications.
+The `failed_jobs` table should have a string primary partition key named `application` and a string primary sort key named `uuid`. The `application` portion of the key will contain your application's name as defined by the `name` configuration value within your application's `app` configuration file. Since the application name is part of the DynamoDB table's key, you can use the same table to store failed jobs for multiple Laravel applications.
 
-Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. When using the `dynamodb` driver, the `queue.failed.database` configuration option is unnecessary.
+In addition, ensure that you install the AWS SDK so that your Laravel application can communicate with Amazon DynamoDB:
+
+```nothing
+composer require aws/aws-sdk-php
+```
+
+Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. In addition, you should define a `key`, `secret`, and `region` configuration option within the failed job configuration array. These options will be used to authenticate with AWS. When using the `dynamodb` driver, the `queue.failed.database` configuration option is unnecessary:
+
+```php
+'failed' => [
+    'driver' => env('QUEUE_FAILED_DRIVER', 'dynamodb'),
+    'key' => env('AWS_ACCESS_KEY_ID'),
+    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    'table' => 'failed_jobs',
+],
+```
 
 <a name="failed-job-events"></a>
 ### Failed Job Events
