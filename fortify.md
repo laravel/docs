@@ -9,6 +9,7 @@
     - [Disabling Views](#disabling-views)
 - [Authentication](#authentication)
     - [Customizing User Authentication](#customizing-user-authentication)
+    - [Customizing Authentication Pipeline](#customizing-authentication-pipeline)
 - [Two Factor Authentication](#two-factor-authentication)
     - [Enabling Two Factor Authentication](#enabling-two-factor-authentication)
     - [Authenticating With Two Factor Authentication](#authenticating-with-two-factor-authentication)
@@ -186,6 +187,35 @@ public function boot()
 #### Authentication Guard
 
 You may customize the authentication guard used by Fortify within your application's `fortify` configuration file. However, you should ensure that the configured guard is an implementation of `Illuminate\Contracts\Auth\StatefulGuard`. If you are attempting to use Laravel Fortify to authenticate an SPA, you should use Laravel's default `web` guard in combination with [Laravel Sanctum](https://laravel.com/docs/sanctum).
+
+<a name="customizing-authentication-pipeline"></a>
+### Customizing The Authentication Pipeline
+
+Laravel Fortify authenticates login requests through a pipeline of invokable classes.
+
+If you would like, you may define a custom pipeline of classes that login requests should be piped through. Each class should have an `__invoke` method which receives the incoming `Illuminate\Http\Request` instance and, like middleware, a `$next` variable that is invoked in order to pass the request to the next class in the pipeline.
+
+To define your custom pipeline, you may use the `Fortify::authenticateThrough` method. This method accepts a closure which should return the array of classes to pipe the login request through. Typically, this method should be called from the `boot` method of your `App\Providers\FortifyServiceProvider` class.
+
+The example below contains the default pipeline definition that you may use as a starting point when making your own modifications:
+
+```php
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
+use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
+use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
+use Laravel\Fortify\Fortify;
+use Illuminate\Http\Request;
+
+Fortify::authenticateThrough(function (Request $request) {
+    return array_filter([
+            config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
+            Features::enabled(Features::twoFactorAuthentication()) ? RedirectIfTwoFactorAuthenticatable::class : null,
+            AttemptToAuthenticate::class,
+            PrepareAuthenticatedSession::class,
+    ]);
+});
+```
 
 <a name="two-factor-authentication"></a>
 ## Two Factor Authentication
