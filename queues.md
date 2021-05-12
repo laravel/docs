@@ -1718,6 +1718,8 @@ Laravel also provides support for storing your failed job records in [DynamoDB](
 
 This table should have a string primary partition key named `application` and a string primary sort key named `uuid`. The `application` portion of the key will contain your application's name as defined by the `name` configuration value within your application's `app` configuration file. Since the application name is part of the DynamoDB table's key, you can use the same table to store failed jobs for multiple Laravel applications.
 
+Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. When using the `dynamodb` driver, the `queue.failed.database` configuration option is unnecessary.
+
 <a name="failed-job-events"></a>
 ### Failed Job Events
 
