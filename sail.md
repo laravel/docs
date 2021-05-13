@@ -16,6 +16,7 @@
 - [Running Tests](#running-tests)
     - [Laravel Dusk](#laravel-dusk)
 - [Previewing Emails](#previewing-emails)
+- [Cloud Storage](#cloud-storage)
 - [Container CLI](#sail-container-cli)
 - [PHP Versions](#sail-php-versions)
 - [Sharing Your Site](#sharing-your-site)
@@ -236,6 +237,25 @@ MAIL_PORT=1025
 ```
 
 When Sail is running, you may access the MailHog web interface at: http://localhost:8025
+
+<a name="cloud-storage"></a>
+## Cloud Storage
+
+If you chose to install the [MinIO](https://min.io/) service when installing Sail, your application's `docker-compose.yml` file will contain an entry for this S3 compatible Object Storage service. Once you have started your containers, you may connect to MinIO instance within your application by adding the below `disk` to `config/filesystems.php`. Make sure you application also has the [required prerequisites](https://laravel.com/docs/8.x/filesystem#driver-prerequisites) for using an S3 compatible filesystems.
+
+```bash
+'minio' => [
+    'driver' => 's3',
+    'key' => env('AWS_ACCESS_KEY_ID', 'sail'),
+    'secret' => env('AWS_SECRET_ACCESS_KEY', 'password'),
+    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    'bucket' => env('AWS_BUCKET', 'local'),
+    'endpoint' => env('AWS_ENDPOINT', 'http://minio:9000'),
+    'use_path_style_endpoint' => true,
+],
+```
+
+From your local machine, you may access MinIO's web based administration panel by navigating to `http://localhost:9000` in your web browser. You will want to log in to create storage buckets from the interface, the default username is `sail` and the corresponding password is `password`.
 
 <a name="sail-container-cli"></a>
 ## Container CLI
