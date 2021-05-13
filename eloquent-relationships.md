@@ -1659,6 +1659,10 @@ You may also pass additional intermediate table values with the IDs:
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
 
+You can also use the method `syncWithPivotValues` to sync the intermediate tables with a list of IDs or collection of models with the given pivot values:
+
+    $user->roles()->syncWithPivotValues($ids, ['active' => true]);
+
 If you do not want to detach existing IDs that are missing from the given array, you may use the `syncWithoutDetaching` method:
 
     $user->roles()->syncWithoutDetaching([1, 2, 3]);
