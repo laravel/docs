@@ -538,3 +538,40 @@ Fortify will take care of defining the `/user/confirm-password` endpoint that re
 If the password matches the user's current password, Fortify will redirect the user to the route they were attempting to access. If the request was an XHR request, a 201 HTTP response will be returned.
 
 If the request was not successful, the user will be redirected back to the confirm password screen and the validation errors will be available to you via the shared `$errors` Blade template variable. Or, in the case of an XHR request, the validation errors will be returned with a 422 HTTP response.
+
+
+## Logout
+
+### Logout redirection
+
+By default Laravel will return json response `new JsonResponse('', 204)` or it will redirect to home page `redirect('/');`. For more info take a look at `\Laravel\Fortify\Http\Responses\LogoutResponse`.
+
+Sometimes you may want to change redirection URL. You can do that by implementing your own `LogoutResponse`:
+```php
+namespace App\Http\Responses;
+
+use Illuminate\Http\JsonResponse;
+use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
+
+class LogoutResponse implements LogoutResponseContract
+{
+    public function toResponse($request)
+    {
+        return $request->wantsJson()
+            ? new JsonResponse('', 204)
+            : redirect('/login');
+    }
+}
+```
+
+Add following lines in `FortifyServiceProvider`
+
+```php
+public function boot()
+{
+    $this->app->singleton(
+        \Laravel\Fortify\Contracts\LogoutResponse::class,
+        \App\Http\Responses\LogoutResponse::class
+    );
+}
+```
