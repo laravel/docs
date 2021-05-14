@@ -1371,7 +1371,7 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
 
 You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve:
 
-    $books = Book::with('author:id,name')->get();
+    $books = Book::with('author:id,name,book_id')->get();
 
 > {note} When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
 
