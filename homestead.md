@@ -104,6 +104,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Crystal & Lucky Framework
 - Docker
 - Elasticsearch
+- EventStoreDB
 - Gearman
 - Go
 - Grafana
@@ -117,8 +118,12 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - Open Resty
 - PM2
 - Python
+- R
 - RabbitMQ
+- RVM (Ruby Version Manager)
 - Solr
+- TimescaleDB
+- Trader <small>(PHP extension)</small>
 - Webdriver & Laravel Dusk Utilities
 </div>
 
@@ -303,6 +308,8 @@ Optional software is installed using the `features` option within your `Homestea
         - docker: true
         - elasticsearch:
             version: 7.9.0
+        - eventstore: true
+            version: 21.2.0
         - gearman: true
         - golang: true
         - grafana: true
@@ -316,8 +323,12 @@ Optional software is installed using the `features` option within your `Homestea
         - openresty: true
         - pm2: true
         - python: true
+        - r-base: true
         - rabbitmq: true
+        - rvm: true
         - solr: true
+        - timescaledb: true
+        - trader: true
         - webdriver: true
 
 <a name="elasticsearch"></a>
