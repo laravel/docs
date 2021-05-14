@@ -67,7 +67,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - PHP 7.0
 - PHP 5.6
 - Nginx
-- MySQL
+- MySQL (8.0)
 - lmm
 - Sqlite3
 - PostgreSQL (9.6, 10, 11, 12, 13)
