@@ -7,6 +7,7 @@
     - [Swoole](#swoole)
 - [Serving Your Application](#serving-your-application)
     - [Serving Your Application Via HTTPS](#serving-your-application-via-https)
+    - [Serving Your Application Via Nginx](#serving-your-application-via-nginx)
     - [Watching For File Changes](#watching-for-file-changes)
     - [Specifying The Worker Count](#specifying-the-worker-count)
     - [Specifying The Max Request Count](#specifying-the-max-request-count)
@@ -144,10 +145,14 @@ By default, applications running via Octane generate links prefixed with `http:/
 'https' => env('OCTANE_HTTPS', false),
 ```
 
-<a name="using-octane-with-nginx"></a>
-### Using Octane with Nginx
+<a name="serving-your-application-via-nginx"></a>
+### Serving Your Application Via Nginx
 
-In production environments, it is usually good practice to run Octane behind a web server such as Nginx. In this example configuation file, Nginx will serve the site's static assets and proxy requests to the Octane server running on port 8000.
+> {tip} If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel Octane application, check out [Laravel Forge](https://forge.laravel.com).
+
+In production environments, you should serve your Octane application behind a traditional web server such as a Nginx or Apache. Doing so will allow the web server to serve your static assets such as images and stylesheets, as well as manage your SSL certificate termination.
+
+In the Nginx configuration example below file, Nginx will serve the site's static assets and proxy requests to the Octane server that is running on port 8000:
 
 ```conf
 map $http_upgrade $connection_upgrade {
