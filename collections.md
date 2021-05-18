@@ -384,7 +384,7 @@ The `concat` method appends the given `array` or collection's values onto the en
 <a name="method-contains"></a>
 #### `contains()` {#collection-method}
 
-The `contains` method determines whether the collection contains a given item. You may pass a closure to the `contains` to determine if an element exists in the collection matching a given truth test:
+The `contains` method determines whether the collection contains a given item. You may pass a closure to the `contains` method to determine if an element exists in the collection matching a given truth test:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
