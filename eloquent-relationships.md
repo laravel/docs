@@ -15,6 +15,7 @@
 - [Polymorphic Relationships](#polymorphic-relationships)
     - [One To One](#one-to-one-polymorphic-relations)
     - [One To Many](#one-to-many-polymorphic-relations)
+    - [One Of Many](#one-of-many-polymorphic-relations)
     - [Many To Many](#many-to-many-polymorphic-relations)
     - [Custom Polymorphic Types](#custom-polymorphic-types)
 - [Dynamic Relationships](#dynamic-relationships)
@@ -863,6 +864,49 @@ You may also retrieve the parent of a polymorphic child model by accessing the n
     $commentable = $comment->commentable;
 
 The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model is the comment's parent.
+
+<a name="one-of-many-polymorphic-relations"></a>
+### One Of Many (Polymorphic)
+
+Sometimes a model may have many related models, yet you want to easily retrieve the "latest" or "oldest" related model of the relationship. For example, a `User` model may be related to many `Image` models, but you want to define a convenient way to interact with the most recent image the user has uploaded. You may accomplish this using the `morphOne` relationship type combined with the `ofMany` methods:
+
+```php
+/**
+ * Get the user's most recent image.
+ */
+public function latestImage()
+{
+    return $this->morphOne(Image::class)->latestOfMany();
+}
+```
+
+Likewise, you may define a method to retrieve the "oldest", or first, related model of a relationship:
+
+```php
+/**
+ * Get the user's oldest image.
+ */
+public function oldestImage()
+{
+    return $this->morphOne(Image::class)->oldestOfMany();
+}
+```
+
+By default, the `latestOfMany` and `oldestOfMany` methods will retrieve the latest or oldest related model based on the model's primary key, which must be sortable. However, sometimes you may wish to retrieve a single model from a larger relationship using a different sorting criteria.
+
+For example, using the `ofMany` method, you may retrieve the user's most "liked" image. The `ofMany` method accepts the sortable column as its first argument and which aggregate function (`min` or `max`) to apply when querying for the related model:
+
+```php
+/**
+ * Get the user's most popular image.
+ */
+public function bestImage()
+{
+    return $this->morphOne(Image::class)->ofMany('likes', 'max');
+}
+```
+
+> {tip} It is possible to construct more advanced "one of many" relationships. For more information, please consult the [has one of many documentation](#advanced-has-one-of-many-relationships).
 
 <a name="many-to-many-polymorphic-relations"></a>
 ### Many To Many (Polymorphic)
