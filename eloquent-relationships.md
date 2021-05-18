@@ -1220,7 +1220,7 @@ If you're combining `withCount` with a `select` statement, ensure that you call 
 <a name="other-aggregate-functions"></a>
 ### Other Aggregate Functions
 
-In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `withAvg`, and `withSum` methods. These methods will place a `{relation}_{function}_{column}` attribute on your resulting models:
+In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `withAvg`, `withSum`, and `withExists` methods. These methods will place a `{relation}_{function}_{column}` attribute on your resulting models:
 
     use App\Models\Post;
 
