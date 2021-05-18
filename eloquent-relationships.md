@@ -324,6 +324,9 @@ It is possible to construct more advanced "has one of many" relationships. For e
 So, in summary, we need to retrieve the latest published pricing where the published date is not in the future. In addition, if two prices have the same published date, we will prefer the price with the greatest ID. To accomplish this, we must pass an array to the `ofMany` method that contains the sortable columns which determine the latest price. In addition, a closure will be provided as the second argument to the `ofMany` method. This closure will be responsible for adding additional publish date constraints to the relationship query:
 
 ```php
+/**
+ * Get the current pricing for the product.
+ */
 public function currentPricing()
 {
     return $this->hasOne(Price::class)->ofMany([
