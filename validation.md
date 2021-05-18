@@ -1466,6 +1466,31 @@ Of course, you may chain all the methods in the examples above:
         ->symbols()
         ->uncompromised()
 
+<a name="defining-default-password-rules"></a>
+#### Defining Default Password Rules
+
+You may find it convenient to specify the default validation rules for passwords in a single location of your application. You can easily accomplish this using the `Password::defaults` method, which accepts a closure. The closure given to the `defaults` method should return the default configuration of the Password rule. Typically, the `defaults` rule should be called within the `boot` method of one of your application's service providers:
+
+```php
+use Illuminate\Validation\Rules\Password;
+
+/**
+ * Bootstrap any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Password::defaults(function () {
+        return Password::min(8)->mixedCase()->uncompromised();
+    });
+}
+```
+
+Then, when you would like to apply the default rules to a particular password undergoing validation, you may invoke the `defaults` method with no arguments:
+
+    'password' => ['required', Password::defaults()],
+
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
 
