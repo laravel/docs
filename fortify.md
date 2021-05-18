@@ -111,7 +111,7 @@ The `fortify` configuration file contains a `features` configuration array. This
 <a name="disabling-views"></a>
 ### Disabling Views
 
-By default, Fortify define routes that are intended to return views, such as a login screen or registration screen. However, if you are building a JavaScript driven single-page application, you may not need these routes. For that reason, you may disable these routes entirely by setting the `views` configuration value within your application's `config/fortify.php` configuration file to `false`:
+By default, Fortify defines routes that are intended to return views, such as a login screen or registration screen. However, if you are building a JavaScript driven single-page application, you may not need these routes. For that reason, you may disable these routes entirely by setting the `views` configuration value within your application's `config/fortify.php` configuration file to `false`:
 
 ```php
 'views' => false,
