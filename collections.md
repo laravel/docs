@@ -322,19 +322,6 @@ The `collapse` method collapses a collection of arrays into a single, flat colle
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-<a name="method-combine"></a>
-#### `combine()` {#collection-method}
-
-The `combine` method combines the values of the collection, as keys, with the values of another array or collection:
-
-    $collection = collect(['name', 'age']);
-
-    $combined = $collection->combine(['George', 29]);
-
-    $combined->all();
-
-    // ['name' => 'George', 'age' => 29]
-
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
 
@@ -367,6 +354,19 @@ The `collect` method is primarily useful for converting [lazy collections](#lazy
     // [1, 2, 3]
 
 > {tip} The `collect` method is especially useful when you have an instance of `Enumerable` and need a non-lazy collection instance. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.
+
+<a name="method-combine"></a>
+#### `combine()` {#collection-method}
+
+The `combine` method combines the values of the collection, as keys, with the values of another array or collection:
+
+    $collection = collect(['name', 'age']);
+
+    $combined = $collection->combine(['George', 29]);
+
+    $combined->all();
+
+    // ['name' => 'George', 'age' => 29]
 
 <a name="method-concat"></a>
 #### `concat()` {#collection-method}
