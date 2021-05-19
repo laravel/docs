@@ -1482,7 +1482,11 @@ use Illuminate\Validation\Rules\Password;
 public function boot()
 {
     Password::defaults(function () {
-        return Password::min(8)->mixedCase()->uncompromised();
+        $rule = Password::min(8);
+
+        return $this->app->isProduction()
+                    ? $rule->mixedCase()->uncompromised()
+                    : $rule;
     });
 }
 ```
