@@ -791,6 +791,22 @@ The field under validation must be entirely alpha-numeric characters.
 
 The field under validation must be a PHP `array`.
 
+When the `array` rule is defined with parameters, each key in the input array must be present within the list of values provided to the rule. In the following example, the `is_admin` key in the input array is invalid since it is not contained in the list of keys provided to the `array` rule:
+
+    use Illuminate\Support\Facades\Validator;
+
+    $input = [
+        'user' => [
+            'username' => 'taylor',
+            'locale' => 'en',
+            'is_admin' => true,
+        ],
+    ];
+
+    Validator::make($input, [
+        'user' => 'array:username,locale',
+    ]);
+
 <a name="rule-bail"></a>
 #### bail
 
