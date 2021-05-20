@@ -1014,7 +1014,7 @@ The field under validation must be included in the given list of values. Since t
         ],
     ]);
 
-Additionally, you may want to support multiple choices and still validate if the values are all in the allowed list. To do that, you may add an `array` rule to the field under validation. The `in` rule will check if the `array` rule is also present in the rules list and will do an `array_diff` comparison instead of the default behavior. In other words, this is a convenient way to allow multiple values and still validate that they are from the allowed list of values:
+Additionally, you may want to support multiple choices and still validate if the values are all in the allowed list. To do that, you may add an `array` rule to the field under validation. The `in` rule will check if the `array` rule is also present in the rules list for that field and make an `array_diff` comparison instead of the default `in_array` check. In other words, this is a convenient way to allow multiple values and still validate that they are from the allowed list of values:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
