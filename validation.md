@@ -1014,6 +1014,23 @@ The field under validation must be included in the given list of values. Since t
         ],
     ]);
 
+Additionally, you may want to support multiple choices and still validate if the values are all in the allowed list. To do that, you may add an `array` rule to the field under validation. The `in` rule will check if the `array` rule is also present in the rules list and will do an `array_diff` comparison instead of the default behavior. In other words, this is a convenient way to allow multiple values and still validate that they are from the allowed list of values:
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rule;
+
+    $data = [
+        'zones' => ['first-zone', 'invalid'],
+    ];
+
+    Validator::make($data, [
+        'zones' => [
+            'required',
+            'array',
+            Rule::in(['first-zone', 'second-zone']),
+        ],
+    ]);
+
 <a name="rule-in-array"></a>
 #### in_array:_anotherfield_.*
 
