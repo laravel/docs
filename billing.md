@@ -1188,7 +1188,7 @@ To ensure your application can handle Stripe webhooks, be sure to configure the 
 Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your application's `App\Http\Middleware\VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
 
     protected $except = [
-        'stripe/*',
+        'stripe/webhook/*',
     ];
 
 <a name="defining-webhook-event-handlers"></a>
