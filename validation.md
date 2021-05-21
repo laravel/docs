@@ -211,7 +211,7 @@ You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly d
 
 <label for="title">Post Title</label>
 
-<input id="title" type="text" class="@error('title') is-invalid @enderror">
+<input id="title" type="text" name="title" class="@error('title') is-invalid @enderror">
 
 @error('title')
     <div class="alert alert-danger">{{ $message }}</div>
