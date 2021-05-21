@@ -91,7 +91,7 @@ Before we create a new Laravel application on your Windows machine, make sure to
 Next, you are ready to create your first Laravel project. Launch [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) and begin a new terminal session for your WSL2 Linux operating system. Next, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
 ```nothing
-curl -s https://laravel.build/example-app | bash
+curl -S https://laravel.build/example-app | bash
 ```
 
 Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
@@ -122,7 +122,7 @@ Once these tools are installed, you may open any Laravel project by executing th
 If you're developing on Linux and [Docker](https://www.docker.com) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
 ```nothing
-curl -s https://laravel.build/example-app | bash
+curl -S https://laravel.build/example-app | bash
 ```
 
 Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
@@ -147,7 +147,7 @@ Once the application's Docker containers have been started, you can access the a
 When creating a new Laravel application via Sail, you may use the `with` query string variable to choose which services should be configured in your new application's `docker-compose.yml` file. Available services include `mysql`, `pgsql`, `mariadb`, `redis`, `memcached`, `meilisearch`, `selenium`, and `mailhog`:
 
 ```nothing
-curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
+curl -S "https://laravel.build/example-app?with=mysql,redis" | bash
 ```
 
 If you do not specify which services you would like configured, a default stack of `mysql`, `redis`, `meilisearch`, `mailhog`, and `selenium` will be configured.
