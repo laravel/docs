@@ -124,7 +124,11 @@ To enable maintenance mode, execute the `down` Artisan command:
 
     php artisan down
 
-You may also provide a `retry` option to the `down` command, which will be set as the `Retry-After` HTTP header's value:
+If you would like the `Refresh` HTTP header to be sent with all maintenance mode responses, you may provide the `refresh` option when invoking the `down` command. The `Refresh` header will instruct the browser to automatically refresh the page after the specified number of seconds:
+
+    php artisan down --refresh=15
+
+You may also provide a `retry` option to the `down` command, which will be set as the `Retry-After` HTTP header's value, although browsers generally ignore this header:
 
     php artisan down --retry=60
 
