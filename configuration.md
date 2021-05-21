@@ -124,7 +124,7 @@ To enable maintenance mode, execute the `down` Artisan command:
 
     php artisan down
 
-To make browsers reload the page again after a number of seconds, the `refresh` option can be used to set the `Refresh` HTTP header in maintenance mode:
+If you would like the `Refresh` HTTP header to be sent with all maintenance mode responses, you may provide the `refresh` option when invoking the `down` command. The `Refresh` header will instruct the browser to automatically refresh the page after the specified number of seconds:
 
     php artisan down --refresh=15
 
