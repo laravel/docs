@@ -126,6 +126,18 @@ Headers may be added to requests using the `withHeaders` method. This `withHeade
     ])->post('http://example.com/users', [
         'name' => 'Taylor',
     ]);
+    
+<a name="accept-content-type"></a>
+#### Accept Content Type
+You may use the `accept` method to define the content type the HTTP client is able to understand.
+
+    $response = Http::accept('application/json')->get('http://example.com/users');
+    
+<a name="accept-json-content-type"></a>
+#### Accept JSON Content Type
+You may use the `acceptJson` method as an alternative to the `accept` method with `application/json` content type.
+
+    $response = Http::acceptJson()->get('http://example.com/users');
 
 <a name="authentication"></a>
 ### Authentication
