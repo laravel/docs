@@ -1103,7 +1103,7 @@ You may use the `endTrial` method to immediately end a subscription trial:
 <a name="defining-trial-days-in-stripe-cashier"></a>
 #### Defining Trial Days In Stripe / Cashier
 
-You may choose to define how many trial days your plan's receive in the Stripe dashboard or always pass them explicitly using Cashier. If you choose to define your plan's trial days in Stripe you should be aware that new subscriptions, including new subscriptions for a customer that had a subscription in the past, will always receive a trial period unless you explicitly call the `trialDays(0)` method.
+You may choose to define how many trial days your plan's receive in the Stripe dashboard or always pass them explicitly using Cashier. If you choose to define your plan's trial days in Stripe you should be aware that new subscriptions, including new subscriptions for a customer that had a subscription in the past, will always receive a trial period unless you explicitly call the `skipTrial()` method.
 
 <a name="without-payment-method-up-front"></a>
 ### Without Payment Method Up Front
