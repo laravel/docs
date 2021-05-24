@@ -121,7 +121,7 @@ Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) w
 <a name="code-of-conduct"></a>
 ## Code of Conduct
 
-The Laravel code of conduct is derived from the Ruby code of conduct. Any violations of the code of conduct may be reported to Taylor Otwell (taylor@laravel.com):
+The Laravel code of conduct is derived from the Ruby code of conduct. Any violations of the code of conduct may be reported to Taylor Otwell (<a href="mailto:taylor@laravel.com">taylor@laravel.com</a>):
 
 <div class="content-list" markdown="1">
 - Participants will be tolerant of opposing views.
