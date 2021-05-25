@@ -214,7 +214,9 @@ The Zend Diactoros library for generating PSR-7 responses has been deprecated. I
 
 **Likelihood Of Impact: Optional**
 
-In order to support multiple mailers, the default `mail` configuration file has changed in Laravel 7.x to include an array of `mailers`. However, in order to preserve backwards compatibility, the Laravel 6.x format of this configuration file is still supported. So, no changes are **required** when upgrading to Laravel 7.x; however, you may wish to [examine the new `mail` configuration file](https://github.com/laravel/laravel/blob/{{version}}/config/mail.php) structure and update your file to reflect the changes.
+In order to support multiple mailers, the default `mail` configuration file has changed in Laravel 7.x to include an array of `mailers`. However, in order to preserve backwards compatibility, the Laravel 6.x format of this configuration file is still supported. So, no changes are **required** when upgrading to Laravel 7.x; however, you may wish to [examine the new `mail` configuration file](https://github.com/laravel/laravel/blob/{{version}}/config/mail.php) structure and update your file to reflect the changes. 
+
+In addition, the `MAIL_DRIVER` environment variable has been renamed to `MAIL_MAILER`.
 
 <a name="markdown-mail-template-updates"></a>
 #### Markdown Mail Template Updates
