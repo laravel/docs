@@ -31,6 +31,7 @@
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
     - [Lazy Eager Loading](#lazy-eager-loading)
+    - [Preventing Lazy Loading](#preventing-lazy-loading)
 - [Inserting & Updating Related Models](#inserting-and-updating-related-models)
     - [The `save` Method](#the-save-method)
     - [The `create` Method](#the-create-method)
@@ -1624,6 +1625,29 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
             Photo::class => ['tags'],
             Post::class => ['author'],
         ]);
+
+<a name="preventing-lazy-loading"></a>
+### Preventing Lazy Loading
+
+As previously discussed, eager loading relationships can often provide significant performance benefits to your application. Therefore, if you would like, you may instruct Laravel to always prevent the lazy loading of relationships. To accomplish this, you may invoke the `preventLazyLoading` method offered by the base Eloquent model class. Typically, you should call this method within the `boot` method of your application's `AppServiceProvider` class.
+
+The `preventLazyLoading` method accepts an optional boolean argument that indicates if lazy loading should be prevented. For example, you may wish to only disable lazy loading in non-production environments so that your production environment will continue to function normally even if a lazy loaded relationship is accidentally present in production code:
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Bootstrap any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Model::preventLazyLoading(! $this->app->isProduction());
+}
+```
+
+After preventing lazy loading, Eloquent will throw a `Illuminate\Database\LazyLoadingViolationException` exception when your application attempts to lazy load any Eloquent relationship.
 
 <a name="inserting-and-updating-related-models"></a>
 ## Inserting & Updating Related Models
