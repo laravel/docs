@@ -1025,6 +1025,20 @@ You may also define the maximum number of seconds a job should be allowed to run
 
 Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value.
 
+<a name="failing-on-timeout"></a>
+#### Failing On Timeout
+
+If you would like to indicate that a job should be marked as [failed](#dealing-with-failed-jobs) on timeout, you may define the `$failOnTimeout` property on the job class:
+
+```php
+/**
+ * Indicate if the job should be marked as failed on timeout.
+ *
+ * @var bool
+ */
+public $failOnTimeout = true;
+```
+
 <a name="error-handling"></a>
 ### Error Handling
 
