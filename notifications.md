@@ -894,7 +894,7 @@ Laravel also supports sending shortcode notifications, which are pre-defined mes
             'type' => 'alert',
             'custom' => [
                 'code' => 'ABC123',
-            ];
+            ],
         ];
     }
 
