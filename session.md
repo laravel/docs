@@ -158,7 +158,7 @@ To determine if an item is not present in the session, you may use the `missing`
 <a name="storing-data"></a>
 ### Storing Data
 
-To store data in the session, you will typically use the request instance's `put` method or the `session` helper:
+To store data in the session, you will typically use the request instance's `put` method of the `session` helper:
 
     // Via a request instance...
     $request->session()->put('key', 'value');
