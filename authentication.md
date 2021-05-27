@@ -250,7 +250,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
             }
 
             return back()->withErrors([
-                'email' => __('auth.failed')
+                'email' => 'The provided credentials do not match our records.',
             ]);
         }
     }
