@@ -1649,6 +1649,16 @@ public function boot()
 
 After preventing lazy loading, Eloquent will throw a `Illuminate\Database\LazyLoadingViolationException` exception when your application attempts to lazy load any Eloquent relationship.
 
+You may customize the behavior of lazy loading violations using the `handleLazyLoadingViolationsUsing` method. For example, using this method, you may instruct lazy loading violations to only be logged instead of interrupting the application's execution with exceptions:
+
+```php
+Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
+    $class = get_class($model);
+
+    info("Attempted to lazy load [{$relation}] on model [{$class}] but lazy loading is disabled.");
+});
+```
+
 <a name="inserting-and-updating-related-models"></a>
 ## Inserting & Updating Related Models
 
