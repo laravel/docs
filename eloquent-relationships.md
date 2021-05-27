@@ -1655,7 +1655,7 @@ You may customize the behavior of lazy loading violations using the `handleLazyL
 Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
     $class = get_class($model);
 
-    info("Attempted to lazy load [{$relation}] on model [{$class}] but lazy loading is disabled.");
+    info("Attempted to lazy load [{$relation}] on model [{$class}].");
 });
 ```
 
