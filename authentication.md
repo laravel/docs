@@ -239,8 +239,8 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
         public function authenticate(Request $request)
         {
             $credentials = $request->validate([
-                'email'    => ['required', 'email'],
-                'password' => ['required']
+                'email' => ['required', 'email'],
+                'password' => ['required'],
             ]);
 
             if (Auth::attempt($credentials)) {
