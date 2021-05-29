@@ -450,7 +450,7 @@ Releasing a rate limited job back onto the queue will still increment the job's 
 <a name="preventing-job-overlaps"></a>
 ### Preventing Job Overlaps
 
-Laravel includes an `Illuminate\Queue\Middleware\WithoutOverlapping` middleware that allows you to prevent job overlaps based on an arbitrary key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time.
+Laravel includes an `Illuminate\Queue\Middleware\WithoutOverlapping` middleware that allows you to prevent jobs from different queue workers to overlap based on an arbitrary key. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time.
 
 For example, let's imagine you have a queued job that updates a user's credit score and you want to prevent credit score update job overlaps for the same user ID. To accomplish this, you can return the `WithoutOverlapping` middleware from your job's `middleware` method:
 
