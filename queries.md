@@ -211,7 +211,7 @@ Instead of using the `count` method to determine if any records exist that match
         // ...
     }
 
-From time to time you might want to perform a different action when above checks return false. The `existsOr` and `doesntExistOr` will return the results of the checks above if they are true, otherwise, the specified closures will be executed. Then the ultimate results will be the returned values by the closures.
+From time to time you might want to perform a different action when those checks return false. The `existsOr` and `doesntExistOr` methods will return the results of the checks above if they are true, otherwise, the specified closures will be executed. Then the ultimate results will be the returned values by the closures.
 
     DB::table('orders')->where('finalized', 1)->existsOr(function () {
         // ...
