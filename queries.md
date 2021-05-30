@@ -217,7 +217,7 @@ From time to time you might want to perform a different action when those checks
         // ...
     })
 
-    DB::table('orders')->where('finalized', 1)->doesntExistsOr(function () {
+    DB::table('orders')->where('finalized', 1)->doesntExistOr(function () {
         // ...
     })
 
