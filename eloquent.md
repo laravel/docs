@@ -1131,7 +1131,7 @@ The `is` and `isNot` methods are also available when using the `belongsTo`, `has
 
 Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, and `replicating`.
 
-The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Events with `-ing` is fired before changes to the model are persisted, while events with `-ed` is fired after changes to the model are persisted.
+The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Events with `-ing` are fired before changes to the model are persisted, while events with `-ed` are fired after changes to the model are persisted.
 
 To start listening to model events, define a `$dispatchesEvents` property on your Eloquent model. This property maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events). Each model event class should expect to receive an instance of the affected model via its constructor:
 
@@ -1261,7 +1261,7 @@ This command will place the new observer in your `App/Observers` directory. If t
         }
     }
 
-> {tip} There are additional event functions an observer can implement like `creating`, `saved` and `retrieved`, there are described under [events](#events).
+> {tip} There are additional event functions an observer can implement like `saving` and `retrieved`. They are described under [events](#events).
 
 To register an observer, you need to call the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\EventServiceProvider` service provider:
 
