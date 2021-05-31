@@ -164,6 +164,13 @@ After defining the cast, the `is_admin` attribute will always be cast to a boole
         //
     }
 
+If you need to add a new, temporary cast at runtime, you may use the `mergeCasts` method. These cast definitions will be added to any of the casts already defined on the model:
+
+    $user->mergeCasts([
+        'is_admin' => 'integer',
+        'options' => 'object',
+    ]);
+
 > {note} Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.
 
 <a name="array-and-json-casting"></a>
