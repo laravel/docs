@@ -1947,7 +1947,7 @@ The `sole` method returns the first element in the collection that passes a give
         return $value === 2;
     });
 
-    // 3
+    // 2
 
 You may also pass a key / value pair to the `sole` method, which will return the first element in the collection that matches the given pair, but only if it exactly one element matches:
 
