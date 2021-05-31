@@ -606,7 +606,7 @@ Once the custom intermediate table attribute has been specified, you may access 
 <a name="filtering-queries-via-intermediate-table-columns"></a>
 ### Filtering Queries Via Intermediate Table Columns
 
-You can also filter the results returned by `belongsToMany` relationship queries using the `wherePivot`, `wherePivotIn`, `wherePivotNotIn`, `wherePivotBetween`, `wherePivotNotBetween`, `wherePivotNull` and `wherePivotNotNull` methods when defining the relationship:
+You can also filter the results returned by `belongsToMany` relationship queries using the `wherePivot`, `wherePivotIn`, `wherePivotNotIn`, `wherePivotBetween`, `wherePivotNotBetween`, `wherePivotNull`, and `wherePivotNotNull` methods when defining the relationship:
 
     return $this->belongsToMany(Role::class)
                     ->wherePivot('approved', 1);
