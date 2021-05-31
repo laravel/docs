@@ -164,7 +164,7 @@ After defining the cast, the `is_admin` attribute will always be cast to a boole
         //
     }
 
-You can also add new casts to or update the `$casts` property using the `mergeCasts` method:
+If you need to add a new, temporary cast at runtime, you may use the `mergeCasts` method. These cast definitions will be added to any of the casts already defined on the model:
 
     $user->mergeCasts([
         'is_admin' => 'integer',
