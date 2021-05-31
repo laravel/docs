@@ -43,6 +43,8 @@ For example, imagine your application is able to export a user's data to a CSV f
 
 To assist you in building these types of features, Laravel makes it easy to "broadcast" your server-side Laravel [events](/docs/{{version}}/events) over a WebSocket connection. Broadcasting your Laravel events allows you to share the same event names and data between your server-side Laravel application and your client-side JavaScript application.
 
+The concept behind broadcasting is simple: Clients connect to named channels on the frontend, and your application backend pushes events to these channels. These events will include their respective name and data, which will be received by the respective clients.
+
 <a name="supported-drivers"></a>
 #### Supported Drivers
 
