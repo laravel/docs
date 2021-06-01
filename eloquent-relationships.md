@@ -1361,6 +1361,12 @@ Like the `loadCount` method, deferred versions of these methods are also availab
 
     $post->loadSum('comments', 'votes');
 
+If you're combining these aggregate methods with a `select` statement, ensure that you call the aggregate methods methods after the `select` method:
+
+    $posts = Post::select(['title', 'body'])
+                    ->withExists('comments')
+                    ->get();
+
 <a name="counting-related-models-on-morph-to-relationships"></a>
 ### Counting Related Models On Morph To Relationships
 
