@@ -267,8 +267,6 @@ When defining a `date` or `datetime` cast, you may also specify the date's forma
         'created_at' => 'datetime:Y-m-d',
     ];
 
-> {note} It's important to note that when using a custom date format using the `date` or `datetime` cast that the time will not be converted to UTC when the date is serialized.
-
 When a column is cast as a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database.
 
 You may customize the default serialization format for all of your model's dates by defining a `serializeDate` method on your model. This method does not affect how your dates are formatted for storage in the database:
@@ -292,6 +290,13 @@ To specify the format that should be used when actually storing a model's dates 
      * @var string
      */
     protected $dateFormat = 'U';
+
+<a name="date-casting-and-timezones"></a>
+#### Date Casting, Serialization, & Timezones
+
+By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`1986-05-28T21:05:54.000000Z`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript.
+
+If a custom format is applied to the `date` or `datetime` cast, such as `datetime:Y-m-d H:i:s`, the inner timezone of the Carbon instance will be used during date serialization. Typically, this will be the timezone specified in your application's `timezone` configuration option.
 
 <a name="query-time-casting"></a>
 ### Query Time Casting
