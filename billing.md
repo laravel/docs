@@ -125,7 +125,7 @@ Before using Cashier, add the `Billable` trait to your billable model definition
         use Billable;
     }
 
-Cashier assumes your billable model will be the `App\Models\User` class that ships with Laravel. If you wish to change this you can specify a different model by using the `useCustomerModel` in the `boot` method of your `AppServiceProvider` class:
+Cashier assumes your billable model will be the `App\Models\User` class that ships with Laravel. If you wish to change this you may specify a different model via the `useCustomerModel` method. This method should typically be called in the `boot` method of your `AppServiceProvider` class:
 
     use App\Models\Cashier\User;
     use Laravel\Cashier\Cashier;
@@ -415,7 +415,7 @@ The `paymentMethods` method on the billable model instance returns a collection 
 
     $paymentMethods = $user->paymentMethods();
 
-By default this method is configured to return payment methods of the `card` type. To retrieve payment methods of a different type you can pass the type as a parameter:
+By default, this method will return payment methods of the `card` type. To retrieve payment methods of a different type, you may pass the `type` as an argument to the method:
 
     $paymentMethods = $user->paymentMethods('sepa_debit');
 
@@ -442,7 +442,7 @@ You may use the `hasPaymentMethod` method to determine if a billable model has a
         //
     }
 
-By default this method is configured to check for payment methods of the `card` type. To check for payment methods of a different type you can pass the type as a parameter:
+This method will determine if the billable model has payment methods of the `card` type. To determine if a payment method of another type exists for the model, you may pass the `type` as an argument to the method:
 
     if ($user->hasPaymentMethod('sepa_debit')) {
         //
@@ -481,7 +481,7 @@ The `deletePaymentMethods` method will delete all of the payment method informat
 
     $user->deletePaymentMethods();
 
-By default this method is configured to delete payment methods of the `card` type. To delete payment methods of a different type you can pass the type as a parameter:
+By default, this method will delete payment methods of the `card` type. To delete payment methods of a different type you can pass the `type` as an argument to the method:
 
     $user->deletePaymentMethods('sepa_debit');
 
@@ -1387,24 +1387,22 @@ When listing the invoices for the customer, you may use the invoice's methods to
 <a name="upcoming-invoices"></a>
 ### Upcoming Invoices
 
-You can also use Cashier to check the upcoming invoice of a customer by using the `upcomingInvoice` on the billable model:
+To retrieve the upcoming invoice for a customer, you may use the `upcomingInvoice` method:
 
     $invoice = $user->upcomingInvoice();
 
-This will return the next drafted invoice for the customer for their billing schedule. Similary, you can also retrieve the upcoming invoice for a specific subscription:
+Similary, if the customer has multiple subscriptions, you can also retrieve the upcoming invoice for a specific subscription:
 
     $invoice = $user->subscription('default')->upcomingInvoice();
-
-And this will display the invoice for this subscription specifically. This is useful if a customer has multiple subscriptions.
 
 <a name="previewing-subscription-invoices"></a>
 ### Previewing Subscription Invoice
 
-Similarly to checking the upcoming invoice of a subscription, you can also preview an invoice before making price changes. This is useful to know how your customer's invoice will look like when the price changes are made. You can use the `previewInvoice` method on a subscription for this:
+Using the `previewInvoice` method, you can preview an invoice before making price changes. This will allow you to determine what your customer's invoice will look like when a given price change is made:
 
     $invoice = $user->subscription('default')->previewInvoice('price_premium');
 
-Or when you want to swap to multiple new prices:
+You may pass an array of prices to the `previewInvoice` method in order to preview invoices with multiple new prices:
 
     $invoice = $user->subscription('default')->previewInvoice(['price_premium', 'price_metered']);
 
@@ -1419,7 +1417,7 @@ From within a route or controller, you may use the `downloadInvoice` method to g
         return $request->user()->downloadInvoice($invoiceId);
     });
 
-By default, all data is derived from Stripe but you can customize a couple of things by using the second array argument like the vendor and product name. Also, if you want your company information to appear on the invoice you should pass that directly using the below data:
+By default, all data on the invoice is derived from the customer and invoice data stored in Stripe. However, you can customize some of this data by providing an array as the second argument to the `downloadInvoice` method. This array allows you to customize information such as your company and product details:
 
     return $request->user()->downloadInvoice($invoiceId, [
         'vendor' => 'Your Company',
@@ -1432,7 +1430,7 @@ By default, all data is derived from Stripe but you can customize a couple of th
         'vendorVat' => 'BE123456789',
     ], 'my-invoice');
 
-The `downloadInvoice` method also allows for a custom filename via its third argument. This filename will automatically be suffixed with `.pdf` for you:
+The `downloadInvoice` method also allows for a custom filename via its third argument. This filename will automatically be suffixed with `.pdf`:
 
     return $request->user()->downloadInvoice($invoiceId, [], 'my-invoice');
 
@@ -1573,7 +1571,7 @@ First, you could redirect your customer to the dedicated payment confirmation pa
         );
     }
 
-On the payment confirmation page, the customer will be prompted to enter their credit card information again and perform any additional actions required by Stripe, such as "3D Secure" confirmation. After confirming their payment, the user will be redirected to the URL provided by the `redirect` parameter specified above. Upon redirection, `message` (string) and `success` (integer) query string variables will be added to the URL. As of this moment the payment page supports the following payment method types:
+On the payment confirmation page, the customer will be prompted to enter their credit card information again and perform any additional actions required by Stripe, such as "3D Secure" confirmation. After confirming their payment, the user will be redirected to the URL provided by the `redirect` parameter specified above. Upon redirection, `message` (string) and `success` (integer) query string variables will be added to the URL. The payment page currently supports the following payment method types:
 
 <div class="content-list" markdown="1">
 - Credit Cards
@@ -1588,7 +1586,7 @@ On the payment confirmation page, the customer will be prompted to enter their c
 
 Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if an `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
 
-Payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on models using the `Billable` trait. When interacting with subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Subscription` & `SubscriptionItem` models may throw incomplete payment exceptions.
+Payment exceptions may be thrown for the following methods: `charge`, `invoiceFor`, and `invoice` on models using the `Billable` trait. When interacting with subscriptions, the `create` method on the `SubscriptionBuilder`, and the `incrementAndInvoice` and `swapAndInvoice` methods on the `Subscription` and `SubscriptionItem` models may throw incomplete payment exceptions.
 
 Determining if an existing subscription has an incomplete payment may be accomplished using the `hasIncompletePayment` method on the billable model or a subscription instance:
 
@@ -1600,7 +1598,7 @@ Determining if an existing subscription has an incomplete payment may be accompl
         //
     }
 
-You can derive the specific status of an incomplete payment by checking the `payment` property on the exception instance:
+You can derive the specific status of an incomplete payment by inspecting the `payment` property on the exception instance:
 
     use Laravel\Cashier\Exceptions\IncompletePayment;
 
