@@ -324,7 +324,7 @@ Now, when your package's users execute the `vendor:publish` command, your assets
 <a name="publishing-file-groups"></a>
 ## Publishing File Groups
 
-You may want to publish groups of package assets and resources separately. For instance, you might want to allow your users to publish your package's configuration files without being forced to publish your package's assets. You may do this by "tagging" them when calling the `publishes` method from a package's service provider. For example, let's use tags to define two publish groups (`config` and `migrations`) in the `boot` method of a package's service provider:
+You may want to publish groups of package assets and resources separately. For instance, you might want to allow your users to publish your package's configuration files without being forced to publish your package's assets. You may do this by "tagging" them when calling the `publishes` method from a package's service provider. For example, let's use tags to define two publish groups for the `courier` package (`courier-config` and `courier-migrations`) in the `boot` method of the package's service provider:
 
     /**
      * Bootstrap any package services.
@@ -335,13 +335,13 @@ You may want to publish groups of package assets and resources separately. For i
     {
         $this->publishes([
             __DIR__.'/../config/package.php' => config_path('package.php')
-        ], 'config');
+        ], 'courier-config');
 
         $this->publishes([
             __DIR__.'/../database/migrations/' => database_path('migrations')
-        ], 'migrations');
+        ], 'courier-migrations');
     }
 
 Now your users may publish these groups separately by referencing their tag when executing the `vendor:publish` command:
 
-    php artisan vendor:publish --tag=config
+    php artisan vendor:publish --tag=courier-config
