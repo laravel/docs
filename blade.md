@@ -1319,6 +1319,12 @@ In these cases, Blade allows you to register a custom echo handler for that part
         });
     }
 
+Once your custom echo handler has been defined, you may simply echo the object in your Blade template:
+
+```html
+Cost: {{ $money }}
+```
+
 <a name="custom-if-statements"></a>
 ### Custom If Statements
 
