@@ -838,6 +838,12 @@ public function broadcastOn($event)
 }
 ```
 
+If you plan to explicitly return a channel instance from your model's `broadcastOn` method, you may pass an Eloquent model instance to the channel's constructor. When doing so, Laravel will use the model channel conventions discussed above to convert the Eloquent model into a channel name string:
+
+```php
+return [new Channel($this->user)];
+```
+
 <a name="model-broadcasting-event-conventions"></a>
 #### Event Conventions
 
