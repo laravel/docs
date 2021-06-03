@@ -553,6 +553,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertCreated](#assert-created)
 [assertDontSee](#assert-dont-see)
 [assertDontSeeText](#assert-dont-see-text)
+[assertDownload](#assert-download)
 [assertExactJson](#assert-exact-json)
 [assertForbidden](#assert-forbidden)
 [assertHeader](#assert-header)
@@ -642,6 +643,17 @@ Assert that the given string is not contained within the response returned by th
 Assert that the given string is not contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. This method will pass the response content to the `strip_tags` PHP function before making the assertion:
 
     $response->assertDontSeeText($value, $escaped = true);
+
+<a name="assert-download"></a>
+#### assertDownload
+
+Assert that the response is a "download". Typically, this means the invoked route that returned the response returned a `Response::download` response, `BinaryFileResponse`, or `Storage::download` response:
+
+    $response->assertDownload();
+
+If you wish, you may assert that the downloadable file was assigned a given file name:
+
+    $response->assertDownload('image.jpg');
 
 <a name="assert-exact-json"></a>
 #### assertExactJson

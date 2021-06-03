@@ -31,6 +31,9 @@
     - [Authorizing Presence Channels](#authorizing-presence-channels)
     - [Joining Presence Channels](#joining-presence-channels)
     - [Broadcasting To Presence Channels](#broadcasting-to-presence-channels)
+- [Model Broadcasting](#model-broadcasting)
+    - [Model Broadcasting Conventions](#model-broadcasting-conventions)
+    - [Listening For Model Broadcasts](#listening-for-model-broadcasts)
 - [Client Events](#client-events)
 - [Notifications](#notifications)
 
@@ -743,6 +746,120 @@ As typical of other types of events, you may listen for events sent to presence 
         .listen('NewMessage', (e) => {
             //
         });
+
+<a name="model-broadcasting"></a>
+## Model Broadcasting
+
+> {note} Before reading the following documentation about model broadcasting, we recommend you become familiar with the general concepts of Laravel's model broadcasting services as well as how to manually create and listen to broadcast events.
+
+It is common to broadcast events when your application's [Eloquent models](/docs/{{version}}/eloquent) are created, updated, or deleted. Of course, this can easily be accomplished by manually [defining custom events for Eloquent model state changes](/docs/{{version}}/eloquent#events) and marking those events with the `ShouldBroadcast` interface.
+
+However, if you are not using these events for any other purposes in your application, it can be cumbersome to create event classes for the sole purpose of broadcasting them. To remedy this, Laravel allows you to indicate that an Eloquent model should automatically broadcast its state changes.
+
+To get started, your Eloquent model should use the `Illuminate\Database\Eloquent\BroadcastsEvents` trait. In addition, the model should define a `broadcastsOn` method, which will return an array of channels that the model's events should broadcast on:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    use BroadcastsEvents, HasFactory;
+
+    /**
+     * Get the user that the post belongs to.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the channels that model events should broadcast on.
+     *
+     * @param  string  $event
+     * @return \Illuminate\Broadcasting\Channel|array
+     */
+    public function broadcastOn($event)
+    {
+        return [$this, $this->user];
+    }
+}
+```
+
+Once your model includes this trait and defines its broadcast channels, it will begin automatically broadcasting events when a model instance is created, updated, deleted, trashed, or restored.
+
+In addition, you may have noticed that the `broadcastOn` method receives a string `$event` argument. This argument contains the type of event that has occurred on the model and will have a value of `created`, `updated`, `deleted`, `trashed`, or `restored`. By inspecting the value of this variable, you may determine which channels (if any) the model should broadcast to for a particular event:
+
+```php
+/**
+ * Get the channels that model events should broadcast on.
+ *
+ * @param  string  $event
+ * @return \Illuminate\Broadcasting\Channel|array
+ */
+public function broadcastOn($event)
+{
+    return match($event) {
+        'deleted' => [],
+        default => [$this, $this->user],
+    };
+}
+```
+
+<a name="model-broadcasting-conventions"></a>
+### Model Broadcasting Conventions
+
+<a name="model-broadcasting-channel-conventions"></a>
+#### Channel Conventions
+
+As you may have noticed, the `broadcastOn` method in the model example above did not return `Channel` instances. Instead, Eloquent models were returned directly. If an Eloquent model instance is returned by your model's `broadcastOn` method (or is contained in an array returned by the method), Laravel will automatically instantiate a private channel instance for the model using the model's class name and primary key identifier as the channel name.
+
+So, an `App\Models\User` model with an `id` of `1` would be converted into a `Illuminate\Broadcasting\PrivateChannel` instance with a name of `App.Models.User.1`. Of course, in addition to returning Eloquent model instances from your model's `broadcastOn` method, you may return complete `Channel` instances in order to have full control over the model's channel names:
+
+```php
+use Illuminate\Broadcasting\PrivateChannel;
+
+/**
+ * Get the channels that model events should broadcast on.
+ *
+ * @param  string  $event
+ * @return \Illuminate\Broadcasting\Channel|array
+ */
+public function broadcastOn($event)
+{
+    return [new PrivateChannel('user.'.$this->id)];
+}
+```
+
+<a name="model-broadcasting-event-conventions"></a>
+#### Event Conventions
+
+Since model broadcast events are not associated with an "actual" event within your application's `App\Events` directory, they are assigned a name based on convention. Laravel's convention is to broadcast the event using the class name of the model (not including the namespace) and the name of the model event that triggered the broadcast.
+
+So, for example, an update to the `App\Models\Post` model would broadcast an event to your client-side application as `PostUpdated`, while the deletion of an `App\Models\User` model would broadcast an event named `UserDeleted`.
+
+<a name="listening-for-model-broadcasts"></a>
+### Listening For Model Broadcasts
+
+Once you have added the `BroadcastsEvents` trait to your model and defined your model's `broadcastOn` method, you are ready to start listening for broadcasted model events within your client-side application. Before getting started, you may wish to consult the complete documentation on [listening for events](#listening-for-events).
+
+First, use the `private` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event. Typically, the channel name given to the `private` method should correspond to Laravel's [model broadcasting conventions](#model-broadcasting-conventions).
+
+Once you have obtained a channel instance, you may use the `listen` method to listen for a particular event. Since model broadcast events are not associated with an "actual" event within your application's `App\Events` directory, the [event name](#model-broadcasting-event-conventions) must be prefixed with a `.` to indicate it does not belong to a particular namespace. Each model broadcast event has a `model` property which contains all of the broadcastable properties of the model:
+
+```js
+Echo.channel(`App.Models.User.${this.user.id}`)
+    .listen('.PostUpdated', (e) => {
+        console.log(e.model);
+    });
+```
 
 <a name="client-events"></a>
 ## Client Events
