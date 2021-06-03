@@ -1134,12 +1134,12 @@ You may enable or disable foreign key constraints within your migrations by usin
 <a name="events"></a>
 ## Events
 
-For convenience, each migration operation will trigger events that can be listened to, for example, update existing data in your database. All of these events extend `Illuminate\Database\Events\MigrationEvent`.
+For convenience, each migration operation will dispatch an [event](/docs/{{version}}/events). All of the following events extend the base `Illuminate\Database\Events\MigrationEvent` class:
 
- Event | Class 
+ Class | Description
 -------|-------
-| MigrationStarted | `Illuminate\Database\Events\MigrationStarted` |
-| MigrationEnded | `Illuminate\Database\Events\MigrationEnded` |
-| MigrationsStarted | `Illuminate\Database\Events\MigrationsStarted` |
-| MigrationsEnded | `Illuminate\Database\Events\MigrationsEnded` |
+| `Illuminate\Database\Events\MigrationsStarted` | A batch of migrations is about to be executed. |
+| `Illuminate\Database\Events\MigrationsEnded` | A batch of migrations has finished executing. |
+| `Illuminate\Database\Events\MigrationStarted` | A single migration is about to be executed. |
+| `Illuminate\Database\Events\MigrationEnded` | A single migration has finished executing. |
 
