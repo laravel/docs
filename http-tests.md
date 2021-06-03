@@ -75,6 +75,8 @@ Instead of returning an `Illuminate\Http\Response` instance, test request method
         }
     }
 
+> {note} Avoid making multiple requests in the same test method.  This is not supported.
+
 > {tip} For convenience, the CSRF middleware is automatically disabled when running tests.
 
 <a name="customizing-request-headers"></a>
