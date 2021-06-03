@@ -13,6 +13,7 @@
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
     - [Inspecting Requests](#inspecting-requests)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -380,3 +381,24 @@ Or, you may use the `assertNothingSent` method to assert that no requests were s
     Http::fake();
 
     Http::assertNothingSent();
+
+<a name="events"></a>
+## Events
+
+Laravel fires two events during the process of sending HTTP requests. The `RequestSending` event is fired prior to a request being sent, while the `ResponseReceived` event is fired after a response is received for a given request.
+
+The `RequestSending` event contains a public `$request` property that you may use to inspect the `Illuminate\Http\Client\Request` instance. Likewise, the `ResponseReceived` event contains a `$request` property as well as a `$response` property which may be used to inspect the `Illuminate\Http\Client\Response` instance. You may register event listeners for this event in your `App\Providers\EventServiceProvider` service provider:
+
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Illuminate\Http\Client\Events\RequestSending' => [
+            'App\Listeners\LogRequestSending',
+        ],
+        'Illuminate\Http\Client\Events\ResponseReceived' => [
+            'App\Listeners\LogResponseReceived',
+        ],
+    ];
