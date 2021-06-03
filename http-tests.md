@@ -75,6 +75,8 @@ Instead of returning an `Illuminate\Http\Response` instance, test request method
         }
     }
 
+In general, each of your tests should only make one request to your application. Unexpected behavior may occur if multiple requests are executed within a single test method.
+
 > {tip} For convenience, the CSRF middleware is automatically disabled when running tests.
 
 <a name="customizing-request-headers"></a>
