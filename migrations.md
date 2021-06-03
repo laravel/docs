@@ -21,6 +21,7 @@
     - [Renaming Indexes](#renaming-indexes)
     - [Dropping Indexes](#dropping-indexes)
     - [Foreign Key Constraints](#foreign-key-constraints)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1129,3 +1130,16 @@ You may enable or disable foreign key constraints within your migrations by usin
     Schema::disableForeignKeyConstraints();
 
 > {note} SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations. In addition, SQLite only supports foreign keys upon creation of the table and [not when tables are altered](https://www.sqlite.org/omitted.html).
+
+<a name="events"></a>
+## Events
+
+For convenience, each migration operation will trigger events that can be listened to, for example, update existing data in your database. All of these events extend `Illuminate\Database\Events\MigrationEvent`.
+
+ Event | Class 
+-------|-------
+| MigrationStarted | `Illuminate\Database\Events\MigrationStarted` |
+| MigrationEnded | `Illuminate\Database\Events\MigrationEnded` |
+| MigrationsStarted | `Illuminate\Database\Events\MigrationsStarted` |
+| MigrationsEnded | `Illuminate\Database\Events\MigrationsEnded` |
+
