@@ -337,6 +337,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [enum](#column-method-enum)
 [float](#column-method-float)
 [foreignId](#column-method-foreignId)
+[foreignIdFor](#column-method-foreignIdFor)
 [geometryCollection](#column-method-geometryCollection)
 [geometry](#column-method-geometry)
 [id](#column-method-id)
@@ -478,6 +479,13 @@ The `float` method creates a `FLOAT` equivalent column with the given precision 
 The `foreignId` method is an alias of the `unsignedBigInteger` method:
 
     $table->foreignId('user_id');
+
+<a name="column-method-foreignIdFor"></a>
+#### `foreignIdFor()` {#collection-method}
+
+The `foreignIdFor` method is a shorter way of using `$table->foreignId('user_id')->constrained();` where you can pass the Eloquent Model instead of database table and column:
+
+    $table->foreignIdFor(\App\Models\User::class);
 
 <a name="column-method-geometryCollection"></a>
 #### `geometryCollection()` {#collection-method}
