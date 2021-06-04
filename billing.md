@@ -14,6 +14,7 @@
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
     - [Updating Customers](#updating-customers)
+    - [Tax ID's](#tax-ids)
     - [Billing Portal](#billing-portal)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
@@ -221,6 +222,27 @@ The `createOrGetStripeCustomer` method may be used if you would like to retrieve
 Occasionally, you may wish to update the Stripe customer directly with additional information. You may accomplish this using the `updateStripeCustomer` method. This method accepts an array of [customer update options supported by the Stripe API](https://stripe.com/docs/api/customers/update):
 
     $stripeCustomer = $user->updateStripeCustomer($options);
+
+<a name="tax-ids"></a>
+### Tax ID's
+
+Cashier Stripe also offers an easy way to manage tax ID's on a customer. For exampple, you can return all tax ID's of the customer in an collection instance:
+
+    $taxIds = $user->taxIds(); 
+
+This will return a collection with [tax ID objects](https://stripe.com/docs/api/customer_tax_ids/object) from Stripe. You can also retrieve a specific tax ID of a customer by its identifier:
+
+    $taxId = $user->findTaxId('txi_belgium');
+
+Creating a new tax ID can be done by providing a valid [type](https://stripe.com/docs/api/customer_tax_ids/object#tax_id_object-type) and value:
+
+    $taxId = $user->createTaxId('eu_vat', 'BE0123456789');
+
+This will immediately add the vat ID to the customer's account. [Verification of vat ID's is also done by Stripe](https://stripe.com/docs/invoicing/customer/tax-ids#validation) but it's an asynchronous process. You can be notified of verification updates by subscribing tothe `customer.tax_id.updated` event and checking [the vat ID's `verification` parameter](https://stripe.com/docs/api/customer_tax_ids/object#tax_id_object-verification). See the docs on defining webhook event handlers on how to do that.
+
+You may also delete a tax ID from the customer by calling the `deleteTaxId` method:
+
+    $user->deleteTaxId('txi_belgium');
 
 <a name="billing-portal"></a>
 ### Billing Portal
