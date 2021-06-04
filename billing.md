@@ -15,6 +15,7 @@
     - [Creating Customers](#creating-customers)
     - [Updating Customers](#updating-customers)
     - [Tax IDs](#tax-ids)
+    - [Syncing Customers With Stripe](#syncing-customers-with-stripe)
     - [Billing Portal](#billing-portal)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
@@ -256,6 +257,39 @@ The `createTaxId` method will immediately add the VAT ID to the customer's accou
 You may delete a tax ID using the `deleteTaxId` method:
 
     $user->deleteTaxId('txi_belgium');
+
+<a name="syncing-customers-with-stripe"></a>
+### Syncing Customers With Stripe
+
+When it comes to customer data you usually best want it to be in sync with Stripe. Luckily there's an easy way to do this with Cashier. By implementing the various `stripeX` methods on your billable model you can keep them in sync. To automate this, you may hook the `syncStripeCustomerDetails` method with the `updated` event in the `booted` method of your billable model:
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::updated(queueable(function ($customer) {
+            $customer->syncStripeCustomerDetails();
+        }));
+    }
+
+Now every time your customer model is updated, its details will be synced with Stripe through a queued closure. Additionally, these columns will also be synced upon the first time creation of the Stripe customer.
+
+You may customize the columns used for syncing details by overwriting the corresponding `stripeX` method. For example, you may wish to use the `company_name` column instead of the default `name` method:
+
+    /**
+     * Get the name that should be synced to Stripe.
+     *
+     * @return string|null
+     */
+    public function stripeName()
+    {
+        return $this->company_name;
+    }
+
+Similar, there's also `stripeEmail`, `stripePhone` and `stripeAddress`. These methods will sync to the same named parameters used when [updating a Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to sync even more parameters, like the `metadata` parameter, you may choose to overwrite the `syncStripeCustomerDetails` method alltogether.
 
 <a name="billing-portal"></a>
 ### Billing Portal
