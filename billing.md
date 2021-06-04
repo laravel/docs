@@ -15,7 +15,7 @@
     - [Creating Customers](#creating-customers)
     - [Updating Customers](#updating-customers)
     - [Tax IDs](#tax-ids)
-    - [Syncing Customers With Stripe](#syncing-customers-with-stripe)
+    - [Syncing Customer Data With Stripe](#syncing-customer-data-with-stripe)
     - [Billing Portal](#billing-portal)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
@@ -258,10 +258,12 @@ You may delete a tax ID using the `deleteTaxId` method:
 
     $user->deleteTaxId('txi_belgium');
 
-<a name="syncing-customers-with-stripe"></a>
-### Syncing Customers With Stripe
+<a name="syncing-customer-data-with-stripe"></a>
+### Syncing Customer Data With Stripe
 
-When it comes to customer data you usually best want it to be in sync with Stripe. Luckily there's an easy way to do this with Cashier. By implementing the various `stripeX` methods on your billable model you can keep them in sync. To automate this, you may hook the `syncStripeCustomerDetails` method with the `updated` event in the `booted` method of your billable model:
+Typically, when your application's users update their name, email address, or other information that is also stored by Stripe, you should inform Stripe of the updates. By doing so, Stripe's copy of the information will be in sync with your application's.
+
+To automate this, you may define an event listener on your billable model that reacts to the model's `updated` event. Then, within your event listener, you may invoke the `syncStripeCustomerDetails` method on the model:
 
     /**
      * The "booted" method of the model.
@@ -275,12 +277,12 @@ When it comes to customer data you usually best want it to be in sync with Strip
         }));
     }
 
-Now every time your customer model is updated, its details will be synced with Stripe through a queued closure. Additionally, these columns will also be synced upon the first time creation of the Stripe customer.
+Now, every time your customer model is updated, its information will be synced with Stripe. For convenience, Cashier will automatically sync your customer's information with Stripe on the initial creation of the customer.
 
-You may customize the columns used for syncing details by overwriting the corresponding `stripeX` method. For example, you may wish to use the `company_name` column instead of the default `name` method:
+You may customize the columns used for syncing customer information to Stripe by overwriting a variety of methods provided by Cashier. For example, you may override the `stripeName` method to customize the attribute that should be considered the customer's "name" when Cashier syncs customer information to Stripe:
 
     /**
-     * Get the name that should be synced to Stripe.
+     * Get the customer name that should be synced to Stripe.
      *
      * @return string|null
      */
@@ -289,7 +291,7 @@ You may customize the columns used for syncing details by overwriting the corres
         return $this->company_name;
     }
 
-Similar, there's also `stripeEmail`, `stripePhone` and `stripeAddress`. These methods will sync to the same named parameters used when [updating a Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to sync even more parameters, like the `metadata` parameter, you may choose to overwrite the `syncStripeCustomerDetails` method alltogether.
+Similarly, you may override the `stripeEmail`, `stripePhone`, and `stripeAddress` methods. These methods will sync information to their corresponding customer parameters when [updating the Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to take total control over the customer information sync process, you may override the `syncStripeCustomerDetails` method.
 
 <a name="billing-portal"></a>
 ### Billing Portal
