@@ -14,7 +14,7 @@
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
     - [Updating Customers](#updating-customers)
-    - [Tax ID's](#tax-ids)
+    - [Tax IDs](#tax-ids)
     - [Billing Portal](#billing-portal)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
@@ -224,23 +224,23 @@ Occasionally, you may wish to update the Stripe customer directly with additiona
     $stripeCustomer = $user->updateStripeCustomer($options);
 
 <a name="tax-ids"></a>
-### Tax ID's
+### Tax IDs
 
-Cashier Stripe also offers an easy way to manage tax ID's on a customer. For exampple, you can return all tax ID's of the customer in an collection instance:
+Cashier offers an easy way to manage a customer's tax IDs. For example, the `taxIds` method may be used to retrieve all of the [tax IDs](https://stripe.com/docs/api/customer_tax_ids/object) that are assigned to a customer as a collection:
 
     $taxIds = $user->taxIds(); 
 
-This will return a collection with [tax ID objects](https://stripe.com/docs/api/customer_tax_ids/object) from Stripe. You can also retrieve a specific tax ID of a customer by its identifier:
+You can also retrieve a specific tax ID for a customer by its identifier:
 
     $taxId = $user->findTaxId('txi_belgium');
 
-Creating a new tax ID can be done by providing a valid [type](https://stripe.com/docs/api/customer_tax_ids/object#tax_id_object-type) and value:
+You may create a new Tax ID by providing a valid [type](https://stripe.com/docs/api/customer_tax_ids/object#tax_id_object-type) and value to the `createTaxId` method:
 
     $taxId = $user->createTaxId('eu_vat', 'BE0123456789');
 
-This will immediately add the vat ID to the customer's account. [Verification of vat ID's is also done by Stripe](https://stripe.com/docs/invoicing/customer/tax-ids#validation) but it's an asynchronous process. You can be notified of verification updates by subscribing tothe `customer.tax_id.updated` event and checking [the vat ID's `verification` parameter](https://stripe.com/docs/api/customer_tax_ids/object#tax_id_object-verification). See the docs on defining webhook event handlers on how to do that.
+The `createTaxId` method will immediately add the VAT ID to the customer's account. [Verification of VAT IDs is also done by Stripe](https://stripe.com/docs/invoicing/customer/tax-ids#validation); however, this is an asynchronous process. You can be notified of verification updates by subscribing to the `customer.tax_id.updated` webhook event and inspecting [the VAT IDs `verification` parameter](https://stripe.com/docs/api/customer_tax_ids/object#tax_id_object-verification). For more information on handling webhooks, please consult the documentation on defining webhook handlers.
 
-You may also delete a tax ID from the customer by calling the `deleteTaxId` method:
+You may delete a tax ID using the `deleteTaxId` method:
 
     $user->deleteTaxId('txi_belgium');
 
