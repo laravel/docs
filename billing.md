@@ -14,6 +14,7 @@
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
     - [Updating Customers](#updating-customers)
+    - [Tax IDs](#tax-ids)
     - [Billing Portal](#billing-portal)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
@@ -221,6 +222,27 @@ The `createOrGetStripeCustomer` method may be used if you would like to retrieve
 Occasionally, you may wish to update the Stripe customer directly with additional information. You may accomplish this using the `updateStripeCustomer` method. This method accepts an array of [customer update options supported by the Stripe API](https://stripe.com/docs/api/customers/update):
 
     $stripeCustomer = $user->updateStripeCustomer($options);
+
+<a name="tax-ids"></a>
+### Tax IDs
+
+Cashier offers an easy way to manage a customer's tax IDs. For example, the `taxIds` method may be used to retrieve all of the [tax IDs](https://stripe.com/docs/api/customer_tax_ids/object) that are assigned to a customer as a collection:
+
+    $taxIds = $user->taxIds(); 
+
+You can also retrieve a specific tax ID for a customer by its identifier:
+
+    $taxId = $user->findTaxId('txi_belgium');
+
+You may create a new Tax ID by providing a valid [type](https://stripe.com/docs/api/customer_tax_ids/object#tax_id_object-type) and value to the `createTaxId` method:
+
+    $taxId = $user->createTaxId('eu_vat', 'BE0123456789');
+
+The `createTaxId` method will immediately add the VAT ID to the customer's account. [Verification of VAT IDs is also done by Stripe](https://stripe.com/docs/invoicing/customer/tax-ids#validation); however, this is an asynchronous process. You can be notified of verification updates by subscribing to the `customer.tax_id.updated` webhook event and inspecting [the VAT IDs `verification` parameter](https://stripe.com/docs/api/customer_tax_ids/object#tax_id_object-verification). For more information on handling webhooks, please consult the [documentation on defining webhook handlers](#handling-stripe-webhooks).
+
+You may delete a tax ID using the `deleteTaxId` method:
+
+    $user->deleteTaxId('txi_belgium');
 
 <a name="billing-portal"></a>
 ### Billing Portal
