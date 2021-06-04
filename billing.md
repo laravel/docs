@@ -279,7 +279,7 @@ To automate this, you may define an event listener on your billable model that r
 
 Now, every time your customer model is updated, its information will be synced with Stripe. For convenience, Cashier will automatically sync your customer's information with Stripe on the initial creation of the customer.
 
-You may customize the columns used for syncing customer information to Stripe by overwriting a variety of methods provided by Cashier. For example, you may override the `stripeName` method to customize the attribute that should be considered the customer's "name" when Cashier syncs customer information to Stripe:
+You may customize the columns used for syncing customer information to Stripe by overriding a variety of methods provided by Cashier. For example, you may override the `stripeName` method to customize the attribute that should be considered the customer's "name" when Cashier syncs customer information to Stripe:
 
     /**
      * Get the customer name that should be synced to Stripe.
