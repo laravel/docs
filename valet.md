@@ -374,6 +374,7 @@ Command  | Description
 `valet restart` | Restart the Valet daemons.
 `valet start` | Start the Valet daemons.
 `valet stop` | Stop the Valet daemons.
+`valet tld` | Get or set the TLD used for Valet sites.
 `valet trust` | Add sudoers files for Brew and Valet to allow Valet commands to be run without prompting for your password.
 `valet uninstall` | Uninstall Valet: shows instructions for manual uninstall. Pass the `--force` option to aggressively delete all of Valet's resources.
 
