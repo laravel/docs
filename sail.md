@@ -20,6 +20,7 @@
 - [Container CLI](#sail-container-cli)
 - [PHP Versions](#sail-php-versions)
 - [Sharing Your Site](#sharing-your-site)
+- [Queue Workers](#queue-workers)
 - [Customization](#sail-customization)
 
 <a name="introduction"></a>
@@ -299,6 +300,55 @@ If you would like to choose the subdomain for your shared site, you may provide 
 > {tip} The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de).
 
 <a name="sail-customization"></a>
+## Queue Workers
+
+Working with queues in a local environment is not an easy task, because there are problems with the installation of the Supervisor for the Docker environment. A simple solution is to run the command in a new console tab every time:
+
+```bash
+sail artisan queue:work
+```
+
+Or use a separate Docker service for this:
+
+```yaml
+    queue-worker:
+        image: sail-8.0/app
+        container_name: queue-worker
+        depends_on:
+            - redis
+        networks:
+            - sail
+        volumes:
+            - '.:/var/www/html'
+        restart: unless-stopped
+        entrypoint: [ 'php', 'artisan', 'queue:work' ]
+```
+
+This worker listens to all queues. If you need to customize any of the queues, then you can create a new service in `docker-compose.yml`:
+
+```yaml
+    queue-emails-worker:
+        image: sail-8.0/app
+        container_name: queue-emails-worker
+        depends_on:
+            - redis
+        networks:
+            - sail
+        volumes:
+            - '.:/var/www/html'
+        restart: unless-stopped
+        entrypoint: [ 'php', 'artisan', 'queue:work', '--queue=emails', '--tries=3', '--timeout=30' ]
+```
+
+Please note that to update the code executed in the worker, you need to run the following command or restart the entire environment:
+
+```bash
+sail artisan queue:restart
+```
+
+Configuration `restart: unless-stopped` will automatically restart the container with new changes.
+
+<a name="queue-workers"></a>
 ## Customization
 
 Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` command:
