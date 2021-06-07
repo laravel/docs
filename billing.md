@@ -647,7 +647,7 @@ If you would like to determine if a user is still within their trial period, you
         //
     }
 
-The `subscribedToProduct` method may be used to determine if the user is subscribed to a given product based on a given Stripe product's identifier. In this example, we will determine if the user's `default` subscription is actively subscribed to the application's "premium" product. The given Stripe product identifier should correspond to one of your product's identifiers in the Stripe dashboard:
+The `subscribedToProduct` method may be used to determine if the user is subscribed to a given product based on a given Stripe product's identifier. In Stripe, products are collections of prices. In this example, we will determine if the user's `default` subscription is actively subscribed to the application's "premium" product. The given Stripe product identifier should correspond to one of your product's identifiers in the Stripe dashboard:
 
     if ($user->subscribedToProduct('prod_premium', 'default')) {
         //
@@ -659,7 +659,7 @@ By passing an array to the `subscribedToProduct` method, you may determine if th
         //
     }
 
-Similar, the `subscribedToPrice` method works the same but checks for Price ID's instead.
+The `subscribedToPrice` method may be used to determine if a customer's subscription corresponds to a given price ID:
 
     if ($user->subscribedToPrice('price_basic_monthly', 'default')) {
         //
