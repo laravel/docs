@@ -1499,6 +1499,8 @@ Of course, you may chain all the methods in the examples above:
         ->symbols()
         ->uncompromised()
 
+The `Password` validation rule is available starting Laravel 8.39
+
 <a name="defining-default-password-rules"></a>
 #### Defining Default Password Rules
 
@@ -1527,6 +1529,8 @@ public function boot()
 Then, when you would like to apply the default rules to a particular password undergoing validation, you may invoke the `defaults` method with no arguments:
 
     'password' => ['required', Password::defaults()],
+
+The `Password::defaults()` method is available starting Laravel 8.42
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
