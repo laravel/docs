@@ -537,13 +537,13 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
     Route::post('/user/subscribe', function (Request $request) {
         $request->user()->newSubscription(
-            'default', 'price_premium'
+            'default', 'price_monthly'
         )->create($request->paymentMethodId);
 
         // ...
     });
 
-The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific price the user is subscribing to. This value should correspond to the price's price identifier in Stripe.
+The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific price the user is subscribing to. This value should correspond to the price's identifier in Stripe.
 
 The `create` method, which accepts [a Stripe payment method identifier](#storing-payment-methods) or Stripe `PaymentMethod` object, will begin the subscription as well as update your database with the billable model's Stripe customer ID and other relevant billing information.
 
@@ -593,7 +593,7 @@ If you would like to add a subscription to a customer who already has a default 
 
     $user = User::find(1);
 
-    $user->newSubscription('default', 'price_premium')->add();
+    $user->newSubscription('default', 'price_monthly')->add();
 
 <a name="creating-subscriptions-from-the-stripe-dashboard"></a>
 #### Creating Subscriptions From The Stripe Dashboard
@@ -647,15 +647,21 @@ If you would like to determine if a user is still within their trial period, you
         //
     }
 
-The `subscribedToPrice` method may be used to determine if the user is subscribed to a given price based on a given Stripe price's price identifier. In this example, we will determine if the user's `default` subscription is actively subscribed to the application's "monthly" price. The given Stripe price price identifier should correspond to one of your price's identifiers in the Stripe dashboard:
+The `subscribedToProduct` method may be used to determine if the user is subscribed to a given product based on a given Stripe product's identifier. In this example, we will determine if the user's `default` subscription is actively subscribed to the application's "premium" product. The given Stripe product identifier should correspond to one of your product's identifiers in the Stripe dashboard:
 
-    if ($user->subscribedToPrice('price_monthly', 'default')) {
+    if ($user->subscribedToProduct('prod_premium', 'default')) {
         //
     }
 
-By passing an array to the `subscribedToPrice` method, you may determine if the user's `default` subscription is actively subscribed to the application's "monthly" or "yearly" price:
+By passing an array to the `subscribedToProduct` method, you may determine if the user's `default` subscription is actively subscribed to the application's "basic" or "premium" product:
 
-    if ($user->subscribedToPrice(['price_monthly', 'price_yearly'], 'default')) {
+    if ($user->subscribedToProduct(['prod_basic', 'prod_premium'], 'default')) {
+        //
+    }
+
+Similar, the `subscribedToPrice` method works the same but checks for Price ID's instead.
+
+    if ($user->subscribedToPrice('price_basic_monthly', 'default')) {
         //
     }
 
@@ -755,13 +761,13 @@ A complete list of available scopes is available below:
 <a name="changing-prices"></a>
 ### Changing Prices
 
-After a customer is subscribed to your application, they may occasionally want to change to a new subscription price. To swap a customer to a new price, pass the Stripe price's price identifier to the `swap` method. The given price identifier should correspond to a Stripe price price identifier available in the Stripe dashboard:
+After a customer is subscribed to your application, they may occasionally want to change to a new subscription price. To swap a customer to a new price, pass the Stripe price's identifier to the `swap` method. The given price identifier should correspond to a Stripe price identifier available in the Stripe dashboard:
 
     use App\Models\User;
 
     $user = App\Models\User::find(1);
 
-    $user->subscription('default')->swap('price_id');
+    $user->subscription('default')->swap('price_yearly');
 
 If the customer is on trial, the trial period will be maintained. Additionally, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
@@ -769,20 +775,20 @@ If you would like to swap prices and cancel any trial period the customer is cur
 
     $user->subscription('default')
             ->skipTrial()
-            ->swap('price_id');
+            ->swap('price_yearly');
 
 If you would like to swap prices and immediately invoice the customer instead of waiting for their next billing cycle, you may use the `swapAndInvoice` method:
 
     $user = User::find(1);
 
-    $user->subscription('default')->swapAndInvoice('price_id');
+    $user->subscription('default')->swapAndInvoice('price_yearly');
 
 <a name="prorations"></a>
 #### Prorations
 
 By default, Stripe prorates charges when swapping between prices. The `noProrate` method may be used to update the subscription's price without prorating the charges:
 
-    $user->subscription('default')->noProrate()->swap('price_id');
+    $user->subscription('default')->noProrate()->swap('price_yearly');
 
 For more information on subscription proration, consult the [Stripe documentation](https://stripe.com/docs/billing/subscriptions/prorations).
 
@@ -1092,7 +1098,7 @@ By default, the billing cycle anchor is the date the subscription was created or
     Route::post('/user/subscribe', function (Request $request) {
         $anchor = Carbon::parse('first day of next month');
 
-        $request->user()->newSubscription('default', 'price_premium')
+        $request->user()->newSubscription('default', 'price_monthly')
                     ->anchorBillingCycleOn($anchor->startOfDay())
                     ->create($request->paymentMethodId);
 
@@ -1436,11 +1442,11 @@ Similary, if the customer has multiple subscriptions, you can also retrieve the 
 
 Using the `previewInvoice` method, you can preview an invoice before making price changes. This will allow you to determine what your customer's invoice will look like when a given price change is made:
 
-    $invoice = $user->subscription('default')->previewInvoice('price_premium');
+    $invoice = $user->subscription('default')->previewInvoice('price_yearly');
 
 You may pass an array of prices to the `previewInvoice` method in order to preview invoices with multiple new prices:
 
-    $invoice = $user->subscription('default')->previewInvoice(['price_premium', 'price_metered']);
+    $invoice = $user->subscription('default')->previewInvoice(['price_yearly', 'price_metered']);
 
 <a name="generating-invoice-pdfs"></a>
 ### Generating Invoice PDFs
@@ -1482,7 +1488,7 @@ The following documentation contains information on how to get started using Str
 
 You may perform a checkout for an existing product that has been created within your Stripe dashboard using the `checkout` method on a billable model. The `checkout` method will initiate a new Stripe Checkout session. By default, you're required to pass a Stripe Price ID:
 
-    $checkout = $user->checkout('price_12345');
+    $checkout = $user->checkout('price_tshirt');
 
     return view('your-checkout-view', [
         'checkout' => $checkout,
@@ -1490,7 +1496,7 @@ You may perform a checkout for an existing product that has been created within 
 
 If needed, you may also specify a product quantity:
 
-    $checkout = $user->checkout(['price_12345' => 15]);
+    $checkout = $user->checkout(['price_tshirt' => 15]);
 
 Once you have passed the Checkout session instance to your view, a button that directs the user to Stripe Checkout may be rendered using the `button` method:
 
@@ -1498,7 +1504,7 @@ Once you have passed the Checkout session instance to your view, a button that d
 
 When a customer clicks this button they will be redirected to Stripe's Checkout page. By default, when a user successfully completes a purchase or cancels a purchase they will be redirected to your `home` route location, but you may specify custom callback URLs using the `success_url` and `cancel_url` options:
 
-    $checkout = $user->checkout(['price_12345' => 1], [
+    $checkout = $user->checkout(['price_tshirt' => 1], [
         'success_url' => route('your-success-route'),
         'cancel_url' => route('your-cancel-route'),
     ]);
@@ -1508,7 +1514,7 @@ When a customer clicks this button they will be redirected to Stripe's Checkout 
 
 By default, Stripe Checkout does not allow [user redeemable promotion codes](https://stripe.com/docs/billing/subscriptions/discounts/codes). Luckily, there's an easy way to enable these for your Checkout page. To do so, you may invoke the `allowPromotionCodes` method:
 
-    $checkout = $user->allowPromotionCodes()->checkout('price_12345');
+    $checkout = $user->allowPromotionCodes()->checkout('price_tshirt');
 
 <a name="single-charge-checkouts"></a>
 ### Single Charge Checkouts
@@ -1537,7 +1543,7 @@ When a customer clicks this button they will be redirected to Stripe's Checkout 
 You may also use Stripe Checkout to initiate subscriptions. After defining your subscription with Cashier's subscription builder methods, you may call the `checkout `method:
 
     $checkout = Auth::user()
-            ->newSubscription('default', 'price_xxx')
+            ->newSubscription('default', 'price_monthly')
             ->checkout();
 
     return view('your-checkout-view', [
@@ -1546,14 +1552,14 @@ You may also use Stripe Checkout to initiate subscriptions. After defining your 
 
 Just as with product checkouts, you may customize the success and cancellation URLs:
 
-    $checkout = Auth::user()->newSubscription('default', 'price_xxx')->checkout([
+    $checkout = Auth::user()->newSubscription('default', 'price_monthly')->checkout([
         'success_url' => route('your-success-route'),
         'cancel_url' => route('your-cancel-route'),
     ]);
 
 Of course, you can also enable promotion codes for subscription checkouts:
 
-    $checkout = Auth::user()->newSubscription('default', 'price_xxx')
+    $checkout = Auth::user()->newSubscription('default', 'price_monthly')
         ->allowPromotionCodes()
         ->checkout();
 
@@ -1570,7 +1576,7 @@ When a customer clicks this button they will be redirected to Stripe's Checkout 
 
 Of course, you can define a trial period when building a subscription that will be completed using Stripe Checkout:
 
-    $checkout = Auth::user()->newSubscription('default', 'price_xxx')
+    $checkout = Auth::user()->newSubscription('default', 'price_monthly')
         ->trialDays(3)
         ->checkout();
 
