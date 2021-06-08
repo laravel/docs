@@ -139,6 +139,12 @@ Once you have registered the middleware in your kernel, you may attach it to a r
         // ...
     })->name('unsubscribe')->middleware('signed');
 
+There might be cases where you need to allow the frontend to append data to a signed URL, for example for pagination. You can define specific parameters to be ignored when verifying the URL by using the `hasValidSignatureWhileIgnoring` method on the incoming `Request`. Remember that this allows for anyone to modify these parameters while still passing the validation test.
+
+    if (! $request->hasValidSignatureWhileIgnoring(['page', 'order'])) {
+        abort(401);
+    }
+
 <a name="urls-for-controller-actions"></a>
 ## URLs For Controller Actions
 
