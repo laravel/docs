@@ -108,7 +108,7 @@ If you would like to generate a temporary signed route URL that expires after a 
 <a name="validating-signed-route-requests"></a>
 #### Validating Signed Route Requests
 
-To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Request`:
+To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Illuminate\Http\Request` instance:
 
     use Illuminate\Http\Request;
 
@@ -120,7 +120,13 @@ To verify that an incoming request has a valid signature, you should call the `h
         // ...
     })->name('unsubscribe');
 
-Alternatively, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
+Sometimes, you may need to allow your application's frontend to append data to a signed URL, such as when performing client-side pagination. Therefore, you can specify request query parameters that should be ignored when validating a signed URL using the `hasValidSignatureWhileIgnoring` method. Remember, ignoring parameters allows anyone to modify those parameters on the request:
+
+    if (! $request->hasValidSignatureWhileIgnoring(['page', 'order'])) {
+        abort(401);
+    }
+
+Instead of validating signed URLs using the incoming request instance, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you should assign this middleware a key in your HTTP kernel's `routeMiddleware` array:
 
     /**
      * The application's route middleware.
@@ -138,12 +144,6 @@ Once you have registered the middleware in your kernel, you may attach it to a r
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
     })->name('unsubscribe')->middleware('signed');
-
-There might be cases where you need to allow the frontend to append data to a signed URL, for example for pagination. You can define specific parameters to be ignored when verifying the URL by using the `hasValidSignatureWhileIgnoring` method on the incoming `Request`. Remember that this allows for anyone to modify these parameters while still passing the validation test.
-
-    if (! $request->hasValidSignatureWhileIgnoring(['page', 'order'])) {
-        abort(401);
-    }
 
 <a name="urls-for-controller-actions"></a>
 ## URLs For Controller Actions
