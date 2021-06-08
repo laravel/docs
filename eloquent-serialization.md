@@ -141,7 +141,7 @@ Occasionally, when converting models to arrays or JSON, you may wish to add attr
          */
         public function getIsAdminAttribute()
         {
-            return $this->attributes['admin'] === 'yes';
+            return $this->attributes['admin'] = 'yes';
         }
     }
 
