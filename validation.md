@@ -1133,9 +1133,9 @@ The field under validation must be [numeric](https://www.php.net/manual/en/funct
 <a name="rule-password"></a>
 #### password
 
-The field under validation must match the authenticated user's password. You may specify an [authentication guard](/docs/{{version}}/authentication) using the rule's first parameter:
+The field under validation must match the authenticated user's password.
 
-    'password' => 'password:api'
+> {note} This rule was renamed to `current_password` with the intention of removing it in Laravel 9. Please use the [Current Password](#rule-current-password) rule instead.
 
 <a name="rule-present"></a>
 #### present
