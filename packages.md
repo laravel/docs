@@ -246,17 +246,17 @@ Now, when users of your package execute Laravel's `vendor:publish` Artisan comma
 <a name="view-components"></a>
 ### View Components
 
-If your package contains [view components](/docs/{{version}}/blade#components), you may use the `loadViewComponentsAs` method to inform Laravel how to load them. The `loadViewComponentsAs` method accepts two arguments: the tag prefix for your view components and an array of your view component class names. For example, if your package's prefix is `courier` and you have `Alert` and `Button` view components, you would add the following to your service provider's `register` method:
+If your package contains [view components](/docs/{{version}}/blade#components), you may use the `loadViewComponentsAs` method to inform Laravel how to load them. The `loadViewComponentsAs` method accepts two arguments: the tag prefix for your view components and an array of your view component class names. For example, if your package's prefix is `courier` and you have `Alert` and `Button` view components, you would add the following to your service provider's `boot` method:
 
     use Courier\Components\Alert;
     use Courier\Components\Button;
 
     /**
-     * Register any package services.
+     * Bootstrap any package services.
      *
      * @return void
      */
-    public function register()
+    public function boot()
     {
         $this->loadViewComponentsAs('courier', [
             Alert::class,
