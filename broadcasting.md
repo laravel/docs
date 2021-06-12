@@ -121,6 +121,8 @@ Next, you will need to change your broadcast driver to `ably` in your `.env` fil
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
+> {tip} If you plan to use ably without [Laravel Echo](#client-side-installation), it is important to know that the channels you create will be prefixed with the respective type `public:`, `private:` and `presence:`. For example `new PrivateChannel('orders.'.$this->order->id);` will become `private:orders.1`.
+
 <a name="open-source-alternatives"></a>
 ### Open Source Alternatives
 
