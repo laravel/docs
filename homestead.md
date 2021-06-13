@@ -175,6 +175,15 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 
     provider: virtualbox
 
+<a name="setting-your-paravirtualization-interface"></a>
+#### Setting Your Paravirtualization Interface
+
+The `paravirtualization` key in your `Homestead.yaml` file indicates which paravirtualization interface should be provided to the guest operating system:
+
+    paravirtprovider: hyperv
+
+Supported `paravirtualization` values include: `none`, `default`, `legacy`, `minimal`, `hyperv`, and `kvm` (the default)
+
 <a name="configuring-shared-folders"></a>
 #### Configuring Shared Folders
 
