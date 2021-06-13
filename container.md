@@ -150,6 +150,18 @@ The `singleton` method binds a class or interface into the container that should
         return new Transistor($app->make(PodcastParser::class));
     });
 
+<a name="binding-scoped"></a>
+#### Binding Scoped Instances
+
+The `scoped` method binds a class or interface into the container that should only be resolved one time inside the same context. Differently than the `singleton` method, instances registered with the `scoped` method will be flushed whenever the Laravel Application switches contexts, such as when a Laravel Octane Worker processes a new request or when Laravel Queue Worker processes a new Job:
+
+    use App\Services\Transistor;
+    use App\Services\PodcastParser;
+
+    $this->app->scoped(Transistor::class, function ($app) {
+        return new Transistor($app->make(PodcastParser::class));
+    });
+
 <a name="binding-instances"></a>
 #### Binding Instances
 
