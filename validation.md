@@ -686,6 +686,7 @@ Below is a list of all available validation rules and their function:
 [Between](#rule-between)
 [Boolean](#rule-boolean)
 [Confirmed](#rule-confirmed)
+[Current Password](#rule-current-password)
 [Date](#rule-date)
 [Date Equals](#rule-date-equals)
 [Date Format](#rule-date-format)
@@ -842,6 +843,13 @@ The field under validation must be able to be cast as a boolean. Accepted input 
 #### confirmed
 
 The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
+
+<a name="rule-current-password"></a>
+#### current_password
+
+The field under validation must match the authenticated user's password. You may specify an [authentication guard](/docs/{{version}}/authentication) using the rule's first parameter:
+
+    'password' => 'current_password:api'
 
 <a name="rule-date"></a>
 #### date
@@ -1163,9 +1171,9 @@ The field under validation must be [numeric](https://www.php.net/manual/en/funct
 <a name="rule-password"></a>
 #### password
 
-The field under validation must match the authenticated user's password. You may specify an [authentication guard](/docs/{{version}}/authentication) using the rule's first parameter:
+The field under validation must match the authenticated user's password.
 
-    'password' => 'password:api'
+> {note} This rule was renamed to `current_password` with the intention of removing it in Laravel 9. Please use the [Current Password](#rule-current-password) rule instead.
 
 <a name="rule-present"></a>
 #### present
