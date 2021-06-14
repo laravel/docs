@@ -769,6 +769,8 @@ After a customer is subscribed to your application, they may occasionally want t
 
     $user->subscription('default')->swap('price_yearly');
 
+> {note} When swapping a price it is assumed that the user would like to re-activate their subscription if they have canceled previously. If you do not want to re-activate the user's subscription it is best not to swap their price.
+
 If the customer is on trial, the trial period will be maintained. Additionally, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
 If you would like to swap prices and cancel any trial period the customer is currently on, you may invoke the `skipTrial` method:
