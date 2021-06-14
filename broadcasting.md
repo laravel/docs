@@ -844,13 +844,11 @@ If you plan to explicitly return a channel instance from your model's `broadcast
 return [new Channel($this->user)];
 ```
 
-If you need access to the channel name of a model, you may use the `broadcastChannel()` method from any model instance:
+If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for a `App\Models\User` model with an `id` of `1`:
 
 ```php
 $user->broadcastChannel()
 ```
-
-This method returns the string `App.Models.User.1` for a `App\Models\User` model with an `id` of `1`.
 
 <a name="model-broadcasting-event-conventions"></a>
 #### Event Conventions

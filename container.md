@@ -151,9 +151,9 @@ The `singleton` method binds a class or interface into the container that should
     });
 
 <a name="binding-scoped"></a>
-#### Binding Scoped Instances
+#### Binding Scoped Singletons
 
-The `scoped` method binds a class or interface into the container that should only be resolved one time inside the same context. Differently than the `singleton` method, instances registered with the `scoped` method will be flushed whenever the Laravel Application switches contexts, such as when a Laravel Octane Worker processes a new request or when Laravel Queue Worker processes a new Job:
+The `scoped` method binds a class or interface into the container that should only be resolved one time within a given Laravel request / job lifecycle. While this method is similar to the `singleton` method, instances registered using the `scoped` method will be flushed whenever the Laravel application starts a new "lifecycle", such as when a [Laravel Octane](/docs/{{version}}/octane) worker processes a new request or when a Laravel [queue worker](/docs/{{version}}/queues) processes a new job:
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
