@@ -761,15 +761,13 @@ A complete list of available scopes is available below:
 <a name="changing-prices"></a>
 ### Changing Prices
 
-After a customer is subscribed to your application, they may occasionally want to change to a new subscription price. To swap a customer to a new price, pass the Stripe price's identifier to the `swap` method. The given price identifier should correspond to a Stripe price identifier available in the Stripe dashboard:
+After a customer is subscribed to your application, they may occasionally want to change to a new subscription price. To swap a customer to a new price, pass the Stripe price's identifier to the `swap` method. When swapping prices, it is assumed that the user would like to re-activate their subscription if it was previously cancelled. The given price identifier should correspond to a Stripe price identifier available in the Stripe dashboard:
 
     use App\Models\User;
 
     $user = App\Models\User::find(1);
 
     $user->subscription('default')->swap('price_yearly');
-
-> {note} When swapping a price it is assumed that the user would like to re-activate their subscription if they have canceled previously. If you do not want to re-activate the user's subscription it is best not to swap their price.
 
 If the customer is on trial, the trial period will be maintained. Additionally, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
