@@ -761,7 +761,7 @@ A complete list of available scopes is available below:
 <a name="changing-prices"></a>
 ### Changing Prices
 
-After a customer is subscribed to your application, they may occasionally want to change to a new subscription price. To swap a customer to a new price, pass the Stripe price's identifier to the `swap` method. The given price identifier should correspond to a Stripe price identifier available in the Stripe dashboard:
+After a customer is subscribed to your application, they may occasionally want to change to a new subscription price. To swap a customer to a new price, pass the Stripe price's identifier to the `swap` method. When swapping prices, it is assumed that the user would like to re-activate their subscription if it was previously cancelled. The given price identifier should correspond to a Stripe price identifier available in the Stripe dashboard:
 
     use App\Models\User;
 
