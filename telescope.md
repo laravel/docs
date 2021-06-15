@@ -317,7 +317,7 @@ The gate watcher records the data and result of [gate and policy](/docs/{{versio
 <a name="http-client-watcher"></a>
 ### HTTP Client Watcher
 
-The HTTP Client watcher records outgoing [HTTP Client requests](/docs/{{version}}/http-client) made by your application.
+The HTTP client watcher records outgoing [HTTP client requests](/docs/{{version}}/http-client) made by your application.
 
 <a name="job-watcher"></a>
 ### Job Watcher
