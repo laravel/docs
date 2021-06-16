@@ -377,6 +377,23 @@ Scout allows you to add simple "where" clauses to your search queries. Currently
 
     $orders = Order::search('Star Trek')->where('user_id', 1)->get();
 
+<a name="eager-loading"></a>
+### Eager loading
+
+In order to eager load relationships, you should use lazy eager loading:
+
+    use App\Models\Order;
+
+    $orders = Order::search('Star Trek')->get();
+    $orders->load('user');
+
+When using pagination:
+
+    use App\Models\Order;
+
+    $orders = Order::search('Star Trek')->paginate();
+    $orders->load('user');
+
 <a name="pagination"></a>
 ### Pagination
 
