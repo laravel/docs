@@ -498,7 +498,7 @@ By default, Echo will use the `/broadcasting/auth` endpoint to authorize channel
 <a name="customizing-the-authorization-request"></a>
 #### Customizing The Authorization Request
 
-You can customize how Echo performs authorization requests by providing a custom authorizer when initializing Laravel Echo:
+You can customize how Laravel Echo performs authorization requests by providing a custom authorizer when initializing Echo:
 
     window.Echo = new Echo({
         // ...
