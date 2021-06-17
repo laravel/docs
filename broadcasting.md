@@ -495,6 +495,31 @@ By default, Echo will use the `/broadcasting/auth` endpoint to authorize channel
         authEndpoint: '/custom/endpoint/auth'
     });
 
+<a name="customizing-the-authorization-request"></a>
+#### Customizing The Authorization Request
+
+You can customize how Laravel Echo performs authorization requests by providing a custom authorizer when initializing Echo:
+
+    window.Echo = new Echo({
+        // ...
+        authorizer: (channel, options) => {
+            return {
+                authorize: (socketId, callback) => {
+                    axios.post('/api/broadcasting/auth', {
+                        socket_id: socketId,
+                        channel_name: channel.name
+                    })
+                    .then(response => {
+                        callback(false, response.data);
+                    })
+                    .catch(error => {
+                        callback(true, error);
+                    });
+                }
+            };
+        },
+    })
+
 <a name="defining-authorization-callbacks"></a>
 ### Defining Authorization Callbacks
 
