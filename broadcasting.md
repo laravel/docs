@@ -20,7 +20,6 @@
 - [Authorizing Channels](#authorizing-channels)
     - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
-    = [Customizing The Authorization Request](#customizing-the-authorization-request)
     - [Defining Channel Classes](#defining-channel-classes)
 - [Broadcasting Events](#broadcasting-events)
     - [Only To Others](#only-to-others)
