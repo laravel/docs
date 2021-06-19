@@ -969,7 +969,7 @@ Next, define a route to your Cashier webhook controller within your application'
 
     use App\Http\Controllers\WebhookController;
 
-    Route::post('/paddle/webhook', WebhookController::class);
+    Route::post('/paddle/webhook', WebhookController::class)->name('cashier.webhook');
 
 Cashier emits a `Laravel\Paddle\Events\WebhookReceived` event when a webhook is received and a `Laravel\Paddle\Events\WebhookHandled` event when a webhook was handled. Both events contain the full payload of the Paddle webhook.
 
