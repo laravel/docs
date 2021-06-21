@@ -1316,7 +1316,7 @@ Next, define a route to your Cashier webhook controller within your application'
     Route::post(
         '/stripe/webhook',
         [WebhookController::class, 'handleWebhook']
-    );
+    )->name('cashier.webhook');
 
 > {tip} Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Stripe webhook.
 
