@@ -47,6 +47,8 @@ npm run dev
 php artisan migrate
 ```
 
+> {note} You should not execute `php artisan breeze:install` on an existing Laravel project which will overwrite some of the existing files. If you have a backup or have committed to the code to your version control and you are sure that you can easily rollback the changes, only then run the command and then resolve the conflicting files.
+
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
 
 > {tip} To learn more about compiling your application's CSS and JavaScript, check out the [Laravel Mix documentation](/docs/{{version}}/mix#running-mix).
