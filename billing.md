@@ -1298,7 +1298,23 @@ To ensure your application can handle Stripe webhooks, be sure to configure the 
 - `customer.deleted`
 - `invoice.payment_action_required`
 
-> {note} Make sure you protect incoming Stripe webhook requests with Cashier's included [webhook signature verification](/docs/{{version}}/billing#verifying-webhook-signatures) middleware.
+To make it easy for you to set these up, Cashier comes with a `cashier:webhook` command. You can run this after deploying to production for the first time:
+
+    php artisan cashier:webhook
+
+Cashier will set up the webhook in Stripe with all events it needs. By default, it will make use of the `APP_URL` and the `cashier.webhook` route that ships with Cashier. If you need a different url you can use the `--url` parameter:
+
+    php artisan cashier:webhook --url "https://example.com/stripe/webhook"
+
+The webhook that will be created will use the Stripe version that Cashier is compatible with. If you need to use a different Stripe version for your webhook you may use the `--api-version` parameter:
+
+    php artisan cashier:webhook --app-version="2019-12-03"
+
+After being created, the webhook will be active immediately. If you wish to create the webhook but have it disabled until you're ready you may use the `--disabled` flag:
+
+    php artisan cashier:webhook --disabled
+
+> {note} Make sure you protect incoming Stripe webhook requests with Cashier's included [webhook signature verification](#verifying-webhook-signatures) middleware.
 
 <a name="webhooks-csrf-protection"></a>
 #### Webhooks & CSRF Protection
