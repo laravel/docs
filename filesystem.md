@@ -8,6 +8,7 @@
     - [Amazon S3 Compatible Filesystems](#amazon-s3-compatible-filesystems)
     - [Caching](#caching)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
+    - [On-Demand Disks](#on-demand-disks)
 - [Retrieving Files](#retrieving-files)
     - [Downloading Files](#downloading-files)
     - [File URLs](#file-urls)
@@ -162,6 +163,22 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 If your application interacts with multiple disks, you may use the `disk` method on the `Storage` facade to work with files on a particular disk:
 
     Storage::disk('s3')->put('avatars/1', $content);
+
+<a name="on-demand-disks"></a>
+### On-Demand Disks
+
+Sometimes you may wish to create a disk at runtime using a given configuration without that configuration actually being present in your application's `filesystems` configuration file. To accomplish this, you may pass a configuration array to the `Storage` facade's `build` method:
+
+```php
+use Illuminate\Support\Facades\Storage;
+
+$disk = Storage::build([
+    'driver' => 'local',
+    'root' => '/path/to/root',
+]);
+
+$disk->put('image.jpg', $content);
+```
 
 <a name="retrieving-files"></a>
 ## Retrieving Files
