@@ -50,6 +50,7 @@
     - [Product Checkouts](#product-checkouts)
     - [Single Charge Checkouts](#single-charge-checkouts)
     - [Subscription Checkouts](#subscription-checkouts)
+    - [Collecting Tax IDs](#collecting-tax-ids)
     - [Styling The Checkout Button](#styling-the-checkout-button)
 - [Invoices](#invoices)
     - [Retrieving Invoices](#retrieving-invoices)
@@ -1586,6 +1587,15 @@ However, the trial period must be at least 48 hours, which is the minimum amount
 #### Subscriptions & Webhooks
 
 Remember, Stripe and Cashier update subscription statuses via webhooks, so there's a possibility a subscription might not yet be active when the customer returns to the application after entering their payment information. To handle this scenario, you may wish to display a message informing the user that their payment or subscription is pending.
+
+<a name="collecting-tax-ids"></a>
+### Collecting Tax IDs
+
+Checkout also supports collecting a customer's Tax ID. To enable this on a checkout session, use the `collectTaxIds` method when creating the session:
+
+    $checkout = $user->collectTaxIds()->checkout('price_tshirt');
+
+This will show a new checkbox to allow the customer to indicate if they're purchasing as a company, and if so, fill in their Tax ID number.
 
 <a name="styling-the-checkout-button"></a>
 ### Styling The Checkout Button
