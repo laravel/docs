@@ -1479,7 +1479,7 @@ The `downloadInvoice` method also allows for a custom filename via its third arg
 <a name="checkout"></a>
 ## Checkout
 
-Cashier Stripe also provides support for [Stripe Checkout](https://stripe.com/en-be/payments/checkout). Stripe Checkout takes the pain out of implementing custom pages to accept payments by providing a pre-built, hosted payment page.
+Cashier Stripe also provides support for [Stripe Checkout](https://stripe.com/payments/checkout). Stripe Checkout takes the pain out of implementing custom pages to accept payments by providing a pre-built, hosted payment page.
 
 The following documentation contains information on how to get started using Stripe Checkout with Cashier. To learn more about Stripe Checkout, you should also consider reviewing [Stripe's own documentation on Checkout](https://stripe.com/docs/payments/checkout).
 
