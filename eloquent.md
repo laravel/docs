@@ -901,6 +901,25 @@ You may create an unsaved copy of an existing model instance using the `replicat
 
     $billing->save();
 
+If you do not wish to carry one or more fields to the new replicant, you can exclude from the replicant by providing an array of field names. This is useful when some values only relate to a specific instance of the model
+
+    use App\Models\Flight;
+
+    $flight = Flight::create([
+        'destination' => 'LAX',
+        'origin' => 'LHR',
+        'last_flown' => '2020-03-04 11:00:00',
+        'last_pilot_id' => 747,
+    ]);
+
+    $flight = $flight->replicate([
+        'last_flown',
+        'last_pilot_id'
+    ]);
+
+    $flight->save();
+
+
 <a name="query-scopes"></a>
 ## Query Scopes
 
