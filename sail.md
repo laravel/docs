@@ -22,6 +22,7 @@
 - [PHP Versions](#sail-php-versions)
 - [Sharing Your Site](#sharing-your-site)
 - [Customization](#sail-customization)
+- [Speeding up Reloads on WSL2](#speeding-up-wsl2)
 
 <a name="introduction"></a>
 ## Introduction
@@ -342,3 +343,9 @@ After running this command, the Dockerfiles and other configuration files used b
 ```bash
 sail build --no-cache
 ```
+<a name="speeding-up-wsl2"></a>
+## Speeding up reloads on WSL2
+
+When using Sail on Windows with WSL2, you may notice reloads taking a really long time. This is the case when you store your project in the Windows filesystem, as filesystem access from WSL then takes a huge hit. Thus, Microsoft itself recommends against using filesystems across operating systems. The solution to speeding up your Sail environment, is to move your project from Windows, into the home directory of the user in the operating system you are using, found under the share path `\\wsl$\`. After moving your files, navigate to the new project directory in WSL and fix the file permissions using `chown -R user:group PROJECT_NAME`. Replace `user`,`group` and `PROJECT_NAME` as applicable.
+
+
