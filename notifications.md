@@ -224,6 +224,11 @@ Sometimes you may need to send a notification to someone who is not stored as a 
                 ->route('slack', 'https://hooks.slack.com/services/...')
                 ->notify(new InvoicePaid($invoice));
 
+    // Specify the recipient name...
+    Notification::route('mail', [
+        'barrett@example.com' => 'Barrett Blair',
+    ])->notify(new InvoicePaid($invoice));
+
 <a name="mail-notifications"></a>
 ## Mail Notifications
 
