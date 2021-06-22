@@ -1059,7 +1059,7 @@ For a full reference of all usage data returned and how to use Stripe's cursor b
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
 
-> {note} Instead of calculating Tax Rates manually, you can [automatically calculate taxes using Stripe Tax](#calculating-taxes)
+> {note} Instead of calculating Tax Rates manually, you can [automatically calculate taxes using Stripe Tax](#tax-configuration)
 
 To specify the tax rates a user pays on a subscription, you should implement the `taxRates` method on your billable model and return an array containing the Stripe tax rate IDs. You can define these tax rates in [your Stripe dashboard](https://dashboard.stripe.com/test/tax-rates):
 
