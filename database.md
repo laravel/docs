@@ -43,7 +43,30 @@ To enable foreign key constraints for SQLite connections, you should set the `DB
 <a name="mssql-configuration"></a>
 #### Microsoft SQL Server Configuration
 
-To use a Microsoft SQL Server database, you should ensure that you have the `sqlsrv` and `pdo_sqlsrv` PHP extensions installed as well as any dependencies they may require such as the Microsoft SQL ODBC driver.
+To use a Microsoft SQL Server database, you should ensure that you have the `sqlsrv` and `pdo_sqlsrv` PHP extensions installed as well as any dependencies they may require such as the Microsoft SQL ODBC driver. For instructions on how to install the driver, refer to Microsoft's official documentation ([macOS](https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos), [Linux](https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server), [Windows](https://docs.microsoft.com/en-us/sql/connect/odbc/windows/system-requirements-installation-and-driver-files)).
+
+##### Setup SQL Server on Laravel Sail
+
+To easily add the required extensions to your default Laravel Sail image, simply add this code at the end of your custom Dockerfile. It assumes the Sail image is using the default Ubuntu 20.04 image. You may need to change some values to fit your requirements.
+    
+    # Install SQL Server Linux ODBC driver
+    RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+        && curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+        && apt-get update \
+        && ACCEPT_EULA=Y apt-get install -y msodbcsql17 \
+        # Optional: bcp & sqlcmd
+        && ACCEPT_EULA=Y apt-get install -y mssql-tools \
+        && echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc \
+        # Optional: unixODBC headers
+        && apt-get install -y unixodbc-dev
+
+    # Install SQL Server PHP extensions
+    RUN pecl install sqlsrv \
+        && pecl install pdo_sqlsrv \
+        && printf "; priority=20\nextension=sqlsrv.so\n" > /etc/php/8.0/mods-available/sqlsrv.ini \
+        && printf "; priority=30\nextension=pdo_sqlsrv.so\n" > /etc/php/8.0/mods-available/pdo_sqlsrv.ini \
+        && phpenmod -v 8.0 sqlsrv pdo_sqlsrv
+
 
 <a name="configuration-using-urls"></a>
 #### Configuration Using URLs
