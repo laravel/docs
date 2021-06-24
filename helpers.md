@@ -1526,6 +1526,10 @@ The `Str::snake` method converts the given string to `snake_case`:
 
     // foo_bar
 
+    $converted = Str::snake('fooBar', '-');
+
+    // foo-bar
+
 <a name="method-str-start"></a>
 #### `Str::start()` {#collection-method}
 
