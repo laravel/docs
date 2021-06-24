@@ -127,11 +127,11 @@ Headers may be added to requests using the `withHeaders` method. This `withHeade
     ])->post('http://example.com/users', [
         'name' => 'Taylor',
     ]);
-    
+
 You may use the `accept` method to specify the content type that your application is expecting in response to your request:
 
     $response = Http::accept('application/json')->get('http://example.com/users');
-    
+
 For convenience, you may use the `acceptJson` method to quickly specify that your application expects the `application/json` content type in response to your request:
 
     $response = Http::acceptJson()->get('http://example.com/users');
@@ -385,9 +385,9 @@ Or, you may use the `assertNothingSent` method to assert that no requests were s
 <a name="events"></a>
 ## Events
 
-Laravel fires two events during the process of sending HTTP requests. The `RequestSending` event is fired prior to a request being sent, while the `ResponseReceived` event is fired after a response is received for a given request.
+Laravel fires three events during the process of sending HTTP requests. The `RequestSending` event is fired prior to a request being sent, while the `ResponseReceived` event is fired after a response is received for a given request. The `ConnectionFailed` event is fired if no response is received for a given request.
 
-The `RequestSending` event contains a public `$request` property that you may use to inspect the `Illuminate\Http\Client\Request` instance. Likewise, the `ResponseReceived` event contains a `$request` property as well as a `$response` property which may be used to inspect the `Illuminate\Http\Client\Response` instance. You may register event listeners for this event in your `App\Providers\EventServiceProvider` service provider:
+The `RequestSending` and `ConnectionFailed` events both contain a public `$request` property that you may use to inspect the `Illuminate\Http\Client\Request` instance. Likewise, the `ResponseReceived` event contains a `$request` property as well as a `$response` property which may be used to inspect the `Illuminate\Http\Client\Response` instance. You may register event listeners for this event in your `App\Providers\EventServiceProvider` service provider:
 
     /**
      * The event listener mappings for the application.
@@ -400,5 +400,8 @@ The `RequestSending` event contains a public `$request` property that you may us
         ],
         'Illuminate\Http\Client\Events\ResponseReceived' => [
             'App\Listeners\LogResponseReceived',
+        ],
+        'Illuminate\Http\Client\Events\ConnectionFailed' => [
+            'App\Listeners\LogConnectionFailed',
         ],
     ];
