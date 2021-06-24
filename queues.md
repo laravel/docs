@@ -687,6 +687,8 @@ If you would like to dispatch a job immediately (synchronously), you may use the
             ProcessPodcast::dispatchSync($podcast);
         }
     }
+    
+When using the `dispatchSync` method, no value is returned from the job's `handle` method and no job middleware is executed.
 
 <a name="jobs-and-database-transactions"></a>
 ### Jobs & Database Transactions
