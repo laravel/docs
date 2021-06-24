@@ -620,7 +620,7 @@ If the collection contains arrays or objects, you can pass the key of the attrib
         ['email' => 'abigail@example.com', 'position' => 'Developer'],
         ['email' => 'james@example.com', 'position' => 'Designer'],
         ['email' => 'victoria@example.com', 'position' => 'Developer'],
-    ])
+    ]);
 
     $employees->duplicates('position');
 
