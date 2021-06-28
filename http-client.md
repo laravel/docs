@@ -136,6 +136,8 @@ For convenience, you may use the `acceptJson` method to quickly specify that you
 
     $response = Http::acceptJson()->get('http://example.com/users');
 
+> {tip} Headers with the same name applied twice will result in both headers being sent (they are not replaced). For example, you cannot set a custom content type if you use the `->asForm()` method.
+
 <a name="authentication"></a>
 ### Authentication
 
