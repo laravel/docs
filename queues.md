@@ -37,6 +37,7 @@
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
     - [Retrying Failed Jobs](#retrying-failed-jobs)
+    - [Pruning Failed Jobs](#pruning-failed-jobs)
     - [Ignoring Missing Models](#ignoring-missing-models)
     - [Storing Failed Jobs In DynamoDB](#storing-failed-jobs-in-dynamodb)
     - [Failed Job Events](#failed-job-events)
@@ -1710,6 +1711,17 @@ If you would like to delete a failed job, you may use the `queue:forget` command
 To delete all of your failed jobs from the `failed_jobs` table, you may use the `queue:flush` command:
 
     php artisan queue:flush
+
+<a name="pruning-failed-jobs"></a>
+### Pruning Failed Jobs
+
+To prune all records from the failed_jobs database table, you may use the `queue:prune-failed` Artisan Command:
+
+    php artisan queue:prune-failed
+
+If necessary, you may pass the number of hours to retain jobs data.
+
+    php artisan queue:prune-failed --hours=48
 
 <a name="ignoring-missing-models"></a>
 ### Ignoring Missing Models
