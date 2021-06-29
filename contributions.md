@@ -57,7 +57,7 @@ Laravel's GitHub issue trackers are not intended to provide Laravel help or supp
 - [StackOverflow](https://stackoverflow.com/questions/tagged/laravel)
 - [Discord](https://discordapp.com/invite/KxwQuKb)
 - [Larachat](https://larachat.co)
-- [IRC](https://webchat.freenode.net/?nick=artisan&channels=%23laravel&prompt=1)
+- [IRC](https://web.libera.chat/?nick=artisan&channels=#laravel)
 </div>
 
 <a name="core-development-discussion"></a>
