@@ -6,6 +6,7 @@
     - [Channel Prerequisites](#channel-prerequisites)
 - [Building Log Stacks](#building-log-stacks)
 - [Writing Log Messages](#writing-log-messages)
+    - [Contextual Information](#contextual-information)
     - [Writing To Specific Channels](#writing-to-specific-channels)
 - [Monolog Channel Customization](#monolog-channel-customization)
     - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
@@ -170,11 +171,44 @@ You may call any of these methods to log a message for the corresponding level. 
     }
 
 <a name="contextual-information"></a>
-#### Contextual Information
+### Contextual Information
 
-An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
+An array of contextual data may be passed to the log methods. This contextual data will be formatted and displayed with the log message:
+
+    use Illuminate\Support\Facades\Log;
 
     Log::info('User failed to login.', ['id' => $user->id]);
+
+Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:
+
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use Closure;
+    use Illuminate\Support\Facades\Log;
+    use Illuminate\Support\Str;
+
+    class AssignRequestId
+    {
+        /**
+         * Handle an incoming request.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Closure  $next
+         * @return mixed
+         */
+        public function handle($request, Closure $next)
+        {
+            $requestId = (string) Str::uuid();
+
+            Log::withContext([
+                'request-id' => $requestId
+            ]);
+
+            return $next($request)->header('Request-Id', $requestId);
+        }
+    }
 
 <a name="writing-to-specific-channels"></a>
 ### Writing To Specific Channels
