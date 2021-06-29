@@ -18,6 +18,7 @@
 - [Advanced Where Clauses](#advanced-where-clauses)
     - [Where Exists Clauses](#where-exists-clauses)
     - [Subquery Where Clauses](#subquery-where-clauses)
+- [Advanced From Clauses](#advanced-from-clauses)
 - [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit-and-offset)
     - [Ordering](#ordering)
     - [Grouping](#grouping)
@@ -663,6 +664,29 @@ Or, you may need to construct a "where" clause that compares a column to the res
     $incomes = Income::where('amount', '<', function ($query) {
         $query->selectRaw('avg(i.amount)')->from('incomes as i');
     })->get();
+
+
+<a name="advanced-from-clauses"></a>
+## Advanced From Clause
+
+The query builder also provides `fromSub` method to create a subquery on "from", instead of only being able to use table names. The `fromSub` method accepts a closure which will receive a query builder instance, allowing you to define the query that should be placed inside of the "from" clause:
+
+    $builder->fromSub(function ($query) {
+            $query->select(new Raw('max(last_seen_at) as last_seen_at'))
+                ->from('user_sessions')->where('foo', 1);
+    }, 'sessions')
+    ->where('bar', '<', '10');
+
+The example above will produce the following SQL:
+
+```sql
+select * from (select max(last_seen_at) as last_seen_at from "user_sessions" where "foo" = 1) as "sessions" where "bar" < 10
+```
+
+You can also use `fromRaw` method to achieve the same result as the above but using raw SQL
+
+    $builder->fromRaw('(select max(last_seen_at) as last_seen_at from "user_sessions" where "foo" = ?) as "sessions"', [1])
+    ->where('bar', '<', '10');
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit & Offset
