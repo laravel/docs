@@ -37,9 +37,9 @@
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
     - [Retrying Failed Jobs](#retrying-failed-jobs)
-    - [Pruning Failed Jobs](#pruning-failed-jobs)
     - [Ignoring Missing Models](#ignoring-missing-models)
     - [Storing Failed Jobs In DynamoDB](#storing-failed-jobs-in-dynamodb)
+    - [Pruning Failed Jobs](#pruning-failed-jobs)
     - [Failed Job Events](#failed-job-events)
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
 - [Job Events](#job-events)
@@ -1712,17 +1712,6 @@ To delete all of your failed jobs from the `failed_jobs` table, you may use the 
 
     php artisan queue:flush
 
-<a name="pruning-failed-jobs"></a>
-### Pruning Failed Jobs
-
-To prune all records from the failed_jobs database table, you may use the `queue:prune-failed` Artisan Command:
-
-    php artisan queue:prune-failed
-
-If necessary, you may pass the number of hours to retain jobs data.
-
-    php artisan queue:prune-failed --hours=48
-
 <a name="ignoring-missing-models"></a>
 ### Ignoring Missing Models
 
@@ -1761,6 +1750,17 @@ Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. 
     'table' => 'failed_jobs',
 ],
 ```
+
+<a name="pruning-failed-jobs"></a>
+### Pruning Failed Jobs
+
+You may delete all of the records in your application's `failed_jobs` table by invoking the `queue:prune-failed` Artisan command:
+
+    php artisan queue:prune-failed
+
+If you provide the `--hours` option to the command, only the failed job records that were inserted within the last N number of hours will be retained. For example, the following command will delete all of the failed job records that were inserted more than 48 hours ago:
+
+    php artisan queue:prune-failed --hours=48
 
 <a name="failed-job-events"></a>
 ### Failed Job Events
