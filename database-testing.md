@@ -287,6 +287,13 @@ If necessary, you may include a closure as a sequence value. The closure will be
                     ))
                     ->create();
 
+If necessary, you may use the `$index` or `$count` property in the sequence closure.
+
+    $users = User::factory()
+                    ->count(10)
+                    ->sequence(fn ($sequence) => ['name' => 'index '.$sequence->index])
+                    ->create();
+
 <a name="factory-relationships"></a>
 ## Factory Relationships
 
