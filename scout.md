@@ -9,6 +9,7 @@
     - [Configuring Searchable Data](#configuring-searchable-data)
     - [Configuring The Model ID](#configuring-the-model-id)
     - [Identifying Users](#identifying-users)
+- [Local Development](#local-development)
 - [Indexing](#indexing)
     - [Batch Import](#batch-import)
     - [Adding Records](#adding-records)
@@ -29,7 +30,7 @@
 
 Laravel Scout provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
-Currently, Scout ships with [Algolia](https://www.algolia.com/) and [MeiliSearch](https://www.meilisearch.com) drivers; however, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
+Currently, Scout ships with [Algolia](https://www.algolia.com/) and [MeiliSearch](https://www.meilisearch.com) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
 <a name="installation"></a>
 ## Installation
@@ -198,6 +199,19 @@ Scout also allows you to auto identify users when using [Algolia](https://algoli
     SCOUT_IDENTIFY=true
 
 Enabling this feature this will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
+
+<a name="local-development"></a>
+## Local Development
+
+While you are free to use the Algolia or MeiliSearch search engines during local development, you may find it more convenient to get started with the "collection" engine. The collection engine will use "where" clauses and collection filtering on results from your existing database to determine the applicable search results for your query. When using this engine, it is not necessary to "index" your searchable models, as they will simply be retrieved from your local database.
+
+To use the collection engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `collection`, or specify the `collection` driver directly in your application's `scout` configuration file:
+
+```ini
+SCOUT_DRIVER=collection
+```
+
+Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the collection engine.
 
 <a name="indexing"></a>
 ## Indexing
