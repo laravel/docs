@@ -283,15 +283,15 @@ If necessary, you may include a closure as a sequence value. The closure will be
     $users = User::factory()
                     ->count(10)
                     ->state(new Sequence(
-                        fn () => ['role' => UserRoles::all()->random()],
+                        fn ($sequence) => ['role' => UserRoles::all()->random()],
                     ))
                     ->create();
 
-If necessary, you may use the `$index` or `$count` property in the sequence closure.
+Within a sequence closure, you may access the `$index` or `$count` properties on the sequence instance that is injected into the closure:
 
     $users = User::factory()
                     ->count(10)
-                    ->sequence(fn ($sequence) => ['name' => 'index '.$sequence->index])
+                    ->sequence(fn ($sequence) => ['name' => 'Name '.$sequence->index])
                     ->create();
 
 <a name="factory-relationships"></a>
