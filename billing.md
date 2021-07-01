@@ -1413,11 +1413,11 @@ The `charge` method will throw an exception if the charge fails. If the charge i
 <a name="charge-with-invoice"></a>
 ### Charge With Invoice
 
-Sometimes you may need to make a one-time charge and offer a PDF receipt to your customer. The `invoicePrice` method lets you do just that. For example, let's invoice a customer for 5 new T-shirt's:
+Sometimes you may need to make a one-time charge and offer a PDF receipt to your customer. The `invoicePrice` method lets you do just that. For example, let's invoice a customer for five new shirts:
 
     $user->invoicePrice('price_tshirt', 5);
 
-The invoice will be charged immediately against the user's default payment method. The `invoicePrice` method also accepts an array as its third argument. This array contains the billing options for the invoice item. The fourth argument accepted by the method is also an array which should contain the billing options for the invoice itself:
+The invoice will be immediately charged against the user's default payment method. The `invoicePrice` method also accepts an array as its third argument. This array contains the billing options for the invoice item. The fourth argument accepted by the method is also an array which should contain the billing options for the invoice itself:
 
     $user->invoicePrice('price_tshirt', 5, [
         'discounts' => ['coupon' => 'SUMMER21SALE'],
@@ -1425,11 +1425,11 @@ The invoice will be charged immediately against the user's default payment metho
         'default_tax_rates' => ['txr_id'],
     ]);
 
-Alternatively, you may use the `invoiceFor` to charge an custom one-time amount. For example, let's invoice a customer $5.00 for a "Maintenance Fee":
+Alternatively, you may use the `invoiceFor` method to make a "one-off" charge against the customer's default payment method:
 
     $user->invoiceFor('One Time Fee', 500);
 
-It is however, recommended that you use the `invoicePrice` with pre-defined prices so you can much better track analytics on sold products in your Stripe dashboard.
+Although the `invoiceFor` method is available for you to use, it is recommendeded that you use the `invoicePrice` method with pre-defined prices. By doing so, you will have access to better analytics and data within your Stripe dashboard regarding your sales on a per-product basis.
 
 > {note} The `invoicePrice` and `invoiceFor` methods will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
 
