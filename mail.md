@@ -100,7 +100,7 @@ Next, set the `default` option in your `config/mail.php` configuration file to `
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-If you would like to define [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-email-2010-12-01.html#sendrawemail) that Laravel should pass to the AWS SDK's `SendRawEmail` method when sending an email, you may define an `options` array within your `ses` configuration:
+If you would like to define [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sesv2-2019-09-27.html#sendemail) that Laravel should pass to the AWS SDK's `SendEmail` method when sending an email, you may define an `options` array within your `ses` configuration:
 
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
@@ -108,7 +108,7 @@ If you would like to define [additional options](https://docs.aws.amazon.com/aws
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
         'options' => [
             'ConfigurationSetName' => 'MyConfigurationSet',
-            'Tags' => [
+            'EmailTags' => [
                 ['Name' => 'foo', 'Value' => 'bar'],
             ],
         ],
