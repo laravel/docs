@@ -318,6 +318,8 @@ public function largestOrder()
 }
 ```
 
+> {note} As max,min aggregate function does not support UUID datatype in PostgreSQL database. You should not use Has One Of Many relationship if you're using UUID as a primary key in PostgreSQL database.
+
 <a name="advanced-has-one-of-many-relationships"></a>
 #### Advanced Has One Of Many Relationships
 
