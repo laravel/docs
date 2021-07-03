@@ -611,7 +611,7 @@ The `multiPolygon` method creates a `MULTIPOLYGON` equivalent column:
 <a name="column-method-nullableTimestamps"></a>
 #### `nullableTimestamps()` {#collection-method}
 
-The `nullableTimestamps` method is an alias of the `timestamps` method:
+The `nullableTimestamps` method is an alias of the [timestamps](#column-method-timestamps) method:
 
     $table->nullableTimestamps(0);
 
