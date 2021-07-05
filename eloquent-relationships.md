@@ -318,7 +318,7 @@ public function largestOrder()
 }
 ```
 
-> {note} It's not possible to use Has One Or Many in combination with UUID's in PostgreSQL because of PostgreSQL's lack of an implementation of `MAX` for UUID's. You can, however, create your own `MAX` implementation in PostgreSQL if you want.
+> {note} It's not possible to use one-of-many relationships in combination with UUID's in PostgreSQL because of PostgreSQL's lack of an implementation of `MAX` for UUID's. You can, however, create your own `MAX` implementation in PostgreSQL if you want.
 
 <a name="advanced-has-one-of-many-relationships"></a>
 #### Advanced Has One Of Many Relationships
