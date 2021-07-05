@@ -156,7 +156,7 @@ The closure passed to the `renderable` method should return an instance of `Illu
         });
     }
 
-If you want to override the behavior of some existing Laravel exception, like `HttpNotFoundException`, you may also use the `renderable` method. Inside it, you may also check if the `$request` comes from API or not.
+You may also use the `renderable` method to override the rendering behavior for built-in Laravel or Symfony exceptions such as `NotFoundHttpException`. If the closure given to the `renderable` method does not return a value, Laravel's default exception rendering will be utilized:
 
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -169,12 +169,12 @@ If you want to override the behavior of some existing Laravel exception, like `H
     {
         $this->renderable(function (NotFoundHttpException $e, $request) {
             if ($request->is('api/*')) {
-                return response()->json(['message' => 'Object not found'], 404);
+                return response()->json([
+                    'message' => 'Record not found.'
+                ], 404);
             }
         });
     }
-
-In the example above, if the request doesn't start with `/api/`, then the `renderable` code will be ignored, and the default `NotFoundHttpException` behavior will take place.
 
 <a name="renderable-exceptions"></a>
 ### Reportable & Renderable Exceptions
