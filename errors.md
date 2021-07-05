@@ -156,6 +156,26 @@ The closure passed to the `renderable` method should return an instance of `Illu
         });
     }
 
+You may also use the `renderable` method to override the rendering behavior for built-in Laravel or Symfony exceptions such as `NotFoundHttpException`. If the closure given to the `renderable` method does not return a value, Laravel's default exception rendering will be utilized:
+
+    use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+    /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Record not found.'
+                ], 404);
+            }
+        });
+    }
+
 <a name="renderable-exceptions"></a>
 ### Reportable & Renderable Exceptions
 
