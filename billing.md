@@ -15,6 +15,7 @@
     - [Retrieving Customers](#retrieving-customers)
     - [Creating Customers](#creating-customers)
     - [Updating Customers](#updating-customers)
+    - [Balances](#balances)
     - [Tax IDs](#tax-ids)
     - [Syncing Customer Data With Stripe](#syncing-customer-data-with-stripe)
     - [Billing Portal](#billing-portal)
@@ -261,6 +262,34 @@ The `createOrGetStripeCustomer` method may be used if you would like to retrieve
 Occasionally, you may wish to update the Stripe customer directly with additional information. You may accomplish this using the `updateStripeCustomer` method. This method accepts an array of [customer update options supported by the Stripe API](https://stripe.com/docs/api/customers/update):
 
     $stripeCustomer = $user->updateStripeCustomer($options);
+
+<a name="balances"></a>
+### Balances
+
+Stripe allows you to credit or debit a customer's "balance". Later, this balance will be credited or debited on new invoices. To check the customer's total balance you may use the `balance` method that is available on your billable model. The `balance` method will return a formatted string representation of the balance in the customer's currency:
+
+    $balance = $user->balance();
+
+To credit a customer's balance, you may provide a positive value to the `applyBalance` method. If you wish, you may also provide a description:
+
+    $user->applyBalance(500, 'Premium customer top-up.');
+
+Providing a negative value to the `applyBalance` method will debit the customer's balance:
+    
+    $user->applyBalance(-300, 'Bad usage penalty.');
+
+The `applyBalance` method will create new customer balance transactions for the customer. You may retrieve these transaction records using the `balanceTransactions` method, which may be useful in order to provide a log of credits and debits for the customer to review:
+
+    // Retrieve all transactions...
+    $transactions = $user->balanceTransactions();
+
+    foreach ($transactions as $transaction) {
+        // Transaction amount...
+        $amount = $transaction->amount(); // $2.31
+
+        // Retrieve the related invoice when available...
+        $invoice = $transaction->invoice();
+    }
 
 <a name="tax-ids"></a>
 ### Tax IDs
