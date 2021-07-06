@@ -266,33 +266,30 @@ Occasionally, you may wish to update the Stripe customer directly with additiona
 <a name="balances"></a>
 ### Balances
 
-With Stripe, you can also credit and debit a customer. This will be applied to their total balance on their Stripe customer object. Later, this balance may credited or debited on new invoices. To check the customer's total balance you can use the `->balance()` method on a customer:
+Stripe allows you to credit or debit a customer's "balance". Later, this balance will be credited or debited on new invoices. To check the customer's total balance you may use the `balance` method that is available on your billable model. The `balance` method will return a formatted string representation of the balance in the customer's currency:
 
-    $balance = $this->balance();
+    $balance = $user->balance();
 
-This will produce a readable amount with the customer's currency applied. To credit a customer with a new amount you may use the `applyBalance` with a positive amount and an optional description for internal purposes:
+To credit a customer's balance, you may provide a positive value to the `applyBalance` method. If you wish, you may also provide a description:
 
     $user->applyBalance(500, 'Premium customer top-up.');
 
-To debit a customer with a certain amount may use the `applyBalance` with a negative amount:
+Providing a negative value to the `applyBalance` method will debit the customer's balance:
     
     $user->applyBalance(-300, 'Bad usage penalty.');
 
-The `applyBalance` will create new customer balance transactions for the customer. These can be retrieved using the `balanceTransactions`:
+The `applyBalance` method will create new customer balance transactions for the customer. You may retrieve these transaction records using the `balanceTransactions` method, which may be useful in order to provide a log of credits and debits for the customer to review:
 
     // Retrieve all transactions...
     $transactions = $user->balanceTransactions();
 
-    // Display all transactions...
     foreach ($transactions as $transaction) {
-        // Specific amount of the transaction...
+        // Transaction amount...
         $amount = $transaction->amount(); // $2.31
 
         // Retrieve the related invoice when available...
         $invoice = $transaction->invoice();
     }
-    
-This is useful to display a log in your application for the customer to review all of the credits and debits they've received. 
 
 <a name="tax-ids"></a>
 ### Tax IDs
