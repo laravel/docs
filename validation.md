@@ -250,6 +250,8 @@ In this example, we are specifying that the `publish_at` field may be either `nu
 <a name="creating-form-requests"></a>
 ### Creating Form Requests
 
+> {note} Watch out when using laravel/octane in conjuction with form request objects. Direct injection into controllers is prohibited by the way laravel/octane works as is documented in https://laravel.com/docs/8.x/octane#request-injection . Please consider instantiating your Form Request Objects inside your controllers instead of injecting them via type-hinting when using laravel/octane.
+
 For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that encapsulate their own validation and authorization logic. To create a form request class, you may use the `make:request` Artisan CLI command:
 
     php artisan make:request StorePostRequest
