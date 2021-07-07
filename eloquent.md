@@ -25,6 +25,7 @@
 - [Deleting Models](#deleting-models)
     - [Soft Deleting](#soft-deleting)
     - [Querying Soft Deleted Models](#querying-soft-deleted-models)
+- [Prune Models](#prune-models)
 - [Replicating Models](#replicating-models)
 - [Query Scopes](#query-scopes)
     - [Global Scopes](#global-scopes)
@@ -879,6 +880,68 @@ The `onlyTrashed` method will retrieve **only** soft deleted models:
     $flights = Flight::onlyTrashed()
                     ->where('airline_id', 1)
                     ->get();
+
+<a name="prune-models"></a>
+## Prune Models
+
+Sometimes you may want to periodically delete models that are no longer needed. So, in those cases, add the `Illuminate\Database\Eloquent\Prunable` or `Illuminate\Database\Eloquent\MassPrunable` trait to the models you would like to periodically prune, and implement a `prunable` method that determines the models that are no longer needed:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Prunable; // or MassPrunable
+
+    class Flight extends Model
+    {
+        use Prunable; // or MassPrunable
+
+        /**
+         * Determines the prunable query.
+         *
+         * @return \Illuminate\Database\Eloquent\Builder
+         */
+        public function prunable()
+        {
+            return $this->where('created_at', '<=', now()->subMonth());
+        }
+    }
+
+When making models `Prunable`, you may also specify a `pruning` method that is called before the model gets deleted. This method can be useful for deleting any custom resources associated with the model, before the model gets permanently removed.
+
+    /**
+     * Prepare the model for pruning.
+     *
+     * @return void
+     */
+    protected function pruning()
+    {
+        //
+    }
+    
+On the other hand, when making models `MassPrunable`, the method `pruning` method won't be called, and the `delete`, and `deleting` model events will not be fired for the deleted models. This is because the models are never actually retrieved. Making the entire pruning process much faster.
+
+Finally, you should schedule the `model:prune` Artisan command in your `App\Console\Kernel` class to run daily:
+
+    /**
+     * Define the application's command schedule.
+     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @return void
+     */
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('model:prune')->daily();
+    }
+
+Behind the scenes, the `model:prune` artisan command will automatically detect "Prunable" models in the `app/Models` folder. Yet, if your models are in a different location, you may use the `--model` artisan option to specify the model class names:
+
+        $schedule->command('model:prune', [
+            '--model' => Flight::class, // or [Flight::class, Address::class]
+        ])->daily();
+
+> {note} When using the "SoftDeletes" trait, soft deleted models will be permanently removed if they match the prunable query.
 
 <a name="replicating-models"></a>
 ## Replicating Models
