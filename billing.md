@@ -1534,10 +1534,7 @@ From within a route or controller, you may use the `downloadInvoice` method to g
     use Illuminate\Http\Request;
 
     Route::get('/user/invoice/{invoice}', function (Request $request, $invoiceId) {
-        return $request->user()->downloadInvoice($invoiceId, [
-            'vendor' => 'Your Company',
-            'product' => 'Your Product',
-        ]);
+        return $request->user()->downloadInvoice($invoiceId);
     });
 
 By default, all data on the invoice is derived from the customer and invoice data stored in Stripe. However, you can customize some of this data by providing an array as the second argument to the `downloadInvoice` method. This array allows you to customize information such as your company and product details:
