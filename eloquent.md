@@ -25,7 +25,7 @@
 - [Deleting Models](#deleting-models)
     - [Soft Deleting](#soft-deleting)
     - [Querying Soft Deleted Models](#querying-soft-deleted-models)
-- [Prune Models](#prune-models)
+- [Pruning Models](#pruning-models)
 - [Replicating Models](#replicating-models)
 - [Query Scopes](#query-scopes)
     - [Global Scopes](#global-scopes)
@@ -881,8 +881,8 @@ The `onlyTrashed` method will retrieve **only** soft deleted models:
                     ->where('airline_id', 1)
                     ->get();
 
-<a name="prune-models"></a>
-## Prune Models
+<a name="pruning-models"></a>
+## Pruning Models
 
 Sometimes you may want to periodically delete models that are no longer needed. So, in those cases, add the `Illuminate\Database\Eloquent\Prunable` or `Illuminate\Database\Eloquent\MassPrunable` trait to the models you would like to periodically prune, and implement a `prunable` method that determines the models that are no longer needed:
 
