@@ -218,78 +218,11 @@ You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly d
 @enderror
 ```
 
-If you use [named error bags](#named-error-bags), you can pass it's name as a second argument to `@error` directive.
-
-For example let there be page with multiple forms on it, all forms has a `title` input field, and you don't want 
-to prefix them. If user submits one of it without valid `title` then you don't want to display errors on other 
-`title` inputs, just on the submitted one. 
-
-Assume that one of your form requests is called `FooRequest`. In this form request you have to put it's validation 
-messages into `foo-message-bag` to achieve it, like this:
-
-    <?php
-    
-    namespace App\Http\Requests;
-    
-    use Illuminate\Foundation\Http\FormRequest;
-    
-    class FooRequest extends FormRequest
-    {
-        protected $errorBag = 'foo-message-bag';
-    
-        /**
-         * Get the validation rules that apply to the request.
-         *
-         * @return array
-         */
-        public function rules()
-        {
-            return [
-                'title' => 'required'
-                // ... 
-            ];
-        }
-    }
-
-Then on your page you can use `@error` directive with two arguments: `fieldName` and `messageBag`, to determine and/or 
-echo its own message for `title` field.
+If you are using [named error bags](#named-error-bags), you may pass the name of the error bag as the second argument to the `@error` directive:
 
 ```html
-<!-- /resources/views/mutli-form-page.blade.php -->
-
-<!-- Foo form -->
-<form>
-    <label for="foo_title">Foo's Title</label>
-    
-    <input id="foo_title" type="text" name="title" class="@error('title', 'foo-message-bag') is-invalid @enderror">
-    
-    <!-- Another necessary foo fields -->
-    
-    <button type="submit">Submit foo</button>
-
-    @error('title', 'foo-message-bag')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
-</form>
-
-<!-- Bar form -->
-<form>
-    <label for="bar_title">Bar's Title</label>
-    
-    <input id="bar_title" type="text" name="title" class="@error('title', 'bar-message-bag') is-invalid @enderror">
-
-    <!-- Another necessary bar fields -->
-
-    <button type="submit">Submit bar</button>
-
-    @error('title', 'bar-message-bag')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
-</form>
+<input ... class="@error('title', 'post') is-invalid @enderror">
 ```
-
-In this scenario if you omit the second argument of `@error` directive, then it will look for `title` key in `default` 
-message bag and won't display the error message.
 
 <a name="repopulating-forms"></a>
 ### Repopulating Forms
