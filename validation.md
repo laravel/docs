@@ -218,6 +218,8 @@ You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly d
 @enderror
 ```
 
+> {tip} If you use named error bags, you can pass it's name as a second argument to `@error` [Blade](/docs/{{version}}/blade) directive.
+
 <a name="repopulating-forms"></a>
 ### Repopulating Forms
 
