@@ -218,6 +218,12 @@ You may use the `@error` [Blade](/docs/{{version}}/blade) directive to quickly d
 @enderror
 ```
 
+If you are using [named error bags](#named-error-bags), you may pass the name of the error bag as the second argument to the `@error` directive:
+
+```html
+<input ... class="@error('title', 'post') is-invalid @enderror">
+```
+
 <a name="repopulating-forms"></a>
 ### Repopulating Forms
 
