@@ -518,7 +518,7 @@ You may select a random option by omitting the second argument:
 
     $browser->select('size');
 
-You may also use it with `multiple` by setting `array` as the second argument:
+You may also use it with `select` element with `multiple` attribute by setting `array` as the second argument:
 
     $browser->select('tags', ['foo', 'bar']);
 
