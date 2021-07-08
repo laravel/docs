@@ -518,6 +518,10 @@ You may select a random option by omitting the second argument:
 
     $browser->select('size');
 
+By providing an array as the second argument to the `select` method, you can instruct the method to select multiple options:
+
+    $browser->select('categories', ['Art', 'Music']);
+
 <a name="checkboxes"></a>
 #### Checkboxes
 
