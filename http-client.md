@@ -37,6 +37,7 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
 
     $response->body() : string;
     $response->json() : array|mixed;
+    $response->object() : object;
     $response->collect() : Illuminate\Support\Collection;
     $response->status() : int;
     $response->ok() : bool;
