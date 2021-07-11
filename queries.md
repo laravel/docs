@@ -571,6 +571,8 @@ The `whereTime` method may be used to compare a column's value against a specifi
                     ->whereTime('created_at', '=', '11:20:45')
                     ->get();
 
+> {note} These methods can result in significant performance degration, because the database can not make use of indexes for the `where` contions!
+
 **whereColumn / orWhereColumn**
 
 The `whereColumn` method may be used to verify that two columns are equal:
