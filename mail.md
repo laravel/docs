@@ -681,9 +681,9 @@ Sometimes you may wish to capture the HTML content of a mailable without sending
 When designing a mailable's template, it is convenient to quickly preview the rendered mailable in your browser like a typical Blade template. For this reason, Laravel allows you to return any mailable directly from a route closure or controller. When a mailable is returned, it will be rendered and displayed in the browser, allowing you to quickly preview its design without needing to send it to an actual email address:
 
     Route::get('/mailable', function () {
-        $invoice = App\Models\Invoice::find(1);
+        $invoice = \App\Models\Invoice::find(1);
 
-        return new App\Mail\InvoicePaid($invoice);
+        return new \App\Mail\InvoicePaid($invoice);
     });
 
 > {note} [Inline attachments](#inline-attachments) will not be rendered when a mailable is previewed in your browser. To preview these mailables, you should send them to an email testing application such as [MailHog](https://github.com/mailhog/MailHog) or [HELO](https://usehelo.com).
