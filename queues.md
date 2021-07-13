@@ -531,7 +531,7 @@ For example, let's imagine a queued job that interacts with a third-party API th
      */
     public function retryUntil()
     {
-        return now()->addMinutes(30);
+        return now()->addMinutes(5);
     }
 
 The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again.
