@@ -190,13 +190,34 @@ You may be wondering why we suggest that you authenticate the routes within your
 You may "revoke" tokens by deleting them from your database using the `tokens` relationship that is provided by the `Laravel\Sanctum\HasApiTokens` trait:
 
     // Revoke all tokens...
-    $user->tokens()->delete();
+    public function revokeAllTokens(Request $request) {
+        // Grabs user based on token
+        $user = $request->user();
+        // Deletes that token 
+        $user->tokens()->delete();
+
+        return response()->json('All tokens removed!');
+    }
 
     // Revoke the token that was used to authenticate the current request...
-    $request->user()->currentAccessToken()->delete();
+    public function revokeCurrentToken(Request $request) {
+        // Grabs the user based on the token
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json('Current token removed!');        
+    }
 
     // Revoke a specific token...
-    $user->tokens()->where('id', $tokenId)->delete();
+    public function revokeToken(Request $request) {
+        // Grabs the user based on Token
+        $user = $request->user();
+
+        // Grabs the id of the token from user request
+        $tokenId = $request->input('token_id');
+
+        // Delete a specific token
+        $user->tokens()->where('id', $tokenId)->delete();
+    }
 
 <a name="spa-authentication"></a>
 ## SPA Authentication
@@ -367,10 +388,34 @@ As previously documented, you may protect routes so that all incoming requests m
 To allow users to revoke API tokens issued to mobile devices, you may list them by name, along with a "Revoke" button, within an "account settings" portion of your web application's UI. When the user clicks the "Revoke" button, you can delete the token from the database. Remember, you can access a user's API tokens via the `tokens` relationship provided by the `Laravel\Sanctum\HasApiTokens` trait:
 
     // Revoke all tokens...
-    $user->tokens()->delete();
+    public function revokeAllTokens(Request $request) {
+        // Grabs user based on token
+        $user = $request->user();
+        // Deletes that token 
+        $user->tokens()->delete();
+
+        return response()->json('All tokens removed!');
+    }
+
+    // Revoke the token that was used to authenticate the current request...
+    public function revokeCurrentToken(Request $request) {
+        // Grabs the user based on the token
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json('Current token removed!');        
+    }
 
     // Revoke a specific token...
-    $user->tokens()->where('id', $tokenId)->delete();
+    public function revokeToken(Request $request) {
+        // Grabs the user based on Token
+        $user = $request->user();
+
+        // Grabs the id of the token from user request
+        $tokenId = $request->input('token_id');
+
+        // Delete a specific token
+        $user->tokens()->where('id', $tokenId)->delete();
+    }
 
 <a name="testing"></a>
 ## Testing
