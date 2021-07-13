@@ -26,7 +26,7 @@
 - [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Validating Arrays](#validating-arrays)
     - [Excluding Unvalidated Array Keys](#excluding-unvalidated-array-keys)
-    - [Validating Nested Array Data](#validating-nested-array-data)
+    - [Validating Nested Array Input](#validating-nested-array-input)
 - [Validating Passwords](#validating-passwords)
 - [Custom Validation Rules](#custom-validation-rules)
     - [Using Rule Objects](#using-rule-objects)
@@ -1498,8 +1498,8 @@ public function boot()
 }
 ```
 
-<a name="validating-nested-array-data"></a>
-### Validating Nested Array Data
+<a name="validating-nested-array-input"></a>
+### Validating Nested Array Input
 
 Validating nested array based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
 
