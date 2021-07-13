@@ -908,7 +908,7 @@ Sometimes you may want to periodically delete models that are no longer needed. 
         }
     }
 
-When marking models as `Prunable`, you may also define a `pruning` method on the model. This method will be called called before the model is deleted. This method can be useful for deleting any additional resources associated with the model, such as stored files, before the model is permanently removed from the database:
+When marking models as `Prunable`, you may also define a `pruning` method on the model. This method will be called before the model is deleted. This method can be useful for deleting any additional resources associated with the model, such as stored files, before the model is permanently removed from the database:
 
     /**
      * Prepare the model for pruning.
