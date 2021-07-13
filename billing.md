@@ -1582,7 +1582,7 @@ If needed, you may also specify a product quantity:
         return $request->user()->checkout(['price_tshirt' => 15]);
     });
 
-When a customer goes to this rout they will be redirected to Stripe's Checkout page. By default, when a user successfully completes a purchase or cancels a purchase they will be redirected to your `home` route location, but you may specify custom callback URLs using the `success_url` and `cancel_url` options:
+When a customer visits this route they will be redirected to Stripe's Checkout page. By default, when a user successfully completes or cancels a purchase they will be redirected to your `home` route location, but you may specify custom callback URLs using the `success_url` and `cancel_url` options:
 
     use Illuminate\Http\Request;
 
@@ -1609,15 +1609,13 @@ By default, Stripe Checkout does not allow [user redeemable promotion codes](htt
 <a name="single-charge-checkouts"></a>
 ### Single Charge Checkouts
 
-You can also perform a simple charge for an ad-hoc product that has not been created in your Stripe dashboard. To do so you may use the `checkoutCharge` method on a billable model and pass it a chargeable amount, a product name, and an optional quantity:
+You can also perform a simple charge for an ad-hoc product that has not been created in your Stripe dashboard. To do so you may use the `checkoutCharge` method on a billable model and pass it a chargeable amount, a product name, and an optional quantity. When a customer visits this route they will be redirected to Stripe's Checkout page:
 
     use Illuminate\Http\Request;
 
     Route::get('/charge-checkout', function (Request $request) {
         return $request->user()->checkoutCharge(1200, 'T-Shirt', 5);
     });
-
-When a customer goes to this route they will be redirected to Stripe's Checkout page.
 
 > {note} When using the `checkoutCharge` method, Stripe will always create a new product and price in your Stripe dashboard. Therefore, we recommend that you create the products up front in your Stripe dashboard and use of the `checkout` method instead.
 
@@ -1626,7 +1624,7 @@ When a customer goes to this route they will be redirected to Stripe's Checkout 
 
 > {note} Using Stripe Checkout for subscriptions requires you to enable the `customer.subscription.created` webhook in your Stripe dashboard. This webhook will create the subscription record in your database and store all of the relevant subscription items.
 
-You may also use Stripe Checkout to initiate subscriptions. After defining your subscription with Cashier's subscription builder methods, you may call the `checkout `method:
+You may also use Stripe Checkout to initiate subscriptions. After defining your subscription with Cashier's subscription builder methods, you may call the `checkout `method. When a customer visits this route they will be redirected to Stripe's Checkout page:
 
     use Illuminate\Http\Request;
 
@@ -1659,8 +1657,6 @@ Of course, you can also enable promotion codes for subscription checkouts:
             ->allowPromotionCodes()
             ->checkout();
     });
-
-When a customer goes to this route they will be redirected to Stripe's Checkout page.
 
 > {note} Unfortunately Stripe Checkout does not support all subscription billing options when starting subscriptions. Using the `anchorBillingCycleOn` method on the subscription builder, setting proration behavior, or setting payment behavior will not have any effect during Stripe Checkout sessions. Please consult [the Stripe Checkout Session API documentation](https://stripe.com/docs/api/checkout/sessions/create) to review which parameters are available.
 
