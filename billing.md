@@ -53,7 +53,6 @@
     - [Single Charge Checkouts](#single-charge-checkouts)
     - [Subscription Checkouts](#subscription-checkouts)
     - [Collecting Tax IDs](#collecting-tax-ids)
-    - [Styling The Checkout Button](#styling-the-checkout-button)
 - [Invoices](#invoices)
     - [Retrieving Invoices](#retrieving-invoices)
     - [Upcoming Invoices](#upcoming-invoices)
@@ -1569,50 +1568,54 @@ The following documentation contains information on how to get started using Str
 
 You may perform a checkout for an existing product that has been created within your Stripe dashboard using the `checkout` method on a billable model. The `checkout` method will initiate a new Stripe Checkout session. By default, you're required to pass a Stripe Price ID:
 
-    $checkout = $user->checkout('price_tshirt');
+    use Illuminate\Http\Request;
 
-    return view('your-checkout-view', [
-        'checkout' => $checkout,
-    ]);
+    Route::get('/product-checkout', function (Request $request) {
+        return $request->user()->checkout('price_tshirt');
+    });
 
 If needed, you may also specify a product quantity:
 
-    $checkout = $user->checkout(['price_tshirt' => 15]);
+    use Illuminate\Http\Request;
 
-Once you have passed the Checkout session instance to your view, a button that directs the user to Stripe Checkout may be rendered using the `button` method:
+    Route::get('/product-checkout', function (Request $request) {
+        return $request->user()->checkout(['price_tshirt' => 15]);
+    });
 
-    {{ $checkout->button('Buy') }}
+When a customer visits this route they will be redirected to Stripe's Checkout page. By default, when a user successfully completes or cancels a purchase they will be redirected to your `home` route location, but you may specify custom callback URLs using the `success_url` and `cancel_url` options:
 
-When a customer clicks this button they will be redirected to Stripe's Checkout page. By default, when a user successfully completes a purchase or cancels a purchase they will be redirected to your `home` route location, but you may specify custom callback URLs using the `success_url` and `cancel_url` options:
+    use Illuminate\Http\Request;
 
-    $checkout = $user->checkout(['price_tshirt' => 1], [
-        'success_url' => route('your-success-route'),
-        'cancel_url' => route('your-cancel-route'),
-    ]);
+    Route::get('/product-checkout', function (Request $request) {
+        return $request->user()->checkout(['price_tshirt' => 1], [
+            'success_url' => route('your-success-route'),
+            'cancel_url' => route('your-cancel-route'),
+        ]);
+    });
 
 <a name="checkout-promotion-codes"></a>
 #### Promotion Codes
 
 By default, Stripe Checkout does not allow [user redeemable promotion codes](https://stripe.com/docs/billing/subscriptions/discounts/codes). Luckily, there's an easy way to enable these for your Checkout page. To do so, you may invoke the `allowPromotionCodes` method:
 
-    $checkout = $user->allowPromotionCodes()->checkout('price_tshirt');
+    use Illuminate\Http\Request;
+
+    Route::get('/product-checkout', function (Request $request) {
+        return $request->user()
+            ->allowPromotionCodes()
+            ->checkout('price_tshirt');
+    });
 
 <a name="single-charge-checkouts"></a>
 ### Single Charge Checkouts
 
-You can also perform a simple charge for an ad-hoc product that has not been created in your Stripe dashboard. To do so you may use the `checkoutCharge` method on a billable model and pass it a chargeable amount, a product name, and an optional quantity:
+You can also perform a simple charge for an ad-hoc product that has not been created in your Stripe dashboard. To do so you may use the `checkoutCharge` method on a billable model and pass it a chargeable amount, a product name, and an optional quantity. When a customer visits this route they will be redirected to Stripe's Checkout page:
 
-    $checkout = $user->checkoutCharge(1200, 'T-Shirt', 5);
+    use Illuminate\Http\Request;
 
-    return view('your-checkout-view', [
-        'checkout' => $checkout,
-    ]);
-
-Once you have passed the Checkout session instance to your view, a button that directs the user to Stripe Checkout may be rendered using the `button` method:
-
-    {{ $checkout->button('Buy') }}
-
-When a customer clicks this button they will be redirected to Stripe's Checkout page.
+    Route::get('/charge-checkout', function (Request $request) {
+        return $request->user()->checkoutCharge(1200, 'T-Shirt', 5);
+    });
 
 > {note} When using the `checkoutCharge` method, Stripe will always create a new product and price in your Stripe dashboard. Therefore, we recommend that you create the products up front in your Stripe dashboard and use of the `checkout` method instead.
 
@@ -1621,34 +1624,39 @@ When a customer clicks this button they will be redirected to Stripe's Checkout 
 
 > {note} Using Stripe Checkout for subscriptions requires you to enable the `customer.subscription.created` webhook in your Stripe dashboard. This webhook will create the subscription record in your database and store all of the relevant subscription items.
 
-You may also use Stripe Checkout to initiate subscriptions. After defining your subscription with Cashier's subscription builder methods, you may call the `checkout `method:
+You may also use Stripe Checkout to initiate subscriptions. After defining your subscription with Cashier's subscription builder methods, you may call the `checkout `method. When a customer visits this route they will be redirected to Stripe's Checkout page:
 
-    $checkout = Auth::user()
+    use Illuminate\Http\Request;
+
+    Route::get('/subscription-checkout', function (Request $request) {
+        return $request->user()
             ->newSubscription('default', 'price_monthly')
             ->checkout();
-
-    return view('your-checkout-view', [
-        'checkout' => $checkout,
-    ]);
+    });
 
 Just as with product checkouts, you may customize the success and cancellation URLs:
 
-    $checkout = Auth::user()->newSubscription('default', 'price_monthly')->checkout([
-        'success_url' => route('your-success-route'),
-        'cancel_url' => route('your-cancel-route'),
-    ]);
+    use Illuminate\Http\Request;
+
+    Route::get('/subscription-checkout', function (Request $request) {
+        return $request->user()
+            ->newSubscription('default', 'price_monthly')
+            ->checkout([
+                'success_url' => route('your-success-route'),
+                'cancel_url' => route('your-cancel-route'),
+            ]);
+    });
 
 Of course, you can also enable promotion codes for subscription checkouts:
 
-    $checkout = Auth::user()->newSubscription('default', 'price_monthly')
-        ->allowPromotionCodes()
-        ->checkout();
+    use Illuminate\Http\Request;
 
-Once you have passed the Checkout session instance to your view, a button that directs the user to Stripe Checkout may be rendered using the `button` method:
-
-    {{ $checkout->button('Subscribe') }}
-
-When a customer clicks this button they will be redirected to Stripe's Checkout page.
+    Route::get('/subscription-checkout', function (Request $request) {
+        return $request->user()
+            ->newSubscription('default', 'price_monthly')
+            ->allowPromotionCodes()
+            ->checkout();
+    });
 
 > {note} Unfortunately Stripe Checkout does not support all subscription billing options when starting subscriptions. Using the `anchorBillingCycleOn` method on the subscription builder, setting proration behavior, or setting payment behavior will not have any effect during Stripe Checkout sessions. Please consult [the Stripe Checkout Session API documentation](https://stripe.com/docs/api/checkout/sessions/create) to review which parameters are available.
 
@@ -1676,13 +1684,6 @@ Checkout also supports collecting a customer's Tax ID. To enable this on a check
     $checkout = $user->collectTaxIds()->checkout('price_tshirt');
 
 When this method is invoked, a new checkbox will be available to the customer that allows them to indicate if they're purchasing as a company. If so, they will have the opportunity to provide their Tax ID number.
-
-<a name="styling-the-checkout-button"></a>
-### Styling The Checkout Button
-
-When rendering the checkout button, you may customize the button's styling using the `class` and `style` options. These options should be passed within an associative array as the second argument to the `button` method:
-
-    {{ $checkout->button('Buy', ['class' => 'p-4 bg-blue-500 text-white']) }}
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
