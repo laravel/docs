@@ -73,7 +73,7 @@ You may configure additional symbolic links in your `filesystems` configuration 
 
 Before using the S3 or SFTP drivers, you will need to install the appropriate package via the Composer package manager:
 
-- Amazon S3: `composer require league/flysystem-aws-s3-v3 "~1.0"`
+- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^1.0"`
 - SFTP: `composer require league/flysystem-sftp "~1.0"`
 
 In addition, you may choose to install a cached adapter for increased performance:
