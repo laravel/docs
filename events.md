@@ -336,6 +336,18 @@ If you would like to define the listener's queue at runtime, you may define a `v
         return 'listeners';
     }
 
+To define the listener's queue connection at runtime, you may define a `viaConnection` method on the listener:
+
+    /**
+     * Get the name of the listener's queue connection.
+     *
+     * @return string
+     */
+    public function viaConnection()
+    {
+        return 'redis';
+    }
+
 <a name="conditionally-queueing-listeners"></a>
 #### Conditionally Queueing Listeners
 
