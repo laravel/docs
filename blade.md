@@ -20,6 +20,7 @@
     - [Reserved Keywords](#reserved-keywords)
     - [Slots](#slots)
     - [Inline Component Views](#inline-component-views)
+    - [Dinamically Generated HTML](#dinamically-generated-html)
     - [Anonymous Components](#anonymous-components)
     - [Dynamic Components](#dynamic-components)
     - [Manually Registering Components](#manually-registering-components)
@@ -916,6 +917,55 @@ For very small components, it may feel cumbersome to manage both the component c
 To create a component that renders an inline view, you may use the `inline` option when executing the `make:component` command:
 
     php artisan make:component Alert --inline
+
+<a name="dinamically-generated-html"></a>
+### Dinamically Generated HTML
+
+When you're generating the HTML dynamically without using views (maybe using some library) and want to use Blade components to encapsulate that logic, you may return the result as an object that implements `Iluminate\Contracts\Support\Htmlable` interface. The easies way to do it is to use `Illuminate\Support\HtmlString` class.
+
+    <?php
+
+    namespace App\View\Components;
+
+    use Illuminate\Support\HtmlString;
+    use Illuminate\View\Component;
+
+    class List extends Component
+    {
+        /**
+         * The list items.
+         *
+         * @var array
+         */
+        public $items;
+
+        /**
+         * Create the component instance.
+         *
+         * @param  array  $items
+         * @return void
+         */
+        public function __construct($items)
+        {
+            $this->items = $items;
+        }
+
+        /**
+         * Get the view / contents that represent the component.
+         *
+         * @return \Illuminate\Contracts\Support\Htmlable
+         */
+        public function render()
+        {
+            $html = '<ul>'.collect($this->items)->map(function ($item) {
+                return "<li>{$item}</li>";
+            })->join('').'</ul>';
+
+            return new HtmlString($html);
+        }
+    }
+
+If you were to return the string directly it would be treated as an inline template and would be cached. However, since the string can be different on each render, it's possible that thousands of cached files are generated. By returning `Illuminate\Contracts\Support\Htmlable` you signal that you are returning finished result and there is no need to treat it as a template.
 
 <a name="anonymous-components"></a>
 ### Anonymous Components
