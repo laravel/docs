@@ -12,6 +12,7 @@
     - [Comments](#comments)
     - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
+    - [Conditional Classes](#conditional-classes)
     - [Raw PHP](#raw-php)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
@@ -432,6 +433,26 @@ The `@once` directive allows you to define a portion of the template that will o
             </script>
         @endpush
     @endonce
+
+<a name="conditional-classes"></a>
+### Conditional Classes
+
+The `@class` direction conditionally compiles a CSS class string. It accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+
+    @php
+        $isActive = false;
+        $hasError = true;
+    @endphp
+
+    <span @class([
+        'p-4',
+        'font-bold' => $isActive,
+        'bg-red' => $hasError,
+    ])></span>
+
+    <span class="p-4 bg-red"></span>
+
+This behaviour can also be found when [merging classes with a component's attribute bag](#conditionally-merge-classes), or when utilizing the [`Arr::toCssClasses()` helper method](/docs/{{version}}/helpers#method-array-to-css-classes).
 
 <a name="raw-php"></a>
 ### Raw PHP
