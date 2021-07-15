@@ -239,6 +239,8 @@ In addition, you should enable the `withCredentials` option on your application'
 
     axios.defaults.withCredentials = true;
 
+If your application makes server side requests in order to server side render content make sure the `referer` header is correctly filled with your application domain.
+
 Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may accomplish this by prefixing the domain with a leading `.` within your application's `config/session.php` configuration file:
 
     'domain' => '.domain.com',
