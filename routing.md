@@ -180,6 +180,10 @@ You may constrain the format of your route parameters using the `where` method o
     Route::get('/user/{id}/{name}', function ($id, $name) {
         //
     })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+    
+    Route::get('/user/{user:email}', function ($post) {
+        //
+    })->where(['user' => '.+@.+');
 
 For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:
 
