@@ -477,14 +477,14 @@ The `float` method creates a `FLOAT` equivalent column with the given precision 
 <a name="column-method-foreignId"></a>
 #### `foreignId()` {#collection-method}
 
-The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, just like the `unsignedBigInteger` method.
+The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, just like the `unsignedBigInteger` method:
 
     $table->foreignId('user_id');
 
 <a name="column-method-foreignUuid"></a>
 #### `foreignUuid()` {#collection-method}
 
-The `foreignId` method creates a `UUID` equivalent column, just like the `uuid` method.
+The `foreignId` method creates a `UUID` equivalent column, just like the `uuid` method:
 
     $table->foreignUuid('id');
 
