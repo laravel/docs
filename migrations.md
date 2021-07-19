@@ -338,6 +338,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [enum](#column-method-enum)
 [float](#column-method-float)
 [foreignId](#column-method-foreignId)
+[foreignUuid](#column-method-foreignUuid)
 [geometryCollection](#column-method-geometryCollection)
 [geometry](#column-method-geometry)
 [id](#column-method-id)
@@ -476,9 +477,16 @@ The `float` method creates a `FLOAT` equivalent column with the given precision 
 <a name="column-method-foreignId"></a>
 #### `foreignId()` {#collection-method}
 
-The `foreignId` method is an alias of the `unsignedBigInteger` method:
+The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, just like the `unsignedBigInteger` method.
 
     $table->foreignId('user_id');
+
+<a name="column-method-foreignUuid"></a>
+#### `foreignUuid()` {#collection-method}
+
+The `foreignId` method creates a `UUID` equivalent column, just like the `uuid` method.
+
+    $table->foreignUuid('id');
 
 <a name="column-method-geometryCollection"></a>
 #### `geometryCollection()` {#collection-method}
@@ -1089,7 +1097,7 @@ Since this syntax is rather verbose, Laravel provides additional, terser methods
         $table->foreignId('user_id')->constrained();
     });
 
-The `foreignId` method is an alias for `unsignedBigInteger` while the `constrained` method will use conventions to determine the table and column name being referenced. If your table name does not match Laravel's conventions, you may specify the table name by passing it as an argument to the `constrained` method:
+The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column while the `constrained` method will use conventions to determine the table and column name being referenced. If your table name does not match Laravel's conventions, you may specify the table name by passing it as an argument to the `constrained` method:
 
     Schema::table('posts', function (Blueprint $table) {
         $table->foreignId('user_id')->constrained('users');
@@ -1108,6 +1116,8 @@ Any additional [column modifiers](#column-modifiers) must be called before the `
     $table->foreignId('user_id')
           ->nullable()
           ->constrained();
+
+> {note} The `constrained` method can only be used with the `foreignId` or `foreignUuid` method. For other column types like strings, use the `$table->foreign('user_id')->references('id')->on('users');` syntax.
 
 <a name="dropping-foreign-keys"></a>
 #### Dropping Foreign Keys
