@@ -431,6 +431,8 @@ You may also pass an array of conditions to the `where` function. Each element o
         ['subscribed', '<>', '1'],
     ])->get();
 
+> {note} PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
+
 <a name="or-where-clauses"></a>
 ### Or Where Clauses
 
