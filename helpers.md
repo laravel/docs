@@ -792,7 +792,7 @@ The `Arr::toCssClasses` conditionally compiles a CSS class string. The method ac
         'p-4 bg-red'
     */
 
-This behaviour can be found when [merging classes with a Blade component's attribute bag](/docs/{{version}}/blade#conditionally-merge-classes), or when utilizing the `@class` directive.
+This method powers Laravel's functionality allowing [merging classes with a Blade component's attribute bag](/docs/{{version}}/blade#conditionally-merge-classes) as well as the `@class` [Blade directive](/docs/{{version}}/blade#conditional-classes).
 
 <a name="method-array-where"></a>
 #### `Arr::where()` {#collection-method}
