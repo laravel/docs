@@ -9,11 +9,11 @@
     - [Switch Statements](#switch-statements)
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
-    - [Comments](#comments)
+    - [Conditional Classes](#conditional-classes)
     - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
-    - [Conditional Classes](#conditional-classes)
     - [Raw PHP](#raw-php)
+    - [Comments](#comments)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
     - [Passing Data To Components](#passing-data-to-components)
@@ -362,12 +362,23 @@ Property  | Description
 `$loop->depth`  |  The nesting level of the current loop.
 `$loop->parent`  |  When in a nested loop, the parent's loop variable.
 
-<a name="comments"></a>
-### Comments
+<a name="conditional-classes"></a>
+### Conditional Classes
 
-Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
+The `@class` direction conditionally compiles a CSS class string. It accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
-    {{-- This comment will not be present in the rendered HTML --}}
+    @php
+        $isActive = false;
+        $hasError = true;
+    @endphp
+
+    <span @class([
+        'p-4',
+        'font-bold' => $isActive,
+        'bg-red' => $hasError,
+    ])></span>
+
+    <span class="p-4 bg-red"></span>
 
 <a name="including-subviews"></a>
 ### Including Subviews
@@ -434,26 +445,6 @@ The `@once` directive allows you to define a portion of the template that will o
         @endpush
     @endonce
 
-<a name="conditional-classes"></a>
-### Conditional Classes
-
-The `@class` direction conditionally compiles a CSS class string. It accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
-
-    @php
-        $isActive = false;
-        $hasError = true;
-    @endphp
-
-    <span @class([
-        'p-4',
-        'font-bold' => $isActive,
-        'bg-red' => $hasError,
-    ])></span>
-
-    <span class="p-4 bg-red"></span>
-
-This behaviour can also be found when [merging classes with a component's attribute bag](#conditionally-merge-classes), or when utilizing the [`Arr::toCssClasses()` helper method](/docs/{{version}}/helpers#method-array-to-css-classes).
-
 <a name="raw-php"></a>
 ### Raw PHP
 
@@ -462,6 +453,13 @@ In some situations, it's useful to embed PHP code into your views. You can use t
     @php
         $counter = 1;
     @endphp
+
+<a name="comments"></a>
+### Comments
+
+Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
+
+    {{-- This comment will not be present in the rendered HTML --}}
 
 <a name="components"></a>
 ## Components
@@ -781,7 +779,7 @@ If you need to merge other attributes onto your component, you can chain the `me
         {{ $slot }}
     </button>
 
-If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class` directive](#conditional-classes). This behaviour can also be found when utilizing the [`Arr::toCssClasses()` helper method](/docs/{{version}}/helpers#method-array-to-css-classes).
+> {tip} If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class` directive](#conditional-classes).
 
 <a name="non-class-attribute-merging"></a>
 #### Non-Class Attribute Merging
