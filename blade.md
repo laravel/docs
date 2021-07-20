@@ -365,7 +365,7 @@ Property  | Description
 <a name="conditional-classes"></a>
 ### Conditional Classes
 
-The `@class` directive conditionally compiles a CSS class string. It accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+The `@class` directive conditionally compiles a CSS class string. The directive accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
     @php
         $isActive = false;
