@@ -1605,6 +1605,18 @@ The `pop` method removes and returns the last item from the collection:
 
     // [1, 2, 3, 4]
 
+You may also pass an integer to remove and return multiple items from the end of a collection.
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $collection->pop(3);
+
+    // collect([5, 4, 3])
+
+    $collection->all();
+
+    // [1, 2]
+
 <a name="method-prepend"></a>
 #### `prepend()` {#collection-method}
 
@@ -1845,6 +1857,18 @@ The `shift` method removes and returns the first item from the collection:
     $collection->all();
 
     // [2, 3, 4, 5]
+
+You may also pass an integer to remove and return multiple items from the beginning of a collection.
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $collection->shift(3);
+
+    // collect([1, 2, 3])
+
+    $collection->all();
+
+    // [4, 5]
 
 <a name="method-shuffle"></a>
 #### `shuffle()` {#collection-method}
