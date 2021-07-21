@@ -66,7 +66,7 @@ Of course, don't forget to examine any 3rd party packages consumed by your appli
 
 #### Symfony 4
 
-All of the underlying Symfony components used by Laravel have been upgraded to the Symfony `^4.0` release series. If you are directly interacting with Symfony components within your application, you should review the [Symfony change log](https://github.com/symfony/symfony/blob/master/UPGRADE-4.0.md).
+All of the underlying Symfony components used by Laravel have been upgraded to the Symfony `^4.0` release series. If you are directly interacting with Symfony components within your application, you should review the [Symfony change log](https://github.com/symfony/symfony/blob/4.0/UPGRADE-4.0.md).
 
 #### PHPUnit
 
