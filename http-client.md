@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Making Requests](#making-requests)
+    - [Base URL](#base-url)
     - [Request Data](#request-data)
     - [Headers](#headers)
     - [Authentication](#authentication)
@@ -58,6 +59,21 @@ The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAcces
 If you would like to dump the outgoing request instance before it is sent and terminate the script's execution, you may add the `dd` method to the beginning of your request definition:
 
     return Http::dd()->get('http://example.com');
+
+<a name="base-url"></a>
+### Base URL
+
+You can set the client to use the same URL. It is useful if you have to perform several HTTP calls to the same endpoint.
+
+    use Illuminate\Support\Facades\Http;
+
+    $request = Http::baseUrl('http://example.com');
+
+    $users = $request->get('users')->json();
+    
+    $request->post('user', ['name' => 'Patrick']);
+
+    $user = $request->get('user/1')->json();
 
 <a name="request-data"></a>
 ### Request Data
