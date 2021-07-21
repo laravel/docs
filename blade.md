@@ -375,10 +375,11 @@ The `@class` directive conditionally compiles a CSS class string. The directive 
     <span @class([
         'p-4',
         'font-bold' => $isActive,
+        'text-gray-500' => ! $isActive,
         'bg-red' => $hasError,
     ])></span>
 
-    <span class="p-4 bg-red"></span>
+    <span class="p-4 text-gray-500 bg-red"></span>
 
 <a name="including-subviews"></a>
 ### Including Subviews
