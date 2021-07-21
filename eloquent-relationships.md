@@ -1357,6 +1357,14 @@ In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `
         echo $post->comments_sum_votes;
     }
 
+If you wish to access the result of the aggregate function using another name, you may specify your own alias:
+
+    $posts = Post::withSum('comments as total_comments', 'votes')->get();
+
+    foreach ($posts as $post) {
+        echo $post->total_comments;
+    }
+
 Like the `loadCount` method, deferred versions of these methods are also available. These additional aggregate operations may be performed on Eloquent models that have already been retrieved:
 
     $post = Post::first();
