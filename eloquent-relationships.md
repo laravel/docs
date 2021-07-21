@@ -1357,9 +1357,7 @@ In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `
         echo $post->comments_sum_votes;
     }
 
-If you don't like a `{relation}_{function}_{column}` attribute on your resulting models, you may specify your own `as` alias:
-
-    use App\Models\Post;
+If you wish to access the result of the aggregate function using another name, you may specify your own alias:
 
     $posts = Post::withSum('comments as total_comments', 'votes')->get();
 
