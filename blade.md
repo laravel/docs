@@ -375,7 +375,7 @@ The `@class` directive conditionally compiles a CSS class string. The directive 
     <span @class([
         'p-4',
         'font-bold' => $isActive,
-        'text-gray-500' => !$isActive,
+        'text-gray-500' => ! $isActive,
         'bg-red' => $hasError,
     ])></span>
 
