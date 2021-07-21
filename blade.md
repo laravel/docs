@@ -1111,7 +1111,7 @@ To get started, let's take a look at a simple example. First, we will examine a 
     <body>
         @section('sidebar')
             This is the master sidebar.
-        @show
+        @endsection
 
         <div class="container">
             @yield('content')
