@@ -56,7 +56,7 @@ Laravel Dusk provides an expressive, easy-to-use browser automation and testing 
 <a name="installation"></a>
 ## Installation
 
-To get started, you should add the `laravel/dusk` Composer dependency to your project:
+To get started, you should install [Google Chrome](https://www.google.com/chrome) and add the `laravel/dusk` Composer dependency to your project:
 
     composer require --dev laravel/dusk
 
