@@ -995,6 +995,12 @@ Assert that the response has an unauthorized (401) HTTP status code:
 Assert that the response view contains given a piece of data:
 
     $response->assertViewHas($key, $value = null);
+    
+You can also pass a closure as the second parameter:
+
+    $response->assertViewHas('user', function (User $user) {
+        return $user->name === 'Taylor';
+    });
 
 In addition, view data may be accessed as array variables on the response, allowing you to convenient inspect it:
 
