@@ -996,7 +996,7 @@ Assert that the response view contains given a piece of data:
 
     $response->assertViewHas($key, $value = null);
     
-You can also pass a closure as the second parameter:
+Passing a closure as the second argument to the `assertViewHas` method will allow you to inspect and make assertions against a particular piece of view data:
 
     $response->assertViewHas('user', function (User $user) {
         return $user->name === 'Taylor';
