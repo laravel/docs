@@ -838,6 +838,28 @@ public function broadcastOn($event)
 }
 ```
 
+<a name="customizing-model-broadcasting-event-creation"></a>
+#### Customizing Model Broadcasting Event Creation
+
+Occasionally, you may wish to customize how Laravel creates the underlying model broadcasting event. You may accomplish this by defining a `newBroadcastableEvent` method on your Eloquent model. This method should return an `Illuminate\Database\Eloquent\BroadcastableModelEventOccurred` instance:
+
+```php
+use Illuminate\Database\Eloquent\BroadcastableModelEventOccurred
+
+/**
+ * Create a new broadcastable model event for the model.
+ *
+ * @param  string  $event
+ * @return \Illuminate\Database\Eloquent\BroadcastableModelEventOccurred
+ */
+protected function newBroadcastableEvent($event)
+{
+    return (new BroadcastableModelEventOccurred(
+        $this, $event
+    ))->dontBroadcastToCurrentUser();
+}
+```
+
 <a name="model-broadcasting-conventions"></a>
 ### Model Broadcasting Conventions
 
