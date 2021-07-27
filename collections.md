@@ -1605,7 +1605,7 @@ The `pop` method removes and returns the last item from the collection:
 
     // [1, 2, 3, 4]
 
-You may also pass an integer to remove and return multiple items from the end of a collection.
+You may pass an integer to the `pop` method to remove and return multiple items from the end of a collection:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
