@@ -1858,7 +1858,7 @@ The `shift` method removes and returns the first item from the collection:
 
     // [2, 3, 4, 5]
 
-You may also pass an integer to remove and return multiple items from the beginning of a collection.
+You may pass an integer to the `shift` method to remove and return multiple items from the beginning of a collection:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
