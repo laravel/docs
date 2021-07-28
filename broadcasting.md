@@ -900,9 +900,51 @@ $user->broadcastChannel()
 <a name="model-broadcasting-event-conventions"></a>
 #### Event Conventions
 
-Since model broadcast events are not associated with an "actual" event within your application's `App\Events` directory, they are assigned a name based on convention. Laravel's convention is to broadcast the event using the class name of the model (not including the namespace) and the name of the model event that triggered the broadcast.
+Since model broadcast events are not associated with an "actual" event within your application's `App\Events` directory, they are assigned a name and a payload based on conventions. Laravel's convention is to broadcast the event using the class name of the model (not including the namespace) and the name of the model event that triggered the broadcast.
 
-So, for example, an update to the `App\Models\Post` model would broadcast an event to your client-side application as `PostUpdated`, while the deletion of an `App\Models\User` model would broadcast an event named `UserDeleted`.
+So, for example, an update to the `App\Models\Post` model would broadcast an event to your client-side application as `PostUpdated` with the following payload:
+
+    {
+        "model": {
+            "id": 1,
+            "title": "My first post"
+            ...
+        },
+        ...
+        "socket": "someSocketId",
+    }
+
+The deletion of an `App\Models\User` model would broadcast an event named `UserDeleted`.
+
+Just like for "actual" events, and similar to the `broadcastOn` method, you can define a custom broadcast name and payload if needed by adding a `broadcastAs` and a `broadcastWith` method to your model:
+
+```php
+/**
+ * The model event's broadcast name.
+ *
+ * @param  string  $event
+ * @return string
+ */
+public function broadcastAs($event)
+{
+    return match($event) {
+        'created' => 'post.created',
+    };
+}
+
+/**
+ * Get the data to broadcast for the model.
+ *
+ * @param  string  $event
+ * @return array
+ */
+public function broadcastWith($event)
+{
+    return match($event) {
+        'created' => ['title' => $this->title],
+    };
+}
+```
 
 <a name="listening-for-model-broadcasts"></a>
 ### Listening For Model Broadcasts
