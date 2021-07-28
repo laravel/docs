@@ -900,9 +900,53 @@ $user->broadcastChannel()
 <a name="model-broadcasting-event-conventions"></a>
 #### Event Conventions
 
-Since model broadcast events are not associated with an "actual" event within your application's `App\Events` directory, they are assigned a name based on convention. Laravel's convention is to broadcast the event using the class name of the model (not including the namespace) and the name of the model event that triggered the broadcast.
+Since model broadcast events are not associated with an "actual" event within your application's `App\Events` directory, they are assigned a name and a payload based on conventions. Laravel's convention is to broadcast the event using the class name of the model (not including the namespace) and the name of the model event that triggered the broadcast.
 
-So, for example, an update to the `App\Models\Post` model would broadcast an event to your client-side application as `PostUpdated`, while the deletion of an `App\Models\User` model would broadcast an event named `UserDeleted`.
+So, for example, an update to the `App\Models\Post` model would broadcast an event to your client-side application as `PostUpdated` with the following payload:
+
+    {
+        "model": {
+            "id": 1,
+            "title": "My first post"
+            ...
+        },
+        ...
+        "socket": "someSocketId",
+    }
+
+The deletion of the `App\Models\User` model would broadcast an event named `UserDeleted`.
+
+If you would like, you may define a custom broadcast name and payload by adding a `broadcastAs` and `broadcastWith` method to your model. These methods receive the name of the model event / operation that is occurring, allowing you to customize the event's name and payload for each model operation. If `null` is returned from the `broadcastAs` method, Laravel will use the model broadcasting event name conventions discussed above when broadcasting the event:
+
+```php
+/**
+ * The model event's broadcast name.
+ *
+ * @param  string  $event
+ * @return string|null
+ */
+public function broadcastAs($event)
+{
+    return match ($event) {
+        'created' => 'post.created',
+        default => null,
+    };
+}
+
+/**
+ * Get the data to broadcast for the model.
+ *
+ * @param  string  $event
+ * @return array
+ */
+public function broadcastWith($event)
+{
+    return match ($event) {
+        'created' => ['title' => $this->title],
+        default => ['model' => $this],
+    };
+}
+```
 
 <a name="listening-for-model-broadcasts"></a>
 ### Listening For Model Broadcasts
