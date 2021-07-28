@@ -22,6 +22,7 @@
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
     - [Defining Channel Classes](#defining-channel-classes)
 - [Broadcasting Events](#broadcasting-events)
+    - [Customizing The Connection](#customizing-the-connection)
     - [Only To Others](#only-to-others)
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Listening For Events](#listening-for-events)
@@ -612,6 +613,41 @@ Once you have defined an event and marked it with the `ShouldBroadcast` interfac
     use App\Events\OrderShipmentStatusUpdated;
 
     OrderShipmentStatusUpdated::dispatch($order);
+
+<a name="customizing-the-connection"></a>
+### Customizing The Connection
+
+If your application need to interact with multiple broadcast connections and you want to use a different broadcaster than your default one, you may specify which connection to push an event to using the `via` method:
+
+    use App\Events\OrderShipmentStatusUpdated;
+
+    broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');
+
+Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor:
+
+    <?php
+
+    namespace App\Events;
+
+    use Illuminate\Broadcasting\Channel;
+    use Illuminate\Broadcasting\InteractsWithSockets;
+    use Illuminate\Broadcasting\PresenceChannel;
+    use Illuminate\Broadcasting\PrivateChannel;
+    use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+    use Illuminate\Queue\SerializesModels;
+
+    class OrderShipmentStatusUpdated implements ShouldBroadcast
+    {
+        /**
+         * Create a new event instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            $this->broadcastVia('pusher');
+        }
+    }
 
 <a name="only-to-others"></a>
 ### Only To Others
