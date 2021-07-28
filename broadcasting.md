@@ -914,7 +914,7 @@ So, for example, an update to the `App\Models\Post` model would broadcast an eve
         "socket": "someSocketId",
     }
 
-The deletion of an `App\Models\User` model would broadcast an event named `UserDeleted`.
+The deletion of the `App\Models\User` model would broadcast an event named `UserDeleted`.
 
 Just like for "actual" events, and similar to the `broadcastOn` method, you can define a custom broadcast name and payload if needed by adding a `broadcastAs` and a `broadcastWith` method to your model:
 
