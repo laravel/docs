@@ -916,19 +916,20 @@ So, for example, an update to the `App\Models\Post` model would broadcast an eve
 
 The deletion of the `App\Models\User` model would broadcast an event named `UserDeleted`.
 
-Just like for "actual" events, and similar to the `broadcastOn` method, you can define a custom broadcast name and payload if needed by adding a `broadcastAs` and a `broadcastWith` method to your model:
+If you would like, you may define a custom broadcast name and payload by adding a `broadcastAs` and `broadcastWith` method to your model. These methods receive the name of the model event / operation that is occurring, allowing you to customize the event's name and payload for each model operation. If `null` is returned from the `broadcastAs` method, Laravel will use the model broadcasting event name conventions discussed above when broadcasting the event:
 
 ```php
 /**
  * The model event's broadcast name.
  *
  * @param  string  $event
- * @return string
+ * @return string|null
  */
 public function broadcastAs($event)
 {
-    return match($event) {
+    return match ($event) {
         'created' => 'post.created',
+        default => null,
     };
 }
 
@@ -940,8 +941,9 @@ public function broadcastAs($event)
  */
 public function broadcastWith($event)
 {
-    return match($event) {
+    return match ($event) {
         'created' => ['title' => $this->title],
+        default => ['model' => $this],
     };
 }
 ```
