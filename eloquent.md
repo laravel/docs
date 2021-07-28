@@ -1037,7 +1037,7 @@ The `Scope` interface requires you to implement one method: `apply`. The `apply`
          */
         public function apply(Builder $builder, Model $model)
         {
-            $builder->where('created_at', '<', now()->subYears(2000));
+            $builder->where($model->qualifyColumn('created_at'), '<', now()->subYears(2000));
         }
     }
 
