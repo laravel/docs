@@ -895,7 +895,7 @@ Sometimes a model may have many related models, yet you want to easily retrieve 
  */
 public function latestImage()
 {
-    return $this->morphOne(Image::class)->latestOfMany();
+    return $this->morphOne(Image::class, 'imageable')->latestOfMany();
 }
 ```
 
@@ -907,7 +907,7 @@ Likewise, you may define a method to retrieve the "oldest", or first, related mo
  */
 public function oldestImage()
 {
-    return $this->morphOne(Image::class)->oldestOfMany();
+    return $this->morphOne(Image::class, 'imageable')->oldestOfMany();
 }
 ```
 
@@ -921,7 +921,7 @@ For example, using the `ofMany` method, you may retrieve the user's most "liked"
  */
 public function bestImage()
 {
-    return $this->morphOne(Image::class)->ofMany('likes', 'max');
+    return $this->morphOne(Image::class, 'imageable')->ofMany('likes', 'max');
 }
 ```
 
