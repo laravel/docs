@@ -23,6 +23,7 @@
     - [Defining Channel Classes](#defining-channel-classes)
 - [Broadcasting Events](#broadcasting-events)
     - [Only To Others](#only-to-others)
+    - [Customizing The Connection](#customizing-the-connection)
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Listening For Events](#listening-for-events)
     - [Leaving A Channel](#leaving-a-channel)
@@ -641,6 +642,41 @@ When you initialize a Laravel Echo instance, a socket ID is assigned to the conn
 If you are not using a global Axios instance, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header with all outgoing requests. You may retrieve the socket ID using the `Echo.socketId` method:
 
     var socketId = Echo.socketId();
+
+<a name="customizing-the-connection"></a>
+### Customizing The Connection
+
+If your application interacts with multiple broadcast connections and you want to broadcast an event using a broadcaster other than your default, you may specify which connection to push an event to using the `via` method:
+
+    use App\Events\OrderShipmentStatusUpdated;
+
+    broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');
+
+Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor:
+
+    <?php
+
+    namespace App\Events;
+
+    use Illuminate\Broadcasting\Channel;
+    use Illuminate\Broadcasting\InteractsWithSockets;
+    use Illuminate\Broadcasting\PresenceChannel;
+    use Illuminate\Broadcasting\PrivateChannel;
+    use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+    use Illuminate\Queue\SerializesModels;
+
+    class OrderShipmentStatusUpdated implements ShouldBroadcast
+    {
+        /**
+         * Create a new event instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            $this->broadcastVia('pusher');
+        }
+    }
 
 <a name="receiving-broadcasts"></a>
 ## Receiving Broadcasts
