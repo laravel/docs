@@ -62,7 +62,6 @@ If necessary, you may define macros that accept additional arguments:
 
     use Illuminate\Support\Collection;
     use Illuminate\Support\Facades\Lang;
-    use Illuminate\Support\Str;
 
     Collection::macro('toLocale', function ($locale) {
         return $this->map(function ($value) use ($locale) {
