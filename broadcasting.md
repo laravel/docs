@@ -22,8 +22,8 @@
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
     - [Defining Channel Classes](#defining-channel-classes)
 - [Broadcasting Events](#broadcasting-events)
-    - [Customizing The Connection](#customizing-the-connection)
     - [Only To Others](#only-to-others)
+    - [Customizing The Connection](#customizing-the-connection)
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Listening For Events](#listening-for-events)
     - [Leaving A Channel](#leaving-a-channel)
@@ -614,10 +614,39 @@ Once you have defined an event and marked it with the `ShouldBroadcast` interfac
 
     OrderShipmentStatusUpdated::dispatch($order);
 
+<a name="only-to-others"></a>
+### Only To Others
+
+When building an application that utilizes event broadcasting, you may occasionally need to broadcast an event to all subscribers to a given channel except for the current user. You may accomplish this using the `broadcast` helper and the `toOthers` method:
+
+    use App\Events\OrderShipmentStatusUpdated;
+
+    broadcast(new OrderShipmentStatusUpdated($update))->toOthers();
+
+To better understand when you may want to use the `toOthers` method, let's imagine a task list application where a user may create a new task by entering a task name. To create a task, your application might make a request to a `/task` URL which broadcasts the task's creation and returns a JSON representation of the new task. When your JavaScript application receives the response from the end-point, it might directly insert the new task into its task list like so:
+
+    axios.post('/task', task)
+        .then((response) => {
+            this.tasks.push(response.data);
+        });
+
+However, remember that we also broadcast the task's creation. If your JavaScript application is also listening for this event in order to add tasks to the task list, you will have duplicate tasks in your list: one from the end-point and one from the broadcast. You may solve this by using the `toOthers` method to instruct the broadcaster to not broadcast the event to the current user.
+
+> {note} Your event must use the `Illuminate\Broadcasting\InteractsWithSockets` trait in order to call the `toOthers` method.
+
+<a name="only-to-others-configuration"></a>
+#### Configuration
+
+When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using a global [Axios](https://github.com/mzabriskie/axios) instance to make HTTP requests from your JavaScript application, the socket ID will automatically be attached to every outgoing request as a `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID.
+
+If you are not using a global Axios instance, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header with all outgoing requests. You may retrieve the socket ID using the `Echo.socketId` method:
+
+    var socketId = Echo.socketId();
+
 <a name="customizing-the-connection"></a>
 ### Customizing The Connection
 
-If your application need to interact with multiple broadcast connections and you want to use a different broadcaster than your default one, you may specify which connection to push an event to using the `via` method:
+If your application interacts with multiple broadcast connections and you want to broadcast an event using a broadcaster other than your default, you may specify which connection to push an event to using the `via` method:
 
     use App\Events\OrderShipmentStatusUpdated;
 
@@ -648,35 +677,6 @@ Alternatively, you may specify the event's broadcast connection by calling the `
             $this->broadcastVia('pusher');
         }
     }
-
-<a name="only-to-others"></a>
-### Only To Others
-
-When building an application that utilizes event broadcasting, you may occasionally need to broadcast an event to all subscribers to a given channel except for the current user. You may accomplish this using the `broadcast` helper and the `toOthers` method:
-
-    use App\Events\OrderShipmentStatusUpdated;
-
-    broadcast(new OrderShipmentStatusUpdated($update))->toOthers();
-
-To better understand when you may want to use the `toOthers` method, let's imagine a task list application where a user may create a new task by entering a task name. To create a task, your application might make a request to a `/task` URL which broadcasts the task's creation and returns a JSON representation of the new task. When your JavaScript application receives the response from the end-point, it might directly insert the new task into its task list like so:
-
-    axios.post('/task', task)
-        .then((response) => {
-            this.tasks.push(response.data);
-        });
-
-However, remember that we also broadcast the task's creation. If your JavaScript application is also listening for this event in order to add tasks to the task list, you will have duplicate tasks in your list: one from the end-point and one from the broadcast. You may solve this by using the `toOthers` method to instruct the broadcaster to not broadcast the event to the current user.
-
-> {note} Your event must use the `Illuminate\Broadcasting\InteractsWithSockets` trait in order to call the `toOthers` method.
-
-<a name="only-to-others-configuration"></a>
-#### Configuration
-
-When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using a global [Axios](https://github.com/mzabriskie/axios) instance to make HTTP requests from your JavaScript application, the socket ID will automatically be attached to every outgoing request as a `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID.
-
-If you are not using a global Axios instance, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header with all outgoing requests. You may retrieve the socket ID using the `Echo.socketId` method:
-
-    var socketId = Echo.socketId();
 
 <a name="receiving-broadcasts"></a>
 ## Receiving Broadcasts
