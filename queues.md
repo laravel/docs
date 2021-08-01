@@ -402,6 +402,8 @@ After creating job middleware, they may be attached to a job by returning them f
         return [new RateLimited];
     }
 
+> {tip} Job middleware can also be used on notifications, mailables, and event listeners.
+
 <a name="rate-limiting"></a>
 ### Rate Limiting
 
