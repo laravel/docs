@@ -1410,6 +1410,8 @@ Remember, queue workers, are long-lived processes and store the booted applicati
 Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker when you want to reload your updated code or reset the application state; however, this command is significantly less efficient than the `queue:work` command:
 
     php artisan queue:listen
+    
+Because the `queue:work` command needs to be restarted when your code is changed, it will listen to termination signals and exit gracefully by allowing running jobs to finish before shutting down the worker. For this to work, the php module `pcntl` needs to be installed. Please note that `queue:listen` doesn't handle termination signals and shouldn't be used if you plan on restarting the queue worker frequently as you risk having jobs terminated during execution. An example of when this can become an issue is when using `queue:listen` for an application deployed using docker.
 
 <a name="running-multiple-queue-workers"></a>
 #### Running Multiple Queue Workers
