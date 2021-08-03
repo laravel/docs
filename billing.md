@@ -1448,7 +1448,9 @@ Sometimes you may need to make a one-time charge and offer a PDF receipt to your
 The invoice will be immediately charged against the user's default payment method. The `invoicePrice` method also accepts an array as its third argument. This array contains the billing options for the invoice item. The fourth argument accepted by the method is also an array which should contain the billing options for the invoice itself:
 
     $user->invoicePrice('price_tshirt', 5, [
-        'discounts' => ['coupon' => 'SUMMER21SALE'],
+        'discounts' => [
+            ['coupon' => 'SUMMER21SALE']
+        ],
     ], [
         'default_tax_rates' => ['txr_id'],
     ]);
