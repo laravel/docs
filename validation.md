@@ -763,7 +763,7 @@ The field under validation must be `"yes"`, `"on"`, `1`, or `true`. This is usef
 <a name="rule-accepted-if"></a>
 #### accepted_if:anotherfield,value,...
 
-The field under validation must be `"yes"`, `"on"`, `1`, or `true` if the anotherfield field is equal to any value. This is useful for validating "Terms of Service" acceptance or similar fields.
+The field under validation must be `"yes"`, `"on"`, `1`, or `true` if another field under validation is equal to a specified value. This is useful for validating "Terms of Service" acceptance or similar fields.
 
 <a name="rule-active-url"></a>
 #### active_url
