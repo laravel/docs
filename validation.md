@@ -681,6 +681,7 @@ Below is a list of all available validation rules and their function:
 <div class="collection-method-list" markdown="1">
 
 [Accepted](#rule-accepted)
+[Accepted If](#rule-accepted-if)
 [Active URL](#rule-active-url)
 [After (Date)](#rule-after)
 [After Or Equal (Date)](#rule-after-or-equal)
@@ -758,6 +759,11 @@ Below is a list of all available validation rules and their function:
 #### accepted
 
 The field under validation must be `"yes"`, `"on"`, `1`, or `true`. This is useful for validating "Terms of Service" acceptance or similar fields.
+
+<a name="rule-accepted-if"></a>
+#### accepted_if:anotherfield,value,...
+
+The field under validation must be `"yes"`, `"on"`, `1`, or `true` if the anotherfield field is equal to any value. This is useful for validating "Terms of Service" acceptance or similar fields.
 
 <a name="rule-active-url"></a>
 #### active_url
