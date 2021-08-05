@@ -1828,7 +1828,7 @@ If your queue receives a sudden influx of jobs, it could become overwhelmed, lea
 To get started, you should schedule the `queue:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the queues you wish to monitor as well as your desired job count threshold:
 
 ```bash
-php artisan queue:monitor redis:default,redis:deployments --threshold=100
+php artisan queue:monitor redis:default,redis:deployments --max=100
 ```
 
 Scheduling this command alone is not enough to trigger a notification alerting you of the queue's overwhelmed status. When the command encounters a queue that has a job count exceeding your threshold, an `Illuminate\Queue\Events\QueueBusy` event will be dispatched. You may listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
