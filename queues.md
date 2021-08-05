@@ -42,6 +42,7 @@
     - [Pruning Failed Jobs](#pruning-failed-jobs)
     - [Failed Job Events](#failed-job-events)
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
+- [Monitoring Your Queues](#monitoring-your-queues)
 - [Job Events](#job-events)
 
 <a name="introduction"></a>
@@ -1818,6 +1819,43 @@ You may also provide the `connection` argument and `queue` option to delete jobs
     php artisan queue:clear redis --queue=emails
 
 > {note} Clearing jobs from queues is only available for the SQS, Redis, and database queue drivers. In addition, the SQS message deletion process takes up to 60 seconds, so jobs sent to the SQS queue up to 60 seconds after you clear the queue might also be deleted.
+
+<a name="monitoring-your-queues"></a>
+## Monitoring Your Queues
+
+If your queue receives a sudden influx of jobs, it could become overwhelmed, leading to a long wait time for jobs to complete. If you wish, Laravel can alert you when your queue job count exceeds a specified threshold.
+
+To get started, you should schedule the `queue:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the queues you wish to monitor as well as your desired job count threshold:
+
+```bash
+php artisan queue:monitor redis:default,redis:deployments --threshold=100
+```
+
+Scheduling this command alone is not enough to trigger a notification alerting you of the queue's overwhelmed status. When the command encounters a queue that has a job count exceeding your threshold, an `Illuminate\Queue\Events\QueueBusy` event will be dispatched. You may listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+
+```php
+use App\Notifications\QueueHasLongWaitTime;
+use Illuminate\Queue\Events\QueueBusy;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+
+/**
+ * Register any other events for your application.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Event::listen(function (QueueBusy $event) {
+        Notification::route('mail', 'dev@example.com')
+                ->notify(new QueueHasLongWaitTime(
+                    $event->connection,
+                    $event->queue,
+                    $event->size
+                ));
+    });
+}
+```
 
 <a name="job-events"></a>
 ## Job Events
