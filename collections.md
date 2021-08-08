@@ -1287,7 +1287,7 @@ The `mapWithKeys` method iterates through the collection and passes each value t
         ]
     ]);
 
-    $keyed = $collection->mapWithKeys(function ($item) {
+    $keyed = $collection->mapWithKeys(function ($item, $key) {
         return [$item['email'] => $item['name']];
     });
 
