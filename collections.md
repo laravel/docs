@@ -1300,6 +1300,22 @@ The `mapWithKeys` method iterates through the collection and passes each value t
         ]
     */
 
+The callback also gets the key as the second argument and can be used to walk over the keys of the collection items:
+
+    $collection = collect([
+        'John' => 'john@example.org',
+        'Jane' => 'jane@example.org'
+    ]);
+
+    $collection = $collection->mapWithKeys(fn ($value, $key) => [ strtolower($key) => $value ]);
+    
+    /*
+        [
+            'john' => 'john@example.org',
+            'jane' => 'jane@example.org'
+        ]
+    */
+
 <a name="method-max"></a>
 #### `max()` {#collection-method}
 
