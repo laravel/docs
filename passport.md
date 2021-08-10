@@ -631,9 +631,11 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
     });
 
 <a name="password-grant-tokens"></a>
-## Password Grant Tokens
+## Password Grant Tokens (legacy)
 
 The OAuth2 password grant allows your other first-party clients, such as a mobile application, to obtain an access token using an email address / username and password. This allows you to issue access tokens securely to your first-party clients without requiring your users to go through the entire OAuth2 authorization code redirect flow.
+
+Because the client application has to collect the user's password and send it to the authorization server, it is not recommended that this grant be used at all anymore.
 
 <a name="creating-a-password-grant-client"></a>
 ### Creating A Password Grant Client
@@ -743,7 +745,7 @@ When authenticating using the password grant, Passport will use the `password` a
     }
 
 <a name="implicit-grant-tokens"></a>
-## Implicit Grant Tokens
+## Implicit Grant Tokens (legacy)
 
 The implicit grant is similar to the authorization code grant; however, the token is returned to the client without exchanging an authorization code. This grant is most commonly used for JavaScript or mobile applications where the client credentials can't be securely stored. To enable the grant, call the `enableImplicitGrant` method in the `boot` method of your application's `App\Providers\AuthServiceProvider` class:
 
@@ -778,6 +780,8 @@ Once the grant has been enabled, developers may use their client ID to request a
 
         return redirect('http://passport-app.com/oauth/authorize?'.$query);
     });
+    
+Public clients such as native apps and JavaScript apps should now use the authorization code flow with the PKCE extension instead.
 
 > {tip} Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
 
