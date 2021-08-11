@@ -52,6 +52,8 @@ Sanctum will only attempt to authenticate using cookies when the incoming reques
 <a name="installation"></a>
 ## Installation
 
+> {tip} The most recent versions of Laravel already include Laravel Sanctum. However, if your application's `composer.json` file does not include `laravel/sanctum`, you may follow the installation instructions below.
+
 You may install Laravel Sanctum via the Composer package manager:
 
     composer require laravel/sanctum
