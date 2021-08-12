@@ -1,181 +1,381 @@
 # Release Notes
 
 - [Versioning Scheme](#versioning-scheme)
+    - [Exceptions](#exceptions)
 - [Support Policy](#support-policy)
-- [Laravel 5.6](#laravel-5.6)
+- [Laravel 8](#laravel-8)
 
 <a name="versioning-scheme"></a>
 ## Versioning Scheme
 
-Laravel's versioning scheme maintains the following convention: `paradigm.major.minor`. Major framework releases are released every six months (February and August), while minor releases may be released as often as every week. Minor releases should **never** contain breaking changes.
+Laravel and its other first-party packages follow [Semantic Versioning](https://semver.org). Major framework releases are released every year (~January), while minor and patch releases may be released as often as every week. Minor and patch releases should **never** contain breaking changes.
 
-When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `5.5.*`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
+When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `^8.0`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
 
-Paradigm shifting releases are separated by many years and represent fundamental shifts in the framework's architecture and conventions. Currently, there is no paradigm shifting release under development.
+<a name="exceptions"></a>
+### Exceptions
+
+<a name="named-arguments"></a>
+#### Named Arguments
+
+At this time, PHP's [named arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments) functionality are not covered by Laravel's backwards compatibility guidelines. We may choose to rename function parameters when necessary in order to improve the Laravel codebase. Therefore, using named arguments when calling Laravel methods should be done cautiously and with the understanding that the parameter names may change in the future.
 
 <a name="support-policy"></a>
 ## Support Policy
 
-For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+For LTS releases, such as Laravel 9, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
 
-<a name="laravel-5.6"></a>
-## Laravel 5.6
+| Version | Release | Bug Fixes Until | Security Fixes Until |
+| --- | --- | --- | --- |
+| 6 (LTS) | September 3rd, 2019 | January 25th, 2022 | September 6th, 2022 |
+| 7 | March 3rd, 2020 | October 6th, 2020 | March 3rd, 2021 |
+| 8 | September 8th, 2020 | July 26th, 2022 | January 24th, 2023 |
+| 9 (LTS) | January 25th, 2022 | January 30th, 2024 | January 28th, 2025 |
+| 10 | January 24th, 2023 | July 30th, 2024 | January 28th, 2025 |
 
-Laravel 5.6 continues the improvements made in Laravel 5.5 by adding an improved logging system, single-server task scheduling, improvements to model serialization, dynamic rate limiting, broadcast channel classes, API resource controller generation, Eloquent date formatting improvements, Blade component aliases, Argon2 password hashing support, inclusion of the Collision package, and more. In addition, all front-end scaffolding has been upgraded to Bootstrap 4.
+<a name="laravel-8"></a>
+## Laravel 8
 
-All underlying Symfony components used by Laravel have been upgraded to the Symfony `~4.0` release series.
+Laravel 8 continues the improvements made in Laravel 7.x by introducing Laravel Jetstream, model factory classes, migration squashing, job batching, improved rate limiting, queue improvements, dynamic Blade components, Tailwind pagination views, time testing helpers, improvements to `artisan serve`, event listener improvements, and a variety of other bug fixes and usability improvements.
 
-The release of Laravel 5.6 coincides with the release of [Spark 6.0](https://spark.laravel.com), the first major upgrade to Laravel Spark since its release. Spark 6.0 introduces per-seat pricing for Stripe and Braintree, localization, Bootstrap 4, an enhanced UI, and Stripe Elements support.
+<a name="laravel-jetstream"></a>
+### Laravel Jetstream
 
-> {tip} This documentation summarizes the most notable improvements to the framework; however, more thorough change logs are always available [on GitHub](https://github.com/laravel/framework/blob/5.6/CHANGELOG-5.6.md).
+_Laravel Jetstream was written by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-### Logging Improvements
+[Laravel Jetstream](https://jetstream.laravel.com) is a beautifully designed application scaffolding for Laravel. Jetstream provides the perfect starting point for your next project and includes login, registration, email verification, two-factor authentication, session management, API support via Laravel Sanctum, and optional team management. Laravel Jetstream replaces and improves upon the legacy authentication UI scaffolding available for previous versions of Laravel.
 
-Laravel 5.6 brings vast improvements to Laravel's logging system. All logging configuration is housed in the new `config/logging.php` configuration file. You may now easily build logging "stacks" that send log messages to multiple handlers. For example, you may send all `debug` level messages to the system log while sending `error` level messages to Slack so that your team can quickly react to errors:
+Jetstream is designed using [Tailwind CSS](https://tailwindcss.com) and offers your choice of [Livewire](https://laravel-livewire.com) or [Inertia](https://inertiajs.com) scaffolding.
 
-    'channels' => [
-        'stack' => [
-            'driver' => 'stack',
-            'channels' => ['syslog', 'slack'],
-        ],
-    ],
+<a name="models-directory"></a>
+### Models Directory
 
-In addition, it is now easier to customize existing log channels using the logging system's new "tap" functionality. For more information, check out the [full documentation on logging](/docs/{{version}}/logging).
+By overwhelming community demand, the default Laravel application skeleton now contains an `app/Models` directory. We hope you enjoy this new home for your Eloquent models! All relevant generator commands have been updated to assume models exist within the `app/Models` directory if it exists. If the directory does not exist, the framework will assume your models should be placed within the `app` directory.
 
-### Single Server Task Scheduling
+<a name="model-factory-classes"></a>
+### Model Factory Classes
 
-> {note} To utilize this feature, your application must be using the `memcached` or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+_Model factory classes were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-If your application is running on multiple servers, you may now limit a scheduled job to only execute on a single server. For instance, assume you have a scheduled task that generates a new report every Friday night. If the task scheduler is running on three worker servers, the scheduled task will run on all three servers and generate the report three times. Not good!
-
-To indicate that the task should run on only one server, you may use the `onOneServer` method when defining the scheduled task. The first server to obtain the task will secure an atomic lock on the job to prevent other servers from running the same task on the same Cron cycle:
-
-    $schedule->command('report:generate')
-             ->fridays()
-             ->at('17:00')
-             ->onOneServer();
-
-### Dynamic Rate Limiting
-
-When specifying a [rate limit](/docs/{{version}}/routing#rate-limiting) on a group of routes in previous releases of Laravel, you were forced to provide a hard-coded number of maximum requests:
-
-    Route::middleware('auth:api', 'throttle:60,1')->group(function () {
-        Route::get('/user', function () {
-            //
-        });
-    });
-
-In Laravel 5.6, you may specify a dynamic request maximum based on an attribute of the authenticated `User` model. For example, if your `User` model contains a `rate_limit` attribute, you may pass the name of the attribute to the `throttle` middleware so that it is used to calculate the maximum request count:
-
-    Route::middleware('auth:api', 'throttle:rate_limit,1')->group(function () {
-        Route::get('/user', function () {
-            //
-        });
-    });
-
-### Broadcast Channel Classes
-
-If your application is consuming many different channels, your `routes/channels.php` file could become bulky. So, instead of using Closures to authorize channels, you may now use channel classes. To generate a channel class, use the `make:channel` Artisan command. This command will place a new channel class in the `App/Broadcasting` directory.
-
-    php artisan make:channel OrderChannel
-
-Next, register your channel in your `routes/channels.php` file:
-
-    use App\Broadcasting\OrderChannel;
-
-    Broadcast::channel('order.{order}', OrderChannel::class);
-
-Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization Closure. Of course, you may also take advantage of channel model binding:
+Eloquent [model factories](/docs/{{version}}/database-testing#defining-model-factories) have been entirely re-written as class based factories and improved to have first-class relationship support. For example, the `UserFactory` included with Laravel is written like so:
 
     <?php
 
-    namespace App\Broadcasting;
+    namespace Database\Factories;
 
-    use App\User;
-    use App\Order;
+    use App\Models\User;
+    use Illuminate\Database\Eloquent\Factories\Factory;
+    use Illuminate\Support\Str;
 
-    class OrderChannel
+    class UserFactory extends Factory
     {
         /**
-         * Create a new channel instance.
+         * The name of the factory's corresponding model.
          *
-         * @return void
+         * @var string
          */
-        public function __construct()
-        {
-            //
-        }
+        protected $model = User::class;
 
         /**
-         * Authenticate the user's access to the channel.
+         * Define the model's default state.
          *
-         * @param  \App\User  $user
-         * @param  \App\Order  $order
-         * @return array|bool
+         * @return array
          */
-        public function join(User $user, Order $order)
+        public function definition()
         {
-            return $user->id === $order->user_id;
+            return [
+                'name' => $this->faker->name(),
+                'email' => $this->faker->unique()->safeEmail(),
+                'email_verified_at' => now(),
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'remember_token' => Str::random(10),
+            ];
         }
     }
 
-### API Controller Generation
+Thanks to the new `HasFactory` trait available on generated models, the model factory may be used like so:
 
-When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. To generate a resource controller that does not include these methods, you may now use the `--api` switch when executing the `make:controller` command:
+    use App\Models\User;
 
-    php artisan make:controller API/PhotoController --api
+    User::factory()->count(50)->create();
 
-### Model Serialization Improvements
+Since model factories are now simple PHP classes, state transformations may be written as class methods. In addition, you may add any other helper classes to your Eloquent model factory as needed.
 
-In previous releases of Laravel, queued models would not be restored with their loaded relationships intact. In Laravel 5.6, relationships that were loaded on the model when it was queued are automatically re-loaded when the job is processed by the queue.
+For example, your `User` model might have a `suspended` state that modifies one of its default attribute values. You may define your state transformations using the base factory's `state` method. You may name your state method anything you like. After all, it's just a typical PHP method:
 
-### Eloquent Date Casting
+    /**
+     * Indicate that the user is suspended.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function suspended()
+    {
+        return $this->state([
+            'account_status' => 'suspended',
+        ]);
+    }
 
-You may now individually customize the format of Eloquent date cast columns. To get started, specify the desired date format within the cast declaration. Once specified, this format will be used when serializing the model to an array / JSON:
+After defining the state transformation method, we may use it like so:
 
-    protected $casts = [
-        'birthday' => 'date:Y-m-d',
-        'joined_at' => 'datetime:Y-m-d H:00',
-    ];
+    use App\Models\User;
 
-### Blade Component Aliases
+    User::factory()->count(5)->suspended()->create();
 
-If your Blade components are stored in a sub-directory, you may now alias them for easier access. For example, imagine a Blade component that is stored at `resources/views/components/alert.blade.php`. You may use the `component` method to alias the component from `components.alert` to `alert`:
+As mentioned, Laravel 8's model factories contain first class support for relationships. So, assuming our `User` model has a `posts` relationship method, we may simply run the following code to generate a user with three posts:
 
-    Blade::component('components.alert', 'alert');
+    $users = User::factory()
+                ->hasPosts(3, [
+                    'published' => false,
+                ])
+                ->create();
 
-Once the component has been aliased, you may render it using a directive:
+To ease the upgrade process, the [laravel/legacy-factories](https://github.com/laravel/legacy-factories) package has been released to provide support for the previous iteration of model factories within Laravel 8.x.
 
-    @alert('alert', ['type' => 'danger'])
-        You are not allowed to access this resource!
-    @endalert
+Laravel's re-written factories contain many more features that we think you will love. To learn more about model factories, please consult the [database testing documentation](/docs/{{version}}/database-testing#defining-model-factories).
 
-You may omit the component parameters if it has no additional slots:
+<a name="migration-squashing"></a>
+### Migration Squashing
 
-    @alert
-        You are not allowed to access this resource!
-    @endalert
+_Migration squashing was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
 
-### Argon2 Password Hashing
+As you build your application, you may accumulate more and more migrations over time. This can lead to your migration directory becoming bloated with potentially hundreds of migrations. If you're using MySQL or PostgreSQL, you may now "squash" your migrations into a single SQL file. To get started, execute the `schema:dump` command:
 
-If you are building an application on PHP 7.2.0 or greater, Laravel now supports password hashing via the Argon2 algorithm. The default hash driver for your application is controlled by a new `config/hashing.php` configuration file.
+    php artisan schema:dump
 
-### UUID Methods
+    // Dump the current database schema and prune all existing migrations...
+    php artisan schema:dump --prune
 
-Laravel 5.6 introduces two new methods for generating UUIDs: `Str::uuid` and `Str::orderedUuid`. The `orderedUuid` method will generate a timestamp first UUID that is more easily and efficiently indexed by databases such as MySQL. Each of these methods returns a `Ramsey\Uuid\Uuid` object:
+When you execute this command, Laravel will write a "schema" file to your `database/schema` directory. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute the schema file's SQL first. After executing the schema file's commands, Laravel will execute any remaining migrations that were not part of the schema dump.
 
-    use Illuminate\Support\Str;
+<a name="job-batching"></a>
+### Job Batching
 
-    return (string) Str::uuid();
+_Job batching was contributed by [Taylor Otwell](https://github.com/taylorotwell) & [Mohamed Said](https://github.com/themsaid)_.
 
-    return (string) Str::orderedUuid();
+Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing.
 
-### Collision
+The new `batch` method of the `Bus` facade may be used to dispatch a batch of jobs. Of course, batching is primarily useful when combined with completion callbacks. So, you may use the `then`, `catch`, and `finally` methods to define completion callbacks for the batch. Each of these callbacks will receive an `Illuminate\Bus\Batch` instance when they are invoked:
 
-The default `laravel/laravel` application now contains a `dev` Composer dependency for the [Collision](https://github.com/nunomaduro/collision) package maintained by Nuno Maduro. This packages provides beautiful error reporting when interacting with your Laravel application on the command line:
+    use App\Jobs\ProcessPodcast;
+    use App\Podcast;
+    use Illuminate\Bus\Batch;
+    use Illuminate\Support\Facades\Bus;
+    use Throwable;
 
-<img src="https://raw.githubusercontent.com/nunomaduro/collision/stable/docs/example.png" width="600" height="388">
+    $batch = Bus::batch([
+        new ProcessPodcast(Podcast::find(1)),
+        new ProcessPodcast(Podcast::find(2)),
+        new ProcessPodcast(Podcast::find(3)),
+        new ProcessPodcast(Podcast::find(4)),
+        new ProcessPodcast(Podcast::find(5)),
+    ])->then(function (Batch $batch) {
+        // All jobs completed successfully...
+    })->catch(function (Batch $batch, Throwable $e) {
+        // First batch job failure detected...
+    })->finally(function (Batch $batch) {
+        // The batch has finished executing...
+    })->dispatch();
 
-### Bootstrap 4
+    return $batch->id;
 
-All front-end scaffolding such as the authentication boilerplate and example Vue component have been upgraded to [Bootstrap 4](https://blog.getbootstrap.com/2018/01/18/bootstrap-4/). By default, pagination link generation also now defaults to Bootstrap 4.
+To learn more about job batching, please consult the [queue documentation](/docs/{{version}}/queues#job-batching).
+
+<a name="improved-rate-limiting"></a>
+### Improved Rate Limiting
+
+_Rate limiting improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Laravel's request rate limiter feature has been augmented with more flexibility and power, while still maintaining backwards compatibility with previous release's `throttle` middleware API.
+
+Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned this rate limiter:
+
+    use Illuminate\Cache\RateLimiting\Limit;
+    use Illuminate\Support\Facades\RateLimiter;
+
+    RateLimiter::for('global', function (Request $request) {
+        return Limit::perMinute(1000);
+    });
+
+Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit dynamically based on the incoming request or authenticated user:
+
+    RateLimiter::for('uploads', function (Request $request) {
+        return $request->user()->vipCustomer()
+                    ? Limit::none()
+                    : Limit::perMinute(100);
+    });
+
+Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `by` method when building your rate limit:
+
+    RateLimiter::for('uploads', function (Request $request) {
+        return $request->user()->vipCustomer()
+                    ? Limit::none()
+                    : Limit::perMinute(100)->by($request->ip());
+    });
+
+Rate limiters may be attached to routes or route groups using the `throttle` [middleware](/docs/{{version}}/middleware). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
+
+    Route::middleware(['throttle:uploads'])->group(function () {
+        Route::post('/audio', function () {
+            //
+        });
+
+        Route::post('/video', function () {
+            //
+        });
+    });
+
+To learn more about rate limiting, please consult the [routing documentation](/docs/{{version}}/routing#rate-limiting).
+
+<a name="improved-maintenance-mode"></a>
+### Improved Maintenance Mode
+
+_Maintenance mode improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell) with inspiration from [Spatie](https://spatie.be)_.
+
+In previous releases of Laravel, the `php artisan down` maintenance mode feature may be bypassed using an "allow list" of IP addresses that were allowed to access the application. This feature has been removed in favor of a simpler "secret" / token solution.
+
+While in maintenance mode, you may use the `secret` option to specify a maintenance mode bypass token:
+
+    php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
+
+After placing the application in maintenance mode, you may navigate to the application URL matching this token and Laravel will issue a maintenance mode bypass cookie to your browser:
+
+    https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
+
+When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
+
+<a name="pre-rendering-the-maintenance-mode-view"></a>
+#### Pre-Rendering The Maintenance Mode View
+
+If you utilize the `php artisan down` command during deployment, your users may still occasionally encounter errors if they access the application while your Composer dependencies or other infrastructure components are updating. This occurs because a significant part of the Laravel framework must boot in order to determine your application is in maintenance mode and render the maintenance mode view using the templating engine.
+
+For this reason, Laravel now allows you to pre-render a maintenance mode view that will be returned at the very beginning of the request cycle. This view is rendered before any of your application's dependencies have loaded. You may pre-render a template of your choice using the `down` command's `render` option:
+
+    php artisan down --render="errors::503"
+
+<a name="closure-dispatch-chain-catch"></a>
+### Closure Dispatch / Chain `catch`
+
+_Catch improvements were contributed by [Mohamed Said](https://github.com/themsaid)_.
+
+Using the new `catch` method, you may now provide a closure that should be executed if a queued closure fails to complete successfully after exhausting all of your queue's configured retry attempts:
+
+    use Throwable;
+
+    dispatch(function () use ($podcast) {
+        $podcast->publish();
+    })->catch(function (Throwable $e) {
+        // This job has failed...
+    });
+
+<a name="dynamic-blade-components"></a>
+### Dynamic Blade Components
+
+_Dynamic Blade components were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Sometimes you may need to render a component but not know which component should be rendered until runtime. In this situation, you may now use Laravel's built-in `dynamic-component` component to render the component based on a runtime value or variable:
+
+    <x-dynamic-component :component="$componentName" class="mt-4" />
+
+To learn more about Blade components, please consult the [Blade documentation](/docs/{{version}}/blade#components).
+
+<a name="event-listener-improvements"></a>
+### Event Listener Improvements
+
+_Event listener improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+Closure based event listeners may now be registered by only passing the closure to the `Event::listen` method. Laravel will inspect the closure to determine which type of event the listener handles:
+
+    use App\Events\PodcastProcessed;
+    use Illuminate\Support\Facades\Event;
+
+    Event::listen(function (PodcastProcessed $event) {
+        //
+    });
+
+In addition, closure based event listeners may now be marked as queueable using the `Illuminate\Events\queueable` function:
+
+    use App\Events\PodcastProcessed;
+    use function Illuminate\Events\queueable;
+    use Illuminate\Support\Facades\Event;
+
+    Event::listen(queueable(function (PodcastProcessed $event) {
+        //
+    }));
+
+Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods to customize the execution of the queued listener:
+
+    Event::listen(queueable(function (PodcastProcessed $event) {
+        //
+    })->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
+
+If you would like to handle anonymous queued listener failures, you may provide a closure to the `catch` method while defining the `queueable` listener:
+
+    use App\Events\PodcastProcessed;
+    use function Illuminate\Events\queueable;
+    use Illuminate\Support\Facades\Event;
+    use Throwable;
+
+    Event::listen(queueable(function (PodcastProcessed $event) {
+        //
+    })->catch(function (PodcastProcessed $event, Throwable $e) {
+        // The queued listener failed...
+    }));
+
+<a name="time-testing-helpers"></a>
+### Time Testing Helpers
+
+_Time testing helpers were contributed by [Taylor Otwell](https://github.com/taylorotwell) with inspiration from Ruby on Rails_.
+
+When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\Support\Carbon::now()`. Laravel's base feature test class now includes helpers that allow you to manipulate the current time:
+
+    public function testTimeCanBeManipulated()
+    {
+        // Travel into the future...
+        $this->travel(5)->milliseconds();
+        $this->travel(5)->seconds();
+        $this->travel(5)->minutes();
+        $this->travel(5)->hours();
+        $this->travel(5)->days();
+        $this->travel(5)->weeks();
+        $this->travel(5)->years();
+
+        // Travel into the past...
+        $this->travel(-5)->hours();
+
+        // Travel to an explicit time...
+        $this->travelTo(now()->subHours(6));
+
+        // Return back to the present time...
+        $this->travelBack();
+    }
+
+<a name="artisan-serve-improvements"></a>
+### Artisan `serve` Improvements
+
+_Artisan `serve` improvements were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+
+The Artisan `serve` command has been improved with automatic reloading when environment variable changes are detected within your local `.env` file. Previously, the command had to be manually stopped and restarted.
+
+<a name="tailwind-pagination-views"></a>
+### Tailwind Pagination Views
+
+The Laravel paginator has been updated to use the [Tailwind CSS](https://tailwindcss.com) framework by default. Tailwind CSS is a highly customizable, low-level CSS framework that gives you all of the building blocks you need to build bespoke designs without any annoying opinionated styles you have to fight to override. Of course, Bootstrap 3 and 4 views remain available as well.
+
+<a name="routing-namespace-updates"></a>
+### Routing Namespace Updates
+
+In previous releases of Laravel, the `RouteServiceProvider` contained a `$namespace` property. This property's value would automatically be prefixed onto controller route definitions and calls to the `action` helper / `URL::action` method. In Laravel 8.x, this property is `null` by default. This means that no automatic namespace prefixing will be done by Laravel. Therefore, in new Laravel 8.x applications, controller route definitions should be defined using standard PHP callable syntax:
+
+    use App\Http\Controllers\UserController;
+
+    Route::get('/users', [UserController::class, 'index']);
+
+Calls to the `action` related methods should use the same callable syntax:
+
+    action([UserController::class, 'index']);
+
+    return Redirect::action([UserController::class, 'index']);
+
+If you prefer Laravel 7.x style controller route prefixing, you may simply add the `$namespace` property into your application's `RouteServiceProvider`.
+
+> {note} This change only affects new Laravel 8.x applications. Applications upgrading from Laravel 7.x will still have the `$namespace` property in their `RouteServiceProvider`.
