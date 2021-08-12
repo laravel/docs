@@ -54,6 +54,7 @@
     - [Subscription Checkouts](#subscription-checkouts)
     - [Collecting Tax IDs](#collecting-tax-ids)
 - [Invoices](#invoices)
+    - [Invoice With Multiple Line Items](#invoice-with-multiple-line-items)
     - [Retrieving Invoices](#retrieving-invoices)
     - [Upcoming Invoices](#upcoming-invoices)
     - [Previewing Subscription Invoices](#previewing-subscription-invoices)
@@ -1474,6 +1475,47 @@ If you need to refund a Stripe charge, you may use the `refund` method. This met
 
 <a name="invoices"></a>
 ## Invoices
+
+<a name="invoice-with-multiple-line-items"></a>
+### Invoice With Multiple Line Items
+
+There are time that your invoice will contain multiple line items instead of just one product/service. To achieve that, prepare the invoice line items by calling the `tabPrice()` method and create the invoice by invoking the `invoice()` method.
+
+    $currency = 'PHP';
+    $items = [
+        [
+            'description' => '1 Dozen Eggs',
+            'amount' => 100,
+            'quantity' => 1
+        ],
+        [
+            'description' => '1 Liter Oil',
+            'amount' => 70,
+            'quantity' => 1
+        ],
+    ];
+    // Prepare the line items
+    foreach ($items as $item) {
+        // Create the price object
+        $invoice_item_amount = ($item['amount'] * 100); // Stripe needs to do it this way
+        $price = $stripe->prices->create([
+            'currency' => $currency,
+            'unit_amount' => $invoice_item_amount,
+            'product_data' => [
+                'name' => $item['description']
+            ]
+        ]);
+        // Now create the line item
+        $user->tabPrice($price->id, $item['quantity']);
+    }
+    // Create the invoice now
+    $user->invoice([
+        'description' => 'Invoice for ' . count($items) . ' products',
+        'auto_advance' => false,
+        'collection_method' => 'send_invoice',
+        'days_until_due' => 15,
+        'footer' => 'Bawal utang ngayon, bukas pwede'
+    ]);
 
 <a name="retrieving-invoices"></a>
 ### Retrieving Invoices
