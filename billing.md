@@ -1485,19 +1485,19 @@ There are time that your invoice will contain multiple line items instead of jus
     $items = [
         [
             'description' => '1 Dozen Eggs',
-            'amount' => 100,
+            'unit_amount' => 100,
             'quantity' => 1
         ],
         [
             'description' => '1 Liter Oil',
-            'amount' => 70,
+            'unit_amount' => 70,
             'quantity' => 1
         ],
     ];
     // Prepare the line items
     foreach ($items as $item) {
         // Create the price object
-        $invoice_item_amount = ($item['amount'] * 100); // Stripe needs to do it this way
+        $invoice_item_amount = ($item['unit_amount'] * 100); // Stripe needs to do it this way
         $price = $stripe->prices->create([
             'currency' => $currency,
             'unit_amount' => $invoice_item_amount,
