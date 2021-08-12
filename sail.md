@@ -252,6 +252,9 @@ Finally, you may run your Dusk test suite by starting Sail and running the `dusk
 
     sail dusk
 
+> {tip} If you are using [selenium-chrome-debug](https://github.com/SeleniumHQ/docker-selenium#debugging) to visualize your tests add `DUSK_HEADLESS_DISABLED=true` to your .env to enable the Chrome GUI and [expose port 5900](https://docs.docker.com/compose/compose-file/compose-file-v3/#ports).
+
+
 <a name="previewing-emails"></a>
 ## Previewing Emails
 
