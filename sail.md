@@ -252,6 +252,32 @@ Finally, you may run your Dusk test suite by starting Sail and running the `dusk
 
     sail dusk
 
+
+<a name="laravel-dusk-debug"></a>
+### Visualizing Browser Tests
+
+It can be helpful to watch your tests in a browser while they run. Selenium provide a [debug version](https://github.com/SeleniumHQ/docker-selenium#debugging) of their container which runs a VNC server so you can view the desktop.
+
+To use it change the image in your `selenium` service to `selenium-chrome-debug` and [expose port 5900](https://docs.docker.com/compose/compose-file/compose-file-v3/#ports). Optionally you can specify a desktop resolution.
+
+```yaml
+selenium:
+    image: 'selenium/standalone-chrome-debug'
+    ports:
+        - "5900:5900"
+    environment:
+        SCREEN_HEIGHT: '1080' # Optional
+        SCREEN_WIDTH: '1920' # Optional
+```
+
+> {tip} Don't forget to run `sail up --build`
+
+Before running your tests connect to your container's desktop using a [VNC client](https://www.tightvnc.com/) then, pass the `--browse` flag to dusk temporarally disable headless mode in Dusk.
+
+    sail dusk --browse
+
+> {tip} To disable headless mode permanently add  `DUSK_HEADLESS_DISABLED=true` .to your `.env`.
+
 <a name="previewing-emails"></a>
 ## Previewing Emails
 
