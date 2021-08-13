@@ -98,6 +98,10 @@ Valet allows you to switch PHP versions using the `valet use php@version` comman
 
 > {note} Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
 
+Valet can also get a specified PHP version from a `.valetphprc` file in the root of your project which can be read by using the `valet use` command. You just need to specifiy the PHP version to use in the file:
+
+    php@7.2
+
 <a name="database"></a>
 #### Database
 
