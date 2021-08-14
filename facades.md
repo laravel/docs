@@ -168,6 +168,26 @@ If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that the
 
 Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. This method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
 
+
+It is worth noting that if in your service provider you use `$this->app->singleton` or `$this->app->bind`, when using a Facade, a singleton will always be returned because the `Facade` class keeps it's own record of what has been instantiated.
+
+If this behaviour is undesirable, clearing the resolved instance before the accessor is returned ensures that a new instance of the underlying class is called each time: 
+
+    use Illuminate\Support\Facades\Facade;
+
+    /**
+     * @method static [various methods]
+     */
+    class MyPackage extends Facade
+    {
+        protected static function getFacadeAccessor()
+        {
+            self::clearResolvedInstance(MyPackageUnderlyingClass::class);
+
+            return MyPackageUnderlyingClass::class;
+        }
+    }
+
 <a name="real-time-facades"></a>
 ## Real-Time Facades
 
