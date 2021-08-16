@@ -486,7 +486,7 @@ The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:
 
 The `foreignUuid` method creates a `UUID` equivalent column:
 
-    $table->foreignUuid('id');
+    $table->foreignUuid('user_id');
 
 <a name="column-method-geometryCollection"></a>
 #### `geometryCollection()` {#collection-method}
