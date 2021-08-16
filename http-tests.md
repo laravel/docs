@@ -575,6 +575,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertOk](#assert-ok)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
+[assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
 [assertSee](#assert-see)
 [assertSeeInOrder](#assert-see-in-order)
 [assertSeeText](#assert-see-text)
@@ -864,6 +865,13 @@ Assert that the response contains the given unencrypted cookie:
 Assert that the response is a redirect to the given URI:
 
     $response->assertRedirect($uri);
+
+<a name="assert-redirect-to-signed-route"></a>
+#### assertRedirectToSignedRoute
+
+Assert that the response is a redirect to the given signed route:
+
+    $response->assertRedirectToSignedRoute($name = null, $parameters = []);
 
 <a name="assert-see"></a>
 #### assertSee
