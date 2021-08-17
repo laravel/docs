@@ -399,6 +399,14 @@ When calling the `Mail` facade's assertion methods, the mailable instance accept
                $mail->hasBcc('...');
     });
 
+You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:
+
+    Mail::assertNothingOutgoing();
+
+    Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {
+        return $mail->order->id === $order->id;
+    });
+
 <a name="notification-fake"></a>
 ## Notification Fake
 
