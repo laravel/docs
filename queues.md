@@ -1535,7 +1535,7 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
 ```ini
 [program:laravel-worker]
 process_name=%(program_name)s_%(process_num)02d
-command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3 --max-time=3600
+command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3 --timeout=3600
 autostart=true
 autorestart=true
 stopasgroup=true
