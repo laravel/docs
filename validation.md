@@ -18,6 +18,7 @@
     - [Named Error Bags](#named-error-bags)
     - [Customizing The Error Messages](#manual-customizing-the-error-messages)
     - [After Validation Hook](#after-validation-hook)
+- [Working With Validated Input](#working-with-validated-input)
 - [Working With Error Messages](#working-with-error-messages)
     - [Specifying Custom Messages In Language Files](#specifying-custom-messages-in-language-files)
     - [Specifying Attributes In Language Files](#specifying-attribute-in-language-files)
@@ -295,6 +296,10 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
 
         // Retrieve the validated input data...
         $validated = $request->validated();
+
+        // Retrieve a portion of the validated input data...
+        $validated = $request->safe()->only(['name', 'email']);
+        $validated = $request->safe()->except(['name', 'email']);
     }
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
@@ -463,6 +468,13 @@ If you do not want to use the `validate` method on the request, you may create a
                             ->withInput();
             }
 
+            // Retrieve the validated input...
+            $validated = $validator->validated();
+
+            // Retrieve a portion of the validated input...
+            $validated = $validator->safe()->only(['name', 'email']);
+            $validated = $validator->safe()->except(['name', 'email']);
+
             // Store the blog post...
         }
     }
@@ -561,6 +573,39 @@ You may also attach callbacks to be run after validation is completed. This allo
     if ($validator->fails()) {
         //
     }
+
+<a name="working-with-validated-input"></a>
+## Working With Validated Input
+
+After validating incoming request data using a form request or a manually created validator instance, you may wish to retrieve the incoming request data that actually underwent validation. This can be accomplished in several ways. First, you may call the `validated` method on a form request or validator instance. This method returns an array of the data that was validated:
+
+    $validated = $request->validated();
+
+    $validated = $validator->validated();
+
+Alternatively, you may call the `safe` method on a form request or validator instance. This method returns an instance of `Illuminate\Support\ValidatedInput`. This object exposes `only`, `except`, and `all` methods to retrieve a subset of the validated data or the entire array of validated data:
+
+    $validated = $request->safe()->only(['name', 'email']);
+
+    $validated = $request->safe()->except(['name', 'email']);
+
+    $validated = $request->safe()->all();
+
+In addition, the `Illuminate\Support\ValidatedInput` instance may be iterated over and accessed like an array:
+
+    // Validated data may be iterated...
+    foreach ($request->safe() as $key => $value) {
+        //
+    }
+
+    // Validated data may be accessed as an array...
+    $validated = $request->safe();
+
+    $email = $validated['email'];
+
+If you would like to retrieve the validated data as a [collection](/docs/{{version}}/collections) instance, you may call the `collect` method:
+
+    $collection = $request->safe()->collect();
 
 <a name="working-with-error-messages"></a>
 ## Working With Error Messages
