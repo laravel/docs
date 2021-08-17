@@ -1595,6 +1595,29 @@ When a customer visits this route they will be redirected to Stripe's Checkout p
         ]);
     });
 
+Additionally you may add a template variable to your success url `{CHECKOUT_SESSION_ID}` when you create the Checkout Session. Note that this is a literal string and must be added exactly as you see it here. 
+
+> {note} Do not substitute it with a Checkout Session ID — this template is handled by Stripe directly
+
+    use Illuminate\Http\Request;
+    use Stripe\Checkout\Session;
+    use Stripe\Customer;
+
+    Route::get('/product-checkout', function (Request $request) {
+        return $request->user()->checkout(['price_tshirt' => 1], [
+            'success_url' => route('your-success-route' . '?session_id={CHECKOUT_SESSION_ID}'),
+            'cancel_url' => route('your-cancel-route'),
+        ]);
+    });
+
+    Route::get('/success', function (Request $request) {
+        $session = Session::retrieve($request->get('session_id'));
+        $customer = Customer::retrieve($session->customer);
+
+        return view('checkout.success', ['customerName' => $customer->name]);
+    })->name('your-success-route');
+
+
 <a name="checkout-promotion-codes"></a>
 #### Promotion Codes
 
