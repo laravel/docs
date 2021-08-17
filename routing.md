@@ -388,6 +388,17 @@ Of course, implicit binding is also possible when using controller methods. Agai
         return view('user.profile', ['user' => $user]);
     }
 
+<a name="implicit-soft-deleted-models"></a>
+#### Soft Deleted Models
+
+Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting). However, you may instruct the implicit binding to retrieve these models by chaining the `withTrashed` method onto your route's definition:
+
+    use App\Models\User;
+
+    Route::get('/users/{user}', function (User $user) {
+        return $user->email;
+    })->withTrashed();
+
 <a name="customizing-the-key"></a>
 <a name="customizing-the-default-key-name"></a>
 #### Customizing The Key
