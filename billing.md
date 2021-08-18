@@ -1595,6 +1595,26 @@ When a customer visits this route they will be redirected to Stripe's Checkout p
         ]);
     });
 
+When defining your `success_url` checkout option, you may instruct Stripe to add the checkout session ID as a query string parameter when invoking your URL. To do so, add the literal string `{CHECKOUT_SESSION_ID}` to your `success_url` query string. Stripe will replace this placeholder with the actual checkout session ID:
+
+    use Illuminate\Http\Request;
+    use Stripe\Checkout\Session;
+    use Stripe\Customer;
+
+    Route::get('/product-checkout', function (Request $request) {
+        return $request->user()->checkout(['price_tshirt' => 1], [
+            'success_url' => route('checkout-success'.'?session_id={CHECKOUT_SESSION_ID}'),
+            'cancel_url' => route('checkout-cancel'),
+        ]);
+    });
+
+    Route::get('/checkout-success', function (Request $request) {
+        $session = Session::retrieve($request->get('session_id'));
+        $customer = Customer::retrieve($session->customer);
+
+        return view('checkout.success', ['customerName' => $customer->name]);
+    })->name('checkout-success');
+
 <a name="checkout-promotion-codes"></a>
 #### Promotion Codes
 
