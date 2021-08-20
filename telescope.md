@@ -155,6 +155,15 @@ To keep the assets up-to-date and avoid issues in future updates, you may add th
         }
     }
 
+    // For Local Only Installation
+    {
+        "scripts": {
+            "post-update-cmd": [
+                "[ $COMPOSER_DEV_MODE -eq 0 ] || php artisan telescope:publish --ansi"
+            ]
+        }
+    }
+
 <a name="filtering"></a>
 ## Filtering
 
