@@ -82,7 +82,7 @@ Any additional array elements that do not correspond to the route's definition p
 <a name="eloquent-models"></a>
 #### Eloquent Models
 
-You will often be generating URLs using the primary key of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's primary key:
+You will often be generating URLs using the route key (typically the primary key) of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's route key:
 
     echo route('post.show', ['post' => $post]);
 
