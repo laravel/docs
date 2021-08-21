@@ -1603,7 +1603,7 @@ When defining your `success_url` checkout option, you may instruct Stripe to add
 
     Route::get('/product-checkout', function (Request $request) {
         return $request->user()->checkout(['price_tshirt' => 1], [
-            'success_url' => route('checkout-success'.'?session_id={CHECKOUT_SESSION_ID}'),
+            'success_url' => route('checkout-success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout-cancel'),
         ]);
     });
