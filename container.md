@@ -429,6 +429,28 @@ For example, you may type-hint a repository defined by your application in a con
         }
     }
 
+<a name="method-injection"></a>
+### Method Injection
+
+Sometimes a method requires its own dependencies:
+
+    namespace App\Services;
+    
+    class ExternalIntegration
+    {
+        public function import(Client $client)
+        {
+            //
+        }
+    }
+
+To execute such a method you don't have to resolve a class instance and the dependency yourself. You may use the `call` method and the container will provide the wiring:
+
+    use App\Services\ExternalIntegration;
+    use Illuminate\Support\Facades\App;
+
+    App::call([ExternalIntegration::class, 'import']);
+
 <a name="container-events"></a>
 ## Container Events
 
