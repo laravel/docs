@@ -1285,7 +1285,7 @@ Instead of passing an array of possible polymorphic models, you may provide `*` 
 <a name="counting-related-models"></a>
 ### Counting Related Models
 
-Sometimes you may want to count the number of related models for a given relationship without actually loading the models. To accomplish this, you may use the `withCount` method. The `withCount` method which will place a `{relation}_count` attribute on the resulting models:
+Sometimes you may want to count the number of related models for a given relationship without actually loading the models. To accomplish this, you may use the `withCount` method. The `withCount` method will place a `{relation}_count` attribute on the resulting models:
 
     use App\Models\Post;
 
