@@ -449,7 +449,7 @@ Once you have defined your rate limit, you may attach the rate limiter to your b
 
 Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [`retryUntil` method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
 
-If you don't want the job to be retried, you may use the `dontRelease` method:
+If you do not want a job to be retried when it is rate limited, you may use the `dontRelease` method:
 
     /**
      * Get the middleware the job should pass through.
