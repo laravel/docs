@@ -4,6 +4,7 @@
 - [Installation & Setup](#installation)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Configuring A Bash Alias](#configuring-a-bash-alias)
+    - [Tuning Sail](#tuning-sail)
 - [Starting & Stopping Sail](#starting-and-stopping-sail)
 - [Executing Commands](#executing-sail-commands)
     - [Executing PHP Commands](#executing-php-commands)
@@ -72,6 +73,11 @@ Once the Bash alias has been configured, you may execute Sail commands by simply
 ```bash
 sail up
 ```
+
+<a name="tuning-sail"></a>
+### Tuning Sail
+
+For a speedup when running Artisan or Composer commands in the container, you can define an environment variable called `SAIL_SKIP_CHECKS` set to an non empty value either in your shell or in the .env file which is loaded by Sail.
 
 <a name="starting-and-stopping-sail"></a>
 ## Starting & Stopping Sail
