@@ -457,7 +457,7 @@ Sometimes you may wish to invoke a method on an object instance while allowing t
 
 You may invoke the `generate` method via the container like so:
 
-    use App\UserRepoort;
+    use App\UserReport;
     use Illuminate\Support\Facades\App;
 
     $report = App::call([new UserReport, 'generate']);
