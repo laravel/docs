@@ -185,7 +185,7 @@ If you are redirecting to a route with an "ID" parameter that is being populated
 
     // For a route with the following URI: /profile/{id}
 
-    return redirect()->route('profile', [$user]);
+    return redirect()->route('profile', $user);
 
 If you would like to customize the value that is placed in the route parameter, you can specify the column in the route parameter definition (`/profile/{id:slug}`) or you can override the `getRouteKey` method on your Eloquent model:
 
