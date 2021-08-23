@@ -221,7 +221,7 @@ If your exception extends an exception that is already renderable, such as a bui
      */
     public function render($request)
     {
-    // Determine if the exception needs custom rendering...
+        // Determine if the exception needs custom rendering...
 
         return false;
     }
