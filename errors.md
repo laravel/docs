@@ -211,44 +211,19 @@ Instead of type-checking exceptions in the exception handler's `register` method
         }
     }
 
-If your exception extends a built-in Laravel or Symfony exception you may return `false` from the exception's `render` method to render the default HTTP response.
+If your exception extends an exception that is already renderable, such as a built-in Laravel or Symfony exception, you may return `false` from the exception's `render` method to render the exception's default HTTP response:
 
-    <?php
-
-    namespace App\Exceptions;
-
-    use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-    class InvalidOrderException extends NotFoundHttpException
+    /**
+     * Render the exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request)
     {
-        /**
-         * Report the exception.
-         *
-         * @return bool|null
-         */
-        public function report()
-        {
-            //
-        }
+    // Determine if the exception needs custom rendering...
 
-        /**
-         * Render the exception into an HTTP response.
-         *
-         * @param  \Illuminate\Http\Request  $request
-         * @return \Illuminate\Http\Response
-         */
-        public function render($request)
-        {
-            // If a condition is met, return a custom response
-
-            if ($request->has('condition')) {
-                return response(...)
-            }
-
-            // Otherwise return the default 404 response
-
-            return false;
-        }
+        return false;
     }
 
 If your exception contains custom reporting logic that is only necessary when certain conditions are met, you may need to instruct Laravel to sometimes report the exception using the default exception handling configuration. To accomplish this, you may return `false` from the exception's `report` method:
