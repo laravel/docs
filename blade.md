@@ -913,6 +913,46 @@ If you have used a JavaScript framework such as Vue, you may be familiar with "s
 </x-alert>
 ```
 
+<a name="slot-attributes"></a>
+#### Slot Attributes
+
+Like Blade components, you may assign additional [attributes](#component-attributes) to slots such as CSS class names:
+
+```html
+<x-card class="shadow-sm">
+    <x-slot name="heading" class="font-bold">
+        Heading
+    </x-slot>
+
+    Content
+
+    <x-slot name="footer" class="text-sm">
+        Footer
+    </x-slot>
+</x-card>
+```
+
+To interact with slot attributes, you may access the `attributes` property of the slot's variable. For more information on how to interact with attributes, please consult the documentation on [component attributes](#component-attributes):
+
+```php
+@props([
+    'heading',
+    'footer',
+])
+
+<div {{ $attributes->class(['border']) }}>
+    <h1 {{ $heading->attributes->class(['text-lg']) }}>
+        {{ $heading }}
+    </h1>
+
+    {{ $slot }}
+
+    <footer {{ $footer->attributes->class(['text-gray-700']) }}>
+        {{ $footer }}
+    </footer>
+</div>
+```
+
 <a name="inline-component-views"></a>
 ### Inline Component Views
 
