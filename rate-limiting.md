@@ -5,7 +5,6 @@
 - [Basic Usage](#basic-usage)
     - [Manually Incrementing Attempts](#manually-incrementing-attempts)
     - [Clearing Attempts](#clearing-attempts)
-    - [Seconds until available](#seconds-until-available)
 
 <a name="introduction"></a>
 ## Introduction
@@ -60,9 +59,22 @@ Alternatively, you may use the `remaining` method to retrieve the number of atte
     use Illuminate\Support\Facades\RateLimiter;
     
     if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
-        // Send message...
-        
         RateLimiter::hit('send-message:'.$user->id);
+
+        // Send message...
+    }
+
+<a name="determining-limiter-availability"></a>
+#### Determining Limiter Availability
+
+When a key has no more attempts left, the `availableIn` method returns the number of seconds remaining until more attempts will be available:
+
+    use Illuminate\Support\Facades\RateLimiter;
+
+    if (RateLimiter::tooManyAttemptsLeft('send-message:'.$user->id, $perMinute = 5)) {
+        $seconds = RateLimiter::availableIn('send-message:'.$user->id);
+
+        return 'You may try again in '.$seconds.' seconds.'.
     }
 
 <a name="clearing-attempts"></a>
@@ -86,17 +98,4 @@ You may reset the number of attempts for a given rate limiter key using the `cle
         RateLimiter::clear('send-message:'.$message->user_id);
         
         return $message;
-    }
-
-<a name="seconds-until-available"></a>
-### Seconds until available
-
-When a key has no more attempts left, the `availableIn()` returns the amount of seconds until the rate limiter resets back to zero. This is useful to tell the user how much he has to wait to try again a given key.
-
-    use Illuminate\Support\Facades\RateLimiter;
-    
-    if (RateLimiter::tooManyAttemptsLeft('send-message:'.$user->id, $perMinute = 5)) {
-        $seconds = RateLimiter::availableIn('send-message:'.$user->id);
-        
-        return 'Please wait '.$seconds.' seconds to try again.'.
     }
