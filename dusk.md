@@ -786,6 +786,10 @@ When making a path assertion such as `$browser->assertPathIs('/home')`, the asse
 
     $browser->waitForLocation('/secret');
 
+The `waitForLocation` method can also be used to wait for the current window location to be a fully qualified URL:
+
+    $browser->waitForLocation('https://example.com/path');
+
 You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) location:
 
     $browser->waitForRoute($routeName, $parameters);
