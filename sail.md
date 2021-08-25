@@ -334,7 +334,7 @@ If you would like to choose the subdomain for your shared site, you may provide 
 Since Sail is just Docker, you are free to customize nearly everything about it. To publish Sail's own Dockerfiles, you may execute the `sail:publish` command:
 
 ```bash
-sail artisan sail:publish
+php artisan sail:publish
 ```
 
 After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may rebuild your application's containers using the `build` command:
