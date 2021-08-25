@@ -786,7 +786,7 @@ When making a path assertion such as `$browser->assertPathIs('/home')`, the asse
 
     $browser->waitForLocation('/secret');
 
-The `waitForLocation` method can also be used to wait for a URL:
+The `waitForLocation` method can also be used to wait for the current window location to be a fully qualified URL:
 
     $browser->waitForLocation('https://example.com/path');
 
