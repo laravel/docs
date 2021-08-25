@@ -785,6 +785,10 @@ The `waitForLink` method may be used to wait until the given link text is displa
 When making a path assertion such as `$browser->assertPathIs('/home')`, the assertion can fail if `window.location.pathname` is being updated asynchronously. You may use the `waitForLocation` method to wait for the location to be a given value:
 
     $browser->waitForLocation('/secret');
+    
+`waitForLocation` can also be used to wait for a URL:
+
+    $browser->waitForLocation('https://example.com/path');
 
 You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) location:
 
