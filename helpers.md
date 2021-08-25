@@ -2990,6 +2990,15 @@ If would like to manually calculate the number of milliseconds to sleep in betwe
         return $attempt * 100;
     });
 
+
+To only retry under specific conditions, you may pass a closure as the fourth argument to the `retry` function:
+
+    return retry(5, function () {
+        // ...
+    }, 100, function ($exception) {
+        return $exception instanceof RetryException;
+    });
+    
 <a name="method-session"></a>
 #### `session()` {#collection-method}
 
