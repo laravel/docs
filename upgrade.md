@@ -10,6 +10,7 @@
 - [Queue `retryAfter` Method](#queue-retry-after-method)
 - [Queue `timeoutAt` Property](#queue-timeout-at-property)
 - [Queue `allOnQueue` and `allOnConnection`](#queue-allOnQueue-allOnConnection)
+- [Queue `dispatchNow`](#queue-dispatchNow)
 - [Pagination Defaults](#pagination-defaults)
 - [Seeder & Factory Namespaces](#seeder-factory-namespaces)
 </div>
@@ -272,6 +273,13 @@ For consistency with other dispatching methods, the `allOnQueue()` and `allOnCon
     ])->onConnection('redis')->onQueue('podcasts')->dispatch();
 
 Note that this change only affects code using the `withChain` method. The `allOnQueue()` and `allOnConnection()` are still available when using the global `dispatch()` helper.
+
+<a name="queue-dispatchNow"></a>
+#### The `dispatchNow()`
+
+**Likelihood Of Impact: High**
+
+The `dispatchNow()` method is deprecated and should be renamed to `dispatchSync` method.
 
 <a name="failed-jobs-table-batch-support"></a>
 #### Failed Jobs Table Batch Support
