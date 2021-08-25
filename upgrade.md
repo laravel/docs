@@ -275,11 +275,11 @@ For consistency with other dispatching methods, the `allOnQueue()` and `allOnCon
 Note that this change only affects code using the `withChain` method. The `allOnQueue()` and `allOnConnection()` are still available when using the global `dispatch()` helper.
 
 <a name="queue-dispatchNow"></a>
-#### The `dispatchNow()`
+#### The `dispatchNow()` method
 
 **Likelihood Of Impact: High**
 
-The `dispatchNow()` method is deprecated and should be renamed to `dispatchSync` method.
+The `dispatchNow()` method is deprecated and should be renamed to `dispatchSync()`.
 
 <a name="failed-jobs-table-batch-support"></a>
 #### Failed Jobs Table Batch Support
