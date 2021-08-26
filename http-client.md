@@ -167,9 +167,15 @@ If the given timeout is exceeded, an instance of `Illuminate\Http\Client\Connect
 <a name="retries"></a>
 ### Retries
 
-If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts two arguments: the maximum number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
+If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts the maximum number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
 
     $response = Http::retry(3, 100)->post(...);
+
+If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:
+
+    $response = Http::retry(3, 100, function ($exception) {
+        return $exception instanceof ConnectionException;
+    })->post(...);
 
 If all of the requests fail, an instance of `Illuminate\Http\Client\RequestException` will be thrown.
 
