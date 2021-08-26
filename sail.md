@@ -17,6 +17,9 @@
 - [File Storage](#file-storage)
 - [Running Tests](#running-tests)
     - [Laravel Dusk](#laravel-dusk)
+- [Debugging with Xdebug](#xdebug)
+  - [Xdebug CLI Usage](#xdebug-cli-usage)
+  - [Xdebug Browser Usage](#xdebug-browser-usage)
 - [Previewing Emails](#previewing-emails)
 - [Container CLI](#sail-container-cli)
 - [PHP Versions](#sail-php-versions)
@@ -251,6 +254,52 @@ depends_on:
 Finally, you may run your Dusk test suite by starting Sail and running the `dusk` command:
 
     sail dusk
+
+<a name="xdebug"></a>
+## Debugging with Xdebug
+
+Laravel Sail's Docker configuration includes support for [Xdebug](https://xdebug.org/) (a popular and powerful debugger for php). In order to enable Xdebug, you must configure your application's `.env` file.
+
+[XDEBUG_MODE](https://xdebug.org/docs/step_debug#mode) is set to `off` by default. To enable Xdebug you must set the appropriate mode(s) before starting Sail. For example:
+```nothing
+SAIL_XDEBUG_MODE=develop,debug
+```
+
+[XDEBUG_CONFIG](https://xdebug.org/docs/all_settings#mode) is set to `client_host=host.docker.internal` by default, so it will be properly configured to work on Mac and Windows (WSL2). This means that if you are working on Mac or Windows you do not need to set this variable.
+
+However, `host.docker.internal` is not available on Linux hosts, so Linux users must include this environment variable:
+```nothing
+SAIL_XDEBUG_CONFIG="client_host=<host-ip-address>"
+```
+
+You can get the correct `<host-ip-address>` by running the following command:
+```nothing
+docker inspect -f {{range.NetworkSettings.Networks}}{{.Gateway}}{{end}} <container-name>
+```
+where `<container-name>` is the Docker container that serves your application (often ending in `_laravel.test_1`).
+
+<a name="xdebug-cli-usage"></a>
+### Xdebug CLI Usage
+A `sail debug` command has been added that can be used to start a debugging session when running an artisan command:
+```
+# Without xdebug:
+sail artisan foo:bar
+
+# With xdebug:
+sail debug foo:bar
+
+# Without xdebug:
+sail test
+
+# With xdebug:
+sail debug test
+```
+
+<a name="xdebug-browser-usage"></a>
+### Xdebug Browser Usage
+To debug your application during a web session, follow the [instructions provided by Xdebug](https://xdebug.org/docs/step_debug#activate_debugger) for initiating an Xdebug session from the web browser.
+
+If you're using PhpStorm, see the instructions for [Zero-configuration debugging](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html).
 
 <a name="previewing-emails"></a>
 ## Previewing Emails
