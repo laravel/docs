@@ -1037,7 +1037,7 @@ Passing a closure as the second argument to the `assertViewHas` method will allo
         return $user->name === 'Taylor';
     });
 
-In addition, view data may be accessed as array variables on the response, allowing you to convenient inspect it:
+In addition, view data may be accessed as array variables on the response, allowing you to conveniently inspect it:
 
     $this->assertEquals('Taylor', $response['name']);
 
