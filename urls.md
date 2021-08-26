@@ -53,7 +53,7 @@ Each of these methods may also be accessed via the `URL` [facade](/docs/{{versio
 
 The `route` helper may be used to generate URLs to [named routes](/docs/{{version}}/routing#named-routes). Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your calls to the `route` function. For example, imagine your application contains a route defined like the following:
 
-    Route::get('/post/{post}', function () {
+    Route::get('/post/{post}', function (Post $post) {
         //
     })->name('post.show');
 
@@ -65,7 +65,7 @@ To generate a URL to this route, you may use the `route` helper like so:
 
 Of course, the `route` helper may also be used to generate URLs for routes with multiple parameters:
 
-    Route::get('/post/{post}/comment/{comment}', function () {
+    Route::get('/post/{post}/comment/{comment}', function (Post $post, Comment $comment) {
         //
     })->name('comment.show');
 
