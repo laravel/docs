@@ -1660,9 +1660,9 @@ The `Str::uuid` method generates a UUID (version 4):
     return (string) Str::uuid();
 
 <a name="method-str-word-count"></a>
-### `wordCount`
+#### `Str::wordCount` {#collection-method}
 
-The `wordCount` function returns the number of words that a string contains:
+The `Str::wordCount` method returns the number of words that a string contains:
 
 ```php
 use Illuminate\Support\Str;
@@ -2505,9 +2505,9 @@ The `whenEmpty` method invokes the given closure if the string is empty. If the 
     // 'Laravel'
 
 <a name="method-fluent-str-word-count"></a>
-### `wordCount`
+#### `wordCount` {#collection-method}
 
-The `wordCount` function returns the number of words that a string contains:
+The `wordCount` method returns the number of words that a string contains:
 
 ```php
 use Illuminate\Support\Str;
