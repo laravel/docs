@@ -173,7 +173,7 @@ Laravel's session is typically used to maintain state for the currently authenti
 
 You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:
 
-    $this->actingAs($user, 'api')
+    $this->actingAs($user, 'web')
 
 <a name="debugging-responses"></a>
 ### Debugging Responses
