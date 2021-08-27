@@ -21,6 +21,9 @@
 - [Container CLI](#sail-container-cli)
 - [PHP Versions](#sail-php-versions)
 - [Sharing Your Site](#sharing-your-site)
+- [Debugging With Xdebug](#debugging-with-xdebug)
+  - [Xdebug CLI Usage](#xdebug-cli-usage)
+  - [Xdebug Browser Usage](#xdebug-browser-usage)
 - [Customization](#sail-customization)
 
 <a name="introduction"></a>
@@ -327,6 +330,51 @@ If you would like to choose the subdomain for your shared site, you may provide 
     sail share --subdomain=my-sail-site
 
 > {tip} The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de).
+
+<a name="debugging-with-xdebug"></a>
+## Debugging With Xdebug
+
+Laravel Sail's Docker configuration includes support for [Xdebug](https://xdebug.org/), a popular and powerful debugger for PHP. In order to enable Xdebug, you will need to add a few variables to your application's `.env` file to [configure Xdebug](https://xdebug.org/docs/step_debug#mode). To enable Xdebug you must set the appropriate mode(s) before starting Sail:
+
+```ini
+SAIL_XDEBUG_MODE=develop,debug
+```
+
+#### Linux Host IP Configuration
+
+Internally, the `XDEBUG_CONFIG` environment variable is defined as `client_host=host.docker.internal` so that Xdebug will be properly configured for Mac and Windows (WSL2). If your local machine is running Linux, you will need to manually define this environment variable.
+
+First, you should determine the correct host IP address to add to the environment variable by running the following command. Typically, the `<container-name>` should be the name of the container that serves your application and often ends with `_laravel.test_1`:
+
+```bash
+docker inspect -f {{range.NetworkSettings.Networks}}{{.Gateway}}{{end}} <container-name>
+```
+
+Once you have obtained the correct host IP address, you should define the `SAIL_XDEBUG_CONFIG` variable within your application's `.env` file:
+
+```ini
+SAIL_XDEBUG_CONFIG="client_host=<host-ip-address>"
+```
+
+<a name="xdebug-cli-usage"></a>
+### Xdebug CLI Usage
+
+A `sail debug` command may be used to start a debugging session when running an Artisan command:
+
+```bash
+# Run an Artisan command without Xdebug...
+sail artisan migrate
+
+# Run an Artisan command with Xdebug...
+sail debug migrate
+```
+
+<a name="xdebug-browser-usage"></a>
+### Xdebug Browser Usage
+
+To debug your application while interacting with the application via a web browser, follow the [instructions provided by Xdebug](https://xdebug.org/docs/step_debug#web-application) for initiating an Xdebug session from the web browser.
+
+If you're using PhpStorm, please review JetBrain's documentation regarding [zero-configuration debugging](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html).
 
 <a name="sail-customization"></a>
 ## Customization
