@@ -2982,7 +2982,7 @@ The `retry` function attempts to execute the given callback until the given maxi
         // Attempt 5 times while resting 100ms in between attempts...
     }, 100);
 
-If would like to manually calculate the number of milliseconds to sleep in between attempts, you may pass a closure as the third argument to the `retry` function:
+If you would like to manually calculate the number of milliseconds to sleep in between attempts, you may pass a closure as the third argument to the `retry` function:
 
     return retry(5, function () {
         // ...
