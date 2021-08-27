@@ -246,6 +246,8 @@ Finally, you should ensure your application's session cookie domain configuratio
 
     'domain' => '.domain.com',
 
+You don't need to configure the `domain` option if you are using `localhost` for local development.
+
 <a name="spa-authenticating"></a>
 ### Authenticating
 
