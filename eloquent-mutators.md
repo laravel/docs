@@ -334,6 +334,8 @@ The `encrypted` cast gives the ability to encrypt a model's attribute value stor
 
 As the final length of the ciphertext is not predictable and longer than the plaintext, make sur database column has a proper type that will be long enough to handle encrypted value, and ajust it if necessary (ex: `text` instead of `string`).
 
+Since data is encrypted in database, be aware that you won't be able to query or search those attributes through query builder (as it doesn't cast the values).
+
 > {note} When the value of `APP_KEY` is changed or rotated, you won't be able to decrypt previously encrypted data
 
 > {note} When switching an existing column to an encrypted cast, you won't be able to read attribute anymore for existing data. You'll need to encrypt those values manually.
