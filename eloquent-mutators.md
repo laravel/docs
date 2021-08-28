@@ -332,7 +332,7 @@ The `encrypted` cast gives the ability to encrypt a model's attribute value stor
 
 `encrypted:array`, `encrypted:collection` and `encrypted:object` works respectively as origial casts `array`, `collection` and `object` but the given value is encrypted when stored in database.
 
-As the final length of the ciphertext is not predictable and longer than the plaintext, make sur database column has a proper type that will be long enough to handle encrypted value, and ajust it if necessary (ex: `text` instead of `string`).
+As the final length of the ciphertext is not predictable and longer than the plaintext, make sure database column has a proper type that will be long enough to handle encrypted value, and ajust it if necessary (ex: `text` instead of `string`).
 
 Since data is encrypted in database, be aware that you won't be able to query or search those attributes through query builder (as it doesn't cast the values).
 
