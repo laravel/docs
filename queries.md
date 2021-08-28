@@ -113,13 +113,17 @@ If you would like to retrieve an `Illuminate\Support\Collection` instance contai
         echo $title;
     }
 
- You may specify the column that the resulting collection should use as its keys by providing a second argument to the `pluck` method:
+You may specify the column that the resulting collection should use as its keys by providing a second argument to the `pluck` method:
 
     $titles = DB::table('users')->pluck('title', 'name');
 
     foreach ($titles as $name => $title) {
         echo $title;
     }
+
+In addition, you can also use the `implode` method to directly concatenate the values, needless to use the same method on the collection.
+
+    $names = DB::table('users')->implode('name', ', ');
 
 <a name="chunking-results"></a>
 ### Chunking Results
