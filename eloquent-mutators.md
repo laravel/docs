@@ -8,6 +8,7 @@
     - [Array & JSON Casting](#array-and-json-casting)
     - [Date Casting](#date-casting)
     - [Query Time Casting](#query-time-casting)
+    - [Encrypted Casting](#encrypted-casting)
 - [Custom Casts](#custom-casts)
     - [Value Object Casting](#value-object-casting)
     - [Array / JSON Serialization](#array-json-serialization)
@@ -323,6 +324,19 @@ The `last_posted_at` attribute on the results of this query will be a simple str
     ])->withCasts([
         'last_posted_at' => 'datetime'
     ])->get();
+
+<a name="encrypted-casting"></a>
+### Encrypted Casting
+
+The `encrypted` cast gives the ability to encrypt a model's attribute value stored in database using framework's built-in [encryption](/docs/{{version}}/encryption) feature. When updating or accessing the given model's attribute, it is automatically encrypted and decrypted from the database so you can use the model normally. 
+
+`encrypted:array`, `encrypted:collection` and `encrypted:object` works respectively as origial casts `array`, `collection` and `object` but the given value is encrypted when stored in database.
+
+As the final length of the ciphertext is not predictable and longer than the plaintext, make sur database column has a proper type that will be long enough to handle encrypted value, and ajust it if necessary (ex: `text` instead of `string`).
+
+> {note} When the value of `APP_KEY` is changed or rotated, you won't be able to decrypt previously encrypted data
+
+> {note} When switching an existing column to an encrypted cast, you won't be able to read attribute anymore for existing data. You'll need to encrypt those values manually.
 
 <a name="custom-casts"></a>
 ## Custom Casts
