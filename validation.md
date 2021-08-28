@@ -1509,6 +1509,22 @@ The first argument passed to the `sometimes` method is the name of the field we 
 
 > {tip} The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files under validation.
 
+In some situations you may want to validate a field based on another field in the same nested array whose index you do not know. In the past, this only was possible with a custom validator or by working with foreach. Now you can use the second parameter `$item` in your closure.
+
+    $validator->sometimes('channels.*.contact', 'email', function($input, $item) {
+    return $item->type === 'email';
+    });
+    
+    $validator->sometimes('channels.*.contact', 'url', function($input, $item) {
+    return $item->type !== 'email';
+    });
+
+If the given attribute you want to validate does not end with `.*`, Laravel takes the data from one level above the depth of the last level of the given attribute. In the above example, `$item` contains the data of the current array in `channels`, e.g. `channels.0`. 
+
+In case the given attribute ends with `.*`, Laravel will not go one level up and directly take the data of the given attribute you want to validate. For example, `users.*` will not return the data of `users`, but the current item (e.g. `users.0`).
+
+Similar to the `$input` parameter passed to the closure, the `$item` parameter is an instance of `Illuminate\Support\Fluent` if the attribute data is an array, otherwise it is a string.
+
 <a name="validating-arrays"></a>
 ## Validating Arrays
 
