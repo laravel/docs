@@ -941,12 +941,12 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellation on failed charges and other common Paddle webhooks. However, if you have additional webhook events you would like to handle, you may do so by listening to the Cashier emited events:
+Cashier automatically handles subscription cancellation on failed charges and other common Paddle webhooks. However, if you have additional webhook events you would like to handle, you may do so by listening to the following events that are dispatched by Cashier:
 
     - `Laravel\Cashier\Events\WebhookReceived`
     - `Laravel\Cashier\Events\WebhookHandled`
 
-Both events contain the full payload of the Paddle webhook. We can use these to either act before a webhook is handled or after it's handled. For example, if you wish to handle the `payment_succeeded` webhook, you can create a listener that'll handle this event:
+Both events contain the full payload of the Paddle webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
 
     <?php
 
@@ -957,7 +957,7 @@ Both events contain the full payload of the Paddle webhook. We can use these to 
     class PaddleEventListener
     {
         /**
-         * Handle received Stripe webhooks.
+         * Handle received Paddle webhooks.
          *
          * @param  \Laravel\Cashier\Events\WebhookReceived  $event
          * @return void
@@ -970,7 +970,7 @@ Both events contain the full payload of the Paddle webhook. We can use these to 
         }
     }
 
-Then, hook the event into your `EventServiceProvider`:
+Once your listener has been defined, you may register it within your application's `EventServiceProvider`:
 
     <?php
 
@@ -988,8 +988,6 @@ Then, hook the event into your `EventServiceProvider`:
             ],
         ];
     }
-
-Now any Paddle webhook that's sent to your app can be listened to and you'll have a convenient place to handle them.
 
 Cashier also emit events dedicated to the type of the received webhook. In addition to the full payload from Paddle, they also contain the relevant models that were used to process the webhook such as the billable model, the subscription, or the receipt:
 

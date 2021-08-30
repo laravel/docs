@@ -1358,12 +1358,12 @@ Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellations for failed charges and other common Stripe webhook events. However, if you have additional webhook events you would like to handle, you may do so by listening to the Cashier emited events:
+Cashier automatically handles subscription cancellations for failed charges and other common Stripe webhook events. However, if you have additional webhook events you would like to handle, you may do so by listening to the following events that are dispatched by Cashier:
 
     - `Laravel\Cashier\Events\WebhookReceived`
     - `Laravel\Cashier\Events\WebhookHandled`
 
-Both events contain the full payload of the Stripe webhook. We can use these to either act before a webhook is handled or after it's handled. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you can create a listener that'll handle this event:
+Both events contain the full payload of the Stripe webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
 
     <?php
 
@@ -1387,7 +1387,7 @@ Both events contain the full payload of the Stripe webhook. We can use these to 
         }
     }
 
-Then, hook the event into your `EventServiceProvider`:
+Once your listener has been defined, you may register it within your application's `EventServiceProvider`:
 
     <?php
 
@@ -1405,8 +1405,6 @@ Then, hook the event into your `EventServiceProvider`:
             ],
         ];
     }
-
-Now any Stripe webhook that's sent to your app can be listened to and you'll have a convenient place to handle them.
 
 <a name="verifying-webhook-signatures"></a>
 ### Verifying Webhook Signatures
