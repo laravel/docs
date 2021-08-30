@@ -99,6 +99,10 @@ Alternatively, you may send notifications via the `Notification` [facade](/docs/
 
     Notification::send($users, new InvoicePaid($invoice));
 
+You can also send notifications immediately using the `sendNow` method. This method will send the notification immediately even if the notification implements the `ShouldQueue` interface:
+
+    Notification::sendNow($developers, new DeploymentCompleted($deployment));
+
 <a name="specifying-delivery-channels"></a>
 ### Specifying Delivery Channels
 
