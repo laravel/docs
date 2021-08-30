@@ -941,37 +941,55 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellation on failed charges and other common Paddle webhooks, but if you have additional webhook events you would like to handle, you should extend Cashier's `WebhookController`.
+Cashier automatically handles subscription cancellation on failed charges and other common Paddle webhooks. However, if you have additional webhook events you would like to handle, you may do so by listening to the Cashier emited events:
 
-Your controller's method names should correspond to Cashier's controller method conventions. Specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `payment_succeeded` webhook, you should add a `handlePaymentSucceeded` method to the controller:
+    - `Laravel\Cashier\Events\WebhookReceived`
+    - `Laravel\Cashier\Events\WebhookHandled`
+
+Both events contain the full payload of the Paddle webhook. We can use these to either act before a webhook is handled or after it's handled. For example, if you wish to handle the `payment_succeeded` webhook, you can create a listener that'll handle this event:
 
     <?php
 
-    namespace App\Http\Controllers;
+    namespace App\Listeners;
 
-    use Laravel\Paddle\Http\Controllers\WebhookController as CashierController;
+    use Laravel\Cashier\Events\WebhookReceived;
 
-    class WebhookController extends CashierController
+    class PaddleEventListener
     {
         /**
-         * Handle the payment succeeded webhook.
+         * Handle received Stripe webhooks.
          *
-         * @param  array  $payload
+         * @param  \Laravel\Cashier\Events\WebhookReceived  $event
          * @return void
          */
-        public function handlePaymentSucceeded($payload)
+        public function handle(WebhookReceived $event)
         {
-            // Handle the event...
+            if ($event->payload['alert_name'] === 'payment_succeeded') {
+                // Handle the incoming event...
+            }
         }
     }
 
-Next, define a route to your Cashier webhook controller within your application's `routes/web.php` file. This will overwrite the default route registered by Cashier's service provider:
+Then, hook the event into your `EventServiceProvider`:
 
-    use App\Http\Controllers\WebhookController;
+    <?php
 
-    Route::post('/paddle/webhook', WebhookController::class)->name('cashier.webhook');
+    namespace App\Providers;
 
-Cashier emits a `Laravel\Paddle\Events\WebhookReceived` event when a webhook is received and a `Laravel\Paddle\Events\WebhookHandled` event when a webhook was handled. Both events contain the full payload of the Paddle webhook.
+    use App\Listeners\PaddleEventListener;
+    use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+    use Laravel\Cashier\Events\WebhookReceived;
+
+    class EventServiceProvider extends ServiceProvider
+    {
+        protected $listen = [
+            WebhookReceived::class => [
+                PaddleEventListener::class,
+            ],
+        ];
+    }
+
+Now any Paddle webhook that's sent to your app can be listened to and you'll have a convenient place to handle them.
 
 Cashier also emit events dedicated to the type of the received webhook. In addition to the full payload from Paddle, they also contain the relevant models that were used to process the webhook such as the billable model, the subscription, or the receipt:
 
