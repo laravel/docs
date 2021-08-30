@@ -734,6 +734,14 @@ As you might expect, the `groupBy` and `having` methods may be used to group the
                     ->having('account_id', '>', 100)
                     ->get();
 
+You can use the `havingBetween` method to filter the results within a given range:
+
+    $report = DB::table('orders')
+                    ->selectRaw('count(id) as number_of_orders, customer_id')
+                    ->groupBy('customer_id')
+                    ->havingBetween('number_of_orders', [5, 15])
+                    ->get();
+
 You may pass multiple arguments to the `groupBy` method to group by multiple columns:
 
     $users = DB::table('users')
