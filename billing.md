@@ -1358,40 +1358,53 @@ Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellations for failed charges and other common Stripe webhook events. However, if you have additional webhook events you would like to handle, you may do so by extending the Cashier webhook controller.
+Cashier automatically handles subscription cancellations for failed charges and other common Stripe webhook events. However, if you have additional webhook events you would like to handle, you may do so by listening to the following events that are dispatched by Cashier:
 
-Your controller's method names should correspond to Cashier's controller conventions. Specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you should add a `handleInvoicePaymentSucceeded` method to the controller:
+    - `Laravel\Cashier\Events\WebhookReceived`
+    - `Laravel\Cashier\Events\WebhookHandled`
+
+Both events contain the full payload of the Stripe webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
 
     <?php
 
-    namespace App\Http\Controllers;
+    namespace App\Listeners;
 
-    use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
+    use Laravel\Cashier\Events\WebhookReceived;
 
-    class WebhookController extends CashierController
+    class StripeEventListener
     {
         /**
-         * Handle invoice payment succeeded.
+         * Handle received Stripe webhooks.
          *
-         * @param  array  $payload
-         * @return \Symfony\Component\HttpFoundation\Response
+         * @param  \Laravel\Cashier\Events\WebhookReceived  $event
+         * @return void
          */
-        public function handleInvoicePaymentSucceeded($payload)
+        public function handle(WebhookReceived $event)
         {
-            // Handle the incoming event...
+            if ($event->payload['type'] === 'invoice.payment_succeeded') {
+                // Handle the incoming event...
+            }
         }
     }
 
-Next, define a route to your Cashier webhook controller within your application's `routes/web.php` file. This will overwrite the default route registered by Cashier's service provider:
+Once your listener has been defined, you may register it within your application's `EventServiceProvider`:
 
-    use App\Http\Controllers\WebhookController;
+    <?php
 
-    Route::post(
-        '/stripe/webhook',
-        [WebhookController::class, 'handleWebhook']
-    )->name('cashier.webhook');
+    namespace App\Providers;
 
-> {tip} Cashier emits a `Laravel\Cashier\Events\WebhookReceived` event when a webhook is received and a `Laravel\Cashier\Events\WebhookHandled` event when a webhook was handled by Cashier. Both events contain the full payload of the Stripe webhook.
+    use App\Listeners\StripeEventListener;
+    use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+    use Laravel\Cashier\Events\WebhookReceived;
+
+    class EventServiceProvider extends ServiceProvider
+    {
+        protected $listen = [
+            WebhookReceived::class => [
+                StripeEventListener::class,
+            ],
+        ];
+    }
 
 <a name="verifying-webhook-signatures"></a>
 ### Verifying Webhook Signatures
