@@ -1509,6 +1509,34 @@ The first argument passed to the `sometimes` method is the name of the field we 
 
 > {tip} The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files under validation.
 
+<a name="complex-conditional-array-validation"></a>
+#### Complex Conditional Array Validation
+
+Sometimes you may want to validate a field based on another field in the same nested array whose index you do not know. In these situations, you may allow your closure to receive a second argument which will be the current individual item in the array being validated:
+
+    $input = [
+        'channels' => [
+            [
+                'type' => 'email',
+                'address' => 'abigail@example.com',
+            ],
+            [
+                'type' => 'url',
+                'address' => 'https://example.com',
+            ],
+        ],
+    ];
+
+    $validator->sometimes('channels.*.address', 'email', function($input, $item) {
+        return $item->type === 'email';
+    });
+    
+    $validator->sometimes('channels.*.address', 'url', function($input, $item) {
+        return $item->type !== 'email';
+    });
+
+Like the `$input` parameter passed to the closure, the `$item` parameter is an instance of `Illuminate\Support\Fluent` when the attribute data is an array; otherwise, it is a string.
+
 <a name="validating-arrays"></a>
 ## Validating Arrays
 
