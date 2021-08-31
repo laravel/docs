@@ -1691,6 +1691,8 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 
     php artisan make:rule Uppercase
 
+    php artisan make:rule Uppercase --implicit
+
 Once the rule has been created, we are ready to define its behavior. A rule object contains two methods: `passes` and `message`. The `passes` method receives the attribute value and name, and should return `true` or `false` depending on whether the attribute value is valid or not. The `message` method should return the validation error message that should be used when validation fails:
 
     <?php
