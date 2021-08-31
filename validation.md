@@ -1691,8 +1691,6 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 
     php artisan make:rule Uppercase
 
-    php artisan make:rule Uppercase --implicit
-
 Once the rule has been created, we are ready to define its behavior. A rule object contains two methods: `passes` and `message`. The `passes` method receives the attribute value and name, and should return `true` or `false` depending on whether the attribute value is valid or not. The `message` method should return the validation error message that should be used when validation fails:
 
     <?php
@@ -1779,5 +1777,9 @@ By default, when an attribute being validated is not present or contains an empt
     Validator::make($input, $rules)->passes(); // true
 
 For a custom rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create an "implicit" rule, implement the `Illuminate\Contracts\Validation\ImplicitRule` interface. This interface serves as a "marker interface" for the validator; therefore, it does not contain any additional methods you need to implement beyond the methods required by the typical `Rule` interface.
+
+To generate a new implicit rule object, you may use the `make:rule` Artisan command with the `--implicit` option :
+
+     php artisan make:rule Uppercase --implicit
 
 > {note} An "implicit" rule only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
