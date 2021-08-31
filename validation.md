@@ -1420,6 +1420,10 @@ Instead of passing the model key's value to the `ignore` method, you may also pa
 
     Rule::unique('users')->ignore($user)
 
+If you use this inside of [Form Request class](#form-request-validation), you may access the Controller's variables with adding `$this->`:
+
+    Rule::unique('users')->ignore($this->user)
+
 If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:
 
     Rule::unique('users')->ignore($user->id, 'user_id')
