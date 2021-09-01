@@ -7,8 +7,8 @@
 - [Attribute Casting](#attribute-casting)
     - [Array & JSON Casting](#array-and-json-casting)
     - [Date Casting](#date-casting)
-    - [Query Time Casting](#query-time-casting)
     - [Encrypted Casting](#encrypted-casting)
+    - [Query Time Casting](#query-time-casting)
 - [Custom Casts](#custom-casts)
     - [Value Object Casting](#value-object-casting)
     - [Array / JSON Serialization](#array-json-serialization)
@@ -301,6 +301,13 @@ By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-86
 
 If a custom format is applied to the `date` or `datetime` cast, such as `datetime:Y-m-d H:i:s`, the inner timezone of the Carbon instance will be used during date serialization. Typically, this will be the timezone specified in your application's `timezone` configuration option.
 
+<a name="encrypted-casting"></a>
+### Encrypted Casting
+
+The `encrypted` cast will encrypt a model's attribute value using Laravel's built-in [encryption](/docs/{{version}}/encryption) features. In addition, the `encrypted:array`, `encrypted:collection`, and `encrypted:object` casts work like their unencrypted counterparts; however, as you might expect, the underlying value is encrypted when stored in your database.
+
+As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values.
+
 <a name="query-time-casting"></a>
 ### Query Time Casting
 
@@ -324,21 +331,6 @@ The `last_posted_at` attribute on the results of this query will be a simple str
     ])->withCasts([
         'last_posted_at' => 'datetime'
     ])->get();
-
-<a name="encrypted-casting"></a>
-### Encrypted Casting
-
-The `encrypted` cast gives the ability to encrypt a model's attribute value stored in database using framework's built-in [encryption](/docs/{{version}}/encryption) feature. When updating or accessing the given model's attribute, it is automatically encrypted and decrypted from the database so you can use the model normally. 
-
-`encrypted:array`, `encrypted:collection` and `encrypted:object` works respectively as origial casts `array`, `collection` and `object` but the given value is encrypted when stored in database.
-
-As the final length of the ciphertext is not predictable and longer than the plaintext, make sure database column has a proper type that will be long enough to handle encrypted value, and ajust it if necessary (ex: `text` instead of `string`).
-
-Since data is encrypted in database, be aware that you won't be able to query or search those attributes through query builder (as it doesn't cast the values).
-
-> {note} When the value of `APP_KEY` is changed or rotated, you won't be able to decrypt previously encrypted data
-
-> {note} When switching an existing column to an encrypted cast, you won't be able to read attribute anymore for existing data. You'll need to encrypt those values manually.
 
 <a name="custom-casts"></a>
 ## Custom Casts
