@@ -413,7 +413,7 @@ You may specify multiple types using the `|` character, or passing an array of t
              ->whereType('id', ['string', 'integer'])
     );
 
-The `whereType` and `whereTypeAll` methods recognize the following types: `string`, `integer`, `double`, `boolean`, `array`, and `null`.
+The `whereType` and `whereAllType` methods recognize the following types: `string`, `integer`, `double`, `boolean`, `array`, and `null`.
 
 <a name="testing-file-uploads"></a>
 ## Testing File Uploads
