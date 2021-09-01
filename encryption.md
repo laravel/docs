@@ -14,8 +14,6 @@ Laravel's encryption services provide a simple, convenient interface for encrypt
 
 Before using Laravel's encrypter, you must set the `key` configuration option in your `config/app.php` configuration file. This configuration value is driven by the `APP_KEY` environment variable. You should use the `php artisan key:generate` command to generate this variable's value since the `key:generate` command will use PHP's secure random bytes generator to build a cryptographically secure key for your application. Typically, the value of the `APP_KEY` environment variable will be generated for you during [Laravel's installation](/docs/{{version}}/installation).
 
-> {note} When the value of `APP_KEY` is changed or rotated, you won't be able to decrypt previously encrypted data
-
 <a name="using-the-encrypter"></a>
 ## Using The Encrypter
 
