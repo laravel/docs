@@ -186,6 +186,8 @@ In addition to the conditional directives already discussed, the `@isset` and `@
         // $records is "empty"...
     @endempty
 
+> {tip} If needed, the `@else` directive can be combined with `@isset` or `@empty`.
+
 <a name="authentication-directives"></a>
 #### Authentication Directives
 
@@ -208,6 +210,8 @@ If needed, you may specify the authentication guard that should be checked when 
     @guest('admin')
         // The user is not authenticated...
     @endguest
+
+> {tip} If needed, the `@else` directive can be combined with `@auth` or `@guest`.
 
 <a name="environment-directives"></a>
 #### Environment Directives
