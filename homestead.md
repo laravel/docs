@@ -67,10 +67,10 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - PHP 7.0
 - PHP 5.6
 - Nginx
-- MySQL (8.0)
+- MySQL 8.0
 - lmm
 - Sqlite3
-- PostgreSQL (9.6, 10, 11, 12, 13)
+- PostgreSQL 13
 - Composer
 - Node (With Yarn, Bower, Grunt, and Gulp)
 - Redis
@@ -255,7 +255,7 @@ Homestead starts several services by default; however, you may customize which s
 ```yaml
 services:
     - enabled:
-        - "postgresql@12-main"
+        - "postgresql"
     - disabled:
         - "mysql"
 ```
