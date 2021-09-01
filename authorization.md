@@ -643,7 +643,7 @@ When writing Blade templates, you may wish to display a portion of the page only
 @cannot('update', $post)
     <!-- The current user cannot update the post... -->
 @elsecannot('create', App\Models\Post::class)
-    <!-- The current user can now create new posts... -->
+    <!-- The current user cannot create new posts... -->
 @endcannot
 ```
 
