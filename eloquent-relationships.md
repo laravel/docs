@@ -21,6 +21,7 @@
 - [Dynamic Relationships](#dynamic-relationships)
 - [Querying Relations](#querying-relations)
     - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
+    - [Querying Relationship](#querying-relationship)
     - [Querying Relationship Existence](#querying-relationship-existence)
     - [Querying Relationship Absence](#querying-relationship-absence)
     - [Querying Morph To Relationships](#querying-morph-to-relationships)
@@ -1164,6 +1165,23 @@ If you do not need to add additional constraints to an Eloquent relationship que
     }
 
 Dynamic relationship properties perform "lazy loading", meaning they will only load their relationship data when you actually access them. Because of this, developers often use [eager loading](#eager-loading) to pre-load relationships they know will be accessed after loading the model. Eager loading provides a significant reduction in SQL queries that must be executed to load a model's relations.
+
+<a name="querying-relationships"></a>
+### Querying Relationship
+
+The easiest way to query a relationship is using `whereRelation`, or `whereMorphRelation` for polymorphic relationships. This adds simple constraints to the query executed on the relation. For example, we can query all posts that contain unapproved comments.
+
+    use App\Models\Post;
+    
+    // Retrieve all posts that contains unapproved comments.
+    $posts = Post::whereRelation('comments', 'is_approved', false)->get();
+
+Since it's a shorthand for using a simple [`where` clause](/docs/{{version}}/queries#basic-where-clauses) over the relation query, you may also specify an operator.
+
+    use App\Models\Posts;
+    
+    // Retrieve all post with comment activity under the last hour.
+    $posts = Post::whereRelation('comments', 'created_at', '>=', now()->subHour())->get();
 
 <a name="querying-relationship-existence"></a>
 ### Querying Relationship Existence
