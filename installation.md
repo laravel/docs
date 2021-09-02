@@ -162,6 +162,8 @@ If your computer already has PHP and Composer installed, you may create a new La
     cd example-app
 
     php artisan serve
+    
+ > {tip} After installing Laravel via Composer, you should edit the `name` property in your `composer.json` file in order to prevent conflicts with the `laravel/laravel` package (example: `"name": "myauthorname/myprojectname",`).
 
 <a name="the-laravel-installer"></a>
 #### The Laravel Installer
