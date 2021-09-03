@@ -776,7 +776,7 @@ Sometimes you may want certain query clauses to apply to a query based on anothe
     $role = $request->input('role');
 
     $users = DB::table('users')
-                    ->when($role, function ($query, $role) {
+                    ->when($role, function ($query) use ($role) {
                         return $query->where('role_id', $role);
                     })
                     ->get();
@@ -788,7 +788,7 @@ You may pass another closure as the third argument to the `when` method. This cl
     $sortByVotes = $request->input('sort_by_votes');
 
     $users = DB::table('users')
-                    ->when($sortByVotes, function ($query, $sortByVotes) {
+                    ->when($sortByVotes, function ($query) {
                         return $query->orderBy('votes');
                     }, function ($query) {
                         return $query->orderBy('name');
