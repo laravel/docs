@@ -751,6 +751,7 @@ Below is a list of all available validation rules and their function:
 [Distinct](#rule-distinct)
 [Email](#rule-email)
 [Ends With](#rule-ends-with)
+[Exclude](#rule-exclude)
 [Exclude If](#rule-exclude-if)
 [Exclude Unless](#rule-exclude-unless)
 [Exists (Database)](#rule-exists)
@@ -1024,6 +1025,11 @@ The `filter` validator, which uses PHP's `filter_var` function, ships with Larav
 #### ends_with:_foo_,_bar_,...
 
 The field under validation must end with one of the given values.
+
+<a name="rule-exclude"></a>
+#### exclude
+
+The field under validation will be excluded from the request data returned by the `validate` and `validated` methods.
 
 <a name="rule-exclude-if"></a>
 #### exclude_if:_anotherfield_,_value_
