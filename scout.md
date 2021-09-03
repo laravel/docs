@@ -71,6 +71,8 @@ When using the Algolia driver, you should configure your Algolia `id` and `secre
 <a name="meilisearch"></a>
 #### MeiliSearch
 
+[MeiliSearch](https://www.meilisearch.com) is a blazingly fast and open source search engine. If you aren't sure how to install MeiliSearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
+
 When using the MeiliSearch driver you will need to install the MeiliSearch PHP SDK via the Composer package manager:
 
     composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
@@ -85,7 +87,7 @@ For more information regarding MeiliSearch, please consult the [MeiliSearch docu
 
 In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch). 
 
-> {tip} If you aren't sure how to install MeiliSearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
+> {note} When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
 
 <a name="queueing"></a>
 ### Queueing
@@ -95,11 +97,6 @@ While not strictly required to use Scout, you should strongly consider configuri
 Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
 
     'queue' => true,
-    
-<a name="upgrading-scout"></a>
-## Upgrading Scout
-
-When upgrading the Scout and you're using the Meilisearch driver you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) when also upgrading your Meilisearch binary.
 
 <a name="configuration"></a>
 ## Configuration
