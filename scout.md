@@ -4,7 +4,6 @@
 - [Installation](#installation)
     - [Driver Prerequisites](#driver-prerequisites)
     - [Queueing](#queueing)
-- [Upgrading Scout](#upgrading-scout)
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
