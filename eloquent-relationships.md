@@ -1201,6 +1201,21 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 
 > {note} Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database.
 
+<a name="inline-relationship-existence-queries"></a>
+#### Inline Relationship Existence Queries
+
+If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation` and `whereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:
+
+    use App\Models\Post;
+
+    $posts = Post::whereRelation('comments', 'is_approved', false)->get();
+
+Of course, like calls to the query builder's `where` method, you may also specify an operator:
+
+    $posts = Post::whereRelation(
+        'comments', 'created_at', '>=', now()->subHour()
+    )->get();
+
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
 
