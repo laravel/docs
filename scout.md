@@ -4,6 +4,7 @@
 - [Installation](#installation)
     - [Driver Prerequisites](#driver-prerequisites)
     - [Queueing](#queueing)
+- [Upgrading Scout](#upgrading-scout)
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
@@ -92,6 +93,11 @@ While not strictly required to use Scout, you should strongly consider configuri
 Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
 
     'queue' => true,
+    
+<a name="upgrading-scout"></a>
+## Upgrading Scout
+
+When upgrading the Scout and you're using the Meilisearch driver you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) when also upgrading your Meilisearch binary.
 
 <a name="configuration"></a>
 ## Configuration
