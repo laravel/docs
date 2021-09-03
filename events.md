@@ -623,7 +623,7 @@ If your event listener methods are defined within the subscriber itself, you may
          * Register the listeners for the subscriber.
          *
          * @param  \Illuminate\Events\Dispatcher  $events
-         * @return void
+         * @return array
          */
         public function subscribe($events)
         {
