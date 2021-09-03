@@ -4,6 +4,7 @@
 - [Installation](#installation)
     - [Driver Prerequisites](#driver-prerequisites)
     - [Queueing](#queueing)
+- [Upgrading Scout](#upgrading-scout)
 - [Configuration](#configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
@@ -70,6 +71,8 @@ When using the Algolia driver, you should configure your Algolia `id` and `secre
 <a name="meilisearch"></a>
 #### MeiliSearch
 
+[MeiliSearch](https://www.meilisearch.com) is a blazingly fast and open source search engine. If you aren't sure how to install MeiliSearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
+
 When using the MeiliSearch driver you will need to install the MeiliSearch PHP SDK via the Composer package manager:
 
     composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
@@ -80,9 +83,11 @@ Then, set the `SCOUT_DRIVER` environment variable as well as your MeiliSearch `h
     MEILISEARCH_HOST=http://127.0.0.1:7700
     MEILISEARCH_KEY=masterKey
 
-For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
+For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html). 
 
-> {tip} If you aren't sure how to install MeiliSearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
+In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch). 
+
+> {note} When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
 
 <a name="queueing"></a>
 ### Queueing
