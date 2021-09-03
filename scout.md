@@ -81,7 +81,9 @@ Then, set the `SCOUT_DRIVER` environment variable as well as your MeiliSearch `h
     MEILISEARCH_HOST=http://127.0.0.1:7700
     MEILISEARCH_KEY=masterKey
 
-For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html). Make sure you install a version of `meilisearch/meilisearch-php` that is compatible with your meilisearch binary version. You can check compatibility [here](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch). 
+For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html). 
+
+In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch). 
 
 > {tip} If you aren't sure how to install MeiliSearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
 
