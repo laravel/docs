@@ -13,6 +13,7 @@
     - [Authorizing Form Requests](#authorizing-form-requests)
     - [Customizing The Error Messages](#customizing-the-error-messages)
     - [Preparing Input For Validation](#preparing-input-for-validation)
+    - [Customizing Automatic Redirects](#customizing-automatic-redirects)
 - [Manually Creating Validators](#manually-creating-validators)
     - [Automatic Redirection](#automatic-redirection)
     - [Named Error Bags](#named-error-bags)
@@ -433,6 +434,18 @@ If you need to prepare or sanitize any data from the request before you apply yo
             'slug' => Str::slug($this->slug),
         ]);
     }
+
+<a name="customizing-automatic-redirects"></a>
+### Customizing Automatic Redirects
+
+By default, a Form Request will redirect back to the previous page in case of validation failure. If you need to change this behavior, you can specify an URI on attribute `$redirect`, a route on `$redirectRoute` or a controller action on `$redirectAction`.
+
+    /**
+     * The route to redirect to if validation fails.
+     *
+     * @var string
+     */
+    protected $redirectRoute = 'post.index';
 
 <a name="manually-creating-validators"></a>
 ## Manually Creating Validators
