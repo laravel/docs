@@ -337,6 +337,27 @@ By adding a `stopOnFirstFailure` property to your request class, you may inform 
      */
     protected $stopOnFirstFailure = true;
 
+<a name="customizing-the-redirect-location"></a>
+#### Customizing The Redirect Location
+
+As previously discussed, a redirect response will be generated to send the user back to their previous location when form request validation fails. However, you are free to customize this behavior. To do so, define a `$redirect` property on your form request:
+
+    /**
+     * The URI that users should be redirected to if validation fails.
+     *
+     * @var string
+     */
+    protected $redirect = '/dashboard';
+
+Or, if you would like to redirect users to a named route, you may define a `$redirectRoute` property instead:
+
+    /**
+     * The route that users should be redirected to if validation fails.
+     *
+     * @var string
+     */
+    protected $redirectRoute = 'dashboard';
+
 <a name="authorizing-form-requests"></a>
 ### Authorizing Form Requests
 
