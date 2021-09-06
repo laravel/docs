@@ -146,8 +146,8 @@ You may install the application's dependencies by navigating to the application'
 ```nothing
 docker run --rm \
     -u "$(id -u):$(id -g)" \
-    -v $(pwd):/opt \
-    -w /opt \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
     laravelsail/php80-composer:latest \
     composer install --ignore-platform-reqs
 ```
