@@ -739,15 +739,13 @@ You may also wait until the element matching the given selector is missing from 
     // Wait a maximum of one second until the selector is missing...
     $browser->waitUntilMissing('.selector', 1);
 
-You may also wait until the element matching the given selector is enabled:
+Or, you may wait until the element matching the given selector is enabled or disabled:
 
     // Wait a maximum of five seconds until the selector is enabled...
     $browser->waitUntilEnabled('.selector');
 
     // Wait a maximum of one second until the selector is enabled...
     $browser->waitUntilEnabled('.selector', 1);
-
-You may also wait until the element matching the given selector is disabled:
 
     // Wait a maximum of five seconds until the selector is disabled...
     $browser->waitUntilDisabled('.selector');
