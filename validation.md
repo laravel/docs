@@ -624,6 +624,10 @@ In addition, the `Illuminate\Support\ValidatedInput` instance may be iterated ov
 
     $email = $validated['email'];
 
+If you would like to add additional fields to the validated data, you may call the `merge` method:
+
+    $validated = $request->safe()->merge(['name' => 'Taylor Otwell']);
+
 If you would like to retrieve the validated data as a [collection](/docs/{{version}}/collections) instance, you may call the `collect` method:
 
     $collection = $request->safe()->collect();
