@@ -943,8 +943,8 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 
 Cashier automatically handles subscription cancellation on failed charges and other common Paddle webhooks. However, if you have additional webhook events you would like to handle, you may do so by listening to the following events that are dispatched by Cashier:
 
-    - `Laravel\Cashier\Events\WebhookReceived`
-    - `Laravel\Cashier\Events\WebhookHandled`
+- `Laravel\Paddle\Events\WebhookReceived`
+- `Laravel\Paddle\Events\WebhookHandled`
 
 Both events contain the full payload of the Paddle webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
 
@@ -952,14 +952,14 @@ Both events contain the full payload of the Paddle webhook. For example, if you 
 
     namespace App\Listeners;
 
-    use Laravel\Cashier\Events\WebhookReceived;
+    use Laravel\Paddle\Events\WebhookReceived;
 
     class PaddleEventListener
     {
         /**
          * Handle received Paddle webhooks.
          *
-         * @param  \Laravel\Cashier\Events\WebhookReceived  $event
+         * @param  \Laravel\Paddle\Events\WebhookReceived  $event
          * @return void
          */
         public function handle(WebhookReceived $event)
@@ -978,7 +978,7 @@ Once your listener has been defined, you may register it within your application
 
     use App\Listeners\PaddleEventListener;
     use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-    use Laravel\Cashier\Events\WebhookReceived;
+    use Laravel\Paddle\Events\WebhookReceived;
 
     class EventServiceProvider extends ServiceProvider
     {
