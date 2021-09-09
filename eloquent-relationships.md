@@ -1046,12 +1046,12 @@ For example, instead of using the model names as the "type", we may use simple s
 
     use Illuminate\Database\Eloquent\Relations\Relation;
 
-    Relation::morphMap([
+    Relation::enforceMorphMap([
         'post' => 'App\Models\Post',
         'video' => 'App\Models\Video',
     ]);
 
-You may register the `morphMap` in the `boot` function of your `App\Providers\AppServiceProvider` class or create a separate service provider if you wish.
+You may call the `enforceMorphMap` method in the `boot` method of your `App\Providers\AppServiceProvider` class or create a separate service provider if you wish.
 
 You may determine the morph alias of a given model at runtime using the model's `getMorphClass` method. Conversely, you may determine the fully-qualified class name associated with a morph alias using the `Relation::getMorphedModel` method:
 
