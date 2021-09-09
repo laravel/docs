@@ -1362,8 +1362,8 @@ Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 
 Cashier automatically handles subscription cancellations for failed charges and other common Stripe webhook events. However, if you have additional webhook events you would like to handle, you may do so by listening to the following events that are dispatched by Cashier:
 
-    - `Laravel\Cashier\Events\WebhookReceived`
-    - `Laravel\Cashier\Events\WebhookHandled`
+- `Laravel\Cashier\Events\WebhookReceived`
+- `Laravel\Cashier\Events\WebhookHandled`
 
 Both events contain the full payload of the Stripe webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
 
