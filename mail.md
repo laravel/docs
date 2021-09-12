@@ -101,7 +101,7 @@ Next, set the `default` option in your `config/mail.php` configuration file to `
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-To utilize AWS temporary credentials together via a session token, you may add a `token` key to your application's SES configuration:
+To utilize AWS [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) via a session token, you may add a `token` key to your application's SES configuration:
 
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
