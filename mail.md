@@ -101,6 +101,15 @@ Next, set the `default` option in your `config/mail.php` configuration file to `
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+To utilize AWS [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) via a session token, you may add a `token` key to your application's SES configuration:
+
+    'ses' => [
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+        'token' => env('AWS_SESSION_TOKEN'),
+    ],
+
 If you would like to define [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-email-2010-12-01.html#sendrawemail) that Laravel should pass to the AWS SDK's `SendRawEmail` method when sending an email, you may define an `options` array within your `ses` configuration:
 
     'ses' => [
