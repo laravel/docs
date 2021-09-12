@@ -10,7 +10,7 @@
     - [View Data](#view-data)
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
-    - [Customizing The SwiftMailer Message](#customizing-the-swiftmailer-message)
+    - [Customizing The Symfony Message](#customizing-the-symfony-message)
 - [Markdown Mailables](#markdown-mailables)
     - [Generating Markdown Mailables](#generating-markdown-mailables)
     - [Writing Markdown Messages](#writing-markdown-messages)
@@ -27,7 +27,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [SwiftMailer](https://swiftmailer.symfony.com/) library. Laravel and SwiftMailer provide drivers for sending email via SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
+Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by using the popular [Symfony Mailer](https://symfony.com/doc/6.0/mailer.html) component. Laravel and Symfony Mailer provide drivers for sending email via SMTP, Mailgun, Postmark, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
 
 <a name="configuration"></a>
 ### Configuration
@@ -39,14 +39,16 @@ Within your `mail` configuration file, you will find a `mailers` configuration a
 <a name="driver-prerequisites"></a>
 ### Driver / Transport Prerequisites
 
-The API based drivers such as Mailgun and Postmark are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers. All of the API based drivers require the Guzzle HTTP library, which may be installed via the Composer package manager:
-
-    composer require guzzlehttp/guzzle
+The API based drivers such as Mailgun and Postmark are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
 
 <a name="mailgun-driver"></a>
 #### Mailgun Driver
 
-To use the Mailgun driver, first install the Guzzle HTTP library. Then, set the `default` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file contains the following options:
+To use the Mailgun driver, install Symfony's Mailgun Mailer transport via Composer:
+
+    composer require symfony/mailgun-mailer
+
+Next set the `default` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file contains the following options:
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
@@ -64,11 +66,11 @@ If you are not using the United States [Mailgun region](https://documentation.ma
 <a name="postmark-driver"></a>
 #### Postmark Driver
 
-To use the Postmark driver, install Postmark's SwiftMailer transport via Composer:
+To use the Postmark driver, install Symfony's Postmark Mailer transport via Composer:
 
-    composer require wildbit/swiftmailer-postmark
+    composer require symfony/postmark-mailer
 
-Next, install the Guzzle HTTP library and set the `default` option in your `config/mail.php` configuration file to `postmark`. Finally, verify that your `config/services.php` configuration file contains the following options:
+Next set the `default` option in your `config/mail.php` configuration file to `postmark`. Finally, verify that your `config/services.php` configuration file contains the following options:
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
@@ -86,10 +88,10 @@ This way you are also able to set up multiple Postmark mailers with different me
 <a name="ses-driver"></a>
 #### SES Driver
 
-To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. You may install this library via the Composer package manager:
+To use the SES driver, install Symfony's Amazon Mailer transport via Composer:
 
 ```bash
-composer require aws/aws-sdk-php
+composer require symfony/amazon-mailer
 ```
 
 Next, set the `default` option in your `config/mail.php` configuration file to `ses` and verify that your `config/services.php` configuration file contains the following options:
@@ -420,10 +422,10 @@ If you already have a raw image data string you wish to embed into an email temp
         <img src="{{ $message->embedData($data, 'example-image.jpg') }}">
     </body>
 
-<a name="customizing-the-swiftmailer-message"></a>
-### Customizing The SwiftMailer Message
+<a name="customizing-the-symfony-message"></a>
+### Customizing The Symfony Message
 
-The `withSwiftMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the SwiftMailer message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
+The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
 
     /**
      * Build the message.
@@ -434,7 +436,7 @@ The `withSwiftMessage` method of the `Mailable` base class allows you to registe
     {
         $this->view('emails.orders.shipped');
 
-        $this->withSwiftMessage(function ($message) {
+        $this->withSymfonyMessage(function ($message) {
             $message->getHeaders()->addTextHeader(
                 'Custom-Header', 'Header Value'
             );
