@@ -18,7 +18,7 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
-- [PHP 7.3.0 Required](#php-7.3.0-required)
+- [PHP 7.4.0 Required](#php-7.4.0-required)
 - [Failed Jobs Table Batch Support](#failed-jobs-table-batch-support)
 - [Maintenance Mode Updates](#maintenance-mode-updates)
 - [The `php artisan down --message` Option](#artisan-down-message)
@@ -33,12 +33,12 @@
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
-<a name="php-7.3.0-required"></a>
-### PHP 7.3.0 Required
+<a name="php-7.4.0-required"></a>
+### PHP 7.4.0 Required
 
 **Likelihood Of Impact: Medium**
 
-The new minimum PHP version is now 7.3.0.
+The new minimum PHP version is now 7.4.0.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
