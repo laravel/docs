@@ -8,6 +8,7 @@
     - [Requesting The Password Reset Link](#requesting-the-password-reset-link)
     - [Resetting The Password](#resetting-the-password)
 - [Customization](#password-customization)
+- [Flushing Expired Tokens](#flush-expired-tokens)
 
 <a name="introduction"></a>
 ## Introduction
@@ -187,3 +188,14 @@ You may easily modify the notification class used to send the password reset lin
 
         $this->notify(new ResetPasswordNotification($url));
     }
+
+<a name="flush-expired-tokens"></a>
+## Flushing Expired Tokens
+
+Password reset tokens that have expired will still be present within your database. To easily flush these records, use the following artisan command:
+
+    php artisan auth:clear-resets
+
+If you would like to automate this process, consider adding the command to your [scheduler](/docs/{{version}}/scheduling):
+
+    $schedule->command('auth:clear-resets')->everyFifteenMinutes();
