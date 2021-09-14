@@ -819,7 +819,7 @@ The `insertOrIgnore` method will ignore errors while inserting records into the 
         ['id' => 2, 'email' => 'archer@example.com'],
     ]);
 
-> {note} `insertOrIgnore` will ignore duplicate records **and** may have other side effects depending on database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#ignore-effect-on-execution) and silently fail for some errors.
+> {note} `insertOrIgnore` will ignore duplicate records **and** may have other side effects depending on database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution) and silently fail for some errors.
 
 <a name="auto-incrementing-ids"></a>
 #### Auto-Incrementing IDs
