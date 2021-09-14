@@ -95,10 +95,10 @@ sail up -d
 
 Once the application's containers have been started, you may access the project in your web browser at: http://localhost.
 
-To stop all of the containers, you may simply press Control + C to stop the container's execution. Or, if the containers are running in the background, you may use the `down` command:
+To stop all of the containers, you may simply press Control + C to stop the container's execution. Or, if the containers are running in the background, you may use the `stop` command:
 
 ```bash
-sail down
+sail stop
 ```
 
 <a name="executing-sail-commands"></a>
