@@ -639,3 +639,27 @@ The `assertDeleted` asserts that a given Eloquent model has been deleted from th
 The `assertSoftDeleted` method may be used to assert a given Eloquent model has been "soft deleted":
 
     $this->assertSoftDeleted($user);
+
+<a name="assert-model-exists"></a>
+#### assertModelExists
+
+Assert that a given model exists in the database:
+
+    use App\Models\User;
+
+    $user = User::factory()->create();
+
+    $this->assertModelExists($user);
+
+<a name="assert-model-missing"></a>
+#### assertModelMissing
+
+Assert that a given model does not exist in the database:
+
+    use App\Models\User;
+
+    $user = User::factory()->create();
+
+    $user->delete();
+
+    $this->assertModelMissing($user);
