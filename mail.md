@@ -427,7 +427,7 @@ If you already have a raw image data string you wish to embed into an email temp
 
 The `withSymfonyMessage` method of the `Mailable` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
 
-    use Illuminate\Mail\Message;
+    use Symfony\Component\Mime\Email;
     
     /**
      * Build the message.
@@ -438,7 +438,7 @@ The `withSymfonyMessage` method of the `Mailable` base class allows you to regis
     {
         $this->view('emails.orders.shipped');
 
-        $this->withSymfonyMessage(function (Message $message) {
+        $this->withSymfonyMessage(function (Email $message) {
             $message->getHeaders()->addTextHeader(
                 'Custom-Header', 'Header Value'
             );
