@@ -48,7 +48,7 @@ To use the Mailgun driver, install Symfony's Mailgun Mailer transport via Compos
 
     composer require symfony/mailgun-mailer
 
-Next set the `default` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file contains the following options:
+Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
@@ -70,7 +70,7 @@ To use the Postmark driver, install Symfony's Postmark Mailer transport via Comp
 
     composer require symfony/postmark-mailer
 
-Next set the `default` option in your `config/mail.php` configuration file to `postmark`. Finally, verify that your `config/services.php` configuration file contains the following options:
+Next, set the `default` option in your application's `config/mail.php` configuration file to `postmark`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
