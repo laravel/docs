@@ -385,7 +385,7 @@ If you are queueing mailables for delivery in the background, you should use the
 
     Mail::assertNothingQueued();
 
-You may pass a closure to the `assertSent` or `assertNotSent` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
+You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued` and `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
 
     Mail::assertSent(function (OrderShipped $mail) use ($order) {
         return $mail->order->id === $order->id;
