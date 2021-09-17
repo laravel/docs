@@ -74,7 +74,7 @@ When a key has no more attempts left, the `availableIn` method returns the numbe
     if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
         $seconds = RateLimiter::availableIn('send-message:'.$user->id);
 
-        return 'You may try again in '.$seconds.' seconds.'.
+        return 'You may try again in '.$seconds.' seconds';
     }
 
 <a name="clearing-attempts"></a>
