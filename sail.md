@@ -58,7 +58,7 @@ Finally, you may start Sail. To continue learning how to use Sail, please contin
 <a name="using-devcontainers"></a>
 #### Using Devcontainers
 
-If you'd like to develop inside a [Devcontainer](https://code.visualstudio.com/docs/remote/containers), then you can provide the `--devcontainer` option to the `sail:install` command. That option will make the install command publish a default `.devcontainer/devcontainer.json ` file to the root of your application:
+If you would like to develop within a [Devcontainer](https://code.visualstudio.com/docs/remote/containers), you may provide the `--devcontainer` option to the `sail:install` command. The `--devcontainer` option will instruct the `sail:install` command to publish a default `.devcontainer/devcontainer.json ` file to the root of your application:
 
     php artisan sail:install --devcontainer
 
