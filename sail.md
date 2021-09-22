@@ -55,6 +55,13 @@ Finally, you may start Sail. To continue learning how to use Sail, please contin
 
     ./vendor/bin/sail up
 
+<a name="using-devcontainers"></a>
+#### Using Devcontainers
+
+If you would like to develop within a [Devcontainer](https://code.visualstudio.com/docs/remote/containers), you may provide the `--devcontainer` option to the `sail:install` command. The `--devcontainer` option will instruct the `sail:install` command to publish a default `.devcontainer/devcontainer.json ` file to the root of your application:
+
+    php artisan sail:install --devcontainer
+
 <a name="configuring-a-bash-alias"></a>
 ### Configuring A Bash Alias
 
