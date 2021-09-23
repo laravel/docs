@@ -298,7 +298,7 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
         $validated = $request->validated();
 
         // Retrieve a portion of the validated input data...
-        $validated = $request->safe()->only(['name', 'email']);
+        $validated = $request->safe(['name', 'email']);
         $validated = $request->safe()->except(['name', 'email']);
     }
 
