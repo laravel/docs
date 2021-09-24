@@ -942,7 +942,7 @@ Behind the scenes, the `model:prune` command will automatically detect "Prunable
         '--model' => [Address::class, Flight::class],
     ])->daily();
 
-You may test your `prunable` query by running the `model:prune` command with the `--pretend` option.
+You may test your `prunable` query by running the `model:prune` command with the `--pretend` option:
 
     php artisan model:prune --pretend
 
