@@ -942,6 +942,12 @@ Behind the scenes, the `model:prune` command will automatically detect "Prunable
         '--model' => [Address::class, Flight::class],
     ])->daily();
 
+You may test your `prunable` query by running the `model:prune` command with the `--pretend` option.
+
+    php artisan model:prune --pretend
+
+In pretend mode, the command will run the query and report how many records will be pruned, but will not delete any actual records.
+
 > {note} Soft deleting models will be permanently deleted (`forceDelete`) if they match the prunable query.
 
 <a name="mass-pruning"></a>
