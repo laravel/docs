@@ -226,6 +226,16 @@ You may retrieve all of the incoming request's input data as an `array` using th
 
     $input = $request->all();
 
+Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):
+
+    $input = $request->collect();
+
+The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:
+
+    $request->collect('users')->each(function ($user) {
+        // ...
+    });
+
 <a name="retrieving-an-input-value"></a>
 #### Retrieving An Input Value
 
