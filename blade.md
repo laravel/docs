@@ -990,10 +990,6 @@ You may use the `.` character to indicate if a component is nested deeper inside
 
     <x-inputs.button/>
 
-To create an anonymous component, provide the `anonymous` option when executing the `make:component` command:
-
-    php artisan make:component alert --anonymous
-
 <a name="data-properties-attributes"></a>
 #### Data Properties / Attributes
 
