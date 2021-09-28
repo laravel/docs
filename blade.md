@@ -990,7 +990,7 @@ You may use the `.` character to indicate if a component is nested deeper inside
 
     <x-inputs.button/>
 
-To create an anonymous component, you may use the `anonymous` option when executing the `make:component` command:
+To create an anonymous component, provide the `anonymous` option when executing the `make:component` command:
 
     php artisan make:component alert --anonymous
 
