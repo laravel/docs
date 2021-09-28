@@ -990,6 +990,35 @@ You may use the `.` character to indicate if a component is nested deeper inside
 
     <x-inputs.button/>
 
+<a name="anonymous-index-components"></a>
+#### Anonymous Index Components
+
+Sometimes, when a component is made up of many Blade templates, you may wish to group the given component's templates within a single directory. For example, imagine an "accordion" component with the following directory structure:
+
+```none
+/resources/views/components/accordion.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
+This directory structure allows you to render the accordion component and its item like so:
+
+```html
+<x-accordion>
+    <x-accordion.item>
+        ...
+    </x-accordion.item>
+</x-accordion>
+```
+
+However, in order to render the accordion component via `x-accordion`, we were forced to place the "index" accordion component template in the `resources/views/compnoents` directory instead of nesting it within the `accordion` directory with the other accordion related templates.
+
+Thankfully, Blade allows you to place an `index.blade.php` file within a component's template directory. When an `index.blade.php` template exists for the component, it will be rendered as the "root" node of the component. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
+
+```none
+/resources/views/components/accordion/index.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
 <a name="data-properties-attributes"></a>
 #### Data Properties / Attributes
 
