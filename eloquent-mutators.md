@@ -634,3 +634,5 @@ By combining "castables" with PHP's [anonymous classes](https://www.php.net/manu
             };
         }
     }
+
+> {note} When using anonymous cast classes, you cannot use [Array / JSON Serialization](#array-json-serialization) on the anonymous class.
