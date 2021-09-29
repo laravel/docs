@@ -667,6 +667,8 @@ Alternatively, you may specify the event's broadcast connection by calling the `
 
     class OrderShipmentStatusUpdated implements ShouldBroadcast
     {
+        use InteractsWithBroadcasting;
+        
         /**
          * Create a new event instance.
          *
