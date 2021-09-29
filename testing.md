@@ -45,6 +45,11 @@ If you would like to create a test within the `tests/Unit` directory, you may us
 
     php artisan make:test UserTest --unit
 
+If you're using Pest PHP, you may create Pest style tests instead of PhpUnit style tests by adding the `--pest` option:
+
+    php artisan make:test UserTest --pest
+    php artisan make:test UserTest --unit --pest
+
 > {tip} Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 Once the test has been generated, you may define test methods as you normally would using [PHPUnit](https://phpunit.de). To run your tests, execute the `vendor/bin/phpunit` or `php artisan test` command from your terminal:
