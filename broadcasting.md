@@ -652,13 +652,14 @@ If your application interacts with multiple broadcast connections and you want t
 
     broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');
 
-Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor:
+Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor. However, before doing so, you should ensure that the event class uses the `InteractsWithBroadcasting` trait:
 
     <?php
 
     namespace App\Events;
 
     use Illuminate\Broadcasting\Channel;
+    use Illuminate\Broadcasting\InteractsWithBroadcasting;
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Broadcasting\PresenceChannel;
     use Illuminate\Broadcasting\PrivateChannel;
