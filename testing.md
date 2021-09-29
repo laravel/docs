@@ -45,7 +45,7 @@ If you would like to create a test within the `tests/Unit` directory, you may us
 
     php artisan make:test UserTest --unit
 
-If you're using Pest PHP, you may create Pest style tests instead of PhpUnit style tests by adding the `--pest` option:
+If you would like to create a [Pest PHP](https://pestphp.com) test, you may provide the `--pest` option to the `make:test` command:
 
     php artisan make:test UserTest --pest
     php artisan make:test UserTest --unit --pest
