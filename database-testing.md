@@ -55,6 +55,12 @@ Before proceeding much further, let's discuss how to reset your database after e
         }
     }
 
+If you don't want to include the `Illuminate\Foundation\Testing\RefreshDatabase` on each test class that requires database access, you may
+instead include the `Illuminate\Foundation\Testing\LazilyRefreshDatabase` trait on your abstract `Tests\TestCase`. This trait listens for calls
+to the database within your tests and prepares the database for you as and when required.
+
+> {tip} You should never use `Illuminate\Foundation\Testing\RefreshDatabase` and `Illuminate\Foundation\Testing\LazilyRefreshDatabase` together, as doing so will cause errors.
+
 <a name="defining-model-factories"></a>
 ## Defining Model Factories
 
