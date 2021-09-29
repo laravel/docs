@@ -198,3 +198,8 @@ Laravel makes it easy to display custom error pages for various HTTP status code
 You may publish Laravel's default error page templates using the `vendor:publish` Artisan command. Once the templates have been published, you may customize them to your liking:
 
     php artisan vendor:publish --tag=laravel-errors
+
+<a name="fallback-http-error-pages"></a>
+#### Fallback HTTP Error Pages
+
+You may also define a "fallback" error page for a given series of HTTP status codes. This page will be rendered if there is not a corresponding page for the specific HTTP status code that occurred. To accomplish this, define a `4xx.blade.php` template and a `5xx.blade.php` template in your application's `resources/views/errors` directory.
