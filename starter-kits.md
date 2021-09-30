@@ -2,11 +2,12 @@
 
 - [Introduction](#introduction)
 - [Laravel Breeze](#laravel-breeze)
-    - [Installation](#laravel-breeze-installation)
-    - [Breeze & Inertia](#breeze-and-inertia)
+  - [Installation](#laravel-breeze-installation)
+  - [Breeze & Inertia](#breeze-and-inertia)
 - [Laravel Jetstream](#laravel-jetstream)
 
 <a name="introduction"></a>
+
 ## Introduction
 
 To give you a head start building your new Laravel application, we are happy to offer authentication and application starter kits. These kits automatically scaffold your application with the routes, controllers, and views you need to register and authenticate your application's users.
@@ -14,11 +15,13 @@ To give you a head start building your new Laravel application, we are happy to 
 While you are welcome to use these starter kits, they are not required. You are free to build your own application from the ground up by simply installing a fresh copy of Laravel. Either way, we know you will build something great!
 
 <a name="laravel-breeze"></a>
+
 ## Laravel Breeze
 
 Laravel Breeze is a minimal, simple implementation of all of Laravel's [authentication features](/docs/{{version}}/authentication), including login, registration, password reset, email verification, and password confirmation. Laravel Breeze's default view layer is made up of simple [Blade templates](/docs/{{version}}/blade) styled with [Tailwind CSS](https://tailwindcss.com). Breeze provides a wonderful starting point for beginning a fresh Laravel application.
 
 <a name="laravel-breeze-installation"></a>
+
 ### Installation
 
 First, you should [create a new Laravel application](/docs/{{version}}/installation), configure your database, and run your [database migrations](/docs/{{version}}/migrations):
@@ -44,6 +47,8 @@ php artisan breeze:install
 
 npm install
 npm run dev
+// Or
+npm install && npm run dev
 php artisan migrate
 ```
 
@@ -52,6 +57,7 @@ Next, you may navigate to your application's `/login` or `/register` URLs in you
 > {tip} To learn more about compiling your application's CSS and JavaScript, check out the [Laravel Mix documentation](/docs/{{version}}/mix#running-mix).
 
 <a name="breeze-and-inertia"></a>
+
 ### Breeze & Inertia
 
 Laravel Breeze also offers an [Inertia.js](https://inertiajs.com) frontend implementation powered by Vue or React. To use an Inertia stack, specify `vue` or `react` as your desired stack when executing the `breeze:install` Artisan command:
@@ -65,10 +71,13 @@ php artisan breeze:install react
 
 npm install
 npm run dev
+// Or
+npm install && npm run dev
 php artisan migrate
 ```
 
 <a name="laravel-jetstream"></a>
+
 ## Laravel Jetstream
 
 While Laravel Breeze provides a simple and minimal starting point for building a Laravel application, Jetstream augments that functionality with more robust features and additional frontend technology stacks. **For those brand new to Laravel, we recommend learning the ropes with Laravel Breeze before graduating to Laravel Jetstream.**
