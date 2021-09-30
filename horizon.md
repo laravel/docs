@@ -354,7 +354,7 @@ Horizon includes a metrics dashboard which provides information regarding your j
 <a name="deleting-failed-jobs"></a>
 ## Deleting Failed Jobs
 
-If you would like to delete a failed job, you may use the `horizon:forget` command. The `horizon:forget` command accepts the ID of the failed job as its only argument:
+If you would like to delete a failed job, you may use the `horizon:forget` command. The `horizon:forget` command accepts the ID or UUID of the failed job as its only argument:
 
     php artisan horizon:forget 5
 
