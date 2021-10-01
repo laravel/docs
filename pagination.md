@@ -76,11 +76,6 @@ Of course, you may call the `paginate` method after setting other constraints on
 
     $users = User::where('votes', '>', 100)->paginate(15);
 
-There are additional parameters you can pass to the `paginate` method including an array of the columns to include, the name of the paginator and a specific page number. Specifying the paginator name is helpful when you want to have multiple paginators on a page.
-
-    $users = User::where('votes', '>', 100)->paginate(15, ['*'], 'users');
-
-
 You may also use the `simplePaginate` method when paginating Eloquent models:
 
     $users = User::where('votes', '>', 100)->simplePaginate(15);
@@ -88,6 +83,16 @@ You may also use the `simplePaginate` method when paginating Eloquent models:
 Similarly, you may use the `cursorPaginate` method to cursor paginate Eloquent models:
 
     $users = User::where('votes', '>', 100)->cursorPaginate(15);
+
+#### Multiple Paginator Instances Per Page
+
+Sometimes you may need to render two separate paginators on a single screen that is rendered by your application. However, if both paginator instances use the `page` query string parameter to store the current page, the two paginator's will conflict. To resolve this conflict, you may pass the name of the query string parameter you wish to use to store the paginator's current page via the third argument provided to the `paginate`, `simplePaginate`, and `cursorPaginate` methods:
+
+    use App\Models\User;
+
+    $users = User::where('votes', '>', 100)->paginate(
+        $perPage = 15, $columns = ['*'], $pageName = 'users'
+    );
 
 <a name="cursor-pagination"></a>
 ### Cursor Pagination
