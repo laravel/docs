@@ -84,6 +84,7 @@ Similarly, you may use the `cursorPaginate` method to cursor paginate Eloquent m
 
     $users = User::where('votes', '>', 100)->cursorPaginate(15);
 
+<a name="multiple-paginator-instances-per-page"></a>
 #### Multiple Paginator Instances Per Page
 
 Sometimes you may need to render two separate paginators on a single screen that is rendered by your application. However, if both paginator instances use the `page` query string parameter to store the current page, the two paginator's will conflict. To resolve this conflict, you may pass the name of the query string parameter you wish to use to store the paginator's current page via the third argument provided to the `paginate`, `simplePaginate`, and `cursorPaginate` methods:
