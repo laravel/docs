@@ -288,6 +288,8 @@ The `put` method may be used to store file contents on a disk. You may also pass
 
     Storage::put('file.jpg', $resource);
 
+> {tip} If storing files to Amazon S3 or an S3 compatible interface, the content type has to be guessed before upload. This is a memory-inefficient operation, using several times more memory than the file size. If storing bigger files, it's recommended that you pass in a content type to reduce memory usage and prevent out of memory errors. This can be done by doing `Storage::put('file.jpg', $contents, ['ContentType' => 'video/mp4']);`.
+
 <a name="automatic-streaming"></a>
 #### Automatic Streaming
 
