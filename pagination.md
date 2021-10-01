@@ -76,6 +76,11 @@ Of course, you may call the `paginate` method after setting other constraints on
 
     $users = User::where('votes', '>', 100)->paginate(15);
 
+There are additional parameters you can pass to the `paginate` method including an array of the columns to include, the name of the paginator and a specific page number. Specifying the paginator name is helpful when you want to have multiple paginators on a page.
+
+    $users = User::where('votes', '>', 100)->paginate(15, ['*'], 'users');
+
+
 You may also use the `simplePaginate` method when paginating Eloquent models:
 
     $users = User::where('votes', '>', 100)->simplePaginate(15);
