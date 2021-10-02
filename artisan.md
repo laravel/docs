@@ -459,6 +459,14 @@ For long running tasks, it can be helpful to show a progress bar that informs us
         $this->performTask($user);
     });
 
+Of course, you can use `cursor()` and any other instances of `Illuminate\Support\LazyCollection` for handling large datasets when outputting progress bars:
+
+    use App\Models\User;
+
+    $users = $this->withProgressBar(User::cursor(), function ($user) {
+        $this->performTask($user);
+    }); 
+
 Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar after processing each item:
 
     $users = App\Models\User::all();
