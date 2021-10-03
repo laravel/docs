@@ -71,6 +71,8 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
         //
     });
 
+> {tip} When defining multiple routes that share the same URI, the methods `get`, `post`, `put`, `patch`, `delete`, and `options` must be called before methods `any`, `match`, and `redirect`. This ensures the incoming request is matched with the correct route.
+
 <a name="dependency-injection"></a>
 #### Dependency Injection
 
