@@ -277,6 +277,23 @@ To populate the default model with attributes, you may pass an array or closure 
         });
     }
 
+<a name="querying-belongs-to-relationships"></a>
+#### Querying Belongs To Relationships
+
+When querying for the children of a "belongs to" relationship, you may manually build the `where` clause to retrieve the corresponding Eloquent models:
+
+    use App\Models\Post;
+
+    $posts = Post::where('user_id', $user->id)->get();
+
+However, you may find it more convenient to use the `whereBelongsTo` method, which will automatically determine the proper relationship and foreign key for the given model:
+
+    $posts = Post::whereBelongsTo($user)->get();
+
+By default, Laravel will determine the relationship associated with the given model based on the class name of the model; however, you may specify the relationship name manually by providing it as the second argument to the `whereBelongsTo` method:
+
+    $posts = Post::whereBelongsTo($user, 'author')->get();
+
 <a name="has-one-of-many"></a>
 ### Has One Of Many
 
