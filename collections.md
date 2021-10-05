@@ -2546,6 +2546,20 @@ The `unless` method will execute the given callback unless the first argument gi
 
     // [1, 2, 3, 5]
 
+A second callback may be passed to the `unless` method. The second callback will be executed when the first argument given to the `unless` method evaluates to `true`:
+
+    $collection = collect([1, 2, 3]);
+
+    $collection->unless(true, function ($collection) {
+        return $collection->push(4);
+    }, function ($collection) {
+        return $collection->push(5);
+    });
+
+    $collection->all();
+
+    // [1, 2, 3, 5]
+
 For the inverse of `unless`, see the [`when`](#method-when) method.
 
 <a name="method-unlessempty"></a>
@@ -2614,6 +2628,20 @@ The `when` method will execute the given callback when the first argument given 
     $collection->all();
 
     // [1, 2, 3, 4]
+
+A second callback may be passed to the `when` method. The second callback will be executed when the first argument given to the `when` method evaluates to `false`:
+
+    $collection = collect([1, 2, 3]);
+
+    $collection->when(false, function ($collection) {
+        return $collection->push(4);
+    }, function ($collection) {
+        return $collection->push(5);
+    });
+
+    $collection->all();
+
+    // [1, 2, 3, 5]
 
 For the inverse of `when`, see the [`unless`](#method-unless) method.
 
