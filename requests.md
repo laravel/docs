@@ -331,6 +331,14 @@ The `whenHas` method will execute the given closure if a value is present on the
         //
     });
 
+A second closure may be passed to the `whenHas` method that will be executed otherwise:
+
+    $request->whenFilled('name', function ($input) {
+        // `name` is filled
+    }, function () {
+        // `name` is not filled
+    });
+
 The `hasAny` method returns `true` if any of the specified values are present:
 
     if ($request->hasAny(['name', 'email'])) {
@@ -347,6 +355,14 @@ The `whenFilled` method will execute the given closure if a value is present on 
 
     $request->whenFilled('name', function ($input) {
         //
+    });
+
+A second closure may be passed to the `whenFilled` method that will be executed otherwise:
+
+    $request->whenFilled('name', function ($input) {
+        // `name` is filled
+    }, function () {
+        // `name` is not filled
     });
 
 To determine if a given key is absent from the request, you may use the `missing` method:
