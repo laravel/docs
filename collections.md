@@ -2629,7 +2629,7 @@ The `when` method will execute the given callback when the first argument given 
 
     // [1, 2, 3, 4]
 
-A second closure may be passed to the `when` method that will be executed when the first argument is falsy:
+A second callback may be passed to the `when` method. The second callback will be executed when the first argument given to the `when` method evaluates to `false`:
 
     $collection = collect([1, 2, 3]);
 
