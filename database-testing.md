@@ -28,31 +28,18 @@ Laravel provides a variety of helpful tools and assertions to make it easier to 
 <a name="resetting-the-database-after-each-test"></a>
 ### Resetting The Database After Each Test
 
-Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of this for you. Simply use the trait on your test class:
+Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included `Illuminate\Foundation\Testing\LazilyRefreshDatabase` trait will take care of this for you. This trait is already included on your application's base `TestCase` class so that you may always assume you have a fresh copy of your database during each of your application's "feature" tests:
 
     <?php
 
-    namespace Tests\Feature;
+    namespace Tests;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Tests\TestCase;
+    use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+    use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
-    class ExampleTest extends TestCase
+    abstract class TestCase extends BaseTestCase
     {
-        use RefreshDatabase;
-
-        /**
-         * A basic functional test example.
-         *
-         * @return void
-         */
-        public function test_basic_example()
-        {
-            $response = $this->get('/');
-
-            // ...
-        }
+        use CreatesApplication, LazilyRefreshDatabase;
     }
 
 <a name="defining-model-factories"></a>
