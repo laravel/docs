@@ -595,6 +595,26 @@ You may also pass an array of column comparisons to the `whereColumn` method. Th
                         ['updated_at', '>', 'created_at'],
                     ])->get();
 
+**whereBelongsTo**
+
+When retrieving `belongsTo` related records, you can usually use the inverse (hasMany) of the relationship, like so:
+    
+    $author->posts()
+
+However, sometimes this is not possible, and you must filter an existing query by its parent record:
+
+    $query->where('author_id', $author->id)
+
+This works, but explicitly depends on the name of foreign key (`author_id`), and the name of the owner key (`id`) in most cases. This is a maintenance burden, as these key names can be changed inside the relationship method and will subsequently become outdated across your entire app. So query builder has `whereBelongsTo`. You may use it like so: 
+
+    $query->whereBelongsTo($author)
+
+It will automatically retrieve the foreign key name from the relationship (`author`), and the correct owner key from the related model (`$author`).
+
+Sometimes, this is not appropriate. If the `$author` is an instance of `App\Models\User`, `whereBelongsTo()` will search for a `user()` relationship that does not exist. In this case, you may manually specify the relationship name:
+
+    $query->whereBelongsTo($author, 'author')
+
 <a name="logical-grouping"></a>
 ### Logical Grouping
 
