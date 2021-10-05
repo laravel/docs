@@ -2546,7 +2546,7 @@ The `unless` method will execute the given callback unless the first argument gi
 
     // [1, 2, 3, 5]
 
-A second closure may be passed to the `unless` method that will be executed when the first argument is truthy:
+A second callback may be passed to the `unless` method. The second callback will be executed when the first argument given to the `unless` method evaluates to `true`:
 
     $collection = collect([1, 2, 3]);
 
