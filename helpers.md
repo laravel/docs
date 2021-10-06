@@ -1660,7 +1660,7 @@ The `Str::uuid` method generates a UUID (version 4):
     return (string) Str::uuid();
 
 <a name="method-str-word-count"></a>
-#### `Str::wordCount` {#collection-method}
+#### `Str::wordCount()` {#collection-method}
 
 The `Str::wordCount` method returns the number of words that a string contains:
 
