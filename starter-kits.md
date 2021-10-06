@@ -47,7 +47,7 @@ npm run dev
 php artisan migrate
 ```
 
-Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file.
+Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Breeze's routes are defined within the `routes/auth.php` file. For routes  such as `/forgot-password` you may need  [email](/docs/{{version}}/mail) configuration. 
 
 > {tip} To learn more about compiling your application's CSS and JavaScript, check out the [Laravel Mix documentation](/docs/{{version}}/mix#running-mix).
 
