@@ -333,7 +333,7 @@ The `whenHas` method will execute the given closure if a value is present on the
 
 A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:
 
-    $request->whenFilled('name', function ($input) {
+    $request->whenHas('name', function ($input) {
         // The "name" value is present...
     }, function () {
         // The "name" value is not present...
