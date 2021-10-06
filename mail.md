@@ -160,6 +160,8 @@ When building Laravel applications, each type of email sent by your application 
 
 Once you have generated a mailable class, open it up so we can explore its contents. First, note that all of a mailable class' configuration is done in the `build` method. Within this method, you may call various methods such as `from`, `subject`, `view`, and `attach` to configure the email's presentation and delivery.
 
+> {tip} You may type-hint dependencies on the mailable's `build` method. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
+
 <a name="configuring-the-sender"></a>
 ### Configuring The Sender
 
