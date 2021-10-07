@@ -868,7 +868,7 @@ Modifier  |  Description
 `->first()`  |  Place the column "first" in the table (MySQL).
 `->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).
 `->nullable($value = true)`  |  Allow NULL values to be inserted into the column.
-`->storedAs($expression)`  |  Create a stored generated column (MySQL).
+`->storedAs($expression)`  |  Create a stored generated column (MySQL / PostgreSQL).
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
 `->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated.
