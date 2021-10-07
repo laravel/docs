@@ -225,6 +225,7 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
 You may retrieve all of the incoming request's input data as an `array` using the `all` method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:
 
     $input = $request->all();
+> {note} When using Form Requests, be careful when working with nested arrays, the `$request->all()` method in Controller will not return data from heavily nested arrays unless the `array` rule is written in `rule` method of Form Request
 
 Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):
 
