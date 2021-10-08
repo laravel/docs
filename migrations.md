@@ -1022,7 +1022,7 @@ Alternatively, you may create the index after defining the column. To do so, you
 
 You may even pass an array of columns to an index method to create a compound (or composite) index:
 
-    $table->index(['account_id', 'created_at']);
+    $table->unique(['account_id', 'created_at']);
 
 When creating an index, Laravel will automatically generate an index name based on the table, column names, and the index type, but you may pass a second argument to the method to specify the index name yourself:
 
