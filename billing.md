@@ -1835,6 +1835,12 @@ You may also use the `updateStripeSubscription` method to update a Stripe subscr
 
     $subscription->updateStripeSubscription(['application_fee_percent' => 5]);
 
+You may invoke the `stripe` method on the `Cashier` class if you would like to use the `Stripe\StripeClient` client directly. For example, you could use this method to access the `StripeClient` instance and retrieve a list of prices from your Stripe account:
+
+    use Laravel\Cashier\Cashier;
+    
+    $prices = Cashier::stripe()->prices->all();
+
 <a name="testing"></a>
 ## Testing
 
