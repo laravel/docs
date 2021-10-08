@@ -1834,6 +1834,12 @@ Many of Cashier's objects are wrappers around Stripe SDK objects. If you would l
 You may also use the `updateStripeSubscription` method to update a Stripe subscription directly:
 
     $subscription->updateStripeSubscription(['application_fee_percent' => 5]);
+    
+Additionally, if you need to use the `Stripe\StripeClient` client directly you can call it on the `Cashier` class. Here's how you can get a list of prices from your Stripe account:
+
+    use Laravel\Cashier\Cashier;
+    
+    $prices = Cashier::stripe()->prices->all();
 
 <a name="testing"></a>
 ## Testing
