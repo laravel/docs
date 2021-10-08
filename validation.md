@@ -1070,7 +1070,7 @@ The field under validation will be excluded from the request data returned by th
 <a name="rule-exclude-without"></a>
 #### exclude_without:_anotherfield_
 
-The field under validation will be excluded from the request data returned by the `validate` and `validated` methods without _anotherfield_'s field.
+The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is not present.
 
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
