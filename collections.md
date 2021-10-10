@@ -625,10 +625,16 @@ If the collection contains arrays or objects, you can pass the key of the attrib
 
     // [2 => 'Developer']
 
+> {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections).
+>
+> Additionally, in order to pass the key of the attribute to check for duplicate values in Eloquent Collections, they must first be converted to regular Collections using the `toBase()` method.
+
 <a name="method-duplicatesstrict"></a>
 #### `duplicatesStrict()` {#collection-method}
 
 This method has the same signature as the [`duplicates`](#method-duplicates) method; however, all values are compared using "strict" comparisons.
+
+> {tip} This method acts the same as `duplicates()` when using [Eloquent Collections](/docs/{{version}}/eloquent-collections).
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}
