@@ -921,6 +921,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertSelectHasOption](#assert-select-has-option)
 [assertSelectMissingOption](#assert-select-missing-option)
 [assertValue](#assert-value)
+[assertValueIsNot](#assert-value-is-not)
 [assertAttribute](#assert-attribute)
 [assertAriaAttribute](#assert-aria-attribute)
 [assertDataAttribute](#assert-data-attribute)
@@ -1286,6 +1287,13 @@ Assert that the given value is not available to be selected:
 Assert that the element matching the given selector has the given value:
 
     $browser->assertValue($selector, $value);
+
+<a name="assert-value-is-not"></a>
+#### assertValueIsNot
+
+Assert that the element matching the given selector does not have the given value:
+
+    $browser->assertValueIsNot($selector, $value);
 
 <a name="assert-attribute"></a>
 #### assertAttribute
