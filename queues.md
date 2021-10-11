@@ -87,7 +87,7 @@ In order to use the `database` queue driver, you will need a database table to h
 
     php artisan migrate
 
-Finally, don't forget to instruct application to use the `database` driver by updating the `QUEUE_CONNECTION` variable in your application's `.env` file:
+Finally, don't forget to instruct your application to use the `database` driver by updating the `QUEUE_CONNECTION` variable in your application's `.env` file:
 
     QUEUE_CONNECTION=database
 
