@@ -87,6 +87,10 @@ In order to use the `database` queue driver, you will need a database table to h
 
     php artisan migrate
 
+You will need to tell your application to use the database driver. To do this you will need to edit your `.env` file:
+
+    QUEUE_CONNECTION=database
+
 <a name="redis"></a>
 #### Redis
 
