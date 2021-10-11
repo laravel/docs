@@ -251,6 +251,18 @@ View "creators" are very similar to view composers; however, they are executed i
 
     View::creator('profile', ProfileCreator::class);
 
+When you use `View::creator` you have the chance to override the variables of view in the controller. Like this:
+
+    View::creator('layout', function($view) {
+    $view->with('foo', 'bar');
+    });
+
+    // in controller
+    return View::make('layout')->with('foo', 'not bar at all');
+
+    // it's defined as 'not bar at all' in the view
+
+
 <a name="optimizing-views"></a>
 ## Optimizing Views
 
