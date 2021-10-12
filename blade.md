@@ -1041,9 +1041,7 @@ Given the component definition above, we may render the component like so:
 <a name="accessing-parent-data"></a>
 #### Accessing Parent Data
 
-Sometimes you may want to access data from a parent component inside a child component. In these cases, you can use the `@aware` directive to make outside data available inside the component.
-
-For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
+Sometimes you may want to access data from a parent component inside a child component. In these cases, you may use the `@aware` directive. For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
 
     <x-menu color="purple">
         <x-menu.item>...</x-menu.item>
