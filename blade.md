@@ -1043,14 +1043,14 @@ Given the component definition above, we may render the component like so:
 
 Sometimes you may want to access data from a parent component inside a child component. In these cases, you can use the `@aware` directive to make outside data available inside the component.
 
-For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>` that would be used like so:
+For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
 
     <x-menu color="purple">
         <x-menu.item>...</x-menu.item>
         <x-menu.item>...</x-menu.item>
     </x-menu>
     
-Given the above usage, here's what the `<x-menu>` component might look like:
+The `<x-menu>` component may have an implementation like the following:
 
     <!-- /resources/views/components/menu/index.blade.php -->
 
@@ -1060,11 +1060,11 @@ Given the above usage, here's what the `<x-menu>` component might look like:
         {{ $slot }}
     </ul>
 
-Because the `$color` prop was only passed into the parent `<x-menu>`, it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
+Because the `color` prop was only passed into the parent (`<x-menu>`), it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
 
     <!-- /resources/views/components/menu/item.blade.php -->
 
-    @aware(['color'])
+    @aware(['color' => 'gray'])
 
     <li {{ $attributes->merge(['class' => 'text-'.$color.'-800']) }}>
         {{ $slot }}
