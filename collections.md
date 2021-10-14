@@ -162,6 +162,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [push](#method-push)
 [put](#method-put)
 [random](#method-random)
+[range](#method-range)
 [reduce](#method-reduce)
 [reduceMany](#method-reduce-many)
 [reject](#method-reject)
@@ -1701,6 +1702,17 @@ You may pass an integer to `random` to specify how many items you would like to 
     // [2, 4, 5] - (retrieved randomly)
 
 If the collection instance has fewer items than requested, the `random` method will throw an `InvalidArgumentException`.
+
+<a name="method-range"></a>
+#### `range()` {#collection-method}
+
+The `range` method returns a collection containing integers between the specified range:
+
+    $collection = collect()->range(3, 6);
+
+    $collection->all();
+
+    // [3, 4, 5, 6]
 
 <a name="method-reduce"></a>
 #### `reduce()` {#collection-method}
