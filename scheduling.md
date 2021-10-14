@@ -415,11 +415,10 @@ All of the ping methods require the Guzzle HTTP library. Guzzle is typically ins
 
     composer require guzzlehttp/guzzle
 
-
 <a name="events"></a>
 ## Events
 
-To execute code on every scheduled task operation, you may listen for the [events](/docs/{{version}}/events) fired by the scheduler. Typically, you should place these event listeners within your application's `App\Providers\EventServiceProvider` class:
+If needed, you may listen to [events](/docs/{{version}}/events) dispatched by the scheduler. Typically, you should place these event listeners within your application's `App\Providers\EventServiceProvider` class:
 
     /**
      * The event listener mappings for the application.
@@ -435,15 +434,15 @@ To execute code on every scheduled task operation, you may listen for the [event
             'App\Listeners\LogScheduledTaskFinished',
         ],
 
-        'Illuminate\Console\Events\ScheduledTaskFailed' => [
-            'App\Listeners\LogScheduledTaskFailed',
+        'Illuminate\Console\Events\ScheduledBackgroundTaskFinished' => [
+            'App\Listeners\LogScheduledBackgroundTaskFinished',
         ],
 
         'Illuminate\Console\Events\ScheduledTaskSkipped' => [
             'App\Listeners\LogScheduledTaskSkipped',
         ],
 
-        'Illuminate\Console\Events\ScheduledBackgroundTaskFinished' => [
-            'App\Listeners\LogScheduledBackgroundTaskFinished',
+        'Illuminate\Console\Events\ScheduledTaskFailed' => [
+            'App\Listeners\LogScheduledTaskFailed',
         ],
     ];
