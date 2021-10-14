@@ -947,7 +947,7 @@ public function bestImage()
 <a name="advanced-polymorphic-one-of-many-relationships"></a>
 #### Advanced Polymorphic One Of Many Relationships
 
-Just as for simple [one of many relations](#advanced-has-one-of-many-relationships), advanced usecases can be constructed. For example, an event sourcing approach for model states can be implemented where each state change is stored in the `states` table and the last state added is the current state of the model. This allows tracking the state history of a Model. In addition, a model can have multiple states. For example, an Order has an `shippingState` the and a `paymentState`. Thus, the state depends on a `type` attribute.
+Just as for simple [one of many relations](#advanced-has-one-of-many-relationships), advanced usecases can be constructed. For example, an event sourcing approach for Model states, where each state change is stored in the `states` table and the last state added is the current state of the Model. This allows tracking the state history of a Model. In addition, a Model can have multiple states. For example, an `Order` has an `shippingState` the and a `paymentState`. Thus, the state depends on a `type` attribute.
 
 ```php
 class Order extends Model
