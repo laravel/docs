@@ -1003,7 +1003,7 @@ Assert that the response has an unauthorized (401) HTTP status code:
 <a name="assert-unprocessable"></a>
 #### assertUnprocessable
 
-Assert that the response has an unprocessable entity (402) HTTP status code:
+Assert that the response has an unprocessable entity (422) HTTP status code:
 
     $response->assertUnprocessable();
 
