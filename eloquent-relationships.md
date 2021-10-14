@@ -359,6 +359,8 @@ public function currentPricing()
 }
 ```
 
+> {tip} When modifying the sub query of a one-of-many relationship, a deep understanding of the generated sql query is recommended. For more information, please consult the articel [*Runtime (Big O) Of Laravel's One-Of-Many Relationship*](https://lennartcb.me/runtime-of-laravels-one-of-many-relationship).
+
 <a name="has-one-through"></a>
 ### Has One Through
 
@@ -942,7 +944,37 @@ public function bestImage()
 }
 ```
 
-> {tip} It is possible to construct more advanced "one of many" relationships. For more information, please consult the [has one of many documentation](#advanced-has-one-of-many-relationships).
+<a name="advanced-polymorphic-one-of-many-relationships"></a>
+#### Advanced Polymorphic One Of Many Relationships
+
+Just as for simple [one of many relations](#advanced-has-one-of-many-relationships), advanced usecases can be constructed. For example, an event sourcing approach for model states can be implemented where each state change is traceable and the last state added is the current state of the model. In addition, a model can have multiple states. For example, an Order has an `shippingState` the and a `paymentState`. Thus, the state depends on a `type` attribute.
+
+```php
+class Order extends Model
+{
+    /**
+     * Get the order's current shipping state.
+     */
+    public function shippingState()
+    {
+        return $this->morphOne(State::class, 'stateful')->ofMany(function($query) {
+            $query->where('type', 'order_state');
+        });
+    }
+    
+    /**
+     * Get the order's current payment state.
+     */
+    public function paymentState()
+    {
+        return $this->morphOne(State::class, 'stateful')->ofMany(function($query) {
+            $query->where('type', 'payment_state');
+        });
+    }
+}
+```
+
+> {tip} For more advanced examples, please consult the [has one of many documentation](#advanced-has-one-of-many-relationships).
 
 <a name="many-to-many-polymorphic-relations"></a>
 ### Many To Many (Polymorphic)
