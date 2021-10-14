@@ -591,6 +591,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
 [assertUnauthorized](#assert-unauthorized)
+[assertUnprocessable](#assert-unprocessable)
 [assertValid](#assert-valid)
 [assertInvalid](#assert-invalid)
 [assertViewHas](#assert-view-has)
@@ -998,6 +999,13 @@ Assert that the response has a successful (>= 200 and < 300) HTTP status code:
 Assert that the response has an unauthorized (401) HTTP status code:
 
     $response->assertUnauthorized();
+
+<a name="assert-unprocessable"></a>
+#### assertUnprocessable
+
+Assert that the response has an unprocessable entity (402) HTTP status code:
+
+    $response->assertUnprocessable();
 
 <a name="assert-valid"></a>
 #### assertValid
