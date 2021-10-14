@@ -418,7 +418,7 @@ All of the ping methods require the Guzzle HTTP library. Guzzle is typically ins
 <a name="events"></a>
 ## Events
 
-If needed, you may listen to [events](/docs/{{version}}/events) dispatched by the scheduler. Typically, you should place these event listeners within your application's `App\Providers\EventServiceProvider` class:
+If needed, you may listen to [events](/docs/{{version}}/events) dispatched by the scheduler. Typically, event listener mappings will be defined within your application's `App\Providers\EventServiceProvider` class:
 
     /**
      * The event listener mappings for the application.
