@@ -1706,7 +1706,7 @@ If the collection instance has fewer items than requested, the `random` method w
 <a name="method-range"></a>
 #### `range()` {#collection-method}
 
-The `range` method returns a collection containing a range of elements:
+The `range` method returns a collection containing integers between the specified range:
 
     $collection = collect()->range(3, 6);
 
