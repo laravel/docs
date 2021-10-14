@@ -15,6 +15,7 @@
     - [Running The Scheduler Locally](#running-the-scheduler-locally)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -413,3 +414,36 @@ The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL 
 All of the ping methods require the Guzzle HTTP library. Guzzle is typically installed in all new Laravel projects by default, but, you may manually install Guzzle into your project using the Composer package manager if it has been accidentally removed:
 
     composer require guzzlehttp/guzzle
+
+
+<a name="events"></a>
+## Events
+
+To execute code on every scheduled task operation, you may listen for the [events](/docs/{{version}}/events) fired by the scheduler. Typically, you should place these event listeners within your application's `App\Providers\EventServiceProvider` class:
+
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Illuminate\Console\Events\ScheduledTaskStarting' => [
+            'App\Listeners\LogScheduledTaskStarting',
+        ],
+
+        'Illuminate\Console\Events\ScheduledTaskFinished' => [
+            'App\Listeners\LogScheduledTaskFinished',
+        ],
+
+        'Illuminate\Console\Events\ScheduledTaskFailed' => [
+            'App\Listeners\LogScheduledTaskFailed',
+        ],
+
+        'Illuminate\Console\Events\ScheduledTaskSkipped' => [
+            'App\Listeners\LogScheduledTaskSkipped',
+        ],
+
+        'Illuminate\Console\Events\ScheduledBackgroundTaskFinished' => [
+            'App\Listeners\LogScheduledBackgroundTaskFinished',
+        ],
+    ];
