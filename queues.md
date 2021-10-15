@@ -1416,7 +1416,7 @@ Using the `catch` method, you may provide a closure that should be executed if t
 <a name="the-queue-work-command"></a>
 ### The `queue:work` Command
 
-Laravel includes an Artisan command that will start a queue worker and process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:
+Laravel includes an Artisan command that will start a queue worker and process new jobs as they are pushed onto the default queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:
 
     php artisan queue:work
 
@@ -1440,7 +1440,7 @@ You may also specify which queue connection the worker should utilize. The conne
 
     php artisan queue:work redis
 
-You may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:
+By default the worker only processes the default queue of the specified connection, so if you have a non-default queue name you have to pass the queue name to the worker. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:
 
     php artisan queue:work redis --queue=emails
 
