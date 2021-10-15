@@ -30,6 +30,8 @@ If you are developing with a team, you may wish to continue including a `.env.ex
 
 > {tip} Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
 
+> {note} If the environment variable `APP_ENV` exists on server-level or system-level than the `.env.{APP_ENV}` file will be used instead of the `.env` file.
+
 <a name="environment-file-security"></a>
 #### Environment File Security
 
