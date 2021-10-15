@@ -218,6 +218,25 @@ If your queue connection's `after_commit` configuration option is set to `false`
 
 > {tip} To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
+<a name="determining-if-the-queued-notification-should-be-sent"></a>
+#### Determining If A Queued Notification Should Be Sent
+
+After a queued notification has been dispatched for the queue for background processing, it will typically be accepted by a queue worker and sent to its intended recipient.
+
+However, if you would like to make the final determination on whether the queued notification should be sent after it is being processed by a queue worker, you may define a `shouldSend` method on the notification class. If this method returns `false`, the notification will not be sent:
+
+    /**
+     * Determine if the notification should be sent.
+     *
+     * @param  mixed  $notifiable
+     * @param  string  $channel
+     * @return bool
+     */
+    public function shouldSend($notifiable, $channel)
+    {
+        return $this->invoice->isPaid();
+    }
+
 <a name="on-demand-notifications"></a>
 ### On-Demand Notifications
 
