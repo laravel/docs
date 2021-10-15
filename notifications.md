@@ -218,6 +218,30 @@ If your queue connection's `after_commit` configuration option is set to `false`
 
 > {tip} To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
+#### Cancelling Notifications prior to send
+
+Queued or delayed notifications make it possible that data changes between the notification being queued and its job being processed. Sometimes the up-to-date data is no longer compatible with the kind of notification being sent, for example a "InvoicePaid" email on an order that has since been reversed. this can be achieved by adding a `shouldSend` method to your notivation and returning false from there to stop the dispatch.
+
+ ```php
+<?php
+
+    namespace App\Notifications;
+
+    use Illuminate\Bus\Queueable;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Notifications\Notification;
+
+    class InvoicePayed extends Notification implements ShouldQueue
+    {
+        use Queueable;
+
+        public function shouldSend($notifiable, $channel)
+        {
+            return $this->invoice->isPaid(); //boolean false if the payment has been reversed.
+        }
+    
+    }
+```
 <a name="on-demand-notifications"></a>
 ### On-Demand Notifications
 
