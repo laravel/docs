@@ -1724,6 +1724,9 @@ To retry all of your failed jobs, execute the `queue:retry` command and pass `al
 If you would like to delete a failed job, you may use the `queue:forget` command:
 
     php artisan queue:forget 5
+    
+
+> {note} The way you provide the `ID` for the retry commands depends upon the chosen value of `failed` key in the your config file. For example if you choose the `database-uuid` then you have to provide the `uuid` of the job and the simple ids wont work.
 
 > {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
 
