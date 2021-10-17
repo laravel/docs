@@ -143,9 +143,13 @@ To run all of your outstanding migrations, execute the `migrate` Artisan command
 
     php artisan migrate
 
+<a name="running-migrations-status"></a>
+## Check status of Migrations
+
 If you would like to see which migrations have run thus far, you may use the `migrate:status` Artisan command:
 
     php artisan migrate:status
+
 
 <a name="forcing-migrations-to-run-in-production"></a>
 #### Forcing Migrations To Run In Production
