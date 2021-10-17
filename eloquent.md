@@ -1372,7 +1372,7 @@ This command will place the new observer in your `App/Observers` directory. If t
         }
     }
 
-To register an observer, you need to call the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\EventServiceProvider` service provider:
+To register an observer, you need to call the `observe` method on the model you wish to observe. You may register observers in the `boot` method of your application's `App\Providers\AppServiceProvider` service provider:
 
     use App\Models\User;
     use App\Observers\UserObserver;
