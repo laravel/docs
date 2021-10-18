@@ -1705,13 +1705,11 @@ To view all of the failed jobs that have been inserted into your `failed_jobs` d
 
 The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
 
-    php artisan queue:retry 5
+    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece
 
-If necessary, you may pass multiple IDs or an ID range (when using numeric IDs) to the command:
+If necessary, you may pass multiple IDs to the command:
 
-    php artisan queue:retry 5 6 7 8 9 10
-
-    php artisan queue:retry --range=5-10
+    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece 91401d2c-0784-4f43-824c-34f94a33c24d
 
 You may also retry all of the failed jobs for a particular queue:
 
@@ -1723,10 +1721,7 @@ To retry all of your failed jobs, execute the `queue:retry` command and pass `al
 
 If you would like to delete a failed job, you may use the `queue:forget` command:
 
-    php artisan queue:forget 5
-    
-
-> {note} The way you provide the `ID` for the retry commands depends upon the chosen value of `failed` key in the your config file. For example if you choose the `database-uuid` then you have to provide the `uuid` of the job and the simple ids wont work.
+    php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d
 
 > {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
 
