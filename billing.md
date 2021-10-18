@@ -641,6 +641,8 @@ Or, if you would like to apply a [Stripe promotion code](https://stripe.com/docs
          ->withPromotionCode('promo_code')
          ->create($paymentMethod);
 
+This needs to be the API ID of the promo code and not the customer facing code.
+
 <a name="adding-subscriptions"></a>
 #### Adding Subscriptions
 
