@@ -26,6 +26,7 @@
     - [Customizing The Connection](#customizing-the-connection)
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Listening For Events](#listening-for-events)
+    - [Stop listening For Active Events](#stop-listening-for-events)
     - [Leaving A Channel](#leaving-a-channel)
     - [Namespaces](#namespaces)
 - [Presence Channels](#presence-channels)
@@ -703,6 +704,16 @@ Echo.private(`orders.${this.order.id}`)
     .listen(...)
     .listen(...)
     .listen(...);
+```
+
+<a name="stop-listening-for-events"></a>
+### Stop Listening For Active Events
+
+There's an situations when you want to stop to listen to any active events on any channel but don't leave the channel. You need to provide channel name and the *event name*
+
+```js
+Echo.private(`orders.${this.order.id}`)
+    .stopListening('OrderShipmentStatusUpdated')
 ```
 
 <a name="leaving-a-channel"></a>
