@@ -705,6 +705,16 @@ Echo.private(`orders.${this.order.id}`)
     .listen(...);
 ```
 
+<a name="stop-listening-for-events"></a>
+#### Stop Listening For Events
+
+If you would like to stop listening to a given event without [leaving the channel](#leaving-a-channel), you may use the `stopListening` method:
+
+```js
+Echo.private(`orders.${this.order.id}`)
+    .stopListening('OrderShipmentStatusUpdated')
+```
+
 <a name="leaving-a-channel"></a>
 ### Leaving A Channel
 
