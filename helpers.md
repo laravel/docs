@@ -99,6 +99,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
+[Str::headline](#method-str-headline)
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
 [Str::isUuid](#method-str-is-uuid)
@@ -1216,6 +1217,21 @@ The `Str::finish` method adds a single instance of the given value to a string i
     $adjusted = Str::finish('this/string/', '/');
 
     // this/string/
+
+<a name="method-str-headline"></a>
+#### `Str::headline()` {#collection-method}
+
+The `Str::headline` method will convert strings delimited by casing, hyphens, or underscores into a space delimited string with each word's first letter capitalized:
+
+    use Illuminate\Support\Str;
+
+    $headline = Str::headline('steve_jobs');
+
+    // Steve Jobs
+
+    $headline = Str::headline('EmailNotificationSent');
+
+    // Email Notification Sent
 
 <a name="method-str-is"></a>
 #### `Str::is()` {#collection-method}
