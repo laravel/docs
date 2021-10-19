@@ -164,7 +164,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [random](#method-random)
 [range](#method-range)
 [reduce](#method-reduce)
-[reduceMany](#method-reduce-many)
+[reduceSpread](#method-reduce-spread)
 [reject](#method-reject)
 [replace](#method-replace)
 [replaceRecursive](#method-replacerecursive)
@@ -1755,15 +1755,15 @@ The `reduce` method also passes array keys in associative collections to the giv
 
     // 4264
 
-<a name="method-reduce-many"></a>
-#### `reduceMany()` {#collection-method}
+<a name="method-reduce-spread"></a>
+#### `reduceSpread()` {#collection-method}
 
-The `reduceMany` method reduces the collection to an array of values, passing the results of each iteration into the subsequent iteration. This method is similar to the `reduce` method; however, it can accept multiple initial values:
+The `reduceSpread` method reduces the collection to an array of values, passing the results of each iteration into the subsequent iteration. This method is similar to the `reduce` method; however, it can accept multiple initial values:
 
 ```php
 [$creditsRemaining, $batch] = Image::where('status', 'unprocessed')
         ->get()
-        ->reduceMany(function ($creditsRemaining, $batch, $image) {
+        ->reduceSpread(function ($creditsRemaining, $batch, $image) {
             if ($creditsRemaining >= $image->creditsRequired()) {
                 $batch->push($image);
 
