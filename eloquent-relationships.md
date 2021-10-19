@@ -1923,3 +1923,4 @@ For example, when a `Comment` model is updated, you may want to automatically "t
     }
 
 > {note} Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method.
+> {note} Using `touches` property is not recommended when dealing with relationship that contains too many records (>50,000) because you may hit some database limits.
