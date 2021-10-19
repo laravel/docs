@@ -1134,7 +1134,7 @@ If you would like to remove several or even all of the query's global scopes, yo
 
 Local scopes allow you to define common sets of query constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, prefix an Eloquent model method with `scope`.
 
-Scopes should always return a query builder instance:
+Scopes should always return the same query builder instance or `void`:
 
     <?php
 
@@ -1159,11 +1159,11 @@ Scopes should always return a query builder instance:
          * Scope a query to only include active users.
          *
          * @param  \Illuminate\Database\Eloquent\Builder  $query
-         * @return \Illuminate\Database\Eloquent\Builder
+         * @return void
          */
         public function scopeActive($query)
         {
-            return $query->where('active', 1);
+            $query->where('active', 1);
         }
     }
 
