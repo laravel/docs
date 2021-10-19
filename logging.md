@@ -4,6 +4,7 @@
 - [Configuration](#configuration)
     - [Available Channel Drivers](#available-channel-drivers)
     - [Channel Prerequisites](#channel-prerequisites)
+    - [Logging Deprecation Warnings](#logging-deprecation-warnings)
 - [Building Log Stacks](#building-log-stacks)
 - [Writing Log Messages](#writing-log-messages)
     - [Contextual Information](#contextual-information)
@@ -12,7 +13,6 @@
     - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
     - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
     - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
-- [Get Deprecation Warnings](#get-deprecation-warnings)
 
 <a name="introduction"></a>
 ## Introduction
@@ -86,6 +86,13 @@ The `papertrail` channel requires the `host` and `port` configuration options. Y
 The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.
 
 By default, Slack will only receive logs at the `critical` level and above; however, you can adjust this in your `config/logging.php` configuration file by modifying the `level` configuration option within your Slack log channel's configuration array.
+
+<a name="logging-deprecation-warnings"></a>
+### Logging Deprecation Warnings
+
+PHP, Laravel, and other libraries often notify their users that some of their features have been deprecated and will be removed in a future version. If you would like to log these deprecation warnings, you may specify your preferred `deprecations` log channel in your application's `config/logging.php` configuration file:
+
+    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
 
 <a name="building-log-stacks"></a>
 ## Building Log Stacks
@@ -341,12 +348,3 @@ Once you have configured the `custom` driver channel, you're ready to define the
             return new Logger(...);
         }
     }
-
-<a name="get-deprecation-warnings"></a>
-## Get Deprecation Warnings
-
-Often PHP, Laravel, and Libraries notify their users that some features have been deprecated and should not be used as they may be removed at any time from a future version.
-
-If you would like to be aware of those deprecations, you may change your application's "deprecations" logging behavior specifying the  `deprecations` log channel driver in your `config/logging.php` configuration file.
-
-    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
