@@ -12,6 +12,7 @@
     - [Customizing Monolog For Channels](#customizing-monolog-for-channels)
     - [Creating Monolog Handler Channels](#creating-monolog-handler-channels)
     - [Creating Custom Channels Via Factories](#creating-custom-channels-via-factories)
+- [Get Deprecation Warnings](#get-deprecation-warnings)
 
 <a name="introduction"></a>
 ## Introduction
@@ -340,3 +341,11 @@ Once you have configured the `custom` driver channel, you're ready to define the
             return new Logger(...);
         }
     }
+
+<a name="get-deprecation-warnings"></a>
+## Get Deprecation Warnings
+Often PHP, Laravel, and Libraries notify their users that some features have been deprecated and should not be used as they may be removed at any time from a future version.
+
+If you would like to be aware of those deprecations, you may change your application's "deprecations" logging behavior specifying the  `deprecations` log channel driver in your `config/logging.php` configuration file.
+
+    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
