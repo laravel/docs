@@ -206,6 +206,26 @@ As you can see in the example above, the array of chained jobs may be an array o
         new UpdateInventory,
     ]);
 
+If one of the jobs in your chain was a closure, the bus will receive an instance of `Illuminate\Queue\CallQueuedClosure` rather than PHP’s `Closure`:
+
+    // Logic
+    Bus::chain([
+        new ShipOrder($order),
+        new RecordShipment($order),
+        new UpdateInventory($order),
+        function () {
+            Product::update(…);
+        },
+    ])->dispatch();
+
+    // Test
+    Bus::assertChained([
+        new ShipOrder,
+        new RecordShipment,
+        new UpdateInventory,
+        new CallQueuedClosure,
+    ]);
+
 <a name="job-batches"></a>
 ### Job Batches
 
