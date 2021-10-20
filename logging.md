@@ -50,7 +50,7 @@ Name | Description
 ------------- | -------------
 `custom` | A driver that calls a specified factory to create a channel
 `daily` | A `RotatingFileHandler` based Monolog driver which rotates daily
-`errorlog` | A `ErrorLogHandler` based Monolog driver
+`errorlog` | An `ErrorLogHandler` based Monolog driver
 `monolog` | A Monolog factory driver that may use any supported Monolog handler
 `null` | A driver that discards all log messages
 `papertrail` | A `SyslogUdpHandler` based Monolog driver
