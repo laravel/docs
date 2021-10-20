@@ -923,12 +923,24 @@ Assert that the session contains the given piece of data:
 
     $response->assertSessionHas($key, $value = null);
 
+A closure can be provided, returning true if value is expected:
+
+    $response->assertSessionHas($key, function ($value) {
+        return $value->name === "Taylor Otwell";
+    });
+
 <a name="assert-session-has-input"></a>
 #### assertSessionHasInput
 
 Assert that the session has a given value in the [flashed input array](/docs/{{version}}/responses#redirecting-with-flashed-session-data):
 
     $response->assertSessionHasInput($key, $value = null);
+
+A closure can be provided if additional processing is required, returning true if value expected:
+
+    $response->assertSessionHasInput($key, function ($value) {
+        return Crypt::decryptString($value) === 'secret';
+    });
 
 <a name="assert-session-has-all"></a>
 #### assertSessionHasAll
