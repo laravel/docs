@@ -227,9 +227,32 @@ Sometimes you may wish to log a message to a channel other than your application
 
     Log::channel('slack')->info('Something happened!');
 
+It is also possible to create an on-demand channel by providing the configuration at runtime without that configuration being
+  present in your application's `logging` configuration file. To accomplish this, you may pass a configuration array to the
+  the `Log` facade's `build` method:
+
+    use Illuminate\Support\Facades\Log;
+
+    Log::build([
+      'driver' => 'single',
+      'path' => storage_path('logs/custom.log'),
+    ])->info('Something happened!');
+
 If you would like to create an on-demand logging stack consisting of multiple channels, you may use the `stack` method:
 
     Log::stack(['single', 'slack'])->info('Something happened!');
+
+You may also wish to include an on-demand channel in an on-demand logging stack. This can be achieved by including your 
+  on-demand channel instance in the array passed to the `stack` method:
+
+    use Illuminate\Support\Facades\Log;
+
+    $channel = Log::build([
+      'driver' => 'single',
+      'path' => storage_path('logs/custom.log'),
+    ]);
+
+    Log::stack(['slack', $channel])->info('Something happened!');
 
 
 <a name="monolog-channel-customization"></a>
