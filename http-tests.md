@@ -923,10 +923,10 @@ Assert that the session contains the given piece of data:
 
     $response->assertSessionHas($key, $value = null);
 
-A closure can be provided, returning true if value is expected:
+If needed, a closure can be provided as the second argument to the `assertSessionHas` method. The assertion will pass if the closure returns `true`:
 
     $response->assertSessionHas($key, function ($value) {
-        return $value->name === "Taylor Otwell";
+        return $value->name === 'Taylor Otwell';
     });
 
 <a name="assert-session-has-input"></a>
