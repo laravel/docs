@@ -1119,6 +1119,6 @@ Sometimes, you may want to test that your application's routes are throwing a sp
 
     $this->withoutExceptionHandling();
     
-In addition, if you would like to ensure your application is not using deprecated PHP and library features, you may use the `withoutDeprecationHandling` method so those warnings get converted to exceptions:
+In addition, if you would like to ensure your application is not using deprecated PHP and library features, you may use the `withoutDeprecationHandling` method, so those warnings get converted to exceptions:
 
     $this->withoutDeprecationHandling();
