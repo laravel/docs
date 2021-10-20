@@ -6,6 +6,7 @@
     - [Cookies](#cookies)
     - [Session / Authentication](#session-and-authentication)
     - [Debugging Responses](#debugging-responses)
+    - [Exception Handling](#exception-handling)
 - [Testing JSON APIs](#testing-json-apis)
     - [Fluent JSON Testing](#fluent-json-testing)
 - [Testing File Uploads](#testing-file-uploads)
@@ -14,7 +15,6 @@
 - [Available Assertions](#available-assertions)
     - [Response Assertions](#response-assertions)
     - [Authentication Assertions](#authentication-assertions)
-- [Exception Handling] (#exception-handling)
 
 <a name="introduction"></a>
 ## Introduction
@@ -207,6 +207,17 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
             $response->dump();
         }
     }
+
+<a name="exception-handling"></a>
+### Exception Handling
+
+Sometimes you may want to test that your application is throwing a specific exception. To ensure that the exception does not get caught by Laravel's exception handler and returned as an HTTP response, you may invoke the `withoutExceptionHandling` method before making your request:
+
+    $response = $this->withoutExceptionHandling()->get('/');
+
+In addition, if you would like to ensure that your application is not utilizing features that have been deprecated by the PHP language or the libraries your application is using, you may invoke the `withoutDeprecationHandling` method before making your request. When deprecation handling is disabled, deprecation warnings will be converted to exceptions, thus causing your test to fail:
+
+    $response = $this->withoutDeprecationHandling()->get('/');
 
 <a name="testing-json-apis"></a>
 ## Testing JSON APIs
@@ -1110,15 +1121,3 @@ Assert that a user is not authenticated:
 Assert that a specific user is authenticated:
 
     $this->assertAuthenticatedAs($user, $guard = null);
-    
-
-<a name="exception-handling"></a>
-## Exception Handling
-
-Sometimes, you may want to test that your application's routes are throwing a specific exception. So, to ensure that exception does not get caught by Laravel's exception handler, you may use the `withoutExceptionHandling` method:
-
-    $this->withoutExceptionHandling();
-    
-In addition, if you would like to ensure your application is not using deprecated PHP and library features, you may use the `withoutDeprecationHandling` method, so those warnings get converted to exceptions:
-
-    $this->withoutDeprecationHandling();
