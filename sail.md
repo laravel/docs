@@ -270,7 +270,7 @@ Laravel Sail's default `docker-compose.yml` file contains a service entry for [M
 ```bash
 MAIL_HOST=mailhog
 MAIL_PORT=1025
-MAIL_ENCRYPTION=
+MAIL_ENCRYPTION=null
 ```
 
 When Sail is running, you may access the MailHog web interface at: http://localhost:8025
