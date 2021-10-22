@@ -74,13 +74,6 @@ To see an example of how to write a factory, take a look at the `database/factor
     class UserFactory extends Factory
     {
         /**
-         * The name of the factory's corresponding model.
-         *
-         * @var string
-         */
-        protected $model = User::class;
-
-        /**
          * Define the model's default state.
          *
          * @return array
@@ -97,7 +90,16 @@ To see an example of how to write a factory, take a look at the `database/factor
         }
     }
 
-As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `model` property and `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory.
+As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory. By default, factories guess the model class which you can override by defining a `model` property on the factory class.
+
+    use App\Models\User;
+
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = User::class;
 
 Via the `faker` property, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
@@ -150,13 +152,6 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
 
     class UserFactory extends Factory
     {
-        /**
-         * The name of the factory's corresponding model.
-         *
-         * @var string
-         */
-        protected $model = User::class;
-
         /**
          * Configure the model factory.
          *
