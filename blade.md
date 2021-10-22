@@ -1124,6 +1124,18 @@ This will allow the usage of package components by their vendor namespace using 
 
 Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
 
+#### Inherit Parent Attributes
+
+Imagine you have two components: `button` and `danger-button`, where `danger-button` contains an instance of `button` with some additional classes. The way to proper to do it is this:
+
+```
+<!-- danger-button.blade.php -->
+
+<x-button class="bg-red-200" :attributes="$attributes">
+    {{ $slot }}
+</x-button>
+```
+
 <a name="building-layouts"></a>
 ## Building Layouts
 
