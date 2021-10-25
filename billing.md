@@ -1724,7 +1724,7 @@ Checkout also supports collecting a customer's Tax ID. To enable this on a check
 
 When this method is invoked, a new checkbox will be available to the customer that allows them to indicate if they're purchasing as a company. If so, they will have the opportunity to provide their Tax ID number.
 
-If you've set up [tax configuration](#tax-configuration) in your service provider then this feature will be enabled automatically so you don't need to call it explicitly.
+> {note} If you have already configured [automatic tax collection](#tax-configuration) in your application's service provider then this feature will be enabled automatically and there is no need to invoke the `collectTaxIds` method.
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments
