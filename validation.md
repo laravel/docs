@@ -1786,6 +1786,48 @@ Once the rule has been defined, you may attach it to a validator by passing an i
     $request->validate([
         'name' => ['required', 'string', new Uppercase],
     ]);
+    
+In case you need to access the full payload data within your custom rule, then you should implement the `DataAwareRule` interface.
+Once laravel sees that you are implementing the interface it will pass validator data to the `setData()` method on your rule.
+
+    <?php
+
+    namespace App\Rules;
+
+    use Illuminate\Contracts\Validation\Rule;
+    use Illuminate\Contracts\Validation\DataAwareRule;
+
+    class MyCustomDataAwareRule implements Rule, DataAwareRule
+    {
+        private $data;
+    
+        /**
+         * Determine if the validation rule passes.
+         *
+         * @param  string  $attribute
+         * @param  mixed  $value
+         * @return bool
+         */
+        public function passes($attribute, $value)
+        {
+            return false;
+        }
+
+        /**
+         * Get the validation error message.
+         *
+         * @return string
+         */
+        public function message()
+        {
+            return 'The :attribute is invalid.';
+        }
+
+        public function setData($data)
+        {
+            $this->data = $data;
+        }
+    }
 
 <a name="using-closures"></a>
 ### Using Closures
