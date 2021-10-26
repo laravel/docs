@@ -74,13 +74,6 @@ To see an example of how to write a factory, take a look at the `database/factor
     class UserFactory extends Factory
     {
         /**
-         * The name of the factory's corresponding model.
-         *
-         * @var string
-         */
-        protected $model = User::class;
-
-        /**
          * Define the model's default state.
          *
          * @return array
@@ -97,7 +90,7 @@ To see an example of how to write a factory, take a look at the `database/factor
         }
     }
 
-As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `model` property and `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory.
+As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory.
 
 Via the `faker` property, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
@@ -112,9 +105,24 @@ To create a factory, execute the `make:factory` [Artisan command](/docs/{{versio
 
 The new factory class will be placed in your `database/factories` directory.
 
-The `--model` option may be used to indicate the name of the model created by the factory. This option will pre-fill the generated factory file with the given model:
+<a name="factory-and-model-discovery-conventions"></a>
+#### Model & Factory Discovery Conventions
 
-    php artisan make:factory PostFactory --model=Post
+Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\Database\Eloquent\Factories\HasFactory` trait in order to instantiate a factory instance for that model.
+
+The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
+
+    use Database\Factories\Administration\FlightFactory;
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return FlightFactory::new();
+    }
 
 <a name="factory-states"></a>
 ### Factory States
@@ -150,13 +158,6 @@ Factory callbacks are registered using the `afterMaking` and `afterCreating` met
 
     class UserFactory extends Factory
     {
-        /**
-         * The name of the factory's corresponding model.
-         *
-         * @var string
-         */
-        protected $model = User::class;
-
         /**
          * Configure the model factory.
          *
@@ -218,23 +219,6 @@ Alternatively, the `state` method may be called directly on the factory instance
     ])->make();
 
 > {tip} [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories.
-
-<a name="factory-and-model-discovery-conventions"></a>
-#### Model & Factory Discovery Conventions
-
-The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
-
-    use Database\Factories\Administration\FlightFactory;
-
-    /**
-     * Create a new factory instance for the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    protected static function newFactory()
-    {
-        return FlightFactory::new();
-    }
 
 <a name="persisting-models"></a>
 ### Persisting Models
