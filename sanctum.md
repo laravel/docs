@@ -169,13 +169,13 @@ The `abilities` middleware may be assigned to a route to verify that the incomin
 
     Route::get('/orders', function () {
         // Token has both "check-status" and "place-orders" abilities...
-    })->middleware(['auth:api', 'abilities:check-status,place-orders']);
+    })->middleware(['auth:sanctum', 'abilities:check-status,place-orders']);
 
 The `ability` middleware may be assigned to a route to verify that the incoming request's token has *at least one* of the listed abilities:
 
     Route::get('/orders', function () {
         // Token has either "check-status" or "place-orders" ability...
-    })->middleware(['auth:api', 'ability:check-status,place-orders']);
+    })->middleware(['auth:sanctum', 'ability:check-status,place-orders']);
 
 <a name="first-party-ui-initiated-requests"></a>
 #### First-Party UI Initiated Requests
