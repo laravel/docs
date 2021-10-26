@@ -124,6 +124,21 @@ The `HasFactory` trait's `factory` method will use conventions to determine the 
         return FlightFactory::new();
     }
 
+And override the `model` property on your factory:
+
+    use App\Administration\Flight;
+    use Illuminate\Database\Eloquent\Factories\Factory;
+
+    class FlightFactory extends Factory
+    {
+        /**
+         * The name of the factory's corresponding model.
+         *
+         * @var string
+         */
+        protected $model = Flight::class;
+    }
+
 <a name="factory-states"></a>
 ### Factory States
 
