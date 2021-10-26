@@ -67,7 +67,6 @@ To see an example of how to write a factory, take a look at the `database/factor
 
     namespace Database\Factories;
 
-    use App\Models\User;
     use Illuminate\Database\Eloquent\Factories\Factory;
     use Illuminate\Support\Str;
 
