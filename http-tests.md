@@ -185,8 +185,6 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -205,6 +203,33 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
             $response->dumpSession();
 
             $response->dump();
+        }
+    }
+
+Alternatively, if would like to also terminate the script's execution you can use the `dd`, `ddHeaders`, and `ddSession` methods:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic test example.
+         *
+         * @return void
+         */
+        public function test_basic_test()
+        {
+            $response = $this->get('/');
+
+            $response->ddHeaders();
+
+            $response->ddSession();
+
+            $response->dd();
         }
     }
 
