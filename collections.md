@@ -679,7 +679,7 @@ The `every` method may be used to verify that all elements of a collection pass 
 
 If the collection is empty, the `every` method will return true:
 
-    $collection = collect([]);
+    $collection = collect([2, 2]);
 
     $collection->every(function ($value, $key) {
         return $value > 2;
