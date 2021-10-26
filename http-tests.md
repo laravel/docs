@@ -206,7 +206,7 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
         }
     }
 
-Alternatively, if would like to also terminate the script's execution you can use the `dd`, `ddHeaders`, and `ddSession` methods:
+Alternatively, you may use the `dd`, `ddHeaders`, and `ddSession` methods to dump information about the response and then stop execution:
 
     <?php
 
