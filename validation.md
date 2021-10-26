@@ -1250,7 +1250,7 @@ The field under validation must have a minimum _value_. Strings, numerics, array
 
 The field under validation must be a multiple of _value_.
 
-> {tip} The [`bcmath` PHP extension](https://www.php.net/manual/en/book.bc.php) is required in order to use the `multiple_of` rule.
+> {note} The [`bcmath` PHP extension](https://www.php.net/manual/en/book.bc.php) is required in order to use the `multiple_of` rule.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
