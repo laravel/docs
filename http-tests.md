@@ -345,31 +345,28 @@ In the example above, you may have noticed we invoked the `etc` method at the en
 The intention behind this behavior is to protect you from unintentionally exposing sensitive information in your JSON responses by forcing you to either explicitly make an assertion against the attribute or explicitly allow additional attributes via the `etc` method.
 
 <a name="asserting-json-attribute-presence-and-absence"></a>
-#### Asserting JSON attribute presence and absence
+#### Asserting Attribute Presence / Absence
 
-To assert that an attribute is present without checking its value you may use the `has` method while `missing` asserts the absence of an attribute:
+To assert that an attribute is present or absent, you may use the `has` and `missing` methods:
 
-    $response
-        ->assertJson(fn (AssertableJson $json) =>
-            $json->has('data')
-                 ->missing('message')
-        );
+    $response->assertJson(fn (AssertableJson $json) =>
+        $json->has('data')
+             ->missing('message')
+    );
 
-The `hasAll` and `missingAll` methods allow asserting the presence or absence of multiple attributes simultaneously:
+In addition, the `hasAll` and `missingAll` methods allow asserting the presence or absence of multiple attributes simultaneously:
 
-    $response
-        ->assertJson(fn (AssertableJson $json) =>
-            $json->hasAll('status', 'data')
-                 ->missingAll('message', 'code')
-        );
+    $response->assertJson(fn (AssertableJson $json) =>
+        $json->hasAll('status', 'data')
+             ->missingAll('message', 'code')
+    );
 
-To check if at least one of multiple attributes is present you may use the `hasAny` method:
+You may use the `hasAny` method to determine if at least one of a given list of attributes is present:
 
-    $response
-        ->assertJson(fn (AssertableJson $json) =>
-            $json->has('status')
-                 ->hasAny('data', 'message', 'code')
-        );
+    $response->assertJson(fn (AssertableJson $json) =>
+        $json->has('status')
+             ->hasAny('data', 'message', 'code')
+    );
 
 <a name="asserting-against-json-collections"></a>
 #### Asserting Against JSON Collections
