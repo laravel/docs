@@ -157,6 +157,26 @@ When handling an incoming request authenticated by Sanctum, you may determine if
         //
     }
 
+<a name="token-ability-middleware"></a>
+#### Token Ability Middleware
+
+Sanctum also includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given ability. To get started, add the following middleware to the `$routeMiddleware` property of your application's `app/Http/Kernel.php` file:
+
+    'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
+    'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
+
+The `abilities` middleware may be assigned to a route to verify that the incoming request's token has all of the listed abilities:
+
+    Route::get('/orders', function () {
+        // Token has both "check-status" and "place-orders" abilities...
+    })->middleware(['auth:sanctum', 'abilities:check-status,place-orders']);
+
+The `ability` middleware may be assigned to a route to verify that the incoming request's token has *at least one* of the listed abilities:
+
+    Route::get('/orders', function () {
+        // Token has the "check-status" or "place-orders" ability...
+    })->middleware(['auth:sanctum', 'ability:check-status,place-orders']);
+
 <a name="first-party-ui-initiated-requests"></a>
 #### First-Party UI Initiated Requests
 
