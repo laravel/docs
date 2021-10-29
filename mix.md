@@ -188,6 +188,18 @@ With this addition to your `webpack.mix.js` file, Mix will no longer match any `
         background: url("../images/thing.png");
     }
 
+When processing files, you can also explicitly specify the absolute URL conversion:
+
+    mix.sass('resources/sass/app.scss', 'public/css').options({
+        resourceRoot: 'https://example.com'
+    });
+
+After that, the final CSS file will contain absolute links:
+
+    .example {
+        background: url(https://example.com/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
+    }
+
 <a name="css-source-maps"></a>
 ### Source Maps
 
