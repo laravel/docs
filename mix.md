@@ -317,6 +317,19 @@ Because versioned files are usually unnecessary in development, you may instruct
     if (mix.inProduction()) {
         mix.version();
     }
+    
+If you are working with chunked assets (aka "lazy loaded assets") in your project and you want them to be versioned as well, use the `chunkFilename` option. Here is a scenario utilizing webpack config options to cache bust chunked javascript files:
+
+    mix.js('resources/js/app.js', 'public/js');
+
+    if (mix.inProduction()) {
+        mix.version()
+            .webpackConfig({
+                output: {
+                    chunkFilename: 'js/[name].js?id=[chunkhash]'
+                }
+            });
+    }
 
 <a name="custom-mix-base-urls"></a>
 #### Custom Mix Base URLs
