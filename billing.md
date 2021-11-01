@@ -1617,7 +1617,6 @@ When defining your `success_url` checkout option, you may instruct Stripe to add
     use Illuminate\Http\Request;
     use Stripe\Checkout\Session;
     use Stripe\Customer;
-    use Stripe\Stripe;
 
     Route::get('/product-checkout', function (Request $request) {
         return $request->user()->checkout(['price_tshirt' => 1], [
@@ -1627,12 +1626,9 @@ When defining your `success_url` checkout option, you may instruct Stripe to add
     });
 
     Route::get('/checkout-success', function (Request $request) {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-        
-        $session = Session::retrieve($request->get('session_id'));
-        $customer = Customer::retrieve($session->customer);
+        $checkoutSession = $request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
 
-        return view('checkout.success', ['customerName' => $customer->name]);
+        return view('checkout.success', ['checkoutSession' => $checkoutSession]);
     })->name('checkout-success');
 
 <a name="checkout-promotion-codes"></a>
