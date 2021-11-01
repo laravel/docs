@@ -1626,10 +1626,9 @@ When defining your `success_url` checkout option, you may instruct Stripe to add
     });
 
     Route::get('/checkout-success', function (Request $request) {
-        $session = Session::retrieve($request->get('session_id'));
-        $customer = Customer::retrieve($session->customer);
+        $checkoutSession = $request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
 
-        return view('checkout.success', ['customerName' => $customer->name]);
+        return view('checkout.success', ['checkoutSession' => $checkoutSession]);
     })->name('checkout-success');
 
 <a name="checkout-promotion-codes"></a>
