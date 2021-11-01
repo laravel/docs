@@ -1423,7 +1423,7 @@ The field under validation must be a string. If you would like to allow the fiel
 The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function.
 
 <a name="rule-unique"></a>
-#### unique:_table_,_column_,_except_,_idColumn_
+#### unique:_table_,_column_
 
 The field under validation must not exist within the given database table.
 
@@ -1575,7 +1575,7 @@ Sometimes you may want to validate a field based on another field in the same ne
     $validator->sometimes('channels.*.address', 'email', function($input, $item) {
         return $item->type === 'email';
     });
-    
+
     $validator->sometimes('channels.*.address', 'url', function($input, $item) {
         return $item->type !== 'email';
     });
