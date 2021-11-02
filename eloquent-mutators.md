@@ -119,6 +119,7 @@ The `$casts` property should be an array where the key is the name of the attrib
 
 <div class="content-list" markdown="1">
 - `array`
+- `AsStringable::class`
 - `boolean`
 - `collection`
 - `date`
@@ -175,6 +176,30 @@ If you need to add a new, temporary cast at runtime, you may use the `mergeCasts
     ]);
 
 > {note} Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.
+
+<a name="stringable-casting"></a>
+#### Stringable Casting
+
+You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Casts\AsStringable;
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        /**
+         * The attributes that should be cast.
+         *
+         * @var array
+         */
+        protected $casts = [
+            'directory' => AsStringable::class,
+        ];
+    }
 
 <a name="array-and-json-casting"></a>
 ### Array & JSON Casting
