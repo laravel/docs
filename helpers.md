@@ -108,6 +108,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
 [Str::markdown](#method-str-markdown)
+[Str::mask](#method-str-mask)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -170,6 +171,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [lower](#method-fluent-str-lower)
 [ltrim](#method-fluent-str-ltrim)
 [markdown](#method-fluent-str-markdown)
+[mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
 [padBoth](#method-fluent-str-padboth)
@@ -1347,6 +1349,23 @@ The `Str::markdown` method converts GitHub flavored Markdown into HTML:
 
     // <h1>Taylor Otwell</h1>
 
+<a name="method-str-mask"></a>
+#### `Str::mask()` {#collection-method}
+
+The `Str::mask` method masks a portion of a string with a repeated character, and may be used to obfuscate segments of strings such as email addresses and phone numbers:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::mask('taylor@example.com', '*', 3);
+
+    // tay***************
+
+If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
+
+    $string = Str::mask('taylor@example.com', '*', -15, 3);
+
+    // tay***@example.com
+
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {#collection-method}
 
@@ -2084,6 +2103,23 @@ The `markdown` method converts GitHub flavored Markdown into HTML:
     ]);
 
     // <h1>Taylor Otwell</h1>
+
+<a name="method-fluent-str-mask"></a>
+#### `mask` {#collection-method}
+
+The `mask` method masks a portion of a string with a repeated character, and may be used to obfuscate segments of strings such as email addresses and phone numbers:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('taylor@example.com')->mask('*', 3);
+
+    // tay***************
+
+If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
+
+    $string = Str::of('taylor@example.com')->mask('*', -15, 3);
+
+    // tay***@example.com
 
 <a name="method-fluent-str-match"></a>
 #### `match` {#collection-method}
@@ -3014,7 +3050,7 @@ To only retry under specific conditions, you may pass a closure as the fourth ar
     }, 100, function ($exception) {
         return $exception instanceof RetryException;
     });
-    
+
 <a name="method-session"></a>
 #### `session()` {#collection-method}
 
