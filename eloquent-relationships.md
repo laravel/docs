@@ -463,6 +463,7 @@ class Project extends Model
         return $this->hasManyThrough(Deployment::class, Environment::class);
     }
 }
+```
 
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
