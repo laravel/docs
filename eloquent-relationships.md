@@ -364,9 +364,6 @@ public function currentPricing()
 
 The "has-one-through" relationship defines a one-to-one relationship with another model. However, this relationship indicates that the declaring model can be matched with one instance of another model by proceeding _through_ a third model.
 
-
-For example, in a company, each  employee, is part of a team, which is 
-
 For example, in a company application, each `Employee` model may be associated with one `Team` model, and each `Team` model may be associated with one `Company` model. While the employee and the company have no direct relationship within the database, the employee can access the owner _through_ the `Team` model. Let's look at the tables necessary to define 
 this relationship:
 
@@ -410,7 +407,7 @@ The first argument passed to the `hasOneThrough` method is the name of the final
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
 
-    class Mechanic extends Model
+    class Employee extends Model
     {
         /**
          * Get the car's owner.
