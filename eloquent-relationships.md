@@ -383,22 +383,22 @@ this relationship:
 
 Now that we have examined the table structure for the relationship, let's define the relationship on the `Employee` model:
 
-    <?php
+```php
+namespace App\Models;
 
-    namespace App\Models;
+use Illuminate\Database\Eloquent\Model;
 
-    use Illuminate\Database\Eloquent\Model;
-
-    class Employee extends Model
+class Employee extends Model
+{
+    /**
+        * Get the company of the employee through its team.
+        */
+    public function company()
     {
-        /**
-         * Get the company of the employee through its team.
-         */
-        public function company()
-        {
-            return $this->hasOneThrough(Company::class, Team::class);
-        }
+        return $this->hasOneThrough(Company::class, Team::class);
     }
+}
+```
 
 The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
@@ -407,23 +407,25 @@ The first argument passed to the `hasOneThrough` method is the name of the final
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
 
-    class Employee extends Model
+```php
+class Employee extends Model
+{
+    /**
+     * Get the car's owner.
+     */
+    public function company()
     {
-        /**
-         * Get the car's owner.
-         */
-        public function company()
-        {
-            return $this->hasOneThrough(
-                Company::class,
-                Team::class,
-                'id',        // Local key on the teams table...
-                'id',        // Local key on the company table...
-                'team_id',   // Foreign key on the teams table...
-                'company_id' // Foreign key on the company table...
-            );
-        }
+        return $this->hasOneThrough(
+            Company::class,
+            Team::class,
+            'id',        // Local key on the teams table...
+            'id',        // Local key on the company table...
+            'team_id',   // Foreign key on the teams table...
+            'company_id' // Foreign key on the company table...
+        );
     }
+}
+```
 
 <a name="has-many-through"></a>
 ### Has Many Through
@@ -446,22 +448,21 @@ The "has-many-through" relationship provides a convenient way to access distant 
 
 Now that we have examined the table structure for the relationship, let's define the relationship on the `Project` model:
 
-    <?php
+```php
+namespace App\Models;
 
-    namespace App\Models;
+use Illuminate\Database\Eloquent\Model;
 
-    use Illuminate\Database\Eloquent\Model;
-
-    class Project extends Model
+class Project extends Model
+{
+    /**
+     * Get all of the deployments for the project.
+     */
+    public function deployments()
     {
-        /**
-         * Get all of the deployments for the project.
-         */
-        public function deployments()
-        {
-            return $this->hasManyThrough(Deployment::class, Environment::class);
-        }
+        return $this->hasManyThrough(Deployment::class, Environment::class);
     }
+}
 
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
