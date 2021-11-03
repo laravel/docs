@@ -513,6 +513,7 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
 
     @component('mail::message')
     # Order Shipped
+    @endcomponent
 
     Your order has been shipped!
 
