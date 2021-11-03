@@ -138,6 +138,33 @@ Next, define a `model` property on the corresponding factory:
         protected $model = Flight::class;
     }
 
+Alternatively, you can register your own logic of discovering model names from factories using the static `Factory::guessModelNamesUsing()` method, for example from within `AppServiceProvider`:
+
+    use Illuminate\Database\Eloquent\Factories\Factory;
+
+    class AppServiceProvider
+    {
+        public function boot()
+        {
+            Factory::guessModelNamesUsing(function (Factory $factory) {
+                $modelName = customModelDiscovery($factory);
+
+                return $modelName;
+            });
+        }
+    }
+
+Similarly, you can use `Factory::guessFactoryNamesUsing()` to instruct Laravel to return the corresponding factory from the model name following your own convention: 
+
+    public function boot()
+    {
+        Factory::guessFactoryNamesUsing(function (string $modelName) {
+            $factoryName = customFactoryDiscovery($modelName);
+
+            return $factoryName::new();
+        });
+    }
+
 <a name="factory-states"></a>
 ### Factory States
 
