@@ -446,24 +446,26 @@ The "has-many-through" relationship provides a convenient way to access distant 
         environment_id - integer
         commit_hash - string
 
+
 Now that we have examined the table structure for the relationship, let's define the relationship on the `Project` model:
 
-```php
-namespace App\Models;
+    <?php
 
-use Illuminate\Database\Eloquent\Model;
+    namespace App\Models;
 
-class Project extends Model
-{
-    /**
-     * Get all of the deployments for the project.
-     */
-    public function deployments()
+    use Illuminate\Database\Eloquent\Model;
+
+    class Project extends Model
     {
-        return $this->hasManyThrough(Deployment::class, Environment::class);
+        /**
+         * Get all of the deployments for the project.
+         */
+        public function deployments()
+        {
+            return $this->hasManyThrough(Deployment::class, Environment::class);
+        }
     }
-}
-```
+
 
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
