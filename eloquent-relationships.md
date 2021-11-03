@@ -364,23 +364,27 @@ public function currentPricing()
 
 The "has-one-through" relationship defines a one-to-one relationship with another model. However, this relationship indicates that the declaring model can be matched with one instance of another model by proceeding _through_ a third model.
 
-For example, in a vehicle repair shop application, each `Mechanic` model may be associated with one `Car` model, and each `Car` model may be associated with one `Owner` model. While the mechanic and the owner have no direct relationship within the database, the mechanic can access the owner _through_ the `Car` model. Let's look at the tables necessary to define this relationship:
 
-    mechanics
+For example, in a company, each  employee, is part of a team, which is 
+
+For example, in a company application, each `Employee` model may be associated with one `Team` model, and each `Team` model may be associated with one `Company` model. While the employee and the company have no direct relationship within the database, the employee can access the owner _through_ the `Team` model. Let's look at the tables necessary to define 
+this relationship:
+
+    employees
+        id - integer
+        name - string
+        team_id - integer
+
+    teams
+        id - integer
+        name - string
+        company_id - integer
+
+    companies
         id - integer
         name - string
 
-    cars
-        id - integer
-        model - string
-        mechanic_id - integer
-
-    owners
-        id - integer
-        name - string
-        car_id - integer
-
-Now that we have examined the table structure for the relationship, let's define the relationship on the `Mechanic` model:
+Now that we have examined the table structure for the relationship, let's define the relationship on the `Employee` model:
 
     <?php
 
@@ -388,14 +392,14 @@ Now that we have examined the table structure for the relationship, let's define
 
     use Illuminate\Database\Eloquent\Model;
 
-    class Mechanic extends Model
+    class Employee extends Model
     {
         /**
-         * Get the car's owner.
+         * Get the company of the employee through its team.
          */
-        public function carOwner()
+        public function company()
         {
-            return $this->hasOneThrough(Owner::class, Car::class);
+            return $this->hasOneThrough(Company::class, Team::class);
         }
     }
 
@@ -411,15 +415,15 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         /**
          * Get the car's owner.
          */
-        public function carOwner()
+        public function company()
         {
             return $this->hasOneThrough(
-                Owner::class,
-                Car::class,
-                'mechanic_id', // Foreign key on the cars table...
-                'car_id', // Foreign key on the owners table...
-                'id', // Local key on the mechanics table...
-                'id' // Local key on the cars table...
+                Company::class,
+                Team::class,
+                'id',        // Local key on the teams table...
+                'id',        // Local key on the company table...
+                'team_id',   // Foreign key on the teams table...
+                'company_id' // Foreign key on the company table...
             );
         }
     }
