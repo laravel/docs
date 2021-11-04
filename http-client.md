@@ -199,12 +199,15 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 <a name="throwing-exceptions"></a>
 #### Throwing Exceptions
 
-If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` method:
+If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` or `throwIf` methods:
 
     $response = Http::post(...);
 
     // Throw an exception if a client or server error occurred...
     $response->throw();
+
+    // Throw an exception if an error occurred and the given condition is true...
+    $response->throwIf($condition);
 
     return $response['user']['id'];
 
@@ -219,17 +222,6 @@ If you would like to perform some additional logic before the exception is throw
     return Http::post(...)->throw(function ($response, $e) {
         //
     })->json();
-
-<a name="conditionally-throwing-exceptions"></a>
-##### Conditionally Throwing Exceptions
-
-Using the response instance you can decide when to throw an exception by providing a truthy value in the `throwIf` method:
-
-    use Illuminate\Support\Facades\App;
-
-    $response->throwIf(App::isLocal());
-
-If the response has client or server errors, the `Illuminate\Http\Client\RequestException` will be thrown only when the application is in the local environment.
 
 <a name="guzzle-options"></a>
 ### Guzzle Options
