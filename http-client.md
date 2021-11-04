@@ -199,12 +199,15 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 <a name="throwing-exceptions"></a>
 #### Throwing Exceptions
 
-If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` method:
+If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` or `throwIf` methods:
 
     $response = Http::post(...);
 
     // Throw an exception if a client or server error occurred...
     $response->throw();
+
+    // Throw an exception if an error occurred and the given condition is true...
+    $response->throwIf($condition);
 
     return $response['user']['id'];
 
