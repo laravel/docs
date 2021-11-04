@@ -220,6 +220,17 @@ If you would like to perform some additional logic before the exception is throw
         //
     })->json();
 
+<a name="conditionally-throwing-exceptions"></a>
+##### Conditionally Throwing Exceptions
+
+Using the response instance you can decide when to throw an exception by providing a truthy value in the `throwIf` method:
+
+    use Illuminate\Support\Facades\App;
+
+    $response->throwIf(App()->isLocal());
+
+If the response has client or server errors, the `Illuminate\Http\Client\RequestException` will be thrown only when the application is in the local environment.
+
 <a name="guzzle-options"></a>
 ### Guzzle Options
 
