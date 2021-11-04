@@ -227,7 +227,7 @@ Using the response instance you can decide when to throw an exception by providi
 
     use Illuminate\Support\Facades\App;
 
-    $response->throwIf(App()->isLocal());
+    $response->throwIf(App::isLocal());
 
 If the response has client or server errors, the `Illuminate\Http\Client\RequestException` will be thrown only when the application is in the local environment.
 
