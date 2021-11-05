@@ -365,7 +365,7 @@ In the example below, we will dispatch a queued job if a lock is successfully ac
 
     $lock = Cache::lock('processing', 120);
 
-    if ($result = $lock->get()) {
+    if ($lock->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 
