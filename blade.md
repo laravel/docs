@@ -48,7 +48,7 @@ Blade views may be returned from routes or controller using the global `view` he
         return view('greeting', ['name' => 'Finn']);
     });
 
-> {tip} Before digging deeper into Blade, make sure to read the Laravel [view documentation](/docs/{{version}}/views).
+> {tip} Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
 
 <a name="displaying-data"></a>
 ## Displaying Data
