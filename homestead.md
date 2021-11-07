@@ -240,7 +240,7 @@ Homestead publishes hostnames using `mDNS` for automatic host resolution. If you
 
 Using automatic hostnames works best for [per project installations](#per-project-installation) of Homestead. If you host multiple sites on a single Homestead instance, you may add the "domains" for your web sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead virtual machine. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
-    192.168.10.10  homestead.test
+    192.168.56.56  homestead.test
 
 Make sure the IP address listed is the one set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
 
@@ -422,8 +422,8 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
 If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`:
 
-    192.168.10.10  homestead.test
-    192.168.10.10  another.test
+    192.168.56.56  homestead.test
+    192.168.56.56  another.test
 
 Once the site has been added, execute the `vagrant reload --provision` terminal command from your Homestead directory.
 
