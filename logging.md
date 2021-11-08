@@ -234,7 +234,7 @@ If you would like to create an on-demand logging stack consisting of multiple ch
 <a name="on-demand-channels"></a>
 #### On-Demand Channels
 
-It is also possible to create an on-demand channel by providing the configuration at runtime without that configuration being present in your application's `logging` configuration file. To accomplish this, you may pass a configuration array to the the `Log` facade's `build` method:
+It is also possible to create an on-demand channel by providing the configuration at runtime without that configuration being present in your application's `logging` configuration file. To accomplish this, you may pass a configuration array to the `Log` facade's `build` method:
 
     use Illuminate\Support\Facades\Log;
 
