@@ -1703,7 +1703,7 @@ To view all of the failed jobs that have been inserted into your `failed_jobs` d
 
     php artisan queue:failed
 
-The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
+The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece`, issue the following command:
 
     php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece
 
