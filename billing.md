@@ -652,6 +652,17 @@ If you would like to add a subscription to a customer who already has a default 
 
     $user->newSubscription('default', 'price_monthly')->add();
 
+<a name="adding-subscriptions"></a>
+#### Sending Subscription Invoices
+
+If instead of recurring automatic payments, you want to send an invoice to your customer you may use the `createAndSendInvoice` method. This will create a subscription on the customer without having them to require to provide a payment method up front and it'll send an invoice to them so they can perform the payment:
+
+    use App\Models\User;
+
+    $user = User::find(1);
+
+    $user->newSubscription('default', 'price_monthly')->createAndSendInvoice();
+
 <a name="creating-subscriptions-from-the-stripe-dashboard"></a>
 #### Creating Subscriptions From The Stripe Dashboard
 
