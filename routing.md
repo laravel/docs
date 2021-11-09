@@ -439,6 +439,23 @@ When implicitly binding multiple Eloquent models in a single route definition, y
 
 When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural form of the route parameter name) which can be used to retrieve the `Post` model.
 
+If you wish, you may instruct Laravel to scope "child" bindings even when a custom key is not provided. To do so, you may invoke the `scopeBindings` method when defining your route:
+
+    use App\Models\Post;
+    use App\Models\User;
+
+    Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
+        return $post;
+    })->scopeBindings();
+
+Or, you may instruct an entire group of route definitions to use scoped bindings:
+
+    Route::scopeBindings()->group(function () {
+        Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
+            return $post;
+        });
+    });
+
 <a name="customizing-missing-model-behavior"></a>
 #### Customizing Missing Model Behavior
 
