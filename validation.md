@@ -776,6 +776,7 @@ Below is a list of all available validation rules and their function:
 [Distinct](#rule-distinct)
 [Email](#rule-email)
 [Ends With](#rule-ends-with)
+[Enum](#rule-enum)
 [Exclude](#rule-exclude)
 [Exclude If](#rule-exclude-if)
 [Exclude Unless](#rule-exclude-unless)
@@ -1051,6 +1052,20 @@ The `filter` validator, which uses PHP's `filter_var` function, ships with Larav
 #### ends_with:_foo_,_bar_,...
 
 The field under validation must end with one of the given values.
+
+<a name="rule-enum"></a>
+#### enum
+
+The `Enum` rule is a class based rule that validates whether the field under validation contains a valid enum value. The `Enum` rule accepts the name of the enum as its only constructor argument:
+
+    use App\Enums\ServerStatus;
+    use Illuminate\Validation\Rules\Enum;
+
+    $request->validate([
+        'status' => [new Enum(ServerStatus::class)],
+    ]);
+
+> {note} Enums are only available on PHP 8.1+.
 
 <a name="rule-exclude"></a>
 #### exclude
