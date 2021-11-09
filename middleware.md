@@ -146,6 +146,9 @@ When assigning middleware, you may also pass the fully qualified class name:
         //
     })->middleware(EnsureTokenIsValid::class);
 
+<a name="excluding-middleware"></a>
+#### Excluding Middleware
+
 When assigning middleware to a group of routes, you may occasionally need to prevent the middleware from being applied to an individual route within the group. You may accomplish this using the `withoutMiddleware` method:
 
     use App\Http\Middleware\EnsureTokenIsValid;
