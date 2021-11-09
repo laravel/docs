@@ -36,6 +36,7 @@
     - [Formatting SMS Notifications](#formatting-sms-notifications)
     - [Formatting Shortcode Notifications](#formatting-shortcode-notifications)
     - [Customizing The "From" Number](#customizing-the-from-number)
+    - [Adding a Client Reference](#adding-a-client-reference)
     - [Routing SMS Notifications](#routing-sms-notifications)
 - [Slack Notifications](#slack-notifications)
     - [Prerequisites](#slack-prerequisites)
@@ -945,6 +946,25 @@ If you would like to send some notifications from a phone number that is differe
         return (new NexmoMessage)
                     ->content('Your SMS message content')
                     ->from('15554443333');
+    }
+
+<a name="adding-a-client-reference"></a>
+### Adding a Client Reference
+
+If you need to keep track of costs per user, team or client, you can optionally add a clientReference to the notification.  This client reference will
+then be reportable by Vonage so that you can better understand SMS usage. The clientReference can be any string up to 40 characters.
+
+    /**
+     * Get the Vonage / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return NexmoMessage
+     */
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage)
+                    ->clientReference('Account A')
+                    ->content('Your SMS message content');
     }
 
 <a name="routing-sms-notifications"></a>
