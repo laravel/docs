@@ -69,29 +69,6 @@ You are not limited to displaying the contents of the variables passed to the vi
 
     The current UNIX timestamp is {{ time() }}.
 
-<a name="rendering-json"></a>
-#### Rendering JSON
-
-Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
-
-    <script>
-        var app = <?php echo json_encode($array); ?>;
-    </script>
-
-However, instead of manually calling `json_encode`, you may use the `Illuminate\Support\Js::from` method directive. The `from` method accepts the same arguments as PHP's `json_encode` function; however, it will ensure that the resulting JSON is properly escaped for inclusion within HTML quotes. The `from` method will return a string `JSON.parse` JavaScript statement that will convert the given object or array into a valid JavaScript object:
-
-    <script>
-        var app = {{ Illuminate\Support\Js::from($array) }};
-    </script>
-
-The latest versions of the Laravel application skeleton include a `Js` facade, which provides convenient access to this functionality within your Blade templates:
-
-    <script>
-        var app = {{ Js::from($array) }};
-    </script>
-
-> {note} You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
-
 <a name="html-entity-encoding"></a>
 ### HTML Entity Encoding
 
@@ -144,6 +121,29 @@ The `@` symbol may also be used to escape Blade directives:
 
     <!-- HTML output -->
     @if()
+
+<a name="rendering-json"></a>
+#### Rendering JSON
+
+Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
+
+    <script>
+        var app = <?php echo json_encode($array); ?>;
+    </script>
+
+However, instead of manually calling `json_encode`, you may use the `Illuminate\Support\Js::from` method directive. The `from` method accepts the same arguments as PHP's `json_encode` function; however, it will ensure that the resulting JSON is properly escaped for inclusion within HTML quotes. The `from` method will return a string `JSON.parse` JavaScript statement that will convert the given object or array into a valid JavaScript object:
+
+    <script>
+        var app = {{ Illuminate\Support\Js::from($array) }};
+    </script>
+
+The latest versions of the Laravel application skeleton include a `Js` facade, which provides convenient access to this functionality within your Blade templates:
+
+    <script>
+        var app = {{ Js::from($array) }};
+    </script>
+
+> {note} You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="the-at-verbatim-directive"></a>
 #### The `@verbatim` Directive
