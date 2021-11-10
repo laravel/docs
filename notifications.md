@@ -1247,7 +1247,7 @@ When a notification is sending `Illuminate\Notifications\Events\NotificationSend
         ],
     ];
 
-When `Illuminate\Notifications\Events\NotificationSending`'s listener handle method returns `false` notification will not be sent and it will prevent from sending the notification:
+When `Illuminate\Notifications\Events\NotificationSending`'s listener `handle` method returns `false` notification will not be sent and it will prevent from sending the notification:
 
     /**
      * Handle the event.
