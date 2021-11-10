@@ -1655,7 +1655,7 @@ You can also perform a simple charge for an ad-hoc product that has not been cre
         return $request->user()->checkoutCharge(1200, 'T-Shirt', 5);
     });
 
-> {note} When using the `checkoutCharge` method, Stripe will always create a new product and price in your Stripe dashboard. Therefore, we recommend that you create the products up front in your Stripe dashboard and use of the `checkout` method instead.
+> {note} When using the `checkoutCharge` method, Stripe will always create a new product and price in your Stripe dashboard. Therefore, we recommend that you create the products up front in your Stripe dashboard and use the `checkout` method instead.
 
 <a name="subscription-checkouts"></a>
 ### Subscription Checkouts
