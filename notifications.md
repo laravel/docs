@@ -1233,6 +1233,48 @@ Within an event listener, you may access the `notifiable`, `notification`, `chan
         // $event->notification
         // $event->response
     }
+    
+When a notification is sending `Illuminate\Notifications\Events\NotificationSending` event will be fired, and You will be able to listen on it which contains a `notifiable` entity. You can set the listener in `EventServiceProvicer` for this event:
+
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Illuminate\Notifications\Events\NotificationSending' => [
+            'App\Listeners\CheckNotificationStatus',
+        ],
+    ];
+
+When `Illuminate\Notifications\Events\NotificationSending`'s listener handle method returns `false` notification will not be sent and it will prevent from sending the notification:
+
+    /**
+     * Handle the event.
+     *
+     * @param  \Illuminate\Notifications\Events\NotificationSending  $event
+     * @return void
+     */
+    public function handle(NotificationSending $event)
+    {
+        return false;
+    }
+    
+Also, You access the `notifiable`, `notification` and `channel` properties on the event:
+
+    /**
+     * Handle the event.
+     *
+     * @param  \Illuminate\Notifications\Events\NotificationSending  $event
+     * @return void
+     */
+    public function handle(NotificationSending $event)
+    {
+        // $event->channel
+        // $event->notifiable
+        // $event->notification
+    }   
+
 
 <a name="custom-channels"></a>
 ## Custom Channels
