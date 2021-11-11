@@ -32,9 +32,7 @@ The most basic Laravel routes accept a URI and a closure, providing a very simpl
 
     use Illuminate\Support\Facades\Route;
 
-    Route::get('/greeting', function () {
-        return 'Hello World';
-    });
+    Route::get('/greeting', fn() => 'Hello World');
 
 <a name="the-default-route-files"></a>
 #### The Default Route Files
