@@ -769,6 +769,8 @@ Below is a list of all available validation rules and their function:
 [Date](#rule-date)
 [Date Equals](#rule-date-equals)
 [Date Format](#rule-date-format)
+[Declined](#rule-declined)
+[Declined If](#rule-declined-if)
 [Different](#rule-different)
 [Digits](#rule-digits)
 [Digits Between](#rule-digits-between)
@@ -971,6 +973,16 @@ The field under validation must be equal to the given date. The dates will be pa
 #### date_format:_format_
 
 The field under validation must match the given _format_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
+
+<a name="rule-declined"></a>
+#### declined
+
+The field under validation must be `"no"`, `"off"`, `0`, or `false`.
+
+<a name="rule-declined-if"></a>
+#### declined_if:anotherfield,value,...
+
+The field under validation must be `"no"`, `"off"`, `0`, or `false` if another field under validation is equal to a specified value.
 
 <a name="rule-different"></a>
 #### different:_field_
