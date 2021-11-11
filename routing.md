@@ -242,10 +242,7 @@ Named routes allow the convenient generation of URLs or redirects for specific r
 
 You may also specify route names for controller actions:
 
-    Route::get(
-        '/user/profile',
-        [UserProfileController::class, 'show']
-    )->name('profile');
+    Route::get('/user/profile',[UserProfileController::class, 'show'])->name('profile');
 
 > {note} Route names should always be unique.
 
