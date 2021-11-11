@@ -446,6 +446,8 @@ When this configuration option is `true`, Scout will not remove soft deleted mod
     // Only include trashed records when retrieving results...
     $orders = Order::search('Star Trek')->onlyTrashed()->get();
 
+> {note} If you are using MeiliSearch, you need to add the `__soft_deleted` field to the filterable attributes and hide it from the search output. [Check the MeiliSearch docs](https://docs.meilisearch.com/reference/api/settings.html#update-settings) on how to accomplish this.
+
 > {tip} When a soft deleted model is permanently deleted using `forceDelete`, Scout will remove it from the search index automatically.
 
 <a name="customizing-engine-searches"></a>
