@@ -613,6 +613,8 @@ Instead of collecting a customer's recurring payments automatically, you may ins
 
     $user->newSubscription('default', 'price_monthly')->createAndSendInvoice();
 
+The amount of time a customer has to pay their invoice before their subscription is cancelled is determined by your subscription and invoice settings within the [Stripe dashboard](https://dashboard.stripe.com/settings/billing/automatic).
+
 <a name="subscription-quantities"></a>
 #### Quantities
 
