@@ -1,30 +1,34 @@
 # Laravel Sail
 
-- [Introduction](#introduction)
-- [Installation & Setup](#installation)
+- [Laravel Sail](#laravel-sail)
+  - [Introduction](#introduction)
+  - [Installation & Setup](#installation--setup)
     - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
+      - [Using Devcontainers](#using-devcontainers)
     - [Configuring A Bash Alias](#configuring-a-bash-alias)
-- [Starting & Stopping Sail](#starting-and-stopping-sail)
-- [Executing Commands](#executing-sail-commands)
+  - [Starting & Stopping Sail](#starting--stopping-sail)
+  - [Executing Commands](#executing-commands)
     - [Executing PHP Commands](#executing-php-commands)
     - [Executing Composer Commands](#executing-composer-commands)
+      - [Installing Composer Dependencies For Existing Applications](#installing-composer-dependencies-for-existing-applications)
     - [Executing Artisan Commands](#executing-artisan-commands)
-    - [Executing Node / NPM Commands](#executing-node-npm-commands)
-- [Interacting With Databases](#interacting-with-sail-databases)
+    - [Executing Node / NPM Commands](#executing-node--npm-commands)
+  - [Interacting With Databases](#interacting-with-databases)
     - [MySQL](#mysql)
     - [Redis](#redis)
     - [MeiliSearch](#meilisearch)
-- [File Storage](#file-storage)
-- [Running Tests](#running-tests)
+  - [File Storage](#file-storage)
+  - [Running Tests](#running-tests)
     - [Laravel Dusk](#laravel-dusk)
-- [Previewing Emails](#previewing-emails)
-- [Container CLI](#sail-container-cli)
-- [PHP Versions](#sail-php-versions)
-- [Sharing Your Site](#sharing-your-site)
-- [Debugging With Xdebug](#debugging-with-xdebug)
-  - [Xdebug CLI Usage](#xdebug-cli-usage)
-  - [Xdebug Browser Usage](#xdebug-browser-usage)
-- [Customization](#sail-customization)
+  - [Previewing Emails](#previewing-emails)
+  - [Container CLI](#container-cli)
+  - [PHP Versions](#php-versions)
+  - [Sharing Your Site](#sharing-your-site)
+  - [Debugging With Xdebug](#debugging-with-xdebug)
+      - [Linux Host IP Configuration](#linux-host-ip-configuration)
+    - [Xdebug CLI Usage](#xdebug-cli-usage)
+    - [Xdebug Browser Usage](#xdebug-browser-usage)
+  - [Customization](#customization)
 
 <a name="introduction"></a>
 ## Introduction
@@ -33,7 +37,7 @@ Laravel Sail is a light-weight command-line interface for interacting with Larav
 
 At its heart, Sail is the `docker-compose.yml` file and the `sail` script that is stored at the root of your project. The `sail` script provides a CLI with convenient methods for interacting with the Docker containers defined by the `docker-compose.yml` file.
 
-Laravel Sail is supported on macOS, Linux, and Windows (via WSL2).
+Laravel Sail is supported on macOS, Linux, and Windows (via [WSL2](https://docs.microsoft.com/en-us/windows/wsl/about)).
 
 <a name="installation"></a>
 ## Installation & Setup
