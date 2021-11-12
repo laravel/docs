@@ -1004,7 +1004,7 @@ Before you can send notifications via Slack, you must install the Slack notifica
 
     composer require laravel/slack-notification-channel
 
-You will also need to create a ["Slack App"](https://api.slack.com/apps?new_app=1) for your team. Once created, you must then configure an "Incoming Webhook" for the workspace. Slack will then provide you with a URL you may use when [routing Slack notifications](#routing-slack-notifications).
+You will also need to create a [Slack App](https://api.slack.com/apps?new_app=1) for your team. After creating the App, you should configure an "Incoming Webhook" for the workspace. Slack will then provide you with a webhook URL that you may use when [routing Slack notifications](#routing-slack-notifications).
 
 <a name="formatting-slack-notifications"></a>
 ### Formatting Slack Notifications
