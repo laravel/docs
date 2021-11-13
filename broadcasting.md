@@ -127,6 +127,8 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 
 The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible WebSocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
 
+Alternatively, you may use [soketi](https://github.com/soketi/soketi), a standalone Pusher-based WebSockets server written in TypeScript that is really fast, resilient and comes with support for Laravel, Laravel Sail and Docker. For more information about installing and configuring the server, check out the [official documentation](https://rennokki.gitbook.io/soketi-docs).
+
 <a name="client-side-installation"></a>
 ## Client Side Installation
 
