@@ -186,6 +186,13 @@ If you are using [route model binding](/docs/{{version}}/routing#route-model-bin
 
     php artisan make:controller PhotoController --resource --model=Photo
 
+<a name="generating-the-form-requests"></a>
+#### Generating The Form Requests
+
+You can also use the `--requests` option to generate the [Form Request classes](/docs/{{version}}/validation#form-request-validation).
+
+    php artisan make:controller PhotoController --resource --model=Photo --requests
+
 <a name="restful-partial-resource-routes"></a>
 ### Partial Resource Routes
 
