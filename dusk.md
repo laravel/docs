@@ -389,12 +389,14 @@ You may use the `deleteCookie` method to delete the given cookie:
 
 You may use the `script` method to execute arbitrary JavaScript statements within the browser:
 
-    $output = $browser->script('document.documentElement.scrollTop = 0');
+    $browser->script('document.documentElement.scrollTop = 0');
 
-    $output = $browser->script([
+    $browser->script([
         'document.body.scrollTop = 0',
         'document.documentElement.scrollTop = 0',
     ]);
+
+    $output = $browser->script('return window.location.pathname');
 
 <a name="taking-a-screenshot"></a>
 ### Taking A Screenshot
