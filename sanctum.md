@@ -342,7 +342,7 @@ You may also use Sanctum tokens to authenticate your mobile application's reques
 <a name="issuing-mobile-api-tokens"></a>
 ### Issuing API Tokens
 
-To get started, create a route that accepts the user's email / username, password, and device name, then exchanges those credentials for a new Sanctum token. The "device name" given to this endpoint is for informational purposes and may be any value you wish. In general, the device name value should be a name the user would recognize, such as "Nuno's iPhone 12".
+To get started, create a route that accepts the user's email / username, password, and device name, then exchange those credentials for a new Sanctum token. The "device name" given to this endpoint is for informational purposes and may be any value you wish. In general, the device name value should be a name the user would recognize, such as "Nuno's iPhone 12".
 
 Typically, you will make a request to the token endpoint from your mobile application's "login" screen. The endpoint will return the plain-text API token which may then be stored on the mobile device and used to make additional API requests:
 
