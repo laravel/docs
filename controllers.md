@@ -184,14 +184,14 @@ Typically, a 404 HTTP response will be generated if an implicitly bound resource
 
 If you are using [route model binding](/docs/{{version}}/routing#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
 
-    php artisan make:controller PhotoController --resource --model=Photo
+    php artisan make:controller PhotoController --model=Photo --resource
 
-<a name="generating-the-form-requests"></a>
-#### Generating The Form Requests
+<a name="generating-form-requests"></a>
+#### Generating Form Requests
 
-You can also use the `--requests` option to generate the [Form Request classes](/docs/{{version}}/validation#form-request-validation).
+You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](/docs/{{version}}/validation#form-request-validation) for the controller's storage and update methods:
 
-    php artisan make:controller PhotoController --resource --model=Photo --requests
+    php artisan make:controller PhotoController --model=Photo --resource --requests
 
 <a name="restful-partial-resource-routes"></a>
 ### Partial Resource Routes
