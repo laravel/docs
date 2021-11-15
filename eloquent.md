@@ -69,7 +69,7 @@ php artisan make:model Flight -s
 php artisan make:model Flight --controller
 php artisan make:model Flight -c
 
-# Generate a model, a Resource FlightController class, and FormRequest classes...
+# Generate a model, a FlightController resource class, and form request classes...
 php artisan make:model Flight --controller --resource --requests
 php artisan make:model Flight -crR
 
