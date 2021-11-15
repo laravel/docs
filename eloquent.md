@@ -54,7 +54,7 @@ If you would like to generate a [database migration](/docs/{{version}}/migration
 
     php artisan make:model Flight --migration
 
-You may generate various other types of classes when generating a model, such as factories, seeders, policies, and controllers. In addition, these options may be combined to create multiple classes at once:
+You may generate various other types of classes when generating a model, such as factories, seeders, policies, controllers, and form requests. In addition, these options may be combined to create multiple classes at once:
 
 ```bash
 # Generate a model and a FlightFactory class...
@@ -69,13 +69,17 @@ php artisan make:model Flight -s
 php artisan make:model Flight --controller
 php artisan make:model Flight -c
 
+# Generate a model, FlightController resource class, and form request classes...
+php artisan make:model Flight --controller --resource --requests
+php artisan make:model Flight -crR
+
 # Generate a model and a FlightPolicy class...
 php artisan make:model Flight --policy
 
 # Generate a model and a migration, factory, seeder, and controller...
 php artisan make:model Flight -mfsc
 
-# Shortcut to generate a model, migration, factory, seeder, policy, and controller...
+# Shortcut to generate a model, migration, factory, seeder, policy, controller, and form requests...
 php artisan make:model Flight --all
 
 # Generate a pivot model...
