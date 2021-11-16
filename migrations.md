@@ -1117,10 +1117,10 @@ You may also specify the desired action for the "on delete" and "on update" prop
           ->constrained()
           ->onUpdate('cascade')
           ->onDelete('cascade');
-          
-An alternative syntax is also provided for these actions:
 
-Command  |  Description
+An alternative, expressive syntax is also provided for these actions:
+
+Method  |  Description
 -------  |  -----------
 `$table->cascadeOnUpdate();` | Updates should cascade.
 `$table->restrictOnUpdate();`| Updates should be restricted.
