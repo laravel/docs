@@ -1117,6 +1117,16 @@ You may also specify the desired action for the "on delete" and "on update" prop
           ->constrained()
           ->onUpdate('cascade')
           ->onDelete('cascade');
+          
+An alternative syntax is also provided for these actions:
+
+Command  |  Description
+-------  |  -----------
+`$table->cascadeOnUpdate();` | Updates should cascade.
+`$table->restrictOnUpdate();`| Updates should be restricted.
+`$table->cascadeOnDelete();` | Deletes should cascade.
+`$table->restrictOnDelete();`| Deletes should be restricted.
+`$table->nullOnDelete();`    | Deletes should set the foreign key value to null.
 
 Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
 
