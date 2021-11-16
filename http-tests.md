@@ -804,6 +804,8 @@ Assert that the response has no JSON validation errors for the given keys:
 
     $response->assertJsonMissingValidationErrors($keys);
 
+> {tip} The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage.
+
 <a name="assert-json-path"></a>
 #### assertJsonPath
 
@@ -887,6 +889,8 @@ In this situation, you may use the `*` character to assert against the structure
 Assert that the response has the given JSON validation errors for the given keys. This method should be used when asserting against responses where the validation errors are returned as a JSON structure instead of being flashed to the session:
 
     $response->assertJsonValidationErrors(array $data);
+
+> {tip} The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage.
 
 <a name="assert-location"></a>
 #### assertLocation
