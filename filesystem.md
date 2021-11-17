@@ -397,19 +397,21 @@ If you are using the `storeAs` method, you may pass the disk name as the third a
 <a name="other-uploaded-file-information"></a>
 #### Other Uploaded File Information
 
-If you would like to get the original name and extension, of the uploaded file, you may do so using the `getClientOriginalName` and `getClientOriginalExtension` methods:
+If you would like to get the original name and extension of the uploaded file, you may do so using the `getClientOriginalName` and `getClientOriginalExtension` methods:
 
     $file = $request->file('avatar');
 
     $name = $file->getClientOriginalName();
+
     $extension = $file->getClientOriginalExtension();
 
-Yet, keep in mind that, both `getClientOriginalName` and `getClientOriginalExtension` are considered unsafe, as its information may be tampered with by a malicious user. For this reason, you should always prefer the `hashName` and `extension` methods to get a name and an extension for the given file upload:
+However, keep in mind that the `getClientOriginalName` and `getClientOriginalExtension` methods are considered unsafe, as the file name and extension may be tampered with by a malicious user. For this reason, you should typically prefer the `hashName` and `extension` methods to get a name and an extension for the given file upload:
 
     $file = $request->file('avatar');
 
-    $name = $file->hashName(); // generates an unique and random name.
-    $extension = $file->extension(); // generates the extension according to the file MIME type.
+    $name = $file->hashName(); // Generates a unique and random name...
+
+    $extension = $file->extension(); // Determines the file's extension based on the file's MIME type...
 
 <a name="file-visibility"></a>
 ### File Visibility
