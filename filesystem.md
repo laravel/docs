@@ -402,16 +402,14 @@ If you would like to get the original name and extension of the uploaded file, y
     $file = $request->file('avatar');
 
     $name = $file->getClientOriginalName();
-
     $extension = $file->getClientOriginalExtension();
 
 However, keep in mind that the `getClientOriginalName` and `getClientOriginalExtension` methods are considered unsafe, as the file name and extension may be tampered with by a malicious user. For this reason, you should typically prefer the `hashName` and `extension` methods to get a name and an extension for the given file upload:
 
     $file = $request->file('avatar');
 
-    $name = $file->hashName(); // Generates a unique and random name...
-
-    $extension = $file->extension(); // Determines the file's extension based on the file's MIME type...
+    $name = $file->hashName(); // Generate a unique, random name...
+    $extension = $file->extension(); // Determine the file's extension based on the file's MIME type...
 
 <a name="file-visibility"></a>
 ### File Visibility
