@@ -5,6 +5,18 @@
 <a name="upgrade-9.0"></a>
 ## Upgrading To 9.0 From 8.x
 
+<a name="application"></a>
+### Application
+
+<a name="the-application-contract"></a>
+#### The `Application` Contract
+
+**Likelihood Of Impact: Low**
+
+The `storagePath` method of the `Illuminate\Contracts\Foundation\Application` interface has been updated to accept a `$path` argument. If you are implementing this interface you should update your implementation accordingly:
+
+    public function storagePath($path = '');
+
 <a name="queue"></a>
 ### Queue
 
