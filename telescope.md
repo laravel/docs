@@ -19,6 +19,7 @@
     - [Event Watcher](#event-watcher)
     - [Exception Watcher](#exception-watcher)
     - [Gate Watcher](#gate-watcher)
+    - [HTTP Client Watcher](#http-client-watcher)
     - [Job Watcher](#job-watcher)
     - [Log Watcher](#log-watcher)
     - [Mail Watcher](#mail-watcher)
@@ -182,6 +183,7 @@ You may filter the data that is recorded by Telescope via the `filter` closure t
             return $entry->isReportableException() ||
                 $entry->isFailedJob() ||
                 $entry->isScheduledTask() ||
+                $entry->isSlowQuery() ||
                 $entry->hasMonitoredTag();
         });
     }
@@ -312,6 +314,11 @@ The gate watcher records the data and result of [gate and policy](/docs/{{versio
         ],
         ...
     ],
+
+<a name="http-client-watcher"></a>
+### HTTP Client Watcher
+
+The HTTP client watcher records outgoing [HTTP client requests](/docs/{{version}}/http-client) made by your application.
 
 <a name="job-watcher"></a>
 ### Job Watcher

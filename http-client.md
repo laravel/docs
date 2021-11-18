@@ -9,9 +9,11 @@
     - [Retries](#retries)
     - [Error Handling](#error-handling)
     - [Guzzle Options](#guzzle-options)
+- [Concurrent Requests](#concurrent-requests)
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
     - [Inspecting Requests](#inspecting-requests)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -35,6 +37,8 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
 
     $response->body() : string;
     $response->json() : array|mixed;
+    $response->object() : object;
+    $response->collect() : Illuminate\Support\Collection;
     $response->status() : int;
     $response->ok() : bool;
     $response->successful() : bool;
@@ -47,6 +51,13 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
 The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAccess` interface, allowing you to access JSON response data directly on the response:
 
     return Http::get('http://example.com/users/1')['name'];
+
+<a name="dumping-requests"></a>
+#### Dumping Requests
+
+If you would like to dump the outgoing request instance before it is sent and terminate the script's execution, you may add the `dd` method to the beginning of your request definition:
+
+    return Http::dd()->get('http://example.com');
 
 <a name="request-data"></a>
 ### Request Data
@@ -118,6 +129,14 @@ Headers may be added to requests using the `withHeaders` method. This `withHeade
         'name' => 'Taylor',
     ]);
 
+You may use the `accept` method to specify the content type that your application is expecting in response to your request:
+
+    $response = Http::accept('application/json')->get('http://example.com/users');
+
+For convenience, you may use the `acceptJson` method to quickly specify that your application expects the `application/json` content type in response to your request:
+
+    $response = Http::acceptJson()->get('http://example.com/users');
+
 <a name="authentication"></a>
 ### Authentication
 
@@ -148,9 +167,15 @@ If the given timeout is exceeded, an instance of `Illuminate\Http\Client\Connect
 <a name="retries"></a>
 ### Retries
 
-If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts two arguments: the maximum number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
+If you would like HTTP client to automatically retry the request if a client or server error occurs, you may use the `retry` method. The `retry` method accepts the maximum number of times the request should be attempted and the number of milliseconds that Laravel should wait in between attempts:
 
     $response = Http::retry(3, 100)->post(...);
+
+If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:
+
+    $response = Http::retry(3, 100, function ($exception) {
+        return $exception instanceof ConnectionException;
+    })->post(...);
 
 If all of the requests fail, an instance of `Illuminate\Http\Client\RequestException` will be thrown.
 
@@ -174,12 +199,15 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 <a name="throwing-exceptions"></a>
 #### Throwing Exceptions
 
-If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` method:
+If you have a response instance and would like to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error, you may use the `throw` or `throwIf` methods:
 
     $response = Http::post(...);
 
     // Throw an exception if a client or server error occurred...
     $response->throw();
+
+    // Throw an exception if an error occurred and the given condition is true...
+    $response->throwIf($condition);
 
     return $response['user']['id'];
 
@@ -203,6 +231,39 @@ You may specify additional [Guzzle request options](http://docs.guzzlephp.org/en
     $response = Http::withOptions([
         'debug' => true,
     ])->get('http://example.com/users');
+
+<a name="concurrent-requests"></a>
+## Concurrent Requests
+
+Sometimes, you may wish to make multiple HTTP requests concurrently. In other words, you want several requests to be dispatched at the same time instead of issuing the requests sequentially. This can lead to substantial performance improvements when interacting with slow HTTP APIs.
+
+Thankfully, you may accomplish this using the `pool` method. The `pool` method accepts a closure which receives an `Illuminate\Http\Client\Pool` instance, allowing you to easily add requests to the request pool for dispatching:
+
+    use Illuminate\Http\Client\Pool;
+    use Illuminate\Support\Facades\Http;
+
+    $responses = Http::pool(fn (Pool $pool) => [
+        $pool->get('http://localhost/first'),
+        $pool->get('http://localhost/second'),
+        $pool->get('http://localhost/third'),
+    ]);
+
+    return $responses[0]->ok() &&
+           $responses[1]->ok() &&
+           $responses[2]->ok();
+
+As you can see, each response instance can be accessed based on the order it was added to the pool. If you wish, you can name the requests using the `as` method, which allows you to access the corresponding responses by name:
+
+    use Illuminate\Http\Client\Pool;
+    use Illuminate\Support\Facades\Http;
+
+    $responses = Http::pool(fn (Pool $pool) => [
+        $pool->as('first')->get('http://localhost/first'),
+        $pool->as('second')->get('http://localhost/second'),
+        $pool->as('third')->get('http://localhost/third'),
+    ]);
+
+    return $responses['first']->ok();
 
 <a name="testing"></a>
 ## Testing
@@ -330,3 +391,27 @@ Or, you may use the `assertNothingSent` method to assert that no requests were s
     Http::fake();
 
     Http::assertNothingSent();
+
+<a name="events"></a>
+## Events
+
+Laravel fires three events during the process of sending HTTP requests. The `RequestSending` event is fired prior to a request being sent, while the `ResponseReceived` event is fired after a response is received for a given request. The `ConnectionFailed` event is fired if no response is received for a given request.
+
+The `RequestSending` and `ConnectionFailed` events both contain a public `$request` property that you may use to inspect the `Illuminate\Http\Client\Request` instance. Likewise, the `ResponseReceived` event contains a `$request` property as well as a `$response` property which may be used to inspect the `Illuminate\Http\Client\Response` instance. You may register event listeners for this event in your `App\Providers\EventServiceProvider` service provider:
+
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Illuminate\Http\Client\Events\RequestSending' => [
+            'App\Listeners\LogRequestSending',
+        ],
+        'Illuminate\Http\Client\Events\ResponseReceived' => [
+            'App\Listeners\LogResponseReceived',
+        ],
+        'Illuminate\Http\Client\Events\ConnectionFailed' => [
+            'App\Listeners\LogConnectionFailed',
+        ],
+    ];

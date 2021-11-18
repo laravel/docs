@@ -14,6 +14,7 @@
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
+- [Method Invocation & Injection](#method-invocation-and-injection)
 - [Container Events](#container-events)
 - [PSR-11](#psr-11)
 
@@ -150,6 +151,18 @@ The `singleton` method binds a class or interface into the container that should
         return new Transistor($app->make(PodcastParser::class));
     });
 
+<a name="binding-scoped"></a>
+#### Binding Scoped Singletons
+
+The `scoped` method binds a class or interface into the container that should only be resolved one time within a given Laravel request / job lifecycle. While this method is similar to the `singleton` method, instances registered using the `scoped` method will be flushed whenever the Laravel application starts a new "lifecycle", such as when a [Laravel Octane](/docs/{{version}}/octane) worker processes a new request or when a Laravel [queue worker](/docs/{{version}}/queues) processes a new job:
+
+    use App\Services\Transistor;
+    use App\Services\PodcastParser;
+
+    $this->app->scoped(Transistor::class, function ($app) {
+        return new Transistor($app->make(PodcastParser::class));
+    });
+
 <a name="binding-instances"></a>
 #### Binding Instances
 
@@ -225,10 +238,16 @@ Sometimes a class may depend on an array of [tagged](#tagging) instances. Using 
         ->needs('$reports')
         ->giveTagged('reports');
 
+If you need to inject a value from one of your application's configuration files, you may use the `giveConfig` method:
+
+    $this->app->when(ReportAggregator::class)
+        ->needs('$timezone')
+        ->giveConfig('app.timezone');
+
 <a name="binding-typed-variadics"></a>
 ### Binding Typed Variadics
 
-Occasionally you may have a class that receives an array of typed objects using a variadic constructor argument:
+Occasionally, you may have a class that receives an array of typed objects using a variadic constructor argument:
 
     <?php
 
@@ -358,7 +377,7 @@ If you would like to have the Laravel container instance itself injected into a 
     /**
      * Create a new class instance.
      *
-     * @param  \Illuminate\Container\Container
+     * @param  \Illuminate\Container\Container  $container
      * @return void
      */
     public function __construct(Container $container)
@@ -410,6 +429,47 @@ For example, you may type-hint a repository defined by your application in a con
             //
         }
     }
+
+<a name="method-invocation-and-injection"></a>
+## Method Invocation & Injection
+
+Sometimes you may wish to invoke a method on an object instance while allowing the container to automatically inject that method's dependencies. For example, given the following class:
+
+    <?php
+
+    namespace App;
+
+    use App\Repositories\UserRepository;
+
+    class UserReport
+    {
+        /**
+         * Generate a new user report.
+         *
+         * @param  \App\Repositories\UserRepository  $repository
+         * @return array
+         */
+        public function generate(UserRepository $repository)
+        {
+            // ...
+        }
+    }
+
+You may invoke the `generate` method via the container like so:
+
+    use App\UserReport;
+    use Illuminate\Support\Facades\App;
+
+    $report = App::call([new UserReport, 'generate']);
+
+The `call` method accepts any PHP callable. The container's `call` method may even be used to invoke a closure while automatically injecting its dependencies:
+
+    use App\Repositories\UserRepository;
+    use Illuminate\Support\Facades\App;
+
+    $result = App::call(function (UserRepository $repository) {
+        // ...
+    });
 
 <a name="container-events"></a>
 ## Container Events

@@ -84,6 +84,13 @@ Before using a Redis cache with Laravel, you will need to either install the Php
 
 For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
 
+<a name="dynamodb"></a>
+#### DynamoDB
+
+Before using the [DynamoDB](https://aws.amazon.com/dynamodb) cache driver, you must create a DynamoDB table to store all of the cached data. Typically, this table should be named `cache`. However, you should name the table based on the value of the `stores.dynamodb.table` configuration value within your application's `cache` configuration file.
+
+This table should also have a string partition key with a name that corresponds to the value of the `stores.dynamodb.attributes.key` configuration item within your application's `cache` configuration file. By default, the partition key should be named `key`.
+
 <a name="cache-usage"></a>
 ## Cache Usage
 
@@ -358,7 +365,7 @@ In the example below, we will dispatch a queued job if a lock is successfully ac
 
     $lock = Cache::lock('processing', 120);
 
-    if ($result = $lock->get()) {
+    if ($lock->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 

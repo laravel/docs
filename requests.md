@@ -18,6 +18,7 @@
     - [Retrieving Uploaded Files](#retrieving-uploaded-files)
     - [Storing Uploaded Files](#storing-uploaded-files)
 - [Configuring Trusted Proxies](#configuring-trusted-proxies)
+- [Configuring Trusted Hosts](#configuring-trusted-hosts)
 
 <a name="introduction"></a>
 ## Introduction
@@ -130,6 +131,10 @@ To retrieve the full URL for the incoming request you may use the `url` or `full
 
     $urlWithQueryString = $request->fullUrl();
 
+If you would like to append query string data to the current URL, you may call the `fullUrlWithQuery` method. This method merges the given array of query string variables with the current query string:
+
+    $request->fullUrlWithQuery(['type' => 'phone']);
+
 <a name="retrieving-the-request-method"></a>
 #### Retrieving The Request Method
 
@@ -156,7 +161,7 @@ The `hasHeader` method may be used to determine if the request contains a given 
         //
     }
 
-For convenience, the `bearerToken` may be used to a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:
+For convenience, the `bearerToken` method may be used to retrieve a bearer token from the `Authorization` header. If no such header is present, an empty string will be returned:
 
     $token = $request->bearerToken();
 
@@ -220,6 +225,16 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
 You may retrieve all of the incoming request's input data as an `array` using the `all` method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:
 
     $input = $request->all();
+
+Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):
+
+    $input = $request->collect();
+
+The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:
+
+    $request->collect('users')->each(function ($user) {
+        // ...
+    });
 
 <a name="retrieving-an-input-value"></a>
 #### Retrieving An Input Value
@@ -316,6 +331,14 @@ The `whenHas` method will execute the given closure if a value is present on the
         //
     });
 
+A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:
+
+    $request->whenHas('name', function ($input) {
+        // The "name" value is present...
+    }, function () {
+        // The "name" value is not present...
+    });
+
 The `hasAny` method returns `true` if any of the specified values are present:
 
     if ($request->hasAny(['name', 'email'])) {
@@ -332,6 +355,14 @@ The `whenFilled` method will execute the given closure if a value is present on 
 
     $request->whenFilled('name', function ($input) {
         //
+    });
+
+A second closure may be passed to the `whenFilled` method that will be executed if the specified value is not "filled":
+
+    $request->whenFilled('name', function ($input) {
+        // The "name" value is filled...
+    }, function () {
+        // The "name" value is not filled...
     });
 
 To determine if a given key is absent from the request, you may use the `missing` method:
@@ -472,7 +503,7 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
 
     namespace App\Http\Middleware;
 
-    use Fideloper\Proxy\TrustProxies as Middleware;
+    use Illuminate\Http\Middleware\TrustProxies as Middleware;
     use Illuminate\Http\Request;
 
     class TrustProxies extends Middleware
@@ -508,3 +539,27 @@ If you are using Amazon AWS or another "cloud" load balancer provider, you may n
      * @var string|array
      */
     protected $proxies = '*';
+
+<a name="configuring-trusted-hosts"></a>
+## Configuring Trusted Hosts
+
+By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request.
+
+Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\Http\Middleware\TrustHosts` middleware for your application.
+
+The `TrustHosts` middleware is already included in the `$middleware` stack of your application; however, you should uncomment it so that it becomes active. Within this middleware's `hosts` method, you may specify the host names that your application should respond to. Incoming requests with other `Host` value headers will be rejected:
+
+    /**
+     * Get the host patterns that should be trusted.
+     *
+     * @return array
+     */
+    public function hosts()
+    {
+        return [
+            'laravel.test',
+            $this->allSubdomainsOfApplicationUrl(),
+        ];
+    }
+
+The `allSubdomainsOfApplicationUrl` helper method will return a regular expression matching all subdomains of your application's `app.url` configuration value. This helper method provides a convenient way to allow all of your application's subdomains when building an application that utilizes wildcard subdomains.

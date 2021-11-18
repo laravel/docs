@@ -3,12 +3,14 @@
 - [Introduction](#introduction)
 - [Upgrading Cashier](#upgrading-cashier)
 - [Installation](#installation)
+    - [Paddle Sandbox](#paddle-sandbox)
     - [Database Migrations](#database-migrations)
 - [Configuration](#configuration)
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
     - [Paddle JS](#paddle-js)
     - [Currency Configuration](#currency-configuration)
+    - [Overriding Default Models](#overriding-default-models)
 - [Core Concepts](#core-concepts)
     - [Pay Links](#pay-links)
     - [Inline Checkout](#inline-checkout)
@@ -61,6 +63,13 @@ First, install the Cashier package for Paddle using the Composer package manager
     composer require laravel/cashier-paddle
 
 > {note} To ensure Cashier properly handles all Paddle events, remember to [set up Cashier's webhook handling](#handling-paddle-webhooks).
+
+<a name="paddle-sandbox"></a>
+### Paddle Sandbox
+
+During local and staging development, you should [register a Paddle Sandbox account](https://developer.paddle.com/getting-started/sandbox). This account will give you a sandboxed environment to test and develop your applications without making actual payments. You may use Paddle's [test card numbers](https://developer.paddle.com/getting-started/sandbox#test-cards) to simulate various payment scenarios.
+
+After you have finished developing your application you may [apply for a Paddle vendor account](https://paddle.com).
 
 <a name="database-migrations"></a>
 ### Database Migrations
@@ -120,6 +129,9 @@ Next, you should configure your Paddle keys in your application's `.env` file. Y
     PADDLE_VENDOR_ID=your-paddle-vendor-id
     PADDLE_VENDOR_AUTH_CODE=your-paddle-vendor-auth-code
     PADDLE_PUBLIC_KEY="your-paddle-public-key"
+    PADDLE_SANDBOX=true
+
+The `PADDLE_SANDBOX` environment variable should be set to `true` when you are using [Paddle's Sandbox environment](#paddle-sandbox). The `PADDLE_SANDBOX` variable should be set to `false` if you are deploying your application to production and are using Paddle's live vendor environment.
 
 <a name="paddle-js"></a>
 ### Paddle JS
@@ -144,6 +156,34 @@ In addition to configuring Cashier's currency, you may also specify a locale to 
     CASHIER_CURRENCY_LOCALE=nl_BE
 
 > {note} In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
+
+<a name="overriding-default-models"></a>
+### Overriding Default Models
+
+You are free to extend the models used internally by Cashier by defining your own model and extending the corresponding Cashier model:
+
+    use Laravel\Paddle\Subscription as CashierSubscription;
+
+    class Subscription extends CashierSubscription
+    {
+        // ...
+    }
+
+After defining your model, you may instruct Cashier to use your custom model via the `Laravel\Paddle\Cashier` class. Typically, you should inform Cashier about your custom models in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+
+    use App\Models\Cashier\Receipt;
+    use App\Models\Cashier\Subscription;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Cashier::useReceiptModel(Receipt::class);
+        Cashier::useSubscriptionModel(Subscription::class);
+    }
 
 <a name="core-concepts"></a>
 ## Core Concepts
@@ -200,6 +240,11 @@ Next, simply attach the pay link URL to an `a` element in your HTML:
     <a href="#!" class="ml-4 paddle_button" data-override="{{ $payLink }}">
         Paddle Checkout
     </a>
+
+<a name="payments-requiring-additional-confirmation"></a>
+#### Payments Requiring Additional Confirmation
+
+Sometimes additional verification is required in order to confirm and process a payment. When this happens, Paddle will present a payment confirmation screen. Payment confirmation screens presented by Paddle or Cashier may be tailored to a specific bank or card issuer's payment flow and can include additional card confirmation, a temporary small charge, separate device authentication, or other forms of verification.
 
 <a name="inline-checkout"></a>
 ### Inline Checkout
@@ -426,7 +471,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
         return view('billing', ['payLink' => $payLink]);
     });
 
-The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. The second argument is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Paddle. The `returnTo` method accepts a URL that your user will be redirected to after they successfully complete the checkout.
+The first argument passed to the `newSubscription` method should be the internal name of the subscription. If your application only offers a single subscription, you might call this `default` or `primary`. This subscription name is only for internal application usage and is not meant to be shown to users. In addition, it should not contain spaces and it should never be changed after creating the subscription. The second argument given to the `newSubscription` method is the specific plan the user is subscribing to. This value should correspond to the plan's identifier in Paddle. The `returnTo` method accepts a URL that your user will be redirected to after they successfully complete the checkout.
 
 The `create` method will create a pay link which you can use to generate a payment button. The payment button can be generated using the `paddle-button` [Blade component](/docs/{{version}}/blade#components) that is included with Cashier Paddle:
 
@@ -896,37 +941,53 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
 
-Cashier automatically handles subscription cancellation on failed charges and other common Paddle webhooks, but if you have additional webhook events you would like to handle, you should extend Cashier's `WebhookController`.
+Cashier automatically handles subscription cancellation on failed charges and other common Paddle webhooks. However, if you have additional webhook events you would like to handle, you may do so by listening to the following events that are dispatched by Cashier:
 
-Your controller's method names should correspond to Cashier's controller method conventions. Specifically, methods should be prefixed with `handle` and the "camel case" name of the webhook you wish to handle. For example, if you wish to handle the `payment_succeeded` webhook, you should add a `handlePaymentSucceeded` method to the controller:
+- `Laravel\Paddle\Events\WebhookReceived`
+- `Laravel\Paddle\Events\WebhookHandled`
+
+Both events contain the full payload of the Paddle webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](/docs/{{version}}/events#defining-listeners) that will handle the event:
 
     <?php
 
-    namespace App\Http\Controllers;
+    namespace App\Listeners;
 
-    use Laravel\Paddle\Http\Controllers\WebhookController as CashierController;
+    use Laravel\Paddle\Events\WebhookReceived;
 
-    class WebhookController extends CashierController
+    class PaddleEventListener
     {
         /**
-         * Handle payment succeeded.
+         * Handle received Paddle webhooks.
          *
-         * @param  array  $payload
+         * @param  \Laravel\Paddle\Events\WebhookReceived  $event
          * @return void
          */
-        public function handlePaymentSucceeded($payload)
+        public function handle(WebhookReceived $event)
         {
-            // Handle the event...
+            if ($event->payload['alert_name'] === 'payment_succeeded') {
+                // Handle the incoming event...
+            }
         }
     }
 
-Next, define a route to your Cashier webhook controller within your application's `routes/web.php` file. This will overwrite the default route registered by Cashier's service provider:
+Once your listener has been defined, you may register it within your application's `EventServiceProvider`:
 
-    use App\Http\Controllers\WebhookController;
+    <?php
 
-    Route::post('/paddle/webhook', WebhookController::class);
+    namespace App\Providers;
 
-Cashier emits a `Laravel\Paddle\Events\WebhookReceived` event when a webhook is received and a `Laravel\Paddle\Events\WebhookHandled` event when a webhook was handled. Both events contain the full payload of the Paddle webhook.
+    use App\Listeners\PaddleEventListener;
+    use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+    use Laravel\Paddle\Events\WebhookReceived;
+
+    class EventServiceProvider extends ServiceProvider
+    {
+        protected $listen = [
+            WebhookReceived::class => [
+                PaddleEventListener::class,
+            ],
+        ];
+    }
 
 Cashier also emit events dedicated to the type of the received webhook. In addition to the full payload from Paddle, they also contain the relevant models that were used to process the webhook such as the billable model, the subscription, or the receipt:
 
@@ -1047,13 +1108,13 @@ You may optionally specify a specific amount to refund as well as a reason for t
 <a name="receipts"></a>
 ## Receipts
 
-You may easily retrieve an array of a billable model's receipts using the `receipts` method:
+You may easily retrieve an array of a billable model's receipts via the `receipts` property:
 
     use App\Models\User;
 
     $user = User::find(1);
 
-    $receipts = $user->receipts();
+    $receipts = $user->receipts;
 
 When listing the receipts for the customer, you may use the receipt instance's methods to display the relevant receipt information. For example, you may wish to list every receipt in a table, allowing the user to easily download any of the receipts:
 
@@ -1117,4 +1178,6 @@ Alternatively, you can perform more precise customization by catching the [`subs
 <a name="testing"></a>
 ## Testing
 
-Paddle currently lacks a proper CRUD API so you will need to manually test your billing flow. Paddle also lacks a sandboxed developer environment so any card charges you make are live charges. In order to work around this, we recommend you use coupons with a 100% discount or free products during testing.
+While testing, you should manually test your billing flow to make sure your integration works as expected.
+
+For automated tests, including those executed within a CI environment, you may use [Laravel's HTTP Client](/docs/{{version}}/http-client#testing) to fake HTTP calls made to Paddle. Although this does not test the actual responses from Paddle, it does provide a way to test your application without actually calling Paddle's API.

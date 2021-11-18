@@ -16,6 +16,7 @@
     - [Customizing The Mailer](#customizing-the-mailer)
     - [Customizing The Templates](#customizing-the-templates)
     - [Attachments](#mail-attachments)
+    - [Using Mailables](#using-mailables)
     - [Previewing Mail Notifications](#previewing-mail-notifications)
 - [Markdown Mail Notifications](#markdown-mail-notifications)
     - [Generating The Message](#generating-the-message)
@@ -35,6 +36,7 @@
     - [Formatting SMS Notifications](#formatting-sms-notifications)
     - [Formatting Shortcode Notifications](#formatting-shortcode-notifications)
     - [Customizing The "From" Number](#customizing-the-from-number)
+    - [Adding A Client Reference](#adding-a-client-reference)
     - [Routing SMS Notifications](#routing-sms-notifications)
 - [Slack Notifications](#slack-notifications)
     - [Prerequisites](#slack-prerequisites)
@@ -97,6 +99,10 @@ Alternatively, you may send notifications via the `Notification` [facade](/docs/
     use Illuminate\Support\Facades\Notification;
 
     Notification::send($users, new InvoicePaid($invoice));
+
+You can also send notifications immediately using the `sendNow` method. This method will send the notification immediately even if the notification implements the `ShouldQueue` interface:
+
+    Notification::sendNow($developers, new DeploymentCompleted($deployment));
 
 <a name="specifying-delivery-channels"></a>
 ### Specifying Delivery Channels
@@ -213,6 +219,25 @@ If your queue connection's `after_commit` configuration option is set to `false`
 
 > {tip} To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
+<a name="determining-if-the-queued-notification-should-be-sent"></a>
+#### Determining If A Queued Notification Should Be Sent
+
+After a queued notification has been dispatched for the queue for background processing, it will typically be accepted by a queue worker and sent to its intended recipient.
+
+However, if you would like to make the final determination on whether the queued notification should be sent after it is being processed by a queue worker, you may define a `shouldSend` method on the notification class. If this method returns `false`, the notification will not be sent:
+
+    /**
+     * Determine if the notification should be sent.
+     *
+     * @param  mixed  $notifiable
+     * @param  string  $channel
+     * @return bool
+     */
+    public function shouldSend($notifiable, $channel)
+    {
+        return $this->invoice->isPaid();
+    }
+
 <a name="on-demand-notifications"></a>
 ### On-Demand Notifications
 
@@ -222,6 +247,12 @@ Sometimes you may need to send a notification to someone who is not stored as a 
                 ->route('nexmo', '5555555555')
                 ->route('slack', 'https://hooks.slack.com/services/...')
                 ->notify(new InvoicePaid($invoice));
+
+If you would like to provide the recipient's name when sending an on-demand notification to the `mail` route, you may provide an array that contains the email address as the key and the name as the value of the first element in the array:
+
+    Notification::route('mail', [
+        'barrett@example.com' => 'Barrett Blair',
+    ])->notify(new InvoicePaid($invoice));
 
 <a name="mail-notifications"></a>
 ## Mail Notifications
@@ -290,22 +321,6 @@ You may specify a plain-text view for the mail message by passing the view name 
             ['emails.name.html', 'emails.name.plain'],
             ['invoice' => $this->invoice]
         );
-    }
-
-In addition, you may return a full [mailable object](/docs/{{version}}/mail) from the `toMail` method:
-
-    use App\Mail\InvoicePaid as InvoicePaidMailable;
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return Mailable
-     */
-    public function toMail($notifiable)
-    {
-        return (new InvoicePaidMailable($this->invoice))
-                    ->to($notifiable->email);
     }
 
 <a name="error-messages"></a>
@@ -491,6 +506,49 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
                     ->attachData($this->pdf, 'name.pdf', [
                         'mime' => 'application/pdf',
                     ]);
+    }
+
+<a name="using-mailables"></a>
+### Using Mailables
+
+If needed, you may return a full [mailable object](/docs/{{version}}/mail) from your notification's `toMail` method. When returning a `Mailable` instead of a `MailMessage`, you will need to specify the message recipient using the mailable object's `to` method:
+
+    use App\Mail\InvoicePaid as InvoicePaidMailable;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return Mailable
+     */
+    public function toMail($notifiable)
+    {
+        return (new InvoicePaidMailable($this->invoice))
+                    ->to($notifiable->email);
+    }
+
+<a name="mailables-and-on-demand-notifications"></a>
+#### Mailables & On-Demand Notifications
+
+If you are sending an [on-demand notification](#on-demand-notifications), the `$notifiable` instance given to the `toMail` method will be an instance of `Illuminate\Notifications\AnonymousNotifiable`, which offers a `routeNotificationFor` method that may be used to retrieve the email address the on-demand notification should be sent to:
+
+    use App\Mail\InvoicePaid as InvoicePaidMailable;
+    use Illuminate\Notifications\AnonymousNotifiable;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return Mailable
+     */
+    public function toMail($notifiable)
+    {
+        $address = $notifiable instanceof AnonymousNotifiable
+                ? $notifiable->routeNotificationFor('mail')
+                : $notifiable->email;
+
+        return (new InvoicePaidMailable($this->invoice))
+                    ->to($address);
     }
 
 <a name="previewing-mail-notifications"></a>
@@ -866,7 +924,7 @@ Laravel also supports sending shortcode notifications, which are pre-defined mes
             'type' => 'alert',
             'custom' => [
                 'code' => 'ABC123',
-            ];
+            ],
         ];
     }
 
@@ -888,6 +946,24 @@ If you would like to send some notifications from a phone number that is differe
         return (new NexmoMessage)
                     ->content('Your SMS message content')
                     ->from('15554443333');
+    }
+
+<a name="adding-a-client-reference"></a>
+### Adding a Client Reference
+
+If you would like to keep track of costs per user, team, or client, you may add a "client reference" to the notification. Vonage will allow you to generate reports using this client reference so that you can better understand a particular customer's SMS usage. The client reference can be any string up to 40 characters:
+
+    /**
+     * Get the Vonage / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return NexmoMessage
+     */
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage)
+                    ->clientReference((string) $notifiable->id)
+                    ->content('Your SMS message content');
     }
 
 <a name="routing-sms-notifications"></a>
@@ -928,7 +1004,7 @@ Before you can send notifications via Slack, you must install the Slack notifica
 
     composer require laravel/slack-notification-channel
 
-You will also need to configure an ["Incoming Webhook"](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) integration for your Slack team. This integration will provide you with a URL you may use when [routing Slack notifications](#routing-slack-notifications).
+You will also need to create a [Slack App](https://api.slack.com/apps?new_app=1) for your team. After creating the App, you should configure an "Incoming Webhook" for the workspace. Slack will then provide you with a webhook URL that you may use when [routing Slack notifications](#routing-slack-notifications).
 
 <a name="formatting-slack-notifications"></a>
 ### Formatting Slack Notifications
@@ -939,7 +1015,7 @@ If a notification supports being sent as a Slack message, you should define a `t
      * Get the Slack representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Message\SlackMessage
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
@@ -1127,7 +1203,56 @@ Once you have implemented the interface, Laravel will automatically use the pref
 <a name="notification-events"></a>
 ## Notification Events
 
-When a notification is sent, the `Illuminate\Notifications\Events\NotificationSent` [event](/docs/{{version}}/events) is fired by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register listeners for this event in your `EventServiceProvider`:
+<a name="notification-sending-event"></a>
+#### Notification Sending Event
+
+When a notification is sending, the `Illuminate\Notifications\Events\NotificationSending` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register listeners for this event in your application's `EventServiceProvider`:
+
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Illuminate\Notifications\Events\NotificationSending' => [
+            'App\Listeners\CheckNotificationStatus',
+        ],
+    ];
+
+The notification will not be sent if an event listener for the `NotificationSending` event returns `false` from its `handle` method:
+
+    use Illuminate\Notifications\Events\NotificationSending;
+
+    /**
+     * Handle the event.
+     *
+     * @param  \Illuminate\Notifications\Events\NotificationSending  $event
+     * @return void
+     */
+    public function handle(NotificationSending $event)
+    {
+        return false;
+    }
+
+Within an event listener, you may access the `notifiable`, `notification`, and `channel` properties on the event to learn more about the notification recipient or the notification itself:
+
+    /**
+     * Handle the event.
+     *
+     * @param  \Illuminate\Notifications\Events\NotificationSending  $event
+     * @return void
+     */
+    public function handle(NotificationSending $event)
+    {
+        // $event->channel
+        // $event->notifiable
+        // $event->notification
+    }
+
+<a name="notification-sent-event"></a>
+#### Notification Sent Event
+
+When a notification is sent, the `Illuminate\Notifications\Events\NotificationSent` [event](/docs/{{version}}/events) is dispatched by the notification system. This contains the "notifiable" entity and the notification instance itself. You may register listeners for this event in your `EventServiceProvider`:
 
     /**
      * The event listener mappings for the application.
@@ -1142,7 +1267,7 @@ When a notification is sent, the `Illuminate\Notifications\Events\NotificationSe
 
 > {tip} After registering listeners in your `EventServiceProvider`, use the `event:generate` Artisan command to quickly generate listener classes.
 
-Within an event listener, you may access the `notifiable`, `notification`, and `channel` properties on the event to learn more about the notification recipient or the notification itself:
+Within an event listener, you may access the `notifiable`, `notification`, `channel`, and `response` properties on the event to learn more about the notification recipient or the notification itself:
 
     /**
      * Handle the event.

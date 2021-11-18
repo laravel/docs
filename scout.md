@@ -9,6 +9,7 @@
     - [Configuring Searchable Data](#configuring-searchable-data)
     - [Configuring The Model ID](#configuring-the-model-id)
     - [Identifying Users](#identifying-users)
+- [Local Development](#local-development)
 - [Indexing](#indexing)
     - [Batch Import](#batch-import)
     - [Adding Records](#adding-records)
@@ -29,7 +30,7 @@
 
 Laravel Scout provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
-Currently, Scout ships with an [Algolia](https://www.algolia.com/) driver; however, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
+Currently, Scout ships with [Algolia](https://www.algolia.com/) and [MeiliSearch](https://www.meilisearch.com) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
 <a name="installation"></a>
 ## Installation
@@ -65,6 +66,27 @@ Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
 
     composer require algolia/algoliasearch-client-php
+
+<a name="meilisearch"></a>
+#### MeiliSearch
+
+[MeiliSearch](https://www.meilisearch.com) is a blazingly fast and open source search engine. If you aren't sure how to install MeiliSearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
+
+When using the MeiliSearch driver you will need to install the MeiliSearch PHP SDK via the Composer package manager:
+
+    composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
+
+Then, set the `SCOUT_DRIVER` environment variable as well as your MeiliSearch `host` and `key` credentials within your application's `.env` file:
+
+    SCOUT_DRIVER=meilisearch
+    MEILISEARCH_HOST=http://127.0.0.1:7700
+    MEILISEARCH_KEY=masterKey
+
+For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html). 
+
+In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch). 
+
+> {note} When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
 
 <a name="queueing"></a>
 ### Queueing
@@ -181,6 +203,19 @@ Scout also allows you to auto identify users when using [Algolia](https://algoli
     SCOUT_IDENTIFY=true
 
 Enabling this feature this will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
+
+<a name="local-development"></a>
+## Local Development
+
+While you are free to use the Algolia or MeiliSearch search engines during local development, you may find it more convenient to get started with the "collection" engine. The collection engine will use "where" clauses and collection filtering on results from your existing database to determine the applicable search results for your query. When using this engine, it is not necessary to "index" your searchable models, as they will simply be retrieved from your local database.
+
+To use the collection engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `collection`, or specify the `collection` driver directly in your application's `scout` configuration file:
+
+```ini
+SCOUT_DRIVER=collection
+```
+
+Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the collection engine.
 
 <a name="indexing"></a>
 ## Indexing

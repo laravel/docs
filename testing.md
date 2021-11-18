@@ -45,7 +45,12 @@ If you would like to create a test within the `tests/Unit` directory, you may us
 
     php artisan make:test UserTest --unit
 
-> {tip} Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+If you would like to create a [Pest PHP](https://pestphp.com) test, you may provide the `--pest` option to the `make:test` command:
+
+    php artisan make:test UserTest --pest
+    php artisan make:test UserTest --unit --pest
+
+> {tip} Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 Once the test has been generated, you may define test methods as you normally would using [PHPUnit](https://phpunit.de). To run your tests, execute the `vendor/bin/phpunit` or `php artisan test` command from your terminal:
 
@@ -89,13 +94,15 @@ Any arguments that can be passed to the `phpunit` command may also be passed to 
 <a name="running-tests-in-parallel"></a>
 ### Running Tests In Parallel
 
-By default, Laravel and PHPUnit execute your tests sequentially within a single process. However, you may greatly reduce the amount of time it takes to run your tests by running tests simultaneously across multiple processes. To get started, include the `--parallel` option when executing the `test` Artisan command:
+By default, Laravel and PHPUnit execute your tests sequentially within a single process. However, you may greatly reduce the amount of time it takes to run your tests by running tests simultaneously across multiple processes. To get started, ensure your application depends on version `^5.3` or greater of the `nunomaduro/collision` package. Then, include the `--parallel` option when executing the `test` Artisan command:
 
     php artisan test --parallel
 
 By default, Laravel will create as many processes as there are available CPU cores on your machine. However, you may adjust the number of processes using the `--processes` option:
 
     php artisan test --parallel --processes=4
+
+> {note} When running tests in parallel, some PHPUnit options (such as `--do-not-cache-result`) may not be available.
 
 <a name="parallel-testing-and-databases"></a>
 #### Parallel Testing & Databases
@@ -117,6 +124,7 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
 
     namespace App\Providers;
 
+    use Illuminate\Support\Facades\Artisan;
     use Illuminate\Support\Facades\ParallelTesting;
     use Illuminate\Support\ServiceProvider;
 
@@ -130,23 +138,31 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
         public function boot()
         {
             ParallelTesting::setUpProcess(function ($token) {
-                // ..
+                // ...
             });
 
             ParallelTesting::setUpTestCase(function ($token, $testCase) {
-                // ..
+                // ...
+            });
+
+            // Executed when a test database is created...
+            ParallelTesting::setUpTestDatabase(function ($database, $token) {
+                Artisan::call('db:seed');
             });
 
             ParallelTesting::tearDownTestCase(function ($token, $testCase) {
-                // ..
+                // ...
             });
 
             ParallelTesting::tearDownProcess(function ($token) {
-                // ..
+                // ...
             });
         }
     }
 
-If you would like to access to current process token from any other place in your application's test code, you may use the `token` method:
+<a name="accessing-the-parallel-testing-token"></a>
+#### Accessing The Parallel Testing Token
+
+If you would like to access to current parallel process "token" from any other location in your application's test code, you may use the `token` method. This token is a unique, string identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:
 
     $token = ParallelTesting::token();

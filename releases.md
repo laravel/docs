@@ -8,7 +8,7 @@
 <a name="versioning-scheme"></a>
 ## Versioning Scheme
 
-Laravel and its other first-party packages follow [Semantic Versioning](https://semver.org). Major framework releases are released every year (~September), while minor and patch releases may be released as often as every week. Minor and patch releases should **never** contain breaking changes.
+Laravel and its other first-party packages follow [Semantic Versioning](https://semver.org). Major framework releases are released every year (~January), while minor and patch releases may be released as often as every week. Minor and patch releases should **never** contain breaking changes.
 
 When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `^8.0`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
 
@@ -23,15 +23,15 @@ At this time, PHP's [named arguments](https://www.php.net/manual/en/functions.ar
 <a name="support-policy"></a>
 ## Support Policy
 
-For LTS releases, such as Laravel 6, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
+For LTS releases, such as Laravel 9, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
 
 | Version | Release | Bug Fixes Until | Security Fixes Until |
 | --- | --- | --- | --- |
-| 6 (LTS) | September 3rd, 2019 | September 7th, 2021 | September 6th, 2022 |
+| 6 (LTS) | September 3rd, 2019 | January 25th, 2022 | September 6th, 2022 |
 | 7 | March 3rd, 2020 | October 6th, 2020 | March 3rd, 2021 |
-| 8 | September 8th, 2020 | March 1st, 2022 | September 6th, 2022 |
-| 9 (LTS) | September, 2021 | September, 2023 | September, 2024 |
-| 10 | September, 2022 | March, 2024 | September, 2024 |
+| 8 | September 8th, 2020 | July 26th, 2022 | January 24th, 2023 |
+| 9 (LTS) | January 25th, 2022 | January 30th, 2024 | January 28th, 2025 |
+| 10 | January 24th, 2023 | July 30th, 2024 | January 28th, 2025 |
 
 <a name="laravel-8"></a>
 ## Laravel 8
@@ -84,8 +84,8 @@ Eloquent [model factories](/docs/{{version}}/database-testing#defining-model-fac
         public function definition()
         {
             return [
-                'name' => $this->faker->name,
-                'email' => $this->faker->unique()->safeEmail,
+                'name' => $this->faker->name(),
+                'email' => $this->faker->unique()->safeEmail(),
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),

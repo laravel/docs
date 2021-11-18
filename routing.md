@@ -71,6 +71,8 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
         //
     });
 
+> {tip} When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route.
+
 <a name="dependency-injection"></a>
 #### Dependency Injection
 
@@ -388,6 +390,17 @@ Of course, implicit binding is also possible when using controller methods. Agai
         return view('user.profile', ['user' => $user]);
     }
 
+<a name="implicit-soft-deleted-models"></a>
+#### Soft Deleted Models
+
+Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting). However, you may instruct the implicit binding to retrieve these models by chaining the `withTrashed` method onto your route's definition:
+
+    use App\Models\User;
+
+    Route::get('/users/{user}', function (User $user) {
+        return $user->email;
+    })->withTrashed();
+
 <a name="customizing-the-key"></a>
 <a name="customizing-the-default-key-name"></a>
 #### Customizing The Key
@@ -426,13 +439,31 @@ When implicitly binding multiple Eloquent models in a single route definition, y
 
 When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural form of the route parameter name) which can be used to retrieve the `Post` model.
 
+If you wish, you may instruct Laravel to scope "child" bindings even when a custom key is not provided. To do so, you may invoke the `scopeBindings` method when defining your route:
+
+    use App\Models\Post;
+    use App\Models\User;
+
+    Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
+        return $post;
+    })->scopeBindings();
+
+Or, you may instruct an entire group of route definitions to use scoped bindings:
+
+    Route::scopeBindings()->group(function () {
+        Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
+            return $post;
+        });
+    });
+
 <a name="customizing-missing-model-behavior"></a>
 #### Customizing Missing Model Behavior
 
-Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` methods accepts a closure that will be invoked if an implicitly bound model can not be found:
+Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` method accepts a closure that will be invoked if an implicitly bound model can not be found:
 
     use App\Http\Controllers\LocationsController;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Redirect;
 
     Route::get('/locations/{location:slug}', [LocationsController::class, 'show'])
             ->name('locations.view')
@@ -586,6 +617,14 @@ Sometimes you may wish to segment rate limits by some arbitrary value. For examp
                     : Limit::perMinute(100)->by($request->ip());
     });
 
+To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:
+
+    RateLimiter::for('uploads', function (Request $request) {
+        return $request->user()
+                    ? Limit::perMinute(100)->by($request->user()->id)
+                    : Limit::perMinute(10)->by($request->ip());
+    });
+
 <a name="multiple-rate-limits"></a>
 #### Multiple Rate Limits
 
@@ -623,7 +662,7 @@ Typically, the `throttle` middleware is mapped to the `Illuminate\Routing\Middle
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
 
-HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining `PUT`, `PATCH` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form. The value sent with the `_method` field will be used as the HTTP request method:
+HTML forms do not support `PUT`, `PATCH`, or `DELETE` actions. So, when defining `PUT`, `PATCH`, or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form. The value sent with the `_method` field will be used as the HTTP request method:
 
     <form action="/example" method="POST">
         <input type="hidden" name="_method" value="PUT">

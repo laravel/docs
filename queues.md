@@ -10,6 +10,7 @@
 - [Job Middleware](#job-middleware)
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
+    - [Throttling Exceptions](#throttling-exceptions)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
@@ -37,8 +38,11 @@
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
     - [Retrying Failed Jobs](#retrying-failed-jobs)
     - [Ignoring Missing Models](#ignoring-missing-models)
+    - [Storing Failed Jobs In DynamoDB](#storing-failed-jobs-in-dynamodb)
+    - [Pruning Failed Jobs](#pruning-failed-jobs)
     - [Failed Job Events](#failed-job-events)
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
+- [Monitoring Your Queues](#monitoring-your-queues)
 - [Job Events](#job-events)
 
 <a name="introduction"></a>
@@ -82,6 +86,10 @@ In order to use the `database` queue driver, you will need a database table to h
     php artisan queue:table
 
     php artisan migrate
+
+Finally, don't forget to instruct your application to use the `database` driver by updating the `QUEUE_CONNECTION` variable in your application's `.env` file:
+
+    QUEUE_CONNECTION=database
 
 <a name="redis"></a>
 #### Redis
@@ -138,7 +146,7 @@ By default, all of the queueable jobs for your application are stored in the `ap
 
 The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
 
-> {tip} Job stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+> {tip} Job stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="class-structure"></a>
 ### Class Structure
@@ -264,17 +272,17 @@ In certain cases, you may want to define a specific "key" that makes the job uni
         public $product;
 
         /**
-        * The number of seconds after which the job's unique lock will be released.
-        *
-        * @var int
-        */
+         * The number of seconds after which the job's unique lock will be released.
+         *
+         * @var int
+         */
         public $uniqueFor = 3600;
 
         /**
-        * The unique ID of the job.
-        *
-        * @return string
-        */
+         * The unique ID of the job.
+         *
+         * @return string
+         */
         public function uniqueId()
         {
             return $this->product->id;
@@ -311,10 +319,10 @@ Behind the scenes, when a `ShouldBeUnique` job is dispatched, Laravel attempts t
         ...
 
         /**
-        * Get the cache driver for the unique job lock.
-        *
-        * @return \Illuminate\Contracts\Cache\Repository
-        */
+         * Get the cache driver for the unique job lock.
+         *
+         * @return \Illuminate\Contracts\Cache\Repository
+         */
         public function uniqueVia()
         {
             return Cache::driver('redis');
@@ -399,6 +407,8 @@ After creating job middleware, they may be attached to a job by returning them f
         return [new RateLimited];
     }
 
+> {tip} Job middleware can also be assigned to queueable event listeners, mailables, and notifications.
+
 <a name="rate-limiting"></a>
 ### Rate Limiting
 
@@ -442,6 +452,18 @@ Once you have defined your rate limit, you may attach the rate limiter to your b
     }
 
 Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [`retryUntil` method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
+
+If you do not want a job to be retried when it is rate limited, you may use the `dontRelease` method:
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [(new RateLimited('backups'))->dontRelease()];
+    }
 
 > {tip} If you are using Redis, you may use the `Illuminate\Queue\Middleware\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware.
 
@@ -488,7 +510,80 @@ If you wish to immediately delete any overlapping jobs so that they will not be 
         return [(new WithoutOverlapping($this->order->id))->dontRelease()];
     }
 
+The `WithoutOverlapping` middleware is powered by Laravel's atomic lock feature. Sometimes, your job may unexpectedly fail or timeout in such a way that the lock is not released. Therefore, you may explicitly define a lock expiration time using the `expireAfter` method. For example, the example below will instruct Laravel to release the `WithoutOverlapping` lock three minutes after the job has started processing:
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [(new WithoutOverlapping($this->order->id))->expireAfter(180)];
+    }
+
 > {note} The `WithoutOverlapping` middleware requires a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
+
+<a name="throttling-exceptions"></a>
+### Throttling Exceptions
+
+Laravel includes a `Illuminate\Queue\Middleware\ThrottlesExceptions` middleware that allows you to throttle exceptions. Once the job throws a given number of exceptions, all further attempts to execute the job are delayed until a specified time interval lapses. This middleware is particularly useful for jobs that interact with third-party services that are unstable.
+
+For example, let's imagine a queued job that interacts with a third-party API that begins throwing exceptions. To throttle exceptions, you can return the `ThrottlesExceptions` middleware from your job's `middleware` method. Typically, this middleware should be paired with a job that implements [time based attempts](#time-based-attempts):
+
+    use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [new ThrottlesExceptions(10, 5)];
+    }
+
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return now()->addMinutes(5);
+    }
+
+The first constructor argument accepted by the middleware is the number of exceptions the job can throw before being throttled, while the second constructor argument is the number of minutes that should elapse before the job is attempted again once it has been throttled. In the code example above, if the job throws 10 exceptions within 5 minutes, we will wait 5 minutes before attempting the job again.
+
+When a job throws an exception but the exception threshold has not yet been reached, the job will typically be retried immediately. However, you may specify the number of minutes such a job should be delayed by calling the `backoff` method when attaching the middleware to the job:
+
+    use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [(new ThrottlesExceptions(10, 5))->backoff(5)];
+    }
+
+Internally, this middleware uses Laravel's cache system to implement rate limiting, and the job's class name is utilized as the cache "key". You may override this key by calling the `by` method when attaching the middleware to your job. This may be useful if you have multiple jobs interacting with the same third-party service and you would like them to share a common throttling "bucket":
+
+    use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [(new ThrottlesExceptions(10, 10))->by('key')];
+    }
+
+> {tip} If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
@@ -950,6 +1045,20 @@ You may also define the maximum number of seconds a job should be allowed to run
 
 Sometimes, IO blocking processes such as sockets or outgoing HTTP connections may not respect your specified timeout. Therefore, when using these features, you should always attempt to specify a timeout using their APIs as well. For example, when using Guzzle, you should always specify a connection and request timeout value.
 
+<a name="failing-on-timeout"></a>
+#### Failing On Timeout
+
+If you would like to indicate that a job should be marked as [failed](#dealing-with-failed-jobs) on timeout, you may define the `$failOnTimeout` property on the job class:
+
+```php
+/**
+ * Indicate if the job should be marked as failed on timeout.
+ *
+ * @var bool
+ */
+public $failOnTimeout = true;
+```
+
 <a name="error-handling"></a>
 ### Error Handling
 
@@ -974,7 +1083,7 @@ Sometimes you may wish to manually release a job back onto the queue so that it 
 
 By default, the `release` method will release the job back onto the queue for immediate processing. However, by passing an integer to the `release` method you may instruct the queue to not make the job available for processing until a given number of seconds has elapsed:
 
-    $this->release(10)
+    $this->release(10);
 
 <a name="manually-failing-a-job"></a>
 #### Manually Failing A Job
@@ -1276,6 +1385,10 @@ By default, all finished batches that are more than 24 hours old will be pruned.
 
     $schedule->command('queue:prune-batches --hours=48')->daily();
 
+Sometimes, your `jobs_batches` table may accumulate batch records for batches that never completed successfully, such as batches where a job failed and that job was never retried successfully. You may instruct the `queue:prune-batches` command to prune these unfinished batch records using the `unfinished` option:
+
+    $schedule->command('queue:prune-batches --hours=48 --unfinished=72')->daily();
+
 <a name="queueing-closures"></a>
 ## Queueing Closures
 
@@ -1327,7 +1440,7 @@ You may also specify which queue connection the worker should utilize. The conne
 
     php artisan queue:work redis
 
-You may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:
+By default, the `queue:work` command only processes jobs for the default queue on a given connection. However, you may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:
 
     php artisan queue:work redis --queue=emails
 
@@ -1581,6 +1694,8 @@ When a particular job fails, you may want to send an alert to your users or reve
         }
     }
 
+> {note} A new instance of the job is instantiated before invoking the `failed` method; therefore, any class property modifications that may have occurred within the `handle` method will be lost.
+
 <a name="retrying-failed-jobs"></a>
 ### Retrying Failed Jobs
 
@@ -1588,15 +1703,17 @@ To view all of the failed jobs that have been inserted into your `failed_jobs` d
 
     php artisan queue:failed
 
-The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
+The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece`, issue the following command:
 
-    php artisan queue:retry 5
+    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece
 
-If necessary, you may pass multiple IDs or an ID range (when using numeric IDs) to the command:
+If necessary, you may pass multiple IDs to the command:
 
-    php artisan queue:retry 5 6 7 8 9 10
+    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece 91401d2c-0784-4f43-824c-34f94a33c24d
 
-    php artisan queue:retry --range=5-10
+You may also retry all of the failed jobs for a particular queue:
+
+    php artisan queue:retry --queue=name
 
 To retry all of your failed jobs, execute the `queue:retry` command and pass `all` as the ID:
 
@@ -1604,7 +1721,7 @@ To retry all of your failed jobs, execute the `queue:retry` command and pass `al
 
 If you would like to delete a failed job, you may use the `queue:forget` command:
 
-    php artisan queue:forget 5
+    php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d
 
 > {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
 
@@ -1625,6 +1742,42 @@ For convenience, you may choose to automatically delete jobs with missing models
      * @var bool
      */
     public $deleteWhenMissingModels = true;
+
+<a name="storing-failed-jobs-in-dynamodb"></a>
+### Storing Failed Jobs In DynamoDB
+
+Laravel also provides support for storing your failed job records in [DynamoDB](https://aws.amazon.com/dynamodb) instead of a relational database table. However, you must create a DynamoDB table to store all of the failed job records. Typically, this table should be named `failed_jobs`, but you should name the table based on the value of the `queue.failed.table` configuration value within your application's `queue` configuration file.
+
+The `failed_jobs` table should have a string primary partition key named `application` and a string primary sort key named `uuid`. The `application` portion of the key will contain your application's name as defined by the `name` configuration value within your application's `app` configuration file. Since the application name is part of the DynamoDB table's key, you can use the same table to store failed jobs for multiple Laravel applications.
+
+In addition, ensure that you install the AWS SDK so that your Laravel application can communicate with Amazon DynamoDB:
+
+```nothing
+composer require aws/aws-sdk-php
+```
+
+Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. In addition, you should define `key`, `secret`, and `region` configuration options within the failed job configuration array. These options will be used to authenticate with AWS. When using the `dynamodb` driver, the `queue.failed.database` configuration option is unnecessary:
+
+```php
+'failed' => [
+    'driver' => env('QUEUE_FAILED_DRIVER', 'dynamodb'),
+    'key' => env('AWS_ACCESS_KEY_ID'),
+    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    'table' => 'failed_jobs',
+],
+```
+
+<a name="pruning-failed-jobs"></a>
+### Pruning Failed Jobs
+
+You may delete all of the records in your application's `failed_jobs` table by invoking the `queue:prune-failed` Artisan command:
+
+    php artisan queue:prune-failed
+
+If you provide the `--hours` option to the command, only the failed job records that were inserted within the last N number of hours will be retained. For example, the following command will delete all of the failed job records that were inserted more than 48 hours ago:
+
+    php artisan queue:prune-failed --hours=48
 
 <a name="failed-job-events"></a>
 ### Failed Job Events
@@ -1680,6 +1833,43 @@ You may also provide the `connection` argument and `queue` option to delete jobs
     php artisan queue:clear redis --queue=emails
 
 > {note} Clearing jobs from queues is only available for the SQS, Redis, and database queue drivers. In addition, the SQS message deletion process takes up to 60 seconds, so jobs sent to the SQS queue up to 60 seconds after you clear the queue might also be deleted.
+
+<a name="monitoring-your-queues"></a>
+## Monitoring Your Queues
+
+If your queue receives a sudden influx of jobs, it could become overwhelmed, leading to a long wait time for jobs to complete. If you wish, Laravel can alert you when your queue job count exceeds a specified threshold.
+
+To get started, you should schedule the `queue:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the queues you wish to monitor as well as your desired job count threshold:
+
+```bash
+php artisan queue:monitor redis:default,redis:deployments --max=100
+```
+
+Scheduling this command alone is not enough to trigger a notification alerting you of the queue's overwhelmed status. When the command encounters a queue that has a job count exceeding your threshold, an `Illuminate\Queue\Events\QueueBusy` event will be dispatched. You may listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+
+```php
+use App\Notifications\QueueHasLongWaitTime;
+use Illuminate\Queue\Events\QueueBusy;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+
+/**
+ * Register any other events for your application.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Event::listen(function (QueueBusy $event) {
+        Notification::route('mail', 'dev@example.com')
+                ->notify(new QueueHasLongWaitTime(
+                    $event->connection,
+                    $event->queue,
+                    $event->size
+                ));
+    });
+}
+```
 
 <a name="job-events"></a>
 ## Job Events

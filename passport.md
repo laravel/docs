@@ -120,7 +120,9 @@ Next, you should call the `Passport::routes` method within the `boot` method of 
         {
             $this->registerPolicies();
 
-            Passport::routes();
+            if (! $this->app->routesAreCached()) {
+                Passport::routes();
+            }
         }
     }
 
@@ -386,7 +388,7 @@ Once a client has been created, developers may use their client ID and secret to
             'state' => $state,
         ]);
 
-        return redirect('http://passport-app.com/oauth/authorize?'.$query);
+        return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
 > {tip} Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
@@ -437,7 +439,7 @@ If the user approves the authorization request, they will be redirected back to 
             InvalidArgumentException::class
         );
 
-        $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+        $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
             'grant_type' => 'authorization_code',
             'client_id' => 'client-id',
             'client_secret' => 'client-secret',
@@ -481,7 +483,7 @@ If your application issues short-lived access tokens, users will need to refresh
 
     use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'refresh_token',
         'refresh_token' => 'the-refresh-token',
         'client_id' => 'client-id',
@@ -594,7 +596,7 @@ Once a client has been created, you may use the client ID and the generated code
             'code_challenge_method' => 'S256',
         ]);
 
-        return redirect('http://passport-app.com/oauth/authorize?'.$query);
+        return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
 <a name="code-grant-pkce-converting-authorization-codes-to-access-tokens"></a>
@@ -617,7 +619,7 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
             InvalidArgumentException::class
         );
 
-        $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+        $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
             'grant_type' => 'authorization_code',
             'client_id' => 'client-id',
             'redirect_uri' => 'http://third-party-app.com/callback',
@@ -647,7 +649,7 @@ Once you have created a password grant client, you may request an access token b
 
     use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'password',
         'client_id' => 'client-id',
         'client_secret' => 'client-secret',
@@ -667,7 +669,7 @@ When using the password grant or client credentials grant, you may wish to autho
 
     use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'password',
         'client_id' => 'client-id',
         'client_secret' => 'client-secret',
@@ -774,7 +776,7 @@ Once the grant has been enabled, developers may use their client ID to request a
             'state' => $state,
         ]);
 
-        return redirect('http://passport-app.com/oauth/authorize?'.$query);
+        return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
 > {tip} Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
@@ -815,7 +817,7 @@ To retrieve a token using this grant type, make a request to the `oauth/token` e
 
     use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'client_credentials',
         'client_id' => 'client-id',
         'client_secret' => 'client-secret',
@@ -955,7 +957,7 @@ When calling routes that are protected by Passport, your application's API consu
     $response = Http::withHeaders([
         'Accept' => 'application/json',
         'Authorization' => 'Bearer '.$accessToken,
-    ])->get('https://passport-app.com/api/user');
+    ])->get('https://passport-app.test/api/user');
 
     return $response->json();
 
@@ -1019,7 +1021,7 @@ When requesting an access token using the authorization code grant, consumers sh
             'scope' => 'place-orders check-status',
         ]);
 
-        return redirect('http://passport-app.com/oauth/authorize?'.$query);
+        return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
 <a name="when-issuing-personal-access-tokens"></a>

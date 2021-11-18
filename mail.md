@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Configuration](#configuration)
     - [Driver Prerequisites](#driver-prerequisites)
+    - [Failover Configuration](#failover-configuration)
 - [Generating Mailables](#generating-mailables)
 - [Writing Mailables](#writing-mailables)
     - [Configuring The Sender](#configuring-the-sender)
@@ -102,6 +103,15 @@ Next, set the `default` option in your `config/mail.php` configuration file to `
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+To utilize AWS [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) via a session token, you may add a `token` key to your application's SES configuration:
+
+    'ses' => [
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+        'token' => env('AWS_SESSION_TOKEN'),
+    ],
+
 If you would like to define [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sesv2-2019-09-27.html#sendemail) that Laravel should pass to the AWS SDK's `SendEmail` method when sending an email, you may define an `options` array within your `ses` configuration:
 
     'ses' => [
@@ -116,6 +126,30 @@ If you would like to define [additional options](https://docs.aws.amazon.com/aws
         ],
     ],
 
+<a name="failover-configuration"></a>
+### Failover Configuration
+
+Sometimes, an external service you have configured to send your application's mail may be down. In these cases, it can be useful to define one or more backup mail delivery configurations that will be used in case your primary delivery driver is down.
+
+To accomplish this, you should define a mailer within your application's `mail` configuration file that uses the `failover` transport. The configuration array for your application's `failover` mailer should contain an array of `mailers` that reference the order in which mail drivers should be chosen for delivery:
+
+    'mailers' => [
+        'failover' => [
+            'transport' => 'failover',
+            'mailers' => [
+                'postmark',
+                'mailgun',
+                'sendmail',
+            ],
+        ],
+
+        // ...
+    ],
+
+Once your failover mailer has been defined, you should set this mailer as the default mailer used by your application by specifying its name as the value of the `default` configuration key within your application's `mail` configuration file:
+
+    'default' => env('MAIL_MAILER', 'failover'),
+
 <a name="generating-mailables"></a>
 ## Generating Mailables
 
@@ -127,6 +161,8 @@ When building Laravel applications, each type of email sent by your application 
 ## Writing Mailables
 
 Once you have generated a mailable class, open it up so we can explore its contents. First, note that all of a mailable class' configuration is done in the `build` method. Within this method, you may call various methods such as `from`, `subject`, `view`, and `attach` to configure the email's presentation and delivery.
+
+> {tip} You may type-hint dependencies on the mailable's `build` method. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
 
 <a name="configuring-the-sender"></a>
 ### Configuring The Sender
@@ -143,7 +179,7 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
      */
     public function build()
     {
-        return $this->from('example@example.com')
+        return $this->from('example@example.com', 'Example')
                     ->view('emails.orders.shipped');
     }
 
@@ -275,7 +311,7 @@ If you would like to customize the format of your email's data before it is sent
         /**
          * Create a new message instance.
          *
-         * @param  \App\Models\Order $order
+         * @param  \App\Models\Order  $order
          * @return void
          */
         public function __construct(Order $order)
@@ -337,7 +373,7 @@ When attaching files to a message, you may also specify the display name and / o
     }
 
 <a name="attaching-files-from-disk"></a>
-#### Attaching Files from Disk
+#### Attaching Files From Disk
 
 If you have stored a file on one of your [filesystem disks](/docs/{{version}}/filesystem), you may attach it to the email using the `attachFromStorage` method:
 
@@ -443,6 +479,8 @@ The `withSymfonyMessage` method of the `Mailable` base class allows you to regis
                 'Custom-Header', 'Header Value'
             );
         });
+        
+        return $this;
     }
 
 <a name="markdown-mailables"></a>

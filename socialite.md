@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-    - [Upgrading Socialite](#upgrading-socialite)
+- [Upgrading Socialite](#upgrading-socialite)
 - [Configuration](#configuration)
 - [Authentication](#authentication)
     - [Routing](#routing)
@@ -25,7 +25,7 @@ To get started with Socialite, use the Composer package manager to add the packa
     composer require laravel/socialite
 
 <a name="upgrading-socialite"></a>
-### Upgrading Socialite
+## Upgrading Socialite
 
 When upgrading to a new major version of Socialite, it's important that you carefully review [the upgrade guide](https://github.com/laravel/socialite/blob/master/UPGRADE.md).
 

@@ -7,6 +7,7 @@
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
+    - [Serving a Default Site](#serving-a-default-site)
 - [Sharing Sites](#sharing-sites)
     - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
     - [Sharing Sites Via Expose](#sharing-sites-via-expose)
@@ -95,6 +96,12 @@ Valet allows you to switch PHP versions using the `valet use php@version` comman
 
     valet use php
 
+You may also create a `.valetphprc` file in the root of your project. The `.valetphprc` file should contain the PHP version the site should use:
+
+    php@7.2
+
+Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
+
 > {note} Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
 
 <a name="database"></a>
@@ -126,7 +133,7 @@ The `park` command registers a directory on your machine that contains your appl
 
     valet park
 
-That's all there is to it. Now, any application you create within your "parked" directory will automatically be served using the `http://<directory-name>.test` convention. So, if your parked directory contains a directory named "laravel", the application within that directory will be accessible at `http://laravel.test`.
+That's all there is to it. Now, any application you create within your "parked" directory will automatically be served using the `http://<directory-name>.test` convention. So, if your parked directory contains a directory named "laravel", the application within that directory will be accessible at `http://laravel.test`. In addition, Valet automatically allows you to access the site using wildcard subdomains (`http://foo.laravel.test`).
 
 <a name="the-link-command"></a>
 ### The `link` Command
@@ -137,7 +144,7 @@ The `link` command can also be used to serve your Laravel applications. This com
 
     valet link
 
-Once an application has been linked to Valet using the `link` command, you may access the application using its directory name. So, the site that was linked in the example above may be accessed at `http://laravel.test`.
+Once an application has been linked to Valet using the `link` command, you may access the application using its directory name. So, the site that was linked in the example above may be accessed at `http://laravel.test`. In addition, Valet automatically allows you to access the site using wildcard sub-domains (`http://foo.laravel.test`).
 
 If you would like to serve the application at a different hostname, you may pass the hostname to the `link` command. For example, you may run the following command to make an application available at `http://application.test`:
 
@@ -166,6 +173,13 @@ To "unsecure" a site and revert back to serving its traffic over plain HTTP, use
 
     valet unsecure laravel
 
+<a name="serving-a-default-site"></a>
+### Serving A Default Site
+
+Sometimes, you may wish to configure Valet to serve a "default" site instead of a `404` when visiting an unknown `test` domain. To accomplish this, you may add a `default` option to your `~/.config/valet/config.json` configuration file containing the path to the site that should serve as your default site:
+
+    "default": "/Users/Sally/Sites/foo",
+
 <a name="sharing-sites"></a>
 ## Sharing Sites
 
@@ -187,11 +201,11 @@ To stop sharing your site, you may press `Control + C`.
 <a name="sharing-sites-via-expose"></a>
 ### Sharing Sites Via Expose
 
-If you have [Expose](https://beyondco.de/docs/expose) installed, you can share your site by navigating to the site's directory in your terminal and running the `expose` command. Consult the [Expose documentation](https://beyondco.de/docs/expose/introduction) for information regarding the additional command-line parameters it supports. After sharing the site, Expose will display the sharable URL that you may use on your other devices or amongst team members:
+If you have [Expose](https://expose.dev) installed, you can share your site by navigating to the site's directory in your terminal and running the `expose` command. Consult the [Expose documentation](https://expose.dev/docs) for information regarding the additional command-line parameters it supports. After sharing the site, Expose will display the sharable URL that you may use on your other devices or amongst team members:
 
     cd ~/Sites/laravel
 
-    valet expose
+    expose
 
 To stop sharing your site, you may press `Control + C`.
 
@@ -233,7 +247,11 @@ Sometimes you may wish to proxy a Valet domain to another service on your local 
 To solve this, you may use the `proxy` command to generate a proxy. For example, you may proxy all traffic from `http://elasticsearch.test` to `http://127.0.0.1:9200`:
 
 ```bash
+// Proxy over HTTP...
 valet proxy elasticsearch http://127.0.0.1:9200
+
+// Proxy over TLS + HTTP/2...
+valet proxy elasticsearch http://127.0.0.1:9200 --secure
 ```
 
 You may remove a proxy using the `unproxy` command:

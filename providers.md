@@ -135,7 +135,7 @@ You may type-hint dependencies for your service provider's `boot` method. The [s
     /**
      * Bootstrap any application services.
      *
-     * @param  \Illuminate\Contracts\Routing\ResponseFactory
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return void
      */
     public function boot(ResponseFactory $response)

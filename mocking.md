@@ -173,6 +173,9 @@ You may use the `Bus` facade's `fake` method to prevent jobs from being dispatch
 
             // Assert a job was not dispatched...
             Bus::assertNotDispatched(AnotherJob::class);
+
+            // Assert no jobs were dispatched...
+            Bus::assertNothingDispatched();
         }
     }
 
@@ -209,7 +212,7 @@ As you can see in the example above, the array of chained jobs may be an array o
 <a name="job-batches"></a>
 ### Job Batches
 
-The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batches) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\Bus\PendingBatch`, which may be used to inspect the jobs within the batch:
+The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batching) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\Bus\PendingBatch`, which may be used to inspect the jobs within the batch:
 
     use Illuminate\Bus\PendingBatch;
     use Illuminate\Support\Facades\Bus;
@@ -254,7 +257,7 @@ When testing code that dispatches events, you may wish to instruct Laravel to no
 
             // Assert an event was not dispatched...
             Event::assertNotDispatched(OrderFailedToShip::class);
-            
+
             // Assert that no events were dispatched...
             Event::assertNothingDispatched();
         }
@@ -265,6 +268,13 @@ You may pass a closure to the `assertDispatched` or `assertNotDispatched` method
     Event::assertDispatched(function (OrderShipped $event) use ($order) {
         return $event->order->id === $order->id;
     });
+
+If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:
+
+    Event::assertListening(
+        OrderShipped::class,
+        SendShipmentNotification::class
+    );
 
 > {note} After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
 
@@ -378,7 +388,7 @@ If you are queueing mailables for delivery in the background, you should use the
 
     Mail::assertNothingQueued();
 
-You may pass a closure to the `assertSent` or `assertNotSent` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
+You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
 
     Mail::assertSent(function (OrderShipped $mail) use ($order) {
         return $mail->order->id === $order->id;
@@ -390,6 +400,14 @@ When calling the `Mail` facade's assertion methods, the mailable instance accept
         return $mail->hasTo($user->email) &&
                $mail->hasCc('...') &&
                $mail->hasBcc('...');
+    });
+
+You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:
+
+    Mail::assertNothingOutgoing();
+
+    Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {
+        return $mail->order->id === $order->id;
     });
 
 <a name="notification-fake"></a>

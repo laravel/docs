@@ -78,7 +78,6 @@ If a controller action is particularly complex, you might find it convenient to 
         /**
          * Provision a new web server.
          *
-         * @param  int  $id
          * @return \Illuminate\Http\Response
          */
         public function __invoke()
@@ -97,7 +96,7 @@ You may generate an invokable controller by using the `--invokable` option of th
 
     php artisan make:controller ProvisionServer --invokable
 
-> {tip} Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+> {tip} Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="controller-middleware"></a>
 ## Controller Middleware
@@ -144,7 +143,7 @@ This command will generate a controller at `app/Http/Controllers/PhotoController
 
     Route::resource('photos', PhotoController::class);
 
-This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions. Remember, you can always get a quick overview of your application's by running the `route:list` Artisan command.
+This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions. Remember, you can always get a quick overview of your application's routes by running the `route:list` Artisan command.
 
 You may even register many resource controllers at once by passing an array to the `resources` method:
 
@@ -166,12 +165,33 @@ GET       | `/photos/{photo}/edit` | edit         | photos.edit
 PUT/PATCH | `/photos/{photo}`      | update       | photos.update
 DELETE    | `/photos/{photo}`      | destroy      | photos.destroy
 
+<a name="customizing-missing-model-behavior"></a>
+#### Customizing Missing Model Behavior
+
+Typically, a 404 HTTP response will be generated if an implicitly bound resource model is not found. However, you may customize this behavior by calling the `missing` method when defining your resource route. The `missing` method accepts a closure that will be invoked if an implicitly bound model can not be found for any of the resource's routes:
+
+    use App\Http\Controllers\PhotoController;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Redirect;
+
+    Route::resource('photos', PhotoController::class)
+            ->missing(function (Request $request) {
+                return Redirect::route('photos.index');
+            });
+
 <a name="specifying-the-resource-model"></a>
 #### Specifying The Resource Model
 
 If you are using [route model binding](/docs/{{version}}/routing#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
 
-    php artisan make:controller PhotoController --resource --model=Photo
+    php artisan make:controller PhotoController --model=Photo --resource
+
+<a name="generating-form-requests"></a>
+#### Generating Form Requests
+
+You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](/docs/{{version}}/validation#form-request-validation) for the controller's storage and update methods:
+
+    php artisan make:controller PhotoController --model=Photo --resource --requests
 
 <a name="restful-partial-resource-routes"></a>
 ### Partial Resource Routes
@@ -380,8 +400,8 @@ In addition to constructor injection, you may also type-hint dependencies on you
         /**
          * Store a new user.
          *
-         * @param  Request  $request
-         * @return Response
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\Response
          */
         public function store(Request $request)
         {

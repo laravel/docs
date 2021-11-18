@@ -7,6 +7,8 @@
 - [Attribute Casting](#attribute-casting)
     - [Array & JSON Casting](#array-and-json-casting)
     - [Date Casting](#date-casting)
+    - [Enum Casting](#enum-casting)
+    - [Encrypted Casting](#encrypted-casting)
     - [Query Time Casting](#query-time-casting)
 - [Custom Casts](#custom-casts)
     - [Value Object Casting](#value-object-casting)
@@ -70,7 +72,7 @@ You are not limited to interacting with a single attribute within your accessor.
         return "{$this->first_name} {$this->last_name}";
     }
 
-> {tip} If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](https://laravel.com/docs/{{version}}/eloquent-serialization#appending-values-to-json).
+> {tip} If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](/docs/{{version}}/eloquent-serialization#appending-values-to-json).
 
 <a name="defining-a-mutator"></a>
 ### Defining A Mutator
@@ -118,10 +120,13 @@ The `$casts` property should be an array where the key is the name of the attrib
 
 <div class="content-list" markdown="1">
 - `array`
+- `AsStringable::class`
 - `boolean`
 - `collection`
 - `date`
 - `datetime`
+- `immutable_date`
+- `immutable_datetime`
 - `decimal:<digits>`
 - `double`
 - `encrypted`
@@ -164,7 +169,38 @@ After defining the cast, the `is_admin` attribute will always be cast to a boole
         //
     }
 
+If you need to add a new, temporary cast at runtime, you may use the `mergeCasts` method. These cast definitions will be added to any of the casts already defined on the model:
+
+    $user->mergeCasts([
+        'is_admin' => 'integer',
+        'options' => 'object',
+    ]);
+
 > {note} Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.
+
+<a name="stringable-casting"></a>
+#### Stringable Casting
+
+You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/helpers#fluent-strings-method-list):
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Casts\AsStringable;
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        /**
+         * The attributes that should be cast.
+         *
+         * @var array
+         */
+        protected $casts = [
+            'directory' => AsStringable::class,
+        ];
+    }
 
 <a name="array-and-json-casting"></a>
 ### Array & JSON Casting
@@ -209,10 +245,45 @@ To update a single field of a JSON attribute with a more terse syntax, you may u
 
     $user->update(['options->key' => 'value']);
 
+<a name="array-object-and-collection-casting"></a>
+#### Array Object & Collection Casting
+
+Although the standard `array` cast is sufficient for many applications, it does have some disadvantages. Since the `array` cast returns a primitive type, it is not possible to mutate an offset of the array directly. For example, the following code will trigger a PHP error:
+
+    $user = User::find(1);
+
+    $user->options['key'] = $value;
+
+To solve this, Laravel offers an `AsArrayObject` cast that casts your JSON attribute to an [ArrayObject](https://www.php.net/manual/en/class.arrayobject.php) class. This feature is implemented using Laravel's [custom cast](#custom-casts) implementation, which allows Laravel to intelligently cache and transform the mutated object such that individual offsets may be modified without triggering a PHP error. To use the `AsArrayObject` cast, simply assign it to an attribute:
+
+    use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'options' => AsArrayObject::class,
+    ];
+
+Similarly, Laravel offers an `AsCollection` cast that casts your JSON attribute to a Laravel [Collection](/docs/{{version}}/collections) instance:
+
+    use Illuminate\Database\Eloquent\Casts\AsCollection;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'options' => AsCollection::class,
+    ];
+
 <a name="date-casting"></a>
 ### Date Casting
 
-By default, Eloquent will cast the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class and provides an assortment of helpful methods. You may cast additional date attributes by defining additional date casts within your model's `$cast` property array. Typically, dates should be cast using the `datetime` cast.
+By default, Eloquent will cast the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which extends the PHP `DateTime` class and provides an assortment of helpful methods. You may cast additional date attributes by defining additional date casts within your model's `$casts` property array. Typically, dates should be cast using the `datetime` or `immutable_datetime` cast types.
 
 When defining a `date` or `datetime` cast, you may also specify the date's format. This format will be used when the [model is serialized to an array or JSON](/docs/{{version}}/eloquent-serialization):
 
@@ -225,7 +296,7 @@ When defining a `date` or `datetime` cast, you may also specify the date's forma
         'created_at' => 'datetime:Y-m-d',
     ];
 
-When a column is cast as a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database:
+When a column is cast as a date, you may set the corresponding model attribute value to a UNIX timestamp, date string (`Y-m-d`), date-time string, or a `DateTime` / `Carbon` instance. The date's value will be correctly converted and stored in your database.
 
 You may customize the default serialization format for all of your model's dates by defining a `serializeDate` method on your model. This method does not affect how your dates are formatted for storage in the database:
 
@@ -248,6 +319,46 @@ To specify the format that should be used when actually storing a model's dates 
      * @var string
      */
     protected $dateFormat = 'U';
+
+<a name="date-casting-and-timezones"></a>
+#### Date Casting, Serialization, & Timezones
+
+By default, the `date` and `datetime` casts will serialize dates to a UTC ISO-8601 date string (`1986-05-28T21:05:54.000000Z`), regardless of the timezone specified in your application's `timezone` configuration option. You are strongly encouraged to always use this serialization format, as well as to store your application's dates in the UTC timezone by not changing your application's `timezone` configuration option from its default `UTC` value. Consistently using the UTC timezone throughout your application will provide the maximum level of interoperability with other date manipulation libraries written in PHP and JavaScript.
+
+If a custom format is applied to the `date` or `datetime` cast, such as `datetime:Y-m-d H:i:s`, the inner timezone of the Carbon instance will be used during date serialization. Typically, this will be the timezone specified in your application's `timezone` configuration option.
+
+<a name="enum-casting"></a>
+### Enum Casting
+
+> {note} Enum casting is only available for PHP 8.1+.
+
+Eloquent also allows you to cast your attribute values to PHP enums. To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
+
+    use App\Enums\ServerStatus;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => ServerStatus::class,
+    ];
+
+Once you have defined the cast on your model, the specified attribute will be automatically cast to and from an enum when you interact with the attribute:
+
+    if ($server->status == ServerStatus::provisioned) {
+        $server->status = ServerStatus::ready;
+
+        $server->save();
+    }
+
+<a name="encrypted-casting"></a>
+### Encrypted Casting
+
+The `encrypted` cast will encrypt a model's attribute value using Laravel's built-in [encryption](/docs/{{version}}/encryption) features. In addition, the `encrypted:array`, `encrypted:collection`, and `encrypted:object` casts work like their unencrypted counterparts; however, as you might expect, the underlying value is encrypted when stored in your database.
+
+As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values.
 
 <a name="query-time-casting"></a>
 ### Query Time Casting
@@ -411,7 +522,7 @@ When casting to value objects, any changes made to the value object will automat
 
 When an Eloquent model is converted to an array or JSON using the `toArray` and `toJson` methods, your custom cast value objects will typically be serialized as well as long as they implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces. However, when using value objects provided by third-party libraries, you may not have the ability to add these interfaces to the object.
 
-Therefore, you may specify that your custom cast class will be responsible for serializing the value object. To do so, your custom class cast should implement the `Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes` interface. This interface states that your class should contain a `serialize` method which should return the serialized form of your value object:
+Therefore, you may specify that your custom cast class will be responsible for serializing the value object. To do so, your custom cast class should implement the `Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes` interface. This interface states that your class should contain a `serialize` method which should return the serialized form of your value object:
 
     /**
      * Get the serialized representation of the value.

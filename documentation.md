@@ -43,6 +43,7 @@
     - [Notifications](/docs/{{version}}/notifications)
     - [Package Development](/docs/{{version}}/packages)
     - [Queues](/docs/{{version}}/queues)
+    - [Rate Limiting](/docs/{{version}}/rate-limiting)
     - [Task Scheduling](/docs/{{version}}/scheduling)
 - ## Security
     - [Authentication](/docs/{{version}}/authentication)
@@ -82,6 +83,7 @@
     - [Homestead](/docs/{{version}}/homestead)
     - [Horizon](/docs/{{version}}/horizon)
     - [Jetstream](https://jetstream.laravel.com)
+    - [Octane](/docs/{{version}}/octane)
     - [Passport](/docs/{{version}}/passport)
     - [Sail](/docs/{{version}}/sail)
     - [Sanctum](/docs/{{version}}/sanctum)

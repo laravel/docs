@@ -27,7 +27,7 @@
 
 In addition to providing built-in [authentication](/docs/{{version}}/authentication) services, Laravel also provides a simple way to authorize user actions against a given resource. For example, even though a user is authenticated, they may not be authorized to update or delete certain Eloquent models or database records managed by your application. Laravel's authorization features provide an easy, organized way of managing these types of authorization checks.
 
-Laravel provides two primary ways of authorizing actions: [gates](#gates) and [policies](#creating-policies). Think of gates and policies like routes and controllers. Gates provide a simple, closure based approach to authorization while policies, like controllers, group logic around a particular model or resource. In this documentation, we'll explore gates first and then examine policies.
+Laravel provides two primary ways of authorizing actions: [gates](#gates) and [policies](#creating-policies). Think of gates and policies like routes and controllers. Gates provide a simple, closure-based approach to authorization while policies, like controllers, group logic around a particular model or resource. In this documentation, we'll explore gates first and then examine policies.
 
 You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain some mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions which are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource.
 
@@ -41,7 +41,7 @@ You do not need to choose between exclusively using gates or exclusively using p
 
 Gates are simply closures that determine if a user is authorized to perform a given action. Typically, gates are defined within the `boot` method of the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument and may optionally receive additional arguments such as a relevant Eloquent model.
 
-In this example, we'll define a gate to determine if a user can update a given `App\Models\Post` model. The gate will accomplish this may comparing the user's `id` against the `user_id` of the user that created the post:
+In this example, we'll define a gate to determine if a user can update a given `App\Models\Post` model. The gate will accomplish this by comparing the user's `id` against the `user_id` of the user that created the post:
 
     use App\Models\Post;
     use App\Models\User;
@@ -472,7 +472,7 @@ The `App\Models\User` model that is included with your Laravel application inclu
         }
     }
 
-If a [policy is registered](#registering-policies) for the given model, the `can` method will automatically call the appropriate policy and return the boolean result. If no policy is registered for the model, the `can` method will attempt to call the closure based Gate matching the given action name.
+If a [policy is registered](#registering-policies) for the given model, the `can` method will automatically call the appropriate policy and return the boolean result. If no policy is registered for the model, the `can` method will attempt to call the closure-based Gate matching the given action name.
 
 <a name="user-model-actions-that-dont-require-models"></a>
 #### Actions That Don't Require Models
@@ -617,6 +617,14 @@ Laravel includes a middleware that can authorize actions before the incoming req
 
 In this example, we're passing the `can` middleware two arguments. The first is the name of the action we wish to authorize and the second is the route parameter we wish to pass to the policy method. In this case, since we are using [implicit model binding](/docs/{{version}}/routing#implicit-binding), a `App\Models\Post` model will be passed to the policy method. If the user is not authorized to perform the given action, an HTTP response with a 403 status code will be returned by the middleware.
 
+For convenience, you may also attach the `can` middleware to your route using the `can` method:
+
+    use App\Models\Post;
+
+    Route::put('/post/{post}', function (Post $post) {
+        // The current user may update the post...
+    })->can('update', 'post');
+
 <a name="middleware-actions-that-dont-require-models"></a>
 #### Actions That Don't Require Models
 
@@ -625,6 +633,14 @@ Again, some policy methods like `create` do not require a model instance. In the
     Route::post('/post', function () {
         // The current user may create posts...
     })->middleware('can:create,App\Models\Post');
+
+Specifying the entire class name within a string middleware definition can become cumbersome. For that reason, you may choose to attach the `can` middleware to your route using the `can` method:
+
+    use App\Models\Post;
+
+    Route::post('/post', function () {
+        // The current user may create posts...
+    })->can('create', Post::class);
 
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
@@ -636,12 +652,14 @@ When writing Blade templates, you may wish to display a portion of the page only
     <!-- The current user can update the post... -->
 @elsecan('create', App\Models\Post::class)
     <!-- The current user can create new posts... -->
+@else
+    <!-- ... -->
 @endcan
 
 @cannot('update', $post)
     <!-- The current user cannot update the post... -->
 @elsecannot('create', App\Models\Post::class)
-    <!-- The current user can now create new posts... -->
+    <!-- The current user cannot create new posts... -->
 @endcannot
 ```
 
@@ -691,7 +709,7 @@ When authorizing actions using policies, you may pass an array as the second arg
      * Determine if the given post can be updated by the user.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\  $post
+     * @param  \App\Models\Post  $post
      * @param  int  $category
      * @return bool
      */

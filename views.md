@@ -138,13 +138,13 @@ View composers are callbacks or class methods that are called when a view is ren
 
 Typically, view composers will be registered within one of your application's [service providers](/docs/{{version}}/providers). In this example, we'll assume that we have created a new `App\Providers\ViewServiceProvider` to house this logic.
 
-We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class based view composers, so you are free to organize them however you wish. For example, you could create an `app/Http/View/Composers` directory to house all of your application's view composers:
+We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class based view composers, so you are free to organize them however you wish. For example, you could create an `app/View/Composers` directory to house all of your application's view composers:
 
     <?php
 
     namespace App\Providers;
 
-    use App\Http\View\Composers\ProfileComposer;
+    use App\View\Composers\ProfileComposer;
     use Illuminate\Support\Facades\View;
     use Illuminate\Support\ServiceProvider;
 
@@ -179,11 +179,11 @@ We'll use the `View` facade's `composer` method to register the view composer. L
 
 > {note} Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
 
-Now that we have registered the composer, the `compose` method of the `App\Http\View\Composers\ProfileComposer` class will be executed each time the `profile` view is being rendered. Let's take a look at an example of the composer class:
+Now that we have registered the composer, the `compose` method of the `App\View\Composers\ProfileComposer` class will be executed each time the `profile` view is being rendered. Let's take a look at an example of the composer class:
 
     <?php
 
-    namespace App\Http\View\Composers;
+    namespace App\View\Composers;
 
     use App\Repositories\UserRepository;
     use Illuminate\View\View;
@@ -205,7 +205,7 @@ Now that we have registered the composer, the `compose` method of the `App\Http\
          */
         public function __construct(UserRepository $users)
         {
-            // Dependencies automatically resolved by service container...
+            // Dependencies are automatically resolved by the service container...
             $this->users = $users;
         }
 
@@ -228,7 +228,7 @@ As you can see, all view composers are resolved via the [service container](/doc
 
 You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
 
-    use App\Http\Views\Composers\MultiComposer;
+    use App\Views\Composers\MultiComposer;
 
     View::composer(
         ['profile', 'dashboard'],
@@ -246,7 +246,7 @@ The `composer` method also accepts the `*` character as a wildcard, allowing you
 
 View "creators" are very similar to view composers; however, they are executed immediately after the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
 
-    use App\Http\View\Creators\ProfileCreator;
+    use App\View\Creators\ProfileCreator;
     use Illuminate\Support\Facades\View;
 
     View::creator('profile', ProfileCreator::class);

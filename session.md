@@ -149,10 +149,16 @@ To determine if an item is present in the session, even if its value is `null`, 
         //
     }
 
+To determine if an item is not present in the session, you may use the `missing` method. The `missing` method returns `true` if the item is `null` or if the item is not present:
+
+    if ($request->session()->missing('users')) {
+        //
+    }
+
 <a name="storing-data"></a>
 ### Storing Data
 
-To store data in the session, you will typically use the request instance's `put` method or the `session` helper:
+To store data in the session, you will typically use the request instance's `put` method or the global `session` helper:
 
     // Via a request instance...
     $request->session()->put('key', 'value');
@@ -179,7 +185,7 @@ The `pull` method will retrieve and delete an item from the session in a single 
 
 If your session data contains an integer you wish to increment or decrement, you may use the `increment` and `decrement` methods:
 
-    $request->session()->increment('count'); 
+    $request->session()->increment('count');
 
     $request->session()->increment('count', $incrementBy = 2);
 

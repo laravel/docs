@@ -53,6 +53,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
 [Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::where](#method-array-where)
 [Arr::wrap](#method-array-wrap)
 [data_fill](#method-data-fill)
@@ -98,6 +99,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
+[Str::headline](#method-str-headline)
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
 [Str::isUuid](#method-str-is-uuid)
@@ -106,6 +108,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
 [Str::markdown](#method-str-markdown)
+[Str::mask](#method-str-mask)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -113,6 +116,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::plural](#method-str-plural)
 [Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
+[Str::remove](#method-str-remove)
+[Str::replace](#method-str-replace)
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
@@ -128,6 +133,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
+[Str::wordCount](#method-str-word-count)
 [Str::words](#method-str-words)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
@@ -158,12 +164,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isAscii](#method-fluent-str-is-ascii)
 [isEmpty](#method-fluent-str-is-empty)
 [isNotEmpty](#method-fluent-str-is-not-empty)
+[isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
 [ltrim](#method-fluent-str-ltrim)
 [markdown](#method-fluent-str-markdown)
+[mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
 [padBoth](#method-fluent-str-padboth)
@@ -172,6 +180,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [pipe](#method-fluent-str-pipe)
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
+[remove](#method-fluent-str-remove)
 [replace](#method-fluent-str-replace)
 [replaceArray](#method-fluent-str-replace-array)
 [replaceFirst](#method-fluent-str-replace-first)
@@ -187,12 +196,14 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
 [tap](#method-fluent-str-tap)
+[test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
 [whenEmpty](#method-fluent-str-when-empty)
+[wordCount](#method-fluent-str-word-count)
 [words](#method-fluent-str-words)
 
 </div>
@@ -234,7 +245,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
-[dispatch_now](#method-dispatch-now)
 [dump](#method-dump)
 [env](#method-env)
 [event](#method-event)
@@ -768,6 +778,26 @@ The `Arr::sortRecursive` method recursively sorts an array using the `sort` func
         ]
     */
 
+<a name="method-array-to-css-classes"></a>
+#### `Arr::toCssClasses()` {#collection-method}
+
+The `Arr::toCssClasses` conditionally compiles a CSS class string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+
+    use Illuminate\Support\Arr;
+
+    $isActive = false;
+    $hasError = true;
+
+    $array = ['p-4', 'font-bold' => $isActive, 'bg-red' => $hasError];
+
+    $classes = Arr::toCssClasses($array);
+
+    /*
+        'p-4 bg-red'
+    */
+
+This method powers Laravel's functionality allowing [merging classes with a Blade component's attribute bag](/docs/{{version}}/blade#conditionally-merge-classes) as well as the `@class` [Blade directive](/docs/{{version}}/blade#conditional-classes).
+
 <a name="method-array-where"></a>
 #### `Arr::where()` {#collection-method}
 
@@ -786,7 +816,7 @@ The `Arr::where` method filters an array using the given closure:
 <a name="method-array-wrap"></a>
 #### `Arr::wrap()` {#collection-method}
 
-The `Arr::wrap` method wraps the given value in an array. If the given value is already an array it be returned without modification:
+The `Arr::wrap` method wraps the given value in an array. If the given value is already an array it will be returned without modification:
 
     use Illuminate\Support\Arr;
 
@@ -1190,6 +1220,21 @@ The `Str::finish` method adds a single instance of the given value to a string i
 
     // this/string/
 
+<a name="method-str-headline"></a>
+#### `Str::headline()` {#collection-method}
+
+The `Str::headline` method will convert strings delimited by casing, hyphens, or underscores into a space delimited string with each word's first letter capitalized:
+
+    use Illuminate\Support\Str;
+
+    $headline = Str::headline('steve_jobs');
+
+    // Steve Jobs
+
+    $headline = Str::headline('EmailNotificationSent');
+
+    // Email Notification Sent
+
 <a name="method-str-is"></a>
 #### `Str::is()` {#collection-method}
 
@@ -1303,6 +1348,23 @@ The `Str::markdown` method converts GitHub flavored Markdown into HTML:
     ]);
 
     // <h1>Taylor Otwell</h1>
+
+<a name="method-str-mask"></a>
+#### `Str::mask()` {#collection-method}
+
+The `Str::mask` method masks a portion of a string with a repeated character, and may be used to obfuscate segments of strings such as email addresses and phone numbers:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::mask('taylor@example.com', '*', 3);
+
+    // tay***************
+
+If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
+
+    $string = Str::mask('taylor@example.com', '*', -15, 3);
+
+    // tay***@example.com
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {#collection-method}
@@ -1421,6 +1483,34 @@ The `Str::random` method generates a random string of the specified length. This
 
     $random = Str::random(40);
 
+<a name="method-str-remove"></a>
+#### `Str::remove()` {#collection-method}
+
+The `Str::remove` method removes the given value or array of values from the string:
+
+    use Illuminate\Support\Str;
+
+    $string = 'Peter Piper picked a peck of pickled peppers.';
+
+    $removed = Str::remove('e', $string);
+
+    // Ptr Pipr pickd a pck of pickld ppprs.
+
+You may also pass `false` as a third argument to the `remove` method to ignore case when removing strings.
+
+<a name="method-str-replace"></a>
+#### `Str::replace()` {#collection-method}
+
+The `Str::replace` method replaces a given string within the string:
+
+    use Illuminate\Support\Str;
+
+    $string = 'Laravel 8.x';
+
+    $replaced = Str::replace('8.x', '9.x', $string);
+
+    // Laravel 9.x
+
 <a name="method-str-replace-array"></a>
 #### `Str::replaceArray()` {#collection-method}
 
@@ -1493,6 +1583,10 @@ The `Str::snake` method converts the given string to `snake_case`:
 
     // foo_bar
 
+    $converted = Str::snake('fooBar', '-');
+
+    // foo-bar
+
 <a name="method-str-start"></a>
 #### `Str::start()` {#collection-method}
 
@@ -1516,6 +1610,12 @@ The `Str::startsWith` method determines if the given string begins with the give
     use Illuminate\Support\Str;
 
     $result = Str::startsWith('This is my name', 'This');
+
+    // true
+
+If an array of possible values is passed, the `startsWith` method will return `true` if the string begins with any of the given values:
+
+    $result = Str::startsWith('This is my name', ['This', 'That', 'There']);
 
     // true
 
@@ -1593,6 +1693,17 @@ The `Str::uuid` method generates a UUID (version 4):
     use Illuminate\Support\Str;
 
     return (string) Str::uuid();
+
+<a name="method-str-word-count"></a>
+#### `Str::wordCount()` {#collection-method}
+
+The `Str::wordCount` method returns the number of words that a string contains:
+
+```php
+use Illuminate\Support\Str;
+
+Str::wordCount('Hello, world!'); // 2
+```
 
 <a name="method-str-words"></a>
 #### `Str::words()` {#collection-method}
@@ -1894,6 +2005,21 @@ The `isNotEmpty` method determines if the given string is not empty:
 
     // true
 
+<a name="method-fluent-str-is-uuid"></a>
+#### `isUuid` {#collection-method}
+
+The `isUuid` method determines if a given string is a UUID:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('5ace9ab9-e9cf-4ec6-a19d-5881212a452c')->isUuid();
+
+    // true
+
+    $result = Str::of('Taylor')->isUuid();
+
+    // false
+
 <a name="method-fluent-str-kebab"></a>
 #### `kebab` {#collection-method}
 
@@ -1977,6 +2103,23 @@ The `markdown` method converts GitHub flavored Markdown into HTML:
     ]);
 
     // <h1>Taylor Otwell</h1>
+
+<a name="method-fluent-str-mask"></a>
+#### `mask` {#collection-method}
+
+The `mask` method masks a portion of a string with a repeated character, and may be used to obfuscate segments of strings such as email addresses and phone numbers:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('taylor@example.com')->mask('*', 3);
+
+    // tay***************
+
+If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
+
+    $string = Str::of('taylor@example.com')->mask('*', -15, 3);
+
+    // tay***@example.com
 
 <a name="method-fluent-str-match"></a>
 #### `match` {#collection-method}
@@ -2113,6 +2256,19 @@ The `prepend` method prepends the given values onto the string:
     $string = Str::of('Framework')->prepend('Laravel ');
 
     // Laravel Framework
+
+<a name="method-fluent-str-remove"></a>
+#### `remove` {#collection-method}
+
+The `remove` method removes the given value or array of values from the string:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Arkansas is quite beautiful!')->remove('quite');
+
+    // Arkansas is beautiful!
+
+You may also pass `false` as a second parameter to ignore case when removing.
 
 <a name="method-fluent-str-replace"></a>
 #### `replace` {#collection-method}
@@ -2312,6 +2468,17 @@ The `tap` method passes the string to the given closure, allowing you to examine
 
     // LARAVEL FRAMEWORK
 
+<a name="method-fluent-str-test"></a>
+#### `test` {#collection-method}
+
+The `test` method determines if a string matches the given regular expression pattern:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('Laravel Framework')->test('/Laravel/');
+
+    // true
+
 <a name="method-fluent-str-title"></a>
 #### `title` {#collection-method}
 
@@ -2388,6 +2555,17 @@ The `whenEmpty` method invokes the given closure if the string is empty. If the 
     });
 
     // 'Laravel'
+
+<a name="method-fluent-str-word-count"></a>
+#### `wordCount` {#collection-method}
+
+The `wordCount` method returns the number of words that a string contains:
+
+```php
+use Illuminate\Support\Str;
+
+Str::of('Hello, world!')->wordCount(); // 2
+```
 
 <a name="method-fluent-str-words"></a>
 #### `words` {#collection-method}
@@ -2657,13 +2835,6 @@ The `dispatch` function pushes the given [job](/docs/{{version}}/queues#creating
 
     dispatch(new App\Jobs\SendEmails);
 
-<a name="method-dispatch-now"></a>
-#### `dispatch_now()` {#collection-method}
-
-The `dispatch_now` function runs the given [job](/docs/{{version}}/queues#creating-jobs) immediately and returns the value from its `handle` method:
-
-    $result = dispatch_now(new App\Jobs\SendEmails);
-
 <a name="method-dump"></a>
 #### `dump()` {#collection-method}
 
@@ -2862,6 +3033,23 @@ The `retry` function attempts to execute the given callback until the given maxi
     return retry(5, function () {
         // Attempt 5 times while resting 100ms in between attempts...
     }, 100);
+
+If you would like to manually calculate the number of milliseconds to sleep in between attempts, you may pass a closure as the third argument to the `retry` function:
+
+    return retry(5, function () {
+        // ...
+    }, function ($attempt) {
+        return $attempt * 100;
+    });
+
+
+To only retry under specific conditions, you may pass a closure as the fourth argument to the `retry` function:
+
+    return retry(5, function () {
+        // ...
+    }, 100, function ($exception) {
+        return $exception instanceof RetryException;
+    });
 
 <a name="method-session"></a>
 #### `session()` {#collection-method}

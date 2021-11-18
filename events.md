@@ -8,7 +8,7 @@
 - [Defining Events](#defining-events)
 - [Defining Listeners](#defining-listeners)
 - [Queued Event Listeners](#queued-event-listeners)
-    - [Manually Interacting The Queue](#manually-interacting-the-queue)
+    - [Manually Interacting With The Queue](#manually-interacting-with-the-queue)
     - [Queued Event Listeners & Database Transactions](#queued-event-listeners-and-database-transactions)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
@@ -146,7 +146,7 @@ Laravel finds event listeners by scanning the listener classes using PHP's refle
         /**
          * Handle the given event.
          *
-         * @param  \App\Events\PodcastProcessed
+         * @param  \App\Events\PodcastProcessed  $event
          * @return void
          */
         public function handle(PodcastProcessed $event)
@@ -324,7 +324,17 @@ If you would like to customize the queue connection, queue name, or queue delay 
         public $delay = 60;
     }
 
-If you would like to define the listener's queue at runtime, you may define a `viaQueue` method on the listener:
+If you would like to define the listener's queue connection or queue name at runtime, you may define `viaConnection` or `viaQueue` methods on the listener:
+
+    /**
+     * Get the name of the listener's queue connection.
+     *
+     * @return string
+     */
+    public function viaConnection()
+    {
+        return 'sqs';
+    }
 
     /**
      * Get the name of the listener's queue.
@@ -373,8 +383,8 @@ Sometimes, you may need to determine whether a listener should be queued based o
         }
     }
 
-<a name="manually-interacting-the-queue"></a>
-### Manually Interacting The Queue
+<a name="manually-interacting-with-the-queue"></a>
+### Manually Interacting With The Queue
 
 If you need to manually access the listener's underlying queue job's `delete` and `release` methods, you may do so using the `Illuminate\Queue\InteractsWithQueue` trait. This trait is imported by default on generated listeners and provides access to these methods:
 
@@ -553,6 +563,9 @@ Event subscribers are classes that may subscribe to multiple events from within 
 
     namespace App\Listeners;
 
+    use Illuminate\Auth\Events\Login;
+    use Illuminate\Auth\Events\Logout;
+
     class UserEventSubscriber
     {
         /**
@@ -574,14 +587,50 @@ Event subscribers are classes that may subscribe to multiple events from within 
         public function subscribe($events)
         {
             $events->listen(
-                'Illuminate\Auth\Events\Login',
+                Login::class,
                 [UserEventSubscriber::class, 'handleUserLogin']
             );
 
             $events->listen(
-                'Illuminate\Auth\Events\Logout',
+                Logout::class,
                 [UserEventSubscriber::class, 'handleUserLogout']
             );
+        }
+    }
+
+If your event listener methods are defined within the subscriber itself, you may find it more convenient to return an array of events and method names from the subscriber's `subscribe` method. Laravel will automatically determine the subscriber's class name when registering the event listeners:
+
+    <?php
+
+    namespace App\Listeners;
+
+    use Illuminate\Auth\Events\Login;
+    use Illuminate\Auth\Events\Logout;
+
+    class UserEventSubscriber
+    {
+        /**
+         * Handle user login events.
+         */
+        public function handleUserLogin($event) {}
+
+        /**
+         * Handle user logout events.
+         */
+        public function handleUserLogout($event) {}
+
+        /**
+         * Register the listeners for the subscriber.
+         *
+         * @param  \Illuminate\Events\Dispatcher  $events
+         * @return array
+         */
+        public function subscribe($events)
+        {
+            return [
+                Login::class => 'handleUserLogin',
+                Logout::class => 'handleUserLogout',
+            ];
         }
     }
 

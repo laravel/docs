@@ -3,9 +3,11 @@
 - [Introduction](#introduction)
     - [Model Preparation](#model-preparation)
     - [Database Preparation](#database-preparation)
+    - [Configuring Trusted Hosts](#configuring-trusted-hosts)
 - [Routing](#routing)
     - [Requesting The Password Reset Link](#requesting-the-password-reset-link)
     - [Resetting The Password](#resetting-the-password)
+- [Deleting Expired Tokens](#deleting-expired-tokens)
 - [Customization](#password-customization)
 
 <a name="introduction"></a>
@@ -28,6 +30,15 @@ Next, verify that your `App\Models\User` model implements the `Illuminate\Contra
 A table must be created to store your application's password reset tokens. The migration for this table is included in the default Laravel application, so you only need to migrate your database to create this table:
 
     php artisan migrate
+
+<a name="configuring-trusted-hosts"></a>
+### Configuring Trusted Hosts
+
+By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request.
+
+Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given host name. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain host names, you may do so by enabling the `App\Http\Middleware\TrustHosts` middleware for your application. This is particular important when your application offers password reset functionality.
+
+To learn more about this middleware, please consult the [`TrustHosts` middleware documentation](/docs/{{version}}/requests#configuring-trusted-hosts).
 
 <a name="routing"></a>
 ## Routing
@@ -72,7 +83,7 @@ Before moving on, let's examine this route in more detail. First, the request's 
 
 The `sendResetLink` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
 
-You may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `sendResetLink` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers)
+You may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `sendResetLink` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
 
 > {tip} When manually implementing password resets, you are required to define the contents of the views and routes yourself. If you would like scaffolding that includes all necessary authentication and verification logic, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits).
 
@@ -110,18 +121,18 @@ Of course, we need to define a route to actually handle the password reset form 
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) use ($request) {
+            function ($user, $password) {
                 $user->forceFill([
                     'password' => Hash::make($password)
-                ])->save();
+                ])->setRememberToken(Str::random(60));
 
-                $user->setRememberToken(Str::random(60));
+                $user->save();
 
                 event(new PasswordReset($user));
             }
         );
 
-        return $status == Password::PASSWORD_RESET
+        return $status === Password::PASSWORD_RESET
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withErrors(['email' => [__($status)]]);
     })->middleware('guest')->name('password.update');
@@ -132,7 +143,18 @@ If the token, email address, and password given to the password broker are valid
 
 The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
 
-Before moving on, you may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `reset` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers)
+Before moving on, you may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `reset` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
+
+<a name="deleting-expired-tokens"></a>
+## Deleting Expired Tokens
+
+Password reset tokens that have expired will still be present within your database. However, you may easily delete these records using the `auth:clear-resets` Artisan command:
+
+    php artisan auth:clear-resets
+
+If you would like to automate this process, consider adding the command to your application's [scheduler](/docs/{{version}}/scheduling):
+
+    $schedule->command('auth:clear-resets')->everyFifteenMinutes();
 
 <a name="password-customization"></a>
 ## Customization

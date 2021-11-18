@@ -8,12 +8,14 @@
     - [Setup](#setup)
     - [Variables](#variables)
     - [Stories](#stories)
+    - [Completion Hooks](#completion-hooks)
 - [Running Tasks](#running-tasks)
     - [Confirming Task Execution](#confirming-task-execution)
 - [Notifications](#notifications)
     - [Slack](#slack)
     - [Discord](#discord)
     - [Telegram](#telegram)
+    - [Microsoft Teams](#microsoft-teams)
 
 <a name="introduction"></a>
 ## Introduction
@@ -172,6 +174,63 @@ Once the story has been written, you may invoke it in the same way you would inv
 
     php vendor/bin/envoy run deploy
 
+<a name="completion-hooks"></a>
+### Completion Hooks
+
+When tasks and stories finish, a number of hooks are executed. The hook types supported by Envoy are `@after`, `@error`, `@success`, and `@finished`. All of the code in these hooks is interpreted as PHP and executed locally, not on the remote servers that your tasks interact with.
+
+You may define as many of each of these hooks as you like. They will be executed in the order that they appear in your Envoy script.
+
+<a name="completion-after"></a>
+#### `@after`
+
+After each task execution, all of the `@after` hooks registered in your Envoy script will execute. The `@after` hooks receive the name of the task that was executed:
+
+```php
+@after
+    if ($task === 'deploy') {
+        // ...
+    }
+@endafter
+```
+
+<a name="completion-error"></a>
+#### `@error`
+
+After every task failure (exits with a status code greater than `0`), all of the `@error` hooks registered in your Envoy script will execute. The `@error` hooks receive the name of the task that was executed:
+
+```php
+@error
+    if ($task === 'deploy') {
+        // ...
+    }
+@enderror
+```
+
+<a name="completion-success"></a>
+#### `@success`
+
+If all tasks have executed without errors, all of the `@success` hooks registered in your Envoy script will execute:
+
+```bash
+@success
+    // ...
+@endsuccess
+```
+
+<a name="completion-finished"></a>
+#### `@finished`
+
+After all tasks have been executed (regardless of exit status), all of the `@finished` hooks will be executed. The `@finished` hooks receive the status code of the completed task, which may be `null` or an `integer` greater than or equal to `0`:
+
+```bash
+@finished
+    if ($exitCode > 0) {
+        // There were errors in one of the tasks...
+    }
+@endfinished
+```
+
 <a name="running-tasks"></a>
 ## Running Tasks
 
@@ -206,6 +265,12 @@ You should pass the entire webhook URL as the first argument given to the `@slac
         @slack('webhook-url', '#bots')
     @endfinished
 
+By default, Envoy notifications will send a message to the notification channel describing the task that was executed. However, you may overwrite this message with your own custom message by passing a third argument to the `@slack` directive:
+
+    @finished
+        @slack('webhook-url', '#bots', 'Hello, Slack.')
+    @endfinished
+
 <a name="discord"></a>
 ### Discord
 
@@ -222,4 +287,13 @@ Envoy also supports sending notifications to [Telegram](https://telegram.org) af
 
     @finished
         @telegram('bot-id','chat-id')
+    @endfinished
+
+<a name="microsoft-teams"></a>
+### Microsoft Teams
+
+Envoy also supports sending notifications to [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams) after each task is executed. The `@microsoftTeams` directive accepts a Teams Webhook (required), a message, theme color (success, info, warning, error), and an array of options. You may retrieve your Teams Webook by creating a new [incoming webhook](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook). The Teams API has many other attributes to customize your message box like title, summary, and sections. You can find more information on the [Microsoft Teams documentation](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL#example-of-connector-message). You should pass the entire Webhook URL into the `@microsoftTeams` directive:
+
+    @finished
+        @microsoftTeams('webhook-url')
     @endfinished

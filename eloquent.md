@@ -11,6 +11,7 @@
 - [Retrieving Models](#retrieving-models)
     - [Collections](#collections)
     - [Chunking Results](#chunking-results)
+    - [Streaming Results Lazily](#streaming-results-lazily)
     - [Cursors](#cursors)
     - [Advanced Subqueries](#advanced-subqueries)
 - [Retrieving Single Models / Aggregates](#retrieving-single-models)
@@ -24,6 +25,7 @@
 - [Deleting Models](#deleting-models)
     - [Soft Deleting](#soft-deleting)
     - [Querying Soft Deleted Models](#querying-soft-deleted-models)
+- [Pruning Models](#pruning-models)
 - [Replicating Models](#replicating-models)
 - [Query Scopes](#query-scopes)
     - [Global Scopes](#global-scopes)
@@ -52,7 +54,7 @@ If you would like to generate a [database migration](/docs/{{version}}/migration
 
     php artisan make:model Flight --migration
 
-You may generate various other types of classes when generating a model, such as factories, seeders, and controllers. In addition, these options may be combined to create multiple classes at once:
+You may generate various other types of classes when generating a model, such as factories, seeders, policies, controllers, and form requests. In addition, these options may be combined to create multiple classes at once:
 
 ```bash
 # Generate a model and a FlightFactory class...
@@ -67,8 +69,21 @@ php artisan make:model Flight -s
 php artisan make:model Flight --controller
 php artisan make:model Flight -c
 
+# Generate a model, FlightController resource class, and form request classes...
+php artisan make:model Flight --controller --resource --requests
+php artisan make:model Flight -crR
+
+# Generate a model and a FlightPolicy class...
+php artisan make:model Flight --policy
+
 # Generate a model and a migration, factory, seeder, and controller...
 php artisan make:model Flight -mfsc
+
+# Shortcut to generate a model, migration, factory, seeder, policy, controller, and form requests...
+php artisan make:model Flight --all
+
+# Generate a pivot model...
+php artisan make:model Member --pivot
 ```
 
 <a name="eloquent-model-conventions"></a>
@@ -318,9 +333,11 @@ In addition to the methods provided by Laravel's base collection class, the Eloq
 
 Since all of Laravel's collections implement PHP's iterable interfaces, you may loop over collections as if they were an array:
 
-    foreach ($flights as $flight) {
-        echo $flight->name;
-    }
+```php
+foreach ($flights as $flight) {
+    echo $flight->name;
+}
+```
 
 <a name="chunking-results"></a>
 ### Chunking Results
@@ -329,47 +346,82 @@ Your application may run out of memory if you attempt to load tens of thousands 
 
 The `chunk` method will retrieve a subset of Eloquent models, passing them to a closure for processing. Since only the current chunk of Eloquent models is retrieved at a time, the `chunk` method will provide significantly reduced memory usage when working with a large number of models:
 
-    use App\Models\Flight;
+```php
+use App\Models\Flight;
 
-    Flight::chunk(200, function ($flights) {
-        foreach ($flights as $flight) {
-            //
-        }
-    });
+Flight::chunk(200, function ($flights) {
+    foreach ($flights as $flight) {
+        //
+    }
+});
+```
 
 The first argument passed to the `chunk` method is the number of records you wish to receive per "chunk". The closure passed as the second argument will be invoked for each chunk that is retrieved from the database. A database query will be executed to retrieve each chunk of records passed to the closure.
 
 If you are filtering the results of the `chunk` method based on a column that you will also be updating while iterating over the results, you should use the `chunkById` method. Using the `chunk` method in these scenarios could lead to unexpected and inconsistent results. Internally, the `chunkById` method will always retrieve models with an `id` column greater than the last model in the previous chunk:
 
-    Flight::where('departed', true)
-            ->chunkById(200, function ($flights) {
-                $flights->each->update(['departed' => false]);
-            }, $column = 'id');
+```php
+Flight::where('departed', true)
+    ->chunkById(200, function ($flights) {
+        $flights->each->update(['departed' => false]);
+    }, $column = 'id');
+```
+
+<a name="streaming-results-lazily"></a>
+### Streaming Results Lazily
+
+The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that, behind the scenes, it executes the query in chunks. However, instead of passing each chunk directly into a callback as is, the `lazy` method returns a flattened [`LazyCollection`](/docs/{{version}}/collections#lazy-collections) of Eloquent models, which lets you interact with the results as a single stream:
+
+```php
+use App\Models\Flight;
+
+foreach (Flight::lazy() as $flight) {
+    //
+}
+```
+
+If you are filtering the results of the `lazy` method based on a column that you will also be updating while iterating over the results, you should use the `lazyById` method. Internally, the `lazyById` method will always retrieve models with an `id` column greater than the last model in the previous chunk:
+
+```php
+Flight::where('departed', true)
+    ->lazyById(200, $column = 'id')
+    ->each->update(['departed' => false]);
+```
 
 <a name="cursors"></a>
 ### Cursors
 
-Similar to the `chunk` method, the `cursor` method may be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records.
+Similar to the `lazy` method, the `cursor` method may be used to significantly reduce your application's memory consumption when iterating through tens of thousands of Eloquent model records.
 
-The `cursor` method will only execute a single database query; however, the individual Eloquent models will not be hydrated until they are actually iterated over. Therefore, only one Eloquent model is kept in memory at any given time while iterating over the cursor. Internally, the `cursor` method uses PHP [generators](https://www.php.net/manual/en/language.generators.overview.php) to implement this functionality:
+The `cursor` method will only execute a single database query; however, the individual Eloquent models will not be hydrated until they are actually iterated over. Therefore, only one Eloquent model is kept in memory at any given time while iterating over the cursor.
 
-    use App\Models\Flight;
+> {note} Since the `cursor` method only ever holds a single Eloquent model in memory at a time, it cannot eager load relationships. If you need to eager load relationships, consider using [the `lazy` method](#streaming-results-lazily) instead.
 
-    foreach (Flight::where('destination', 'Zurich')->cursor() as $flight) {
-        //
-    }
+Internally, the `cursor` method uses PHP [generators](https://www.php.net/manual/en/language.generators.overview.php) to implement this functionality:
+
+```php
+use App\Models\Flight;
+
+foreach (Flight::where('destination', 'Zurich')->cursor() as $flight) {
+    //
+}
+```
 
 The `cursor` returns an `Illuminate\Support\LazyCollection` instance. [Lazy collections](/docs/{{version}}/collections#lazy-collections) allow you to use many of the collection methods available on typical Laravel collections while only loading a single model into memory at a time:
 
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $users = User::cursor()->filter(function ($user) {
-        return $user->id > 500;
-    });
+$users = User::cursor()->filter(function ($user) {
+    return $user->id > 500;
+});
 
-    foreach ($users as $user) {
-        echo $user->id;
-    }
+foreach ($users as $user) {
+    echo $user->id;
+}
+```
+
+Although the `cursor` method uses far less memory than a regular query (by only holding a single Eloquent model in memory at a time), it will still eventually run out of memory. This is [due to PHP's PDO driver internally caching all raw query results in its buffer](https://www.php.net/manual/en/mysqlinfo.concepts.buffering.php). If you're dealing with a very large number of Eloquent records, consider using [the `lazy` method](#streaming-results-lazily) instead.
 
 <a name="advanced-subqueries"></a>
 ### Advanced Subqueries
@@ -700,8 +752,6 @@ If you would like to perform multiple "upserts" in a single query, then you shou
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
     ], ['departure', 'destination'], ['price']);
 
-> {note} All databases systems except SQL Server require the columns in the second argument provided to the `upsert` method to have a "primary" or "unique" index.
-
 <a name="deleting-models"></a>
 ## Deleting Models
 
@@ -712,6 +762,10 @@ To delete a model, you may call the `delete` method on the model instance:
     $flight = Flight::find(1);
 
     $flight->delete();
+
+You may call the `truncate` method to delete all of the model's associated database records. The `truncate` operation will also reset any auto-incrementing IDs on the model's associated table:
+
+    Flight::truncate();
 
 <a name="deleting-an-existing-model-by-its-primary-key"></a>
 #### Deleting An Existing Model By Its Primary Key
@@ -759,7 +813,7 @@ In addition to actually removing records from your database, Eloquent can also "
 You should also add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
     use Illuminate\Database\Schema\Blueprint;
-    use Illuminate\Facades\Schema;
+    use Illuminate\Support\Facades\Schema;
 
     Schema::table('flights', function (Blueprint $table) {
         $table->softDeletes();
@@ -832,6 +886,97 @@ The `onlyTrashed` method will retrieve **only** soft deleted models:
                     ->where('airline_id', 1)
                     ->get();
 
+<a name="pruning-models"></a>
+## Pruning Models
+
+Sometimes you may want to periodically delete models that are no longer needed. To accomplish this, you may add the `Illuminate\Database\Eloquent\Prunable` or `Illuminate\Database\Eloquent\MassPrunable` trait to the models you would like to periodically prune. After adding one of the traits to the model, implement a `prunable` method which returns an Eloquent query builder that resolves the models that are no longer needed:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Prunable;
+
+    class Flight extends Model
+    {
+        use Prunable;
+
+        /**
+         * Get the prunable model query.
+         *
+         * @return \Illuminate\Database\Eloquent\Builder
+         */
+        public function prunable()
+        {
+            return static::where('created_at', '<=', now()->subMonth());
+        }
+    }
+
+When marking models as `Prunable`, you may also define a `pruning` method on the model. This method will be called before the model is deleted. This method can be useful for deleting any additional resources associated with the model, such as stored files, before the model is permanently removed from the database:
+
+    /**
+     * Prepare the model for pruning.
+     *
+     * @return void
+     */
+    protected function pruning()
+    {
+        //
+    }
+
+After configuring your prunable model, you should schedule the `model:prune` Artisan command in your application's `App\Console\Kernel` class. You are free to choose the appropriate interval at which this command should be run:
+
+    /**
+     * Define the application's command schedule.
+     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @return void
+     */
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('model:prune')->daily();
+    }
+
+Behind the scenes, the `model:prune` command will automatically detect "Prunable" models within your application's `app/Models` directory. If your models are in a different location, you may use the `--model` option to specify the model class names:
+
+    $schedule->command('model:prune', [
+        '--model' => [Address::class, Flight::class],
+    ])->daily();
+
+You may test your `prunable` query by executing the `model:prune` command with the `--pretend` option. When pretending, the `model:prune` command will simply report how many records would be pruned if the command were to actually run:
+
+    php artisan model:prune --pretend
+
+> {note} Soft deleting models will be permanently deleted (`forceDelete`) if they match the prunable query.
+
+<a name="mass-pruning"></a>
+#### Mass Pruning
+
+When models are marked with the `Illuminate\Database\Eloquent\MassPrunable` trait, models are deleted from the database using mass-deletion queries. Therefore, the `pruning` method will not be invoked, nor will the `deleting` and `deleted` model events be dispatched. This is because the models are never actually retrieved before deletion, thus making the pruning process much more efficient:
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\MassPrunable;
+
+    class Flight extends Model
+    {
+        use MassPrunable;
+
+        /**
+         * Get the prunable model query.
+         *
+         * @return \Illuminate\Database\Eloquent\Builder
+         */
+        public function prunable()
+        {
+            return static::where('created_at', '<=', now()->subMonth());
+        }
+    }
+
 <a name="replicating-models"></a>
 ## Replicating Models
 
@@ -852,6 +997,20 @@ You may create an unsaved copy of an existing model instance using the `replicat
     ]);
 
     $billing->save();
+
+To exclude one or more attributes from being replicated to the new model, you may pass an array to the `replicate` method:
+
+    $flight = Flight::create([
+        'destination' => 'LAX',
+        'origin' => 'LHR',
+        'last_flown' => '2020-03-04 11:00:00',
+        'last_pilot_id' => 747,
+    ]);
+
+    $flight = $flight->replicate([
+        'last_flown',
+        'last_pilot_id'
+    ]);
 
 <a name="query-scopes"></a>
 ## Query Scopes
@@ -921,7 +1080,7 @@ To assign a global scope to a model, you should override the model's `booted` me
 After adding the scope in the example above to the `App\Models\User` model, a call to the `User::all()` method will execute the following SQL query:
 
 ```sql
-select * from `users` where `age` > 200
+select * from `users` where `created_at` < 0021-02-18 00:00:00
 ```
 
 <a name="anonymous-global-scopes"></a>
@@ -977,7 +1136,7 @@ If you would like to remove several or even all of the query's global scopes, yo
 
 Local scopes allow you to define common sets of query constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, prefix an Eloquent model method with `scope`.
 
-Scopes should always return a query builder instance:
+Scopes should always return the same query builder instance or `void`:
 
     <?php
 
@@ -1002,11 +1161,11 @@ Scopes should always return a query builder instance:
          * Scope a query to only include active users.
          *
          * @param  \Illuminate\Database\Eloquent\Builder  $query
-         * @return \Illuminate\Database\Eloquent\Builder
+         * @return void
          */
         public function scopeActive($query)
         {
-            return $query->where('active', 1);
+            $query->where('active', 1);
         }
     }
 
@@ -1062,13 +1221,17 @@ Once the expected arguments have been added to your scope method's signature, yo
 <a name="comparing-models"></a>
 ## Comparing Models
 
-Sometimes you may need to determine if two models are the "same". The `is` method may be used to quickly verify two models have the same primary key, table, and database connection:
+Sometimes you may need to determine if two models are the "same" or not. The `is` and `isNot` methods may be used to quickly verify two models have the same primary key, table, and database connection or not:
 
     if ($post->is($anotherPost)) {
         //
     }
 
-The `is` method is also available when using the `belongsTo`, `hasOne`, `morphTo`, and `morphOne` [relationships](/docs/{{version}}/eloquent-relationships). This method is particularly helpful when you would like to compare a related model without issuing a query to retrieve that model:
+    if ($post->isNot($anotherPost)) {
+        //
+    }
+
+The `is` and `isNot` methods are also available when using the `belongsTo`, `hasOne`, `morphTo`, and `morphOne` [relationships](/docs/{{version}}/eloquent-relationships). This method is particularly helpful when you would like to compare a related model without issuing a query to retrieve that model:
 
     if ($post->author()->is($user)) {
         //
@@ -1077,9 +1240,11 @@ The `is` method is also available when using the `belongsTo`, `hasOne`, `morphTo
 <a name="events"></a>
 ## Events
 
+> {tip} Want to broadcast your Eloquent events directly to your client-side application? Check out Laravel's [model event broadcasting](/docs/{{version}}/broadcasting#model-broadcasting).
+
 Eloquent models dispatch several events, allowing you to hook into the following moments in a model's lifecycle: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, and `replicating`.
 
-The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed.
+The `retrieved` event will dispatch when an existing model is retrieved from the database. When a new model is saved for the first time, the `creating` and `created` events will dispatch. The `updating` / `updated` events will dispatch when an existing model is modified and the `save` method is called. The `saving` / `saved` events will dispatch when a model is created or updated - even if the model's attributes have not been changed. Event names ending with `-ing` are dispatched before any changes to the model are persisted, while events ending with `-ed` are dispatched after the changes to the model are persisted.
 
 To start listening to model events, define a `$dispatchesEvents` property on your Eloquent model. This property maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events). Each model event class should expect to receive an instance of the affected model via its constructor:
 
@@ -1106,7 +1271,7 @@ To start listening to model events, define a `$dispatchesEvents` property on you
         ];
     }
 
-After defining and mapping your Eloquent events, you may use [event listeners](https://laravel.com/docs/{{version}}/events#defining-listeners) to handle the events.
+After defining and mapping your Eloquent events, you may use [event listeners](/docs/{{version}}/events#defining-listeners) to handle the events.
 
 > {note} When issuing a mass update or delete query via Eloquent, the `saved`, `updated`, `deleting`, and `deleted` model events will not be dispatched for the affected models. This is because the models are never actually retrieved when performing mass updates or deletes.
 
@@ -1222,6 +1387,40 @@ To register an observer, you need to call the `observe` method on the model you 
     public function boot()
     {
         User::observe(UserObserver::class);
+    }
+
+> {tip} There are additional events an observer can listen to, such as `saving` and `retrieved`. These events are described within the [events](#events) documentation.
+
+<a name="observers-and-database-transactions"></a>
+#### Observers & Database Transactions
+
+When models are being created within a database transaction, you may want to instruct an observer to only execute its event handlers after the database transaction is committed. You may accomplish this by defining an `$afterCommit` property on the observer. If a database transaction is not in progress, the event handlers will execute immediately:
+
+    <?php
+
+    namespace App\Observers;
+
+    use App\Models\User;
+
+    class UserObserver
+    {
+        /**
+         * Handle events after all transactions are committed.
+         *
+         * @var bool
+         */
+        public $afterCommit = true;
+
+        /**
+         * Handle the User "created" event.
+         *
+         * @param  \App\Models\User  $user
+         * @return void
+         */
+        public function created(User $user)
+        {
+            //
+        }
     }
 
 <a name="muting-events"></a>

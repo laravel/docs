@@ -51,12 +51,12 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Dusk provides an expressive, easy-to-use browser automation and testing API. By default, Dusk does not require you to install JDK or Selenium on your local computer. Instead, Dusk uses a standalone [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) installation. However, you are free to utilize any other Selenium compatible driver you wish.
+Laravel Dusk provides an expressive, easy-to-use browser automation and testing API. By default, Dusk does not require you to install JDK or Selenium on your local computer. Instead, Dusk uses a standalone [ChromeDriver](https://sites.google.com/chromium.org/driver) installation. However, you are free to utilize any other Selenium compatible driver you wish.
 
 <a name="installation"></a>
 ## Installation
 
-To get started, you should add the `laravel/dusk` Composer dependency to your project:
+To get started, you should install [Google Chrome](https://www.google.com/chrome) and add the `laravel/dusk` Composer dependency to your project:
 
     composer require --dev laravel/dusk
 
@@ -92,7 +92,7 @@ If you would like to install a different version of ChromeDriver than what is in
 <a name="using-other-browsers"></a>
 ### Using Other Browsers
 
-By default, Dusk uses Google Chrome and a standalone [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) installation to run your browser tests. However, you may start your own Selenium server and run your tests against any browser you wish.
+By default, Dusk uses Google Chrome and a standalone [ChromeDriver](https://sites.google.com/chromium.org/driver) installation to run your browser tests. However, you may start your own Selenium server and run your tests against any browser you wish.
 
 To get started, open your `tests/DuskTestCase.php` file, which is the base Dusk test case for your application. Within this file, you can remove the call to the `startChromeDriver` method. This will stop Dusk from automatically starting the ChromeDriver:
 
@@ -389,12 +389,14 @@ You may use the `deleteCookie` method to delete the given cookie:
 
 You may use the `script` method to execute arbitrary JavaScript statements within the browser:
 
-    $output = $browser->script('document.documentElement.scrollTop = 0');
+    $browser->script('document.documentElement.scrollTop = 0');
 
-    $output = $browser->script([
+    $browser->script([
         'document.body.scrollTop = 0',
         'document.documentElement.scrollTop = 0',
     ]);
+
+    $output = $browser->script('return window.location.pathname');
 
 <a name="taking-a-screenshot"></a>
 ### Taking A Screenshot
@@ -517,6 +519,10 @@ To select a value available on a `select` element, you may use the `select` meth
 You may select a random option by omitting the second argument:
 
     $browser->select('size');
+
+By providing an array as the second argument to the `select` method, you can instruct the method to select multiple options:
+
+    $browser->select('categories', ['Art', 'Music']);
 
 <a name="checkboxes"></a>
 #### Checkboxes
@@ -699,7 +705,7 @@ You may occasionally need to execute assertions outside of the current scope. Yo
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements
 
-When testing applications that use JavaScript extensively, it often becomes necessary to "wait" for certain elements or data to be available before proceeding with a test. Dusk makes this a cinch. Using a variety of methods, you may wait for elements to be visible on the page or even wait until a given JavaScript expression evaluates to `true`.
+When testing applications that use JavaScript extensively, it often becomes necessary to "wait" for certain elements or data to be available before proceeding with a test. Dusk makes this a cinch. Using a variety of methods, you may wait for elements to become visible on the page or even wait until a given JavaScript expression evaluates to `true`.
 
 <a name="waiting"></a>
 #### Waiting
@@ -734,6 +740,20 @@ You may also wait until the element matching the given selector is missing from 
 
     // Wait a maximum of one second until the selector is missing...
     $browser->waitUntilMissing('.selector', 1);
+
+Or, you may wait until the element matching the given selector is enabled or disabled:
+
+    // Wait a maximum of five seconds until the selector is enabled...
+    $browser->waitUntilEnabled('.selector');
+
+    // Wait a maximum of one second until the selector is enabled...
+    $browser->waitUntilEnabled('.selector', 1);
+
+    // Wait a maximum of five seconds until the selector is disabled...
+    $browser->waitUntilDisabled('.selector');
+
+    // Wait a maximum of one second until the selector is disabled...
+    $browser->waitUntilDisabled('.selector', 1);
 
 <a name="scoping-selectors-when-available"></a>
 #### Scoping Selectors When Available
@@ -781,6 +801,10 @@ The `waitForLink` method may be used to wait until the given link text is displa
 When making a path assertion such as `$browser->assertPathIs('/home')`, the assertion can fail if `window.location.pathname` is being updated asynchronously. You may use the `waitForLocation` method to wait for the location to be a given value:
 
     $browser->waitForLocation('/secret');
+
+The `waitForLocation` method can also be used to wait for the current window location to be a fully qualified URL:
+
+    $browser->waitForLocation('https://example.com/path');
 
 You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) location:
 
@@ -899,12 +923,17 @@ Dusk provides a variety of assertions that you may make against your application
 [assertSelectHasOption](#assert-select-has-option)
 [assertSelectMissingOption](#assert-select-missing-option)
 [assertValue](#assert-value)
+[assertValueIsNot](#assert-value-is-not)
 [assertAttribute](#assert-attribute)
+[assertAttributeContains](#assert-attribute-contains)
 [assertAriaAttribute](#assert-aria-attribute)
 [assertDataAttribute](#assert-data-attribute)
 [assertVisible](#assert-visible)
 [assertPresent](#assert-present)
+[assertNotPresent](#assert-not-present)
 [assertMissing](#assert-missing)
+[assertInputPresent](#assert-input-present)
+[assertInputMissing](#assert-input-missing)
 [assertDialogOpened](#assert-dialog-opened)
 [assertEnabled](#assert-enabled)
 [assertDisabled](#assert-disabled)
@@ -1262,12 +1291,26 @@ Assert that the element matching the given selector has the given value:
 
     $browser->assertValue($selector, $value);
 
+<a name="assert-value-is-not"></a>
+#### assertValueIsNot
+
+Assert that the element matching the given selector does not have the given value:
+
+    $browser->assertValueIsNot($selector, $value);
+
 <a name="assert-attribute"></a>
 #### assertAttribute
 
 Assert that the element matching the given selector has the given value in the provided attribute:
 
     $browser->assertAttribute($selector, $attribute, $value);
+
+<a name="assert-attribute-contains"></a>
+#### assertAttributeContains
+
+Assert that the element matching the given selector contains the given value in the provided attribute:
+
+    $browser->assertAttributeContains($selector, $attribute, $value);
 
 <a name="assert-aria-attribute"></a>
 #### assertAriaAttribute
@@ -1305,12 +1348,33 @@ Assert that the element matching the given selector is present:
 
     $browser->assertPresent($selector);
 
+<a name="assert-not-present"></a>
+#### assertNotPresent
+
+Assert that the element matching the given selector is not present in the source:
+
+    $browser->assertNotPresent($selector);
+
 <a name="assert-missing"></a>
 #### assertMissing
 
 Assert that the element matching the given selector is not visible:
 
     $browser->assertMissing($selector);
+
+<a name="assert-input-present"></a>
+#### assertInputPresent
+
+Assert that an input with the given name is present:
+
+    $browser->assertInputPresent($name);
+
+<a name="assert-input-missing"></a>
+#### assertInputMissing
+
+Assert that an input with the given name is not present in the source:
+
+    $browser->assertInputMissing($name);
 
 <a name="assert-dialog-opened"></a>
 #### assertDialogOpened
@@ -1717,7 +1781,7 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
           ],
           "scripts": {
             "test-setup": "cp .env.testing .env",
-            "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve > /dev/null 2>&1 &' && php artisan dusk"
+            "test": "nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &' && nohup bash -c 'php artisan serve --no-reload > /dev/null 2>&1 &' && php artisan dusk"
           }
         }
       }
@@ -1738,13 +1802,13 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following 
 
     install:
       - cp .env.testing .env
-      - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+      - travis_retry composer install --no-interaction --prefer-dist
       - php artisan key:generate
       - php artisan dusk:chrome-driver
 
     before_script:
       - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      - php artisan serve &
+      - php artisan serve --no-reload &
 
     script:
       - php artisan dusk
@@ -1769,7 +1833,7 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
               sudo systemctl start mysql
               mysql --user="root" --password="root" -e "CREATE DATABASE 'my-database' character set UTF8mb4 collate utf8mb4_bin;"
           - name: Install Composer Dependencies
-            run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+            run: composer install --no-progress --prefer-dist --optimize-autoloader
           - name: Generate Application Key
             run: php artisan key:generate
           - name: Upgrade Chrome Driver
@@ -1777,7 +1841,7 @@ If you are using [Github Actions](https://github.com/features/actions) to run yo
           - name: Start Chrome Driver
             run: ./vendor/laravel/dusk/bin/chromedriver-linux &
           - name: Run Laravel Server
-            run: php artisan serve &
+            run: php artisan serve --no-reload &
           - name: Run Dusk Tests
             env:
               APP_URL: "http://127.0.0.1:8000"

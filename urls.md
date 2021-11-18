@@ -53,7 +53,7 @@ Each of these methods may also be accessed via the `URL` [facade](/docs/{{versio
 
 The `route` helper may be used to generate URLs to [named routes](/docs/{{version}}/routing#named-routes). Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your calls to the `route` function. For example, imagine your application contains a route defined like the following:
 
-    Route::get('/post/{post}', function () {
+    Route::get('/post/{post}', function (Post $post) {
         //
     })->name('post.show');
 
@@ -65,7 +65,7 @@ To generate a URL to this route, you may use the `route` helper like so:
 
 Of course, the `route` helper may also be used to generate URLs for routes with multiple parameters:
 
-    Route::get('/post/{post}/comment/{comment}', function () {
+    Route::get('/post/{post}/comment/{comment}', function (Post $post, Comment $comment) {
         //
     })->name('comment.show');
 
@@ -82,7 +82,7 @@ Any additional array elements that do not correspond to the route's definition p
 <a name="eloquent-models"></a>
 #### Eloquent Models
 
-You will often be generating URLs using the primary key of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's primary key:
+You will often be generating URLs using the route key (typically the primary key) of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's route key:
 
     echo route('post.show', ['post' => $post]);
 
@@ -144,6 +144,25 @@ Once you have registered the middleware in your kernel, you may attach it to a r
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
     })->name('unsubscribe')->middleware('signed');
+    
+<a name="responding-to-invalid-signed-routes"></a>
+#### Responding To Invalid Signed Routes
+
+When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom "renderable" closure for the `InvalidSignatureException` exception in your exception handler. This closure should return an HTTP response:
+
+    use Illuminate\Routing\Exceptions\InvalidSignatureException;
+
+    /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->renderable(function (InvalidSignatureException $e) {
+            return response()->view('error.link-expired', [], 403);
+        });
+    }
 
 <a name="urls-for-controller-actions"></a>
 ## URLs For Controller Actions
@@ -198,7 +217,7 @@ Once the default value for the `locale` parameter has been set, you are no longe
 <a name="url-defaults-middleware-priority"></a>
 #### URL Defaults & Middleware Priority
 
-Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](https://laravel.com/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this by making sure your middleware occurs before the `SubstituteBindings` middleware within the `$middlewarePriority` property of your application's HTTP kernel.
+Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this by making sure your middleware occurs before the `SubstituteBindings` middleware within the `$middlewarePriority` property of your application's HTTP kernel.
 
 The `$middlewarePriority` property is defined in the base `Illuminate\Foundation\Http\Kernel` class. You may copy its definition from that class and overwrite it in your application's HTTP kernel in order to modify it:
 

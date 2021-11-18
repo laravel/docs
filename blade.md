@@ -9,14 +9,16 @@
     - [Switch Statements](#switch-statements)
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
-    - [Comments](#comments)
+    - [Conditional Classes](#conditional-classes)
     - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
     - [Raw PHP](#raw-php)
+    - [Comments](#comments)
 - [Components](#components)
     - [Rendering Components](#rendering-components)
     - [Passing Data To Components](#passing-data-to-components)
     - [Component Attributes](#component-attributes)
+    - [Reserved Keywords](#reserved-keywords)
     - [Slots](#slots)
     - [Inline Component Views](#inline-component-views)
     - [Anonymous Components](#anonymous-components)
@@ -32,6 +34,7 @@
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Extending Blade](#extending-blade)
+    - [Custom Echo Handlers](#custom-echo-handlers)
     - [Custom If Statements](#custom-if-statements)
 
 <a name="introduction"></a>
@@ -45,7 +48,7 @@ Blade views may be returned from routes or controller using the global `view` he
         return view('greeting', ['name' => 'Finn']);
     });
 
-> {tip} Before digging deeper into Blade, make sure to read the Laravel [view documentation](/docs/{{version}}/views).
+> {tip} Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
 
 <a name="displaying-data"></a>
 ## Displaying Data
@@ -65,25 +68,6 @@ You may display the contents of the `name` variable like so:
 You are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
 
     The current UNIX timestamp is {{ time() }}.
-
-<a name="rendering-json"></a>
-#### Rendering JSON
-
-Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
-
-    <script>
-        var app = <?php echo json_encode($array); ?>;
-    </script>
-
-However, instead of manually calling `json_encode`, you may use the `@json` Blade directive. The `@json` directive accepts the same arguments as PHP's `json_encode` function. By default, the `@json` directive calls the `json_encode` function with the `JSON_HEX_TAG`, `JSON_HEX_APOS`, `JSON_HEX_AMP`, and `JSON_HEX_QUOT` flags:
-
-    <script>
-        var app = @json($array);
-
-        var app = @json($array, JSON_PRETTY_PRINT);
-    </script>
-
-> {note} You should only use the `@json` directive to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="html-entity-encoding"></a>
 ### HTML Entity Encoding
@@ -133,10 +117,33 @@ In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` 
 The `@` symbol may also be used to escape Blade directives:
 
     {{-- Blade template --}}
-    @@json()
+    @@if()
 
     <!-- HTML output -->
-    @json()
+    @if()
+
+<a name="rendering-json"></a>
+#### Rendering JSON
+
+Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
+
+    <script>
+        var app = <?php echo json_encode($array); ?>;
+    </script>
+
+However, instead of manually calling `json_encode`, you may use the `Illuminate\Support\Js::from` method directive. The `from` method accepts the same arguments as PHP's `json_encode` function; however, it will ensure that the resulting JSON is properly escaped for inclusion within HTML quotes. The `from` method will return a string `JSON.parse` JavaScript statement that will convert the given object or array into a valid JavaScript object:
+
+    <script>
+        var app = {{ Illuminate\Support\Js::from($array) }};
+    </script>
+
+The latest versions of the Laravel application skeleton include a `Js` facade, which provides convenient access to this functionality within your Blade templates:
+
+    <script>
+        var app = {{ Js::from($array) }};
+    </script>
+
+> {note} You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="the-at-verbatim-directive"></a>
 #### The `@verbatim` Directive
@@ -359,12 +366,24 @@ Property  | Description
 `$loop->depth`  |  The nesting level of the current loop.
 `$loop->parent`  |  When in a nested loop, the parent's loop variable.
 
-<a name="comments"></a>
-### Comments
+<a name="conditional-classes"></a>
+### Conditional Classes
 
-Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
+The `@class` directive conditionally compiles a CSS class string. The directive accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
-    {{-- This comment will not be present in the rendered HTML --}}
+    @php
+        $isActive = false;
+        $hasError = true;
+    @endphp
+
+    <span @class([
+        'p-4',
+        'font-bold' => $isActive,
+        'text-gray-500' => ! $isActive,
+        'bg-red' => $hasError,
+    ])></span>
+
+    <span class="p-4 text-gray-500 bg-red"></span>
 
 <a name="including-subviews"></a>
 ### Including Subviews
@@ -431,197 +450,6 @@ The `@once` directive allows you to define a portion of the template that will o
         @endpush
     @endonce
 
-<a name="building-layouts"></a>
-## Building Layouts
-
-<a name="layouts-using-components"></a>
-### Layouts Using Components
-
-Most web applications maintain the same general layout across various pages. It would be incredibly cumbersome and hard to maintain our application if we had to repeat the entire layout HTML in every view we create. Thankfully, it's convenient to define this layout as a single [Blade component](#components) and then use it throughout our application.
-
-<a name="defining-the-layout-component"></a>
-#### Defining The Layout Component
-
-For example, imagine we are building a "todo" list application. We might define a `layout` component that looks like the following:
-
-```html
-<!-- resources/views/components/layout.blade.php -->
-
-<html>
-    <head>
-        <title>{{ $title ?? 'Todo Manager' }}</title>
-    </head>
-    <body>
-        <h1>Todos</h1>
-        <hr/>
-        {{ $slot }}
-    </body>
-</html>
-```
-
-<a name="applying-the-layout-component"></a>
-#### Applying The Layout Component
-
-Once the `layout` component has been defined, we may create a Blade view that utilizes the component. In this example, we will define a simple view that displays our task list:
-
-```html
-<!-- resources/views/tasks.blade.php -->
-
-<x-layout>
-    @foreach ($tasks as $task)
-        {{ $task }}
-    @endforeach
-</x-layout>
-```
-
-Remember, content that is injected into a component will be supplied to the default `$slot` variable within our `layout` component. As you may have noticed, our `layout` also respects a `$title` slot if one is provided; otherwise, a default title is shown. We may inject a custom title from our task list view using the standard slot syntax discussed in the [component documentation](#components):
-
-```html
-<!-- resources/views/tasks.blade.php -->
-
-<x-layout>
-    <x-slot name="title">
-        Custom Title
-    </x-slot>
-
-    @foreach ($tasks as $task)
-        {{ $task }}
-    @endforeach
-</x-layout>
-```
-
-Now that we have defined our layout and task list views, we just need to return the `task` view from a route:
-
-    use App\Models\Task;
-
-    Route::get('/tasks', function () {
-        return view('tasks', ['tasks' => Task::all()]);
-    });
-
-<a name="layouts-using-template-inheritance"></a>
-### Layouts Using Template Inheritance
-
-<a name="defining-a-layout"></a>
-#### Defining A Layout
-
-Layouts may also be created via "template inheritance". This was the primary way of building applications prior to the introduction of [components](#components).
-
-To get started, let's take a look at a simple example. First, we will examine a page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
-
-```html
-<!-- resources/views/layouts/app.blade.php -->
-
-<html>
-    <head>
-        <title>App Name - @yield('title')</title>
-    </head>
-    <body>
-        @section('sidebar')
-            This is the master sidebar.
-        @show
-
-        <div class="container">
-            @yield('content')
-        </div>
-    </body>
-</html>
-```
-
-As you can see, this file contains typical HTML mark-up. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
-
-Now that we have defined a layout for our application, let's define a child page that inherits the layout.
-
-<a name="extending-a-layout"></a>
-#### Extending A Layout
-
-When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
-
-```html
-<!-- resources/views/child.blade.php -->
-
-@extends('layouts.app')
-
-@section('title', 'Page Title')
-
-@section('sidebar')
-    @@parent
-
-    <p>This is appended to the master sidebar.</p>
-@endsection
-
-@section('content')
-    <p>This is my body content.</p>
-@endsection
-```
-
-In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
-
-> {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
-
-The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
-
-    @yield('content', 'Default content')
-
-<a name="forms"></a>
-## Forms
-
-<a name="csrf-field"></a>
-### CSRF Field
-
-Anytime you define an HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](https://laravel.com/docs/{{version}}/csrf) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
-
-```html
-<form method="POST" action="/profile">
-    @csrf
-
-    ...
-</form>
-```
-
-<a name="method-field"></a>
-### Method Field
-
-Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need to add a hidden `_method` field to spoof these HTTP verbs. The `@method` Blade directive can create this field for you:
-
-```html
-<form action="/foo/bar" method="POST">
-    @method('PUT')
-
-    ...
-</form>
-```
-
-<a name="validation-errors"></a>
-### Validation Errors
-
-The `@error` directive may be used to quickly check if [validation error messages](/docs/{{version}}/validation#quick-displaying-the-validation-errors) exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
-
-```html
-<!-- /resources/views/post/create.blade.php -->
-
-<label for="title">Post Title</label>
-
-<input id="title" type="text" class="@error('title') is-invalid @enderror">
-
-@error('title')
-    <div class="alert alert-danger">{{ $message }}</div>
-@enderror
-```
-
-You may pass [the name of a specific error bag](/docs/{{version}}/validation#named-error-bags) as the second parameter to the `@error` directive to retrieve validation error messages on pages containing multiple forms:
-
-```html
-<!-- /resources/views/auth.blade.php -->
-
-<label for="email">Email address</label>
-
-<input id="email" type="email" class="@error('email', 'login') is-invalid @enderror">
-
-@error('email', 'login')
-    <div class="alert alert-danger">{{ $message }}</div>
-@enderror
-```
-
 <a name="raw-php"></a>
 ### Raw PHP
 
@@ -630,6 +458,13 @@ In some situations, it's useful to embed PHP code into your views. You can use t
     @php
         $counter = 1;
     @endphp
+
+<a name="comments"></a>
+### Comments
+
+Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
+
+    {{-- This comment will not be present in the rendered HTML --}}
 
 <a name="components"></a>
 ## Components
@@ -870,6 +705,34 @@ If your component requires dependencies from Laravel's [service container](/docs
         $this->message = $message;
     }
 
+<a name="hiding-attributes-and-methods"></a>
+#### Hiding Attributes / Methods
+
+If you would like to prevent some public methods or properties from being exposed as variables to your component template, you may add them to an `$except` array property on your component:
+
+    <?php
+
+    namespace App\View\Components;
+
+    use Illuminate\View\Component;
+
+    class Alert extends Component
+    {
+        /**
+         * The alert type.
+         *
+         * @var string
+         */
+        public $type;
+
+        /**
+         * The properties / methods that should not be exposed to the component template.
+         *
+         * @var array
+         */
+        protected $except = ['type'];
+    }
+
 <a name="component-attributes"></a>
 ### Component Attributes
 
@@ -905,6 +768,23 @@ The final, rendered HTML of the component will appear like the following:
     <!-- Contents of the $message variable -->
 </div>
 ```
+
+<a name="conditionally-merge-classes"></a>
+#### Conditionally Merge Classes
+
+Sometimes you may wish to merge classes if a given condition is `true`. You can accomplish this via the `class` method, which accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+
+    <div {{ $attributes->class(['p-4', 'bg-red' => $hasError]) }}>
+        {{ $message }}
+    </div>
+
+If you need to merge other attributes onto your component, you can chain the `merge` method onto the `class` method:
+
+    <button {{ $attributes->class(['p-4'])->merge(['type' => 'button']) }}>
+        {{ $slot }}
+    </button>
+
+> {tip} If you need to conditionally compile classes on other HTML elements that shouldn't receive merged attributes, you can use the [`@class` directive](#conditional-classes).
 
 <a name="non-class-attribute-merging"></a>
 #### Non-Class Attribute Merging
@@ -944,6 +824,10 @@ For convenience, you may use the `whereStartsWith` method to retrieve all attrib
 
     {{ $attributes->whereStartsWith('wire:model') }}
 
+Conversely, the `whereDoesntStartWith` method may be used to exclude all attributes whose keys begin with a given string:
+
+    {{ $attributes->whereDoesntStartWith('wire:model') }}
+
 Using the `first` method, you may render the first attribute in a given attribute bag:
 
     {{ $attributes->whereStartsWith('wire:model')->first() }}
@@ -957,6 +841,21 @@ If you would like to check if an attribute is present on the component, you may 
 You may retrieve a specific attribute's value using the `get` method:
 
     {{ $attributes->get('class') }}
+
+<a name="reserved-keywords"></a>
+### Reserved Keywords
+
+By default, some keywords are reserved for Blade's internal use in order to render components. The following keywords cannot be defined as public properties or method names within your components:
+
+<div class="content-list" markdown="1">
+- `data`
+- `render`
+- `resolveView`
+- `shouldRender`
+- `view`
+- `withAttributes`
+- `withName`
+</div>
 
 <a name="slots"></a>
 ### Slots
@@ -1018,6 +917,46 @@ If you have used a JavaScript framework such as Vue, you may be familiar with "s
 </x-alert>
 ```
 
+<a name="slot-attributes"></a>
+#### Slot Attributes
+
+Like Blade components, you may assign additional [attributes](#component-attributes) to slots such as CSS class names:
+
+```html
+<x-card class="shadow-sm">
+    <x-slot name="heading" class="font-bold">
+        Heading
+    </x-slot>
+
+    Content
+
+    <x-slot name="footer" class="text-sm">
+        Footer
+    </x-slot>
+</x-card>
+```
+
+To interact with slot attributes, you may access the `attributes` property of the slot's variable. For more information on how to interact with attributes, please consult the documentation on [component attributes](#component-attributes):
+
+```php
+@props([
+    'heading',
+    'footer',
+])
+
+<div {{ $attributes->class(['border']) }}>
+    <h1 {{ $heading->attributes->class(['text-lg']) }}>
+        {{ $heading }}
+    </h1>
+
+    {{ $slot }}
+
+    <footer {{ $footer->attributes->class(['text-gray-700']) }}>
+        {{ $footer }}
+    </footer>
+</div>
+```
+
 <a name="inline-component-views"></a>
 ### Inline Component Views
 
@@ -1055,6 +994,35 @@ You may use the `.` character to indicate if a component is nested deeper inside
 
     <x-inputs.button/>
 
+<a name="anonymous-index-components"></a>
+#### Anonymous Index Components
+
+Sometimes, when a component is made up of many Blade templates, you may wish to group the given component's templates within a single directory. For example, imagine an "accordion" component with the following directory structure:
+
+```none
+/resources/views/components/accordion.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
+This directory structure allows you to render the accordion component and its item like so:
+
+```html
+<x-accordion>
+    <x-accordion.item>
+        ...
+    </x-accordion.item>
+</x-accordion>
+```
+
+However, in order to render the accordion component via `x-accordion`, we were forced to place the "index" accordion component template in the `resources/views/components` directory instead of nesting it within the `accordion` directory with the other accordion related templates.
+
+Thankfully, Blade allows you to place an `index.blade.php` file within a component's template directory. When an `index.blade.php` template exists for the component, it will be rendered as the "root" node of the component. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
+
+```none
+/resources/views/components/accordion/index.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
 <a name="data-properties-attributes"></a>
 #### Data Properties / Attributes
 
@@ -1073,6 +1041,36 @@ You may specify which attributes should be considered data variables using the `
 Given the component definition above, we may render the component like so:
 
     <x-alert type="error" :message="$message" class="mb-4"/>
+    
+<a name="accessing-parent-data"></a>
+#### Accessing Parent Data
+
+Sometimes you may want to access data from a parent component inside a child component. In these cases, you may use the `@aware` directive. For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
+
+    <x-menu color="purple">
+        <x-menu.item>...</x-menu.item>
+        <x-menu.item>...</x-menu.item>
+    </x-menu>
+    
+The `<x-menu>` component may have an implementation like the following:
+
+    <!-- /resources/views/components/menu/index.blade.php -->
+
+    @props(['color' => 'gray'])
+
+    <ul {{ $attributes->merge(['class' => 'bg-'.$color.'-200']) }}>
+        {{ $slot }}
+    </ul>
+
+Because the `color` prop was only passed into the parent (`<x-menu>`), it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
+
+    <!-- /resources/views/components/menu/item.blade.php -->
+
+    @aware(['color' => 'gray'])
+
+    <li {{ $attributes->merge(['class' => 'text-'.$color.'-800']) }}>
+        {{ $slot }}
+    </li>
 
 <a name="dynamic-components"></a>
 ### Dynamic Components
@@ -1129,6 +1127,207 @@ This will allow the usage of package components by their vendor namespace using 
     <x-nightshade::color-picker />
 
 Blade will automatically detect the class that's linked to this component by pascal-casing the component name. Subdirectories are also supported using "dot" notation.
+
+<a name="building-layouts"></a>
+## Building Layouts
+
+<a name="layouts-using-components"></a>
+### Layouts Using Components
+
+Most web applications maintain the same general layout across various pages. It would be incredibly cumbersome and hard to maintain our application if we had to repeat the entire layout HTML in every view we create. Thankfully, it's convenient to define this layout as a single [Blade component](#components) and then use it throughout our application.
+
+<a name="defining-the-layout-component"></a>
+#### Defining The Layout Component
+
+For example, imagine we are building a "todo" list application. We might define a `layout` component that looks like the following:
+
+```html
+<!-- resources/views/components/layout.blade.php -->
+
+<html>
+    <head>
+        <title>{{ $title ?? 'Todo Manager' }}</title>
+    </head>
+    <body>
+        <h1>Todos</h1>
+        <hr/>
+        {{ $slot }}
+    </body>
+</html>
+```
+
+<a name="applying-the-layout-component"></a>
+#### Applying The Layout Component
+
+Once the `layout` component has been defined, we may create a Blade view that utilizes the component. In this example, we will define a simple view that displays our task list:
+
+```html
+<!-- resources/views/tasks.blade.php -->
+
+<x-layout>
+    @foreach ($tasks as $task)
+        {{ $task }}
+    @endforeach
+</x-layout>
+```
+
+Remember, content that is injected into a component will be supplied to the default `$slot` variable within our `layout` component. As you may have noticed, our `layout` also respects a `$title` slot if one is provided; otherwise, a default title is shown. We may inject a custom title from our task list view using the standard slot syntax discussed in the [component documentation](#components):
+
+```html
+<!-- resources/views/tasks.blade.php -->
+
+<x-layout>
+    <x-slot name="title">
+        Custom Title
+    </x-slot>
+
+    @foreach ($tasks as $task)
+        {{ $task }}
+    @endforeach
+</x-layout>
+```
+
+Now that we have defined our layout and task list views, we just need to return the `task` view from a route:
+
+    use App\Models\Task;
+
+    Route::get('/tasks', function () {
+        return view('tasks', ['tasks' => Task::all()]);
+    });
+
+<a name="layouts-using-template-inheritance"></a>
+### Layouts Using Template Inheritance
+
+<a name="defining-a-layout"></a>
+#### Defining A Layout
+
+Layouts may also be created via "template inheritance". This was the primary way of building applications prior to the introduction of [components](#components).
+
+To get started, let's take a look at a simple example. First, we will examine a page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
+
+```html
+<!-- resources/views/layouts/app.blade.php -->
+
+<html>
+    <head>
+        <title>App Name - @yield('title')</title>
+    </head>
+    <body>
+        @section('sidebar')
+            This is the master sidebar.
+        @show
+
+        <div class="container">
+            @yield('content')
+        </div>
+    </body>
+</html>
+```
+
+As you can see, this file contains typical HTML mark-up. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
+
+Now that we have defined a layout for our application, let's define a child page that inherits the layout.
+
+<a name="extending-a-layout"></a>
+#### Extending A Layout
+
+When defining a child view, use the `@extends` Blade directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
+
+```html
+<!-- resources/views/child.blade.php -->
+
+@extends('layouts.app')
+
+@section('title', 'Page Title')
+
+@section('sidebar')
+    @@parent
+
+    <p>This is appended to the master sidebar.</p>
+@endsection
+
+@section('content')
+    <p>This is my body content.</p>
+@endsection
+```
+
+In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
+
+> {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
+
+The `@yield` directive also accepts a default value as its second parameter. This value will be rendered if the section being yielded is undefined:
+
+    @yield('content', 'Default content')
+
+<a name="forms"></a>
+## Forms
+
+<a name="csrf-field"></a>
+### CSRF Field
+
+Anytime you define an HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](/docs/{{version}}/csrf) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
+
+```html
+<form method="POST" action="/profile">
+    @csrf
+
+    ...
+</form>
+```
+
+<a name="method-field"></a>
+### Method Field
+
+Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need to add a hidden `_method` field to spoof these HTTP verbs. The `@method` Blade directive can create this field for you:
+
+```html
+<form action="/foo/bar" method="POST">
+    @method('PUT')
+
+    ...
+</form>
+```
+
+<a name="validation-errors"></a>
+### Validation Errors
+
+The `@error` directive may be used to quickly check if [validation error messages](/docs/{{version}}/validation#quick-displaying-the-validation-errors) exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
+
+```html
+<!-- /resources/views/post/create.blade.php -->
+
+<label for="title">Post Title</label>
+
+<input id="title" type="text" class="@error('title') is-invalid @enderror">
+
+@error('title')
+    <div class="alert alert-danger">{{ $message }}</div>
+@enderror
+```
+
+Since the `@error` directive compiles to an "if" statement, you may use the `@else` directive to render content when there is not an error for an attribute:
+
+```html
+<!-- /resources/views/auth.blade.php -->
+
+<label for="email">Email address</label>
+
+<input id="email" type="email" class="@error('email') is-invalid @else is-valid @enderror">
+```
+
+You may pass [the name of a specific error bag](/docs/{{version}}/validation#named-error-bags) as the second parameter to the `@error` directive to retrieve validation error messages on pages containing multiple forms:
+
+```html
+<!-- /resources/views/auth.blade.php -->
+
+<label for="email">Email address</label>
+
+<input id="email" type="email" class="@error('email', 'login') is-invalid @enderror">
+
+@error('email', 'login')
+    <div class="alert alert-danger">{{ $message }}</div>
+@enderror
+```
 
 <a name="stacks"></a>
 ## Stacks
@@ -1222,6 +1421,34 @@ As you can see, we will chain the `format` method onto whatever expression is pa
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 
 > {note} After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
+
+<a name="custom-echo-handlers"></a>
+### Custom Echo Handlers
+
+If you attempt to "echo" an object using Blade, the object's `__toString` method will be invoked. The [`__toString`](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) method is one of PHP's built-in "magic methods". However, sometimes you may not have control over the `__toString` method of a given class, such as when the class that you are interacting with belongs to a third-party library.
+
+In these cases, Blade allows you to register a custom echo handler for that particular type of object. To accomplish this, you should invoke Blade's `stringable` method. The `stringable` method accepts a closure. This closure should type-hint the type of object that it is responsible for rendering. Typically, the `stringable` method should be invoked within the `boot` method of your application's `AppServiceProvider` class:
+
+    use Illuminate\Support\Facades\Blade;
+    use Money\Money;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Blade::stringable(function (Money $money) {
+            return $money->formatTo('en_GB');
+        });
+    }
+
+Once your custom echo handler has been defined, you may simply echo the object in your Blade template:
+
+```html
+Cost: {{ $money }}
+```
 
 <a name="custom-if-statements"></a>
 ### Custom If Statements

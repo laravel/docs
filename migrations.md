@@ -21,6 +21,7 @@
     - [Renaming Indexes](#renaming-indexes)
     - [Dropping Indexes](#dropping-indexes)
     - [Foreign Key Constraints](#foreign-key-constraints)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -40,7 +41,7 @@ Laravel will use the name of the migration to attempt to guess the name of the t
 
 If you would like to specify a custom path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
 
-> {tip} Migration stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization)
+> {tip} Migration stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
 <a name="squashing-migrations"></a>
 ### Squashing Migrations
@@ -99,12 +100,52 @@ Within both of these methods, you may use the Laravel schema builder to expressi
         }
     }
 
+<a name="anonymous-migrations"></a>
+#### Anonymous Migrations
+
+As you may have noticed in the example above, Laravel will automatically assign a class name to all of the migrations that you generate using the `make:migration` command. However, if you wish, you may return an anonymous class from your migration file. This is primarily useful if your application accumulates many migrations and two of them have a class name collision:
+
+    <?php
+
+    use Illuminate\Database\Migrations\Migration;
+
+    return new class extends Migration
+    {
+        //
+    };
+
+<a name="setting-the-migration-connection"></a>
+#### Setting The Migration Connection
+
+If your migration will be interacting with a database connection other than your application's default database connection, you should set the `$connection` property of your migration:
+
+    /**
+     * The database connection that should be used by the migration.
+     *
+     * @var string
+     */
+    protected $connection = 'pgsql';
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        //
+    }
+
 <a name="running-migrations"></a>
 ## Running Migrations
 
 To run all of your outstanding migrations, execute the `migrate` Artisan command:
 
     php artisan migrate
+
+If you would like to see which migrations have run thus far, you may use the `migrate:status` Artisan command:
+
+    php artisan migrate:status
 
 <a name="forcing-migrations-to-run-in-production"></a>
 #### Forcing Migrations To Run In Production
@@ -297,6 +338,8 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [enum](#column-method-enum)
 [float](#column-method-float)
 [foreignId](#column-method-foreignId)
+[foreignIdFor](#column-method-foreignIdFor)
+[foreignUuid](#column-method-foreignUuid)
 [geometryCollection](#column-method-geometryCollection)
 [geometry](#column-method-geometry)
 [id](#column-method-id)
@@ -336,6 +379,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [timestamps](#column-method-timestamps)
 [tinyIncrements](#column-method-tinyIncrements)
 [tinyInteger](#column-method-tinyInteger)
+[tinyText](#column-method-tinyText)
 [unsignedBigInteger](#column-method-unsignedBigInteger)
 [unsignedDecimal](#column-method-unsignedDecimal)
 [unsignedInteger](#column-method-unsignedInteger)
@@ -348,7 +392,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="column-method-bigIncrements"></a>
-#### `bigIncrements()` {#collection-method .first-collection-method}
+#### `bigIncrements()` {#collection-method}
 
 The `bigIncrements` method creates an auto-incrementing `UNSIGNED BIGINT` (primary key) equivalent column:
 
@@ -434,9 +478,23 @@ The `float` method creates a `FLOAT` equivalent column with the given precision 
 <a name="column-method-foreignId"></a>
 #### `foreignId()` {#collection-method}
 
-The `foreignId` method is an alias of the `unsignedBigInteger` method:
+The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:
 
     $table->foreignId('user_id');
+
+<a name="column-method-foreignIdFor"></a>
+#### `foreignIdFor()` {#collection-method}
+
+The `foreignIdFor` method adds a `{column}_id UNSIGNED BIG INT` equivalent column for a given model class:
+
+    $table->foreignIdFor(User::class);
+
+<a name="column-method-foreignUuid"></a>
+#### `foreignUuid()` {#collection-method}
+
+The `foreignUuid` method creates a `UUID` equivalent column:
+
+    $table->foreignUuid('user_id');
 
 <a name="column-method-geometryCollection"></a>
 #### `geometryCollection()` {#collection-method}
@@ -476,7 +534,7 @@ The `integer` method creates an `INTEGER` equivalent column:
 <a name="column-method-ipAddress"></a>
 #### `ipAddress()` {#collection-method}
 
-The `ipAddress` method creates an `INTEGER` equivalent column:
+The `ipAddress` method creates a `VARCHAR` equivalent column:
 
     $table->ipAddress('visitor');
 
@@ -569,7 +627,7 @@ The `multiPolygon` method creates a `MULTIPOLYGON` equivalent column:
 <a name="column-method-nullableTimestamps"></a>
 #### `nullableTimestamps()` {#collection-method}
 
-The method is similar to the [timestamps](#column-method-timestamps) method; however, the column that is created will be "nullable":
+The `nullableTimestamps` method is an alias of the [timestamps](#column-method-timestamps) method:
 
     $table->nullableTimestamps(0);
 
@@ -712,6 +770,13 @@ The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equi
 The `tinyInteger` method creates a `TINYINT` equivalent column:
 
     $table->tinyInteger('votes');
+    
+<a name="column-method-tinyText"></a>
+#### `tinyText()` {#collection-method}
+
+The `tinyText` method creates a `TINYTEXT` equivalent column:
+
+    $table->tinyText('notes');
 
 <a name="column-method-unsignedBigInteger"></a>
 #### `unsignedBigInteger()` {#collection-method}
@@ -803,13 +868,14 @@ Modifier  |  Description
 `->first()`  |  Place the column "first" in the table (MySQL).
 `->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).
 `->nullable($value = true)`  |  Allow NULL values to be inserted into the column.
-`->storedAs($expression)`  |  Create a stored generated column (MySQL).
+`->storedAs($expression)`  |  Create a stored generated column (MySQL / PostgreSQL).
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
 `->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value.
 `->useCurrentOnUpdate()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP when a record is updated.
 `->virtualAs($expression)`  |  Create a virtual generated column (MySQL).
 `->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL).
 `->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL).
+`->isGeometry()`  |  Set spatial column type to `geometry` - the default type is `geography` (PostgreSQL).
 
 <a name="default-expressions"></a>
 #### Default Expressions
@@ -841,6 +907,17 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
     }
 
 > {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+
+<a name="column-order"></a>
+#### Column Order
+
+When using the MySQL database, the `after` method may be used to add columns after an existing column in the schema:
+
+    $table->after('password', function ($table) {
+        $table->string('address_line1');
+        $table->string('address_line2');
+        $table->string('city');
+    });
 
 <a name="modifying-columns"></a>
 ### Modifying Columns
@@ -1023,18 +1100,17 @@ Laravel also provides support for creating foreign key constraints, which are us
         $table->foreign('user_id')->references('id')->on('users');
     });
 
-Since this syntax is rather verbose, Laravel provides additional, terser methods that use conventions to provide a better developer experience. The example above can be rewritten like so:
+Since this syntax is rather verbose, Laravel provides additional, terser methods that use conventions to provide a better developer experience. When using the `foreignId` method to create your column, the example above can be rewritten like so:
 
     Schema::table('posts', function (Blueprint $table) {
         $table->foreignId('user_id')->constrained();
     });
 
-The `foreignId` method is an alias for `unsignedBigInteger` while the `constrained` method will use conventions to determine the table and column name being referenced. If your table name does not match Laravel's conventions, you may specify the table name by passing it as an argument to the `constrained` method:
+The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the `constrained` method will use conventions to determine the table and column name being referenced. If your table name does not match Laravel's conventions, you may specify the table name by passing it as an argument to the `constrained` method:
 
     Schema::table('posts', function (Blueprint $table) {
         $table->foreignId('user_id')->constrained('users');
     });
-
 
 You may also specify the desired action for the "on delete" and "on update" properties of the constraint:
 
@@ -1042,6 +1118,16 @@ You may also specify the desired action for the "on delete" and "on update" prop
           ->constrained()
           ->onUpdate('cascade')
           ->onDelete('cascade');
+
+An alternative, expressive syntax is also provided for these actions:
+
+Method  |  Description
+-------  |  -----------
+`$table->cascadeOnUpdate();` | Updates should cascade.
+`$table->restrictOnUpdate();`| Updates should be restricted.
+`$table->cascadeOnDelete();` | Deletes should cascade.
+`$table->restrictOnDelete();`| Deletes should be restricted.
+`$table->nullOnDelete();`    | Deletes should set the foreign key value to null.
 
 Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
 
@@ -1070,3 +1156,16 @@ You may enable or disable foreign key constraints within your migrations by usin
     Schema::disableForeignKeyConstraints();
 
 > {note} SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations. In addition, SQLite only supports foreign keys upon creation of the table and [not when tables are altered](https://www.sqlite.org/omitted.html).
+
+<a name="events"></a>
+## Events
+
+For convenience, each migration operation will dispatch an [event](/docs/{{version}}/events). All of the following events extend the base `Illuminate\Database\Events\MigrationEvent` class:
+
+ Class | Description
+-------|-------
+| `Illuminate\Database\Events\MigrationsStarted` | A batch of migrations is about to be executed. |
+| `Illuminate\Database\Events\MigrationsEnded` | A batch of migrations has finished executing. |
+| `Illuminate\Database\Events\MigrationStarted` | A single migration is about to be executed. |
+| `Illuminate\Database\Events\MigrationEnded` | A single migration has finished executing. |
+
