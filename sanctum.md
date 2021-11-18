@@ -48,7 +48,18 @@ For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses
 Sanctum will only attempt to authenticate using cookies when the incoming request originates from your own SPA frontend. When Sanctum examines an incoming HTTP request, it will first check for an authentication cookie and, if none is present, Sanctum will then examine the `Authorization` header for a valid API token.
 
 > {tip} It is perfectly fine to use Sanctum only for API token authentication or only for SPA authentication. Just because you use Sanctum does not mean you are required to use both features it offers.
-
+> {tip} If you want to use a custom guard instead of Laravel's `web` authentication guard, you have to specify the guard in your sanctum config, make sure the custom guard uses session as driver.
+```
+config/sanctum.php
+ 'guard' => 'custom'
+```
+```
+config/auth.php
+ 'custom' => [
+            'driver' => 'session',
+            'provider' => 'customer',
+        ],
+```
 <a name="installation"></a>
 ## Installation
 
