@@ -132,7 +132,7 @@ Eloquent determines the foreign key name by examining the name of the relationsh
         return $this->belongsTo(User::class, 'foreign_key');
     }
 
-If the parent model does not use `id` as its primary key, or you wish to find the associated model using a different column, you may pass a third argument to the `belongsTo` method specifying the parent table's custom key:
+If the owner model does not use `id` as its primary key, or you wish to find the associated model using a different column, you may pass a third argument to the `belongsTo` method specifying the owner table's custom key:
 
     /**
      * Get the user that owns the phone.
