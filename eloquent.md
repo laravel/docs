@@ -1426,9 +1426,7 @@ When models are being created within a database transaction, you may want to ins
 <a name="muting-events"></a>
 ### Muting Events
 
-You may occasionally need to temporarily "mute" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a closure as its only argument. Any code executed within this closure will not dispatch model events. 
-
-The following example will fetch and delete an `App\Models\User` instance without dispatching any model events. Any value returned by the closure will be returned by the `withoutEvents` method:
+You may occasionally need to temporarily "mute" all events fired by a model. You may achieve this using the `withoutEvents` method. The `withoutEvents` method accepts a closure as its only argument. Any code executed within this closure will not dispatch model events, and any value returned by the closure will be returned by the `withoutEvents` method:
 
     use App\Models\User;
 
