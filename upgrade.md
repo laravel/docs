@@ -13,7 +13,7 @@
 
 **Likelihood Of Impact: Low**
 
-The `storagePath` method of the `Application` interface has been updated to accept an `$path`. If you are implementing this interface you should update your implementation accordingly:
+The `storagePath` method of the `Illuminate\Contracts\Foundation\Application` interface has been updated to accept a `$path` argument. If you are implementing this interface you should update your implementation accordingly:
 
     public function storagePath($path = '');
 
