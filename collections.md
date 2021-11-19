@@ -649,6 +649,14 @@ If you would like to stop iterating through the items, you may return `false` fr
         }
     });
 
+If you would like to continue iterating the items, but skip the rest of the current loop iteration, simply use `return` from your closure:
+
+    $collection->each(function ($item, $key) {
+        if (/* condition */) {
+            return;
+        }
+    });
+
 <a name="method-eachspread"></a>
 #### `eachSpread()` {#collection-method}
 
