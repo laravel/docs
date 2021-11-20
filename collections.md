@@ -2912,7 +2912,7 @@ The `whereNotBetween` method filters the collection by determining if a specifie
 <a name="method-wherenotin"></a>
 #### `whereNotIn()` {#collection-method}
 
-The `whereNotIn` method removes elements from the collection that have a specified item value that is not contained within the given array:
+The `whereNotIn` method removes elements from the collection that have a specified item value that is contained within the given array:
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
