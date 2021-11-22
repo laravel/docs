@@ -17,6 +17,76 @@ The `storagePath` method of the `Illuminate\Contracts\Foundation\Application` in
 
     public function storagePath($path = '');
 
+<a name="mail"></a>
+### Mail
+
+<a name="symfony-mailer"></a>
+#### Symfony Mailer
+
+**Likelihood Of Impact: High**
+
+Swift Mailer is discontinued as of December 2021 and was therefore replaced with Symfony Mailer 6.0 (See https://symfony.com/blog/the-end-of-swiftmailer)
+Because of this SwiftMailer plugins and transports will no longer work with the new implementation.
+
+##### Updated Content Methods
+`send`, `html`, `text` & `plain` don't return the number of recipients anymore but an instance of `Illuminate\Mail\SentMessage` which contains the `Symfony\Component\Mailer\SentMessage` instance
+
+##### Renamed Swift methods to Symfony
+
+All Swift methods were renamed to Symfony. For example:
+
+    // BEFORE
+    $this->withSwiftMessage(function ($message) {
+        $message->getHeaders()->addTextHeader(
+            'Custom-Header', 'Header Value'
+        );
+    });
+
+    // AFTER
+    use Symfony\Component\Mime\Email;
+
+    $this->withSymfonyMessage(function (Email $message) {
+        $message->getHeaders()->addTextHeader(
+            'Custom-Header', 'Header Value'
+        );
+    });
+
+##### `Illuminate\Mail\Message`
+The Illuminate\Mail\Message class now contains an instance of Symfony\Component\Mime\Email instead of Swift_Message so all forwarding calls in userland will need to be updated.
+
+##### Removed `auth_mode` for SMTP
+Setting the auth_mode in the mail config was removed, because the authentication mode can be automatically negotiated between the Mailer and the SMTP server.
+
+##### Failed recipients
+It's no longer possible to get a list of failed recipients. Instead, if an email is failed to send, and exception will be thrown.
+
+##### Stream Options for SMTP transport
+Setting stream options for the SMTP transport can no longer be done through an smtp key. Instead you need to set the options directly in the config. For example, when disabling TLS peer verification you can do
+
+##### Generated Messages ID's
+SwiftMailer offered the ability to set a custom domain to generate Message ID's through register it to mime.idgenerator.idright. This is no longer possible with Symfony Mailer. Instead, Symfony Mailer will automatically generate a Message ID based on the sender and add it to a message automatically.
+
+##### Removed Force Reconnection
+It is no longer possible to force a reconnection (for example when the mailer is running through a daemon process). Instead, Symfony Mailer will properly attempt to reconnect the transport itself and error out if that fails
+
+##### Driver / Transport Prerequisites
+`guzzlehttp/guzzle` can be removed if wanted (Still required to use with the HTTP Client and the ping methods on schedules). Symfony API mail transport will utilize `symfony/http` instead.
+
+###### SES
+`aws/aws-sdk-php` is not needed for SES Transport anymore and can be removed if wanted (Still required to use with the SQS queue driver and DynamoDb failed job storage). To continue using the SES Mailer you are required to use the underlying Symfony Amazon Mailer:
+
+    composer require symfony/amazon-mailer
+
+###### Mailgun
+To continue using the Mailgun Mailer you are required to use the underlying Symfony Mailgun Mailer:
+
+    composer require symfony/mailgun-mailer
+
+###### Postmark
+`wildbit/swiftmailer-postmark` needs to be removed because Laravel moved from Swift Mailer to Symfony Mailer. To continue using Postmark Mailer you are required to use the underlying Symfony Postmark Mailer:
+
+    composer require symfony/postmark-mailer
+
 <a name="queue"></a>
 ### Queue
 
