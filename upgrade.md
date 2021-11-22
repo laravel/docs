@@ -53,10 +53,7 @@ All Swift methods were renamed to an equivalent with Symfony in the method name.
 
 Please also take a look at the [Symfony Mailer Docs](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the Email message.
 
-Here is a list of all Methods which need to be renamed:
-    
-    MailManager::createTransport($config);
-    MailManager::createSymfonyTransport($config);
+Here is a list of all Methods which need to be renamed if they are used:
     
     Message::getSwiftMessage();
     Message::getSymfonyMessage();
@@ -64,14 +61,17 @@ Here is a list of all Methods which need to be renamed:
     Mailable::withSwiftMessage($callback);
     Mailable::withSymfonyMessage($callback);
 
+    MailMessage::withSwiftMessage($callback);
+    MailMessage::withSymfonyMessage($callback);
+
     Mailer::getSwiftMailer();
     Mailer::getSymfonyTransport();
 
     Mailer::setSwiftMailer($swift);
     Mailer::setSymfonyTransport(TransportInterface $transport);
-
-    MailMessage::withSwiftMessage($callback);
-    MailMessage::withSymfonyMessage($callback);
+    
+    MailManager::createTransport($config);
+    MailManager::createSymfonyTransport($config);
 
 ##### `Illuminate\Mail\Message`
 The Illuminate\Mail\Message class now contains an instance of Symfony\Component\Mime\Email instead of Swift_Message so all forwarding calls in userland will need to be updated. Here are some examples which were possible with SwiftMailer but are not possible anymore with Symfony Mailer (most people are probably using the laravel style already):
