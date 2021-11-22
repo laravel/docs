@@ -139,6 +139,9 @@ Because of this common use case, Laravel resource routing assigns the typical cr
 
 This command will generate a controller at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller:
 
+<a name="resource-route"></a>
+#### Resource Route
+
     use App\Http\Controllers\PhotoController;
 
     Route::resource('photos', PhotoController::class);
