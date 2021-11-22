@@ -83,7 +83,26 @@ Setting the auth_mode in the mail config was removed, because the authentication
 It's no longer possible to get a list of failed recipients. Instead, if an email is failed to send, and exception will be thrown.
 
 ##### Stream Options for SMTP transport
-Setting stream options for the SMTP transport can no longer be done through an smtp key. Instead you need to set the options directly in the config. For example, when disabling TLS peer verification you can do
+Setting stream options for the SMTP transport can no longer be done through an smtp key. Instead you need to set the options directly in the config. For example, when disabling TLS peer verification in `config/mail.php`:
+
+    'smtp' => [
+
+        // BEFORE
+        'stream' => [
+            'ssl' => [
+
+                'verify_peer' => false,
+
+            ],
+        ],
+
+        // AFTER
+        'verify_peer' => false,
+    ],
+
+> {note} It is generally not advised to disable the Verification of SSL-Certificates because it introduces the possibiliets of Man-in-the-Middle attacks.
+
+For more options you can take a look at the [Symfony Mailer Docs](https://symfony.com/doc/6.0/mailer.html#transport-setup)
 
 ##### Generated Messages ID's
 SwiftMailer offered the ability to set a custom domain to generate Message ID's through register it to mime.idgenerator.idright. This is no longer possible with Symfony Mailer. Instead, Symfony Mailer will automatically generate a Message ID based on the sender and add it to a message automatically.
