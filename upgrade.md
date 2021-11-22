@@ -52,7 +52,29 @@ All Swift methods were renamed to Symfony. For example:
     });
 
 ##### `Illuminate\Mail\Message`
-The Illuminate\Mail\Message class now contains an instance of Symfony\Component\Mime\Email instead of Swift_Message so all forwarding calls in userland will need to be updated.
+The Illuminate\Mail\Message class now contains an instance of Symfony\Component\Mime\Email instead of Swift_Message so all forwarding calls in userland will need to be updated. Here are some examples which were possible with SwiftMailer but are not possible anymore with Symfony Mailer (most people are probably using the laravel style already):
+
+    // IF YOU USED THIS
+    $message
+        ->setFrom('taylor@laravel.com')
+        ->setTo('example@example.org')
+        ->setSubject("Order Shipped")
+        ->setBody(
+            '<h1>HTML email</h1><p>Shows HTML tags if the client supports it.</p>',
+            'text/html'
+        )
+        ->addPart(
+            'Some Plain text in the email',
+            'text/plain'
+        );
+
+    // YOU NEED TO CHANGE IT TO
+    $email
+        ->from('taylor@laravel.com')
+        ->to('example@example.org')
+        ->subject("Order Shipped")
+        ->html('<h1>HTML email</h1><p>Shows HTML tags if the client supports it.</p>')
+        ->text('Some Plain text in the email');
 
 ##### Removed `auth_mode` for SMTP
 Setting the auth_mode in the mail config was removed, because the authentication mode can be automatically negotiated between the Mailer and the SMTP server.
