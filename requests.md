@@ -18,6 +18,8 @@
     - [Retrieving Uploaded Files](#retrieving-uploaded-files)
     - [Storing Uploaded Files](#storing-uploaded-files)
 - [Configuring Trusted Proxies](#configuring-trusted-proxies)
+    - [Trusted Proxies From Config File](#trusted-proxies-from-config-file)
+    - [Trusting All Proxies](#trusting-all-proxies)
 - [Configuring Trusted Hosts](#configuring-trusted-hosts)
 
 <a name="introduction"></a>
@@ -527,6 +529,63 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
     }
 
 > {tip} If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
+
+<a name="trusted-proxies-from-config-file"></a>
+#### Trusted Proxies From Config File
+> {tip} If you want to get the `$proxies` and `$headers` from a config file you can do the following:
+    
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use Illuminate\Http\Middleware\TrustProxies as Middleware;
+    use Illuminate\Http\Request;
+
+    class TrustProxies extends Middleware
+    {
+        /**
+         * The trusted proxies for this application.
+         *
+         * @var array|string|null
+         */
+        protected $proxies;
+
+        /**
+         * The headers that should be used to detect proxies.
+         *
+         * @var int|string|null
+         */
+        protected $headers;
+
+        /**
+         * Create a new trusted proxies middleware instance.
+         *
+         * @param  \Illuminate\Contracts\Config\Repository  $config
+         * @return void
+         */
+        public function __construct(Repository $config)
+        {
+            $this->proxies = $config->get('trustedproxy.proxies');
+            $this->headers = $config->get('trustedproxy.headers');
+        }
+    }
+
+The "config/trustedproxy.php" file
+
+    <?php
+
+    return [
+
+        'proxies' => env('TRUSTEDPROXY_PROXIES'),
+
+        'headers' => env('TRUSTEDPROXY_HEADERS', Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_AWS_ELB),
+
+    ];
+
+The .env file
+
+    TRUSTEDPROXY_PROXIES='*'
+    TRUSTEDPROXY_HEADERS='HEADER_X_FORWARDED_AWS_ELB'
 
 <a name="trusting-all-proxies"></a>
 #### Trusting All Proxies
