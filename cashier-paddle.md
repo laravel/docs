@@ -931,6 +931,11 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
     protected $except = [
         'paddle/*',
     ];
+    
+<a name="webhooks-local-development"></a>
+#### Webhooks & Local Development
+
+For Paddle to be able to send your application webhooks during local development, you will need to expose your application via a site sharing service such as [Ngrok](https://ngrok.com/) or [Expose](https://expose.dev/docs/introduction). If you are developing your application locally using [Laravel Sail](https://laravel.com/docs/{{version}}/sail), you may use Sail's [site sharing command](https://laravel.com/docs/{{version}}/sail#sharing-your-site).
 
 <a name="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
