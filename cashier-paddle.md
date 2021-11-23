@@ -694,19 +694,13 @@ After a user has subscribed to your application, they may occasionally want to c
 
     $user->subscription('default')->swap($premium = 34567);
 
-If the user is on a trial, the trial period will be maintained. Additionally, if a "quantity" exists for the subscription, that quantity will also be maintained.
-
-If you would like to swap plans and cancel any trial period the user is currently on, you may use the `skipTrial` method:
-
-    $user->subscription('default')
-            ->skipTrial()
-            ->swap($premium = 34567);
-
 If you would like to swap plans and immediately invoice the user instead of waiting for their next billing cycle, you may use the `swapAndInvoice` method:
 
     $user = User::find(1);
 
     $user->subscription('default')->swapAndInvoice($premium = 34567);
+
+> {note} Please note that plans cannot be swapped when a trial is active. For additional limitation, please see [the Paddle documentation](https://developer.paddle.com/api-reference/subscription-api/users/updateuser#usage-notes).
 
 <a name="prorations"></a>
 #### Prorations
