@@ -700,7 +700,7 @@ If you would like to swap plans and immediately invoice the user instead of wait
 
     $user->subscription('default')->swapAndInvoice($premium = 34567);
 
-> {note} Please note that plans cannot be swapped when a trial is active. For additional limitation, please see [the Paddle documentation](https://developer.paddle.com/api-reference/subscription-api/users/updateuser#usage-notes).
+> {note} Plans may not be swapped when a trial is active. For additional information regarding this limitation, please see the [Paddle documentation](https://developer.paddle.com/api-reference/subscription-api/users/updateuser#usage-notes).
 
 <a name="prorations"></a>
 #### Prorations
