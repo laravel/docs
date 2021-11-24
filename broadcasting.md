@@ -880,7 +880,7 @@ In addition, you may have noticed that the `broadcastOn` method receives a strin
  */
 public function broadcastOn($event)
 {
-    return match($event) {
+    return match ($event) {
         'deleted' => [],
         default => [$this, $this->user],
     };
