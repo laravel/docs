@@ -99,7 +99,7 @@ chmod +x ./rr
 If you plan to use the Swoole application server to serve your Laravel Octane application, you must install the Swoole PHP extension. Typically, this can be done via PECL:
 
 ```bash
-pecl install openswoole
+pecl install swoole
 ```
 
 <a name="swoole-via-laravel-sail"></a>
