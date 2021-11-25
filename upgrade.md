@@ -104,6 +104,7 @@ The `Illuminate\Mail\Message` class now contains an instance of `Symfony\Compone
 Setting the `auth_mode` in the mail config was removed, because the authentication mode can be automatically negotiated between the Mailer and the SMTP server.
 
 ##### Failed recipients
+
 It's no longer possible to get a list of failed recipients. Instead, if an email is failed to send, and exception will be thrown.
 
 ##### Stream Options for SMTP transport
