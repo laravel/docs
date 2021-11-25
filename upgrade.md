@@ -128,7 +128,8 @@ Setting stream options for the SMTP transport can no longer be done through an s
 For more options you can take a look at the [Symfony Mailer Docs](https://symfony.com/doc/6.0/mailer.html#transport-setup)
 
 ##### Generated Messages ID's
-SwiftMailer offered the ability to set a custom domain to generate Message ID's through register it to mime.idgenerator.idright. This is no longer possible with Symfony Mailer. Instead, Symfony Mailer will automatically generate a Message ID based on the sender and add it to a message automatically.
+
+SwiftMailer offered the ability to set a custom domain to generate Message ID's through `mime.idgenerator.idright`. This is no longer possible with Symfony Mailer. Instead, Symfony Mailer will automatically generate a Message ID based on the sender and add it to a message automatically.
 
 ##### Removed Force Reconnection
 
