@@ -153,7 +153,8 @@ To continue using the Mailgun Mailer you are required to use the underlying Symf
     composer require symfony/mailgun-mailer
 
 ###### Postmark
-`wildbit/swiftmailer-postmark` needs to be removed because Laravel moved from Swift Mailer to Symfony Mailer. To continue using Postmark Mailer you are required to use the underlying Symfony Postmark Mailer:
+
+`wildbit/swiftmailer-postmark` needs to be removed because Laravel moved from SwiftMailer to Symfony Mailer. To continue using Postmark Mailer you are required to use the underlying Symfony Postmark Mailer:
 
     composer require symfony/postmark-mailer
 
