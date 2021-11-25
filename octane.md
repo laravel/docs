@@ -119,6 +119,16 @@ Next, update the `command` directive of your application's `docker/supervisord.c
 command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
 ```
 
+Next, update the `ports` directive of your application's `docker-compose.yml` file from port `80` to `8000` in the `laravel.test` service so Docker forwards incoming requests Octane instead of the PHP development server:
+
+```yaml
+services:
+    laravel.test:
+        ...
+        ports:
+            - '${APP_PORT:-80}:8000'
+```
+
 Finally, build your Sail images:
 
 ```bash
