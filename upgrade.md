@@ -100,7 +100,8 @@ The `Illuminate\Mail\Message` class now contains an instance of `Symfony\Compone
         ->text('Some Plain text in the email');
 
 ##### Removed `auth_mode` for SMTP
-Setting the auth_mode in the mail config was removed, because the authentication mode can be automatically negotiated between the Mailer and the SMTP server.
+
+Setting the `auth_mode` in the mail config was removed, because the authentication mode can be automatically negotiated between the Mailer and the SMTP server.
 
 ##### Failed recipients
 It's no longer possible to get a list of failed recipients. Instead, if an email is failed to send, and exception will be thrown.
