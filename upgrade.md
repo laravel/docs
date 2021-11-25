@@ -141,6 +141,7 @@ It is no longer possible to force a reconnection (for example when the mailer is
 `guzzlehttp/guzzle` can be removed if wanted (Still required to use with the HTTP Client and the ping methods on the scheduler). Symfony API mail transport will utilize `symfony/http` instead.
 
 ###### SES
+
 `aws/aws-sdk-php` is not needed for SES Transport anymore and can be removed if wanted (Still required to use with the SQS queue driver and DynamoDb failed job storage). To continue using the SES Mailer you are required to use the underlying Symfony Amazon Mailer:
 
     composer require symfony/amazon-mailer
