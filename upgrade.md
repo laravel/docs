@@ -147,6 +147,7 @@ It is no longer possible to force a reconnection (for example when the mailer is
     composer require symfony/amazon-mailer
 
 ###### Mailgun
+
 To continue using the Mailgun Mailer you are required to use the underlying Symfony Mailgun Mailer:
 
     composer require symfony/mailgun-mailer
