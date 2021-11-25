@@ -133,7 +133,8 @@ For more options you can take a look at the [Symfony Mailer Docs](https://symfon
 SwiftMailer offered the ability to set a custom domain to generate Message ID's through register it to mime.idgenerator.idright. This is no longer possible with Symfony Mailer. Instead, Symfony Mailer will automatically generate a Message ID based on the sender and add it to a message automatically.
 
 ##### Removed Force Reconnection
-It is no longer possible to force a reconnection (for example when the mailer is running through a daemon process). Instead, Symfony Mailer will properly attempt to reconnect the transport itself and error out if that fails
+
+It is no longer possible to force a reconnection (for example when the mailer is running through a daemon process). Instead, Symfony Mailer will properly attempt to reconnect the transport itself and error out if that fails.
 
 ##### Driver / Transport Prerequisites
 `guzzlehttp/guzzle` can be removed if wanted (Still required to use with the HTTP Client and the ping methods on schedules). Symfony API mail transport will utilize `symfony/http` instead.
