@@ -28,6 +28,7 @@ The `storagePath` method of the `Illuminate\Contracts\Foundation\Application` in
 SwiftMailer is discontinued as of December 2021 and was therefore replaced with Symfony Mailer 6.0 (See https://symfony.com/blog/the-end-of-swiftmailer). Because of this, SwiftMailer plugins and transports will no longer work with the new implementation.
 
 ##### Updated Content Methods
+
 `send`, `html`, `text` & `plain` don't return the number of recipients anymore but an instance of `Illuminate\Mail\SentMessage` which contains the `Symfony\Component\Mailer\SentMessage` instance
 
 ##### Renamed Swift methods to Symfony
