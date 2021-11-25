@@ -28,6 +28,8 @@ Laravel's default `.env` file contains some common configuration values that may
 
 If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting placeholder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
+Before loading the environment variables, Laravel checks to see if either the `APP_ENV` environment variable is externally set, or the `--env` argument has been specified. If either one of those are set, Laravel will instead attempt to use a `.env.[APP_ENV]` file, if one exists. If it does not exist, or the argument/variable is not set, the fallback of `.env` is used instead.
+
 > {tip} Any variable in your `.env` file can be overridden by external environment variables such as server-level or system-level environment variables.
 
 <a name="environment-file-security"></a>
