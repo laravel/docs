@@ -887,6 +887,8 @@ public function broadcastOn($event)
 }
 ```
 
+> {note} Match expressions are available as of PHP 8.0.0.
+
 <a name="customizing-model-broadcasting-event-creation"></a>
 #### Customizing Model Broadcasting Event Creation
 
@@ -996,6 +998,8 @@ public function broadcastWith($event)
     };
 }
 ```
+
+> {note} Match expressions are available as of PHP 8.0.0.
 
 <a name="listening-for-model-broadcasts"></a>
 ### Listening For Model Broadcasts
