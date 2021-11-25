@@ -108,6 +108,7 @@ Setting the `auth_mode` in the mail config was removed, because the authenticati
 It's no longer possible to get a list of failed recipients. Instead, if an email is failed to send, and exception will be thrown.
 
 ##### Stream Options for SMTP transport
+
 Setting stream options for the SMTP transport can no longer be done through an smtp key. Instead you need to set the options directly in the config. For example, when disabling TLS peer verification in `config/mail.php`:
 
     'smtp' => [
