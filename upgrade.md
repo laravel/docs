@@ -74,7 +74,8 @@ Here is a list of all Methods which need to be renamed if they are used:
     MailManager::createSymfonyTransport($config);
 
 ##### `Illuminate\Mail\Message`
-The Illuminate\Mail\Message class now contains an instance of Symfony\Component\Mime\Email instead of Swift_Message so all forwarding calls in userland will need to be updated. Here are some examples which were possible with SwiftMailer but are not possible anymore with Symfony Mailer (most people are probably using the laravel style already):
+
+The `Illuminate\Mail\Message` class now contains an instance of `Symfony\Component\Mime\Email` instead of `Swift_Message` so all forwarding calls in user-land will need to be updated. Here are some examples which were possible with SwiftMailer but are not possible anymore with Symfony Mailer (most people are probably using the Laravel style already):
 
     // IF YOU USED THIS
     $message
