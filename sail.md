@@ -51,7 +51,7 @@ After Sail has been installed, you may run the `sail:install` Artisan command. T
 
     php artisan sail:install
 
-You may wish to add multiple services, please use commas to separate your choises:
+You may wish to add multiple services, please use commas to separate your selections:
 
     0, 3, 8
 
