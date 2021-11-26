@@ -1182,6 +1182,8 @@ To dispatch a batch of jobs, you should use the `batch` method of the `Bus` faca
 
 The batch's ID, which may be accessed via the `$batch->id` property, may be used to [query the Laravel command bus](#inspecting-batches) for information about the batch after it has been dispatched.
 
+> {note} Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks.
+
 <a name="naming-batches"></a>
 #### Naming Batches
 
