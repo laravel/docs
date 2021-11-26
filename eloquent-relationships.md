@@ -1311,7 +1311,7 @@ Instead of passing an array of possible polymorphic models, you may provide `*` 
         $query->where('title', 'like', 'foo%');
     })->get();
 
-> {note} WhereHasMorph() is only for MorphTo relationships. Use whereHas for all other relationships like for example MorphToMany
+> {note} WhereHasMorph() is only for MorphTo relationships. Use whereHas for all other relationships, like for example MorphToMany
 
 <a name="aggregating-related-models"></a>
 ## Aggregating Related Models
