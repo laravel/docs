@@ -116,7 +116,7 @@ Alternatively, you may develop your Swoole based Octane application using [Larav
 Next, update the `command` directive of your application's `docker/supervisord.conf` file so that Sail serves your application using Octane instead of the PHP development server:
 
 ```ini
-command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
+command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=swoole --host=0.0.0.0 --port=80
 ```
 
 Finally, build your Sail images:
