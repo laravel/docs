@@ -944,7 +944,7 @@ Behind the scenes, the `model:prune` command will automatically detect "Prunable
         '--model' => [Address::class, Flight::class],
     ])->daily();
 
-If you wish to exclude certain models from being pruned, you may use the `--except` option:
+If you wish to exclude certain models from being pruned while pruning all other detected models, you may use the `--except` option:
 
     $schedule->command('model:prune', [
         '--except' => [Address::class, Flight::class],
