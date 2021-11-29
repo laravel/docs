@@ -938,11 +938,18 @@ After configuring your prunable model, you should schedule the `model:prune` Art
         $schedule->command('model:prune')->daily();
     }
 
-Behind the scenes, the `model:prune` command will automatically detect "Prunable" models within your application's `app/Models` directory. If your models are in a different location, you may use the `--model` option to specify the model class names:
+Behind the scenes, the `model:prune` command will automatically detect "Prunable" models within your application's `app/Models` directory.
+If your models are in a different location, you may use the `--model` option to specify the model class names:
 
     $schedule->command('model:prune', [
         '--model' => [Address::class, Flight::class],
     ])->daily();
+
+If you wish to exclude certain model class names from being automatically detected within your application's `app/Models` directory, use the `--exclude` option:
+
+    $schedule->command('model:prune', [
+        '--exclude' => [Address::class, Flight::class],
+    ])->daily()
 
 You may test your `prunable` query by executing the `model:prune` command with the `--pretend` option. When pretending, the `model:prune` command will simply report how many records would be pruned if the command were to actually run:
 
