@@ -54,6 +54,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::sort](#method-array-sort)
 [Arr::sortRecursive](#method-array-sort-recursive)
 [Arr::toCssClasses](#method-array-to-css-classes)
+[Arr::undot](#method-array-undot)
 [Arr::where](#method-array-where)
 [Arr::wrap](#method-array-wrap)
 [data_fill](#method-data-fill)
@@ -797,6 +798,22 @@ The `Arr::toCssClasses` conditionally compiles a CSS class string. The method ac
     */
 
 This method powers Laravel's functionality allowing [merging classes with a Blade component's attribute bag](/docs/{{version}}/blade#conditionally-merge-classes) as well as the `@class` [Blade directive](/docs/{{version}}/blade#conditional-classes).
+
+<a name="method-array-undot"></a>
+#### `Arr::undot()` {#collection-method}
+
+The `Arr::undot` method expands a single-dimensional array that uses "dot" notation into a multi-dimensional array:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        'user.name' => 'Kevin Malone',
+        'user.occupation' => 'Accountant',
+    ];
+
+    $array = Arr::undot($array);
+
+    // ['user' => ['name' => 'Kevin Malone', 'occupation' => 'Accountant']]
 
 <a name="method-array-where"></a>
 #### `Arr::where()` {#collection-method}
