@@ -1998,7 +1998,7 @@ The `skipWhile` method skips over items from the collection while the given call
 
     // [4]
 
-> {note} If the callback never returns `true`, the `skipWhile` method will return an empty collection.
+> {note} If the callback never returns `false`, the `skipWhile` method will return an empty collection.
 
 <a name="method-slice"></a>
 #### `slice()` {#collection-method}
