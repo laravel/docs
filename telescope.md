@@ -299,6 +299,9 @@ The dump watcher records and displays your variable dumps in Telescope. When usi
 The event watcher records the payload, listeners, and broadcast data for any [events](/docs/{{version}}/events) dispatched by your application. The Laravel framework's internal events are ignored by the Event watcher.
 
 <a name="exception-watcher"></a>
+
+> {note} Avoid to emit events from the `boot` method of your Service Providers, as telescope could try to register them before the package is actually booted.
+
 ### Exception Watcher
 
 The exception watcher records the data and stack trace for any reportable exceptions that are thrown by your application.
