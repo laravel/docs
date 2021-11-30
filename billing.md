@@ -816,7 +816,7 @@ A complete list of available scopes is available below:
     Subscription::query()->cancelled();
     Subscription::query()->ended();
     Subscription::query()->incomplete();
-    Subscription::query()->notCanceled();
+    Subscription::query()->notCancelled();
     Subscription::query()->notOnGracePeriod();
     Subscription::query()->notOnTrial();
     Subscription::query()->onGracePeriod();
