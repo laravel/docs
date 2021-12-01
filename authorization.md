@@ -6,6 +6,7 @@
     - [Authorizing Actions](#authorizing-actions-via-gates)
     - [Gate Responses](#gate-responses)
     - [Intercepting Gate Checks](#intercepting-gate-checks)
+    - [On-demand authorization](#on-demand-authorization)
 - [Creating Policies](#creating-policies)
     - [Generating Policies](#generating-policies)
     - [Registering Policies](#registering-policies)
@@ -218,6 +219,37 @@ You may use the `after` method to define a closure to be executed after all othe
     });
 
 Similar to the `before` method, if the `after` closure returns a non-null result that result will be considered the result of the authorization check.
+
+<a name="on-demand-authorization"></a>
+### On-demand authorization
+
+On-demand authorization works similary to a [gate action](#authorizing-actions-via-gates), but instead of registering an action, it allows or denies by directly checking a given condition.
+
+The `allowIf` method checks if the condition is truthy before continuing, and `denyIf` does the opposite. When a check fails, an `AuthorizationException` is thrown.
+
+    Gate::allowIf($user->isAdministrator());
+
+    Gate::denyIf($post->isReadOnly());
+
+You can customize the message using a second parameter, which is useful to detail why the permission was not granted.
+
+    Gate::denyIf($post->isReadOnly(), 'This post is read-only.');
+
+When issuing a callback, it receives the authenticated user as first parameter. You can explicitely make a callback work with guests users by allowing the first parameter to be `null`.
+
+    Gate::allowIf(function ($user = null) use ($post) {
+        return $post->isPublic() || $user && $user->isAdministrator();
+    });
+
+If the callback returns a `Response` instance, it will take precedence over any other check, effectively hijacking it.
+
+    Gate::denyIf(function () use ($post) {
+        if ($post->isDraft()) {
+            return Response::deny('This post is a draft.')
+        }
+
+        return $post->isReadOnly();
+    }, 'This post is read-only.');
 
 <a name="creating-policies"></a>
 ## Creating Policies
