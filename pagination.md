@@ -42,7 +42,7 @@ In this example, the only argument passed to the `paginate` method is the number
     class UserController extends Controller
     {
         /**
-         * Show all of the users for the application.
+         * Show all application users.
          *
          * @return \Illuminate\Http\Response
          */
