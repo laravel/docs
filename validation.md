@@ -1815,6 +1815,13 @@ Once the rule has been defined, you may attach it to a validator by passing an i
     $request->validate([
         'name' => ['required', 'string', new Uppercase],
     ]);
+    
+If you need access to the validator or validation data, you can use the ValidatorAwareRule and DataAwareRule interfaces:
+
+    use Illuminate\Contracts\Validation\ValidatorAwareRule;
+    use Illuminate\Contracts\Validation\DataAwareRule;
+
+    class Uppercase implements Rule, DataAwareRule, ValidatorAwareRule
 
 <a name="using-closures"></a>
 ### Using Closures
