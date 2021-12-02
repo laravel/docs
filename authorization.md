@@ -223,7 +223,7 @@ Similar to the `before` method, if the `after` closure returns a non-null result
 <a name="on-demand-authorization"></a>
 ### On-demand authorization
 
-On-demand authorization works similary to a [gate action](#authorizing-actions-via-gates), but instead of registering an action, it allows or denies by directly checking a given condition.
+On-demand authorization works similary to [gate actions](#authorizing-actions-via-gates), but these authorize a condition or a callback directly and free of [interceptions](#intercepting-gate-checks).
 
 The `allowIf` method checks if the condition is truthy before continuing, and `denyIf` does the opposite. When a check fails, an `AuthorizationException` is thrown.
 
@@ -231,7 +231,7 @@ The `allowIf` method checks if the condition is truthy before continuing, and `d
 
     Gate::denyIf($post->isReadOnly());
 
-You can customize the message using a second parameter, which is useful to detail why the permission was not granted.
+You can customize the message using a second parameter, which is useful to detail why the permission was denied.
 
     Gate::denyIf($post->isReadOnly(), 'This post is read-only.');
 
@@ -241,7 +241,7 @@ When issuing a callback, it receives the authenticated user as first parameter. 
         return $post->isPublic() || $user && $user->isAdministrator();
     });
 
-If the callback returns a `Response` instance, it will take precedence over any other check, effectively hijacking it.
+If the callback returns a `Response` instance, it will take precedence over any other check.
 
     Gate::denyIf(function () use ($post) {
         if ($post->isDraft()) {
@@ -249,7 +249,7 @@ If the callback returns a `Response` instance, it will take precedence over any 
         }
 
         return $post->isReadOnly();
-    }, 'This post is read-only.');
+    });
 
 <a name="creating-policies"></a>
 ## Creating Policies
