@@ -1299,6 +1299,8 @@ You may occasionally need to add query constraints based on the "type" of the re
             $query->where($column, 'like', 'code%');
         }
     )->get();
+    
+> {note} Unfortunately, different database connections for models aren't compatible with the `whereHasMorph` call.
 
 <a name="querying-all-morph-to-related-models"></a>
 #### Querying All Related Models
