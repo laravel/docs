@@ -33,6 +33,17 @@ For LTS releases, such as Laravel 9, bug fixes are provided for 2 years and secu
 | 9 (LTS) | 8.0 - 8.1 | January 25th, 2022 | January 30th, 2024 | January 28th, 2025 |
 | 10 | 8.0 - 8.1 | January 24th, 2023 | July 30th, 2024 | January 28th, 2025 |
 
+<div class="sm:flex dark:text-gray-400 mb-1">
+    <div class="flex items-center mr-4">
+        <div class="w-3 h-3 mr-2 bg-red-500"></div>
+        <div>End of life</div>
+    </div>
+    <div class="flex items-center">
+        <div class="w-3 h-3 mr-2 bg-orange-600"></div>
+        <div>Security fixes only</div>
+    </div>
+</div>
+
 (*) Supported PHP versions
 
 <a name="laravel-8"></a>
