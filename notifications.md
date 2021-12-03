@@ -206,14 +206,11 @@ If your queue connection's `after_commit` configuration option is set to `false`
 
     namespace App\Notifications;
 
-    use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Notifications\Notification;
 
     class InvoicePaid extends Notification implements ShouldQueue
     {
-        use Queueable;
-
         public $afterCommit = true;
     }
 
