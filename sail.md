@@ -257,6 +257,15 @@ depends_on:
     - redis
     - selenium
 ```
+Then, the following lines should be added to the '.env' file.
+
+```yaml
+APP_SERVICE="laravel.test"
+APP_URL="http://laravel.test:80"
+DUSK_DRIVER_URL="http://selenium:4444"
+```
+
+>{tip} The service name can be modified after publishing Sail's Dockerfiles. Refer to the [Sail Customization] (#sail-customization) documetation for more info.
 
 Finally, you may run your Dusk test suite by starting Sail and running the `dusk` command:
 
