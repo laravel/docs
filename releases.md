@@ -25,7 +25,6 @@ At this time, PHP's [named arguments](https://www.php.net/manual/en/functions.ar
 
 For LTS releases, such as Laravel 9, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
 
-
 | Version | PHP (*) | Release | Bug Fixes Until | Security Fixes Until |
 | --- | --- | --- | --- |
 | 6 (LTS) | 7.2 - 8.0 | September 3rd, 2019 | January 25th, 2022 | September 6th, 2022 |
