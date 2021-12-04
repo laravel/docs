@@ -948,7 +948,7 @@ If you wish to exclude certain models from being pruned while pruning all other 
 
     $schedule->command('model:prune', [
         '--except' => [Address::class, Flight::class],
-    ])->daily()
+    ])->daily();
 
 You may test your `prunable` query by executing the `model:prune` command with the `--pretend` option. When pretending, the `model:prune` command will simply report how many records would be pruned if the command were to actually run:
 
