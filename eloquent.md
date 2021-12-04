@@ -388,6 +388,8 @@ Flight::where('departed', true)
     ->each->update(['departed' => false]);
 ```
 
+Sometimes you may wish to filter the results based on the descending order of the `id`, in this case you should use the `lazyByIdDesc` method. 
+
 <a name="cursors"></a>
 ### Cursors
 

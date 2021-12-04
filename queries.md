@@ -168,7 +168,7 @@ DB::table('users')->orderBy('id')->lazy()->each(function ($user) {
 });
 ```
 
-Once again, if you plan to update the retrieved records while iterating over them, it is best to use the `lazyById` method instead. This method will automatically paginate the results based on the record's primary key:
+Once again, if you plan to update the retrieved records while iterating over them, it is best to use the `lazyById` or `lazyByIdDesc` methods instead. This method will automatically paginate the results based on the record's primary key:
 
 ```php
 DB::table('users')->where('active', false)
