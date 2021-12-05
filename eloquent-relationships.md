@@ -1691,7 +1691,7 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
         ]);
 
 <a name="preventing-lazy-loading"></a>
-### Preventing Lazy Loading
+### Preventing Lazy Loading (>= v8.44.0)
 
 As previously discussed, eager loading relationships can often provide significant performance benefits to your application. Therefore, if you would like, you may instruct Laravel to always prevent the lazy loading of relationships. To accomplish this, you may invoke the `preventLazyLoading` method offered by the base Eloquent model class. Typically, you should call this method within the `boot` method of your application's `AppServiceProvider` class.
 
