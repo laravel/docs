@@ -90,6 +90,8 @@ After running the `passport:install` command, add the `Laravel\Passport\HasApiTo
         use HasApiTokens, HasFactory, Notifiable;
     }
 
+> {tip} Make sure that you replaced the original Laravel\Sanctum\HasApiTokens trait with the Laravel\Passport\HasApiTokens trait
+
 Next, you should call the `Passport::routes` method within the `boot` method of your `App\Providers\AuthServiceProvider`. This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
 
     <?php
