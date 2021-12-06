@@ -74,7 +74,7 @@ Next, you should execute the `passport:install` Artisan command. This command wi
 
 > {tip} If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids).
 
-After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
+After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes. If your model is already using the `Laravel\Sanctum\HasApiTokens` trait, you may remove that trait:
 
     <?php
 
@@ -89,8 +89,6 @@ After running the `passport:install` command, add the `Laravel\Passport\HasApiTo
     {
         use HasApiTokens, HasFactory, Notifiable;
     }
-
-> {tip} Make sure that you replaced the original Laravel\Sanctum\HasApiTokens trait with the Laravel\Passport\HasApiTokens trait
 
 Next, you should call the `Passport::routes` method within the `boot` method of your `App\Providers\AuthServiceProvider`. This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
 
