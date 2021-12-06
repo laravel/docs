@@ -265,7 +265,7 @@ Finally, you may run your Dusk test suite by starting Sail and running the `dusk
 <a name="selenium-on-apple-silicon"></a>
 #### Selenium On Apple Silicon
 
-If your local machine contains an Apple Silicon chip, your `selenium` must use the `seleniarm/standalone-chromium` image:
+If your local machine contains an Apple Silicon chip, your `selenium` service must use the `seleniarm/standalone-chromium` image:
 
 ```yaml
 selenium:
