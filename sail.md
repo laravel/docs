@@ -267,12 +267,14 @@ Finally, you may run your Dusk test suite by starting Sail and running the `dusk
 
 If your local machine contains an Apple Silicon chip, your `selenium` must use the `seleniarm/standalone-chromium` image:
 
+```yaml
 selenium:
     image: 'seleniarm/standalone-chromium'
     volumes:
         - '/dev/shm:/dev/shm'
     networks:
         - sail
+```
 
 <a name="previewing-emails"></a>
 ## Previewing Emails
