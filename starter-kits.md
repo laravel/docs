@@ -4,6 +4,7 @@
 - [Laravel Breeze](#laravel-breeze)
     - [Installation](#laravel-breeze-installation)
     - [Breeze & Inertia](#breeze-and-inertia)
+    - [Breeze & Next.js / API](#breeze-and-next)
 - [Laravel Jetstream](#laravel-jetstream)
 
 <a name="introduction"></a>
@@ -69,6 +70,24 @@ npm install
 npm run dev
 php artisan migrate
 ```
+
+<a name="breeze-and-next"></a>
+### Breeze & Next.js / API
+
+Laravel Breeze can also scaffold an authentication API that is ready to authenticate modern single-page applications such as those powered by [Next](https://nextjs.org), [Nuxt](https://nuxtjs.org), and others. To get started, specify the `api` stack as your desired stack when executing the `breeze:install` Artisan command:
+
+```nothing
+php artisan breeze:install api
+
+php artisan migrate
+```
+
+During installation, Breeze will add an `APP_FRONTEND_URL` environment variable to your application's `.env` file. This URL should be the URL of your JavaScript application. During local development, this will typically be `http://localhost:3000`.
+
+<a name="next-reference-implementation"></a>
+#### Next.js Reference Implementation
+
+Finally, you are ready to pair this backend with the frontend of your choice. A reference implementation of the Breeze frontend written in Next is [available on GitHub](https://github.com/laravel/breeze-next). This frontend is maintained by Laravel and contains the same user interface as the traditional Blade and Inertia stacks provided by Breeze.
 
 <a name="laravel-jetstream"></a>
 ## Laravel Jetstream
