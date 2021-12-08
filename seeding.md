@@ -98,8 +98,6 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
 
 While running seeds, you may want to prevent models from firing events. You may achieve this using the `WithoutModelEvents` trait. When used, the `WithoutModelEvents` trait ensures no model events get fired, even if additional seed classes are executed via the `call` method:
 
-    use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
     <?php
 
     namespace Database\Seeders;
