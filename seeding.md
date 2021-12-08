@@ -93,6 +93,37 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
         ]);
     }
 
+<a name="muting-model-events"></a>
+### Muting Model Events
+
+While running seeds, you may want to prevent models from firing events. You may achieve this using the `WithoutModelEvents` trait. When used, the `WithoutModelEvents` trait ensures no model events get fired, even if additional seed classes are executed via the `call` method:
+
+    use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+    <?php
+
+    namespace Database\Seeders;
+
+    use Illuminate\Database\Seeder;
+    use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+    class DatabaseSeeder extends Seeder
+    {
+        use WithoutModelEvents;
+
+        /**
+         * Run the database seeders.
+         *
+         * @return void
+         */
+        public function run()
+        {
+            $this->call([
+                UserSeeder::class,
+            ]);
+        }
+    }
+
 <a name="running-seeders"></a>
 ## Running Seeders
 
