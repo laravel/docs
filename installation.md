@@ -152,13 +152,11 @@ curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 
 If you do not specify which services you would like configured, a default stack of `mysql`, `redis`, `meilisearch`, `mailhog`, and `selenium` will be configured.
 
-You can also tell Sail to install a default [Devcontainer](/docs/{{version}}/sail#using-devcontainers) by adding the `devcontainer` parameter to the previous command:
+You may instruct Sail to install a default [Devcontainer](/docs/{{version}}/sail#using-devcontainers) by adding the `devcontainer` parameter to the URL:
 
 ```nothing
 curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
 ```
-
-This will make it easier to develop your application remotely from within your app's container.
 
 <a name="installation-via-composer"></a>
 ### Installation Via Composer
