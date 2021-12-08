@@ -4,6 +4,7 @@
 - [Writing Seeders](#writing-seeders)
     - [Using Model Factories](#using-model-factories)
     - [Calling Additional Seeders](#calling-additional-seeders)
+    - [Muting Model Events](#muting-model-events)
 - [Running Seeders](#running-seeders)
 
 <a name="introduction"></a>
@@ -96,7 +97,7 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
 <a name="muting-model-events"></a>
 ### Muting Model Events
 
-While running seeds, you may want to prevent models from firing events. You may achieve this using the `WithoutModelEvents` trait. When used, the `WithoutModelEvents` trait ensures no model events get fired, even if additional seed classes are executed via the `call` method:
+While running seeds, you may want to prevent models from dispatching events. You may achieve this using the `WithoutModelEvents` trait. When used, the `WithoutModelEvents` trait ensures no model events are dispatched, even if additional seed classes are executed via the `call` method:
 
     <?php
 
