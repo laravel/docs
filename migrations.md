@@ -299,14 +299,7 @@ Before renaming a table, you should verify that any foreign key constraints on t
 <a name="creating-columns"></a>
 ### Creating Columns
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives an `Illuminate\Database\Schema\Blueprint` instance you may use to add columns to the table:
 
-    use Illuminate\Database\Schema\Blueprint;
-    use Illuminate\Support\Facades\Schema;
-
-    Schema::table('users', function (Blueprint $table) {
-        $table->integer('votes');
-    });
 
 <a name="available-column-types"></a>
 ### Available Column Types
