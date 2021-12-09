@@ -557,6 +557,13 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
             $this->seed(OrderStatusSeeder::class);
 
             // ...
+
+            // Run an array of specific seeders...
+            $this->seed([
+                OrderStatusSeeder::class,
+                TransactionStatusSeeder::class,
+                // ...
+            ]);
         }
     }
 
