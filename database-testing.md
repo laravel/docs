@@ -535,6 +535,7 @@ If you would like to use [database seeders](/docs/{{version}}/seeding) to popula
     namespace Tests\Feature;
 
     use Database\Seeders\OrderStatusSeeder;
+    use Database\Seeders\TransactionStatusSeeder;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
