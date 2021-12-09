@@ -1349,7 +1349,7 @@ By default, the created webhook will point to the URL defined by the `APP_URL` e
 
 The webhook that is created will use the Stripe API version that your version of Cashier is compatible with. If you would like to use a different Stripe version, you may provide the `--api-version` option:
 
-    php artisan cashier:webhook --app-version="2019-12-03"
+    php artisan cashier:webhook --api-version="2019-12-03"
 
 After creation, the webhook will be immediately active. If you wish to create the webhook but have it disabled until you're ready, you may provide the `--disabled` option when invoking the command:
 
