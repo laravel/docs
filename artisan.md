@@ -300,7 +300,7 @@ You may assign descriptions to input arguments and options by separating the arg
      */
     protected $signature = 'mail:send
                             {user : The ID of the user}
-                            {--queue= : Whether the job should be queued}';
+                            {--queue : Whether the job should be queued}';
 
 <a name="command-io"></a>
 ## Command I/O
