@@ -401,6 +401,8 @@ To debug your application while interacting with the application via a web brows
 
 If you're using PhpStorm, please review JetBrain's documentation regarding [zero-configuration debugging](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html).
 
+> {note} Laravel sail relies on the ServeCommand under the hood. The ServeCommand only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. If you are on a version of Laravel older than 8.53.0, you will need to upgrade in order to use this configuration for browser debugging.
+
 <a name="sail-customization"></a>
 ## Customization
 
