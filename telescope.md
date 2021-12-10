@@ -43,7 +43,7 @@ Laravel Telescope is an elegant debug assistant for the Laravel framework. Teles
 
 You may use Composer to install Telescope into your Laravel project:
 
-    composer require laravel/telescope
+    composer require laravel/telescope "^3.0"
 
 After installing Telescope, publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command:
 
@@ -55,7 +55,7 @@ After installing Telescope, publish its assets using the `telescope:install` Art
 
 If you plan to only use Telescope to assist your local development, you may install Telescope using the `--dev` flag:
 
-    composer require laravel/telescope --dev
+    composer require laravel/telescope "^3.0" --dev
 
 After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your `app` configuration file. Instead, manually register the service provider in the `register` method of your `AppServiceProvider`:
 
