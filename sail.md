@@ -401,7 +401,7 @@ To debug your application while interacting with the application via a web brows
 
 If you're using PhpStorm, please review JetBrain's documentation regarding [zero-configuration debugging](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html).
 
-> {note} Laravel Sail relies on `artisan serve` under the hood to serve up the application. `artisan serve` only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) will not properly pass these variables through properly, preventing debug connections. You will need to upgrade to at least 8.53.0 to debug this way.
+> {note} Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections.
 
 <a name="sail-customization"></a>
 ## Customization
