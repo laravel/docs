@@ -127,7 +127,7 @@ The `$casts` property should be an array where the key is the name of the attrib
 - `datetime`
 - `immutable_date`
 - `immutable_datetime`
-- `decimal:<digits>`
+- `decimal:`<code>&lt;digits&gt;</code>
 - `double`
 - `encrypted`
 - `encrypted:array`
