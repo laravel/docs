@@ -123,6 +123,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
+[Str::reverse](#method-str-reverse)
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
 [Str::snake](#method-snake-case)
@@ -1576,6 +1577,20 @@ The `Str::replaceLast` method replaces the last occurrence of a given value in a
     $replaced = Str::replaceLast('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
     // the quick brown fox jumps over a lazy dog
+
+
+<a name="method-str-reverse"></a>
+#### `Str::reverse()` {#collection-method}
+
+The `Str::reverse` method reverses the order of a given string:
+
+    use Illuminate\Support\Str;
+
+    $reversed = Str::reverse('Hello World');
+
+    // dlroW olleH
+
+
 
 <a name="method-str-singular"></a>
 #### `Str::singular()` {#collection-method}
