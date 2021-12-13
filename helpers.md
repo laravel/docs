@@ -1580,7 +1580,7 @@ The `Str::replaceLast` method replaces the last occurrence of a given value in a
 
 
 <a name="method-str-reverse"></a>
-#### `Str::reverse()` {#collection-method}
+#### `Str::reverse()` {.collection-method}
 
 The `Str::reverse` method reverses the given string:
 
