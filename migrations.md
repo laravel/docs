@@ -331,7 +331,6 @@ The schema builder blueprint offers a variety of methods that correspond to the 
         margin-top: 50px;
     }
 </style>
-</style>
 
 <div id="collection-method-list" markdown="1">
 [bigIncrements](#column-method-bigIncrements)
