@@ -1582,15 +1582,13 @@ The `Str::replaceLast` method replaces the last occurrence of a given value in a
 <a name="method-str-reverse"></a>
 #### `Str::reverse()` {#collection-method}
 
-The `Str::reverse` method reverses the order of a given string:
+The `Str::reverse` method reverses the given string:
 
     use Illuminate\Support\Str;
 
     $reversed = Str::reverse('Hello World');
 
     // dlroW olleH
-
-
 
 <a name="method-str-singular"></a>
 #### `Str::singular()` {#collection-method}
