@@ -1872,6 +1872,10 @@ If you would like to insert the same intermediate table values with each of the 
 If you do not want to detach existing IDs that are missing from the given array, you may use the `syncWithoutDetaching` method:
 
     $user->roles()->syncWithoutDetaching([1, 2, 3]);
+    
+Using an empty array with `sync` has no effect:
+
+    $user->roles()->sync([]);
 
 <a name="toggling-associations"></a>
 #### Toggling Associations
