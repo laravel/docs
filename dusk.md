@@ -1344,7 +1344,7 @@ Assert that the element matching the given selector is visible:
 <a name="assert-present"></a>
 #### assertPresent
 
-Assert that the element matching the given selector is present:
+Assert that the element matching the given selector is present in the source:
 
     $browser->assertPresent($selector);
 

@@ -229,17 +229,17 @@ For the majority of the remaining collection documentation, we'll discuss each m
 ## Method Listing
 
 <style>
-    #collection-method code {
+    .collection-method code {
         font-size: 14px;
     }
 
-    #collection-method:not(.first-collection-method) {
+    .collection-method:not(.first-collection-method) {
         margin-top: 50px;
     }
 </style>
 
 <a name="method-all"></a>
-#### `all()` {#collection-method .first-collection-method}
+#### `all()` {.collection-method .first-collection-method}
 
 The `all` method returns the underlying array represented by the collection:
 
@@ -248,12 +248,12 @@ The `all` method returns the underlying array represented by the collection:
     // [1, 2, 3]
 
 <a name="method-average"></a>
-#### `average()` {#collection-method}
+#### `average()` {.collection-method}
 
 Alias for the [`avg`](#method-avg) method.
 
 <a name="method-avg"></a>
-#### `avg()` {#collection-method}
+#### `avg()` {.collection-method}
 
 The `avg` method returns the [average value](https://en.wikipedia.org/wiki/Average) of a given key:
 
@@ -271,7 +271,7 @@ The `avg` method returns the [average value](https://en.wikipedia.org/wiki/Avera
     // 2
 
 <a name="method-chunk"></a>
-#### `chunk()` {#collection-method}
+#### `chunk()` {.collection-method}
 
 The `chunk` method breaks the collection into multiple, smaller collections of a given size:
 
@@ -294,7 +294,7 @@ This method is especially useful in [views](/docs/{{version}}/views) when workin
     @endforeach
 
 <a name="method-chunkwhile"></a>
-#### `chunkWhile()` {#collection-method}
+#### `chunkWhile()` {.collection-method}
 
 The `chunkWhile` method breaks the collection into multiple, smaller collections based on the evaluation of the given callback. The `$chunk` variable passed to the closure may be used to inspect the previous element:
 
@@ -309,7 +309,7 @@ The `chunkWhile` method breaks the collection into multiple, smaller collections
     // [['A', 'A'], ['B', 'B'], ['C', 'C', 'C'], ['D']]
 
 <a name="method-collapse"></a>
-#### `collapse()` {#collection-method}
+#### `collapse()` {.collection-method}
 
 The `collapse` method collapses a collection of arrays into a single, flat collection:
 
@@ -326,7 +326,7 @@ The `collapse` method collapses a collection of arrays into a single, flat colle
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 <a name="method-collect"></a>
-#### `collect()` {#collection-method}
+#### `collect()` {.collection-method}
 
 The `collect` method returns a new `Collection` instance with the items currently in the collection:
 
@@ -359,7 +359,7 @@ The `collect` method is primarily useful for converting [lazy collections](#lazy
 > {tip} The `collect` method is especially useful when you have an instance of `Enumerable` and need a non-lazy collection instance. Since `collect()` is part of the `Enumerable` contract, you can safely use it to get a `Collection` instance.
 
 <a name="method-combine"></a>
-#### `combine()` {#collection-method}
+#### `combine()` {.collection-method}
 
 The `combine` method combines the values of the collection, as keys, with the values of another array or collection:
 
@@ -372,7 +372,7 @@ The `combine` method combines the values of the collection, as keys, with the va
     // ['name' => 'George', 'age' => 29]
 
 <a name="method-concat"></a>
-#### `concat()` {#collection-method}
+#### `concat()` {.collection-method}
 
 The `concat` method appends the given `array` or collection's values onto the end of another collection:
 
@@ -385,7 +385,7 @@ The `concat` method appends the given `array` or collection's values onto the en
     // ['John Doe', 'Jane Doe', 'Johnny Doe']
 
 <a name="method-contains"></a>
-#### `contains()` {#collection-method}
+#### `contains()` {.collection-method}
 
 The `contains` method determines whether the collection contains a given item. You may pass a closure to the `contains` method to determine if an element exists in the collection matching a given truth test:
 
@@ -423,14 +423,14 @@ You may also pass a key / value pair to the `contains` method, which will determ
 The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`containsStrict`](#method-containsstrict) method to filter using "strict" comparisons.
 
 <a name="method-containsstrict"></a>
-#### `containsStrict()` {#collection-method}
+#### `containsStrict()` {.collection-method}
 
 This method has the same signature as the [`contains`](#method-contains) method; however, all values are compared using "strict" comparisons.
 
 > {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-contains).
 
 <a name="method-count"></a>
-#### `count()` {#collection-method}
+#### `count()` {.collection-method}
 
 The `count` method returns the total number of items in the collection:
 
@@ -441,7 +441,7 @@ The `count` method returns the total number of items in the collection:
     // 4
 
 <a name="method-countBy"></a>
-#### `countBy()` {#collection-method}
+#### `countBy()` {.collection-method}
 
 The `countBy` method counts the occurrences of values in the collection. By default, the method counts the occurrences of every element, allowing you to count certain "types" of elements in the collection:
 
@@ -466,7 +466,7 @@ You pass a closure to the `countBy` method to count all items by a custom value:
     // ['gmail.com' => 2, 'yahoo.com' => 1]
 
 <a name="method-crossjoin"></a>
-#### `crossJoin()` {#collection-method}
+#### `crossJoin()` {.collection-method}
 
 The `crossJoin` method cross joins the collection's values among the given arrays or collections, returning a Cartesian product with all possible permutations:
 
@@ -505,7 +505,7 @@ The `crossJoin` method cross joins the collection's values among the given array
     */
 
 <a name="method-dd"></a>
-#### `dd()` {#collection-method}
+#### `dd()` {.collection-method}
 
 The `dd` method dumps the collection's items and ends execution of the script:
 
@@ -525,7 +525,7 @@ The `dd` method dumps the collection's items and ends execution of the script:
 If you do not want to stop executing the script, use the [`dump`](#method-dump) method instead.
 
 <a name="method-diff"></a>
-#### `diff()` {#collection-method}
+#### `diff()` {.collection-method}
 
 The `diff` method compares the collection against another collection or a plain PHP `array` based on its values. This method will return the values in the original collection that are not present in the given collection:
 
@@ -540,7 +540,7 @@ The `diff` method compares the collection against another collection or a plain 
 > {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-diff).
 
 <a name="method-diffassoc"></a>
-#### `diffAssoc()` {#collection-method}
+#### `diffAssoc()` {.collection-method}
 
 The `diffAssoc` method compares the collection against another collection or a plain PHP `array` based on its keys and values. This method will return the key / value pairs in the original collection that are not present in the given collection:
 
@@ -562,7 +562,7 @@ The `diffAssoc` method compares the collection against another collection or a p
     // ['color' => 'orange', 'remain' => 6]
 
 <a name="method-diffkeys"></a>
-#### `diffKeys()` {#collection-method}
+#### `diffKeys()` {.collection-method}
 
 The `diffKeys` method compares the collection against another collection or a plain PHP `array` based on its keys. This method will return the key / value pairs in the original collection that are not present in the given collection:
 
@@ -586,7 +586,7 @@ The `diffKeys` method compares the collection against another collection or a pl
     // ['one' => 10, 'three' => 30, 'five' => 50]
 
 <a name="method-dump"></a>
-#### `dump()` {#collection-method}
+#### `dump()` {.collection-method}
 
 The `dump` method dumps the collection's items:
 
@@ -606,7 +606,7 @@ The `dump` method dumps the collection's items:
 If you want to stop executing the script after dumping the collection, use the [`dd`](#method-dd) method instead.
 
 <a name="method-duplicates"></a>
-#### `duplicates()` {#collection-method}
+#### `duplicates()` {.collection-method}
 
 The `duplicates` method retrieves and returns duplicate values from the collection:
 
@@ -629,12 +629,12 @@ If the collection contains arrays or objects, you can pass the key of the attrib
     // [2 => 'Developer']
 
 <a name="method-duplicatesstrict"></a>
-#### `duplicatesStrict()` {#collection-method}
+#### `duplicatesStrict()` {.collection-method}
 
 This method has the same signature as the [`duplicates`](#method-duplicates) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-each"></a>
-#### `each()` {#collection-method}
+#### `each()` {.collection-method}
 
 The `each` method iterates over the items in the collection and passes each item to a closure:
 
@@ -651,7 +651,7 @@ If you would like to stop iterating through the items, you may return `false` fr
     });
 
 <a name="method-eachspread"></a>
-#### `eachSpread()` {#collection-method}
+#### `eachSpread()` {.collection-method}
 
 The `eachSpread` method iterates over the collection's items, passing each nested item value into the given callback:
 
@@ -668,7 +668,7 @@ You may stop iterating through the items by returning `false` from the callback:
     });
 
 <a name="method-every"></a>
-#### `every()` {#collection-method}
+#### `every()` {.collection-method}
 
 The `every` method may be used to verify that all elements of a collection pass a given truth test:
 
@@ -689,7 +689,7 @@ If the collection is empty, the `every` method will return true:
     // true
 
 <a name="method-except"></a>
-#### `except()` {#collection-method}
+#### `except()` {.collection-method}
 
 The `except` method returns all items in the collection except for those with the specified keys:
 
@@ -706,7 +706,7 @@ For the inverse of `except`, see the [only](#method-only) method.
 > {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-except).
 
 <a name="method-filter"></a>
-#### `filter()` {#collection-method}
+#### `filter()` {.collection-method}
 
 The `filter` method filters the collection using the given callback, keeping only those items that pass a given truth test:
 
@@ -731,7 +731,7 @@ If no callback is supplied, all entries of the collection that are equivalent to
 For the inverse of `filter`, see the [reject](#method-reject) method.
 
 <a name="method-first"></a>
-#### `first()` {#collection-method}
+#### `first()` {.collection-method}
 
 The `first` method returns the first element in the collection that passes a given truth test:
 
@@ -748,7 +748,7 @@ You may also call the `first` method with no arguments to get the first element 
     // 1
 
 <a name="method-first-where"></a>
-#### `firstWhere()` {#collection-method}
+#### `firstWhere()` {.collection-method}
 
 The `firstWhere` method returns the first element in the collection with the given key / value pair:
 
@@ -776,7 +776,7 @@ Like the [where](#method-where) method, you may pass one argument to the `firstW
     // ['name' => 'Linda', 'age' => 14]
 
 <a name="method-flatmap"></a>
-#### `flatMap()` {#collection-method}
+#### `flatMap()` {.collection-method}
 
 The `flatMap` method iterates through the collection and passes each value to the given closure. The closure is free to modify the item and return it, thus forming a new collection of modified items. Then, the array is flattened by one level:
 
@@ -795,7 +795,7 @@ The `flatMap` method iterates through the collection and passes each value to th
     // ['name' => 'SALLY', 'school' => 'ARKANSAS', 'age' => '28'];
 
 <a name="method-flatten"></a>
-#### `flatten()` {#collection-method}
+#### `flatten()` {.collection-method}
 
 The `flatten` method flattens a multi-dimensional collection into a single dimension:
 
@@ -843,7 +843,7 @@ If necessary, you may pass the `flatten` method a "depth" argument:
 In this example, calling `flatten` without providing the depth would have also flattened the nested arrays, resulting in `['iPhone 6S', 'Apple', 'Galaxy S7', 'Samsung']`. Providing a depth allows you to specify the number of levels nested arrays will be flattened.
 
 <a name="method-flip"></a>
-#### `flip()` {#collection-method}
+#### `flip()` {.collection-method}
 
 The `flip` method swaps the collection's keys with their corresponding values:
 
@@ -856,7 +856,7 @@ The `flip` method swaps the collection's keys with their corresponding values:
     // ['taylor' => 'name', 'laravel' => 'framework']
 
 <a name="method-forget"></a>
-#### `forget()` {#collection-method}
+#### `forget()` {.collection-method}
 
 The `forget` method removes an item from the collection by its key:
 
@@ -871,7 +871,7 @@ The `forget` method removes an item from the collection by its key:
 > {note} Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
 
 <a name="method-forpage"></a>
-#### `forPage()` {#collection-method}
+#### `forPage()` {.collection-method}
 
 The `forPage` method returns a new collection containing the items that would be present on a given page number. The method accepts the page number as its first argument and the number of items to show per page as its second argument:
 
@@ -884,7 +884,7 @@ The `forPage` method returns a new collection containing the items that would be
     // [4, 5, 6]
 
 <a name="method-get"></a>
-#### `get()` {#collection-method}
+#### `get()` {.collection-method}
 
 The `get` method returns the item at a given key. If the key does not exist, `null` is returned:
 
@@ -911,7 +911,7 @@ You may even pass a callback as the method's default value. The result of the ca
     // taylor@example.com
 
 <a name="method-groupby"></a>
-#### `groupBy()` {#collection-method}
+#### `groupBy()` {.collection-method}
 
 The `groupBy` method groups the collection's items by a given key:
 
@@ -996,7 +996,7 @@ Multiple grouping criteria may be passed as an array. Each array element will be
     */
 
 <a name="method-has"></a>
-#### `has()` {#collection-method}
+#### `has()` {.collection-method}
 
 The `has` method determines if a given key exists in the collection:
 
@@ -1015,7 +1015,7 @@ The `has` method determines if a given key exists in the collection:
     // false
 
 <a name="method-implode"></a>
-#### `implode()` {#collection-method}
+#### `implode()` {.collection-method}
 
 The `implode` method joins items in a collection. Its arguments depend on the type of items in the collection. If the collection contains arrays or objects, you should pass the key of the attributes you wish to join, and the "glue" string you wish to place between the values:
 
@@ -1035,7 +1035,7 @@ If the collection contains simple strings or numeric values, you should pass the
     // '1-2-3-4-5'
 
 <a name="method-intersect"></a>
-#### `intersect()` {#collection-method}
+#### `intersect()` {.collection-method}
 
 The `intersect` method removes any values from the original collection that are not present in the given `array` or collection. The resulting collection will preserve the original collection's keys:
 
@@ -1050,7 +1050,7 @@ The `intersect` method removes any values from the original collection that are 
 > {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-intersect).
 
 <a name="method-intersectbykeys"></a>
-#### `intersectByKeys()` {#collection-method}
+#### `intersectByKeys()` {.collection-method}
 
 The `intersectByKeys` method removes any keys and their corresponding values from the original collection that are not present in the given `array` or collection:
 
@@ -1067,7 +1067,7 @@ The `intersectByKeys` method removes any keys and their corresponding values fro
     // ['type' => 'screen', 'year' => 2009]
 
 <a name="method-isempty"></a>
-#### `isEmpty()` {#collection-method}
+#### `isEmpty()` {.collection-method}
 
 The `isEmpty` method returns `true` if the collection is empty; otherwise, `false` is returned:
 
@@ -1076,7 +1076,7 @@ The `isEmpty` method returns `true` if the collection is empty; otherwise, `fals
     // true
 
 <a name="method-isnotempty"></a>
-#### `isNotEmpty()` {#collection-method}
+#### `isNotEmpty()` {.collection-method}
 
 The `isNotEmpty` method returns `true` if the collection is not empty; otherwise, `false` is returned:
 
@@ -1085,7 +1085,7 @@ The `isNotEmpty` method returns `true` if the collection is not empty; otherwise
     // false
 
 <a name="method-join"></a>
-#### `join()` {#collection-method}
+#### `join()` {.collection-method}
 
 The `join` method joins the collection's values with a string. Using this method's second argument, you may also specify how the final element should be appended to the string:
 
@@ -1096,7 +1096,7 @@ The `join` method joins the collection's values with a string. Using this method
     collect([])->join(', ', ' and '); // ''
 
 <a name="method-keyby"></a>
-#### `keyBy()` {#collection-method}
+#### `keyBy()` {.collection-method}
 
 The `keyBy` method keys the collection by the given key. If multiple items have the same key, only the last one will appear in the new collection:
 
@@ -1132,7 +1132,7 @@ You may also pass a callback to the method. The callback should return the value
     */
 
 <a name="method-keys"></a>
-#### `keys()` {#collection-method}
+#### `keys()` {.collection-method}
 
 The `keys` method returns all of the collection's keys:
 
@@ -1148,7 +1148,7 @@ The `keys` method returns all of the collection's keys:
     // ['prod-100', 'prod-200']
 
 <a name="method-last"></a>
-#### `last()` {#collection-method}
+#### `last()` {.collection-method}
 
 The `last` method returns the last element in the collection that passes a given truth test:
 
@@ -1165,17 +1165,17 @@ You may also call the `last` method with no arguments to get the last element in
     // 4
 
 <a name="method-macro"></a>
-#### `macro()` {#collection-method}
+#### `macro()` {.collection-method}
 
 The static `macro` method allows you to add methods to the `Collection` class at run time. Refer to the documentation on [extending collections](#extending-collections) for more information.
 
 <a name="method-make"></a>
-#### `make()` {#collection-method}
+#### `make()` {.collection-method}
 
 The static `make` method creates a new collection instance. See the [Creating Collections](#creating-collections) section.
 
 <a name="method-map"></a>
-#### `map()` {#collection-method}
+#### `map()` {.collection-method}
 
 The `map` method iterates through the collection and passes each value to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items:
 
@@ -1192,7 +1192,7 @@ The `map` method iterates through the collection and passes each value to the gi
 > {note} Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
 
 <a name="method-mapinto"></a>
-#### `mapInto()` {#collection-method}
+#### `mapInto()` {.collection-method}
 
 The `mapInto()` method iterates over the collection, creating a new instance of the given class by passing the value into the constructor:
 
@@ -1219,7 +1219,7 @@ The `mapInto()` method iterates over the collection, creating a new instance of 
     // [Currency('USD'), Currency('EUR'), Currency('GBP')]
 
 <a name="method-mapspread"></a>
-#### `mapSpread()` {#collection-method}
+#### `mapSpread()` {.collection-method}
 
 The `mapSpread` method iterates over the collection's items, passing each nested item value into the given closure. The closure is free to modify the item and return it, thus forming a new collection of modified items:
 
@@ -1236,7 +1236,7 @@ The `mapSpread` method iterates over the collection's items, passing each nested
     // [1, 5, 9, 13, 17]
 
 <a name="method-maptogroups"></a>
-#### `mapToGroups()` {#collection-method}
+#### `mapToGroups()` {.collection-method}
 
 The `mapToGroups` method groups the collection's items by the given closure. The closure should return an associative array containing a single key / value pair, thus forming a new collection of grouped values:
 
@@ -1273,7 +1273,7 @@ The `mapToGroups` method groups the collection's items by the given closure. The
     // ['John Doe', 'Jane Doe']
 
 <a name="method-mapwithkeys"></a>
-#### `mapWithKeys()` {#collection-method}
+#### `mapWithKeys()` {.collection-method}
 
 The `mapWithKeys` method iterates through the collection and passes each value to the given callback. The callback should return an associative array containing a single key / value pair:
 
@@ -1304,7 +1304,7 @@ The `mapWithKeys` method iterates through the collection and passes each value t
     */
 
 <a name="method-max"></a>
-#### `max()` {#collection-method}
+#### `max()` {.collection-method}
 
 The `max` method returns the maximum value of a given key:
 
@@ -1320,7 +1320,7 @@ The `max` method returns the maximum value of a given key:
     // 5
 
 <a name="method-median"></a>
-#### `median()` {#collection-method}
+#### `median()` {.collection-method}
 
 The `median` method returns the [median value](https://en.wikipedia.org/wiki/Median) of a given key:
 
@@ -1338,7 +1338,7 @@ The `median` method returns the [median value](https://en.wikipedia.org/wiki/Med
     // 1.5
 
 <a name="method-merge"></a>
-#### `merge()` {#collection-method}
+#### `merge()` {.collection-method}
 
 The `merge` method merges the given array or collection with the original collection. If a string key in the given items matches a string key in the original collection, the given items's value will overwrite the value in the original collection:
 
@@ -1361,7 +1361,7 @@ If the given items's keys are numeric, the values will be appended to the end of
     // ['Desk', 'Chair', 'Bookcase', 'Door']
 
 <a name="method-mergerecursive"></a>
-#### `mergeRecursive()` {#collection-method}
+#### `mergeRecursive()` {.collection-method}
 
 The `mergeRecursive` method merges the given array or collection recursively with the original collection. If a string key in the given items matches a string key in the original collection, then the values for these keys are merged together into an array, and this is done recursively:
 
@@ -1378,7 +1378,7 @@ The `mergeRecursive` method merges the given array or collection recursively wit
     // ['product_id' => [1, 2], 'price' => [100, 200], 'discount' => false]
 
 <a name="method-min"></a>
-#### `min()` {#collection-method}
+#### `min()` {.collection-method}
 
 The `min` method returns the minimum value of a given key:
 
@@ -1391,7 +1391,7 @@ The `min` method returns the minimum value of a given key:
     // 1
 
 <a name="method-mode"></a>
-#### `mode()` {#collection-method}
+#### `mode()` {.collection-method}
 
 The `mode` method returns the [mode value](https://en.wikipedia.org/wiki/Mode_(statistics)) of a given key:
 
@@ -1413,7 +1413,7 @@ The `mode` method returns the [mode value](https://en.wikipedia.org/wiki/Mode_(s
     // [1, 2]
 
 <a name="method-nth"></a>
-#### `nth()` {#collection-method}
+#### `nth()` {.collection-method}
 
 The `nth` method creates a new collection consisting of every n-th element:
 
@@ -1430,7 +1430,7 @@ You may optionally pass a starting offset as the second argument:
     // ['b', 'f']
 
 <a name="method-only"></a>
-#### `only()` {#collection-method}
+#### `only()` {.collection-method}
 
 The `only` method returns the items in the collection with the specified keys:
 
@@ -1452,7 +1452,7 @@ For the inverse of `only`, see the [except](#method-except) method.
 > {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-only).
 
 <a name="method-pad"></a>
-#### `pad()` {#collection-method}
+#### `pad()` {.collection-method}
 
 The `pad` method will fill the array with the given value until the array reaches the specified size. This method behaves like the [array_pad](https://secure.php.net/manual/en/function.array-pad.php) PHP function.
 
@@ -1473,7 +1473,7 @@ To pad to the left, you should specify a negative size. No padding will take pla
     // [0, 0, 'A', 'B', 'C']
 
 <a name="method-partition"></a>
-#### `partition()` {#collection-method}
+#### `partition()` {.collection-method}
 
 The `partition` method may be combined with PHP array destructuring to separate elements that pass a given truth test from those that do not:
 
@@ -1492,7 +1492,7 @@ The `partition` method may be combined with PHP array destructuring to separate 
     // [3, 4, 5, 6]
 
 <a name="method-pipe"></a>
-#### `pipe()` {#collection-method}
+#### `pipe()` {.collection-method}
 
 The `pipe` method passes the collection to the given closure and returns the result of the executed closure:
 
@@ -1505,7 +1505,7 @@ The `pipe` method passes the collection to the given closure and returns the res
     // 6
 
 <a name="method-pipeinto"></a>
-#### `pipeInto()` {#collection-method}
+#### `pipeInto()` {.collection-method}
 
 The `pipeInto` method creates a new instance of the given class and passes the collection into the constructor:
 
@@ -1537,7 +1537,7 @@ The `pipeInto` method creates a new instance of the given class and passes the c
     // [1, 2, 3]
 
 <a name="method-pluck"></a>
-#### `pluck()` {#collection-method}
+#### `pluck()` {.collection-method}
 
 The `pluck` method retrieves all of the values for a given key:
 
@@ -1593,7 +1593,7 @@ If duplicate keys exist, the last matching element will be inserted into the plu
     // ['Tesla' => 'black', 'Pagani' => 'orange']
 
 <a name="method-pop"></a>
-#### `pop()` {#collection-method}
+#### `pop()` {.collection-method}
 
 The `pop` method removes and returns the last item from the collection:
 
@@ -1620,7 +1620,7 @@ You may pass an integer to the `pop` method to remove and return multiple items 
     // [1, 2]
 
 <a name="method-prepend"></a>
-#### `prepend()` {#collection-method}
+#### `prepend()` {.collection-method}
 
 The `prepend` method adds an item to the beginning of the collection:
 
@@ -1643,7 +1643,7 @@ You may also pass a second argument to specify the key of the prepended item:
     // ['zero' => 0, 'one' => 1, 'two' => 2]
 
 <a name="method-pull"></a>
-#### `pull()` {#collection-method}
+#### `pull()` {.collection-method}
 
 The `pull` method removes and returns an item from the collection by its key:
 
@@ -1658,7 +1658,7 @@ The `pull` method removes and returns an item from the collection by its key:
     // ['product_id' => 'prod-100']
 
 <a name="method-push"></a>
-#### `push()` {#collection-method}
+#### `push()` {.collection-method}
 
 The `push` method appends an item to the end of the collection:
 
@@ -1671,7 +1671,7 @@ The `push` method appends an item to the end of the collection:
     // [1, 2, 3, 4, 5]
 
 <a name="method-put"></a>
-#### `put()` {#collection-method}
+#### `put()` {.collection-method}
 
 The `put` method sets the given key and value in the collection:
 
@@ -1684,7 +1684,7 @@ The `put` method sets the given key and value in the collection:
     // ['product_id' => 1, 'name' => 'Desk', 'price' => 100]
 
 <a name="method-random"></a>
-#### `random()` {#collection-method}
+#### `random()` {.collection-method}
 
 The `random` method returns a random item from the collection:
 
@@ -1705,7 +1705,7 @@ You may pass an integer to `random` to specify how many items you would like to 
 If the collection instance has fewer items than requested, the `random` method will throw an `InvalidArgumentException`.
 
 <a name="method-range"></a>
-#### `range()` {#collection-method}
+#### `range()` {.collection-method}
 
 The `range` method returns a collection containing integers between the specified range:
 
@@ -1716,7 +1716,7 @@ The `range` method returns a collection containing integers between the specifie
     // [3, 4, 5, 6]
 
 <a name="method-reduce"></a>
-#### `reduce()` {#collection-method}
+#### `reduce()` {.collection-method}
 
 The `reduce` method reduces the collection to a single value, passing the result of each iteration into the subsequent iteration:
 
@@ -1774,7 +1774,7 @@ The `reduceMany` method reduces the collection to an array of values, passing th
         }, $creditsAvailable, collect());
 
 <a name="method-reduce-spread"></a>
-#### `reduceSpread()` {#collection-method}
+#### `reduceSpread()` {.collection-method}
 
 The `reduceSpread` method reduces the collection to an array of values, passing the results of each iteration into the subsequent iteration. This method is similar to the `reduce` method; however, it can accept multiple initial values:
 
@@ -1791,7 +1791,7 @@ The `reduceSpread` method reduces the collection to an array of values, passing 
         }, $creditsAvailable, collect());
 
 <a name="method-reject"></a>
-#### `reject()` {#collection-method}
+#### `reject()` {.collection-method}
 
 The `reject` method filters the collection using the given closure. The closure should return `true` if the item should be removed from the resulting collection:
 
@@ -1808,7 +1808,7 @@ The `reject` method filters the collection using the given closure. The closure 
 For the inverse of the `reject` method, see the [`filter`](#method-filter) method.
 
 <a name="method-replace"></a>
-#### `replace()` {#collection-method}
+#### `replace()` {.collection-method}
 
 The `replace` method behaves similarly to `merge`; however, in addition to overwriting matching items that have string keys, the `replace` method will also overwrite items in the collection that have matching numeric keys:
 
@@ -1821,7 +1821,7 @@ The `replace` method behaves similarly to `merge`; however, in addition to overw
     // ['Taylor', 'Victoria', 'James', 'Finn']
 
 <a name="method-replacerecursive"></a>
-#### `replaceRecursive()` {#collection-method}
+#### `replaceRecursive()` {.collection-method}
 
 This method works like `replace`, but it will recur into arrays and apply the same replacement process to the inner values:
 
@@ -1845,7 +1845,7 @@ This method works like `replace`, but it will recur into arrays and apply the sa
     // ['Charlie', 'Abigail', ['James', 'King', 'Finn']]
 
 <a name="method-reverse"></a>
-#### `reverse()` {#collection-method}
+#### `reverse()` {.collection-method}
 
 The `reverse` method reverses the order of the collection's items, preserving the original keys:
 
@@ -1866,7 +1866,7 @@ The `reverse` method reverses the order of the collection's items, preserving th
     */
 
 <a name="method-search"></a>
-#### `search()` {#collection-method}
+#### `search()` {.collection-method}
 
 The `search` method searches the collection for the given value and returns its key if found. If the item is not found, `false` is returned:
 
@@ -1891,7 +1891,7 @@ Alternatively, you may provide your own closure to search for the first item tha
     // 2
 
 <a name="method-shift"></a>
-#### `shift()` {#collection-method}
+#### `shift()` {.collection-method}
 
 The `shift` method removes and returns the first item from the collection:
 
@@ -1918,7 +1918,7 @@ You may pass an integer to the `shift` method to remove and return multiple item
     // [4, 5]
 
 <a name="method-shuffle"></a>
-#### `shuffle()` {#collection-method}
+#### `shuffle()` {.collection-method}
 
 The `shuffle` method randomly shuffles the items in the collection:
 
@@ -1931,7 +1931,7 @@ The `shuffle` method randomly shuffles the items in the collection:
     // [3, 2, 5, 1, 4] - (generated randomly)
 
 <a name="method-sliding"></a>
-#### `sliding()` {#collection-method}
+#### `sliding()` {.collection-method}
 
 The `sliding` method returns a new collection of chunks representing a "sliding window" view of the items in the collection:
 
@@ -1960,7 +1960,7 @@ You may optionally pass a second "step" value, which determines the distance bet
     // [[1, 2, 3], [3, 4, 5]]
 
 <a name="method-skip"></a>
-#### `skip()` {#collection-method}
+#### `skip()` {.collection-method}
 
 The `skip` method returns a new collection, with the given number of elements removed from the beginning of the collection:
 
@@ -1973,7 +1973,7 @@ The `skip` method returns a new collection, with the given number of elements re
     // [5, 6, 7, 8, 9, 10]
 
 <a name="method-skipuntil"></a>
-#### `skipUntil()` {#collection-method}
+#### `skipUntil()` {.collection-method}
 
 The `skipUntil` method skips over items from the collection until the given callback returns `true` and then returns the remaining items in the collection as a new collection instance:
 
@@ -2000,7 +2000,7 @@ You may also pass a simple value to the `skipUntil` method to skip all items unt
 > {note} If the given value is not found or the callback never returns `true`, the `skipUntil` method will return an empty collection.
 
 <a name="method-skipwhile"></a>
-#### `skipWhile()` {#collection-method}
+#### `skipWhile()` {.collection-method}
 
 The `skipWhile` method skips over items from the collection while the given callback returns `true` and then returns the remaining items in the collection as a new collection:
 
@@ -2014,10 +2014,10 @@ The `skipWhile` method skips over items from the collection while the given call
 
     // [4]
 
-> {note} If the callback never returns `true`, the `skipWhile` method will return an empty collection.
+> {note} If the callback never returns `false`, the `skipWhile` method will return an empty collection.
 
 <a name="method-slice"></a>
-#### `slice()` {#collection-method}
+#### `slice()` {.collection-method}
 
 The `slice` method returns a slice of the collection starting at the given index:
 
@@ -2040,7 +2040,7 @@ If you would like to limit the size of the returned slice, pass the desired size
 The returned slice will preserve keys by default. If you do not wish to preserve the original keys, you can use the [`values`](#method-values) method to reindex them.
 
 <a name="method-sole"></a>
-#### `sole()` {#collection-method}
+#### `sole()` {.collection-method}
 
 The `sole` method returns the first element in the collection that passes a given truth test, but only if the truth test matches exactly one element:
 
@@ -2074,12 +2074,12 @@ Alternatively, you may also call the `sole` method with no argument to get the f
 If there are no elements in the collection that should be returned by the `sole` method, an `\Illuminate\Collections\ItemNotFoundException` exception will be thrown. If there is more than one element that should be returned, an `\Illuminate\Collections\MultipleItemsFoundException` will be thrown. 
 
 <a name="method-some"></a>
-#### `some()` {#collection-method}
+#### `some()` {.collection-method}
 
 Alias for the [`contains`](#method-contains) method.
 
 <a name="method-sort"></a>
-#### `sort()` {#collection-method}
+#### `sort()` {.collection-method}
 
 The `sort` method sorts the collection. The sorted collection keeps the original array keys, so in the following example we will use the [`values`](#method-values) method to reset the keys to consecutively numbered indexes:
 
@@ -2096,7 +2096,7 @@ If your sorting needs are more advanced, you may pass a callback to `sort` with 
 > {tip} If you need to sort a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.
 
 <a name="method-sortby"></a>
-#### `sortBy()` {#collection-method}
+#### `sortBy()` {.collection-method}
 
 The `sortBy` method sorts the collection by the given key. The sorted collection keeps the original array keys, so in the following example we will use the [`values`](#method-values) method to reset the keys to consecutively numbered indexes:
 
@@ -2211,12 +2211,12 @@ When sorting a collection by multiple attributes, you may also provide closures 
     */
 
 <a name="method-sortbydesc"></a>
-#### `sortByDesc()` {#collection-method}
+#### `sortByDesc()` {.collection-method}
 
 This method has the same signature as the [`sortBy`](#method-sortby) method, but will sort the collection in the opposite order.
 
 <a name="method-sortdesc"></a>
-#### `sortDesc()` {#collection-method}
+#### `sortDesc()` {.collection-method}
 
 This method will sort the collection in the opposite order as the [`sort`](#method-sort) method:
 
@@ -2231,7 +2231,7 @@ This method will sort the collection in the opposite order as the [`sort`](#meth
 Unlike `sort`, you may not pass a closure to `sortDesc`. Instead, you should use the [`sort`](#method-sort) method and invert your comparison.
 
 <a name="method-sortkeys"></a>
-#### `sortKeys()` {#collection-method}
+#### `sortKeys()` {.collection-method}
 
 The `sortKeys` method sorts the collection by the keys of the underlying associative array:
 
@@ -2254,12 +2254,12 @@ The `sortKeys` method sorts the collection by the keys of the underlying associa
     */
 
 <a name="method-sortkeysdesc"></a>
-#### `sortKeysDesc()` {#collection-method}
+#### `sortKeysDesc()` {.collection-method}
 
 This method has the same signature as the [`sortKeys`](#method-sortkeys) method, but will sort the collection in the opposite order.
 
 <a name="method-splice"></a>
-#### `splice()` {#collection-method}
+#### `splice()` {.collection-method}
 
 The `splice` method removes and returns a slice of items starting at the specified index:
 
@@ -2304,7 +2304,7 @@ In addition, you may pass a third argument containing the new items to replace t
     // [1, 2, 10, 11, 4, 5]
 
 <a name="method-split"></a>
-#### `split()` {#collection-method}
+#### `split()` {.collection-method}
 
 The `split` method breaks a collection into the given number of groups:
 
@@ -2317,7 +2317,7 @@ The `split` method breaks a collection into the given number of groups:
     // [[1, 2], [3, 4], [5]]
 
 <a name="method-splitin"></a>
-#### `splitIn()` {#collection-method}
+#### `splitIn()` {.collection-method}
 
 The `splitIn` method breaks a collection into the given number of groups, filling non-terminal groups completely before allocating the remainder to the final group:
 
@@ -2330,7 +2330,7 @@ The `splitIn` method breaks a collection into the given number of groups, fillin
     // [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10]]
 
 <a name="method-sum"></a>
-#### `sum()` {#collection-method}
+#### `sum()` {.collection-method}
 
 The `sum` method returns the sum of all items in the collection:
 
@@ -2364,7 +2364,7 @@ In addition, you may pass your own closure to determine which values of the coll
     // 6
 
 <a name="method-take"></a>
-#### `take()` {#collection-method}
+#### `take()` {.collection-method}
 
 The `take` method returns a new collection with the specified number of items:
 
@@ -2387,7 +2387,7 @@ You may also pass a negative integer to take the specified number of items from 
     // [4, 5]
 
 <a name="method-takeuntil"></a>
-#### `takeUntil()` {#collection-method}
+#### `takeUntil()` {.collection-method}
 
 The `takeUntil` method returns items in the collection until the given callback returns `true`:
 
@@ -2414,7 +2414,7 @@ You may also pass a simple value to the `takeUntil` method to get the items unti
 > {note} If the given value is not found or the callback never returns `true`, the `takeUntil` method will return all items in the collection.
 
 <a name="method-takewhile"></a>
-#### `takeWhile()` {#collection-method}
+#### `takeWhile()` {.collection-method}
 
 The `takeWhile` method returns items in the collection until the given callback returns `false`:
 
@@ -2431,7 +2431,7 @@ The `takeWhile` method returns items in the collection until the given callback 
 > {note} If the callback never returns `false`, the `takeWhile` method will return all items in the collection.
 
 <a name="method-tap"></a>
-#### `tap()` {#collection-method}
+#### `tap()` {.collection-method}
 
 The `tap` method passes the collection to the given callback, allowing you to "tap" into the collection at a specific point and do something with the items while not affecting the collection itself. The collection is then returned by the `tap` method:
 
@@ -2445,7 +2445,7 @@ The `tap` method passes the collection to the given callback, allowing you to "t
     // 1
 
 <a name="method-times"></a>
-#### `times()` {#collection-method}
+#### `times()` {.collection-method}
 
 The static `times` method creates a new collection by invoking the given closure a specified number of times:
 
@@ -2458,7 +2458,7 @@ The static `times` method creates a new collection by invoking the given closure
     // [9, 18, 27, 36, 45, 54, 63, 72, 81, 90]
 
 <a name="method-toarray"></a>
-#### `toArray()` {#collection-method}
+#### `toArray()` {.collection-method}
 
 The `toArray` method converts the collection into a plain PHP `array`. If the collection's values are [Eloquent](/docs/{{version}}/eloquent) models, the models will also be converted to arrays:
 
@@ -2475,7 +2475,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
 > {note} `toArray` also converts all of the collection's nested objects that are an instance of `Arrayable` to an array. If you want to get the raw array underlying the collection, use the [`all`](#method-all) method instead.
 
 <a name="method-tojson"></a>
-#### `toJson()` {#collection-method}
+#### `toJson()` {.collection-method}
 
 The `toJson` method converts the collection into a JSON serialized string:
 
@@ -2486,7 +2486,7 @@ The `toJson` method converts the collection into a JSON serialized string:
     // '{"name":"Desk", "price":200}'
 
 <a name="method-transform"></a>
-#### `transform()` {#collection-method}
+#### `transform()` {.collection-method}
 
 The `transform` method iterates over the collection and calls the given callback with each item in the collection. The items in the collection will be replaced by the values returned by the callback:
 
@@ -2503,7 +2503,7 @@ The `transform` method iterates over the collection and calls the given callback
 > {note} Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
 
 <a name="method-union"></a>
-#### `union()` {#collection-method}
+#### `union()` {.collection-method}
 
 The `union` method adds the given array to the collection. If the given array contains keys that are already in the original collection, the original collection's values will be preferred:
 
@@ -2516,7 +2516,7 @@ The `union` method adds the given array to the collection. If the given array co
     // [1 => ['a'], 2 => ['b'], 3 => ['c']]
 
 <a name="method-unique"></a>
-#### `unique()` {#collection-method}
+#### `unique()` {.collection-method}
 
 The `unique` method returns all of the unique items in the collection. The returned collection keeps the original array keys, so in the following example we will use the [`values`](#method-values) method to reset the keys to consecutively numbered indexes:
 
@@ -2571,12 +2571,12 @@ The `unique` method uses "loose" comparisons when checking item values, meaning 
 > {tip} This method's behavior is modified when using [Eloquent Collections](/docs/{{version}}/eloquent-collections#method-unique).
 
 <a name="method-uniquestrict"></a>
-#### `uniqueStrict()` {#collection-method}
+#### `uniqueStrict()` {.collection-method}
 
 This method has the same signature as the [`unique`](#method-unique) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-unless"></a>
-#### `unless()` {#collection-method}
+#### `unless()` {.collection-method}
 
 The `unless` method will execute the given callback unless the first argument given to the method evaluates to `true`:
 
@@ -2611,17 +2611,17 @@ A second callback may be passed to the `unless` method. The second callback will
 For the inverse of `unless`, see the [`when`](#method-when) method.
 
 <a name="method-unlessempty"></a>
-#### `unlessEmpty()` {#collection-method}
+#### `unlessEmpty()` {.collection-method}
 
 Alias for the [`whenNotEmpty`](#method-whennotempty) method.
 
 <a name="method-unlessnotempty"></a>
-#### `unlessNotEmpty()` {#collection-method}
+#### `unlessNotEmpty()` {.collection-method}
 
 Alias for the [`whenEmpty`](#method-whenempty) method.
 
 <a name="method-unwrap"></a>
-#### `unwrap()` {#collection-method}
+#### `unwrap()` {.collection-method}
 
 The static `unwrap` method returns the collection's underlying items from the given value when applicable:
 
@@ -2638,7 +2638,7 @@ The static `unwrap` method returns the collection's underlying items from the gi
     // 'John Doe'
 
 <a name="method-values"></a>
-#### `values()` {#collection-method}
+#### `values()` {.collection-method}
 
 The `values` method returns a new collection with the keys reset to consecutive integers:
 
@@ -2659,7 +2659,7 @@ The `values` method returns a new collection with the keys reset to consecutive 
     */
 
 <a name="method-when"></a>
-#### `when()` {#collection-method}
+#### `when()` {.collection-method}
 
 The `when` method will execute the given callback when the first argument given to the method evaluates to `true`:
 
@@ -2694,7 +2694,7 @@ A second callback may be passed to the `when` method. The second callback will b
 For the inverse of `when`, see the [`unless`](#method-unless) method.
 
 <a name="method-whenempty"></a>
-#### `whenEmpty()` {#collection-method}
+#### `whenEmpty()` {.collection-method}
 
 The `whenEmpty` method will execute the given callback when the collection is empty:
 
@@ -2736,7 +2736,7 @@ A second closure may be passed to the `whenEmpty` method that will be executed w
 For the inverse of `whenEmpty`, see the [`whenNotEmpty`](#method-whennotempty) method.
 
 <a name="method-whennotempty"></a>
-#### `whenNotEmpty()` {#collection-method}
+#### `whenNotEmpty()` {.collection-method}
 
 The `whenNotEmpty` method will execute the given callback when the collection is not empty:
 
@@ -2778,7 +2778,7 @@ A second closure may be passed to the `whenNotEmpty` method that will be execute
 For the inverse of `whenNotEmpty`, see the [`whenEmpty`](#method-whenempty) method.
 
 <a name="method-where"></a>
-#### `where()` {#collection-method}
+#### `where()` {.collection-method}
 
 The `where` method filters the collection by a given key / value pair:
 
@@ -2822,12 +2822,12 @@ Optionally, you may pass a comparison operator as the second parameter.
     */
 
 <a name="method-wherestrict"></a>
-#### `whereStrict()` {#collection-method}
+#### `whereStrict()` {.collection-method}
 
 This method has the same signature as the [`where`](#method-where) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-wherebetween"></a>
-#### `whereBetween()` {#collection-method}
+#### `whereBetween()` {.collection-method}
 
 The `whereBetween` method filters the collection by determining if a specified item value is within a given range:
 
@@ -2852,7 +2852,7 @@ The `whereBetween` method filters the collection by determining if a specified i
     */
 
 <a name="method-wherein"></a>
-#### `whereIn()` {#collection-method}
+#### `whereIn()` {.collection-method}
 
 The `whereIn` method removes elements from the collection that do not have a specified item value that is contained within the given array:
 
@@ -2877,12 +2877,12 @@ The `whereIn` method removes elements from the collection that do not have a spe
 The `whereIn` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`whereInStrict`](#method-whereinstrict) method to filter using "strict" comparisons.
 
 <a name="method-whereinstrict"></a>
-#### `whereInStrict()` {#collection-method}
+#### `whereInStrict()` {.collection-method}
 
 This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-whereinstanceof"></a>
-#### `whereInstanceOf()` {#collection-method}
+#### `whereInstanceOf()` {.collection-method}
 
 The `whereInstanceOf` method filters the collection by a given class type:
 
@@ -2902,7 +2902,7 @@ The `whereInstanceOf` method filters the collection by a given class type:
     // [App\Models\User, App\Models\User]
 
 <a name="method-wherenotbetween"></a>
-#### `whereNotBetween()` {#collection-method}
+#### `whereNotBetween()` {.collection-method}
 
 The `whereNotBetween` method filters the collection by determining if a specified item value is outside of a given range:
 
@@ -2926,9 +2926,9 @@ The `whereNotBetween` method filters the collection by determining if a specifie
     */
 
 <a name="method-wherenotin"></a>
-#### `whereNotIn()` {#collection-method}
+#### `whereNotIn()` {.collection-method}
 
-The `whereNotIn` method removes elements from the collection that have a specified item value that is not contained within the given array:
+The `whereNotIn` method removes elements from the collection that have a specified item value that is contained within the given array:
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
@@ -2951,12 +2951,12 @@ The `whereNotIn` method removes elements from the collection that have a specifi
 The `whereNotIn` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`whereNotInStrict`](#method-wherenotinstrict) method to filter using "strict" comparisons.
 
 <a name="method-wherenotinstrict"></a>
-#### `whereNotInStrict()` {#collection-method}
+#### `whereNotInStrict()` {.collection-method}
 
 This method has the same signature as the [`whereNotIn`](#method-wherenotin) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-wherenotnull"></a>
-#### `whereNotNull()` {#collection-method}
+#### `whereNotNull()` {.collection-method}
 
 The `whereNotNull` method returns items from the collection where the given key is not `null`:
 
@@ -2978,7 +2978,7 @@ The `whereNotNull` method returns items from the collection where the given key 
     */
 
 <a name="method-wherenull"></a>
-#### `whereNull()` {#collection-method}
+#### `whereNull()` {.collection-method}
 
 The `whereNull` method returns items from the collection where the given key is `null`:
 
@@ -3000,7 +3000,7 @@ The `whereNull` method returns items from the collection where the given key is 
 
 
 <a name="method-wrap"></a>
-#### `wrap()` {#collection-method}
+#### `wrap()` {.collection-method}
 
 The static `wrap` method wraps the given value in a collection when applicable:
 
@@ -3025,7 +3025,7 @@ The static `wrap` method wraps the given value in a collection when applicable:
     // ['John Doe']
 
 <a name="method-zip"></a>
-#### `zip()` {#collection-method}
+#### `zip()` {.collection-method}
 
 The `zip` method merges together the values of the given array with the values of the original collection at their corresponding index:
 
@@ -3244,7 +3244,7 @@ Almost all methods available on the `Collection` class are also available on the
 In addition to the methods defined in the `Enumerable` contract, the `LazyCollection` class contains the following methods:
 
 <a name="method-takeUntilTimeout"></a>
-#### `takeUntilTimeout()` {#collection-method}
+#### `takeUntilTimeout()` {.collection-method}
 
 The `takeUntilTimeout` method returns a new lazy collection that will enumerate values until the specified time. After that time, the collection will then stop enumerating:
 
@@ -3275,7 +3275,7 @@ To illustrate the usage of this method, imagine an application that submits invo
         ->each(fn ($invoice) => $invoice->submit());
 
 <a name="method-tapEach"></a>
-#### `tapEach()` {#collection-method}
+#### `tapEach()` {.collection-method}
 
 While the `each` method calls the given callback for each item in the collection right away, the `tapEach` method only calls the given callback as the items are being pulled out of the list one by one:
 
@@ -3292,7 +3292,7 @@ While the `each` method calls the given callback for each item in the collection
     // 3
 
 <a name="method-remember"></a>
-#### `remember()` {#collection-method}
+#### `remember()` {.collection-method}
 
 The `remember` method returns a new lazy collection that will remember any values that have already been enumerated and will not retrieve them again on subsequent collection enumerations:
 

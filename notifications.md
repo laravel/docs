@@ -200,7 +200,13 @@ If you would like to specify a specific queue that should be used for each notif
 
 When queued notifications are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your notification depends on these models, unexpected errors can occur when the job that sends the queued notification is processed.
 
-If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued notification should be dispatched after all open database transactions have been committed by defining an `$afterCommit` property on the notification class:
+If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued notification should be dispatched after all open database transactions have been committed by calling the `afterCommit` method when sending the notification:
+
+    use App\Notifications\InvoicePaid;
+
+    $user->notify((new InvoicePaid($invoice))->afterCommit());
+
+Alternatively, you may call the `afterCommit` method from your notification's constructor:
 
     <?php
 
@@ -214,7 +220,15 @@ If your queue connection's `after_commit` configuration option is set to `false`
     {
         use Queueable;
 
-        public $afterCommit = true;
+        /**
+         * Create a new notification instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            $this->afterCommit();
+        }
     }
 
 > {tip} To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).

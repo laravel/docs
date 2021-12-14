@@ -262,6 +262,20 @@ Finally, you may run your Dusk test suite by starting Sail and running the `dusk
 
     sail dusk
 
+<a name="selenium-on-apple-silicon"></a>
+#### Selenium On Apple Silicon
+
+If your local machine contains an Apple Silicon chip, your `selenium` service must use the `seleniarm/standalone-chromium` image:
+
+```yaml
+selenium:
+    image: 'seleniarm/standalone-chromium'
+    volumes:
+        - '/dev/shm:/dev/shm'
+    networks:
+        - sail
+```
+
 <a name="previewing-emails"></a>
 ## Previewing Emails
 
@@ -295,7 +309,7 @@ sail tinker
 <a name="sail-php-versions"></a>
 ## PHP Versions
 
-Sail currently supports serving your application via PHP 8.1, PHP 8.0, or PHP 7.4. The default PHP version used by Sail is currently PHP 8.0. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
+Sail currently supports serving your application via PHP 8.1, PHP 8.0, or PHP 7.4. The default PHP version used by Sail is currently PHP 8.1. To change the PHP version that is used to serve your application, you should update the `build` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
 
 ```yaml
 # PHP 8.1
@@ -311,7 +325,7 @@ context: ./vendor/laravel/sail/runtimes/7.4
 In addition, you may wish to update your `image` name to reflect the version of PHP being used by your application. This option is also defined in your application's `docker-compose.yml` file:
 
 ```yaml
-image: sail-8.0/app
+image: sail-8.1/app
 ```
 
 After updating your application's `docker-compose.yml` file, you should rebuild your container images:
@@ -386,6 +400,8 @@ sail debug migrate
 To debug your application while interacting with the application via a web browser, follow the [instructions provided by Xdebug](https://xdebug.org/docs/step_debug#web-application) for initiating an Xdebug session from the web browser.
 
 If you're using PhpStorm, please review JetBrain's documentation regarding [zero-configuration debugging](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html).
+
+> {note} Laravel Sail relies on `artisan serve` to serve your application. The `artisan serve` command only accepts the `XDEBUG_CONFIG` and `XDEBUG_MODE` variables as of Laravel version 8.53.0. Older versions of Laravel (8.52.0 and below) do not support these variables and will not accept debug connections.
 
 <a name="sail-customization"></a>
 ## Customization

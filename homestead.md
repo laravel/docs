@@ -58,6 +58,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 <div id="software-list" markdown="1">
 - Ubuntu 20.04
 - Git
+- PHP 8.1
 - PHP 8.0
 - PHP 7.4
 - PHP 7.3
@@ -174,7 +175,7 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 
     provider: virtualbox
 
-> {note} If you are using Apple Silicon, you should add `box: laravel/homestead-arm` to your `Homstead.yaml` file. Apple Silicon requires the Parallels provider.
+> {note} If you are using Apple Silicon, you should add `box: laravel/homestead-arm` to your `Homestead.yaml` file. Apple Silicon requires the Parallels provider.
 
 <a name="configuring-shared-folders"></a>
 #### Configuring Shared Folders
@@ -503,7 +504,7 @@ Below is a list of additional Homestead service ports that you may wish to map f
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", and "8.0" (the default):
+Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0" (the default), and "8.1":
 
     sites:
         - map: homestead.test
@@ -519,6 +520,7 @@ Homestead 6 introduced support for running multiple versions of PHP on the same 
     php7.3 artisan list
     php7.4 artisan list
     php8.0 artisan list
+    php8.1 artisan list
 
 You may change the default version of PHP used by the CLI by issuing the following commands from within your Homestead virtual machine:
 
@@ -529,6 +531,7 @@ You may change the default version of PHP used by the CLI by issuing the followi
     php73
     php74
     php80
+    php81
 
 <a name="connecting-to-databases"></a>
 ### Connecting To Databases

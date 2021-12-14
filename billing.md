@@ -35,7 +35,7 @@
     - [Metered Billing](#metered-billing)
     - [Subscription Taxes](#subscription-taxes)
     - [Subscription Anchor Date](#subscription-anchor-date)
-    - [Cancelling Subscriptions](#cancelling-subscriptions)
+    - [Canceling Subscriptions](#cancelling-subscriptions)
     - [Resuming Subscriptions](#resuming-subscriptions)
 - [Subscription Trials](#subscription-trials)
     - [With Payment Method Up Front](#with-payment-method-up-front)
@@ -613,7 +613,7 @@ Instead of collecting a customer's recurring payments automatically, you may ins
 
     $user->newSubscription('default', 'price_monthly')->createAndSendInvoice();
 
-The amount of time a customer has to pay their invoice before their subscription is cancelled is determined by your subscription and invoice settings within the [Stripe dashboard](https://dashboard.stripe.com/settings/billing/automatic).
+The amount of time a customer has to pay their invoice before their subscription is canceled is determined by your subscription and invoice settings within the [Stripe dashboard](https://dashboard.stripe.com/settings/billing/automatic).
 
 <a name="subscription-quantities"></a>
 #### Quantities
@@ -740,21 +740,21 @@ The `recurring` method may be used to determine if the user is currently subscri
 > {note} If a user has two subscriptions with the same name, the most recent subscription will always be returned by the `subscription` method. For example, a user might have two subscription records named `default`; however, one of the subscriptions may be an old, expired subscription, while the other is the current, active subscription. The most recent subscription will always be returned while older subscriptions are kept in the database for historical review.
 
 <a name="cancelled-subscription-status"></a>
-#### Cancelled Subscription Status
+#### Canceled Subscription Status
 
-To determine if the user was once an active subscriber but has cancelled their subscription, you may use the `cancelled` method:
+To determine if the user was once an active subscriber but has canceled their subscription, you may use the `canceled` method:
 
-    if ($user->subscription('default')->cancelled()) {
+    if ($user->subscription('default')->canceled()) {
         //
     }
 
-You may also determine if a user has cancelled their subscription but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
+You may also determine if a user has canceled their subscription but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time:
 
     if ($user->subscription('default')->onGracePeriod()) {
         //
     }
 
-To determine if the user has cancelled their subscription and is no longer within their "grace period", you may use the `ended` method:
+To determine if the user has canceled their subscription and is no longer within their "grace period", you may use the `ended` method:
 
     if ($user->subscription('default')->ended()) {
         //
@@ -807,16 +807,16 @@ Most subscription states are also available as query scopes so that you may easi
     // Get all active subscriptions...
     $subscriptions = Subscription::query()->active()->get();
 
-    // Get all of the cancelled subscriptions for a user...
-    $subscriptions = $user->subscriptions()->cancelled()->get();
+    // Get all of the canceled subscriptions for a user...
+    $subscriptions = $user->subscriptions()->canceled()->get();
 
 A complete list of available scopes is available below:
 
     Subscription::query()->active();
-    Subscription::query()->cancelled();
+    Subscription::query()->canceled();
     Subscription::query()->ended();
     Subscription::query()->incomplete();
-    Subscription::query()->notCancelled();
+    Subscription::query()->notCanceled();
     Subscription::query()->notOnGracePeriod();
     Subscription::query()->notOnTrial();
     Subscription::query()->onGracePeriod();
@@ -827,7 +827,7 @@ A complete list of available scopes is available below:
 <a name="changing-prices"></a>
 ### Changing Prices
 
-After a customer is subscribed to your application, they may occasionally want to change to a new subscription price. To swap a customer to a new price, pass the Stripe price's identifier to the `swap` method. When swapping prices, it is assumed that the user would like to re-activate their subscription if it was previously cancelled. The given price identifier should correspond to a Stripe price identifier available in the Stripe dashboard:
+After a customer is subscribed to your application, they may occasionally want to change to a new subscription price. To swap a customer to a new price, pass the Stripe price's identifier to the `swap` method. When swapping prices, it is assumed that the user would like to re-activate their subscription if it was previously canceled. The given price identifier should correspond to a Stripe price identifier available in the Stripe dashboard:
 
     use App\Models\User;
 
@@ -1182,11 +1182,11 @@ To cancel a subscription, call the `cancel` method on the user's subscription:
 
     $user->subscription('default')->cancel();
 
-When a subscription is cancelled, Cashier will automatically set the `ends_at` column in your `subscriptions` database table. This column is used to know when the `subscribed` method should begin returning `false`.
+When a subscription is canceled, Cashier will automatically set the `ends_at` column in your `subscriptions` database table. This column is used to know when the `subscribed` method should begin returning `false`.
 
 For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th. This is done because a user is typically allowed to continue using an application until the end of their billing cycle.
 
-You may determine if a user has cancelled their subscription but are still on their "grace period" using the `onGracePeriod` method:
+You may determine if a user has canceled their subscription but are still on their "grace period" using the `onGracePeriod` method:
 
     if ($user->subscription('default')->onGracePeriod()) {
         //
@@ -1209,7 +1209,7 @@ You may also choose to cancel the subscription at a specific moment in time:
 <a name="resuming-subscriptions"></a>
 ### Resuming Subscriptions
 
-If a customer has cancelled their subscription and you wish to resume it, you may invoke the `resume` method on the subscription. The customer must still be within their "grace period" in order to resume a subscription:
+If a customer has canceled their subscription and you wish to resume it, you may invoke the `resume` method on the subscription. The customer must still be within their "grace period" in order to resume a subscription:
 
     $user->subscription('default')->resume();
 
@@ -1235,7 +1235,7 @@ If you would like to offer trial periods to your customers while still collectin
 
 This method will set the trial period ending date on the subscription record within the database and instruct Stripe to not begin billing the customer until after this date. When using the `trialDays` method, Cashier will overwrite any default trial period configured for the price in Stripe.
 
-> {note} If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
+> {note} If the customer's subscription is not canceled before the trial ending date they will be charged as soon as the trial expires, so you should be sure to notify your users of their trial ending date.
 
 The `trialUntil` method allows you to provide a `DateTime` instance that specifies when the trial period should end:
 
@@ -1349,7 +1349,7 @@ By default, the created webhook will point to the URL defined by the `APP_URL` e
 
 The webhook that is created will use the Stripe API version that your version of Cashier is compatible with. If you would like to use a different Stripe version, you may provide the `--api-version` option:
 
-    php artisan cashier:webhook --app-version="2019-12-03"
+    php artisan cashier:webhook --api-version="2019-12-03"
 
 After creation, the webhook will be immediately active. If you wish to create the webhook but have it disabled until you're ready, you may provide the `--disabled` option when invoking the command:
 

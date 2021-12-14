@@ -6,8 +6,9 @@
 - [Configuration](#configuration)
 - [Authentication](#authentication)
     - [Routing](#routing)
-    - [Optional Parameters](#optional-parameters)
+    - [Authentication & Storage](#authentication-and-storage)
     - [Access Scopes](#access-scopes)
+    - [Optional Parameters](#optional-parameters)
 - [Retrieving User Details](#retrieving-user-details)
 
 <a name="introduction"></a>
@@ -64,18 +65,41 @@ To authenticate users using an OAuth provider, you will need two routes: one for
 
 The `redirect` method provided by the `Socialite` facade takes care of redirecting the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider after they are authenticated.
 
-<a name="optional-parameters"></a>
-### Optional Parameters
+<a name="authentication-and-storage"></a>
+### Authentication & Storage
 
-A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+Once the user has been retrieved from the OAuth provider, you may determine if the user exists in your application's database and [authenticate the user](/docs/{{version}}/authentication#authenticate-a-user-instance). If the user does not exist in your application's database, you will typically create a new record in your database to represent the user:
 
+    use App\Models\User;
+    use Illuminate\Support\Facades\Auth;
     use Laravel\Socialite\Facades\Socialite;
 
-    return Socialite::driver('google')
-        ->with(['hd' => 'example.com'])
-        ->redirect();
+    Route::get('/auth/callback', function () {
+        $githubUser = Socialite::driver('github')->user();
 
-> {note} When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
+        $user = User::where('github_id', $githubUser->id)->first();
+
+        if ($user) {
+            $user->update([
+                'github_token' => $githubUser->token,
+                'github_refresh_token' => $githubUser->refreshToken,
+            ]);
+        } else {
+            $user = User::create([
+                'name' => $githubUser->name,
+                'email' => $githubUser->email,
+                'github_id' => $githubUser->id,
+                'github_token' => $githubUser->token,
+                'github_refresh_token' => $githubUser->refreshToken,
+            ]);
+        }
+
+        Auth::login($user);
+
+        return redirect('/dashboard');
+    });
+
+> {tip} For more information regarding what user information is available from specific OAuth providers, please consult the documentation on [retrieving user details](#retrieving-user-details).
 
 <a name="access-scopes"></a>
 ### Access Scopes
@@ -94,10 +118,25 @@ You can overwrite all existing scopes on the authentication request using the `s
         ->setScopes(['read:user', 'public_repo'])
         ->redirect();
 
+<a name="optional-parameters"></a>
+### Optional Parameters
+
+A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+
+    use Laravel\Socialite\Facades\Socialite;
+
+    return Socialite::driver('google')
+        ->with(['hd' => 'example.com'])
+        ->redirect();
+
+> {note} When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
+
 <a name="retrieving-user-details"></a>
 ## Retrieving User Details
 
 After the user is redirected back to your authentication callback route, you may retrieve the user's details using Socialite's `user` method. The user object returned by the `user` method provides a variety of properties and methods you may use to store information about the user in your own database. Different properties and methods may be available depending on whether the OAuth provider you are authenticating with supports OAuth 1.0 or OAuth 2.0:
+
+    use Laravel\Socialite\Facades\Socialite;
 
     Route::get('/auth/callback', function () {
         $user = Socialite::driver('github')->user();

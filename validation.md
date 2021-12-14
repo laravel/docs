@@ -1816,6 +1816,76 @@ Once the rule has been defined, you may attach it to a validator by passing an i
         'name' => ['required', 'string', new Uppercase],
     ]);
 
+#### Accessing Additional Data
+
+If your custom validation rule class needs to access all of the other data undergoing validation, your rule class may implement the `Illuminate\Contracts\Validation\DataAwareRule` interface. This interface requires your class to define a `setData` method. This method will automatically be invoked by Laravel (before validation proceeds) with all of the data under validation:
+
+    <?php
+
+    namespace App\Rules;
+
+    use Illuminate\Contracts\Validation\Rule;
+    use Illuminate\Contracts\Validation\DataAwareRule;
+
+    class Uppercase implements Rule, DataAwareRule
+    {
+        /**
+         * All of the data under validation.
+         *
+         * @var array
+         */
+        protected $data = [];
+
+        // ...
+
+        /**
+         * Set the data under validation.
+         *
+         * @param  array  $data
+         * @return $this
+         */
+        public function setData($data)
+        {
+            $this->data = $data;
+
+            return $this;
+        }
+    }
+
+Or, if your validation rule requires access to the validator instance performing the validation, you may implement the `ValidatorAwareRule` interface:
+
+    <?php
+
+    namespace App\Rules;
+
+    use Illuminate\Contracts\Validation\Rule;
+    use Illuminate\Contracts\Validation\ValidatorAwareRule;
+
+    class Uppercase implements Rule, ValidatorAwareRule
+    {
+        /**
+         * The validator instance.
+         *
+         * @var \Illuminate\Validation\Validator
+         */
+        protected $validator;
+
+        // ...
+
+        /**
+         * Set the current validator.
+         *
+         * @param  \Illuminate\Validation\Validator  $validator
+         * @return $this
+         */
+        public function setValidator($validator)
+        {
+            $this->validator = $validator;
+
+            return $this;
+        }
+    }
+
 <a name="using-closures"></a>
 ### Using Closures
 
