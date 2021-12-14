@@ -875,6 +875,7 @@ Modifier  |  Description
 `->default($value)`  |  Specify a "default" value for the column.
 `->first()`  |  Place the column "first" in the table (MySQL).
 `->from($integer)`  |  Set the starting value of an auto-incrementing field (MySQL / PostgreSQL).
+`->invisible()`  |  Make the column "invisible" to `SELECT *` queries (MySQL).
 `->nullable($value = true)`  |  Allow NULL values to be inserted into the column.
 `->storedAs($expression)`  |  Create a stored generated column (MySQL / PostgreSQL).
 `->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL).
