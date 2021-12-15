@@ -109,6 +109,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [diff](#method-diff)
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
+[doesntContain](#method-doesntcontain)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
 [duplicatesStrict](#method-duplicatesstrict)
