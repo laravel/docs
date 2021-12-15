@@ -599,7 +599,7 @@ The `doesntContain` method determines whether the collection does not contain a 
 
     // false
 
-Alternatively, you may pass a string to the `contains` method to determine whether the collection does not contain a given item value:
+Alternatively, you may pass a string to the `doesntContain` method to determine whether the collection does not contain a given item value:
 
     $collection = collect(['name' => 'Desk', 'price' => 100]);
 
