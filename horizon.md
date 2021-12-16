@@ -43,6 +43,8 @@ After installing Horizon, publish its assets using the `horizon:install` Artisan
 
 After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure the queue worker options for your application. Each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
 
+> {note} Please note that the Redis connection `horizon` is reserved and cannot be used as a Redis connection in `database.php` or as the value of `use` in `horizon.php`.
+
 <a name="environments"></a>
 #### Environments
 
