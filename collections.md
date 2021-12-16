@@ -109,6 +109,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [diff](#method-diff)
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
+[doesntContain](#method-doesntcontain)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
 [duplicatesStrict](#method-duplicatesstrict)
@@ -421,6 +422,8 @@ You may also pass a key / value pair to the `contains` method, which will determ
 
 The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`containsStrict`](#method-containsstrict) method to filter using "strict" comparisons.
 
+For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) method.
+
 <a name="method-containsstrict"></a>
 #### `containsStrict()` {.collection-method}
 
@@ -583,6 +586,44 @@ The `diffKeys` method compares the collection against another collection or a pl
     $diff->all();
 
     // ['one' => 10, 'three' => 30, 'five' => 50]
+
+<a name="method-doesntcontain"></a>
+#### `doesntContain()` {.collection-method}
+
+The `doesntContain` method determines whether the collection does not contain a given item. You may pass a closure to the `doesntContain` method to determine if an element does not exist in the collection matching a given truth test:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $collection->doesntContain(function ($value, $key) {
+        return $value < 5;
+    });
+
+    // false
+
+Alternatively, you may pass a string to the `doesntContain` method to determine whether the collection does not contain a given item value:
+
+    $collection = collect(['name' => 'Desk', 'price' => 100]);
+
+    $collection->doesntContain('Table');
+
+    // true
+
+    $collection->doesntContain('Desk');
+
+    // false
+
+You may also pass a key / value pair to the `doesntContain` method, which will determine if the given pair does not exist in the collection:
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 100],
+    ]);
+
+    $collection->doesntContain('product', 'Bookcase');
+
+    // true
+
+The `doesntContain` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value.
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
