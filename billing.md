@@ -330,7 +330,9 @@ To automate this, you may define an event listener on your billable model that r
     protected static function booted()
     {
         static::updated(queueable(function ($customer) {
-            $customer->syncStripeCustomerDetails();
+            if ($customer->hasStripeId()) {
+                $customer->syncStripeCustomerDetails();
+            }
         }));
     }
 
