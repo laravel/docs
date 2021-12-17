@@ -279,6 +279,17 @@ When sending JSON requests to your application, you may access the JSON data via
 
     $name = $request->input('user.name');
 
+<a name="retrieving-date-values"></a>
+#### Retrieving date values
+
+Inputs with date or time values can be retrieved as a Carbon instance using `date`:
+
+    $birthdate = $request->date('birthdate');
+
+You can set a custom format as second parameter, and a timezone.
+
+    $time = $request->date('elapsed', '!H:i', 'Europe/Madrid');
+
 <a name="retrieving-boolean-input-values"></a>
 #### Retrieving Boolean Input Values
 
