@@ -2143,7 +2143,7 @@ The `sortBy` method sorts the collection by the given key. The sorted collection
         ]
     */
 
-The `sort` method accepts [sort flags](https://www.php.net/manual/en/function.sort.php) as its second argument:
+The `sortBy` method accepts [sort flags](https://www.php.net/manual/en/function.sort.php) as its second argument:
 
     $collection = collect([
         ['title' => 'Item 1'],
