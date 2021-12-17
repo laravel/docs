@@ -125,6 +125,20 @@ Finally, build your Sail images:
 ./vendor/bin/sail build --no-cache
 ```
 
+<a name="swoole-configuration"></a>
+#### Swoole Configuration
+
+Swoole supports a few additional configuration options that you may add to your `octane` configuration file if necessary. Because they rarely need to be modified, these options are not included in the default configuration file:
+
+```php
+'swoole' => [ 
+    'options' => [
+        'log_file' => storage_path('logs/swoole_http.log'),
+        'package_max_length' => 10 * 1024 * 1024,
+    ],
+];
+```
+
 <a name="serving-your-application"></a>
 ## Serving Your Application
 
