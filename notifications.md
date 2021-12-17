@@ -1302,7 +1302,7 @@ Within an event listener, you may access the `notifiable`, `notification`, `chan
 
 Laravel ships with a handful of notification channels, but you may want to write your own drivers to deliver notifications via other channels. Laravel makes it simple. To get started, define a class that contains a `send` method. The method should receive two arguments: a `$notifiable` and a `$notification`.
 
-> {note} Although useful, Artisan's custom channel creation command will generate a channel in the Broadcasting namespace, different from the recommended namespace for custom channels: "Channels", according to the example below.
+> {note} Although useful, Artisan custom channel creation command will generate a channel in the Broadcasting namespace, different from the recommended namespace for custom channels: "Channels", according to the example below.
 
 Within the `send` method, you may call methods on the notification to retrieve a message object understood by your channel and then send the notification to the `$notifiable` instance however you wish:
 
