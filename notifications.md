@@ -1306,7 +1306,7 @@ Within the `send` method, you may call methods on the notification to retrieve a
 
     <?php
 
-    namespace App\Channels;
+    namespace App\Notifications;
 
     use Illuminate\Notifications\Notification;
 
@@ -1333,8 +1333,8 @@ Once your notification channel class has been defined, you may return the class 
 
     namespace App\Notifications;
 
-    use App\Channels\Messages\VoiceMessage;
-    use App\Channels\VoiceChannel;
+    use App\Notifications\Messages\VoiceMessage;
+    use App\Notifications\VoiceChannel;
     use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Notifications\Notification;
