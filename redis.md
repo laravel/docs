@@ -132,7 +132,7 @@ If you would like your application to interact with Redis via the Predis package
 
         'client' => env('REDIS_CLIENT', 'predis'),
 
-        // Rest of Redis configuration...
+        // ...
     ],
 
 In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in your application's `config/database.php` configuration file:
