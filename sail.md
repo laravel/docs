@@ -159,7 +159,7 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
-Please note that you'll need to use the same PHP version for `laravelsail/phpXX-composer` that your app uses: `74`, `80` or `81`.
+When using the `laravelsail/phpXX-composer` image, you should use the same version of PHP that you plan to use for your application (`74`, `80`, or `81`).
 
 <a name="executing-artisan-commands"></a>
 ### Executing Artisan Commands
