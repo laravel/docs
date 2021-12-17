@@ -1,4 +1,3 @@
-
 # Laravel Octane
 
 - [Introduction](#introduction)
