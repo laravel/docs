@@ -125,16 +125,17 @@ Finally, build your Sail images:
 ./vendor/bin/sail build --no-cache
 ```
 
-<a name="modifying-swoole-server-configuration"></a>
-#### Modifying Swoole Configuration
+<a name="swoole-configuration"></a>
+#### Swoole Configuration
 
-To modify the configuration of Swoole's HTTP server, simply add the following to your `config/octane.php` configuration file,
+Swoole supports a few additional configuration options that you may add to your `octane` configuration file if necessary. Because they rarely need to be modified, these options are not included in the default configuration file:
+
 ```php
 'swoole' => [ 
-	'options' => [
-		'log_file' => storage_path('logs/swoole_http.log'),
-		'package_max_length' => 10 * 1024 * 1024,
-	],
+    'options' => [
+        'log_file' => storage_path('logs/swoole_http.log'),
+        'package_max_length' => 10 * 1024 * 1024,
+    ],
 ];
 ```
 
