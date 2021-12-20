@@ -924,6 +924,8 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
         //
     })->middleware('auth:api');
 
+> {note} If you are using the [client credentials grant](#client-credentials-grant-tokens), you should use [the `client` middleware](#client-credentials-grant-tokens) to protect your routes instead of the `auth:api` middleware.
+
 <a name="multiple-authentication-guards"></a>
 #### Multiple Authentication Guards
 
