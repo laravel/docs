@@ -744,9 +744,9 @@ The `recurring` method may be used to determine if the user is currently subscri
 <a name="cancelled-subscription-status"></a>
 #### Canceled Subscription Status
 
-To determine if the user was once an active subscriber but has canceled their subscription, you may use the `canceled` method:
+To determine if the user was once an active subscriber but has canceled their subscription, you may use the `cancelled` method:
 
-    if ($user->subscription('default')->canceled()) {
+    if ($user->subscription('default')->cancelled()) {
         //
     }
 
