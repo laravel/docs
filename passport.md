@@ -16,6 +16,7 @@
     - [Refreshing Tokens](#refreshing-tokens)
     - [Revoking Tokens](#revoking-tokens)
     - [Purging Tokens](#purging-tokens)
+    - [Custom Token Claims](#custom-token-claims)
 - [Authorization Code Grant with PKCE](#code-grant-pkce)
     - [Creating The Client](#creating-a-auth-pkce-grant-client)
     - [Requesting Tokens](#requesting-auth-pkce-grant-tokens)
@@ -538,6 +539,11 @@ You may also configure a [scheduled job](/docs/{{version}}/scheduling) in your a
     {
         $schedule->command('passport:purge')->hourly();
     }
+
+<a name="custom-token-claims"></a>
+### Custom Token Claims
+
+Sometimes, you may want to add your own custom claims to the issued access tokens. For this, we recommend using the [laravel-passport-claims](https://github.com/corbosman/laravel-passport-claims) package. 
 
 <a name="code-grant-pkce"></a>
 ## Authorization Code Grant with PKCE
