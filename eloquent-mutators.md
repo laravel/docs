@@ -46,7 +46,7 @@ In this example, we'll define an accessor for the `first_name` attribute. The ac
          * @param  string  $value
          * @return string
          */
-        public function getFirstNameAttribute($value)
+        protected function getFirstNameAttribute($value)
         {
             return ucfirst($value);
         }
@@ -67,7 +67,7 @@ You are not limited to interacting with a single attribute within your accessor.
      *
      * @return string
      */
-    public function getFullNameAttribute()
+    protected function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
     }
@@ -95,7 +95,7 @@ Let's define a mutator for the `first_name` attribute. This mutator will be auto
          * @param  string  $value
          * @return void
          */
-        public function setFirstNameAttribute($value)
+        protected function setFirstNameAttribute($value)
         {
             $this->attributes['first_name'] = strtolower($value);
         }
