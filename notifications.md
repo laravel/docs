@@ -831,7 +831,7 @@ In addition to the data you specify, all broadcast notifications also have a `ty
 <a name="listening-for-notifications"></a>
 ### Listening For Notifications
 
-Notifications will broadcast on a private channel formatted using a `{notifiable}.{id}` convention. So, if you are sending a notification to an `App\Models\User` instance with an ID of `1`, the notification will be broadcast on the `App.Models.User.1` private channel. When using [Laravel Echo](/docs/{{version}}/broadcasting), you may easily listen for notifications on a channel using the `notification` method:
+Notifications will broadcast on a private channel formatted using a `{notifiable}.{id}` convention. So, if you are sending a notification to an `App\Models\User` instance with an ID of `1`, the notification will be broadcast on the `App.Models.User.1` private channel. When using [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation), you may easily listen for notifications on a channel using the `notification` method:
 
     Echo.private('App.Models.User.' + userId)
         .notification((notification) => {
@@ -1306,7 +1306,7 @@ Within the `send` method, you may call methods on the notification to retrieve a
 
     <?php
 
-    namespace App\Channels;
+    namespace App\Notifications;
 
     use Illuminate\Notifications\Notification;
 
@@ -1333,8 +1333,8 @@ Once your notification channel class has been defined, you may return the class 
 
     namespace App\Notifications;
 
-    use App\Channels\Messages\VoiceMessage;
-    use App\Channels\VoiceChannel;
+    use App\Notifications\Messages\VoiceMessage;
+    use App\Notifications\VoiceChannel;
     use Illuminate\Bus\Queueable;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Notifications\Notification;

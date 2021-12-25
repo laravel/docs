@@ -68,7 +68,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
+[Laravel Cashier Stripe](https://github.com/laravel/cashier-stripe) provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
 
 <a name="upgrading-cashier"></a>
 ## Upgrading Cashier
@@ -330,7 +330,9 @@ To automate this, you may define an event listener on your billable model that r
     protected static function booted()
     {
         static::updated(queueable(function ($customer) {
-            $customer->syncStripeCustomerDetails();
+            if ($customer->hasStripeId()) {
+                $customer->syncStripeCustomerDetails();
+            }
         }));
     }
 
@@ -1349,7 +1351,7 @@ By default, the created webhook will point to the URL defined by the `APP_URL` e
 
 The webhook that is created will use the Stripe API version that your version of Cashier is compatible with. If you would like to use a different Stripe version, you may provide the `--api-version` option:
 
-    php artisan cashier:webhook --app-version="2019-12-03"
+    php artisan cashier:webhook --api-version="2019-12-03"
 
 After creation, the webhook will be immediately active. If you wish to create the webhook but have it disabled until you're ready, you may provide the `--disabled` option when invoking the command:
 
