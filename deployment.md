@@ -47,6 +47,7 @@ Please ensure, like the configuration below, your web server directs all request
 
     server {
         listen 80;
+        listen [::]:80;
         server_name example.com;
         root /srv/example.com/public;
 
