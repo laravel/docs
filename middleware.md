@@ -309,7 +309,7 @@ Sometimes a middleware may need to do some work after the HTTP response has been
          * Handle tasks after the response has been sent to the browser.
          *
          * @param  \Illuminate\Http\Request  $request
-         * @param  \Illuminate\Http\Response  $response
+         * @param  \Symfony\Component\HttpFoundation\Response  $response
          * @return void
          */
         public function terminate($request, $response)
