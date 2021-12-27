@@ -279,23 +279,23 @@ When sending JSON requests to your application, you may access the JSON data via
 
     $name = $request->input('user.name');
 
-<a name="retrieving-date-values"></a>
-#### Retrieving date values
-
-Inputs with date or time values can be retrieved as a Carbon instance using `date`:
-
-    $birthdate = $request->date('birthdate');
-
-You can set a custom format as second parameter, and a timezone.
-
-    $time = $request->date('elapsed', '!H:i', 'Europe/Madrid');
-
 <a name="retrieving-boolean-input-values"></a>
 #### Retrieving Boolean Input Values
 
 When dealing with HTML elements like checkboxes, your application may receive "truthy" values that are actually strings. For example, "true" or "on". For convenience, you may use the `boolean` method to retrieve these values as booleans. The `boolean` method returns `true` for 1, "1", true, "true", "on", and "yes". All other values will return `false`:
 
     $archived = $request->boolean('archived');
+
+<a name="retrieving-date-input-values"></a>
+#### Retrieving Date Input Values
+
+For convenience, input values containing dates / times may be retrieved as Carbon instances using the `date` method:
+
+    $birthday = $request->date('birthday');
+
+The second and third arguments accepted by the `date` method may be used to specify the date's format and timezone, respectively:
+
+    $elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');
 
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input Via Dynamic Properties
