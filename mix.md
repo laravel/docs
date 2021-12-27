@@ -94,7 +94,7 @@ Your application's `webpack.mix.js` file is your entry point for all asset compi
 
     npx tailwindcss init
 
-The `init` command will generate a `tailwind.config.js` file. The `content` section of this file allows you to configure the paths to all of your HTML templates, JavaScript components, and any other source files that contain Tailwind class names so that they will not be purged:
+The `init` command will generate a `tailwind.config.js` file. The `content` section of this file allows you to configure the paths to all of your HTML templates, JavaScript components, and any other source files that contain Tailwind class names so that any CSS classes that are not used within these files will be purged from your production CSS build:
 
 ```js
 content: [
