@@ -289,13 +289,15 @@ When dealing with HTML elements like checkboxes, your application may receive "t
 <a name="retrieving-date-input-values"></a>
 #### Retrieving Date Input Values
 
-For convenience, input values containing dates / times may be retrieved as Carbon instances using the `date` method:
+For convenience, input values containing dates / times may be retrieved as Carbon instances using the `date` method. If the request does not contain an input value with the given name, `null` will be returned:
 
     $birthday = $request->date('birthday');
 
 The second and third arguments accepted by the `date` method may be used to specify the date's format and timezone, respectively:
 
     $elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');
+
+If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method.
 
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input Via Dynamic Properties
