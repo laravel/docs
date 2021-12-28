@@ -226,7 +226,7 @@ Rarely, you may need your middleware to execute in a specific order but not have
      *
      * This forces non-global middleware to always be in the given order.
      *
-     * @var array
+     * @var string[]
      */
     protected $middlewarePriority = [
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
