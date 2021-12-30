@@ -243,6 +243,35 @@ If you need to specify additional [S3 request parameters](https://docs.aws.amazo
         ]
     );
 
+If you need to define your own custom logic for creating temporary URLs to files for a specific storage disk, you can use the `buildTemporaryUrlsUsing` method. For example, this can be useful if you have a controller that allows you to download files stored in a storage disk that doesn't support temporary URLs. You may want to define this method in the `boot` method of a service provider, like so:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\Facades\URL;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Storage::disk('local')->buildTemporaryUrlsUsing(function ($path, $expiration, $options) {
+                return URL::temporarySignedRoute(
+                    'files.download',
+                    $expiration,
+                    array_merge($options, ['path' => $path])
+                );
+            });
+        }
+    }
+
 <a name="url-host-customization"></a>
 #### URL Host Customization
 
