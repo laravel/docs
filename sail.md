@@ -181,7 +181,7 @@ sail node --version
 sail npm run prod
 ```
 
-Yarn can also be used instead of NPM.
+If you wish, you may use Yarn instead of NPM:
 
 ```nothing
 sail yarn
