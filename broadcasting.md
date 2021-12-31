@@ -52,7 +52,7 @@ The core concepts behind broadcasting are simple: clients connect to named chann
 <a name="supported-drivers"></a>
 #### Supported Drivers
 
-By default, Laravel includes two server-side broadcasting drivers for you to choose from: [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.io). However, community driven packages such as [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) provide additional broadcasting drivers that do not require commercial broadcasting providers.
+By default, Laravel includes two server-side broadcasting drivers for you to choose from: [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.io). However, community driven packages such as [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) and [soketi](https://docs.soketi.app/) provide additional broadcasting drivers that do not require commercial broadcasting providers.
 
 > {tip} Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
 
@@ -100,10 +100,10 @@ Next, you will need to change your broadcast driver to `pusher` in your `.env` f
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
-<a name="pusher-compatible-laravel-websockets"></a>
-#### Pusher Compatible Laravel Websockets
+<a name="pusher-compatible-open-source-alternatives"></a>
+#### Open Source Alternatives
 
-The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible WebSocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
+The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) and [soketi](https://docs.soketi.app/) packages provide Pusher compatible WebSocket servers for Laravel. These packages allow you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using these packages, please consult our documentation on [open source alternatives](#open-source-alternatives).
 
 <a name="ably"></a>
 ### Ably
@@ -125,7 +125,15 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 <a name="open-source-alternatives"></a>
 ### Open Source Alternatives
 
+<a name="open-source-alternatives-php"></a>
+#### PHP
+
 The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible WebSocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
+
+<a name="open-source-alternatives-node"></a>
+#### Node
+
+[Soketi](https://github.com/soketi/soketi) is a Node based, Pusher compatible WebSocket server for Laravel. Under the hood, Soketi utilizes µWebSockets.js for extreme scalability and speed. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://docs.soketi.app/).
 
 <a name="client-side-installation"></a>
 ## Client Side Installation
@@ -222,7 +230,7 @@ Laravel's event broadcasting allows you to broadcast your server-side Laravel ev
 
 Events are broadcast over "channels", which may be specified as public or private. Any visitor to your application may subscribe to a public channel without any authentication or authorization; however, in order to subscribe to a private channel, a user must be authenticated and authorized to listen on that channel.
 
-> {tip} If you would like to use an open source, PHP driven alternative to Pusher, check out the [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package.
+> {tip} If you would like to use an open source, PHP driven alternative to Pusher, check out the [open source alternatives](#open-source-alternatives).
 
 <a name="using-example-application"></a>
 ### Using An Example Application
