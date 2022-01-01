@@ -1,11 +1,13 @@
 # Starter Kits
 
-- [Introduction](#introduction)
-- [Laravel Breeze](#laravel-breeze)
-    - [Installation](#laravel-breeze-installation)
-    - [Breeze & Inertia](#breeze-and-inertia)
-    - [Breeze & Next.js / API](#breeze-and-next)
-- [Laravel Jetstream](#laravel-jetstream)
+- [Starter Kits](#starter-kits)
+  - [Introduction](#introduction)
+  - [Laravel Breeze](#laravel-breeze)
+    - [Installation](#installation)
+    - [Breeze & Inertia](#breeze--inertia)
+    - [Breeze & Next.js / API](#breeze--nextjs--api)
+      - [Next.js Reference Implementation](#nextjs-reference-implementation)
+  - [Laravel Jetstream](#laravel-jetstream)
 
 <a name="introduction"></a>
 ## Introduction
@@ -46,7 +48,7 @@ After Composer has installed the Laravel Breeze package, you may run the `breeze
 php artisan breeze:install
 
 npm install
-npm run dev
+npm run watch
 php artisan migrate
 ```
 
@@ -67,7 +69,7 @@ php artisan breeze:install vue
 php artisan breeze:install react
 
 npm install
-npm run dev
+npm run watch
 php artisan migrate
 ```
 
