@@ -1,13 +1,12 @@
 # Starter Kits
 
-- [Starter Kits](#starter-kits)
-  - [Introduction](#introduction)
-  - [Laravel Breeze](#laravel-breeze)
-    - [Installation](#installation)
-    - [Breeze & Inertia](#breeze--inertia)
-    - [Breeze & Next.js / API](#breeze--nextjs--api)
-      - [Next.js Reference Implementation](#nextjs-reference-implementation)
-  - [Laravel Jetstream](#laravel-jetstream)
+- [Introduction](#introduction)
+- [Laravel Breeze](#laravel-breeze)
+  - [Installation](#installation)
+  - [Breeze & Inertia](#breeze--inertia)
+  - [Breeze & Next.js / API](#breeze--nextjs--api)
+    - [Next.js Reference Implementation](#nextjs-reference-implementation)
+- [Laravel Jetstream](#laravel-jetstream)
 
 <a name="introduction"></a>
 ## Introduction
