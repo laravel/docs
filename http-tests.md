@@ -1197,12 +1197,26 @@ Assert that a user is authenticated:
 
     $this->assertAuthenticated($guard = null);
 
+<a name="assert-credentials"></a>
+#### assertCredentials
+
+Assert that the given credentials are valid:
+
+    $this->assertCredentials(array $credentials, $guard = null);
+
 <a name="assert-guest"></a>
 #### assertGuest
 
 Assert that a user is not authenticated:
 
     $this->assertGuest($guard = null);
+
+<a name="assert-credentials"></a>
+#### assertInvalidCredentials
+
+Assert that the given credentials are invalid:
+
+    $this->assertInvalidCredentials(array $credentials, $guard = null);
 
 <a name="assert-authenticated-as"></a>
 #### assertAuthenticatedAs
