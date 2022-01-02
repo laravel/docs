@@ -2547,7 +2547,21 @@ The `undot` method expands a single-dimensional collection that uses "dot" notat
 
     $person->toArray();
 
-    // ["name" => ["first_name" => "Marie", "last_name" => "Valentine"], "address" => ["line_1" => "2992 Eagle Drive", "line_2" => "", "suburb" => "Detroit", "state" => "MI", "postcode" => "48219"]]
+    /*
+        [
+            "name" => [
+                "first_name" => "Marie",
+                "last_name" => "Valentine",
+            ],
+            "address" => [
+                "line_1" => "2992 Eagle Drive",
+                "line_2" => "",
+                "suburb" => "Detroit",
+                "state" => "MI",
+                "postcode" => "48219",
+            ],
+        ]
+    */
 
 <a name="method-union"></a>
 #### `union()` {.collection-method}
