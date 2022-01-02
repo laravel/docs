@@ -181,6 +181,12 @@ sail node --version
 sail npm run prod
 ```
 
+If you wish, you may use Yarn instead of NPM:
+
+```nothing
+sail yarn
+```
+
 <a name="interacting-with-sail-databases"></a>
 ## Interacting With Databases
 
