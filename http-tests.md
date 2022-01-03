@@ -947,9 +947,9 @@ Assert that the response is a redirect to the given URI:
 <a name="assert-redirect-contains"></a>
 #### assertRedirectContains
 
-Assert whether the response is redirecting to a URI that contains the given URI:
+Assert whether the response is redirecting to a URI that contains the given string:
 
-    $response->assertRedirectContains($uri);
+    $response->assertRedirectContains($string);
 
 <a name="assert-redirect-to-signed-route"></a>
 #### assertRedirectToSignedRoute
@@ -1073,13 +1073,6 @@ Assert that the session does not contain the given key:
 
     $response->assertSessionMissing($key);
 
-<a name="assert-similar-json"></a>
-#### assertSimilarJson
-
-Assert that the response has the similar JSON as given:
-
-    $response->assertSimilarJson(array $data);
-
 <a name="assert-status"></a>
 #### assertStatus
 
@@ -1197,26 +1190,12 @@ Assert that a user is authenticated:
 
     $this->assertAuthenticated($guard = null);
 
-<a name="assert-credentials"></a>
-#### assertCredentials
-
-Assert that the given credentials are valid:
-
-    $this->assertCredentials(array $credentials, $guard = null);
-
 <a name="assert-guest"></a>
 #### assertGuest
 
 Assert that a user is not authenticated:
 
     $this->assertGuest($guard = null);
-
-<a name="assert-credentials"></a>
-#### assertInvalidCredentials
-
-Assert that the given credentials are invalid:
-
-    $this->assertInvalidCredentials(array $credentials, $guard = null);
 
 <a name="assert-authenticated-as"></a>
 #### assertAuthenticatedAs
