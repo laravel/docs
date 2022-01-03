@@ -69,6 +69,10 @@ First, install the Cashier package for Paddle using the Composer package manager
 
 During local and staging development, you should [register a Paddle Sandbox account](https://developer.paddle.com/getting-started/sandbox). This account will give you a sandboxed environment to test and develop your applications without making actual payments. You may use Paddle's [test card numbers](https://developer.paddle.com/getting-started/sandbox#test-cards) to simulate various payment scenarios.
 
+When using the Paddle Sandbox environment, you should set the `PADDLE_SANDBOX` environment variable to `true` within your application's `.env` file:
+
+PADDLE_SANDBOX=true
+
 After you have finished developing your application you may [apply for a Paddle vendor account](https://paddle.com).
 
 <a name="database-migrations"></a>
