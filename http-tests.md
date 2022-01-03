@@ -300,7 +300,7 @@ As previously mentioned, the `assertJson` method may be used to assert that a fr
          */
         public function test_asserting_an_exact_json_match()
         {
-            $response = $this->json('POST', '/user', ['name' => 'Sally']);
+            $response = $this->postJson('/user', ['name' => 'Sally']);
 
             $response
                 ->assertStatus(201)
@@ -330,7 +330,7 @@ If you would like to verify that the JSON response contains the given data at a 
          */
         public function test_asserting_a_json_paths_value()
         {
-            $response = $this->json('POST', '/user', ['name' => 'Sally']);
+            $response = $this->postJson('/user', ['name' => 'Sally']);
 
             $response
                 ->assertStatus(201)
@@ -352,7 +352,7 @@ Laravel also offers a beautiful way to fluently test your application's JSON res
      */
     public function test_fluent_json()
     {
-        $response = $this->json('GET', '/users/1');
+        $response = $this->getJson('/users/1');
 
         $response
             ->assertJson(fn (AssertableJson $json) =>
@@ -630,12 +630,14 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonPath](#assert-json-path)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
+[assertJsonValidationErrorFor](#assert-json-validation-error-for)
 [assertLocation](#assert-location)
 [assertNoContent](#assert-no-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
+[assertRedirectContains](#assert-redirect-contains)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
 [assertSee](#assert-see)
 [assertSeeInOrder](#assert-see-in-order)
@@ -649,6 +651,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSessionHasNoErrors](#assert-session-has-no-errors)
 [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors)
 [assertSessionMissing](#assert-session-missing)
+[assertSimilarJson](#assert-similar-json)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
 [assertUnauthorized](#assert-unauthorized)
@@ -888,9 +891,16 @@ In this situation, you may use the `*` character to assert against the structure
 
 Assert that the response has the given JSON validation errors for the given keys. This method should be used when asserting against responses where the validation errors are returned as a JSON structure instead of being flashed to the session:
 
-    $response->assertJsonValidationErrors(array $data);
+    $response->assertJsonValidationErrors(array $data, $responseKey = 'errors');
 
 > {tip} The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage.
+
+<a name="assert-json-validation-error-for"></a>
+#### assertJsonValidationErrorFor
+
+Assert the response has any JSON validation errors for the given key:
+
+    $response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');
 
 <a name="assert-location"></a>
 #### assertLocation
@@ -933,6 +943,13 @@ Assert that the response contains the given unencrypted cookie:
 Assert that the response is a redirect to the given URI:
 
     $response->assertRedirect($uri);
+
+<a name="assert-redirect-contains"></a>
+#### assertRedirectContains
+
+Assert whether the response is redirecting to a URI that contains the given string:
+
+    $response->assertRedirectContains($string);
 
 <a name="assert-redirect-to-signed-route"></a>
 #### assertRedirectToSignedRoute
