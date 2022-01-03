@@ -813,10 +813,9 @@ You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) 
 <a name="waiting-for-page-reloads"></a>
 #### Waiting for Page Reloads
 
-If you need to make assertions after a page has been reloaded, use the `waitForReload` method:
+If you need to make assertions after a page has been reloaded, use the `clickAndWaitForReload` method:
 
-    $browser->click('.some-action')
-            ->waitForReload()
+    $browser->clickAndWaitForReload('.some-action')
             ->assertSee('something');
 
 <a name="waiting-on-javascript-expressions"></a>
