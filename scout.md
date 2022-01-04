@@ -395,7 +395,7 @@ Scout allows you to add simple "where" clauses to your search queries. Currently
 
     $orders = Order::search('Star Trek')->where('user_id', 1)->get();
 
-You may also use the `whereIn` method to limit results against a given set of values:
+You may use the `whereIn` method to constrain results against a given set of values:
 
     $orders = Order::search('Star Trek')->whereIn(
         'status', ['paid', 'open']
