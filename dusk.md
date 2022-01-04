@@ -815,8 +815,15 @@ You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) 
 
 If you need to make assertions after a page has been reloaded, use the `waitForReload` method:
 
-    $browser->click('.some-action')
-            ->waitForReload()
+    use Laravel\Dusk\Browser;
+
+    $browser->waitForReload(function (Browser $browser) {
+        $browser->assertSee('something');
+    });
+
+Since the need to wait for the page to reload typically occurs after clicking a button, you may use the `clickAndWaitForReload` method for convenience:
+
+    $browser->clickAndWaitForReload('.selector')
             ->assertSee('something');
 
 <a name="waiting-on-javascript-expressions"></a>
