@@ -818,7 +818,7 @@ If you need to make assertions after a page has been reloaded, use the `waitForR
     use Laravel\Dusk\Browser;
 
     $browser->waitForReload(function (Browser $browser) {
-        $browser->assertSee('something');
+        $browser->press('Submit');
     });
 
 Since the need to wait for the page to reload typically occurs after clicking a button, you may use the `clickAndWaitForReload` method for convenience:
