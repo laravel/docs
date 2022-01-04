@@ -26,7 +26,7 @@
 ## Upgrading To 9.0 From 8.x
 
 <a name="estimated-upgrade-time-10-minutes"></a>
-#### Estimated Upgrade Time: 15 Minutes
+#### Estimated Upgrade Time: 30 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
@@ -238,7 +238,7 @@ One of the largest changes in Laravel 9 is the transition from SwiftMailer, whic
 
 #### Updated Return Types
 
-The `send`, `html`, `text`, and `plain` methods no longer return the number of recipients that received the message. Instead, an instance of `Illuminate\Mail\SentMessage` is now returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
+The `send`, `html`, `text`, and `plain` methods no longer return the number of recipients that received the message. Instead, an instance of `Illuminate\Mail\SentMessage` is returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
 
 #### Updated Driver Prerequisites
 
@@ -262,7 +262,7 @@ The `wildbit/swiftmailer-postmark` Composer package should be removed from your 
 
 #### Renamed "Swift" Methods
 
-Various methods, some of which were undocumented, have been renamed to their Symfony Mailer counterparts. For example, the `withSwiftMessage` method:
+Various SwiftMailer related methods, some of which were undocumented, have been renamed to their Symfony Mailer counterparts. For example, the `withSwiftMessage` method has been renamed to `withSymfonyMessage`:
 
     // Laravel 8.x...
     $this->withSwiftMessage(function ($message) {
@@ -282,7 +282,7 @@ Various methods, some of which were undocumented, have been renamed to their Sym
 
 > {note} Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\Component\Mime\Email` object.
 
-The list below contains a more thorough list of renamed methods. Many of these methods are low-level methods used to interact with SwiftMailer / Symfony Mailer directly, so may not be commonly used within most Laravel applications:
+The list below contains a more thorough overview of renamed methods. Many of these methods are low-level methods used to interact with SwiftMailer / Symfony Mailer directly, so may not be commonly used within most Laravel applications:
 
     Message::getSwiftMessage();
     Message::getSymfonyMessage();
