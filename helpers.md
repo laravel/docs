@@ -133,6 +133,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::substr](#method-str-substr)
 [Str::substrCount](#method-str-substrcount)
 [Str::title](#method-title-case)
+[Str::toHtmlString](#method-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
@@ -1706,6 +1707,15 @@ The `Str::title` method converts the given string to `Title Case`:
     $converted = Str::title('a nice title uses the correct case');
 
     // A Nice Title Uses The Correct Case
+
+<a name="method-str-to-html-string"></a>
+#### `Str::toHtmlString()` {.collection-method}
+
+The `Str::toHtmlString` method converts the string instance to an instance of `Illuminate\Support\HtmlString`, which may be displayed in Blade templates:
+
+    use Illuminate\Support\Str;
+
+    $htmlString = Str::of('Nuno Maduro')->toHtmlString();
 
 <a name="method-str-ucfirst"></a>
 #### `Str::ucfirst()` {.collection-method}
