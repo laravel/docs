@@ -389,11 +389,19 @@ Search queries will typically be performed on the index specified by the model's
 <a name="where-clauses"></a>
 ### Where Clauses
 
-Scout allows you to add simple "where" clauses to your search queries. Currently, these clauses only support basic numeric equality checks and are primarily useful for scoping search queries by an owner ID. Since a search index is not a relational database, more advanced "where" clauses are not currently supported:
+Scout allows you to add simple "where" clauses to your search queries. Currently, these clauses only support basic numeric equality checks and are primarily useful for scoping search queries by an owner ID:
 
     use App\Models\Order;
 
     $orders = Order::search('Star Trek')->where('user_id', 1)->get();
+
+You may use the `whereIn` method to constrain results against a given set of values:
+
+    $orders = Order::search('Star Trek')->whereIn(
+        'status', ['paid', 'open']
+    )->get();
+    
+Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
 <a name="pagination"></a>
 ### Pagination
