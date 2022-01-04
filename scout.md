@@ -397,9 +397,9 @@ Scout allows you to add simple "where" clauses to your search queries. Currently
 
 You may also use the `whereIn` method to limit results against a given set of values:
 
-    use App\Models\Order;
-
-    $orders = Order::search('Star Trek')->whereIn('status', ['paid', 'open'])->get();
+    $orders = Order::search('Star Trek')->whereIn(
+        'status', ['paid', 'open']
+    )->get();
     
 Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
