@@ -358,7 +358,7 @@ Defining the SMTP `auth_mode` in the `mail` configuration file is no longer requ
 
 #### Failed Recipients
 
-It is no longer possible to retrieve a list of failed recipients after sending a message. Instead, an exception will be thrown if a message fails to send.
+It is no longer possible to retrieve a list of failed recipients after sending a message. Instead, a `Symfony\Component\Mailer\Exception\TransportExceptionInterface` exception will be thrown if a message fails to send. Instead of relying on retrieving invalid email addresses after sending a message, we recommend that you validate email addresses before sending the message instead.
 
 ### Packages
 
