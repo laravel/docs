@@ -280,7 +280,7 @@ Various methods, some of which were undocumented, have been renamed to their Sym
         );
     });
 
-Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\Component\Mime\Email` object.
+> {note} Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\Component\Mime\Email` object.
 
 The list below contains a more thorough list of renamed methods. Many of these methods are low-level methods used to interact with SwiftMailer / Symfony Mailer directly, so may not be commonly used within most Laravel applications:
 
@@ -304,7 +304,9 @@ The list below contains a more thorough list of renamed methods. Many of these m
 
 #### Proxied `Illuminate\Mail\Message` Methods
 
-The `Illuminate\Mail\Message` typically proxied missing methods to the underlying `Swift_Message` instance. However, missing methods are now proxied to an instance of `Symfony\Component\Mime\Email` instead. So, any code that was previously relying on missing methods to be proxied to SwiftMailer should be updated to their corresponding Symfony Mailer counterparts. **Again, many applications may not be interacting with these methods, as they are not documented within the Laravel documentation:**
+The `Illuminate\Mail\Message` typically proxied missing methods to the underlying `Swift_Message` instance. However, missing methods are now proxied to an instance of `Symfony\Component\Mime\Email` instead. So, any code that was previously relying on missing methods to be proxied to SwiftMailer should be updated to their corresponding Symfony Mailer counterparts.
+
+Again, many applications may not be interacting with these methods, as they are not documented within the Laravel documentation:
 
     // Laravel 8.x...
     $message
@@ -356,7 +358,7 @@ Defining the SMTP `auth_mode` in the `mail` configuration file is no longer requ
 
 #### Failed Recipients
 
-It is no longer possible to retrieve a list of failed recipients after sending a message. Instead, an exception will be thrown if an email fails to send.
+It is no longer possible to retrieve a list of failed recipients after sending a message. Instead, an exception will be thrown if a message fails to send.
 
 ### Packages
 
