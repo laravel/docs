@@ -14,12 +14,13 @@
 
 <div class="content-list" markdown="1">
 - [Belongs To Many `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods](#belongs-to-many-first-or-new)
-- [Postgres "Schema" Configuration](#postgres-schema-configuration)
-- [The `when` / `unless` Methods](#when-and-unless-methods)
 - [Custom Casts & `null`](#custom-casts-and-null)
-- [The `password` Rule](#the-password-rule)
-- [The `lang` Directory](#the-lang-directory)
+- [Default HTTP Client Timeout](#http-client-default-timeout)
+- [Postgres "Schema" Configuration](#postgres-schema-configuration)
 - [The `assertDeleted` Method](#the-assert-deleted-method)
+- [The `lang` Directory](#the-lang-directory)
+- [The `password` Rule](#the-password-rule)
+- [The `when` / `unless` Methods](#when-and-unless-methods)
 </div>
 
 <a name="upgrade-9.0"></a>
@@ -228,6 +229,19 @@ $collection->when(function ($collection) {
     $collection->merge([1, 2, 3]);
 });
 ```
+
+### HTTP Client
+
+<a name="http-client-default-timeout"></a>
+#### Default Timeout
+
+**Likelihood Of Impact: Medium**
+
+The HTTP client now has a default timeout of 30 seconds. In other words, if the server does not respond within 30 seconds, an exception will be thrown. Previously, no default timeout length was configured on the HTTP client, causing requests to sometimes "hang" indefinitely.
+
+If you wish to specify a longer timeout for a given request, you may do so using the `timeout` method:
+
+    $response = Http::timeout(120)->get(...);
 
 <a name="symfony-mailer"></a>
 ### Symfony Mailer
