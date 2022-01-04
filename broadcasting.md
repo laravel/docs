@@ -230,7 +230,7 @@ Laravel's event broadcasting allows you to broadcast your server-side Laravel ev
 
 Events are broadcast over "channels", which may be specified as public or private. Any visitor to your application may subscribe to a public channel without any authentication or authorization; however, in order to subscribe to a private channel, a user must be authenticated and authorized to listen on that channel.
 
-> {tip} If you would like to use an open source, PHP driven alternative to Pusher, check out the [open source alternatives](#open-source-alternatives).
+> {tip} If you would like to explore open source alternatives to Pusher, check out the [open source alternatives](#open-source-alternatives).
 
 <a name="using-example-application"></a>
 ### Using An Example Application
