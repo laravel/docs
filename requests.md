@@ -11,6 +11,7 @@
 - [Input](#input)
     - [Retrieving Input](#retrieving-input)
     - [Determining If Input Is Present](#determining-if-input-is-present)
+    - [Merging Additional Input](#merging-additional-input)
     - [Old Input](#old-input)
     - [Cookies](#cookies)
     - [Input Trimming & Normalization](#input-trimming-and-normalization)
@@ -383,6 +384,17 @@ To determine if a given key is absent from the request, you may use the `missing
     if ($request->missing('name')) {
         //
     }
+
+<a name="merging-additional-input"></a>
+### Merging Additional Input
+
+Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method:
+
+    $request->merge(['votes' => 0]);
+
+The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:
+
+    $request->mergeIfMissing(['votes' => 0]);
 
 <a name="old-input"></a>
 ### Old Input
