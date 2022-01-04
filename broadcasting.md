@@ -101,7 +101,7 @@ Next, you will need to change your broadcast driver to `pusher` in your `.env` f
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
 <a name="pusher-compatible-open-source-alternatives"></a>
-#### Open Source Alternatives
+#### Open Source Pusher Alternatives
 
 The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) and [soketi](https://docs.soketi.app/) packages provide Pusher compatible WebSocket servers for Laravel. These packages allow you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using these packages, please consult our documentation on [open source alternatives](#open-source-alternatives).
 
