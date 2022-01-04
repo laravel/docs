@@ -2,6 +2,13 @@
 
 - [Upgrading To 9.0 From 8.x](#upgrade-9.0)
 
+<a name="high-impact-changes"></a>
+## High Impact Changes
+
+<div class="content-list" markdown="1">
+- [Symfony Mailer](#symfony-mailer)
+</div>
+
 <a name="medium-impact-changes"></a>
 ## Medium Impact Changes
 
@@ -221,6 +228,135 @@ $collection->when(function ($collection) {
     $collection->merge([1, 2, 3]);
 });
 ```
+
+<a name="symfony-mailer"></a>
+### Symfony Mailer
+
+**Likelihood Of Impact: High**
+
+One of the largest changes in Laravel 9 is the transition from SwiftMailer, which is no longer maintained as of December 2021, to Symfony Mailer. However, we have tried to make this transition as seamless as possible for your applications. That being said, please thoroughly review the list of changes below to ensure your application is fully compatible.
+
+#### Updated Return Types
+
+The `send`, `html`, `text`, and `plain` methods no longer return the number of recipients that received the message. Instead, an instance of `Illuminate\Mail\SentMessage` is now returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
+
+#### Updated Driver Prerequisites
+
+##### Amazon SES
+
+The `aws/aws-sdk-php` Composer package is no longer needed when using the Amazon SES transport and can be removed if no other part of your application requires it. Instead, your application should require the `symfony/amazon-mailer` Composer package:
+
+    composer require symfony/amazon-mailer
+
+##### Mailgun
+
+To continue using the Mailgun transport, your application should require the `symfony/mailgun-mailer` Composer package:
+
+    composer require symfony/mailgun-mailer
+
+##### Postmark
+
+The `wildbit/swiftmailer-postmark` Composer package should be removed from your application. Instead, your application should require the `symfony/postmark-mailer` Composer package:
+
+    composer require symfony/postmark-mailer
+
+#### Renamed "Swift" Methods
+
+Various methods, some of which were undocumented, have been renamed to their Symfony Mailer counterparts. For example, the `withSwiftMessage` method:
+
+    // Laravel 8.x...
+    $this->withSwiftMessage(function ($message) {
+        $message->getHeaders()->addTextHeader(
+            'Custom-Header', 'Header Value'
+        );
+    });
+
+    // Laravel 9.x...
+    use Symfony\Component\Mime\Email;
+
+    $this->withSymfonyMessage(function (Email $message) {
+        $message->getHeaders()->addTextHeader(
+            'Custom-Header', 'Header Value'
+        );
+    });
+
+Please thoroughly review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#creating-sending-messages) for all possible interactions with the `Symfony\Component\Mime\Email` object.
+
+The list below contains a more thorough list of renamed methods. Many of these methods are low-level methods used to interact with SwiftMailer / Symfony Mailer directly, so may not be commonly used within most Laravel applications:
+
+    Message::getSwiftMessage();
+    Message::getSymfonyMessage();
+
+    Mailable::withSwiftMessage($callback);
+    Mailable::withSymfonyMessage($callback);
+
+    MailMessage::withSwiftMessage($callback);
+    MailMessage::withSymfonyMessage($callback);
+
+    Mailer::getSwiftMailer();
+    Mailer::getSymfonyTransport();
+
+    Mailer::setSwiftMailer($swift);
+    Mailer::setSymfonyTransport(TransportInterface $transport);
+
+    MailManager::createTransport($config);
+    MailManager::createSymfonyTransport($config);
+
+#### Proxied `Illuminate\Mail\Message` Methods
+
+The `Illuminate\Mail\Message` typically proxied missing methods to the underlying `Swift_Message` instance. However, missing methods are now proxied to an instance of `Symfony\Component\Mime\Email` instead. So, any code that was previously relying on missing methods to be proxied to SwiftMailer should be updated to their corresponding Symfony Mailer counterparts. **Again, many applications may not be interacting with these methods, as they are not documented within the Laravel documentation:**
+
+    // Laravel 8.x...
+    $message
+        ->setFrom('taylor@laravel.com')
+        ->setTo('example@example.org')
+        ->setSubject('Order Shipped')
+        ->setBody('<h1>HTML</h1>', 'text/html')
+        ->addPart('Plain Text', 'text/plain');
+
+    // Laravel 9.x...
+    $message
+        ->from('taylor@laravel.com')
+        ->to('example@example.org')
+        ->subject('Order Shipped')
+        ->html('<h1>HTML</h1>')
+        ->text('Plain Text');
+
+#### Generated Messages IDs
+
+SwiftMailer offered the ability to define a custom domain to include in generated Message IDs via the `mime.idgenerator.idright` configuration option. This is not supported by Symfony Mailer. Instead, Symfony Mailer will automatically generate a Message ID based on the sender.
+
+#### Forced Reconnections
+
+It is no longer possible to force a transport reconnection (for example when the mailer is running via a daemon process). Instead, Symfony Mailer will attempt to reconnect to the transport automatically and throw an exception if the reconnection fails.
+
+#### SMTP Stream Options
+
+Defining stream options for the SMTP transport is no longer supported. Instead, you must define the relevant options directly within the configuration if they are supported. For example, to disable TLS peer verification:
+
+    'smtp' => [
+        // Laravel 8.x...
+        'stream' => [
+            'ssl' => [
+                'verify_peer' => false,
+            ],
+        ],
+
+        // Laravel 9.x...
+        'verify_peer' => false,
+    ],
+
+To learn more about the available configuration options, please review the [Symfony Mailer documentation](https://symfony.com/doc/6.0/mailer.html#transport-setup).
+
+> {note} In spite of the example above, you are not generally advised to disable SSL verification since it introduces the possibility of "man-in-the-middle" attacks.
+
+#### SMTP `auth_mode`
+
+Defining the SMTP `auth_mode` in the `mail` configuration file is no longer required. The authentication mode will be automatically negotiated between Symfony Mailer and the SMTP server.
+
+#### Failed Recipients
+
+It is no longer possible to retrieve a list of failed recipients after sending a message. Instead, an exception will be thrown if an email fails to send.
 
 ### Packages
 
