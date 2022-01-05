@@ -6,6 +6,7 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
+- [Flysystem 2.0](#flysystem-2)
 - [Symfony Mailer](#symfony-mailer)
 </div>
 
@@ -194,6 +195,35 @@ protected static function getFacadeAccessor()
 **Likelihood Of Impact: Low**
 
 The `FILESYSTEM_DRIVER` environment variable has been renamed to `FILESYSTEM_DISK` to more accurately reflect its usage. This change only affects the application skeleton; however, you are welcome to update your own application's environment variables to reflect this change if you wish.
+
+<a name="flysystem-2"></a>
+### Flysystem 2.0
+
+**Likelihood Of Impact: High**
+
+Laravel 9 has moved from Flysystem 1.x to 2.x. In light of this, some changes may be required within your application; however, we have tried to make this transition as seamless as possible.
+
+#### Overwriting Existing Files
+
+Write operations such as `put`, `write`, `writeStream` now overwrite existing files by default. If you do not want to overwrite existing files, you should manually check for the file's existence before performing the write operation.
+
+#### Reading Missing Files
+
+Attempting to read from a file that does not exist now returns `null`. In previous releases of Laravel, an `Illuminate\Contracts\Filesystem\FileNotFoundException` would have been thrown.
+
+#### Deleting Missing Files
+
+Attempting to `delete` a file that does not exist now returns `true`.
+
+#### FTP Adapter
+
+Flysystem no longer includes the FTP adapter by default. To install it, you should install the `league/flysystem-ftp` Composer package:
+
+    composer require league/flysystem-ftp:^2.0
+
+#### Cached Adapters
+
+Flysystem no longer supports "cached adapters". Thus, they have been removed from Laravel and any relevant configuration (such as the `cache` key within disk configurations) can be removed.
 
 ### Helpers
 
