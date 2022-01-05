@@ -201,7 +201,7 @@ The `FILESYSTEM_DRIVER` environment variable has been renamed to `FILESYSTEM_DIS
 
 **Likelihood Of Impact: High**
 
-Laravel 9 has moved from Flysystem 1.x to 2.x. In light of this, some changes may be required within your application; however, we have tried to make this transition as seamless as possible.
+Laravel 9 has migrated from [Flysystem](https://flysystem.thephpleague.com/v2/docs/) 1.x to 2.x. Under the hood, Flysystem powers all of the file manipulation methods provided by the `Storage` facade. In light of this, some changes may be required within your application; however, we have tried to make this transition as seamless as possible.
 
 #### Driver Prerequisites
 
