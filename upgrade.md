@@ -203,6 +203,13 @@ The `FILESYSTEM_DRIVER` environment variable has been renamed to `FILESYSTEM_DIS
 
 Laravel 9 has moved from Flysystem 1.x to 2.x. In light of this, some changes may be required within your application; however, we have tried to make this transition as seamless as possible.
 
+#### Driver Prerequisites
+
+Before using the S3 or SFTP drivers, you will need to install the appropriate package via the Composer package manager:
+
+- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^2.0"`
+- SFTP: `composer require league/flysystem-sftp "^2.0"`
+
 #### Overwriting Existing Files
 
 Write operations such as `put`, `write`, `writeStream` now overwrite existing files by default. If you do not want to overwrite existing files, you should manually check for the file's existence before performing the write operation.
@@ -214,12 +221,6 @@ Attempting to read from a file that does not exist now returns `null`. In previo
 #### Deleting Missing Files
 
 Attempting to `delete` a file that does not exist now returns `true`.
-
-#### FTP Adapter
-
-Flysystem no longer includes the FTP adapter by default. To install it, you should install the `league/flysystem-ftp` Composer package:
-
-    composer require league/flysystem-ftp:^2.0
 
 #### Cached Adapters
 

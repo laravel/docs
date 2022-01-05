@@ -6,7 +6,6 @@
     - [The Public Disk](#the-public-disk)
     - [Driver Prerequisites](#driver-prerequisites)
     - [Amazon S3 Compatible Filesystems](#amazon-s3-compatible-filesystems)
-    - [Caching](#caching)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
     - [On-Demand Disks](#on-demand-disks)
 - [Retrieving Files](#retrieving-files)
@@ -73,12 +72,8 @@ You may configure additional symbolic links in your `filesystems` configuration 
 
 Before using the S3 or SFTP drivers, you will need to install the appropriate package via the Composer package manager:
 
-- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^1.0"`
-- SFTP: `composer require league/flysystem-sftp "~1.0"`
-
-In addition, you may choose to install a cached adapter for increased performance:
-
-- CachedAdapter: `composer require league/flysystem-cached-adapter "~1.0"`
+- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^2.0"`
+- SFTP: `composer require league/flysystem-sftp "^2.0"`
 
 <a name="s3-driver-configuration"></a>
 #### S3 Driver Configuration
@@ -133,23 +128,6 @@ By default, your application's `filesystems` configuration file contains a disk 
 Typically, after updating the disk's credentials to match the credentials of the service you are planning to use, you only need to update the value of the `url` configuration option. This option's value is typically defined via the `AWS_ENDPOINT` environment variable:
 
     'endpoint' => env('AWS_ENDPOINT', 'https://minio:9000'),
-
-<a name="caching"></a>
-### Caching
-
-To enable caching for a given disk, you may add a `cache` directive to the disk's configuration options. The `cache` option should be an array of caching options containing the `disk` name, the `expire` time in seconds, and the cache `prefix`:
-
-    's3' => [
-        'driver' => 's3',
-
-        // Other Disk Options...
-
-        'cache' => [
-            'store' => 'memcached',
-            'expire' => 600,
-            'prefix' => 'cache-prefix',
-        ],
-    ],
 
 <a name="obtaining-disk-instances"></a>
 ## Obtaining Disk Instances
