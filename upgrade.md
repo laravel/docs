@@ -281,29 +281,23 @@ If you wish to specify a longer timeout for a given request, you may do so using
 
 One of the largest changes in Laravel 9 is the transition from SwiftMailer, which is no longer maintained as of December 2021, to Symfony Mailer. However, we have tried to make this transition as seamless as possible for your applications. That being said, please thoroughly review the list of changes below to ensure your application is fully compatible.
 
-#### Updated Return Types
-
-The `send`, `html`, `text`, and `plain` methods no longer return the number of recipients that received the message. Instead, an instance of `Illuminate\Mail\SentMessage` is returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
-
-#### Updated Driver Prerequisites
-
-##### Amazon SES
+#### Driver Prerequisites
 
 The `aws/aws-sdk-php` Composer package is no longer needed when using the Amazon SES transport and can be removed if no other part of your application requires it. Instead, your application should require the `symfony/amazon-mailer` Composer package:
 
     composer require symfony/amazon-mailer
 
-##### Mailgun
-
 To continue using the Mailgun transport, your application should require the `symfony/mailgun-mailer` Composer package:
 
     composer require symfony/mailgun-mailer
 
-##### Postmark
-
 The `wildbit/swiftmailer-postmark` Composer package should be removed from your application. Instead, your application should require the `symfony/postmark-mailer` Composer package:
 
     composer require symfony/postmark-mailer
+
+#### Updated Return Types
+
+The `send`, `html`, `text`, and `plain` methods no longer return the number of recipients that received the message. Instead, an instance of `Illuminate\Mail\SentMessage` is returned. This object contains an instance of `Symfony\Component\Mailer\SentMessage` that is accessible via the `getSymfonySentMessage` method or by dynamically invoking methods on the object.
 
 #### Renamed "Swift" Methods
 
