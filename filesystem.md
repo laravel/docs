@@ -505,6 +505,7 @@ Next, you can register the driver within the `boot` method of one of your applic
 
     namespace App\Providers;
 
+    use Illuminate\Filesystem\FilesystemAdapter;
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\ServiceProvider;
     use League\Flysystem\Filesystem;
@@ -531,15 +532,19 @@ Next, you can register the driver within the `boot` method of one of your applic
         public function boot()
         {
             Storage::extend('dropbox', function ($app, $config) {
-                $client = new DropboxClient(
+                $adapter = new DropboxAdapter(new DropboxClient(
                     $config['authorization_token']
-                );
+                ););
 
-                return new Filesystem(new DropboxAdapter($client));
+                return new FilesystemAdapter(
+                    new Filesystem($adapter, $config),
+                    $adapter,
+                    $config
+                );
             });
         }
     }
 
-The first argument of the `extend` method is the name of the driver and the second is a closure that receives the `$app` and `$config` variables. The closure must return an instance of `League\Flysystem\Filesystem`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
+The first argument of the `extend` method is the name of the driver and the second is a closure that receives the `$app` and `$config` variables. The closure must return an instance of `Illuminate\Filesystem\FilesystemAdapter`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
 
 Once you have created and registered the extension's service provider, you may use the `dropbox` driver in your `config/filesystems.php` configuration file.

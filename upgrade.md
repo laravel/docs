@@ -252,7 +252,7 @@ However, in Laravel 9.x, the callback given to the `Storage::extend` method shou
 ```php
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Filesystem as Flysystem;
+use League\Flysystem\Filesystem;
 use Spatie\Dropbox\Client as DropboxClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 
@@ -262,7 +262,7 @@ Storage::extend('dropbox', function ($app, $config) {
     ););
 
     return new FilesystemAdapter(
-        new Flysystem($adapter, $config),
+        new Filesystem($adapter, $config),
         $adapter,
         $config
     );
