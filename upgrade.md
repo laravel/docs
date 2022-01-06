@@ -96,7 +96,7 @@ The `schema` configuration option used to configure Postgres connection search p
 
 **Likelihood Of Impact: Medium**
 
-In previous releases of Laravel, the `set` method of custom cast classes was not invoked if the cast attribute was being set to `null`. However, this behavior was inconsistent with the Laravel documentation. In Laravel 9, the `set` method of the cast class will be invoked with `null` as the provided `$value` argument. Therefore, you should ensure your custom casts are able to sufficiently handle this scenario:
+In previous releases of Laravel, the `set` method of custom cast classes was not invoked if the cast attribute was being set to `null`. However, this behavior was inconsistent with the Laravel documentation. In Laravel 9.x, the `set` method of the cast class will be invoked with `null` as the provided `$value` argument. Therefore, you should ensure your custom casts are able to sufficiently handle this scenario:
 
 ```php
 /**
@@ -201,7 +201,7 @@ The `FILESYSTEM_DRIVER` environment variable has been renamed to `FILESYSTEM_DIS
 
 **Likelihood Of Impact: High**
 
-Laravel 9 has migrated from [Flysystem](https://flysystem.thephpleague.com/v2/docs/) 1.x to 2.x. Under the hood, Flysystem powers all of the file manipulation methods provided by the `Storage` facade. In light of this, some changes may be required within your application; however, we have tried to make this transition as seamless as possible.
+Laravel 9.x has migrated from [Flysystem](https://flysystem.thephpleague.com/v2/docs/) 1.x to 2.x. Under the hood, Flysystem powers all of the file manipulation methods provided by the `Storage` facade. In light of this, some changes may be required within your application; however, we have tried to make this transition as seamless as possible.
 
 #### Driver Prerequisites
 
@@ -226,6 +226,49 @@ Attempting to `delete` a file that does not exist now returns `true`.
 
 Flysystem no longer supports "cached adapters". Thus, they have been removed from Laravel and any relevant configuration (such as the `cache` key within disk configurations) can be removed.
 
+#### Custom Filesystems
+
+Slight changes have been made to the steps required to register custom filesystem drivers. Therefore, if you were defining your own custom filesystem drivers, or using packages that define custom drivers, you should update your code and dependencies.
+
+For example, in Laravel 8.x, a custom filesystem driver might be registered like so:
+
+```php
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Filesystem;
+use Spatie\Dropbox\Client as DropboxClient;
+use Spatie\FlysystemDropbox\DropboxAdapter;
+
+Storage::extend('dropbox', function ($app, $config) {
+    $client = new DropboxClient(
+        $config['authorization_token']
+    );
+
+    return new Filesystem(new DropboxAdapter($client));
+});
+```
+
+However, in Laravel 9.x, the callback given to the `Storage::extend` method should return an instance of `Illuminate\Filesystem\FilesystemAdapter` directly:
+
+```php
+use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Filesystem as Flysystem;
+use Spatie\Dropbox\Client as DropboxClient;
+use Spatie\FlysystemDropbox\DropboxAdapter;
+
+Storage::extend('dropbox', function ($app, $config) {
+    $adapter = new DropboxAdapter(new DropboxClient(
+        $config['authorization_token']
+    ););
+
+    return new FilesystemAdapter(
+        new Flysystem($adapter, $config),
+        $adapter,
+        $config
+    );
+});
+```
+
 ### Helpers
 
 #### The `data_get` Helper & Iterable Objects
@@ -249,7 +292,7 @@ $collection->when(true, function ($collection) {
 
 Therefore, in previous releases of Laravel, passing a closure to the `when` or `unless` methods meant that the conditional operation would always execute, since a loose comparison against a closure object (or any other object) always evaluates to `true`. This often led to unexpected outcomes because developers expect the **result** of the closure to be used as the boolean value that determines if the conditional action executes.
 
-So, in Laravel 9, any closures passed to the `when` or `unless` methods will be executed and the value returned by the closure will be considered the boolean value used by the `when` and `unless` methods:
+So, in Laravel 9.x, any closures passed to the `when` or `unless` methods will be executed and the value returned by the closure will be considered the boolean value used by the `when` and `unless` methods:
 
 ```php
 $collection->when(function ($collection) {
@@ -279,7 +322,7 @@ If you wish to specify a longer timeout for a given request, you may do so using
 
 **Likelihood Of Impact: High**
 
-One of the largest changes in Laravel 9 is the transition from SwiftMailer, which is no longer maintained as of December 2021, to Symfony Mailer. However, we have tried to make this transition as seamless as possible for your applications. That being said, please thoroughly review the list of changes below to ensure your application is fully compatible.
+One of the largest changes in Laravel 9.x is the transition from SwiftMailer, which is no longer maintained as of December 2021, to Symfony Mailer. However, we have tried to make this transition as seamless as possible for your applications. That being said, please thoroughly review the list of changes below to ensure your application is fully compatible.
 
 #### Driver Prerequisites
 
