@@ -131,7 +131,7 @@ Finally, build your Sail images:
 Swoole supports a few additional configuration options that you may add to your `octane` configuration file if necessary. Because they rarely need to be modified, these options are not included in the default configuration file:
 
 ```php
-'swoole' => [ 
+'swoole' => [
     'options' => [
         'log_file' => storage_path('logs/swoole_http.log'),
         'package_max_length' => 10 * 1024 * 1024,

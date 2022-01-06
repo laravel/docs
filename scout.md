@@ -82,9 +82,9 @@ Then, set the `SCOUT_DRIVER` environment variable as well as your MeiliSearch `h
     MEILISEARCH_HOST=http://127.0.0.1:7700
     MEILISEARCH_KEY=masterKey
 
-For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html). 
+For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
 
-In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch). 
+In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
 
 > {note} When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
 
@@ -400,7 +400,7 @@ You may use the `whereIn` method to constrain results against a given set of val
     $orders = Order::search('Star Trek')->whereIn(
         'status', ['paid', 'open']
     )->get();
-    
+
 Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
 <a name="pagination"></a>

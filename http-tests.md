@@ -864,7 +864,7 @@ Sometimes, JSON responses returned by your application may contain arrays of obj
             "name": "Steve Schoger",
             "age": 55,
             "location": "Earth"
-        },  
+        },
         {
             "name": "Mary Schoger",
             "age": 60,
@@ -1132,7 +1132,7 @@ You may also assert that a given key has a particular validation error message. 
 Assert that the response view contains given a piece of data:
 
     $response->assertViewHas($key, $value = null);
-    
+
 Passing a closure as the second argument to the `assertViewHas` method will allow you to inspect and make assertions against a particular piece of view data:
 
     $response->assertViewHas('user', function (User $user) {

@@ -935,7 +935,7 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
     protected $except = [
         'paddle/*',
     ];
-    
+
 <a name="webhooks-local-development"></a>
 #### Webhooks & Local Development
 

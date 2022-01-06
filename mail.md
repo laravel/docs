@@ -475,7 +475,7 @@ The `withSwiftMessage` method of the `Mailable` base class allows you to registe
                 'Custom-Header', 'Header Value'
             );
         });
-        
+
         return $this;
     }
 

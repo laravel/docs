@@ -1041,7 +1041,7 @@ You may specify which attributes should be considered data variables using the `
 Given the component definition above, we may render the component like so:
 
     <x-alert type="error" :message="$message" class="mb-4"/>
-    
+
 <a name="accessing-parent-data"></a>
 #### Accessing Parent Data
 
@@ -1051,7 +1051,7 @@ Sometimes you may want to access data from a parent component inside a child com
         <x-menu.item>...</x-menu.item>
         <x-menu.item>...</x-menu.item>
     </x-menu>
-    
+
 The `<x-menu>` component may have an implementation like the following:
 
     <!-- /resources/views/components/menu/index.blade.php -->
