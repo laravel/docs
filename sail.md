@@ -20,6 +20,7 @@
 - [Previewing Emails](#previewing-emails)
 - [Container CLI](#sail-container-cli)
 - [PHP Versions](#sail-php-versions)
+- [Node Versions](#sail-node-versions)
 - [Sharing Your Site](#sharing-your-site)
 - [Debugging With Xdebug](#debugging-with-xdebug)
   - [Xdebug CLI Usage](#xdebug-cli-usage)
@@ -334,6 +335,24 @@ In addition, you may wish to update your `image` name to reflect the version of 
 
 ```yaml
 image: sail-8.1/app
+```
+
+After updating your application's `docker-compose.yml` file, you should rebuild your container images:
+
+    sail build --no-cache
+
+    sail up
+
+<a name="sail-node-versions"></a>
+## Node Versions
+
+Sail installs Node 16 by default. To change the Node version that is installed when building your images, you may update the `build.args` definition of the `laravel.test` service in your application's `docker-compose.yml` file:
+
+```yaml
+build:
+    args:
+        WWWGROUP: '${WWWGROUP}'
+        NODE_VERSION: '14'
 ```
 
 After updating your application's `docker-compose.yml` file, you should rebuild your container images:
