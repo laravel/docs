@@ -98,7 +98,7 @@ PHP, Laravel, and other libraries often notify their users that some of their fe
         ...
     ]
 
-or define a channel named `deprecations`:
+Or, you may define a log channel named `deprecations`. If a log channel with this name exists, it will always be used to log deprecations:
 
     'channels' => [
         'deprecations' => [
