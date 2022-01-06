@@ -789,7 +789,7 @@ In the example above, we are retrieving the model from the database before calli
 
 Of course, you may build an Eloquent query to delete all models matching your query's criteria. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not dispatch model events for the models that are deleted:
 
-    $deletedRows = Flight::where('active', 0)->delete();
+    $deleted = Flight::where('active', 0)->delete();
 
 > {note} When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be dispatched for the deleted models. This is because the models are never actually retrieved when executing the delete statement.
 

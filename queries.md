@@ -897,11 +897,11 @@ You may also specify additional columns to update during the operation:
 <a name="delete-statements"></a>
 ## Delete Statements
 
-The query builder's `delete` method may be used to delete records from the table. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
+The query builder's `delete` method may be used to delete records from the table. The `delete` method returns the number of affected rows. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
 
-    DB::table('users')->delete();
+    $deleted = DB::table('users')->delete();
 
-    DB::table('users')->where('votes', '>', 100)->delete();
+    $deleted = DB::table('users')->where('votes', '>', 100)->delete();
 
 If you wish to truncate an entire table, which will remove all records from the table and reset the auto-incrementing ID to zero, you may use the `truncate` method:
 
