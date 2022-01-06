@@ -346,7 +346,7 @@ After updating your application's `docker-compose.yml` file, you should rebuild 
 <a name="sail-node-versions"></a>
 ## Node Versions
 
-The default Node vserion used by Sail is currently Node 16. To change the Node version that is used in your application, you should bupdate the `build.args` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
+The default Node version used by Sail is currently Node 16. To change the Node version that is used in your application, you should update the `build.args` definition of the `laravel.test` container in your application's `docker-compose.yml` file:
 
 ```yaml
 build:
