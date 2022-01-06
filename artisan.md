@@ -264,7 +264,7 @@ To assign a shortcut when defining an option, you may specify it before the opti
 
     mail:send {user} {--Q|queue}
 
-Whereas the full version of an option or a switch requires two hyphens, as stated above (`--queue`), shortcuts require a single one when used in the console:
+When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen:
 
     php artisan mail:send 1 -Q
 
