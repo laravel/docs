@@ -2082,9 +2082,9 @@ You may also pass a key / value pair to the `sole` method, which will return the
         ['product' => 'Desk', 'price' => 200],
         ['product' => 'Chair', 'price' => 100],
     ]);
-    
+
     $collection->sole('product', 'Chair');
-    
+
     // ['product' => 'Chair', 'price' => 100]
 
 Alternatively, you may also call the `sole` method with no argument to get the first element in the collection if there is only one element:
@@ -2094,10 +2094,10 @@ Alternatively, you may also call the `sole` method with no argument to get the f
     ]);
 
     $collection->sole();
-    
+
     // ['product' => 'Desk', 'price' => 200]
 
-If there are no elements in the collection that should be returned by the `sole` method, an `\Illuminate\Collections\ItemNotFoundException` exception will be thrown. If there is more than one element that should be returned, an `\Illuminate\Collections\MultipleItemsFoundException` will be thrown. 
+If there are no elements in the collection that should be returned by the `sole` method, an `\Illuminate\Collections\ItemNotFoundException` exception will be thrown. If there is more than one element that should be returned, an `\Illuminate\Collections\MultipleItemsFoundException` will be thrown.
 
 <a name="method-some"></a>
 #### `some()` {.collection-method}

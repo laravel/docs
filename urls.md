@@ -138,7 +138,7 @@ Once you have registered the middleware in your kernel, you may attach it to a r
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
     })->name('unsubscribe')->middleware('signed');
-    
+
 <a name="responding-to-invalid-signed-routes"></a>
 #### Responding To Invalid Signed Routes
 
