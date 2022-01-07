@@ -140,6 +140,7 @@ You may also provide a `retry` option to the `down` command, which will be set a
 <a name="bypassing-maintenance-mode"></a>
 #### Bypassing Maintenance Mode
 
+
 Even while in maintenance mode, you may use the `secret` option to specify a maintenance mode bypass token:
 
     php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
@@ -147,6 +148,8 @@ Even while in maintenance mode, you may use the `secret` option to specify a mai
 After placing the application in maintenance mode, you may navigate to the application URL matching this token and Laravel will issue a maintenance mode bypass cookie to your browser:
 
     https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
+    
+> {tip} Note that publicly accessible urls such as those used to serve static pages or css and js files e.g `/css/app.css` or `/js/app.js` would still be accessible during maintenance mode.
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
