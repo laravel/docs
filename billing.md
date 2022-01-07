@@ -572,9 +572,9 @@ To delete a payment method, you may call the `delete` method on the `Laravel\Cas
 
     $paymentMethod->delete();
 
-The `removePaymentMethod` method will remove a specific payment method from the billable model:
+The `deletePaymentMethod` method will delete a specific payment method from the billable model:
 
-    $user->removePaymentMethod('pm_visa');
+    $user->deletePaymentMethod('pm_visa');
 
 The `deletePaymentMethods` method will delete all of the payment method information for the billable model:
 
