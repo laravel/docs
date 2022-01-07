@@ -147,6 +147,9 @@ Even while in maintenance mode, you may use the `secret` option to specify a mai
 After placing the application in maintenance mode, you may navigate to the application URL matching this token and Laravel will issue a maintenance mode bypass cookie to your browser:
 
     https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
+    
+
+> {note} Avoid using special characters such as `&`, `?` in your `secret` as they can be misrepresented as a seperate value in the url.Preferably, your `secret` should only contain lowercase letters and hyphens, in a UUID format.
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
