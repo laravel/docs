@@ -18,6 +18,7 @@
 - [Advanced Where Clauses](#advanced-where-clauses)
     - [Where Exists Clauses](#where-exists-clauses)
     - [Subquery Where Clauses](#subquery-where-clauses)
+    - [Full-Text Search](#full-text-search)
 - [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit-and-offset)
     - [Ordering](#ordering)
     - [Grouping](#grouping)
@@ -665,6 +666,46 @@ Or, you may need to construct a "where" clause that compares a column to the res
     $incomes = Income::where('amount', '<', function ($query) {
         $query->selectRaw('avg(i.amount)')->from('incomes as i');
     })->get();
+
+<a name="full-text-search"></a>
+### Full-Text Search
+
+Full-Text search allows you to search `fulltext` indexes with natural language search. You first get started by creating an index on one or multiple columns that you want to search:
+
+    Schema::create('articles', function (Blueprint $table) {
+        $table->id('id');
+        $table->string('title', 200);
+        $table->text('body');
+        $table->fulltext(['title', 'body']);
+    });
+    
+Then, you may search this index using the `whereFullText` method on the query builder:
+
+    $articles = DB::table('articles')
+        ->whereFullText(['title', 'body'], 'Server management for PHP')
+        ->get();
+
+MySQL and PostgreSQL also allow you to pass in additional options that are specific to each engine:
+
+    // Use boolean mode in MySQL...
+    $articles = DB::table('articles')
+        ->whereFullText(['title', 'body'], '+Server -PHP', ['mode' => 'boolean')
+        ->get();
+
+    // Expand queries in MySQL...
+    $articles = DB::table('articles')
+        ->whereFullText(['title', 'body'], 'Server management for PHP', ['expanded' => true)
+        ->get();
+
+    // Use a different language in PostgreSQL...
+    $articles = DB::table('articles')
+        ->whereFullText(['title', 'body'], 'Guten Tag', ['language' => 'german')
+        ->get();
+
+    // Use a different mode in PostgreSQL...
+    $articles = DB::table('articles')
+        ->whereFullText(['title', 'body'], 'Server management for PHP', ['mode' => 'websearch')
+        ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit & Offset
