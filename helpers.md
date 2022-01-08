@@ -132,6 +132,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::studly](#method-studly-case)
 [Str::substr](#method-str-substr)
 [Str::substrCount](#method-str-substrcount)
+[Str::substr](#method-str-substrreplace)
 [Str::title](#method-title-case)
 [Str::toHtmlString](#method-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
@@ -199,6 +200,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
+[substr](#method-fluent-str-substrreplace)
 [tap](#method-fluent-str-tap)
 [test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
@@ -1697,6 +1699,20 @@ The `Str::substrCount` method returns the number of occurrences of a given value
 
     // 2
 
+<a name="method-str-substrreplace"></a>
+#### `Str::substrReplace()` {.collection-method}
+
+The `Str::substrReplace` method replaces text within a portion of a string, starting at the position specified in the third argument and replacing the specified number of characters from the fourth argument. Setting the number of characters to replace to `0` will insert the string at the specified position:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::substrReplace('1300', ':', 2); 
+    // 13:
+    
+    $result = Str::substrReplace('1300', ':', 2, 0); 
+    // 13:00
+    
+
 <a name="method-title-case"></a>
 #### `Str::title()` {.collection-method}
 
@@ -2505,6 +2521,21 @@ The `substr` method returns the portion of the string specified by the given sta
     $string = Str::of('Laravel Framework')->substr(8, 5);
 
     // Frame
+
+<a name="method-fluent-str-substrreplace"></a>
+#### `substrReplace` {.collection-method}
+
+The `substrReplace` method replaces text within a portion of a string, starting at the position specified in the second argument and replacing the specified number of characters set with the third argument. Setting the number of characters to replace to `0` will insert the string at the specified position:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('1300')->substrReplace(':', 2, 0);
+
+    // 13:00
+
+    $string = Str::of('The Framework')->substrReplace(' Laravel', 3, 0);
+
+    // The Laravel Framework
 
 <a name="method-fluent-str-tap"></a>
 #### `tap` {.collection-method}
