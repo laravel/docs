@@ -1711,7 +1711,6 @@ The `Str::substrReplace` method replaces text within a portion of a string, star
     
     $result = Str::substrReplace('1300', ':', 2, 0); 
     // 13:00
-    
 
 <a name="method-title-case"></a>
 #### `Str::title()` {.collection-method}
