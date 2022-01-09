@@ -218,6 +218,8 @@ In order to support multiple mailers, the default `mail` configuration file has 
 
 In addition, the `MAIL_DRIVER` environment variable has been renamed to `MAIL_MAILER`.
 
+However, if you use logging in your `mail` configuration, it seems you are **required** to upgrade to the new format.
+
 <a name="markdown-mail-template-updates"></a>
 #### Markdown Mail Template Updates
 
