@@ -139,6 +139,16 @@ Laravel's [model factories](/docs/{{version}}/database-testing#defining-model-fa
 
     composer require laravel/legacy-factories
 
+If you do choose to use the new model factories, you should not forget to add
+
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+as a dependency to the User Model, and also change the User class to:
+
+    class User extends Authenticatable
+    {
+        use HasFactory, Notifiable; 
+
 <a name="the-castable-interface"></a>
 #### The `Castable` Interface
 
