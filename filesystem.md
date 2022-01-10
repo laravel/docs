@@ -92,13 +92,13 @@ Laravel's Flysystem integrations work great with FTP; however, a sample configur
 
     'ftp' => [
         'driver' => 'ftp',
-        'host' => env('SFTP_HOST'),
-        'username' => env('SFTP_USERNAME'),
-        'password' => env('SFTP_PASSWORD'),
+        'host' => env('FTP_HOST'),
+        'username' => env('FTP_USERNAME'),
+        'password' => env('FTP_PASSWORD'),
 
         // Optional FTP Settings...
-        // 'port' => env('SFTP_PORT', 21),
-        // 'root' => env('SFTP_ROOT'),
+        // 'port' => env('FTP_PORT', 21),
+        // 'root' => env('FTP_ROOT'),
         // 'passive' => true,
         // 'ssl' => true,
         // 'timeout' => 30,
