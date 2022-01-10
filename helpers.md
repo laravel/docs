@@ -132,6 +132,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::studly](#method-studly-case)
 [Str::substr](#method-str-substr)
 [Str::substrCount](#method-str-substrcount)
+[Str::substrReplace](#method-str-substrreplace)
 [Str::title](#method-title-case)
 [Str::toHtmlString](#method-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
@@ -199,6 +200,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
+[substrReplace](#method-fluent-str-substrreplace)
 [tap](#method-fluent-str-tap)
 [test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
@@ -1697,6 +1699,19 @@ The `Str::substrCount` method returns the number of occurrences of a given value
 
     // 2
 
+<a name="method-str-substrreplace"></a>
+#### `Str::substrReplace()` {.collection-method}
+
+The `Str::substrReplace` method replaces text within a portion of a string, starting at the position specified by the third argument and replacing the number of characters specified by the fourth argument. Passing `0` to the method's fourth argument will insert the string at the specified position without replacing any of the existing characters in the string:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::substrReplace('1300', ':', 2); 
+    // 13:
+    
+    $result = Str::substrReplace('1300', ':', 2, 0); 
+    // 13:00
+
 <a name="method-title-case"></a>
 #### `Str::title()` {.collection-method}
 
@@ -2505,6 +2520,21 @@ The `substr` method returns the portion of the string specified by the given sta
     $string = Str::of('Laravel Framework')->substr(8, 5);
 
     // Frame
+
+<a name="method-fluent-str-substrreplace"></a>
+#### `substrReplace` {.collection-method}
+
+The `substrReplace` method replaces text within a portion of a string, starting at the position specified by the third argument and replacing the number of characters specified by the fourth argument. Passing `0` to the method's fourth argument will insert the string at the specified position without replacing any of the existing characters in the string:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('1300')->substrReplace(':', 2);
+
+    // 13:
+
+    $string = Str::of('The Framework')->substrReplace(' Laravel', 3, 0);
+
+    // The Laravel Framework
 
 <a name="method-fluent-str-tap"></a>
 #### `tap` {.collection-method}
