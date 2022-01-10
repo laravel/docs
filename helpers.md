@@ -1702,7 +1702,7 @@ The `Str::substrCount` method returns the number of occurrences of a given value
 <a name="method-str-substrreplace"></a>
 #### `Str::substrReplace()` {.collection-method}
 
-The `Str::substrReplace` method replaces text within a portion of a string, starting at the position specified in the third argument and replacing the specified number of characters from the fourth argument. Setting the number of characters to replace to `0` will insert the string at the specified position:
+The `Str::substrReplace` method replaces text within a portion of a string, starting at the position specified by the third argument and replacing the number of characters specified by the fourth argument. Passing `0` to the method's fourth argument will insert the string at the specified position without replacing any of the existing characters in the string:
 
     use Illuminate\Support\Str;
 
@@ -2524,13 +2524,13 @@ The `substr` method returns the portion of the string specified by the given sta
 <a name="method-fluent-str-substrreplace"></a>
 #### `substrReplace` {.collection-method}
 
-The `substrReplace` method replaces text within a portion of a string, starting at the position specified in the second argument and replacing the specified number of characters set with the third argument. Setting the number of characters to replace to `0` will insert the string at the specified position:
+The `substrReplace` method replaces text within a portion of a string, starting at the position specified by the third argument and replacing the number of characters specified by the fourth argument. Passing `0` to the method's fourth argument will insert the string at the specified position without replacing any of the existing characters in the string:
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('1300')->substrReplace(':', 2, 0);
+    $string = Str::of('1300')->substrReplace(':', 2);
 
-    // 13:00
+    // 13:
 
     $string = Str::of('The Framework')->substrReplace(' Laravel', 3, 0);
 
