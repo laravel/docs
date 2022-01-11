@@ -127,6 +127,8 @@ public function address(): Attribute
 <a name="implicit-route-bindings-with-enums"></a>
 ### Implicit Route Bindings With Enums
 
+_Implicit Enum bindings was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+
 PHP 8.1 introduces support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). Laravel 9.x introduces the ability to type-hint an Enum on your route definition and Laravel will only invoke the route if that route segment is a valid Enum value in the URI. Otherwise, an HTTP 404 response will be returned automatically. For example, given the following Enum:
 
 ```php
@@ -144,3 +146,9 @@ Route::get('/categories/{category}', function (Category $category) {
     return $category->value;
 });
 ```
+
+### Improved `route:list` CLI Output
+
+_Improved `route:list` CLI output was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+
+The `route:list` CLI output has been significantly improved for the Laravel 9.x release, offering a beautiful new experience when exploring your route definitions.
