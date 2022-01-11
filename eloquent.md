@@ -1397,6 +1397,20 @@ To register an observer, you need to call the `observe` method on the model you 
         User::observe(UserObserver::class);
     }
 
+Alternatively, you may list your observers within an `$observers` property of your applications' `App\Providers\EventServiceProvider` class:
+
+    use App\Models\User;
+    use App\Observers\UserObserver;
+
+    /**
+     * The model observers for your application.
+     *
+     * @var array
+     */
+    protected $observers = [
+        User::class => [UserObserver::class],
+    ];
+
 > {tip} There are additional events an observer can listen to, such as `saving` and `retrieved`. These events are described within the [events](#events) documentation.
 
 <a name="observers-and-database-transactions"></a>
