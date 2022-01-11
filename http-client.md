@@ -177,7 +177,9 @@ If needed, you may pass a third argument to the `retry` method. The third argume
         return $exception instanceof ConnectionException;
     })->post(...);
 
-If all of the requests fail, an instance of `Illuminate\Http\Client\RequestException` will be thrown.
+If all of the requests fail, an instance of `Illuminate\Http\Client\RequestException` will be thrown. If you would like to disable this behavior, you may provide a `throw` argument with a value of `false`. When disabled, the last response received by the client will be returned after all retries have been attempted:
+
+    $response = Http::retry(3, 100, throw: false)->post(...);
 
 <a name="error-handling"></a>
 ### Error Handling
