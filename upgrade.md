@@ -208,7 +208,7 @@ Laravel 9.x has migrated from [Flysystem](https://flysystem.thephpleague.com/v2/
 Before using the S3 or SFTP drivers, you will need to install the appropriate package via the Composer package manager:
 
 - Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^2.0"`
-- SFTP: `composer require league/flysystem-sftp "^2.0"`
+- SFTP: `composer require league/flysystem-sftp-v3 "^2.4"`
 
 #### Overwriting Existing Files
 
