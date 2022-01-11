@@ -28,14 +28,15 @@ Accessors, mutators, and attribute casting allow you to transform Eloquent attri
 <a name="defining-an-accessor"></a>
 ### Defining An Accessor
 
-An accessor transforms an Eloquent attribute value when it is accessed. To define an accessor, create a `get{Attribute}Attribute` method on your model where `{Attribute}` is the "studly" cased name of the column you wish to access.
+An accessor transforms an Eloquent attribute value when it is accessed. To define an accessor, create a protected method on your model to represent the accessible attribute. This method name should correspond to the "camel case" representation of the true underlying model attribute / database column when applicable.
 
-In this example, we'll define an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of the `first_name` attribute:
+In this example, we'll define an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of the `first_name` attribute. All accessor methods must declare a return type-hint of `Illuminate\Database\Eloquent\Casts\Attribute`:
 
     <?php
 
     namespace App\Models;
 
+    use Illuminate\Database\Eloquent\Casts\Attribute;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -44,13 +45,17 @@ In this example, we'll define an accessor for the `first_name` attribute. The ac
          * Get the user's first name.
          *
          * @param  string  $value
-         * @return string
+         * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
-        public function getFirstNameAttribute($value)
+        protected function firstName($value): Attribute
         {
-            return ucfirst($value);
+            return new Attribute(
+                get: fn ($value) => ucfirst($value),
+            );
         }
     }
+
+All accessor methods return an `Attribute` instance which defines how the attribute will be accessed and, optionally, mutated. In this example, we are only defining how the attribute will be accessed. To do so, we supply the `get` argument to the `Attribute` class constructor.
 
 As you can see, the original value of the column is passed to the accessor, allowing you to manipulate and return the value. To access the value of the accessor, you may simply access the `first_name` attribute on a model instance:
 
@@ -60,48 +65,63 @@ As you can see, the original value of the column is passed to the accessor, allo
 
     $firstName = $user->first_name;
 
-You are not limited to interacting with a single attribute within your accessor. You may also use accessors to return new, computed values from existing attributes:
-
-    /**
-     * Get the user's full name.
-     *
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        return "{$this->first_name} {$this->last_name}";
-    }
-
 > {tip} If you would like these computed values to be added to the array / JSON representations of your model, [you will need to append them](/docs/{{version}}/eloquent-serialization#appending-values-to-json).
+
+<a name="building-value-objects-from-multiple-attributes"></a>
+#### Building Value Objects From Multiple Attributes
+
+Sometimes your accessor may need to transform multiple model attributes into a single "value object". To do so, your `get` closure may accept a second argument of `$attributes`, which will be automatically supplied to the closure and will contain an array of all of the model's current attributes:
+
+```php
+use App\Support\Address;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
+/**
+ * Interact with the user's address.
+ *
+ * @return  \Illuminate\Database\Eloquent\Casts\Attribute
+ */
+public function address(): Attribute
+{
+    return new Attribute(
+        get: fn ($value, $attributes) => new Address(
+            $attributes['address_line_one'],
+            $attributes['address_line_two'],
+        ),
+    );
+}
+```
 
 <a name="defining-a-mutator"></a>
 ### Defining A Mutator
 
-A mutator transforms an Eloquent attribute value when it is set. To define a mutator, define a `set{Attribute}Attribute` method on your model where `{Attribute}` is the "studly" cased name of the column you wish to access.
-
-Let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:
+A mutator transforms an Eloquent attribute value when it is set. To define a mutator, you may provide the `set` argument when defining your attribute. Let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:
 
     <?php
 
     namespace App\Models;
 
+    use Illuminate\Database\Eloquent\Casts\Attribute;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
     {
         /**
-         * Set the user's first name.
+         * Interact with the user's first name.
          *
          * @param  string  $value
-         * @return void
+         * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
-        public function setFirstNameAttribute($value)
+        protected function firstName(): Attribute
         {
-            $this->attributes['first_name'] = strtolower($value);
+            return new Attribute(
+                get: fn ($value) => ucfirst($value),
+                set: fn ($value) => strtolower($value),
+            );
         }
     }
 
-The mutator will receive the value that is being set on the attribute, allowing you to manipulate the value and set the manipulated value on the Eloquent model's internal `$attributes` property. To use our mutator, we only need to set the `first_name` attribute on an Eloquent model:
+The mutator closure will receive the value that is being set on the attribute, allowing you to manipulate the value and return the manipulated value. To use our mutator, we only need to set the `first_name` attribute on an Eloquent model:
 
     use App\Models\User;
 
@@ -109,7 +129,36 @@ The mutator will receive the value that is being set on the attribute, allowing 
 
     $user->first_name = 'Sally';
 
-In this example, the `setFirstNameAttribute` function will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in the internal `$attributes` array.
+In this example, the `set` callback will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its resulting value in model's the internal `$attributes` array.
+
+<a name="mutating-multiple-attributes"></a>
+#### Mutating Multiple Attributes
+
+Sometimes your mutator may need to set multiple attributes on the underlying model. To do so, you may return an array from the `set` closure. Each key in the array should correspond with an underlying attribute / database column associated with the model:
+
+```php
+use App\Support\Address;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
+/**
+ * Interact with the user's address.
+ *
+ * @return  \Illuminate\Database\Eloquent\Casts\Attribute
+ */
+public function address(): Attribute
+{
+    return new Attribute(
+        get: fn ($value, $attributes) => new Address(
+            $attributes['address_line_one'],
+            $attributes['address_line_two'],
+        ),
+        set: fn (Address $value) => [
+            'address_line_one' => $value->lineOne,
+            'address_line_two' => $value->lineTwo,
+        ],
+    );
+}
+```
 
 <a name="attribute-casting"></a>
 ## Attribute Casting
