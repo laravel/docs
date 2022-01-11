@@ -72,7 +72,7 @@ Within both of these methods, you may use the Laravel schema builder to expressi
     use Illuminate\Database\Schema\Blueprint;
     use Illuminate\Support\Facades\Schema;
 
-    class CreateFlightsTable extends Migration
+    return new class extends Migration
     {
         /**
          * Run the migrations.
@@ -98,7 +98,7 @@ Within both of these methods, you may use the Laravel schema builder to expressi
         {
             Schema::drop('flights');
         }
-    }
+    };
 
 <a name="anonymous-migrations"></a>
 #### Anonymous Migrations
@@ -898,7 +898,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
     use Illuminate\Database\Query\Expression;
     use Illuminate\Database\Migrations\Migration;
 
-    class CreateFlightsTable extends Migration
+    return new class extends Migration
     {
         /**
          * Run the migrations.
@@ -913,7 +913,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
                 $table->timestamps();
             });
         }
-    }
+    };
 
 > {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
 
