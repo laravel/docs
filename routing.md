@@ -15,6 +15,7 @@
     - [Route Name Prefixes](#route-group-name-prefixes)
 - [Route Model Binding](#route-model-binding)
     - [Implicit Binding](#implicit-binding)
+    - [Implicit Enum Binding](#implicit-enum-binding)
     - [Explicit Binding](#explicit-binding)
 - [Fallback Routes](#fallback-routes)
 - [Rate Limiting](#rate-limiting)
@@ -470,6 +471,34 @@ Typically, a 404 HTTP response will be generated if an implicitly bound model is
             ->missing(function (Request $request) {
                 return Redirect::route('locations.index');
             });
+
+<a name="implicit-enum-binding"></a>
+### Implicit Enum Binding
+
+PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint an Enum on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
+
+```php
+<?php
+
+namespace App\Enums;
+
+enum Category: string
+{
+    case Fruits = 'fruits';
+    case People = 'people';
+}
+```
+
+You may define a route that will only be invoked if the `{category}` route segment is `fruits` or `people`. Otherwise, Laravel will return a 404 HTTP response:
+
+```php
+use App\Enums\Category;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/categories/{category}', function (Category $category) {
+    return $category->value;
+});
+```
 
 <a name="explicit-binding"></a>
 ### Explicit Binding
