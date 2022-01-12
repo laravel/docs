@@ -10,6 +10,7 @@
     - [Error Handling](#error-handling)
     - [Guzzle Options](#guzzle-options)
 - [Concurrent Requests](#concurrent-requests)
+- [Macros](#macros)
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
     - [Inspecting Requests](#inspecting-requests)
@@ -266,6 +267,35 @@ As you can see, each response instance can be accessed based on the order it was
     ]);
 
     return $responses['first']->ok();
+
+<a name="macros"></a>
+## Macros
+
+The Laravel HTTP client allows you to define "macros", which can serve as a fluent, expressive mechanism to configure common request paths and headers when interacting with services throughout your application. To get started, you may define the macro within the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+/**
+ * Bootstrap any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Http::macro('github', function () {
+        return Http::withHeaders([
+            'X-Example' => 'example',
+        ])->baseUrl('https://github.com');
+    });
+}
+```
+
+Once your macro has been configured, you may invoke it from anywhere in your application to create a pending request with the specified configuration:
+
+```php
+$response = Http::github()->get('/');
+```
 
 <a name="testing"></a>
 ## Testing

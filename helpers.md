@@ -208,7 +208,17 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [ucfirst](#method-fluent-str-ucfirst)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
+[whenContains](#method-fluent-str-when-contains)
+[whenContainsAll](#method-fluent-str-when-contains-all)
 [whenEmpty](#method-fluent-str-when-empty)
+[whenNotEmpty](#method-fluent-str-when-not-empty)
+[whenStartsWith](#method-fluent-str-when-starts-with)
+[whenEndsWith](#method-fluent-str-when-ends-with)
+[whenExactly](#method-fluent-str-when-exactly)
+[whenIs](#method-fluent-str-when-is)
+[whenIsAscii](#method-fluent-str-when-is-ascii)
+[whenIsUuid](#method-fluent-str-when-is-uuid)
+[whenTest](#method-fluent-str-when-test)
 [wordCount](#method-fluent-str-word-count)
 [words](#method-fluent-str-words)
 
@@ -2627,6 +2637,22 @@ The `when` method invokes the given closure if a given condition is `true`. The 
 
 If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
 
+<a name="method-fluent-str-when-contains-all"></a>
+#### `whenContainsAll` {.collection-method}
+
+The `whenContainsAll` method invokes the given closure if the string contains all of the given sub-strings. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('tony stark')
+                    ->whenContainsAll(['tony', 'stark'], function ($string) {
+                        return $string->title();
+                    });
+
+    // 'Tony Stark'
+
+If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
+
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {.collection-method}
 
@@ -2639,6 +2665,110 @@ The `whenEmpty` method invokes the given closure if the string is empty. If the 
     });
 
     // 'Laravel'
+
+<a name="method-fluent-str-when-not-empty"></a>
+#### `whenNotEmpty` {.collection-method}
+
+The `whenNotEmpty` method invokes the given closure if the string is not empty. If the closure returns a value, that value will also be returned by the `whenNotEmpty` method. If the closure does not return a value, the fluent string instance will be returned:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Framework')->whenNotEmpty(function ($string) {
+        return $string->prepend('Laravel ');
+    });
+
+    // 'Laravel Framework'
+
+<a name="method-fluent-str-when-starts-with"></a>
+#### `whenStartsWith` {.collection-method}
+
+The `whenStartsWith` method invokes the given closure if the string starts with the given sub-string. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('disney world')->whenStartsWith('disney', function ($string) {
+        return $string->title();
+    });
+
+    // 'Disney World'
+
+<a name="method-fluent-str-when-ends-with"></a>
+#### `whenEndsWith` {.collection-method}
+
+The `whenEndsWith` method invokes the given closure if the string ends with the given sub-string. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('disney world')->whenEndsWith('world', function ($string) {
+        return $string->title();
+    });
+
+    // 'Disney World'
+
+<a name="method-fluent-str-when-exactly"></a>
+#### `whenExactly` {.collection-method}
+
+The `whenExactly` method invokes the given closure if the string exactly matches the given string. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('laravel')->whenExactly('laravel', function ($string) {
+        return $string->title();
+    });
+
+    // 'Laravel'
+
+<a name="method-fluent-str-when-is"></a>
+#### `whenIs` {.collection-method}
+
+The `whenIs` method invokes the given closure if the string matches a given pattern. Asterisks may be used as wildcard values. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('foo/bar')->whenIs('foo/*', function ($string) {
+        return $string->append('/baz');
+    });
+
+    // 'foo/bar/baz'
+
+<a name="method-fluent-str-when-is-ascii"></a>
+#### `whenIsAscii` {.collection-method}
+
+The `whenIsAscii` method invokes the given closure if the string is 7 bit ASCII. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('foo/bar')->whenIsAscii('laravel', function ($string) {
+        return $string->title();
+    });
+
+    // 'Laravel'
+
+<a name="method-fluent-str-when-is-uuid"></a>
+#### `whenIsUuid` {.collection-method}
+
+The `whenIsUuid` method invokes the given closure if the string is a valid UUID. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('foo/bar')->whenIsUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de', function ($string) {
+        return $string->substr(0, 8);
+    });
+
+    // 'a0a2a2d2'
+
+<a name="method-fluent-str-when-test"></a>
+#### `whenTest` {.collection-method}
+
+The `whenTest` method invokes the given closure if the string matches the given regular expression. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('laravel framework')->whenTest('/laravel/', function ($string) {
+        return $string->title();
+    });
+
+    // 'Laravel Framework'
 
 <a name="method-fluent-str-word-count"></a>
 #### `wordCount` {.collection-method}
