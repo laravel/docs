@@ -1585,7 +1585,7 @@ The `pipeThrough` method passes the collection to the given array of closures an
 
     $collection = collect([1, 2, 3]);
 
-    $pipeThroughed = $collection->pipeThrough([
+    $result = $collection->pipeThrough([
         function ($collection) {
             return $collection->merge([4, 5]);
         },
