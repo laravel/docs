@@ -1049,8 +1049,8 @@ Command  |  Description
 `$table->primary(['id', 'parent_id']);`  |  Adds composite keys.
 `$table->unique('email');`  |  Adds a unique index.
 `$table->index('state');`  |  Adds an index.
-`$table->fulltext('body');`  |  Adds a fulltext index (MySQL/PostgreSQL).
-`$table->fulltext('body')->language('english');`  |  Adds a fulltext index of the specified language (PostgreSQL).
+`$table->fullText('body');`  |  Adds a full text index (MySQL/PostgreSQL).
+`$table->fullText('body')->language('english');`  |  Adds a full text index of the specified language (PostgreSQL).
 `$table->spatialIndex('location');`  |  Adds a spatial index (except SQLite).
 
 <a name="index-lengths-mysql-mariadb"></a>
