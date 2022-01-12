@@ -18,6 +18,7 @@
 - [Advanced Where Clauses](#advanced-where-clauses)
     - [Where Exists Clauses](#where-exists-clauses)
     - [Subquery Where Clauses](#subquery-where-clauses)
+    - [Full Text Where Clauses](#full-text-where-clauses)
 - [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit-and-offset)
     - [Ordering](#ordering)
     - [Grouping](#grouping)
@@ -665,6 +666,17 @@ Or, you may need to construct a "where" clause that compares a column to the res
     $incomes = Income::where('amount', '<', function ($query) {
         $query->selectRaw('avg(i.amount)')->from('incomes as i');
     })->get();
+
+<a name="full-text-where-clauses"></a>
+### Full Text Where Clauses
+
+> {note} Full text where clauses are currently supported by MySQL and PostgreSQL.
+
+The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MySQL:
+
+    $users = DB::table('users')
+               ->whereFullText('bio', 'web developer')
+               ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit & Offset
