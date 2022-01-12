@@ -1228,7 +1228,7 @@ The field under validation must be an IPv6 address.
 <a name="rule-mac"></a>
 #### mac
 
-The field under validation must be an MAC address.
+The field under validation must be a MAC address.
 
 <a name="rule-json"></a>
 #### json
