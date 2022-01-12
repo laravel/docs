@@ -156,6 +156,21 @@ If your application interacts with small to medium sized databases or has a ligh
 
 To learn more about the Scout database engine, consult the [Scout documentation](/docs/{{version}}/scout).
 
+<a name="full-text"></a>
+### Full Text Indexes / Where Clauses
+
+_Full text indexes and "where" clauses were contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Dries Vints](https://github.com/driesvints)_.
+
+When using MySQL or PostgreSQL, the `fullText` method may now be added to column definitions to generate full text indexes:
+
+    $table->text('bio')->fullText();
+
+In addition, the `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MySQL:
+
+    $users = DB::table('users')
+               ->whereFullText('bio', 'web developer')
+               ->get();
+
 ### Improved `route:list` CLI Output
 
 _Improved `route:list` CLI output was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
