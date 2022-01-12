@@ -11,6 +11,7 @@
 - [Input](#input)
     - [Retrieving Input](#retrieving-input)
     - [Determining If Input Is Present](#determining-if-input-is-present)
+    - [Merging Additional Input](#merging-additional-input)
     - [Old Input](#old-input)
     - [Cookies](#cookies)
     - [Input Trimming & Normalization](#input-trimming-and-normalization)
@@ -286,6 +287,19 @@ When dealing with HTML elements like checkboxes, your application may receive "t
 
     $archived = $request->boolean('archived');
 
+<a name="retrieving-date-input-values"></a>
+#### Retrieving Date Input Values
+
+For convenience, input values containing dates / times may be retrieved as Carbon instances using the `date` method. If the request does not contain an input value with the given name, `null` will be returned:
+
+    $birthday = $request->date('birthday');
+
+The second and third arguments accepted by the `date` method may be used to specify the date's format and timezone, respectively:
+
+    $elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');
+
+If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method.
+
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input Via Dynamic Properties
 
@@ -370,6 +384,17 @@ To determine if a given key is absent from the request, you may use the `missing
     if ($request->missing('name')) {
         //
     }
+
+<a name="merging-additional-input"></a>
+### Merging Additional Input
+
+Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method:
+
+    $request->merge(['votes' => 0]);
+
+The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:
+
+    $request->mergeIfMissing(['votes' => 0]);
 
 <a name="old-input"></a>
 ### Old Input

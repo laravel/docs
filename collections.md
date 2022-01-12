@@ -109,6 +109,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [diff](#method-diff)
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
+[doesntContain](#method-doesntcontain)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
 [duplicatesStrict](#method-duplicatesstrict)
@@ -155,6 +156,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [partition](#method-partition)
 [pipe](#method-pipe)
 [pipeInto](#method-pipeinto)
+[pipeThrough](#method-pipethrough)
 [pluck](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
@@ -198,6 +200,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [toArray](#method-toarray)
 [toJson](#method-tojson)
 [transform](#method-transform)
+[undot](#method-undot)
 [union](#method-union)
 [unique](#method-unique)
 [uniqueStrict](#method-uniquestrict)
@@ -422,6 +425,8 @@ You may also pass a key / value pair to the `contains` method, which will determ
 
 The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`containsStrict`](#method-containsstrict) method to filter using "strict" comparisons.
 
+For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) method.
+
 <a name="method-containsstrict"></a>
 #### `containsStrict()` {.collection-method}
 
@@ -584,6 +589,44 @@ The `diffKeys` method compares the collection against another collection or a pl
     $diff->all();
 
     // ['one' => 10, 'three' => 30, 'five' => 50]
+
+<a name="method-doesntcontain"></a>
+#### `doesntContain()` {.collection-method}
+
+The `doesntContain` method determines whether the collection does not contain a given item. You may pass a closure to the `doesntContain` method to determine if an element does not exist in the collection matching a given truth test:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $collection->doesntContain(function ($value, $key) {
+        return $value < 5;
+    });
+
+    // false
+
+Alternatively, you may pass a string to the `doesntContain` method to determine whether the collection does not contain a given item value:
+
+    $collection = collect(['name' => 'Desk', 'price' => 100]);
+
+    $collection->doesntContain('Table');
+
+    // true
+
+    $collection->doesntContain('Desk');
+
+    // false
+
+You may also pass a key / value pair to the `doesntContain` method, which will determine if the given pair does not exist in the collection:
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 100],
+    ]);
+
+    $collection->doesntContain('product', 'Bookcase');
+
+    // true
+
+The `doesntContain` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value.
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
@@ -1536,6 +1579,24 @@ The `pipeInto` method creates a new instance of the given class and passes the c
 
     // [1, 2, 3]
 
+<a name="method-pipethrough"></a>
+#### `pipeThrough()` {.collection-method}
+
+The `pipeThrough` method passes the collection to the given array of closures and returns the result of the executed closures:
+
+    $collection = collect([1, 2, 3]);
+
+    $result = $collection->pipeThrough([
+        function ($collection) {
+            return $collection->merge([4, 5]);
+        },
+        function ($collection) {
+            return $collection->sum();
+        },
+    ]);
+
+    // 15
+
 <a name="method-pluck"></a>
 #### `pluck()` {.collection-method}
 
@@ -2056,9 +2117,9 @@ You may also pass a key / value pair to the `sole` method, which will return the
         ['product' => 'Desk', 'price' => 200],
         ['product' => 'Chair', 'price' => 100],
     ]);
-    
+
     $collection->sole('product', 'Chair');
-    
+
     // ['product' => 'Chair', 'price' => 100]
 
 Alternatively, you may also call the `sole` method with no argument to get the first element in the collection if there is only one element:
@@ -2068,10 +2129,10 @@ Alternatively, you may also call the `sole` method with no argument to get the f
     ]);
 
     $collection->sole();
-    
+
     // ['product' => 'Desk', 'price' => 200]
 
-If there are no elements in the collection that should be returned by the `sole` method, an `\Illuminate\Collections\ItemNotFoundException` exception will be thrown. If there is more than one element that should be returned, an `\Illuminate\Collections\MultipleItemsFoundException` will be thrown. 
+If there are no elements in the collection that should be returned by the `sole` method, an `\Illuminate\Collections\ItemNotFoundException` exception will be thrown. If there is more than one element that should be returned, an `\Illuminate\Collections\MultipleItemsFoundException` will be thrown.
 
 <a name="method-some"></a>
 #### `some()` {.collection-method}
@@ -2118,7 +2179,7 @@ The `sortBy` method sorts the collection by the given key. The sorted collection
         ]
     */
 
-The `sort` method accepts [sort flags](https://www.php.net/manual/en/function.sort.php) as its second argument:
+The `sortBy` method accepts [sort flags](https://www.php.net/manual/en/function.sort.php) as its second argument:
 
     $collection = collect([
         ['title' => 'Item 1'],
@@ -2501,6 +2562,41 @@ The `transform` method iterates over the collection and calls the given callback
     // [2, 4, 6, 8, 10]
 
 > {note} Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
+
+<a name="method-undot"></a>
+#### `undot()` {.collection-method}
+
+The `undot` method expands a single-dimensional collection that uses "dot" notation into a multi-dimensional collection:
+
+    $person = collect([
+        'name.first_name' => 'Marie',
+        'name.last_name' => 'Valentine',
+        'address.line_1' => '2992 Eagle Drive',
+        'address.line_2' => '',
+        'address.suburb' => 'Detroit',
+        'address.state' => 'MI',
+        'address.postcode' => '48219'
+    ])
+
+    $person = $person->undot();
+
+    $person->toArray();
+
+    /*
+        [
+            "name" => [
+                "first_name" => "Marie",
+                "last_name" => "Valentine",
+            ],
+            "address" => [
+                "line_1" => "2992 Eagle Drive",
+                "line_2" => "",
+                "suburb" => "Detroit",
+                "state" => "MI",
+                "postcode" => "48219",
+            ],
+        ]
+    */
 
 <a name="method-union"></a>
 #### `union()` {.collection-method}

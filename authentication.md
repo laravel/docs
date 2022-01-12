@@ -483,7 +483,7 @@ Next, we will define a route that will handle the form request from the "confirm
         $request->session()->passwordConfirmed();
 
         return redirect()->intended();
-    })->middleware(['auth', 'throttle:6,1'])->name('password.confirm');
+    })->middleware(['auth', 'throttle:6,1']);
 
 Before moving on, let's examine this route in more detail. First, the request's `password` field is determined to actually match the authenticated user's password. If the password is valid, we need to inform Laravel's session that the user has confirmed their password. The `passwordConfirmed` method will set a timestamp in the user's session that Laravel can use to determine when the user last confirmed their password. Finally, we can redirect the user to their intended destination.
 

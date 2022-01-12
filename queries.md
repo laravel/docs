@@ -849,7 +849,7 @@ In the example above, Laravel will attempt to insert two records. If a record al
 <a name="update-statements"></a>
 ## Update Statements
 
-In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. You may constrain the `update` query using `where` clauses:
+In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. The `update` method returns the number of affected rows. You may constrain the `update` query using `where` clauses:
 
     $affected = DB::table('users')
                   ->where('id', 1)
@@ -897,11 +897,11 @@ You may also specify additional columns to update during the operation:
 <a name="delete-statements"></a>
 ## Delete Statements
 
-The query builder's `delete` method may be used to delete records from the table. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
+The query builder's `delete` method may be used to delete records from the table. The `delete` method returns the number of affected rows. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
 
-    DB::table('users')->delete();
+    $deleted = DB::table('users')->delete();
 
-    DB::table('users')->where('votes', '>', 100)->delete();
+    $deleted = DB::table('users')->where('votes', '>', 100)->delete();
 
 If you wish to truncate an entire table, which will remove all records from the table and reset the auto-incrementing ID to zero, you may use the `truncate` method:
 

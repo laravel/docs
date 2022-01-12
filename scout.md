@@ -28,7 +28,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Scout provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
+[Laravel Scout](https://github.com/laravel/scout) provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
 Currently, Scout ships with [Algolia](https://www.algolia.com/), [MeiliSearch](https://www.meilisearch.com), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
@@ -82,9 +82,9 @@ Then, set the `SCOUT_DRIVER` environment variable as well as your MeiliSearch `h
     MEILISEARCH_HOST=http://127.0.0.1:7700
     MEILISEARCH_KEY=masterKey
 
-For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html). 
+For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
 
-In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch). 
+In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your MeiliSearch binary version by reviewing [MeiliSearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
 
 > {note} When upgrading Scout on an application that utilizes MeiliSearch, you should always [review any additional breaking changes](https://github.com/meilisearch/MeiliSearch/releases) to the MeiliSearch service itself.
 
@@ -389,11 +389,19 @@ Search queries will typically be performed on the index specified by the model's
 <a name="where-clauses"></a>
 ### Where Clauses
 
-Scout allows you to add simple "where" clauses to your search queries. Currently, these clauses only support basic numeric equality checks and are primarily useful for scoping search queries by an owner ID. Since a search index is not a relational database, more advanced "where" clauses are not currently supported:
+Scout allows you to add simple "where" clauses to your search queries. Currently, these clauses only support basic numeric equality checks and are primarily useful for scoping search queries by an owner ID:
 
     use App\Models\Order;
 
     $orders = Order::search('Star Trek')->where('user_id', 1)->get();
+
+You may use the `whereIn` method to constrain results against a given set of values:
+
+    $orders = Order::search('Star Trek')->whereIn(
+        'status', ['paid', 'open']
+    )->get();
+
+Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
 
 <a name="pagination"></a>
 ### Pagination

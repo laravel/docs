@@ -479,7 +479,7 @@ The `withSymfonyMessage` method of the `Mailable` base class allows you to regis
                 'Custom-Header', 'Header Value'
             );
         });
-        
+
         return $this;
     }
 

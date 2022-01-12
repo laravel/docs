@@ -388,7 +388,7 @@ Flight::where('departed', true)
     ->each->update(['departed' => false]);
 ```
 
-You may filter the results based on the descending order of the `id` using the `lazyByIdDesc` method. 
+You may filter the results based on the descending order of the `id` using the `lazyByIdDesc` method.
 
 <a name="cursors"></a>
 ### Cursors
@@ -605,7 +605,7 @@ Updates can also be performed against models that match a given query. In this e
           ->where('destination', 'San Diego')
           ->update(['delayed' => 1]);
 
-The `update` method expects an array of column and value pairs representing the columns that should be updated.
+The `update` method expects an array of column and value pairs representing the columns that should be updated. The `update` method returns the number of affected rows.
 
 > {note} When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
 
@@ -789,7 +789,7 @@ In the example above, we are retrieving the model from the database before calli
 
 Of course, you may build an Eloquent query to delete all models matching your query's criteria. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not dispatch model events for the models that are deleted:
 
-    $deletedRows = Flight::where('active', 0)->delete();
+    $deleted = Flight::where('active', 0)->delete();
 
 > {note} When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be dispatched for the deleted models. This is because the models are never actually retrieved when executing the delete statement.
 

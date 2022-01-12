@@ -94,6 +94,19 @@ PHP, Laravel, and other libraries often notify their users that some of their fe
 
     'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
 
+    'channels' => [
+        ...
+    ]
+
+Or, you may define a log channel named `deprecations`. If a log channel with this name exists, it will always be used to log deprecations:
+
+    'channels' => [
+        'deprecations' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/php-deprecation-warnings.log'),
+        ],
+    ],
+
 <a name="building-log-stacks"></a>
 ## Building Log Stacks
 

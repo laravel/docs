@@ -46,7 +46,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Passport provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
+[Laravel Passport](https://github.com/laravel/passport) provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
 
 > {note} This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
 
@@ -923,6 +923,8 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
     Route::get('/user', function () {
         //
     })->middleware('auth:api');
+
+> {note} If you are using the [client credentials grant](#client-credentials-grant-tokens), you should use [the `client` middleware](#client-credentials-grant-tokens) to protect your routes instead of the `auth:api` middleware.
 
 <a name="multiple-authentication-guards"></a>
 #### Multiple Authentication Guards

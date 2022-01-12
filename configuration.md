@@ -150,6 +150,8 @@ After placing the application in maintenance mode, you may navigate to the appli
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
+> {tip} Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?`.
+
 <a name="pre-rendering-the-maintenance-mode-view"></a>
 #### Pre-Rendering The Maintenance Mode View
 

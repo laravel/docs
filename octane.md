@@ -26,7 +26,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Octane supercharges your application's performance by serving your application using high-powered application servers, including [Swoole](https://swoole.co.uk) and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
+[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [Open Swoole](https://swoole.co.uk), [Swoole](https://github.com/swoole/swoole-src), and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
 
 <a name="installation"></a>
 ## Installation
@@ -125,6 +125,20 @@ Finally, build your Sail images:
 ./vendor/bin/sail build --no-cache
 ```
 
+<a name="swoole-configuration"></a>
+#### Swoole Configuration
+
+Swoole supports a few additional configuration options that you may add to your `octane` configuration file if necessary. Because they rarely need to be modified, these options are not included in the default configuration file:
+
+```php
+'swoole' => [
+    'options' => [
+        'log_file' => storage_path('logs/swoole_http.log'),
+        'package_max_length' => 10 * 1024 * 1024,
+    ],
+];
+```
+
 <a name="serving-your-application"></a>
 ## Serving Your Application
 
@@ -152,7 +166,7 @@ By default, applications running via Octane generate links prefixed with `http:/
 
 In production environments, you should serve your Octane application behind a traditional web server such as a Nginx or Apache. Doing so will allow the web server to serve your static assets such as images and stylesheets, as well as manage your SSL certificate termination.
 
-In the Nginx configuration example below file, Nginx will serve the site's static assets and proxy requests to the Octane server that is running on port 8000:
+In the Nginx configuration example below, Nginx will serve the site's static assets and proxy requests to the Octane server that is running on port 8000:
 
 ```conf
 map $http_upgrade $connection_upgrade {
@@ -542,4 +556,3 @@ return Octane::table('example')->get('uuid');
 ```
 
 > {note} The column types supported by Swoole tables are: `string`, `int`, and `float`.
-

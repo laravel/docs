@@ -174,12 +174,24 @@ You may use the `Bus` facade's `fake` method to prevent jobs from being dispatch
             // Assert a job was not dispatched...
             Bus::assertNotDispatched(AnotherJob::class);
 
+            // Assert that a job was dispatched synchronously...
+            Bus::assertDispatchedSync(AnotherJob::class);
+
+            // Assert that a job was not dipatched synchronously...
+            Bus::assertNotDispatchedSync(AnotherJob::class);
+
+            // Assert that a job was dispatched after the response was sent...
+            Bus::assertDispatchedAfterResponse(AnotherJob::class);
+
+            // Assert a job was not dispatched after response was sent...
+            Bus::assertNotDispatchedAfterResponse(AnotherJob::class);
+
             // Assert no jobs were dispatched...
             Bus::assertNothingDispatched();
         }
     }
 
-You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that a job was dispatched that passes a given "truth test". If at least one job was dispatched that passes the given truth test then the assertion will be successful. For example, you may wish to assert that a job was dispatched for a specific order:
+You may pass a closure to the available methods in order to assert that a job was dispatched that passes a given "truth test". If at least one job was dispatched that passes the given truth test then the assertion will be successful. For example, you may wish to assert that a job was dispatched for a specific order:
 
     Bus::assertDispatched(function (ShipOrder $job) use ($order) {
         return $job->order->id === $order->id;

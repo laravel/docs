@@ -87,13 +87,13 @@ Laravel's Flysystem integrations work great with FTP; however, a sample configur
 
     'ftp' => [
         'driver' => 'ftp',
-        'host' => 'ftp.example.com',
-        'username' => 'your-username',
-        'password' => 'your-password',
+        'host' => env('FTP_HOST'),
+        'username' => env('FTP_USERNAME'),
+        'password' => env('FTP_PASSWORD'),
 
         // Optional FTP Settings...
-        // 'port' => 21,
-        // 'root' => '',
+        // 'port' => env('FTP_PORT', 21),
+        // 'root' => env('FTP_ROOT'),
         // 'passive' => true,
         // 'ssl' => true,
         // 'timeout' => 30,
@@ -106,17 +106,19 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
 
     'sftp' => [
         'driver' => 'sftp',
-        'host' => 'example.com',
-        'username' => 'your-username',
-        'password' => 'your-password',
+        'host' => env('SFTP_HOST'),
+        
+        // Settings for basic authentication...
+        'username' => env('SFTP_USERNAME'),
+        'password' => env('SFTP_PASSWORD'),
 
-        // Settings for SSH key based authentication...
-        'privateKey' => '/path/to/privateKey',
-        'password' => 'encryption-password',
+        // Settings for SSH key based authentication with encryption password...
+        'privateKey' => env('SFTP_PRIVATE_KEY'),
+        'password' => env('SFTP_PASSWORD'),
 
         // Optional SFTP Settings...
-        // 'port' => 22,
-        // 'root' => '',
+        // 'port' => env('SFTP_PORT', 22),
+        // 'root' => env('SFTP_ROOT'),
         // 'timeout' => 30,
     ],
 
@@ -220,6 +222,35 @@ If you need to specify additional [S3 request parameters](https://docs.aws.amazo
             'ResponseContentDisposition' => 'attachment; filename=file2.jpg',
         ]
     );
+
+If you need to customize how temporary URLs are created for a specific storage disk, you can use the `buildTemporaryUrlsUsing` method. For example, this can be useful if you have a controller that allows you to download files stored via a disk that doesn't typically support temporary URLs. Usually, this method should be called from the `boot` method of a service provider:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Facades\URL;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Storage::disk('local')->buildTemporaryUrlsUsing(function ($path, $expiration, $options) {
+                return URL::temporarySignedRoute(
+                    'files.download',
+                    $expiration,
+                    array_merge($options, ['path' => $path])
+                );
+            });
+        }
+    }
 
 <a name="url-host-customization"></a>
 #### URL Host Customization

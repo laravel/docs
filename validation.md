@@ -1753,6 +1753,16 @@ Then, when you would like to apply the default rules to a particular password un
 
     'password' => ['required', Password::defaults()],
 
+Occasionally, you may want to attach additional validation rules to your default password validation rules. You may use the `rules` method to accomplish this:
+
+    use App\Rules\ZxcvbnRule;
+
+    Password::defaults(function () {
+        $rule = Password::min(8)->rules([new ZxcvbnRule]);
+
+        // ...
+    });
+
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
 

@@ -778,7 +778,7 @@ The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equi
 The `tinyInteger` method creates a `TINYINT` equivalent column:
 
     $table->tinyInteger('votes');
-    
+
 <a name="column-method-tinyText"></a>
 #### `tinyText()` {.collection-method}
 

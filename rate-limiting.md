@@ -30,7 +30,7 @@ The `Illuminate\Support\Facades\RateLimiter` facade may be used to interact with
 The `attempt` method returns `false` when the callback has no remaining attempts available; otherwise, the `attempt` method will return the callback's result or `true`. The first argument accepted by the `attempt` method is a rate limiter "key", which may be any string of your choosing that represents the action being rate limited:
 
     use Illuminate\Support\Facades\RateLimiter;
-    
+
     $executed = RateLimiter::attempt(
         'send-message:'.$user->id,
         $perMinute = 5,
@@ -38,7 +38,7 @@ The `attempt` method returns `false` when the callback has no remaining attempts
             // Send message...
         }
     );
-    
+
     if (! $executed) {
       return 'Too many messages sent!';
     }
@@ -49,7 +49,7 @@ The `attempt` method returns `false` when the callback has no remaining attempts
 If you would like to manually interact with the rate limiter, a variety of other methods are available. For example, you may invoke the `tooManyAttempts` method to determine if a given rate limiter key has exceeded its maximum number of allowed attempts per minute:
 
     use Illuminate\Support\Facades\RateLimiter;
-    
+
     if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
         return 'Too many attempts!';
     }
@@ -57,7 +57,7 @@ If you would like to manually interact with the rate limiter, a variety of other
 Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `hit` method to increment the number of total attempts:
 
     use Illuminate\Support\Facades\RateLimiter;
-    
+
     if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
         RateLimiter::hit('send-message:'.$user->id);
 
@@ -94,8 +94,8 @@ You may reset the number of attempts for a given rate limiter key using the `cle
     public function read(Message $message)
     {
         $message->markAsRead();
-        
+
         RateLimiter::clear('send-message:'.$message->user_id);
-        
+
         return $message;
     }

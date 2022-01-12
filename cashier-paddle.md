@@ -46,7 +46,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Cashier Paddle provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods, and more.
+[Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) provides an expressive, fluent interface to [Paddle's](https://paddle.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading. In addition to basic subscription management, Cashier can handle: coupons, swapping subscription, subscription "quantities", cancellation grace periods, and more.
 
 While working with Cashier we recommend you also review Paddle's [user guides](https://developer.paddle.com/guides) and [API documentation](https://developer.paddle.com/api-reference/intro).
 
@@ -68,6 +68,10 @@ First, install the Cashier package for Paddle using the Composer package manager
 ### Paddle Sandbox
 
 During local and staging development, you should [register a Paddle Sandbox account](https://developer.paddle.com/getting-started/sandbox). This account will give you a sandboxed environment to test and develop your applications without making actual payments. You may use Paddle's [test card numbers](https://developer.paddle.com/getting-started/sandbox#test-cards) to simulate various payment scenarios.
+
+When using the Paddle Sandbox environment, you should set the `PADDLE_SANDBOX` environment variable to `true` within your application's `.env` file:
+
+PADDLE_SANDBOX=true
 
 After you have finished developing your application you may [apply for a Paddle vendor account](https://paddle.com).
 
@@ -931,7 +935,7 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
     protected $except = [
         'paddle/*',
     ];
-    
+
 <a name="webhooks-local-development"></a>
 #### Webhooks & Local Development
 
