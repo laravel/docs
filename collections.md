@@ -156,6 +156,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [partition](#method-partition)
 [pipe](#method-pipe)
 [pipeInto](#method-pipeinto)
+[pipeThrough](#method-pipethrough)
 [pluck](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
@@ -1576,6 +1577,24 @@ The `pipeInto` method creates a new instance of the given class and passes the c
     $resource->collection->all();
 
     // [1, 2, 3]
+
+<a name="method-pipethrough"></a>
+#### `pipeThrough()` {.collection-method}
+
+The `pipeThrough` method passes the collection to the given array of closures and returns the result of the executed closures:
+
+    $collection = collect([1, 2, 3]);
+
+    $result = $collection->pipeThrough([
+        function ($collection) {
+            return $collection->merge([4, 5]);
+        },
+        function ($collection) {
+            return $collection->sum();
+        },
+    ]);
+
+    // 15
 
 <a name="method-pluck"></a>
 #### `pluck()` {.collection-method}
