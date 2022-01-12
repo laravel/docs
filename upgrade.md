@@ -22,6 +22,7 @@
 - [The `lang` Directory](#the-lang-directory)
 - [The `password` Rule](#the-password-rule)
 - [The `when` / `unless` Methods](#when-and-unless-methods)
+- [Unvalidated Array Keys](#unvalidated-array-keys)
 </div>
 
 <a name="upgrade-9.0"></a>
@@ -498,6 +499,31 @@ public function validated($key = null, $default = null)
 **Likelihood Of Impact: Medium**
 
 The `password` rule, which validates that the given input value matches the authenticated user's current password, has been renamed to `current_password`.
+
+<a name="unvalidated-array-keys"></a>
+#### Unvalidated Array Keys
+
+**Likelihood Of Impact: Medium**
+
+In previous releases of Laravel, you were required to manually instruct Laravel's validator to exclude unvalidated array keys from the "validated" data it returns, especially in combination with an `array` rule that does not specify a list of allowed keys.
+
+However, in Laravel 9.x, unvalidated array keys are always excluded from the "validated" data even when no allowed keys have been specified via the `array` rule. Typically, this behavior is the most expected behavior and the previous `excludeUnvalidatedArrayKeys` method was only added to Laravel 8.x as a temporary measure in order to preserve backwards compatibility.
+
+Although it is not recommended, you may opt-in to the previous Laravel 8.x behavior by invoking a new `includeUnvalidatedArrayKeys` method within the `boot` method of one of your application's service providers:
+
+```php
+use Illuminate\Support\Facades\Validator;
+
+/**
+ * Register any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Validator::includeUnvalidatedArrayKeys();
+}
+```
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
