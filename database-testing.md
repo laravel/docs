@@ -55,6 +55,10 @@ Before proceeding much further, let's discuss how to reset your database after e
         }
     }
 
+The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database.
+
+If you would like to totally reset the database using migrations, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` trait instead. However, the `DatabaseMigrations` trait is significantly slower than the `RefreshDatabase` trait.
+
 <a name="defining-model-factories"></a>
 ## Defining Model Factories
 
