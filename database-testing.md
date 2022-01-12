@@ -1,7 +1,7 @@
 # Database Testing
 
 - [Introduction](#introduction)
-    - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
+    - [Resetting The Database After Each Test](#resetting-the-database-after-a-test)
 - [Defining Model Factories](#defining-model-factories)
     - [Concept Overview](#concept-overview)
     - [Generating Factories](#generating-factories)
@@ -25,10 +25,10 @@
 
 Laravel provides a variety of helpful tools and assertions to make it easier to test your database driven applications. In addition, Laravel model factories and seeders make it painless to create test database records using your application's Eloquent models and relationships. We'll discuss all of these powerful features in the following documentation.
 
-<a name="resetting-the-database-after-each-test"></a>
-### Resetting The Database After Each Test
+<a name="resetting-the-database-after-a-test"></a>
+### Resetting The Database After A Test
 
-Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of this for you. Simply use the trait on your test class:
+Before proceeding much further, let's discuss how to reset your database after a test so that changes made by it do not interfere with subsequent tests. Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of this for you. Simply use the trait on your test class:
 
     <?php
 
@@ -54,6 +54,8 @@ Before proceeding much further, let's discuss how to reset your database after e
             // ...
         }
     }
+
+Note that `Illuminate\Foundation\Testing\RefreshDatabase` does not provide a fresh start for the test it is applied to. Database manipulations made by tests without this trait will affect all subsequent tests, including those with this trait. To instead reset the database to an unmanipulated state using migrations, use the `Illuminate\Foundation\Testing\DatabaseMigrations` trait, although be aware that this is significantly slower than applying the above to the manipulating test.
 
 <a name="defining-model-factories"></a>
 ## Defining Model Factories
