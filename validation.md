@@ -793,6 +793,7 @@ Below is a list of all available validation rules and their function:
 [In Array](#rule-in-array)
 [Integer](#rule-integer)
 [IP Address](#rule-ip)
+[MAC Address](#rule-mac)
 [JSON](#rule-json)
 [Less Than](#rule-lt)
 [Less Than Or Equal](#rule-lte)
@@ -1223,6 +1224,11 @@ The field under validation must be an IPv4 address.
 #### ipv6
 
 The field under validation must be an IPv6 address.
+
+<a name="rule-mac"></a>
+#### mac
+
+The field under validation must be a MAC address.
 
 <a name="rule-json"></a>
 #### json
