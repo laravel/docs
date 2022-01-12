@@ -147,6 +147,15 @@ Route::get('/categories/{category}', function (Category $category) {
 });
 ```
 
+<a name="laravel-scout-database-engine"></a>
+### Laravel Scout Database Engine
+
+_The Laravel Scout database engine was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Dries Vints](https://github.com/driesvints)_.
+
+If your application interacts with small to medium sized databases or has a light workload, you may now use Scout's "database" engine instead of a dedicated search service such as Algolia or MeiliSerach. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
+
+To learn more about the Scout database engine, consult the [Scout documentation](/docs/{{version}}/scout).
+
 ### Improved `route:list` CLI Output
 
 _Improved `route:list` CLI output was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
