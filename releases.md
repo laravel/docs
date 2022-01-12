@@ -147,6 +147,13 @@ Route::get('/categories/{category}', function (Category $category) {
 });
 ```
 
+<a name="laravel-breeze-api"></a>
+### Laravel Breeze API & Next.js
+
+_The Laravel Breeze API scaffolding and Next.js starter kit was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Miguel Piedrafita](https://twitter.com/m1guelpf)_.
+
+The [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-next) starter kit has received an "API" scaffolding mode and complimentary [Next.js](https://nextjs.org) [frontend implementation](https://github.com/laravel/breeze-next). This starter kit scaffolding may be used to jump start your Laravel applications that are serving as a backend, Laravel Sanctum authenticated API for a JavaScript frontend.
+
 <a name="laravel-scout-database-engine"></a>
 ### Laravel Scout Database Engine
 
