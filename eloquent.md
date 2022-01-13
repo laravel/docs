@@ -541,13 +541,15 @@ When interacting with Eloquent models, you may also use the `count`, `sum`, `max
 
 ### Lazy Loading Results
 
-When dealing with large tables, you may wish to reduce memory usage. Historically this would be done using [lazy ollections](/docs/{{version}}/collections#lazy-collections). As of Laravel version 8.78.0, you can use the `lazy` method at the end of your Eloquent queries to split your database results and work on very large data sets, whilst keeping your memory usage low. Laravel will load your data into chunks on demand, which clears memory after each chunk is used. You may specify the chunk size as an integer greater than 1. Passing a chunk size less than 1 will result in `InvalidArgumentException` being thrown.
+When dealing with large tables, you may wish to reduce memory usage. Historically this would be done using [lazy ollections](/docs/{{version}}/collections#lazy-collections). As of Laravel version 8.78.0, you can use the `lazy` method at the end of your Eloquent queries to split your database results and work on very large datasets, whilst keeping your memory usage low. Laravel will load your data into chunks on demand, which clears memory after each chunk is used. You may specify the chunk size as an integer greater than 1. Passing a chunk size less than 1 will result in `InvalidArgumentException` being thrown.
 
 The result of this lazy loading is a flattened `LazyCollection` instance, that you can use like regular collections, without the worry of running out of memory:
 
     $flights Flight::where('departed', true)->lazy(100)
 
     $flights->each->archive();
+
+> {tip} You can also use `lazyByIdDesc` to lazy load a large data based on the descending order of the ID, complementing the existing `lazyById`.
 ## Inserting & Updating Models
 
 <a name="inserts"></a>
