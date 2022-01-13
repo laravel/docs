@@ -147,6 +147,34 @@ Route::get('/categories/{category}', function (Category $category) {
 });
 ```
 
+<a name="enum-casting"></a>
+### Enum Eloquent Attribute Casting
+
+> {note} Enum casting is only available for PHP 8.1+.
+
+_Enum casting was contributed by [Mohamed Said](https://github.com/themsaid)_.
+
+Eloquent now allows you to cast your attribute values to PHP enums. To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
+
+    use App\Enums\ServerStatus;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => ServerStatus::class,
+    ];
+
+Once you have defined the cast on your model, the specified attribute will be automatically cast to and from an enum when you interact with the attribute:
+
+    if ($server->status == ServerStatus::provisioned) {
+        $server->status = ServerStatus::ready;
+
+        $server->save();
+    }
+
 <a name="laravel-breeze-api"></a>
 ### Laravel Breeze API & Next.js
 
