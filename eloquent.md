@@ -11,7 +11,7 @@
 - [Retrieving Models](#retrieving-models)
     - [Collections](#collections)
     - [Chunking Results](#chunking-results)
-    - [Streaming Results Lazily](#streaming-results-lazily)
+    - [Lazy Loading Results](#lazy-loading-results)
     - [Cursors](#cursors)
     - [Advanced Subqueries](#advanced-subqueries)
 - [Retrieving Single Models / Aggregates](#retrieving-single-models)
@@ -367,8 +367,8 @@ Flight::where('departed', true)
     }, $column = 'id');
 ```
 
-<a name="streaming-results-lazily"></a>
-### Streaming Results Lazily
+<a name="lazy-loading-results"></a>
+### Lazy Loading Results
 
 The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that, behind the scenes, it executes the query in chunks. However, instead of passing each chunk directly into a callback as is, the `lazy` method returns a flattened [`LazyCollection`](/docs/{{version}}/collections#lazy-collections) of Eloquent models, which lets you interact with the results as a single stream:
 
