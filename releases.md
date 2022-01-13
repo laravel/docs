@@ -183,3 +183,11 @@ In addition, the `whereFullText` and `orWhereFullText` methods may be used to ad
 _Improved `route:list` CLI output was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
 
 The `route:list` CLI output has been significantly improved for the Laravel 9.x release, offering a beautiful new experience when exploring your route definitions.
+
+### Soketi Echo Server
+
+_The Soketi Echo server was developed by [Alex Renoki](https://github.com/rennokki)_.
+
+Although not exclusive to Laravel 9.x, Laravel has recently assisted with the documentation of Soketi, a [Laravel Echo](/docs/{{version}}/broadcasting) compatible Web Socket server written for Node.js. Soketi provides a great, open source alternative to Pusher and Ably for those applications that prefer to manage their own Web Socket server.
+
+For more information on using Soketi, please consult the [broadcasting documentation](/docs/{{version}}/broadcasting) and [Soketi documentation](https://docs.soketi.app/).
