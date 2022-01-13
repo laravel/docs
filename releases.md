@@ -244,6 +244,10 @@ _Improved `route:list` CLI output was contributed by [Nuno Maduro](https://githu
 
 The `route:list` CLI output has been significantly improved for the Laravel 9.x release, offering a beautiful new experience when exploring your route definitions.
 
+<p align="center">
+<img src="https://user-images.githubusercontent.com/5457236/148321982-38c8b869-f188-4f42-a3cc-a03451d5216c.png">
+</p>
+
 ### Soketi Echo Server
 
 _The Soketi Echo server was developed by [Alex Renoki](https://github.com/rennokki)_.
