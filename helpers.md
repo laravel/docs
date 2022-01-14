@@ -2628,10 +2628,9 @@ The `when` method invokes the given closure if a given condition is `true`. The 
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('Taylor')
-                    ->when(true, function ($string) {
-                        return $string->append(' Otwell');
-                    });
+    $string = Str::of('Taylor')->when(true, function ($string) {
+        return $string->append(' Otwell');
+    });
 
     // 'Taylor Otwell'
 
@@ -2644,10 +2643,9 @@ The `whenContains` method invokes the given closure if the string contains the g
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('tony stark')
-                    ->whenContains('tony', function ($string) {
-                        return $string->title();
-                    });
+    $string = Str::of('tony stark')->whenContains('tony', function ($string) {
+        return $string->title();
+    });
 
     // 'Tony Stark'
 
@@ -2657,12 +2655,11 @@ You may also pass an array of values to determine if the given string contains a
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('this is my name')
-                    ->whenContains(['is', 'name'], function ($string) {
-                        return $string->title();
-                    });
+    $string = Str::of('tony stark')->whenContains(['tony', 'hulk'], function ($string) {
+        return $string->title();
+    });
 
-    // This Is My Name
+    // Tony Stark
 
 <a name="method-fluent-str-when-contains-all"></a>
 #### `whenContainsAll` {.collection-method}
@@ -2671,10 +2668,9 @@ The `whenContainsAll` method invokes the given closure if the string contains al
 
     use Illuminate\Support\Str;
 
-    $string = Str::of('tony stark')
-                    ->whenContainsAll(['tony', 'stark'], function ($string) {
-                        return $string->title();
-                    });
+    $string = Str::of('tony stark')->whenContainsAll(['tony', 'stark'], function ($string) {
+        return $string->title();
+    });
 
     // 'Tony Stark'
 
