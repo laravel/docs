@@ -134,7 +134,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::substrCount](#method-str-substrcount)
 [Str::substrReplace](#method-str-substrreplace)
 [Str::title](#method-title-case)
-[Str::toHtmlString](#method-to-html-string)
+[Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
