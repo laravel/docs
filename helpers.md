@@ -2637,6 +2637,33 @@ The `when` method invokes the given closure if a given condition is `true`. The 
 
 If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
 
+<a name="method-fluent-str-when-contains"></a>
+#### `whenContains` {.collection-method}
+
+The `whenContains` method invokes the given closure if the string contains the given value. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('tony stark')
+                    ->whenContains('tony', function ($string) {
+                        return $string->title();
+                    });
+
+    // 'Tony Stark'
+
+If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
+
+You may also pass an array of values to determine if the given string contains any of the values in the array:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('this is my name')
+                    ->whenContains(['is', 'name'], function ($string) {
+                        return $string->title();
+                    });
+
+    // This Is My Name
+
 <a name="method-fluent-str-when-contains-all"></a>
 #### `whenContainsAll` {.collection-method}
 
