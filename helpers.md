@@ -3245,10 +3245,10 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 The `retry` function attempts to execute the given callback until the given maximum attempt threshold is met. If the callback does not throw an exception, its return value will be returned. If the callback throws an exception, it will automatically be retried. If the maximum attempt count is exceeded, the exception will be thrown:
 
     return retry(5, function () {
-        // Attempt 5 times while resting 100ms in between attempts...
+        // Attempt 5 times while resting 100ms between attempts...
     }, 100);
 
-If you would like to manually calculate the number of milliseconds to sleep in between attempts, you may pass a closure as the third argument to the `retry` function:
+If you would like to manually calculate the number of milliseconds to sleep between attempts, you may pass a closure as the third argument to the `retry` function:
 
     return retry(5, function () {
         // ...
@@ -3256,6 +3256,11 @@ If you would like to manually calculate the number of milliseconds to sleep in b
         return $attempt * 100;
     });
 
+For convenience, you may provide an array as the first argument to the `retry` function. This array will be used to determine how many milliseconds to sleep between subsequent attempts:
+
+    return retry([100, 200] function () {
+        // Sleep for 100ms on first retry, 200ms on second retry...
+    });
 
 To only retry under specific conditions, you may pass a closure as the fourth argument to the `retry` function:
 
