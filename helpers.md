@@ -1733,7 +1733,7 @@ The `Str::title` method converts the given string to `Title Case`:
 
     // A Nice Title Uses The Correct Case
 
-<a name="method-str-to-html-string"></a>
+<a name="method-to-html-string"></a>
 #### `Str::toHtmlString()` {.collection-method}
 
 The `Str::toHtmlString` method converts the string instance to an instance of `Illuminate\Support\HtmlString`, which may be displayed in Blade templates:
