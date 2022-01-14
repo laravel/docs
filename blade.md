@@ -1353,6 +1353,9 @@ You may push to a stack as many times as needed. To render the complete stack co
 If you would like to prepend content onto the beginning of a stack, you should use the `@prepend` directive:
 
 ```html
+<x-app-layout>
+  <!-- Contents -->
+  
 @push('scripts')
     This will be second...
 @endpush
@@ -1362,6 +1365,19 @@ If you would like to prepend content onto the beginning of a stack, you should u
 @prepend('scripts')
     This will be first...
 @endprepend
+</x-app-layout>
+```
+
+The `@stack` needs to placed inside the layout tags to work.
+```html
+<x-app-layout>
+<!-- Contents -->
+  
+@push('scripts')
+   
+@endpush
+  
+</x-app-layout>
 ```
 
 <a name="service-injection"></a>
