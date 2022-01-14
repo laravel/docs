@@ -157,6 +157,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [basename](#method-fluent-str-basename)
 [before](#method-fluent-str-before)
 [beforeLast](#method-fluent-str-before-last)
+[between](#method-fluent-str-between)
 [camel](#method-fluent-str-camel)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
@@ -1902,6 +1903,17 @@ The `beforeLast` method returns everything before the last occurrence of the giv
     $slice = Str::of('This is my name')->beforeLast('is');
 
     // 'This '
+
+<a name="method-fluent-str-between"></a>
+#### `between` {.collection-method}
+
+The `between` method returns the portion of a string between two values:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('This is my name')->between('This', 'name');
+
+    // ' is my '
 
 <a name="method-fluent-str-camel"></a>
 #### `camel` {.collection-method}
