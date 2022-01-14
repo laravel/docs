@@ -6,7 +6,7 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
-- [Flysystem 2.0](#flysystem-2)
+- [Flysystem 3.x](#flysystem-3)
 - [Symfony Mailer](#symfony-mailer)
 </div>
 
@@ -197,19 +197,19 @@ protected static function getFacadeAccessor()
 
 The `FILESYSTEM_DRIVER` environment variable has been renamed to `FILESYSTEM_DISK` to more accurately reflect its usage. This change only affects the application skeleton; however, you are welcome to update your own application's environment variables to reflect this change if you wish.
 
-<a name="flysystem-2"></a>
-### Flysystem 2.0
+<a name="flysystem-3"></a>
+### Flysystem 3.x
 
 **Likelihood Of Impact: High**
 
-Laravel 9.x has migrated from [Flysystem](https://flysystem.thephpleague.com/v2/docs/) 1.x to 2.x. Under the hood, Flysystem powers all of the file manipulation methods provided by the `Storage` facade. In light of this, some changes may be required within your application; however, we have tried to make this transition as seamless as possible.
+Laravel 9.x has migrated from [Flysystem](https://flysystem.thephpleague.com/v2/docs/) 1.x to 3.x. Under the hood, Flysystem powers all of the file manipulation methods provided by the `Storage` facade. In light of this, some changes may be required within your application; however, we have tried to make this transition as seamless as possible.
 
 #### Driver Prerequisites
 
 Before using the S3 or SFTP drivers, you will need to install the appropriate package via the Composer package manager:
 
-- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^2.0"`
-- SFTP: `composer require league/flysystem-sftp-v3 "^2.4"`
+- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^3.0"`
+- SFTP: `composer require league/flysystem-sftp-v3 "^3.0"`
 
 #### Overwriting Existing Files
 

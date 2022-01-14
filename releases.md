@@ -61,14 +61,14 @@ Previous releases of Laravel utilized the [Swift Mailer](https://swiftmailer.sym
 
 Please review the [upgrade guide](/docs/{{version}}/upgrade#symfony-mailer) to learn more about ensuring your application is compatible with Symfony Mailer.
 
-<a name="flysystem-2"></a>
-### Flysystem 2.0
+<a name="flysystem-3"></a>
+### Flysystem 3.x
 
-_Flysystem 2.0 support was contributed by [Dries Vints](https://github.com/driesvints)_.
+_Flysystem 3.x support was contributed by [Dries Vints](https://github.com/driesvints)_.
 
-Laravel 9.x upgrades our upstream Flysystem dependency to Flysystem 2.x. Flysystem powers all of filesystem interactions offered by the `Storage` facade.
+Laravel 9.x upgrades our upstream Flysystem dependency to Flysystem 3.x. Flysystem powers all of filesystem interactions offered by the `Storage` facade.
 
-Please review the [upgrade guide](/docs/{{version}}/upgrade#flysystem-2) to learn more about ensuring your application is compatible with Flysystem 2.0.
+Please review the [upgrade guide](/docs/{{version}}/upgrade#flysystem-3) to learn more about ensuring your application is compatible with Flysystem 3.x.
 
 <a name="eloquent-accessors-and-mutators"></a>
 ### Improved Eloquent Accessors / Mutators
