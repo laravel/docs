@@ -428,7 +428,19 @@ By default, each broadcast event is placed on the default queue for the default 
      */
     public $queue = 'default';
 
-If you want to broadcast your event using the `sync` queue instead of the default queue driver, you can implement the `ShouldBroadcastNow` interface instead of `ShouldBroadcast`:
+Alternatively, you may customize the queue name by defining a `broadcastQueue` method on your event:
+
+    /**
+     * The name of the queue on which to place the broadcasting job.
+     *
+     * @return string
+     */
+    public function broadcastQueue()
+    {
+        return 'default';
+    }
+
+If you would like to broadcast your event using the `sync` queue instead of the default queue driver, you can implement the `ShouldBroadcastNow` interface instead of `ShouldBroadcast`:
 
     <?php
 
