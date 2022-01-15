@@ -717,7 +717,7 @@ When assigning JSON columns, each column's mass assignable key must be specified
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var String[]
      */
     protected $fillable = [
         'options->enabled',
@@ -731,7 +731,7 @@ If you would like to make all of your attributes mass assignable, you may define
     /**
      * The attributes that aren't mass assignable.
      *
-     * @var array
+     * @var String[]
      */
     protected $guarded = [];
 
