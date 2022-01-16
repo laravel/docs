@@ -1073,6 +1073,13 @@ Assert that the session does not contain the given key:
 
     $response->assertSessionMissing($key);
 
+<a name="assert-similar-json"></a>
+#### assertSimilarJson
+
+Assert that the response has the similar JSON as given.
+
+    $response->assertSimilarJson(array $data);
+
 <a name="assert-status"></a>
 #### assertStatus
 
