@@ -197,6 +197,7 @@ Example phpredis server configuration in the `config/database.php` configuration
         'context' => [
             // 'auth' => ['username', 'secret'],
             // 'stream' => ['verify_peer' => false],
+            'verify_peer' => true,
         ],
         'options' => [
             'name' => 'demo_connection',
