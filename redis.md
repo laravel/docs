@@ -178,7 +178,7 @@ In addition to the default `scheme`, `host`, `port`, `database`, and `password` 
 - `prefix` all keys will be prefixed with this string before sending to the redis server
 - `scan` scan behaviour, one of: `Redis::SCAN_NORETRY` (default), `Redis::SCAN_RETRY`, `Redis::SCAN_PREFIX`, `Redis::SCAN_NOPREFIX`
 - `serializer` serializer to use, depending on the phpredis version and compilation one of: `Redis::SERIALIZER_NONE` (default), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY`, `Redis::SERIALIZER_MSGPACK`
-- `compression` compression algorithm to use, depending on the phpredis version and compilation one of: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, `Redis::COMPRESSION_LZ4
+- `compression` compression algorithm to use, depending on the phpredis version and compilation one of: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, `Redis::COMPRESSION_LZ4`
 - `compression_level` only used for ZSTD (`Redis::COMPRESSION_ZSTD_MIN`: 1, `Redis::COMPRESSION_ZSTD_DEFAULT`: 3, `Redis::COMPRESSION_ZSTD_MAX`: 22) and LZ4 (`<= 0` for default or `1 - 12` for high compression variant)
 
 Example phpredis server configuration in the `config/database.php` configuration file:
