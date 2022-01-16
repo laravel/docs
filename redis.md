@@ -181,6 +181,8 @@ In addition to the default `scheme`, `host`, `port`, `database`, and `password` 
 - `compression` compression algorithm to use, depending on the phpredis version and compilation one of: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, `Redis::COMPRESSION_LZ4`
 - `compression_level` only used for ZSTD (`Redis::COMPRESSION_ZSTD_MIN`: 1, `Redis::COMPRESSION_ZSTD_DEFAULT`: 3, `Redis::COMPRESSION_ZSTD_MAX`: 22) and LZ4 (`<= 0` for default or `1 - 12` for high compression variant)
 
+Refer to https://github.com/phpredis/phpredis for an in depth documentation of all available parameters.
+
 Example phpredis server configuration in the `config/database.php` configuration file:
 
     'default' => [
