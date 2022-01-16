@@ -162,19 +162,50 @@ By default, Laravel will use the phpredis extension to communicate with Redis. T
         // Rest of Redis configuration...
     ],
 
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, phpredis supports the following additional connection parameters: `name`, `persistent`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
+In addition to the default `scheme`, `host`, `port`, `database`, and `password` connection configurations, phpredis supports the following additional parameters: 
+
+- `persistent` whether to use persistent connections, boolean
+- `persistent_id` optional string by which to distinguish persistent connections, string
+- `timeout` connection timeout in seconds, float
+- `read_timeout` read timeout in seconds, float
+- `retry_interval` retry interval in milliseconds, int
+- `context` assoc array
+- `options` assoc array
+
+`context` is an array that contains additional connection related config like tls/ssl settings and `options` is an array that lets you configure additional phpredis features like:
+
+- `name` internal connection name, may be useful for debugging purposes or when multiple connections are used
+- `prefix` all keys will be prefixed with this string before sending to the redis server
+- `scan` scan behaviour, one of: `Redis::SCAN_NORETRY` (default), `Redis::SCAN_RETRY`, `Redis::SCAN_PREFIX`, `Redis::SCAN_NOPREFIX`
+- `serializer` serializer to use, depending on the phpredis version and compilation one of: `Redis::SERIALIZER_NONE` (default), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY`, `Redis::SERIALIZER_MSGPACK`
+- `compression` compression algorithm to use, depending on the phpredis version and compilation one of: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, `Redis::COMPRESSION_LZ4
+- `compression_level` only used for ZSTD (`Redis::COMPRESSION_ZSTD_MIN`: 1, `Redis::COMPRESSION_ZSTD_DEFAULT`: 3, `Redis::COMPRESSION_ZSTD_MAX`: 22) and LZ4 (`<= 0` for default or `1 - 12` for high compression variant)
+
+Example phpredis server configuration in the `config/database.php` configuration file:
 
     'default' => [
+        'scheme' => 'tlsv1.2',
         'host' => env('REDIS_HOST', 'localhost'),
         'password' => env('REDIS_PASSWORD', null),
         'port' => env('REDIS_PORT', 6379),
         'database' => 0,
-        'read_timeout' => 60,
+        'timeout' => 0.25,
+        'read_timeout' => 0.5,
+        'retruy_interval' => 250,
         'context' => [
             // 'auth' => ['username', 'secret'],
             // 'stream' => ['verify_peer' => false],
         ],
+        'options' => [
+            'name' => 'demo_connection',
+            'prefix' => 'service_name:',
+            'scan' => Redis::SCAN_RETRY,
+            'serializer' => Redis::SERIALIZER_MSGPACK,
+            'compression' => Redis::COMPRESSION_LZ4,
+            'compression_level' => 7,
+        ],
     ],
+
 
 <a name="interacting-with-redis"></a>
 ## Interacting With Redis
