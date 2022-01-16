@@ -193,7 +193,7 @@ Example phpredis server configuration in the `config/database.php` configuration
         'database' => 0,
         'timeout' => 0.25,
         'read_timeout' => 0.5,
-        'retruy_interval' => 250,
+        'retry_interval' => 250,
         'context' => [
             // 'auth' => ['username', 'secret'],
             // 'stream' => ['verify_peer' => false],
