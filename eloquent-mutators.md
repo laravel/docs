@@ -44,10 +44,9 @@ In this example, we'll define an accessor for the `first_name` attribute. The ac
         /**
          * Get the user's first name.
          *
-         * @param  string  $value
          * @return \Illuminate\Database\Eloquent\Casts\Attribute
          */
-        protected function firstName($value): Attribute
+        protected function firstName(): Attribute
         {
             return new Attribute(
                 get: fn ($value) => ucfirst($value),
