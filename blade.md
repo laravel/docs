@@ -33,6 +33,7 @@
     - [Validation Errors](#validation-errors)
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
+- [Rendering Inline Blade Templates](#rendering-inline-blade-templates)
 - [Extending Blade](#extending-blade)
     - [Custom Echo Handlers](#custom-echo-handlers)
     - [Custom If Statements](#custom-if-statements)
@@ -1375,6 +1376,27 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
 <div>
     Monthly Revenue: {{ $metrics->monthlyRevenue() }}.
 </div>
+```
+
+<a name="rendering-inline-blade-templates"></a>
+## Rendering Inline Blade Templates
+
+Sometimes you may need to transform a raw Blade template string into valid HTML. You may accomplish this using the `render` method provided by the `Blade` facade. The `render` method accepts the Blade template string and an optional array of data to provide to the template:
+
+```php
+use Illuminate\Support\Facades\Blade;
+
+return Blade::render('Hello, {{ $name }}', ['name' => 'Julian Bashir']);
+```
+
+Laravel renders inline Blade templates by writing them to the `storage/framework/views` directory. If you would like Laravel to remove these temporary files after rendering the Blade template, you may provide the `deleteCachedView` argument to the method:
+
+```php
+return Blade::render(
+    'Hello, {{ $name }}',
+    ['name' => 'Julian Bashir'],
+    deleteCachedView: true
+);
 ```
 
 <a name="extending-blade"></a>
