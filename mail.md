@@ -789,7 +789,7 @@ Once you have implemented the interface, Laravel will automatically use the pref
 <a name="testing-mailables"></a>
 ## Testing Mailables
 
-Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInText`, and `assertDontSeeInText`.
+Laravel provides several convenient methods for testing that your mailables contain the content that you expect. These methods are: `assertSeeInHtml`, `assertDontSeeInHtml`, `assertSeeInHtmlInOrder`, `assertSeeInText`, `assertDontSeeInText`, and `assertSeeInTextInOrder`.
 
 As you might expect, the "HTML" assertions assert that the HTML version of your mailable contains a given string, while the "text" assertions assert that the plain-text version of your mailable contains a given string:
 
@@ -804,9 +804,10 @@ As you might expect, the "HTML" assertions assert that the HTML version of your 
 
         $mailable->assertSeeInHtml($user->email);
         $mailable->assertSeeInHtml('Invoice Paid');
+        $mailable->assertSeeInHtmlInOrder('Invoice Paid', 'Thanks');
 
         $mailable->assertSeeInText($user->email);
-        $mailable->assertSeeInText('Invoice Paid');
+        $mailable->assertSeeInTextInOrder(['Invoice Paid', 'Thanks']);
     }
 
 <a name="testing-mailable-sending"></a>
