@@ -831,7 +831,7 @@ To retrieve a token using this grant type, make a request to the `oauth/token` e
 
 Sometimes, your users may want to issue access tokens to themselves without going through the typical authorization code redirect flow. Allowing users to issue tokens to themselves via your application's UI can be useful for allowing users to experiment with your API or may serve as a simpler approach to issuing access tokens in general.
 
-> {note} If you're feeling you need a more feature-rich client for personal access tokens than Passport offers, we suggest you take a look at [Laravel Sanctum](/docs/{{version}}/sanctum), our dedicated first-party library for API access tokens.
+> {tip} If your application's primary API token needs are personal access tokens, consider using [Laravel Sanctum](/docs/{{version}}/sanctum), Laravel's dedicated first-party library for issuing API access tokens.
 
 <a name="creating-a-personal-access-client"></a>
 ### Creating A Personal Access Client
