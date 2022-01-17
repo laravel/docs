@@ -6,7 +6,7 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
-- [Update Dependencies](#updating-dependencies)
+- [Updating Dependencies](#updating-dependencies)
 - [Flysystem 3.x](#flysystem-3)
 - [Symfony Mailer](#symfony-mailer)
 </div>
@@ -15,7 +15,6 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
-- [PHP 8.0.2 Required](#php-8.0.2-required)
 - [Belongs To Many `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods](#belongs-to-many-first-or-new)
 - [Custom Casts & `null`](#custom-casts-and-null)
 - [Default HTTP Client Timeout](#http-client-default-timeout)
@@ -35,24 +34,25 @@
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
-<a name="php-8.0.2-required"></a>
-### PHP 8.0.2 Required
-
-**Likelihood Of Impact: Medium**
-
-The new minimum PHP version is now 8.0.2.
-
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
 
-Update the following dependencies in your `composer.json` file:
+**Likelihood Of Impact: High**
+
+#### PHP 8.0.2 Required
+
+Laravel's minimum supported PHP version is now 8.0.2.
+
+#### Composer Dependencies
+
+You should update the following dependencies in your application's `composer.json` file:
 
 <div class="content-list" markdown="1">
 - `laravel/framework` to `^9.0`
 - `nunomaduro/collision` to `^6.0`
 </div>
 
-In addition, replace `facade/ignition` by `"spatie/laravel-ignition": "^1.0"` in your `composer.json` file.
+In addition, replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your `composer.json` file.
 
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 9 support.
 
