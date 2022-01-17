@@ -6,6 +6,7 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
+- [Updating Dependencies](#updating-dependencies)
 - [Flysystem 3.x](#flysystem-3)
 - [Symfony Mailer](#symfony-mailer)
 </div>
@@ -32,6 +33,28 @@
 #### Estimated Upgrade Time: 30 Minutes
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+
+<a name="updating-dependencies"></a>
+### Updating Dependencies
+
+**Likelihood Of Impact: High**
+
+#### PHP 8.0.2 Required
+
+Laravel's minimum supported PHP version is now 8.0.2.
+
+#### Composer Dependencies
+
+You should update the following dependencies in your application's `composer.json` file:
+
+<div class="content-list" markdown="1">
+- `laravel/framework` to `^9.0`
+- `nunomaduro/collision` to `^6.0`
+</div>
+
+In addition, replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your `composer.json` file.
+
+Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 9 support.
 
 <a name="application"></a>
 ### Application
