@@ -105,6 +105,18 @@ The `Illuminate\Contracts\Container\ContextualBindingBuilder` contract now defin
 public function giveConfig($key, $default = null);
 ```
 
+### Collections
+
+#### The `Enumerable` Contract
+
+**Likelihood Of Impact: Low**
+
+The `Illuminate\Support\Enumerable` contract now defines a `sole` method. If you are manually implementing this interface, you should update your implementation to reflect this new method:
+
+```php
+public function sole($key = null, $operator = null, $value = null);
+```
+
 ### Database
 
 <a name="postgres-schema-configuration"></a>
