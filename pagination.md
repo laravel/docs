@@ -295,7 +295,7 @@ If you would like to designate a different file as the default pagination view, 
 <a name="using-bootstrap"></a>
 ### Using Bootstrap
 
-Laravel includes pagination views built using [Bootstrap CSS](https://getbootstrap.com/). To use these views instead of the default Tailwind views, you may call the paginator's `useBootstrap` method within the `boot` method of your `App\Providers\AppServiceProvider` class:
+Laravel includes pagination views built using [Bootstrap CSS](https://getbootstrap.com/). To use these views instead of the default Tailwind views, you may call the paginator's `useBootstrapFour` or `useBootstrapFive` methods within the `boot` method of your `App\Providers\AppServiceProvider` class:
 
     use Illuminate\Pagination\Paginator;
 
@@ -306,7 +306,8 @@ Laravel includes pagination views built using [Bootstrap CSS](https://getbootstr
      */
     public function boot()
     {
-        Paginator::useBootstrap();
+        Paginator::useBootstrapFive();
+        Paginator::useBootstrapFour();
     }
 
 <a name="paginator-instance-methods"></a>

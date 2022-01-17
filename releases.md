@@ -238,6 +238,7 @@ In addition, the `whereFullText` and `orWhereFullText` methods may be used to ad
                ->whereFullText('bio', 'web developer')
                ->get();
 
+<a name="improved-route-list"></a>
 ### Improved `route:list` CLI Output
 
 _Improved `route:list` CLI output was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
@@ -248,6 +249,7 @@ The `route:list` CLI output has been significantly improved for the Laravel 9.x 
 <img src="https://user-images.githubusercontent.com/5457236/148321982-38c8b869-f188-4f42-a3cc-a03451d5216c.png">
 </p>
 
+<a name="soketi-echo-server"></a>
 ### Soketi Echo Server
 
 _The Soketi Echo server was developed by [Alex Renoki](https://github.com/rennokki)_.
@@ -255,3 +257,20 @@ _The Soketi Echo server was developed by [Alex Renoki](https://github.com/rennok
 Although not exclusive to Laravel 9.x, Laravel has recently assisted with the documentation of Soketi, a [Laravel Echo](/docs/{{version}}/broadcasting) compatible Web Socket server written for Node.js. Soketi provides a great, open source alternative to Pusher and Ably for those applications that prefer to manage their own Web Socket server.
 
 For more information on using Soketi, please consult the [broadcasting documentation](/docs/{{version}}/broadcasting) and [Soketi documentation](https://docs.soketi.app/).
+
+<a name="bootstrap-5-pagination-views"></a>
+### Bootstrap 5 Pagination Views
+
+Laravel now includes pagination views built using [Bootstrap 5](https://getbootstrap.com/). To use these views instead of the default Tailwind views, you may call the paginator's `useBootstrapFive` method within the `boot` method of your `App\Providers\AppServiceProvider` class:
+
+    use Illuminate\Pagination\Paginator;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Paginator::useBootstrapFive();
+    }
