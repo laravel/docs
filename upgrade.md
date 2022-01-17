@@ -54,12 +54,6 @@ Update the following dependencies in your `composer.json` file:
 
 In addition, replace `facade/ignition` by `"spatie/laravel-ignition": "^1.0"` in your `composer.json` file.
 
-The following first-party packages have new major releases to support Laravel 9.x. If applicable, you should read their individual upgrade guides before upgrading:
-
-<div class="content-list" markdown="1">
-    TODO...
-</div>
-
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 9 support.
 
 <a name="application"></a>
