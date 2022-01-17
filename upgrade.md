@@ -7,6 +7,7 @@
 
 <div class="content-list" markdown="1">
 - [Updating Dependencies](#updating-dependencies)
+- [Application](#application)
 - [Flysystem 3.x](#flysystem-3)
 - [Symfony Mailer](#symfony-mailer)
 </div>
