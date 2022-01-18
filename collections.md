@@ -2322,12 +2322,12 @@ The `sortKeysUsing` method sorts the collection by the keys of the underlying as
     /*
         [
             'first' => 'John',
-            'ID' => 22345,
+            'id' => 22345,
             'last' => 'Doe',
         ]
     */
 
-The callback must be a comparison function that returns an integer less than, equal to, or greater than zero. Refer to the PHP documentation on [`uksort`](https://www.php.net/manual/en/function.uksort.php#refsect1-function.uksort-parameters), which is what the collection's `sortKeysUsing` method calls utilizes internally.
+The callback must be a comparison function that returns an integer less than, equal to, or greater than zero. For more information, refer to the PHP documentation on [`uksort`](https://www.php.net/manual/en/function.uksort.php#refsect1-function.uksort-parameters), which is the PHP function that `sortKeysUsing` method utilizes internally.
 
 <a name="method-splice"></a>
 #### `splice()` {.collection-method}
