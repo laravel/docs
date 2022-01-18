@@ -165,6 +165,10 @@ The `timeout` method may be used to specify the maximum number of seconds to wai
 
 If the given timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
 
+You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:
+
+    $response = Http::connectTimeout(3)->get(...);
+
 <a name="retries"></a>
 ### Retries
 
