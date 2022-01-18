@@ -7,7 +7,6 @@
 
 <div class="content-list" markdown="1">
 - [Updating Dependencies](#updating-dependencies)
-- [Application](#application)
 - [Flysystem 3.x](#flysystem-3)
 - [Symfony Mailer](#symfony-mailer)
 </div>
@@ -87,6 +86,18 @@ public function ignore(string $class);
 
 When iterating over a `LazyCollection` instance within a Blade template, the `$loop` variable is no longer available, as accessing this variable causes the entire `LazyCollection` to be loaded into memory, thus rendering the usage of lazy collections pointless in this scenario.
 
+### Collections
+
+#### The `Enumerable` Contract
+
+**Likelihood Of Impact: Low**
+
+The `Illuminate\Support\Enumerable` contract now defines a `sole` method. If you are manually implementing this interface, you should update your implementation to reflect this new method:
+
+```php
+public function sole($key = null, $operator = null, $value = null);
+```
+
 ### Container
 
 #### The `Container` Contract
@@ -103,18 +114,6 @@ The `Illuminate\Contracts\Container\ContextualBindingBuilder` contract now defin
 
 ```php
 public function giveConfig($key, $default = null);
-```
-
-### Collections
-
-#### The `Enumerable` Contract
-
-**Likelihood Of Impact: Low**
-
-The `Illuminate\Support\Enumerable` contract now defines a `sole` method. If you are manually implementing this interface, you should update your implementation to reflect this new method:
-
-```php
-public function sole($key = null, $operator = null, $value = null);
 ```
 
 ### Database
