@@ -1605,11 +1605,11 @@ Sometimes you may want to validate a field based on another field in the same ne
         ],
     ];
 
-    $validator->sometimes('channels.*.address', 'email', function($input, $item) {
+    $validator->sometimes('channels.*.address', 'email', function ($input, $item) {
         return $item->type === 'email';
     });
 
-    $validator->sometimes('channels.*.address', 'url', function($input, $item) {
+    $validator->sometimes('channels.*.address', 'url', function ($input, $item) {
         return $item->type !== 'email';
     });
 
