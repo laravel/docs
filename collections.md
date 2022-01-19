@@ -2322,7 +2322,7 @@ The `sortKeysUsing` method sorts the collection by the keys of the underlying as
     /*
         [
             'first' => 'John',
-            'id' => 22345,
+            'ID' => 22345,
             'last' => 'Doe',
         ]
     */
