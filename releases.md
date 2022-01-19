@@ -147,6 +147,29 @@ Route::get('/categories/{category}', function (Category $category) {
 });
 ```
 
+<a name="improved-route-groups"></a>
+### Improved Route Groups
+
+_Route Groups improvements were contributed by [Luke Downing](https://github.com/lukeraymonddowning)_.
+
+As you may know, route groups allow you to share route attributes, such as middleware, across a large number of routes without needing to define those attributes on each individual route:
+
+    use App\Http\Controllers\OrderController;
+
+    Route::group(function () {
+        Route::get('/orders/{id}', [OrderController::class, 'show']);
+        Route::post('/orders', [OrderController::class, 'store']);
+    });
+
+In Laravel 9, when a group of routes use the same controller, you may use the `controller` method to define the common controller for all of the routes within the group. Then, when defining the routes, you only need to provide the controller method that they invoke:
+
+    use App\Http\Controllers\OrderController;
+
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/orders/{id}', 'show');
+        Route::post('/orders', 'store');
+    });
+
 <a name="enum-casting"></a>
 ### Enum Eloquent Attribute Casting
 
