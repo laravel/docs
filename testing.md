@@ -5,6 +5,7 @@
 - [Creating Tests](#creating-tests)
 - [Running Tests](#running-tests)
     - [Running Tests In Parallel](#running-tests-in-parallel)
+    - [Reporting Test Coverage](#reporting-test-coverage)
 
 <a name="introduction"></a>
 ## Introduction
@@ -166,3 +167,17 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
 If you would like to access to current parallel process "token" from any other location in your application's test code, you may use the `token` method. This token is a unique, string identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:
 
     $token = ParallelTesting::token();
+
+<a name="reporting-test-coverage"></a>
+### Reporting Test Coverage
+
+When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running your tests. To accomplish this, you may provide the `--coverage` option when invoking the `test` command:
+
+    php artisan test --coverage
+
+<a name="enforcing-a-minimum-coverage-threshold"></a>
+#### Enforcing A Minimum Coverage Threshold
+
+You may use the `--min` option to define a minimum test coverage threshold for your application. The test suite will fail if this threshold is not met:
+
+    php artisan test --coverage --min=80.3
