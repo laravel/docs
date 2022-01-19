@@ -792,6 +792,7 @@ Below is a list of all available validation rules and their function:
 [In Array](#rule-in-array)
 [Integer](#rule-integer)
 [IP Address](#rule-ip)
+[MAC Address](#rule-mac)
 [JSON](#rule-json)
 [Less Than](#rule-lt)
 [Less Than Or Equal](#rule-lte)
@@ -1207,6 +1208,11 @@ The field under validation must be an IPv4 address.
 
 The field under validation must be an IPv6 address.
 
+<a name="rule-mac"></a>
+#### mac_address
+
+The field under validation must be a MAC address.
+
 <a name="rule-json"></a>
 #### json
 
@@ -1582,11 +1588,11 @@ Sometimes you may want to validate a field based on another field in the same ne
         ],
     ];
 
-    $validator->sometimes('channels.*.address', 'email', function($input, $item) {
+    $validator->sometimes('channels.*.address', 'email', function ($input, $item) {
         return $item->type === 'email';
     });
 
-    $validator->sometimes('channels.*.address', 'url', function($input, $item) {
+    $validator->sometimes('channels.*.address', 'url', function ($input, $item) {
         return $item->type !== 'email';
     });
 

@@ -188,6 +188,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [sortDesc](#method-sortdesc)
 [sortKeys](#method-sortkeys)
 [sortKeysDesc](#method-sortkeysdesc)
+[sortKeysUsing](#method-sortkeysusing)
 [splice](#method-splice)
 [split](#method-split)
 [splitIn](#method-splitin)
@@ -2318,6 +2319,31 @@ The `sortKeys` method sorts the collection by the keys of the underlying associa
 #### `sortKeysDesc()` {.collection-method}
 
 This method has the same signature as the [`sortKeys`](#method-sortkeys) method, but will sort the collection in the opposite order.
+
+<a name="method-sortkeysusing"></a>
+#### `sortKeysUsing()` {.collection-method}
+
+The `sortKeysUsing` method sorts the collection by the keys of the underlying associative array using a callback:
+
+    $collection = collect([
+        'ID' => 22345,
+        'first' => 'John',
+        'last' => 'Doe',
+    ]);
+
+    $sorted = $collection->sortKeysUsing('strnatcasecmp');
+
+    $sorted->all();
+
+    /*
+        [
+            'first' => 'John',
+            'ID' => 22345,
+            'last' => 'Doe',
+        ]
+    */
+
+The callback must be a comparison function that returns an integer less than, equal to, or greater than zero. For more information, refer to the PHP documentation on [`uksort`](https://www.php.net/manual/en/function.uksort.php#refsect1-function.uksort-parameters), which is the PHP function that `sortKeysUsing` method utilizes internally.
 
 <a name="method-splice"></a>
 #### `splice()` {.collection-method}

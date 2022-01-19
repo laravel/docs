@@ -134,7 +134,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::substrCount](#method-str-substrcount)
 [Str::substrReplace](#method-str-substrreplace)
 [Str::title](#method-title-case)
-[Str::toHtmlString](#method-to-html-string)
+[Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
@@ -157,6 +157,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [basename](#method-fluent-str-basename)
 [before](#method-fluent-str-before)
 [beforeLast](#method-fluent-str-before-last)
+[between](#method-fluent-str-between)
 [camel](#method-fluent-str-camel)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
@@ -1903,6 +1904,17 @@ The `beforeLast` method returns everything before the last occurrence of the giv
 
     // 'This '
 
+<a name="method-fluent-str-between"></a>
+#### `between` {.collection-method}
+
+The `between` method returns the portion of a string between two values:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('This is my name')->between('This', 'name');
+
+    // ' is my '
+
 <a name="method-fluent-str-camel"></a>
 #### `camel` {.collection-method}
 
@@ -2636,6 +2648,33 @@ The `when` method invokes the given closure if a given condition is `true`. The 
     // 'Taylor Otwell'
 
 If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
+
+<a name="method-fluent-str-when-contains"></a>
+#### `whenContains` {.collection-method}
+
+The `whenContains` method invokes the given closure if the string contains the given value. The closure will receive the fluent string instance:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('tony stark')
+                ->whenContains('tony', function ($string) {
+                    return $string->title();
+                });
+
+    // 'Tony Stark'
+
+If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the string does not contain the given value.
+
+You may also pass an array of values to determine if the given string contains any of the values in the array:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('tony stark')
+                ->whenContains(['tony', 'hulk'], function ($string) {
+                    return $string->title();
+                });
+
+    // Tony Stark
 
 <a name="method-fluent-str-when-contains-all"></a>
 #### `whenContainsAll` {.collection-method}
