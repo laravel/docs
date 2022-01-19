@@ -324,6 +324,26 @@ If you would like to add an "after" validation hook to a form request, you may u
         });
     }
 
+The "after" validation hook will run even if the rules defined in your form request fail. If you would like to avoid running the hook if there are validation errors present, check if the error bag is empty before using the hook.
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        if ($validator->errors()->isNotEmpty()) {
+            return;
+        }
+
+        $validator->after(function ($validator) {
+            if ($this->somethingElseIsInvalid()) {
+                $validator->errors()->add('field', 'Something is wrong with this field!');
+            }
+        });
+    }
 
 <a name="request-stopping-on-first-validation-rule-failure"></a>
 #### Stopping On First Validation Failure Attribute
