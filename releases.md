@@ -260,6 +260,29 @@ The `route:list` CLI output has been significantly improved for the Laravel 9.x 
 <img src="https://user-images.githubusercontent.com/5457236/148321982-38c8b869-f188-4f42-a3cc-a03451d5216c.png">
 </p>
 
+<a name="test-coverage-support-on-artisan-test-Command"></a>
+### Test Coverage Using Artisan `test` Command
+
+_Test coverage when using the Artisan `test` command was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+
+The Artisan `test` command has received a new `--coverage` option that you may use to explore the amount of code coverage your tests are providing to your application:
+
+    php artisan test --coverage
+
+The test coverage results will be displayed directly within the CLI output.
+
+<p align="center">
+<img width="100%" src="https://user-images.githubusercontent.com/5457236/150133237-440290c2-3538-4d8e-8eac-4fdd5ec7bd9e.png">
+</p>
+
+In addition, if you would like to specify a minimum threshold that your test coverage percentage must meet, you may use the `--min` option. The test suite will fail if the given minimum threshold is not met:
+
+    php artisan test --coverage --min=80.3
+
+<p align="center">
+<img width="100%" src="https://user-images.githubusercontent.com/5457236/149989853-a29a7629-2bfa-4bf3-bbf7-cdba339ec157.png">
+</p>
+
 <a name="soketi-echo-server"></a>
 ### Soketi Echo Server
 
