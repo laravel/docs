@@ -506,7 +506,7 @@ To define a relationship within your model factory, you will typically assign a 
         ];
     }
 
-If the relationship's columns depend on the factory that defines it you may assign a closure to an attribute. The closure will receive the factory's evaluated attribute array:
+If the relationship's columns depend on the factory that defines it you may assign a closure to an attribute. The closure will receive the factory's evaluated attribute array. The callbacks get invoked, before the actual model(s) will be created.
 
     /**
      * Define the model's default state.
