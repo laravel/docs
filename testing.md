@@ -5,7 +5,7 @@
 - [Creating Tests](#creating-tests)
 - [Running Tests](#running-tests)
     - [Running Tests In Parallel](#running-tests-in-parallel)
-    - [Collecting Test Coverage](#collecting-test-coverage)
+    - [Reporting Test Coverage](#reporting-test-coverage)
 
 <a name="introduction"></a>
 ## Introduction
@@ -169,16 +169,15 @@ If you would like to access to current parallel process "token" from any other l
     $token = ParallelTesting::token();
 
 <a name="collecting-test-coverage"></a>
-### Collecting Test Coverage
+### Reporting Test Coverage
 
-When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running those application tests. So, if you would like to collect to test coverage, you may use the `--coverage` option when executing the `test` command:
+When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running your tests. To accomplish this, you may provide the `--coverage` option when invoking the `test` command:
 
     php artisan test --coverage
 
-#### Enforcing A Minimum Threshold
+<a name="enforcing-a-minimum-coverage-threshold"></a>
+#### Enforcing A Minimum Coverage Threshold
 
-If you would like to have an minimum threshold enforcement in your test coverage percentage, you may use the `--min` option:
+You may use the `--min` option to define a minimum test coverage threshold for your application. The test suite will fail if this threshold is not met:
 
     php artisan test --coverage --min=80.3
-
-Of course, if the given minimum threshold is not met, the test suite will fail.
