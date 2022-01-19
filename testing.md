@@ -171,6 +171,8 @@ If you would like to access to current parallel process "token" from any other l
 <a name="reporting-test-coverage"></a>
 ### Reporting Test Coverage
 
+> {note} This feature requires [Xdebug](https://xdebug.org) or [PCOV](https://pecl.php.net/package/pcov).
+
 When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running your tests. To accomplish this, you may provide the `--coverage` option when invoking the `test` command:
 
     php artisan test --coverage
