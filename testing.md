@@ -171,7 +171,7 @@ If you would like to access to current parallel process "token" from any other l
 <a name="collecting-test-coverage"></a>
 ### Collecting Test Coverage
 
-When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much code is used when we run those application tests. So, if you would like to collect to test coverage, you may use the `--coverage` option when executing the `test` command:
+When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running those application tests. So, if you would like to collect to test coverage, you may use the `--coverage` option when executing the `test` command:
 
     php artisan test --coverage
 
