@@ -168,7 +168,7 @@ If you would like to access to current parallel process "token" from any other l
 
     $token = ParallelTesting::token();
 
-<a name="collecting-test-coverage"></a>
+<a name="reporting-test-coverage"></a>
 ### Reporting Test Coverage
 
 When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running your tests. To accomplish this, you may provide the `--coverage` option when invoking the `test` command:
