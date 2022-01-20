@@ -239,12 +239,6 @@ Once the cast is defined, you may access the `options` attribute and it will aut
 
     $user->save();
 
-To update a single field of a JSON attribute with a more terse syntax, you may use the `->` operator when calling the `update` method:
-
-    $user = User::find(1);
-
-    $user->update(['options->key' => 'value']);
-
 <a name="array-object-and-collection-casting"></a>
 #### Array Object & Collection Casting
 
