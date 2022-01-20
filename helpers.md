@@ -1800,7 +1800,7 @@ The `Str::words` method limits the number of words in a string. An additional st
 <a name="method-str"></a>
 #### `str()` {.collection-method}
 
-The `str` function returns a new `Stringable` instance of the given string. This function is equivalent to the `Str::of` method:
+The `str` function returns a new `Illuminate\Support\Stringable` instance of the given string. This function is equivalent to the `Str::of` method:
 
     $string = str('Taylor')->append(' Otwell');
 
