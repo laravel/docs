@@ -347,7 +347,7 @@ Previously, the `data_get` helper could be used to retrieve nested data on array
 
 **Likelihood Of Impact: Very Low**
 
-Laravel 9.x now includes a global `str` helper function. If you are defining a global `str` helper in your application, you should rename or remove it so that it does not conflict with Laravel's own `str` helper.
+Laravel 9.x now includes a global `str` [helper function](/docs/{{version}}/helpers#method-str). If you are defining a global `str` helper in your application, you should rename or remove it so that it does not conflict with Laravel's own `str` helper.
 
 <a name="when-and-unless-methods"></a>
 #### The `when` / `unless` Methods
