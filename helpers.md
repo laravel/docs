@@ -235,6 +235,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [route](#method-route)
 [secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
+[to_route](#method-to-route)
 [url](#method-url)
 
 </div>
@@ -2890,6 +2891,15 @@ The `secure_url` function generates a fully qualified HTTPS URL to the given pat
     $url = secure_url('user/profile');
 
     $url = secure_url('user/profile', [1]);
+
+<a name="method-to-route"></a>
+#### `to_route()` {.collection-method}
+
+The `to_route` function generates a [redirect HTTP response](/docs/{{version}}/responses#redirects) for a given [named route](/docs/{{version}}/routing#named-routes):
+
+    return to_route($route, $parameters = [], $status = 302, $headers = []);
+
+    return to_route('route.name');
 
 <a name="method-url"></a>
 #### `url()` {.collection-method}
