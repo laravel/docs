@@ -335,11 +335,19 @@ Storage::extend('dropbox', function ($app, $config) {
 
 ### Helpers
 
+<a name="data-get-function"></a>
 #### The `data_get` Helper & Iterable Objects
 
 **Likelihood Of Impact: Very Low**
 
 Previously, the `data_get` helper could be used to retrieve nested data on arrays and `Collection` instances; however, this helper can now retrieve nested data on all iterable objects.
+
+<a name="str-function"></a>
+#### The `str` Helper
+
+**Likelihood Of Impact: Very Low**
+
+The `str` global helper was added in Laravel 9.x. If you are defining a global `str` function in your application, you should rename it or remove it, so it doesn't collide with Laravel's `str` helper.
 
 <a name="when-and-unless-methods"></a>
 #### The `when` / `unless` Methods

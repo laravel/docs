@@ -140,6 +140,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
 [Str::words](#method-str-words)
+[str](#method-str)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
 
@@ -1795,6 +1796,15 @@ The `Str::words` method limits the number of words in a string. An additional st
     return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
 
     // Perfectly balanced, as >>>
+
+<a name="method-str"></a>
+#### `str()` {.collection-method}
+
+The `str` function returns a new `Stringable` instance with the given string, similar to the `Str::of` method:
+
+    $string = str('Taylor')->append(' Otwell');
+
+    // 'Taylor Otwell'
 
 <a name="method-trans"></a>
 #### `trans()` {.collection-method}
