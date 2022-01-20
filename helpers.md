@@ -2897,9 +2897,11 @@ The `secure_url` function generates a fully qualified HTTPS URL to the given pat
 
 The `to_route` function generates a [redirect HTTP response](/docs/{{version}}/responses#redirects) for a given [named route](/docs/{{version}}/routing#named-routes):
 
-    return to_route($route, $parameters = [], $status = 302, $headers = []);
+    return to_route('users.show', ['user' => 1]);
 
-    return to_route('route.name');
+If necessary, you may pass the HTTP status code that should be assigned to the redirect and any additional response headers as the third and fourth arguments to the `to_route` method:
+
+    return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
 
 <a name="method-url"></a>
 #### `url()` {.collection-method}
