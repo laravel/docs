@@ -152,6 +152,20 @@ Route::get('/categories/{category}', function (Category $category) {
 });
 ```
 
+<a name="controller-route-groups"></a>
+### Controller Route Groups
+
+_Route group improvements were contributed by [Luke Downing](https://github.com/lukeraymonddowning)_.
+
+You may now use the `controller` method to define the common controller for all of the routes within the group. Then, when defining the routes, you only need to provide the controller method that they invoke:
+
+    use App\Http\Controllers\OrderController;
+
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/orders/{id}', 'show');
+        Route::post('/orders', 'store');
+    });
+
 <a name="enum-casting"></a>
 ### Enum Eloquent Attribute Casting
 
