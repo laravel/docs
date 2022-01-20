@@ -12,13 +12,10 @@ Laravel and its other first-party packages follow [Semantic Versioning](https://
 
 When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `^9.0`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
 
-<a name="exceptions"></a>
-### Exceptions
-
 <a name="named-arguments"></a>
 #### Named Arguments
 
-PHP's [named arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments) functionality are not covered by Laravel's backwards compatibility guidelines. We may choose to rename function parameters when necessary in order to improve the Laravel codebase. Therefore, using named arguments when calling Laravel methods should be done cautiously and with the understanding that the parameter names may change in the future.
+[Named arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments) are not covered by Laravel's backwards compatibility guidelines. We may choose to rename function arguments when necessary in order to improve the Laravel codebase. Therefore, using named arguments when calling Laravel methods should be done cautiously and with the understanding that the parameter names may change in the future.
 
 <a name="support-policy"></a>
 ## Support Policy
