@@ -132,6 +132,8 @@ public function address(): Attribute
 <a name="implicit-route-bindings-with-enums"></a>
 ### Implicit Route Bindings With Enums
 
+> {note} Implicit Route Bindings With Enums is only available for PHP 8.1+.
+
 _Implicit Enum bindings was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
 
 PHP 8.1 introduces support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). Laravel 9.x introduces the ability to type-hint an Enum on your route definition and Laravel will only invoke the route if that route segment is a valid Enum value in the URI. Otherwise, an HTTP 404 response will be returned automatically. For example, given the following Enum:
