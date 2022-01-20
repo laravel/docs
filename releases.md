@@ -132,7 +132,7 @@ public function address(): Attribute
 <a name="implicit-route-bindings-with-enums"></a>
 ### Implicit Route Bindings With Enums
 
-> {note} Implicit Route Bindings With Enums is only available for PHP 8.1+.
+> {note} Implicit Route bindings with Enums is only available for PHP 8.1+.
 
 _Implicit Enum bindings was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
 
