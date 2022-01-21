@@ -328,7 +328,6 @@ Laravel now includes pagination views built using [Bootstrap 5](https://getboots
         Paginator::useBootstrapFive();
     }
 
-<<<<<<< HEAD
 <a name="exception-page"></a>
 ### Improved Ignition Exception Page
 
