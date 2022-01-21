@@ -276,7 +276,7 @@ _Improved `route:list` CLI output was contributed by [Nuno Maduro](https://githu
 The `route:list` CLI output has been significantly improved for the Laravel 9.x release, offering a beautiful new experience when exploring your route definitions.
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/5457236/148321982-38c8b869-f188-4f42-a3cc-a03451d5216c.png">
+<img src="https://user-images.githubusercontent.com/5457236/148321982-38c8b869-f188-4f42-a3cc-a03451d5216c.png"/>
 </p>
 
 <a name="test-coverage-support-on-artisan-test-Command"></a>
@@ -291,7 +291,7 @@ The Artisan `test` command has received a new `--coverage` option that you may u
 The test coverage results will be displayed directly within the CLI output.
 
 <p align="center">
-<img width="100%" src="https://user-images.githubusercontent.com/5457236/150133237-440290c2-3538-4d8e-8eac-4fdd5ec7bd9e.png">
+<img width="100%" src="https://user-images.githubusercontent.com/5457236/150133237-440290c2-3538-4d8e-8eac-4fdd5ec7bd9e.png"/>
 </p>
 
 In addition, if you would like to specify a minimum threshold that your test coverage percentage must meet, you may use the `--min` option. The test suite will fail if the given minimum threshold is not met:
@@ -299,7 +299,7 @@ In addition, if you would like to specify a minimum threshold that your test cov
     php artisan test --coverage --min=80.3
 
 <p align="center">
-<img width="100%" src="https://user-images.githubusercontent.com/5457236/149989853-a29a7629-2bfa-4bf3-bbf7-cdba339ec157.png">
+<img width="100%" src="https://user-images.githubusercontent.com/5457236/149989853-a29a7629-2bfa-4bf3-bbf7-cdba339ec157.png"/>
 </p>
 
 <a name="soketi-echo-server"></a>

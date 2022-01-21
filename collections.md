@@ -1819,7 +1819,7 @@ The `reduce` method also passes array keys in associative collections to the giv
     // 4264
 
 <a name="method-reduce-many"></a>
-#### `reduceMany()` {#collection-method}
+#### `reduceMany()` {.collection-method}
 
 The `reduceMany` method reduces the collection to an array of values, passing the results of each iteration into the subsequent iteration. This method is similar to the `reduce` method; however, it can accept multiple initial values:
 
