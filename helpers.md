@@ -1807,6 +1807,12 @@ The `str` function returns a new `Illuminate\Support\Stringable` instance of the
 
     // 'Taylor Otwell'
 
+If you don't provide the string argument, the `str` function returns a instance of `Illuminate\Support\Str`:
+
+    $isUuid = str()->uuid();
+
+    // 'a0a2a2d2-0b87-4a18-83f2-2529882be2de'
+
 <a name="method-trans"></a>
 #### `trans()` {.collection-method}
 
