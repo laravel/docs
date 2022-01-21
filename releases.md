@@ -328,6 +328,7 @@ Laravel now includes pagination views built using [Bootstrap 5](https://getboots
         Paginator::useBootstrapFive();
     }
 
+<<<<<<< HEAD
 <a name="exception-page"></a>
 ### Improved Ignition Exception Page
 
@@ -336,3 +337,34 @@ Ignition, the open source exception debug page created by Spatie, has been redes
 <p align="center">
 <img width="100%" src="https://user-images.githubusercontent.com/483853/149235404-f7caba56-ebdf-499e-9883-cac5d5610369.png"/>
 </p>
+
+<a name="new-helpers"></a>
+### New Helpers
+
+Laravel 9.x brings two new helpers that you may find convenient to use in your own application.
+
+<a name="new-helpers-str"></a>
+#### `str`
+
+The `str` function returns a new `Illuminate\Support\Stringable` instance of the given string. This function is equivalent to the `Str::of` method:
+
+    $string = str('Taylor')->append(' Otwell');
+
+    // 'Taylor Otwell'
+
+If no argument is provided to the `str` function, the function returns an instance of `Illuminate\Support\Str`:
+
+    $snake = str()->snake('FooBar');
+
+    // 'foo_bar'
+
+<a name="new-helpers-to-route"></a>
+#### `to_route`
+
+The `to_route` function generates a redirect HTTP response for a given named route:
+
+    return to_route('users.show', ['user' => 1]);
+
+If necessary, you may pass the HTTP status code that should be assigned to the redirect and any additional response headers as the third and fourth arguments to the to_route method:
+
+    return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
