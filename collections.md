@@ -953,6 +953,37 @@ You may even pass a callback as the method's default value. The result of the ca
 
     // taylor@example.com
 
+<a name="method-getorput"></a>
+#### `getOrPut()` {.collection-method}
+
+The `getOrPut` method returns the item at a given key. If the key does not exist, the method will add the second parameter to collection using the first parameter as key.
+
+    $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+
+    $value = $collection->getOrPut('name', 'Without Name');
+
+    // taylor
+
+    $value = $collection->getOrPut('email', 'Without Email');
+
+    // Without Email
+
+    $value = $collection->get('email');
+
+    // Without Email
+
+You may even pass a callback as the method's value. The result of the callback will be returned and added to collection if the specified key does not exist:
+
+    $collection->getOrPut('gender', function () {
+        return 'male';
+    });
+
+    // male
+
+    $collection->get('gender');
+
+    // male
+
 <a name="method-groupby"></a>
 #### `groupBy()` {.collection-method}
 
@@ -3412,4 +3443,3 @@ The `remember` method returns a new lazy collection that will remember any value
     // First 5 users come from the collection's cache...
     // The rest are hydrated from the database...
     $users->take(20)->all();
-
