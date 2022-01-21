@@ -1807,6 +1807,12 @@ The `str` function returns a new `Illuminate\Support\Stringable` instance of the
 
     // 'Taylor Otwell'
 
+If no argument is provided to the `str` function, the function returns an instance of `Illuminate\Support\Str`:
+
+    $snake = str()->snake('FooBar');
+
+    // 'foo_bar'
+
 <a name="method-trans"></a>
 #### `trans()` {.collection-method}
 
