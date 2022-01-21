@@ -1807,11 +1807,11 @@ The `str` function returns a new `Illuminate\Support\Stringable` instance of the
 
     // 'Taylor Otwell'
 
-If you don't provide the string argument, the `str` function returns a instance of `Illuminate\Support\Str`:
+If no argument is provided to the `str` function, the function returns an instance of `Illuminate\Support\Str`:
 
-    $isUuid = str()->uuid();
+    $snake = str()->snake('FooBar');
 
-    // 'a0a2a2d2-0b87-4a18-83f2-2529882be2de'
+    // 'foo_bar'
 
 <a name="method-trans"></a>
 #### `trans()` {.collection-method}
