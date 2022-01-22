@@ -340,12 +340,12 @@ Ignition, the open source exception debug page created by Spatie, has been redes
 <a name="new-helpers"></a>
 ### New Helpers
 
-Laravel 9.x brings two new helpers that you may find convenient to use in your own application.
+Laravel 9.x introduces two new, convenient helper functions that you may use in your own application.
 
 <a name="new-helpers-str"></a>
 #### `str`
 
-The `str` function returns a new `Illuminate\Support\Stringable` instance of the given string. This function is equivalent to the `Str::of` method:
+The `str` function returns a new `Illuminate\Support\Stringable` instance for the given string. This function is equivalent to the `Str::of` method:
 
     $string = str('Taylor')->append(' Otwell');
 
@@ -353,14 +353,14 @@ The `str` function returns a new `Illuminate\Support\Stringable` instance of the
 
 If no argument is provided to the `str` function, the function returns an instance of `Illuminate\Support\Str`:
 
-    $snake = str()->snake('FooBar');
+    $snake = str()->snake('LaravelFramework');
 
-    // 'foo_bar'
+    // 'laravel_framework'
 
 <a name="new-helpers-to-route"></a>
 #### `to_route`
 
-The `to_route` function generates a redirect HTTP response for a given named route:
+The `to_route` function generates a redirect HTTP response for a given named route, providing an expressive way to redirect to named routes from your routes and controllers:
 
     return to_route('users.show', ['user' => 1]);
 
