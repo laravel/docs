@@ -389,14 +389,6 @@ If you wish to specify a longer timeout for a given request, you may do so using
 
     $response = Http::timeout(120)->get(...);
 
-### Trusted proxies Middleware
-
-**Likelihood Of Impact: High**
-
-If you are upgrading from Laravel <=8.5.23 then you will have to change the TrustProxies middleware in 'app/Http/Middleware/TrustProxies.php'.
-
-Change line 5 from `use Fideloper\Proxy\TrustProxies as Middleware;` to `use Illuminate\Http\Middleware\TrustProxies as Middleware;`. 
-
 <a name="symfony-mailer"></a>
 ### Symfony Mailer
 
@@ -569,6 +561,14 @@ The `getSession` method previously returned an instance of `Illuminate\Session\S
 **Likelihood Of Impact: Medium**
 
 All calls to the `assertDeleted` method should be updated to `assertModelMissing`.
+
+### Trusted Proxies
+
+**Likelihood Of Impact: Low**
+
+If you are upgrading your Laravel 8 project to Laravel 9 by importing your existing application code into a totally new Laravel 9 application skeleton, you may need to update your application's "trusted proxy" middleware.
+
+Within your `app/Http/Middleware/TrustProxies.php` file, update `use Fideloper\Proxy\TrustProxies as Middleware` to `use Illuminate\Http\Middleware\TrustProxies as Middleware`.
 
 ### Validation
 
