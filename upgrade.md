@@ -389,6 +389,14 @@ If you wish to specify a longer timeout for a given request, you may do so using
 
     $response = Http::timeout(120)->get(...);
 
+### Trusted proxies Middleware
+
+**Likelihood Of Impact: High**
+
+If you are upgrading from Laravel <=8.5.23 then you will have to change the TrustProxies middleware in 'app/Http/Middleware/TrustProxies.php'.
+
+Change line 5 from `use Fideloper\Proxy\TrustProxies as Middleware;` to `use Illuminate\Http\Middleware\TrustProxies as Middleware;`. 
+
 <a name="symfony-mailer"></a>
 ### Symfony Mailer
 
