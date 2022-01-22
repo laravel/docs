@@ -753,6 +753,8 @@ If you would like to perform multiple "upserts" in a single query, then you shou
         ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
     ], ['departure', 'destination'], ['price']);
+    
+> {note} All databases require the columns in the second argument `uniqueBy` of the `upsert` method to have a "primary" or "unique" index.
 
 <a name="deleting-models"></a>
 ## Deleting Models
