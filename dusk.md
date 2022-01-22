@@ -51,7 +51,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Dusk provides an expressive, easy-to-use browser automation and testing API. By default, Dusk does not require you to install JDK or Selenium on your local computer. Instead, Dusk uses a standalone [ChromeDriver](https://sites.google.com/chromium.org/driver) installation. However, you are free to utilize any other Selenium compatible driver you wish.
+[Laravel Dusk](https://github.com/laravel/dusk) provides an expressive, easy-to-use browser automation and testing API. By default, Dusk does not require you to install JDK or Selenium on your local computer. Instead, Dusk uses a standalone [ChromeDriver](https://sites.google.com/chromium.org/driver) installation. However, you are free to utilize any other Selenium compatible driver you wish.
 
 <a name="installation"></a>
 ## Installation
@@ -389,12 +389,14 @@ You may use the `deleteCookie` method to delete the given cookie:
 
 You may use the `script` method to execute arbitrary JavaScript statements within the browser:
 
-    $output = $browser->script('document.documentElement.scrollTop = 0');
+    $browser->script('document.documentElement.scrollTop = 0');
 
-    $output = $browser->script([
+    $browser->script([
         'document.body.scrollTop = 0',
         'document.documentElement.scrollTop = 0',
     ]);
+
+    $output = $browser->script('return window.location.pathname');
 
 <a name="taking-a-screenshot"></a>
 ### Taking A Screenshot
@@ -703,7 +705,7 @@ You may occasionally need to execute assertions outside of the current scope. Yo
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements
 
-When testing applications that use JavaScript extensively, it often becomes necessary to "wait" for certain elements or data to be available before proceeding with a test. Dusk makes this a cinch. Using a variety of methods, you may wait for elements to be visible on the page or even wait until a given JavaScript expression evaluates to `true`.
+When testing applications that use JavaScript extensively, it often becomes necessary to "wait" for certain elements or data to be available before proceeding with a test. Dusk makes this a cinch. Using a variety of methods, you may wait for elements to become visible on the page or even wait until a given JavaScript expression evaluates to `true`.
 
 <a name="waiting"></a>
 #### Waiting
@@ -738,6 +740,20 @@ You may also wait until the element matching the given selector is missing from 
 
     // Wait a maximum of one second until the selector is missing...
     $browser->waitUntilMissing('.selector', 1);
+
+Or, you may wait until the element matching the given selector is enabled or disabled:
+
+    // Wait a maximum of five seconds until the selector is enabled...
+    $browser->waitUntilEnabled('.selector');
+
+    // Wait a maximum of one second until the selector is enabled...
+    $browser->waitUntilEnabled('.selector', 1);
+
+    // Wait a maximum of five seconds until the selector is disabled...
+    $browser->waitUntilDisabled('.selector');
+
+    // Wait a maximum of one second until the selector is disabled...
+    $browser->waitUntilDisabled('.selector', 1);
 
 <a name="scoping-selectors-when-available"></a>
 #### Scoping Selectors When Available
@@ -786,6 +802,10 @@ When making a path assertion such as `$browser->assertPathIs('/home')`, the asse
 
     $browser->waitForLocation('/secret');
 
+The `waitForLocation` method can also be used to wait for the current window location to be a fully qualified URL:
+
+    $browser->waitForLocation('https://example.com/path');
+
 You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) location:
 
     $browser->waitForRoute($routeName, $parameters);
@@ -793,10 +813,18 @@ You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) 
 <a name="waiting-for-page-reloads"></a>
 #### Waiting for Page Reloads
 
-If you need to make assertions after a page has been reloaded, use the `waitForReload` method:
+If you need to wait for a page to reload after performing an action, use the `waitForReload` method:
 
-    $browser->click('.some-action')
-            ->waitForReload()
+    use Laravel\Dusk\Browser;
+
+    $browser->waitForReload(function (Browser $browser) {
+        $browser->press('Submit');
+    })
+    ->assertSee('Success!');
+
+Since the need to wait for the page to reload typically occurs after clicking a button, you may use the `clickAndWaitForReload` method for convenience:
+
+    $browser->clickAndWaitForReload('.selector')
             ->assertSee('something');
 
 <a name="waiting-on-javascript-expressions"></a>
@@ -903,13 +931,17 @@ Dusk provides a variety of assertions that you may make against your application
 [assertSelectHasOption](#assert-select-has-option)
 [assertSelectMissingOption](#assert-select-missing-option)
 [assertValue](#assert-value)
+[assertValueIsNot](#assert-value-is-not)
 [assertAttribute](#assert-attribute)
+[assertAttributeContains](#assert-attribute-contains)
 [assertAriaAttribute](#assert-aria-attribute)
 [assertDataAttribute](#assert-data-attribute)
 [assertVisible](#assert-visible)
 [assertPresent](#assert-present)
 [assertNotPresent](#assert-not-present)
 [assertMissing](#assert-missing)
+[assertInputPresent](#assert-input-present)
+[assertInputMissing](#assert-input-missing)
 [assertDialogOpened](#assert-dialog-opened)
 [assertEnabled](#assert-enabled)
 [assertDisabled](#assert-disabled)
@@ -1267,12 +1299,26 @@ Assert that the element matching the given selector has the given value:
 
     $browser->assertValue($selector, $value);
 
+<a name="assert-value-is-not"></a>
+#### assertValueIsNot
+
+Assert that the element matching the given selector does not have the given value:
+
+    $browser->assertValueIsNot($selector, $value);
+
 <a name="assert-attribute"></a>
 #### assertAttribute
 
 Assert that the element matching the given selector has the given value in the provided attribute:
 
     $browser->assertAttribute($selector, $attribute, $value);
+
+<a name="assert-attribute-contains"></a>
+#### assertAttributeContains
+
+Assert that the element matching the given selector contains the given value in the provided attribute:
+
+    $browser->assertAttributeContains($selector, $attribute, $value);
 
 <a name="assert-aria-attribute"></a>
 #### assertAriaAttribute
@@ -1306,7 +1352,7 @@ Assert that the element matching the given selector is visible:
 <a name="assert-present"></a>
 #### assertPresent
 
-Assert that the element matching the given selector is present:
+Assert that the element matching the given selector is present in the source:
 
     $browser->assertPresent($selector);
 
@@ -1323,6 +1369,20 @@ Assert that the element matching the given selector is not present in the source
 Assert that the element matching the given selector is not visible:
 
     $browser->assertMissing($selector);
+
+<a name="assert-input-present"></a>
+#### assertInputPresent
+
+Assert that an input with the given name is present:
+
+    $browser->assertInputPresent($name);
+
+<a name="assert-input-missing"></a>
+#### assertInputMissing
+
+Assert that an input with the given name is not present in the source:
+
+    $browser->assertInputMissing($name);
 
 <a name="assert-dialog-opened"></a>
 #### assertDialogOpened

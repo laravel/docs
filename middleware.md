@@ -146,6 +146,9 @@ When assigning middleware, you may also pass the fully qualified class name:
         //
     })->middleware(EnsureTokenIsValid::class);
 
+<a name="excluding-middleware"></a>
+#### Excluding Middleware
+
 When assigning middleware to a group of routes, you may occasionally need to prevent the middleware from being applied to an individual route within the group. You may accomplish this using the `withoutMiddleware` method:
 
     use App\Http\Middleware\EnsureTokenIsValid;
@@ -158,6 +161,16 @@ When assigning middleware to a group of routes, you may occasionally need to pre
         Route::get('/profile', function () {
             //
         })->withoutMiddleware([EnsureTokenIsValid::class]);
+    });
+
+You may also exclude a given set of middleware from an entire [group](/docs/{{version}}/routing#route-groups) of route definitions:
+
+    use App\Http\Middleware\EnsureTokenIsValid;
+
+    Route::withoutMiddleware([EnsureTokenIsValid::class])->group(function () {
+        Route::get('/profile', function () {
+            //
+        });
     });
 
 The `withoutMiddleware` method can only remove route middleware and does not apply to [global middleware](#global-middleware).
@@ -213,7 +226,7 @@ Rarely, you may need your middleware to execute in a specific order but not have
      *
      * This forces non-global middleware to always be in the given order.
      *
-     * @var array
+     * @var string[]
      */
     protected $middlewarePriority = [
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
@@ -221,6 +234,7 @@ Rarely, you may need your middleware to execute in a specific order but not have
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
         \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,

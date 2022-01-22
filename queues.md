@@ -42,6 +42,7 @@
     - [Pruning Failed Jobs](#pruning-failed-jobs)
     - [Failed Job Events](#failed-job-events)
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
+- [Monitoring Your Queues](#monitoring-your-queues)
 - [Job Events](#job-events)
 
 <a name="introduction"></a>
@@ -85,6 +86,10 @@ In order to use the `database` queue driver, you will need a database table to h
     php artisan queue:table
 
     php artisan migrate
+
+Finally, don't forget to instruct your application to use the `database` driver by updating the `QUEUE_CONNECTION` variable in your application's `.env` file:
+
+    QUEUE_CONNECTION=database
 
 <a name="redis"></a>
 #### Redis
@@ -447,6 +452,18 @@ Once you have defined your rate limit, you may attach the rate limiter to your b
     }
 
 Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [`retryUntil` method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
+
+If you do not want a job to be retried when it is rate limited, you may use the `dontRelease` method:
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return [(new RateLimited('backups'))->dontRelease()];
+    }
 
 > {tip} If you are using Redis, you may use the `Illuminate\Queue\Middleware\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware.
 
@@ -1165,6 +1182,8 @@ To dispatch a batch of jobs, you should use the `batch` method of the `Bus` faca
 
 The batch's ID, which may be accessed via the `$batch->id` property, may be used to [query the Laravel command bus](#inspecting-batches) for information about the batch after it has been dispatched.
 
+> {note} Since batch callbacks are serialized and executed at a later time by the Laravel queue, you should not use the `$this` variable within the callbacks.
+
 <a name="naming-batches"></a>
 #### Naming Batches
 
@@ -1423,7 +1442,7 @@ You may also specify which queue connection the worker should utilize. The conne
 
     php artisan queue:work redis
 
-You may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:
+By default, the `queue:work` command only processes jobs for the default queue on a given connection. However, you may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:
 
     php artisan queue:work redis --queue=emails
 
@@ -1686,15 +1705,13 @@ To view all of the failed jobs that have been inserted into your `failed_jobs` d
 
     php artisan queue:failed
 
-The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
+The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece`, issue the following command:
 
-    php artisan queue:retry 5
+    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece
 
-If necessary, you may pass multiple IDs or an ID range (when using numeric IDs) to the command:
+If necessary, you may pass multiple IDs to the command:
 
-    php artisan queue:retry 5 6 7 8 9 10
-
-    php artisan queue:retry --range=5-10
+    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece 91401d2c-0784-4f43-824c-34f94a33c24d
 
 You may also retry all of the failed jobs for a particular queue:
 
@@ -1706,7 +1723,7 @@ To retry all of your failed jobs, execute the `queue:retry` command and pass `al
 
 If you would like to delete a failed job, you may use the `queue:forget` command:
 
-    php artisan queue:forget 5
+    php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d
 
 > {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
 
@@ -1818,6 +1835,43 @@ You may also provide the `connection` argument and `queue` option to delete jobs
     php artisan queue:clear redis --queue=emails
 
 > {note} Clearing jobs from queues is only available for the SQS, Redis, and database queue drivers. In addition, the SQS message deletion process takes up to 60 seconds, so jobs sent to the SQS queue up to 60 seconds after you clear the queue might also be deleted.
+
+<a name="monitoring-your-queues"></a>
+## Monitoring Your Queues
+
+If your queue receives a sudden influx of jobs, it could become overwhelmed, leading to a long wait time for jobs to complete. If you wish, Laravel can alert you when your queue job count exceeds a specified threshold.
+
+To get started, you should schedule the `queue:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the queues you wish to monitor as well as your desired job count threshold:
+
+```bash
+php artisan queue:monitor redis:default,redis:deployments --max=100
+```
+
+Scheduling this command alone is not enough to trigger a notification alerting you of the queue's overwhelmed status. When the command encounters a queue that has a job count exceeding your threshold, an `Illuminate\Queue\Events\QueueBusy` event will be dispatched. You may listen for this event within your application's `EventServiceProvider` in order to send a notification to you or your development team:
+
+```php
+use App\Notifications\QueueHasLongWaitTime;
+use Illuminate\Queue\Events\QueueBusy;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+
+/**
+ * Register any other events for your application.
+ *
+ * @return void
+ */
+public function boot()
+{
+    Event::listen(function (QueueBusy $event) {
+        Notification::route('mail', 'dev@example.com')
+                ->notify(new QueueHasLongWaitTime(
+                    $event->connection,
+                    $event->queue,
+                    $event->size
+                ));
+    });
+}
+```
 
 <a name="job-events"></a>
 ## Job Events

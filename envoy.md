@@ -15,6 +15,7 @@
     - [Slack](#slack)
     - [Discord](#discord)
     - [Telegram](#telegram)
+    - [Microsoft Teams](#microsoft-teams)
 
 <a name="introduction"></a>
 ## Introduction
@@ -286,4 +287,13 @@ Envoy also supports sending notifications to [Telegram](https://telegram.org) af
 
     @finished
         @telegram('bot-id','chat-id')
+    @endfinished
+
+<a name="microsoft-teams"></a>
+### Microsoft Teams
+
+Envoy also supports sending notifications to [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams) after each task is executed. The `@microsoftTeams` directive accepts a Teams Webhook (required), a message, theme color (success, info, warning, error), and an array of options. You may retrieve your Teams Webook by creating a new [incoming webhook](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook). The Teams API has many other attributes to customize your message box like title, summary, and sections. You can find more information on the [Microsoft Teams documentation](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL#example-of-connector-message). You should pass the entire Webhook URL into the `@microsoftTeams` directive:
+
+    @finished
+        @microsoftTeams('webhook-url')
     @endfinished

@@ -46,7 +46,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Passport provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
+[Laravel Passport](https://github.com/laravel/passport) provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
 
 > {note} This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
 
@@ -74,7 +74,7 @@ Next, you should execute the `passport:install` Artisan command. This command wi
 
 > {tip} If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids).
 
-After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
+After running the `passport:install` command, add the `Laravel\Passport\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes. If your model is already using the `Laravel\Sanctum\HasApiTokens` trait, you may remove that trait:
 
     <?php
 
@@ -388,7 +388,7 @@ Once a client has been created, developers may use their client ID and secret to
             'state' => $state,
         ]);
 
-        return redirect('http://passport-app.com/oauth/authorize?'.$query);
+        return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
 > {tip} Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
@@ -439,7 +439,7 @@ If the user approves the authorization request, they will be redirected back to 
             InvalidArgumentException::class
         );
 
-        $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+        $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
             'grant_type' => 'authorization_code',
             'client_id' => 'client-id',
             'client_secret' => 'client-secret',
@@ -483,7 +483,7 @@ If your application issues short-lived access tokens, users will need to refresh
 
     use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'refresh_token',
         'refresh_token' => 'the-refresh-token',
         'client_id' => 'client-id',
@@ -596,7 +596,7 @@ Once a client has been created, you may use the client ID and the generated code
             'code_challenge_method' => 'S256',
         ]);
 
-        return redirect('http://passport-app.com/oauth/authorize?'.$query);
+        return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
 <a name="code-grant-pkce-converting-authorization-codes-to-access-tokens"></a>
@@ -619,7 +619,7 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
             InvalidArgumentException::class
         );
 
-        $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+        $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
             'grant_type' => 'authorization_code',
             'client_id' => 'client-id',
             'redirect_uri' => 'http://third-party-app.com/callback',
@@ -649,7 +649,7 @@ Once you have created a password grant client, you may request an access token b
 
     use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'password',
         'client_id' => 'client-id',
         'client_secret' => 'client-secret',
@@ -669,7 +669,7 @@ When using the password grant or client credentials grant, you may wish to autho
 
     use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'password',
         'client_id' => 'client-id',
         'client_secret' => 'client-secret',
@@ -776,7 +776,7 @@ Once the grant has been enabled, developers may use their client ID to request a
             'state' => $state,
         ]);
 
-        return redirect('http://passport-app.com/oauth/authorize?'.$query);
+        return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
 > {tip} Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
@@ -817,7 +817,7 @@ To retrieve a token using this grant type, make a request to the `oauth/token` e
 
     use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://passport-app.com/oauth/token', [
+    $response = Http::asForm()->post('http://passport-app.test/oauth/token', [
         'grant_type' => 'client_credentials',
         'client_id' => 'client-id',
         'client_secret' => 'client-secret',
@@ -830,6 +830,8 @@ To retrieve a token using this grant type, make a request to the `oauth/token` e
 ## Personal Access Tokens
 
 Sometimes, your users may want to issue access tokens to themselves without going through the typical authorization code redirect flow. Allowing users to issue tokens to themselves via your application's UI can be useful for allowing users to experiment with your API or may serve as a simpler approach to issuing access tokens in general.
+
+> {tip} If your application is primarily using Passport to issue personal access tokens, consider using [Laravel Sanctum](/docs/{{version}}/sanctum), Laravel's light-weight first-party library for issuing API access tokens.
 
 <a name="creating-a-personal-access-client"></a>
 ### Creating A Personal Access Client
@@ -924,6 +926,8 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
         //
     })->middleware('auth:api');
 
+> {note} If you are using the [client credentials grant](#client-credentials-grant-tokens), you should use [the `client` middleware](#client-credentials-grant-tokens) to protect your routes instead of the `auth:api` middleware.
+
 <a name="multiple-authentication-guards"></a>
 #### Multiple Authentication Guards
 
@@ -957,7 +961,7 @@ When calling routes that are protected by Passport, your application's API consu
     $response = Http::withHeaders([
         'Accept' => 'application/json',
         'Authorization' => 'Bearer '.$accessToken,
-    ])->get('https://passport-app.com/api/user');
+    ])->get('https://passport-app.test/api/user');
 
     return $response->json();
 
@@ -1021,7 +1025,7 @@ When requesting an access token using the authorization code grant, consumers sh
             'scope' => 'place-orders check-status',
         ]);
 
-        return redirect('http://passport-app.com/oauth/authorize?'.$query);
+        return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
 <a name="when-issuing-personal-access-tokens"></a>

@@ -163,12 +163,12 @@ The `lazy` method works similarly to [the `chunk` method](#chunking-results) in 
 ```php
 use Illuminate\Support\Facades\DB;
 
-DB::table('users')->lazy()->each(function ($user) {
+DB::table('users')->orderBy('id')->lazy()->each(function ($user) {
     //
 });
 ```
 
-Once again, if you plan to update the retrieved records while iterating over them, it is best to use the `lazyById` method instead. This method will automatically paginate the results based on the record's primary key:
+Once again, if you plan to update the retrieved records while iterating over them, it is best to use the `lazyById` or `lazyByIdDesc` methods instead. These methods will automatically paginate the results based on the record's primary key:
 
 ```php
 DB::table('users')->where('active', false)
@@ -734,6 +734,14 @@ As you might expect, the `groupBy` and `having` methods may be used to group the
                     ->having('account_id', '>', 100)
                     ->get();
 
+You can use the `havingBetween` method to filter the results within a given range:
+
+    $report = DB::table('orders')
+                    ->selectRaw('count(id) as number_of_orders, customer_id')
+                    ->groupBy('customer_id')
+                    ->havingBetween('number_of_orders', [5, 15])
+                    ->get();
+
 You may pass multiple arguments to the `groupBy` method to group by multiple columns:
 
     $users = DB::table('users')
@@ -804,12 +812,14 @@ You may insert several records at once by passing an array of arrays. Each array
         ['email' => 'janeway@example.com', 'votes' => 0],
     ]);
 
-The `insertOrIgnore` method will ignore duplicate record errors while inserting records into the database:
+The `insertOrIgnore` method will ignore errors while inserting records into the database:
 
     DB::table('users')->insertOrIgnore([
         ['id' => 1, 'email' => 'sisko@example.com'],
         ['id' => 2, 'email' => 'archer@example.com'],
     ]);
+
+> {note} `insertOrIgnore` will ignore duplicate records and also may ignore other types of errors depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution).
 
 <a name="auto-incrementing-ids"></a>
 #### Auto-Incrementing IDs
@@ -839,7 +849,7 @@ In the example above, Laravel will attempt to insert two records. If a record al
 <a name="update-statements"></a>
 ## Update Statements
 
-In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. You may constrain the `update` query using `where` clauses:
+In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. The `update` method returns the number of affected rows. You may constrain the `update` query using `where` clauses:
 
     $affected = DB::table('users')
                   ->where('id', 1)
@@ -887,11 +897,11 @@ You may also specify additional columns to update during the operation:
 <a name="delete-statements"></a>
 ## Delete Statements
 
-The query builder's `delete` method may be used to delete records from the table. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
+The query builder's `delete` method may be used to delete records from the table. The `delete` method returns the number of affected rows. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
 
-    DB::table('users')->delete();
+    $deleted = DB::table('users')->delete();
 
-    DB::table('users')->where('votes', '>', 100)->delete();
+    $deleted = DB::table('users')->where('votes', '>', 100)->delete();
 
 If you wish to truncate an entire table, which will remove all records from the table and reset the auto-incrementing ID to zero, you may use the `truncate` method:
 

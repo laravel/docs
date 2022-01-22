@@ -1,12 +1,38 @@
 # Console Tests
 
 - [Introduction](#introduction)
+- [Success / Failure Expectations](#success-failure-expectations)
 - [Input / Output Expectations](#input-output-expectations)
 
 <a name="introduction"></a>
 ## Introduction
 
 In addition to simplifying HTTP testing, Laravel provides a simple API for testing your application's [custom console commands](/docs/{{version}}/artisan).
+
+<a name="success-failure-expectations"></a>
+## Success / Failure Expectations
+
+To get started, let's explore how to make assertions regarding an Artisan command's exit code. To accomplish this, we will use the `artisan` method to invoke an Artisan command from our test. Then, we will use the `assertExitCode` method to assert that the command completed with a given exit code:
+
+    /**
+     * Test a console command.
+     *
+     * @return void
+     */
+    public function test_console_command()
+    {
+        $this->artisan('inspire')->assertExitCode(0);
+    }
+
+You may use the `assertNotExitCode` method to assert that the command did not exit with a given exit code:
+
+    $this->artisan('inspire')->assertNotExitCode(1);
+
+Of course, all terminal commands typically exit with a status code of `0` when they are successful and a non-zero exit code when they are not successful. Therefore, for convenience, you may utilize the `assertSuccessful` and `assertFailed` assertions to assert that a given command exited with a successful exit code or not:
+
+    $this->artisan('inspire')->assertSuccessful();
+
+    $this->artisan('inspire')->assertFailed();
 
 <a name="input-output-expectations"></a>
 ## Input / Output Expectations

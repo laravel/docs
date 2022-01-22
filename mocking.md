@@ -173,10 +173,25 @@ You may use the `Bus` facade's `fake` method to prevent jobs from being dispatch
 
             // Assert a job was not dispatched...
             Bus::assertNotDispatched(AnotherJob::class);
+
+            // Assert that a job was dispatched synchronously...
+            Bus::assertDispatchedSync(AnotherJob::class);
+
+            // Assert that a job was not dipatched synchronously...
+            Bus::assertNotDispatchedSync(AnotherJob::class);
+
+            // Assert that a job was dispatched after the response was sent...
+            Bus::assertDispatchedAfterResponse(AnotherJob::class);
+
+            // Assert a job was not dispatched after response was sent...
+            Bus::assertNotDispatchedAfterResponse(AnotherJob::class);
+
+            // Assert no jobs were dispatched...
+            Bus::assertNothingDispatched();
         }
     }
 
-You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that a job was dispatched that passes a given "truth test". If at least one job was dispatched that passes the given truth test then the assertion will be successful. For example, you may wish to assert that a job was dispatched for a specific order:
+You may pass a closure to the available methods in order to assert that a job was dispatched that passes a given "truth test". If at least one job was dispatched that passes the given truth test then the assertion will be successful. For example, you may wish to assert that a job was dispatched for a specific order:
 
     Bus::assertDispatched(function (ShipOrder $job) use ($order) {
         return $job->order->id === $order->id;
@@ -209,7 +224,7 @@ As you can see in the example above, the array of chained jobs may be an array o
 <a name="job-batches"></a>
 ### Job Batches
 
-The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batches) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\Bus\PendingBatch`, which may be used to inspect the jobs within the batch:
+The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batching) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\Bus\PendingBatch`, which may be used to inspect the jobs within the batch:
 
     use Illuminate\Bus\PendingBatch;
     use Illuminate\Support\Facades\Bus;
@@ -385,7 +400,7 @@ If you are queueing mailables for delivery in the background, you should use the
 
     Mail::assertNothingQueued();
 
-You may pass a closure to the `assertSent` or `assertNotSent` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
+You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
 
     Mail::assertSent(function (OrderShipped $mail) use ($order) {
         return $mail->order->id === $order->id;
@@ -397,6 +412,14 @@ When calling the `Mail` facade's assertion methods, the mailable instance accept
         return $mail->hasTo($user->email) &&
                $mail->hasCc('...') &&
                $mail->hasBcc('...');
+    });
+
+You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:
+
+    Mail::assertNothingOutgoing();
+
+    Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {
+        return $mail->order->id === $order->id;
     });
 
 <a name="notification-fake"></a>

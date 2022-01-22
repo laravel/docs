@@ -11,6 +11,7 @@
 - [Input](#input)
     - [Retrieving Input](#retrieving-input)
     - [Determining If Input Is Present](#determining-if-input-is-present)
+    - [Merging Additional Input](#merging-additional-input)
     - [Old Input](#old-input)
     - [Cookies](#cookies)
     - [Input Trimming & Normalization](#input-trimming-and-normalization)
@@ -226,6 +227,16 @@ You may retrieve all of the incoming request's input data as an `array` using th
 
     $input = $request->all();
 
+Using the `collect` method, you may retrieve all of the incoming request's input data as a [collection](/docs/{{version}}/collections):
+
+    $input = $request->collect();
+
+The `collect` method also allows you to retrieve a subset of the incoming request input as a collection:
+
+    $request->collect('users')->each(function ($user) {
+        // ...
+    });
+
 <a name="retrieving-an-input-value"></a>
 #### Retrieving An Input Value
 
@@ -276,6 +287,19 @@ When dealing with HTML elements like checkboxes, your application may receive "t
 
     $archived = $request->boolean('archived');
 
+<a name="retrieving-date-input-values"></a>
+#### Retrieving Date Input Values
+
+For convenience, input values containing dates / times may be retrieved as Carbon instances using the `date` method. If the request does not contain an input value with the given name, `null` will be returned:
+
+    $birthday = $request->date('birthday');
+
+The second and third arguments accepted by the `date` method may be used to specify the date's format and timezone, respectively:
+
+    $elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');
+
+If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method.
+
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input Via Dynamic Properties
 
@@ -321,6 +345,14 @@ The `whenHas` method will execute the given closure if a value is present on the
         //
     });
 
+A second closure may be passed to the `whenHas` method that will be executed if the specified value is not present on the request:
+
+    $request->whenHas('name', function ($input) {
+        // The "name" value is present...
+    }, function () {
+        // The "name" value is not present...
+    });
+
 The `hasAny` method returns `true` if any of the specified values are present:
 
     if ($request->hasAny(['name', 'email'])) {
@@ -339,11 +371,30 @@ The `whenFilled` method will execute the given closure if a value is present on 
         //
     });
 
+A second closure may be passed to the `whenFilled` method that will be executed if the specified value is not "filled":
+
+    $request->whenFilled('name', function ($input) {
+        // The "name" value is filled...
+    }, function () {
+        // The "name" value is not filled...
+    });
+
 To determine if a given key is absent from the request, you may use the `missing` method:
 
     if ($request->missing('name')) {
         //
     }
+
+<a name="merging-additional-input"></a>
+### Merging Additional Input
+
+Sometimes you may need to manually merge additional input into the request's existing input data. To accomplish this, you may use the `merge` method:
+
+    $request->merge(['votes' => 0]);
+
+The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:
+
+    $request->mergeIfMissing(['votes' => 0]);
 
 <a name="old-input"></a>
 ### Old Input
@@ -477,7 +528,7 @@ To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware tha
 
     namespace App\Http\Middleware;
 
-    use Fideloper\Proxy\TrustProxies as Middleware;
+    use Illuminate\Http\Middleware\TrustProxies as Middleware;
     use Illuminate\Http\Request;
 
     class TrustProxies extends Middleware

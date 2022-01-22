@@ -42,7 +42,7 @@ In this example, the only argument passed to the `paginate` method is the number
     class UserController extends Controller
     {
         /**
-         * Show all of the users for the application.
+         * Show all application users.
          *
          * @return \Illuminate\Http\Response
          */
@@ -84,6 +84,17 @@ Similarly, you may use the `cursorPaginate` method to cursor paginate Eloquent m
 
     $users = User::where('votes', '>', 100)->cursorPaginate(15);
 
+<a name="multiple-paginator-instances-per-page"></a>
+#### Multiple Paginator Instances Per Page
+
+Sometimes you may need to render two separate paginators on a single screen that is rendered by your application. However, if both paginator instances use the `page` query string parameter to store the current page, the two paginator's will conflict. To resolve this conflict, you may pass the name of the query string parameter you wish to use to store the paginator's current page via the third argument provided to the `paginate`, `simplePaginate`, and `cursorPaginate` methods:
+
+    use App\Models\User;
+
+    $users = User::where('votes', '>', 100)->paginate(
+        $perPage = 15, $columns = ['*'], $pageName = 'users'
+    );
+
 <a name="cursor-pagination"></a>
 ### Cursor Pagination
 
@@ -124,7 +135,7 @@ The cursor pagination query offers the following advantages over offset paginati
 However, cursor pagination has the following limitations:
 
 - Like `simplePaginate`, cursor pagination can only be used to display "Next" and "Previous" links and does not support generating links with page numbers.
-- It requires that the ordering is based on at least one unique column or a combination of columns that are unique.
+- It requires that the ordering is based on at least one unique column or a combination of columns that are unique. Columns with `null` values are not supported.
 - Query expressions in "order by" clauses are supported only if they are aliased and added to the "select" clause as well.
 
 <a name="manually-creating-a-paginator"></a>

@@ -19,7 +19,6 @@
     - [PHP Versions](#php-versions)
     - [Connecting To Databases](#connecting-to-databases)
     - [Database Backups](#database-backups)
-    - [Database Snapshots](#database-snapshots)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Configuring MailHog](#configuring-mailhog)
     - [Configuring Minio](#configuring-minio)
@@ -37,7 +36,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel strives to make the entire PHP development experience delightful, including your local development environment. Laravel Homestead is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine.
+Laravel strives to make the entire PHP development experience delightful, including your local development environment. [Laravel Homestead](https://github.com/laravel/homestead) is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine.
 
 [Vagrant](https://www.vagrantup.com) provides a simple, elegant way to manage and provision Virtual Machines. Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
@@ -59,6 +58,7 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 <div id="software-list" markdown="1">
 - Ubuntu 20.04
 - Git
+- PHP 8.1
 - PHP 8.0
 - PHP 7.4
 - PHP 7.3
@@ -67,10 +67,10 @@ Homestead runs on any Windows, macOS, or Linux system and includes Nginx, PHP, M
 - PHP 7.0
 - PHP 5.6
 - Nginx
-- MySQL (8.0)
+- MySQL 8.0
 - lmm
 - Sqlite3
-- PostgreSQL (9.6, 10, 11, 12, 13)
+- PostgreSQL 13
 - Composer
 - Node (With Yarn, Bower, Grunt, and Gulp)
 - Redis
@@ -175,6 +175,8 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 
     provider: virtualbox
 
+> {note} If you are using Apple Silicon, you should add `box: laravel/homestead-arm` to your `Homestead.yaml` file. Apple Silicon requires the Parallels provider.
+
 <a name="configuring-shared-folders"></a>
 #### Configuring Shared Folders
 
@@ -239,7 +241,7 @@ Homestead publishes hostnames using `mDNS` for automatic host resolution. If you
 
 Using automatic hostnames works best for [per project installations](#per-project-installation) of Homestead. If you host multiple sites on a single Homestead instance, you may add the "domains" for your web sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead virtual machine. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
-    192.168.10.10  homestead.test
+    192.168.56.56  homestead.test
 
 Make sure the IP address listed is the one set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
 
@@ -255,7 +257,7 @@ Homestead starts several services by default; however, you may customize which s
 ```yaml
 services:
     - enabled:
-        - "postgresql@12-main"
+        - "postgresql"
     - disabled:
         - "mysql"
 ```
@@ -421,8 +423,8 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
 If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well. On macOS and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`:
 
-    192.168.10.10  homestead.test
-    192.168.10.10  another.test
+    192.168.56.56  homestead.test
+    192.168.56.56  another.test
 
 Once the site has been added, execute the `vagrant reload --provision` terminal command from your Homestead directory.
 
@@ -471,15 +473,8 @@ After updating the `Homestead.yaml` file, be sure to re-provision the machine by
 By default, the following ports are forwarded to your Homestead environment:
 
 <div class="content-list" markdown="1">
-- **SSH:** 2222 &rarr; Forwards To 22
-- **ngrok UI:** 4040 &rarr; Forwards To 4040
 - **HTTP:** 8000 &rarr; Forwards To 80
 - **HTTPS:** 44300 &rarr; Forwards To 443
-- **MySQL:** 33060 &rarr; Forwards To 3306
-- **PostgreSQL:** 54320 &rarr; Forwards To 5432
-- **MongoDB:** 27017 &rarr; Forwards To 27017
-- **Mailhog:** 8025 &rarr; Forwards To 8025
-- **Minio:** 9600 &rarr; Forwards To 9600
 </div>
 
 <a name="forwarding-additional-ports"></a>
@@ -494,10 +489,22 @@ If you wish, you may forward additional ports to the Vagrant box by defining a `
           to: 777
           protocol: udp
 
+Below is a list of additional Homestead service ports that you may wish to map from your host machine to your Vagrant box:
+
+<div class="content-list" markdown="1">
+- **SSH:** 2222 &rarr; To 22
+- **ngrok UI:** 4040 &rarr; To 4040
+- **MySQL:** 33060 &rarr; To 3306
+- **PostgreSQL:** 54320 &rarr; To 5432
+- **MongoDB:** 27017 &rarr; To 27017
+- **Mailhog:** 8025 &rarr; To 8025
+- **Minio:** 9600 &rarr; To 9600
+</div>
+
 <a name="php-versions"></a>
 ### PHP Versions
 
-Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", and "8.0" (the default):
+Homestead 6 introduced support for running multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0" (the default), and "8.1":
 
     sites:
         - map: homestead.test
@@ -513,6 +520,7 @@ Homestead 6 introduced support for running multiple versions of PHP on the same 
     php7.3 artisan list
     php7.4 artisan list
     php8.0 artisan list
+    php8.1 artisan list
 
 You may change the default version of PHP used by the CLI by issuing the following commands from within your Homestead virtual machine:
 
@@ -523,6 +531,7 @@ You may change the default version of PHP used by the CLI by issuing the followi
     php73
     php74
     php80
+    php81
 
 <a name="connecting-to-databases"></a>
 ### Connecting To Databases
@@ -539,21 +548,6 @@ Homestead can automatically backup your database when your Homestead virtual mac
     backup: true
 
 Once configured, Homestead will export your databases to `mysql_backup` and `postgres_backup` directories when the `vagrant destroy` command is executed. These directories can be found in the folder where you installed Homestead or in the root of your project if you are using the [per project installation](#per-project-installation) method.
-
-<a name="database-snapshots"></a>
-### Database Snapshots
-
-Homestead supports freezing the state of MySQL and MariaDB databases and branching between them using [Logical MySQL Manager](https://github.com/Lullabot/lmm). For example, imagine working on a site with a multi-gigabyte database. You can import the database and take a snapshot. After doing some work and creating some test content locally, you may quickly restore back to the original state.
-
-Under the hood, LMM uses LVM's thin snapshot functionality with copy-on-write support. In practice, this means that changing a single row in a table will only cause the changes you made to be written to disk, saving significant time and disk space during restores.
-
-Since LMM interacts with LVM, it must be run as `root`. To see all available commands, run the `sudo lmm` command within Vagrant box. A common workflow looks like the following:
-
-- Import a database into the default `master` lmm branch.
-- Save a snapshot of the unchanged database using `sudo lmm branch prod-YYYY-MM-DD`.
-- Modify the database.
-- Run `sudo lmm merge prod-YYYY-MM-DD` to undo all changes.
-- Run `sudo lmm delete <branch>` to delete unneeded branches.
 
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules

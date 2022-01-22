@@ -132,7 +132,7 @@ If you would like your application to interact with Redis via the Predis package
 
         'client' => env('REDIS_CLIENT', 'predis'),
 
-        // Rest of Redis configuration...
+        // ...
     ],
 
 In addition to the default `host`, `port`, `database`, and `password` server configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in your application's `config/database.php` configuration file:
@@ -162,7 +162,7 @@ By default, Laravel will use the phpredis extension to communicate with Redis. T
         // Rest of Redis configuration...
     ],
 
-In addition to the default `host`, `port`, `database`, and `password` server configuration options, phpredis supports the following additional connection parameters: `name`, `persistent`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
+In addition to the default `scheme`, `host`, `port`, `database`, and `password` server configuration options, phpredis supports the following additional connection parameters: `name`, `persistent`, `persistent_id`, `prefix`, `read_timeout`, `retry_interval`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -175,6 +175,29 @@ In addition to the default `host`, `port`, `database`, and `password` server con
             // 'stream' => ['verify_peer' => false],
         ],
     ],
+
+<a name="phpredis-serialization"></a>
+#### phpredis Serialization & Compression
+
+The phpredis extension may also be configured to use a variety serialization and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
+
+    use Redis;
+
+    'redis' => [
+
+        'client' => env('REDIS_CLIENT', 'phpredis'),
+
+        'options' => [
+            'serializer' => Redis::SERIALIZER_MSGPACK,
+            'compression' => Redis::COMPRESSION_LZ4,
+        ],
+
+        // Rest of Redis configuration...
+    ],
+
+Currently supported serialization algorithms include: `Redis::SERIALIZER_NONE` (default), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY`, and `Redis::SERIALIZER_MSGPACK`.
+
+Supported compression algorithms include: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, and `Redis::COMPRESSION_LZ4`.
 
 <a name="interacting-with-redis"></a>
 ## Interacting With Redis

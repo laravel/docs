@@ -277,6 +277,23 @@ To populate the default model with attributes, you may pass an array or closure 
         });
     }
 
+<a name="querying-belongs-to-relationships"></a>
+#### Querying Belongs To Relationships
+
+When querying for the children of a "belongs to" relationship, you may manually build the `where` clause to retrieve the corresponding Eloquent models:
+
+    use App\Models\Post;
+
+    $posts = Post::where('user_id', $user->id)->get();
+
+However, you may find it more convenient to use the `whereBelongsTo` method, which will automatically determine the proper relationship and foreign key for the given model:
+
+    $posts = Post::whereBelongsTo($user)->get();
+
+By default, Laravel will determine the relationship associated with the given model based on the class name of the model; however, you may specify the relationship name manually by providing it as the second argument to the `whereBelongsTo` method:
+
+    $posts = Post::whereBelongsTo($user, 'author')->get();
+
 <a name="has-one-of-many"></a>
 ### Has One Of Many
 
@@ -1046,12 +1063,12 @@ For example, instead of using the model names as the "type", we may use simple s
 
     use Illuminate\Database\Eloquent\Relations\Relation;
 
-    Relation::morphMap([
+    Relation::enforceMorphMap([
         'post' => 'App\Models\Post',
         'video' => 'App\Models\Video',
     ]);
 
-You may register the `morphMap` in the `boot` function of your `App\Providers\AppServiceProvider` class or create a separate service provider if you wish.
+You may call the `enforceMorphMap` method in the `boot` method of your `App\Providers\AppServiceProvider` class or create a separate service provider if you wish.
 
 You may determine the morph alias of a given model at runtime using the model's `getMorphClass` method. Conversely, you may determine the fully-qualified class name associated with a morph alias using the `Relation::getMorphedModel` method:
 
@@ -1201,6 +1218,21 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 
 > {note} Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database.
 
+<a name="inline-relationship-existence-queries"></a>
+#### Inline Relationship Existence Queries
+
+If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation` and `whereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:
+
+    use App\Models\Post;
+
+    $posts = Post::whereRelation('comments', 'is_approved', false)->get();
+
+Of course, like calls to the query builder's `where` method, you may also specify an operator:
+
+    $posts = Post::whereRelation(
+        'comments', 'created_at', '>=', now()->subHour()
+    )->get();
+
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
 
@@ -1285,7 +1317,7 @@ Instead of passing an array of possible polymorphic models, you may provide `*` 
 <a name="counting-related-models"></a>
 ### Counting Related Models
 
-Sometimes you may want to count the number of related models for a given relationship without actually loading the models. To accomplish this, you may use the `withCount` method. The `withCount` method which will place a `{relation}_count` attribute on the resulting models:
+Sometimes you may want to count the number of related models for a given relationship without actually loading the models. To accomplish this, you may use the `withCount` method. The `withCount` method will place a `{relation}_count` attribute on the resulting models:
 
     use App\Models\Post;
 

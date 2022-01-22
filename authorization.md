@@ -6,6 +6,7 @@
     - [Authorizing Actions](#authorizing-actions-via-gates)
     - [Gate Responses](#gate-responses)
     - [Intercepting Gate Checks](#intercepting-gate-checks)
+    - [Inline Authorization](#inline-authorization)
 - [Creating Policies](#creating-policies)
     - [Generating Policies](#generating-policies)
     - [Registering Policies](#registering-policies)
@@ -218,6 +219,21 @@ You may use the `after` method to define a closure to be executed after all othe
     });
 
 Similar to the `before` method, if the `after` closure returns a non-null result that result will be considered the result of the authorization check.
+
+<a name="inline-authorization"></a>
+### Inline Authorization
+
+Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicate gate that corresponds to the action. Laravel allows you to perform these types of "inline" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:
+
+```php
+use Illuminate\Support\Facades\Auth;
+
+Gate::allowIf(fn ($user) => $user->isAdministrator());
+
+Gate::denyIf(fn ($user) => $user->banned());
+```
+
+If the action is not authorized or if no user is currently authenticated, Laravel will automatically throw an `Illuminate\Auth\Access\AuthorizationException` exception. Instances of `AuthorizationException` are automatically converted to a 403 HTTP response by Laravel's exception handler:
 
 <a name="creating-policies"></a>
 ## Creating Policies
@@ -617,6 +633,14 @@ Laravel includes a middleware that can authorize actions before the incoming req
 
 In this example, we're passing the `can` middleware two arguments. The first is the name of the action we wish to authorize and the second is the route parameter we wish to pass to the policy method. In this case, since we are using [implicit model binding](/docs/{{version}}/routing#implicit-binding), a `App\Models\Post` model will be passed to the policy method. If the user is not authorized to perform the given action, an HTTP response with a 403 status code will be returned by the middleware.
 
+For convenience, you may also attach the `can` middleware to your route using the `can` method:
+
+    use App\Models\Post;
+
+    Route::put('/post/{post}', function (Post $post) {
+        // The current user may update the post...
+    })->can('update', 'post');
+
 <a name="middleware-actions-that-dont-require-models"></a>
 #### Actions That Don't Require Models
 
@@ -625,6 +649,14 @@ Again, some policy methods like `create` do not require a model instance. In the
     Route::post('/post', function () {
         // The current user may create posts...
     })->middleware('can:create,App\Models\Post');
+
+Specifying the entire class name within a string middleware definition can become cumbersome. For that reason, you may choose to attach the `can` middleware to your route using the `can` method:
+
+    use App\Models\Post;
+
+    Route::post('/post', function () {
+        // The current user may create posts...
+    })->can('create', Post::class);
 
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
@@ -643,7 +675,7 @@ When writing Blade templates, you may wish to display a portion of the page only
 @cannot('update', $post)
     <!-- The current user cannot update the post... -->
 @elsecannot('create', App\Models\Post::class)
-    <!-- The current user can now create new posts... -->
+    <!-- The current user cannot create new posts... -->
 @endcannot
 ```
 

@@ -19,7 +19,7 @@ All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespa
 
     use Illuminate\Support\Facades\Cache;
     use Illuminate\Support\Facades\Route;
-    
+
     Route::get('/cache', function () {
         return Cache::get('key');
     });

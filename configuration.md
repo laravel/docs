@@ -35,6 +35,11 @@ If you are developing with a team, you may wish to continue including a `.env.ex
 
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
 
+<a name="additional-environment-files"></a>
+#### Additional Environment Files
+
+Before loading your application's environment variables, Laravel determines if either the `APP_ENV` environment variable has been externally provided or if the `--env` CLI argument has been specified. If so, Laravel will attempt to load an `.env.[APP_ENV]` file if it exists. If it does not exist, the default `.env` file will be loaded.
+
 <a name="environment-variable-types"></a>
 ### Environment Variable Types
 
@@ -144,6 +149,8 @@ After placing the application in maintenance mode, you may navigate to the appli
     https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
+
+> {tip} Your maintenance mode secret should typically consist of alpha-numeric characters and, optionally, dashes. You should avoid using characters that have special meaning in URLs such as `?`.
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
 #### Pre-Rendering The Maintenance Mode View

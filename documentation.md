@@ -43,6 +43,7 @@
     - [Notifications](/docs/{{version}}/notifications)
     - [Package Development](/docs/{{version}}/packages)
     - [Queues](/docs/{{version}}/queues)
+    - [Rate Limiting](/docs/{{version}}/rate-limiting)
     - [Task Scheduling](/docs/{{version}}/scheduling)
 - ## Security
     - [Authentication](/docs/{{version}}/authentication)

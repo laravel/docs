@@ -7,6 +7,7 @@
 - [Routing](#routing)
     - [Requesting The Password Reset Link](#requesting-the-password-reset-link)
     - [Resetting The Password](#resetting-the-password)
+- [Deleting Expired Tokens](#deleting-expired-tokens)
 - [Customization](#password-customization)
 
 <a name="introduction"></a>
@@ -143,6 +144,17 @@ If the token, email address, and password given to the password broker are valid
 The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `resources/lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
 
 Before moving on, you may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `reset` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
+
+<a name="deleting-expired-tokens"></a>
+## Deleting Expired Tokens
+
+Password reset tokens that have expired will still be present within your database. However, you may easily delete these records using the `auth:clear-resets` Artisan command:
+
+    php artisan auth:clear-resets
+
+If you would like to automate this process, consider adding the command to your application's [scheduler](/docs/{{version}}/scheduling):
+
+    $schedule->command('auth:clear-resets')->everyFifteenMinutes();
 
 <a name="password-customization"></a>
 ## Customization

@@ -48,7 +48,7 @@ Blade views may be returned from routes or controller using the global `view` he
         return view('greeting', ['name' => 'Finn']);
     });
 
-> {tip} Before digging deeper into Blade, make sure to read the Laravel [view documentation](/docs/{{version}}/views).
+> {tip} Want to take your Blade templates to the next level and build dynamic interfaces with ease? Check out [Laravel Livewire](https://laravel-livewire.com).
 
 <a name="displaying-data"></a>
 ## Displaying Data
@@ -68,25 +68,6 @@ You may display the contents of the `name` variable like so:
 You are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
 
     The current UNIX timestamp is {{ time() }}.
-
-<a name="rendering-json"></a>
-#### Rendering JSON
-
-Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
-
-    <script>
-        var app = <?php echo json_encode($array); ?>;
-    </script>
-
-However, instead of manually calling `json_encode`, you may use the `@json` Blade directive. The `@json` directive accepts the same arguments as PHP's `json_encode` function. By default, the `@json` directive calls the `json_encode` function with the `JSON_HEX_TAG`, `JSON_HEX_APOS`, `JSON_HEX_AMP`, and `JSON_HEX_QUOT` flags:
-
-    <script>
-        var app = @json($array);
-
-        var app = @json($array, JSON_PRETTY_PRINT);
-    </script>
-
-> {note} You should only use the `@json` directive to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="html-entity-encoding"></a>
 ### HTML Entity Encoding
@@ -136,10 +117,33 @@ In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` 
 The `@` symbol may also be used to escape Blade directives:
 
     {{-- Blade template --}}
-    @@json()
+    @@if()
 
     <!-- HTML output -->
-    @json()
+    @if()
+
+<a name="rendering-json"></a>
+#### Rendering JSON
+
+Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
+
+    <script>
+        var app = <?php echo json_encode($array); ?>;
+    </script>
+
+However, instead of manually calling `json_encode`, you may use the `Illuminate\Support\Js::from` method directive. The `from` method accepts the same arguments as PHP's `json_encode` function; however, it will ensure that the resulting JSON is properly escaped for inclusion within HTML quotes. The `from` method will return a string `JSON.parse` JavaScript statement that will convert the given object or array into a valid JavaScript object:
+
+    <script>
+        var app = {{ Illuminate\Support\Js::from($array) }};
+    </script>
+
+The latest versions of the Laravel application skeleton include a `Js` facade, which provides convenient access to this functionality within your Blade templates:
+
+    <script>
+        var app = {{ Js::from($array) }};
+    </script>
+
+> {note} You should only use the `Js::from` method to render existing variables as JSON. The Blade templating is based on regular expressions and attempts to pass a complex expression to the directive may cause unexpected failures.
 
 <a name="the-at-verbatim-directive"></a>
 #### The `@verbatim` Directive
@@ -913,6 +917,46 @@ If you have used a JavaScript framework such as Vue, you may be familiar with "s
 </x-alert>
 ```
 
+<a name="slot-attributes"></a>
+#### Slot Attributes
+
+Like Blade components, you may assign additional [attributes](#component-attributes) to slots such as CSS class names:
+
+```html
+<x-card class="shadow-sm">
+    <x-slot name="heading" class="font-bold">
+        Heading
+    </x-slot>
+
+    Content
+
+    <x-slot name="footer" class="text-sm">
+        Footer
+    </x-slot>
+</x-card>
+```
+
+To interact with slot attributes, you may access the `attributes` property of the slot's variable. For more information on how to interact with attributes, please consult the documentation on [component attributes](#component-attributes):
+
+```php
+@props([
+    'heading',
+    'footer',
+])
+
+<div {{ $attributes->class(['border']) }}>
+    <h1 {{ $heading->attributes->class(['text-lg']) }}>
+        {{ $heading }}
+    </h1>
+
+    {{ $slot }}
+
+    <footer {{ $footer->attributes->class(['text-gray-700']) }}>
+        {{ $footer }}
+    </footer>
+</div>
+```
+
 <a name="inline-component-views"></a>
 ### Inline Component Views
 
@@ -950,6 +994,35 @@ You may use the `.` character to indicate if a component is nested deeper inside
 
     <x-inputs.button/>
 
+<a name="anonymous-index-components"></a>
+#### Anonymous Index Components
+
+Sometimes, when a component is made up of many Blade templates, you may wish to group the given component's templates within a single directory. For example, imagine an "accordion" component with the following directory structure:
+
+```none
+/resources/views/components/accordion.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
+This directory structure allows you to render the accordion component and its item like so:
+
+```html
+<x-accordion>
+    <x-accordion.item>
+        ...
+    </x-accordion.item>
+</x-accordion>
+```
+
+However, in order to render the accordion component via `x-accordion`, we were forced to place the "index" accordion component template in the `resources/views/components` directory instead of nesting it within the `accordion` directory with the other accordion related templates.
+
+Thankfully, Blade allows you to place an `index.blade.php` file within a component's template directory. When an `index.blade.php` template exists for the component, it will be rendered as the "root" node of the component. So, we can continue to use the same Blade syntax given in the example above; however, we will adjust our directory structure like so:
+
+```none
+/resources/views/components/accordion/index.blade.php
+/resources/views/components/accordion/item.blade.php
+```
+
 <a name="data-properties-attributes"></a>
 #### Data Properties / Attributes
 
@@ -968,6 +1041,36 @@ You may specify which attributes should be considered data variables using the `
 Given the component definition above, we may render the component like so:
 
     <x-alert type="error" :message="$message" class="mb-4"/>
+
+<a name="accessing-parent-data"></a>
+#### Accessing Parent Data
+
+Sometimes you may want to access data from a parent component inside a child component. In these cases, you may use the `@aware` directive. For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
+
+    <x-menu color="purple">
+        <x-menu.item>...</x-menu.item>
+        <x-menu.item>...</x-menu.item>
+    </x-menu>
+
+The `<x-menu>` component may have an implementation like the following:
+
+    <!-- /resources/views/components/menu/index.blade.php -->
+
+    @props(['color' => 'gray'])
+
+    <ul {{ $attributes->merge(['class' => 'bg-'.$color.'-200']) }}>
+        {{ $slot }}
+    </ul>
+
+Because the `color` prop was only passed into the parent (`<x-menu>`), it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
+
+    <!-- /resources/views/components/menu/item.blade.php -->
+
+    @aware(['color' => 'gray'])
+
+    <li {{ $attributes->merge(['class' => 'text-'.$color.'-800']) }}>
+        {{ $slot }}
+    </li>
 
 <a name="dynamic-components"></a>
 ### Dynamic Components

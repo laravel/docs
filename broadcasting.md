@@ -52,7 +52,7 @@ The core concepts behind broadcasting are simple: clients connect to named chann
 <a name="supported-drivers"></a>
 #### Supported Drivers
 
-By default, Laravel includes two server-side broadcasting drivers for you to choose from: [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.io). However, community driven packages such as [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) provide additional broadcasting drivers that do not require commercial broadcasting providers.
+By default, Laravel includes two server-side broadcasting drivers for you to choose from: [Pusher Channels](https://pusher.com/channels) and [Ably](https://ably.io). However, community driven packages such as [laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) and [soketi](https://docs.soketi.app/) provide additional broadcasting drivers that do not require commercial broadcasting providers.
 
 > {tip} Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
 
@@ -100,10 +100,10 @@ Next, you will need to change your broadcast driver to `pusher` in your `.env` f
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
-<a name="pusher-compatible-laravel-websockets"></a>
-#### Pusher Compatible Laravel Websockets
+<a name="pusher-compatible-open-source-alternatives"></a>
+#### Open Source Pusher Alternatives
 
-The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible WebSocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
+The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) and [soketi](https://docs.soketi.app/) packages provide Pusher compatible WebSocket servers for Laravel. These packages allow you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using these packages, please consult our documentation on [open source alternatives](#open-source-alternatives).
 
 <a name="ably"></a>
 ### Ably
@@ -125,7 +125,15 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 <a name="open-source-alternatives"></a>
 ### Open Source Alternatives
 
+<a name="open-source-alternatives-php"></a>
+#### PHP
+
 The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package is a pure PHP, Pusher compatible WebSocket package for Laravel. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://beyondco.de/docs/laravel-websockets).
+
+<a name="open-source-alternatives-node"></a>
+#### Node
+
+[Soketi](https://github.com/soketi/soketi) is a Node based, Pusher compatible WebSocket server for Laravel. Under the hood, Soketi utilizes µWebSockets.js for extreme scalability and speed. This package allows you to leverage the full power of Laravel broadcasting without a commercial WebSocket provider. For more information on installing and using this package, please consult its [official documentation](https://docs.soketi.app/).
 
 <a name="client-side-installation"></a>
 ## Client Side Installation
@@ -133,7 +141,7 @@ The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) packa
 <a name="client-pusher-channels"></a>
 ### Pusher Channels
 
-Laravel Echo is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since we will be using the Pusher Channels broadcaster:
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since we will be using the Pusher Channels broadcaster:
 
 ```bash
 npm install --save-dev laravel-echo pusher-js
@@ -180,7 +188,7 @@ window.Echo = new Echo({
 <a name="client-ably"></a>
 ### Ably
 
-Laravel Echo is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package.
+[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package.
 
 You may wonder why we would install the `pusher-js` JavaScript library even though we are using Ably to broadcast our events. Thankfully, Ably includes a Pusher compatibility mode which lets us use the Pusher protocol when listening for events in our client-side application:
 
@@ -222,7 +230,7 @@ Laravel's event broadcasting allows you to broadcast your server-side Laravel ev
 
 Events are broadcast over "channels", which may be specified as public or private. Any visitor to your application may subscribe to a public channel without any authentication or authorization; however, in order to subscribe to a private channel, a user must be authenticated and authorized to listen on that channel.
 
-> {tip} If you would like to use an open source, PHP driven alternative to Pusher, check out the [laravel-websockets](https://github.com/beyondcode/laravel-websockets) package.
+> {tip} If you would like to explore open source alternatives to Pusher, check out the [open source alternatives](#open-source-alternatives).
 
 <a name="using-example-application"></a>
 ### Using An Example Application
@@ -292,7 +300,7 @@ All authorization callbacks receive the currently authenticated user as their fi
 <a name="listening-for-event-broadcasts"></a>
 #### Listening For Event Broadcasts
 
-Next, all that remains is to listen for the event in our JavaScript application. We can do this using Laravel Echo. First, we'll use the `private` method to subscribe to the private channel. Then, we may use the `listen` method to listen for the `OrderShipmentStatusUpdated` event. By default, all of the event's public properties will be included on the broadcast event:
+Next, all that remains is to listen for the event in our JavaScript application. We can do this using [Laravel Echo](#client-side-installation). First, we'll use the `private` method to subscribe to the private channel. Then, we may use the `listen` method to listen for the `OrderShipmentStatusUpdated` event. By default, all of the event's public properties will be included on the broadcast event:
 
 ```js
 Echo.private(`orders.${orderId}`)
@@ -420,7 +428,19 @@ By default, each broadcast event is placed on the default queue for the default 
      */
     public $queue = 'default';
 
-If you want to broadcast your event using the `sync` queue instead of the default queue driver, you can implement the `ShouldBroadcastNow` interface instead of `ShouldBroadcast`:
+Alternatively, you may customize the queue name by defining a `broadcastQueue` method on your event:
+
+    /**
+     * The name of the queue on which to place the broadcasting job.
+     *
+     * @return string
+     */
+    public function broadcastQueue()
+    {
+        return 'default';
+    }
+
+If you would like to broadcast your event using the `sync` queue instead of the default queue driver, you can implement the `ShouldBroadcastNow` interface instead of `ShouldBroadcast`:
 
     <?php
 
@@ -652,13 +672,14 @@ If your application interacts with multiple broadcast connections and you want t
 
     broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');
 
-Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor:
+Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor. However, before doing so, you should ensure that the event class uses the `InteractsWithBroadcasting` trait:
 
     <?php
 
     namespace App\Events;
 
     use Illuminate\Broadcasting\Channel;
+    use Illuminate\Broadcasting\InteractsWithBroadcasting;
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Broadcasting\PresenceChannel;
     use Illuminate\Broadcasting\PrivateChannel;
@@ -667,6 +688,8 @@ Alternatively, you may specify the event's broadcast connection by calling the `
 
     class OrderShipmentStatusUpdated implements ShouldBroadcast
     {
+        use InteractsWithBroadcasting;
+
         /**
          * Create a new event instance.
          *
@@ -700,6 +723,16 @@ Echo.private(`orders.${this.order.id}`)
     .listen(...)
     .listen(...)
     .listen(...);
+```
+
+<a name="stop-listening-for-events"></a>
+#### Stop Listening For Events
+
+If you would like to stop listening to a given event without [leaving the channel](#leaving-a-channel), you may use the `stopListening` method:
+
+```js
+Echo.private(`orders.${this.order.id}`)
+    .stopListening('OrderShipmentStatusUpdated')
 ```
 
 <a name="leaving-a-channel"></a>
@@ -867,7 +900,7 @@ In addition, you may have noticed that the `broadcastOn` method receives a strin
  */
 public function broadcastOn($event)
 {
-    return match($event) {
+    return match ($event) {
         'deleted' => [],
         default => [$this, $this->user],
     };
