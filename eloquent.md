@@ -1031,7 +1031,7 @@ Global scopes allow you to add constraints to all queries for a given model. Lar
 <a name="writing-global-scopes"></a>
 #### Writing Global Scopes
 
-Writing a global scope is simple. First, define a class that implements the `Illuminate\Database\Eloquent\Scope` interface. Laravel does not have a conventional location that you should place scope classes, so you are free to place this class in any directory that you wish.
+Writing a global scope is simple. First, define a class that implements the `Illuminate\Database\Eloquent\Scope` interface. Laravel does not have a conventional location where you should place scope classes, so you are free to place this class in any directory that you wish.
 
 The `Scope` interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints or other types of clauses to the query as needed:
 
