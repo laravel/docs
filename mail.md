@@ -832,7 +832,7 @@ If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your me
 
 Finally, you may specify a global "to" address in your `config/mail.php` configuration file. This address will always be used instead of the original recipient specified on the email message your application will be sending. This is another simple solution but don't forget to configure a real mailer so the messages can actually be sent to that one address:
 
-    'to' => ['address' => 'taylor@example.com', 'name' => 'Test User'],
+    'to' => ['address' => 'taylor@example.com', 'name' => 'App Name'],
 
 If you need more control and granularity, you could instead define it within a Service Provider, like your `AppServiceProvider.php` file for example:
 
