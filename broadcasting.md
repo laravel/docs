@@ -285,7 +285,7 @@ The `ShouldBroadcast` interface requires our event to define a `broadcastOn` met
 <a name="example-application-authorizing-channels"></a>
 #### Authorizing Channels
 
-Remember, users must be authorized to listen on private channels. We may define our channel authorization rules in our application's `routes/channels.php` file. In this example, we need to verify that any user attempting to listen on the private `order.1` channel is actually the creator of the order:
+Remember, users must be authorized to listen on private channels. We may define our channel authorization rules in our application's `routes/channels.php` file. In this example, we need to verify that any user attempting to listen on the private `orders.1` channel is actually the creator of the order:
 
     use App\Models\Order;
 
