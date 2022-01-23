@@ -1587,6 +1587,19 @@ The first argument passed to the `sometimes` method is the name of the field we 
 
 > {tip} The `$input` parameter passed to your closure will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files under validation.
 
+<a name="complex-conditional-validation-using-rule-object"></a>
+#### Complex Conditional Validation Using `when`
+
+If you need to use a validation rule that already exists but you need to do add it or not based on a complex conditional, you can take advantage of `Rule::when()`. For example, you may wish to require and check the value type when a field passed a truth test:
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rule;
+
+    $validator = Validator::make($request->all(), [
+        'type' => 'required|string|in:numeric,string',
+        'value' => Rule::when($request->type === 'numeric', ['required|numeric'], ['required|string']),
+    ]);
+
 <a name="complex-conditional-array-validation"></a>
 #### Complex Conditional Array Validation
 
