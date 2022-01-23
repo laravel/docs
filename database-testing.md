@@ -4,6 +4,7 @@
     - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
 - [Defining Model Factories](#defining-model-factories)
     - [Concept Overview](#concept-overview)
+    - [Factories with relationships](#factories-with-relationships)
     - [Generating Factories](#generating-factories)
     - [Factory States](#factory-states)
     - [Factory Callbacks](#factory-callbacks)
@@ -94,6 +95,31 @@ As you can see, in their most basic form, factories are classes that extend Lara
 Via the `faker` property, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
 > {tip} You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
+
+<a name="factories-with-relationships"></a>
+### Factories with relationships
+To define a default value for a relationship, you may call the related model's factory method:
+
+    namespace Database\Factories;
+
+    use Illuminate\Database\Eloquent\Factories\Factory;
+    use Illuminate\Support\Str;
+    use App\Models\User;
+
+    class CommentFactory extends Factory
+    {
+        /**
+         * Define the model's default state.
+         *
+         * @return array
+         */
+        public function definition()
+        {
+            return [
+                'user_id' => User::factory(),
+            ];
+        }
+    }
 
 <a name="generating-factories"></a>
 ### Generating Factories
