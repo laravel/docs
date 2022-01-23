@@ -1600,6 +1600,8 @@ If you need to use a validation rule that already exists but you need to do add 
         'value' => Rule::when($request->type === 'numeric', ['required|numeric'], ['required|string']),
     ]);
 
+The `Rule::when` method can be used inside a Form Request's `rule` method.
+
 <a name="complex-conditional-array-validation"></a>
 #### Complex Conditional Array Validation
 
