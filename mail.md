@@ -823,21 +823,27 @@ Instead of sending your emails, the `log` mail driver will write all email messa
 <a name="mailtrap"></a>
 #### HELO / Mailtrap / MailHog
 
-You may use a service like [HELO](https://usehelo.com) or [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer.
+Alternatively, you may use a service like [HELO](https://usehelo.com) or [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer.
 
 If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [MailHog](https://github.com/mailhog/MailHog). When Sail is running, you may access the MailHog interface at: `http://localhost:8025`.
 
 <a name="using-a-global-to-address"></a>
 #### Using A Global `to` Address
 
-Finally, you may specify a global "to" address in your `config/mail.php` configuration file. This address will always be used instead of the original recipient specified on the email message your application will be sending. This is another simple solution but don't forget to configure a real mailer so the messages can actually be sent to that one address:
+Finally, you may specify a global "to" address by invoking the `alwaysTo` method offered by the `Mail` facade. Typically, this method should be called from the `boot` method of one of your application's service providers:
 
-    'to' => ['address' => 'taylor@example.com', 'name' => 'App Name'],
+    use Illuminate\Support\Facades\Mail;
 
-If you need more control and granularity, you could instead define it within a Service Provider, like your `AppServiceProvider.php` file for example:
-
-    if (app()->environment('local')) {
-        Mail::alwaysTo('taylor@example.com');
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        if ($this->app->environment('local')) {
+            Mail::alwaysTo('taylor@example.com');
+        }
     }
 
 <a name="events"></a>
