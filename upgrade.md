@@ -126,6 +126,10 @@ The `Illuminate\Support\Enumerable` contract now defines a `sole` method. If you
 public function sole($key = null, $operator = null, $value = null);
 ```
 
+#### The `reduceWithKeys` Method
+
+The `reduceWithKeys` method has been removed as the `reduce` method provides the same functionality. You may simply update your code to call `reduce` instead of `reduceWithKeys`.
+
 #### The `reduceMany` Method
 
 The `reduceMany` method has been renamed to `reduceSpread` for naming consistency with other similar methods.
