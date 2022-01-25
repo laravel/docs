@@ -2447,7 +2447,7 @@ The `rtrim` method trims the right side of the given string:
 <a name="method-fluent-str-scan"></a>
 #### `scan` {.collection-method}
 
-The `scan` method parses input from a string to a collection, according to a format:
+The `scan` method parses input from a string into a collection according to a format supported by the [`sscanf` PHP function](https://www.php.net/manual/en/function.sscanf.php):
 
     use Illuminate\Support\Str;
 
