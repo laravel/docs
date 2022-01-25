@@ -747,7 +747,7 @@ When authenticating using the password grant, Passport will use the `password` a
 <a name="implicit-grant-tokens"></a>
 ## Implicit Grant Tokens
 
-> {note} It's no longer recommended to use the legacy implicit grant tokens. Instead, you should choose [a grant recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/).
+> {note} We no longer recommend using implicit grant tokens. Instead, you should choose [a grant type that is currently recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/).
 
 The implicit grant is similar to the authorization code grant; however, the token is returned to the client without exchanging an authorization code. This grant is most commonly used for JavaScript or mobile applications where the client credentials can't be securely stored. To enable the grant, call the `enableImplicitGrant` method in the `boot` method of your application's `App\Providers\AuthServiceProvider` class:
 
