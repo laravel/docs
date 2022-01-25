@@ -1333,17 +1333,17 @@ The field under validation must be present in the input data but can be empty.
 <a name="rule-prohibited"></a>
 #### prohibited
 
-The field under validation must be empty or not present.
+The field under validation not be present.
 
 <a name="rule-prohibited-if"></a>
 #### prohibited_if:_anotherfield_,_value_,...
 
-The field under validation must be empty or not present if the _anotherfield_ field is equal to any _value_.
+The field under validation must not be present if the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
 
-The field under validation must be empty or not present unless the _anotherfield_ field is equal to any _value_.
+The field under validation must not be present unless the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-prohibits"></a>
 #### prohibits:_anotherfield_,...
