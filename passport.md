@@ -633,7 +633,7 @@ If the state parameter matches, the consumer should issue a `POST` request to yo
 <a name="password-grant-tokens"></a>
 ## Password Grant Tokens
 
-> {note} It's no longer recommended to use the legacy password grant tokens. Instead, you should choose [a grant recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/).
+> {note} We no longer recommend using password grant tokens. Instead, you should choose [a grant type that is currently recommended by OAuth2 Server](https://oauth2.thephpleague.com/authorization-server/which-grant/).
 
 The OAuth2 password grant allows your other first-party clients, such as a mobile application, to obtain an access token using an email address / username and password. This allows you to issue access tokens securely to your first-party clients without requiring your users to go through the entire OAuth2 authorization code redirect flow.
 
