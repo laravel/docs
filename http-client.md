@@ -317,8 +317,6 @@ For example, to instruct the HTTP client to return empty, `200` status code resp
 
     $response = Http::post(...);
 
-> {note} When faking requests, HTTP client middleware are not executed. You should define expectations for faked responses as if these middleware have run correctly.
-
 <a name="faking-specific-urls"></a>
 #### Faking Specific URLs
 
