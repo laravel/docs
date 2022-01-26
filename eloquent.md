@@ -1088,7 +1088,7 @@ To assign a global scope to a model, you should override the model's `booted` me
 After adding the scope in the example above to the `App\Models\User` model, a call to the `User::all()` method will execute the following SQL query:
 
 ```sql
-select * from `users` where `created_at` < 0021-02-18 00:00:00
+select * from `users` where `created_at` < 2022-01-26 00:00:00
 ```
 
 <a name="anonymous-global-scopes"></a>
