@@ -494,6 +494,19 @@ SwiftMailer offered the ability to define a custom domain to include in generate
 
 It is no longer possible to force a transport reconnection (for example when the mailer is running via a daemon process). Instead, Symfony Mailer will attempt to reconnect to the transport automatically and throw an exception if the reconnection fails.
 
+#### AWS SES Options
+
+It is no longer possible to define SES ConfigurationSet globally on `mail.php`. Instead, a new custom header must be added to your message as follows
+
+    public function build()
+    {
+        return $this->subject('Welcome to Laravel!')
+            ->withSymfonyMessage(fn (\Symfony\Component\Mime\Email $email) => $email->getHeaders()->addTextHeader('X-SES-CONFIGURATION-SET', 'MySESConfigurationSet');
+            ->view('email.template');
+    }
+    
+Email Tags for AWS SES are no longer supported by Symfony Mailer.
+
 #### SMTP Stream Options
 
 Defining stream options for the SMTP transport is no longer supported. Instead, you must define the relevant options directly within the configuration if they are supported. For example, to disable TLS peer verification:
