@@ -112,19 +112,14 @@ To utilize AWS [temporary credentials](https://docs.aws.amazon.com/IAM/latest/Us
         'token' => env('AWS_SESSION_TOKEN'),
     ],
 
-If you would like to define [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sesv2-2019-09-27.html#sendemail) that Laravel should pass to the AWS SDK's `SendEmail` method when sending an email, you may define an `options` array within your `ses` configuration:
+If you would like to define a ConfigurationSetName, you may opt to add a custom header to your Mailable.
 
-    'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-        'options' => [
-            'ConfigurationSetName' => 'MyConfigurationSet',
-            'EmailTags' => [
-                ['Name' => 'foo', 'Value' => 'bar'],
-            ],
-        ],
-    ],
+    public function build()
+    {
+        return $this->subject('Welcome to Laravel!')
+            ->withSymfonyMessage(fn (\Symfony\Component\Mime\Email $email) => $email->getHeaders()->addTextHeader('X-SES-CONFIGURATION-SET', 'MySESConfigurationSet');
+            ->view('email.template');
+    }
 
 <a name="failover-configuration"></a>
 ### Failover Configuration
