@@ -754,6 +754,8 @@ If you would like to perform multiple "upserts" in a single query, then you shou
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
     ], ['departure', 'destination'], ['price']);
 
+> {note} When using `upsert` method make sure to create unique compound index on all columns passed as second argument for database table represented by given model.
+
 <a name="deleting-models"></a>
 ## Deleting Models
 
