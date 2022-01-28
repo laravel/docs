@@ -1634,6 +1634,8 @@ You may easily configure "exponential" backoffs by returning an array of backoff
         return [1, 5, 10];
     }
 
+> {tip} If you don't want to save failed jobs to the database, set the `queue.failed.database` config value to `null`.
+
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Cleaning Up After Failed Jobs
 
