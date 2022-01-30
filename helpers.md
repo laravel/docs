@@ -3451,7 +3451,7 @@ The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 The `with` function returns the value it is given. If a closure is passed as the second argument to the function, the closure will be executed and its returned value will be returned:
 
     $callback = function ($value) {
-        return (is_numeric($value)) ? $value * 2 : 0;
+        return is_numeric($value) ? $value * 2 : 0;
     };
 
     $result = with(5, $callback);
