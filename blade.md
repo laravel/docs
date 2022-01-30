@@ -298,7 +298,7 @@ In addition to conditional statements, Blade provides simple directives for work
         <p>I'm looping forever.</p>
     @endwhile
 
-> {tip} When looping, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
+> {tip} When using `foreach` loop, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
 When using loops you may also end the loop or skip the current iteration using the `@continue` and `@break` directives:
 
@@ -327,7 +327,7 @@ You may also include the continuation or break condition within the directive de
 <a name="the-loop-variable"></a>
 ### The Loop Variable
 
-When looping, a `$loop` variable will be available inside of your loop. This variable provides access to some useful bits of information such as the current loop index and whether this is the first or last iteration through the loop:
+When using `foreach` loop, a `$loop` variable will be available inside of your loop. This variable provides access to some useful bits of information such as the current loop index and whether this is the first or last iteration through the loop:
 
     @foreach ($users as $user)
         @if ($loop->first)
