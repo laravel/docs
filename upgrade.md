@@ -545,10 +545,10 @@ Laravel's dependency on `opis/closure` has been replaced by `laravel/serializabl
 
 **Likelihood Of Impact: Low**
 
-The `flush` method defined by the `Illuminate\Queue\Failed\FailedJobProviderInterface` interface now accepts an `$age` argument which determines how old a failed job must be (in days) before it is flushed by the `queue:flush` command. If you are manually implementing the `FailedJobProviderInterface` you should ensure that your implementation is updated to reflect this new argument:
+The `flush` method defined by the `Illuminate\Queue\Failed\FailedJobProviderInterface` interface now accepts an `$hours` argument which determines how old a failed job must be (in hours) before it is flushed by the `queue:flush` command. If you are manually implementing the `FailedJobProviderInterface` you should ensure that your implementation is updated to reflect this new argument:
 
 ```php
-public function flush($age = null);
+public function flush($hours = null);
 ```
 
 ### Session
