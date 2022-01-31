@@ -391,11 +391,17 @@ $collection->when(function ($collection) {
 
 **Likelihood Of Impact: Medium**
 
-The HTTP client now has a default timeout of 30 seconds. In other words, if the server does not respond within 30 seconds, an exception will be thrown. Previously, no default timeout length was configured on the HTTP client, causing requests to sometimes "hang" indefinitely.
+The [HTTP client](/docs/{{version}}/http-client) now has a default timeout of 30 seconds. In other words, if the server does not respond within 30 seconds, an exception will be thrown. Previously, no default timeout length was configured on the HTTP client, causing requests to sometimes "hang" indefinitely.
 
 If you wish to specify a longer timeout for a given request, you may do so using the `timeout` method:
 
     $response = Http::timeout(120)->get(...);
+
+#### HTTP Fake & Middleware
+
+**Likelihood Of Impact: Low**
+
+Previously, Laravel would not execute any provided Guzzle HTTP middleware when the [HTTP client](/docs/{{version}}/http-client) was "faked". However, in Laravel 9.x, Guzzle HTTP middleware will be exeucted even when the HTTP client is faked.
 
 <a name="symfony-mailer"></a>
 ### Symfony Mailer
