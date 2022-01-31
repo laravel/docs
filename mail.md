@@ -89,10 +89,10 @@ This way you are also able to set up multiple Postmark mailers with different me
 <a name="ses-driver"></a>
 #### SES Driver
 
-To use the SES driver, install Symfony's Amazon Mailer transport via Composer:
+To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. You may install this library via the Composer package manager:
 
 ```bash
-composer require symfony/amazon-mailer
+composer require aws/aws-sdk-php
 ```
 
 Next, set the `default` option in your `config/mail.php` configuration file to `ses` and verify that your `config/services.php` configuration file contains the following options:
