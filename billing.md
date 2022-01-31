@@ -1586,6 +1586,28 @@ The `downloadInvoice` method also allows for a custom filename via its third arg
 
     return $request->user()->downloadInvoice($invoiceId, [], 'my-invoice');
 
+<a name="custom-invoice-render"></a>
+#### Custom Invoice Renderer
+
+Cashier also makes it possible to use a custom invoice renderer. By default, the `DompdfInvoiceRenderer` is used which makes use of [dompdf](https://github.com/dompdf/dompdf) to generate Cashier's invoices. However, you may implement any renderer you wish.
+
+Say, for example, you want to render an invoice PDF using an API call:
+
+    use Illuminate\Support\Facades\Http;
+    use Laravel\Cashier\Contracts\InvoiceRenderer;
+
+    class ApiInvoiceRenderer implements InvoiceRenderer
+    {
+        public function render(Invoice $invoice, array $data = [], array $options = []): string
+        {
+            $html = $invoice->view($data)->render();
+
+            return Http::get('https://example.com/html-to-pdf', ['html' => $html])->get()->body();
+        }
+    }
+    
+Then replace the `cashier.invoices.renderer` config option with your new class. 
+
 <a name="checkout"></a>
 ## Checkout
 
