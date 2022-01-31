@@ -406,10 +406,6 @@ One of the largest changes in Laravel 9.x is the transition from SwiftMailer, wh
 
 #### Driver Prerequisites
 
-The `aws/aws-sdk-php` Composer package is no longer needed when using the Amazon SES transport and can be removed if no other part of your application requires it. Instead, your application should require the `symfony/amazon-mailer` Composer package:
-
-    composer require symfony/amazon-mailer
-
 To continue using the Mailgun transport, your application should require the `symfony/mailgun-mailer` Composer package:
 
     composer require symfony/mailgun-mailer
