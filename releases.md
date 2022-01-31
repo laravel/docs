@@ -362,10 +362,8 @@ _Improved collections IDE support was contributed by [Nuno Maduro](https://githu
 
 Laravel 9.x adds improved type definitions to the collections component, improving their IDE support and static analysis support. In other words, IDEs such as [PHPStorm](https://blog.jetbrains.com/phpstorm/2021/12/phpstorm-2021-3-release/#support_for_future_laravel_collections), or static analysis tools such as [PHPStan](https://phpstan.org), will better understand Laravel collections natively.
 
-https://user-images.githubusercontent.com/5457236/151783350-ed301660-1e09-44c1-b549-85c6db3f078d.gif
-
 <p align="center">
-<img width="100%" src="https://user-images.githubusercontent.com/5457236/149989853-a29a7629-2bfa-4bf3-bbf7-cdba339ec157.png"/>
+<img width="100%" src="https://user-images.githubusercontent.com/5457236/151783350-ed301660-1e09-44c1-b549-85c6db3f078d.gif"/>
 </p>
 
 <a name="new-helpers"></a>
