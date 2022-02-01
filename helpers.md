@@ -2377,7 +2377,7 @@ The `remove` method removes the given value or array of values from the string:
 
     // Arkansas is beautiful!
 
-You may also pass `false` as a second parameter to ignore case when removing.
+You may also pass `false` as a second parameter to ignore case when removing strings.
 
 <a name="method-fluent-str-replace"></a>
 #### `replace` {.collection-method}
@@ -3484,7 +3484,7 @@ The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 The `with` function returns the value it is given. If a closure is passed as the second argument to the function, the closure will be executed and its returned value will be returned:
 
     $callback = function ($value) {
-        return (is_numeric($value)) ? $value * 2 : 0;
+        return is_numeric($value) ? $value * 2 : 0;
     };
 
     $result = with(5, $callback);
