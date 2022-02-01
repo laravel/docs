@@ -562,6 +562,18 @@ public function flush($hours = null);
 
 ### Session
 
+#### Session Serialization Strategy
+
+**Likelihood Of Impact: None**
+
+New Laravel 9.x applications serialize session data using PHP's `json_encode` and `json_decode` functions. Previous releases of Laravel serialized session data using PHP's `serialize` and `unserialize` functions. This change should not affect existing applications.
+
+However, you may update your application's `config/session.php` configuration file to include the new `serialization` option if you wish. Changing your existing application's serialization strategy to `json` will invalidate all existing sessions:
+
+```php
+'serialization' => 'php',
+```
+
 #### The `getSession` Method
 
 **Likelihood Of Impact: Low**
