@@ -819,6 +819,7 @@ Below is a list of all available validation rules and their function:
 [Required With All](#rule-required-with-all)
 [Required Without](#rule-required-without)
 [Required Without All](#rule-required-without-all)
+[Required Array Keys](#rule-required-array-keys)
 [Same](#rule-same)
 [Size](#rule-size)
 [Sometimes](#validating-when-present)
@@ -1400,6 +1401,11 @@ The field under validation must be present and not empty _only when_ any of the 
 #### required_without_all:_foo_,_bar_,...
 
 The field under validation must be present and not empty _only when_ all of the other specified fields are empty or not present.
+
+<a name="rule-required-array-keys"></a>
+#### required_array_keys:_foo_,_bar_,...
+
+The field under validation must be an array and must contain at least the specified keys.
 
 <a name="rule-same"></a>
 #### same:_field_
