@@ -166,7 +166,7 @@ The `schema` configuration option used to configure Postgres connection search p
 
 **Likelihood Of Impact: Low**
 
-The `registerCustomDoctrineType` method has been removed from the `Illuminate\Database\Schema\Builder` class. You can use the `registerDoctrineType` method on the `DB` facade instead, or register custom Doctrine types in the `config/database.php` configuration file.
+The `registerCustomDoctrineType` method has been removed from the `Illuminate\Database\Schema\Builder` class. You may use the `registerDoctrineType` method on the `DB` facade instead, or register custom Doctrine types in the `config/database.php` configuration file.
 
 ### Eloquent
 
