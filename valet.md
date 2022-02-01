@@ -194,9 +194,7 @@ To share a site, navigate to the site's directory in your terminal and run Valet
 
     valet share
 
-To stop sharing your site, you may press `Control + C`.
-
-Sharing through Ngrok requires you to first [register an account](https://dashboard.ngrok.com/signup) and [setup an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken).
+To stop sharing your site, you may press `Control + C`. Sharing your site using Ngrok requires you to [create an Ngrok account](https://dashboard.ngrok.com/signup) and [setup an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken).
 
 > {tip} You may pass additional Ngrok parameters to the share command, such as `valet share --region=eu`. For more information, consult the [ngrok documentation](https://ngrok.com/docs).
 
