@@ -161,6 +161,13 @@ public function giveConfig($key, $default = null);
 
 The `schema` configuration option used to configure Postgres connection search paths in your application's `config/database.php` configuration file should be renamed to `search_path`.
 
+<a name="schema-builder-doctrine-method"></a>
+#### Schema Builder `registerCustomDoctrineType` Method
+
+**Likelihood Of Impact: Low**
+
+The `registerCustomDoctrineType` method has been removed from the `Illuminate\Database\Schema\Builder` class. You can use the `registerDoctrineType` method on the `DB` facade instead, or register custom Doctrine types in the `config/database.php` configuration file.
+
 ### Eloquent
 
 <a name="custom-casts-and-null"></a>
