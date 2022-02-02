@@ -10,6 +10,7 @@
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
     - [Conditional Classes](#conditional-classes)
+    - [Checked / Selected](#checked-and-selected)
     - [Including Subviews](#including-subviews)
     - [The `@once` Directive](#the-once-directive)
     - [Raw PHP](#raw-php)
@@ -385,6 +386,26 @@ The `@class` directive conditionally compiles a CSS class string. The directive 
     ])></span>
 
     <span class="p-4 text-gray-500 bg-red"></span>
+
+<a name="checked-and-selected"></a>
+### Checked / Selected
+
+For convenience, you may use the `@checked` directive to easily indicate if a given HTML checkbox input is "checked". This directive will echo `checked` if the provided condition evaluates to `true`:
+
+    <input type="checkbox"
+            name="active"
+            value="active"
+            @checked(old('active', $user->active)) />
+
+Likewise, the `@selected` directive may be used to indicate if a given select option should be "selected":
+
+    <select name="version">
+        @foreach ($product->versions as $version)
+            <option value="{{ $version }}" @selected(old('version') == $version)>
+                {{ $version }}
+            </option>
+        @endforeach
+    </select>
 
 <a name="including-subviews"></a>
 ### Including Subviews
