@@ -129,43 +129,6 @@ public function address(): Attribute
 }
 ```
 
-<a name="implicit-route-bindings-with-enums"></a>
-### Implicit Route Bindings With Enums
-
-_Implicit Enum bindings was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
-
-PHP 8.1 introduces support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). Laravel 9.x introduces the ability to type-hint an Enum on your route definition and Laravel will only invoke the route if that route segment is a valid Enum value in the URI. Otherwise, an HTTP 404 response will be returned automatically. For example, given the following Enum:
-
-```php
-enum Category: string
-{
-    case Fruits = 'fruits';
-    case People = 'people';
-}
-```
-
-You may define a route that will only be invoked if the `{category}` route segment is `fruits` or `people`. Otherwise, an HTTP 404 response will be returned:
-
-```php
-Route::get('/categories/{category}', function (Category $category) {
-    return $category->value;
-});
-```
-
-<a name="controller-route-groups"></a>
-### Controller Route Groups
-
-_Route group improvements were contributed by [Luke Downing](https://github.com/lukeraymonddowning)_.
-
-You may now use the `controller` method to define the common controller for all of the routes within the group. Then, when defining the routes, you only need to provide the controller method that they invoke:
-
-    use App\Http\Controllers\OrderController;
-
-    Route::controller(OrderController::class)->group(function () {
-        Route::get('/orders/{id}', 'show');
-        Route::post('/orders', 'store');
-    });
-
 <a name="enum-casting"></a>
 ### Enum Eloquent Attribute Casting
 
@@ -194,7 +157,31 @@ Once you have defined the cast on your model, the specified attribute will be au
         $server->save();
     }
 
-### Forced Scoped Bindings
+<a name="implicit-route-bindings-with-enums"></a>
+### Implicit Route Bindings With Enums
+
+_Implicit Enum bindings was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+
+PHP 8.1 introduces support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). Laravel 9.x introduces the ability to type-hint an Enum on your route definition and Laravel will only invoke the route if that route segment is a valid Enum value in the URI. Otherwise, an HTTP 404 response will be returned automatically. For example, given the following Enum:
+
+```php
+enum Category: string
+{
+    case Fruits = 'fruits';
+    case People = 'people';
+}
+```
+
+You may define a route that will only be invoked if the `{category}` route segment is `fruits` or `people`. Otherwise, an HTTP 404 response will be returned:
+
+```php
+Route::get('/categories/{category}', function (Category $category) {
+    return $category->value;
+});
+```
+
+<a name="forced-scoping-of-route-bindings"></a>
+### Forced Scoping Of Route Bindings
 
 _Forced scoped bindings was contributed by [Claudio Dekker](https://github.com/claudiodekker)_.
 
@@ -226,21 +213,19 @@ Or, you may instruct an entire group of route definitions to use scoped bindings
         });
     });
 
-<a name="laravel-breeze-api"></a>
-### Laravel Breeze API & Next.js
+<a name="controller-route-groups"></a>
+### Controller Route Groups
 
-_The Laravel Breeze API scaffolding and Next.js starter kit was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Miguel Piedrafita](https://twitter.com/m1guelpf)_.
+_Route group improvements were contributed by [Luke Downing](https://github.com/lukeraymonddowning)_.
 
-The [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-next) starter kit has received an "API" scaffolding mode and complimentary [Next.js](https://nextjs.org) [frontend implementation](https://github.com/laravel/breeze-next). This starter kit scaffolding may be used to jump start your Laravel applications that are serving as a backend, Laravel Sanctum authenticated API for a JavaScript frontend.
+You may now use the `controller` method to define the common controller for all of the routes within the group. Then, when defining the routes, you only need to provide the controller method that they invoke:
 
-<a name="laravel-scout-database-engine"></a>
-### Laravel Scout Database Engine
+    use App\Http\Controllers\OrderController;
 
-_The Laravel Scout database engine was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Dries Vints](https://github.com/driesvints)_.
-
-If your application interacts with small to medium sized databases or has a light workload, you may now use Scout's "database" engine instead of a dedicated search service such as Algolia or MeiliSerach. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
-
-To learn more about the Scout database engine, consult the [Scout documentation](/docs/{{version}}/scout).
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/orders/{id}', 'show');
+        Route::post('/orders', 'store');
+    });
 
 <a name="full-text"></a>
 ### Full Text Indexes / Where Clauses
@@ -256,6 +241,15 @@ In addition, the `whereFullText` and `orWhereFullText` methods may be used to ad
     $users = DB::table('users')
                ->whereFullText('bio', 'web developer')
                ->get();
+
+<a name="laravel-scout-database-engine"></a>
+### Laravel Scout Database Engine
+
+_The Laravel Scout database engine was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Dries Vints](https://github.com/driesvints)_.
+
+If your application interacts with small to medium sized databases or has a light workload, you may now use Scout's "database" engine instead of a dedicated search service such as Algolia or MeiliSerach. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
+
+To learn more about the Scout database engine, consult the [Scout documentation](/docs/{{version}}/scout).
 
 <a name="rendering-inline-blade-templates"></a>
 ### Rendering Inline Blade Templates
@@ -278,6 +272,7 @@ use App\View\Components\HelloComponent;
 return Blade::renderComponent(new HelloComponent('Julian Bashir'));
 ```
 
+<a name="slot-name-shortcut"></a>
 ### Slot Name Shortcut
 
 _Slot name shortcuts were contributed by [Caleb Porzio](https://github.com/calebporzio)._
@@ -302,6 +297,7 @@ However, beginning in Laravel 9.x, you may specify the slot's name using a conve
 </x-slot>
 ```
 
+<a name="checked-selected-blade-directives"></a>
 ### Checked / Selected Blade Directives
 
 _Checked and selected Blade directives were contributed by [Ash Allen](https://github.com/ash-jc-allen) and [Taylor Otwell](https://github.com/taylorotwell)_.
@@ -323,6 +319,25 @@ Likewise, the `@selected` directive may be used to indicate if a given select op
         @endforeach
     </select>
 
+<a name="bootstrap-5-pagination-views"></a>
+### Bootstrap 5 Pagination Views
+
+_Bootstrap 5 pagination views were contributed by [Jared Lewis](https://github.com/jrd-lewis)_.
+
+Laravel now includes pagination views built using [Bootstrap 5](https://getbootstrap.com/). To use these views instead of the default Tailwind views, you may call the paginator's `useBootstrapFive` method within the `boot` method of your `App\Providers\AppServiceProvider` class:
+
+    use Illuminate\Pagination\Paginator;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Paginator::useBootstrapFive();
+    }
+
 <a name="improved-validation-of-nested-array-data"></a>
 ### Improved Validation Of Nested Array Data
 
@@ -342,6 +357,24 @@ Sometimes you may need to access the value for a given nested array element when
             ];
         }),
     ]);
+
+<a name="laravel-breeze-api"></a>
+### Laravel Breeze API & Next.js
+
+_The Laravel Breeze API scaffolding and Next.js starter kit was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Miguel Piedrafita](https://twitter.com/m1guelpf)_.
+
+The [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-next) starter kit has received an "API" scaffolding mode and complimentary [Next.js](https://nextjs.org) [frontend implementation](https://github.com/laravel/breeze-next). This starter kit scaffolding may be used to jump start your Laravel applications that are serving as a backend, Laravel Sanctum authenticated API for a JavaScript frontend.
+
+<a name="exception-page"></a>
+### Improved Ignition Exception Page
+
+_Ignition is developed by [Spatie](https://spatie.be/)._
+
+Ignition, the open source exception debug page created by Spatie, has been redesigned from the ground up. The new, improved Ignition ships with Laravel 9.x and includes light / dark themes, customizable "open in editor" functionality, and more.
+
+<p align="center">
+<img width="100%" src="https://user-images.githubusercontent.com/483853/149235404-f7caba56-ebdf-499e-9883-cac5d5610369.png"/>
+</p>
 
 <a name="improved-route-list"></a>
 ### Improved `route:list` CLI Output
@@ -385,36 +418,6 @@ _The Soketi Echo server was developed by [Alex Renoki](https://github.com/rennok
 Although not exclusive to Laravel 9.x, Laravel has recently assisted with the documentation of Soketi, a [Laravel Echo](/docs/{{version}}/broadcasting) compatible Web Socket server written for Node.js. Soketi provides a great, open source alternative to Pusher and Ably for those applications that prefer to manage their own Web Socket server.
 
 For more information on using Soketi, please consult the [broadcasting documentation](/docs/{{version}}/broadcasting) and [Soketi documentation](https://docs.soketi.app/).
-
-<a name="bootstrap-5-pagination-views"></a>
-### Bootstrap 5 Pagination Views
-
-_Bootstrap 5 pagination views were contributed by [Jared Lewis](https://github.com/jrd-lewis)_.
-
-Laravel now includes pagination views built using [Bootstrap 5](https://getbootstrap.com/). To use these views instead of the default Tailwind views, you may call the paginator's `useBootstrapFive` method within the `boot` method of your `App\Providers\AppServiceProvider` class:
-
-    use Illuminate\Pagination\Paginator;
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Paginator::useBootstrapFive();
-    }
-
-<a name="exception-page"></a>
-### Improved Ignition Exception Page
-
-_Ignition is developed by [Spatie](https://spatie.be/)._
-
-Ignition, the open source exception debug page created by Spatie, has been redesigned from the ground up. The new, improved Ignition ships with Laravel 9.x and includes light / dark themes, customizable "open in editor" functionality, and more.
-
-<p align="center">
-<img width="100%" src="https://user-images.githubusercontent.com/483853/149235404-f7caba56-ebdf-499e-9883-cac5d5610369.png"/>
-</p>
 
 <a name="improved-collections-ide-support"></a>
 ### Improved Collections IDE Support
