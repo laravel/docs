@@ -270,6 +270,14 @@ use Illuminate\Support\Facades\Blade;
 return Blade::render('Hello, {{ $name }}', ['name' => 'Julian Bashir']);
 ```
 
+Similarly, the `renderComponent` method may be used to render a given class component by passing the component instance to the method:
+
+```php
+use App\View\Components\HelloComponent;
+
+return Blade::renderComponent(new HelloComponent('Julian Bashir'));
+```
+
 ### Checked / Selected Blade Directives
 
 _Checked and selected Blade directives were contributed by [Ash Allen](https://github.com/ash-jc-allen) and [Taylor Otwell](https://github.com/taylorotwell)_.
