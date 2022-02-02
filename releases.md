@@ -260,6 +260,8 @@ In addition, the `whereFullText` and `orWhereFullText` methods may be used to ad
 <a name="rendering-inline-blade-templates"></a>
 ### Rendering Inline Blade Templates
 
+_Rendering inline Blade templates was contributed by [Jason Beggs](https://github.com/jasonlbeggs)_.
+
 Sometimes you may need to transform a raw Blade template string into valid HTML. You may accomplish this using the `render` method provided by the `Blade` facade. The `render` method accepts the Blade template string and an optional array of data to provide to the template:
 
 ```php
@@ -268,8 +270,31 @@ use Illuminate\Support\Facades\Blade;
 return Blade::render('Hello, {{ $name }}', ['name' => 'Julian Bashir']);
 ```
 
+### Checked / Selected Blade Directives
+
+_Checked and selected Blade directives were contributed by [Ash Allen](https://github.com/ash-jc-allen) and [Taylor Otwell](https://github.com/taylorotwell)_.
+
+For convenience, you may use the `@checked` directive to easily indicate if a given HTML checkbox input is "checked". This directive will echo `checked` if the provided condition evaluates to `true`:
+
+    <input type="checkbox"
+            name="active"
+            value="active"
+            @checked(old('active', $user->active)) />
+
+Likewise, the `@selected` directive may be used to indicate if a given select option should be "selected":
+
+    <select name="version">
+        @foreach ($product->versions as $version)
+            <option value="{{ $version }}" @selected(old('version') == $version)>
+                {{ $version }}
+            </option>
+        @endforeach
+    </select>
+
 <a name="improved-validation-of-nested-array-data"></a>
 ### Improved Validation Of Nested Array Data
+
+_Improved validation of nested array inputs was contributed by [Steve Bauman](https://github.com/stevebauman)_.
 
 Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may now accomplish this using the `Rule::foreEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:
 
@@ -331,6 +356,8 @@ For more information on using Soketi, please consult the [broadcasting documenta
 
 <a name="bootstrap-5-pagination-views"></a>
 ### Bootstrap 5 Pagination Views
+
+_Bootstrap 5 pagination views were contributed by [Jared Lewis](https://github.com/jrd-lewis)_.
 
 Laravel now includes pagination views built using [Bootstrap 5](https://getbootstrap.com/). To use these views instead of the default Tailwind views, you may call the paginator's `useBootstrapFive` method within the `boot` method of your `App\Providers\AppServiceProvider` class:
 
