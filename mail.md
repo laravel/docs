@@ -24,6 +24,7 @@
 - [Testing Mailables](#testing-mailables)
 - [Mail & Local Development](#mail-and-local-development)
 - [Events](#events)
+- [Custom Transports](#custom-transports)
 
 <a name="introduction"></a>
 ## Introduction
@@ -869,3 +870,86 @@ Laravel fires two events during the process of sending mail messages. The `Messa
             'App\Listeners\LogSentMessage',
         ],
     ];
+
+<a name="custom-transports"></a>
+## Custom Transports
+
+Laravel includes a variety of mail transports; however, you may wish to write your own transports to deliver email via other services that Laravel does not support out of the box. To get started, define a class that implements the `Symfony\Component\Mailer\Transport\TransportInterface` interface and extends the `Symfony\Component\Mailer\Transport\AbstractTransport` class. Then, implement the `doSend` and `__toString()` methods on your transport:
+
+    use MailchimpTransactional\ApiClient;
+    use Symfony\Component\Mailer\SentMessage;
+    use Symfony\Component\Mailer\Transport\AbstractTransport;
+    use Symfony\Component\Mailer\Transport\TransportInterface;
+    use Symfony\Component\Mime\MessageConverter;
+
+    class MailchimpTransport extends AbstractTransport implements TransportInterface
+    {
+        /**
+         * The Mailchimp API client.
+         *
+         * @var \MailchimpTransactional\ApiClient
+         */
+        protected $client;
+
+        /**
+         * Create a new Mailchimp transport instance.
+         *
+         * @param  \MailchimpTransactional\ApiClient  $client
+         * @return void
+         */
+        public function __construct(ApiClient $client)
+        {
+            $this->client = $client
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        protected function doSend(SentMessage $message): void
+        {
+            $email = MessageConverter::toEmail($message->getOriginalMessage());
+
+            $this->client->messages->send(['message' => [
+                'from_email' => $email->getFrom(),
+                'to' => collect($email->getTo())->map(function ($email) {
+                    return ['email' => $email->getAddress(), 'type' => 'to'];
+                })->all(),
+                'subject' => $email->getSubject(),
+                'text' => $email->getTextBody(),
+            ]]);
+        }
+
+        /**
+         * Get the string representation of the transport.
+         *
+         * @return string
+         */
+        public function __toString(): string
+        {
+            return 'mailchimp';
+        }
+    }
+
+Once you've defined your custom transport, you may register it via the `extend` method provided by the `Mail` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider` service provider. A `$config` argument will be passed to the closure provided to the `extend` method. This argument will contain the configuration array defined for the mailer in the application's `config/mail.php` configuration file:
+
+    use App\Mail\MailchimpTransport;
+    use Illuminate\Support\Facades\Mail;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Mail::extend('mailchimp', function (array $config = []) {
+            return new MailchimpTransport(...);
+        })
+    }
+
+Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:
+
+    'mailchimp' => [
+        'transport' => 'mailchimp',
+        // ...
+    ],
