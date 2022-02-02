@@ -916,7 +916,7 @@ You may define the content of the named slot using the `x-slot` tag. Any content
 
 ```html
 <x-alert>
-    <x-slot name="title">
+    <x-slot:title>
         Server Error
     </x-slot>
 
@@ -931,7 +931,7 @@ If you have used a JavaScript framework such as Vue, you may be familiar with "s
 
 ```html
 <x-alert>
-    <x-slot name="title">
+    <x-slot:title>
         {{ $component->formatAlert('Server Error') }}
     </x-slot>
 
@@ -946,13 +946,13 @@ Like Blade components, you may assign additional [attributes](#component-attribu
 
 ```html
 <x-card class="shadow-sm">
-    <x-slot name="heading" class="font-bold">
+    <x-slot:heading class="font-bold">
         Heading
     </x-slot>
 
     Content
 
-    <x-slot name="footer" class="text-sm">
+    <x-slot:footer class="text-sm">
         Footer
     </x-slot>
 </x-card>
@@ -1199,7 +1199,7 @@ Remember, content that is injected into a component will be supplied to the defa
 <!-- resources/views/tasks.blade.php -->
 
 <x-layout>
-    <x-slot name="title">
+    <x-slot:title>
         Custom Title
     </x-slot>
 

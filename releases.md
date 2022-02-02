@@ -278,6 +278,30 @@ use App\View\Components\HelloComponent;
 return Blade::renderComponent(new HelloComponent('Julian Bashir'));
 ```
 
+### Slot Name Shortcut
+
+_Slot name shortcuts were contributed by [Caleb Porzio](https://github.com/calebporzio)._
+
+In previous releases of Laravel, slot names were provided using a `name` attribute on the `x-slot` tag:
+
+```html
+<x-alert>
+    <x-slot name="title">
+        Server Error
+    </x-slot>
+
+    <strong>Whoops!</strong> Something went wrong!
+</x-alert>
+```
+
+However, beginning in Laravel 9.x, you may specify the slot's name using a convenient, shorter syntax:
+
+```html
+<x-slot:title>
+    Server Error
+</x-slot>
+```
+
 ### Checked / Selected Blade Directives
 
 _Checked and selected Blade directives were contributed by [Ash Allen](https://github.com/ash-jc-allen) and [Taylor Otwell](https://github.com/taylorotwell)_.
