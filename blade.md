@@ -472,6 +472,14 @@ The `@once` directive allows you to define a portion of the template that will o
         @endpush
     @endonce
 
+Since the `@once` directive is often used in conjunction with the `@push` or `@prepend` directives, the `@pushOnce` and `@prependOnce` directives are available for your convenience:
+
+    @pushOnce('scripts')
+        <script>
+            // Your custom JavaScript...
+        </script>
+    @endPushOnce
+
 <a name="raw-php"></a>
 ### Raw PHP
 
