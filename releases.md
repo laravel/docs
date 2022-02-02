@@ -384,6 +384,8 @@ Laravel now includes pagination views built using [Bootstrap 5](https://getboots
 <a name="exception-page"></a>
 ### Improved Ignition Exception Page
 
+_Ignition is developed by [Spatie](https://spatie.be/)._
+
 Ignition, the open source exception debug page created by Spatie, has been redesigned from the ground up. The new, improved Ignition ships with Laravel 9.x and includes light / dark themes, customizable "open in editor" functionality, and more.
 
 <p align="center">
