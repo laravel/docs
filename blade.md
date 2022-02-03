@@ -517,7 +517,7 @@ If you wish to create an anonymous component (a component with only a Blade temp
 
     php artisan make:component forms.input --view
    
-The command above will create a Blade file called `resources/views/components/forms/input.blade.php`, and can be consumed via `<x-forms.input />`.
+The command above will create a Blade file at `resources/views/components/forms/input.blade.php` which can be rendered as a component via `<x-forms.input />`.
 
 <a name="manually-registering-package-components"></a>
 #### Manually Registering Package Components
