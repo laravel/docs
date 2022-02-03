@@ -75,6 +75,8 @@ Name | Description | Default
 `locking` | Attempt to lock the log file before writing to it | `false`
 `permission` | The log file's permissions | `0644`
 
+> {tip} If your console commands runs with a different user than web processes, you may have to change permissions to 0664 or 0666. Permission expects an integer value. Use octdec() function for the conversion, for example octdec('0664').
+
 <a name="configuring-the-papertrail-channel"></a>
 #### Configuring The Papertrail Channel
 
