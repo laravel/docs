@@ -513,6 +513,12 @@ You may also create components within subdirectories:
 
 The command above will create an `Input` component in the `App\View\Components\Forms` directory and the view will be placed in the `resources/views/components/forms` directory.
 
+If you wish to create an anonymous component (a component with only a Blade template and no class), you can use the `--view` flag:
+
+    php artisan make:component forms.input --view
+   
+The command above will create a Blade file at `resources/views/components/forms/input.blade.php` which can be rendered as a component via `<x-forms.input />`.
+
 <a name="manually-registering-package-components"></a>
 #### Manually Registering Package Components
 
