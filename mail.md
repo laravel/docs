@@ -874,6 +874,48 @@ Laravel fires two events during the process of sending mail messages. The `Messa
 <a name="custom-transports"></a>
 ## Custom Transports
 
+### Symfony mail transports
+
+Laravel includes some existing Symfony mail transports, like `Mailgun` and `Postmark` for example. If you would
+like to use one of the other existing Symfony mailers, you can do so by requiring the necessary Symfony mailer via
+composer and `extend` the Laravel `MailManager` by registering the Symfony mailer. Below is an example of how to
+add and implement the Sendinblue Symfony mailer for example.
+
+Require the Sendinblue Symfony mailer:
+```
+composer require symfony/sendinblue-mailer
+```
+
+Add your Sendinblue API key to your `config/services.php`:
+```
+'sendinblue' => [
+    'api' => 'Your API key',
+],
+```
+
+Extend the Laravel `MailManager` with the Sendinblue Mail Tranport:
+```
+use Illuminate\Mail\MailManager;
+use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
+use Symfony\Component\Mailer\Transport\Dsn;
+
+/**
+ * Bootstrap any application services.
+ *
+ * @return void
+ */
+public function boot()
+{
+    $this->app[MailManager::class]->extend('sendinblue', function () {
+        return (new SendinblueTransportFactory())->create(
+            new Dsn('sendinblue+api', 'default', $this->app['config']->get('services.sendinblue.api'))
+        );
+    });
+}
+```
+
+### Custom mail transport
+
 Laravel includes a variety of mail transports; however, you may wish to write your own transports to deliver email via other services that Laravel does not support out of the box. To get started, define a class that implements the `Symfony\Component\Mailer\Transport\TransportInterface` interface and extends the `Symfony\Component\Mailer\Transport\AbstractTransport` class. Then, implement the `doSend` and `__toString()` methods on your transport:
 
     use MailchimpTransactional\ApiClient;
