@@ -874,15 +874,14 @@ Laravel fires two events during the process of sending mail messages. The `Messa
 <a name="custom-transports"></a>
 ## Custom Transports
 
-Laravel includes a variety of mail transports; however, you may wish to write your own transports to deliver email via other services that Laravel does not support out of the box. To get started, define a class that implements the `Symfony\Component\Mailer\Transport\TransportInterface` interface and extends the `Symfony\Component\Mailer\Transport\AbstractTransport` class. Then, implement the `doSend` and `__toString()` methods on your transport:
+Laravel includes a variety of mail transports; however, you may wish to write your own transports to deliver email via other services that Laravel does not support out of the box. To get started, define a class that extends the `Symfony\Component\Mailer\Transport\AbstractTransport` class. Then, implement the `doSend` and `__toString()` methods on your transport:
 
     use MailchimpTransactional\ApiClient;
     use Symfony\Component\Mailer\SentMessage;
     use Symfony\Component\Mailer\Transport\AbstractTransport;
-    use Symfony\Component\Mailer\Transport\TransportInterface;
     use Symfony\Component\Mime\MessageConverter;
 
-    class MailchimpTransport extends AbstractTransport implements TransportInterface
+    class MailchimpTransport extends AbstractTransport
     {
         /**
          * The Mailchimp API client.
