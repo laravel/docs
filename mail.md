@@ -25,6 +25,7 @@
 - [Mail & Local Development](#mail-and-local-development)
 - [Events](#events)
 - [Custom Transports](#custom-transports)
+    - [Additional Symfony Transports](#additional-symfony-transports)
 
 <a name="introduction"></a>
 ## Introduction
