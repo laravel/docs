@@ -887,32 +887,30 @@ composer require symfony/sendinblue-mailer
 ```
 
 Add your Sendinblue API key to your `config/services.php`:
-```
-'sendinblue' => [
-    'api' => 'Your API key',
-],
-```
+
+    'sendinblue' => [
+        'api' => 'Your API key',
+    ],
 
 Extend the Laravel `MailManager` with the Sendinblue Mail Tranport:
-```
-use Illuminate\Mail\MailManager;
-use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
-use Symfony\Component\Mailer\Transport\Dsn;
 
-/**
- * Bootstrap any application services.
- *
- * @return void
- */
-public function boot()
-{
-    $this->app[MailManager::class]->extend('sendinblue', function () {
-        return (new SendinblueTransportFactory())->create(
-            new Dsn('sendinblue+api', 'default', $this->app['config']->get('services.sendinblue.api'))
-        );
-    });
-}
-```
+    use Illuminate\Mail\MailManager;
+    use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
+    use Symfony\Component\Mailer\Transport\Dsn;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->app[MailManager::class]->extend('sendinblue', function () {
+            return (new SendinblueTransportFactory())->create(
+                new Dsn('sendinblue+api', 'default', $this->app['config']->get('services.sendinblue.api'))
+            );
+        });
+    }
 
 ### Custom mail transport
 
