@@ -33,14 +33,38 @@ For LTS releases, such as Laravel 9, bug fixes are provided for 2 years and secu
 | 9 (LTS) | 8.0 - 8.1 | February 8th, 2022 | February 8th, 2024 | February 8th, 2025 |
 | 10 | 8.0 - 8.1 | February 7th, 2023 | August 7th, 2024 | February 7th, 2025 |
 
+<style>
+  .version-colors .end-of-life, .version-colors .security-fixes {
+    display: flex;
+  }
+
+  .version-colors .color-box {
+    width: 22px;
+    height: 22px;
+    margin-right: 8px;
+  }
+
+  .version-colors .end-of-life .color-box {
+    background: #ff7c75;
+  }
+
+  .version-colors .security-fixes .color-box {
+    background: #f49d37;
+  }
+
+  .version-colors p {
+    margin-bottom: 8px;
+  }
+</style>
+
 <div class="version-colors">
     <div class="end-of-life">
         <div class="color-box"></div>
-        <div>End of life</div>
+        <p>End of life</p>
     </div>
     <div class="security-fixes">
         <div class="color-box"></div>
-        <div>Security fixes only</div>
+        <p>Security fixes only</p>
     </div>
 </div>
 
