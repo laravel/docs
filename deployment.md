@@ -47,38 +47,40 @@ If you are deploying your application to a server that is running Nginx, you may
 
 Please ensure, like the configuration below, your web server directs all requests to your application's `public/index.php` file. You should never attempt to move the `index.php` file to your project's root, as serving the application from the project root will expose many sensitive configuration files to the public Internet:
 
-    server {
-        listen 80;
-        listen [::]:80;
-        server_name example.com;
-        root /srv/example.com/public;
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name example.com;
+    root /srv/example.com/public;
 
-        add_header X-Frame-Options "SAMEORIGIN";
-        add_header X-Content-Type-Options "nosniff";
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
 
-        index index.php;
+    index index.php;
 
-        charset utf-8;
+    charset utf-8;
 
-        location / {
-            try_files $uri $uri/ /index.php?$query_string;
-        }
-
-        location = /favicon.ico { access_log off; log_not_found off; }
-        location = /robots.txt  { access_log off; log_not_found off; }
-
-        error_page 404 /index.php;
-
-        location ~ \.php$ {
-            fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-            include fastcgi_params;
-        }
-
-        location ~ /\.(?!well-known).* {
-            deny all;
-        }
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
     }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+```
 
 <a name="optimization"></a>
 ## Optimization
@@ -88,7 +90,9 @@ Please ensure, like the configuration below, your web server directs all request
 
 When deploying to production, make sure that you are optimizing Composer's class autoloader map so Composer can quickly find the proper file to load for a given class:
 
-    composer install --optimize-autoloader --no-dev
+```shell
+composer install --optimize-autoloader --no-dev
+```
 
 > {tip} In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present.
 
@@ -97,7 +101,9 @@ When deploying to production, make sure that you are optimizing Composer's class
 
 When deploying your application to production, you should make sure that you run the `config:cache` Artisan command during your deployment process:
 
-    php artisan config:cache
+```shell
+php artisan config:cache
+```
 
 This command will combine all of Laravel's configuration files into a single, cached file, which greatly reduces the number of trips the framework must make to the filesystem when loading your configuration values.
 
@@ -108,7 +114,9 @@ This command will combine all of Laravel's configuration files into a single, ca
 
 If you are building a large application with many routes, you should make sure that you are running the `route:cache` Artisan command during your deployment process:
 
-    php artisan route:cache
+```shell
+php artisan route:cache
+```
 
 This command reduces all of your route registrations into a single method call within a cached file, improving the performance of route registration when registering hundreds of routes.
 
@@ -117,7 +125,9 @@ This command reduces all of your route registrations into a single method call w
 
 When deploying your application to production, you should make sure that you run the `view:cache` Artisan command during your deployment process:
 
-    php artisan view:cache
+```shell
+php artisan view:cache
+```
 
 This command precompiles all your Blade views so they are not compiled on demand, improving the performance of each request that returns a view.
 

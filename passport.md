@@ -179,7 +179,7 @@ Alternatively, you may publish Passport's configuration file using the `vendor:p
 
 After the configuration file has been published, you may load your application's encryption keys by defining them as environment variables:
 
-```bash
+```shell
 PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
 <private key here>
 -----END RSA PRIVATE KEY-----"
@@ -295,7 +295,7 @@ The simplest way to create a client is using the `passport:client` Artisan comma
 
 If you would like to allow multiple redirect URLs for your client, you may specify them using a comma-delimited list when prompted for the URL by the `passport:client` command. Any URLs which contain commas should be URL encoded:
 
-```bash
+```shell
 http://example.com/callback,http://examplefoo.com/callback
 ```
 
@@ -846,7 +846,7 @@ Before your application can issue personal access tokens, you will need to creat
 
 After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
 
-```bash
+```shell
 PASSPORT_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
 PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
 ```

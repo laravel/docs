@@ -76,7 +76,7 @@ composer require laravel/fortify
 
 Next, publish Fortify's resources using the `vendor:publish` command:
 
-```bash
+```shell
 php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
 ```
 
@@ -84,7 +84,7 @@ This command will publish Fortify's actions to your `app/Actions` directory, whi
 
 Next, you should migrate your database:
 
-```bash
+```shell
 php artisan migrate
 ```
 

@@ -147,7 +147,7 @@ To use the Parallels provider, you will need to install [Parallels Vagrant plug-
 
 You may install Homestead by cloning the Homestead repository onto your host machine. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead virtual machine will serve as the host to all of your Laravel applications. Throughout this documentation, we will refer to this directory as your "Homestead directory":
 
-```bash
+```shell
 git clone https://github.com/laravel/homestead.git ~/Homestead
 ```
 
@@ -245,7 +245,7 @@ Using automatic hostnames works best for [per project installations](#per-projec
 
 Make sure the IP address listed is the one set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
 
-```bash
+```shell
 http://homestead.test
 ```
 
@@ -278,7 +278,7 @@ Instead of installing Homestead globally and sharing the same Homestead virtual 
 
 You may install Homestead into your project using the Composer package manager:
 
-```bash
+```shell
 composer require laravel/homestead --dev
 ```
 
@@ -606,7 +606,7 @@ In order to use Minio, you will need to adjust the S3 disk configuration in your
 
 Finally, ensure your `.env` file has the following options:
 
-```bash
+```shell
 AWS_ACCESS_KEY_ID=homestead
 AWS_SECRET_ACCESS_KEY=secretkey
 AWS_DEFAULT_REGION=us-east-1

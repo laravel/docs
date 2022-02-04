@@ -19,7 +19,7 @@ Before using Redis with Laravel, we encourage you to install and use the [phpred
 
 If you are unable to install the phpredis extension, you may install the `predis/predis` package via Composer. Predis is a Redis client written entirely in PHP and does not require any additional extensions:
 
-```bash
+```shell
 composer require predis/predis
 ```
 

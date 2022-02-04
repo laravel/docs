@@ -1377,7 +1377,7 @@ When a job within a batch fails, Laravel will automatically mark the batch as "c
 
 For convenience, Laravel provides a `queue:retry-batch` Artisan command that allows you to easily retry all of the failed jobs for a given batch. The `queue:retry-batch` command accepts the UUID of the batch whose failed jobs should be retried:
 
-```bash
+```shell
 php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 ```
 
@@ -1526,7 +1526,7 @@ In your `config/queue.php` configuration file, each queue connection defines a `
 
 The `queue:work` Artisan command exposes a `--timeout` option. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):
 
-```bash
+```shell
 php artisan queue:work --timeout=60
 ```
 
@@ -1579,7 +1579,7 @@ In this example, the `numprocs` directive will instruct Supervisor to run eight 
 
 Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
 
-```bash
+```shell
 sudo supervisorctl reread
 
 sudo supervisorctl update
@@ -1855,7 +1855,7 @@ If your queue receives a sudden influx of jobs, it could become overwhelmed, lea
 
 To get started, you should schedule the `queue:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the queues you wish to monitor as well as your desired job count threshold:
 
-```bash
+```shell
 php artisan queue:monitor redis:default,redis:deployments --max=100
 ```
 

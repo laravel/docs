@@ -246,7 +246,7 @@ Sometimes you may wish to proxy a Valet domain to another service on your local 
 
 To solve this, you may use the `proxy` command to generate a proxy. For example, you may proxy all traffic from `http://elasticsearch.test` to `http://127.0.0.1:9200`:
 
-```bash
+```shell
 // Proxy over HTTP...
 valet proxy elasticsearch http://127.0.0.1:9200
 

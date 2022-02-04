@@ -56,7 +56,7 @@ If you would like to generate a [database migration](/docs/{{version}}/migration
 
 You may generate various other types of classes when generating a model, such as factories, seeders, policies, controllers, and form requests. In addition, these options may be combined to create multiple classes at once:
 
-```bash
+```shell
 # Generate a model and a FlightFactory class...
 php artisan make:model Flight --factory
 php artisan make:model Flight -f

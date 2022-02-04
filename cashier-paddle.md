@@ -1006,7 +1006,7 @@ Cashier also emit events dedicated to the type of the received webhook. In addit
 
 You can also override the default, built-in webhook route by defining the `CASHIER_WEBHOOK` environment variable in your application's `.env` file. This value should be the full URL to your webhook route and needs to match the URL set in your Paddle control panel:
 
-```bash
+```shell
 CASHIER_WEBHOOK=https://example.com/my-paddle-webhook-url
 ```
 
@@ -1049,7 +1049,7 @@ The `charge` method accepts an array as its third argument, allowing you to pass
 
 Charges happen in the currency specified in the `cashier.currency` configuration option. By default, this is set to USD. You may override the default currency by defining the `CASHIER_CURRENCY` environment variable in your application's `.env` file:
 
-```bash
+```shell
 CASHIER_CURRENCY=EUR
 ```
 

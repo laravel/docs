@@ -331,7 +331,7 @@ If your Mix compiled assets are deployed to a CDN separate from your application
 
 After configuring the Mix URL, The `mix` function will prefix the configured URL when generating URLs to assets:
 
-```bash
+```shell
 https://cdn.example.com/js/app.js?id=1964becbdd96414518cd
 ```
 

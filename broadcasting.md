@@ -143,7 +143,7 @@ The [laravel-websockets](https://github.com/beyondcode/laravel-websockets) packa
 
 [Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver. You may install Echo via the NPM package manager. In this example, we will also install the `pusher-js` package since we will be using the Pusher Channels broadcaster:
 
-```bash
+```shell
 npm install --save-dev laravel-echo pusher-js
 ```
 
@@ -192,7 +192,7 @@ window.Echo = new Echo({
 
 You may wonder why we would install the `pusher-js` JavaScript library even though we are using Ably to broadcast our events. Thankfully, Ably includes a Pusher compatibility mode which lets us use the Pusher protocol when listening for events in our client-side application:
 
-```bash
+```shell
 npm install --save-dev laravel-echo pusher-js
 ```
 

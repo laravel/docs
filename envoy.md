@@ -43,7 +43,7 @@ Tasks are the basic building block of Envoy. Tasks define the shell commands tha
 
 All of your Envoy tasks should be defined in an `Envoy.blade.php` file at the root of your application. Here's an example to get you started:
 
-```bash
+```shell
 @servers(['web' => ['user@192.168.1.1'], 'workers' => ['user@192.168.1.2']])
 
 @task('restart-queues', ['on' => 'workers'])
@@ -59,7 +59,7 @@ As you can see, an array of `@servers` is defined at the top of the file, allowi
 
 You can force a script to run on your local computer by specifying the server's IP address as `127.0.0.1`:
 
-```bash
+```shell
 @servers(['localhost' => '127.0.0.1'])
 ```
 
@@ -68,7 +68,7 @@ You can force a script to run on your local computer by specifying the server's 
 
 Using the `@import` directive, you may import other Envoy files so their stories and tasks are added to yours. After the files have been imported, you may execute the tasks they contain as if they were defined in your own Envoy file:
 
-```bash
+```shell
 @import('vendor/package/Envoy.blade.php')
 ```
 
@@ -77,7 +77,7 @@ Using the `@import` directive, you may import other Envoy files so their stories
 
 Envoy allows you to easily run a task across multiple servers. First, add additional servers to your `@servers` declaration. Each server should be assigned a unique name. Once you have defined your additional servers you may list each of the servers in the task's `on` array:
 
-```bash
+```shell
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
 @task('deploy', ['on' => ['web-1', 'web-2']])
@@ -92,7 +92,7 @@ Envoy allows you to easily run a task across multiple servers. First, add additi
 
 By default, tasks will be executed on each server serially. In other words, a task will finish running on the first server before proceeding to execute on the second server. If you would like to run a task across multiple servers in parallel, add the `parallel` option to your task declaration:
 
-```bash
+```shell
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
 @task('deploy', ['on' => ['web-1', 'web-2'], 'parallel' => true])
@@ -115,7 +115,7 @@ Sometimes, you may need to execute arbitrary PHP code before running your Envoy 
 
 If you need to require other PHP files before your task is executed, you may use the `@include` directive at the top of your `Envoy.blade.php` file:
 
-```bash
+```shell
 @include('vendor/autoload.php')
 
 @task('restart-queues')
@@ -132,7 +132,7 @@ If needed, you may pass arguments to Envoy tasks by specifying them on the comma
 
 You may access the options within your tasks using Blade's "echo" syntax. You may also define Blade `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
 
-```bash
+```shell
 @servers(['web' => ['user@192.168.1.1']])
 
 @task('deploy', ['on' => 'web'])
@@ -151,7 +151,7 @@ You may access the options within your tasks using Blade's "echo" syntax. You ma
 
 Stories group a set of tasks under a single, convenient name. For instance, a `deploy` story may run the `update-code` and `install-dependencies` tasks by listing the task names within its definition:
 
-```bash
+```shell
 @servers(['web' => ['user@192.168.1.1']])
 
 @story('deploy')
@@ -212,7 +212,7 @@ After every task failure (exits with a status code greater than `0`), all of the
 
 If all tasks have executed without errors, all of the `@success` hooks registered in your Envoy script will execute:
 
-```bash
+```shell
 @success
     // ...
 @endsuccess
@@ -223,7 +223,7 @@ If all tasks have executed without errors, all of the `@success` hooks registere
 
 After all tasks have been executed (regardless of exit status), all of the `@finished` hooks will be executed. The `@finished` hooks receive the status code of the completed task, which may be `null` or an `integer` greater than or equal to `0`:
 
-```bash
+```shell
 @finished
     if ($exitCode > 0) {
         // There were errors in one of the tasks...
@@ -243,7 +243,7 @@ To run a task or story that is defined in your application's `Envoy.blade.php` f
 
 If you would like to be prompted for confirmation before running a given task on your servers, you should add the `confirm` directive to your task declaration. This option is particularly useful for destructive operations:
 
-```bash
+```shell
 @task('deploy', ['on' => 'web', 'confirm' => true])
     cd /home/user/example.com
     git pull origin {{ $branch }}

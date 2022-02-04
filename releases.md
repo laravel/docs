@@ -279,7 +279,7 @@ _Slot name shortcuts were contributed by [Caleb Porzio](https://github.com/caleb
 
 In previous releases of Laravel, slot names were provided using a `name` attribute on the `x-slot` tag:
 
-```html
+```blade
 <x-alert>
     <x-slot name="title">
         Server Error
@@ -291,7 +291,7 @@ In previous releases of Laravel, slot names were provided using a `name` attribu
 
 However, beginning in Laravel 9.x, you may specify the slot's name using a convenient, shorter syntax:
 
-```html
+```xml
 <x-slot:title>
     Server Error
 </x-slot>
@@ -304,20 +304,24 @@ _Checked and selected Blade directives were contributed by [Ash Allen](https://g
 
 For convenience, you may now use the `@checked` directive to easily indicate if a given HTML checkbox input is "checked". This directive will echo `checked` if the provided condition evaluates to `true`:
 
-    <input type="checkbox"
-            name="active"
-            value="active"
-            @checked(old('active', $user->active)) />
+```blade
+<input type="checkbox"
+        name="active"
+        value="active"
+        @checked(old('active', $user->active)) />
+```
 
 Likewise, the `@selected` directive may be used to indicate if a given select option should be "selected":
 
-    <select name="version">
-        @foreach ($product->versions as $version)
-            <option value="{{ $version }}" @selected(old('version') == $version)>
-                {{ $version }}
-            </option>
-        @endforeach
-    </select>
+```blade
+<select name="version">
+    @foreach ($product->versions as $version)
+        <option value="{{ $version }}" @selected(old('version') == $version)>
+            {{ $version }}
+        </option>
+    @endforeach
+</select>
+```
 
 <a name="bootstrap-5-pagination-views"></a>
 ### Bootstrap 5 Pagination Views

@@ -16,7 +16,7 @@
 
 Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. A simple view might look something like this:
 
-```html
+```blade
 <!-- View stored in resources/views/greeting.blade.php -->
 
 <html>
@@ -258,8 +258,13 @@ By default, Blade template views are compiled on demand. When a request is execu
 
 Compiling views during the request may have a small negative impact on performance, so Laravel provides the `view:cache` Artisan command to precompile all of the views utilized by your application. For increased performance, you may wish to run this command as part of your deployment process:
 
-    php artisan view:cache
+```shell
+php artisan view:cache
+```
 
 You may use the `view:clear` command to clear the view cache:
 
-    php artisan view:clear
+```shell
+php artisan view:clear
+```
+
