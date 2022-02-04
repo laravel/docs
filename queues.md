@@ -204,8 +204,6 @@ In this example, note that we were able to pass an [Eloquent model](/docs/{{vers
 
 If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance and its loaded relationships from the database. This approach to model serialization allows for much smaller job payloads to be sent to your queue driver.
 
-At this time, eager loaded relationships are not supported. When you attempt to serialize a model with eager loaded relationships that are constrained, upon deserialization, a lazy load will be performed to load the entire relationship.
-
 <a name="handle-method-dependency-injection"></a>
 #### `handle` Method Dependency Injection
 
@@ -223,7 +221,7 @@ If you would like to take total control over how the container injects dependenc
 > {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
 
 <a name="handling-relationships"></a>
-#### Handling Relationships
+#### Queued Relationships
 
 Because loaded relationships also get serialized, the serialized job string can sometimes become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model without its loaded relationships:
 
@@ -237,6 +235,8 @@ Because loaded relationships also get serialized, the serialized job string can 
     {
         $this->podcast = $podcast->withoutRelations();
     }
+
+Furthermore, when a job is deserialized and model relationships are re-retrieved from the database, they will be retrieved in their entirety. Any previous relationship constraints that were applied before the model was serialized during the job queueing process will not be applied when the job is deserialized. Therefore, if you wish to work with a subset of a given relationship, you should re-constrain that relationship within your queued job.
 
 <a name="unique-jobs"></a>
 ### Unique Jobs
