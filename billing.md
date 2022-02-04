@@ -1787,6 +1787,7 @@ First, you could redirect your customer to the dedicated payment confirmation pa
 On the payment confirmation page, the customer will be prompted to enter their credit card information again and perform any additional actions required by Stripe, such as "3D Secure" confirmation. After confirming their payment, the user will be redirected to the URL provided by the `redirect` parameter specified above. Upon redirection, `message` (string) and `success` (integer) query string variables will be added to the URL. The payment page currently supports the following payment method types:
 
 <div class="content-list" markdown="1">
+
 - Credit Cards
 - Alipay
 - Bancontact
@@ -1795,6 +1796,7 @@ On the payment confirmation page, the customer will be prompted to enter their c
 - Giropay
 - iDEAL
 - SEPA Direct Debit
+
 </div>
 
 Alternatively, you could allow Stripe to handle the payment confirmation for you. In this case, instead of redirecting to the payment confirmation page, you may [setup Stripe's automatic billing emails](https://dashboard.stripe.com/account/billing/automatic) in your Stripe dashboard. However, if an `IncompletePayment` exception is caught, you should still inform the user they will receive an email with further payment confirmation instructions.
