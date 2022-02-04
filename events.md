@@ -49,13 +49,17 @@ The `App\Providers\EventServiceProvider` included with your Laravel application 
 
 Of course, manually creating the files for each event and listener is cumbersome. Instead, add listeners and events to your `EventServiceProvider` and use the `event:generate` Artisan command. This command will generate any events or listeners that are listed in your `EventServiceProvider` that do not already exist:
 
-    php artisan event:generate
+```shell
+php artisan event:generate
+```
 
 Alternatively, you may use the `make:event` and `make:listener` Artisan commands to generate individual events and listeners:
 
-    php artisan make:event PodcastProcessed
+```shell
+php artisan make:event PodcastProcessed
 
-    php artisan make:listener SendPodcastNotification --event=PodcastProcessed
+php artisan make:listener SendPodcastNotification --event=PodcastProcessed
+```
 
 <a name="manually-registering-events"></a>
 ### Manually Registering Events

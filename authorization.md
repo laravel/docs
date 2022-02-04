@@ -245,11 +245,15 @@ Policies are classes that organize authorization logic around a particular model
 
 You may generate a policy using the `make:policy` Artisan command. The generated policy will be placed in the `app/Policies` directory. If this directory does not exist in your application, Laravel will create it for you:
 
-    php artisan make:policy PostPolicy
+```shell
+php artisan make:policy PostPolicy
+```
 
 The `make:policy` command will generate an empty policy class. If you would like to generate a class with example policy methods related to viewing, creating, updating, and deleting the resource, you may provide a `--model` option when executing the command:
 
-    php artisan make:policy PostPolicy --model=Post
+```shell
+php artisan make:policy PostPolicy --model=Post
+```
 
 <a name="registering-policies"></a>
 ### Registering Policies
@@ -663,7 +667,7 @@ Specifying the entire class name within a string middleware definition can becom
 
 When writing Blade templates, you may wish to display a portion of the page only if the user is authorized to perform a given action. For example, you may wish to show an update form for a blog post only if the user can actually update the post. In this situation, you may use the `@can` and `@cannot` directives:
 
-```html
+```blade
 @can('update', $post)
     <!-- The current user can update the post... -->
 @elsecan('create', App\Models\Post::class)
@@ -681,7 +685,7 @@ When writing Blade templates, you may wish to display a portion of the page only
 
 These directives are convenient shortcuts for writing `@if` and `@unless` statements. The `@can` and `@cannot` statements above are equivalent to the following statements:
 
-```html
+```blade
 @if (Auth::user()->can('update', $post))
     <!-- The current user can update the post... -->
 @endif
@@ -693,7 +697,7 @@ These directives are convenient shortcuts for writing `@if` and `@unless` statem
 
 You may also determine if a user is authorized to perform any action from a given array of actions. To accomplish this, use the `@canany` directive:
 
-```html
+```blade
 @canany(['update', 'view', 'delete'], $post)
     <!-- The current user can update, view, or delete the post... -->
 @elsecanany(['create'], \App\Models\Post::class)
@@ -706,7 +710,7 @@ You may also determine if a user is authorized to perform any action from a give
 
 Like most of the other authorization methods, you may pass a class name to the `@can` and `@cannot` directives if the action does not require a model instance:
 
-```html
+```blade
 @can('create', App\Models\Post::class)
     <!-- The current user can create posts... -->
 @endcan

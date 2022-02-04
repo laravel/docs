@@ -51,7 +51,9 @@ To make these files accessible from the web, you should create a symbolic link f
 
 To create the symbolic link, you may use the `storage:link` Artisan command:
 
-    php artisan storage:link
+```shell
+php artisan storage:link
+```
 
 Once a file has been stored and the symbolic link has been created, you can create a URL to the files using the `asset` helper:
 
@@ -528,7 +530,9 @@ Laravel's Flysystem integration provides support for several "drivers" out of th
 
 In order to define a custom filesystem you will need a Flysystem adapter. Let's add a community maintained Dropbox adapter to our project:
 
-    composer require spatie/flysystem-dropbox
+```shell
+composer require spatie/flysystem-dropbox
+```
 
 Next, you can register the driver within the `boot` method of one of your application's [service providers](/docs/{{version}}/providers). To accomplish this, you should use the `extend` method of the `Storage` facade:
 

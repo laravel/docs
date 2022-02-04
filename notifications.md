@@ -59,7 +59,9 @@ Typically, notifications should be short, informational messages that notify use
 
 In Laravel, each notification is represented by a single class that is typically stored in the `app/Notifications` directory. Don't worry if you don't see this directory in your application - it will be created for you when you run the `make:notification` Artisan command:
 
-    php artisan make:notification InvoicePaid
+```shell
+php artisan make:notification InvoicePaid
+```
 
 This command will place a fresh notification class in your `app/Notifications` directory. Each notification class contains a `via` method and a variable number of message building methods, such as `toMail` or `toDatabase`, that convert the notification to a message tailored for that particular channel.
 
@@ -447,7 +449,9 @@ By default, the email notification will be sent using the default mailer defined
 
 You can modify the HTML and plain-text template used by mail notifications by publishing the notification package's resources. After running this command, the mail notification templates will be located in the `resources/views/vendor/notifications` directory:
 
-    php artisan vendor:publish --tag=laravel-notifications
+```shell
+php artisan vendor:publish --tag=laravel-notifications
+```
 
 <a name="mail-attachments"></a>
 ### Attachments
@@ -590,7 +594,9 @@ Markdown mail notifications allow you to take advantage of the pre-built templat
 
 To generate a notification with a corresponding Markdown template, you may use the `--markdown` option of the `make:notification` Artisan command:
 
-    php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
+```shell
+php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
+```
 
 Like all other mail notifications, notifications that use Markdown templates should define a `toMail` method on their notification class. However, instead of using the `line` and `action` methods to construct the notification, use the `markdown` method to specify the name of the Markdown template that should be used. An array of data you wish to make available to the template may be passed as the method's second argument:
 
@@ -614,55 +620,65 @@ Like all other mail notifications, notifications that use Markdown templates sho
 
 Markdown mail notifications use a combination of Blade components and Markdown syntax which allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
 
-    @component('mail::message')
-    # Invoice Paid
+```blade
+@component('mail::message')
+# Invoice Paid
 
-    Your invoice has been paid!
+Your invoice has been paid!
 
-    @component('mail::button', ['url' => $url])
-    View Invoice
-    @endcomponent
+@component('mail::button', ['url' => $url])
+View Invoice
+@endcomponent
 
-    Thanks,<br>
-    {{ config('app.name') }}
-    @endcomponent
+Thanks,<br>
+{{ config('app.name') }}
+@endcomponent
+```
 
 <a name="button-component"></a>
 #### Button Component
 
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `green`, and `red`. You may add as many button components to a notification as you wish:
 
-    @component('mail::button', ['url' => $url, 'color' => 'green'])
-    View Invoice
-    @endcomponent
+```blade
+@component('mail::button', ['url' => $url, 'color' => 'green'])
+View Invoice
+@endcomponent
+```
 
 <a name="panel-component"></a>
 #### Panel Component
 
 The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the notification. This allows you to draw attention to a given block of text:
 
-    @component('mail::panel')
-    This is the panel content.
-    @endcomponent
+```blade
+@component('mail::panel')
+This is the panel content.
+@endcomponent
+```
 
 <a name="table-component"></a>
 #### Table Component
 
 The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
 
-    @component('mail::table')
-    | Laravel       | Table         | Example  |
-    | ------------- |:-------------:| --------:|
-    | Col 2 is      | Centered      | $10      |
-    | Col 3 is      | Right-Aligned | $20      |
-    @endcomponent
+```blade
+@component('mail::table')
+| Laravel       | Table         | Example  |
+| ------------- |:-------------:| --------:|
+| Col 2 is      | Centered      | $10      |
+| Col 3 is      | Right-Aligned | $20      |
+@endcomponent
+```
 
 <a name="customizing-the-components"></a>
 ### Customizing The Components
 
 You may export all of the Markdown notification components to your own application for customization. To export the components, use the `vendor:publish` Artisan command to publish the `laravel-mail` asset tag:
 
-    php artisan vendor:publish --tag=laravel-mail
+```shell
+php artisan vendor:publish --tag=laravel-mail
+```
 
 This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain an `html` and a `text` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
 
@@ -699,9 +715,11 @@ The `database` notification channel stores the notification information in a dat
 
 You can query the table to display the notifications in your application's user interface. But, before you can do that, you will need to create a database table to hold your notifications. You may use the `notifications:table` command to generate a [migration](/docs/{{version}}/migrations) with the proper table schema:
 
-    php artisan notifications:table
+```shell
+php artisan notifications:table
 
-    php artisan migrate
+php artisan migrate
+```
 
 <a name="formatting-database-notifications"></a>
 ### Formatting Database Notifications
@@ -1016,7 +1034,9 @@ To route Vonage notifications to the proper phone number, define a `routeNotific
 
 Before you can send notifications via Slack, you must install the Slack notification channel via Composer:
 
-    composer require laravel/slack-notification-channel
+```shell
+composer require laravel/slack-notification-channel
+```
 
 You will also need to create a [Slack App](https://api.slack.com/apps?new_app=1) for your team. After creating the App, you should configure an "Incoming Webhook" for the workspace. Slack will then provide you with a webhook URL that you may use when [routing Slack notifications](#routing-slack-notifications).
 

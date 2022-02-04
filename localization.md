@@ -103,7 +103,7 @@ For applications with a large number of translatable strings, defining every str
 
 For this reason, Laravel also provides support for defining translation strings using the "default" translation of the string as the key. Translation files that use translation strings as keys are stored as JSON files in the `resources/lang` directory. For example, if your application has a Spanish translation, you should create a `resources/lang/es.json` file:
 
-```js
+```json
 {
     "I love programming.": "Me encanta programar."
 }
@@ -157,7 +157,7 @@ Pluralization is a complex problem, as different languages have a variety of com
 
 Of course, pluralization is also supported when using [translation strings as keys](#using-translation-strings-as-keys):
 
-```js
+```json
 {
     "There is one apple|There are many apples": "Hay una manzana|Hay muchas manzanas"
 }
