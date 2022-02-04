@@ -204,6 +204,8 @@ In this example, note that we were able to pass an [Eloquent model](/docs/{{vers
 
 If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance and its loaded relationships from the database. This approach to model serialization allows for much smaller job payloads to be sent to your queue driver.
 
+At this time, eager loaded relationships are not supported. When you attempt to serialize a model with eager loaded relationships that are constrained, upon deserialization, a lazy load will be performed to load the entire relationship.
+
 <a name="handle-method-dependency-injection"></a>
 #### `handle` Method Dependency Injection
 
