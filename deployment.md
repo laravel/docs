@@ -23,6 +23,7 @@ When you're ready to deploy your Laravel application to production, there are so
 The Laravel framework has a few system requirements. You should ensure that your web server has the following minimum PHP version and extensions:
 
 <div class="content-list" markdown="1">
+
 - PHP >= 7.3
 - BCMath PHP Extension
 - Ctype PHP Extension
@@ -33,6 +34,7 @@ The Laravel framework has a few system requirements. You should ensure that your
 - PDO PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
+
 </div>
 
 <a name="server-configuration"></a>
