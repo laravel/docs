@@ -1037,41 +1037,6 @@ If a notification supports being sent as a Slack message, you should define a `t
                     ->content('One of your invoices has been paid!');
     }
 
-<a name="customizing-the-sender-recipient"></a>
-#### Customizing The Sender & Recipient
-
-You may use the `from` and `to` methods to customize the sender and recipient. The `from` method accepts a username and emoji identifier, while the `to` method accepts a channel or username:
-
-    /**
-     * Get the Slack representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-        return (new SlackMessage)
-                    ->from('Ghost', ':ghost:')
-                    ->to('#bots')
-                    ->content('This will be sent to #bots');
-    }
-
-You may also use an image as your from "logo" instead of an emoji:
-
-    /**
-     * Get the Slack representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-        return (new SlackMessage)
-                    ->from('Laravel')
-                    ->image('https://laravel.com/img/favicon/favicon.ico')
-                    ->content('This will display the Laravel logo next to the message');
-    }
-
 <a name="slack-attachments"></a>
 ### Slack Attachments
 
