@@ -27,18 +27,24 @@
 
 Artisan is the command line interface included with Laravel. Artisan exists at the root of your application as the `artisan` script and provides a number of helpful commands that can assist you while you build your application. To view a list of all available Artisan commands, you may use the `list` command:
 
-    php artisan list
+```shell
+php artisan list
+```
 
 Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, precede the name of the command with `help`:
 
-    php artisan help migrate
+```shell
+php artisan help migrate
+```
 
 <a name="laravel-sail"></a>
 #### Laravel Sail
 
 If you are using [Laravel Sail](/docs/{{version}}/sail) as your local development environment, remember to use the `sail` command line to invoke Artisan commands. Sail will execute your Artisan commands within your application's Docker containers:
 
-    ./sail artisan list
+```shell
+./sail artisan list
+```
 
 <a name="tinker"></a>
 ### Tinker (REPL)
@@ -50,7 +56,9 @@ Laravel Tinker is a powerful REPL for the Laravel framework, powered by the [Psy
 
 All Laravel applications include Tinker by default. However, you may install Tinker using Composer if you have previously removed it from your application:
 
-    composer require laravel/tinker
+```shell
+composer require laravel/tinker
+```
 
 > {tip} Looking for a graphical UI for interacting with your Laravel application? Check out [Tinkerwell](https://tinkerwell.app)!
 
@@ -59,11 +67,15 @@ All Laravel applications include Tinker by default. However, you may install Tin
 
 Tinker allows you to interact with your entire Laravel application on the command line, including your Eloquent models, jobs, events, and more. To enter the Tinker environment, run the `tinker` Artisan command:
 
-    php artisan tinker
+```shell
+php artisan tinker
+```
 
 You can publish Tinker's configuration file using the `vendor:publish` command:
 
-    php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+```shell
+php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+```
 
 > {note} The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. Therefore, when using tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs.
 
@@ -95,7 +107,9 @@ In addition to the commands provided with Artisan, you may build your own custom
 
 To create a new command, you may use the `make:command` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. Don't worry if this directory does not exist in your application - it will be created the first time you run the `make:command` Artisan command:
 
-    php artisan make:command SendEmails
+```shell
+php artisan make:command SendEmails
+```
 
 <a name="command-structure"></a>
 ### Command Structure
@@ -216,10 +230,10 @@ All user supplied arguments and options are wrapped in curly braces. In the foll
 You may also make arguments optional or define default values for arguments:
 
     // Optional argument...
-    mail:send {user?}
+    'mail:send {user?}'
 
     // Optional argument with default value...
-    mail:send {user=foo}
+    'mail:send {user=foo}'
 
 <a name="options"></a>
 ### Options
@@ -235,7 +249,9 @@ Options, like arguments, are another form of user input. Options are prefixed by
 
 In this example, the `--queue` switch may be specified when calling the Artisan command. If the `--queue` switch is passed, the value of the option will be `true`. Otherwise, the value will be `false`:
 
-    php artisan mail:send 1 --queue
+```shell
+php artisan mail:send 1 --queue
+```
 
 <a name="options-with-values"></a>
 #### Options With Values
@@ -251,46 +267,56 @@ Next, let's take a look at an option that expects a value. If the user must spec
 
 In this example, the user may pass a value for the option like so. If the option is not specified when invoking the command, its value will be `null`:
 
-    php artisan mail:send 1 --queue=default
+```shell
+php artisan mail:send 1 --queue=default
+```
 
 You may assign default values to options by specifying the default value after the option name. If no option value is passed by the user, the default value will be used:
 
-    mail:send {user} {--queue=default}
+    'mail:send {user} {--queue=default}'
 
 <a name="option-shortcuts"></a>
 #### Option Shortcuts
 
 To assign a shortcut when defining an option, you may specify it before the option name and use the `|` character as a delimiter to separate the shortcut from the full option name:
 
-    mail:send {user} {--Q|queue}
+    'mail:send {user} {--Q|queue}'
 
 When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen:
 
-    php artisan mail:send 1 -Q
+```shell
+php artisan mail:send 1 -Q
+```
 
 <a name="input-arrays"></a>
 ### Input Arrays
 
 If you would like to define arguments or options to expect multiple input values, you may use the `*` character. First, let's take a look at an example that specifies such an argument:
 
-    mail:send {user*}
+    'mail:send {user*}'
 
 When calling this method, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `foo` and `bar` as its values:
 
-    php artisan mail:send foo bar
+```shell
+php artisan mail:send foo bar
+```
 
 This `*` character can be combined with an optional argument definition to allow zero or more instances of an argument:
 
-    mail:send {user?*}
+    'mail:send {user?*}'
 
 <a name="option-arrays"></a>
 #### Option Arrays
 
 When defining an option that expects multiple input values, each option value passed to the command should be prefixed with the option name:
 
-    mail:send {user} {--id=*}
+    'mail:send {user} {--id=*}'
 
-    php artisan mail:send --id=1 --id=2
+Such a command may be invoked by passing multiple `--id` arguments:
+
+```shell
+php artisan mail:send --id=1 --id=2
+```
 
 <a name="input-descriptions"></a>
 ### Input Descriptions
@@ -642,7 +668,9 @@ As you might expect, the `getSubscribedSignals` method should return an array of
 
 The Artisan console's `make` commands are used to create a variety of classes, such as controllers, jobs, migrations, and tests. These classes are generated using "stub" files that are populated with values based on your input. However, you may want to make small changes to files generated by Artisan. To accomplish this, you may use the `stub:publish` command to publish the most common stubs to your application so that you can customize them:
 
-    php artisan stub:publish
+```shell
+php artisan stub:publish
+```
 
 The published stubs will be located within a `stubs` directory in the root of your application. Any changes you make to these stubs will be reflected when you generate their corresponding classes using Artisan's `make` commands.
 
