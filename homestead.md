@@ -473,8 +473,10 @@ After updating the `Homestead.yaml` file, be sure to re-provision the machine by
 By default, the following ports are forwarded to your Homestead environment:
 
 <div class="content-list" markdown="1">
+
 - **HTTP:** 8000 &rarr; Forwards To 80
 - **HTTPS:** 44300 &rarr; Forwards To 443
+
 </div>
 
 <a name="forwarding-additional-ports"></a>
@@ -492,6 +494,7 @@ If you wish, you may forward additional ports to the Vagrant box by defining a `
 Below is a list of additional Homestead service ports that you may wish to map from your host machine to your Vagrant box:
 
 <div class="content-list" markdown="1">
+
 - **SSH:** 2222 &rarr; To 22
 - **ngrok UI:** 4040 &rarr; To 4040
 - **MySQL:** 33060 &rarr; To 3306
@@ -499,6 +502,7 @@ Below is a list of additional Homestead service ports that you may wish to map f
 - **MongoDB:** 27017 &rarr; To 27017
 - **Mailhog:** 8025 &rarr; To 8025
 - **Minio:** 9600 &rarr; To 9600
+
 </div>
 
 <a name="php-versions"></a>

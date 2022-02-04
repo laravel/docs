@@ -130,9 +130,11 @@ Adjusting this value based on your queue load can be more efficient than continu
 The following dependencies are needed for the listed queue drivers. These dependencies may be installed via the Composer package manager:
 
 <div class="content-list" markdown="1">
+
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~4.0`
 - Redis: `predis/predis ~1.0` or phpredis PHP extension
+
 </div>
 
 <a name="creating-jobs"></a>
@@ -221,7 +223,7 @@ If you would like to take total control over how the container injects dependenc
 > {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
 
 <a name="handling-relationships"></a>
-#### Handling Relationships
+#### Queued Relationships
 
 Because loaded relationships also get serialized, the serialized job string can sometimes become quite large. To prevent relations from being serialized, you can call the `withoutRelations` method on the model when setting a property value. This method will return an instance of the model without its loaded relationships:
 
@@ -235,6 +237,8 @@ Because loaded relationships also get serialized, the serialized job string can 
     {
         $this->podcast = $podcast->withoutRelations();
     }
+
+Furthermore, when a job is deserialized and model relationships are re-retrieved from the database, they will be retrieved in their entirety. Any previous relationship constraints that were applied before the model was serialized during the job queueing process will not be applied when the job is deserialized. Therefore, if you wish to work with a subset of a given relationship, you should re-constrain that relationship within your queued job.
 
 <a name="unique-jobs"></a>
 ### Unique Jobs

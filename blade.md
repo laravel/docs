@@ -884,6 +884,7 @@ You may retrieve a specific attribute's value using the `get` method:
 By default, some keywords are reserved for Blade's internal use in order to render components. The following keywords cannot be defined as public properties or method names within your components:
 
 <div class="content-list" markdown="1">
+
 - `data`
 - `render`
 - `resolveView`
@@ -891,6 +892,7 @@ By default, some keywords are reserved for Blade's internal use in order to rend
 - `view`
 - `withAttributes`
 - `withName`
+
 </div>
 
 <a name="slots"></a>

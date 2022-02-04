@@ -197,6 +197,7 @@ Attribute casting provides functionality similar to accessors and mutators witho
 The `$casts` property should be an array where the key is the name of the attribute being cast and the value is the type you wish to cast the column to. The supported cast types are:
 
 <div class="content-list" markdown="1">
+
 - `array`
 - `AsStringable::class`
 - `boolean`
@@ -217,6 +218,7 @@ The `$casts` property should be an array where the key is the name of the attrib
 - `real`
 - `string`
 - `timestamp`
+
 </div>
 
 To demonstrate attribute casting, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:

@@ -6,15 +6,18 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
+
 - [Updating Dependencies](#updating-dependencies)
 - [Flysystem 3.x](#flysystem-3)
 - [Symfony Mailer](#symfony-mailer)
+
 </div>
 
 <a name="medium-impact-changes"></a>
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
+
 - [Belongs To Many `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods](#belongs-to-many-first-or-new)
 - [Custom Casts & `null`](#custom-casts-and-null)
 - [Default HTTP Client Timeout](#http-client-default-timeout)
@@ -25,6 +28,7 @@
 - [The `password` Rule](#the-password-rule)
 - [The `when` / `unless` Methods](#when-and-unless-methods)
 - [Unvalidated Array Keys](#unvalidated-array-keys)
+
 </div>
 
 <a name="upgrade-9.0"></a>
@@ -50,6 +54,7 @@ Laravel's minimum supported PHP version is now 8.0.2.
 PHP is beginning to transition to requiring return type definitions on PHP methods such as `offsetGet`, `offsetSet`, etc. In light of this, Laravel 9 has implemented these return types in its code base. Typically, this should not affect user written code; however, if you are overriding one of these methods by extending Laravel's core classes, you will need to add these return types to your own application or package code:
 
 <div class="content-list" markdown="1">
+
 - `count(): int`
 - `getIterator(): Traversable`
 - `getSize(): int`
@@ -58,17 +63,20 @@ PHP is beginning to transition to requiring return type definitions on PHP metho
 - `offsetGet($key): mixed`
 - `offsetSet($key, $value): void`
 - `offsetUnset($key): void`
+
 </div>
 
 In addition, return types were added to methods implementing PHP's `SessionHandlerInterface`. Again, it is unlikely that this change affects your own application or package code:
 
 <div class="content-list" markdown="1">
+
 - `open($savePath, $sessionName): bool`
 - `close(): bool`
 - `read($sessionId): string|false`
 - `write($sessionId, $data): bool`
 - `destroy($sessionId): bool`
 - `gc($lifetime): int`
+
 </div>
 
 #### Composer Dependencies
@@ -76,8 +84,10 @@ In addition, return types were added to methods implementing PHP's `SessionHandl
 You should update the following dependencies in your application's `composer.json` file:
 
 <div class="content-list" markdown="1">
+
 - `laravel/framework` to `^9.0`
 - `nunomaduro/collision` to `^6.0`
+
 </div>
 
 In addition, replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your `composer.json` file.
