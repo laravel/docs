@@ -420,6 +420,12 @@ If you wish to specify a longer timeout for a given request, you may do so using
 
 Previously, Laravel would not execute any provided Guzzle HTTP middleware when the [HTTP client](/docs/{{version}}/http-client) was "faked". However, in Laravel 9.x, Guzzle HTTP middleware will be exeucted even when the HTTP client is faked.
 
+#### HTTP Fake & Dependency Injection
+
+**Likelihood Of Impact: Low**
+
+In previous releases of Laravel, invoking the `Http::fake()` method would not affect instances of the `Illuminate\Http\Client\Factory` that were injected into class constructors. However, in Laravel 9.x, `Http::fake()` will ensure fake responses are returned by HTTP clients injected into other services via dependency injection. This behavior is more consistent with the behavior of other facades and fakes.
+
 <a name="symfony-mailer"></a>
 ### Symfony Mailer
 
