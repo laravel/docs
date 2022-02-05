@@ -32,11 +32,15 @@ When using Horizon, all of your queue worker configuration is stored in a single
 
 You may install Horizon into your project using the Composer package manager:
 
-    composer require laravel/horizon
+```shell
+composer require laravel/horizon
+```
 
 After installing Horizon, publish its assets using the `horizon:install` Artisan command:
 
-    php artisan horizon:install
+```shell
+php artisan horizon:install
+```
 
 <a name="configuration"></a>
 ### Configuration
@@ -143,44 +147,58 @@ Remember that Laravel automatically injects the authenticated user into the gate
 
 When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md). In addition, when upgrading to any new Horizon version, you should re-publish Horizon's assets:
 
-    php artisan horizon:publish
+```shell
+php artisan horizon:publish
+```
 
 To keep the assets up-to-date and avoid issues in future updates, you may add the `horizon:publish` command to the `post-update-cmd` scripts in your application's `composer.json` file:
 
-    {
-        "scripts": {
-            "post-update-cmd": [
-                "@php artisan horizon:publish --ansi"
-            ]
-        }
+```json
+{
+    "scripts": {
+        "post-update-cmd": [
+            "@php artisan horizon:publish --ansi"
+        ]
     }
+}
+```
 
 <a name="running-horizon"></a>
 ## Running Horizon
 
 Once you have configured your supervisors and workers in your application's `config/horizon.php` configuration file, you may start Horizon using the `horizon` Artisan command. This single command will start all of the configured worker processes for the current environment:
 
-    php artisan horizon
+```shell
+php artisan horizon
+```
 
 You may pause the Horizon process and instruct it to continue processing jobs using the `horizon:pause` and `horizon:continue` Artisan commands:
 
-    php artisan horizon:pause
+```shell
+php artisan horizon:pause
 
-    php artisan horizon:continue
+php artisan horizon:continue
+```
 
 You may also pause and continue specific Horizon [supervisors](#supervisors) using the `horizon:pause-supervisor` and `horizon:continue-supervisor` Artisan commands:
 
-    php artisan horizon:pause-supervisor supervisor-1
+```shell
+php artisan horizon:pause-supervisor supervisor-1
 
-    php artisan horizon:continue-supervisor supervisor-1
+php artisan horizon:continue-supervisor supervisor-1
+```
 
 You may check the current status of the Horizon process using the `horizon:status` Artisan command:
 
-    php artisan horizon:status
+```shell
+php artisan horizon:status
+```
 
 You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed by will be completed and then Horizon will stop executing:
 
-    php artisan horizon:terminate
+```shell
+php artisan horizon:terminate
+```
 
 <a name="deploying-horizon"></a>
 ### Deploying Horizon
@@ -189,14 +207,18 @@ When you're ready to deploy Horizon to your application's actual server, you sho
 
 During your application's deployment process, you should instruct the Horizon process to terminate so that it will be restarted by your process monitor and receive your code changes:
 
-    php artisan horizon:terminate
+```shell
+php artisan horizon:terminate
+```
 
 <a name="installing-supervisor"></a>
 #### Installing Supervisor
 
 Supervisor is a process monitor for the Linux operating system and will automatically restart your `horizon` process if it stops executing. To install Supervisor on Ubuntu, you may use the following command. If you are not using Ubuntu, you can likely install Supervisor using your operating system's package manager:
 
-    sudo apt-get install supervisor
+```shell
+sudo apt-get install supervisor
+```
 
 > {tip} If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
 
@@ -205,15 +227,17 @@ Supervisor is a process monitor for the Linux operating system and will automati
 
 Supervisor configuration files are typically stored within your server's `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `horizon.conf` file that starts and monitors a `horizon` process:
 
-    [program:horizon]
-    process_name=%(program_name)s
-    command=php /home/forge/example.com/artisan horizon
-    autostart=true
-    autorestart=true
-    user=forge
-    redirect_stderr=true
-    stdout_logfile=/home/forge/example.com/horizon.log
-    stopwaitsecs=3600
+```ini
+[program:horizon]
+process_name=%(program_name)s
+command=php /home/forge/example.com/artisan horizon
+autostart=true
+autorestart=true
+user=forge
+redirect_stderr=true
+stdout_logfile=/home/forge/example.com/horizon.log
+stopwaitsecs=3600
+```
 
 > {note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
@@ -222,11 +246,13 @@ Supervisor configuration files are typically stored within your server's `/etc/s
 
 Once the configuration file has been created, you may update the Supervisor configuration and start the monitored processes using the following commands:
 
-    sudo supervisorctl reread
+```shell
+sudo supervisorctl reread
 
-    sudo supervisorctl update
+sudo supervisorctl update
 
-    sudo supervisorctl start horizon
+sudo supervisorctl start horizon
+```
 
 > {tip} For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
 
@@ -358,15 +384,21 @@ Horizon includes a metrics dashboard which provides information regarding your j
 
 If you would like to delete a failed job, you may use the `horizon:forget` command. The `horizon:forget` command accepts the ID or UUID of the failed job as its only argument:
 
-    php artisan horizon:forget 5
+```shell
+php artisan horizon:forget 5
+```
 
 <a name="clearing-jobs-from-queues"></a>
 ## Clearing Jobs From Queues
 
 If you would like to delete all jobs from your application's default queue, you may do so using the `horizon:clear` Artisan command:
 
-    php artisan horizon:clear
+```shell
+php artisan horizon:clear
+```
 
 You may provide the `queue` option to delete jobs from a specific queue:
 
-    php artisan horizon:clear --queue=emails
+```shell
+php artisan horizon:clear --queue=emails
+```
