@@ -437,11 +437,15 @@ One of the largest changes in Laravel 9.x is the transition from SwiftMailer, wh
 
 To continue using the Mailgun transport, your application should require the `symfony/mailgun-mailer` Composer package:
 
-    composer require symfony/mailgun-mailer
+```shell
+composer require symfony/mailgun-mailer
+```
 
 The `wildbit/swiftmailer-postmark` Composer package should be removed from your application. Instead, your application should require the `symfony/postmark-mailer` Composer package:
 
-    composer require symfony/postmark-mailer
+```shell
+composer require symfony/postmark-mailer
+```
 
 #### Updated Return Types
 
