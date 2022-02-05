@@ -168,7 +168,7 @@ In production environments, you should serve your Octane application behind a tr
 
 In the Nginx configuration example below, Nginx will serve the site's static assets and proxy requests to the Octane server that is running on port 8000:
 
-```conf
+```nginx
 map $http_upgrade $connection_upgrade {
     default upgrade;
     ''      close;
