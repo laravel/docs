@@ -58,13 +58,17 @@
 
 To get started, you should install [Google Chrome](https://www.google.com/chrome) and add the `laravel/dusk` Composer dependency to your project:
 
-    composer require --dev laravel/dusk
+```shell
+composer require --dev laravel/dusk
+```
 
 > {note} If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
 
 After installing the Dusk package, execute the `dusk:install` Artisan command. The `dusk:install` command will create a `tests/Browser` directory and an example Dusk test:
 
-    php artisan dusk:install
+```shell
+php artisan dusk:install
+```
 
 Next, set the `APP_URL` environment variable in your application's `.env` file. This value should match the URL you use to access your application in a browser.
 
@@ -75,17 +79,19 @@ Next, set the `APP_URL` environment variable in your application's `.env` file. 
 
 If you would like to install a different version of ChromeDriver than what is included with Laravel Dusk, you may use the `dusk:chrome-driver` command:
 
-    # Install the latest version of ChromeDriver for your OS...
-    php artisan dusk:chrome-driver
+```shell
+# Install the latest version of ChromeDriver for your OS...
+php artisan dusk:chrome-driver
 
-    # Install a given version of ChromeDriver for your OS...
-    php artisan dusk:chrome-driver 86
+# Install a given version of ChromeDriver for your OS...
+php artisan dusk:chrome-driver 86
 
-    # Install a given version of ChromeDriver for all supported OSs...
-    php artisan dusk:chrome-driver --all
+# Install a given version of ChromeDriver for all supported OSs...
+php artisan dusk:chrome-driver --all
 
-    # Install the version of ChromeDriver that matches the detected version of Chrome / Chromium for your OS...
-    php artisan dusk:chrome-driver --detect
+# Install the version of ChromeDriver that matches the detected version of Chrome / Chromium for your OS...
+php artisan dusk:chrome-driver --detect
+```
 
 > {note} Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin/`.
 
@@ -129,7 +135,9 @@ Next, you may modify the `driver` method to connect to the URL and port of your 
 
 To generate a Dusk test, use the `dusk:make` Artisan command. The generated test will be placed in the `tests/Browser` directory:
 
-    php artisan dusk:make LoginTest
+```shell
+php artisan dusk:make LoginTest
+```
 
 <a name="migrations"></a>
 ### Database Migrations
@@ -157,15 +165,21 @@ Most of the tests you write will interact with pages that retrieve data from you
 
 To run your browser tests, execute the `dusk` Artisan command:
 
-    php artisan dusk
+```shell
+php artisan dusk
+```
 
 If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
 
-    php artisan dusk:fails
+```shell
+php artisan dusk:fails
+```
 
 The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, such as allowing you to only run the tests for a given [group](https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group):
 
-    php artisan dusk --group=foo
+```shell
+php artisan dusk --group=foo
+```
 
 > {tip} If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
 
@@ -883,6 +897,7 @@ Dusk provides a variety of assertions that you may make against your application
 </style>
 
 <div class="collection-method-list" markdown="1">
+
 [assertTitle](#assert-title)
 [assertTitleContains](#assert-title-contains)
 [assertUrlIs](#assert-url-is)
@@ -956,6 +971,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertVueIsNot](#assert-vue-is-not)
 [assertVueContains](#assert-vue-contains)
 [assertVueDoesNotContain](#assert-vue-does-not-contain)
+
 </div>
 
 <a name="assert-title"></a>
@@ -1800,69 +1816,73 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
 
 To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following `.travis.yml` configuration. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
 
-    language: php
+```yaml
+language: php
 
-    php:
-      - 7.3
+php:
+  - 7.3
 
-    addons:
-      chrome: stable
+addons:
+  chrome: stable
 
-    install:
-      - cp .env.testing .env
-      - travis_retry composer install --no-interaction --prefer-dist
-      - php artisan key:generate
-      - php artisan dusk:chrome-driver
+install:
+  - cp .env.testing .env
+  - travis_retry composer install --no-interaction --prefer-dist
+  - php artisan key:generate
+  - php artisan dusk:chrome-driver
 
-    before_script:
-      - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      - php artisan serve --no-reload &
+before_script:
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - php artisan serve --no-reload &
 
-    script:
-      - php artisan dusk
+script:
+  - php artisan dusk
+```
 
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
 If you are using [Github Actions](https://github.com/features/actions) to run your Dusk tests, you may use the following configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
-    name: CI
-    on: [push]
-    jobs:
+```yaml
+name: CI
+on: [push]
+jobs:
 
-      dusk-php:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v2
-          - name: Prepare The Environment
-            run: cp .env.example .env
-          - name: Create Database
-            run: |
-              sudo systemctl start mysql
-              mysql --user="root" --password="root" -e "CREATE DATABASE 'my-database' character set UTF8mb4 collate utf8mb4_bin;"
-          - name: Install Composer Dependencies
-            run: composer install --no-progress --prefer-dist --optimize-autoloader
-          - name: Generate Application Key
-            run: php artisan key:generate
-          - name: Upgrade Chrome Driver
-            run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
-          - name: Start Chrome Driver
-            run: ./vendor/laravel/dusk/bin/chromedriver-linux &
-          - name: Run Laravel Server
-            run: php artisan serve --no-reload &
-          - name: Run Dusk Tests
-            env:
-              APP_URL: "http://127.0.0.1:8000"
-            run: php artisan dusk
-          - name: Upload Screenshots
-            if: failure()
-            uses: actions/upload-artifact@v2
-            with:
-              name: screenshots
-              path: tests/Browser/screenshots
-          - name: Upload Console Logs
-            if: failure()
-            uses: actions/upload-artifact@v2
-            with:
-              name: console
-              path: tests/Browser/console
+  dusk-php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare The Environment
+        run: cp .env.example .env
+      - name: Create Database
+        run: |
+          sudo systemctl start mysql
+          mysql --user="root" --password="root" -e "CREATE DATABASE 'my-database' character set UTF8mb4 collate utf8mb4_bin;"
+      - name: Install Composer Dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+      - name: Generate Application Key
+        run: php artisan key:generate
+      - name: Upgrade Chrome Driver
+        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
+      - name: Start Chrome Driver
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux &
+      - name: Run Laravel Server
+        run: php artisan serve --no-reload &
+      - name: Run Dusk Tests
+        env:
+          APP_URL: "http://127.0.0.1:8000"
+        run: php artisan dusk
+      - name: Upload Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: tests/Browser/screenshots
+      - name: Upload Console Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: console
+          path: tests/Browser/console
+```
