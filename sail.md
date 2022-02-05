@@ -46,22 +46,30 @@ Laravel Sail is automatically installed with all new Laravel applications so you
 
 If you are interested in using Sail with an existing Laravel application, you may simply install Sail using the Composer package manager. Of course, these steps assume that your existing local development environment allows you to install Composer dependencies:
 
-    composer require laravel/sail --dev
+```shell
+composer require laravel/sail --dev
+```
 
 After Sail has been installed, you may run the `sail:install` Artisan command. This command will publish Sail's `docker-compose.yml` file to the root of your application:
 
-    php artisan sail:install
+```shell
+php artisan sail:install
+```
 
 Finally, you may start Sail. To continue learning how to use Sail, please continue reading the remainder of this documentation:
 
-    ./vendor/bin/sail up
+```shell
+./vendor/bin/sail up
+```
 
 <a name="using-devcontainers"></a>
 #### Using Devcontainers
 
 If you would like to develop within a [Devcontainer](https://code.visualstudio.com/docs/remote/containers), you may provide the `--devcontainer` option to the `sail:install` command. The `--devcontainer` option will instruct the `sail:install` command to publish a default `.devcontainer/devcontainer.json ` file to the root of your application:
 
-    php artisan sail:install --devcontainer
+```shell
+php artisan sail:install --devcontainer
+```
 
 <a name="configuring-a-bash-alias"></a>
 ### Configuring A Bash Alias
@@ -151,7 +159,7 @@ If you are developing an application with a team, you may not be the one that in
 
 You may install the application's dependencies by navigating to the application's directory and executing the following command. This command uses a small Docker container containing PHP and Composer to install the application's dependencies:
 
-```nothing
+```shell
 docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v $(pwd):/var/www/html \
@@ -176,7 +184,7 @@ sail artisan queue:work
 
 Node commands may be executed using the `node` command while NPM commands may be executed using the `npm` command:
 
-```nothing
+```shell
 sail node --version
 
 sail npm run prod
@@ -184,7 +192,7 @@ sail npm run prod
 
 If you wish, you may use Yarn instead of NPM:
 
-```nothing
+```shell
 sail yarn
 ```
 
@@ -236,13 +244,17 @@ AWS_USE_PATH_STYLE_ENDPOINT=true
 
 Laravel provides amazing testing support out of the box, and you may use Sail's `test` command to run your applications [feature and unit tests](/docs/{{version}}/testing). Any CLI options that are accepted by PHPUnit may also be passed to the `test` command:
 
-    sail test
+```shell
+sail test
 
-    sail test --group orders
+sail test --group orders
+```
 
 The Sail `test` command is equivalent to running the `test` Artisan command:
 
-    sail artisan test
+```shell
+sail artisan test
+```
 
 <a name="laravel-dusk"></a>
 ### Laravel Dusk
@@ -269,7 +281,9 @@ depends_on:
 
 Finally, you may run your Dusk test suite by starting Sail and running the `dusk` command:
 
-    sail dusk
+```shell
+sail dusk
+```
 
 <a name="selenium-on-apple-silicon"></a>
 #### Selenium On Apple Silicon
@@ -290,7 +304,7 @@ selenium:
 
 Laravel Sail's default `docker-compose.yml` file contains a service entry for [MailHog](https://github.com/mailhog/MailHog). MailHog intercepts emails sent by your application during local development and provides a convenient web interface so that you can preview your email messages in your browser. When using Sail, MailHog's default host is `mailhog` and is available via port 1025:
 
-```shell
+```ini
 MAIL_HOST=mailhog
 MAIL_PORT=1025
 MAIL_ENCRYPTION=null
@@ -303,7 +317,7 @@ When Sail is running, you may access the MailHog web interface at: http://localh
 
 Sometimes you may wish to start a Bash session within your application's container. You may use the `shell` command to connect to your application's container, allowing you to inspect its files and installed services as well execute arbitrary shell commands within the container:
 
-```nothing
+```shell
 sail shell
 
 sail root-shell
@@ -339,9 +353,11 @@ image: sail-8.1/app
 
 After updating your application's `docker-compose.yml` file, you should rebuild your container images:
 
-    sail build --no-cache
+```shell
+sail build --no-cache
 
-    sail up
+sail up
+```
 
 <a name="sail-node-versions"></a>
 ## Node Versions
@@ -357,16 +373,20 @@ build:
 
 After updating your application's `docker-compose.yml` file, you should rebuild your container images:
 
-    sail build --no-cache
+```shell
+sail build --no-cache
 
-    sail up
+sail up
+```
 
 <a name="sharing-your-site"></a>
 ## Sharing Your Site
 
 Sometimes you may need to share your site publicly in order to preview your site for a colleague or to test webhook integrations with your application. To share your site, you may use the `share` command. After executing this command, you will be issued a random `laravel-sail.site` URL that you may use to access your application:
 
-    sail share
+```shell
+sail share
+```
 
 When sharing your site via the `share` command, you should configure your application's trusted proxies within the `TrustProxies` middleware. Otherwise, URL generation helpers such as `url` and `route` will be unable to determine the correct HTTP host that should be used during URL generation:
 
@@ -379,7 +399,9 @@ When sharing your site via the `share` command, you should configure your applic
 
 If you would like to choose the subdomain for your shared site, you may provide the `subdomain` option when executing the `share` command:
 
-    sail share --subdomain=my-sail-site
+```shell
+sail share --subdomain=my-sail-site
+```
 
 > {tip} The `share` command is powered by [Expose](https://github.com/beyondcode/expose), an open source tunneling service by [BeyondCode](https://beyondco.de).
 
