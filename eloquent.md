@@ -48,11 +48,15 @@ Laravel includes Eloquent, an object-relational mapper (ORM) that makes it enjoy
 
 To get started, let's create an Eloquent model. Models typically live in the `app\Models` directory and extend the `Illuminate\Database\Eloquent\Model` class. You may use the `make:model` [Artisan command](/docs/{{version}}/artisan) to generate a new model:
 
-    php artisan make:model Flight
+```shell
+php artisan make:model Flight
+```
 
 If you would like to generate a [database migration](/docs/{{version}}/migrations) when you generate the model, you may use the `--migration` or `-m` option:
 
-    php artisan make:model Flight --migration
+```shell
+php artisan make:model Flight --migration
+```
 
 You may generate various other types of classes when generating a model, such as factories, seeders, policies, controllers, and form requests. In addition, these options may be combined to create multiple classes at once:
 
@@ -954,7 +958,9 @@ If you wish to exclude certain models from being pruned while pruning all other 
 
 You may test your `prunable` query by executing the `model:prune` command with the `--pretend` option. When pretending, the `model:prune` command will simply report how many records would be pruned if the command were to actually run:
 
-    php artisan model:prune --pretend
+```shell
+php artisan model:prune --pretend
+```
 
 > {note} Soft deleting models will be permanently deleted (`forceDelete`) if they match the prunable query.
 
@@ -1325,7 +1331,9 @@ If needed, you may utilize [queueable anonymous event listeners](/docs/{{version
 
 If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observer classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the affected model as their only argument. The `make:observer` Artisan command is the easiest way to create a new observer class:
 
-    php artisan make:observer UserObserver --model=User
+```shell
+php artisan make:observer UserObserver --model=User
+```
 
 This command will place the new observer in your `App/Observers` directory. If this directory does not exist, Artisan will create it for you. Your fresh observer will look like the following:
 
