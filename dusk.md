@@ -883,6 +883,7 @@ Dusk provides a variety of assertions that you may make against your application
 </style>
 
 <div class="collection-method-list" markdown="1">
+
 [assertTitle](#assert-title)
 [assertTitleContains](#assert-title-contains)
 [assertUrlIs](#assert-url-is)
@@ -956,6 +957,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertVueIsNot](#assert-vue-is-not)
 [assertVueContains](#assert-vue-contains)
 [assertVueDoesNotContain](#assert-vue-does-not-contain)
+
 </div>
 
 <a name="assert-title"></a>
