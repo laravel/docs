@@ -104,7 +104,9 @@ Via the `faker` property, factories have access to the [Faker](https://github.co
 
 To create a factory, execute the `make:factory` [Artisan command](/docs/{{version}}/artisan):
 
-    php artisan make:factory PostFactory
+```shell
+php artisan make:factory PostFactory
+```
 
 The new factory class will be placed in your `database/factories` directory.
 
