@@ -333,6 +333,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </style>
 
 <div id="collection-method-list" markdown="1">
+
 [bigIncrements](#column-method-bigIncrements)
 [bigInteger](#column-method-bigInteger)
 [binary](#column-method-binary)
@@ -397,6 +398,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [uuidMorphs](#column-method-uuidMorphs)
 [uuid](#column-method-uuid)
 [year](#column-method-year)
+
 </div>
 
 <a name="column-method-bigIncrements"></a>
