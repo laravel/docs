@@ -14,10 +14,12 @@
 Laravel makes interacting with databases extremely simple across a variety of database backends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four databases:
 
 <div class="content-list" markdown="1">
+
 - MySQL 5.6+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
 - PostgreSQL 9.4+ ([Version Policy](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
 - SQL Server 2017+ ([Version Policy](https://support.microsoft.com/en-us/lifecycle/search))
+
 </div>
 
 <a name="configuration"></a>

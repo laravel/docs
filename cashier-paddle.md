@@ -775,11 +775,13 @@ Cashier emits a `Laravel\Paddle\Events\WebhookReceived` event when a webhook is 
 Cashier also emit events dedicated to the type of the received webhook. In addition to the full payload from Paddle, they also contain the relevant models that were used to process the webhook such as the billable model, the subscription, or the receipt:
 
 <div class="content-list" markdown="1">
+
 - `PaymentSucceeded`
 - `SubscriptionPaymentSucceeded`
 - `SubscriptionCreated`
 - `SubscriptionUpdated`
 - `SubscriptionCancelled`
+
 </div>
 
 You can optionally also override the default, built-in webhook route by setting the `CASHIER_WEBHOOK` env variable in your `.env` file. This value should be the full URL to your webhook route and needs to match the URL set in your Paddle control panel:

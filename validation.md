@@ -803,11 +803,13 @@ The field under validation must be formatted as an e-mail address. Under the hoo
 The example above will apply the `RFCValidation` and `DNSCheckValidation` validations. Here's a full list of validation styles you can apply:
 
 <div class="content-list" markdown="1">
+
 - `rfc`: `RFCValidation`
 - `strict`: `NoRFCWarningsValidation`
 - `dns`: `DNSCheckValidation`
 - `spoof`: `SpoofCheckValidation`
 - `filter`: `FilterEmailValidation`
+
 </div>
 
 The `filter` validator, which uses PHP's `filter_var` function under the hood, ships with Laravel and is Laravel's pre-5.8 behavior. The `dns` and `spoof` validators require the PHP `intl` extension.

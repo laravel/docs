@@ -1128,8 +1128,10 @@ Payment exceptions may be thrown for the following methods: `charge`, `invoiceFo
 There are currently two types of payment exceptions which extend `IncompletePayment`. You can catch these separately if needed so that you can customize the user experience:
 
 <div class="content-list" markdown="1">
+
 - `PaymentActionRequired`: this indicates that Stripe requires extra verification in order to confirm and process a payment.
 - `PaymentFailure`: this indicates that a payment failed for various other reasons, such as being out of available funds.
+
 </div>
 
 <a name="strong-customer-authentication"></a>

@@ -36,6 +36,7 @@ Out of the box, Valet support includes, but is not limited to:
 </style>
 
 <div id="valet-support" markdown="1">
+
 - [Laravel](https://laravel.com)
 - [Lumen](https://lumen.laravel.com)
 - [Bedrock](https://roots.io/bedrock/)
@@ -58,6 +59,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [Symfony](https://symfony.com)
 - [WordPress](https://wordpress.org)
 - [Zend](https://framework.zend.com)
+
 </div>
 
 However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).
@@ -77,11 +79,13 @@ Both Valet and Homestead are great choices for configuring your Laravel developm
 **Valet requires macOS and [Homebrew](https://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.**
 
 <div class="content-list" markdown="1">
+
 - Install or update [Homebrew](https://brew.sh/) to the latest version using `brew update`.
 - Install PHP 7.4 using Homebrew via `brew install php`.
 - Install [Composer](https://getcomposer.org).
 - Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/vendor/bin` directory is in your system's "PATH".
 - Run the `valet install` command. This will configure and install Valet and DnsMasq, and register Valet's daemon to launch when your system starts.
+
 </div>
 
 Once Valet is installed, try pinging any `*.test` domain on your terminal using a command such as `ping foobar.test`. If Valet is installed correctly you should see this domain responding on `127.0.0.1`.
@@ -126,9 +130,11 @@ Once Valet is installed, you're ready to start serving sites. Valet provides two
 #### The `park` Command
 
 <div class="content-list" markdown="1">
+
 - Create a new directory on your Mac by running something like `mkdir ~/Sites`. Next, `cd ~/Sites` and run `valet park`. This command will register your current working directory as a path that Valet should search for sites.
 - Next, create a new Laravel site within this directory: `laravel new blog`.
 - Open `http://blog.test` in your browser.
+
 </div>
 
 **That's all there is to it.** Now, any Laravel project you create within your "parked" directory will automatically be served using the `http://folder-name.test` convention.
@@ -139,8 +145,10 @@ Once Valet is installed, you're ready to start serving sites. Valet provides two
 The `link` command may also be used to serve your Laravel sites. This command is useful if you want to serve a single site in a directory and not the entire directory.
 
 <div class="content-list" markdown="1">
+
 - To use the command, navigate to one of your projects and run `valet link app-name` in your terminal. Valet will create a symbolic link in `~/.config/valet/Sites` which points to your current working directory.
 - After running the `link` command, you can access the site in your browser at `http://app-name.test`.
+
 </div>
 
 To see a listing of all of your linked directories, run the `valet links` command. You may use `valet unlink app-name` to destroy the symbolic link.
