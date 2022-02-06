@@ -198,7 +198,7 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
     // Determine if the response has a 500 level status code...
     $response->serverError();
 
-    // Execute the given callback if there was a server or client error...
+    // Immediately execute the given callback if there was a client or server error...
     $response->onError(callable $callback);
 
 <a name="throwing-exceptions"></a>
@@ -420,11 +420,11 @@ If needed, you may assert that a specific request was not sent using the `assert
         return $request->url() === 'http://example.com/posts';
     });
 
-If needed, you may use the `assertSentCount` method to assert how many requests have been recorded during the test:
+You may use the `assertSentCount` method to assert how many requests were "sent" during the test:
 
     Http::fake();
 
-    Http::assertSentCount($count);
+    Http::assertSentCount(5);
 
 Or, you may use the `assertNothingSent` method to assert that no requests were sent during the test:
 
