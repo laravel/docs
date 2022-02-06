@@ -36,6 +36,7 @@
 Database tables are often related to one another. For example, a blog post may have many comments, or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy, and supports several different types of relationships:
 
 <div class="content-list" markdown="1">
+
 - [One To One](#one-to-one)
 - [One To Many](#one-to-many)
 - [Many To Many](#many-to-many)
@@ -44,6 +45,7 @@ Database tables are often related to one another. For example, a blog post may h
 - [One To One (Polymorphic)](#one-to-one-polymorphic-relations)
 - [One To Many (Polymorphic)](#one-to-many-polymorphic-relations)
 - [Many To Many (Polymorphic)](#many-to-many-polymorphic-relations)
+
 </div>
 
 <a name="defining-relationships"></a>

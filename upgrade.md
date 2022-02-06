@@ -6,14 +6,17 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
+
 - [Authorized Resources & `viewAny`](#authorized-resources)
 - [String & Array Helpers](#helpers)
+
 </div>
 
 <a name="medium-impact-changes"></a>
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
+
 - [Carbon 1.x No Longer Supported](#carbon-support)
 - [Redis Default Client](#redis-default-client)
 - [Database `Capsule::table` Method](#capsule-table)
@@ -26,6 +29,7 @@
 - [Resend Email Verification Route](#email-verification-route)
 - [Email Verification Route Change](#email-verification-route-change)
 - [The `Input` Facade](#the-input-facade)
+
 </div>
 
 <a name="upgrade-6.0"></a>

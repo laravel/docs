@@ -178,8 +178,10 @@ Envoy also supports sending notifications to [Slack](https://slack.com) after ea
 You may provide one of the following as the channel argument:
 
 <div class="content-list" markdown="1">
+
 - To send the notification to a channel: `#channel`
 - To send the notification to a user: `@user`
+
 </div>
 
 <a name="discord"></a>
