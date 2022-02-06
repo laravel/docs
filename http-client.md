@@ -28,7 +28,7 @@ Before getting started, you should ensure that you have installed the Guzzle pac
 <a name="making-requests"></a>
 ## Making Requests
 
-To make requests, you may use the `get`, `post`, `put`, `patch`, and `delete` methods provided by the `Http` facade. First, let's examine how to make a basic `GET` request to another URL:
+To make requests, you may use the `head`, `get`, `post`, `put`, `patch`, and `delete` methods provided by the `Http` facade. First, let's examine how to make a basic `GET` request to another URL:
 
     use Illuminate\Support\Facades\Http;
 
@@ -37,12 +37,13 @@ To make requests, you may use the `get`, `post`, `put`, `patch`, and `delete` me
 The `get` method returns an instance of `Illuminate\Http\Client\Response`, which provides a variety of methods that may be used to inspect the response:
 
     $response->body() : string;
-    $response->json() : array|mixed;
+    $response->json($key = null) : array|mixed;
     $response->object() : object;
-    $response->collect() : Illuminate\Support\Collection;
+    $response->collect($key = null) : Illuminate\Support\Collection;
     $response->status() : int;
     $response->ok() : bool;
     $response->successful() : bool;
+    $response->redirect(): bool;
     $response->failed() : bool;
     $response->serverError() : bool;
     $response->clientError() : bool;
@@ -196,6 +197,9 @@ Unlike Guzzle's default behavior, Laravel's HTTP client wrapper does not throw e
 
     // Determine if the response has a 500 level status code...
     $response->serverError();
+
+    // Immediately execute the given callback if there was a client or server error...
+    $response->onError(callable $callback);
 
 <a name="throwing-exceptions"></a>
 #### Throwing Exceptions
@@ -415,6 +419,12 @@ If needed, you may assert that a specific request was not sent using the `assert
     Http::assertNotSent(function (Request $request) {
         return $request->url() === 'http://example.com/posts';
     });
+
+You may use the `assertSentCount` method to assert how many requests were "sent" during the test:
+
+    Http::fake();
+
+    Http::assertSentCount(5);
 
 Or, you may use the `assertNothingSent` method to assert that no requests were sent during the test:
 
