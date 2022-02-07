@@ -42,6 +42,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::has](#method-array-has)
 [Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
+[Arr::isList](#method-array-islist)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
@@ -262,9 +263,11 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [cookie](#method-cookie)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
+[decrypt](#method-decrypt)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
 [dump](#method-dump)
+[encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
 [filled](#method-filled)
@@ -570,6 +573,22 @@ The `Arr::isAssoc` returns `true` if the given array is an associative array. An
     // true
 
     $isAssoc = Arr::isAssoc([1, 2, 3]);
+
+    // false
+
+<a name="method-array-islist"></a>
+#### `Arr::isList()` {.collection-method}
+
+The `Arr::isList` returns `true` if the given array is all array keys are sequential integers starting from 0 with no gaps 
+in between:
+
+    use Illuminate\Support\Arr;
+
+    $isAssoc = Arr::isList([1, 2, 3]);
+
+    // true
+
+    $isAssoc = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 
     // false
 
@@ -3097,6 +3116,20 @@ The `csrf_field` function generates an HTML `hidden` input field containing the 
 The `csrf_token` function retrieves the value of the current CSRF token:
 
     $token = csrf_token();
+
+<a name="method-decrypt"></a>
+#### `decrypt()` {.collection-method}
+
+The `decrypt` function [decrypt](/docs/{{version}}/encryption) the given value using the `decrypt` method provided in `encrypter`. You may use this function as an alternative to the `Crypt` facade:
+
+    $password = decrypt($value);
+
+<a name="method-encrypt"></a>
+#### `encrypt()` {.collection-method}
+
+The `encrypt` function [encrypt](/docs/{{version}}/encryption) the given value using the `encrypt` method provided in `encrypter`. You may use this function as an alternative to the `Crypt` facade:
+
+    $secret = encrypt('my-secret-value');
 
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
