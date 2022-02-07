@@ -133,6 +133,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::substr](#method-str-substr)
 [Str::substrCount](#method-str-substrcount)
 [Str::substrReplace](#method-str-substrreplace)
+[Str::swap](#method-str-swap)
 [Str::title](#method-title-case)
 [Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
@@ -204,6 +205,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
 [substrReplace](#method-fluent-str-substrreplace)
+[swap](#method-fluent-str-swap)
 [tap](#method-fluent-str-tap)
 [test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
@@ -1726,6 +1728,20 @@ The `Str::substrReplace` method replaces text within a portion of a string, star
     $result = Str::substrReplace('1300', ':', 2, 0); 
     // 13:00
 
+<a name="method-str-swap"></a>
+#### `Str::swap()` {.collection-method}
+
+The `Str::swap` method replaces multiple values in the given string using PHP's `strtr` function:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::swap([
+        'Tacos' => 'Burritos',
+        'great' => 'fantastic',
+    ], 'Tacos are great!');
+
+    // Burritos are fantastic!
+
 <a name="method-title-case"></a>
 #### `Str::title()` {.collection-method}
 
@@ -2586,6 +2602,21 @@ The `substrReplace` method replaces text within a portion of a string, starting 
     $string = Str::of('The Framework')->substrReplace(' Laravel', 3, 0);
 
     // The Laravel Framework
+
+<a name="method-fluent-str-swap"></a>
+#### `swap` {.collection-method}
+
+The `swap` method replaces multiple values in the string using PHP's `strtr` function:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Tacos are great!')
+        ->swap([
+            'Tacos' => 'Burritos',
+            'great' => 'fantastic',
+        ]);
+
+    // Burritos are fantastic!
 
 <a name="method-fluent-str-tap"></a>
 #### `tap` {.collection-method}
