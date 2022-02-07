@@ -51,7 +51,9 @@ If you are manually implementing registration within your application instead of
 
 Next, your `users` table must contain an `email_verified_at` column to store the date and time that the user's email address was verified. By default, the `users` table migration included with the Laravel framework already includes this column. So, all you need to do is run your database migrations:
 
-    php artisan migrate
+```shell
+php artisan migrate
+```
 
 <a name="verification-routing"></a>
 ## Routing

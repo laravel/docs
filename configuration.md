@@ -58,7 +58,9 @@ null | (null) null
 
 If you need to define an environment variable with a value that contains spaces, you may do so by enclosing the value in double quotes:
 
-    APP_NAME="My Application"
+```ini
+APP_NAME="My Application"
+```
 
 <a name="retrieving-environment-configuration"></a>
 ### Retrieving Environment Configuration
@@ -127,26 +129,36 @@ When your application is in maintenance mode, a custom view will be displayed fo
 
 To enable maintenance mode, execute the `down` Artisan command:
 
-    php artisan down
+```shell
+php artisan down
+```
 
 If you would like the `Refresh` HTTP header to be sent with all maintenance mode responses, you may provide the `refresh` option when invoking the `down` command. The `Refresh` header will instruct the browser to automatically refresh the page after the specified number of seconds:
 
-    php artisan down --refresh=15
+```shell
+php artisan down --refresh=15
+```
 
 You may also provide a `retry` option to the `down` command, which will be set as the `Retry-After` HTTP header's value, although browsers generally ignore this header:
 
-    php artisan down --retry=60
+```shell
+php artisan down --retry=60
+```
 
 <a name="bypassing-maintenance-mode"></a>
 #### Bypassing Maintenance Mode
 
 Even while in maintenance mode, you may use the `secret` option to specify a maintenance mode bypass token:
 
-    php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
+```shell
+php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
+```
 
 After placing the application in maintenance mode, you may navigate to the application URL matching this token and Laravel will issue a maintenance mode bypass cookie to your browser:
 
-    https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
+```shell
+https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
+```
 
 When accessing this hidden route, you will then be redirected to the `/` route of the application. Once the cookie has been issued to your browser, you will be able to browse the application normally as if it was not in maintenance mode.
 
@@ -159,21 +171,27 @@ If you utilize the `php artisan down` command during deployment, your users may 
 
 For this reason, Laravel allows you to pre-render a maintenance mode view that will be returned at the very beginning of the request cycle. This view is rendered before any of your application's dependencies have loaded. You may pre-render a template of your choice using the `down` command's `render` option:
 
-    php artisan down --render="errors::503"
+```shell
+php artisan down --render="errors::503"
+```
 
 <a name="redirecting-maintenance-mode-requests"></a>
 #### Redirecting Maintenance Mode Requests
 
 While in maintenance mode, Laravel will display the maintenance mode view for all application URLs the user attempts to access. If you wish, you may instruct Laravel to redirect all requests to a specific URL. This may be accomplished using the `redirect` option. For example, you may wish to redirect all requests to the `/` URI:
 
-    php artisan down --redirect=/
+```shell
+php artisan down --redirect=/
+```
 
 <a name="disabling-maintenance-mode"></a>
 #### Disabling Maintenance Mode
 
 To disable maintenance mode, use the `up` command:
 
-    php artisan up
+```shell
+php artisan up
+```
 
 > {tip} You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`.
 

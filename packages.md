@@ -34,16 +34,18 @@ When writing a Laravel application, it generally does not matter if you use cont
 
 In a Laravel application's `config/app.php` configuration file, the `providers` option defines a list of service providers that should be loaded by Laravel. When someone installs your package, you will typically want your service provider to be included in this list. Instead of requiring users to manually add your service provider to the list, you may define the provider in the `extra` section of your package's `composer.json` file. In addition to service providers, you may also list any [facades](/docs/{{version}}/facades) you would like to be registered:
 
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Barryvdh\\Debugbar\\ServiceProvider"
-            ],
-            "aliases": {
-                "Debugbar": "Barryvdh\\Debugbar\\Facade"
-            }
+```json
+"extra": {
+    "laravel": {
+        "providers": [
+            "Barryvdh\\Debugbar\\ServiceProvider"
+        ],
+        "aliases": {
+            "Debugbar": "Barryvdh\\Debugbar\\Facade"
         }
-    },
+    }
+},
+```
 
 Once your package has been configured for discovery, Laravel will automatically register its service providers and facades when it is installed, creating a convenient installation experience for your package's users.
 
@@ -52,23 +54,27 @@ Once your package has been configured for discovery, Laravel will automatically 
 
 If you are the consumer of a package and would like to disable package discovery for a package, you may list the package name in the `extra` section of your application's `composer.json` file:
 
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-                "barryvdh/laravel-debugbar"
-            ]
-        }
-    },
+```json
+"extra": {
+    "laravel": {
+        "dont-discover": [
+            "barryvdh/laravel-debugbar"
+        ]
+    }
+},
+```
 
 You may disable package discovery for all packages using the `*` character inside of your application's `dont-discover` directive:
 
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-                "*"
-            ]
-        }
-    },
+```json
+"extra": {
+    "laravel": {
+        "dont-discover": [
+            "*"
+        ]
+    }
+},
+```
 
 <a name="service-providers"></a>
 ## Service Providers
@@ -266,16 +272,20 @@ If your package contains [view components](/docs/{{version}}/blade#components), 
 
 Once your view components are registered in a service provider, you may reference them in your view like so:
 
-    <x-courier-alert />
+```blade
+<x-courier-alert />
 
-    <x-courier-button />
+<x-courier-button />
+```
 
 <a name="anonymous-components"></a>
 #### Anonymous Components
 
 If your package contains anonymous components, they must be placed within a `components` directory of your package's "views" directory (as specified by `loadViewsFrom`). Then, you may render them by prefixing the component name with the package's view namespace:
 
-    <x-courier::alert />
+```blade
+<x-courier::alert />
+```
 
 <a name="commands"></a>
 ## Commands
@@ -319,7 +329,9 @@ Your package may have assets such as JavaScript, CSS, and images. To publish the
 
 Now, when your package's users execute the `vendor:publish` command, your assets will be copied to the specified publish location. Since users will typically need to overwrite the assets every time the package is updated, you may use the `--force` flag:
 
-    php artisan vendor:publish --tag=public --force
+```shell
+php artisan vendor:publish --tag=public --force
+```
 
 <a name="publishing-file-groups"></a>
 ## Publishing File Groups
@@ -344,4 +356,6 @@ You may want to publish groups of package assets and resources separately. For i
 
 Now your users may publish these groups separately by referencing their tag when executing the `vendor:publish` command:
 
-    php artisan vendor:publish --tag=courier-config
+```shell
+php artisan vendor:publish --tag=courier-config
+```

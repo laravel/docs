@@ -23,7 +23,9 @@ In addition to typical, form based authentication, Laravel also provides a simpl
 
 To get started with Socialite, use the Composer package manager to add the package to your project's dependencies:
 
-    composer require laravel/socialite
+```shell
+composer require laravel/socialite
+```
 
 <a name="upgrading-socialite"></a>
 ## Upgrading Socialite

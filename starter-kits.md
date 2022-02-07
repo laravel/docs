@@ -26,7 +26,7 @@ Breeze provides a wonderful starting point for beginning a fresh Laravel applica
 
 First, you should [create a new Laravel application](/docs/{{version}}/installation), configure your database, and run your [database migrations](/docs/{{version}}/migrations):
 
-```bash
+```shell
 curl -s https://laravel.build/example-app | bash
 
 cd example-app
@@ -36,13 +36,13 @@ php artisan migrate
 
 Once you have created a new Laravel application, you may install Laravel Breeze using Composer:
 
-```bash
+```shell
 composer require laravel/breeze --dev
 ```
 
 After Composer has installed the Laravel Breeze package, you may run the `breeze:install` Artisan command. This command publishes the authentication views, routes, controllers, and other resources to your application. Laravel Breeze publishes all of its code to your application so that you have full control and visibility over its features and implementation. After Breeze is installed, you should also compile your assets so that your application's CSS file is available:
 
-```nothing
+```shell
 php artisan breeze:install
 
 npm install
@@ -59,7 +59,7 @@ Next, you may navigate to your application's `/login` or `/register` URLs in you
 
 Laravel Breeze also offers an [Inertia.js](https://inertiajs.com) frontend implementation powered by Vue or React. To use an Inertia stack, specify `vue` or `react` as your desired stack when executing the `breeze:install` Artisan command:
 
-```nothing
+```shell
 php artisan breeze:install vue
 
 // Or...
@@ -76,7 +76,7 @@ php artisan migrate
 
 Laravel Breeze can also scaffold an authentication API that is ready to authenticate modern JavaScript applications such as those powered by [Next](https://nextjs.org), [Nuxt](https://nuxtjs.org), and others. To get started, specify the `api` stack as your desired stack when executing the `breeze:install` Artisan command:
 
-```nothing
+```shell
 php artisan breeze:install api
 
 php artisan migrate

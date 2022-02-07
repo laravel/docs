@@ -59,7 +59,7 @@ In addition to scheduling using closures, you may also schedule [invokable objec
 
 If you would like to view an overview of your scheduled tasks and the next time they are scheduled to run, you may use the `schedule:list` Artisan command:
 
-```nothing
+```bash
 php artisan schedule:list
 ```
 
@@ -301,14 +301,18 @@ Now that we have learned how to define scheduled tasks, let's discuss how to act
 
 So, when using Laravel's scheduler, we only need to add a single cron configuration entry to our server that runs the `schedule:run` command every minute. If you do not know how to add cron entries to your server, consider using a service such as [Laravel Forge](https://forge.laravel.com) which can manage the cron entries for you:
 
-    * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```shell
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
 
 <a name="running-the-scheduler-locally"></a>
 ## Running The Scheduler Locally
 
 Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:
 
-    php artisan schedule:work
+```shell
+php artisan schedule:work
+```
 
 <a name="task-output"></a>
 ## Task Output
@@ -404,7 +408,9 @@ The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL 
 
 All of the ping methods require the Guzzle HTTP library. Guzzle is typically installed in all new Laravel projects by default, but, you may manually install Guzzle into your project using the Composer package manager if it has been accidentally removed:
 
-    composer require guzzlehttp/guzzle
+```shell
+composer require guzzlehttp/guzzle
+```
 
 <a name="events"></a>
 ## Events

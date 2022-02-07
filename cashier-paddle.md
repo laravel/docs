@@ -60,7 +60,9 @@ When upgrading to a new version of Cashier, it's important that you carefully re
 
 First, install the Cashier package for Paddle using the Composer package manager:
 
-    composer require laravel/cashier-paddle
+```shell
+composer require laravel/cashier-paddle
+```
 
 > {note} To ensure Cashier properly handles all Paddle events, remember to [set up Cashier's webhook handling](#handling-paddle-webhooks).
 
@@ -80,11 +82,15 @@ After you have finished developing your application you may [apply for a Paddle 
 
 The Cashier service provider registers its own database migration directory, so remember to migrate your database after installing the package. The Cashier migrations will create a new `customers` table. In addition, a new `subscriptions` table will be created to store all of your customer's subscriptions. Finally, a new `receipts` table will be created to store all of your application's receipt information:
 
-    php artisan migrate
+```shell
+php artisan migrate
+```
 
 If you need to overwrite the migrations that are included with Cashier, you can publish them using the `vendor:publish` Artisan command:
 
-    php artisan vendor:publish --tag="cashier-migrations"
+```shell
+php artisan vendor:publish --tag="cashier-migrations"
+```
 
 If you would like to prevent Cashier's migrations from running entirely, you may use the `ignoreMigrations` provided by Cashier. Typically, this method should be called in the `register` method of your `AppServiceProvider`:
 
@@ -130,10 +136,12 @@ If you have billable entities that are not users, you may also add the trait to 
 
 Next, you should configure your Paddle keys in your application's `.env` file. You can retrieve your Paddle API keys from the Paddle control panel:
 
-    PADDLE_VENDOR_ID=your-paddle-vendor-id
-    PADDLE_VENDOR_AUTH_CODE=your-paddle-vendor-auth-code
-    PADDLE_PUBLIC_KEY="your-paddle-public-key"
-    PADDLE_SANDBOX=true
+```ini
+PADDLE_VENDOR_ID=your-paddle-vendor-id
+PADDLE_VENDOR_AUTH_CODE=your-paddle-vendor-auth-code
+PADDLE_PUBLIC_KEY="your-paddle-public-key"
+PADDLE_SANDBOX=true
+```
 
 The `PADDLE_SANDBOX` environment variable should be set to `true` when you are using [Paddle's Sandbox environment](#paddle-sandbox). The `PADDLE_SANDBOX` variable should be set to `false` if you are deploying your application to production and are using Paddle's live vendor environment.
 
@@ -142,22 +150,28 @@ The `PADDLE_SANDBOX` environment variable should be set to `true` when you are u
 
 Paddle relies on its own JavaScript library to initiate the Paddle checkout widget. You can load the JavaScript library by placing the `@paddleJS` Blade directive right before your application layout's closing `</head>` tag:
 
-    <head>
-        ...
+```blade
+<head>
+    ...
 
-        @paddleJS
-    </head>
+    @paddleJS
+</head>
+```
 
 <a name="currency-configuration"></a>
 ### Currency Configuration
 
 The default Cashier currency is United States Dollars (USD). You can change the default currency by defining a `CASHIER_CURRENCY` environment variable within your application's `.env` file:
 
-    CASHIER_CURRENCY=EUR
+```ini
+CASHIER_CURRENCY=EUR
+```
 
 In addition to configuring Cashier's currency, you may also specify a locale to be used when formatting money values for display on invoices. Internally, Cashier utilizes [PHP's `NumberFormatter` class](https://www.php.net/manual/en/class.numberformatter.php) to set the currency locale:
 
-    CASHIER_CURRENCY_LOCALE=nl_BE
+```ini
+CASHIER_CURRENCY_LOCALE=nl_BE
+```
 
 > {note} In order to use locales other than `en`, ensure the `ext-intl` PHP extension is installed and configured on your server.
 
@@ -257,25 +271,31 @@ If you don't want to make use of Paddle's "overlay" style checkout widget, Paddl
 
 To make it easy for you to get started with inline checkout, Cashier includes a `paddle-checkout` Blade component. To get started, you should [generate a pay link](#pay-links) and pass the pay link to the component's `override` attribute:
 
-```html
+```blade
 <x-paddle-checkout :override="$payLink" class="w-full" />
 ```
 
 To adjust the height of the inline checkout component, you may pass the `height` attribute to the Blade component:
 
-    <x-paddle-checkout :override="$payLink" class="w-full" height="500" />
+```blade
+<x-paddle-checkout :override="$payLink" class="w-full" height="500" />
+```
 
 <a name="inline-checkout-without-pay-links"></a>
 #### Inline Checkout Without Pay Links
 
 Alternatively, you may customize the widget with custom options instead of using a pay link:
 
-    $options = [
-        'product' => $productId,
-        'title' => 'Product Title',
-    ];
+```blade
+@php
+$options = [
+    'product' => $productId,
+    'title' => 'Product Title',
+];
+@endphp
 
-    <x-paddle-checkout :options="$options" class="w-full" />
+<x-paddle-checkout :options="$options" class="w-full" />
+```
 
 Please consult Paddle's [guide on Inline Checkout](https://developer.paddle.com/guides/how-tos/checkout/inline-checkout) as well as their [parameter reference](https://developer.paddle.com/reference/paddle-js/parameters) for further details on the inline checkout's available options.
 
@@ -288,7 +308,7 @@ You may also manually render an inline checkout without using Laravel's built-in
 
 Next, you may use Paddle.js to initialize the checkout. To keep this example simple, we will demonstrate this using [Alpine.js](https://github.com/alpinejs/alpine); however, you are free to translate this example to your own frontend stack:
 
-```html
+```alpine
 <div class="paddle-checkout" x-data="{}" x-init="
     Paddle.Checkout.open({
         override: {{ $payLink }},
@@ -337,7 +357,7 @@ The currency will be determined based on the IP address of the request; however,
 
 After retrieving the prices you may display them however you wish:
 
-```html
+```blade
 <ul>
     @foreach ($prices as $price)
         <li>{{ $price->product_title }} - {{ $price->price()->gross() }}</li>
@@ -347,7 +367,7 @@ After retrieving the prices you may display them however you wish:
 
 You may also display the net price (excludes tax) and display the tax amount separately:
 
-```html
+```blade
 <ul>
     @foreach ($prices as $price)
         <li>{{ $price->product_title }} - {{ $price->price()->net() }} (+ {{ $price->price()->tax() }} tax)</li>
@@ -357,7 +377,7 @@ You may also display the net price (excludes tax) and display the tax amount sep
 
 If you retrieved prices for subscription plans you can display their initial and recurring price separately:
 
-```html
+```blade
 <ul>
     @foreach ($prices as $price)
         <li>{{ $price->product_title }} - Initial: {{ $price->initialPrice()->gross() }} - Recurring: {{ $price->recurringPrice()->gross() }}</li>
@@ -391,7 +411,7 @@ You may also choose to display prices after a coupon reduction. When calling the
 
 Then, display the calculated prices using the `price` method:
 
-```html
+```blade
 <ul>
     @foreach ($prices as $price)
         <li>{{ $price->product_title }} - {{ $price->price()->gross() }}</li>
@@ -401,7 +421,7 @@ Then, display the calculated prices using the `price` method:
 
 You may display the original listed prices (without coupon discounts) using the `listPrice` method:
 
-```html
+```blade
 <ul>
     @foreach ($prices as $price)
         <li>{{ $price->product_title }} - {{ $price->listPrice()->gross() }}</li>
@@ -479,7 +499,7 @@ The first argument passed to the `newSubscription` method should be the internal
 
 The `create` method will create a pay link which you can use to generate a payment button. The payment button can be generated using the `paddle-button` [Blade component](/docs/{{version}}/blade#components) that is included with Cashier Paddle:
 
-```html
+```blade
 <x-paddle-button :url="$payLink" class="px-8 py-4">
     Subscribe
 </x-paddle-button>
@@ -1006,7 +1026,7 @@ Cashier also emit events dedicated to the type of the received webhook. In addit
 
 You can also override the default, built-in webhook route by defining the `CASHIER_WEBHOOK` environment variable in your application's `.env` file. This value should be the full URL to your webhook route and needs to match the URL set in your Paddle control panel:
 
-```bash
+```ini
 CASHIER_WEBHOOK=https://example.com/my-paddle-webhook-url
 ```
 
@@ -1035,7 +1055,7 @@ If you would like to make a one-time charge against a customer, you may use the 
 
 After generating the pay link, you may use Cashier's provided `paddle-button` Blade component to allow the user to initiate the Paddle widget and complete the charge:
 
-```html
+```blade
 <x-paddle-button :url="$payLink" class="px-8 py-4">
     Buy
 </x-paddle-button>
@@ -1049,7 +1069,7 @@ The `charge` method accepts an array as its third argument, allowing you to pass
 
 Charges happen in the currency specified in the `cashier.currency` configuration option. By default, this is set to USD. You may override the default currency by defining the `CASHIER_CURRENCY` environment variable in your application's `.env` file:
 
-```bash
+```ini
 CASHIER_CURRENCY=EUR
 ```
 
@@ -1075,7 +1095,7 @@ If you would like to make a one-time charge against a specific product configure
 
 Then, you may provide the pay link to the `paddle-button` component to allow the user to initialize the Paddle widget:
 
-```html
+```blade
 <x-paddle-button :url="$payLink" class="px-8 py-4">
     Buy
 </x-paddle-button>
@@ -1151,7 +1171,9 @@ You may use the `lastPayment` and `nextPayment` methods to retrieve and display 
 
 Both of these methods will return an instance of `Laravel\Paddle\Payment`; however, `nextPayment` will return `null` when the billing cycle has ended (such as when a subscription has been cancelled):
 
-    Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
+```blade
+Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
+```
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments

@@ -35,7 +35,9 @@ The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnos
 
 You may use the `make:migration` [Artisan command](/docs/{{version}}/artisan) to generate a database migration. The new migration will be placed in your `database/migrations` directory. Each migration filename contains a timestamp that allows Laravel to determine the order of the migrations:
 
-    php artisan make:migration create_flights_table
+```shell
+php artisan make:migration create_flights_table
+```
 
 Laravel will use the name of the migration to attempt to guess the name of the table and whether or not the migration will be creating a new table. If Laravel is able to determine the table name from the migration name, Laravel will pre-fill the generated migration file with the specified table. Otherwise, you may simply specify the table in the migration file manually.
 
@@ -48,10 +50,12 @@ If you would like to specify a custom path for the generated migration, you may 
 
 As you build your application, you may accumulate more and more migrations over time. This can lead to your `database/migrations` directory becoming bloated with potentially hundreds of migrations. If you would like, you may "squash" your migrations into a single SQL file. To get started, execute the `schema:dump` command:
 
-    php artisan schema:dump
+```shell
+php artisan schema:dump
 
-    // Dump the current database schema and prune all existing migrations...
-    php artisan schema:dump --prune
+# Dump the current database schema and prune all existing migrations...
+php artisan schema:dump --prune
+```
 
 When you execute this command, Laravel will write a "schema" file to your application's `database/schema` directory. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will execute the schema file's SQL statements first. After executing the schema file's statements, Laravel will execute any remaining migrations that were not part of the schema dump.
 
@@ -141,56 +145,74 @@ If your migration will be interacting with a database connection other than your
 
 To run all of your outstanding migrations, execute the `migrate` Artisan command:
 
-    php artisan migrate
+```shell
+php artisan migrate
+```
 
 If you would like to see which migrations have run thus far, you may use the `migrate:status` Artisan command:
 
-    php artisan migrate:status
+```shell
+php artisan migrate:status
+```
 
 <a name="forcing-migrations-to-run-in-production"></a>
 #### Forcing Migrations To Run In Production
 
 Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:
 
-    php artisan migrate --force
+```shell
+php artisan migrate --force
+```
 
 <a name="rolling-back-migrations"></a>
 ### Rolling Back Migrations
 
 To roll back the latest migration operation, you may use the `rollback` Artisan command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
 
-    php artisan migrate:rollback
+```shell
+php artisan migrate:rollback
+```
 
 You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
 
-    php artisan migrate:rollback --step=5
+```shell
+php artisan migrate:rollback --step=5
+```
 
 The `migrate:reset` command will roll back all of your application's migrations:
 
-    php artisan migrate:reset
+```shell
+php artisan migrate:reset
+```
 
 <a name="roll-back-migrate-using-a-single-command"></a>
 #### Roll Back & Migrate Using A Single Command
 
 The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
 
-    php artisan migrate:refresh
+```shell
+php artisan migrate:refresh
 
-    // Refresh the database and run all database seeds...
-    php artisan migrate:refresh --seed
+# Refresh the database and run all database seeds...
+php artisan migrate:refresh --seed
+```
 
 You may roll back and re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will roll back and re-migrate the last five migrations:
 
-    php artisan migrate:refresh --step=5
+```shell
+php artisan migrate:refresh --step=5
+```
 
 <a name="drop-all-tables-migrate"></a>
 #### Drop All Tables & Migrate
 
 The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
 
-    php artisan migrate:fresh
+```shell
+php artisan migrate:fresh
 
-    php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed
+```
 
 > {note} The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
 

@@ -60,9 +60,11 @@ When using the `database` session driver, you will need to create a table to con
 
 You may use the `session:table` Artisan command to generate this migration. To learn more about database migrations, you may consult the complete [migration documentation](/docs/{{version}}/migrations):
 
-    php artisan session:table
+```shell
+php artisan session:table
 
-    php artisan migrate
+php artisan migrate
+```
 
 <a name="redis"></a>
 #### Redis

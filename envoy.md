@@ -27,11 +27,15 @@
 
 First, install Envoy into your project using the Composer package manager:
 
-    composer require laravel/envoy --dev
+```shell
+composer require laravel/envoy --dev
+```
 
 Once Envoy has been installed, the Envoy binary will be available in your application's `vendor/bin` directory:
 
-    php vendor/bin/envoy
+```shell
+php vendor/bin/envoy
+```
 
 <a name="writing-tasks"></a>
 ## Writing Tasks
@@ -43,7 +47,7 @@ Tasks are the basic building block of Envoy. Tasks define the shell commands tha
 
 All of your Envoy tasks should be defined in an `Envoy.blade.php` file at the root of your application. Here's an example to get you started:
 
-```bash
+```blade
 @servers(['web' => ['user@192.168.1.1'], 'workers' => ['user@192.168.1.2']])
 
 @task('restart-queues', ['on' => 'workers'])
@@ -59,7 +63,7 @@ As you can see, an array of `@servers` is defined at the top of the file, allowi
 
 You can force a script to run on your local computer by specifying the server's IP address as `127.0.0.1`:
 
-```bash
+```blade
 @servers(['localhost' => '127.0.0.1'])
 ```
 
@@ -68,7 +72,7 @@ You can force a script to run on your local computer by specifying the server's 
 
 Using the `@import` directive, you may import other Envoy files so their stories and tasks are added to yours. After the files have been imported, you may execute the tasks they contain as if they were defined in your own Envoy file:
 
-```bash
+```blade
 @import('vendor/package/Envoy.blade.php')
 ```
 
@@ -77,7 +81,7 @@ Using the `@import` directive, you may import other Envoy files so their stories
 
 Envoy allows you to easily run a task across multiple servers. First, add additional servers to your `@servers` declaration. Each server should be assigned a unique name. Once you have defined your additional servers you may list each of the servers in the task's `on` array:
 
-```bash
+```blade
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
 @task('deploy', ['on' => ['web-1', 'web-2']])
@@ -92,7 +96,7 @@ Envoy allows you to easily run a task across multiple servers. First, add additi
 
 By default, tasks will be executed on each server serially. In other words, a task will finish running on the first server before proceeding to execute on the second server. If you would like to run a task across multiple servers in parallel, add the `parallel` option to your task declaration:
 
-```bash
+```blade
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
 @task('deploy', ['on' => ['web-1', 'web-2'], 'parallel' => true])
@@ -115,7 +119,7 @@ Sometimes, you may need to execute arbitrary PHP code before running your Envoy 
 
 If you need to require other PHP files before your task is executed, you may use the `@include` directive at the top of your `Envoy.blade.php` file:
 
-```bash
+```blade
 @include('vendor/autoload.php')
 
 @task('restart-queues')
@@ -128,11 +132,13 @@ If you need to require other PHP files before your task is executed, you may use
 
 If needed, you may pass arguments to Envoy tasks by specifying them on the command line when invoking Envoy:
 
-    php vendor/bin/envoy run deploy --branch=master
+```shell
+php vendor/bin/envoy run deploy --branch=master
+```
 
 You may access the options within your tasks using Blade's "echo" syntax. You may also define Blade `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
 
-```bash
+```blade
 @servers(['web' => ['user@192.168.1.1']])
 
 @task('deploy', ['on' => 'web'])
@@ -151,7 +157,7 @@ You may access the options within your tasks using Blade's "echo" syntax. You ma
 
 Stories group a set of tasks under a single, convenient name. For instance, a `deploy` story may run the `update-code` and `install-dependencies` tasks by listing the task names within its definition:
 
-```bash
+```blade
 @servers(['web' => ['user@192.168.1.1']])
 
 @story('deploy')
@@ -172,7 +178,9 @@ Stories group a set of tasks under a single, convenient name. For instance, a `d
 
 Once the story has been written, you may invoke it in the same way you would invoke a task:
 
-    php vendor/bin/envoy run deploy
+```shell
+php vendor/bin/envoy run deploy
+```
 
 <a name="completion-hooks"></a>
 ### Hooks
@@ -199,7 +207,7 @@ Before each task execution, all of the `@before` hooks registered in your Envoy 
 
 After each task execution, all of the `@after` hooks registered in your Envoy script will execute. The `@after` hooks receive the name of the task that was executed:
 
-```php
+```blade
 @after
     if ($task === 'deploy') {
         // ...
@@ -212,7 +220,7 @@ After each task execution, all of the `@after` hooks registered in your Envoy sc
 
 After every task failure (exits with a status code greater than `0`), all of the `@error` hooks registered in your Envoy script will execute. The `@error` hooks receive the name of the task that was executed:
 
-```php
+```blade
 @error
     if ($task === 'deploy') {
         // ...
@@ -225,7 +233,7 @@ After every task failure (exits with a status code greater than `0`), all of the
 
 If all tasks have executed without errors, all of the `@success` hooks registered in your Envoy script will execute:
 
-```bash
+```blade
 @success
     // ...
 @endsuccess
@@ -236,7 +244,7 @@ If all tasks have executed without errors, all of the `@success` hooks registere
 
 After all tasks have been executed (regardless of exit status), all of the `@finished` hooks will be executed. The `@finished` hooks receive the status code of the completed task, which may be `null` or an `integer` greater than or equal to `0`:
 
-```bash
+```blade
 @finished
     if ($exitCode > 0) {
         // There were errors in one of the tasks...
@@ -249,14 +257,16 @@ After all tasks have been executed (regardless of exit status), all of the `@fin
 
 To run a task or story that is defined in your application's `Envoy.blade.php` file, execute Envoy's `run` command, passing the name of the task or story you would like to execute. Envoy will execute the task and display the output from your remote servers as the task is running:
 
-    php vendor/bin/envoy run deploy
+```shell
+php vendor/bin/envoy run deploy
+```
 
 <a name="confirming-task-execution"></a>
 ### Confirming Task Execution
 
 If you would like to be prompted for confirmation before running a given task on your servers, you should add the `confirm` directive to your task declaration. This option is particularly useful for destructive operations:
 
-```bash
+```blade
 @task('deploy', ['on' => 'web', 'confirm' => true])
     cd /home/user/example.com
     git pull origin {{ $branch }}
@@ -274,39 +284,49 @@ Envoy supports sending notifications to [Slack](https://slack.com) after each ta
 
 You should pass the entire webhook URL as the first argument given to the `@slack` directive. The second argument given to the `@slack` directive should be a channel name (`#channel`) or a user name (`@user`):
 
-    @finished
-        @slack('webhook-url', '#bots')
-    @endfinished
+```blade
+@finished
+    @slack('webhook-url', '#bots')
+@endfinished
+```
 
 By default, Envoy notifications will send a message to the notification channel describing the task that was executed. However, you may overwrite this message with your own custom message by passing a third argument to the `@slack` directive:
 
-    @finished
-        @slack('webhook-url', '#bots', 'Hello, Slack.')
-    @endfinished
+```blade
+@finished
+    @slack('webhook-url', '#bots', 'Hello, Slack.')
+@endfinished
+```
 
 <a name="discord"></a>
 ### Discord
 
 Envoy also supports sending notifications to [Discord](https://discord.com) after each task is executed. The `@discord` directive accepts a Discord hook URL and a message. You may retrieve your webhook URL by creating a "Webhook" in your Server Settings and choosing which channel the webhook should post to. You should pass the entire Webhook URL into the `@discord` directive:
 
-    @finished
-        @discord('discord-webhook-url')
-    @endfinished
+```blade
+@finished
+    @discord('discord-webhook-url')
+@endfinished
+```
 
 <a name="telegram"></a>
 ### Telegram
 
 Envoy also supports sending notifications to [Telegram](https://telegram.org) after each task is executed. The `@telegram` directive accepts a Telegram Bot ID and a Chat ID. You may retrieve your Bot ID by creating a new bot using [BotFather](https://t.me/botfather). You can retrieve a valid Chat ID using [@username_to_id_bot](https://t.me/username_to_id_bot). You should pass the entire Bot ID and Chat ID into the `@telegram` directive:
 
-    @finished
-        @telegram('bot-id','chat-id')
-    @endfinished
+```blade
+@finished
+    @telegram('bot-id','chat-id')
+@endfinished
+```
 
 <a name="microsoft-teams"></a>
 ### Microsoft Teams
 
 Envoy also supports sending notifications to [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams) after each task is executed. The `@microsoftTeams` directive accepts a Teams Webhook (required), a message, theme color (success, info, warning, error), and an array of options. You may retrieve your Teams Webook by creating a new [incoming webhook](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook). The Teams API has many other attributes to customize your message box like title, summary, and sections. You can find more information on the [Microsoft Teams documentation](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL#example-of-connector-message). You should pass the entire Webhook URL into the `@microsoftTeams` directive:
 
-    @finished
-        @microsoftTeams('webhook-url')
-    @endfinished
+```blade
+@finished
+    @microsoftTeams('webhook-url')
+@endfinished
+```

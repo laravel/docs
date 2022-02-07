@@ -61,7 +61,7 @@ Laravel Sail is a light-weight command-line interface for interacting with Larav
 
 If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
-```nothing
+```shell
 curl -s "https://laravel.build/example-app" | bash
 ```
 
@@ -69,7 +69,7 @@ Of course, you can change "example-app" in this URL to anything you like. The La
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
-```nothing
+```shell
 cd example-app
 
 ./vendor/bin/sail up
@@ -90,7 +90,7 @@ Before we create a new Laravel application on your Windows machine, make sure to
 
 Next, you are ready to create your first Laravel project. Launch [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) and begin a new terminal session for your WSL2 Linux operating system. Next, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
-```nothing
+```shell
 curl -s https://laravel.build/example-app | bash
 ```
 
@@ -98,7 +98,7 @@ Of course, you can change "example-app" in this URL to anything you like. The La
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
-```nothing
+```shell
 cd example-app
 
 ./vendor/bin/sail up
@@ -121,7 +121,7 @@ Once these tools are installed, you may open any Laravel project by executing th
 
 If you're developing on Linux and [Docker Compose](https://docs.docker.com/compose/install/) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
 
-```nothing
+```shell
 curl -s https://laravel.build/example-app | bash
 ```
 
@@ -129,7 +129,7 @@ Of course, you can change "example-app" in this URL to anything you like. The La
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
-```nothing
+```shell
 cd example-app
 
 ./vendor/bin/sail up
@@ -146,7 +146,7 @@ Once the application's Docker containers have been started, you can access the a
 
 When creating a new Laravel application via Sail, you may use the `with` query string variable to choose which services should be configured in your new application's `docker-compose.yml` file. Available services include `mysql`, `pgsql`, `mariadb`, `redis`, `memcached`, `meilisearch`, `minio`, `selenium`, and `mailhog`:
 
-```nothing
+```shell
 curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 ```
 
@@ -154,7 +154,7 @@ If you do not specify which services you would like configured, a default stack 
 
 You may instruct Sail to install a default [Devcontainer](/docs/{{version}}/sail#using-devcontainers) by adding the `devcontainer` parameter to the URL:
 
-```nothing
+```shell
 curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
 ```
 
@@ -163,18 +163,20 @@ curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
 
 If your computer already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
 
-    composer create-project laravel/laravel example-app
+```shell
+composer create-project laravel/laravel example-app
 
-    cd example-app
+cd example-app
 
-    php artisan serve
+php artisan serve
+```
 
 <a name="the-laravel-installer"></a>
 #### The Laravel Installer
 
 Or, you may install the Laravel Installer as a global Composer dependency:
 
-```nothing
+```shell
 composer global require laravel/installer
 
 laravel new example-app
@@ -196,31 +198,31 @@ Make sure to place Composer's system-wide vendor bin directory in your `$PATH` s
 
 For convenience, the Laravel installer can also create a Git repository for your new project. To indicate that you want a Git repository to be created, pass the `--git` flag when creating a new project:
 
-```bash
+```shell
 laravel new example-app --git
 ```
 
 This command will initialize a new Git repository for your project and automatically commit the base Laravel skeleton. The `git` flag assumes you have properly installed and configured Git. You can also use the `--branch` flag to set the initial branch name:
 
-```bash
+```shell
 laravel new example-app --git --branch="main"
 ```
 
 Instead of using the `--git` flag, you may also use the `--github` flag to create a Git repository and also create a corresponding private repository on GitHub:
 
-```bash
+```shell
 laravel new example-app --github
 ```
 
 The created repository will then be available at `https://github.com/<your-account>/example-app`. The `github` flag assumes you have properly installed the [GitHub CLI](https://cli.github.com) and are authenticated with GitHub. Additionally, you should have `git` installed and properly configured. If needed, you can pass additional flags that are supported by the GitHub CLI:
 
-```bash
+```shell
 laravel new example-app --github="--public"
 ```
 
 You may use the `--organization` flag to create the repository under a specific GitHub organization:
 
-```bash
+```shell
 laravel new example-app --github="--public" --organization="laravel"
 ```
 

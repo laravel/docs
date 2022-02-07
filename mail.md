@@ -49,7 +49,9 @@ The API based drivers such as Mailgun and Postmark are often simpler and faster 
 
 To use the Mailgun driver, install Symfony's Mailgun Mailer transport via Composer:
 
-    composer require symfony/mailgun-mailer
+```shell
+composer require symfony/mailgun-mailer
+```
 
 Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:
 
@@ -71,7 +73,9 @@ If you are not using the United States [Mailgun region](https://documentation.ma
 
 To use the Postmark driver, install Symfony's Postmark Mailer transport via Composer:
 
-    composer require symfony/postmark-mailer
+```shell
+composer require symfony/postmark-mailer
+```
 
 Next, set the `default` option in your application's `config/mail.php` configuration file to `postmark`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:
 
@@ -93,7 +97,7 @@ This way you are also able to set up multiple Postmark mailers with different me
 
 To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. You may install this library via the Composer package manager:
 
-```bash
+```shell
 composer require aws/aws-sdk-php
 ```
 
@@ -157,7 +161,9 @@ Once your failover mailer has been defined, you should set this mailer as the de
 
 When building Laravel applications, each type of email sent by your application is represented as a "mailable" class. These classes are stored in the `app/Mail` directory. Don't worry if you don't see this directory in your application, since it will be generated for you when you create your first mailable class using the `make:mail` Artisan command:
 
-    php artisan make:mail OrderShipped
+```shell
+php artisan make:mail OrderShipped
+```
 
 <a name="writing-mailables"></a>
 ## Writing Mailables
@@ -441,11 +447,13 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
 
 Embedding inline images into your emails is typically cumbersome; however, Laravel provides a convenient way to attach images to your emails. To embed an inline image, use the `embed` method on the `$message` variable within your email template. Laravel automatically makes the `$message` variable available to all of your email templates, so you don't need to worry about passing it in manually:
 
-    <body>
-        Here is an image:
+```blade
+<body>
+    Here is an image:
 
-        <img src="{{ $message->embed($pathToImage) }}">
-    </body>
+    <img src="{{ $message->embed($pathToImage) }}">
+</body>
+```
 
 > {note} The `$message` variable is not available in plain-text message templates since plain-text messages do not utilize inline attachments.
 
@@ -454,11 +462,13 @@ Embedding inline images into your emails is typically cumbersome; however, Larav
 
 If you already have a raw image data string you wish to embed into an email template, you may call the `embedData` method on the `$message` variable. When calling the `embedData` method, you will need to provide a filename that should be assigned to the embedded image:
 
-    <body>
-        Here is an image from raw data:
+```blade
+<body>
+    Here is an image from raw data:
 
-        <img src="{{ $message->embedData($data, 'example-image.jpg') }}">
-    </body>
+    <img src="{{ $message->embedData($data, 'example-image.jpg') }}">
+</body>
+```
 
 <a name="customizing-the-symfony-message"></a>
 ### Customizing The Symfony Message
@@ -495,7 +505,9 @@ Markdown mailable messages allow you to take advantage of the pre-built template
 
 To generate a mailable with a corresponding Markdown template, you may use the `--markdown` option of the `make:mail` Artisan command:
 
-    php artisan make:mail OrderShipped --markdown=emails.orders.shipped
+```shell
+php artisan make:mail OrderShipped --markdown=emails.orders.shipped
+```
 
 Then, when configuring the mailable within its `build` method, call the `markdown` method instead of the `view` method. The `markdown` method accepts the name of the Markdown template and an optional array of data to make available to the template:
 
@@ -517,18 +529,20 @@ Then, when configuring the mailable within its `build` method, call the `markdow
 
 Markdown mailables use a combination of Blade components and Markdown syntax which allow you to easily construct mail messages while leveraging Laravel's pre-built email UI components:
 
-    @component('mail::message')
-    # Order Shipped
+```blade
+@component('mail::message')
+# Order Shipped
 
-    Your order has been shipped!
+Your order has been shipped!
 
-    @component('mail::button', ['url' => $url])
-    View Order
-    @endcomponent
+@component('mail::button', ['url' => $url])
+View Order
+@endcomponent
 
-    Thanks,<br>
-    {{ config('app.name') }}
-    @endcomponent
+Thanks,<br>
+{{ config('app.name') }}
+@endcomponent
+```
 
 > {tip} Do not use excess indentation when writing Markdown emails. Per Markdown standards, Markdown parsers will render indented content as code blocks.
 
@@ -537,37 +551,45 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
 
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:
 
-    @component('mail::button', ['url' => $url, 'color' => 'success'])
-    View Order
-    @endcomponent
+```blade
+@component('mail::button', ['url' => $url, 'color' => 'success'])
+View Order
+@endcomponent
+```
 
 <a name="panel-component"></a>
 #### Panel Component
 
 The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the message. This allows you to draw attention to a given block of text:
 
-    @component('mail::panel')
-    This is the panel content.
-    @endcomponent
+```blade
+@component('mail::panel')
+This is the panel content.
+@endcomponent
+```
 
 <a name="table-component"></a>
 #### Table Component
 
 The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
 
-    @component('mail::table')
-    | Laravel       | Table         | Example  |
-    | ------------- |:-------------:| --------:|
-    | Col 2 is      | Centered      | $10      |
-    | Col 3 is      | Right-Aligned | $20      |
-    @endcomponent
+```blade
+@component('mail::table')
+| Laravel       | Table         | Example  |
+| ------------- |:-------------:| --------:|
+| Col 2 is      | Centered      | $10      |
+| Col 3 is      | Right-Aligned | $20      |
+@endcomponent
+```
 
 <a name="customizing-the-components"></a>
 ### Customizing The Components
 
 You may export all of the Markdown mail components to your own application for customization. To export the components, use the `vendor:publish` Artisan command to publish the `laravel-mail` asset tag:
 
-    php artisan vendor:publish --tag=laravel-mail
+```shell
+php artisan vendor:publish --tag=laravel-mail
+```
 
 This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain an `html` and a `text` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
 

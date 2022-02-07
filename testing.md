@@ -40,16 +40,22 @@ Laravel includes a `CreatesApplication` trait that is applied to your applicatio
 
 To create a new test case, use the `make:test` Artisan command. By default, tests will be placed in the `tests/Feature` directory:
 
-    php artisan make:test UserTest
+```shell
+php artisan make:test UserTest
+```
 
 If you would like to create a test within the `tests/Unit` directory, you may use the `--unit` option when executing the `make:test` command:
 
-    php artisan make:test UserTest --unit
+```shell
+php artisan make:test UserTest --unit
+```
 
 If you would like to create a [Pest PHP](https://pestphp.com) test, you may provide the `--pest` option to the `make:test` command:
 
-    php artisan make:test UserTest --pest
-    php artisan make:test UserTest --unit --pest
+```shell
+php artisan make:test UserTest --pest
+php artisan make:test UserTest --unit --pest
+```
 
 > {tip} Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
@@ -81,27 +87,36 @@ Once the test has been generated, you may define test methods as you normally wo
 
 As mentioned previously, once you've written tests, you may run them using `phpunit`:
 
-    ./vendor/bin/phpunit
+```shell
+./vendor/bin/phpunit
+```
 
 In addition to the `phpunit` command, you may use the `test` Artisan command to run your tests. The Artisan test runner provides verbose test reports in order to ease development and debugging:
 
-    php artisan test
+```shell
+php artisan test
+```
 
 Any arguments that can be passed to the `phpunit` command may also be passed to the Artisan `test` command:
 
-    php artisan test --testsuite=Feature --stop-on-failure
-
+```shell
+php artisan test --testsuite=Feature --stop-on-failure
+```
 
 <a name="running-tests-in-parallel"></a>
 ### Running Tests In Parallel
 
 By default, Laravel and PHPUnit execute your tests sequentially within a single process. However, you may greatly reduce the amount of time it takes to run your tests by running tests simultaneously across multiple processes. To get started, ensure your application depends on version `^5.3` or greater of the `nunomaduro/collision` package. Then, include the `--parallel` option when executing the `test` Artisan command:
 
-    php artisan test --parallel
+```shell
+php artisan test --parallel
+```
 
 By default, Laravel will create as many processes as there are available CPU cores on your machine. However, you may adjust the number of processes using the `--processes` option:
 
-    php artisan test --parallel --processes=4
+```shell
+php artisan test --parallel --processes=4
+```
 
 > {note} When running tests in parallel, some PHPUnit options (such as `--do-not-cache-result`) may not be available.
 
@@ -112,7 +127,9 @@ Laravel automatically handles creating and migrating a test database for each pa
 
 By default, test databases persist between calls to the `test` Artisan command so that they can be used again by subsequent `test` invocations. However, you may re-create them using the `--recreate-databases` option:
 
-    php artisan test --parallel --recreate-databases
+```shell
+php artisan test --parallel --recreate-databases
+```
 
 <a name="parallel-testing-hooks"></a>
 #### Parallel Testing Hooks
@@ -175,11 +192,15 @@ If you would like to access to current parallel process "token" from any other l
 
 When running your application tests, you may want to determine whether your test cases are actually covering the application code and how much application code is used when running your tests. To accomplish this, you may provide the `--coverage` option when invoking the `test` command:
 
-    php artisan test --coverage
+```shell
+php artisan test --coverage
+```
 
 <a name="enforcing-a-minimum-coverage-threshold"></a>
 #### Enforcing A Minimum Coverage Threshold
 
 You may use the `--min` option to define a minimum test coverage threshold for your application. The test suite will fail if this threshold is not met:
 
-    php artisan test --coverage --min=80.3
+```shell
+php artisan test --coverage --min=80.3
+```

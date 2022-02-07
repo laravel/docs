@@ -56,15 +56,21 @@ Sanctum will only attempt to authenticate using cookies when the incoming reques
 
 You may install Laravel Sanctum via the Composer package manager:
 
-    composer require laravel/sanctum
+```shell
+composer require laravel/sanctum
+```
 
 Next, you should publish the Sanctum configuration and migration files using the `vendor:publish` Artisan command. The `sanctum` configuration file will be placed in your application's `config` directory:
 
-    php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+```shell
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+```
 
 Finally, you should run your database migrations. Sanctum will create one database table in which to store API tokens:
 
-    php artisan migrate
+```shell
+php artisan migrate
+```
 
 Next, if you plan to utilize Sanctum to authenticate an SPA, you should add Sanctum's middleware to your `api` middleware group within your application's `app/Http/Kernel.php` file:
 
@@ -260,7 +266,9 @@ You should ensure that your application's CORS configuration is returning the `A
 
 In addition, you should enable the `withCredentials` option on your application's global `axios` instance. Typically, this should be performed in your `resources/js/bootstrap.js` file. If you are not using Axios to make HTTP requests from your frontend, you should perform the equivalent configuration on your own HTTP client:
 
-    axios.defaults.withCredentials = true;
+```js
+axios.defaults.withCredentials = true;
+```
 
 Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may accomplish this by prefixing the domain with a leading `.` within your application's `config/session.php` configuration file:
 
@@ -274,9 +282,11 @@ Finally, you should ensure your application's session cookie domain configuratio
 
 To authenticate your SPA, your SPA's "login" page should first make a request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection for the application:
 
-    axios.get('/sanctum/csrf-cookie').then(response => {
-        // Login...
-    });
+```js
+axios.get('/sanctum/csrf-cookie').then(response => {
+    // Login...
+});
+```
 
 During this request, Laravel will set an `XSRF-TOKEN` cookie containing the current CSRF token. This token should then be passed in an `X-XSRF-TOKEN` header on subsequent requests, which some HTTP client libraries like Axios and the Angular HttpClient will do automatically for you. If your JavaScript HTTP library does not set the value for you, you will need to manually set the `X-XSRF-TOKEN` header to match the value of the `XSRF-TOKEN` cookie that is set by this route.
 
@@ -311,28 +321,30 @@ If your SPA needs to authenticate with [private / presence broadcast channels](/
 
 Next, in order for Pusher's authorization requests to succeed, you will need to provide a custom Pusher `authorizer` when initializing [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation). This allows your application to configure Pusher to use the `axios` instance that is [properly configured for cross-domain requests](#cors-and-cookies):
 
-    window.Echo = new Echo({
-        broadcaster: "pusher",
-        cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-        encrypted: true,
-        key: process.env.MIX_PUSHER_APP_KEY,
-        authorizer: (channel, options) => {
-            return {
-                authorize: (socketId, callback) => {
-                    axios.post('/api/broadcasting/auth', {
-                        socket_id: socketId,
-                        channel_name: channel.name
-                    })
-                    .then(response => {
-                        callback(false, response.data);
-                    })
-                    .catch(error => {
-                        callback(true, error);
-                    });
-                }
-            };
-        },
-    })
+```js
+window.Echo = new Echo({
+    broadcaster: "pusher",
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    encrypted: true,
+    key: process.env.MIX_PUSHER_APP_KEY,
+    authorizer: (channel, options) => {
+        return {
+            authorize: (socketId, callback) => {
+                axios.post('/api/broadcasting/auth', {
+                    socket_id: socketId,
+                    channel_name: channel.name
+                })
+                .then(response => {
+                    callback(false, response.data);
+                })
+                .catch(error => {
+                    callback(true, error);
+                });
+            }
+        };
+    },
+})
+```
 
 <a name="mobile-application-authentication"></a>
 ## Mobile Application Authentication

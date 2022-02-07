@@ -44,13 +44,17 @@
 
 You may use the Composer package manager to install Telescope into your Laravel project:
 
-    composer require laravel/telescope
+```shell
+composer require laravel/telescope
+```
 
 After installing Telescope, publish its assets using the `telescope:install` Artisan command. After installing Telescope, you should also run the `migrate` command in order to create the tables needed to store Telescope's data:
 
-    php artisan telescope:install
+```shell
+php artisan telescope:install
 
-    php artisan migrate
+php artisan migrate
+```
 
 <a name="migration-customization"></a>
 #### Migration Customization
@@ -62,11 +66,13 @@ If you are not going to use Telescope's default migrations, you should call the 
 
 If you plan to only use Telescope to assist your local development, you may install Telescope using the `--dev` flag:
 
-    composer require laravel/telescope --dev
+```shell
+composer require laravel/telescope --dev
 
-    php artisan telescope:install
+php artisan telescope:install
 
-    php artisan migrate
+php artisan migrate
+```
 
 After running `telescope:install`, you should remove the `TelescopeServiceProvider` service provider registration from your application's `config/app.php` configuration file. Instead, manually register Telescope's service providers in the `register` method of your `App\Providers\AppServiceProvider` class. We will ensure the current environment is `local` before registering the providers:
 
@@ -85,13 +91,15 @@ After running `telescope:install`, you should remove the `TelescopeServiceProvid
 
 Finally, you should also prevent the Telescope package from being [auto-discovered](/docs/{{version}}/packages#package-discovery) by adding the following to your `composer.json` file:
 
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-                "laravel/telescope"
-            ]
-        }
-    },
+```json
+"extra": {
+    "laravel": {
+        "dont-discover": [
+            "laravel/telescope"
+        ]
+    }
+},
+```
 
 <a name="configuration"></a>
 ### Configuration
@@ -143,17 +151,21 @@ When upgrading to a new major version of Telescope, it's important that you care
 
 In addition, when upgrading to any new Telescope version, you should re-publish Telescope's assets:
 
-    php artisan telescope:publish
+```shell
+php artisan telescope:publish
+```
 
 To keep the assets up-to-date and avoid issues in future updates, you may add the `telescope:publish` command to the `post-update-cmd` scripts in your application's `composer.json` file:
 
-    {
-        "scripts": {
-            "post-update-cmd": [
-                "@php artisan telescope:publish --ansi"
-            ]
-        }
+```json
+{
+    "scripts": {
+        "post-update-cmd": [
+            "@php artisan telescope:publish --ansi"
+        ]
     }
+}
+```
 
 <a name="filtering"></a>
 ## Filtering

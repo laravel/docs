@@ -201,8 +201,10 @@ Since many applications only serve HTML or JSON, you may use the `expectsJson` m
 
 The [PSR-7 standard](https://www.php-fig.org/psr/psr-7/) specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request instead of a Laravel request, you will first need to install a few libraries. Laravel uses the *Symfony HTTP Message Bridge* component to convert typical Laravel requests and responses into PSR-7 compatible implementations:
 
-    composer require symfony/psr-http-message-bridge
-    composer require nyholm/psr7
+```shell
+composer require symfony/psr-http-message-bridge
+composer require nyholm/psr7
+```
 
 Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route closure or controller method:
 

@@ -22,7 +22,9 @@ Additional middleware can be written to perform a variety of tasks besides authe
 
 To create a new middleware, use the `make:middleware` Artisan command:
 
-    php artisan make:middleware EnsureTokenIsValid
+```shell
+php artisan make:middleware EnsureTokenIsValid
+```
 
 This command will place a new `EnsureTokenIsValid` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `token` input matches a specified value. Otherwise, we will redirect the users back to the `home` URI:
 

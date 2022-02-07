@@ -74,7 +74,9 @@ Note that each connection configuration example in the `queue` configuration fil
 
 Some applications may not need to ever push jobs onto multiple queues, instead preferring to have one simple queue. However, pushing jobs to multiple queues can be especially useful for applications that wish to prioritize or segment how jobs are processed, since the Laravel queue worker allows you to specify which queues it should process by priority. For example, if you push jobs to a `high` queue, you may run a worker that gives them higher processing priority:
 
-    php artisan queue:work --queue=high,default
+```shell
+php artisan queue:work --queue=high,default
+```
 
 <a name="driver-prerequisites"></a>
 ### Driver Notes & Prerequisites
@@ -84,9 +86,11 @@ Some applications may not need to ever push jobs onto multiple queues, instead p
 
 In order to use the `database` queue driver, you will need a database table to hold the jobs. To generate a migration that creates this table, run the `queue:table` Artisan command. Once the migration has been created, you may migrate your database using the `migrate` command:
 
-    php artisan queue:table
+```shell
+php artisan queue:table
 
-    php artisan migrate
+php artisan migrate
+```
 
 Finally, don't forget to instruct your application to use the `database` driver by updating the `QUEUE_CONNECTION` variable in your application's `.env` file:
 
@@ -145,7 +149,9 @@ The following dependencies are needed for the listed queue drivers. These depend
 
 By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command:
 
-    php artisan make:job ProcessPodcast
+```shell
+php artisan make:job ProcessPodcast
+```
 
 The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
 
@@ -937,7 +943,9 @@ If one of your queued jobs is encountering an error, you likely do not want it t
 
 One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line. This will apply to all jobs processed by the worker unless the job being processed specifies a more specific number of times it may be attempted:
 
-    php artisan queue:work --tries=3
+```shell
+php artisan queue:work --tries=3
+```
 
 If a job exceeds its maximum number of attempts, it will be considered a "failed" job. For more information on handling failed jobs, consult the [failed job documentation](#dealing-with-failed-jobs).
 
@@ -1028,7 +1036,9 @@ Often, you know roughly how long you expect your queued jobs to take. For this r
 
 The maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
 
-    php artisan queue:work --timeout=30
+```shell
+php artisan queue:work --timeout=30
+```
 
 If the job exceeds its maximum attempts by continually timing out, it will be marked as failed.
 
@@ -1118,9 +1128,11 @@ If you would like to mark your job as failed because of an exception that you ha
 
 Laravel's job batching feature allows you to easily execute a batch of jobs and then perform some action when the batch of jobs has completed executing. Before getting started, you should create a database migration to build a table to contain meta information about your job batches, such as their completion percentage. This migration may be generated using the `queue:batches-table` Artisan command:
 
-    php artisan queue:batches-table
+```shell
+php artisan queue:batches-table
 
-    php artisan migrate
+php artisan migrate
+```
 
 <a name="defining-batchable-jobs"></a>
 ### Defining Batchable Jobs
@@ -1377,7 +1389,7 @@ When a job within a batch fails, Laravel will automatically mark the batch as "c
 
 For convenience, Laravel provides a `queue:retry-batch` Artisan command that allows you to easily retry all of the failed jobs for a given batch. The `queue:retry-batch` command accepts the UUID of the batch whose failed jobs should be retried:
 
-```bash
+```shell
 php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 ```
 
@@ -1425,7 +1437,9 @@ Using the `catch` method, you may provide a closure that should be executed if t
 
 Laravel includes an Artisan command that will start a queue worker and process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:
 
-    php artisan queue:work
+```shell
+php artisan queue:work
+```
 
 > {tip} To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
 
@@ -1433,7 +1447,9 @@ Remember, queue workers, are long-lived processes and store the booted applicati
 
 Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker when you want to reload your updated code or reset the application state; however, this command is significantly less efficient than the `queue:work` command:
 
-    php artisan queue:listen
+```shell
+php artisan queue:listen
+```
 
 <a name="running-multiple-queue-workers"></a>
 #### Running Multiple Queue Workers
@@ -1445,44 +1461,58 @@ To assign multiple workers to a queue and process jobs concurrently, you should 
 
 You may also specify which queue connection the worker should utilize. The connection name passed to the `work` command should correspond to one of the connections defined in your `config/queue.php` configuration file:
 
-    php artisan queue:work redis
+```shell
+php artisan queue:work redis
+```
 
 By default, the `queue:work` command only processes jobs for the default queue on a given connection. However, you may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes that queue:
 
-    php artisan queue:work redis --queue=emails
+```shell
+php artisan queue:work redis --queue=emails
+```
 
 <a name="processing-a-specified-number-of-jobs"></a>
 #### Processing A Specified Number Of Jobs
 
 The `--once` option may be used to instruct the worker to only process a single job from the queue:
 
-    php artisan queue:work --once
+```shell
+php artisan queue:work --once
+```
 
 The `--max-jobs` option may be used to instruct the worker to process the given number of jobs and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing a given number of jobs, releasing any memory they may have accumulated:
 
-    php artisan queue:work --max-jobs=1000
+```shell
+php artisan queue:work --max-jobs=1000
+```
 
 <a name="processing-all-queued-jobs-then-exiting"></a>
 #### Processing All Queued Jobs & Then Exiting
 
 The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when processing Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
 
-    php artisan queue:work --stop-when-empty
+```shell
+php artisan queue:work --stop-when-empty
+```
 
 <a name="processing-jobs-for-a-given-number-of-seconds"></a>
 #### Processing Jobs For A Given Number Of Seconds
 
 The `--max-time` option may be used to instruct the worker to process jobs for the given number of seconds and then exit. This option may be useful when combined with [Supervisor](#supervisor-configuration) so that your workers are automatically restarted after processing jobs for a given amount of time, releasing any memory they may have accumulated:
 
-    // Process jobs for one hour and then exit...
-    php artisan queue:work --max-time=3600
+```shell
+# Process jobs for one hour and then exit...
+php artisan queue:work --max-time=3600
+```
 
 <a name="worker-sleep-duration"></a>
 #### Worker Sleep Duration
 
 When jobs are available on the queue, the worker will keep processing jobs with no delay in between them. However, the `sleep` option determines how many seconds the worker will "sleep" if there are no new jobs available. While sleeping, the worker will not process any new jobs - the jobs will be processed after the worker wakes up again.
 
-    php artisan queue:work --sleep=3
+```shell
+php artisan queue:work --sleep=3
+```
 
 <a name="resource-considerations"></a>
 #### Resource Considerations
@@ -1498,14 +1528,18 @@ Sometimes you may wish to prioritize how your queues are processed. For example,
 
 To start a worker that verifies that all of the `high` queue jobs are processed before continuing to any jobs on the `low` queue, pass a comma-delimited list of queue names to the `work` command:
 
-    php artisan queue:work --queue=high,low
+```shell
+php artisan queue:work --queue=high,low
+```
 
 <a name="queue-workers-and-deployment"></a>
 ### Queue Workers & Deployment
 
 Since queue workers are long-lived processes, they will not notice changes to your code without being restarted. So, the simplest way to deploy an application using queue workers is to restart the workers during your deployment process. You may gracefully restart all of the workers by issuing the `queue:restart` command:
 
-    php artisan queue:restart
+```shell
+php artisan queue:restart
+```
 
 This command will instruct all queue workers to gracefully exit after they finish processing their current job so that no existing jobs are lost. Since the queue workers will exit when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
 
@@ -1526,7 +1560,7 @@ In your `config/queue.php` configuration file, each queue connection defines a `
 
 The `queue:work` Artisan command exposes a `--timeout` option. If a job is processing for longer than the number of seconds specified by the timeout value, the worker processing the job will exit with an error. Typically, the worker will be restarted automatically by a [process manager configured on your server](#supervisor-configuration):
 
-```bash
+```shell
 php artisan queue:work --timeout=60
 ```
 
@@ -1546,7 +1580,9 @@ For this reason, you need to configure a process monitor that can detect when yo
 
 Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:work` processes if they fail. To install Supervisor on Ubuntu, you may use the following command:
 
-    sudo apt-get install supervisor
+```shell
+sudo apt-get install supervisor
+```
 
 > {tip} If configuring and managing Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your production Laravel projects.
 
@@ -1579,7 +1615,7 @@ In this example, the `numprocs` directive will instruct Supervisor to run eight 
 
 Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
 
-```bash
+```shell
 sudo supervisorctl reread
 
 sudo supervisorctl update
@@ -1594,17 +1630,23 @@ For more information on Supervisor, consult the [Supervisor documentation](http:
 
 Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After a job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. Of course, we will need to create that table if it does not already exist. To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
 
-    php artisan queue:failed-table
+```shell
+php artisan queue:failed-table
 
-    php artisan migrate
+php artisan migrate
+```
 
 When running a [queue worker](#running-the-queue-worker) process, you may specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will only be attempted once or as many times as specified by the job class' `$tries` property:
 
-    php artisan queue:work redis --tries=3
+```shell
+php artisan queue:work redis --tries=3
+```
 
 Using the `--backoff` option, you may specify how many seconds Laravel should wait before retrying a job that has encountered an exception. By default, a job is immediately released back onto the queue so that it may be attempted again:
 
-    php artisan queue:work redis --tries=3 --backoff=3
+```shell
+php artisan queue:work redis --tries=3 --backoff=3
+```
 
 If you would like to configure how many seconds Laravel should wait before retrying a job that has encountered an exception on a per-job basis, you may do so by defining a `backoff` property on your job class:
 
@@ -1708,33 +1750,47 @@ When a particular job fails, you may want to send an alert to your users or reve
 
 To view all of the failed jobs that have been inserted into your `failed_jobs` database table, you may use the `queue:failed` Artisan command:
 
-    php artisan queue:failed
+```shell
+php artisan queue:failed
+```
 
 The `queue:failed` command will list the job ID, connection, queue, failure time, and other information about the job. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece`, issue the following command:
 
-    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece
+```shell
+php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece
+```
 
 If necessary, you may pass multiple IDs to the command:
 
-    php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece 91401d2c-0784-4f43-824c-34f94a33c24d
+```shell
+php artisan queue:retry ce7bb17c-cdd8-41f0-a8ec-7b4fef4e5ece 91401d2c-0784-4f43-824c-34f94a33c24d
+```
 
 You may also retry all of the failed jobs for a particular queue:
 
-    php artisan queue:retry --queue=name
+```shell
+php artisan queue:retry --queue=name
+```
 
 To retry all of your failed jobs, execute the `queue:retry` command and pass `all` as the ID:
 
-    php artisan queue:retry all
+```shell
+php artisan queue:retry all
+```
 
 If you would like to delete a failed job, you may use the `queue:forget` command:
 
-    php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d
+```shell
+php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d
+```
 
 > {tip} When using [Horizon](/docs/{{version}}/horizon), you should use the `horizon:forget` command to delete a failed job instead of the `queue:forget` command.
 
 To delete all of your failed jobs from the `failed_jobs` table, you may use the `queue:flush` command:
 
-    php artisan queue:flush
+```shell
+php artisan queue:flush
+```
 
 <a name="ignoring-missing-models"></a>
 ### Ignoring Missing Models
@@ -1755,11 +1811,15 @@ For convenience, you may choose to automatically delete jobs with missing models
 
 You may delete all of the records in your application's `failed_jobs` table by invoking the `queue:prune-failed` Artisan command:
 
-    php artisan queue:prune-failed
+```shell
+php artisan queue:prune-failed
+```
 
 If you provide the `--hours` option to the command, only the failed job records that were inserted within the last N number of hours will be retained. For example, the following command will delete all of the failed job records that were inserted more than 48 hours ago:
 
-    php artisan queue:prune-failed --hours=48
+```shell
+php artisan queue:prune-failed --hours=48
+```
 
 <a name="storing-failed-jobs-in-dynamodb"></a>
 ### Storing Failed Jobs In DynamoDB
@@ -1770,7 +1830,7 @@ The `failed_jobs` table should have a string primary partition key named `applic
 
 In addition, ensure that you install the AWS SDK so that your Laravel application can communicate with Amazon DynamoDB:
 
-```nothing
+```shell
 composer require aws/aws-sdk-php
 ```
 
@@ -1791,7 +1851,9 @@ Next, set the `queue.failed.driver` configuration option's value to `dynamodb`. 
 
 You may instruct Laravel to discard failed jobs without storing them by setting the `queue.failed.driver` configuration option's value to `null`. Typically, this may be accomplished via the `QUEUE_FAILED_DRIVER` environment variable:
 
-    QUEUE_FAILED_DRIVER=null
+```ini
+QUEUE_FAILED_DRIVER=null
+```
 
 <a name="failed-job-events"></a>
 ### Failed Job Events
@@ -1840,11 +1902,15 @@ If you would like to register an event listener that will be invoked when a job 
 
 If you would like to delete all jobs from the default queue of the default connection, you may do so using the `queue:clear` Artisan command:
 
-    php artisan queue:clear
+```shell
+php artisan queue:clear
+```
 
 You may also provide the `connection` argument and `queue` option to delete jobs from a specific connection and queue:
 
-    php artisan queue:clear redis --queue=emails
+```shell
+php artisan queue:clear redis --queue=emails
+```
 
 > {note} Clearing jobs from queues is only available for the SQS, Redis, and database queue drivers. In addition, the SQS message deletion process takes up to 60 seconds, so jobs sent to the SQS queue up to 60 seconds after you clear the queue might also be deleted.
 
@@ -1855,7 +1921,7 @@ If your queue receives a sudden influx of jobs, it could become overwhelmed, lea
 
 To get started, you should schedule the `queue:monitor` command to [run every minute](/docs/{{version}}/scheduling). The command accepts the names of the queues you wish to monitor as well as your desired job count threshold:
 
-```bash
+```shell
 php artisan queue:monitor redis:default,redis:deployments --max=100
 ```
 

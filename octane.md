@@ -33,13 +33,13 @@
 
 Octane may be installed via the Composer package manager:
 
-```bash
+```shell
 composer require laravel/octane
 ```
 
 After installing Octane, you may execute the `octane:install` Artisan command, which will install Octane's configuration file into your application:
 
-```bash
+```shell
 php artisan octane:install
 ```
 
@@ -58,7 +58,7 @@ php artisan octane:install
 
 If you plan to develop your application using [Laravel Sail](/docs/{{version}}/sail), you should run the following commands to install Octane and RoadRunner:
 
-```bash
+```shell
 ./vendor/bin/sail up
 
 ./vendor/bin/sail composer require laravel/octane spiral/roadrunner
@@ -66,7 +66,7 @@ If you plan to develop your application using [Laravel Sail](/docs/{{version}}/s
 
 Next, you should start a Sail shell and use the `rr` executable to retrieve the latest Linux based build of the RoadRunner binary:
 
-```bash
+```shell
 ./vendor/bin/sail shell
 
 # Within the Sail shell...
@@ -75,7 +75,7 @@ Next, you should start a Sail shell and use the `rr` executable to retrieve the 
 
 After installing the RoadRunner binary, you may exit your Sail shell session. You will now need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
-```bash
+```shell
 ./vendor/bin/sail artisan sail:publish
 ```
 
@@ -87,7 +87,7 @@ command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start
 
 Finally, ensure the `rr` binary is executable and build your Sail images:
 
-```bash
+```shell
 chmod +x ./rr
 
 ./vendor/bin/sail build --no-cache
@@ -98,7 +98,7 @@ chmod +x ./rr
 
 If you plan to use the Swoole application server to serve your Laravel Octane application, you must install the Swoole PHP extension. Typically, this can be done via PECL:
 
-```bash
+```shell
 pecl install swoole
 ```
 
@@ -109,7 +109,7 @@ pecl install swoole
 
 Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/docs/{{version}}/sail), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `supervisor.conf` file used by Sail to keep your application running. To get started, execute the `sail:publish` Artisan command:
 
-```bash
+```shell
 ./vendor/bin/sail artisan sail:publish
 ```
 
@@ -121,7 +121,7 @@ command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start
 
 Finally, build your Sail images:
 
-```bash
+```shell
 ./vendor/bin/sail build --no-cache
 ```
 
@@ -144,7 +144,7 @@ Swoole supports a few additional configuration options that you may add to your 
 
 The Octane server can be started via the `octane:start` Artisan command. By default, this command will utilize the server specified by the `server` configuration option of your application's `octane` configuration file:
 
-```bash
+```shell
 php artisan octane:start
 ```
 
@@ -168,7 +168,7 @@ In production environments, you should serve your Octane application behind a tr
 
 In the Nginx configuration example below, Nginx will serve the site's static assets and proxy requests to the Octane server that is running on port 8000:
 
-```conf
+```nginx
 map $http_upgrade $connection_upgrade {
     default upgrade;
     ''      close;
@@ -227,13 +227,13 @@ server {
 
 Since your application is loaded in memory once when the Octane server starts, any changes to your application's files will not be reflected when you refresh your browser. For example, route definitions added to your `routes/web.php` file will not be reflected until the server is restarted. For convenience, you may use the `--watch` flag to instruct Octane to automatically restart the server on any file changes within your application:
 
-```bash
+```shell
 php artisan octane:start --watch
 ```
 
 Before using this feature, you should ensure that [Node](https://nodejs.org) is installed within your local development environment. In addition, you should install the [Chokidar](https://github.com/paulmillr/chokidar) file-watching library within your project:library:
 
-```bash
+```shell
 npm install --save-dev chokidar
 ```
 
@@ -244,13 +244,13 @@ You may configure the directories and files that should be watched using the `wa
 
 By default, Octane will start an application request worker for each CPU core provided by your machine. These workers will then be used to serve incoming HTTP requests as they enter your application. You may manually specify how many workers you would like to start using the `--workers` option when invoking the `octane:start` command:
 
-```bash
+```shell
 php artisan octane:start --workers=4
 ```
 
 If you are using the Swoole application server, you may also specify how many ["task workers"](#concurrent-tasks) you wish to start:
 
-```bash
+```shell
 php artisan octane:start --workers=4 --task-workers=6
 ```
 
@@ -259,7 +259,7 @@ php artisan octane:start --workers=4 --task-workers=6
 
 To help prevent stray memory leaks, Octane can gracefully restart a worker once it has handled a given number of requests. To instruct Octane to do this, you may use the `--max-requests` option:
 
-```bash
+```shell
 php artisan octane:start --max-requests=250
 ```
 
@@ -268,7 +268,7 @@ php artisan octane:start --max-requests=250
 
 You may gracefully restart the Octane server's application workers using the `octane:reload` command. Typically, this should be done after deployment so that your newly deployed code is loaded into memory and is used to serve to subsequent requests:
 
-```bash
+```shell
 php artisan octane:reload
 ```
 
@@ -277,7 +277,7 @@ php artisan octane:reload
 
 You may stop the Octane server using the `octane:stop` Artisan command:
 
-```bash
+```shell
 php artisan octane:stop
 ```
 
@@ -286,7 +286,7 @@ php artisan octane:stop
 
 You may check the current status of the Octane server using the `octane:status` Artisan command:
 
-```bash
+```shell
 php artisan octane:status
 ```
 
@@ -470,7 +470,7 @@ use Laravel\Octane\Facades\Octane;
 
 Concurrent tasks processed by Octane utilize Swoole's "task workers", and execute within an entirely different process than the incoming request. The amount of workers available to process concurrent tasks is determined by the `--task-workers` directive on the `octane:start` command:
 
-```bash
+```shell
 php artisan octane:start --workers=4 --task-workers=6
 ```
 

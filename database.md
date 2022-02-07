@@ -35,12 +35,16 @@ By default, Laravel's sample [environment configuration](/docs/{{version}}/confi
 
 SQLite databases are contained within a single file on your filesystem. You can create a new SQLite database using the `touch` command in your terminal: `touch database/database.sqlite`. After the database has been created, you may easily configure your environment variables to point to this database by placing the absolute path to the database in the `DB_DATABASE` environment variable:
 
-    DB_CONNECTION=sqlite
-    DB_DATABASE=/absolute/path/to/database.sqlite
+```ini
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/database.sqlite
+```
 
 To enable foreign key constraints for SQLite connections, you should set the `DB_FOREIGN_KEYS` environment variable to `true`:
 
-    DB_FOREIGN_KEYS=true
+```ini
+DB_FOREIGN_KEYS=true
+```
 
 <a name="mssql-configuration"></a>
 #### Microsoft SQL Server Configuration
@@ -312,8 +316,13 @@ Lastly, you can commit a transaction via the `commit` method:
 
 If you would like to connect to your database's CLI, you may use the `db` Artisan command:
 
-    php artisan db
+```shell
+php artisan db
+```
 
 If needed, you may specify a database connection name to connect to a database connection that is not the default connection:
 
-    php artisan db mysql
+```shell
+php artisan db mysql
+```
+

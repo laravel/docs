@@ -39,11 +39,15 @@ Currently, Scout ships with [Algolia](https://www.algolia.com/), [MeiliSearch](h
 
 First, install Scout via the Composer package manager:
 
-    composer require laravel/scout
+```shell
+composer require laravel/scout
+```
 
 After installing Scout, you should publish the Scout configuration file using the `vendor:publish` Artisan command. This command will publish the `scout.php` configuration file to your application's `config` directory:
 
-    php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
+```shell
+php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
+```
 
 Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to make searchable. This trait will register a model observer that will automatically keep the model in sync with your search driver:
 
@@ -67,7 +71,9 @@ Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to
 
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
 
-    composer require algolia/algoliasearch-client-php
+```shell
+composer require algolia/algoliasearch-client-php
+```
 
 <a name="meilisearch"></a>
 #### MeiliSearch
@@ -76,13 +82,17 @@ When using the Algolia driver, you should configure your Algolia `id` and `secre
 
 When using the MeiliSearch driver you will need to install the MeiliSearch PHP SDK via the Composer package manager:
 
-    composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
+```shell
+composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
+```
 
 Then, set the `SCOUT_DRIVER` environment variable as well as your MeiliSearch `host` and `key` credentials within your application's `.env` file:
 
-    SCOUT_DRIVER=meilisearch
-    MEILISEARCH_HOST=http://127.0.0.1:7700
-    MEILISEARCH_KEY=masterKey
+```ini
+SCOUT_DRIVER=meilisearch
+MEILISEARCH_HOST=http://127.0.0.1:7700
+MEILISEARCH_KEY=masterKey
+```
 
 For more information regarding MeiliSearch, please consult the [MeiliSearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
 
@@ -202,7 +212,9 @@ By default, Scout will use the primary key of the model as model's unique ID / k
 
 Scout also allows you to auto identify users when using [Algolia](https://algolia.com). Associating the authenticated user with search operations may be helpful when viewing your search analytics within Algolia's dashboard. You can enable user identification by defining a `SCOUT_IDENTIFY` environment variable as `true` in your application's `.env` file:
 
-    SCOUT_IDENTIFY=true
+```ini
+SCOUT_IDENTIFY=true
+```
 
 Enabling this feature this will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
 
@@ -281,11 +293,15 @@ The collection engine is the most portable search engine as it works across all 
 
 If you are installing Scout into an existing project, you may already have database records you need to import into your indexes. Scout provides a `scout:import` Artisan command that you may use to import all of your existing records into your search indexes:
 
-    php artisan scout:import "App\Models\Post"
+```shell
+php artisan scout:import "App\Models\Post"
+```
 
 The `flush` command may be used to remove all of a model's records from your search indexes:
 
-    php artisan scout:flush "App\Models\Post"
+```shell
+php artisan scout:flush "App\Models\Post"
+```
 
 <a name="modifying-the-import-query"></a>
 #### Modifying The Import Query

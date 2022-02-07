@@ -62,15 +62,21 @@ However, if you are attempting to authenticate a single-page application, mobile
 
 To get started, install Passport via the Composer package manager:
 
-    composer require laravel/passport
+```shell
+composer require laravel/passport
+```
 
 Passport's [service provider](/docs/{{version}}/providers) registers its own database migration directory, so you should migrate your database after installing the package. The Passport migrations will create the tables your application needs to store OAuth2 clients and access tokens:
 
-    php artisan migrate
+```shell
+php artisan migrate
+```
 
 Next, you should execute the `passport:install` Artisan command. This command will create the encryption keys needed to generate secure access tokens. In addition, the command will create "personal access" and "password grant" clients which will be used to generate access tokens:
 
-    php artisan passport:install
+```shell
+php artisan passport:install
+```
 
 > {tip} If you would like to use UUIDs as the primary key value of the Passport `Client` model instead of auto-incrementing integers, please install Passport using [the `uuids` option](#client-uuids).
 
@@ -145,14 +151,18 @@ Finally, in your application's `config/auth.php` configuration file, you should 
 
 You may also run the `passport:install` command with the `--uuids` option present. This option will instruct Passport that you would like to use UUIDs instead of auto-incrementing integers as the Passport `Client` model's primary key values. After running the `passport:install` command with the `--uuids` option, you will be given additional instructions regarding disabling Passport's default migrations:
 
-    php artisan passport:install --uuids
+```shell
+php artisan passport:install --uuids
+```
 
 <a name="deploying-passport"></a>
 ### Deploying Passport
 
 When deploying Passport to your application's servers for the first time, you will likely need to run the `passport:keys` command. This command generates the encryption keys Passport needs in order to generate access tokens. The generated keys are not typically kept in source control:
 
-    php artisan passport:keys
+```shell
+php artisan passport:keys
+```
 
 If necessary, you may define the path where Passport's keys should be loaded from. You may use the `Passport::loadKeysFrom` method to accomplish this. Typically, this method should be called from the `boot` method of your application's `App\Providers\AuthServiceProvider` class:
 
@@ -175,11 +185,13 @@ If necessary, you may define the path where Passport's keys should be loaded fro
 
 Alternatively, you may publish Passport's configuration file using the `vendor:publish` Artisan command:
 
-    php artisan vendor:publish --tag=passport-config
+```shell
+php artisan vendor:publish --tag=passport-config
+```
 
 After the configuration file has been published, you may load your application's encryption keys by defining them as environment variables:
 
-```bash
+```ini
 PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
 <private key here>
 -----END RSA PRIVATE KEY-----"
@@ -194,7 +206,9 @@ PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
 
 If you are not going to use Passport's default migrations, you should call the `Passport::ignoreMigrations` method in the `register` method of your `App\Providers\AppServiceProvider` class. You may export the default migrations using the `vendor:publish` Artisan command:
 
-    php artisan vendor:publish --tag=passport-migrations
+```shell
+php artisan vendor:publish --tag=passport-migrations
+```
 
 <a name="upgrading-passport"></a>
 ### Upgrading Passport
@@ -289,13 +303,15 @@ First, developers building applications that need to interact with your applicat
 
 The simplest way to create a client is using the `passport:client` Artisan command. This command may be used to create your own clients for testing your OAuth2 functionality. When you run the `client` command, Passport will prompt you for more information about your client and will provide you with a client ID and secret:
 
-    php artisan passport:client
+```shell
+php artisan passport:client
+```
 
 **Redirect URLs**
 
 If you would like to allow multiple redirect URLs for your client, you may specify them using a comma-delimited list when prompted for the URL by the `passport:client` command. Any URLs which contain commas should be URL encoded:
 
-```bash
+```shell
 http://example.com/callback,http://examplefoo.com/callback
 ```
 
@@ -313,10 +329,12 @@ The JSON API is guarded by the `web` and `auth` middleware; therefore, it may on
 
 This route returns all of the clients for the authenticated user. This is primarily useful for listing all of the user's clients so that they may edit or delete them:
 
-    axios.get('/oauth/clients')
-        .then(response => {
-            console.log(response.data);
-        });
+```js
+axios.get('/oauth/clients')
+    .then(response => {
+        console.log(response.data);
+    });
+```
 
 <a name="post-oauthclients"></a>
 #### `POST /oauth/clients`
@@ -325,46 +343,52 @@ This route is used to create new clients. It requires two pieces of data: the cl
 
 When a client is created, it will be issued a client ID and client secret. These values will be used when requesting access tokens from your application. The client creation route will return the new client instance:
 
-    const data = {
-        name: 'Client Name',
-        redirect: 'http://example.com/callback'
-    };
+```js
+const data = {
+    name: 'Client Name',
+    redirect: 'http://example.com/callback'
+};
 
-    axios.post('/oauth/clients', data)
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch (response => {
-            // List errors on response...
-        });
+axios.post('/oauth/clients', data)
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch (response => {
+        // List errors on response...
+    });
+```
 
 <a name="put-oauthclientsclient-id"></a>
 #### `PUT /oauth/clients/{client-id}`
 
 This route is used to update clients. It requires two pieces of data: the client's `name` and a `redirect` URL. The `redirect` URL is where the user will be redirected after approving or denying a request for authorization. The route will return the updated client instance:
 
-    const data = {
-        name: 'New Client Name',
-        redirect: 'http://example.com/callback'
-    };
+```js
+const data = {
+    name: 'New Client Name',
+    redirect: 'http://example.com/callback'
+};
 
-    axios.put('/oauth/clients/' + clientId, data)
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch (response => {
-            // List errors on response...
-        });
+axios.put('/oauth/clients/' + clientId, data)
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch (response => {
+        // List errors on response...
+    });
+```
 
 <a name="delete-oauthclientsclient-id"></a>
 #### `DELETE /oauth/clients/{client-id}`
 
 This route is used to delete clients:
 
-    axios.delete('/oauth/clients/' + clientId)
-        .then(response => {
-            //
-        });
+```js
+axios.delete('/oauth/clients/' + clientId)
+    .then(response => {
+        //
+    });
+```
 
 <a name="requesting-tokens"></a>
 ### Requesting Tokens
@@ -400,7 +424,9 @@ When receiving authorization requests, Passport will automatically display a tem
 
 If you would like to customize the authorization approval screen, you may publish Passport's views using the `vendor:publish` Artisan command. The published views will be placed in the `resources/views/vendor/passport` directory:
 
-    php artisan vendor:publish --tag=passport-views
+```shell
+php artisan vendor:publish --tag=passport-views
+```
 
 Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately:
 
@@ -464,17 +490,21 @@ Passport also includes a JSON API for managing authorized access tokens. You may
 
 This route returns all of the authorized access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they can revoke them:
 
-    axios.get('/oauth/tokens')
-        .then(response => {
-            console.log(response.data);
-        });
+```js
+axios.get('/oauth/tokens')
+    .then(response => {
+        console.log(response.data);
+    });
+```
 
 <a name="delete-oauthtokenstoken-id"></a>
 #### `DELETE /oauth/tokens/{token-id}`
 
 This route may be used to revoke authorized access tokens and their related refresh tokens:
 
-    axios.delete('/oauth/tokens/' + tokenId);
+```js
+axios.delete('/oauth/tokens/' + tokenId);
+```
 
 <a name="refreshing-tokens"></a>
 ### Refreshing Tokens
@@ -517,14 +547,16 @@ You may revoke a token by using the `revokeAccessToken` method on the `Laravel\P
 
 When tokens have been revoked or expired, you might want to purge them from the database. Passport's included `passport:purge` Artisan command can do this for you:
 
-    # Purge revoked and expired tokens and auth codes...
-    php artisan passport:purge
+```shell
+# Purge revoked and expired tokens and auth codes...
+php artisan passport:purge
 
-    # Only purge revoked tokens and auth codes...
-    php artisan passport:purge --revoked
+# Only purge revoked tokens and auth codes...
+php artisan passport:purge --revoked
 
-    # Only purge expired tokens and auth codes...
-    php artisan passport:purge --expired
+# Only purge expired tokens and auth codes...
+php artisan passport:purge --expired
+```
 
 You may also configure a [scheduled job](/docs/{{version}}/scheduling) in your application's `App\Console\Kernel` class to automatically prune your tokens on a schedule:
 
@@ -549,7 +581,9 @@ The Authorization Code grant with "Proof Key for Code Exchange" (PKCE) is a secu
 
 Before your application can issue tokens via the authorization code grant with PKCE, you will need to create a PKCE-enabled client. You may do this using the `passport:client` Artisan command with the `--public` option:
 
-    php artisan passport:client --public
+```shell
+php artisan passport:client --public
+```
 
 <a name="requesting-auth-pkce-grant-tokens"></a>
 ### Requesting Tokens
@@ -642,7 +676,9 @@ The OAuth2 password grant allows your other first-party clients, such as a mobil
 
 Before your application can issue tokens via the password grant, you will need to create a password grant client. You may do this using the `passport:client` Artisan command with the `--password` option. **If you have already run the `passport:install` command, you do not need to run this command:**
 
-    php artisan passport:client --password
+```shell
+php artisan passport:client --password
+```
 
 <a name="requesting-password-grant-tokens"></a>
 ### Requesting Tokens
@@ -792,7 +828,9 @@ The client credentials grant is suitable for machine-to-machine authentication. 
 
 Before your application can issue tokens via the client credentials grant, you will need to create a client credentials grant client. You may do this using the `--client` option of the `passport:client` Artisan command:
 
-    php artisan passport:client --client
+```shell
+php artisan passport:client --client
+```
 
 Next, to use this grant type, you need to add the `CheckClientCredentials` middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
 
@@ -842,11 +880,13 @@ Sometimes, your users may want to issue access tokens to themselves without goin
 
 Before your application can issue personal access tokens, you will need to create a personal access client. You may do this by executing the `passport:client` Artisan command with the `--personal` option. If you have already run the `passport:install` command, you do not need to run this command:
 
-    php artisan passport:client --personal
+```shell
+php artisan passport:client --personal
+```
 
 After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
 
-```bash
+```ini
 PASSPORT_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
 PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
 ```
@@ -878,45 +918,53 @@ The JSON API is guarded by the `web` and `auth` middleware; therefore, it may on
 
 This route returns all of the [scopes](#token-scopes) defined for your application. You may use this route to list the scopes a user may assign to a personal access token:
 
-    axios.get('/oauth/scopes')
-        .then(response => {
-            console.log(response.data);
-        });
+```js
+axios.get('/oauth/scopes')
+    .then(response => {
+        console.log(response.data);
+    });
+```
 
 <a name="get-oauthpersonal-access-tokens"></a>
 #### `GET /oauth/personal-access-tokens`
 
 This route returns all of the personal access tokens that the authenticated user has created. This is primarily useful for listing all of the user's tokens so that they may edit or revoke them:
 
-    axios.get('/oauth/personal-access-tokens')
-        .then(response => {
-            console.log(response.data);
-        });
+```js
+axios.get('/oauth/personal-access-tokens')
+    .then(response => {
+        console.log(response.data);
+    });
+```
 
 <a name="post-oauthpersonal-access-tokens"></a>
 #### `POST /oauth/personal-access-tokens`
 
 This route creates new personal access tokens. It requires two pieces of data: the token's `name` and the `scopes` that should be assigned to the token:
 
-    const data = {
-        name: 'Token Name',
-        scopes: []
-    };
+```js
+const data = {
+    name: 'Token Name',
+    scopes: []
+};
 
-    axios.post('/oauth/personal-access-tokens', data)
-        .then(response => {
-            console.log(response.data.accessToken);
-        })
-        .catch (response => {
-            // List errors on response...
-        });
+axios.post('/oauth/personal-access-tokens', data)
+    .then(response => {
+        console.log(response.data.accessToken);
+    })
+    .catch (response => {
+        // List errors on response...
+    });
+```
 
 <a name="delete-oauthpersonal-access-tokenstoken-id"></a>
 #### `DELETE /oauth/personal-access-tokens/{token-id}`
 
 This route may be used to revoke personal access tokens:
 
-    axios.delete('/oauth/personal-access-tokens/' + tokenId);
+```js
+axios.delete('/oauth/personal-access-tokens/' + tokenId);
+```
 
 <a name="protecting-routes"></a>
 ## Protecting Routes

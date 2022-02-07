@@ -94,7 +94,9 @@ When registering routes for single action controllers, you do not need to specif
 
 You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:
 
-    php artisan make:controller ProvisionServer --invokable
+```shell
+php artisan make:controller ProvisionServer --invokable
+```
 
 > {tip} Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
@@ -135,7 +137,9 @@ If you think of each Eloquent model in your application as a "resource", it is t
 
 Because of this common use case, Laravel resource routing assigns the typical create, read, update, and delete ("CRUD") routes to a controller with a single line of code. To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions:
 
-    php artisan make:controller PhotoController --resource
+```shell
+php artisan make:controller PhotoController --resource
+```
 
 This command will generate a controller at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller:
 
@@ -184,14 +188,18 @@ Typically, a 404 HTTP response will be generated if an implicitly bound resource
 
 If you are using [route model binding](/docs/{{version}}/routing#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
 
-    php artisan make:controller PhotoController --model=Photo --resource
+```shell
+php artisan make:controller PhotoController --model=Photo --resource
+```
 
 <a name="generating-form-requests"></a>
 #### Generating Form Requests
 
 You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](/docs/{{version}}/validation#form-request-validation) for the controller's storage and update methods:
 
-    php artisan make:controller PhotoController --model=Photo --resource --requests
+```shell
+php artisan make:controller PhotoController --model=Photo --resource --requests
+```
 
 <a name="restful-partial-resource-routes"></a>
 ### Partial Resource Routes
@@ -229,7 +237,9 @@ You may register many API resource controllers at once by passing an array to th
 
 To quickly generate an API resource controller that does not include the `create` or `edit` methods, use the `--api` switch when executing the `make:controller` command:
 
-    php artisan make:controller PhotoController --api
+```shell
+php artisan make:controller PhotoController --api
+```
 
 <a name="restful-nested-resources"></a>
 ### Nested Resources

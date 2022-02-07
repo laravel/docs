@@ -24,7 +24,9 @@ Of course, you may always convert Eloquent models or collections to JSON using t
 
 To generate a resource class, you may use the `make:resource` Artisan command. By default, resources will be placed in the `app/Http/Resources` directory of your application. Resources extend the `Illuminate\Http\Resources\Json\JsonResource` class:
 
-    php artisan make:resource UserResource
+```shell
+php artisan make:resource UserResource
+```
 
 <a name="generating-resource-collections"></a>
 #### Resource Collections
@@ -33,9 +35,11 @@ In addition to generating resources that transform individual models, you may ge
 
 To create a resource collection, you should use the `--collection` flag when creating the resource. Or, including the word `Collection` in the resource name will indicate to Laravel that it should create a collection resource. Collection resources extend the `Illuminate\Http\Resources\Json\ResourceCollection` class:
 
-    php artisan make:resource User --collection
+```shell
+php artisan make:resource User --collection
 
-    php artisan make:resource UserCollection
+php artisan make:resource UserCollection
+```
 
 <a name="concept-overview"></a>
 ## Concept Overview
@@ -95,7 +99,9 @@ If you are returning a collection of resources or a paginated response, you shou
 
 Note that this does not allow any addition of custom meta data that may need to be returned with your collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:
 
-    php artisan make:resource UserCollection
+```shell
+php artisan make:resource UserCollection
+```
 
 Once the resource collection class has been generated, you may easily define any meta data that should be included with the response:
 
@@ -308,20 +314,22 @@ Like singular resources, resource collections may be returned directly from rout
 
 By default, your outermost resource is wrapped in a `data` key when the resource response is converted to JSON. So, for example, a typical resource collection response looks like the following:
 
-    {
-        "data": [
-            {
-                "id": 1,
-                "name": "Eladio Schroeder Sr.",
-                "email": "therese28@example.com",
-            },
-            {
-                "id": 2,
-                "name": "Liliana Mayert",
-                "email": "evandervort@example.com",
-            }
-        ]
-    }
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Eladio Schroeder Sr.",
+            "email": "therese28@example.com",
+        },
+        {
+            "id": 2,
+            "name": "Liliana Mayert",
+            "email": "evandervort@example.com",
+        }
+    ]
+}
+```
 
 If you would like to use a custom key instead of `data`, you may define a `$wrap` attribute on the resource class:
 
@@ -407,35 +415,37 @@ You may be wondering if this will cause your outermost resource to be wrapped in
 
 When returning paginated collections via a resource response, Laravel will wrap your resource data in a `data` key even if the `withoutWrapping` method has been called. This is because paginated responses always contain `meta` and `links` keys with information about the paginator's state:
 
-    {
-        "data": [
-            {
-                "id": 1,
-                "name": "Eladio Schroeder Sr.",
-                "email": "therese28@example.com",
-            },
-            {
-                "id": 2,
-                "name": "Liliana Mayert",
-                "email": "evandervort@example.com",
-            }
-        ],
-        "links":{
-            "first": "http://example.com/pagination?page=1",
-            "last": "http://example.com/pagination?page=1",
-            "prev": null,
-            "next": null
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Eladio Schroeder Sr.",
+            "email": "therese28@example.com",
         },
-        "meta":{
-            "current_page": 1,
-            "from": 1,
-            "last_page": 1,
-            "path": "http://example.com/pagination",
-            "per_page": 15,
-            "to": 10,
-            "total": 10
+        {
+            "id": 2,
+            "name": "Liliana Mayert",
+            "email": "evandervort@example.com",
         }
+    ],
+    "links":{
+        "first": "http://example.com/pagination?page=1",
+        "last": "http://example.com/pagination?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta":{
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "http://example.com/pagination",
+        "per_page": 15,
+        "to": 10,
+        "total": 10
     }
+}
+```
 
 <a name="pagination"></a>
 ### Pagination
@@ -451,35 +461,37 @@ You may pass a Laravel paginator instance to the `collection` method of a resour
 
 Paginated responses always contain `meta` and `links` keys with information about the paginator's state:
 
-    {
-        "data": [
-            {
-                "id": 1,
-                "name": "Eladio Schroeder Sr.",
-                "email": "therese28@example.com",
-            },
-            {
-                "id": 2,
-                "name": "Liliana Mayert",
-                "email": "evandervort@example.com",
-            }
-        ],
-        "links":{
-            "first": "http://example.com/pagination?page=1",
-            "last": "http://example.com/pagination?page=1",
-            "prev": null,
-            "next": null
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Eladio Schroeder Sr.",
+            "email": "therese28@example.com",
         },
-        "meta":{
-            "current_page": 1,
-            "from": 1,
-            "last_page": 1,
-            "path": "http://example.com/pagination",
-            "per_page": 15,
-            "to": 10,
-            "total": 10
+        {
+            "id": 2,
+            "name": "Liliana Mayert",
+            "email": "evandervort@example.com",
         }
+    ],
+    "links":{
+        "first": "http://example.com/pagination?page=1",
+        "last": "http://example.com/pagination?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta":{
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "path": "http://example.com/pagination",
+        "per_page": 15,
+        "to": 10,
+        "total": 10
     }
+}
+```
 
 <a name="conditional-attributes"></a>
 ### Conditional Attributes

@@ -23,7 +23,9 @@ Laravel provides an expressive, minimal API around the [Guzzle HTTP client](http
 
 Before getting started, you should ensure that you have installed the Guzzle package as a dependency of your application. By default, Laravel automatically includes this dependency. However, if you have previously removed the package, you may install it again via Composer:
 
-    composer require guzzlehttp/guzzle
+```shell
+composer require guzzlehttp/guzzle
+```
 
 <a name="making-requests"></a>
 ## Making Requests

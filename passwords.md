@@ -29,7 +29,9 @@ Next, verify that your `App\Models\User` model implements the `Illuminate\Contra
 
 A table must be created to store your application's password reset tokens. The migration for this table is included in the default Laravel application, so you only need to migrate your database to create this table:
 
-    php artisan migrate
+```shell
+php artisan migrate
+```
 
 <a name="configuring-trusted-hosts"></a>
 ### Configuring Trusted Hosts
@@ -150,7 +152,9 @@ Before moving on, you may be wondering how Laravel knows how to retrieve the use
 
 Password reset tokens that have expired will still be present within your database. However, you may easily delete these records using the `auth:clear-resets` Artisan command:
 
-    php artisan auth:clear-resets
+```shell
+php artisan auth:clear-resets
+```
 
 If you would like to automate this process, consider adding the command to your application's [scheduler](/docs/{{version}}/scheduling):
 

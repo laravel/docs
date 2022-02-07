@@ -70,13 +70,13 @@ If you are attempting to manually build the authentication layer for an applicat
 
 To get started, install Fortify using the Composer package manager:
 
-```nothing
+```shell
 composer require laravel/fortify
 ```
 
 Next, publish Fortify's resources using the `vendor:publish` command:
 
-```bash
+```shell
 php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
 ```
 
@@ -84,7 +84,7 @@ This command will publish Fortify's actions to your `app/Actions` directory, whi
 
 Next, you should migrate your database:
 
-```bash
+```shell
 php artisan migrate
 ```
 
@@ -459,7 +459,7 @@ The `/reset-password` endpoint expects a string `email` field, a `password` fiel
 
 If the password reset request was successful, Fortify will redirect back to the `/login` route so that the user can log in with their new password. In addition, a `status` session variable will be set so that you may display the successful status of the reset on your login screen:
 
-```html
+```blade
 @if (session('status'))
     <div class="mb-4 font-medium text-sm text-green-600">
         {{ session('status') }}
@@ -514,7 +514,7 @@ If you wish, you may add a button to your application's `verify-email` template 
 
 If the request to resend the verification link email was successful, Fortify will redirect the user back to the `/email/verify` endpoint with a `status` session variable, allowing you to display an informational message to the user informing them the operation was successful. If the request was an XHR request, a 202 HTTP response will be returned:
 
-```html
+```blade
 @if (session('status') == 'verification-link-sent')
     <div class="mb-4 font-medium text-sm text-green-600">
         A new email verification link has been emailed to you!
