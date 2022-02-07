@@ -8,7 +8,7 @@
     - [Setup](#setup)
     - [Variables](#variables)
     - [Stories](#stories)
-    - [Completion Hooks](#completion-hooks)
+    - [Hooks](#completion-hooks)
 - [Running Tasks](#running-tasks)
     - [Confirming Task Execution](#confirming-task-execution)
 - [Notifications](#notifications)
@@ -175,11 +175,24 @@ Once the story has been written, you may invoke it in the same way you would inv
     php vendor/bin/envoy run deploy
 
 <a name="completion-hooks"></a>
-### Completion Hooks
+### Hooks
 
-When tasks and stories finish, a number of hooks are executed. The hook types supported by Envoy are `@after`, `@error`, `@success`, and `@finished`. All of the code in these hooks is interpreted as PHP and executed locally, not on the remote servers that your tasks interact with.
+When tasks and stories run, a number of hooks are executed. The hook types supported by Envoy are `@before`, `@after`, `@error`, `@success`, and `@finished`. All of the code in these hooks is interpreted as PHP and executed locally, not on the remote servers that your tasks interact with.
 
 You may define as many of each of these hooks as you like. They will be executed in the order that they appear in your Envoy script.
+
+<a name="hook-before"></a>
+#### `@before`
+
+Before each task execution, all of the `@before` hooks registered in your Envoy script will execute. The `@before` hooks receive the name of the task that will be executed:
+
+```php
+@before
+    if ($task === 'deploy') {
+        // ...
+    }
+@endbefore
+```
 
 <a name="completion-after"></a>
 #### `@after`
