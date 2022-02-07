@@ -186,7 +186,7 @@ You may define as many of each of these hooks as you like. They will be executed
 
 Before each task execution, all of the `@before` hooks registered in your Envoy script will execute. The `@before` hooks receive the name of the task that will be executed:
 
-```php
+```blade
 @before
     if ($task === 'deploy') {
         // ...
