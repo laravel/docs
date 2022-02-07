@@ -451,7 +451,7 @@ If you need to prepare or sanitize any data from the request before you apply yo
     protected function prepareForValidation()
     {
         $this->merge([
-            'slug' => Str::slug($this->slug),
+            'slug' => Str::slug($this->get('slug')),
         ]);
     }
 
