@@ -621,15 +621,13 @@ If you are upgrading your Laravel 8 project to Laravel 9 by importing your exist
 
 Within your `app/Http/Middleware/TrustProxies.php` file, update `use Fideloper\Proxy\TrustProxies as Middleware` to `use Illuminate\Http\Middleware\TrustProxies as Middleware`.
 
-In case you have in `app/Http/Middleware/TrustProxies.php` the next line:
+Next, within `app/Http/Middleware/TrustProxies.php`, you should update the following `$headers` property definition:
 
 ```php
+// Before...
 protected $headers = Request::HEADER_X_FORWARDED_ALL;
-```
 
-You will need to change it to:
-
-```php
+// After...
 protected $headers =
     Request::HEADER_X_FORWARDED_FOR |
     Request::HEADER_X_FORWARDED_HOST |
