@@ -50,7 +50,7 @@ As you may know, Laravel transitioned to yearly releases with the release of Lar
 
 Therefore, this commitment to ship great new features during the current release will likely lead to future "major" releases being primarily used for "maintenance" tasks such as upgrading upstream dependencies, which can be seen in these release notes.
 
-Laravel 9 continues the improvements made in Laravel 8.x by introducing support for Symfony 6.0 components, Symfony Mailer, Flysystem 3.0, improved `route:list` output, a Laravel Scout database driver, new Eloquent accessor / mutator syntax, implicit route bindings via Enums, and a variety of other bug fixes and usability improvements.
+Laravel 9 continues the improvements made in Laravel 8.x by introducing support for Symfony 6.0 components, Symfony Mailer, Flysystem 3.0, improved `route:list` output, improved `event:list` output, a Laravel Scout database driver, new Eloquent accessor / mutator syntax, implicit route bindings via Enums, and a variety of other bug fixes and usability improvements.
 
 <a name="php-8"></a>
 ### PHP 8.0
@@ -392,6 +392,14 @@ The `route:list` CLI output has been significantly improved for the Laravel 9.x 
 </p>
 
 <a name="test-coverage-support-on-artisan-test-Command"></a>
+
+### Improved `event:list` CLI Output
+
+_Improved `event:list` CLI output was contributed by [Iman Ghafoori](https://github.com/imanghafoori1)_.
+
+The `event:list` CLI output has been significantly improved for the Laravel 9.x release, showing each and every event\listener pair set in your application allowing you to have a birds-eye view of what is going on while debugging. Before 9.x it was only able to show what was set through the `$listen` property of `EventServiceProvider`.
+
+
 ### Test Coverage Using Artisan `test` Command
 
 _Test coverage when using the Artisan `test` command was contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
