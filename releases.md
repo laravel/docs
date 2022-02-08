@@ -28,7 +28,7 @@ For LTS releases, such as Laravel 9, bug fixes are provided for 2 years and secu
 | 7 | 7.2 - 8.0 | March 3rd, 2020 | October 6th, 2020 | March 3rd, 2021 |
 | 8 | 7.3 - 8.1 | September 8th, 2020 | July 26th, 2022 | January 24th, 2023 |
 | 9 (LTS) | 8.0 - 8.1 | February 8th, 2022 | February 8th, 2024 | February 8th, 2025 |
-| 10 | 8.0 - 8.1 | February 7th, 2023 | August 7th, 2024 | February 7th, 2025 |
+| 10 | 8.0 - 8.1 | February 7th, 2023 | August 7th, 2024 | February 7th, 2026 |
 
 <div class="version-colors">
     <div class="end-of-life">
