@@ -46,7 +46,7 @@
 
 #### PHP 8.0.2 Required
 
-Laravel's minimum supported PHP version is now 8.0.2.
+Laravel now requires PHP 8.0.2 or greater.
 
 <a name="php-return-types"></a>
 #### PHP Return Types
