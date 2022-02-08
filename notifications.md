@@ -109,7 +109,7 @@ You can also send notifications immediately using the `sendNow` method. This met
 <a name="specifying-delivery-channels"></a>
 ### Specifying Delivery Channels
 
-Every notification class has a `via` method that determines on which channels the notification will be delivered. Notifications may be sent on the `mail`, `database`, `broadcast`, `nexmo`, and `slack` channels.
+Every notification class has a `via` method that determines on which channels the notification will be delivered. Notifications may be sent on the `mail`, `database`, `broadcast`, `vonage`, and `slack` channels.
 
 > {tip} If you would like to use other delivery channels such as Telegram or Pusher, check out the community driven [Laravel Notification Channels website](http://laravel-notification-channels.com).
 
@@ -123,7 +123,7 @@ The `via` method receives a `$notifiable` instance, which will be an instance of
      */
     public function via($notifiable)
     {
-        return $notifiable->prefers_sms ? ['nexmo'] : ['mail', 'database'];
+        return $notifiable->prefers_sms ? ['vonage'] : ['mail', 'database'];
     }
 
 <a name="queueing-notifications"></a>
@@ -260,7 +260,7 @@ However, if you would like to make the final determination on whether the queued
 Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the `Notification` facade's `route` method, you may specify ad-hoc notification routing information before sending the notification:
 
     Notification::route('mail', 'taylor@example.com')
-                ->route('nexmo', '5555555555')
+                ->route('vonage', '5555555555')
                 ->route('slack', 'https://hooks.slack.com/services/...')
                 ->notify(new InvoicePaid($invoice));
 
@@ -890,92 +890,67 @@ If you would like to customize which channel that an entity's broadcast notifica
 <a name="sms-prerequisites"></a>
 ### Prerequisites
 
-Sending SMS notifications in Laravel is powered by [Vonage](https://www.vonage.com/) (formerly known as Nexmo). Before you can send notifications via Vonage, you need to install the `laravel/nexmo-notification-channel` and `nexmo/laravel` Composer packages
+Sending SMS notifications in Laravel is powered by [Vonage](https://www.vonage.com/) (formerly known as Nexmo). Before you can send notifications via Vonage, you need to install the `laravel/vonage-notification-channel` and `guzzlehttp/guzzle` packages:
 
-    composer require laravel/nexmo-notification-channel nexmo/laravel
+    composer require laravel/vonage-notification-channel guzzlehttp/guzzle
 
-The `nexmo/laravel` package includes [its own configuration file](https://github.com/Nexmo/nexmo-laravel/blob/master/config/nexmo.php). However, you are not required to export this configuration file to your own application. You can simply use the `NEXMO_KEY` and `NEXMO_SECRET` environment variables to set your Vonage public and secret key.
+The package includes [a configuration file](https://github.com/laravel/vonage-notification-channel/blob/3.x/config/vonage.php). However, you are not required to export this configuration file to your own application. You can simply use the `VONAGE_KEY` and `VONAGE_SECRET` environment variables to set your Vonage public and secret key.
 
-Next, you will need to add a `nexmo` configuration entry to your `config/services.php` configuration file. You may copy the example configuration below to get started:
+Next, you can set a `VONAGE_SMS_FROM` environment variable:
 
-    'nexmo' => [
-        'sms_from' => '15556666666',
-    ],
+    VONAGE_SMS_FROM=15556666666
 
-The `sms_from` option is the phone number that your SMS messages will be sent from. You should generate a phone number for your application in the Vonage control panel.
+The `VONAGE_SMS_FROM` environment variable is the phone number that your SMS messages will be sent from. You should generate a phone number for your application in the Vonage control panel.
 
 <a name="formatting-sms-notifications"></a>
 ### Formatting SMS Notifications
 
-If a notification supports being sent as an SMS, you should define a `toNexmo` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Messages\NexmoMessage` instance:
+If a notification supports being sent as an SMS, you should define a `toVonage` method on the notification class. This method will receive a `$notifiable` entity and should return an `Illuminate\Notifications\Messages\VonageMessage` instance:
 
     /**
      * Get the Vonage / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\NexmoMessage
+     * @return \Illuminate\Notifications\Messages\VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->content('Your SMS message content');
     }
 
 <a name="unicode-content"></a>
 #### Unicode Content
 
-If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `NexmoMessage` instance:
+If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `VonageMessage` instance:
 
     /**
      * Get the Vonage / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\NexmoMessage
+     * @return \Illuminate\Notifications\Messages\VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->content('Your unicode message')
                     ->unicode();
     }
 
-<a name="formatting-shortcode-notifications"></a>
-### Formatting Shortcode Notifications
-
-Laravel also supports sending shortcode notifications, which are pre-defined message templates in your Vonage account. To send a shortcode SMS notification, you should define a `toShortcode` method on your notification class. From within this method, you may return an array specifying the type of notification (`alert`, `2fa`, or `marketing`) as well as the custom values that will populate the template:
-
-    /**
-     * Get the Vonage / Shortcode representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toShortcode($notifiable)
-    {
-        return [
-            'type' => 'alert',
-            'custom' => [
-                'code' => 'ABC123',
-            ],
-        ];
-    }
-
-> {tip} Like [routing SMS Notifications](#routing-sms-notifications), you should implement the `routeNotificationForShortcode` method on your notifiable model.
-
 <a name="customizing-the-from-number"></a>
 ### Customizing The "From" Number
 
-If you would like to send some notifications from a phone number that is different from the phone number specified in your `config/services.php` file, you may call the `from` method on a `NexmoMessage` instance:
+If you would like to send some notifications from a phone number that is different from the phone number specified by your `VONAGE_SMS_FROM` environment variable, you may call the `from` method on a `VonageMessage` instance:
 
     /**
      * Get the Vonage / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return NexmoMessage
+     * @return \Illuminate\Notifications\Messages\VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->content('Your SMS message content')
                     ->from('15554443333');
     }
@@ -989,11 +964,11 @@ If you would like to keep track of costs per user, team, or client, you may add 
      * Get the Vonage / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return NexmoMessage
+     * @return \Illuminate\Notifications\Messages\VonageMessage
      */
-    public function toNexmo($notifiable)
+    public function toVonage($notifiable)
     {
-        return (new NexmoMessage)
+        return (new VonageMessage)
                     ->clientReference((string) $notifiable->id)
                     ->content('Your SMS message content');
     }
@@ -1001,7 +976,7 @@ If you would like to keep track of costs per user, team, or client, you may add 
 <a name="routing-sms-notifications"></a>
 ### Routing SMS Notifications
 
-To route Vonage notifications to the proper phone number, define a `routeNotificationForNexmo` method on your notifiable entity:
+To route Vonage notifications to the proper phone number, define a `routeNotificationForVonage` method on your notifiable entity:
 
     <?php
 
@@ -1015,12 +990,12 @@ To route Vonage notifications to the proper phone number, define a `routeNotific
         use Notifiable;
 
         /**
-         * Route notifications for the Nexmo channel.
+         * Route notifications for the Vonage channel.
          *
          * @param  \Illuminate\Notifications\Notification  $notification
          * @return string
          */
-        public function routeNotificationForNexmo($notification)
+        public function routeNotificationForVonage($notification)
         {
             return $this->phone_number;
         }
