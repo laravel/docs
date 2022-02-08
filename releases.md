@@ -1,7 +1,6 @@
 # Release Notes
 
 - [Versioning Scheme](#versioning-scheme)
-    - [Exceptions](#exceptions)
 - [Support Policy](#support-policy)
 - [Laravel 9](#laravel-9)
 
