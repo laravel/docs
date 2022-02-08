@@ -46,7 +46,30 @@
 
 #### PHP 8.0.2 Required
 
-Laravel's minimum supported PHP version is now 8.0.2.
+Laravel's minimum required PHP version is now 8.0.2.
+
+#### Composer Dependencies
+
+You should update the following dependencies in your application's `composer.json` file:
+
+<div class="content-list" markdown="1">
+
+- `laravel/framework` to `^9.0`
+- `nunomaduro/collision` to `^6.0`
+
+</div>
+
+In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your application's `composer.json` file.
+
+Furthermore, the following first-party packages have received new major releases to support Laravel 9.x. If applicable, you should read their individual upgrade guides before upgrading:
+
+<div class="content-list" markdown="1">
+
+- [Vonage Notification Channel (v3.0)](https://github.com/laravel/vonage-notification-channel/blob/3.x/UPGRADE.md) (Replaces Nexmo)
+
+</div>
+
+Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 9 support.
 
 <a name="php-return-types"></a>
 #### PHP Return Types
@@ -78,29 +101,6 @@ In addition, return types were added to methods implementing PHP's `SessionHandl
 - `gc($lifetime): int`
 
 </div>
-
-#### Composer Dependencies
-
-You should update the following dependencies in your application's `composer.json` file:
-
-<div class="content-list" markdown="1">
-
-- `laravel/framework` to `^9.0`
-- `nunomaduro/collision` to `^6.0`
-
-</div>
-
-In addition, replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your `composer.json` file.
-
-The following first-party packages have new major releases to support Laravel 9.x. If applicable, you should read their individual upgrade guides before upgrading:
-
-<div class="content-list" markdown="1">
-
-    - [Vonage Notification Channel v3.0](https://github.com/laravel/vonage-notification-channel/blob/3.x/UPGRADE.md)
-
-</div>
-
-Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 9 support.
 
 <a name="application"></a>
 ### Application
