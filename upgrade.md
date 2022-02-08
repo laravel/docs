@@ -432,7 +432,7 @@ If you wish to specify a longer timeout for a given request, you may do so using
 
 **Likelihood Of Impact: Low**
 
-Previously, Laravel would not execute any provided Guzzle HTTP middleware when the [HTTP client](/docs/{{version}}/http-client) was "faked". However, in Laravel 9.x, Guzzle HTTP middleware will be exeucted even when the HTTP client is faked.
+Previously, Laravel would not execute any provided Guzzle HTTP middleware when the [HTTP client](/docs/{{version}}/http-client) was "faked". However, in Laravel 9.x, Guzzle HTTP middleware will be executed even when the HTTP client is faked.
 
 #### HTTP Fake & Dependency Injection
 
