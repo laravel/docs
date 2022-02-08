@@ -234,7 +234,7 @@ To use the database engine, you may simply set the value of the `SCOUT_DRIVER` e
 SCOUT_DRIVER=database
 ```
 
-Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the collection engine.
+Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia or MeiliSearch indexes, is unnecessary when using the database engine.
 
 #### Customizing Database Searching Strategies
 
