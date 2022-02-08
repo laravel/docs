@@ -347,7 +347,7 @@ Laravel now includes pagination views built using [Bootstrap 5](https://getboots
 
 _Improved validation of nested array inputs was contributed by [Steve Bauman](https://github.com/stevebauman)_.
 
-Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may now accomplish this using the `Rule::foreEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:
+Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may now accomplish this using the `Rule::forEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:
 
     use App\Rules\HasPermission;
     use Illuminate\Support\Facades\Validator;
