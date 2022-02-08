@@ -254,7 +254,7 @@ To learn more about the Scout database engine, consult the [Scout documentation]
 <a name="rendering-inline-blade-templates"></a>
 ### Rendering Inline Blade Templates
 
-_Rendering inline Blade templates was contributed by [Jason Beggs](https://github.com/jasonlbeggs). Rendering inline Blade components was contributed by [Toby Zerner](https://github.com/tobyzerner)_.
+_Rendering inline Blade templates was contributed by [Jason Beggs](https://github.com/jasonlbeggs) and [Toby Zerner](https://github.com/tobyzerner)_.
 
 Sometimes you may need to transform a raw Blade template string into valid HTML. You may accomplish this using the `render` method provided by the `Blade` facade. The `render` method accepts the Blade template string and an optional array of data to provide to the template:
 
