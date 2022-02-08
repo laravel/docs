@@ -621,7 +621,7 @@ If you are upgrading your Laravel 8 project to Laravel 9 by importing your exist
 
 Within your `app/Http/Middleware/TrustProxies.php` file, update `use Fideloper\Proxy\TrustProxies as Middleware` to `use Illuminate\Http\Middleware\TrustProxies as Middleware`.
 
-Next, within `app/Http/Middleware/TrustProxies.php`, you should update the following `$headers` property definition:
+Next, within `app/Http/Middleware/TrustProxies.php`, you should update the `$headers` property definition:
 
 ```php
 // Before...
