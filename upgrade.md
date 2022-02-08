@@ -37,7 +37,7 @@
 <a name="estimated-upgrade-time-10-minutes"></a>
 #### Estimated Upgrade Time: 30 Minutes
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {tip} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
@@ -292,6 +292,12 @@ protected static function getFacadeAccessor()
 **Likelihood Of Impact: Low**
 
 The `FILESYSTEM_DRIVER` environment variable has been renamed to `FILESYSTEM_DISK` to more accurately reflect its usage. This change only affects the application skeleton; however, you are welcome to update your own application's environment variables to reflect this change if you wish.
+
+#### The "Cloud" Disk
+
+**Likelihood Of Impact: Low**
+
+The `cloud` disk configuration option was removed from the default application skeleton in November of 2020. This change only affects the application skeleton. If you are using the `cloud` disk within your application, you should leave this configuration value in your own application's skeleton.
 
 <a name="flysystem-3"></a>
 ### Flysystem 3.x
