@@ -92,6 +92,14 @@ You should update the following dependencies in your application's `composer.jso
 
 In addition, replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your `composer.json` file.
 
+The following first-party packages have new major releases to support Laravel 9.x. If applicable, you should read their individual upgrade guides before upgrading:
+
+<div class="content-list" markdown="1">
+
+    - [Vonage Notification Channel v3.0](https://github.com/laravel/vonage-notification-channel/blob/3.x/UPGRADE.md)
+
+</div>
+
 Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 9 support.
 
 <a name="application"></a>
