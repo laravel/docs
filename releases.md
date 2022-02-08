@@ -180,39 +180,6 @@ Route::get('/categories/{category}', function (Category $category) {
 });
 ```
 
-<a name="forced-scoping-of-route-bindings"></a>
-### Forced Scoping Of Route Bindings
-
-_Forced scoped bindings was contributed by [Claudio Dekker](https://github.com/claudiodekker)_.
-
-In previous releases of Laravel, you may wish to scope the second Eloquent model in a route definition such that it must be a child of the previous Eloquent model. For example, consider this route definition that retrieves a blog post by slug for a specific user:
-
-    use App\Models\Post;
-    use App\Models\User;
-
-    Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
-        return $post;
-    });
-
-When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. However, this behavior was only previously supported by Laravel when a custom key was used for the child route binding.
-
-However, in Laravel 9.x, you may now instruct Laravel to scope "child" bindings even when a custom key is not provided. To do so, you may invoke the `scopeBindings` method when defining your route:
-
-    use App\Models\Post;
-    use App\Models\User;
-
-    Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
-        return $post;
-    })->scopeBindings();
-
-Or, you may instruct an entire group of route definitions to use scoped bindings:
-
-    Route::scopeBindings()->group(function () {
-        Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
-            return $post;
-        });
-    });
-
 <a name="controller-route-groups"></a>
 ### Controller Route Groups
 
