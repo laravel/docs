@@ -732,7 +732,7 @@ Thankfully, Laravel provides several methods of working around this problem. Fir
         'after_commit' => true,
     ],
 
-When the `after_commit` option is `true`, you may dispatch jobs within database transactions; however, Laravel will wait until the open parent database transactions has been committed before actually dispatching the job. Of course, if no database transactions are currently open, the job will be dispatched immediately.
+When the `after_commit` option is `true`, you may dispatch jobs within database transactions; however, Laravel will wait until the open parent database transactions have been committed before actually dispatching the job. Of course, if no database transactions are currently open, the job will be dispatched immediately.
 
 If a transaction is rolled back due to an exception that occurs during the transaction, the jobs that were dispatched during that transaction will be discarded.
 
