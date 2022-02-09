@@ -42,6 +42,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::has](#method-array-has)
 [Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
+[Arr::isList](#method-array-islist)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
@@ -265,9 +266,11 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [cookie](#method-cookie)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
+[decrypt](#method-decrypt)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
 [dump](#method-dump)
+[encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
 [filled](#method-filled)
@@ -564,7 +567,7 @@ The `Arr::hasAny` method checks whether any item in a given set exists in an arr
 <a name="method-array-isassoc"></a>
 #### `Arr::isAssoc()` {.collection-method}
 
-The `Arr::isAssoc` returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
+The `Arr::isAssoc` method returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
 
     use Illuminate\Support\Arr;
 
@@ -573,6 +576,21 @@ The `Arr::isAssoc` returns `true` if the given array is an associative array. An
     // true
 
     $isAssoc = Arr::isAssoc([1, 2, 3]);
+
+    // false
+
+<a name="method-array-islist"></a>
+#### `Arr::isList()` {.collection-method}
+
+The `Arr::isList` method returns `true` if the given array's keys are sequential integers beginning from zero:
+
+    use Illuminate\Support\Arr;
+
+    $isAssoc = Arr::isList(['foo', 'bar', 'baz']);
+
+    // true
+
+    $isAssoc = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 
     // false
 
@@ -3141,6 +3159,13 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 
     $token = csrf_token();
 
+<a name="method-decrypt"></a>
+#### `decrypt()` {.collection-method}
+
+The `decrypt` function [decrypts](/docs/{{version}}/encryption) the given value. You may use this function as an alternative to the `Crypt` facade:
+
+    $password = decrypt($value);
+
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
 
@@ -3169,6 +3194,13 @@ The `dump` function dumps the given variables:
     dump($value1, $value2, $value3, ...);
 
 If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
+
+<a name="method-encrypt"></a>
+#### `encrypt()` {.collection-method}
+
+The `encrypt` function [encrypts](/docs/{{version}}/encryption) the given value. You may use this function as an alternative to the `Crypt` facade:
+
+    $secret = encrypt('my-secret-value');
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}
