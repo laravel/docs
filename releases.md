@@ -246,7 +246,7 @@ In addition, the `whereFullText` and `orWhereFullText` methods may be used to ad
 
 _The Laravel Scout database engine was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Dries Vints](https://github.com/driesvints)_.
 
-If your application interacts with small to medium sized databases or has a light workload, you may now use Scout's "database" engine instead of a dedicated search service such as Algolia or MeiliSerach. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
+If your application interacts with small to medium sized databases or has a light workload, you may now use Scout's "database" engine instead of a dedicated search service such as Algolia or MeiliSearch. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
 
 To learn more about the Scout database engine, consult the [Scout documentation](/docs/{{version}}/scout).
 
