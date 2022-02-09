@@ -2591,7 +2591,7 @@ The `substr` method returns the portion of the string specified by the given sta
 <a name="method-fluent-str-substrreplace"></a>
 #### `substrReplace` {.collection-method}
 
-The `substrReplace` method replaces text within a portion of a string, starting at the position specified by the third argument and replacing the number of characters specified by the fourth argument. Passing `0` to the method's fourth argument will insert the string at the specified position without replacing any of the existing characters in the string:
+The `substrReplace` method replaces text within a portion of a string, starting at the position specified by the second argument and replacing the number of characters specified by the third argument. Passing `0` to the method's third argument will insert the string at the specified position without replacing any of the existing characters in the string:
 
     use Illuminate\Support\Str;
 
