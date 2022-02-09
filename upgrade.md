@@ -617,7 +617,7 @@ All calls to the `assertDeleted` method should be updated to `assertModelMissing
 
 **Likelihood Of Impact: Low**
 
-If you are upgrading your Laravel 8 project to Laravel 9 by importing your existing application code into a totally new Laravel 9 application skeleton, you may need to update your application's "trusted proxy" middleware.
+If you are upgrading your Laravel 8 project to Laravel 9 by importing your existing application code into a totally new Laravel 9 application skeleton, you may need to update your application's "trusted proxy" middleware, and remove the dependency on the `fideloper/proxy` package.
 
 Within your `app/Http/Middleware/TrustProxies.php` file, update `use Fideloper\Proxy\TrustProxies as Middleware` to `use Illuminate\Http\Middleware\TrustProxies as Middleware`.
 
@@ -635,6 +635,8 @@ protected $headers =
     Request::HEADER_X_FORWARDED_PROTO |
     Request::HEADER_X_FORWARDED_AWS_ELB;
 ```
+
+Finally, remove `fideloper/proxy` from the `composer.json` file and run `composer update`. Otherwise, you may run into the error "Undefined constant Illuminate\Http\Request::HEADER_X_FORWARDED_ALL" after the `composer update`.
 
 ### Validation
 
