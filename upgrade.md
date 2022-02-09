@@ -233,7 +233,7 @@ $user->roles()->updateOrCreate([
 ]);
 ```
 
-In addition, the `firstOrCreate` method now accepts a `$values` array as its second argument. This array will be merged with the first argument to the method (`$attributes`) when creating the related model if one does not already exist. This changes makes this method consistent with the `firstOrCreate` methods offered by other relationship types:
+In addition, the `firstOrCreate` method now accepts a `$values` array as its second argument. This array will be merged with the first argument to the method (`$attributes`) when creating the related model if one does not already exist. This change makes this method consistent with the `firstOrCreate` methods offered by other relationship types:
 
 ```php
 $user->roles()->firstOrCreate([
