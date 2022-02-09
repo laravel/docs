@@ -564,7 +564,7 @@ The `Arr::hasAny` method checks whether any item in a given set exists in an arr
 <a name="method-array-isassoc"></a>
 #### `Arr::isAssoc()` {.collection-method}
 
-The `Arr::isAssoc` returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
+The `Arr::isAssoc` method returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
 
     use Illuminate\Support\Arr;
 
@@ -579,12 +579,11 @@ The `Arr::isAssoc` returns `true` if the given array is an associative array. An
 <a name="method-array-islist"></a>
 #### `Arr::isList()` {.collection-method}
 
-The `Arr::isList` returns `true` if the given array is all array keys are sequential integers starting from 0 with no gaps 
-in between:
+The `Arr::isList` method returns `true` if the given array's keys are sequential integers starting from 0:
 
     use Illuminate\Support\Arr;
 
-    $isAssoc = Arr::isList([1, 2, 3]);
+    $isAssoc = Arr::isList(['foo', 'bar', 'baz']);
 
     // true
 
@@ -3120,16 +3119,9 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 <a name="method-decrypt"></a>
 #### `decrypt()` {.collection-method}
 
-The `decrypt` function [decrypt](/docs/{{version}}/encryption) the given value using the `decrypt` method provided in `encrypter`. You may use this function as an alternative to the `Crypt` facade:
+The `decrypt` function [decrypts](/docs/{{version}}/encryption) the given value. You may use this function as an alternative to the `Crypt` facade:
 
     $password = decrypt($value);
-
-<a name="method-encrypt"></a>
-#### `encrypt()` {.collection-method}
-
-The `encrypt` function [encrypt](/docs/{{version}}/encryption) the given value using the `encrypt` method provided in `encrypter`. You may use this function as an alternative to the `Crypt` facade:
-
-    $secret = encrypt('my-secret-value');
 
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
@@ -3159,6 +3151,13 @@ The `dump` function dumps the given variables:
     dump($value1, $value2, $value3, ...);
 
 If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
+
+<a name="method-encrypt"></a>
+#### `encrypt()` {.collection-method}
+
+The `encrypt` function [encrypts](/docs/{{version}}/encryption) the given value. You may use this function as an alternative to the `Crypt` facade:
+
+    $secret = encrypt('my-secret-value');
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}
