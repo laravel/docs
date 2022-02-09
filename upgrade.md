@@ -636,7 +636,7 @@ protected $headers =
     Request::HEADER_X_FORWARDED_AWS_ELB;
 ```
 
-To finalize, you'll need to remove the `fideloper/proxy` package from your app:
+Finally, you can remove the `fideloper/proxy` Composer dependency from your application:
 
 ```shell
 composer remove fideloper/proxy
