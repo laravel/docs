@@ -75,7 +75,7 @@ When using the Paddle Sandbox environment, you should set the `PADDLE_SANDBOX` e
 
 PADDLE_SANDBOX=true
 
-After you have finished developing your application you may [apply for a Paddle vendor account](https://paddle.com).
+After you have finished developing your application you may [apply for a Paddle vendor account](https://paddle.com). Before going live, Paddle will need to approve the domain you'll be selling on.
 
 <a name="database-migrations"></a>
 ### Database Migrations
