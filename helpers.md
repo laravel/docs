@@ -579,7 +579,7 @@ The `Arr::isAssoc` method returns `true` if the given array is an associative ar
 <a name="method-array-islist"></a>
 #### `Arr::isList()` {.collection-method}
 
-The `Arr::isList` method returns `true` if the given array's keys are sequential integers starting from 0:
+The `Arr::isList` method returns `true` if the given array's keys are sequential integers beginning from zero:
 
     use Illuminate\Support\Arr;
 
