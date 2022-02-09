@@ -120,7 +120,7 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
 
         // Optional SFTP Settings...
         // 'port' => env('SFTP_PORT', 22),
-        // 'root' => env('SFTP_ROOT'),
+        // 'root' => env('SFTP_ROOT', ''),
         // 'timeout' => 30,
     ],
 
