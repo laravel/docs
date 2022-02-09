@@ -6,6 +6,7 @@
     - [The `bootstrap` Directory](#the-bootstrap-directory)
     - [The `config` Directory](#the-config-directory)
     - [The `database` Directory](#the-database-directory)
+    - [The `lang` Directory](#the-lang-directory)
     - [The `public` Directory](#the-public-directory)
     - [The `resources` Directory](#the-resources-directory)
     - [The `routes` Directory](#the-routes-directory)
@@ -55,6 +56,11 @@ The `config` directory, as the name implies, contains all of your application's 
 
 The `database` directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
 
+<a name="the-lang-directory"></a>
+#### The Lang Directory
+
+The `lang` directory houses all of your language files.
+
 <a name="the-public-directory"></a>
 #### The Public Directory
 
@@ -63,7 +69,7 @@ The `public` directory contains the `index.php` file, which is the entry point f
 <a name="the-resources-directory"></a>
 #### The Resources Directory
 
-The `resources` directory contains your [views](/docs/{{version}}/views) as well as your raw, un-compiled assets such as CSS or JavaScript. This directory also houses all of your language files.
+The `resources` directory contains your [views](/docs/{{version}}/views) as well as your raw, un-compiled assets such as CSS or JavaScript.
 
 <a name="the-routes-directory"></a>
 #### The Routes Directory
