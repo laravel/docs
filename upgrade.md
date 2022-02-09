@@ -636,6 +636,12 @@ protected $headers =
     Request::HEADER_X_FORWARDED_AWS_ELB;
 ```
 
+Finally, you can remove the `fideloper/proxy` Composer dependency from your application:
+
+```shell
+composer remove fideloper/proxy
+```
+
 ### Validation
 
 #### Form Request `validated` Method
