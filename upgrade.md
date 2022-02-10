@@ -6,6 +6,7 @@
 ## High Impact Changes
 
 <div class="content-list" markdown="1">
+
 - [Cache TTL In Seconds](#cache-ttl-in-seconds)
 - [Cache Lock Safety Improvements](#cache-lock-safety-improvements)
 - [Environment Variable Parsing](#environment-variable-parsing)
@@ -18,6 +19,7 @@
 ## Medium Impact Changes
 
 <div class="content-list" markdown="1">
+
 - [Container Generators & Tagged Services](#container-generators)
 - [SQLite Version Constraints](#sqlite)
 - [Prefer String And Array Classes Over Helpers](#string-and-array-helpers)
