@@ -174,7 +174,7 @@ If your package contains [translation files](/docs/{{version}}/localization), yo
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');
     }
 
 Package translations are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
@@ -184,7 +184,7 @@ Package translations are referenced using the `package::file.line` syntax conven
 <a name="publishing-translations"></a>
 #### Publishing Translations
 
-If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:
+If you would like to publish your package's translations to the application's `lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:
 
     /**
      * Bootstrap any package services.
@@ -193,10 +193,10 @@ If you would like to publish your package's translations to the application's `r
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/courier'),
+            __DIR__.'/../lang' => $this->app->langPath('vendor/courier'),
         ]);
     }
 
