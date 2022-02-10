@@ -56,7 +56,7 @@ Laravel 9 continues the improvements made in Laravel 8.x by introducing support 
 
 Laravel 9.x requires a minimum PHP version of 8.0.
 
-<a name="laravel-jetstream"></a>
+<a name="symfony-mailer"></a>
 ### Symfony Mailer
 
 _Symfony Mailer support was contributed by [Dries Vints](https://github.com/driesvints)_, [James Brooks](https://github.com/jbrooksuk), and [Julius Kiekbusch](https://github.com/Jubeki).
