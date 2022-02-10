@@ -69,21 +69,25 @@ You may configure additional symbolic links in your `filesystems` configuration 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
-<a name="composer-packages"></a>
-#### Composer Packages
-
-Before using the S3 or SFTP drivers, you will need to install the appropriate package via the Composer package manager:
-
-- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^3.0"`
-- SFTP: `composer require league/flysystem-sftp-v3 "^3.0"`
-
 <a name="s3-driver-configuration"></a>
 #### S3 Driver Configuration
+
+Before using the S3 driver, you will need to install the Flysystem S3 package via the Composer package manager:
+
+```shell
+composer require -W league/flysystem-aws-s3-v3 "^3.0"
+```
 
 The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
 
 <a name="ftp-driver-configuration"></a>
 #### FTP Driver Configuration
+
+Before using the FTP driver, you will need to install the Flysystem FTP package via the Composer package manager:
+
+```shell
+composer require league/flysystem-ftp "^3.0"
+```
 
 Laravel's Flysystem integrations work great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an FTP filesystem, you may use the configuration example below:
 
@@ -103,6 +107,12 @@ Laravel's Flysystem integrations work great with FTP; however, a sample configur
 
 <a name="sftp-driver-configuration"></a>
 #### SFTP Driver Configuration
+
+Before using the SFTP driver, you will need to install the Flysystem SFTP package via the Composer package manager:
+
+```shell
+composer require league/flysystem-sftp-v3 "^3.0"
+```
 
 Laravel's Flysystem integrations work great with SFTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure an SFTP filesystem, you may use the configuration example below:
 
