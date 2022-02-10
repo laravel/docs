@@ -59,7 +59,7 @@ The `database` directory contains your database migrations, model factories, and
 <a name="the-lang-directory"></a>
 #### The Lang Directory
 
-The `lang` directory houses all of your language files.
+The `lang` directory houses all of your application's language files.
 
 <a name="the-public-directory"></a>
 #### The Public Directory
