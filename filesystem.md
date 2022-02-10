@@ -75,7 +75,7 @@ You may configure additional symbolic links in your `filesystems` configuration 
 Before using the S3 driver, you will need to install the appropriate package via the Composer package manager:
 
 ```shell
-composer require --W league/flysystem-aws-s3-v3 "^3.0"
+composer require -W league/flysystem-aws-s3-v3 "^3.0"
 ```
 
 The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials. For convenience, these environment variables match the naming convention used by the AWS CLI.
