@@ -55,7 +55,7 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^9.0`
-- `nunomaduro/collision` to `^6.0`
+- `nunomaduro/collision` to `^6.1`
 
 </div>
 
