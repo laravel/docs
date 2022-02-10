@@ -72,7 +72,7 @@ You may configure additional symbolic links in your `filesystems` configuration 
 <a name="s3-driver-configuration"></a>
 #### S3 Driver Configuration
 
-Before using the S3 driver, you will need to install the appropriate package via the Composer package manager:
+Before using the S3 driver, you will need to install the Flysystem S3 package via the Composer package manager:
 
 ```shell
 composer require -W league/flysystem-aws-s3-v3 "^3.0"
@@ -83,7 +83,7 @@ The S3 driver configuration information is located in your `config/filesystems.p
 <a name="ftp-driver-configuration"></a>
 #### FTP Driver Configuration
 
-Before using the FTP driver, you will need to install the appropriate package via the Composer package manager:
+Before using the FTP driver, you will need to install the Flysystem FTP package via the Composer package manager:
 
 ```shell
 composer require league/flysystem-ftp "^3.0"
@@ -108,7 +108,7 @@ Laravel's Flysystem integrations work great with FTP; however, a sample configur
 <a name="sftp-driver-configuration"></a>
 #### SFTP Driver Configuration
 
-Before using the SFTP driver, you will need to install the appropriate package via the Composer package manager:
+Before using the SFTP driver, you will need to install the Flysystem SFTP package via the Composer package manager:
 
 ```shell
 composer require league/flysystem-sftp-v3 "^3.0"
