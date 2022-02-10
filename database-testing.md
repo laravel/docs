@@ -636,17 +636,7 @@ Assert that a table in the database does not contain records matching the given 
     ]);
 
 <a name="assert-deleted"></a>
-#### assertDeleted
-
-The `assertDeleted` asserts that a given Eloquent model has been deleted from the database:
-
-    use App\Models\User;
-
-    $user = User::find(1);
-
-    $user->delete();
-
-    $this->assertDeleted($user);
+#### assertSoftDeleted
 
 The `assertSoftDeleted` method may be used to assert a given Eloquent model has been "soft deleted":
 
