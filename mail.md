@@ -50,7 +50,7 @@ The API based drivers such as Mailgun and Postmark are often simpler and faster 
 To use the Mailgun driver, install Symfony's Mailgun Mailer transport via Composer:
 
 ```shell
-composer require symfony/mailgun-mailer
+composer require symfony/mailgun-mailer symfony/http-client
 ```
 
 Next, set the `default` option in your application's `config/mail.php` configuration file to `mailgun`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:
@@ -74,7 +74,7 @@ If you are not using the United States [Mailgun region](https://documentation.ma
 To use the Postmark driver, install Symfony's Postmark Mailer transport via Composer:
 
 ```shell
-composer require symfony/postmark-mailer
+composer require symfony/postmark-mailer symfony/http-client
 ```
 
 Next, set the `default` option in your application's `config/mail.php` configuration file to `postmark`. After configuring your application's default mailer, verify that your `config/services.php` configuration file contains the following options:
