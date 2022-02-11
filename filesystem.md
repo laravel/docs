@@ -579,7 +579,7 @@ Next, you can register the driver within the `boot` method of one of your applic
             Storage::extend('dropbox', function ($app, $config) {
                 $adapter = new DropboxAdapter(new DropboxClient(
                     $config['authorization_token']
-                ););
+                ));
 
                 return new FilesystemAdapter(
                     new Filesystem($adapter, $config),
