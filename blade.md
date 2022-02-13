@@ -536,10 +536,29 @@ The `@once` directive allows you to define a portion of the template that will o
 @endonce
 ```
 
+The `@once` directive also supports custom ID. Pass the ID after declaring the directive:
+
+```blade
+@once('custom_id')
+    @push('scripts')
+        <script>
+            // Your custom JavaScript...
+        </script>
+    @endpush
+@endonce
+```
+
 Since the `@once` directive is often used in conjunction with the `@push` or `@prepend` directives, the `@pushOnce` and `@prependOnce` directives are available for your convenience:
 
 ```blade
 @pushOnce('scripts')
+    <script>
+        // Your custom JavaScript...
+    </script>
+@endPushOnce
+
+// Custom ID for `@once` part
+@pushOnce('scripts', 'custom_id')
     <script>
         // Your custom JavaScript...
     </script>
