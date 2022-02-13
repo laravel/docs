@@ -1179,7 +1179,7 @@ Scopes should always return the same query builder instance or `void`:
          */
         public function scopeActive($query)
         {
-            $query->where('active', 1);
+            return $query->where('active', 1);
         }
     }
 
