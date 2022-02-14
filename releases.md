@@ -135,7 +135,19 @@ public function address(): Attribute
 
 _Enum casting was contributed by [Mohamed Said](https://github.com/themsaid)_.
 
-Eloquent now allows you to cast your attribute values to PHP enums. To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
+Eloquent now allows you to cast your attribute values to PHP enums. To take advantage of enum casting, you must use [backed enums](https://www.php.net/manual/en/language.enumerations.backed.php);
+
+    <?php
+
+    namespace App\Enums;
+
+    enum ServerStatus: string
+    {
+        case Ready = 'ready';
+        case Provisioned = 'provisioned';
+    }
+
+To use your enum as a cast, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
     use App\Enums\ServerStatus;
 
@@ -150,8 +162,8 @@ Eloquent now allows you to cast your attribute values to PHP enums. To accomplis
 
 Once you have defined the cast on your model, the specified attribute will be automatically cast to and from an enum when you interact with the attribute:
 
-    if ($server->status == ServerStatus::provisioned) {
-        $server->status = ServerStatus::ready;
+    if ($server->status == ServerStatus::Provisioned) {
+        $server->status = ServerStatus::Ready;
 
         $server->save();
     }
