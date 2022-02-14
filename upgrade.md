@@ -110,7 +110,7 @@ In addition, return types were added to methods implementing PHP's `SessionHandl
 
 **Likelihood Of Impact: Low**
 
-The `storagePath` methods of the `Illuminate\Contracts\Foundation\Application` interface has been updated to accept a `$path` argument. If you are implementing this interface you should update your implementation accordingly:
+The `storagePath` method of the `Illuminate\Contracts\Foundation\Application` interface has been updated to accept a `$path` argument. If you are implementing this interface you should update your implementation accordingly:
 
     public function storagePath($path = '');
     
