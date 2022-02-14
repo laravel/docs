@@ -985,6 +985,49 @@ The `groupBy` method groups the collection's items by a given key:
         ]
     */
 
+Additionally, you may use "dot" notation to access public property of objects in the collection, which is useful when working with `enums`:
+
+    $collection = collect([
+        ['department' => App\Enums\Department::Development, 'name' => 'John'],
+        ['department' => App\Enums\Department::Sales, 'name' => 'Jane'],
+        ['department' => App\Enums\Department::Development, 'name' => 'Sally'],
+    ]);
+
+    $grouped = $collection->groupBy('department.value');
+
+    $grouped->all();
+
+    /*
+        [
+            "development" => Illuminate\Support\Collection {#1439
+                all: [
+                    [
+                        "department" => App\Enums\Department {#1443
+                            +name: "Development",
+                            +value: "development",
+                        },
+                        "name" => "John",
+                    ],
+                    [
+                        "department" => App\Enums\Department {#1443},
+                        "name" => "Sally",
+                    ],
+                ],
+            },
+            "sales" => Illuminate\Support\Collection {#1438
+                all: [
+                    [
+                        "department" => App\Enums\Department {#1442
+                            +name: "Sales",
+                            +value: "sales",
+                        },
+                        "name" => "Jane",
+                    ],
+                ],
+            },
+        ]
+    */
+
 Instead of passing a string `key`, you may pass a callback. The callback should return the value you wish to key the group by:
 
     $grouped = $collection->groupBy(function ($item, $key) {
