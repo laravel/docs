@@ -101,6 +101,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
+[Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
 [Str::headline](#method-str-headline)
 [Str::is](#method-str-is)
@@ -166,6 +167,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [containsAll](#method-fluent-str-contains-all)
 [dirname](#method-fluent-str-dirname)
 [endsWith](#method-fluent-str-ends-with)
+[excerpt](#method-fluent-str-excerpt)
 [exactly](#method-fluent-str-exactly)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
@@ -1274,6 +1276,32 @@ You may also pass an array of values to determine if the given string ends with 
 
     // false
 
+<a name="method-excerpt"></a>
+#### `Str::excerpt()` {.collection-method}
+
+The `Str::excerpt` method extracts an excerpt from text that matches the first instance of a phrase:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::excerpt('This is my name', 'my', [
+        'radius' => 3
+    ]);
+
+    // '...is my na...'
+
+The `radius` option defaults to `100`, and it allows to define the number of characters that should appear on each side of the truncated string.
+
+Also, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::excerpt('This is my name', 'name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+
+    // '(...) my name'
+
 <a name="method-str-finish"></a>
 #### `Str::finish()` {.collection-method}
 
@@ -2026,6 +2054,32 @@ If necessary, you may specify how many directory levels you wish to trim from th
     $string = Str::of('/foo/bar/baz')->dirname(2);
 
     // '/foo'
+
+<a name="method-fluent-str-excerpt"></a>
+#### `excerpt` {.collection-method}
+
+The `excerpt` method extracts an excerpt from text that matches the first instance of a phrase:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('my', [
+        'radius' => 3
+    ]);
+
+    // '...is my na...'
+
+The `radius` option defaults to `100`, and it allows to define the number of characters that should appear on each side of the truncated string.
+
+Also, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+
+    // '(...) my name'
 
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}
