@@ -143,7 +143,7 @@ Occasionally, when converting models to arrays or JSON, you may wish to add attr
         protected function isAdmin(): Attribute
         {
             return new Attribute(
-                get: fn () => 'yes';
+                get: fn () => 'yes',
             );
         }
     }
