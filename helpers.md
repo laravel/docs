@@ -1279,7 +1279,7 @@ You may also pass an array of values to determine if the given string ends with 
 <a name="method-excerpt"></a>
 #### `Str::excerpt()` {.collection-method}
 
-The `Str::excerpt` method extracts an excerpt from text that matches the first instance of a phrase:
+The `Str::excerpt` method extracts an excerpt from a given string that matches the first instance of a phrase within that string:
 
     use Illuminate\Support\Str;
 
@@ -1289,9 +1289,9 @@ The `Str::excerpt` method extracts an excerpt from text that matches the first i
 
     // '...is my na...'
 
-The `radius` option defaults to `100`, and it allows to define the number of characters that should appear on each side of the truncated string.
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
 
-Also, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+In addition, you may use the `omission` option to define the string that will be prepended and appended to the truncated string:
 
     use Illuminate\Support\Str;
 
@@ -2058,7 +2058,7 @@ If necessary, you may specify how many directory levels you wish to trim from th
 <a name="method-fluent-str-excerpt"></a>
 #### `excerpt` {.collection-method}
 
-The `excerpt` method extracts an excerpt from text that matches the first instance of a phrase:
+The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
 
     use Illuminate\Support\Str;
 
@@ -2068,9 +2068,9 @@ The `excerpt` method extracts an excerpt from text that matches the first instan
 
     // '...is my na...'
 
-The `radius` option defaults to `100`, and it allows to define the number of characters that should appear on each side of the truncated string.
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
 
-Also, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
 
     use Illuminate\Support\Str;
 
