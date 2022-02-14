@@ -114,7 +114,7 @@ The `storagePath` methods of the `Illuminate\Contracts\Foundation\Application` i
 
     public function storagePath($path = '');
     
-Similar, the `langPath` method of the `Illuminate\Foundation\Application` class has been updated to accept a `$path` argument: 
+Similarly, the `langPath` method of the `Illuminate\Foundation\Application` class has been updated to accept a `$path` argument: 
 
     public function langPath($path = '');
 
