@@ -135,7 +135,7 @@ public function address(): Attribute
 
 _Enum casting was contributed by [Mohamed Said](https://github.com/themsaid)_.
 
-Eloquent now allows you to cast your attribute values to PHP enums. To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
+Eloquent now allows you to cast your attribute values to PHP ["backed" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
     use App\Enums\ServerStatus;
 
