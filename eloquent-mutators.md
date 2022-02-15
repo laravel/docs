@@ -199,6 +199,7 @@ The `$casts` property should be an array where the key is the name of the attrib
 <div class="content-list" markdown="1">
 
 - `array`
+- `json`
 - `AsStringable::class`
 - `boolean`
 - `collection`
