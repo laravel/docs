@@ -483,12 +483,12 @@ These defaults will be used for every action in Cashier that generates a [pay li
 <a name="creating-subscriptions"></a>
 ### Creating Subscriptions
 
-To create a subscription, first retrieve an instance of your billable model, which typically will be an instance of `App\Models\User`. Once you have retrieved the model instance, you may use the `newSubscription` method to create the model's subscription pay link:
+To create a subscription, first retrieve an instance of your billable model from your database, which typically will be an instance of `App\Models\User`. Once you have retrieved the model instance, you may use the `newSubscription` method to create the model's subscription pay link:
 
     use Illuminate\Http\Request;
 
     Route::get('/user/subscribe', function (Request $request) {
-        $payLink = $user->newSubscription('default', $premium = 12345)
+        $payLink = $request->user()->newSubscription('default', $premium = 12345)
             ->returnTo(route('home'))
             ->create();
 
