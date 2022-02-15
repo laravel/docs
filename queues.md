@@ -1628,7 +1628,7 @@ For more information on Supervisor, consult the [Supervisor documentation](http:
 <a name="dealing-with-failed-jobs"></a>
 ## Dealing With Failed Jobs
 
-Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After a job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. Of course, we will need to create that table if it does not already exist. To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
+Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to [specify the maximum number of times a job should be attempted](#max-job-attempts-and-timeout). After an asynchronous job has exceeded this number of attempts, it will be inserted into the `failed_jobs` database table. Of course, we will need to create that table if it does not already exist. To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
 
 ```shell
 php artisan queue:failed-table
@@ -1680,6 +1680,8 @@ You may easily configure "exponential" backoffs by returning an array of backoff
     {
         return [1, 5, 10];
     }
+
+Of course, [synchronous jobs](/docs/{{version}}/queues#synchronous-dispatching) are not stored in this table and their exceptions are immediately handled by the application.
 
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Cleaning Up After Failed Jobs
