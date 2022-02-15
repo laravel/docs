@@ -488,7 +488,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
     use Illuminate\Http\Request;
 
     Route::get('/user/subscribe', function (Request $request) {
-        $payLink = $user->newSubscription('default', $premium = 12345)
+        $payLink = $request->user()->newSubscription('default', $premium = 12345)
             ->returnTo(route('home'))
             ->create();
 
