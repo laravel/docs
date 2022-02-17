@@ -24,13 +24,15 @@ The Laravel framework has a few system requirements. You should ensure that your
 
 <div class="content-list" markdown="1">
 
-- PHP >= 7.3
+- PHP >= 8.0
 - BCMath PHP Extension
 - Ctype PHP Extension
+- DOM PHP Extension
 - Fileinfo PHP Extension
 - JSON PHP Extension
 - Mbstring PHP Extension
 - OpenSSL PHP Extension
+- PCRE PHP Extension
 - PDO PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
@@ -71,7 +73,7 @@ server {
     error_page 404 /index.php;
 
     location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
     }

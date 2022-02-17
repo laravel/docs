@@ -37,7 +37,7 @@
 <a name="estimated-upgrade-time-10-minutes"></a>
 #### Estimated Upgrade Time: 30 Minutes
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {tip} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. Want to save time? You can use [Laravel Shift](https://laravelshift.com/) to help automate your application upgrades.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
@@ -46,7 +46,30 @@
 
 #### PHP 8.0.2 Required
 
-Laravel's minimum supported PHP version is now 8.0.2.
+Laravel now requires PHP 8.0.2 or greater.
+
+#### Composer Dependencies
+
+You should update the following dependencies in your application's `composer.json` file:
+
+<div class="content-list" markdown="1">
+
+- `laravel/framework` to `^9.0`
+- `nunomaduro/collision` to `^6.1`
+
+</div>
+
+In addition, please replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your application's `composer.json` file.
+
+Furthermore, the following first-party packages have received new major releases to support Laravel 9.x. If applicable, you should read their individual upgrade guides before upgrading:
+
+<div class="content-list" markdown="1">
+
+- [Vonage Notification Channel (v3.0)](https://github.com/laravel/vonage-notification-channel/blob/3.x/UPGRADE.md) (Replaces Nexmo)
+
+</div>
+
+Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 9 support.
 
 <a name="php-return-types"></a>
 #### PHP Return Types
@@ -79,21 +102,6 @@ In addition, return types were added to methods implementing PHP's `SessionHandl
 
 </div>
 
-#### Composer Dependencies
-
-You should update the following dependencies in your application's `composer.json` file:
-
-<div class="content-list" markdown="1">
-
-- `laravel/framework` to `^9.0`
-- `nunomaduro/collision` to `^6.0`
-
-</div>
-
-In addition, replace `facade/ignition` with `"spatie/laravel-ignition": "^1.0"` in your `composer.json` file.
-
-Finally, examine any other third-party packages consumed by your application and verify you are using the proper version for Laravel 9 support.
-
 <a name="application"></a>
 ### Application
 
@@ -105,6 +113,10 @@ Finally, examine any other third-party packages consumed by your application and
 The `storagePath` method of the `Illuminate\Contracts\Foundation\Application` interface has been updated to accept a `$path` argument. If you are implementing this interface you should update your implementation accordingly:
 
     public function storagePath($path = '');
+    
+Similarly, the `langPath` method of the `Illuminate\Foundation\Application` class has been updated to accept a `$path` argument: 
+
+    public function langPath($path = '');
 
 #### Exception Handler `ignore` Method
 
@@ -225,7 +237,7 @@ $user->roles()->updateOrCreate([
 ]);
 ```
 
-In addition, the `firstOrCreate` method now accepts a `$values` array as its second argument. This array will be merged with the first argument to the method (`$attributes`) when creating the related model if one does not already exist. This changes makes this method consistent with the `firstOrCreate` methods offered by other relationship types:
+In addition, the `firstOrCreate` method now accepts a `$values` array as its second argument. This array will be merged with the first argument to the method (`$attributes`) when creating the related model if one does not already exist. This change makes this method consistent with the `firstOrCreate` methods offered by other relationship types:
 
 ```php
 $user->roles()->firstOrCreate([
@@ -285,6 +297,12 @@ protected static function getFacadeAccessor()
 
 The `FILESYSTEM_DRIVER` environment variable has been renamed to `FILESYSTEM_DISK` to more accurately reflect its usage. This change only affects the application skeleton; however, you are welcome to update your own application's environment variables to reflect this change if you wish.
 
+#### The "Cloud" Disk
+
+**Likelihood Of Impact: Low**
+
+The `cloud` disk configuration option was removed from the default application skeleton in November of 2020. This change only affects the application skeleton. If you are using the `cloud` disk within your application, you should leave this configuration value in your own application's skeleton.
+
 <a name="flysystem-3"></a>
 ### Flysystem 3.x
 
@@ -294,9 +312,10 @@ Laravel 9.x has migrated from [Flysystem](https://flysystem.thephpleague.com/v2/
 
 #### Driver Prerequisites
 
-Before using the S3 or SFTP drivers, you will need to install the appropriate package via the Composer package manager:
+Before using the S3, FTP, or SFTP drivers, you will need to install the appropriate package via the Composer package manager:
 
-- Amazon S3: `composer require --with-all-dependencies league/flysystem-aws-s3-v3 "^3.0"`
+- Amazon S3: `composer require -W league/flysystem-aws-s3-v3 "^3.0"`
+- FTP: `composer require league/flysystem-ftp "^3.0"`
 - SFTP: `composer require league/flysystem-sftp-v3 "^3.0"`
 
 #### Overwriting Existing Files
@@ -418,7 +437,7 @@ If you wish to specify a longer timeout for a given request, you may do so using
 
 **Likelihood Of Impact: Low**
 
-Previously, Laravel would not execute any provided Guzzle HTTP middleware when the [HTTP client](/docs/{{version}}/http-client) was "faked". However, in Laravel 9.x, Guzzle HTTP middleware will be exeucted even when the HTTP client is faked.
+Previously, Laravel would not execute any provided Guzzle HTTP middleware when the [HTTP client](/docs/{{version}}/http-client) was "faked". However, in Laravel 9.x, Guzzle HTTP middleware will be executed even when the HTTP client is faked.
 
 #### HTTP Fake & Dependency Injection
 
@@ -435,16 +454,16 @@ One of the largest changes in Laravel 9.x is the transition from SwiftMailer, wh
 
 #### Driver Prerequisites
 
-To continue using the Mailgun transport, your application should require the `symfony/mailgun-mailer` Composer package:
+To continue using the Mailgun transport, your application should require the `symfony/mailgun-mailer` and `symfony/http-client` Composer packages:
 
 ```shell
-composer require symfony/mailgun-mailer
+composer require symfony/mailgun-mailer symfony/http-client
 ```
 
-The `wildbit/swiftmailer-postmark` Composer package should be removed from your application. Instead, your application should require the `symfony/postmark-mailer` Composer package:
+The `wildbit/swiftmailer-postmark` Composer package should be removed from your application. Instead, your application should require the `symfony/postmark-mailer` and `symfony/http-client` Composer packages:
 
 ```shell
-composer require symfony/postmark-mailer
+composer require symfony/postmark-mailer symfony/http-client
 ```
 
 #### Updated Return Types
@@ -606,6 +625,27 @@ All calls to the `assertDeleted` method should be updated to `assertModelMissing
 If you are upgrading your Laravel 8 project to Laravel 9 by importing your existing application code into a totally new Laravel 9 application skeleton, you may need to update your application's "trusted proxy" middleware.
 
 Within your `app/Http/Middleware/TrustProxies.php` file, update `use Fideloper\Proxy\TrustProxies as Middleware` to `use Illuminate\Http\Middleware\TrustProxies as Middleware`.
+
+Next, within `app/Http/Middleware/TrustProxies.php`, you should update the `$headers` property definition:
+
+```php
+// Before...
+protected $headers = Request::HEADER_X_FORWARDED_ALL;
+
+// After...
+protected $headers =
+    Request::HEADER_X_FORWARDED_FOR |
+    Request::HEADER_X_FORWARDED_HOST |
+    Request::HEADER_X_FORWARDED_PORT |
+    Request::HEADER_X_FORWARDED_PROTO |
+    Request::HEADER_X_FORWARDED_AWS_ELB;
+```
+
+Finally, you can remove the `fideloper/proxy` Composer dependency from your application:
+
+```shell
+composer remove fideloper/proxy
+```
 
 ### Validation
 

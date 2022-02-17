@@ -1,7 +1,6 @@
 # Release Notes
 
 - [Versioning Scheme](#versioning-scheme)
-    - [Exceptions](#exceptions)
 - [Support Policy](#support-policy)
 - [Laravel 9](#laravel-9)
 
@@ -20,14 +19,14 @@ When referencing the Laravel framework or its components from your application o
 <a name="support-policy"></a>
 ## Support Policy
 
-For LTS releases, such as Laravel 9, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
+For all Laravel releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/{{version}}/database#introduction).
 
 | Version | PHP (*) | Release | Bug Fixes Until | Security Fixes Until |
 | --- | --- | --- | --- | --- |
 | 6 (LTS) | 7.2 - 8.0 | September 3rd, 2019 | January 25th, 2022 | September 6th, 2022 |
 | 7 | 7.2 - 8.0 | March 3rd, 2020 | October 6th, 2020 | March 3rd, 2021 |
 | 8 | 7.3 - 8.1 | September 8th, 2020 | July 26th, 2022 | January 24th, 2023 |
-| 9 (LTS) | 8.0 - 8.1 | February 8th, 2022 | February 8th, 2024 | February 8th, 2025 |
+| 9 | 8.0 - 8.1 | February 8th, 2022 | August 8th, 2023 | February 8th, 2024 |
 | 10 | 8.0 - 8.1 | February 7th, 2023 | August 7th, 2024 | February 7th, 2025 |
 
 <div class="version-colors">
@@ -57,7 +56,7 @@ Laravel 9 continues the improvements made in Laravel 8.x by introducing support 
 
 Laravel 9.x requires a minimum PHP version of 8.0.
 
-<a name="laravel-jetstream"></a>
+<a name="symfony-mailer"></a>
 ### Symfony Mailer
 
 _Symfony Mailer support was contributed by [Dries Vints](https://github.com/driesvints)_, [James Brooks](https://github.com/jbrooksuk), and [Julius Kiekbusch](https://github.com/Jubeki).
@@ -136,7 +135,7 @@ public function address(): Attribute
 
 _Enum casting was contributed by [Mohamed Said](https://github.com/themsaid)_.
 
-Eloquent now allows you to cast your attribute values to PHP enums. To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
+Eloquent now allows you to cast your attribute values to PHP ["backed" enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 
     use App\Enums\ServerStatus;
 
@@ -247,7 +246,7 @@ In addition, the `whereFullText` and `orWhereFullText` methods may be used to ad
 
 _The Laravel Scout database engine was contributed by [Taylor Otwell](https://github.com/taylorotwell) and [Dries Vints](https://github.com/driesvints)_.
 
-If your application interacts with small to medium sized databases or has a light workload, you may now use Scout's "database" engine instead of a dedicated search service such as Algolia or MeiliSerach. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
+If your application interacts with small to medium sized databases or has a light workload, you may now use Scout's "database" engine instead of a dedicated search service such as Algolia or MeiliSearch. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
 
 To learn more about the Scout database engine, consult the [Scout documentation](/docs/{{version}}/scout).
 

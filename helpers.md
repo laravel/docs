@@ -42,6 +42,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::has](#method-array-has)
 [Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
+[Arr::isList](#method-array-islist)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
@@ -100,6 +101,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
+[Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
 [Str::headline](#method-str-headline)
 [Str::is](#method-str-is)
@@ -133,6 +135,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::substr](#method-str-substr)
 [Str::substrCount](#method-str-substrcount)
 [Str::substrReplace](#method-str-substrreplace)
+[Str::swap](#method-str-swap)
 [Str::title](#method-title-case)
 [Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
@@ -164,6 +167,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [containsAll](#method-fluent-str-contains-all)
 [dirname](#method-fluent-str-dirname)
 [endsWith](#method-fluent-str-ends-with)
+[excerpt](#method-fluent-str-excerpt)
 [exactly](#method-fluent-str-exactly)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
@@ -204,6 +208,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
 [substrReplace](#method-fluent-str-substrreplace)
+[swap](#method-fluent-str-swap)
 [tap](#method-fluent-str-tap)
 [test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
@@ -263,9 +268,11 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [cookie](#method-cookie)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
+[decrypt](#method-decrypt)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
 [dump](#method-dump)
+[encrypt](#method-encrypt)
 [env](#method-env)
 [event](#method-event)
 [filled](#method-filled)
@@ -562,7 +569,7 @@ The `Arr::hasAny` method checks whether any item in a given set exists in an arr
 <a name="method-array-isassoc"></a>
 #### `Arr::isAssoc()` {.collection-method}
 
-The `Arr::isAssoc` returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
+The `Arr::isAssoc` method returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
 
     use Illuminate\Support\Arr;
 
@@ -571,6 +578,21 @@ The `Arr::isAssoc` returns `true` if the given array is an associative array. An
     // true
 
     $isAssoc = Arr::isAssoc([1, 2, 3]);
+
+    // false
+
+<a name="method-array-islist"></a>
+#### `Arr::isList()` {.collection-method}
+
+The `Arr::isList` method returns `true` if the given array's keys are sequential integers beginning from zero:
+
+    use Illuminate\Support\Arr;
+
+    $isAssoc = Arr::isList(['foo', 'bar', 'baz']);
+
+    // true
+
+    $isAssoc = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 
     // false
 
@@ -1254,6 +1276,32 @@ You may also pass an array of values to determine if the given string ends with 
 
     // false
 
+<a name="method-excerpt"></a>
+#### `Str::excerpt()` {.collection-method}
+
+The `Str::excerpt` method extracts an excerpt from a given string that matches the first instance of a phrase within that string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::excerpt('This is my name', 'my', [
+        'radius' => 3
+    ]);
+
+    // '...is my na...'
+
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
+
+In addition, you may use the `omission` option to define the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::excerpt('This is my name', 'name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+
+    // '(...) my name'
+
 <a name="method-str-finish"></a>
 #### `Str::finish()` {.collection-method}
 
@@ -1726,6 +1774,20 @@ The `Str::substrReplace` method replaces text within a portion of a string, star
     $result = Str::substrReplace('1300', ':', 2, 0); 
     // 13:00
 
+<a name="method-str-swap"></a>
+#### `Str::swap()` {.collection-method}
+
+The `Str::swap` method replaces multiple values in the given string using PHP's `strtr` function:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::swap([
+        'Tacos' => 'Burritos',
+        'great' => 'fantastic',
+    ], 'Tacos are great!');
+
+    // Burritos are fantastic!
+
 <a name="method-title-case"></a>
 #### `Str::title()` {.collection-method}
 
@@ -1992,6 +2054,32 @@ If necessary, you may specify how many directory levels you wish to trim from th
     $string = Str::of('/foo/bar/baz')->dirname(2);
 
     // '/foo'
+
+<a name="method-fluent-str-excerpt"></a>
+#### `excerpt` {.collection-method}
+
+The `excerpt` method extracts an excerpt from the string that matches the first instance of a phrase within that string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('my', [
+        'radius' => 3
+    ]);
+
+    // '...is my na...'
+
+The `radius` option, which defaults to `100`, allows you to define the number of characters that should appear on each side of the truncated string.
+
+In addition, you may use the `omission` option to change the string that will be prepended and appended to the truncated string:
+
+    use Illuminate\Support\Str;
+
+    $excerpt = Str::of('This is my name')->excerpt('name', [
+        'radius' => 3,
+        'omission' => '(...) '
+    ]);
+
+    // '(...) my name'
 
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}
@@ -2575,7 +2663,7 @@ The `substr` method returns the portion of the string specified by the given sta
 <a name="method-fluent-str-substrreplace"></a>
 #### `substrReplace` {.collection-method}
 
-The `substrReplace` method replaces text within a portion of a string, starting at the position specified by the third argument and replacing the number of characters specified by the fourth argument. Passing `0` to the method's fourth argument will insert the string at the specified position without replacing any of the existing characters in the string:
+The `substrReplace` method replaces text within a portion of a string, starting at the position specified by the second argument and replacing the number of characters specified by the third argument. Passing `0` to the method's third argument will insert the string at the specified position without replacing any of the existing characters in the string:
 
     use Illuminate\Support\Str;
 
@@ -2586,6 +2674,21 @@ The `substrReplace` method replaces text within a portion of a string, starting 
     $string = Str::of('The Framework')->substrReplace(' Laravel', 3, 0);
 
     // The Laravel Framework
+
+<a name="method-fluent-str-swap"></a>
+#### `swap` {.collection-method}
+
+The `swap` method replaces multiple values in the string using PHP's `strtr` function:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Tacos are great!')
+        ->swap([
+            'Tacos' => 'Burritos',
+            'great' => 'fantastic',
+        ]);
+
+    // Burritos are fantastic!
 
 <a name="method-fluent-str-tap"></a>
 #### `tap` {.collection-method}
@@ -3110,6 +3213,13 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 
     $token = csrf_token();
 
+<a name="method-decrypt"></a>
+#### `decrypt()` {.collection-method}
+
+The `decrypt` function [decrypts](/docs/{{version}}/encryption) the given value. You may use this function as an alternative to the `Crypt` facade:
+
+    $password = decrypt($value);
+
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
 
@@ -3138,6 +3248,13 @@ The `dump` function dumps the given variables:
     dump($value1, $value2, $value3, ...);
 
 If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
+
+<a name="method-encrypt"></a>
+#### `encrypt()` {.collection-method}
+
+The `encrypt` function [encrypts](/docs/{{version}}/encryption) the given value. You may use this function as an alternative to the `Crypt` facade:
+
+    $secret = encrypt('my-secret-value');
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}

@@ -162,7 +162,7 @@ Method  | Description
 `->thursdays();`  |  Limit the task to Thursday
 `->fridays();`  |  Limit the task to Friday
 `->saturdays();`  |  Limit the task to Saturday
-`->days(array|mixed);`  |  Limit the task to specific days
+`->days(array\|mixed);`  |  Limit the task to specific days
 `->between($startTime, $endTime);`  |  Limit the task to run between start and end times
 `->unlessBetween($startTime, $endTime);`  |  Limit the task to not run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test

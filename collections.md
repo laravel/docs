@@ -390,6 +390,8 @@ The `concat` method appends the given `array` or collection's values onto the en
 
     // ['John Doe', 'Jane Doe', 'Johnny Doe']
 
+The `concat` method numerically reindexes keys for items concatenated onto the original collection. To maintain keys in associative collections, see the [merge](#method-merge) method.
+
 <a name="method-contains"></a>
 #### `contains()` {.collection-method}
 
