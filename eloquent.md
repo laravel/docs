@@ -1049,7 +1049,7 @@ The `Scope` interface requires you to implement one method: `apply`. The `apply`
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Scope;
 
-    class AncientScope implements Scope
+    class ExpiringScope implements Scope
     {
         /**
          * Apply the scope to a given Eloquent query builder.
@@ -1060,11 +1060,28 @@ The `Scope` interface requires you to implement one method: `apply`. The `apply`
          */
         public function apply(Builder $builder, Model $model)
         {
-            $builder->where('created_at', '<', now()->subYears(2000));
+            $builder->where('expired_at', '>', now());
         }
     }
 
 > {tip} If your global scope is adding columns to the select clause of the query, you should use the `addSelect` method instead of `select`. This will prevent the unintentional replacement of the query's existing select clause.
+
+It is possible to use your scope to extend the query builder. You can add a `extend()` method to the class, and it will be called by the builder:
+
+    /**
+     * Extend the query builder with the needed functions.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @return void
+     */
+    public function extend(Builder $builder)
+    {
+        $builder->macro('renew', function (Builder $builder) {
+            return $builder->update(['expired_at' => now()->addMonth()]);
+        });
+    }
+
+And now you can call the `renew` macro from your queries to update the `expired_at` column to the next month.
 
 <a name="applying-global-scopes"></a>
 #### Applying Global Scopes
@@ -1075,10 +1092,10 @@ To assign a global scope to a model, you should override the model's `booted` me
 
     namespace App\Models;
 
-    use App\Scopes\AncientScope;
+    use App\Scopes\ExpiringScope;
     use Illuminate\Database\Eloquent\Model;
 
-    class User extends Model
+    class Subscription extends Model
     {
         /**
          * The "booted" method of the model.
@@ -1087,14 +1104,14 @@ To assign a global scope to a model, you should override the model's `booted` me
          */
         protected static function booted()
         {
-            static::addGlobalScope(new AncientScope);
+            static::addGlobalScope(new ExpiringScope);
         }
     }
 
-After adding the scope in the example above to the `App\Models\User` model, a call to the `User::all()` method will execute the following SQL query:
+After adding the scope in the example above to the `App\Models\Subscription` model, a call to the `Subscription::all()` method will execute the following SQL query:
 
 ```sql
-select * from `users` where `created_at` < 0021-02-18 00:00:00
+select * from `subscriptions` where `expired_at` > 2022-02-17 00:00:00
 ```
 
 <a name="anonymous-global-scopes"></a>
