@@ -1260,7 +1260,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </li>
 ```
 
-> {note} It's not possible to fetch a default prop value from the parent component when it's not explicitly set on as an attribute in the view. The props in `@aware` need to be exactly the same as in the parent component's `@props` list.
+> {note} The `@aware` directive can not access parent data that is not explicitly passed to the parent component as HTML attributes. Default `@props` values that are not explicitly passed to the parent component can not be accessed by the `@aware` directive.
 
 <a name="dynamic-components"></a>
 ### Dynamic Components
