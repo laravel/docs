@@ -336,6 +336,10 @@ The `Arr::accessible` method determines if the given value is array accessible:
 
     // true
 
+    $isAccessible = Arr::accessible(new \ArrayObject());
+
+    // true
+
     $isAccessible = Arr::accessible('abc');
 
     // false
