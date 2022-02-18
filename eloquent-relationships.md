@@ -90,7 +90,7 @@ A one-to-one relationship is a very basic type of database relationship. For exa
 
 The first argument passed to the `hasOne` method is the name of the related model class. Once the relationship is defined, we may retrieve the related record using Eloquent's dynamic properties. Dynamic properties allow you to access relationship methods as if they were properties defined on the model:
 
-    $phone = User::find(1)->phone;
+    $phone = User::query()->find(1)->phone;
 
 Eloquent determines the foreign key of the relationship based on the parent model name. In this case, the `Phone` model is automatically assumed to have a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
 
@@ -172,7 +172,7 @@ Once the relationship method has been defined, we can access the [collection](/d
 
     use App\Models\Post;
 
-    $comments = Post::find(1)->comments;
+    $comments = Post::query()->find(1)->comments;
 
     foreach ($comments as $comment) {
         //
@@ -180,7 +180,7 @@ Once the relationship method has been defined, we can access the [collection](/d
 
 Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `comments` method and continuing to chain conditions onto the query:
 
-    $comment = Post::find(1)->comments()
+    $comment = Post::query()->find(1)->comments()
                         ->where('title', 'foo')
                         ->first();
 
@@ -216,7 +216,7 @@ Once the relationship has been defined, we can retrieve a comment's parent post 
 
     use App\Models\Comment;
 
-    $comment = Comment::find(1);
+    $comment = Comment::query()->find(1);
 
     return $comment->post->title;
 
@@ -286,15 +286,15 @@ When querying for the children of a "belongs to" relationship, you may manually 
 
     use App\Models\Post;
 
-    $posts = Post::where('user_id', $user->id)->get();
+    $posts = Post::query()->where('user_id', $user->id)->get();
 
 However, you may find it more convenient to use the `whereBelongsTo` method, which will automatically determine the proper relationship and foreign key for the given model:
 
-    $posts = Post::whereBelongsTo($user)->get();
+    $posts = Post::query()->whereBelongsTo($user)->get();
 
 By default, Laravel will determine the relationship associated with the given model based on the class name of the model; however, you may specify the relationship name manually by providing it as the second argument to the `whereBelongsTo` method:
 
-    $posts = Post::whereBelongsTo($user, 'author')->get();
+    $posts = Post::query()->whereBelongsTo($user, 'author')->get();
 
 <a name="has-one-of-many"></a>
 ### Has One Of Many
@@ -538,7 +538,7 @@ Once the relationship is defined, you may access the user's roles using the `rol
 
     use App\Models\User;
 
-    $user = User::find(1);
+    $user = User::query()->find(1);
 
     foreach ($user->roles as $role) {
         //
@@ -546,7 +546,7 @@ Once the relationship is defined, you may access the user's roles using the `rol
 
 Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `roles` method and continuing to chain conditions onto the query:
 
-    $roles = User::find(1)->roles()->orderBy('name')->get();
+    $roles = User::query()->find(1)->roles()->orderBy('name')->get();
 
 To determine the table name of the relationship's intermediate table, Eloquent will join the two related model names in alphabetical order. However, you are free to override this convention. You may do so by passing a second argument to the `belongsToMany` method:
 
@@ -587,7 +587,7 @@ As you have already learned, working with many-to-many relations requires the pr
 
     use App\Models\User;
 
-    $user = User::find(1);
+    $user = User::query()->find(1);
 
     foreach ($user->roles as $role) {
         echo $role->pivot->created_at;
@@ -785,7 +785,7 @@ Once your database table and models are defined, you may access the relationship
 
     use App\Models\Post;
 
-    $post = Post::find(1);
+    $post = Post::query()->find(1);
 
     $image = $post->image;
 
@@ -793,7 +793,7 @@ You may retrieve the parent of the polymorphic model by accessing the name of th
 
     use App\Models\Image;
 
-    $image = Image::find(1);
+    $image = Image::query()->find(1);
 
     $imageable = $image->imageable;
 
@@ -887,7 +887,7 @@ Once your database table and models are defined, you may access the relationship
 
     use App\Models\Post;
 
-    $post = Post::find(1);
+    $post = Post::query()->find(1);
 
     foreach ($post->comments as $comment) {
         //
@@ -897,7 +897,7 @@ You may also retrieve the parent of a polymorphic child model by accessing the n
 
     use App\Models\Comment;
 
-    $comment = Comment::find(1);
+    $comment = Comment::query()->find(1);
 
     $commentable = $comment->commentable;
 
@@ -1036,7 +1036,7 @@ Once your database table and models are defined, you may access the relationship
 
     use App\Models\Post;
 
-    $post = Post::find(1);
+    $post = Post::query()->find(1);
 
     foreach ($post->tags as $tag) {
         //
@@ -1046,7 +1046,7 @@ You may retrieve the parent of a polymorphic relation from the polymorphic child
 
     use App\Models\Tag;
 
-    $tag = Tag::find(1);
+    $tag = Tag::query()->find(1);
 
     foreach ($tag->posts as $post) {
         //
@@ -1126,7 +1126,7 @@ You may query the `posts` relationship and add additional constraints to the rel
 
     use App\Models\User;
 
-    $user = User::find(1);
+    $user = User::query()->find(1);
 
     $user->posts()->where('active', 1)->get();
 
@@ -1176,7 +1176,7 @@ If you do not need to add additional constraints to an Eloquent relationship que
 
     use App\Models\User;
 
-    $user = User::find(1);
+    $user = User::query()->find(1);
 
     foreach ($user->posts as $post) {
         //
@@ -1192,29 +1192,29 @@ When retrieving model records, you may wish to limit your results based on the e
     use App\Models\Post;
 
     // Retrieve all posts that have at least one comment...
-    $posts = Post::has('comments')->get();
+    $posts = Post::query()->has('comments')->get();
 
 You may also specify an operator and count value to further customize the query:
 
     // Retrieve all posts that have three or more comments...
-    $posts = Post::has('comments', '>=', 3)->get();
+    $posts = Post::query()->has('comments', '>=', 3)->get();
 
 Nested `has` statements may be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment that has at least one image:
 
     // Retrieve posts that have at least one comment with images...
-    $posts = Post::has('comments.images')->get();
+    $posts = Post::query()->has('comments.images')->get();
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to define additional query constraints on your `has` queries, such as inspecting the content of a comment:
 
     use Illuminate\Database\Eloquent\Builder;
 
     // Retrieve posts with at least one comment containing words like code%...
-    $posts = Post::whereHas('comments', function (Builder $query) {
+    $posts = Post::query()->whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'code%');
     })->get();
 
     // Retrieve posts with at least ten comments containing words like code%...
-    $posts = Post::whereHas('comments', function (Builder $query) {
+    $posts = Post::query()->whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'code%');
     }, '>=', 10)->get();
 
@@ -1227,11 +1227,11 @@ If you would like to query for a relationship's existence with a single, simple 
 
     use App\Models\Post;
 
-    $posts = Post::whereRelation('comments', 'is_approved', false)->get();
+    $posts = Post::query()->whereRelation('comments', 'is_approved', false)->get();
 
 Of course, like calls to the query builder's `where` method, you may also specify an operator:
 
-    $posts = Post::whereRelation(
+    $posts = Post::query()->whereRelation(
         'comments', 'created_at', '>=', now()->subHour()
     )->get();
 
@@ -1242,13 +1242,13 @@ When retrieving model records, you may wish to limit your results based on the a
 
     use App\Models\Post;
 
-    $posts = Post::doesntHave('comments')->get();
+    $posts = Post::query()->doesntHave('comments')->get();
 
 If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to add additional query constraints to your `doesntHave` queries, such as inspecting the content of a comment:
 
     use Illuminate\Database\Eloquent\Builder;
 
-    $posts = Post::whereDoesntHave('comments', function (Builder $query) {
+    $posts = Post::query()->whereDoesntHave('comments', function (Builder $query) {
         $query->where('content', 'like', 'code%');
     })->get();
 
@@ -1256,7 +1256,7 @@ You may use "dot" notation to execute a query against a nested relationship. For
 
     use Illuminate\Database\Eloquent\Builder;
 
-    $posts = Post::whereDoesntHave('comments.author', function (Builder $query) {
+    $posts = Post::query()->whereDoesntHave('comments.author', function (Builder $query) {
         $query->where('banned', 0);
     })->get();
 
@@ -1271,7 +1271,7 @@ To query the existence of "morph to" relationships, you may use the `whereHasMor
     use Illuminate\Database\Eloquent\Builder;
 
     // Retrieve comments associated to posts or videos with a title like code%...
-    $comments = Comment::whereHasMorph(
+    $comments = Comment::query()->whereHasMorph(
         'commentable',
         [Post::class, Video::class],
         function (Builder $query) {
@@ -1280,7 +1280,7 @@ To query the existence of "morph to" relationships, you may use the `whereHasMor
     )->get();
 
     // Retrieve comments associated to posts with a title not like code%...
-    $comments = Comment::whereDoesntHaveMorph(
+    $comments = Comment::query()->whereDoesntHaveMorph(
         'commentable',
         Post::class,
         function (Builder $query) {
@@ -1292,7 +1292,7 @@ You may occasionally need to add query constraints based on the "type" of the re
 
     use Illuminate\Database\Eloquent\Builder;
 
-    $comments = Comment::whereHasMorph(
+    $comments = Comment::query()->whereHasMorph(
         'commentable',
         [Post::class, Video::class],
         function (Builder $query, $type) {
@@ -1309,7 +1309,7 @@ Instead of passing an array of possible polymorphic models, you may provide `*` 
 
     use Illuminate\Database\Eloquent\Builder;
 
-    $comments = Comment::whereHasMorph('commentable', '*', function (Builder $query) {
+    $comments = Comment::query()->whereHasMorph('commentable', '*', function (Builder $query) {
         $query->where('title', 'like', 'foo%');
     })->get();
 
@@ -1323,7 +1323,7 @@ Sometimes you may want to count the number of related models for a given relatio
 
     use App\Models\Post;
 
-    $posts = Post::withCount('comments')->get();
+    $posts = Post::query()->withCount('comments')->get();
 
     foreach ($posts as $post) {
         echo $post->comments_count;
@@ -1333,7 +1333,7 @@ By passing an array to the `withCount` method, you may add the "counts" for mult
 
     use Illuminate\Database\Eloquent\Builder;
 
-    $posts = Post::withCount(['votes', 'comments' => function (Builder $query) {
+    $posts = Post::query()->withCount(['votes', 'comments' => function (Builder $query) {
         $query->where('content', 'like', 'code%');
     }])->get();
 
@@ -1344,7 +1344,7 @@ You may also alias the relationship count result, allowing multiple counts on th
 
     use Illuminate\Database\Eloquent\Builder;
 
-    $posts = Post::withCount([
+    $posts = Post::query()->withCount([
         'comments',
         'comments as pending_comments_count' => function (Builder $query) {
             $query->where('approved', false);
@@ -1359,7 +1359,7 @@ You may also alias the relationship count result, allowing multiple counts on th
 
 Using the `loadCount` method, you may load a relationship count after the parent model has already been retrieved:
 
-    $book = Book::first();
+    $book = Book::query()->first();
 
     $book->loadCount('genres');
 
@@ -1374,7 +1374,7 @@ If you need to set additional query constraints on the count query, you may pass
 
 If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
 
-    $posts = Post::select(['title', 'body'])
+    $posts = Post::query()->select(['title', 'body'])
                     ->withCount('comments')
                     ->get();
 
@@ -1385,7 +1385,7 @@ In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `
 
     use App\Models\Post;
 
-    $posts = Post::withSum('comments', 'votes')->get();
+    $posts = Post::query()->withSum('comments', 'votes')->get();
 
     foreach ($posts as $post) {
         echo $post->comments_sum_votes;
@@ -1393,7 +1393,7 @@ In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `
 
 If you wish to access the result of the aggregate function using another name, you may specify your own alias:
 
-    $posts = Post::withSum('comments as total_comments', 'votes')->get();
+    $posts = Post::query()->withSum('comments as total_comments', 'votes')->get();
 
     foreach ($posts as $post) {
         echo $post->total_comments;
@@ -1401,13 +1401,13 @@ If you wish to access the result of the aggregate function using another name, y
 
 Like the `loadCount` method, deferred versions of these methods are also available. These additional aggregate operations may be performed on Eloquent models that have already been retrieved:
 
-    $post = Post::first();
+    $post = Post::query()->first();
 
     $post->loadSum('comments', 'votes');
 
 If you're combining these aggregate methods with a `select` statement, ensure that you call the aggregate methods after the `select` method:
 
-    $posts = Post::select(['title', 'body'])
+    $posts = Post::query()->select(['title', 'body'])
                     ->withExists('comments')
                     ->get();
 
@@ -1589,11 +1589,11 @@ Sometimes you might want to always load some relationships when retrieving a mod
 
 If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:
 
-    $books = Book::without('author')->get();
+    $books = Book::query()->without('author')->get();
 
 If you would like to override all items within the `$with` property for a single query, you may use the `withOnly` method:
 
-    $books = Book::withOnly('genre')->get();
+    $books = Book::query()->withOnly('genre')->get();
 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
@@ -1738,7 +1738,7 @@ Eloquent provides convenient methods for adding new models to relationships. For
 
     $comment = new Comment(['message' => 'A new comment.']);
 
-    $post = Post::find(1);
+    $post = Post::query()->find(1);
 
     $post->comments()->save($comment);
 
@@ -1746,7 +1746,7 @@ Note that we did not access the `comments` relationship as a dynamic property. I
 
 If you need to save multiple related models, you may use the `saveMany` method:
 
-    $post = Post::find(1);
+    $post = Post::query()->find(1);
 
     $post->comments()->saveMany([
         new Comment(['message' => 'A new comment.']),
@@ -1767,7 +1767,7 @@ The `save` and `saveMany` methods will persist the given model instances, but wi
 
 If you would like to `save` your model and all of its associated relationships, you may use the `push` method. In this example, the `Post` model will be saved as well as its comments and the comment's authors:
 
-    $post = Post::find(1);
+    $post = Post::query()->find(1);
 
     $post->comments[0]->message = 'Message';
     $post->comments[0]->author->name = 'Author Name';
@@ -1781,7 +1781,7 @@ In addition to the `save` and `saveMany` methods, you may also use the `create` 
 
     use App\Models\Post;
 
-    $post = Post::find(1);
+    $post = Post::query()->find(1);
 
     $comment = $post->comments()->create([
         'message' => 'A new comment.',
@@ -1789,7 +1789,7 @@ In addition to the `save` and `saveMany` methods, you may also use the `create` 
 
 You may use the `createMany` method to create multiple related models:
 
-    $post = Post::find(1);
+    $post = Post::query()->find(1);
 
     $post->comments()->createMany([
         ['message' => 'A new comment.'],
@@ -1807,7 +1807,7 @@ If you would like to assign a child model to a new parent model, you may use the
 
     use App\Models\Account;
 
-    $account = Account::find(10);
+    $account = Account::query()->find(10);
 
     $user->account()->associate($account);
 
@@ -1829,7 +1829,7 @@ Eloquent also provides methods to make working with many-to-many relationships m
 
     use App\Models\User;
 
-    $user = User::find(1);
+    $user = User::query()->find(1);
 
     $user->roles()->attach($roleId);
 
@@ -1847,7 +1847,7 @@ Sometimes it may be necessary to remove a role from a user. To remove a many-to-
 
 For convenience, `attach` and `detach` also accept arrays of IDs as input:
 
-    $user = User::find(1);
+    $user = User::query()->find(1);
 
     $user->roles()->detach([1, 2, 3]);
 
@@ -1887,7 +1887,7 @@ The many-to-many relationship also provides a `toggle` method which "toggles" th
 
 If you need to update an existing row in your relationship's intermediate table, you may use the `updateExistingPivot` method. This method accepts the intermediate record foreign key and an array of attributes to update:
 
-    $user = User::find(1);
+    $user = User::query()->find(1);
 
     $user->roles()->updateExistingPivot($roleId, [
         'active' => false,

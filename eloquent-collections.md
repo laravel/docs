@@ -13,7 +13,7 @@ All collections also serve as iterators, allowing you to loop over them as if th
 
     use App\Models\User;
 
-    $users = User::where('active', 1)->get();
+    $users = User::query()->where('active', 1)->get();
 
     foreach ($users as $user) {
         echo $user->name;
@@ -84,7 +84,7 @@ The `contains` method may be used to determine if a given model instance is cont
 
     $users->contains(1);
 
-    $users->contains(User::find(1));
+    $users->contains(User::query()->find(1));
 
 <a name="method-diff"></a>
 #### `diff($items)` {.collection-method}
@@ -93,7 +93,7 @@ The `diff` method returns all of the models that are not present in the given co
 
     use App\Models\User;
 
-    $users = $users->diff(User::whereIn('id', [1, 2, 3])->get());
+    $users = $users->diff(User::query()->whereIn('id', [1, 2, 3])->get());
 
 <a name="method-except"></a>
 #### `except($keys)` {.collection-method}
@@ -127,7 +127,7 @@ The `intersect` method returns all of the models that are also present in the gi
 
     use App\Models\User;
 
-    $users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());
+    $users = $users->intersect(User::query()->whereIn('id', [1, 2, 3])->get());
 
 <a name="method-load"></a>
 #### `load($relations)` {.collection-method}
@@ -184,7 +184,7 @@ The `toQuery` method returns an Eloquent query builder instance containing a `wh
 
     use App\Models\User;
 
-    $users = User::where('status', 'VIP')->get();
+    $users = User::query()->where('status', 'VIP')->get();
 
     $users->toQuery()->update([
         'status' => 'Administrator',

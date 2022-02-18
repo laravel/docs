@@ -31,7 +31,7 @@ To convert a model and its loaded [relationships](/docs/{{version}}/eloquent-rel
 
 The `attributesToArray` method may be used to convert a model's attributes to an array but not its relationships:
 
-    $user = User::first();
+    $user = User::query()->first();
 
     return $user->attributesToArray();
 
@@ -48,7 +48,7 @@ To convert a model to JSON, you should use the `toJson` method. Like `toArray`, 
 
     use App\Models\User;
 
-    $user = User::find(1);
+    $user = User::query()->find(1);
 
     return $user->toJson();
 
@@ -56,7 +56,7 @@ To convert a model to JSON, you should use the `toJson` method. Like `toArray`, 
 
 Alternatively, you may cast a model or collection to a string, which will automatically call the `toJson` method on the model or collection:
 
-    return (string) User::find(1);
+    return (string) User::query()->find(1);
 
 Since models and collections are converted to JSON when cast to a string, you can return Eloquent objects directly from your application's routes or controllers. Laravel will automatically serialize your Eloquent models and collections to JSON when they are returned from routes or controllers:
 

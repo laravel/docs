@@ -82,7 +82,7 @@ Note that we can access model properties directly from the `$this` variable. Thi
     use App\Models\User;
 
     Route::get('/user/{id}', function ($id) {
-        return new UserResource(User::findOrFail($id));
+        return new UserResource(User::query()->findOrFail($id));
     });
 
 <a name="resource-collections"></a>
@@ -231,7 +231,7 @@ Once a resource has been defined, it may be returned directly from a route or co
     use App\Models\User;
 
     Route::get('/user/{id}', function ($id) {
-        return new UserResource(User::findOrFail($id));
+        return new UserResource(User::query()->findOrFail($id));
     });
 
 <a name="relationships"></a>
@@ -456,7 +456,7 @@ You may pass a Laravel paginator instance to the `collection` method of a resour
     use App\Models\User;
 
     Route::get('/users', function () {
-        return new UserCollection(User::paginate());
+        return new UserCollection(User::query()->paginate());
     });
 
 Paginated responses always contain `meta` and `links` keys with information about the paginator's state:
@@ -714,7 +714,7 @@ As you have already read, resources may be returned directly from routes and con
     use App\Models\User;
 
     Route::get('/user/{id}', function ($id) {
-        return new UserResource(User::findOrFail($id));
+        return new UserResource(User::query()->findOrFail($id));
     });
 
 However, sometimes you may need to customize the outgoing HTTP response before it is sent to the client. There are two ways to accomplish this. First, you may chain the `response` method onto the resource. This method will return an `Illuminate\Http\JsonResponse` instance, giving you full control over the response's headers:
@@ -723,7 +723,7 @@ However, sometimes you may need to customize the outgoing HTTP response before i
     use App\Models\User;
 
     Route::get('/user', function () {
-        return (new UserResource(User::find(1)))
+        return (new UserResource(User::query()->find(1)))
                     ->response()
                     ->header('X-Value', 'True');
     });
