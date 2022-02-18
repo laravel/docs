@@ -789,7 +789,7 @@ Sometimes you may want certain query clauses to apply to a query based on anothe
 
     $users = DB::table('users')
                     ->when($role, function ($query, $role) {
-                        return $query->where('role_id', $role);
+                        $query->where('role_id', $role);
                     })
                     ->get();
 
@@ -801,9 +801,9 @@ You may pass another closure as the third argument to the `when` method. This cl
 
     $users = DB::table('users')
                     ->when($sortByVotes, function ($query, $sortByVotes) {
-                        return $query->orderBy('votes');
+                        $query->orderBy('votes');
                     }, function ($query) {
-                        return $query->orderBy('name');
+                        $query->orderBy('name');
                     })
                     ->get();
 
