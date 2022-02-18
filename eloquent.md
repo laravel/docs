@@ -661,7 +661,7 @@ The `wasChanged` method determines if any attributes were changed when the model
     $user->wasChanged('title'); // true
     $user->wasChanged(['title', 'slug']); // true
     $user->wasChanged('first_name'); // false
-    $user->wasChanged(['first_name', 'last_name']); // false
+    $user->wasChanged(['first_name', 'title']); // true
 
 The `getOriginal` method returns an array containing the original attributes of the model regardless of any changes to the model since it was retrieved. If needed, you may pass a specific attribute name to get the original value of a particular attribute:
 
