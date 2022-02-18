@@ -230,7 +230,7 @@ If you plan to use Amazon S3 to store files while running your application in it
 By default, your application's `filesystems` configuration file already contains a disk configuration for the `s3` disk. In addition to using this disk to interact with Amazon S3, you may use it to interact with any S3 compatible file storage service such as MinIO by simply modifying the associated environment variables that control its configuration. For example, when using MinIO, your filesystem environment variable configuration should be defined as follows:
 
 ```ini
-FILESYSTEM_DRIVER=s3
+FILESYSTEM_DISK=s3
 AWS_ACCESS_KEY_ID=sail
 AWS_SECRET_ACCESS_KEY=password
 AWS_DEFAULT_REGION=us-east-1
