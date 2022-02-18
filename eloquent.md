@@ -618,7 +618,7 @@ The `update` method expects an array of column and value pairs representing the 
 
 Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how its attributes have changed from when the model was originally retrieved.
 
-The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name or an array of specify attributes to the `isDirty` method to determine if a particular attribute is dirty. The `isClean` will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:
+The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name or an array of attributes to the `isDirty` method to determine if any of the attributes are "dirty". The `isClean` will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:
 
     use App\Models\User;
 
@@ -633,12 +633,12 @@ The `isDirty` method determines if any of the model's attributes have been chang
     $user->isDirty(); // true
     $user->isDirty('title'); // true
     $user->isDirty('first_name'); // false
-    $user->isDirty(['first_name', 'last_name']); // false
+    $user->isDirty(['first_name', 'title']); // true
 
     $user->isClean(); // false
     $user->isClean('title'); // false
     $user->isClean('first_name'); // true
-    $user->isDirty(['first_name', 'last_name']); // true
+    $user->isClean(['first_name', 'title']); // false
 
     $user->save();
 
