@@ -618,7 +618,7 @@ The `update` method expects an array of column and value pairs representing the 
 
 Eloquent provides the `isDirty`, `isClean`, and `wasChanged` methods to examine the internal state of your model and determine how its attributes have changed from when the model was originally retrieved.
 
-The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name to the `isDirty` method to determine if a particular attribute is dirty. The `isClean` will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:
+The `isDirty` method determines if any of the model's attributes have been changed since the model was retrieved. You may pass a specific attribute name or an array of attributes to the `isDirty` method to determine if any of the attributes are "dirty". The `isClean` will determine if an attribute has remained unchanged since the model was retrieved. This method also accepts an optional attribute argument:
 
     use App\Models\User;
 
@@ -633,10 +633,12 @@ The `isDirty` method determines if any of the model's attributes have been chang
     $user->isDirty(); // true
     $user->isDirty('title'); // true
     $user->isDirty('first_name'); // false
+    $user->isDirty(['first_name', 'title']); // true
 
     $user->isClean(); // false
     $user->isClean('title'); // false
     $user->isClean('first_name'); // true
+    $user->isClean(['first_name', 'title']); // false
 
     $user->save();
 
@@ -657,7 +659,9 @@ The `wasChanged` method determines if any attributes were changed when the model
 
     $user->wasChanged(); // true
     $user->wasChanged('title'); // true
+    $user->wasChanged(['title', 'slug']); // true
     $user->wasChanged('first_name'); // false
+    $user->wasChanged(['first_name', 'title']); // true
 
 The `getOriginal` method returns an array containing the original attributes of the model regardless of any changes to the model since it was retrieved. If needed, you may pass a specific attribute name to get the original value of a particular attribute:
 
