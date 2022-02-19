@@ -41,41 +41,46 @@
 
 <a name="the-root-app-directory"></a>
 #### أولا: مجلد التطبيق `app`
-مجلد التطبيق `app` يحوي الكود الرئيسي لتطبيقك Core Code, سيتم توضيح هذا المجلد بشكل مفصل في الفقرات التالية.
+مجلد التطبيق `app` يحوي الكود الرئيسي لتطبيقك (Core Code), سيتم توضيح هذا المجلد بشكل مفصل في الفقرات التالية.
 
-ولكن بشكل عام يمكن القول أن هذا المجلد يحوي الصفوف Classes الخاصة بالمنطق في تطبيقك.
+ولكن بشكل عام يمكن القول أن هذا المجلد يحوي الصفوف (Classes) الخاصة بالمنطق في تطبيقك.
 
 
 <a name="the-bootstrap-directory"></a>
 ####  مجلد `bootstrap` 
-يحوي هذا المجلد ملف `app.php` والذي يقوم بإقلاع إطار العمل لارافل, وأيضا يحتوي هذا المجلد على المجلد الفرعي `cache` والذي يحوي ملفات الذاكرة المخبئية التي يتم توليدها بشكل تلقائي من خلال اطار العمل لتحسين الأداء على سبيل المثال ملفات مخبئية تخص المسارات Routes أو ملفات مخبئية خاصة بالخدمات Services.
+يحوي هذا المجلد ملف `app.php` والذي يقوم بإقلاع إطار العمل لارافل, وأيضا يحتوي هذا المجلد على المجلد الفرعي `cache` والذي يحوي ملفات الذاكرة المخبئية التي يتم توليدها بشكل تلقائي من خلال اطار العمل لتحسين الأداء على سبيل المثال ملفات مخبئية تخص المسارات (Routes) أو ملفات مخبئية خاصة بالخدمات (Services).
 
 بأغلب الحالات ومن المستحسن ألا تقوم بتعديل أي ملف ضمن هذا المجلد
 
 <a name="the-config-directory"></a>
-#### The Config Directory
+#### مجلد `Config`
 
-The `config` directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
+مجلد الاعدادات (config) كما يشير الاسم, يحوي جميع ملفات الاعدادات الخاصة بالتطبيق.
+
+ومن المهم جدا الاطلاع على هذه الملفات بُغية معرفة كافة الخيارات المتاحة ضمنها والتغيير فيها عند الحاجة بحسب طبيعة التطبيق الخاص بك.
 
 <a name="the-database-directory"></a>
-#### The Database Directory
+#### مجلد `database` 
 
-The `database` directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
+يحوي هذا المجلد ملفات ترحيل قاعدة البيانات (migrations), مصانع البيانات (Factories) وملفات (Seeds).
+
+وأيضا يمكن استخدام هذا المجلد لتخزين قواعد البيانات من النوع SQLite.
 
 <a name="the-lang-directory"></a>
-#### The Lang Directory
+#### مجلد `lang` 
 
-The `lang` directory houses all of your application's language files.
+يحوي هذا المجلد جميع ملفات اللغة الخاصة بالتطبيق.
 
 <a name="the-public-directory"></a>
-#### The Public Directory
+#### مجلد `public` 
 
-The `public` directory contains the `index.php` file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
+يحوي هذا المجلد الملف `index.php` والذي يعتبر نقطة الانطلاق لجميع الطلبات الواردة للتطبيق ويضبط أيضا عملية التحميل التلقائي للصفوف (Classes Autoloading).
+
+كما يستخدم هذا المجلد لتخزين ملفات الأصول (Assets) كالصور وملفات جافاسكريبت أو ملفات CSS.
 
 <a name="the-resources-directory"></a>
-#### The Resources Directory
-
-The `resources` directory contains your [views](/docs/{{version}}/views) as well as your raw, un-compiled assets such as CSS or JavaScript.
+#### مجلد `resources` 
+يحوي هذا المجلد  ملفات الواجهات [views](/docs/views) كما يحوي الملفات الخام, والغير مترجمة من ملفات جافاسكريبت أو CSS. 
 
 <a name="the-routes-directory"></a>
 #### The Routes Directory
