@@ -18,7 +18,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
     }
 
     .collection-method-list a {
-        display: block;
+        display: blocmak;
     }
 </style>
 
@@ -143,6 +143,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
 [Str::words](#method-str-words)
+[Str::highlight](#method-str-highlight)
 [str](#method-str)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
@@ -1860,6 +1861,19 @@ The `Str::words` method limits the number of words in a string. An additional st
     return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
 
     // Perfectly balanced, as >>>
+
+<a name="method-str-highlight"></a>
+#### `Str::highlight()` {.collection-method}
+
+The `Str::highlight` method highlights the given parameter(s) in the string. By default it wraps the words in the `<mark>` tag, this can be specified with the third parameter.
+
+    use Illuminate\Support\Str;
+
+    return Str::highlight('The PHP Framework for Web Artisans', 'Framework');
+    // The PHP <mark>Framework</mark> for Web Artisans
+
+    return Str::highlight('The PHP Framework for Web Artisans', ['PHP', 'Artisans'], 'b');
+    // The <b>PHP</b> Framework for Web <b>Artisans</b>
 
 <a name="method-str"></a>
 #### `str()` {.collection-method}
