@@ -1,50 +1,56 @@
 # Directory Structure
+<div dir="rtl">
 
-- [Introduction](#introduction)
-- [The Root Directory](#the-root-directory)
-    - [The `app` Directory](#the-root-app-directory)
-    - [The `bootstrap` Directory](#the-bootstrap-directory)
-    - [The `config` Directory](#the-config-directory)
-    - [The `database` Directory](#the-database-directory)
-    - [The `lang` Directory](#the-lang-directory)
-    - [The `public` Directory](#the-public-directory)
-    - [The `resources` Directory](#the-resources-directory)
-    - [The `routes` Directory](#the-routes-directory)
-    - [The `storage` Directory](#the-storage-directory)
-    - [The `tests` Directory](#the-tests-directory)
-    - [The `vendor` Directory](#the-vendor-directory)
-- [The App Directory](#the-app-directory)
-    - [The `Broadcasting` Directory](#the-broadcasting-directory)
-    - [The `Console` Directory](#the-console-directory)
-    - [The `Events` Directory](#the-events-directory)
-    - [The `Exceptions` Directory](#the-exceptions-directory)
-    - [The `Http` Directory](#the-http-directory)
-    - [The `Jobs` Directory](#the-jobs-directory)
-    - [The `Listeners` Directory](#the-listeners-directory)
-    - [The `Mail` Directory](#the-mail-directory)
-    - [The `Models` Directory](#the-models-directory)
-    - [The `Notifications` Directory](#the-notifications-directory)
-    - [The `Policies` Directory](#the-policies-directory)
-    - [The `Providers` Directory](#the-providers-directory)
-    - [The `Rules` Directory](#the-rules-directory)
+- [مقدمة](#introduction)
+- [المجلد الرئيسي](#the-root-directory)
+    - [مجلد  `app` ](#the-root-app-directory)
+    - [مجلد `bootstrap` ](#the-bootstrap-directory)
+    - [مجلد `config` ](#the-config-directory)
+    - [مجلد `database` ](#the-database-directory)
+    - [مجلد `lang` ](#the-lang-directory)
+    - [مجلد `public` ](#the-public-directory)
+    - [مجلد `resources` ](#the-resources-directory)
+    - [مجلد `routes` ](#the-routes-directory)
+    - [مجلد `storage` ](#the-storage-directory)
+    - [مجلد `tests` ](#the-tests-directory)
+    - [مجلد `vendor` ](#the-vendor-directory)
+- [مجلد `App` ](#the-app-directory)
+    - [مجلد `Broadcasting` ](#the-broadcasting-directory)
+    - [مجلد `Console` ](#the-console-directory)
+    - [مجلد `Events` ](#the-events-directory)
+    - [مجلد `Exceptions` ](#the-exceptions-directory)
+    - [مجلد `Http` ](#the-http-directory)
+    - [مجلد `Jobs` ](#the-jobs-directory)
+    - [مجلد `Listeners` ](#the-listeners-directory)
+    - [مجلد `Mail` ](#the-mail-directory)
+    - [مجلد `Models` ](#the-models-directory)
+    - [مجلد `Notifications` ](#the-notifications-directory)
+    - [مجلد `Policies` ](#the-policies-directory)
+    - [مجلد `Providers` ](#the-providers-directory)
+    - [مجلد `Rules` ](#the-rules-directory)
 
 <a name="introduction"></a>
-## Introduction
+## المقدمة 
 
-The default Laravel application structure is intended to provide a great starting point for both large and small applications. But you are free to organize your application however you like. Laravel imposes almost no restrictions on where any given class is located - as long as Composer can autoload the class.
+توفر لارافل بنية افتراضية تسهل عليك بداية المشاريع سواء كانت مشاريع كبيرة أو مشاريع صغيرة,  وأيضا لديك الحرية بتنظيم ملفاتك بالشكل الذي تراه مناسباً.
+
+لاتفرض لارفل أية قيد على مكان وجود أي صف Class  طالما أنه يتم تحميله بشكل تلقائي (Autoload ) عن طريق Composer 
 
 <a name="the-root-directory"></a>
-## The Root Directory
+## المجلد الرئيسي root directory 
 
 <a name="the-root-app-directory"></a>
-#### The App Directory
+#### أولا: مجلد التطبيق `app`
+مجلد التطبيق `app` يحوي الكود الرئيسي لتطبيقك Core Code, سيتم توضيح هذا المجلد بشكل مفصل في الفقرات التالية.
 
-The `app` directory contains the core code of your application. We'll explore this directory in more detail soon; however, almost all of the classes in your application will be in this directory.
+ولكن بشكل عام يمكن القول أن هذا المجلد يحوي الصفوف Classes الخاصة بالمنطق في تطبيقك.
+
 
 <a name="the-bootstrap-directory"></a>
-#### The Bootstrap Directory
+####  مجلد `bootstrap` 
+يحوي هذا المجلد ملف `app.php` والذي يقوم بإقلاع إطار العمل لارافل, وأيضا يحتوي هذا المجلد على المجلد الفرعي `cache` والذي يحوي ملفات الذاكرة المخبئية التي يتم توليدها بشكل تلقائي من خلال اطار العمل لتحسين الأداء على سبيل المثال ملفات مخبئية تخص المسارات Routes أو ملفات مخبئية خاصة بالخدمات Services.
 
-The `bootstrap` directory contains the `app.php` file which bootstraps the framework. This directory also houses a `cache` directory which contains framework generated files for performance optimization such as the route and services cache files. You should not typically need to modify any files within this directory.
+بأغلب الحالات ومن المستحسن ألا تقوم بتعديل أي ملف ضمن هذا المجلد
 
 <a name="the-config-directory"></a>
 #### The Config Directory
@@ -178,3 +184,4 @@ In a fresh Laravel application, this directory will already contain several prov
 #### The Rules Directory
 
 This directory does not exist by default, but will be created for you if you execute the `make:rule` Artisan command. The `Rules` directory contains the custom validation rule objects for your application. Rules are used to encapsulate complicated validation logic in a simple object. For more information, check out the [validation documentation](/docs/{{version}}/validation).
+</div>
