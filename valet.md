@@ -59,6 +59,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [Symfony](https://symfony.com)
 - [WordPress](https://wordpress.org)
 - [Zend](https://framework.zend.com)
+- [Neos](https://neos.io)
 
 </div>
 
