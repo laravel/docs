@@ -24,6 +24,7 @@
     - [Pagination](#pagination)
     - [Soft Deleting](#soft-deleting)
     - [Customizing Engine Searches](#customizing-engine-searches)
+    - [Working with Eloquent Results](#working-with-eloquent-results)
 - [Custom Engines](#custom-engines)
 - [Builder Macros](#builder-macros)
 
@@ -549,6 +550,20 @@ If you need to perform advanced customization of the search behavior of an engin
             return $algolia->search($query, $options);
         }
     )->get();
+
+<a name="working-with-eloquent-results"></a>
+### Working with Eloquent Results
+
+If you need to add additional Eloquent behavior to the search results, you may use the `query` method. This callback is run after building the initial Eloquent query for the matched result set, but before executing the query to load the final models. It works well for things like specifying which columns to load, and eager-loading relations:
+
+    use App\Models\Order;
+    use Illuminate\Database\Eloquent\Builder;
+
+    $orders = Order::search('Star Trek')
+        ->query(fn (Builder $builder) => $builder->with('comments'))
+        ->get();
+
+> {note} As this callback is typically triggered after the results are already queried from the search engine, the `query` method should not be used for filtering results. You should use [where clauses](#where-clauses) instead.
 
 <a name="custom-engines"></a>
 ## Custom Engines
