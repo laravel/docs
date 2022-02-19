@@ -18,7 +18,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
     }
 
     .collection-method-list a {
-        display: blocmak;
+        display: block;
     }
 </style>
 
