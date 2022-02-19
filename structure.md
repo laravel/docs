@@ -1,5 +1,6 @@
-# Directory Structure
 <div dir="rtl">
+
+# بنية المجلد في لارافل 
 
 - [مقدمة](#introduction)
 - [المجلد الرئيسي](#the-root-directory)
@@ -40,67 +41,78 @@
 ## المجلد الرئيسي root directory 
 
 <a name="the-root-app-directory"></a>
-#### أولا: مجلد التطبيق `app`
+#### أولا: مجلد التطبيق App 
 مجلد التطبيق `app` يحوي الكود الرئيسي لتطبيقك (Core Code), سيتم توضيح هذا المجلد بشكل مفصل في الفقرات التالية.
 
 ولكن بشكل عام يمكن القول أن هذا المجلد يحوي الصفوف (Classes) الخاصة بالمنطق في تطبيقك.
 
 
 <a name="the-bootstrap-directory"></a>
-####  مجلد `bootstrap` 
+####  مجلد الإقلاع Bootstrap 
 يحوي هذا المجلد ملف `app.php` والذي يقوم بإقلاع إطار العمل لارافل, وأيضا يحتوي هذا المجلد على المجلد الفرعي `cache` والذي يحوي ملفات الذاكرة المخبئية التي يتم توليدها بشكل تلقائي من خلال اطار العمل لتحسين الأداء على سبيل المثال ملفات مخبئية تخص المسارات (Routes) أو ملفات مخبئية خاصة بالخدمات (Services).
 
 بأغلب الحالات ومن المستحسن ألا تقوم بتعديل أي ملف ضمن هذا المجلد
 
 <a name="the-config-directory"></a>
-#### مجلد `Config`
+#### مجلد الإعدادات Config 
 
 مجلد الاعدادات (config) كما يشير الاسم, يحوي جميع ملفات الاعدادات الخاصة بالتطبيق.
 
 ومن المهم جدا الاطلاع على هذه الملفات بُغية معرفة كافة الخيارات المتاحة ضمنها والتغيير فيها عند الحاجة بحسب طبيعة التطبيق الخاص بك.
 
 <a name="the-database-directory"></a>
-#### مجلد `database` 
+#### مجلد قاعدة البيانات Database 
 
 يحوي هذا المجلد ملفات ترحيل قاعدة البيانات (migrations), مصانع البيانات (Factories) وملفات (Seeds).
 
 وأيضا يمكن استخدام هذا المجلد لتخزين قواعد البيانات من النوع SQLite.
 
 <a name="the-lang-directory"></a>
-#### مجلد `lang` 
+#### مجلد اللغة Lang 
 
 يحوي هذا المجلد جميع ملفات اللغة الخاصة بالتطبيق.
 
 <a name="the-public-directory"></a>
-#### مجلد `public` 
+#### المجلد العام Public 
 
 يحوي هذا المجلد الملف `index.php` والذي يعتبر نقطة الانطلاق لجميع الطلبات الواردة للتطبيق ويضبط أيضا عملية التحميل التلقائي للصفوف (Classes Autoloading).
 
 كما يستخدم هذا المجلد لتخزين ملفات الأصول (Assets) كالصور وملفات جافاسكريبت أو ملفات CSS.
 
 <a name="the-resources-directory"></a>
-#### مجلد `resources` 
+#### مجلد الموارد Resources 
 يحوي هذا المجلد  ملفات الواجهات [views](views.md) كما يحوي الملفات الخام, والغير مترجمة من ملفات جافاسكريبت أو CSS. 
 
 <a name="the-routes-directory"></a>
-#### The Routes Directory
+#### مجلد المسارات Routes 
+مجلد `routes` يحوي تعريف كل المسارات في التطبيق افتراضياً يوجد عدة ملفات ضمن هذا الملف وهي `web.php` و `api.php` و`console.php` و `channels.php`.
 
-The `routes` directory contains all of the route definitions for your application. By default, several route files are included with Laravel: `web.php`, `api.php`, `console.php`, and `channels.php`.
+ملف `web.php` يحوي المسارات التي يصنفها `RouteServiceProvider` ضمن مجموعة البرمجيات الوسيطة(Middlewares) الخاصة بالـWeb, والتي تزود حالة الجلسة (Session State), حماية CSRF وتشفير ملفات تعريف الارتباط (Cookies). في حال كان تطبيقك لا يقدم خدمات عديمة الحالة Stateless أو RESTful APIs فإنه من الشائع جداً تعريف جميع المسارات الخاصة بالتطبيق في هذا الملف.
 
-The `web.php` file contains routes that the `RouteServiceProvider` places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API then it is likely that all of your routes will most likely be defined in the `web.php` file.
+ملف `api.php` يحوي جميع  المسارات التي يصنفها RoutueServiceProvider ضمن مجموعة البرمجيات الوسيطة (Middlewares) الخاصة بالـAPI.
+تكون هذه المسارات عديمة الحالة (Stateless) والذي يعني أن الطلبات الواردة للتطبيق لا تملك وصول لحالة الجلسة ويمكن مصادقتها (Authenticate) من خلال [ tokens](sanctum.md)  
 
-The `api.php` file contains routes that the `RouteServiceProvider` places in the `api` middleware group. These routes are intended to be stateless, so requests entering the application through these routes are intended to be authenticated [via tokens](/docs/{{version}}/sanctum) and will not have access to session state.
+ملف `console.php` هو الملف الذي يتم تعريف أوامر التحكم Console Commands والمعتمدة على Closures. 
+كل منها يتم ربطه بأمر Command بحيث تقدم طريقة بسيطة للتفاعل الدخل والخرج الخاص بهذا الأمر.
 
-The `console.php` file is where you may define all of your closure based console commands. Each closure is bound to a command instance allowing a simple approach to interacting with each command's IO methods. Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application.
+يجب ملاحظة أن هذه المسارات في هذا الملف هي ليست مسارات HTTP وإنما هي مسارات يمكن التفاعل بها مع التطبيق من خلال Console.
 
-The `channels.php` file is where you may register all of the [event broadcasting](/docs/{{version}}/broadcasting) channels that your application supports.
+ملف `channels.php` يتم تخزين جميع قنوات أحداث البث العام [event broadcasting](broadcasting.md) التي يدعمها تطبيقك. 
 
 <a name="the-storage-directory"></a>
-#### The Storage Directory
+#### مجلد التخزين Storage 
+مجلد التخزين `storage` يحوي جميع ملفات السجلات (logs), قوالب Blade المترجمة, ملفات الجلسات, ملفات الذاكرة المخبئية, والعديد من الملفات الأخرى التي يتم توليدها من قبل إطار العمل لارافل.
+هذا المجلد مقسم الى المجلدات الفرعية التالية `app` و `framework` و `logs`.
 
-The `storage` directory contains your logs, compiled Blade templates, file based sessions, file caches, and other files generated by the framework. This directory is segregated into `app`, `framework`, and `logs` directories. The `app` directory may be used to store any files generated by your application. The `framework` directory is used to store framework generated files and caches. Finally, the `logs` directory contains your application's log files.
+مجلد `app` يستخدم لتخزين الملفات التي يولدها التطبيق
 
-The `storage/app/public` directory may be used to store user-generated files, such as profile avatars, that should be publicly accessible. You should create a symbolic link at `public/storage` which points to this directory. You may create the link using the `php artisan storage:link` Artisan command.
+مجلد `framework` يستخدم لتخزين الملفات المولدة من قبل اطار العمل وملفات الذاكرة المخبئية.
+
+وأخيرا مجلد `logs` يستخدم لتخزين السجلات الخاصة بتطبيقك كسجلات الطلبات أو سجلات الأخطاء وغيرها.
+
+مجلد `storage/app/public` يستخدم لتخزينن الملفات التي يقوم المستخدم بتوليدها أو رفعها على سبيل المثال الصور الشخصية Avatars, يجب أن يكون هذا المجلد قابل للوصول بشكل عام Publicly Accessible من خلال اضافة وصلة رمزية Symbolic Link في `public/storage` تشير لهذا المجلد.
+
+يمكن انشاء هذه الوصلة من خلال أمر Artisan التالي `php artisan storage:link`
 
 <a name="the-tests-directory"></a>
 #### The Tests Directory
