@@ -80,7 +80,7 @@
 
 <a name="the-resources-directory"></a>
 #### مجلد `resources` 
-يحوي هذا المجلد  ملفات الواجهات [views](/views) كما يحوي الملفات الخام, والغير مترجمة من ملفات جافاسكريبت أو CSS. 
+يحوي هذا المجلد  ملفات الواجهات [views](views.md) كما يحوي الملفات الخام, والغير مترجمة من ملفات جافاسكريبت أو CSS. 
 
 <a name="the-routes-directory"></a>
 #### The Routes Directory
