@@ -36,6 +36,7 @@ The Laravel framework has a few system requirements. You should ensure that your
 - PDO PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
+- cURL PHP Extension
 
 </div>
 
