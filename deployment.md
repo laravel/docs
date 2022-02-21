@@ -27,6 +27,7 @@ The Laravel framework has a few system requirements. You should ensure that your
 - PHP >= 8.0
 - BCMath PHP Extension
 - Ctype PHP Extension
+- cURL PHP Extension
 - DOM PHP Extension
 - Fileinfo PHP Extension
 - JSON PHP Extension
@@ -36,7 +37,6 @@ The Laravel framework has a few system requirements. You should ensure that your
 - PDO PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
-- cURL PHP Extension
 
 </div>
 
