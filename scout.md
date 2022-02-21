@@ -24,7 +24,6 @@
     - [Pagination](#pagination)
     - [Soft Deleting](#soft-deleting)
     - [Customizing Engine Searches](#customizing-engine-searches)
-    - [Working with Eloquent Results](#working-with-eloquent-results)
 - [Custom Engines](#custom-engines)
 - [Builder Macros](#builder-macros)
 
@@ -551,19 +550,20 @@ If you need to perform advanced customization of the search behavior of an engin
         }
     )->get();
 
-<a name="working-with-eloquent-results"></a>
-### Working with Eloquent Results
+<a name="customizing-the-eloquent-results-query"></a>
+#### Customizing The Eloquent Results Query
 
-If you need to add additional Eloquent behavior to the search results, you may use the `query` method. This callback is run after building the initial Eloquent query for the matched result set, but before executing the query to load the final models. It works well for things like specifying which columns to load, and eager-loading relations:
+After Scout retrieves a list of matching Eloquent models from your application's search engine, Eloquent is used to retrieve all of the matching models by their primary keys. You may customize this query by invoking the `query` method. The `query` method accepts a closure that will receive the Eloquent query builder instance as an argument:
 
-    use App\Models\Order;
-    use Illuminate\Database\Eloquent\Builder;
+```php
+use App\Models\Order;
 
-    $orders = Order::search('Star Trek')
-        ->query(fn (Builder $builder) => $builder->with('comments'))
-        ->get();
+$orders = Order::search('Star Trek')
+    ->query(fn ($query) => $query->with('invoices'))
+    ->get();
+```
 
-> {note} As this callback is typically triggered after the results are already queried from the search engine, the `query` method should not be used for filtering results. You should use [where clauses](#where-clauses) instead.
+Since this callback is invoked after the relevant models have already been retrieved from your application's search engine, the `query` method should not be used for "filtering" results. Instead, you should use [Scout where clauses](#where-clauses).
 
 <a name="custom-engines"></a>
 ## Custom Engines
