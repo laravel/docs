@@ -1,49 +1,49 @@
-# Installation
+# التنصيب
 
-- [Meet Laravel](#meet-laravel)
-    - [Why Laravel?](#why-laravel)
-- [Your First Laravel Project](#your-first-laravel-project)
-    - [Getting Started On macOS](#getting-started-on-macos)
-    - [Getting Started On Windows](#getting-started-on-windows)
-    - [Getting Started On Linux](#getting-started-on-linux)
+- [قابل لارافل](#meet-laravel)
+    - [لماذا لارافل؟](#why-laravel)
+- [مشروعك الأول مع لارافل](#your-first-laravel-project)
+    - [البدء على macOS](#getting-started-on-macos)
+    - [البدء على Windows](#getting-started-on-windows)
+    - [البدء على Linux](#getting-started-on-linux)
     - [Choosing Your Sail Services](#choosing-your-sail-services)
-    - [Installation Via Composer](#installation-via-composer)
-- [Initial Configuration](#initial-configuration)
-    - [Environment Based Configuration](#environment-based-configuration)
-    - [Directory Configuration](#directory-configuration)
-- [Next Steps](#next-steps)
-    - [Laravel The Full Stack Framework](#laravel-the-fullstack-framework)
-    - [Laravel The API Backend](#laravel-the-api-backend)
+    - [التنصيب باستخدام المٌلحن (composer)](#installation-via-composer)
+- [الإعدادات الابتدائية](#initial-configuration)
+    - [إعدادات المبنية على البيئة](#environment-based-configuration)
+    - [إعدادات الدليل (directory)](#directory-configuration)
+- [الخطوات التالية](#next-steps)
+    - [لارافل إطار عمل المكدس الكامل (Full Stack)](#laravel-the-fullstack-framework)
+    - [لارافل واجهة التخاطب الخلفية (Backend API)](#laravel-the-api-backend)
 
 <a name="meet-laravel"></a>
-## Meet Laravel
+## قابل لارافل
 
-Laravel is a web application framework with expressive, elegant syntax. A web framework provides a structure and starting point for creating your application, allowing you to focus on creating something amazing while we sweat the details.
+ لارافل هي إطار عمل لتطبيقات الويب بتركيب جمل بليغ وأنيق. يوف إطار عمل تطبيقات الويب بنية (Structure) ونقطة بداية لإنشاء مشروعك، مما يسمح لك بالتركيز على بناء شيء رائع بينما نحن نتعب في التفاصيل.
 
-Laravel strives to provide an amazing developer experience while providing powerful features such as thorough dependency injection, an expressive database abstraction layer, queues and scheduled jobs, unit and integration testing, and more.
+تسعى لارافل جاهدةً لتقديم تجرِبة مطور رائعة بينما تقدم ميزات قوية كحقن التبعية الشامل (Thorough Dependency Injection)، طبقة تجريد قاعدة البيانات التعبيرية (Expressive Database Abstraction Layer)،الطوابير (Queues) والمهام المجدولة (Scheduled Jobs)، اختبار الوحدة والتكامل (Unit & Integration Testing)، والكثير.
 
-Whether you are new to PHP or web frameworks or have years of experience, Laravel is a framework that can grow with you. We'll help you take your first steps as a web developer or give you a boost as you take your expertise to the next level. We can't wait to see what you build.
+سواء كنت جديداً على PHP أو إطر عمل الويب أو لديك سنوات من الخبرة، لارافل هي إطار العمل الذي يمكنه أن يكبر معك. سنساعدك لتأخذ خطواتك الا,لى كمطور ويب أو سنعطيك دفعة بينما تأخذ خبرتك إلى المستوى التالي. لا يسعنا الانتظار لنرى ما تبنيه.
 
 <a name="why-laravel"></a>
-### Why Laravel?
+### لماذا لارافل؟
 
-There are a variety of tools and frameworks available to you when building a web application. However, we believe Laravel is the best choice for building modern, full-stack web applications.
+هنك تنوع في الأدوات وأطر العمل المتوفرة لك عند بناء تطبيق ويب. ومع ذلك نعتقد أن لارافل هي أفضل خِيار لبناء تطبيقات ويب حديثة كاملة المكدس (Full Stack).
 
-#### A Progressive Framework
+#### إطار عمل تقدمي
 
-We like to call Laravel a "progressive" framework. By that, we mean that Laravel grows with you. If you're just taking your first steps into web development, Laravel's vast library of documentation, guides, and [video tutorials](https://laracasts.com) will help you learn the ropes without becoming overwhelmed.
+نحب أن ندعو لارافل إطار عمل "تقدمي". نعني بذلك أن لارافل تنمو معك. إن كنت تأخذ خطواتك الأولى في تطوير المواقع، مكتبة لارافل الواسع من التوثيق، الأدلة الإرشادية والفيديوهات التعليمية ستساعدك على تعلم إنجاز المهام دون أن ترتبك.
 
-If you're a senior developer, Laravel gives you robust tools for [dependency injection](/docs/{{version}}/container), [unit testing](/docs/{{version}}/testing), [queues](/docs/{{version}}/queues), [real-time events](/docs/{{version}}/broadcasting), and more. Laravel is fine-tuned for building professional web applications and ready to handle enterprise work loads.
+إن كنت مطوراً خبيراً، تعطيك لارافل أدوات قوية [لحقن التبعية](/docs/{{version}}/container) (Dependency Injection)، [اختبار الوحدة](/docs/{{version}}/testing) (Unit Testing)، [الطوابير](/docs/{{version}}/queues) (Queues)، [أحداث الوقت الحقيقي](/docs/{{version}}/broadcasting) (Real-time Events)، وأكثر.
 
-#### A Scalable Framework
+#### إطار عمل قابل للتوسيع
 
-Laravel is incredibly scalable. Thanks to the scaling-friendly nature of PHP and Laravel's built-in support for fast, distributed cache systems like Redis, horizontal scaling with Laravel is a breeze. In fact, Laravel applications have been easily scaled to handle hundreds of millions of requests per month.
+إن لارافل قابلة للتوسيع بشكل لا يصدق. بفضل طبيعة PHP الملائمة للتوسع ودعم Laravel المدمج لأنظمة التخزين المؤقت (Cache) السريعة والموزعة مثل Redis، التوسيع الأفقي (Horizontal Scaling) مع لارافل سهل للغاية. في الواقع، وُسِعَت تطبيقات Laravel بسهولة للتعامل مع مئات الملايين من الطلبات شهريًا.
 
-Need extreme scaling? Platforms like [Laravel Vapor](https://vapor.laravel.com) allow you to run your Laravel application at nearly limitless scale on AWS's latest serverless technology.
+هل تحتاج لتوسيع مهول؟ تسمح منصات مثل [Laravel Vapor](https://vapor.laravel.com) بتشغيل تطبيق لارافل الخاص بك على نطاق غير محدود تقريباً على أحدث تقنيات AWS بدون خادم (Serverless).
 
-#### A Community Framework
+#### إطار عمل للمجتمع
 
-Laravel combines the best packages in the PHP ecosystem to offer the most robust and developer friendly framework available. In addition, thousands of talented developers from around the world have [contributed to the framework](https://github.com/laravel/framework). Who knows, maybe you'll even become a Laravel contributor.
+تجمع لارافل أفضل الحزم (Packages) في نظام PHP البيئي (PHP Ecosystem) لتقدم أقوى وأسهل إطار عمل للمطورين. بالإضافة لذلك، [ساهم](https://github.com/laravel/framework) آلاف المطورين الموهوبين حول العالم في لارافل
 
 <a name="your-first-laravel-project"></a>
 ## Your First Laravel Project
