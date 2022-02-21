@@ -550,6 +550,21 @@ If you need to perform advanced customization of the search behavior of an engin
         }
     )->get();
 
+<a name="customizing-the-eloquent-results-query"></a>
+#### Customizing The Eloquent Results Query
+
+After Scout retrieves a list of matching Eloquent models from your application's search engine, Eloquent is used to retrieve all of the matching models by their primary keys. You may customize this query by invoking the `query` method. The `query` method accepts a closure that will receive the Eloquent query builder instance as an argument:
+
+```php
+use App\Models\Order;
+
+$orders = Order::search('Star Trek')
+    ->query(fn ($query) => $query->with('invoices'))
+    ->get();
+```
+
+Since this callback is invoked after the relevant models have already been retrieved from your application's search engine, the `query` method should not be used for "filtering" results. Instead, you should use [Scout where clauses](#where-clauses).
+
 <a name="custom-engines"></a>
 ## Custom Engines
 
