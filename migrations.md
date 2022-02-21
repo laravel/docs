@@ -573,14 +573,14 @@ The `ipAddress` method creates a `VARCHAR` equivalent column:
 <a name="column-method-json"></a>
 #### `json()` {.collection-method}
 
-The `json` method creates a `JSON` equivalent column:
+The `json` method creates a `longtext` equivalent column:
 
     $table->json('options');
 
 <a name="column-method-jsonb"></a>
 #### `jsonb()` {.collection-method}
 
-The `jsonb` method creates a `JSONB` equivalent column:
+The `jsonb` method creates a `longtext` equivalent column:
 
     $table->jsonb('options');
 
