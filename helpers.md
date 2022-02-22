@@ -43,6 +43,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
+[Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
@@ -598,6 +599,27 @@ The `Arr::isList` method returns `true` if the given array's keys are sequential
     $isAssoc = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 
     // false
+
+<a name="method-array-keyby"></a>
+#### `Arr::keyBy()` {.collection-method}
+
+The `Arr::keyBy` method keys the array by the given key. If multiple items have the same key, only the last one will appear in the new array:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        ['product_id' => 'prod-100', 'name' => 'Desk'],
+        ['product_id' => 'prod-200', 'name' => 'Chair'],
+    ];
+
+    $keyed = Arr::keyBy($array, 'product_id');
+
+    /*
+        [
+            'prod-100' => ['product_id' => 'prod-100', 'name' => 'Desk'],
+            'prod-200' => ['product_id' => 'prod-200', 'name' => 'Chair'],
+        ]
+    */
 
 <a name="method-array-last"></a>
 #### `Arr::last()` {.collection-method}
