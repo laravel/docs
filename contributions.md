@@ -1,9 +1,9 @@
-# Contribution Guide
+# دليل المساهمة
 
-- [Bug Reports](#bug-reports)
-- [Support Questions](#support-questions)
-- [Core Development Discussion](#core-development-discussion)
-- [Which Branch?](#which-branch)
+- [تقارير الأخطاء](#bug-reports)
+- [أسئلة الدعم](#support-questions)
+- [نقاش التطوير الجوهري](#core-development-discussion)
+- [ أي فرع؟](#which-branch)
 - [Compiled Assets](#compiled-assets)
 - [Security Vulnerabilities](#security-vulnerabilities)
 - [Coding Style](#coding-style)
@@ -12,45 +12,44 @@
 - [Code of Conduct](#code-of-conduct)
 
 <a name="bug-reports"></a>
-## Bug Reports
+## تقارير الأخطاء
 
-To encourage active collaboration, Laravel strongly encourages pull requests, not just bug reports. "Bug reports" may also be sent in the form of a pull request containing a failing test. Pull requests will only be reviewed when marked as "ready for review" (not in the "draft" state) and all tests for new features are passing. Lingering, non-active pull requests left in the "draft" state will be closed after a few days.
+لتشجيع التعاون النشط، لارافيل تشجع وبقوة طلبات السحب (pull requests)، بالإضافة لتقارير الأخطاء. يمكن أيضاً إرسال "تقارير الأخطاء" بشكل طلب سحب (pull request) يحتوي على اختبار فاشل. سيتم مراجعة طلبات السحب فقط عندما يتم تعليمها كـ"جاهزة للمراجهة" ("ready for review") وليست في حالة "مسودة" ("draft") وبعد اجتياز جميع الاختبارات للميزات الجديدة. سيتم إغلاق طلبات السحب العالقة وغير النشطة التي تركت في حالة "المسودة" بعد بضعة أيام.
 
-However, if you file a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself - and others - to replicate the bug and develop a fix.
+في كافة الأحوال، اذا قمت بتقديم تقرير خطأ، يجب أن تحتوي مشكلتك على على عنوان وشرح واضح للمشكلة. يجب عليك أيضاً تضمين أكبر قدر ممكن من المعلومات ذات الصلة وعينة من الكود البرمجي الذي يوضح المشكلة. الهدف من تقرير الخطأ هو تسهيل استنساخ الخطأ وتطوير حل بالنسبة لك وللمستخدمين الآخرين. 
 
-Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem. If you want to chip in, you can help out by fixing [any bugs listed in our issue trackers](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel). You must be authenticated with GitHub to view all of Laravel's issues.
+تذكر، يتم إنشاء تقارير الأخطاء أملاً بأن الآخرين الذين يواجهون نفس المشكلة سيكونون قادرين على التعاون معك في حلها. لا تتوقع بأن تقرير الخطأ سوف يبحث في النشاطات تلقائياً أو أن الآخرين سيهبون لإصلاحه. إنشاء تقرير بالخطأ يأتي في صالحك أنت و الآخرين للبدء في مسار إصلاح المشكلة. إذا كنت تريد المشاركة، يمكنك المساعدة بإصلاح [أي مشكلة مدرحة في أدوات تعقب المشكلات الخاصة بنا](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel). يجب عليك أن تكون قد سجلت الدخول بغيت هاب (GitHub) لرؤية جميع مشكلات لارافيل. 
 
-The Laravel source code is managed on GitHub, and there are repositories for each of the Laravel projects:
+شيفرة المصدر (source code) الخاصة بلارافيل تتم إداراتها على غيت هاب (GitHub)، ومستودعاتهم لك لكل مشاريع لارافيل: 
 
 <div class="content-list" markdown="1">
 
-- [Laravel Application](https://github.com/laravel/laravel)
-- [Laravel Art](https://github.com/laravel/art)
-- [Laravel Documentation](https://github.com/laravel/docs)
-- [Laravel Dusk](https://github.com/laravel/dusk)
-- [Laravel Cashier Stripe](https://github.com/laravel/cashier)
-- [Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle)
-- [Laravel Echo](https://github.com/laravel/echo)
-- [Laravel Envoy](https://github.com/laravel/envoy)
-- [Laravel Framework](https://github.com/laravel/framework)
-- [Laravel Homestead](https://github.com/laravel/homestead)
-- [Laravel Homestead Build Scripts](https://github.com/laravel/settler)
-- [Laravel Horizon](https://github.com/laravel/horizon)
-- [Laravel Jetstream](https://github.com/laravel/jetstream)
-- [Laravel Passport](https://github.com/laravel/passport)
-- [Laravel Sail](https://github.com/laravel/sail)
-- [Laravel Sanctum](https://github.com/laravel/sanctum)
-- [Laravel Scout](https://github.com/laravel/scout)
-- [Laravel Socialite](https://github.com/laravel/socialite)
-- [Laravel Telescope](https://github.com/laravel/telescope)
-- [Laravel Website](https://github.com/laravel/laravel.com-next)
+- [تطبيق لارافيل (Laravel Application)](https://github.com/laravel/laravel)
+- [رسومات لارافيل (Laravel Art)](https://github.com/laravel/art)
+- [توثيق لارافيل (Laravel Documentation)](https://github.com/laravel/docs)
+- [لارافيل داسك (Laravel Dusk)](https://github.com/laravel/dusk)
+- [لارافيل كاشيير سترايب (Laravel Cashier Stripe)](https://github.com/laravel/cashier)
+- [لارافيل كاشيير بادل (Laravel Cashier Paddle)](https://github.com/laravel/cashier-paddle)
+- [لارافيل_ايكو (Laravel Echo)](https://github.com/laravel/echo)
+- [لارافيل اينفوي (Laravel Envoy)](https://github.com/laravel/envoy)
+- [إطار عمل لارافيل (Laravel Framework)](https://github.com/laravel/framework)
+- [لارافيل هومستيد (Laravel Homestead)](https://github.com/laravel/homestead)
+- [سكربتات بناء لارافيل هومستيد (Laravel Homestead Build Scripts)](https://github.com/laravel/settler)
+- [لارافيل هورايزن (Laravel Horizon)](https://github.com/laravel/horizon)
+- [لارافيل جيت ستريم (Laravel Jetstream)](https://github.com/laravel/jetstream)
+- [لارافيل باسبورت (Laravel Passport)](https://github.com/laravel/passport)
+- [لارافيل سيل (Laravel Sail)](https://github.com/laravel/sail)
+- [لارافيل سانكتوم (Laravel Sanctum)](https://github.com/laravel/sanctum)
+- [لارافيل سكاوت (Laravel Scout)](https://github.com/laravel/scout)
+- [لارافيل سوشيلايت (Laravel Socialite)](https://github.com/laravel/socialite)
+- [لارافيل تيليسكوب (Laravel Telescope)](https://github.com/laravel/telescope)
+- [موقع لارافيل (Laravel Website)](https://github.com/laravel/laravel.com-next)
 
 </div>
 
 <a name="support-questions"></a>
-## Support Questions
-
-Laravel's GitHub issue trackers are not intended to provide Laravel help or support. Instead, use one of the following channels:
+## أسئلة الدعم
+أدوات تتبع أخطاء لارافيل على غيت هاب (GitHub) ليست لتقديم الدعم أو المساعدة بخصوص لارافيل. بدلاً من ذلك، استعمل احدى القنوات التالية لطلب المساعدة:
 
 <div class="content-list" markdown="1">
 
@@ -65,22 +64,21 @@ Laravel's GitHub issue trackers are not intended to provide Laravel help or supp
 </div>
 
 <a name="core-development-discussion"></a>
-## Core Development Discussion
+## نقاش التطوير الجوهري
+يمكنك اقتراح ميزات أو تحسينات لسلوك لارافيل موجود في مستودع (repository) إطار عمل لارافيل [مجلس المناقشة في غيت هاب (GitHub)](https://github.com/laravel/framework/discussions). اذا كنت تود اقتراح ميزة جديدة، رجاءً كن مستعداً لتنفيذ جزء من الكود البرمجي المطلوب  على الأقل لاتمام الميزة.
 
-You may propose new features or improvements of existing Laravel behavior in the Laravel framework repository's [GitHub discussion board](https://github.com/laravel/framework/discussions). If you propose a new feature, please be willing to implement at least some of the code that would be needed to complete the feature.
-
-Informal discussion regarding bugs, new features, and implementation of existing features takes place in the `#internals` channel of the [Laravel Discord server](https://discord.gg/laravel). Taylor Otwell, the maintainer of Laravel, is typically present in the channel on weekdays from 8am-5pm (UTC-06:00 or America/Chicago), and sporadically present in the channel at other times.
+المناقشات الغير رسمية بخصوص المشاكل، الميزات الجديدة، وتنفيذ الميزات الحالية يحدث في قناة `#internals` الموجودة في [سيرفر لارافيل على ديسكورد ](https://discord.gg/laravel). تايلور أوتويل، المشرف على لارافيل، عادة ما يكون متواجد على القناة في أيام الأسبوع من الساعة 8 صباحاً - وحتى الـ5 مساءً بتوقيت الولايات المتحدة الأمريكية  (UTC-06:00 or America/Chicago)، ويكون حاضراً بشكل متقطع في القناة في أوقات أخرى. 
 
 <a name="which-branch"></a>
-## Which Branch?
+## أي فرع؟
 
-**All** bug fixes should be sent to the latest stable branch. Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**جميع** الاصلاحات يجب أن ترسل لاخر فرع (branch) مستقر. يجب **ألا** يتم ارسل الأخطاء التي تم اصلاحها للفرع الرئيسي `master` إلا في حال كان إصلاح لميزة موجودة فقط في إصدار قادم.
 
-**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch.
+قد يتم إرسال الميزات **الثانوية والمتوافقة تماماً مع الإصدارات السابقة** للإصدار الحالي إلى أحدث فرع مستقر.
 
-**Major** new features should always be sent to the `master` branch, which contains the upcoming release.
+دائماً يجب إرسال الميزات الجديدة **الرئيسية** إلى الفرع الرئيسي `master`، الذي يحتوي على الإصدار القادم.
 
-If you are unsure if your feature qualifies as a major or minor, please ask Taylor Otwell in the `#internals` channel of the [Laravel Discord server](https://discord.gg/laravel).
+إذا لم تكن متأكداً بأن ميزتك مؤهلة لتكون ميزة رئيسية أو ميزة ثانوية، رجاءً اسأل تايلور أوتويل في قناة `#internals` الموجودة في [سيرفر لارافيل على ديسكورد ](https://discord.gg/laravel).
 
 <a name="compiled-assets"></a>
 ## Compiled Assets
