@@ -75,6 +75,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [base_path](#method-base-path)
 [config_path](#method-config-path)
 [database_path](#method-database-path)
+[lang_path](#method-lang-path)
 [mix](#method-mix)
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
@@ -1067,6 +1068,15 @@ The `database_path` function returns the fully qualified path to your applicatio
     $path = database_path();
 
     $path = database_path('factories/UserFactory.php');
+
+<a name="method-lang-path"></a>
+#### `lang_path()` {.collection-method}
+
+The `lang_path` function returns the fully qualified path to your application's `lang` directory. You may also use the `lang_path` function to generate a fully qualified path to a given file within the directory:
+
+    $path = lang_path();
+
+    $path = lang_path('en/messages.php');
 
 <a name="method-mix"></a>
 #### `mix()` {.collection-method}
