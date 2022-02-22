@@ -1072,7 +1072,7 @@ The `database_path` function returns the fully qualified path to your applicatio
 <a name="method-lang-path"></a>
 #### `lang_path()` {.collection-method}
 
-The `lang_path` function returns the fully qualified path to your application's `lang` directory. You may also use the `lang_path` function to generate a fully qualified path to a given file within the applications' localization directory:
+The `lang_path` function returns the fully qualified path to your application's `lang` directory. You may also use the `lang_path` function to generate a fully qualified path to a given file within the directory:
 
     $path = lang_path();
 
