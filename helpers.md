@@ -97,6 +97,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
 [Str::between](#method-str-between)
+[Str::betweenFirst](#method-str-between-first)
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
@@ -162,6 +163,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [before](#method-fluent-str-before)
 [beforeLast](#method-fluent-str-before-last)
 [between](#method-fluent-str-between)
+[betweenFirst](#method-fluent-str-between-first)
 [camel](#method-fluent-str-camel)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
@@ -1210,6 +1212,17 @@ The `Str::between` method returns the portion of a string between two values:
     $slice = Str::between('This is my name', 'This', 'name');
 
     // ' is my '
+    
+<a name="method-str-between-first"></a>
+#### `Str::betweenFirst()` {.collection-method}
+
+The `Str::betweenFirst` method returns the smallest possible portion of a string between two values:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::betweenFirst('[a] bc [d]', '[', ']');
+
+    // 'a'
 
 <a name="method-camel-case"></a>
 #### `Str::camel()` {.collection-method}
@@ -1994,6 +2007,17 @@ The `between` method returns the portion of a string between two values:
     $converted = Str::of('This is my name')->between('This', 'name');
 
     // ' is my '
+    
+<a name="method-fluent-str-between-first"></a>
+#### `betweenFirst` {.collection-method}
+
+The `betweenFirst` method returns the smallest possible portion of a string between two values:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('[a] bc [d]')->betweenFirst('[', ']');
+
+    // 'a'
 
 <a name="method-fluent-str-camel"></a>
 #### `camel` {.collection-method}
