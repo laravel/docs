@@ -48,7 +48,7 @@ In this example, we'll define an accessor for the `first_name` attribute. The ac
          */
         protected function firstName(): Attribute
         {
-            return new Attribute(
+            return Attribute::make(
                 get: fn ($value) => ucfirst($value),
             );
         }
@@ -82,7 +82,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 public function address(): Attribute
 {
-    return new Attribute(
+    return Attribute::make(
         get: fn ($value, $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
@@ -112,12 +112,12 @@ If you would like to disable the object caching behavior of attributes, you may 
  */
 public function address(): Attribute
 {
-    return (new Attribute(
+    return Attribute::make(
         get: fn ($value, $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
         ),
-    ))->withoutObjectCaching();
+    )->withoutObjectCaching();
 }
 ```
 
@@ -143,7 +143,7 @@ A mutator transforms an Eloquent attribute value when it is set. To define a mut
          */
         protected function firstName(): Attribute
         {
-            return new Attribute(
+            return Attribute::make(
                 get: fn ($value) => ucfirst($value),
                 set: fn ($value) => strtolower($value),
             );
@@ -176,7 +176,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 public function address(): Attribute
 {
-    return new Attribute(
+    return Attribute::make(
         get: fn ($value, $attributes) => new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two'],
