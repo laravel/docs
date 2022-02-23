@@ -226,7 +226,7 @@ Similar to the `before` method, if the `after` closure returns a non-null result
 Occasionally, you may wish to determine if the currently authenticated user is authorized to perform a given action without writing a dedicate gate that corresponds to the action. Laravel allows you to perform these types of "inline" authorization checks via the `Gate::allowIf` and `Gate::denyIf` methods:
 
 ```php
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 Gate::allowIf(fn ($user) => $user->isAdministrator());
 
