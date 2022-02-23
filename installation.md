@@ -7,7 +7,7 @@
     - [البدء على Windows](#getting-started-on-windows)
     - [البدء على Linux](#getting-started-on-linux)
     - [Choosing Your Sail Services](#choosing-your-sail-services)
-    - [التنصيب باستخدام المٌلحن (composer)](#installation-via-composer)
+    - [التنصيب باستخدام مدير الحزم (composer)](#installation-via-composer)
 - [الإعدادات الابتدائية](#initial-configuration)
     - [إعدادات المبنية على البيئة](#environment-based-configuration)
     - [إعدادات الدليل (directory)](#directory-configuration)
@@ -20,7 +20,7 @@
 
  لارافل هي إطار عمل لتطبيقات الويب بتركيب جمل بليغ وأنيق. يوف إطار عمل تطبيقات الويب بنية (Structure) ونقطة بداية لإنشاء مشروعك، مما يسمح لك بالتركيز على بناء شيء رائع بينما نحن نتعب في التفاصيل.
 
-تسعى لارافل جاهدةً لتقديم تجرِبة مطور رائعة بينما تقدم ميزات قوية كحقن التبعية الشامل (Thorough Dependency Injection)، طبقة تجريد قاعدة البيانات التعبيرية (Expressive Database Abstraction Layer)،الطوابير (Queues) والمهام المجدولة (Scheduled Jobs)، اختبار الوحدة والتكامل (Unit & Integration Testing)، والكثير.
+تسعى لارافل جاهدةً لتقديم تجرِبة مطور رائعة بينما تقدم ميزات قوية كحقن التبعية الشامل (Thorough Dependency Injection)، طبقة تجريد قاعدة البيانات التعبيرية (Expressive Database Abstraction Layer)،الطوابير (Queues) والمهام المجدولة (Scheduled Jobs)، اختبارت الوحدات البرمجية وتكاملها ودمجها مع بعض (Unit & Integration Testing)، والكثير.
 
 سواء كنت جديداً على PHP أو إطر عمل الويب أو لديك سنوات من الخبرة، لارافل هي إطار العمل الذي يمكنه أن يكبر معك. سنساعدك لتأخذ خطواتك الا,لى كمطور ويب أو سنعطيك دفعة بينما تأخذ خبرتك إلى المستوى التالي. لا يسعنا الانتظار لنرى ما تبنيه.
 
@@ -33,7 +33,7 @@
 
 نحب أن ندعو لارافل إطار عمل "تقدمي". نعني بذلك أن لارافل تنمو معك. إن كنت تأخذ خطواتك الأولى في تطوير المواقع، مكتبة لارافل الواسع من التوثيق، الأدلة الإرشادية والفيديوهات التعليمية ستساعدك على تعلم إنجاز المهام دون أن ترتبك.
 
-إن كنت مطوراً خبيراً، تعطيك لارافل أدوات قوية [لحقن التبعية](/docs/{{version}}/container) (Dependency Injection)، [اختبار الوحدة](/docs/{{version}}/testing) (Unit Testing)، [الطوابير](/docs/{{version}}/queues) (Queues)، [أحداث الوقت الحقيقي](/docs/{{version}}/broadcasting) (Real-time Events)، وأكثر.
+إن كنت مطوراً خبيراً، تعطيك لارافل أدوات قوية [لحقن التبعية](/docs/{{version}}/container) (Dependency Injection)، [اختبار الوحدة البرمجية](/docs/{{version}}/testing) (Unit Testing)، [الطوابير](/docs/{{version}}/queues) (Queues)، [أحداث الوقت الحقيقي](/docs/{{version}}/broadcasting) (Real-time Events)، وأكثر.
 
 #### إطار عمل قابل للتوسيع
 
@@ -46,57 +46,52 @@
 تجمع لارافل أفضل الحزم (Packages) في نظام PHP البيئي (PHP Ecosystem) لتقدم أقوى وأسهل إطار عمل للمطورين. بالإضافة لذلك، [ساهم](https://github.com/laravel/framework) آلاف المطورين الموهوبين حول العالم في لارافل
 
 <a name="your-first-laravel-project"></a>
-## Your First Laravel Project
+## مشروعك الأول مع لارافل
+إن كنت أن تبدأ بأسهل طريقة ممكنة مع لارافل. يوجد العديد من الخيارات لتطوير وتشغيل مشروع لارافل على حاسبك الشخصي. بينما قد ترغب باستكشاف هذه الخيارات في وقت لاحق، لارافل تقدم [خدمة Sail](/docs/{{version}}/sail)، وهي حل مدمج لتشغيل مشروع لارافل باستخدام منصة الحاويات [Docker](https://www.docker.com).
 
-We want it to be as easy as possible to get started with Laravel. There are a variety of options for developing and running a Laravel project on your own computer. While you may wish to explore these options at a later time, Laravel provides [Sail](/docs/{{version}}/sail), a built-in solution for running your Laravel project using [Docker](https://www.docker.com).
+منصة الحاويات (Docker) هي أداة لتشغيل التطبيقات والخدمات في "حاويات" صغيرة وخفيفة والتي لا تتداخل مع البرمجيات المنصبة على حاسبك الشخصي أو عداداته. هذا يعني أنه ليس عليك أن تقلق حول تنصيب أدوات التطوير المعقدة مثل مخدمات الويب وقواعد البيانات على حاسبك الشخصي. لتبدأ، كل ما عليك هو تنصيب برنامج [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
-Docker is a tool for running applications and services in small, light-weight "containers" which do not interfere with your local computer's installed software or configuration. This means you don't have to worry about configuring or setting up complicated development tools such as web servers and databases on your personal computer. To get started, you only need to install [Docker Desktop](https://www.docker.com/products/docker-desktop).
+شراع لارافل (Laravel Sail) هو واجهة خفيفة لموجه الأوامر (command-line) مخصصة للتعامل مع إعدادات لارافل الخاصة بمنصة الحاويات (Docker). تقدم خدمة Sail نقطة بداية رائعة لبناء تطبيق لارافل باستخدام لغة PHP، محركة قواعد البيانات MYSQL، ومخزن البيانات Redis دون الحاجة لأي خبرة مسبقة عن منصة الحاويات Docker.
 
-Laravel Sail is a light-weight command-line interface for interacting with Laravel's default Docker configuration. Sail provides a great starting point for building a Laravel application using PHP, MySQL, and Redis without requiring prior Docker experience.
-
-> {tip} Already a Docker expert? Don't worry! Everything about Sail can be customized using the `docker-compose.yml` file included with Laravel.
+> {نصيحة}هل انت خبير بمنصة الحاويات Docker؟ لا تقلق! كل شي في واجهة Sail يمكن تخصيصه باستخدام ملف `docker-compose.yml`الموجود مع لارافل
 
 <a name="getting-started-on-macos"></a>
-### Getting Started On macOS
-
-If you're developing on a Mac and [Docker Desktop](https://www.docker.com/products/docker-desktop) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
+### البدء على MacOS
+إنك كنت تستعمل جهاز ماك ولديك برنامج [Docker Desktop](https://www.docker.com/products/docker-desktop) مٌنصب على جهازك. يمكنك استخدام أمر بسيط في موجه الأوامر (terminal) لإنشاء مشروع لارافل جديد. علا سبيل المثلا، لإنشاء تطبيق لارافل جديد في مجلد اسمه "example-app"، يمكنك تشغيل الأمر الآتي في مشغل الأوامر (terminal):
 
 ```shell
 curl -s "https://laravel.build/example-app" | bash
 ```
+بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. مجلد تطبيق لارافل سيُنشئ داخل المجلد الذي شغلت الأمر فيه.
 
-Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
+بعد أن أُنشئ المشروع، يمكنك الانتقال إلى مجلد التطبيق وتشغيل Laravel Sail. تقدم Laravel Sail واجهة بسيطة للتعامل مع إعدادات لارافل لمنصة الحاويات Docker:
 
-After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
 ```shell
 cd example-app
 
 ./vendor/bin/sail up
 ```
+ في أول مرة تشغل فيها الأمر `up`، ستُبنى حاويات التطبيق التي في Sail على جهازك. سيستغق هذا الأمر عدة دقائق. **ولكن لا تقلق، المحاولات القادمة لتشغيل Sail ستكون أسرع بكثير.**
 
-The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+بمجرد أن بدأت حاويات Docker الخاصة بمشروعك، يمكنك الوصول إلى مشروعك في متصف الويب على هذا الرابط: http://localhost.
 
-Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
-
-> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+> {نصيحة} لتتعلم المزيد عن Laravel Sail، اقرأ [توثيقها الكامل](/docs/{{version}}/sail).
 
 <a name="getting-started-on-windows"></a>
-### Getting Started On Windows
+### البدء على Windows
+قبل أن تُنشئ مشروع جديد في باستخدام لارافل على جهازك، تأكد من تنصيب برنامج [Docker Desktop](https://www.docker.com/products/docker-desktop). بعدها، عليك التاكد من أن ميزة الأنظمة الفرعية في Windows لنظام تشغيل Linux بنسختها الثانية (Windows Subsystem for Linux 2) (WSL2) منصبة ومفعلة. خدمة WSL ستمكنك من تشغيل ملفات Linux التنفيذية على Windows 10. مكنك أن تجد معلومات عن كيفية تنصيب وتفعيل WSL2 في [توثيق بيئة التطوير لشركة مايكروسوفت](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-Before we create a new Laravel application on your Windows machine, make sure to install [Docker Desktop](https://www.docker.com/products/docker-desktop). Next, you should ensure that Windows Subsystem for Linux 2 (WSL2) is installed and enabled. WSL allows you to run Linux binary executables natively on Windows 10. Information on how to install and enable WSL2 can be found within Microsoft's [developer environment documentation](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+> {نصيحة} بعد تنصيب وتفعيل WSL2K ينبغي عليك التأكد من أن برنامج Docker Desktop [معد لاستخدام WSL2(]https://docs.docker.com/docker-for-windows/wsl/)
 
-> {tip} After installing and enabling WSL2, you should ensure that Docker Desktop is [configured to use the WSL2 backend](https://docs.docker.com/docker-for-windows/wsl/).
-
-Next, you are ready to create your first Laravel project. Launch [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) and begin a new terminal session for your WSL2 Linux operating system. Next, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
+بعد ذلك، أنت جاهز لإنشاء مشروعك الأول باستخدام لارافل. شغل موجه الأوامر [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab) وابدأ جلسة جديدة لنظام تشغيل Linuxالمنصب باستخدام WSL2. ومن ثم، يمكنك استخدام موجه الأوامر لإنشاء مشروع لارافل جديد. على سبيل المثال، لإنشاء تطبيق لارافل جديد في مجلد اسمه "example-app"، يمكنك تشغيل الأمر الآتي في موجه الأوامر Terminal:
 
 ```shell
 curl -s https://laravel.build/example-app | bash
 ```
+بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. مجلد تطبيق لارافل سيٌنشءداخل المجلد الذي شغلت الأمر فيه.
 
-Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
-
-After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+بعد أن أُنشئ المشروع، يمكنك الانتقال إلى مجلد التطبيق وتشغيل Laravel Sail. تقدم Laravel Sail واجهة بسيطة للتعامل مع إعدادات لارافل لمنصة الحاويات Docker:
 
 ```shell
 cd example-app
@@ -104,17 +99,16 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+في أول مرة تشغل فيها الأمر `up`، ستُبنى حاويات التطبيق التي في Sail على جهازك. سيستغق هذا الأمر عدة دقائق. **ولكن لا تقلق، المحاولات القادمة لتشغيل Sail ستكون أسرع بكثير.**
 
-Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+بمجرد أن بدأت حاويات Docker الخاصة بمشروعك، يمكنك الوصول إلى مشروعك في متصف الويب على هذا الرابط: http://localhost.
 
-> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+> {نصيحة} لتتعلم المزيد عن Laravel Sail، اقرأ [توثيقها الكامل](/docs/{{version}}/sail).
 
-#### Developing Within WSL2
+#### التطوير داخل WSL2
+بالطبع، ستحتاج أن تكون قادراً على تعديل ملفات تطبيق لارافل التي أٌنشأت داخل WSL2. لتتمكن من ذلك، ننصحك باستخدام محرر [Visual Studio Code](https://code.visualstudio.com) المطور لدى شركة مايكروسوفت مع تنصيب إضافة [التطوير البعيد (Remote Development)](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
 
-Of course, you will need to be able to modify the Laravel application files that were created within your WSL2 installation. To accomplish this, we recommend using Microsoft's [Visual Studio Code](https://code.visualstudio.com) editor and their first-party extension for [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
-
-Once these tools are installed, you may open any Laravel project by executing the `code .` command from your application's root directory using Windows Terminal.
+بمجرد أن نُصبت هذه الأدوات، يمكنك فتح أي مشروع لارافل بتشغيل الأمر `code .` داخل المجلد الرئيسي للتطبيق باستخدام موجه الأوامر (Windows Terminal)
 
 <a name="getting-started-on-linux"></a>
 ### Getting Started On Linux
