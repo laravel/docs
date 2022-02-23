@@ -396,7 +396,7 @@ You may also use the `putFileAs` method on the `Storage` facade, which will perf
         'avatars', $request->file('avatar'), $request->user()->id
     );
 
-> {note} Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\Util::normalizePath` method.
+> {note} Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\WhitespacePathNormalizer::normalizePath` method.
 
 <a name="specifying-a-disk"></a>
 #### Specifying A Disk
