@@ -1,7 +1,8 @@
-# Laravel Documentation
+# التوثيق العربي لإطار عمل لارافيل
 
-You can find the online version of the Laravel documentation at [https://laravel.com/docs](https://laravel.com/docs)
-
-## Contribution Guidelines
-
-If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 9 would be submitted to the `9.x` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
+## دليل المشاركة في المشروع
+1. المهمات موزعة على شكل issues في المستودع الخاص بالمشروع
+2. قم بالرد على اي issue خاصة بملف تريد ترجمته بانك ستقوم بترجمته
+3. قم بعمل بانشاء نسختك الخاصة (fork) من هذا المستودع
+4. قم بترجمة النصوص الى اللغة العربية، ونحن نوصي الا تكون الترجمة حرفية بل يجب ان تشير الى معنى المصطلح او مهمته ثم اسم المصطلح باللغة الانجليزية بين قوسين، ويوجد امثلة في كل issue تشرح طريقة الترجمة المقترحة
+5. عند الانتهاء من ترجمة الملف يمكنك عمل Pull request لكي يتاح للمطورين مراجعته ودمجه.
