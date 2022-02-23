@@ -4,23 +4,23 @@
 - [أسئلة الدعم](#support-questions)
 - [نقاش التطوير الجوهري](#core-development-discussion)
 - [ أي فرع؟](#which-branch)
-- [Compiled Assets](#compiled-assets)
-- [Security Vulnerabilities](#security-vulnerabilities)
-- [Coding Style](#coding-style)
-    - [PHPDoc](#phpdoc)
-    - [StyleCI](#styleci)
-- [Code of Conduct](#code-of-conduct)
+- [الملفات المترجمة (Compiled Assets)](#compiled-assets)
+- [الثغرات الأمنية](#security-vulnerabilities)
+- [تنسيق الكود](#coding-style)
+    - [توثيق PHP](#phpdoc)
+    - [أداة StyleCI](#styleci)
+- [القواعد السلوكية](#code-of-conduct)
 
 <a name="bug-reports"></a>
 ## تقارير الأخطاء
 
-لتشجيع التعاون النشط، لارافيل تشجع وبقوة طلبات السحب (pull requests)، بالإضافة لتقارير الأخطاء. يمكن أيضاً إرسال "تقارير الأخطاء" بشكل طلب سحب (pull request) يحتوي على اختبار فاشل. سيتم مراجعة طلبات السحب فقط عندما يتم تعليمها كـ"جاهزة للمراجهة" ("ready for review") وليست في حالة "مسودة" ("draft") وبعد اجتياز جميع الاختبارات للميزات الجديدة. سيتم إغلاق طلبات السحب العالقة وغير النشطة التي تركت في حالة "المسودة" بعد بضعة أيام.
+لتشجيع التعاون النشط، لارافيل تشجع وبقوة طلبات السحب (pull requests)، بالإضافة لتقارير الأخطاء. ويمكن أيضاً إرسال "تقارير الأخطاء" بشكل طلب سحب (pull request) يحتوي على اختبار فشل. سيتم مراجعة طلبات السحب فقط عندما يتم تعليمها كـ"جاهزة للمراجهة" ("ready for review") وليست في حالة "مسودة" ("draft") وبعد اجتياز جميع الاختبارات للميزات الجديدة المضافة. سيتم إغلاق طلبات السحب العالقة وغير النشطة التي تركت في حالة "المسودة" بعد بضعة أيام.
 
-في كافة الأحوال، اذا قمت بتقديم تقرير خطأ، يجب أن تحتوي مشكلتك على على عنوان وشرح واضح للمشكلة. يجب عليك أيضاً تضمين أكبر قدر ممكن من المعلومات ذات الصلة وعينة من الكود البرمجي الذي يوضح المشكلة. الهدف من تقرير الخطأ هو تسهيل استنساخ الخطأ وتطوير حل بالنسبة لك وللمستخدمين الآخرين. 
+في كافة الأحوال، اذا قمت بتقديم تقرير خطأ، يجب أن تحتوي مشكلتك على على عنوان وشرح واضح للمشكلة. يجب عليك أيضاً تضمين أكبر قدر ممكن من المعلومات ذات الصلة وعينة من الكود البرمجي الذي يوضح المشكلة. إن الهدف من تقرير الخطأ هو تسهيل استنساخ الخطأ وتطوير حل للمشكلة لك وللمستخدمين الآخرين. 
 
 تذكر، يتم إنشاء تقارير الأخطاء أملاً بأن الآخرين الذين يواجهون نفس المشكلة سيكونون قادرين على التعاون معك في حلها. لا تتوقع بأن تقرير الخطأ سوف يبحث في النشاطات تلقائياً أو أن الآخرين سيهبون لإصلاحه. إنشاء تقرير بالخطأ يأتي في صالحك أنت و الآخرين للبدء في مسار إصلاح المشكلة. إذا كنت تريد المشاركة، يمكنك المساعدة بإصلاح [أي مشكلة مدرحة في أدوات تعقب المشكلات الخاصة بنا](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel). يجب عليك أن تكون قد سجلت الدخول بغيت هاب (GitHub) لرؤية جميع مشكلات لارافيل. 
 
-شيفرة المصدر (source code) الخاصة بلارافيل تتم إداراتها على غيت هاب (GitHub)، ومستودعاتهم لك لكل مشاريع لارافيل: 
+شيفرة المصدر (source code) الخاصة بلارافيل تتم إداراتها على غيت هاب (GitHub)، ومستودعاتهم لكل مشاريع لارافيل هي: 
 
 <div class="content-list" markdown="1">
 
@@ -49,6 +49,7 @@
 
 <a name="support-questions"></a>
 ## أسئلة الدعم
+
 أدوات تتبع أخطاء لارافيل على غيت هاب (GitHub) ليست لتقديم الدعم أو المساعدة بخصوص لارافيل. بدلاً من ذلك، استعمل احدى القنوات التالية لطلب المساعدة:
 
 <div class="content-list" markdown="1">
@@ -65,12 +66,14 @@
 
 <a name="core-development-discussion"></a>
 ## نقاش التطوير الجوهري
-يمكنك اقتراح ميزات أو تحسينات لسلوك لارافيل موجود في مستودع (repository) إطار عمل لارافيل [مجلس المناقشة في غيت هاب (GitHub)](https://github.com/laravel/framework/discussions). اذا كنت تود اقتراح ميزة جديدة، رجاءً كن مستعداً لتنفيذ جزء من الكود البرمجي المطلوب  على الأقل لاتمام الميزة.
+
+يمكنك اقتراح ميزات أو تحسينات لسلوك لارافيل الموجود في مستودع (repository) إطار عمل لارافيل [مجلس المناقشة في غيت هاب (GitHub)](https://github.com/laravel/framework/discussions). اذا كنت تود اقتراح ميزة جديدة، رجاءً كن مستعداً لتنفيذ جزء من الكود البرمجي المطلوب  على الأقل لاتمام الميزة.
 
 المناقشات الغير رسمية بخصوص المشاكل، الميزات الجديدة، وتنفيذ الميزات الحالية يحدث في قناة `#internals` الموجودة في [سيرفر لارافيل على ديسكورد ](https://discord.gg/laravel). تايلور أوتويل، المشرف على لارافيل، عادة ما يكون متواجد على القناة في أيام الأسبوع من الساعة 8 صباحاً - وحتى الـ5 مساءً بتوقيت الولايات المتحدة الأمريكية  (UTC-06:00 or America/Chicago)، ويكون حاضراً بشكل متقطع في القناة في أوقات أخرى. 
 
 <a name="which-branch"></a>
 ## أي فرع؟
+
 
 **جميع** الاصلاحات يجب أن ترسل لاخر فرع (branch) مستقر. يجب **ألا** يتم ارسل الأخطاء التي تم اصلاحها للفرع الرئيسي `master` إلا في حال كان إصلاح لميزة موجودة فقط في إصدار قادم.
 
@@ -78,27 +81,27 @@
 
 دائماً يجب إرسال الميزات الجديدة **الرئيسية** إلى الفرع الرئيسي `master`، الذي يحتوي على الإصدار القادم.
 
-إذا لم تكن متأكداً بأن ميزتك مؤهلة لتكون ميزة رئيسية أو ميزة ثانوية، رجاءً اسأل تايلور أوتويل في قناة `#internals` الموجودة في [سيرفر لارافيل على ديسكورد ](https://discord.gg/laravel).
+إذا لم تكن متأكداً بأن ميزتك مؤهلة لتكون ميزة رئيسية أو ميزة ثانوية، رجاءً قم بسؤال تايلور أوتويل في قناة `#internals` الموجودة في [سيرفر لارافيل على ديسكورد ](https://discord.gg/laravel).
 
 <a name="compiled-assets"></a>
-## Compiled Assets
+## الملفات المترجمة (Compiled Assets)
 
-If you are submitting a change that will affect a compiled file, such as most of the files in `resources/css` or `resources/js` of the `laravel/laravel` repository, do not commit the compiled files. Due to their large size, they cannot realistically be reviewed by a maintainer. This could be exploited as a way to inject malicious code into Laravel. In order to defensively prevent this, all compiled files will be generated and committed by Laravel maintainers.
+إذا كنت تقوم بتغيير يؤثر على ملف مترجم (compiled file)، مثل معظم الملفات في `resources/css` أو  `resources/js` في مستودع `laravel/laravel`، لا تقوم بعمل (commit) للملفات المترجمة. لأنه ونظراً لحجمها الكبير، لايمكن مراجعتها بشكل واقعي وجيد من قبل المشرفين، حيث يمكن استغلال هذا الأمر لحقن كود ضار ضمن لارافيل. في إطار الحماية الدفاعية من هذه المشكلة، كل الملفات المترجمة سيتم إنشائها وعمل (commit) لها من قبل مشرفي لارافيل.  
 
 <a name="security-vulnerabilities"></a>
-## Security Vulnerabilities
+## الثغرات الأمنية
 
-If you discover a security vulnerability within Laravel, please send an email to Taylor Otwell at <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. All security vulnerabilities will be promptly addressed.
+اذا قمت باكتشاف ثغرة أمنية في لارافيل، رجاءً قم بإرسال بريد الكتروني لتايلور أوتويل على البريد التالي <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. سيتم معالجة كل الثغرات الأمنية على الفور. 
 
 <a name="coding-style"></a>
-## Coding Style
+## تنسيق الكود
 
-Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
+تتبع لارافيل معيار التكويد [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) ومعيار التحميل التلقائي  [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md). 
 
 <a name="phpdoc"></a>
-### PHPDoc
+### توثيق PHP
 
-Below is an example of a valid Laravel documentation block. Note that the `@param` attribute is followed by two spaces, the argument type, two more spaces, and finally the variable name:
+المثال في الأسفل يعبر عن كتلة توثيق لارافيل سليمة، لاحظ بأن الخاصية `@param` متبوعة بفراغين، من ثم نوع الوسيط، من ثم فراغين، واسم المتحول في النهاية: 
 
     /**
      * Register a binding with the container.
@@ -116,20 +119,20 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
     }
 
 <a name="styleci"></a>
-### StyleCI
+### أداة StyleCI
 
-Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
+لا تقلق اذا كان تنسيق الكود الخاص بك غير مثالي! [أداة StyleCI](https://styleci.io/) تقوم اتوماتيكياً بإصلاح التنسيقات في مستودع لارافيل بعد دمج (merge) عملية سحب الطلب (pull requests). مما يمكننا من التركيز على محتوى المساهمة بدلاً من تنسيق الكود. 
 
 <a name="code-of-conduct"></a>
-## Code of Conduct
+## القواعد السلوكية
 
-The Laravel code of conduct is derived from the Ruby code of conduct. Any violations of the code of conduct may be reported to Taylor Otwell (taylor@laravel.com):
+القواعد السلوكية الخاصة بلارافيل مشتقة من القواعد السلوكية الخاصة بروبي (Ruby). يمكن تبليغ عن أي انتهاكات للقواعد السلوكية لتايلور أوتويل (taylor@laravel.com): 
 
 <div class="content-list" markdown="1">
 
-- Participants will be tolerant of opposing views.
-- Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
-- When interpreting the words and actions of others, participants should always assume good intentions.
-- Behavior that can be reasonably considered harassment will not be tolerated.
+- يجب على المساهمين أن يكونو متسامحين ويتحملو وجهات النظر المخالفة.
+- يجب على المساهمين التأكد من أن لغتهم وأفعالهم خالية من أي تهجم شخصي أو تعليقات شخصية مسيئة. 
+- يجب على المساهمين عند تفسير أقوال وأفعال الآخرين افتراض حسن النية دوماً. 
+- لن يتم التسامح مع أي سلوك يمكن اعتباره مضايقة.  
 
 </div>
