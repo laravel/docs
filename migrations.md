@@ -179,6 +179,12 @@ You may roll back a limited number of migrations by providing the `step` option 
 php artisan migrate:rollback --step=5
 ```
 
+You may roll back a specific "batch" of migrations by providing the `batch` option to the `rollback` command, where the `batch` option corresponds to a batch value within your application's `migrations` database table. For example, the following command will roll back all migrations in batch three:
+
+ ```shell
+ php artisan migrate:rollback --batch=3
+ ```
+
 The `migrate:reset` command will roll back all of your application's migrations:
 
 ```shell
