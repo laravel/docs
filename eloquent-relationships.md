@@ -1541,6 +1541,8 @@ Using these model definitions and relationships, we may retrieve `ActivityFeed` 
             ]);
         }])->get();
 
+> {note} When calling the `->with` method directly on the query builder it will always overwrite previous `->with` calls.
+
 <a name="eager-loading-specific-columns"></a>
 #### Eager Loading Specific Columns
 
