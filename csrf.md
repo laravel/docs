@@ -1,22 +1,22 @@
-# CSRF Protection
+# الحماية من الطلبات المزورة عبر المواقع
 
-- [Introduction](#csrf-introduction)
-- [Preventing CSRF Requests](#preventing-csrf-requests)
-    - [Excluding URIs](#csrf-excluding-uris)
-- [X-CSRF-Token](#csrf-x-csrf-token)
-- [X-XSRF-Token](#csrf-x-xsrf-token)
+- [مقدمة](#csrf-introduction)
+- [منع الطلبات المزورة عبر المواقع](#preventing-csrf-requests)
+    - [استثناء الروابط (URIs)](#csrf-excluding-uris)
+- [رمز (X-CSRF-TOKEN)](#csrf-x-csrf-token)
+- [رمز (X-XSRF-TOKEN)](#csrf-x-xsrf-token)
 
 <a name="csrf-introduction"></a>
-## Introduction
+## مقدمة
 
-Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of an authenticated user. Thankfully, Laravel makes it easy to protect your application from [cross-site request forgery](https://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) attacks.
+تزوير الطلبات عبر المواقع هو نوع من الثغرات الضارة حيث يتم تنفيذ أوامر غير مصرح بها نيابة عن المستخدم الموثق (authenticated user). لكن ولحسن الحظ، يقوم إطار عمل  لارافيل بتسهيل حماية تطبيقك من [الطلبات المزورة عبر المواقع](https://en.wikipedia.org/wiki/Cross-site_request_forgery) أو مايعرف بهجمات الطلبات المزورة عبر المواقع (CSRF attacks).
 
 <a name="csrf-explanation"></a>
-#### An Explanation Of The Vulnerability
+#### شرح للثغرة
 
-In case you're not familiar with cross-site request forgeries, let's discuss an example of how this vulnerability can be exploited. Imagine your application has a `/user/email` route that accepts a `POST` request to change the authenticated user's email address. Most likely, this route expects an `email` input field to contain the email address the user would like to begin using.
+في حال أنك لم تسمع من قبل بالطلبات المزورة عبر الموقع، لنناقش مثالاً عن كيفية استغلال هذه الثغرة. لنتخيل بأن تطبيقك يحتوي المسار (route) التالي `/user/email` ويقبل طلب من الطريقة `POST` وهدفه تغيير عنوان البريد الالكتروني للمستخدم الموثق (authenticated user). غالباً هذا المسار (route) يقبل عنوان بريد الكتروني `email` كحقل إدخال يحوي على عنوان البريد الالكتروني للمستخدم الذي يود المستخدم البدء باستخدامه. 
 
-Without CSRF protection, a malicious website could create an HTML form that points to your application's `/user/email` route and submits the malicious user's own email address:
+بدون الحماية من الطلبات المزورة عبر المواقع (CSRF protection)، يمكن لأي موقع ضار إنشاء استمارة (HTML form) تشير للمسار (route) التالي `/user/email` في تطبيقك، فيقوم عندها المخترق بإرسل عنوان بريد الكتروني خاص به ليستبدل عنوان المستخدم الضحية في تطبيقك:
 
 ```blade
 <form action="https://your-application.com/user/email" method="POST">
@@ -28,16 +28,16 @@ Without CSRF protection, a malicious website could create an HTML form that poin
 </script>
 ```
 
- If the malicious website automatically submits the form when the page is loaded, the malicious user only needs to lure an unsuspecting user of your application to visit their website and their email address will be changed in your application.
+إذا كان الموقع الضار يقوم اتوماتيكياً بإرسال الاستمارة (form) السابقة فور تحميل الصفحة، فإن المخترق يحتاج فقط لجذب المستخدم غير الحذر لزيارة موقعه وبمجرد زيارته للموقع الضار سيتم فوراً تغيير بريده الاكتروني في تطبيقك. 
 
- To prevent this vulnerability, we need to inspect every incoming `POST`, `PUT`, `PATCH`, or `DELETE` request for a secret session value that the malicious application is unable to access.
+لمنع هذه الثغرة، نحتاج لفحص الطلبات من نوع `POST`، `PUT`، `PATCH`، أو `DELETE` القادمة للتطبيق إن كانت تحتوي على قيمة سرية خاصة بالجلسة (session)، حيث لا يمكن للتطبيقات الضارة الوصول لها. 
 
 <a name="preventing-csrf-requests"></a>
-## Preventing CSRF Requests
+## منع الطلبات المزورة عبر المواقع
 
-Laravel automatically generates a CSRF "token" for each active [user session](/docs/{{version}}/session) managed by the application. This token is used to verify that the authenticated user is the person actually making the requests to the application. Since this token is stored in the user's session and changes each time the session is regenerated, a malicious application is unable to access it.
+يقوم إطار عمل لارافيل اوتوماتيكياً بإنشاء "رمز" لمنع الطلبات المزورة عبر المواقع (CSRF token) لكل [جلسة مستخدم](/docs/{{version}}/session) نشطة تتم إدارتها من قبل التطبيق. هذا الرمز (token) يستخدم للتحقق من أن المستخدم الموثق (authenticated user) هو الذي يقوم بإرسال الطلبات للتطبيق. وباعتبار أن هذا الرمز (token) مخزن في جلسة المستخدم ويتغير في كل مرة يتم فيها إعادة إنشاء الجلسة، فإن التطبيق الضار لا يستطيع الوصول لها. 
 
-The current session's CSRF token can be accessed via the request's session or via the `csrf_token` helper function:
+رمز منع الطلبات المزورة عبر المواقع (CSRF token) الحالي يمكن الوصول إليه بواسطة الطلب الخاص بالجلسة (request's session) أو بواسطة التابع المساعد (helper function) `csrf_token`: 
 
     use Illuminate\Http\Request;
 
@@ -49,7 +49,7 @@ The current session's CSRF token can be accessed via the request's session or vi
         // ...
     });
 
-Anytime you define a "POST", "PUT", "PATCH", or "DELETE" HTML form in your application, you should include a hidden CSRF `_token` field in the form so that the CSRF protection middleware can validate the request. For convenience, you may use the `@csrf` Blade directive to generate the hidden token input field:
+في كل مرة تقوم فيها بإنشاء استمارة (HTML form) تحتوي على طلبات من نوع  `POST`، `PUT`، `PATCH`، أو `DELETE` في تطبيقك، يجب عليك تضمين حقل مخفي لرمز ( CSRF `_token`) في الاستمارة (form) بحيث يمكن للبرمجية الوسيطة للحماية من الطلبات المزورة عبر المواقع (CSRF protection middleware) التحقق من الطلب. ولتسهيل تلك العملية، يمكنك استخدام الموجه (Blade directive) التالي `@csrf` الذي سيقوم بإنشاء حقل إدخال مخفي لرمز ( CSRF `_token`):
 
 ```blade
 <form method="POST" action="/profile">
@@ -60,19 +60,18 @@ Anytime you define a "POST", "PUT", "PATCH", or "DELETE" HTML form in your appli
 </form>
 ```
 
-The `App\Http\Middleware\VerifyCsrfToken` [middleware](/docs/{{version}}/middleware), which is included in the `web` middleware group by default, will automatically verify that the token in the request input matches the token stored in the session. When these two tokens match, we know that the authenticated user is the one initiating the request.
+[البرمجية الوسيطة (middleware)](/docs/{{version}}/middleware)  `App\Http\Middleware\VerifyCsrfToken` والمضمنة بشكل افتراضي في مجموعة البرمجيات الوسيطة `web` 
+ أي (`web` middleware group)ستقوم بشكل تلقائي من التحقق من تطابق الرمز (CSRF token) الموجود ضمن الطلب والرمز المخزن ضمن الجلسة. وفي حال تطابق الرمزين يكون المستخدم هو من أرسل الطلب. 
 
 <a name="csrf-tokens-and-spas"></a>
-### CSRF Tokens & SPAs
-
-If you are building an SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
+### رموز الحماية من الطلبات المزورة عبر المواقع وتطبيقات الصفحة الواحدة (SPA)
+في حال كان تطبيقك تطبيق بصفحة واحدة (SPA) يستخدم لارفيل كواجهة خلفية للتطبيق (backend API)، فعليك مراجعة  [توثيق نظام المصادقة لارافيل سانكتوم (Laravel Sanctum)](/docs/{{version}}/sanctum) لمزيد من المعلومات حول المصادقة بالواجهة التطبيقية لبرنامجك (API) وحمايتها من ثغرات الطلبات المزورة عبر المواقع. 
 
 <a name="csrf-excluding-uris"></a>
-### Excluding URIs From CSRF Protection
+### استثناء الروابط (URI) من الحماية من الطلبات المزورة عبر المواقع
+في بعض الأحيان تحتاج لاستثناء مجموعة روابط (URIs) من الحماية من الطلبات المزورة عبر المواقع (CSRF protection). على سبيل المثال، اذا كنت تستخدم [سترايب (Stripe)](https://stripe.com) لمعالجة عمليات الدفع وتستفيد من نظام روابط الويب هوك (webhook system) الخاص به، فسوف تحتاج لاستثناء مسار معالج روابط الويب هوك الخاصة بسترايب (Stripe webhook handler route) من هذه الحماية لأن سترايب لا يعلم ما هو رمز (CSRF token) الذي يجب ارساله لمساراتك (routes). 
 
-Sometimes you may wish to exclude a set of URIs from CSRF protection. For example, if you are using [Stripe](https://stripe.com) to process payments and are utilizing their webhook system, you will need to exclude your Stripe webhook handler route from CSRF protection since Stripe will not know what CSRF token to send to your routes.
-
-Typically, you should place these kinds of routes outside of the `web` middleware group that the `App\Providers\RouteServiceProvider` applies to all routes in the `routes/web.php` file. However, you may also exclude the routes by adding their URIs to the `$except` property of the `VerifyCsrfToken` middleware:
+عادة، لاستثناء هذا النوع من المسارات (routes) يجب عليك وضعها خارج مجموعة البرمجيات الوسيطة (`web` middleware group) التي يقوم `App\Providers\RouteServiceProvider` بتطبيقها على جميع المسارات (routes) الموجودة في الملف `routes/web.php`. ولكن وبكل الأحوال يمكنك أيضاً استثناء المسارات (routes) بطريقة أخرى عبر وضع روابطها (URIs) في الخاصية `$except` في البرمجية الوسيطة (middleware) `VerifyCsrfToken`: 
 
     <?php
 
@@ -94,18 +93,18 @@ Typically, you should place these kinds of routes outside of the `web` middlewar
         ];
     }
 
-> {tip} For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing).
+> {tip} للسهولة، تكون البرمجية الوسيطة معطلة تلقائياً لكل المسارات (routes) عند [إجراء الاختبارات](/docs/{{version}}/testing).
 
 <a name="csrf-x-csrf-token"></a>
-## X-CSRF-TOKEN
+## رمز (X-CSRF-TOKEN)
 
-In addition to checking for the CSRF token as a POST parameter, the `App\Http\Middleware\VerifyCsrfToken` middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in an HTML `meta` tag:
+بالإضافة للتحقق من رمز (CSRF token) كوسيط في طريقة الإرسال POST ستقوم البرمجية الوسيطة `App\Http\Middleware\VerifyCsrfToken` أيضاً من بالتحقق من الترويسة (header)  `X-CSRF-TOKEN` في الطلب، على سبيل المثال يمكنك تخزين الرمز في عنصر `meta` الخاص بلغة HTML: 
+
 
 ```blade
 <meta name="csrf-token" content="{{ csrf_token() }}">
 ```
-
-Then, you can instruct a library like jQuery to automatically add the token to all request headers. This provides simple, convenient CSRF protection for your AJAX based applications using legacy JavaScript technology:
+من ثم يمكنك استعمال مكتبة مثل جي كويري (jQuery) لإضافة الرمز (token) تلقائياً لجميع ترويسات الطلبات. مما يوفر حماية سهلة وبسيطة من الطلبات المزورة عبر المواقع لتطبيقك الذي يعتمد على اجاكس (AJAX) باستعمال تقنية قديمة لجافاسكريبت (JavaScript) : 
 
 ```js
 $.ajaxSetup({
@@ -116,10 +115,10 @@ $.ajaxSetup({
 ```
 
 <a name="csrf-x-xsrf-token"></a>
-## X-XSRF-TOKEN
+## رمز (X-XSRF-TOKEN)
 
-Laravel stores the current CSRF token in an encrypted `XSRF-TOKEN` cookie that is included with each response generated by the framework. You can use the cookie value to set the `X-XSRF-TOKEN` request header.
+يقوم إطار عمل لارافيل بتخزين رمز (CSRF token) ضمن كوكي (cookie) كرمز مشفر `XSRF-TOKEN` ويقوم بتضمينها في كل رد يقوم بانشائه. حيث يمكنك استعمال قيمة الكوكي (cookie) تلك كقيمة لترويسة `X-XSRF-TOKEN` ضمن الطلب. 
 
-This cookie is primarily sent as a developer convenience since some JavaScript frameworks and libraries, like Angular and Axios, automatically place its value in the `X-XSRF-TOKEN` header on same-origin requests.
+يتم إرسال هذه الكوكي (cookie) بشكل أساسي لتسهيل عمل المطور حيث أن بعض اطر عمل ومكتبات جافاسكريبت (JavaScript)  مثل أنغيولر (Angular) وأكسيوس (Axios)، تقوم بشكل تلقائي بوضع قيمة الترويسة `X-XSRF-TOKEN` على الطلبات من نفس المصدر. 
 
-> {tip} By default, the `resources/js/bootstrap.js` file includes the Axios HTTP library which will automatically send the `X-XSRF-TOKEN` header for you.
+> {tip} بشكل افترضي، يحتوي الملف `resources/js/bootstrap.js` على مكتبة HTTP الخاصة باكسيوس (Axios) التي ستقوم وبشكل تلقائي بإرسال ترويسة `X-XSRF-TOKEN` لك. 
