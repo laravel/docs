@@ -109,6 +109,8 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
     'queue' => true,
 
+> {note} Algolia and Meilisearch process updates to indexes/records asynchronously. This means settting `scout.queue` to `false` will not wait for the driver to finish with it's update to the index.
+
 <a name="configuration"></a>
 ## Configuration
 
