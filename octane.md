@@ -521,7 +521,7 @@ use Illuminate\Support\Str;
 
 Cache::store('octane')->interval('random', function () {
     return Str::random(10);
-}, seconds: 5)
+}, seconds: 5);
 ```
 
 <a name="tables"></a>
