@@ -65,7 +65,7 @@ If you're developing on a Mac and [Docker Desktop](https://www.docker.com/produc
 curl -s "https://laravel.build/example-app" | bash
 ```
 
-Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
+Of course, you can change "example-app" in this URL to anything you like. Only alpha-numeric characters, dashes and underscores are allowed. The Laravel application's directory will be created within the directory you execute the command from.
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
@@ -94,7 +94,7 @@ Next, you are ready to create your first Laravel project. Launch [Windows Termin
 curl -s https://laravel.build/example-app | bash
 ```
 
-Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
+Of course, you can change "example-app" in this URL to anything you like. Only alpha-numeric characters, dashes and underscores are allowed. The Laravel application's directory will be created within the directory you execute the command from.
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
@@ -125,7 +125,7 @@ If you're developing on Linux and [Docker Compose](https://docs.docker.com/compo
 curl -s https://laravel.build/example-app | bash
 ```
 
-Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
+Of course, you can change "example-app" in this URL to anything you like. Only alpha-numeric characters, dashes and underscores are allowed. The Laravel application's directory will be created within the directory you execute the command from.
 
 After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
 
