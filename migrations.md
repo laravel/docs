@@ -482,9 +482,9 @@ The `date` method creates a `DATE` equivalent column:
 <a name="column-method-decimal"></a>
 #### `decimal()` {.collection-method}
 
-The `decimal` method creates a `DECIMAL` equivalent column with the given precision (total digits) and scale (decimal digits):
+The `decimal` method creates a `DECIMAL` equivalent column with the given total (total digits) and places (decimal digits):
 
-    $table->decimal('amount', $precision = 8, $scale = 2);
+    $table->decimal('amount', $total = 8, $places = 2);
 
 <a name="column-method-double"></a>
 #### `double()` {.collection-method}
