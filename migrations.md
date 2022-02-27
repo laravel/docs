@@ -1203,4 +1203,6 @@ For convenience, each migration operation will dispatch an [event](/docs/{{versi
 | `Illuminate\Database\Events\MigrationsEnded` | A batch of migrations has finished executing. |
 | `Illuminate\Database\Events\MigrationStarted` | A single migration is about to be executed. |
 | `Illuminate\Database\Events\MigrationEnded` | A single migration has finished executing. |
+| `Illuminate\Database\Events\SchemaDumped` | Database schema dump completed. |
+| `Illuminate\Database\Events\SchemaLoaded` | Stored database schema loaded completely. |
 
