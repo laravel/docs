@@ -454,9 +454,9 @@ The `boolean` method creates a `BOOLEAN` equivalent column:
 <a name="column-method-char"></a>
 #### `char()` {.collection-method}
 
-The `char` method creates a `CHAR` equivalent column with of a given length:
+The `char` method creates a `CHAR` equivalent column with an optional length:
 
-    $table->char('name', 100);
+    $table->char('name', $length = null);
 
 <a name="column-method-dateTimeTz"></a>
 #### `dateTimeTz()` {.collection-method}
