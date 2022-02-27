@@ -1,42 +1,42 @@
 # Contracts
 
-- [Introduction](#introduction)
-    - [Contracts Vs. Facades](#contracts-vs-facades)
-- [When To Use Contracts](#when-to-use-contracts)
-- [How To Use Contracts](#how-to-use-contracts)
-- [Contract Reference](#contract-reference)
+- [مقدمة](#introduction)
+    - [مقارنة Contracts مع Facades](#contracts-vs-facades)
+- [متى تستخدم Contracts](#when-to-use-contracts)
+- [كيفية استخدام Contracts](#how-to-use-contracts)
+- [مرجع Contracts](#contract-reference)
 
 <a name="introduction"></a>
-## Introduction
+## مقدمة
 
-Laravel's "contracts" are a set of interfaces that define the core services provided by the framework. For example, an `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending e-mail.
+إن لارافيل Contracts هي مجموعة من الواجهات (interfaces) التي تُعرِّف الخدمات المركزية التي يوفرها إطار عمل لارافيل. على سبيل المثال، يٌعرِّف الـ Contract التالي `Illuminate\Contracts\Queue\Queue` الدوال المطلوبة لوضع الأعمال في صفوف الانتظار، بينما يُعرِّف الـ Contract التالي `Illuminate\Contracts\Mail\Mailer` الدوال المطلوبة لإرسال رسائل البريد الإلكتروني. 
 
-Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by [Symfony Mailer](https://symfony.com/doc/6.0/mailer.html).
+لكل Contract استخدام (implementation) يوفره إطار عمل لارافيل. فعلى سبيل المثال، توفر لارافيل استخدام للطابور (queue) لعدة أنواع من المشغلات (drivers)، كما توفر أيضاً استخدام للمرسل (mailer) المُشغل بواسطة [Symfony Mailer](https://symfony.com/doc/6.0/mailer.html). 
 
-All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized when building packages that interact with Laravel services.
+توجد كل Laravel Contracts في [مستودعها الخاص في GitHub](https://github.com/illuminate/contracts). مما يوفر نقطة مرجعية سريعة لكل الـ Contracts المتوافرة كما يوفر المستودع حزمة (package) واحدة منفصلة يمكن إستخدامها عند بناء حزم تتفاعل مع خدمات لارافيل.
 
 <a name="contracts-vs-facades"></a>
-### Contracts Vs. Facades
+### مقارنة Contracts مع Facades
 
-Laravel's [facades](/docs/{{version}}/facades) and helper functions provide a simple way of utilizing Laravel's services without needing to type-hint and resolve contracts out of the service container. In most cases, each facade has an equivalent contract.
+توفر [(Laravel Facades)](/docs/{{version}}/facades) والتوابع المساعدة (helper functions) أسلوباً بسيطاً للاستفادة من خدمات لارافيل بدون الحاجة للتلميح إلى النوع (type-hint) أو استبيان Contracts من حاوي الخدمات (service container). وفي معظم الحالات، لكل Facade يوجد Contract مقابل ومساوي له. 
 
-Unlike facades, which do not require you to require them in your class' constructor, contracts allow you to define explicit dependencies for your classes. Some developers prefer to explicitly define their dependencies in this way and therefore prefer to use contracts, while other developers enjoy the convenience of facades. **In general, most applications can use facades without issue during development.**
+على عكس Facades، التي لا تحتاج أن  تقوم بتضمينها في الباني (constructor) الخاص بصفك (class)، تسمح لك  Contracts بتعريف الاعتماديات (dependencies) بشكل صريح لصفك (class). فيفضل بعض المطورين تعريف الاعتماديات (dependencies) بشكل صريح بهذه الطريقة فيتجهون لاستخدام الـ Contracts، بينما يفضل البعض الآخر السهولة والراحة التي تقدمها Facades. **بشكل عام، يمكن لمعظم التطبيقات استخدام Facades بدون مشاكل خلال عملية التطوير.** 
 
 <a name="when-to-use-contracts"></a>
-## When To Use Contracts
+## متى تستخدم Contracts
 
-The decision to use contracts or facades will come down to personal taste and the tastes of your development team. Both contracts and facades can be used to create robust, well-tested Laravel applications. Contracts and facades are not mutually exclusive. Some parts of your applications may use facades while others depend on contracts. As long as you are keeping your class' responsibilities focused, you will notice very few practical differences between using contracts and facades.
+يعود قرار استخدام Contracts أو Facades لما تفضل أنت استخدامه أو ما يفضل فريق التطوير الخاص بك استخدامه. فيمكن استخدام كل منهما لبناء تطبيقات لارافيل قوية ومُختبرة بشكل جيد. فإن استخدام أي منهما لا يستبعد إمكانية استخدام الآخر. فيمكن لبعض أجزاء تطبيقك استخدام Facades بينما تعتمد الأجزاء الأخرى على Contracts. وما دُمت تبقي مسؤوليات الصفوف مركزة، فإنك لن تلاحظ سوى اختلافات تطبيقية قليلة بين استخدام Facades و استخدام Contracts. 
 
-In general, most applications can use facades without issue during development. If you are building a package that integrates with multiple PHP frameworks you may wish to use the `illuminate/contracts` package to define your integration with Laravel's services without the need to require Laravel's concrete implementations in your package's `composer.json` file.
+في العموم يمكن لمعظم التطبيقات استخدام Facades بدون أي مشاكل خلال عملية التطوير. في حال كنت تقوم ببناء حزم تتكامل مع العديد من اطر عمل PHP فسترغب باستخدام الحزمة `illuminate/contracts` لتحديد تكاملك مع خدمات لارافيل دون الحاجة للتضمين اليدوي في ملف الحزم `composer.json`. 
 
 <a name="how-to-use-contracts"></a>
-## How To Use Contracts
+## كيفية استخدام Contracts
 
-So, how do you get an implementation of a contract? It's actually quite simple.
+حسناً، كيف يمكنك الحصول على استخدام (implementation) لـ Contract؟ المسألة بسيطة جداً.
 
-Many types of classes in Laravel are resolved through the [service container](/docs/{{version}}/container), including controllers, event listeners, middleware, queued jobs, and even route closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved.
+يتم الاستبيان عن العديد من أنواع صفوف لارافيل عبر [حاوي الخدمات](/docs/{{version}}/container)، بما فيها المتحكمات (controllers)، المُتنصتات على الأحداث (event listeners)، البرمجيات الوسيطة (middleware)، الأعمال في صفوف الانتظار (queued jobs)، وحتى تعابير المسارات المغلقة (route closure). يمكنك استخدام Contract بمجرد التلميح لنوع (type-hint) الواجهة في الباني (constructor) للصف المُستخدِم للواجهة.
 
-For example, take a look at this event listener:
+على سبيل المثال، لنلق نظرة على متنصت الأحداث (event listener) التالي: 
 
     <?php
 
@@ -78,14 +78,15 @@ For example, take a look at this event listener:
         }
     }
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
+سيقوم حاوي الخدمات بقراءة التلميح للنوع (type-hint) في باني الصف عند استبيان متنصت الأحداث (event listener)، ومن ثم سيقوم بحقن القيمة المناسبة. للمزيد حول تسجيل الأشياء في حاوي الخدمات، يمكنك الاطلاع على [توثيقه](/docs/{{version}}/container). 
 
 <a name="contract-reference"></a>
-## Contract Reference
+## مرجع Contracts 
 
-This table provides a quick reference to all of the Laravel contracts and their equivalent facades:
+يوفر هذا الجدول مرجعاً سريعاً لكل Laravel Contracts وما يقابلها من Facades:
 
-Contract  |  References Facade
+
+Contract  |   References Facade
 ------------- | -------------
 [Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php) | &nbsp;
 [Illuminate\Contracts\Auth\Access\Gate](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Gate.php) | `Gate`
