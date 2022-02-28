@@ -1,29 +1,29 @@
-# Service Container
+# حاوي الخدمات
 
-- [Introduction](#introduction)
-    - [Zero Configuration Resolution](#zero-configuration-resolution)
-    - [When To Use The Container](#when-to-use-the-container)
-- [Binding](#binding)
-    - [Binding Basics](#binding-basics)
-    - [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
-    - [Contextual Binding](#contextual-binding)
-    - [Binding Primitives](#binding-primitives)
-    - [Binding Typed Variadics](#binding-typed-variadics)
-    - [Tagging](#tagging)
-    - [Extending Bindings](#extending-bindings)
-- [Resolving](#resolving)
-    - [The Make Method](#the-make-method)
-    - [Automatic Injection](#automatic-injection)
-- [Method Invocation & Injection](#method-invocation-and-injection)
-- [Container Events](#container-events)
+- [مقدمة](#introduction)
+    - [ميزة عدم الإعداد (Zero Configuration Resolution)](#zero-configuration-resolution)
+    - [متى يتم استخدام حاوي الخدمات](#when-to-use-the-container)
+- [الربط](#binding)
+    - [أساسيات الربط](#binding-basics)
+    - [ربط الواجهات بالاستخدام (Binding Interfaces To Implementations)](#binding-interfaces-to-implementations)
+    - [الربط السياقي](#contextual-binding)
+    - [ربط القيم الأساسية (Binding Primitives)](#binding-primitives)
+    - [ربط الأنواع المتغيرة](#binding-typed-variadics)
+    - [الوَسم (Tagging)](#tagging)
+    - [توسيع الروابط](#extending-bindings)
+- [الاستبيان](#resolving)
+    - [الدالة make](#the-make-method)
+    - [ الحقن التلقائي](#automatic-injection)
+- [استدعاء وحقن الدوال](#method-invocation-and-injection)
+- [أحداث حاوي الخدمات](#container-events)
 - [PSR-11](#psr-11)
 
 <a name="introduction"></a>
-## Introduction
+## مقدمة
 
-The Laravel service container is a powerful tool for managing class dependencies and performing dependency injection. Dependency injection is a fancy phrase that essentially means this: class dependencies are "injected" into the class via the constructor or, in some cases, "setter" methods.
+حاوي الخدمات (service container) في لارافيل هو أداة فعالة لإدارة إعتماديات الصفوف (class dependencies) والقيام بحقن الإعتماديات. حيث أن حقن الاعتمادية (Dependency injection) هو مصطلح تقني يشير بأن إعتماديات الصفوف سيتم "حقنها" في الصف إما عن طريق الباني (constructor) أو عن طريق الدوال المُسنِدة للقيم (setter methods) في بعض الحالات. 
 
-Let's look at a simple example:
+لنلقِ نظرة على هذا المثال البسيط:
 
     <?php
 
@@ -67,14 +67,14 @@ Let's look at a simple example:
         }
     }
 
-In this example, the `UserController` needs to retrieve users from a data source. So, we will **inject** a service that is able to retrieve users. In this context, our `UserRepository` most likely uses [Eloquent](/docs/{{version}}/eloquent) to retrieve user information from the database. However, since the repository is injected, we are able to easily swap it out with another implementation. We are also able to easily "mock", or create a dummy implementation of the `UserRepository` when testing our application.
+في هذا المثال، يحتاج المتحكم (Controller) التالي `UserController` لجلب المستخدمين من مصدر للبيانات. لهذا السبب سوف نقوم **بحقن** خدمة تستطيع جلب المستخدمين.  وعلى الأرجح سيقوم `UserRepository` باستخدام [Eloquent](/docs/{{version}}/eloquent) لجلب معلومات المستخدمين من قاعدة البيانات. بكل الأحوال، وبما أن المستودع (repository) قد تم حقنه، يمكننا وبسهولة تبديله باستخدام (implementation) آخر. ويمكننا أيضاً "تقليد"، أو إنشاء استخدام مزيف (dummy implementation) من `UserRepository` عند اختبار التطبيق. 
 
-A deep understanding of the Laravel service container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
+إن الفهم العميق لحاوي خدمات لارافيل ضروري لبناء تطبيق ضخم وقوي، كما أنه ضروي للمساهة في جوهر لارافيل نفسها.
 
 <a name="zero-configuration-resolution"></a>
-### Zero Configuration Resolution
+### ميزة عدم الإعداد (Zero Configuration Resolution)
 
-If a class has no dependencies or only depends on other concrete classes (not interfaces), the container does not need to be instructed on how to resolve that class. For example, you may place the following code in your `routes/web.php` file:
+اذا لم يحتوي الصف على أي اعتماديات أو اعتمد فقط على صفوف محددة (concrete classes) ليست واجهات (not Interfaces)، فلن يحتاج حاوي الخدمات في لارافيل لتوجيهات عن كيفية استبيان الصف. فعلى سبيل المثال يمكنك وضع الكود التالي في الملف `routes/web.php`: 
 
     <?php
 
@@ -87,14 +87,14 @@ If a class has no dependencies or only depends on other concrete classes (not in
         die(get_class($service));
     });
 
-In this example, hitting your application's `/` route will automatically resolve the `Service` class and inject it into your route's handler. This is game changing. It means you can develop your application and take advantage of dependency injection without worrying about bloated configuration files.
+في هذا المثال، زيارة المسار (route) التالي `/` في تطبيقك سيؤدي اوتوماتيكياً لاستبيان الصف `Service` والقيام بحقنه في معالج المسار (route's handler). يعد ذلك نقطة تحول. أي أنك تستطيع تطوير تطبيقك والاستفادة من حقن الاعتماديات دون الخشية من تضخم ملفات الإعداد. 
 
-Thankfully, many of the classes you will be writing when building a Laravel application automatically receive their dependencies via the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). Once you taste the power of automatic and zero configuration dependency injection it feels impossible to develop without it.
+لحسن الحظ، العديد من الصفوف التي ستقوم بكتابتها عند بناء تطبيق لارافيل ستحصل بشكل أوتوماتيكي على اعتمادياتها بواسطة حاوي الخدمة، بما فيها [المتحكمات (controllers)](/docs/{{version}}/controllers)، [المتنصتات على الأحداث (event listeners)](/docs/{{version}}/events)، [البرمجيات الوسيطة (middleware)](/docs/{{version}}/middleware)، والمزيد. بالإضافة لذلك يمكنك التلميح لنوع (type-hint) الاعتماديات في الدالة `handle` الخاصة [بالأعمال في صفوف الانتظار (queued jobs)](/docs/{{version}}/queues). وبمجرد أن تشعر بقوة الحقن التلقائي للاعتماديات بدون الإعداد ستشعر بأنه يستحيل التطوير بدونه. 
 
 <a name="when-to-use-the-container"></a>
-### When To Use The Container
+### متى يتم استخدام حاوي الخدمات
 
-Thanks to zero configuration resolution, you will often type-hint dependencies on routes, controllers, event listeners, and elsewhere without ever manually interacting with the container. For example, you might type-hint the `Illuminate\Http\Request` object on your route definition so that you can easily access the current request. Even though we never have to interact with the container to write this code, it is managing the injection of these dependencies behind the scenes:
+بفضل ميزة عدم الإعداد، في غالب الأحيان ستقوم بالتلميح لنوع (type-hint) الإعتماديات على المسارات (routes)، والمتحكمات (controllers)، والمتنصتات على الأحداث (event listeners)، وفي أماكن أخرى بدون التعامل اليدوي حتى مع حاوي الخدمات. على سبيل المثال، يمكنك التلميح لنوع الغرض `Illuminate\Http\Request` على تعريف المسار (route) التالي مما يجعلك ببساطة قادراً على الوصول للطلب (request) الحالي. حتى إن لم تقم بالتفاعل مع حاوي الخدمات لكتابة هذا الكود، سيقوم حاوي الخدمات بإدارة الحقن لهذه الإعتماديات خلف الكواليس: 
 
     use Illuminate\Http\Request;
 
@@ -102,22 +102,22 @@ Thanks to zero configuration resolution, you will often type-hint dependencies o
         // ...
     });
 
-In many cases, thanks to automatic dependency injection and [facades](/docs/{{version}}/facades), you can build Laravel applications without **ever** manually binding or resolving anything from the container. **So, when would you ever manually interact with the container?** Let's examine two situations.
+في العديد من الحالات، وبفضل الحقن الأوتماتيكي للإعتماديات و [Facades](/docs/{{version}}/facades)، يمكنك بناء تطبيقات لارافيل بدون الربط أو الاستبيان اليدوي عن أي شيئ **أبداً** في حاوي الخدمات. **اذاً متى يجب التعامل مع حاوي الخدمات؟** دعنا نقوم باختبار حالتين.
 
-First, if you write a class that implements an interface and you wish to type-hint that interface on a route or class constructor, you must [tell the container how to resolve that interface](#binding-interfaces-to-implementations). Secondly, if you are [writing a Laravel package](/docs/{{version}}/packages) that you plan to share with other Laravel developers, you may need to bind your package's services into the container.
+الحالة الأولى، اذا قمت بكتابة صف يقوم باستخدام واجهة (interface) وتوّد القيام بتلميح لنوع (type-hint) تلك الواجهة على مسار (route) أو ضمن باني صف (class constructor). عندئذٍ يجب عليك أن تقوم [بإخبار حاوي الخدمات عن كيفية التعامل مع تلك الواجهة](#binding-interfaces-to-implementations). الحالة الثانية، إذا كنت تقوم [بكتابة حزمة لارافيل](/docs/{{version}}/packages)  تخطط لمشاركتها مع مطوري لارافيل آخرين، ربما تحتاج لربط خدمات حزمتك بحاوي الخدمات. 
 
 <a name="binding"></a>
-## Binding
+## الربط
 
 <a name="binding-basics"></a>
-### Binding Basics
+### أساسيات الربط
 
 <a name="simple-bindings"></a>
-#### Simple Bindings
+#### الربط البسيط
 
-Almost all of your service container bindings will be registered within [service providers](/docs/{{version}}/providers), so most of these examples will demonstrate using the container in that context.
+كل الارتباطات الخاصة بحاوي خدماتك سيتم تسجيلها في [مزودي الخدمات (service providers)](/docs/{{version}}/providers)، لذا ستقوم معظم هذه الأمثلة بإرشادك حول كيفية استخدام حاوي الخدمات في هذا السياق. 
 
-Within a service provider, you always have access to the container via the `$this->app` property. We can register a binding using the `bind` method, passing the class or interface name that we wish to register along with a closure that returns an instance of the class:
+ضمن مزودي الخدمات (service provider)، يجب عليك دائماً الوصول لحاوي الخدمات باستخدام الخاصية `$this->app`. حيث يمكننا تسجيل الارتباط بواسطة الدالة `bind`، عبر تمرير اسم الصف أو الواجهة التي نرغب بتسجيلها مع التعبير (closure) الذي سيعيد نسخة (instance) من الصف: 
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
@@ -126,9 +126,9 @@ Within a service provider, you always have access to the container via the `$thi
         return new Transistor($app->make(PodcastParser::class));
     });
 
-Note that we receive the container itself as an argument to the resolver. We can then use the container to resolve sub-dependencies of the object we are building.
+لاحظ بأننا نحصل على حاوي الخدمات بنفسه كوسيط للمُستبين (resolver). مما يعني أنه بإمكاننا استخدام حاوي الخدمات للتعامل مع الاعتماديات الثانوية (sub-dependencies) للغرض (object) الذي نقوم ببنائه. 
 
-As mentioned, you will typically be interacting with the container within service providers; however, if you would like to interact with the container outside of a service provider, you may do so via the `App` [facade](/docs/{{version}}/facades):
+كما ذُكر، عادة ما ستقوم بالتعامل مع حاوي الخدمات ضمن مزودي الخدمات (service providers). وبكل الأحوال، اذا كنت ترغب بالتعامل مع حاوي الخدمات خارج مزودي الخدمات (service provider)، يمكنك ذلك عبر الـ[facade](/docs/{{version}}/facades)  التالي `App`: 
 
     use App\Services\Transistor;
     use Illuminate\Support\Facades\App;
@@ -137,12 +137,12 @@ As mentioned, you will typically be interacting with the container within servic
         // ...
     });
 
-> {tip} There is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed on how to build these objects, since it can automatically resolve these objects using reflection.
+> {tip} ليس هناك داعٍ لربط الصفوف التي لا تعتمد على أي واجهات بحاوي الخدمات. لأن حاوي الخدمات لا يحتاج لإرشاد حول كيفية بناء هذه الأغراض لأن بإمكانه القيام بالاستبيان عن هذه الأغراض أوتوماتيكاً باستخدام الانعكاس (reflection). 
 
 <a name="binding-a-singleton"></a>
-#### Binding A Singleton
+#### ربط Singleton
+تقوم الدالة `singleton` بربط صف أو واجهة (interface) يجب استبيانها لمرة واحدة بحاوي الخدمات. فعندما يتم استيان ارتباط  singleton، سيتم إعادة نفس النسخة (same instance) في الاستدعاءات اللاحقة لحاوي الخدمات. 
 
-The `singleton` method binds a class or interface into the container that should only be resolved one time. Once a singleton binding is resolved, the same object instance will be returned on subsequent calls into the container:
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
@@ -152,9 +152,10 @@ The `singleton` method binds a class or interface into the container that should
     });
 
 <a name="binding-scoped"></a>
-#### Binding Scoped Singletons
+#### ربط صفوف Singleton محددة النطاق (Binding Scoped Singletons) 
 
-The `scoped` method binds a class or interface into the container that should only be resolved one time within a given Laravel request / job lifecycle. While this method is similar to the `singleton` method, instances registered using the `scoped` method will be flushed whenever the Laravel application starts a new "lifecycle", such as when a [Laravel Octane](/docs/{{version}}/octane) worker processes a new request or when a Laravel [queue worker](/docs/{{version}}/queues) processes a new job:
+تقوم الدالة `scoped` بربط صف أو واجهة (interface) يجب استبيانها لمرة واحدة خلال دورة حياة طلب أو مهمة محددة في لارافيل بحاوي الخدمات. حيث أن هذه الدالة مشابهة للدالة `singleton`، ولكن النسخ  (instances) التي تم تسجيلها بالطريقة `scoped` سيتم التخلص منها عندما يقوم تطبيق لارافيل ببدء "دورة حياة" جديدة، كما هو الحال عندما يقوم الـ worker الخاص بـ [Laravel Octane](/docs/{{version}}/octane) بمعالجة طلب جديد أو عندما يقوم الـ[queue worker](/docs/{{version}}/queues) بلارافيل بمعاجة عمل جديد:
+
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
@@ -164,9 +165,10 @@ The `scoped` method binds a class or interface into the container that should on
     });
 
 <a name="binding-instances"></a>
-#### Binding Instances
+#### ربط النُسخ (Binding Instances)
 
-You may also bind an existing object instance into the container using the `instance` method. The given instance will always be returned on subsequent calls into the container:
+تستطيع أيضاً ربط نسخة غرض موجودة (existing object instance) بحاوي الخدمات باستخدام الدالة `instance`. حيث سيتم دائماً إعادة النسخة التي تم تمريرها في الاستدعاءات اللاحقة لحاوي الخدمات:
+
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
@@ -176,16 +178,16 @@ You may also bind an existing object instance into the container using the `inst
     $this->app->instance(Transistor::class, $service);
 
 <a name="binding-interfaces-to-implementations"></a>
-### Binding Interfaces To Implementations
+### ربط الواجهات بالاستخدام (Binding Interfaces To Implementations)
 
-A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, let's assume we have an `EventPusher` interface and a `RedisEventPusher` implementation. Once we have coded our `RedisEventPusher` implementation of this interface, we can register it with the service container like so:
+إحدى الميزات القوية لحاوية الخدمات هي القدرة على ربط واجهة (interface) باستخدام (implementation) لها. على سبيل المثال، لنفترض بأنه لدينا الواجهة (interface) التالية `EventPusher` ولدينا الاستخدام (implementation) التالي `RedisEventPusher` لها. عندما ننتهي من كتابة الاستخدام `RedisEventPusher` لهذه الواجهة (interface) نستطيع تسجيله بحاوي الخدمات بالطريقة التالية: 
 
     use App\Contracts\EventPusher;
     use App\Services\RedisEventPusher;
 
     $this->app->bind(EventPusher::class, RedisEventPusher::class);
 
-This statement tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in the constructor of a class that is resolved by the container. Remember, controllers, event listeners, middleware, and various other types of classes within Laravel applications are always resolved using the container:
+تقوم العبارة السابقة بإخبار حاوي الخدمات بأن عليه حقن `RedisEventPusher` عند حاجة أي صف لاستخدام (implementation) للواجهة `EventPusher`. وأصبح بإمكاننا الآن التلميح لنوع (type-hint) الواجهة `EventPusher` في باني أي صف يتعامل مع حاوي الخدمات. وتذكر بأن المتحكمات (controllers)، والمتنصتات على الأحداث (event listeners)، والبرمجيات الوسيطة (middleware)، والعديد من أنواع الصفوف الأخرى في تطبيقات لارافيل دوماً ما يتم استبيانها باستخدام حاوي الخدمات: 
 
     use App\Contracts\EventPusher;
 
@@ -201,9 +203,9 @@ This statement tells the container that it should inject the `RedisEventPusher` 
     }
 
 <a name="contextual-binding"></a>
-### Contextual Binding
+### الربط السياقي
 
-Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, two controllers may depend on different implementations of the `Illuminate\Contracts\Filesystem\Filesystem` [contract](/docs/{{version}}/contracts). Laravel provides a simple, fluent interface for defining this behavior:
+في بعض الأحيان يمكن لصفين الاستفادة من نفس الواجهة، ولكنك قد ترغب بحقن استخدامات (implementations) مختلفة في كل صف منهما. على سبيل المثال، يمكن لاثنين من المتحكمات (controllers) الاعتماد على استخدامات (implementations) مختلفة للـ [contract](/docs/{{version}}/contracts) التالي `Illuminate\Contracts\Filesystem\Filesystem`. إن لارافيل توفر واجهة (interface) سهلة و سلسة لتعريف هذا السلوك: 
 
     use App\Http\Controllers\PhotoController;
     use App\Http\Controllers\UploadController;
@@ -224,30 +226,30 @@ Sometimes you may have two classes that utilize the same interface, but you wish
               });
 
 <a name="binding-primitives"></a>
-### Binding Primitives
+### ربط القيم الأساسية (Binding Primitives)
 
-Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:
+في بعض الأحيان قد يكون لديك صف يستقبل بعض الصفوف المحقونة،  وبنفس الوقت قد تحتاج لحقن قيمة أساسية (primitive value) مثل عدد صحيح (integer). يمكنك ببساطة استخدام الربط السياقي لحقن أي قيمة قد تحتاجها في صفك: 
 
     $this->app->when('App\Http\Controllers\UserController')
               ->needs('$variableName')
               ->give($value);
 
-Sometimes a class may depend on an array of [tagged](#tagging) instances. Using the `giveTagged` method, you may easily inject all of the container bindings with that tag:
+في بعض الأحيان قد يعتمد صفك على مصفوفة نُسخ (instances) [موسومة (tagged)](#tagging). يمكنك وبسهولة بواسطة الدالة `giveTagged`  حقن كل روابط حاوي الخدمات التي تحمل الوسم (tag) نفسه. 
 
     $this->app->when(ReportAggregator::class)
         ->needs('$reports')
         ->giveTagged('reports');
 
-If you need to inject a value from one of your application's configuration files, you may use the `giveConfig` method:
+اذا كنت تحتاج لحقن قيمة من أحد ملفات الإعداد في تطبيقك، يمكنك استخدام الدالة  `giveConfig`: 
 
     $this->app->when(ReportAggregator::class)
         ->needs('$timezone')
         ->giveConfig('app.timezone');
 
 <a name="binding-typed-variadics"></a>
-### Binding Typed Variadics
+### ربط الأنواع المتغيرة 
 
-Occasionally, you may have a class that receives an array of typed objects using a variadic constructor argument:
+في بعض الأحيان، قد تمتلك صفاً يستقبل مصفوفة أغراض مصرح عن نوعها باستخدام وسيط متغير في الباني (constructor):
 
     <?php
 
@@ -284,7 +286,7 @@ Occasionally, you may have a class that receives an array of typed objects using
         }
     }
 
-Using contextual binding, you may resolve this dependency by providing the `give` method with a closure that returns an array of resolved `Filter` instances:
+باستخدام الربط السياقي ، يمكنك التعامل مع الإعتمادية السابقة عبر تزويد الدالة `give` بتعبير (closure) يعيد مصفوفة نُسخ (instances) من نوع `Filter` تم استبيانها: 
 
     $this->app->when(Firewall::class)
               ->needs(Filter::class)
@@ -296,7 +298,7 @@ Using contextual binding, you may resolve this dependency by providing the `give
                     ];
               });
 
-For convenience, you may also just provide an array of class names to be resolved by the container whenever `Firewall` needs `Filter` instances:
+للسهولة، يمكنك تزويد المصفوفة بأسماء الصفوف ليقوم حاوي الخدمات باستبيانها عندما يحتاج الصف `Firewall` نُسخاً (instances) من `Filter`: 
 
     $this->app->when(Firewall::class)
               ->needs(Filter::class)
@@ -307,18 +309,18 @@ For convenience, you may also just provide an array of class names to be resolve
               ]);
 
 <a name="variadic-tag-dependencies"></a>
-#### Variadic Tag Dependencies
+#### الإعتماديات المتغيرة الوسوم
 
-Sometimes a class may have a variadic dependency that is type-hinted as a given class (`Report ...$reports`). Using the `needs` and `giveTagged` methods, you may easily inject all of the container bindings with that [tag](#tagging) for the given dependency:
+في بعض الأحيان  قد يحوي أحد الصفوف اعتمادية متغيرة يتم التلميح لنوعها (type-hinted) كصف مُعطى (`Report ...$reports`). يمكنك وبسهولة باستخدام الدوال التالية `needs` و `giveTagged` حقن كل روابط حاوي الخدمات التي تحمل [الوسم (tag)](#tagging) للاعتمادية المُعطاة: 
 
     $this->app->when(ReportAggregator::class)
         ->needs(Report::class)
         ->giveTagged('reports');
 
 <a name="tagging"></a>
-### Tagging
+### الوَسم (Tagging)
 
-Occasionally, you may need to resolve all of a certain "category" of binding. For example, perhaps you are building a report analyzer that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:
+في بعض الأحيان قد تحتاج لاستبيان جميع روابط "صنف" ("category") معين. على سبيل المثال، ربما تقوم ببناء محلل تقارير يستقبل مصفوفة تحتوي العديد من استخدمات (implementations)  الواجهة `Report`. بعد تسجيل أغلب استخدامات الواجهة `Report`، يمكنك تعيين وسم (tag) باستخدام الدالة التالية `tag`: 
 
     $this->app->bind(CpuReport::class, function () {
         //
@@ -330,47 +332,47 @@ Occasionally, you may need to resolve all of a certain "category" of binding. Fo
 
     $this->app->tag([CpuReport::class, MemoryReport::class], 'reports');
 
-Once the services have been tagged, you may easily resolve them all via the container's `tagged` method:
+عندما يتم وسم الخدمات، يمكنك ببساطة استبيانها جميعها بواسطة الدالة `tagged` الخاصة بحاوي الخدمات:
 
     $this->app->bind(ReportAnalyzer::class, function ($app) {
         return new ReportAnalyzer($app->tagged('reports'));
     });
 
 <a name="extending-bindings"></a>
-### Extending Bindings
+### توسيع الروابط
 
-The `extend` method allows the modification of resolved services. For example, when a service is resolved, you may run additional code to decorate or configure the service. The `extend` method accepts a closure, which should return the modified service, as its only argument. The closure receives the service being resolved and the container instance:
+ تسمح الدالة `extend` بتعديل الخدمات التي تم استبيانها. على سبيل المثال، يمكنك اجراء تعليمات إضافية عند استبيان خدمة بهدف تحسينها أو ضبطها. حيث أن الدالة `extend` تقبل وسيطاً وحيداً وهو تعبير (closure) يعيد الخدمة بعد التعديل. ويستقبل التعبير (closure) الخدمة التي يتم استبيانها ونُسخة (instance) حاوي الخدمات:
 
     $this->app->extend(Service::class, function ($service, $app) {
         return new DecoratedService($service);
     });
 
 <a name="resolving"></a>
-## Resolving
+## الاستبيان
 
 <a name="the-make-method"></a>
-### The `make` Method
+### الدالة `make`
 
-You may use the `make` method to resolve a class instance from the container. The `make` method accepts the name of the class or interface you wish to resolve:
+يمكنك استخدام الدالة `make` لاستبيان صف من حاوي الخدمات. حيث أن  الدالة `make` تقبل اسم الصف أو اسم الواجهة التي تريد استبيانها كوسيط:
 
     use App\Services\Transistor;
 
     $transistor = $this->app->make(Transistor::class);
 
-If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method. For example, we may manually pass the `$id` constructor argument required by the `Transistor` service:
+اذا كان بعض اعتماديات صفوفك غير قابلة للاستبيان بواسطة حاوي الخدمات، يمكنك حقنها عبر تمريرها كمصفوفة ترابطية للدالة `makeWith`. فعلى سبيل المثال يمكننا تمرير وسيط الباني `$id` المطلوب من قبل الخدمة `Transistor` يدوياً: 
 
     use App\Services\Transistor;
 
     $transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);
 
-If you are outside of a service provider in a location of your code that does not have access to the `$app` variable, you may use the `App` [facade](/docs/{{version}}/facades) to resolve a class instance from the container:
+إن كنت خارج مزود الخدمة  في منطقة ما في كودك لا يمكنها الوصول للمتحول `$app` يمكنك استخدام الـ [facade](/docs/{{version}}/facades) التالي `App` لاستبيان صف من حاوي الخدمات: 
 
     use App\Services\Transistor;
     use Illuminate\Support\Facades\App;
 
     $transistor = App::make(Transistor::class);
 
-If you would like to have the Laravel container instance itself injected into a class that is being resolved by the container, you may type-hint the `Illuminate\Container\Container` class on your class' constructor:
+إن كنت ترغب بحقن نسخة حاوي خدمات لارافيل في صف يتم استبيانه بواسطة حاوي الخدمات، يمكنك التلميح للنوع (type-hint) التالي `Illuminate\Container\Container` في باني الصف الخاص بك:
 
     use Illuminate\Container\Container;
 
@@ -386,11 +388,11 @@ If you would like to have the Laravel container instance itself injected into a 
     }
 
 <a name="automatic-injection"></a>
-### Automatic Injection
+### الحقن التلقائي
 
-Alternatively, and importantly, you may type-hint the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware), and more. Additionally, you may type-hint dependencies in the `handle` method of [queued jobs](/docs/{{version}}/queues). In practice, this is how most of your objects should be resolved by the container.
+الجدير بالذكر أنه بإمكانك التلميح لنوع (type-hint) الاعتمادية في باني الصف الذي يتم استبيانه من قبل حاوي الخدمات، بما فيها [المتحكمات (controllers)](/docs/{{version}}/controllers)، [المتنصتات على الأحداث (event listeners)](/docs/{{version}}/events)، [البرمجيات الوسيطة (middleware)](/docs/{{version}}/middleware)، والمزيد. بالإضافة لذلك يمكنك التلميح لنوع الاعتمادية في الدالة `handle` الخاصة [بالأعمال في الطوابير (queued jobs)](/docs/{{version}}/queues). وعملياً يجب عليك اتباع هذا الأسلوب في معظم الأغراض التي التي يجب استبيانها بواسطة حاوي الخدمات. 
 
-For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:
+على سبيل المثال، يمكنك التلميح لنوع المستودع (repository) الذي تم تعريفه بواسطة تطبيقك في باني المتحكم (controller). حيث سيتم استبيان وحقن المستودع تلقائياً في الصف:
 
     <?php
 
@@ -431,9 +433,9 @@ For example, you may type-hint a repository defined by your application in a con
     }
 
 <a name="method-invocation-and-injection"></a>
-## Method Invocation & Injection
+## استدعاء وحقن الدوال
 
-Sometimes you may wish to invoke a method on an object instance while allowing the container to automatically inject that method's dependencies. For example, given the following class:
+في بعض الأحيان قد ترغب باستدعاء دالة على نسخة غرض (object instance) أثناء قيام حاوي الخدمات بحقن اعتماديات الدالة تلقائياً. على سبيل المثال، لدينا الصف التالي:
 
     <?php
 
@@ -455,14 +457,14 @@ Sometimes you may wish to invoke a method on an object instance while allowing t
         }
     }
 
-You may invoke the `generate` method via the container like so:
+يمكننا استدعاء الدالة `generate` باستخدام حاوي الخدمات كما يلي: 
 
     use App\UserReport;
     use Illuminate\Support\Facades\App;
 
     $report = App::call([new UserReport, 'generate']);
 
-The `call` method accepts any PHP callable. The container's `call` method may even be used to invoke a closure while automatically injecting its dependencies:
+تقبل الدالة `call` أي متحول PHP من النمط callable. حيث يمكن استخدام الدالة `call` الخاصة بحاوي الخدمات لاستدعاء تعبير (closure) أثناء الحقن التلقائي لاعتمادياته: 
 
     use App\Repositories\UserRepository;
     use Illuminate\Support\Facades\App;
@@ -472,9 +474,9 @@ The `call` method accepts any PHP callable. The container's `call` method may ev
     });
 
 <a name="container-events"></a>
-## Container Events
+## أحداث حاوي الخدمات
 
-The service container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
+يُطلق حاوي الخدمات حدثاً في كل مرة يقوم فيها باستبيان غرض (object). حيث يمكنك التنصت على هذه الأحداث باستخدام الدالة `resolving`:
 
     use App\Services\Transistor;
 
@@ -486,12 +488,12 @@ The service container fires an event each time it resolves an object. You may li
         // Called when container resolves object of any type...
     });
 
-As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.
+كما تلاحظ، سيتم تمرير الغرض الذي يتم استبيانه للاستدعاء (callback)، مما يسمح بضبط أي خواص اضافية للغرض قبل تمريره للمستخدم. 
 
 <a name="psr-11"></a>
 ## PSR-11
 
-Laravel's service container implements the [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) interface. Therefore, you may type-hint the PSR-11 container interface to obtain an instance of the Laravel container:
+يقوم حاوي خدمات لارافيل باستخدم (implement) الواجهة [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md). لذلك تستطيع التلميح لنوع واجهة الحاوي PSR-11 للحصول على نسخة (instance) من حاوي خدمات لارافيل: 
 
     use App\Services\Transistor;
     use Psr\Container\ContainerInterface;
@@ -502,4 +504,4 @@ Laravel's service container implements the [PSR-11](https://github.com/php-fig/f
         //
     });
 
-An exception is thrown if the given identifier can't be resolved. The exception will be an instance of `Psr\Container\NotFoundExceptionInterface` if the identifier was never bound. If the identifier was bound but was unable to be resolved, an instance of `Psr\Container\ContainerExceptionInterface` will be thrown.
+سيتم رمي استثناء (exception) في حال كون المُعرِف (identifier) غير قابل للاستبيان. حيث أن الاستثناء (exception) سيكون عبارة عن نسخة (instance) من `Psr\Container\NotFoundExceptionInterface` في حال لم يتم ربط المُعرِف (identifier). أما في حال ربط المُعرِف (identifier) وعدم القدرة على استبيانه سيتم رمي استثناء (exception) عبارة عن نسخة (instance) من `Psr\Container\ContainerExceptionInterface`. 
