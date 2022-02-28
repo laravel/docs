@@ -322,6 +322,10 @@ Before using the S3, FTP, or SFTP drivers, you will need to install the appropri
 
 Write operations such as `put`, `write`, `writeStream` now overwrite existing files by default. If you do not want to overwrite existing files, you should manually check for the file's existence before performing the write operation.
 
+#### Exception Throwing
+
+Methods such as `put`, `write`, `writeStream` no longer throw a Flysystem exception and will return `false` when a write operation fails. This is because Flysystem now throws an non-specific `UnableToWriteFile` exception instead of the previous more specific `FileExistsException` exception.
+
 #### Reading Missing Files
 
 Attempting to read from a file that does not exist now returns `null`. In previous releases of Laravel, an `Illuminate\Contracts\Filesystem\FileNotFoundException` would have been thrown.
