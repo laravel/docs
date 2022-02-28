@@ -320,7 +320,11 @@ Before using the S3, FTP, or SFTP drivers, you will need to install the appropri
 
 #### Overwriting Existing Files
 
-Write operations such as `put`, `write`, `writeStream` now overwrite existing files by default. If you do not want to overwrite existing files, you should manually check for the file's existence before performing the write operation.
+Write operations such as `put`, `write`, and `writeStream` now overwrite existing files by default. If you do not want to overwrite existing files, you should manually check for the file's existence before performing the write operation.
+
+#### Write Exceptions
+
+Write operations such as `put`, `write`, and `writeStream` no longer throw an exception when a write operation fails. Instead, `false` is returned.
 
 #### Reading Missing Files
 
