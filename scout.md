@@ -109,6 +109,8 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 
     'queue' => true,
 
+Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
+
 <a name="configuration"></a>
 ## Configuration
 
