@@ -80,7 +80,7 @@ Next, publish Fortify's resources using the `vendor:publish` command:
 php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
 ```
 
-This command will publish Fortify's actions to your `app/Actions` directory, which will be created if it does not exist. In addition, Fortify's configuration file and migrations will be published.
+This command will publish Fortify's actions to your `app/Actions` directory, which will be created if it does not exist. In addition, the `FortifyServiceProvider`, configuration file, and all necessary database migrations will be published.
 
 Next, you should migrate your database:
 
