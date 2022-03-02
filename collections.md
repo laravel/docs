@@ -2019,7 +2019,7 @@ You may optionally pass a second "step" value, which determines the distance bet
 
     $collection = collect([1, 2, 3, 4, 5]);
 
-    $chunks = $collection->sliding(3, step: 2);
+    $chunks = $collection->sliding(3, 2);
 
     $chunks->toArray();
 
