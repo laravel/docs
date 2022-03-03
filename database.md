@@ -7,6 +7,7 @@
     - [Using Multiple Database Connections](#using-multiple-database-connections)
     - [Listening For Query Events](#listening-for-query-events)
 - [Database Transactions](#database-transactions)
+    - [Transaction Isolation Level](#transaction-isolation-level)
 - [Connecting To The Database CLI](#connecting-to-the-database-cli)
 
 <a name="introduction"></a>
@@ -311,7 +312,16 @@ Lastly, you can commit a transaction via the `commit` method:
     DB::commit();
 
 > {tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+<a name="transaction-isolation-level"></a>
+#### Transaction Isolation Level
 
+If you need to isolate your transactions with a specific isolation level, you can define `isolation_level` key in your database config file:
+
+    'isolation_level' => 'serializable'
+
+There are 4 types of isolation levels: `read uncommitted`, `read committed`, `repeatable read`, and `serializable`.
+
+> {tip} The isolation levels are available for `mysql` and `postgresql` drivers for now.
 <a name="connecting-to-the-database-cli"></a>
 ## Connecting To The Database CLI
 
