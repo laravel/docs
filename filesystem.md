@@ -129,13 +129,13 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
         'password' => env('SFTP_PASSWORD'),
 
         // Optional SFTP Settings...
+        // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
+        // 'maxTries' => 4,
         // 'passphrase' => env('SFTP_PASSPHRASE'),
         // 'port' => env('SFTP_PORT', 22),
-        // 'useAgent' => true,
         // 'root' => env('SFTP_ROOT', ''),
         // 'timeout' => 30,
-        // 'maxTries' => 4,
-        // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
+        // 'useAgent' => true,
     ],
 
 <a name="amazon-s3-compatible-filesystems"></a>
