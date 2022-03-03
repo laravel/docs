@@ -12,6 +12,7 @@
 - [Basic Where Clauses](#basic-where-clauses)
     - [Where Clauses](#where-clauses)
     - [Or Where Clauses](#or-where-clauses)
+    - [Where Not Clauses](#where-not-clauses)
     - [JSON Where Clauses](#json-where-clauses)
     - [Additional Where Clauses](#additional-where-clauses)
     - [Logical Grouping](#logical-grouping)
@@ -461,6 +462,18 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 ```
 
 > {note} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
+
+<a name="where-not-clauses"></a>
+### Where Not Clauses
+
+The `whereNot` and `orWhereNot` methods may be used to negate a given group of query constraints. For example, the following query excludes products that are on clearance or which have a price that is less than ten:
+
+    $products = DB::table('products')
+                    ->whereNot(function ($query) {
+                        $query->where('clearance', true)
+                              ->orWhere('price', '<', 10);
+                    })
+                    ->get();
 
 <a name="json-where-clauses"></a>
 ### JSON Where Clauses
