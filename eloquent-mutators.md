@@ -440,6 +440,8 @@ The `encrypted` cast will encrypt a model's attribute value using Laravel's buil
 
 As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values.
 
+> {note} When you use encrypted casting, by default your data is encrypted using the `APP_KEY`. Any changes to the `APP_KEY` will lose data encrypted with that `APP_KEY`. To avoid this, data should be re-encrypted with your new key.
+
 <a name="query-time-casting"></a>
 ### Query Time Casting
 
