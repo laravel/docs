@@ -27,6 +27,7 @@
 - [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Validating Arrays](#validating-arrays)
     - [Validating Nested Array Input](#validating-nested-array-input)
+    - [Error Message Indexes & Positions](#error-message-indexes-and-positions)
 - [Validating Passwords](#validating-passwords)
 - [Custom Validation Rules](#custom-validation-rules)
     - [Using Rule Objects](#using-rule-objects)
@@ -1683,6 +1684,34 @@ Sometimes you may need to access the value for a given nested array element when
             ];
         }),
     ]);
+
+<a name="error-message-indexes-and-positions"></a>
+### Error Message Indexes & Positions
+
+When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` and `:position` place-holders within your [custom validation message](#manual-customizing-the-error-messages):
+
+    use Illuminate\Support\Facades\Validator;
+
+    $input = [
+        'photos' => [
+            [
+                'name' => 'BeachVacation.jpg',
+                'description' => 'A photo of my beach vacation!',
+            ],
+            [
+                'name' => 'GrandCanyon.jpg',
+                'description' => '',
+            ],
+        ],
+    ];
+
+    Validator::validate($input, [
+        'photos.*.description' => 'required',
+    ], [
+        'photos.*.description.required' => 'Please describe photo #:position.',
+    ]);
+
+Given the example above, validation will fail and the user will be presented with the following error of _"Please describe photo #2."_
 
 <a name="validating-passwords"></a>
 ## Validating Passwords
