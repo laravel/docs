@@ -369,9 +369,9 @@ use Spatie\Dropbox\Client as DropboxClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 
 Storage::extend('dropbox', function ($app, $config) {
-    $adapter = new DropboxAdapter(new DropboxClient(
-        $config['authorization_token']
-    ););
+    $adapter = new DropboxAdapter(
+        new DropboxClient($config['authorization_token'])
+    );
 
     return new FilesystemAdapter(
         new Filesystem($adapter, $config),
