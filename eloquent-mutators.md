@@ -440,7 +440,6 @@ The `encrypted` cast will encrypt a model's attribute value using Laravel's buil
 
 As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values.
 
-
 <a name="key-rotation"></a>
 #### Key Rotation
 
