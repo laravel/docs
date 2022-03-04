@@ -28,6 +28,7 @@
 - [The `password` Rule](#the-password-rule)
 - [The `when` / `unless` Methods](#when-and-unless-methods)
 - [Unvalidated Array Keys](#unvalidated-array-keys)
+- [Request `get` method](#request-get-method)
 
 </div>
 
@@ -694,6 +695,11 @@ public function boot()
     Validator::includeUnvalidatedArrayKeys();
 }
 ```
+
+<a name="request-get-method"></a>
+#### Request get() method
+
+According to update of Symfony dependency to 6.x, if you have used method `get()` on Illuminate/Http/Request class to get an array from request, you should change it to Request `all($key)` method, because of https://github.com/symfony/symfony/issues/44432 
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
