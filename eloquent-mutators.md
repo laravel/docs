@@ -440,7 +440,11 @@ The `encrypted` cast will encrypt a model's attribute value using Laravel's buil
 
 As the final length of the encrypted text is not predictable and is longer than its plain text counterpart, make sure the associated database column is of `TEXT` type or larger. In addition, since the values are encrypted in the database, you will not be able to query or search encrypted attribute values.
 
-> {note} When you use encrypted casting, by default your data is encrypted using the `APP_KEY`. Any changes to the `APP_KEY` will lose data encrypted with that `APP_KEY`. To avoid this, data should be re-encrypted with your new key.
+
+<a name="key-rotation"></a>
+#### Key Rotation
+
+As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you will need to manually re-encrypt your encrypted columns using the new key.
 
 <a name="query-time-casting"></a>
 ### Query Time Casting
