@@ -267,4 +267,3 @@ You may use the `view:clear` command to clear the view cache:
 ```shell
 php artisan view:clear
 ```
-
