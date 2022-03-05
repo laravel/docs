@@ -439,7 +439,7 @@ To send output to the console, you may use the `line`, `info`, `comment`, `quest
         $this->info('The command was successful!');
     }
 
-To display an error message, use the `error` method. Error message text is typically displayed in red:
+To display an error message, use the `error` method. The error message text is typically displayed in red:
 
     $this->error('Something went wrong!');
 
