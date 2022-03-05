@@ -586,7 +586,7 @@ Using the `onConnection` and `onQueue` methods, you may specify the connection o
 <a name="calling-commands-from-other-commands"></a>
 ### Calling Commands From Other Commands
 
-Sometimes you may wish to call other commands from an existing Artisan command. You may do so using the `call` method. This `call` method accepts the command name and an array of command arguments / options:
+Sometimes you may wish to call other commands from an existing Artisan command. You may do so using the `call` method. This `call` method accepts the command name and an array of command arguments/options:
 
     /**
      * Execute the console command.
