@@ -1388,9 +1388,7 @@ If you would like to construct a more complex condition for the `required_if` ru
     ]);
 
     Validator::make($request->all(), [
-        'role_id' => Rule::requiredIf(function () use ($request) {
-            return $request->user()->is_admin;
-        }),
+        'role_id' => Rule::requiredIf(fn () => $request->user()->is_admin),
     ]);
 
 <a name="rule-required-unless"></a>
@@ -1515,9 +1513,7 @@ By default, the `unique` rule will check the uniqueness of the column matching t
 
 You may specify additional query conditions by customizing the query using the `where` method. For example, let's add a query condition that scopes the query to only search records that have an `account_id` column value of `1`:
 
-    'email' => Rule::unique('users')->where(function ($query) {
-        return $query->where('account_id', 1);
-    })
+    'email' => Rule::unique('users')->where(fn ($query) => $query->where('account_id', 1))
 
 <a name="rule-url"></a>
 #### url
