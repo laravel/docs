@@ -46,18 +46,18 @@ By default, Monolog is instantiated with a "channel name" that matches the curre
 
 Each log channel is powered by a "driver". The driver determines how and where the log message is actually recorded. The following log channel drivers are available in every Laravel application. An entry for most of these drivers is already present in your application's `config/logging.php` configuration file, so be sure to review this file to become familiar with its contents:
 
-Name | Description
-------------- | -------------
-`custom` | A driver that calls a specified factory to create a channel
-`daily` | A `RotatingFileHandler` based Monolog driver which rotates daily
-`errorlog` | An `ErrorLogHandler` based Monolog driver
-`monolog` | A Monolog factory driver that may use any supported Monolog handler
-`null` | A driver that discards all log messages
-`papertrail` | A `SyslogUdpHandler` based Monolog driver
-`single` | A single file or path based logger channel (`StreamHandler`)
-`slack` | A `SlackWebhookHandler` based Monolog driver
-`stack` | A wrapper to facilitate creating "multi-channel" channels
-`syslog` | A `SyslogHandler` based Monolog driver
+| Name         | Description                                                         |
+|--------------|---------------------------------------------------------------------|
+| `custom`     | A driver that calls a specified factory to create a channel         |
+| `daily`      | A `RotatingFileHandler` based Monolog driver which rotates daily    |
+| `errorlog`   | An `ErrorLogHandler` based Monolog driver                           |
+| `monolog`    | A Monolog factory driver that may use any supported Monolog handler |
+| `null`       | A driver that discards all log messages                             |
+| `papertrail` | A `SyslogUdpHandler` based Monolog driver                           |
+| `single`     | A single file or path based logger channel (`StreamHandler`)        |
+| `slack`      | A `SlackWebhookHandler` based Monolog driver                        |
+| `stack`      | A wrapper to facilitate creating "multi-channel" channels           |
+| `syslog`     | A `SyslogHandler` based Monolog driver                              |
 
 > {tip} Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
