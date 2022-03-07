@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
     - [Model Preparation](#model-preparation)
     - [Database Preparation](#database-preparation)
-- [Routing](#verification-routing)
+- [Routing](#routing)
     - [The Email Verification Notice](#the-email-verification-notice)
     - [The Email Verification Handler](#the-email-verification-handler)
     - [Resending The Verification Email](#resending-the-verification-email)
@@ -55,7 +55,7 @@ Next, your `users` table must contain an `email_verified_at` column to store the
 php artisan migrate
 ```
 
-<a name="verification-routing"></a>
+<a name="routing"></a>
 ## Routing
 
 To properly implement email verification, three routes will need to be defined. First, a route will be needed to display a notice to the user that they should click the email verification link in the verification email that Laravel sent them after registration.
