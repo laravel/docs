@@ -1067,15 +1067,15 @@ When creating an index, Laravel will automatically generate an index name based 
 
 Laravel's schema builder blueprint class provides methods for creating each type of index supported by Laravel. Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s) used for the index, as well as the index type. Each of the available index methods is described in the table below:
 
-Command  |  Description
--------  |  -----------
-`$table->primary('id');`  |  Adds a primary key.
-`$table->primary(['id', 'parent_id']);`  |  Adds composite keys.
-`$table->unique('email');`  |  Adds a unique index.
-`$table->index('state');`  |  Adds an index.
-`$table->fullText('body');`  |  Adds a full text index (MySQL/PostgreSQL).
-`$table->fullText('body')->language('english');`  |  Adds a full text index of the specified language (PostgreSQL).
-`$table->spatialIndex('location');`  |  Adds a spatial index (except SQLite).
+| Command                                          | Description                                                    |
+|--------------------------------------------------|----------------------------------------------------------------|
+| `$table->primary('id');`                         | Adds a primary key.                                            |
+| `$table->primary(['id', 'parent_id']);`          | Adds composite keys.                                           |
+| `$table->unique('email');`                       | Adds a unique index.                                           |
+| `$table->index('state');`                        | Adds an index.                                                 |
+| `$table->fullText('body');`                      | Adds a full text index (MySQL/PostgreSQL).                     |
+| `$table->fullText('body')->language('english');` | Adds a full text index of the specified language (PostgreSQL). |
+| `$table->spatialIndex('location');`              | Adds a spatial index (except SQLite).                          |
 
 <a name="index-lengths-mysql-mariadb"></a>
 #### Index Lengths & MySQL / MariaDB
