@@ -69,11 +69,11 @@ Each log channel is powered by a "driver". The driver determines how and where t
 
 The `single` and `daily` channels have three optional configuration options: `bubble`, `permission`, and `locking`.
 
-Name | Description | Default
-------------- | ------------- | -------------
-`bubble` | Indicates if messages should bubble up to other channels after being handled | `true`
-`locking` | Attempt to lock the log file before writing to it | `false`
-`permission` | The log file's permissions | `0644`
+| Name         | Description                                                                  | Default |
+|--------------|------------------------------------------------------------------------------|---------|
+| `bubble`     | Indicates if messages should bubble up to other channels after being handled | `true`  |
+| `locking`    | Attempt to lock the log file before writing to it                            | `false` |
+| `permission` | The log file's permissions                                                   | `0644`  |
 
 <a name="configuring-the-papertrail-channel"></a>
 #### Configuring The Papertrail Channel
