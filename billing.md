@@ -1571,7 +1571,7 @@ Similary, if the customer has multiple subscriptions, you can also retrieve the 
     $invoice = $user->subscription('default')->upcomingInvoice();
 
 <a name="previewing-subscription-invoices"></a>
-### Previewing Subscription Invoice
+### Previewing Subscription Invoices
 
 Using the `previewInvoice` method, you can preview an invoice before making price changes. This will allow you to determine what your customer's invoice will look like when a given price change is made:
 
