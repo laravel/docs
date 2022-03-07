@@ -1,34 +1,34 @@
-# Artisan Console æÍÏÉ ÊÍßã ÇáÍÑİí ÇáãÇåÑ 
+# Artisan Console ÙˆØ­Ø¯Ø© ØªØ­ÙƒÙ… Ø§Ù„Ø­Ø±ÙÙŠ Ø§Ù„Ù…Ø§Ù‡Ø± 
 
-- [Introduction](#introduction) ÇáãŞÏãÉ
-    - [Tinker (REPL)](#tinker) ãÊÚÏÏ ÇáãåÇã 
-- [Writing Commands](#writing-commands) ßÊÇÈÉ ÇáÃæÇãÑ 
-    - [Generating Commands](#generating-commands) ÊæáíÏ ÇáÃæÇãÑ 
-    - [Command Structure](#command-structure) ÈäíÉ ÇáÃæÇãÑ  
-    - [Closure Commands](#closure-commands) ÃæÇãÑ äØÇŞ ÇáÅÛáÇŞ 
-- [Defining Input Expectations](#defining-input-expectations) ÊÍÏíÏ ÇáÏÎá ÇáãÊæŞÚ 
-    - [Arguments](#arguments) ÇáãÊÛíÑÇÊ
-    - [Options](#options) ÇáÎíÇÑÇÊ 
-    - [Input Arrays](#input-arrays) ãÕİæİÉ ÇáÇÏÎÇá 
-    - [Input Descriptions](#input-descriptions) æÕİ ÇáÅÏÎÇá
-- [Command I/O](#command-io) ÃæÇãÑ ÇáÏÎá æÇáÎÑÌ
-    - [Retrieving Input](#retrieving-input) ÇÓÊÑÌÇÚ ÇáÏÎá
-    - [Prompting For Input](#prompting-for-input) ÊáŞíä ÇáÏÎá 
-    - [Writing Output](#writing-output) ßÊÇÈÉ ÇáÎÑÌ
-- [Registering Commands](#registering-commands) ÊÓÌíá ÇáÃæÇãÑ 
-- [Programmatically Executing Commands](#programmatically-executing-commands) ÊäİíĞ ÇáÃæÇãÑ ÈÑãÌíÇ 
-    - [Calling Commands From Other Commands](#calling-commands-from-other-commands) äÏÇÁ ÇáÃæÇãÑ ãä ÃæÇãÑ ÃÎÑì 
-- [Signal Handling](#signal-handling) ãÚÇáÌÉ ÇáÅÔÇÑÉ 
-- [Stub Customization](#stub-customization) ÊÎÕíÕ ÌÒÁ
-- [Events](#events) ÇáÃÍÏÇË 
+- [Introduction](#introduction) Ø§Ù„Ù…Ù‚Ø¯Ù…Ø©
+    - [Tinker (REPL)](#tinker) Ù…ØªØ¹Ø¯Ø¯ Ø§Ù„Ù…Ù‡Ø§Ù… 
+- [Writing Commands](#writing-commands) ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø£ÙˆØ§Ù…Ø± 
+    - [Generating Commands](#generating-commands) ØªÙˆÙ„ÙŠØ¯ Ø§Ù„Ø£ÙˆØ§Ù…Ø± 
+    - [Command Structure](#command-structure) Ø¨Ù†ÙŠØ© Ø§Ù„Ø£ÙˆØ§Ù…Ø±  
+    - [Closure Commands](#closure-commands) Ø£ÙˆØ§Ù…Ø± Ù†Ø·Ø§Ù‚ Ø§Ù„Ø¥ØºÙ„Ø§Ù‚ 
+- [Defining Input Expectations](#defining-input-expectations) ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯Ø®Ù„ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ 
+    - [Arguments](#arguments) Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª
+    - [Options](#options) Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª 
+    - [Input Arrays](#input-arrays) Ù…ØµÙÙˆÙØ© Ø§Ù„Ø§Ø¯Ø®Ø§Ù„ 
+    - [Input Descriptions](#input-descriptions) ÙˆØµÙ Ø§Ù„Ø¥Ø¯Ø®Ø§Ù„
+- [Command I/O](#command-io) Ø£ÙˆØ§Ù…Ø± Ø§Ù„Ø¯Ø®Ù„ ÙˆØ§Ù„Ø®Ø±Ø¬
+    - [Retrieving Input](#retrieving-input) Ø§Ø³ØªØ±Ø¬Ø§Ø¹ Ø§Ù„Ø¯Ø®Ù„
+    - [Prompting For Input](#prompting-for-input) ØªÙ„Ù‚ÙŠÙ† Ø§Ù„Ø¯Ø®Ù„ 
+    - [Writing Output](#writing-output) ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø®Ø±Ø¬
+- [Registering Commands](#registering-commands) ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø£ÙˆØ§Ù…Ø± 
+- [Programmatically Executing Commands](#programmatically-executing-commands) ØªÙ†ÙÙŠØ° Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ø¨Ø±Ù…Ø¬ÙŠØ§ 
+    - [Calling Commands From Other Commands](#calling-commands-from-other-commands) Ù†Ø¯Ø§Ø¡ Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ù…Ù† Ø£ÙˆØ§Ù…Ø± Ø£Ø®Ø±Ù‰ 
+- [Signal Handling](#signal-handling) Ù…Ø¹Ø§Ù„Ø¬Ø© Ø§Ù„Ø¥Ø´Ø§Ø±Ø© 
+- [Stub Customization](#stub-customization) ØªØ®ØµÙŠØµ Ø¬Ø²Ø¡
+- [Events](#events) Ø§Ù„Ø£Ø­Ø¯Ø§Ø« 
 
-<a name="introduction"></a> ÇáãŞÏãÉ 
-## Introduction ÇáãŞÏãÉ 
+<a name="introduction"></a> Ø§Ù„Ù…Ù‚Ø¯Ù…Ø© 
+## Introduction Ø§Ù„Ù…Ù‚Ø¯Ù…Ø© 
 
 Artisan is the command line interface included with Laravel. Artisan exists at the root of your application as the `artisan` script and provides a number of helpful commands that can assist you while you build your application. To view a list of all available Artisan commands, you may use the `list` command:
 
-(Artisan) æÇÌåÉ ÇáÃæÇãÑ ÇáÎÇÕÉ ÈáÇÑÇİá¡ ãæÌæÏ Öãä ÇáÊØÈíŞ ßÓßÑíÈÊ `artisan` 
-íÄãä ÇáÚÏíÏ ãä ÇáÃæÇãÑ ÇáãÓÇÚÏÉ ÃËäÇÁ ÈäÇÁ ÇáÊØÈíŞ¡ áÑæÄíÉ ŞÇÆãÉ ÇáÃæÇãÑ äßÊÈ ÇáÃãÑ ÇáÊÇáí 
+(Artisan) ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ø§Ù„Ø®Ø§ØµØ© Ø¨Ù„Ø§Ø±Ø§ÙÙ„ØŒ Ù…ÙˆØ¬ÙˆØ¯ Ø¶Ù…Ù† Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ ÙƒØ³ÙƒØ±ÙŠØ¨Øª `artisan` 
+                                                                       ÙŠØ¤Ù…Ù† Ø§Ù„Ø¹Ø¯ÙŠØ¯ Ù…Ù† Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯Ø© Ø£Ø«Ù†Ø§Ø¡ Ø¨Ù†Ø§Ø¡ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ØŒ Ù„Ø±ÙˆØ¤ÙŠØ© Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ù†ÙƒØªØ¨ Ø§Ù„Ø£Ù…Ø± Ø§Ù„ØªØ§Ù„ÙŠ 
  
 
 ```shell
@@ -38,43 +38,43 @@ php artisan list
 
 Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, precede the name of the command with `help`:
 
-ßá ÃãÑ ÃíÖÇ íÊÖãä ÔÇÔÉ ÇáãÓÇÚÏÉ ("help" screen) áÚÑÖ ææÕİ ãÊÛíÑÇÊ æÎíÇÑÇÊ ÇáÃæÇãÑ 
-áÚÑÖ ÔÇÔÉ ÇáãÓÇÚÏÉ áÃãÑ äßÊÈ help æÈÚÏåÇ ÇáÃãÑ 
+ÙƒÙ„ Ø£Ù…Ø± Ø£ÙŠØ¶Ø§ ÙŠØªØ¶Ù…Ù† Ø´Ø§Ø´Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯Ø© ("help" screen) Ù„Ø¹Ø±Ø¶ ÙˆÙˆØµÙ Ù…ØªØºÙŠØ±Ø§Øª ÙˆØ®ÙŠØ§Ø±Ø§Øª Ø§Ù„Ø£ÙˆØ§Ù…Ø± 
+Ù„Ø¹Ø±Ø¶ Ø´Ø§Ø´Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯Ø© Ù„Ø£Ù…Ø± Ù†ÙƒØªØ¨ help ÙˆØ¨Ø¹Ø¯Ù‡Ø§ Ø§Ù„Ø£Ù…Ø± 
  
 
 ```shell
 php artisan help migrate
 ```
 
-<a name="laravel-sail"></a> ÔÑÇÚ áÇÑÇİá 
-#### Laravel Sail ÔÑÇÚ áÇÑÇİá 
+<a name="laravel-sail"></a> Ø´Ø±Ø§Ø¹ Ù„Ø§Ø±Ø§ÙÙ„ 
+#### Laravel Sail Ø´Ø±Ø§Ø¹ Ù„Ø§Ø±Ø§ÙÙ„ 
 
 If you are using [Laravel Sail](/docs/{{version}}/sail) as your local development environment, remember to use the `sail` command line to invoke Artisan commands. Sail will execute your Artisan commands within your application's Docker containers:
 
-ÅĞÇ ßäÊ ÊÓÊÎÏã Laravel Sail İí ÈíÆÉ ÇáÊØæíÑ ÇáãÍáíÉ ÇÓÊÎÏã ÇáÃãÑ `sail` áäÏÇÁ ÃæÇãÑ Artisan 
-Sail Óæİ íäİĞ ÃæÇãÑ Artisan Öãä ÍÇæíÇÊ Docker
+Ø¥Ø°Ø§ ÙƒÙ†Øª ØªØ³ØªØ®Ø¯Ù… Laravel Sail ÙÙŠ Ø¨ÙŠØ¦Ø© Ø§Ù„ØªØ·ÙˆÙŠØ± Ø§Ù„Ù…Ø­Ù„ÙŠØ© Ø§Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø£Ù…Ø± `sail` Ù„Ù†Ø¯Ø§Ø¡ Ø£ÙˆØ§Ù…Ø± Artisan 
+Sail Ø³ÙˆÙ ÙŠÙ†ÙØ° Ø£ÙˆØ§Ù…Ø± Artisan Ø¶Ù…Ù† Ø­Ø§ÙˆÙŠØ§Øª Docker
  
 
 ```shell
 ./sail artisan list
 ```
 
-<a name="tinker"></a> ãÊÚÏÏ ÇáãåÇã 
-### Tinker (REPL) ãÊÚÏÏ ÇáãåÇã 
+<a name="tinker"></a> Ù…ØªØ¹Ø¯Ø¯ Ø§Ù„Ù…Ù‡Ø§Ù… 
+### Tinker (REPL) Ù…ØªØ¹Ø¯Ø¯ Ø§Ù„Ù…Ù‡Ø§Ù… 
 
 Laravel Tinker is a powerful REPL for the Laravel framework, powered by the [PsySH](https://github.com/bobthecow/psysh) package.
 
-åæ æÇÌåÉ ÇáÃæÇãÑ ÇáÓæÏÇÁ ÇáÎÇÕÉ ÈáÇÑÇİá powerful REPL 
-REPL (read-eval-print-loop) äæÚ ãä ÇáæÇÌåÇÊ ÇáÓæÏÇÁ ÇáÊİÇÚáíÉ ÇáÊí ÊÃÎĞ ãÏÎáÇÊ ãÓÊÎÏã æÍíÏ æ íŞíã ÇáãÏÎáÇÊ æ íÚíÏ ÇáäÊíÌÉ ááãÓÊÎÏã
-ãÔÛáÉ ÈæÇÓØÉ ÍÒãÉ (https://github.com/bobthecow/psysh)  PsySH
+Ù‡Ùˆ ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ø§Ù„Ø³ÙˆØ¯Ø§Ø¡ Ø§Ù„Ø®Ø§ØµØ© Ø¨Ù„Ø§Ø±Ø§ÙÙ„ powerful REPL 
+REPL (read-eval-print-loop) Ù†ÙˆØ¹ Ù…Ù† Ø§Ù„ÙˆØ§Ø¬Ù‡Ø§Øª Ø§Ù„Ø³ÙˆØ¯Ø§Ø¡ Ø§Ù„ØªÙØ§Ø¹Ù„ÙŠØ© Ø§Ù„ØªÙŠ ØªØ£Ø®Ø° Ù…Ø¯Ø®Ù„Ø§Øª Ù…Ø³ØªØ®Ø¯Ù… ÙˆØ­ÙŠØ¯ Ùˆ ÙŠÙ‚ÙŠÙ… Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª Ùˆ ÙŠØ¹ÙŠØ¯ Ø§Ù„Ù†ØªÙŠØ¬Ø© Ù„Ù„Ù…Ø³ØªØ®Ø¯Ù…
+Ù…Ø´ØºÙ„Ø© Ø¨ÙˆØ§Ø³Ø·Ø© Ø­Ø²Ù…Ø© (https://github.com/bobthecow/psysh)  PsySH
  
 
-<a name="installation"></a> ÇáÊäÕíÈ
-#### Installation ÇáÊäÕíÈ
+<a name="installation"></a> Ø§Ù„ØªÙ†ØµÙŠØ¨
+#### Installation Ø§Ù„ØªÙ†ØµÙŠØ¨
 
 All Laravel applications include Tinker by default. However, you may install Tinker using Composer if you have previously removed it from your application:
 
-ÇáÊäßÑ ãÖãä ÇİÊÑÇÖíÇ ÈÊØÈíŞÇÊ ÇááÇÑÇİá áßä íãßäß ÇÓÊÎÏÇã Composer áÊäÕíÈå İí ÍÇá ÍĞİå ãä ÇáÊØÈíŞ 
+Ø§Ù„ØªÙ†ÙƒØ± Ù…Ø¶Ù…Ù† Ø§ÙØªØ±Ø§Ø¶ÙŠØ§ Ø¨ØªØ·Ø¨ÙŠÙ‚Ø§Øª Ø§Ù„Ù„Ø§Ø±Ø§ÙÙ„ Ù„ÙƒÙ† ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ø³ØªØ®Ø¯Ø§Ù… Composer Ù„ØªÙ†ØµÙŠØ¨Ù‡ ÙÙŠ Ø­Ø§Ù„ Ø­Ø°ÙÙ‡ Ù…Ù† Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ 
 
 
 ```shell
@@ -83,17 +83,17 @@ composer require laravel/tinker
 
 > {tip} Looking for a graphical UI for interacting with your Laravel application? Check out [Tinkerwell](https://tinkerwell.app)!
 
-ááÈÍË Úä æÇÌåÉ ÑÓæãíÉ ááÊİÇÚá ãÚ ÊØÈíŞ áÇÑÇİá 
-ÑÇÌÚ ÇáÑÇÈØ https://tinkerwell.app
+Ù„Ù„Ø¨Ø­Ø« Ø¹Ù† ÙˆØ§Ø¬Ù‡Ø© Ø±Ø³ÙˆÙ…ÙŠØ© Ù„Ù„ØªÙØ§Ø¹Ù„ Ù…Ø¹ ØªØ·Ø¨ÙŠÙ‚ Ù„Ø§Ø±Ø§ÙÙ„ 
+Ø±Ø§Ø¬Ø¹ Ø§Ù„Ø±Ø§Ø¨Ø· https://tinkerwell.app
 
 
-<a name="usage"></a> ÇáÇÓÊÎÏÇã
-#### Usage ÇáÇÓÊÎÏÇã
+<a name="usage"></a> Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù…
+#### Usage Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù…
 
 Tinker allows you to interact with your entire Laravel application on the command line, including your Eloquent models, jobs, events, and more. To enter the Tinker environment, run the `tinker` Artisan command:
 
-ÇáÊäßÑ íÓãÍ áß ÇáÊİÇÚá ãÚ ÊØÈíŞ ÇááÇÑÇİá İí æÇÌåÉ ÇáÃæÇãÑ æ ÇáãæÏáÇÊ æ ÇáÇÚãÇá æ ÇáÇÍÏÇË
-áÏÎæá ÈíÆÉ ÇáÊäßÑ äİĞ ÇáÃãÑ 
+Ø§Ù„ØªÙ†ÙƒØ± ÙŠØ³Ù…Ø­ Ù„Ùƒ Ø§Ù„ØªÙØ§Ø¹Ù„ Ù…Ø¹ ØªØ·Ø¨ÙŠÙ‚ Ø§Ù„Ù„Ø§Ø±Ø§ÙÙ„ ÙÙŠ ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ùˆ Ø§Ù„Ù…ÙˆØ¯Ù„Ø§Øª Ùˆ Ø§Ù„Ø§Ø¹Ù…Ø§Ù„ Ùˆ Ø§Ù„Ø§Ø­Ø¯Ø§Ø«
+Ù„Ø¯Ø®ÙˆÙ„ Ø¨ÙŠØ¦Ø© Ø§Ù„ØªÙ†ÙƒØ± Ù†ÙØ° Ø§Ù„Ø£Ù…Ø± 
 
 
 ```shell
@@ -102,7 +102,7 @@ php artisan tinker
 
 You can publish Tinker's configuration file using the `vendor:publish` command:	
 
-áäÔÑ ãáİ ÇÚÏÇÏÇÊ ÇáÊäßÑ äİĞ ÇáÃãÑ
+Ù„Ù†Ø´Ø± Ù…Ù„Ù Ø§Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„ØªÙ†ÙƒØ± Ù†ÙØ° Ø§Ù„Ø£Ù…Ø±
 
 
 ```shell
@@ -111,65 +111,65 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 > {note} The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. Therefore, when using tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs.
 
-*ãáÇÍÙÉ: ÇáÏÇáÉ ÇáãÓÇÚÏÉ `dispatch`  æ ÇáØÑíŞÉ `dispatch` ÇáãæÌæÏÉ Öãä ßáÇÓ `Dispatchable` 
-ÊÚÊãÏ Úáì æÖÚ ÇáÚãá Öãä ÑÊá æ ÈÇáÊÇáí ÚäÏ ÇÓÊÎÏÇã ÇáÊäßÑ íÌÈ ÇÓÊÎÏÇã `Bus::dispatch`
-Ãæ `Queue::push`  áÅÑÓÇá ÇáÃÚãÇá 
+*Ù…Ù„Ø§Ø­Ø¸Ø©: Ø§Ù„Ø¯Ø§Ù„Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯Ø© `dispatch`  Ùˆ Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `dispatch` Ø§Ù„Ù…ÙˆØ¬ÙˆØ¯Ø© Ø¶Ù…Ù† ÙƒÙ„Ø§Ø³ `Dispatchable` 
+ØªØ¹ØªÙ…Ø¯ Ø¹Ù„Ù‰ ÙˆØ¶Ø¹ Ø§Ù„Ø¹Ù…Ù„ Ø¶Ù…Ù† Ø±ØªÙ„ Ùˆ Ø¨Ø§Ù„ØªØ§Ù„ÙŠ Ø¹Ù†Ø¯ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„ØªÙ†ÙƒØ± ÙŠØ¬Ø¨ Ø§Ø³ØªØ®Ø¯Ø§Ù… `Bus::dispatch`
+Ø£Ùˆ `Queue::push`  Ù„Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø£Ø¹Ù…Ø§Ù„ 
 
 
-<a name="command-allow-list"></a> ŞÇÆãÉ ÇáÓãÇÍíÉ
-#### Command Allow List ŞÇÆãÉ ÇáÓãÇÍíÉ
+<a name="command-allow-list"></a> Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø³Ù…Ø§Ø­ÙŠØ©
+#### Command Allow List Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø³Ù…Ø§Ø­ÙŠØ©
 
 Tinker utilizes an "allow" list to determine which Artisan commands are allowed to be run within its shell. By default, you may run the `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize`, and `up` commands. If you would like to allow more commands you may add them to the `commands` array in your `tinker.php` configuration file:
 
-íÓÊÎÏã ÇáÊäßÑ ŞÇÆãÉ ÇáÓãÇÍíÉ áÊÍÏíÏ ÃæÇãÑ Artisan ÇáÊí ÊäİĞ Öãä Çá shell ÇáÎÇÕ Èå
-íãßä ÊäİíĞ ÇáÃæÇãÑ ÇáÊÇáíÉ `clear-compiled`, `down`, `env`,`inspire`, `migrate`, `optimize`, and `up`
-ÅĞÇ ÃÑÏÊ ÇáÓãÇÍ ÈÃæÇãÑ ÃßËÑ íãßääß ÇÖÇİÊåã áãÕİæİÉ ÇáÃæÇãÑ İí ãáİ ÇÚÏÇÏÇÊ ÇáÊäßÑ `tinker.php`
+ÙŠØ³ØªØ®Ø¯Ù… Ø§Ù„ØªÙ†ÙƒØ± Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø³Ù…Ø§Ø­ÙŠØ© Ù„ØªØ­Ø¯ÙŠØ¯ Ø£ÙˆØ§Ù…Ø± Artisan Ø§Ù„ØªÙŠ ØªÙ†ÙØ° Ø¶Ù…Ù† Ø§Ù„ shell Ø§Ù„Ø®Ø§Øµ Ø¨Ù‡
+ÙŠÙ…ÙƒÙ† ØªÙ†ÙÙŠØ° Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ø§Ù„ØªØ§Ù„ÙŠØ© `clear-compiled`, `down`, `env`,`inspire`, `migrate`, `optimize`, and `up`
+Ø¥Ø°Ø§ Ø£Ø±Ø¯Øª Ø§Ù„Ø³Ù…Ø§Ø­ Ø¨Ø£ÙˆØ§Ù…Ø± Ø£ÙƒØ«Ø± ÙŠÙ…ÙƒÙ†Ù†Ùƒ Ø§Ø¶Ø§ÙØªÙ‡Ù… Ù„Ù…ØµÙÙˆÙØ© Ø§Ù„Ø£ÙˆØ§Ù…Ø± ÙÙŠ Ù…Ù„Ù Ø§Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„ØªÙ†ÙƒØ± `tinker.php`
 
 
     'commands' => [
         // App\Console\Commands\ExampleCommand::class,
     ],
 
-<a name="classes-that-should-not-be-aliased"></a> Õİæİ áÇ íÌÈ Ãä ÊÓÊÎÏã ÇÓã ãÓÊÚÇÑ Ãæ ÇÎÊÕÇÑ 
-#### Classes That Should Not Be Aliased Õİæİ áÇ íÌÈ Ãä ÊÓÊÎÏã ÇÓã ãÓÊÚÇÑ Ãæ ÇÎÊÕÇÑ 
+<a name="classes-that-should-not-be-aliased"></a> ØµÙÙˆÙ Ù„Ø§ ÙŠØ¬Ø¨ Ø£Ù† ØªØ³ØªØ®Ø¯Ù… Ø§Ø³Ù… Ù…Ø³ØªØ¹Ø§Ø± Ø£Ùˆ Ø§Ø®ØªØµØ§Ø± 
+#### Classes That Should Not Be Aliased ØµÙÙˆÙ Ù„Ø§ ÙŠØ¬Ø¨ Ø£Ù† ØªØ³ØªØ®Ø¯Ù… Ø§Ø³Ù… Ù…Ø³ØªØ¹Ø§Ø± Ø£Ùˆ Ø§Ø®ØªØµØ§Ø± 
 
 Typically, Tinker automatically aliases classes as you interact with them in Tinker. However, you may wish to never alias some classes. You may accomplish this by listing the classes in the `dont_alias` array of your `tinker.php` configuration file:
 
-ÚÇÏÉ ÇáÊäßÑ íÖÚ ÃÓãÇÁ ãÓÊÚÇÑÉ ááÕİæİ ÇĞÇ ÃÑÏÊ ÚÏã ÇáÇÎÊÕÇÑ ÖÚåã İí ãÕİæİÉ Öãä ãáİ ÇÚÏÇÏÇÊ ÇáÊäßÑ 
+Ø¹Ø§Ø¯Ø© Ø§Ù„ØªÙ†ÙƒØ± ÙŠØ¶Ø¹ Ø£Ø³Ù…Ø§Ø¡ Ù…Ø³ØªØ¹Ø§Ø±Ø© Ù„Ù„ØµÙÙˆÙ Ø§Ø°Ø§ Ø£Ø±Ø¯Øª Ø¹Ø¯Ù… Ø§Ù„Ø§Ø®ØªØµØ§Ø± Ø¶Ø¹Ù‡Ù… ÙÙŠ Ù…ØµÙÙˆÙØ© Ø¶Ù…Ù† Ù…Ù„Ù Ø§Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„ØªÙ†ÙƒØ± 
 
 
     'dont_alias' => [
         App\Models\User::class,
     ],
 
-<a name="writing-commands"></a>  ßÊÇÈÉ ÇáÃæÇãÑ
-## Writing Commands ßÊÇÈÉ ÇáÃæÇãÑ
+<a name="writing-commands"></a>  ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø£ÙˆØ§Ù…Ø±
+## Writing Commands ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø£ÙˆØ§Ù…Ø±
 In addition to the commands provided with Artisan, you may build your own custom commands. Commands are typically stored in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be loaded by Composer.
 
-íãßäß ÕäÚ ÃæÇãÑ ÎÇÕÉ Èß æ ÊÎÒä ÚÇÏÉ İí ãÌáÏ `app/Console/Commands`  æ íãßäß ÊÎÒíäåÇ ÈÃí ãÌáÏ ÊÑíÏå ØÇáãÇ íŞæã Composer ÈÊÍãíáåÇ 
+ÙŠÙ…ÙƒÙ†Ùƒ ØµÙ†Ø¹ Ø£ÙˆØ§Ù…Ø± Ø®Ø§ØµØ© Ø¨Ùƒ Ùˆ ØªØ®Ø²Ù† Ø¹Ø§Ø¯Ø© ÙÙŠ Ù…Ø¬Ù„Ø¯ `app/Console/Commands`  Ùˆ ÙŠÙ…ÙƒÙ†Ùƒ ØªØ®Ø²ÙŠÙ†Ù‡Ø§ Ø¨Ø£ÙŠ Ù…Ø¬Ù„Ø¯ ØªØ±ÙŠØ¯Ù‡ Ø·Ø§Ù„Ù…Ø§ ÙŠÙ‚ÙˆÙ… Composer Ø¨ØªØ­Ù…ÙŠÙ„Ù‡Ø§ 
 
-<a name="generating-commands"></a>  ÊæáíÏ ÇáÃæÇãÑ
-### Generating Commands ÊæáíÏ ÇáÃæÇãÑ
+<a name="generating-commands"></a>  ØªÙˆÙ„ÙŠØ¯ Ø§Ù„Ø£ÙˆØ§Ù…Ø±
+### Generating Commands ØªÙˆÙ„ÙŠØ¯ Ø§Ù„Ø£ÙˆØ§Ù…Ø±
 
 To create a new command, you may use the `make:command` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. Don't worry if this directory does not exist in your application - it will be created the first time you run the `make:command` Artisan command:
 
-áÇäÔÇÁ ÇãÑ ÌÏíÏ äÓÊÎÏã ÇáÇãÑ `make:command`	
-íäÔÃ Õİ ÃãÑ ÌÏíÏ Öãä `app/Console/Commands`  ÇĞÇ áã íßä ãæÌæÏ ÇáãÌáÏ íäÔÃ ÊáŞÇÆíÇ ÚäÏ ÊäİíĞ ÇáÃãÑ
+Ù„Ø§Ù†Ø´Ø§Ø¡ Ø§Ù…Ø± Ø¬Ø¯ÙŠØ¯ Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø§Ù…Ø± `make:command`	
+ÙŠÙ†Ø´Ø£ ØµÙ Ø£Ù…Ø± Ø¬Ø¯ÙŠØ¯ Ø¶Ù…Ù† `app/Console/Commands`  Ø§Ø°Ø§ Ù„Ù… ÙŠÙƒÙ† Ù…ÙˆØ¬ÙˆØ¯ Ø§Ù„Ù…Ø¬Ù„Ø¯ ÙŠÙ†Ø´Ø£ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§ Ø¹Ù†Ø¯ ØªÙ†ÙÙŠØ° Ø§Ù„Ø£Ù…Ø±
 
 
 ```shell
 php artisan make:command SendEmails
 ```
 
-<a name="command-structure"></a> ÈäíÉ ÇáÃãÑ
-### Command Structure ÈäíÉ ÇáÃãÑ
+<a name="command-structure"></a> Ø¨Ù†ÙŠØ© Ø§Ù„Ø£Ù…Ø±
+### Command Structure Ø¨Ù†ÙŠØ© Ø§Ù„Ø£Ù…Ø±
 
 After generating your command, you should define appropriate values for the `signature` and `description` properties of the class. These properties will be used when displaying your command on the `list` screen. The `signature` property also allows you to define [your command's input expectations](#defining-input-expectations). The `handle` method will be called when your command is executed. You may place your command logic in this method.
 
-ÈÚÏ ÊæáíÏ ÇáÃãÑ íÌÈ ÊÚÑíİ Şíã ãäÇÓÈÉ ááÎÇÕíÊíä `signature` æ `description`
-åĞå ÇáÎÕÇÆÕ ÊÓÊÎÏã ÚäÏ ÚÑÖ ÃãÑß İí ÔÇÔÉ ÇáŞÇÆãÉ
-signature  ÊÓÊÎÏã áÊÍÏíÏ ÇáÏÎá ÇáãÊæŞÚ ááÃãÑ
-ÇáØÑíŞÉ handle íÊã äÏÇÆåÇ ÚäÏ ÊäİíĞ ÇáÃãÑ
+Ø¨Ø¹Ø¯ ØªÙˆÙ„ÙŠØ¯ Ø§Ù„Ø£Ù…Ø± ÙŠØ¬Ø¨ ØªØ¹Ø±ÙŠÙ Ù‚ÙŠÙ… Ù…Ù†Ø§Ø³Ø¨Ø© Ù„Ù„Ø®Ø§ØµÙŠØªÙŠÙ† `signature` Ùˆ `description`
+Ù‡Ø°Ù‡ Ø§Ù„Ø®ØµØ§Ø¦Øµ ØªØ³ØªØ®Ø¯Ù… Ø¹Ù†Ø¯ Ø¹Ø±Ø¶ Ø£Ù…Ø±Ùƒ ÙÙŠ Ø´Ø§Ø´Ø© Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©
+signature  ØªØ³ØªØ®Ø¯Ù… Ù„ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯Ø®Ù„ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ Ù„Ù„Ø£Ù…Ø±
+Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© handle ÙŠØªÙ… Ù†Ø¯Ø§Ø¦Ù‡Ø§ Ø¹Ù†Ø¯ ØªÙ†ÙÙŠØ° Ø§Ù„Ø£Ù…Ø±
 
 
 Let's take a look at an example command. Note that we are able to request any dependencies we need via the command's `handle` method. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies that are type-hinted in this method's signature:
@@ -222,14 +222,14 @@ Let's take a look at an example command. Note that we are able to request any de
 
 > {tip} For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
 
-<a name="closure-commands"></a> ÃæÇãÑ ÇáäØÇŞ ÇáãÛáŞ
-### Closure Commands ÃæÇãÑ ÇáäØÇŞ ÇáãÛáŞ
+<a name="closure-commands"></a> Ø£ÙˆØ§Ù…Ø± Ø§Ù„Ù†Ø·Ø§Ù‚ Ø§Ù„Ù…ØºÙ„Ù‚
+### Closure Commands Ø£ÙˆØ§Ù…Ø± Ø§Ù„Ù†Ø·Ø§Ù‚ Ø§Ù„Ù…ØºÙ„Ù‚
 Closure based commands provide an alternative to defining console commands as classes. In the same way that route closures are an alternative to controllers, think of command closures as an alternative to command classes. Within the `commands` method of your `app/Console/Kernel.php` file, Laravel loads the `routes/console.php` file:
 
-íÚÊãÏ Closure Úáì ÃæÇãÑ ÊÄãä ÈÏíá áÊÍÏíÏ ÃæÇãÑ console ßÕİæİ 
-ÈäİÓ ÇáØÑíŞÉ ãÓÇÑ closures ÈÏíá ÇáãÊÍßãÇÊ controllers
-ÃãÑ closures ÈÏíá áÃãÑ classes
-Öãä ÇáØÑíŞÉ `commands`  ÇáãæÌæÏÉ İí Çáãáİ `app/Console/Kernel.php`  ÊŞæã áÇÑÇİá ÈÊÍãíá ãáİ  `routes/console.php`
+ÙŠØ¹ØªÙ…Ø¯ Closure Ø¹Ù„Ù‰ Ø£ÙˆØ§Ù…Ø± ØªØ¤Ù…Ù† Ø¨Ø¯ÙŠÙ„ Ù„ØªØ­Ø¯ÙŠØ¯ Ø£ÙˆØ§Ù…Ø± console ÙƒØµÙÙˆÙ 
+Ø¨Ù†ÙØ³ Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ù…Ø³Ø§Ø± closures Ø¨Ø¯ÙŠÙ„ Ø§Ù„Ù…ØªØ­ÙƒÙ…Ø§Øª controllers
+Ø£Ù…Ø± closures Ø¨Ø¯ÙŠÙ„ Ù„Ø£Ù…Ø± classes
+Ø¶Ù…Ù† Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `commands`  Ø§Ù„Ù…ÙˆØ¬ÙˆØ¯Ø© ÙÙŠ Ø§Ù„Ù…Ù„Ù `app/Console/Kernel.php`  ØªÙ‚ÙˆÙ… Ù„Ø§Ø±Ø§ÙÙ„ Ø¨ØªØ­Ù…ÙŠÙ„ Ù…Ù„Ù  `routes/console.php`
 
     /**
      * Register the closure based commands for the application.
@@ -243,9 +243,9 @@ Closure based commands provide an alternative to defining console commands as cl
 
 Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
 
-åĞÇ Çáãáİ áÇ íÍÏÏ ãÓÇÑÇÊ HTTP íÍÏÏ ÇáãÓÇÑÇÊ ÇáÏÇÎáíÉ İí ÇáÊØÈíŞ
-İí åĞÇ Çáãáİ íãßä ÊÍÏíÏ ÇáäØÇŞ ÇáãÛáŞ ÇáãÊÚãÏ Úáì ÃæÇãÑ console ÈÇÓÊÎÏÇã ÇáØÑíŞÉ `Artisan::command`
-ÇáØÑíŞÉ `command` ÊÃÎĞ ãÊÛíÑíä ÇáÃæá [command signature] æ ÇáËÇäí ÇáäØÇŞ ÇáãÛáŞ ÇáĞí ÓíÑÓá ãÊÛíÑÇÊ æ ÎíÇÑÇÊ ÇáÃãÑ
+Ù‡Ø°Ø§ Ø§Ù„Ù…Ù„Ù Ù„Ø§ ÙŠØ­Ø¯Ø¯ Ù…Ø³Ø§Ø±Ø§Øª HTTP ÙŠØ­Ø¯Ø¯ Ø§Ù„Ù…Ø³Ø§Ø±Ø§Øª Ø§Ù„Ø¯Ø§Ø®Ù„ÙŠØ© ÙÙŠ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚
+ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…Ù„Ù ÙŠÙ…ÙƒÙ† ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù†Ø·Ø§Ù‚ Ø§Ù„Ù…ØºÙ„Ù‚ Ø§Ù„Ù…ØªØ¹Ù…Ø¯ Ø¹Ù„Ù‰ Ø£ÙˆØ§Ù…Ø± console Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `Artisan::command`
+Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `command` ØªØ£Ø®Ø° Ù…ØªØºÙŠØ±ÙŠÙ† Ø§Ù„Ø£ÙˆÙ„ [command signature] Ùˆ Ø§Ù„Ø«Ø§Ù†ÙŠ Ø§Ù„Ù†Ø·Ø§Ù‚ Ø§Ù„Ù…ØºÙ„Ù‚ Ø§Ù„Ø°ÙŠ Ø³ÙŠØ±Ø³Ù„ Ù…ØªØºÙŠØ±Ø§Øª Ùˆ Ø®ÙŠØ§Ø±Ø§Øª Ø§Ù„Ø£Ù…Ø±
 
 
     Artisan::command('mail:send {user}', function ($user) {
@@ -254,14 +254,14 @@ Even though this file does not define HTTP routes, it defines console based entr
 
 The closure is bound to the underlying command instance, so you have full access to all of the helper methods you would typically be able to access on a full command class.
 
-ÇáäØÇŞ ÇáãÛáŞ íÚØí ÊÍßã ßÇãá ÈÇáØÑŞ ÇáãÓÇÚÏÉ ÈÇáÊÇáí ÊÍßã ÈßÇãá Õİ ÇáÃãÑ
+Ø§Ù„Ù†Ø·Ø§Ù‚ Ø§Ù„Ù…ØºÙ„Ù‚ ÙŠØ¹Ø·ÙŠ ØªØ­ÙƒÙ… ÙƒØ§Ù…Ù„ Ø¨Ø§Ù„Ø·Ø±Ù‚ Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯Ø© Ø¨Ø§Ù„ØªØ§Ù„ÙŠ ØªØ­ÙƒÙ… Ø¨ÙƒØ§Ù…Ù„ ØµÙ Ø§Ù„Ø£Ù…Ø±
 
 <a name="type-hinting-dependencies"></a>
 #### Type-Hinting Dependencies
 
 In addition to receiving your command's arguments and options, command closures may also type-hint additional dependencies that you would like resolved out of the [service container](/docs/{{version}}/container):
 
-ÈÇáÅÖÇİÉ áÇÓÊŞÈÇá ÇáãÊÛíÑÇÊ ÃãÑ ÇáäØÇŞ ÇáãÛáŞ íŞæã ÈßÊÇÈÉ ÊáãíÍ ÅÖÇİí ãÚÊãÏ
+Ø¨Ø§Ù„Ø¥Ø¶Ø§ÙØ© Ù„Ø§Ø³ØªÙ‚Ø¨Ø§Ù„ Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª Ø£Ù…Ø± Ø§Ù„Ù†Ø·Ø§Ù‚ Ø§Ù„Ù…ØºÙ„Ù‚ ÙŠÙ‚ÙˆÙ… Ø¨ÙƒØªØ§Ø¨Ø© ØªÙ„Ù…ÙŠØ­ Ø¥Ø¶Ø§ÙÙŠ Ù…Ø¹ØªÙ…Ø¯
 
     use App\Models\User;
     use App\Support\DripEmailer;
@@ -270,33 +270,33 @@ In addition to receiving your command's arguments and options, command closures 
         $drip->send(User::find($user));
     });
 
-<a name="closure-command-descriptions"></a>  æÕİ ÃãÑ ÇáäØÇŞ ÇáãÛáŞ 
-#### Closure Command Descriptions æÕİ ÃãÑ ÇáäØÇŞ ÇáãÛáŞ 
+<a name="closure-command-descriptions"></a>  ÙˆØµÙ Ø£Ù…Ø± Ø§Ù„Ù†Ø·Ø§Ù‚ Ø§Ù„Ù…ØºÙ„Ù‚ 
+#### Closure Command Descriptions ÙˆØµÙ Ø£Ù…Ø± Ø§Ù„Ù†Ø·Ø§Ù‚ Ø§Ù„Ù…ØºÙ„Ù‚ 
 
 When defining a closure based command, you may use the `purpose` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
 
-ÇÓÊÎÏÇã ÇáØÑíŞÉ `purpose` áßÊÇÈÉ æÕİ ááÃãÑ 
-åĞÇ ÇáæÕİ íÙåÑ ÚäÏ ÊÔÛíá ÇáÃãÑ `php artisan help`  Ãæ ÇáÃãÑ `php artisan list`
+Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `purpose` Ù„ÙƒØªØ§Ø¨Ø© ÙˆØµÙ Ù„Ù„Ø£Ù…Ø± 
+Ù‡Ø°Ø§ Ø§Ù„ÙˆØµÙ ÙŠØ¸Ù‡Ø± Ø¹Ù†Ø¯ ØªØ´ØºÙŠÙ„ Ø§Ù„Ø£Ù…Ø± `php artisan help`  Ø£Ùˆ Ø§Ù„Ø£Ù…Ø± `php artisan list`
  
 
     Artisan::command('mail:send {user}', function ($user) {
         // ...
     })->purpose('Send a marketing email to a user');
 
-<a name="defining-input-expectations"></a> ÊÍÏíÏ ÇáÏÎá ÇáãÊæŞÚ 
-## Defining Input Expectations ÊÍÏíÏ ÇáÏÎá ÇáãÊæŞÚ 
+<a name="defining-input-expectations"></a> ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯Ø®Ù„ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ 
+## Defining Input Expectations ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯Ø®Ù„ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ 
 
 When writing console commands, it is common to gather input from the user through arguments or options. Laravel makes it very convenient to define the input you expect from the user using the `signature` property on your commands. The `signature` property allows you to define the name, arguments, and options for the command in a single, expressive, route-like syntax.
 
-áÊÍÏíÏ ÇáÏÎá ÇáãÊæŞÚ ãä ÇáãÓÊÎÏã äÓÊÎÏã ÇáÎÇÕíÉ `signature` ÊÓãÍ ÈÊÍÏíÏ ÇáÇÓã æÇáãÊÛíÑÇÊ æÇáÎíÇÑÇÊ 
+Ù„ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯Ø®Ù„ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ Ù…Ù† Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø®Ø§ØµÙŠØ© `signature` ØªØ³Ù…Ø­ Ø¨ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø§Ø³Ù… ÙˆØ§Ù„Ù…ØªØºÙŠØ±Ø§Øª ÙˆØ§Ù„Ø®ÙŠØ§Ø±Ø§Øª 
 
-<a name="arguments"></a> ÇáãÊÛíÑÇÊ 
-### Arguments ÇáãÊÛíÑÇÊ 
+<a name="arguments"></a> Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª 
+### Arguments Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª 
 
 All user supplied arguments and options are wrapped in curly braces. In the following example, the command defines one required argument: `user`:
 
-   ÊæÖÚ ÇáãÊÛíÑÇÊ Öãä ŞæÓíä ãä ÇáÔßá {argument name}
-    İí åĞÇ ÇáãËÇá ÊÍÏíÏ ãÊÛíÑ æÇÍÏ ÇÌÈÇÑí 
+   ØªÙˆØ¶Ø¹ Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª Ø¶Ù…Ù† Ù‚ÙˆØ³ÙŠÙ† Ù…Ù† Ø§Ù„Ø´ÙƒÙ„ {argument name}
+    ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…Ø«Ø§Ù„ ØªØ­Ø¯ÙŠØ¯ Ù…ØªØºÙŠØ± ÙˆØ§Ø­Ø¯ Ø§Ø¬Ø¨Ø§Ø±ÙŠ 
  
 
     /**
@@ -308,7 +308,7 @@ All user supplied arguments and options are wrapped in curly braces. In the foll
 
 You may also make arguments optional or define default values for arguments:
 
-   íãßä ÅÖÇİÉ ãÊÛíÑÇÊ ÇÎÊíÇÑíÉ Ãæ æÖÚ Şíã ÇİÊÑÇÖíÉ áãÊÛíÑÇÊ 
+   ÙŠÙ…ÙƒÙ† Ø¥Ø¶Ø§ÙØ© Ù…ØªØºÙŠØ±Ø§Øª Ø§Ø®ØªÙŠØ§Ø±ÙŠØ© Ø£Ùˆ ÙˆØ¶Ø¹ Ù‚ÙŠÙ… Ø§ÙØªØ±Ø§Ø¶ÙŠØ© Ù„Ù…ØªØºÙŠØ±Ø§Øª 
 
     // Optional argument...
     'mail:send {user?}'
@@ -316,14 +316,14 @@ You may also make arguments optional or define default values for arguments:
     // Optional argument with default value...
     'mail:send {user=foo}'
 
-<a name="options"></a> ÇáÎíÇÑÇÊ 
-### Options ÇáÎíÇÑÇÊ 
+<a name="options"></a> Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª 
+### Options Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª 
 
 Options, like arguments, are another form of user input. Options are prefixed by two hyphens (`--`) when they are provided via the command line. There are two types of options: those that receive a value and those that don't. Options that don't receive a value serve as a boolean "switch". Let's take a look at an example of this type of option:
 
-ÇáÎíÇÑÇÊ ãËá ÇáãÊÛíÑÇÊ ÃíÖÇ ÏÎá ãä ÇáãÓÊÎÏã äÖÚ ŞÈáåÇ áÇÍŞÉ (`--`)
-íæÌÏ äæÚíä ãä ÇáÎíÇÑÇÊ ÇáÃæá áÇ íÓÊŞÈá ŞíãÉ æÇáäæÚ ÇáËÇäí íÃÎĞ ŞíãÉ
-ÇáäæÚ ÇáÃæá Êßæä ŞíãÊå true Ãæ false 
+Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª Ù…Ø«Ù„ Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª Ø£ÙŠØ¶Ø§ Ø¯Ø®Ù„ Ù…Ù† Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù†Ø¶Ø¹ Ù‚Ø¨Ù„Ù‡Ø§ Ù„Ø§Ø­Ù‚Ø© (`--`)
+ÙŠÙˆØ¬Ø¯ Ù†ÙˆØ¹ÙŠÙ† Ù…Ù† Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª Ø§Ù„Ø£ÙˆÙ„ Ù„Ø§ ÙŠØ³ØªÙ‚Ø¨Ù„ Ù‚ÙŠÙ…Ø© ÙˆØ§Ù„Ù†ÙˆØ¹ Ø§Ù„Ø«Ø§Ù†ÙŠ ÙŠØ£Ø®Ø° Ù‚ÙŠÙ…Ø©
+Ø§Ù„Ù†ÙˆØ¹ Ø§Ù„Ø£ÙˆÙ„ ØªÙƒÙˆÙ† Ù‚ÙŠÙ…ØªÙ‡ true Ø£Ùˆ false 
 
     /**
      * The name and signature of the console command.
@@ -334,19 +334,19 @@ Options, like arguments, are another form of user input. Options are prefixed by
 
 In this example, the `--queue` switch may be specified when calling the Artisan command. If the `--queue` switch is passed, the value of the option will be `true`. Otherwise, the value will be `false`:
 
-ÅĞÇ ãÑÑäÇ –queue Êßæä Şíãå true ÛíÑ Ğáß ŞíãÊå false
+Ø¥Ø°Ø§ Ù…Ø±Ø±Ù†Ø§ â€“queue ØªÙƒÙˆÙ† Ù‚ÙŠÙ…Ù‡ true ØºÙŠØ± Ø°Ù„Ùƒ Ù‚ÙŠÙ…ØªÙ‡ false
 
 ```shell
 php artisan mail:send 1 --queue
 ```
 
-<a name="options-with-values"></a> ÎíÇÑÇÊ ãÚ Şíã
-#### Options With Values  ÎíÇÑÇÊ ãÚ Şíã 
+<a name="options-with-values"></a> Ø®ÙŠØ§Ø±Ø§Øª Ù…Ø¹ Ù‚ÙŠÙ…
+#### Options With Values  Ø®ÙŠØ§Ø±Ø§Øª Ù…Ø¹ Ù‚ÙŠÙ… 
 
 Next, let's take a look at an option that expects a value. If the user must specify a value for an option, you should suffix the option name with a `=` sign:
 
 
-ÇáäæÚ ÇáËÇäí ÊÍÏíÏ ŞíãÉ ááÎíÇÑ ÈÇÓÊÎÏÇã ÅÔÇÑÉ `=`
+Ø§Ù„Ù†ÙˆØ¹ Ø§Ù„Ø«Ø§Ù†ÙŠ ØªØ­Ø¯ÙŠØ¯ Ù‚ÙŠÙ…Ø© Ù„Ù„Ø®ÙŠØ§Ø± Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¥Ø´Ø§Ø±Ø© `=`
 
     /**
      * The name and signature of the console command.
@@ -357,7 +357,7 @@ Next, let's take a look at an option that expects a value. If the user must spec
 
 In this example, the user may pass a value for the option like so. If the option is not specified when invoking the command, its value will be `null`:
 
-ÇĞÇ áã äÍÏÏ ÇáÏÎá Êßæä ŞíãÊå null 
+Ø§Ø°Ø§ Ù„Ù… Ù†Ø­Ø¯Ø¯ Ø§Ù„Ø¯Ø®Ù„ ØªÙƒÙˆÙ† Ù‚ÙŠÙ…ØªÙ‡ null 
  
 
 ```shell
@@ -366,39 +366,39 @@ php artisan mail:send 1 --queue=default
 
 You may assign default values to options by specifying the default value after the option name. If no option value is passed by the user, the default value will be used:
 
-íãßä æÖÚ ŞíãÉ ÇİÊÑÇÖíÉ ÅĞÇ áã íãÑÑ ÇáãÓÊÎÏã ŞíãÉ íÃÎĞ ÇáÎíÇÑ ÇáŞíãÉ ÇáÇİÊÑÇÖíÉ 
+ÙŠÙ…ÙƒÙ† ÙˆØ¶Ø¹ Ù‚ÙŠÙ…Ø© Ø§ÙØªØ±Ø§Ø¶ÙŠØ© Ø¥Ø°Ø§ Ù„Ù… ÙŠÙ…Ø±Ø± Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù‚ÙŠÙ…Ø© ÙŠØ£Ø®Ø° Ø§Ù„Ø®ÙŠØ§Ø± Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠØ© 
 
     'mail:send {user} {--queue=default}'
 
-<a name="option-shortcuts"></a> ÇÎÊÕÇÑÇÊ ÇáÎíÇÑ
-#### Option Shortcuts ÇÎÊÕÇÑÇÊ ÇáÎíÇÑ
+<a name="option-shortcuts"></a> Ø§Ø®ØªØµØ§Ø±Ø§Øª Ø§Ù„Ø®ÙŠØ§Ø±
+#### Option Shortcuts Ø§Ø®ØªØµØ§Ø±Ø§Øª Ø§Ù„Ø®ÙŠØ§Ø±
 
 To assign a shortcut when defining an option, you may specify it before the option name and use the `|` character as a delimiter to separate the shortcut from the full option name:
 
-áÊÍÏíÏ ÇÎÊÕÇÑ äÖÚå ŞÈá ÇÓã ÇáÎíÇÑ æ äÖÚ  `|` ááİÕá Èíä ÇáÇÎÊÕÇÑ æ ÇÓã ÇáÎíÇÑ 
+Ù„ØªØ­Ø¯ÙŠØ¯ Ø§Ø®ØªØµØ§Ø± Ù†Ø¶Ø¹Ù‡ Ù‚Ø¨Ù„ Ø§Ø³Ù… Ø§Ù„Ø®ÙŠØ§Ø± Ùˆ Ù†Ø¶Ø¹  `|` Ù„Ù„ÙØµÙ„ Ø¨ÙŠÙ† Ø§Ù„Ø§Ø®ØªØµØ§Ø± Ùˆ Ø§Ø³Ù… Ø§Ù„Ø®ÙŠØ§Ø± 
 
     'mail:send {user} {--Q|queue}'
 
 When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen:
 
-äÓÊÎÏã ÇáÇÎÊÕÇÑ Öãä ÔÇÔÉ ÇáÃæÇãÑ 
+Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø§Ø®ØªØµØ§Ø± Ø¶Ù…Ù† Ø´Ø§Ø´Ø© Ø§Ù„Ø£ÙˆØ§Ù…Ø± 
 
 ```shell
 php artisan mail:send 1 -Q
 ```
 
-<a name="input-arrays"></a> ÅÏÎÇá ÇáãÕİæİÇÊ 
-### Input Arrays ÅÏÎÇá ÇáãÕİæİÇÊ 
+<a name="input-arrays"></a> Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ù…ØµÙÙˆÙØ§Øª 
+### Input Arrays Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ù…ØµÙÙˆÙØ§Øª 
 
 If you would like to define arguments or options to expect multiple input values, you may use the `*` character. First, let's take a look at an example that specifies such an argument:
 
-áÅÏÎÇá ÃßËÑ ãä ŞíãÉ ÏÎá äÓÊÎÏã `*` 
+Ù„Ø¥Ø¯Ø®Ø§Ù„ Ø£ÙƒØ«Ø± Ù…Ù† Ù‚ÙŠÙ…Ø© Ø¯Ø®Ù„ Ù†Ø³ØªØ®Ø¯Ù… `*` 
 
     'mail:send {user*}'
 
 When calling this method, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `foo` and `bar` as its values:
 
-íãßä ááãÓÊÎÏã æÖÚ ÃßËÑ ãä ŞíãÉ 
+ÙŠÙ…ÙƒÙ† Ù„Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙˆØ¶Ø¹ Ø£ÙƒØ«Ø± Ù…Ù† Ù‚ÙŠÙ…Ø© 
 
 ```shell
 php artisan mail:send foo bar
@@ -406,16 +406,16 @@ php artisan mail:send foo bar
 
 This `*` character can be combined with an optional argument definition to allow zero or more instances of an argument:
 
-íãßä ÇÓÊÎÏÇã `*`  ãÚ ÇáãÊÛíÑÇÊ ÇáÇÎÊíÇÑíÉ 
+ÙŠÙ…ÙƒÙ† Ø§Ø³ØªØ®Ø¯Ø§Ù… `*`  Ù…Ø¹ Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª Ø§Ù„Ø§Ø®ØªÙŠØ§Ø±ÙŠØ© 
 
     'mail:send {user?*}'
 
-<a name="option-arrays"></a> ãÕİæİÇÊ ÇáÎíÇÑ
-#### Option Arrays ãÕİæİÇÊ ÇáÎíÇÑ 
+<a name="option-arrays"></a> Ù…ØµÙÙˆÙØ§Øª Ø§Ù„Ø®ÙŠØ§Ø±
+#### Option Arrays Ù…ØµÙÙˆÙØ§Øª Ø§Ù„Ø®ÙŠØ§Ø± 
 
 When defining an option that expects multiple input values, each option value passed to the command should be prefixed with the option name:
 
-áÊÍÏíÏ ÎíÇÑ ãÊÚÏÏ ÇáŞíã
+Ù„ØªØ­Ø¯ÙŠØ¯ Ø®ÙŠØ§Ø± Ù…ØªØ¹Ø¯Ø¯ Ø§Ù„Ù‚ÙŠÙ…
 
     'mail:send {user} {--id=*}'
 
@@ -425,12 +425,12 @@ Such a command may be invoked by passing multiple `--id` arguments:
 php artisan mail:send --id=1 --id=2
 ```
 
-<a name="input-descriptions"></a>  æÕİ ÇáÏÎá 
-### Input Descriptions æÕİ ÇáÏÎá 
+<a name="input-descriptions"></a>  ÙˆØµÙ Ø§Ù„Ø¯Ø®Ù„ 
+### Input Descriptions ÙˆØµÙ Ø§Ù„Ø¯Ø®Ù„ 
 
 You may assign descriptions to input arguments and options by separating the argument name from the description using a colon. If you need a little extra room to define your command, feel free to spread the definition across multiple lines:
 
-áæÖÚ æÕİ ááÏÎá äÖÚ : ÈÚÏ ÇáÇÓã Ëã ÇáæÕİ 
+Ù„ÙˆØ¶Ø¹ ÙˆØµÙ Ù„Ù„Ø¯Ø®Ù„ Ù†Ø¶Ø¹ : Ø¨Ø¹Ø¯ Ø§Ù„Ø§Ø³Ù… Ø«Ù… Ø§Ù„ÙˆØµÙ 
 
     /**
      * The name and signature of the console command.
@@ -441,16 +441,16 @@ You may assign descriptions to input arguments and options by separating the arg
                             {user : The ID of the user}
                             {--queue : Whether the job should be queued}';
 
-<a name="command-io"></a> ÃãÑ ÇáÏÎá æÇáÎÑÌ 
-## Command I/O ÃãÑ ÇáÏÎá æÇáÎÑÌ 
+<a name="command-io"></a> Ø£Ù…Ø± Ø§Ù„Ø¯Ø®Ù„ ÙˆØ§Ù„Ø®Ø±Ø¬ 
+## Command I/O Ø£Ù…Ø± Ø§Ù„Ø¯Ø®Ù„ ÙˆØ§Ù„Ø®Ø±Ø¬ 
 
-<a name="retrieving-input"></a> ÇÓÊÑÌÇÚ ÇáÏÎá 
-### Retrieving Input ÇÓÊÑÌÇÚ ÇáÏÎá 
+<a name="retrieving-input"></a> Ø§Ø³ØªØ±Ø¬Ø§Ø¹ Ø§Ù„Ø¯Ø®Ù„ 
+### Retrieving Input Ø§Ø³ØªØ±Ø¬Ø§Ø¹ Ø§Ù„Ø¯Ø®Ù„ 
 
 While your command is executing, you will likely need to access the values for the arguments and options accepted by your command. To do so, you may use the `argument` and `option` methods. If an argument or option does not exist, `null` will be returned:
 
-ÚäÏ ÊäİíĞ ÇáÃãÑ äÍÊÇÌ ÇáæÕæá ááãÊÛíÑÇÊ Çæ ÇáÎíÇÑÇÊ äÓÊÎÏã ÇáØÑíŞÉ `argument`   æÇáØÑíŞÉ `option`
-ÅĞÇ ßÇä ÇáãÊÛíÑ Çæ ÇáÎíÇÑ ÛíÑ ãæÌæÏ íÚíÏ ŞíãÉ `null`
+Ø¹Ù†Ø¯ ØªÙ†ÙÙŠØ° Ø§Ù„Ø£Ù…Ø± Ù†Ø­ØªØ§Ø¬ Ø§Ù„ÙˆØµÙˆÙ„ Ù„Ù„Ù…ØªØºÙŠØ±Ø§Øª Ø§Ùˆ Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `argument`   ÙˆØ§Ù„Ø·Ø±ÙŠÙ‚Ø© `option`
+Ø¥Ø°Ø§ ÙƒØ§Ù† Ø§Ù„Ù…ØªØºÙŠØ± Ø§Ùˆ Ø§Ù„Ø®ÙŠØ§Ø± ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯ ÙŠØ¹ÙŠØ¯ Ù‚ÙŠÙ…Ø© `null`
 
     /**
      * Execute the console command.
@@ -466,15 +466,15 @@ While your command is executing, you will likely need to access the values for t
 
 If you need to retrieve all of the arguments as an `array`, call the `arguments` method:
 
-áÇÓÊÑÌÇÚ ßá ÇáãÊÛíÑÇÊ ßãÕİæİÉ äÓÊÎÏã ÇáØÑíŞÉ `arguments`
+Ù„Ø§Ø³ØªØ±Ø¬Ø§Ø¹ ÙƒÙ„ Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª ÙƒÙ…ØµÙÙˆÙØ© Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `arguments`
  
 
     $arguments = $this->arguments();
 
 Options may be retrieved just as easily as arguments using the `option` method. To retrieve all of the options as an array, call the `options` method:
 
-áÇÓÊÑÌÇÚ ÇáÎíÇÑÇÊ äÓÊÎÏã ÇáØÑíŞÉ `option`
-áÇÓÊÑÌÇÚ ÃßËÑ ãä ŞíãÉ ßãÕİæİÉ `options`
+Ù„Ø§Ø³ØªØ±Ø¬Ø§Ø¹ Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `option`
+Ù„Ø§Ø³ØªØ±Ø¬Ø§Ø¹ Ø£ÙƒØ«Ø± Ù…Ù† Ù‚ÙŠÙ…Ø© ÙƒÙ…ØµÙÙˆÙØ© `options`
  
 
     // Retrieve a specific option...
@@ -483,13 +483,13 @@ Options may be retrieved just as easily as arguments using the `option` method. 
     // Retrieve all options as an array...
     $options = $this->options();
 
-<a name="prompting-for-input"></a> ÊáŞíä ÇáÏÎá 
-### Prompting For Input ÊáŞíä ÇáÏÎá 
+<a name="prompting-for-input"></a> ØªÙ„Ù‚ÙŠÙ† Ø§Ù„Ø¯Ø®Ù„ 
+### Prompting For Input ØªÙ„Ù‚ÙŠÙ† Ø§Ù„Ø¯Ø®Ù„ 
 
 In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:
 
 
-áÓÄÇá ÇáãÓÊÎÏã áíŞæã ÈÇáÅÏÎÇá äÓÊÎÏã ÇáØÑíŞÉ `ask` 
+Ù„Ø³Ø¤Ø§Ù„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù„ÙŠÙ‚ÙˆÙ… Ø¨Ø§Ù„Ø¥Ø¯Ø®Ø§Ù„ Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `ask` 
 
     /**
      * Execute the console command.
@@ -503,18 +503,18 @@ In addition to displaying output, you may also ask the user to provide input dur
 
 The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful when asking for sensitive information such as passwords:
 
-ÇáØÑíŞÉ `secret` ÊÔÈå ÇáØÑíŞÉ `ask` áßä ÇáÏÎá ÛíÑ ãÑÆí ÊÓÊÎÏã ÚäÏ ÅÏÎÇá ÈíÇäÇÊ ÍÓÇÓÉ ãËá ßáãÇÊ ÇáãÑæÑ 
+Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `secret` ØªØ´Ø¨Ù‡ Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `ask` Ù„ÙƒÙ† Ø§Ù„Ø¯Ø®Ù„ ØºÙŠØ± Ù…Ø±Ø¦ÙŠ ØªØ³ØªØ®Ø¯Ù… Ø¹Ù†Ø¯ Ø¥Ø¯Ø®Ø§Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø³Ø© Ù…Ø«Ù„ ÙƒÙ„Ù…Ø§Øª Ø§Ù„Ù…Ø±ÙˆØ± 
 
     $password = $this->secret('What is the password?');
 
-<a name="asking-for-confirmation"></a> ÇáÓÄÇá ááÊÃßíÏ 
-#### Asking For Confirmation ÇáÓÄÇá ááÊÃßíÏ 
+<a name="asking-for-confirmation"></a> Ø§Ù„Ø³Ø¤Ø§Ù„ Ù„Ù„ØªØ£ÙƒÙŠØ¯ 
+#### Asking For Confirmation Ø§Ù„Ø³Ø¤Ø§Ù„ Ù„Ù„ØªØ£ÙƒÙŠØ¯ 
 
 If you need to ask the user for a simple "yes or no" confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` or `yes` in response to the prompt, the method will return `true`.
 
-ÇáÓÄÇá ááÊÃßíÏ äÓÊÎÏã ÇáØÑíŞÉ `confirm` áíÏÎá ÇáãÓÊÎÏã yes Ãæ no 
-ÇİÊÑÇÖíÇ ÊÚíÏ ŞíãÉ false 
-ÅĞÇ ÃÏÎá ÇáãÓÊÎÏã yes Çæ y ÊÚíÏ true 
+Ø§Ù„Ø³Ø¤Ø§Ù„ Ù„Ù„ØªØ£ÙƒÙŠØ¯ Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `confirm` Ù„ÙŠØ¯Ø®Ù„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… yes Ø£Ùˆ no 
+Ø§ÙØªØ±Ø§Ø¶ÙŠØ§ ØªØ¹ÙŠØ¯ Ù‚ÙŠÙ…Ø© false 
+Ø¥Ø°Ø§ Ø£Ø¯Ø®Ù„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… yes Ø§Ùˆ y ØªØ¹ÙŠØ¯ true 
  
 
     if ($this->confirm('Do you wish to continue?')) {
@@ -523,38 +523,38 @@ If you need to ask the user for a simple "yes or no" confirmation, you may use t
 
 If necessary, you may specify that the confirmation prompt should return `true` by default by passing `true` as the second argument to the `confirm` method:
 
-áÊÚíÏ ŞíãÉ ÇİÊÑÇÖíÉ true äÖÚåÇ ßãÊÛíÑ ËÇäí 
+Ù„ØªØ¹ÙŠØ¯ Ù‚ÙŠÙ…Ø© Ø§ÙØªØ±Ø§Ø¶ÙŠØ© true Ù†Ø¶Ø¹Ù‡Ø§ ÙƒÙ…ØªØºÙŠØ± Ø«Ø§Ù†ÙŠ 
 
     if ($this->confirm('Do you wish to continue?', true)) {
         //
     }
 
-<a name="auto-completion"></a> ÇáÅßãÇá ÇáÊáŞÇÆí 
-#### Auto-Completion ÇáÅßãÇá ÇáÊáŞÇÆí 
+<a name="auto-completion"></a> Ø§Ù„Ø¥ÙƒÙ…Ø§Ù„ Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ 
+#### Auto-Completion Ø§Ù„Ø¥ÙƒÙ…Ø§Ù„ Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ 
 
 The `anticipate` method can be used to provide auto-completion for possible choices. The user can still provide any answer, regardless of the auto-completion hints:
 
-ÇáØÑíŞÉ `anticipate`  ÊæİÑ ÅßãÇá ÊáŞÇÆí ááÎíÇÑÇÊ ÇáããßäÉ 
+Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `anticipate`  ØªÙˆÙØ± Ø¥ÙƒÙ…Ø§Ù„ ØªÙ„Ù‚Ø§Ø¦ÙŠ Ù„Ù„Ø®ÙŠØ§Ø±Ø§Øª Ø§Ù„Ù…Ù…ÙƒÙ†Ø© 
 
     $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 
 Alternatively, you may pass a closure as the second argument to the `anticipate` method. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
 
-íãßä ÊãÑíÑ closure ßãÊÛíÑ ËÇäí ááØÑíŞÉ `anticipate`  
-closure íÓÊÏÚì İí ßá ãÑÉ íßÊÈ İíåÇ ÇáãÓÊÎÏã ãÍÑİ 
-closure  íŞÈá ãÊÛíÑ äæÚ äÕí íÊÖãä ÃíÖÇ ÏÎá ÇáãÓÊÎÏã æ íÚíÏ ãÕİæİÉ ÎíÇÑÇÊ ááÅßãÇá ÇáÊáŞÇÆí
+ÙŠÙ…ÙƒÙ† ØªÙ…Ø±ÙŠØ± closure ÙƒÙ…ØªØºÙŠØ± Ø«Ø§Ù†ÙŠ Ù„Ù„Ø·Ø±ÙŠÙ‚Ø© `anticipate`  
+closure ÙŠØ³ØªØ¯Ø¹Ù‰ ÙÙŠ ÙƒÙ„ Ù…Ø±Ø© ÙŠÙƒØªØ¨ ÙÙŠÙ‡Ø§ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ø­Ø±Ù 
+closure  ÙŠÙ‚Ø¨Ù„ Ù…ØªØºÙŠØ± Ù†ÙˆØ¹ Ù†ØµÙŠ ÙŠØªØ¶Ù…Ù† Ø£ÙŠØ¶Ø§ Ø¯Ø®Ù„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ùˆ ÙŠØ¹ÙŠØ¯ Ù…ØµÙÙˆÙØ© Ø®ÙŠØ§Ø±Ø§Øª Ù„Ù„Ø¥ÙƒÙ…Ø§Ù„ Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ
 
     $name = $this->anticipate('What is your address?', function ($input) {
         // Return auto-completion options...
     });
 
-<a name="multiple-choice-questions"></a> ÃÓÆáÉ ÎíÇÑ ãÊÚÏÏ 
-#### Multiple Choice Questions ÃÓÆáÉ ÎíÇÑ ãÊÚÏÏ 
+<a name="multiple-choice-questions"></a> Ø£Ø³Ø¦Ù„Ø© Ø®ÙŠØ§Ø± Ù…ØªØ¹Ø¯Ø¯ 
+#### Multiple Choice Questions Ø£Ø³Ø¦Ù„Ø© Ø®ÙŠØ§Ø± Ù…ØªØ¹Ø¯Ø¯ 
 
 If you need to give the user a predefined set of choices when asking a question, you may use the `choice` method. You may set the array index of the default value to be returned if no option is chosen by passing the index as the third argument to the method:
 
-áÅÚØÇÁ ÇáãÓÊÎÏã ÎíÇÑÇÊ ÚäÏ ÇáÓÄÇá äÓÊÎÏã ÇáØÑíŞÉ `choice`
-íãßä æÖÚ ãÕİæİÉ İíåÇ Şíã ÇİÊÑÇÖíÉ ÅĞÇ áã íÊã ÇÎÊíÇÑ Ãí ÎíÇÑ æÊæÖÚ ßãÊÛíÑ ËÇáË
+Ù„Ø¥Ø¹Ø·Ø§Ø¡ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø®ÙŠØ§Ø±Ø§Øª Ø¹Ù†Ø¯ Ø§Ù„Ø³Ø¤Ø§Ù„ Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `choice`
+ÙŠÙ…ÙƒÙ† ÙˆØ¶Ø¹ Ù…ØµÙÙˆÙØ© ÙÙŠÙ‡Ø§ Ù‚ÙŠÙ… Ø§ÙØªØ±Ø§Ø¶ÙŠØ© Ø¥Ø°Ø§ Ù„Ù… ÙŠØªÙ… Ø§Ø®ØªÙŠØ§Ø± Ø£ÙŠ Ø®ÙŠØ§Ø± ÙˆØªÙˆØ¶Ø¹ ÙƒÙ…ØªØºÙŠØ± Ø«Ø§Ù„Ø«
 
     $name = $this->choice(
         'What is your name?',
@@ -564,7 +564,7 @@ If you need to give the user a predefined set of choices when asking a question,
 
 In addition, the `choice` method accepts optional fourth and fifth arguments for determining the maximum number of attempts to select a valid response and whether multiple selections are permitted:
 
-æ ááØÑíŞÉ ãÊÛíÑ ÑÇÈÚ æ ÎÇãÓ ÇÎÊíÇÑíÉ áÊÍÏíÏ ÚÏÏ ÇáãÍÇæáÇÊ 
+Ùˆ Ù„Ù„Ø·Ø±ÙŠÙ‚Ø© Ù…ØªØºÙŠØ± Ø±Ø§Ø¨Ø¹ Ùˆ Ø®Ø§Ù…Ø³ Ø§Ø®ØªÙŠØ§Ø±ÙŠØ© Ù„ØªØ­Ø¯ÙŠØ¯ Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø§Øª 
 
     $name = $this->choice(
         'What is your name?',
@@ -574,13 +574,13 @@ In addition, the `choice` method accepts optional fourth and fifth arguments for
         $allowMultipleSelections = false
     );
 
-<a name="writing-output"></a> ßÊÇÈÉ ÎÑÌ 
-### Writing Output ßÊÇÈÉ ÎÑÌ 
+<a name="writing-output"></a> ÙƒØªØ§Ø¨Ø© Ø®Ø±Ø¬ 
+### Writing Output ÙƒØªØ§Ø¨Ø© Ø®Ø±Ø¬ 
 
 To send output to the console, you may use the `line`, `info`, `comment`, `question`, `warn`, and `error` methods. Each of these methods will use appropriate ANSI colors for their purpose. For example, let's display some general information to the user. Typically, the `info` method will display in the console as green colored text:
 
-ÇÓÊÎÏÇã ÇáØÑŞ ÇáÊÇáíÉ `line`, `info`, `comment`, `question`, `warn`, and `error` ßá ØÑíŞÉ ÊÚØí ÎÑÌ Èáæä ãäÇÓÈ
-áÚÑÖ ÈÚÖ ÇáãÚáæãÇÊ ááãÓÊÎÏã äÓÊÎÏã ÇáØÑíŞÉ `info` ÓÊÙåÑ Öãä ÇáæÇÌåÉ console ßäÕ Èáæä ÃÎÖÑ
+Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø·Ø±Ù‚ Ø§Ù„ØªØ§Ù„ÙŠØ© `line`, `info`, `comment`, `question`, `warn`, and `error` ÙƒÙ„ Ø·Ø±ÙŠÙ‚Ø© ØªØ¹Ø·ÙŠ Ø®Ø±Ø¬ Ø¨Ù„ÙˆÙ† Ù…Ù†Ø§Ø³Ø¨
+Ù„Ø¹Ø±Ø¶ Ø¨Ø¹Ø¶ Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ù„Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `info` Ø³ØªØ¸Ù‡Ø± Ø¶Ù…Ù† Ø§Ù„ÙˆØ§Ø¬Ù‡Ø© console ÙƒÙ†Øµ Ø¨Ù„ÙˆÙ† Ø£Ø®Ø¶Ø±
  
 
     /**
@@ -597,19 +597,19 @@ To send output to the console, you may use the `line`, `info`, `comment`, `quest
 
 To display an error message, use the `error` method. Error message text is typically displayed in red:
 
-áÅÙåÇÑ ÑÓÇáÉ ÎØÃ äÓÊÎÏã `error`  æ ÓÊÙåÑ Èáæä ÃÍãÑ 
+Ù„Ø¥Ø¸Ù‡Ø§Ø± Ø±Ø³Ø§Ù„Ø© Ø®Ø·Ø£ Ù†Ø³ØªØ®Ø¯Ù… `error`  Ùˆ Ø³ØªØ¸Ù‡Ø± Ø¨Ù„ÙˆÙ† Ø£Ø­Ù…Ø± 
 
     $this->error('Something went wrong!');
 
 You may use the `line` method to display plain, uncolored text:
 
-äÓÊÎÏã ÇáØÑíŞÉ `line` áÅÙåÇÑ äÕ ÛíÑ ãáæä 
+Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `line` Ù„Ø¥Ø¸Ù‡Ø§Ø± Ù†Øµ ØºÙŠØ± Ù…Ù„ÙˆÙ† 
 
     $this->line('Display this on the screen');
 
 You may use the `newLine` method to display a blank line:
 
-äÓÊÎÏã ÇáØÑíŞÉ ` newLine ` áÅÙåÇÑ ÓØÑ İÇÑÛ 
+Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© ` newLine ` Ù„Ø¥Ø¸Ù‡Ø§Ø± Ø³Ø·Ø± ÙØ§Ø±Øº 
 
     // Write a single blank line...
     $this->newLine();
@@ -617,15 +617,15 @@ You may use the `newLine` method to display a blank line:
     // Write three blank lines...
     $this->newLine(3);
 
-<a name="tables"></a> ÇáÌÏÇæá 
-#### Tables ÇáÌÏÇæá 
+<a name="tables"></a> Ø§Ù„Ø¬Ø¯Ø§ÙˆÙ„ 
+#### Tables Ø§Ù„Ø¬Ø¯Ø§ÙˆÙ„ 
 
 The `table` method makes it easy to correctly format multiple rows / columns of data. All you need to do is provide the column names and the data for the table and Laravel will
 automatically calculate the appropriate width and height of the table for you:
 
-äÓÊÎÏã ÇáØÑíŞÉ `table`
-äÍÊÇÌ İŞØ ÇÏÎÇá ÇÓã ÇáÚãæÏ æäæÚ ÇáÈíÇäÇÊ
- áÇÑÇİá ÊÍÓÈ ÈÔßá ÏíäÇãíßí ÇáØæá æÇáÚÑÖ ÇáãäÇÓÈíä ááÌÏæá
+Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `table`
+Ù†Ø­ØªØ§Ø¬ ÙÙ‚Ø· Ø§Ø¯Ø®Ø§Ù„ Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙˆØ¯ ÙˆÙ†ÙˆØ¹ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª
+ Ù„Ø§Ø±Ø§ÙÙ„ ØªØ­Ø³Ø¨ Ø¨Ø´ÙƒÙ„ Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠ Ø§Ù„Ø·ÙˆÙ„ ÙˆØ§Ù„Ø¹Ø±Ø¶ Ø§Ù„Ù…Ù†Ø§Ø³Ø¨ÙŠÙ† Ù„Ù„Ø¬Ø¯ÙˆÙ„
 
     use App\Models\User;
 
@@ -634,13 +634,13 @@ automatically calculate the appropriate width and height of the table for you:
         User::all(['name', 'email'])->toArray()
     );
 
-<a name="progress-bars"></a> ÔÑíØ ÇáÊŞÏã
-#### Progress Bars ÔÑíØ ÇáÊŞÏã
+<a name="progress-bars"></a> Ø´Ø±ÙŠØ· Ø§Ù„ØªÙ‚Ø¯Ù…
+#### Progress Bars Ø´Ø±ÙŠØ· Ø§Ù„ØªÙ‚Ø¯Ù…
 
 For long running tasks, it can be helpful to show a progress bar that informs users how complete the task is. Using the `withProgressBar` method, Laravel will display a progress bar and advance its progress for each iteration over a given iterable value:
 
 
-ÊÚÑÖ ááãÓÊÎÏã ÇáãŞÏÇÑ ÇáãäÌÒ ãä ÇáãåãÉ äÓÊÎÏã ÇáØÑíŞÉ `withProgressBar`
+ØªØ¹Ø±Ø¶ Ù„Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø§Ù„Ù…Ù‚Ø¯Ø§Ø± Ø§Ù„Ù…Ù†Ø¬Ø² Ù…Ù† Ø§Ù„Ù…Ù‡Ù…Ø© Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `withProgressBar`
 
     use App\Models\User;
 
@@ -650,7 +650,7 @@ For long running tasks, it can be helpful to show a progress bar that informs us
 
 Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar after processing each item:
 
-ÃÍíÇäÇ äÍÊÇÌ áÊÍßã íÏæí ÈÔÑíØ ÇáÊŞÏã äÍÏÏ ÇáÚÏÏ Çáßáí áÎØæÇÊ ÇáÊŞÏã æÈÚÏåÇ ÊÍÓíä ÔÑíØ ÇáÊŞÏã ÈÚÏ ãÚÇáÌÉ ßá ÚäÕÑ 
+Ø£Ø­ÙŠØ§Ù†Ø§ Ù†Ø­ØªØ§Ø¬ Ù„ØªØ­ÙƒÙ… ÙŠØ¯ÙˆÙŠ Ø¨Ø´Ø±ÙŠØ· Ø§Ù„ØªÙ‚Ø¯Ù… Ù†Ø­Ø¯Ø¯ Ø§Ù„Ø¹Ø¯Ø¯ Ø§Ù„ÙƒÙ„ÙŠ Ù„Ø®Ø·ÙˆØ§Øª Ø§Ù„ØªÙ‚Ø¯Ù… ÙˆØ¨Ø¹Ø¯Ù‡Ø§ ØªØ­Ø³ÙŠÙ† Ø´Ø±ÙŠØ· Ø§Ù„ØªÙ‚Ø¯Ù… Ø¨Ø¹Ø¯ Ù…Ø¹Ø§Ù„Ø¬Ø© ÙƒÙ„ Ø¹Ù†ØµØ± 
 
     $users = App\Models\User::all();
 
@@ -668,19 +668,19 @@ Sometimes, you may need more manual control over how a progress bar is advanced.
 
 > {tip} For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
 
-áãÒíÏ ãä ÇáÎíÇÑÇÊ ÇáãÊŞÏãÉ ÊİŞÏ ÊæËíŞ ãßæäÇÊ ÔÑíØ ÇáÊŞÏã ááÓíãİæäí
+Ù„Ù…Ø²ÙŠØ¯ Ù…Ù† Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª Ø§Ù„Ù…ØªÙ‚Ø¯Ù…Ø© ØªÙÙ‚Ø¯ ØªÙˆØ«ÙŠÙ‚ Ù…ÙƒÙˆÙ†Ø§Øª Ø´Ø±ÙŠØ· Ø§Ù„ØªÙ‚Ø¯Ù… Ù„Ù„Ø³ÙŠÙ…ÙÙˆÙ†ÙŠ
 (https://symfony.com/doc/current/components/console/helpers/progressbar.html).
  
 
-<a name="registering-commands"></a> ÊÓÌíá ÇáÃæÇãÑ 
-## Registering Commands ÊÓÌíá ÇáÃæÇãÑ 
+<a name="registering-commands"></a> ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø£ÙˆØ§Ù…Ø± 
+## Registering Commands ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø£ÙˆØ§Ù…Ø± 
 
 All of your console commands are registered within your application's `App\Console\Kernel` class, which is your application's "console kernel". Within the `commands` method of this class, you will see a call to the kernel's `load` method. The `load` method will scan the `app/Console/Commands` directory and automatically register each command it contains with Artisan. You are even free to make additional calls to the `load` method to scan other directories for Artisan commands:
 
-ßá ÃæÇãÑ ÔÇÔÉ ÇáÎÑÌ console ÓÌáÊ İí ÇáÕİ `App\Console\Kernel`
-Öãä ÇáØÑíŞÉ `commands`  İí åĞÇ ÇáÕİ äÏÇÁ ÇáØÑíŞÉ `load`
-ÇáØÑíŞÉ `load` ÊŞæã ÈãÓÍ ãÌáÏ `app/Console/Commands`  ÈÔßá ÏíäÇãíßí áÊÓÌíá ßá ÃãÑ ãæÌæÏ ãÚ Artisan
-íãßä äÏÇÁ ØÑíŞÉ `load` ÃÎÑì áãÓÍ ÈŞíÉ ÇáãÌáÏÇÊ áÃæÇãÑ Artisan
+ÙƒÙ„ Ø£ÙˆØ§Ù…Ø± Ø´Ø§Ø´Ø© Ø§Ù„Ø®Ø±Ø¬ console Ø³Ø¬Ù„Øª ÙÙŠ Ø§Ù„ØµÙ `App\Console\Kernel`
+Ø¶Ù…Ù† Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `commands`  ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„ØµÙ Ù†Ø¯Ø§Ø¡ Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `load`
+Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `load` ØªÙ‚ÙˆÙ… Ø¨Ù…Ø³Ø­ Ù…Ø¬Ù„Ø¯ `app/Console/Commands`  Ø¨Ø´ÙƒÙ„ Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠ Ù„ØªØ³Ø¬ÙŠÙ„ ÙƒÙ„ Ø£Ù…Ø± Ù…ÙˆØ¬ÙˆØ¯ Ù…Ø¹ Artisan
+ÙŠÙ…ÙƒÙ† Ù†Ø¯Ø§Ø¡ Ø·Ø±ÙŠÙ‚Ø© `load` Ø£Ø®Ø±Ù‰ Ù„Ù…Ø³Ø­ Ø¨Ù‚ÙŠØ© Ø§Ù„Ù…Ø¬Ù„Ø¯Ø§Øª Ù„Ø£ÙˆØ§Ù…Ø± Artisan
 
     /**
      * Register the commands for the application.
@@ -697,23 +697,23 @@ All of your console commands are registered within your application's `App\Conso
 
 If necessary, you may manually register commands by adding the command's class name to a `$commands` property within your `App\Console\Kernel` class. If this property is not already defined on your kernel, you should define it manually. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:
 
-íãßä íÏæíÇ ÅÖÇİÉ ÇÓã Õİ ÇáÃãÑ Çáì ÇáÎÇÕíÉ `$commands` Öãä ÇáÕİ `App\Console\Kernel`
-ÅĞÇ áã Êßä åĞå ÇáÎÇÕíÉ ãÚÑøİÉ Öãä ÇáäæÇÉ íÌÈ ÊÚÑíİåÇ íÏæíÇ ÚäÏ ÇŞáÇÚ Artisan
-ßá ŞÇÆãÉ ÇáÃæÇãÑ İí åĞå ÇáÎÇÕíÉ ãÕããÉ ÈæÇÓØÉ [service container](/docs/{{version}}/container)
-æãÓÌóáÉ ãÚ Artisan
+ÙŠÙ…ÙƒÙ† ÙŠØ¯ÙˆÙŠØ§ Ø¥Ø¶Ø§ÙØ© Ø§Ø³Ù… ØµÙ Ø§Ù„Ø£Ù…Ø± Ø§Ù„Ù‰ Ø§Ù„Ø®Ø§ØµÙŠØ© `$commands` Ø¶Ù…Ù† Ø§Ù„ØµÙ `App\Console\Kernel`
+Ø¥Ø°Ø§ Ù„Ù… ØªÙƒÙ† Ù‡Ø°Ù‡ Ø§Ù„Ø®Ø§ØµÙŠØ© Ù…Ø¹Ø±Ù‘ÙØ© Ø¶Ù…Ù† Ø§Ù„Ù†ÙˆØ§Ø© ÙŠØ¬Ø¨ ØªØ¹Ø±ÙŠÙÙ‡Ø§ ÙŠØ¯ÙˆÙŠØ§ Ø¹Ù†Ø¯ Ø§Ù‚Ù„Ø§Ø¹ Artisan
+ÙƒÙ„ Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø£ÙˆØ§Ù…Ø± ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„Ø®Ø§ØµÙŠØ© Ù…ØµÙ…Ù…Ø© Ø¨ÙˆØ§Ø³Ø·Ø© [service container](/docs/{{version}}/container)
+ÙˆÙ…Ø³Ø¬ÙÙ„Ø© Ù…Ø¹ Artisan
 
     protected $commands = [
         Commands\SendEmails::class
     ];
 
-<a name="programmatically-executing-commands"></a> ÊäİíĞ ÇáÃæÇãÑ ÈÑãÌíÇ
-## Programmatically Executing Commands  ÊäİíĞ ÇáÃæÇãÑ ÈÑãÌíÇ  
+<a name="programmatically-executing-commands"></a> ØªÙ†ÙÙŠØ° Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ø¨Ø±Ù…Ø¬ÙŠØ§
+## Programmatically Executing Commands  ØªÙ†ÙÙŠØ° Ø§Ù„Ø£ÙˆØ§Ù…Ø± Ø¨Ø±Ù…Ø¬ÙŠØ§  
 
 Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to execute an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts either the command's signature name or class name as its first argument, and an array of command parameters as the second argument. The exit code will be returned:
 
-ÊäİíĞ ÃæÇãÑ Artisan Öãä ÇáãÓÇÑ route Ãæ ÇáãÊÍßã controller
-ÇÓÊÎÏÇã ÇáØÑíŞÉ `call`  İí æÇÌåÉ `Artisan`
-åĞå ÇáØÑíŞÉ ÊÃÎĞ İí ÇáãÊÛíÑ ÇáÃæá ÇÓã ÇáÕİ æİí ÇáãÊÛíÑ ÇáËÇäí ãÕİæİÉ ãÊÛíÑÇÊ ÇáÃãÑ
+ØªÙ†ÙÙŠØ° Ø£ÙˆØ§Ù…Ø± Artisan Ø¶Ù…Ù† Ø§Ù„Ù…Ø³Ø§Ø± route Ø£Ùˆ Ø§Ù„Ù…ØªØ­ÙƒÙ… controller
+Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `call`  ÙÙŠ ÙˆØ§Ø¬Ù‡Ø© `Artisan`
+Ù‡Ø°Ù‡ Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© ØªØ£Ø®Ø° ÙÙŠ Ø§Ù„Ù…ØªØºÙŠØ± Ø§Ù„Ø£ÙˆÙ„ Ø§Ø³Ù… Ø§Ù„ØµÙ ÙˆÙÙŠ Ø§Ù„Ù…ØªØºÙŠØ± Ø§Ù„Ø«Ø§Ù†ÙŠ Ù…ØµÙÙˆÙØ© Ù…ØªØºÙŠØ±Ø§Øª Ø§Ù„Ø£Ù…Ø±
     use Illuminate\Support\Facades\Artisan;
 
     Route::post('/user/{user}/mail', function ($user) {
@@ -726,16 +726,16 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 
 Alternatively, you may pass the entire Artisan command to the `call` method as a string:
 
-ÈÏáÇ" ãä Ğáß íãßä ÅÏÎÇáå ÈÔßá äÕí 
+Ø¨Ø¯Ù„Ø§" Ù…Ù† Ø°Ù„Ùƒ ÙŠÙ…ÙƒÙ† Ø¥Ø¯Ø®Ø§Ù„Ù‡ Ø¨Ø´ÙƒÙ„ Ù†ØµÙŠ 
 
     Artisan::call('mail:send 1 --queue=default');
 
-<a name="passing-array-values"></a> ÊãÑíÑ ãÕİæİÉ Şíã 
-#### Passing Array Values ÊãÑíÑ ãÕİæİÉ Şíã 
+<a name="passing-array-values"></a> ØªÙ…Ø±ÙŠØ± Ù…ØµÙÙˆÙØ© Ù‚ÙŠÙ… 
+#### Passing Array Values ØªÙ…Ø±ÙŠØ± Ù…ØµÙÙˆÙØ© Ù‚ÙŠÙ… 
 
 If your command defines an option that accepts an array, you may pass an array of values to that option:
 
-ÅĞÇ ßÇä ÇáÃãÑ íÍæí ÎíÇÑ íŞÈá ãÕİæİÉ íãÑÑ ãÕİæİÉ Şíã 
+Ø¥Ø°Ø§ ÙƒØ§Ù† Ø§Ù„Ø£Ù…Ø± ÙŠØ­ÙˆÙŠ Ø®ÙŠØ§Ø± ÙŠÙ‚Ø¨Ù„ Ù…ØµÙÙˆÙØ© ÙŠÙ…Ø±Ø± Ù…ØµÙÙˆÙØ© Ù‚ÙŠÙ… 
 
     use Illuminate\Support\Facades\Artisan;
 
@@ -745,25 +745,25 @@ If your command defines an option that accepts an array, you may pass an array o
         ]);
     });
 
-<a name="passing-boolean-values"></a> ÊãÑíÑ Şíã ãäØŞíÉ 
-#### Passing Boolean Values ÊãÑíÑ Şíã ãäØŞíÉ 
+<a name="passing-boolean-values"></a> ØªÙ…Ø±ÙŠØ± Ù‚ÙŠÙ… Ù…Ù†Ø·Ù‚ÙŠØ© 
+#### Passing Boolean Values ØªÙ…Ø±ÙŠØ± Ù‚ÙŠÙ… Ù…Ù†Ø·Ù‚ÙŠØ© 
 
 If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you should pass `true` or `false` as the value of the option:
 
-ÚäÏ ÊÍÏíÏ ŞíãÉ áÎíÇÑ áíÓÊ äÕíÉ ãËáÇ ŞíãÉ `--force`  İí ÇáÃãÑ `migrate:refresh`
-íÌÈ ÊãÑíÑ `true` Ãæ `false  ßŞíãÉ ááÎíÇÑ 
+Ø¹Ù†Ø¯ ØªØ­Ø¯ÙŠØ¯ Ù‚ÙŠÙ…Ø© Ù„Ø®ÙŠØ§Ø± Ù„ÙŠØ³Øª Ù†ØµÙŠØ© Ù…Ø«Ù„Ø§ Ù‚ÙŠÙ…Ø© `--force`  ÙÙŠ Ø§Ù„Ø£Ù…Ø± `migrate:refresh`
+ÙŠØ¬Ø¨ ØªÙ…Ø±ÙŠØ± `true` Ø£Ùˆ `false  ÙƒÙ‚ÙŠÙ…Ø© Ù„Ù„Ø®ÙŠØ§Ø± 
 
     $exitCode = Artisan::call('migrate:refresh', [
         '--force' => true,
     ]);
 
-<a name="queueing-artisan-commands"></a> Artisan  ÑÊá ÃæÇãÑ 
-#### Queueing Artisan Commands Artisan  ÑÊá ÃæÇãÑ 
+<a name="queueing-artisan-commands"></a> Artisan  Ø±ØªÙ„ Ø£ÙˆØ§Ù…Ø± 
+#### Queueing Artisan Commands Artisan  Ø±ØªÙ„ Ø£ÙˆØ§Ù…Ø± 
 
 Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/{{version}}/queues). Before using this method, make sure you have configured your queue and are running a queue listener:
 
-ÇÓÊÎÏÇã ÇáØÑíŞÉ `queue`
-ŞÈá ÇÓÊÎÏÇãåÇ ÊÃßÏ ãä ÇÚÏÇÏÇÊ ÇáÑÊá æÊÔÛíá ãÓÊãÚ ÇáÑÊá
+Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `queue`
+Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù…Ù‡Ø§ ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø±ØªÙ„ ÙˆØªØ´ØºÙŠÙ„ Ù…Ø³ØªÙ…Ø¹ Ø§Ù„Ø±ØªÙ„
 
     use Illuminate\Support\Facades\Artisan;
 
@@ -777,18 +777,18 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
 
 Using the `onConnection` and `onQueue` methods, you may specify the connection or queue the Artisan command should be dispatched to:
 
-ÇÓÊÎÏÇã ÇáØÑŞ`onConnection`  æ `onQueue`  áÊÍÏíÏ áÇÊÕÇá Çæ ÇáÇãÑ ÇáĞí íÌÈ Ãä íÑÓá 
+Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø·Ø±Ù‚`onConnection`  Ùˆ `onQueue`  Ù„ØªØ­Ø¯ÙŠØ¯ Ù„Ø§ØªØµØ§Ù„ Ø§Ùˆ Ø§Ù„Ø§Ù…Ø± Ø§Ù„Ø°ÙŠ ÙŠØ¬Ø¨ Ø£Ù† ÙŠØ±Ø³Ù„ 
 
     Artisan::queue('mail:send', [
         'user' => 1, '--queue' => 'default'
     ])->onConnection('redis')->onQueue('commands');
 
-<a name="calling-commands-from-other-commands"></a> äÏÇÁ ÃæÇãÑ ãä ÃæÇãÑ ÃÎÑì 
-### Calling Commands From Other Commands äÏÇÁ ÃæÇãÑ ãä ÃæÇãÑ ÃÎÑì 
+<a name="calling-commands-from-other-commands"></a> Ù†Ø¯Ø§Ø¡ Ø£ÙˆØ§Ù…Ø± Ù…Ù† Ø£ÙˆØ§Ù…Ø± Ø£Ø®Ø±Ù‰ 
+### Calling Commands From Other Commands Ù†Ø¯Ø§Ø¡ Ø£ÙˆØ§Ù…Ø± Ù…Ù† Ø£ÙˆØ§Ù…Ø± Ø£Ø®Ø±Ù‰ 
 
 Sometimes you may wish to call other commands from an existing Artisan command. You may do so using the `call` method. This `call` method accepts the command name and an array of command arguments / options:
 
-äÓÊÎÏã ÇáØÑíŞÉ`call`  ÊŞÈá ÇÓã ÇáÃãÑ æãÕİæİÉ ÈÇáÎíÇÑÇÊ æÇáãÊÛíÑÇÊ 
+Ù†Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø·Ø±ÙŠÙ‚Ø©`call`  ØªÙ‚Ø¨Ù„ Ø§Ø³Ù… Ø§Ù„Ø£Ù…Ø± ÙˆÙ…ØµÙÙˆÙØ© Ø¨Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª ÙˆØ§Ù„Ù…ØªØºÙŠØ±Ø§Øª 
 
     /**
      * Execute the console command.
@@ -806,22 +806,22 @@ Sometimes you may wish to call other commands from an existing Artisan command. 
 
 If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:
 
-ÇáØÑíŞÉ `callSilently` áäÏÇÁ ÃãÑ console  ÃÎÑ æ ßÊã ÎÑÌå 
+Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `callSilently` Ù„Ù†Ø¯Ø§Ø¡ Ø£Ù…Ø± console  Ø£Ø®Ø± Ùˆ ÙƒØªÙ… Ø®Ø±Ø¬Ù‡ 
 
     $this->callSilently('mail:send', [
         'user' => 1, '--queue' => 'default'
     ]);
 
-<a name="signal-handling"></a> ãÚÇáÌÉ ÇáÅÔÇÑÉ
-## Signal Handling ãÚÇáÌÉ ÇáÅÔÇÑÉ
+<a name="signal-handling"></a> Ù…Ø¹Ø§Ù„Ø¬Ø© Ø§Ù„Ø¥Ø´Ø§Ø±Ø©
+## Signal Handling Ù…Ø¹Ø§Ù„Ø¬Ø© Ø§Ù„Ø¥Ø´Ø§Ø±Ø©
 
 The Symfony Console component, which powers the Artisan console, allows you to indicate which process signals (if any) your command handles. For example, you may indicate that your command handles the `SIGINT` and `SIGTERM` signals.
 
 To get started, you should implement the `Symfony\Component\Console\Command\SignalableCommandInterface` interface on your Artisan command class. This interface requires you to define two methods: `getSubscribedSignals` and `handleSignal`:
 
-íÌÈ ÊÍŞíŞ ÇáæÇÌåÉ `Symfony\Component\Console\Command\SignalableCommandInterface` 
-İí Õİ ÃãÑ Artisan
-ÊÊØáÈ ÊÚÑíİ ØÑíŞÊíä`getSubscribedSignals`  æ`handleSignal`
+ÙŠØ¬Ø¨ ØªØ­Ù‚ÙŠÙ‚ Ø§Ù„ÙˆØ§Ø¬Ù‡Ø© `Symfony\Component\Console\Command\SignalableCommandInterface` 
+ÙÙŠ ØµÙ Ø£Ù…Ø± Artisan
+ØªØªØ·Ù„Ø¨ ØªØ¹Ø±ÙŠÙ Ø·Ø±ÙŠÙ‚ØªÙŠÙ†`getSubscribedSignals`  Ùˆ`handleSignal`
  
 
 ```php
@@ -862,17 +862,17 @@ class StartServer extends Command implements SignalableCommandInterface
 
 As you might expect, the `getSubscribedSignals` method should return an array of the signals that your command can handle, while the `handleSignal` method receives the signal and can respond accordingly.
 
-ÇáØÑíŞÉ `getSubscribedSignals`  ÊÚíÏ ãÕİæİÉ ÅÔÇÑÇÊ íÚÇáÌåÇ ÇáÃãÑ 
-ÇáØÑíŞÉ `handleSignal`  ÊÓÊŞÈá ÇáÅÔÇÑÇÊ
+Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `getSubscribedSignals`  ØªØ¹ÙŠØ¯ Ù…ØµÙÙˆÙØ© Ø¥Ø´Ø§Ø±Ø§Øª ÙŠØ¹Ø§Ù„Ø¬Ù‡Ø§ Ø§Ù„Ø£Ù…Ø± 
+Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© `handleSignal`  ØªØ³ØªÙ‚Ø¨Ù„ Ø§Ù„Ø¥Ø´Ø§Ø±Ø§Øª
 
-<a name="stub-customization"></a> ÊÎÕíÕ ÌÒÁ 
-## Stub Customization ÊÎÕíÕ ÌÒÁ 
+<a name="stub-customization"></a> ØªØ®ØµÙŠØµ Ø¬Ø²Ø¡ 
+## Stub Customization ØªØ®ØµÙŠØµ Ø¬Ø²Ø¡ 
 The Artisan console's `make` commands are used to create a variety of classes, such as controllers, jobs, migrations, and tests. These classes are generated using "stub" files that are populated with values based on your input. However, you may want to make small changes to files generated by Artisan. To accomplish this, you may use the `stub:publish` command to publish the most common stubs to your application so that you can customize them:
 
-ÃæÇãÑ Artisan console's `make` áÅäÔÇÁ Õİæİ ãËá controllers æ jobs æ migrations æ tests
-åĞå ÇáÕİæİ ÊÓÊÎÏã ãáİÇÊ stub
-ÊÊÖãä Şíã ÊÚÊãÏ Úáì ÏÎáß
-äÓÊÎÏã`stub:publish`  áäÔÑ stubs İí ÇáÊØÈíŞ ÈÇáÊÇáí íãßä ÊÎÕíÕåã
+Ø£ÙˆØ§Ù…Ø± Artisan console's `make` Ù„Ø¥Ù†Ø´Ø§Ø¡ ØµÙÙˆÙ Ù…Ø«Ù„ controllers Ùˆ jobs Ùˆ migrations Ùˆ tests
+Ù‡Ø°Ù‡ Ø§Ù„ØµÙÙˆÙ ØªØ³ØªØ®Ø¯Ù… Ù…Ù„ÙØ§Øª stub
+ØªØªØ¶Ù…Ù† Ù‚ÙŠÙ… ØªØ¹ØªÙ…Ø¯ Ø¹Ù„Ù‰ Ø¯Ø®Ù„Ùƒ
+Ù†Ø³ØªØ®Ø¯Ù…`stub:publish`  Ù„Ù†Ø´Ø± stubs ÙÙŠ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ Ø¨Ø§Ù„ØªØ§Ù„ÙŠ ÙŠÙ…ÙƒÙ† ØªØ®ØµÙŠØµÙ‡Ù…
 
 
 
@@ -882,17 +882,17 @@ php artisan stub:publish
 
 The published stubs will be located within a `stubs` directory in the root of your application. Any changes you make to these stubs will be reflected when you generate their corresponding classes using Artisan's `make` commands.
 
-ÊÊæÖÚ stubs Öãä ãÌáÏ stubs İí ÌĞÑ ÇáÊØÈíŞ 
+ØªØªÙˆØ¶Ø¹ stubs Ø¶Ù…Ù† Ù…Ø¬Ù„Ø¯ stubs ÙÙŠ Ø¬Ø°Ø± Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ 
 
-<a name="events"></a> ÇáÃÍÏÇË 
-## Events ÇáÃÍÏÇË 
+<a name="events"></a> Ø§Ù„Ø£Ø­Ø¯Ø§Ø« 
+## Events Ø§Ù„Ø£Ø­Ø¯Ø§Ø« 
 
 Artisan dispatches three events when running commands: `Illuminate\Console\Events\ArtisanStarting`, `Illuminate\Console\Events\CommandStarting`, and `Illuminate\Console\Events\CommandFinished`. The `ArtisanStarting` event is dispatched immediately when Artisan starts running. Next, the `CommandStarting` event is dispatched immediately before a command runs. Finally, the `CommandFinished` event is dispatched once a command finishes executing.
 
 
-ÊÑÓá Artisan ËáÇË ÃÍÏÇË ÚäÏ ÊÔÛíá ÇáÃæÇãÑ
+ØªØ±Ø³Ù„ Artisan Ø«Ù„Ø§Ø« Ø£Ø­Ø¯Ø§Ø« Ø¹Ù†Ø¯ ØªØ´ØºÙŠÙ„ Ø§Ù„Ø£ÙˆØ§Ù…Ø±
 `Illuminate\Console\Events\ArtisanStarting`, `Illuminate\Console\Events\CommandStarting`, `Illuminate\Console\Events\CommandFinished`.
-ÇáÍÏË `ArtisanStarting`  íõÑÓá ãÈÇÔÑÉ ÚäÏ ÊÔÛíá artisan
-ÇáÍÏË`CommandStarting`  íõÑÓá ãÈÇÔÑÉ ŞÈá ÊÔÛíá ÇáÃãÑ
-ÇáÍÏË`CommandFinished`  íõÑÓá ãÈÇÔÑÉ ÚäÏ ÇäÊåÇÁ ÊäİíĞ ÇáÃãÑ
+Ø§Ù„Ø­Ø¯Ø« `ArtisanStarting`  ÙŠÙØ±Ø³Ù„ Ù…Ø¨Ø§Ø´Ø±Ø© Ø¹Ù†Ø¯ ØªØ´ØºÙŠÙ„ artisan
+Ø§Ù„Ø­Ø¯Ø«`CommandStarting`  ÙŠÙØ±Ø³Ù„ Ù…Ø¨Ø§Ø´Ø±Ø© Ù‚Ø¨Ù„ ØªØ´ØºÙŠÙ„ Ø§Ù„Ø£Ù…Ø±
+Ø§Ù„Ø­Ø¯Ø«`CommandFinished`  ÙŠÙØ±Ø³Ù„ Ù…Ø¨Ø§Ø´Ø±Ø© Ø¹Ù†Ø¯ Ø§Ù†ØªÙ‡Ø§Ø¡ ØªÙ†ÙÙŠØ° Ø§Ù„Ø£Ù…Ø±
 
