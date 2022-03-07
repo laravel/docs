@@ -151,22 +151,22 @@ These methods may be combined with additional constraints to create even more fi
 
 A list of additional schedule constraints may be found below:
 
-Method  | Description
-------------- | -------------
-`->weekdays();`  |  Limit the task to weekdays
-`->weekends();`  |  Limit the task to weekends
-`->sundays();`  |  Limit the task to Sunday
-`->mondays();`  |  Limit the task to Monday
-`->tuesdays();`  |  Limit the task to Tuesday
-`->wednesdays();`  |  Limit the task to Wednesday
-`->thursdays();`  |  Limit the task to Thursday
-`->fridays();`  |  Limit the task to Friday
-`->saturdays();`  |  Limit the task to Saturday
-`->days(array\|mixed);`  |  Limit the task to specific days
-`->between($startTime, $endTime);`  |  Limit the task to run between start and end times
-`->unlessBetween($startTime, $endTime);`  |  Limit the task to not run between start and end times
-`->when(Closure);`  |  Limit the task based on a truth test
-`->environments($env);`  |  Limit the task to specific environments
+| Method                                   | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `->weekdays();`                          | Limit the task to weekdays                            |
+| `->weekends();`                          | Limit the task to weekends                            |
+| `->sundays();`                           | Limit the task to Sunday                              |
+| `->mondays();`                           | Limit the task to Monday                              |
+| `->tuesdays();`                          | Limit the task to Tuesday                             |
+| `->wednesdays();`                        | Limit the task to Wednesday                           |
+| `->thursdays();`                         | Limit the task to Thursday                            |
+| `->fridays();`                           | Limit the task to Friday                              |
+| `->saturdays();`                         | Limit the task to Saturday                            |
+| `->days(array\                           | mixed);`                                              |  Limit the task to specific days
+| `->between($startTime, $endTime);`       | Limit the task to run between start and end times     |
+| `->unlessBetween($startTime, $endTime);` | Limit the task to not run between start and end times |
+| `->when(Closure);`                       | Limit the task based on a truth test                  |
+| `->environments($env);`                  | Limit the task to specific environments               |
 
 <a name="day-constraints"></a>
 #### Day Constraints
