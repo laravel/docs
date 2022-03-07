@@ -399,18 +399,18 @@ If you are in a nested loop, you may access the parent loop's `$loop` variable v
 
 The `$loop` variable also contains a variety of other useful properties:
 
-Property  | Description
-------------- | -------------
-`$loop->index`  |  The index of the current loop iteration (starts at 0).
-`$loop->iteration`  |  The current loop iteration (starts at 1).
-`$loop->remaining`  |  The iterations remaining in the loop.
-`$loop->count`  |  The total number of items in the array being iterated.
-`$loop->first`  |  Whether this is the first iteration through the loop.
-`$loop->last`  |  Whether this is the last iteration through the loop.
-`$loop->even`  |  Whether this is an even iteration through the loop.
-`$loop->odd`  |  Whether this is an odd iteration through the loop.
-`$loop->depth`  |  The nesting level of the current loop.
-`$loop->parent`  |  When in a nested loop, the parent's loop variable.
+| Property           | Description                                            |
+|--------------------|--------------------------------------------------------|
+| `$loop->index`     | The index of the current loop iteration (starts at 0). |
+| `$loop->iteration` | The current loop iteration (starts at 1).              |
+| `$loop->remaining` | The iterations remaining in the loop.                  |
+| `$loop->count`     | The total number of items in the array being iterated. |
+| `$loop->first`     | Whether this is the first iteration through the loop.  |
+| `$loop->last`      | Whether this is the last iteration through the loop.   |
+| `$loop->even`      | Whether this is an even iteration through the loop.    |
+| `$loop->odd`       | Whether this is an odd iteration through the loop.     |
+| `$loop->depth`     | The nesting level of the current loop.                 |
+| `$loop->parent`    | When in a nested loop, the parent's loop variable.     |
 
 <a name="conditional-classes"></a>
 ### Conditional Classes
