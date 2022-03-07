@@ -1026,14 +1026,14 @@ You may drop multiple columns from a table by passing an array of column names t
 
 Laravel provides several convenient methods related to dropping common types of columns. Each of these methods is described in the table below:
 
-Command  |  Description
--------  |  -----------
-`$table->dropMorphs('morphable');`  |  Drop the `morphable_id` and `morphable_type` columns.
-`$table->dropRememberToken();`  |  Drop the `remember_token` column.
-`$table->dropSoftDeletes();`  |  Drop the `deleted_at` column.
-`$table->dropSoftDeletesTz();`  |  Alias of `dropSoftDeletes()` method.
-`$table->dropTimestamps();`  |  Drop the `created_at` and `updated_at` columns.
-`$table->dropTimestampsTz();` |  Alias of `dropTimestamps()` method.
+| Command                            | Description                                           |
+|------------------------------------|-------------------------------------------------------|
+| `$table->dropMorphs('morphable');` | Drop the `morphable_id` and `morphable_type` columns. |
+| `$table->dropRememberToken();`     | Drop the `remember_token` column.                     |
+| `$table->dropSoftDeletes();`       | Drop the `deleted_at` column.                         |
+| `$table->dropSoftDeletesTz();`     | Alias of `dropSoftDeletes()` method.                  |
+| `$table->dropTimestamps();`        | Drop the `created_at` and `updated_at` columns.       |
+| `$table->dropTimestampsTz();`      | Alias of `dropTimestamps()` method.                   |
 
 <a name="indexes"></a>
 ## Indexes
