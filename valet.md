@@ -407,16 +407,16 @@ If you would like to define a custom Valet driver for a single application, crea
 <a name="other-valet-commands"></a>
 ## Other Valet Commands
 
-Command  | Description
-------------- | -------------
-`valet forget` | Run this command from a "parked" directory to remove it from the parked directory list.
-`valet log` | View a list of logs which are written by Valet's services.
-`valet paths` | View all of your "parked" paths.
-`valet restart` | Restart the Valet daemons.
-`valet start` | Start the Valet daemons.
-`valet stop` | Stop the Valet daemons.
-`valet trust` | Add sudoers files for Brew and Valet to allow Valet commands to be run without prompting for your password.
-`valet uninstall` | Uninstall Valet: shows instructions for manual uninstall. Pass the `--force` option to aggressively delete all of Valet's resources.
+| Command           | Description                                                                                                                          |
+|-------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `valet forget`    | Run this command from a "parked" directory to remove it from the parked directory list.                                              |
+| `valet log`       | View a list of logs which are written by Valet's services.                                                                           |
+| `valet paths`     | View all of your "parked" paths.                                                                                                     |
+| `valet restart`   | Restart the Valet daemons.                                                                                                           |
+| `valet start`     | Start the Valet daemons.                                                                                                             |
+| `valet stop`      | Stop the Valet daemons.                                                                                                              |
+| `valet trust`     | Add sudoers files for Brew and Valet to allow Valet commands to be run without prompting for your password.                          |
+| `valet uninstall` | Uninstall Valet: shows instructions for manual uninstall. Pass the `--force` option to aggressively delete all of Valet's resources. |
 
 <a name="valet-directories-and-files"></a>
 ## Valet Directories & Files
