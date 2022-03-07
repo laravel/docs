@@ -111,6 +111,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::isAscii](#method-str-is-ascii)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
+[Str::lcfirst](#method-str-lcfirst)
 [Str::length](#method-str-length)
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
@@ -181,6 +182,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
+[lcfirst](#method-fluent-str-lcfirst)
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
@@ -1432,6 +1434,17 @@ The `Str::kebab` method converts the given string to `kebab-case`:
     $converted = Str::kebab('fooBar');
 
     // foo-bar
+    
+<a name="method-str-lcfirst"></a>
+#### `Str::lcfirst()` {.collection-method}
+
+The `Str::lcfirst` method returns the given string with the first character lowercased:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::lcfirst('Foo Bar');
+
+    // foo Bar
 
 <a name="method-str-length"></a>
 #### `Str::length()` {.collection-method}
@@ -2283,6 +2296,18 @@ The `kebab` method converts the given string to `kebab-case`:
     $converted = Str::of('fooBar')->kebab();
 
     // foo-bar
+    
+<a name="method-str-fluent-lcfirst"></a>
+#### `lcfirst()` {.collection-method}
+
+The `lcfirst` method returns the given string with the first character lowercased:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Foo Bar')->lcfirst();
+
+    // foo Bar
+
 
 <a name="method-fluent-str-length"></a>
 #### `length` {.collection-method}
