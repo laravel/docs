@@ -159,15 +159,15 @@ You may even register many resource controllers at once by passing an array to t
 <a name="actions-handled-by-resource-controller"></a>
 #### Actions Handled By Resource Controller
 
-Verb      | URI                    | Action       | Route Name
-----------|------------------------|--------------|---------------------
-GET       | `/photos`              | index        | photos.index
-GET       | `/photos/create`       | create       | photos.create
-POST      | `/photos`              | store        | photos.store
-GET       | `/photos/{photo}`      | show         | photos.show
-GET       | `/photos/{photo}/edit` | edit         | photos.edit
-PUT/PATCH | `/photos/{photo}`      | update       | photos.update
-DELETE    | `/photos/{photo}`      | destroy      | photos.destroy
+| Verb      | URI                    | Action  | Route Name     |
+|-----------|------------------------|---------|----------------|
+| GET       | `/photos`              | index   | photos.index   |
+| GET       | `/photos/create`       | create  | photos.create  |
+| POST      | `/photos`              | store   | photos.store   |
+| GET       | `/photos/{photo}`      | show    | photos.show    |
+| GET       | `/photos/{photo}/edit` | edit    | photos.edit    |
+| PUT/PATCH | `/photos/{photo}`      | update  | photos.update  |
+| DELETE    | `/photos/{photo}`      | destroy | photos.destroy |
 
 <a name="customizing-missing-model-behavior"></a>
 #### Customizing Missing Model Behavior
