@@ -360,21 +360,21 @@ Each paginator instance provides additional pagination information via the follo
 
 Each cursor paginator instance provides additional pagination information via the following methods:
 
-Method  |  Description
--------  |  -----------
-`$paginator->count()`  |  Get the number of items for the current page.
-`$paginator->cursor()`  |  Get the current cursor instance.
-`$paginator->getOptions()`  |  Get the paginator options.
-`$paginator->hasPages()`  |  Determine if there are enough items to split into multiple pages.
-`$paginator->hasMorePages()`  |  Determine if there are more items in the data store.
-`$paginator->getCursorName()`  |  Get the query string variable used to store the cursor.
-`$paginator->items()`  |  Get the items for the current page.
-`$paginator->nextCursor()`  |  Get the cursor instance for the next set of items.
-`$paginator->nextPageUrl()`  |  Get the URL for the next page.
-`$paginator->onFirstPage()`  |  Determine if the paginator is on the first page.
-`$paginator->onLastPage()`  |  Determine if the paginator is on the last page.
-`$paginator->perPage()`  |  The number of items to be shown per page.
-`$paginator->previousCursor()`  |  Get the cursor instance for the previous set of items.
-`$paginator->previousPageUrl()`  |  Get the URL for the previous page.
-`$paginator->setCursorName()`  |  Set the query string variable used to store the cursor.
-`$paginator->url($cursor)`  |  Get the URL for a given cursor instance.
+| Method                          | Description                                                       |
+|---------------------------------|-------------------------------------------------------------------|
+| `$paginator->count()`           | Get the number of items for the current page.                     |
+| `$paginator->cursor()`          | Get the current cursor instance.                                  |
+| `$paginator->getOptions()`      | Get the paginator options.                                        |
+| `$paginator->hasPages()`        | Determine if there are enough items to split into multiple pages. |
+| `$paginator->hasMorePages()`    | Determine if there are more items in the data store.              |
+| `$paginator->getCursorName()`   | Get the query string variable used to store the cursor.           |
+| `$paginator->items()`           | Get the items for the current page.                               |
+| `$paginator->nextCursor()`      | Get the cursor instance for the next set of items.                |
+| `$paginator->nextPageUrl()`     | Get the URL for the next page.                                    |
+| `$paginator->onFirstPage()`     | Determine if the paginator is on the first page.                  |
+| `$paginator->onLastPage()`      | Determine if the paginator is on the last page.                   |
+| `$paginator->perPage()`         | The number of items to be shown per page.                         |
+| `$paginator->previousCursor()`  | Get the cursor instance for the previous set of items.            |
+| `$paginator->previousPageUrl()` | Get the URL for the previous page.                                |
+| `$paginator->setCursorName()`   | Set the query string variable used to store the cursor.           |
+| `$paginator->url($cursor)`      | Get the URL for a given cursor instance.                          |
