@@ -181,7 +181,7 @@ Using the `ParallelTesting` facade, you may specify code to be executed on the `
 <a name="accessing-the-parallel-testing-token"></a>
 #### Accessing The Parallel Testing Token
 
-If you would like to access to current parallel process "token" from any other location in your application's test code, you may use the `token` method. This token is a unique, string identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:
+If you would like to access the current parallel process "token" from any other location in your application's test code, you may use the `token` method. This token is a unique, string identifier for an individual test process and may be used to segment resources across parallel test processes. For example, Laravel automatically appends this token to the end of the test databases created by each parallel testing process:
 
     $token = ParallelTesting::token();
 
