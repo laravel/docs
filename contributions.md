@@ -80,8 +80,6 @@ Informal discussion regarding bugs, new features, and implementation of existing
 
 **Major** new features or features with breaking changes should always be sent to the `master` branch, which contains the upcoming release.
 
-If you are unsure if your feature qualifies as a major or minor, you can [review supported Laravel versions here](/docs/{{version}}/releases#support-policy).
-
 <a name="compiled-assets"></a>
 ## Compiled Assets
 
