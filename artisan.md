@@ -154,7 +154,7 @@ Let's take a look at an example command. Note that we are able to request any de
         }
     }
 
-> {tip} For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
+> {tip} For greater code reuse, it is good practice keeping your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
 
 <a name="closure-commands"></a>
 ### Closure Commands
