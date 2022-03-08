@@ -13,6 +13,9 @@
     - [File URLs](#file-urls)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
+    - [Prepending & Appending To Files](#prepending-appending-to-files)
+    - [Copying & Moving Files](#copying-moving-files)
+    - [Automatic Streaming](#automatic-streaming)
     - [File Uploads](#file-uploads)
     - [File Visibility](#file-visibility)
 - [Deleting Files](#deleting-files)
@@ -330,8 +333,26 @@ If you wish, you may define the `throw` option within your filesystem disk's con
         'throw' => true,
     ],
 
+<a name="prepending-appending-to-files"></a>
+### Prepending & Appending To Files
+
+The `prepend` and `append` methods allow you to write to the beginning or end of a file:
+
+    Storage::prepend('file.log', 'Prepended Text');
+
+    Storage::append('file.log', 'Appended Text');
+
+<a name="copying-moving-files"></a>
+### Copying & Moving Files
+
+The `copy` method may be used to copy an existing file to a new location on the disk, while the `move` method may be used to rename or move an existing file to a new location:
+
+    Storage::copy('old/file.jpg', 'new/file.jpg');
+
+    Storage::move('old/file.jpg', 'new/file.jpg');
+
 <a name="automatic-streaming"></a>
-#### Automatic Streaming
+### Automatic Streaming
 
 Streaming files to storage offers significantly reduced memory usage. If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either an `Illuminate\Http\File` or `Illuminate\Http\UploadedFile` instance and will automatically stream the file to your desired location:
 
@@ -349,24 +370,6 @@ There are a few important things to note about the `putFile` method. Note that w
 The `putFile` and `putFileAs` methods also accept an argument to specify the "visibility" of the stored file. This is particularly useful if you are storing the file on a cloud disk such as Amazon S3 and would like the file to be publicly accessible via generated URLs:
 
     Storage::putFile('photos', new File('/path/to/photo'), 'public');
-
-<a name="prepending-appending-to-files"></a>
-#### Prepending & Appending To Files
-
-The `prepend` and `append` methods allow you to write to the beginning or end of a file:
-
-    Storage::prepend('file.log', 'Prepended Text');
-
-    Storage::append('file.log', 'Appended Text');
-
-<a name="copying-moving-files"></a>
-#### Copying & Moving Files
-
-The `copy` method may be used to copy an existing file to a new location on the disk, while the `move` method may be used to rename or move an existing file to a new location:
-
-    Storage::copy('old/file.jpg', 'new/file.jpg');
-
-    Storage::move('old/file.jpg', 'new/file.jpg');
 
 <a name="file-uploads"></a>
 ### File Uploads
