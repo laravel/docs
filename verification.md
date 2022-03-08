@@ -9,6 +9,7 @@
     - [Resending The Verification Email](#resending-the-verification-email)
     - [Protecting Routes](#protecting-routes)
 - [Customization](#customization)
+    - [Verification Email Customization](#verification-email-customization)
 - [Events](#events)
 
 <a name="introduction"></a>
