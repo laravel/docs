@@ -322,7 +322,7 @@ If the `put` method (or other "write" operations) is unable to write the file to
         // The file could not be written to disk...
     }
 
-Alternatively, you may define the `throw` option within your filesystem disk's configuration array. When this option is defined as `true`, "write" methods such as `put` will throw an instance of `League\Flysystem\UnableToWriteFile` when write operations fail:
+If you wish, you may define the `throw` option within your filesystem disk's configuration array. When this option is defined as `true`, "write" methods such as `put` will throw an instance of `League\Flysystem\UnableToWriteFile` when write operations fail:
 
     'public' => [
         'driver' => 'local',
