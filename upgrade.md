@@ -88,6 +88,8 @@ First, the `report`, `render`, `shouldReport`, and `renderForConsole` methods of
     public function shouldReport(Throwable $exception);
     public function render($request, Throwable $exception);
     public function renderForConsole($output, Throwable $exception);
+    
+Additionally, any `failed` methods implemented on queued jobs should accept instances of `Throwable` instead of `Exception` instances.
 
 Next, please update your `session` configuration file's `secure` option to have a fallback value of `null`:
 
