@@ -324,7 +324,15 @@ Write operations such as `put`, `write`, and `writeStream` now overwrite existin
 
 #### Write Exceptions
 
-Write operations such as `put`, `write`, and `writeStream` no longer throw an exception when a write operation fails. Instead, `false` is returned.
+Write operations such as `put`, `write`, and `writeStream` no longer throw an exception when a write operation fails. Instead, `false` is returned. If you would like to preserve the previous behavior which threw exceptions, you may define the `throw` option within a filesystem disk's configuration array:
+
+```php
+'public' => [
+    'driver' => 'local',
+    // ...
+    'throw' => true,
+],
+```
 
 #### Reading Missing Files
 
