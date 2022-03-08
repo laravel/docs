@@ -313,6 +313,23 @@ The `put` method may be used to store file contents on a disk. You may also pass
 
     Storage::put('file.jpg', $resource);
 
+<a name="failed-writes"></a>
+#### Failed Writes
+
+If the `put` method (or other "write" operations) is unable to write the file to disk, `false` will be returned:
+
+    if (! Storage::put('file.jpg', $contents)) {
+        // The file could not be written to disk...
+    }
+
+Alternatively, you may define the `throw` option within your filesystem disk's configuration array. When this option is defined as `true`, "write" methods such as `put` will throw an instance of `League\Flysystem\UnableToWriteFile` when write operations fail:
+
+    'public' => [
+        'driver' => 'local',
+        // ...
+        'throw' => true,
+    ],
+
 <a name="automatic-streaming"></a>
 #### Automatic Streaming
 
