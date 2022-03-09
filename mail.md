@@ -11,6 +11,7 @@
     - [View Data](#view-data)
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
+    - [Adding Tags & Metadata](#adding-tags-metadata)
     - [Customizing The Symfony Message](#customizing-the-symfony-message)
 - [Markdown Mailables](#markdown-mailables)
     - [Generating Markdown Mailables](#generating-markdown-mailables)
@@ -469,6 +470,23 @@ If you already have a raw image data string you wish to embed into an email temp
     <img src="{{ $message->embedData($data, 'example-image.jpg') }}">
 </body>
 ```
+
+<a name="adding-tags-metadata"></a>
+### Adding Tags & Metadata
+
+Tags and metadata can be added to your `Mailable` - these are used by your email service for filtering/processing:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('emails.orders.shipped')
+                    ->tag('shipment')
+                    ->metadata('order_id', $this->order->id);
+    }
 
 <a name="customizing-the-symfony-message"></a>
 ### Customizing The Symfony Message
