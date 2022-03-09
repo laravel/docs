@@ -146,6 +146,28 @@ You may type-hint dependencies for your service provider's `boot` method. The [s
             //
         });
     }
+    
+
+<a name="call-after-resolving"></a>
+#### Call After Resolving
+
+You can use the `callAfterResolving()` method, when working with other packages that provide Blade directives or Blade components - especially if those packages use `app()->afterResolving()`. This will ensure that your callback gets run after the Blade compiler has been registered:
+
+    use Illuminate\View\Compilers\BladeCompiler;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->callAfterResolving('blade.compiler', function (BladeCompiler $bladeCompiler) {
+            $bladeCompiler->directive('asset', function ($parameter) {
+                //
+            });
+        });
+    }
 
 <a name="registering-providers"></a>
 ## Registering Providers
