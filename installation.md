@@ -261,6 +261,7 @@ laravel new example-app --github="--public" --organization="laravel"
 - [الواجهات (Facades)](/docs/{{version}}/facades)
 
 </div>
+
 أيضاً سؤال كيف تريد استخدام Laravel سيساعدك على تحديد الخطوات التالية في رحلتك. يوجع العديد من الطرق لاستخدام لارافل، سنتعرف على حالتين أساسيتين من حالات الاستخدام لإطار العمل أدناه.
 
 <a name="laravel-the-fullstack-framework"></a>
