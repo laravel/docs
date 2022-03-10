@@ -550,7 +550,7 @@ You are not required to use Laravel's implicit, convention based model resolutio
      */
     public function boot()
     {
-        Route::model('user', User::class);
+        Route::model('user_id', User::class);
 
         // ...
     }
@@ -559,7 +559,7 @@ Next, define a route that contains a `{user}` parameter:
 
     use App\Models\User;
 
-    Route::get('/users/{user}', function (User $user) {
+    Route::get('/users/{user_id}', function ($user) {
         //
     });
 
