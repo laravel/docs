@@ -57,7 +57,7 @@
 
 <a name="getting-started-on-macos"></a>
 ### البدء على MacOS
-إنك كنت تستعمل جهاز ماك ولديك برنامج [Docker Desktop](https://www.docker.com/products/docker-desktop) مٌنصب على جهازك. يمكنك استخدام أمر بسيط في موجه الأوامر (terminal) لإنشاء مشروع لارافل جديد. علا سبيل المثلا، لإنشاء تطبيق لارافل جديد في مجلد اسمه "example-app"، يمكنك تشغيل الأمر الآتي في مشغل الأوامر (terminal):
+إنك كنت تستعمل جهاز ماك ولديك برنامج [Docker Desktop](https://www.docker.com/products/docker-desktop) مٌنصب على جهازك. يمكنك استخدام أمر بسيط في موجه الأوامر (terminal) لإنشاء مشروع لارافل جديد. على سبيل المثال، لإنشاء تطبيق لارافل جديد في مجلد اسمه "example-app"، يمكنك تشغيل الأمر الآتي في مشغل الأوامر (terminal):
 
 ```shell
 curl -s "https://laravel.build/example-app" | bash
@@ -89,7 +89,7 @@ cd example-app
 ```shell
 curl -s https://laravel.build/example-app | bash
 ```
-بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. مجلد تطبيق لارافل سيٌنشءداخل المجلد الذي شغلت الأمر فيه.
+بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. مجلد تطبيق لارافل سيٌنشأ داخل المجلد الذي شغلت الأمر فيه.
 
 بعد أن أُنشئ المشروع، يمكنك الانتقال إلى مجلد التطبيق وتشغيل Laravel Sail. تقدم Laravel Sail واجهة بسيطة للتعامل مع إعدادات لارافل لمنصة الحاويات Docker:
 
@@ -111,17 +111,17 @@ cd example-app
 بمجرد أن نُصبت هذه الأدوات، يمكنك فتح أي مشروع لارافل بتشغيل الأمر `code .` داخل المجلد الرئيسي للتطبيق باستخدام موجه الأوامر (Windows Terminal)
 
 <a name="getting-started-on-linux"></a>
-### Getting Started On Linux
-
-If you're developing on Linux and [Docker Compose](https://docs.docker.com/compose/install/) is already installed, you can use a simple terminal command to create a new Laravel project. For example, to create a new Laravel application in a directory named "example-app", you may run the following command in your terminal:
+### البدء على Linux
+إن كنت تطور على نظام Linux ومنصب لديك برنامج [Docker Compose](https://docs.docker.com/compose/install/)، فيمكنك استخدام هذا الأمر على موجه الأوامر لإنشاء مشروع لارافل جديد.  على سبيل المثال، لإنشاء تطبيق لارافل جديد في مجلد اسمه "example-app"، يمكنك تشغيل الأمر الآتي في مشغل الأوامر (terminal):
 
 ```shell
 curl -s https://laravel.build/example-app | bash
 ```
 
-Of course, you can change "example-app" in this URL to anything you like. The Laravel application's directory will be created within the directory you execute the command from.
 
-After the project has been created, you can navigate to the application directory and start Laravel Sail. Laravel Sail provides a simple command-line interface for interacting with Laravel's default Docker configuration:
+بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. سيُنشأ مجلد تطبيق لارافل داخل المجلد الذي شغلت الأمر فيه.
+
+بعد أن أُنشئ المشروع، يمكنك الانتقال إلى مجلد التطبيق وتشغيل Laravel Sail. تقدم Laravel Sail واجهة بسيطة للتعامل مع إعدادات لارافل لمنصة الحاويات Docker:
 
 ```shell
 cd example-app
@@ -129,24 +129,24 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-The first time you run the Sail `up` command, Sail's application containers will be built on your machine. This could take several minutes. **Don't worry, subsequent attempts to start Sail will be much faster.**
+في أول مرة تشغل فيها الأمر `up`، ستُبنى حاويات التطبيق التي في Sail على جهازك. سيستغق هذا الأمر عدة دقائق. **ولكن لا تقلق، المحاولات القادمة لتشغيل Sail ستكون أسرع بكثير.**
 
-Once the application's Docker containers have been started, you can access the application in your web browser at: http://localhost.
+بمجرد أن بدأت حاويات Docker الخاصة بمشروعك، يمكنك الوصول إلى مشروعك في متصف الويب على هذا الرابط: http://localhost.
 
-> {tip} To continue learning more about Laravel Sail, review its [complete documentation](/docs/{{version}}/sail).
+> {نصيحة} لتتعلم المزيد عن Laravel Sail، اقرأ [توثيقها الكامل](/docs/{{version}}/sail).
 
 <a name="choosing-your-sail-services"></a>
-### Choosing Your Sail Services
+### اختيار خدمات Sail التي تحتاجها
 
-When creating a new Laravel application via Sail, you may use the `with` query string variable to choose which services should be configured in your new application's `docker-compose.yml` file. Available services include `mysql`, `pgsql`, `mariadb`, `redis`, `memcached`, `meilisearch`, `minio`, `selenium`, and `mailhog`:
+عند إنشاء تطبيق لارافل باستخدام Sail، يمكنك استخدام معامل الاستعلام (query string parameter) `with` لاختيار الخدمات التي ستهيئ في ملف `docker-compose.yml` الخاص بمشروعك. الخدمات المتوفرة تتضمن `mysql`، `pgsql`، `mariadb`، `redis`، `memcached`، `meilisearch`، `minio`، `selenium`، و`mailhog`:
 
 ```shell
 curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 ```
 
-If you do not specify which services you would like configured, a default stack of `mysql`, `redis`, `meilisearch`, `mailhog`, and `selenium` will be configured.
+إن لم تحدد الخدمات التي تريد تهيئتها، سيٌهيئ مكدس افتراضي مكون من `mysql`، `redis`، `meilisearch`، `mailhog`، و`selenium`
 
-You may instruct Sail to install a default [Devcontainer](/docs/{{version}}/sail#using-devcontainers) by adding the `devcontainer` parameter to the URL:
+يمكنك أن تأمر Sail بتنصيب [(Devcontainer) حاوية تطوير افتراضية](/docs/{{version}}/sail#using-devcontainers) بإضافة معامل `devcontainer` إلى الرابط:
 
 ```shell
 curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
