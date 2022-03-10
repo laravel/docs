@@ -239,10 +239,10 @@ stdout_logfile=/home/forge/example.com/horizon.log
 stopwaitsecs=3600
 ```
 
-> {note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
+When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
-> {note} On RHEL flavored operating systems, the directory is `/etc/supervisor/conf.d` and the file extension should be ini instead of conf.  For example, `horizon.ini`.
-> 
+> {note} While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information.
+
 <a name="starting-supervisor"></a>
 #### Starting Supervisor
 
