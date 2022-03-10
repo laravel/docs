@@ -559,7 +559,7 @@ Next, define a route that contains a `{user}` parameter:
 
     use App\Models\User;
 
-    Route::get('/users/{user}', function (User $user) {
+    Route::get('/users/{user}', function ($user) {
         //
     });
 
