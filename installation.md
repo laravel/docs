@@ -6,7 +6,7 @@
     - [البدء على macOS](#getting-started-on-macos)
     - [البدء على Windows](#getting-started-on-windows)
     - [البدء على Linux](#getting-started-on-linux)
-    - [Choosing Your Sail Services](#choosing-your-sail-services)
+    - [اختيار خدمات Sail التي تحتاجها](#choosing-your-sail-services)
     - [التنصيب باستخدام مدير الحزم (composer)](#installation-via-composer)
 - [الإعدادات الابتدائية](#initial-configuration)
     - [إعدادات المبنية على البيئة](#environment-based-configuration)
@@ -89,7 +89,7 @@ cd example-app
 ```shell
 curl -s https://laravel.build/example-app | bash
 ```
-بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. مجلد تطبيق لارافل سيٌنشأ داخل المجلد الذي شغلت الأمر فيه.
+بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. سيُنشأ مجلد تطبيق لارافل داخل المجلد الذي شغلت الأمر فيه.
 
 بعد أن أُنشئ المشروع، يمكنك الانتقال إلى مجلد التطبيق وتشغيل Laravel Sail. تقدم Laravel Sail واجهة بسيطة للتعامل مع إعدادات لارافل لمنصة الحاويات Docker:
 
