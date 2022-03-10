@@ -166,9 +166,9 @@ php artisan serve
 ```
 
 <a name="the-laravel-installer"></a>
-#### The Laravel Installer
+#### منصب لارافل
 
-Or, you may install the Laravel Installer as a global Composer dependency:
+أو يمكنك إضافة منصّب لارافل (Laravel Installer) كمكتبة عامة (System-wide Global Dependency) لمنصب الحزم (composer) على جهازك:
 
 ```shell
 composer global require laravel/installer
@@ -180,7 +180,7 @@ cd example-app
 php artisan serve
 ```
 
-Make sure to place Composer's system-wide vendor bin directory in your `$PATH` so the `laravel` executable can be located by your system. This directory exists in different locations based on your operating system; however, some common locations include:
+تأكد من وضع مسار مجلد vendor/bin الخاص بمدير الحزم (composer) في متغير البيئة `$PATH` حتى تتمكن من تشغيل الأمر `laravel` على نظامك. هذا المجلد موجود في مسارات مختلفة حسب نظام التشغيل لديك؛ مع ذلك، تشمل بعض المسارات الشائعة ما يلي:
 
 <div class="content-list" markdown="1">
 
@@ -190,31 +190,31 @@ Make sure to place Composer's system-wide vendor bin directory in your `$PATH` s
 
 </div>
 
-For convenience, the Laravel installer can also create a Git repository for your new project. To indicate that you want a Git repository to be created, pass the `--git` flag when creating a new project:
+لتوفير الوقت، يمكن لمنصب لارافل إنشاء مستودع (Repository) Git لمشروعك الجديد. للإشارة أنك تريد إنشاء مستودع Git، مرر علم `--git` عند إنشاء مشروع جديد:
 
 ```shell
 laravel new example-app --git
 ```
 
-This command will initialize a new Git repository for your project and automatically commit the base Laravel skeleton. The `git` flag assumes you have properly installed and configured Git. You can also use the `--branch` flag to set the initial branch name:
+هذا الأمر سيهيئ مستودع Git جديد لمشروع ويقوم تلقائياً بعمل commit مجلدات لارافل الهيكلية. علم`git` يفترض أنك منصب Git مسبقاً. يمكنك أيضاً استخدام العلم `--branch` لاختيار اسم الفرع:
 
 ```shell
 laravel new example-app --git --branch="main"
 ```
 
-Instead of using the `--git` flag, you may also use the `--github` flag to create a Git repository and also create a corresponding private repository on GitHub:
+بدلاً من استخدام `--git` يمكنك استخدام العلم `--github` لانشاء مستودع Git ولإنشاء مستودع خاص مطابق على Github:
 
 ```shell
 laravel new example-app --github
 ```
 
-The created repository will then be available at `https://github.com/<your-account>/example-app`. The `github` flag assumes you have properly installed the [GitHub CLI](https://cli.github.com) and are authenticated with GitHub. Additionally, you should have `git` installed and properly configured. If needed, you can pass additional flags that are supported by the GitHub CLI:
+المستودع المنشئ سيكون متوفراً في `https://github.com/<your-account>/example-app`. علم `github` يفترض أنك نصبت برنامج [GitHub CLI](https://cli.github.com) وقمت ستجيل الدخول عليه باستخدام Github، يجب أيضاً أن يكون برنامج `git` منصب ومهيئ بشكل صحيح. عند الحاجة، يمكنك تمرير الأعلام الإضافية المدعومة بواسطة برنامج Github Cli:
 
 ```shell
 laravel new example-app --github="--public"
 ```
 
-You may use the `--organization` flag to create the repository under a specific GitHub organization:
+يمكنك استخدام العلم `--organization` لإنشاء المستودع تحت منظمة محددة على GitHub:
 
 ```shell
 laravel new example-app --github="--public" --organization="laravel"
