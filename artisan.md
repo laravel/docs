@@ -9,25 +9,42 @@ Writing Commands كتابة الأوامر
 Generating Commands توليد الأوامر
 
 Command Structure بنية الأوامر
+
 Closure Commands أوامر نطاق الإغلاق
+
 Defining Input Expectations تحديد الدخل المتوقع
+
 Arguments المتغيرات
+
 Options الخيارات
+
 Input Arrays مصفوفة الادخال
+
 Input Descriptions وصف الإدخال
+
 Command I/O أوامر الدخل والخرج
+
 Retrieving Input استرجاع الدخل
+
 Prompting For Input تلقين الدخل
+
 Writing Output كتابة الخرج
+
 Registering Commands تسجيل الأوامر
+
 Programmatically Executing Commands تنفيذ الأوامر برمجيا
+
 Calling Commands From Other Commands نداء الأوامر من أوامر أخرى
+
 Signal Handling معالجة الإشارة
+
 Stub Customization تخصيص جزء
+
 Events الأحداث
+
+
 المقدمة
 
-Introduction المقدمة
 واجهة الأوامر الخاصة بلارافل، موجود ضمن التطبيق كسكريبت artisan
 
 يؤمن العديد من الأوامر المساعدة أثناء بناء التطبيق، لروؤية قائمة الأوامر نكتب الأمر التالي
