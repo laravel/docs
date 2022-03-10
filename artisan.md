@@ -1,8 +1,13 @@
 Artisan Console وحدة تحكم الحرفي الماهر
+
 Introduction المقدمة
+
 Tinker (REPL) متعدد المهام
+
 Writing Commands كتابة الأوامر
+
 Generating Commands توليد الأوامر
+
 Command Structure بنية الأوامر
 Closure Commands أوامر نطاق الإغلاق
 Defining Input Expectations تحديد الدخل المتوقع
