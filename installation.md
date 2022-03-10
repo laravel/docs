@@ -221,25 +221,25 @@ laravel new example-app --github="--public" --organization="laravel"
 ```
 
 <a name="initial-configuration"></a>
-## Initial Configuration
+## الإعدادات الأولية
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+كل ملفات الإعدادات لإطار العمل Larave مخزنة في المجلد `config`. إن كل خيار موثق، لذلك لا تتردد في البحث في الملفات والتعرف على الخيارات المتاحة لك.
 
-Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+لارافل لا تحتاج تقريباً لأي إعدادات بعد إنشاء المشروع. أنت حر في البدء بالتطوير! على مع ذلك، قد ترغب بمراجعة الملف `config/app.php` وتوثيقه. يتضمن عدة خيارات مثل المنطقة الزمنية `timezone`واللغة `locale` والتي يمكن أن ترغب في تغييرها حسب تطبيقك.
 
 <a name="environment-based-configuration"></a>
-### Environment Based Configuration
+### الإعدادات القائمة على البيئة
 
-Since many of Laravel's configuration option values may vary depending on whether your application is running on your local computer or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
+ما أن العديد من إعدادات لارافل قد تختلف اعتماداً على ما إذا كان تطبيقك يعمل على جهازك المحلي أو على مخدم الإنتاج (production). عُرفت العديد من الإعدادات بساتخدام الملف `.env` الموجود في جذر تطبيقك.
 
-Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would get exposed.
+لا يجب إضافة الملف `.env` إلى مستودع التحكم بالمصدر الخاص بمشروعك، حيث كل مطور أو مخدم يستخدم تطبيقك قد يتطلب إعدادات بيئة مختلفة. علاوة على ذلك، قد يكون هذه مخاطرة أمنية في حال تمكن أحد المتسللين من الوصول إلى مستودع التحكم بالمصدر (Source control repository)، حيث سيتم كشف أي بيانات اعتماد حساسة.
 
-> {tip} For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+> {نصحة} للمزيد من المعلومات عن الملف `.env` واعدادات البيئة, تحقق من [توثيق الإعدادات](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="directory-configuration"></a>
-### Directory Configuration
+### إعدادات المجلد
 
-Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files that exist within your application.
+دائماً يجب أن يشغل مشروع لارافل من جذر "مجلد الويب" (Web Directory) المخصص لمخدم الويب الخاص بك. جيب ألا تحاول تشغيل تطبيق لارافل من أي مجلد فرعي في "مجلد الويب". محاولة ذلك قد تؤدي إلى كشف الملفات الحساسة الموجودة ضمن تطبيقك.
 
 <a name="next-steps"></a>
 ## Next Steps
