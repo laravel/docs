@@ -153,9 +153,9 @@ curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
 ```
 
 <a name="installation-via-composer"></a>
-### Installation Via Composer
+### التنصيب باستخدام مدير الحزم (composer)
 
-If your computer already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's `serve` command:
+إن كان مدير الحزم (composer) و PHP منصَبين على جهازك، يمكنك إنشاء مشروع لارافل جديد باستخدام Composer مباشرة. بعد إنشاء التطبيق، يمكنك بدء مخدم تطوير محل باستخدام أمر `serve` الخاص واجهة الأوامر Artisan:
 
 ```shell
 composer create-project laravel/laravel example-app
