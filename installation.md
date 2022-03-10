@@ -47,6 +47,7 @@
 
 <a name="your-first-laravel-project"></a>
 ## مشروعك الأول مع لارافل
+
 إن كنت أن تبدأ بأسهل طريقة ممكنة مع لارافل. يوجد العديد من الخيارات لتطوير وتشغيل مشروع لارافل على حاسبك الشخصي. بينما قد ترغب باستكشاف هذه الخيارات في وقت لاحق، لارافل تقدم [خدمة Sail](/docs/{{version}}/sail)، وهي حل مدمج لتشغيل مشروع لارافل باستخدام منصة الحاويات [Docker](https://www.docker.com).
 
 منصة الحاويات (Docker) هي أداة لتشغيل التطبيقات والخدمات في "حاويات" صغيرة وخفيفة والتي لا تتداخل مع البرمجيات المنصبة على حاسبك الشخصي أو عداداته. هذا يعني أنه ليس عليك أن تقلق حول تنصيب أدوات التطوير المعقدة مثل مخدمات الويب وقواعد البيانات على حاسبك الشخصي. لتبدأ، كل ما عليك هو تنصيب برنامج [Docker Desktop](https://www.docker.com/products/docker-desktop).
@@ -57,21 +58,23 @@
 
 <a name="getting-started-on-macos"></a>
 ### البدء على MacOS
+
 إنك كنت تستعمل جهاز ماك ولديك برنامج [Docker Desktop](https://www.docker.com/products/docker-desktop) مٌنصب على جهازك. يمكنك استخدام أمر بسيط في موجه الأوامر (terminal) لإنشاء مشروع لارافل جديد. على سبيل المثال، لإنشاء تطبيق لارافل جديد في مجلد اسمه "example-app"، يمكنك تشغيل الأمر الآتي في مشغل الأوامر (terminal):
 
 ```shell
 curl -s "https://laravel.build/example-app" | bash
 ```
+
 بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. مجلد تطبيق لارافل سيُنشئ داخل المجلد الذي شغلت الأمر فيه.
 
 بعد أن أُنشئ المشروع، يمكنك الانتقال إلى مجلد التطبيق وتشغيل Laravel Sail. تقدم Laravel Sail واجهة بسيطة للتعامل مع إعدادات لارافل لمنصة الحاويات Docker:
-
 
 ```shell
 cd example-app
 
 ./vendor/bin/sail up
 ```
+
  في أول مرة تشغل فيها الأمر `up`، ستُبنى حاويات التطبيق التي في Sail على جهازك. سيستغق هذا الأمر عدة دقائق. **ولكن لا تقلق، المحاولات القادمة لتشغيل Sail ستكون أسرع بكثير.**
 
 بمجرد أن بدأت حاويات Docker الخاصة بمشروعك، يمكنك الوصول إلى مشروعك في متصف الويب على هذا الرابط: http://localhost.
@@ -80,6 +83,7 @@ cd example-app
 
 <a name="getting-started-on-windows"></a>
 ### البدء على Windows
+
 قبل أن تُنشئ مشروع جديد في باستخدام لارافل على جهازك، تأكد من تنصيب برنامج [Docker Desktop](https://www.docker.com/products/docker-desktop). بعدها، عليك التاكد من أن ميزة الأنظمة الفرعية في Windows لنظام تشغيل Linux بنسختها الثانية (Windows Subsystem for Linux 2) (WSL2) منصبة ومفعلة. خدمة WSL ستمكنك من تشغيل ملفات Linux التنفيذية على Windows 10. مكنك أن تجد معلومات عن كيفية تنصيب وتفعيل WSL2 في [توثيق بيئة التطوير لشركة مايكروسوفت](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 > {نصيحة} بعد تنصيب وتفعيل WSL2K ينبغي عليك التأكد من أن برنامج Docker Desktop [معد لاستخدام WSL2(]https://docs.docker.com/docker-for-windows/wsl/)
@@ -89,6 +93,7 @@ cd example-app
 ```shell
 curl -s https://laravel.build/example-app | bash
 ```
+
 بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. سيُنشأ مجلد تطبيق لارافل داخل المجلد الذي شغلت الأمر فيه.
 
 بعد أن أُنشئ المشروع، يمكنك الانتقال إلى مجلد التطبيق وتشغيل Laravel Sail. تقدم Laravel Sail واجهة بسيطة للتعامل مع إعدادات لارافل لمنصة الحاويات Docker:
@@ -106,18 +111,19 @@ cd example-app
 > {نصيحة} لتتعلم المزيد عن Laravel Sail، اقرأ [توثيقها الكامل](/docs/{{version}}/sail).
 
 #### التطوير داخل WSL2
+
 بالطبع، ستحتاج أن تكون قادراً على تعديل ملفات تطبيق لارافل التي أٌنشأت داخل WSL2. لتتمكن من ذلك، ننصحك باستخدام محرر [Visual Studio Code](https://code.visualstudio.com) المطور لدى شركة مايكروسوفت مع تنصيب إضافة [التطوير البعيد (Remote Development)](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
 
 بمجرد أن نُصبت هذه الأدوات، يمكنك فتح أي مشروع لارافل بتشغيل الأمر `code .` داخل المجلد الرئيسي للتطبيق باستخدام موجه الأوامر (Windows Terminal)
 
 <a name="getting-started-on-linux"></a>
 ### البدء على Linux
+
 إن كنت تطور على نظام Linux ومنصب لديك برنامج [Docker Compose](https://docs.docker.com/compose/install/)، فيمكنك استخدام هذا الأمر على موجه الأوامر لإنشاء مشروع لارافل جديد.  على سبيل المثال، لإنشاء تطبيق لارافل جديد في مجلد اسمه "example-app"، يمكنك تشغيل الأمر الآتي في مشغل الأوامر (terminal):
 
 ```shell
 curl -s https://laravel.build/example-app | bash
 ```
-
 
 بالطبع، يمكنك تغيير "example-app" في هذا الرابط لأي شيء تريده. سيُنشأ مجلد تطبيق لارافل داخل المجلد الذي شغلت الأمر فيه.
 
@@ -259,6 +265,7 @@ laravel new example-app --github="--public" --organization="laravel"
 
 <a name="laravel-the-fullstack-framework"></a>
 ### لارافل إطار عمل المكدس الكامل (Full Stack)
+
 يمكن للارافل أن تستخدم كإطار عمل المكدس الكامل. نعني بإطار عمل "المكدس الكامل" أنك ستستخدم لارافل لتوجيه طلبات تطبيق وتقديم واجهات تطبيقك باستخدام محرك القوالب [Blade templates](/docs/{{version}}/blade) أو باستخدام تقنية هجينة لتطبيق الصفحة الواحدة (single-page application) مثل [Inertia.js](https://inertiajs.com). هذه هي الطريقة الأكثر شيوعاً لاستخدام إطار عمل لارافل.
 
 إن كنت تخطط لاستخدام لارافل، قد ترغب بقراءة وئائقنا عن [التوجيه](/docs/{{version}}/routing), [الواجهات (views)](/docs/{{version}}/views), أو [البليغ (مكتبة ربط الأغراض بقاعدة البيانات) (Eloquent ORM)](/docs/{{version}}/eloquent).
@@ -275,4 +282,3 @@ laravel new example-app --github="--public" --organization="laravel"
 إن كنت تخطط لاستخدام لارافل، قد ترغب بإلقاء نظرة على وثائقنا حول [التوجيه](/docs/{{version}}/routing), [مكتبة المصادقة (Laravel Sanctum)](/docs/{{version}}/sanctum), and the [البليغ (مكتبة ربط الأغراض بقاعدة البيانات) (Eloquent ORM)](/docs/{{version}}/eloquent)
 
 > {نصيحة} إن كنت بحاجة للبدء بسرعة لإنشاء موقع باستخدام لارافل وواجهات Next.js يقدم Laravel Breeze [مكدس لواجهة التخاطب (API stack)](/docs/{{version}}/starter-kits#breeze-and-next) مع [تنجيز للواجهات باستخدام Next.js](https://github.com/laravel/breeze-next) بحيث يمكنك البدء خلال دقائق
-
