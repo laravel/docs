@@ -35,7 +35,7 @@ When upgrading to a new major version of Socialite, it's important that you care
 <a name="configuration"></a>
 ## Configuration
 
-Before using Socialite, you will need to add credentials for the OAuth providers your application utilizes. These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `linkedin`, `google`, `github`, `gitlab`, or `bitbucket`, depending on the providers your application requires:
+Before using Socialite, you will need to add credentials for the OAuth providers your application utilizes. These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `twitter` (OAuth 1.0), `twitter-oauth-2` (OAuth 2.0), `linkedin`, `google`, `github`, `gitlab`, or `bitbucket`, depending on the providers your application requires:
 
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),
@@ -187,4 +187,4 @@ The `stateless` method may be used to disable session state verification. This i
 
     return Socialite::driver('google')->stateless()->user();
 
-> {note} Stateless authentication is not available for the Twitter driver, which uses OAuth 1.0 for authentication.
+> {note} Stateless authentication is not available for the Twitter OAuth 1.0 driver.
