@@ -242,39 +242,37 @@ laravel new example-app --github="--public" --organization="laravel"
 دائماً يجب أن يشغل مشروع لارافل من جذر "مجلد الويب" (Web Directory) المخصص لمخدم الويب الخاص بك. جيب ألا تحاول تشغيل تطبيق لارافل من أي مجلد فرعي في "مجلد الويب". محاولة ذلك قد تؤدي إلى كشف الملفات الحساسة الموجودة ضمن تطبيقك.
 
 <a name="next-steps"></a>
-## Next Steps
+## الخطوات التالية
 
-Now that you have created your Laravel project, you may be wondering what to learn next. First, we strongly recommend becoming familiar with how Laravel works by reading the following documentation:
+الآن بعد أن أنشأت مشروعك باستخدام لارافل، قد تتساءل عما يجب أن تتعلمه بعد ذلك. أولاً، نوصي بشدة بالتعرف على كيفية عمل Laravel عبر قراءة الوثائق التالية:
 
 <div class="content-list" markdown="1">
 
-- [Request Lifecycle](/docs/{{version}}/lifecycle)
-- [Configuration](/docs/{{version}}/configuration)
-- [Directory Structure](/docs/{{version}}/structure)
-- [Service Container](/docs/{{version}}/container)
-- [Facades](/docs/{{version}}/facades)
+- [دورة حياة الطلب (Request Lifecycle)](/docs/{{version}}/lifecycle)
+- [الإعدادات](/docs/{{version}}/configuration)
+- [بنية المجلدات](/docs/{{version}}/structure)
+- [حاوية الخدمة (Service Container)](/docs/{{version}}/container)
+- [الواجهات (Facades)](/docs/{{version}}/facades)
 
 </div>
-
-How you want to use Laravel will also dictate the next steps on your journey. There are a variety of ways to use Laravel, and we'll explore two primary use cases for the framework below.
+أيضاً سؤال كيف تريد استخدام Laravel سيساعدك على تحديد الخطوات التالية في رحلتك. يوجع العديد من الطرق لاستخدام لارافل، سنتعرف على حالتين أساسيتين من حالات الاستخدام لإطار العمل أدناه.
 
 <a name="laravel-the-fullstack-framework"></a>
-### Laravel The Full Stack Framework
+### لارافل إطار عمل المكدس الكامل (Full Stack)
+يمكن للارافل أن تستخدم كإطار عمل المكدس الكامل. نعني بإطار عمل "المكدس الكامل" أنك ستستخدم لارافل لتوجيه طلبات تطبيق وتقديم واجهات تطبيقك باستخدام محرك القوالب [Blade templates](/docs/{{version}}/blade) أو باستخدام تقنية هجينة لتطبيق الصفحة الواحدة (single-page application) مثل [Inertia.js](https://inertiajs.com). هذه هي الطريقة الأكثر شيوعاً لاستخدام إطار عمل لارافل.
 
-Laravel may serve as a full stack framework. By "full stack" framework we mean that you are going to use Laravel to route requests to your application and render your frontend via [Blade templates](/docs/{{version}}/blade) or using a single-page application hybrid technology like [Inertia.js](https://inertiajs.com). This is the most common way to use the Laravel framework.
+إن كنت تخطط لاستخدام لارافل، قد ترغب بقراءة وئائقنا عن [التوجيه](/docs/{{version}}/routing), [الواجهات (views)](/docs/{{version}}/views), أو [البليغ (مكتبة ربط الأغراض بقاعدة البيانات) (Eloquent ORM)](/docs/{{version}}/eloquent).
 
-If this is how you plan to use Laravel, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent). In addition, you might be interested in learning about community packages like [Livewire](https://laravel-livewire.com) and [Inertia.js](https://inertiajs.com). These packages allow you to use Laravel as a full-stack framework while enjoying many of the UI benefits provided by single-page JavaScript applications.
+إن كنت تستعمل لارافل كإطار عمل المكدس الكامل، نشجعك بشدة أن تتعلم ترجمة ملفات CSS و Javascript باستخدام [Laravel Mix](/docs/{{version}}/mix).
 
-If you are using Laravel as a full stack framework, we also strongly encourage you to learn how to compile your application's CSS and JavaScript using [Laravel Mix](/docs/{{version}}/mix).
-
-> {tip} If you want to get a head start building your application, check out one of our official [application starter kits](/docs/{{version}}/starter-kits).
+> {نصيحة} إن كنت تريد أن تبدأ بناء تطبيقك بسرعة، ألق نظرة على إحدى [أدواتنا لإطلاق التطبيقات](/docs/{{version}}/starter-kits).
 
 <a name="laravel-the-api-backend"></a>
-### Laravel The API Backend
+### لارافل واجهة التخاطب الخلفية (Backend API)
 
-Laravel may also serve as an API backend to a JavaScript single-page application or mobile application. For example, you might use Laravel as an API backend for your [Next.js](https://nextjs.org) application. In this context, you may use Laravel to provide [authentication](/docs/{{version}}/sanctum) and data storage / retrieval for your application, while also taking advantage of Laravel's powerful services such as queues, emails, notifications, and more.
+يمكن للارافل أن تُشغل كواجهة تخاطب خلفية لتطبيقات الصفحة الواحدة باستخدام Javascript أو تطبيقات الهواتف. على سبيل المثال، قد تستخدم لارافل كواجهة تخاطب خلفية لتطبيقك المبني باستخدام [Next.js](https://nextjs.org). في هذا السياق يمكنك تقدي [المصادقة](/docs/{{version}}/sanctum) وتخزين أو جلب البيانات لتطبيقك، بينما تستفيد من خدمات لارافل مثل الأرتال، البريد الإلكتروني، الإشعارات، والمزيد.
 
-If this is how you plan to use Laravel, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [Laravel Sanctum](/docs/{{version}}/sanctum), and the [Eloquent ORM](/docs/{{version}}/eloquent).
+إن كنت تخطط لاستخدام لارافل، قد ترغب بإلقاء نظرة على وثائقنا حول [التوجيه](/docs/{{version}}/routing), [مكتبة المصادقة (Laravel Sanctum)](/docs/{{version}}/sanctum), and the [البليغ (مكتبة ربط الأغراض بقاعدة البيانات) (Eloquent ORM)](/docs/{{version}}/eloquent)
 
-> {tip} Need a head start scaffolding your Laravel backend and Next.js frontend? Laravel Breeze offers an [API stack](/docs/{{version}}/starter-kits#breeze-and-next) as well as a [Next.js frontend implementation](https://github.com/laravel/breeze-next) so you can get started in minutes.
+> {نصيحة} إن كنت بحاجة للبدء بسرعة لإنشاء موقع باستخدام لارافل وواجهات Next.js يقدم Laravel Breeze [مكدس لواجهة التخاطب (API stack)](/docs/{{version}}/starter-kits#breeze-and-next) مع [تنجيز للواجهات باستخدام Next.js](https://github.com/laravel/breeze-next) بحيث يمكنك البدء خلال دقائق
 
