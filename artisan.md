@@ -1,29 +1,29 @@
-# Artisan Console وحدة تحكم الحرفي الماهر 
+#وحدة تحكم الحرفي الماهر 
 
 - [المقدمة](#المقدمة)
-    - [Tinker (REPL)](#tinker) متعدد المهام 
-- [Writing Commands](#writing-commands) كتابة الأوامر 
-    - [Generating Commands](#generating-commands) توليد الأوامر 
-    - [Command Structure](#command-structure) بنية الأوامر  
-    - [Closure Commands](#closure-commands) أوامر نطاق الإغلاق 
-- [Defining Input Expectations](#defining-input-expectations) تحديد الدخل المتوقع 
-    - [Arguments](#arguments) المتغيرات
-    - [Options](#options) الخيارات 
-    - [Input Arrays](#input-arrays) مصفوفة الادخال 
-    - [Input Descriptions](#input-descriptions) وصف الإدخال
-- [Command I/O](#command-io) أوامر الدخل والخرج
-    - [Retrieving Input](#retrieving-input) استرجاع الدخل
-    - [Prompting For Input](#prompting-for-input) تلقين الدخل 
-    - [Writing Output](#writing-output) كتابة الخرج
-- [Registering Commands](#registering-commands) تسجيل الأوامر 
-- [Programmatically Executing Commands](#programmatically-executing-commands) تنفيذ الأوامر برمجيا 
-    - [Calling Commands From Other Commands](#calling-commands-from-other-commands) نداء الأوامر من أوامر أخرى 
-- [Signal Handling](#signal-handling) معالجة الإشارة 
-- [Stub Customization](#stub-customization) تخصيص جزء
-- [Events](#events) الأحداث 
+  - [متعدد المهام (REPL)](#متعدد المهام) 
+- [كتابة الأوامر](#كتابة الأوامر) 
+    - [توليد الأوامر](#توليد الأوامر) 
+    - [بنية الأوامر ](#بنية الأوامر )  
+    - [أوامر نطاق الإغلاق](#أوامر نطاق الإغلاق) 
+- [تحديد الدخل المتوقع](#تحديد الدخل المتوقع)  
+    - [المتغيرات](#المتغيرات) 
+    - [الخيارات](#الخيارات)  
+    - [مصفوفة الادخال](#مصفوفة الادخال)  
+    - [وصف الإدخال](#وصف الإدخال) 
+- [أوامر الدخل والخرج](#أوامر الدخل والخرج) 
+    - [استرجاع الدخل](#استرجاع الدخل) 
+    - [تلقين الدخل](#تلقين الدخل)  
+    - [كتابة الخرج](#كتابة الخرج) 
+- [تسجيل الأوامر](#تسجيل الأوامر)  
+- [تنفيذ الأوامر برمجيا](#تنفيذ الأوامر برمجيا)  
+    - [نداء الأوامر من أوامر أخرى](#نداء الأوامر من أوامر أخرى)  
+- [معالجة الإشارة](#معالجة الإشارة)  
+- [تخصيص جزء](#تخصيص جزء) 
+- [الأحداث](#الأحداث)  
 
-<a name="introduction"></a> المقدمة 
-## Introduction المقدمة 
+<a name="المقدمة"></a>  
+## المقدمة 
    واجهة الأوامر الخاصة بلارافل، موجود ضمن التطبيق كسكريبت `artisan`
 
 يؤمن العديد من الأوامر المساعدة أثناء بناء التطبيق، لروؤية قائمة الأوامر نكتب الأمر التالي 
@@ -41,8 +41,8 @@ php artisan list
 php artisan help migrate
 ```
 
-<a name="laravel-sail"></a> شراع لارافل 
-#### Laravel Sail شراع لارافل 
+<a name="شراع لارافل"></a>  
+#### شراع لارافل 
 
 
 إذا كنت تستخدم Laravel Sail في بيئة التطوير المحلية استخدم الأمر `sail` لنداء أوامر Artisan 
@@ -53,16 +53,16 @@ Sail سوف ينفذ أوامر Artisan ضمن حاويات Docker
 ./sail artisan list
 ```
 
-<a name="tinker"></a> متعدد المهام 
-### Tinker (REPL) متعدد المهام 
+<a name="متعدد المهام"></a>  
+### متعدد المهام (REPL)  
 
 هو واجهة الأوامر السوداء الخاصة بلارافل powerful REPL 
 REPL (read-eval-print-loop) نوع من الواجهات السوداء التفاعلية التي تأخذ مدخلات مستخدم وحيد و يقيم المدخلات و يعيد النتيجة للمستخدم
 مشغلة بواسطة حزمة (https://github.com/bobthecow/psysh)  PsySH
  
 
-<a name="installation"></a> التنصيب
-#### Installation التنصيب
+<a name="التنصيب"></a> 
+#### التنصيب
 
 التنكر مضمن افتراضيا بتطبيقات اللارافل لكن يمكنك استخدام Composer لتنصيبه في حال حذفه من التطبيق 
 
@@ -75,8 +75,8 @@ composer require laravel/tinker
 راجع الرابط https://tinkerwell.app
 
 
-<a name="usage"></a> الاستخدام
-#### Usage الاستخدام
+<a name="الاستخدام"></a> 
+#### الاستخدام
 
 التنكر يسمح لك التفاعل مع تطبيق اللارافل في واجهة الأوامر و المودلات و الاعمال و الاحداث
 لدخول بيئة التنكر نفذ الأمر 
@@ -99,8 +99,8 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 أو `Queue::push`  لإرسال الأعمال 
 
 
-<a name="command-allow-list"></a> قائمة السماحية
-#### Command Allow List قائمة السماحية
+<a name="قائمة السماحية"></a> 
+#### قائمة السماحية
 
 
 يستخدم التنكر قائمة السماحية لتحديد أوامر Artisan التي تنفذ ضمن ال shell الخاص به
@@ -112,8 +112,8 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         // App\Console\Commands\ExampleCommand::class,
     ],
 
-<a name="classes-that-should-not-be-aliased"></a> صفوف لا يجب أن تستخدم اسم مستعار أو اختصار 
-#### Classes That Should Not Be Aliased صفوف لا يجب أن تستخدم اسم مستعار أو اختصار 
+<a name="صفوف لا يجب أن تستخدم اسم مستعار أو اختصار"></a>  
+#### صفوف لا يجب أن تستخدم اسم مستعار أو اختصار 
 
 
 عادة التنكر يضع أسماء مستعارة للصفوف اذا أردت عدم الاختصار ضعهم في مصفوفة ضمن ملف اعدادات التنكر 
@@ -123,13 +123,13 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         App\Models\User::class,
     ],
 
-<a name="writing-commands"></a>  كتابة الأوامر
-## Writing Commands كتابة الأوامر
+<a name="كتابة الأوامر"></a>  
+## كتابة الأوامر
 
 يمكنك صنع أوامر خاصة بك و تخزن عادة في مجلد `app/Console/Commands`  و يمكنك تخزينها بأي مجلد تريده طالما يقوم Composer بتحميلها 
 
-<a name="generating-commands"></a>  توليد الأوامر
-### Generating Commands توليد الأوامر
+<a name="توليد الأوامر"></a>  
+### توليد الأوامر
 
 
 لانشاء امر جديد نستخدم الامر `make:command`	
@@ -140,8 +140,8 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 php artisan make:command SendEmails
 ```
 
-<a name="command-structure"></a> بنية الأمر
-### Command Structure بنية الأمر
+<a name="بنية الأمر"></a> 
+### بنية الأمر
 
 
 بعد توليد الأمر يجب تعريف قيم مناسبة للخاصيتين `signature` و `description`
@@ -198,8 +198,8 @@ signature  تستخدم لتحديد الدخل المتوقع للأمر
     }
 
 
-<a name="closure-commands"></a> أوامر النطاق المغلق
-### Closure Commands أوامر النطاق المغلق
+<a name="أوامر النطاق المغلق"></a> 
+### أوامر النطاق المغلق
 
 يعتمد Closure على أوامر تؤمن بديل لتحديد أوامر console كصفوف 
 بنفس الطريقة مسار closures بديل المتحكمات controllers
@@ -228,8 +228,8 @@ signature  تستخدم لتحديد الدخل المتوقع للأمر
 
 النطاق المغلق يعطي تحكم كامل بالطرق المساعدة بالتالي تحكم بكامل صف الأمر
 
-<a name="type-hinting-dependencies"></a>
-#### Type-Hinting Dependencies
+<a name="كتابة تلميح إضافي معتمد"></a>
+#### كتابة تلميح إضافي معتمد
 
 
 بالإضافة لاستقبال المتغيرات أمر النطاق المغلق يقوم بكتابة تلميح إضافي معتمد
@@ -253,13 +253,13 @@ signature  تستخدم لتحديد الدخل المتوقع للأمر
         // ...
     })->purpose('Send a marketing email to a user');
 
-<a name="defining-input-expectations"></a> تحديد الدخل المتوقع 
-## Defining Input Expectations تحديد الدخل المتوقع 
+<a name="تحديد الدخل المتوقع"></a>  
+## تحديد الدخل المتوقع 
 
 لتحديد الدخل المتوقع من المستخدم نستخدم الخاصية `signature` تسمح بتحديد الاسم والمتغيرات والخيارات 
 
-<a name="arguments"></a> المتغيرات 
-### Arguments المتغيرات 
+<a name="المتغيرات"></a>  
+### المتغيرات 
 
 
    توضع المتغيرات ضمن قوسين من الشكل {argument name}
@@ -281,8 +281,8 @@ signature  تستخدم لتحديد الدخل المتوقع للأمر
     // Optional argument with default value...
     'mail:send {user=foo}'
 
-<a name="options"></a> الخيارات 
-### Options الخيارات 
+<a name="الخيارات"></a>  
+### الخيارات 
 
 الخيارات مثل المتغيرات أيضا دخل من المستخدم نضع قبلها لاحقة (`--`)
 يوجد نوعين من الخيارات الأول لا يستقبل قيمة والنوع الثاني يأخذ قيمة
@@ -301,8 +301,8 @@ signature  تستخدم لتحديد الدخل المتوقع للأمر
 php artisan mail:send 1 --queue
 ```
 
-<a name="options-with-values"></a> خيارات مع قيم
-#### Options With Values  خيارات مع قيم 
+<a name="خيارات مع قيم"></a> 
+#### خيارات مع قيم 
 
 
 النوع الثاني تحديد قيمة للخيار باستخدام إشارة `=`
@@ -325,8 +325,8 @@ php artisan mail:send 1 --queue=default
 
     'mail:send {user} {--queue=default}'
 
-<a name="option-shortcuts"></a> اختصارات الخيار
-#### Option Shortcuts اختصارات الخيار
+<a name="اختصارات الخيار"></a> 
+####اختصارات الخيار
 
 لتحديد اختصار نضعه قبل اسم الخيار و نضع  `|` للفصل بين الاختصار و اسم الخيار 
 
@@ -338,8 +338,8 @@ php artisan mail:send 1 --queue=default
 php artisan mail:send 1 -Q
 ```
 
-<a name="input-arrays"></a> إدخال المصفوفات 
-### Input Arrays إدخال المصفوفات 
+<a name=" إدخال المصفوفات"></a> 
+###إدخال المصفوفات 
 
 لإدخال أكثر من قيمة دخل نستخدم `*` 
 
@@ -357,8 +357,8 @@ This `*` character can be combined with an optional argument definition to allow
 
     'mail:send {user?*}'
 
-<a name="option-arrays"></a> مصفوفات الخيار
-#### Option Arrays مصفوفات الخيار 
+<a name="مصفوفات الخيار"></a> 
+###مصفوفات الخيار 
 
 لتحديد خيار متعدد القيم
 
@@ -384,11 +384,11 @@ php artisan mail:send --id=1 --id=2
                             {user : The ID of the user}
                             {--queue : Whether the job should be queued}';
 
-<a name="command-io"></a> أمر الدخل والخرج 
-## Command I/O أمر الدخل والخرج 
+<a name="أمر الدخل والخرج"></a>  
+## أمر الدخل والخرج 
 
-<a name="retrieving-input"></a> استرجاع الدخل 
-### Retrieving Input استرجاع الدخل 
+<a name="استرجاع الدخل"></a>  
+### استرجاع الدخل 
 
 عند تنفيذ الأمر نحتاج الوصول للمتغيرات او الخيارات نستخدم الطريقة `argument`   والطريقة `option`
 إذا كان المتغير او الخيار غير موجود يعيد قيمة `null`
@@ -420,8 +420,8 @@ php artisan mail:send --id=1 --id=2
     // Retrieve all options as an array...
     $options = $this->options();
 
-<a name="prompting-for-input"></a> تلقين الدخل 
-### Prompting For Input تلقين الدخل 
+<a name="تلقين الدخل"></a>  
+### تلقين الدخل 
 
 لسؤال المستخدم ليقوم بالإدخال نستخدم الطريقة `ask` 
 
@@ -439,8 +439,8 @@ php artisan mail:send --id=1 --id=2
 
     $password = $this->secret('What is the password?');
 
-<a name="asking-for-confirmation"></a> السؤال للتأكيد 
-#### Asking For Confirmation السؤال للتأكيد 
+<a name="السؤال للتأكيد"></a>  
+#### السؤال للتأكيد 
 
 السؤال للتأكيد نستخدم الطريقة `confirm` ليدخل المستخدم yes أو no 
 افتراضيا تعيد قيمة false 
@@ -457,8 +457,8 @@ php artisan mail:send --id=1 --id=2
         //
     }
 
-<a name="auto-completion"></a> الإكمال التلقائي 
-#### Auto-Completion الإكمال التلقائي 
+<a name="الإكمال التلقائي"></a>  
+#### الإكمال التلقائي 
 
 الطريقة `anticipate`  توفر إكمال تلقائي للخيارات الممكنة 
 
@@ -472,8 +472,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
         // Return auto-completion options...
     });
 
-<a name="multiple-choice-questions"></a> أسئلة خيار متعدد 
-#### Multiple Choice Questions أسئلة خيار متعدد 
+<a name="أسئلة خيار متعدد"></a>  
+#### أسئلة خيار متعدد 
 لإعطاء المستخدم خيارات عند السؤال نستخدم الطريقة `choice`
 يمكن وضع مصفوفة فيها قيم افتراضية إذا لم يتم اختيار أي خيار وتوضع كمتغير ثالث
 
@@ -493,8 +493,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
         $allowMultipleSelections = false
     );
 
-<a name="writing-output"></a> كتابة خرج 
-### Writing Output كتابة خرج 
+<a name="كتابة خرج"></a>  
+### كتابة خرج 
 
 استخدام الطرق التالية `line`, `info`, `comment`, `question`, `warn`, and `error` كل طريقة تعطي خرج بلون مناسب
 لعرض بعض المعلومات للمستخدم نستخدم الطريقة `info` ستظهر ضمن الواجهة console كنص بلون أخضر
@@ -528,8 +528,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
     // Write three blank lines...
     $this->newLine(3);
 
-<a name="tables"></a> الجداول 
-#### Tables الجداول 
+<a name="الجداول"></a>  
+#### الجداول 
 
 نستخدم الطريقة `table`
 نحتاج فقط ادخال اسم العمود ونوع البيانات
@@ -542,8 +542,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
         User::all(['name', 'email'])->toArray()
     );
 
-<a name="progress-bars"></a> شريط التقدم
-#### Progress Bars شريط التقدم
+<a name="شريط التقدم"></a> 
+#### شريط التقدم
 
 تعرض للمستخدم المقدار المنجز من المهمة نستخدم الطريقة `withProgressBar`
 
@@ -573,8 +573,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
 (https://symfony.com/doc/current/components/console/helpers/progressbar.html).
  
 
-<a name="registering-commands"></a> تسجيل الأوامر 
-## Registering Commands تسجيل الأوامر 
+<a name="تسجيل الأوامر"></a>  
+##تسجيل الأوامر 
 
 كل أوامر شاشة الخرج console سجلت في الصف `App\Console\Kernel`
 ضمن الطريقة `commands`  في هذا الصف نداء الطريقة `load`
@@ -603,8 +603,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
         Commands\SendEmails::class
     ];
 
-<a name="programmatically-executing-commands"></a> تنفيذ الأوامر برمجيا
-## Programmatically Executing Commands  تنفيذ الأوامر برمجيا  
+<a name="تنفيذ الأوامر برمجيا"></a> 
+## تنفيذ الأوامر برمجيا  
 
 تنفيذ أوامر Artisan ضمن المسار route أو المتحكم controller
 استخدام الطريقة `call`  في واجهة `Artisan`
@@ -623,8 +623,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
 
     Artisan::call('mail:send 1 --queue=default');
 
-<a name="passing-array-values"></a> تمرير مصفوفة قيم 
-#### Passing Array Values تمرير مصفوفة قيم 
+<a name="تمرير مصفوفة قيم"></a>  
+#### تمرير مصفوفة قيم 
 إذا كان الأمر يحوي خيار يقبل مصفوفة يمرر مصفوفة قيم 
 
     use Illuminate\Support\Facades\Artisan;
@@ -635,8 +635,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
         ]);
     });
 
-<a name="passing-boolean-values"></a> تمرير قيم منطقية 
-#### Passing Boolean Values تمرير قيم منطقية 
+<a name="تمرير قيم منطقية"></a>  
+#### تمرير قيم منطقية 
 
 عند تحديد قيمة لخيار ليست نصية مثلا قيمة `--force`  في الأمر `migrate:refresh`
 يجب تمرير `true` أو `false  كقيمة للخيار 
@@ -645,8 +645,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
         '--force' => true,
     ]);
 
-<a name="queueing-artisan-commands"></a> Artisan  رتل أوامر 
-#### Queueing Artisan Commands Artisan  رتل أوامر 
+<a name="Artisan  رتل أوامر"></a>  
+#### رتل أوامر Artisan 
 
 استخدام الطريقة `queue`
 قبل استخدامها تأكد من اعدادات الرتل وتشغيل مستمع الرتل
@@ -667,8 +667,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
         'user' => 1, '--queue' => 'default'
     ])->onConnection('redis')->onQueue('commands');
 
-<a name="calling-commands-from-other-commands"></a> نداء أوامر من أوامر أخرى 
-### Calling Commands From Other Commands نداء أوامر من أوامر أخرى 
+<a name="نداء أوامر من أوامر أخرى"></a>  
+### نداء أوامر من أوامر أخرى 
 
 نستخدم الطريقة`call`  تقبل اسم الأمر ومصفوفة بالخيارات والمتغيرات 
 
@@ -691,8 +691,8 @@ closure  يقبل متغير نوع نصي يتضمن أيضا دخل المست
         'user' => 1, '--queue' => 'default'
     ]);
 
-<a name="signal-handling"></a> معالجة الإشارة
-## Signal Handling معالجة الإشارة
+<a name="معالجة الإشارة"></a> 
+## معالجة الإشارة
 
 يجب تحقيق الواجهة `Symfony\Component\Console\Command\SignalableCommandInterface` 
 في صف أمر Artisan
@@ -738,8 +738,8 @@ class StartServer extends Command implements SignalableCommandInterface
 الطريقة `getSubscribedSignals`  تعيد مصفوفة إشارات يعالجها الأمر 
 الطريقة `handleSignal`  تستقبل الإشارات
 
-<a name="stub-customization"></a> تخصيص جزء 
-## Stub Customization تخصيص جزء 
+<a name="تخصيص جزء"></a>  
+## تخصيص جزء 
 
 أوامر Artisan console's `make` لإنشاء صفوف مثل controllers و jobs و migrations و tests
 هذه الصفوف تستخدم ملفات stub
@@ -754,8 +754,8 @@ php artisan stub:publish
 
 تتوضع stubs ضمن مجلد stubs في جذر التطبيق 
 
-<a name="events"></a> الأحداث 
-## Events الأحداث 
+<a name="الأحداث"></a>  
+## الأحداث 
 
 
 ترسل Artisan ثلاث أحداث عند تشغيل الأوامر
