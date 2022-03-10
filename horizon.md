@@ -241,6 +241,8 @@ stopwaitsecs=3600
 
 > {note} You should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
+> {note} On RHEL flavored operating systems, the directory is `/etc/supervisor/conf.d` and the file extension should be ini instead of conf.  For example, `horizon.ini`.
+> 
 <a name="starting-supervisor"></a>
 #### Starting Supervisor
 
