@@ -349,7 +349,7 @@ Some notifications inform users of errors, such as a failed invoice payment. You
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Message
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
