@@ -1113,6 +1113,7 @@ Command  |  Description
 `$table->dropPrimary('users_id_primary');`  |  Drop a primary key from the "users" table.
 `$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
 `$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
+`$table->dropFullText('posts_body_fulltext');`  |  Drop a full text index from the "posts" table.
 `$table->dropSpatialIndex('geo_location_spatialindex');`  |  Drop a spatial index from the "geo" table  (except SQLite).
 
 If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns, and index type:
