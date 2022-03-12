@@ -17,6 +17,7 @@
     - [Customizing The Templates](#customizing-the-templates)
     - [Attachments](#mail-attachments)
     - [Adding Tags & Metadata](#adding-tags-metadata)
+    - [Customizing The Symfony Message](#customizing-the-symfony-message)
     - [Using Mailables](#using-mailables)
     - [Previewing Mail Notifications](#previewing-mail-notifications)
 - [Markdown Mail Notifications](#markdown-mail-notifications)
@@ -544,6 +545,29 @@ Tags and metadata can be added to the `MailMessage` - these are used by your ema
                     ->greeting('Comment Upvoted!')
                     ->tag('upvote')
                     ->metadata('comment_id', $this->comment->id);
+    }
+
+<a name="customizing-the-symfony-message"></a>
+### Customizing The Symfony Message
+
+The `withSymfonyMessage` method of the `MailMessage` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
+
+    use Symfony\Component\Mime\Email;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->withSymfonyMessage(function (Email $message) {
+                        $message->getHeaders()->addTextHeader(
+                            'Custom-Header', 'Header Value'
+                        );
+                    });
     }
 
 <a name="using-mailables"></a>
