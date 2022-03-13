@@ -687,7 +687,7 @@ In previous releases of Laravel, you were required to manually instruct Laravel'
 
 However, in Laravel 9.x, unvalidated array keys are always excluded from the "validated" data even when no allowed keys have been specified via the `array` rule. Typically, this behavior is the most expected behavior and the previous `excludeUnvalidatedArrayKeys` method was only added to Laravel 8.x as a temporary measure in order to preserve backwards compatibility.
 
-Although it is not recommended, you may opt-in to the previous Laravel 8.x behavior by invoking a new `includeUnvalidatedArrayKeys` method within the `boot` method of one of your application's service providers:
+Although it is not recommended, you may opt-in to the previous Laravel 9.x behavior by invoking a new `includeUnvalidatedArrayKeys` method within the `boot` method of one of your application's service providers:
 
 ```php
 use Illuminate\Support\Facades\Validator;
