@@ -531,7 +531,7 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
 <a name="adding-tags-metadata"></a>
 ### Adding Tags & Metadata
 
-Tags and metadata can be added to the `MailMessage` - these are used by your email service for filtering/processing:
+Some third-party email providers such as Mailgun and Postmark support message "tags" and "metadata", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via the `tag` and `metadata` methods:
 
     /**
      * Get the mail representation of the notification.
@@ -547,10 +547,15 @@ Tags and metadata can be added to the `MailMessage` - these are used by your ema
                     ->metadata('comment_id', $this->comment->id);
     }
 
+If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
+
+If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message.
+Tags and metadata can be added to the `MailMessage` - these are used by your email service for filtering/processing:
+
 <a name="customizing-the-symfony-message"></a>
 ### Customizing The Symfony Message
 
-The `withSymfonyMessage` method of the `MailMessage` base class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
+The `withSymfonyMessage` method of the `MailMessage` class allows you to register a closure which will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is delivered:
 
     use Symfony\Component\Mime\Email;
 
