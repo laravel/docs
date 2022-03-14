@@ -1,259 +1,282 @@
 # Facades
 
-- [Introduction](#introduction)
-- [When To Use Facades](#when-to-use-facades)
-    - [Facades Vs. Dependency Injection](#facades-vs-dependency-injection)
-    - [Facades Vs. Helper Functions](#facades-vs-helper-functions)
-- [How Facades Work](#how-facades-work)
-- [Real-Time Facades](#real-time-facades)
-- [Facade Class Reference](#facade-class-reference)
+- [مقدمة](#introduction)
+- [متى تُستخدم واجهات Facades](#when-to-use-facades)
+    - [مقارنة واجهات Facades مع حقن الاعتماديات](#facades-vs-dependency-injection)
+    - [مقارنة واجهات Facades بالتوابع المساعدة (Helper Functions)](#facades-vs-helper-functions)
+- [كيفية عمل واجهات Facades](#how-facades-work)
+- [واجهات Facades أثناء التنفيذ](#real-time-facades)
+- [مرجع لكائنات Facades](#facade-class-reference)
 
 <a name="introduction"></a>
-## Introduction
+## مقدمة
 
-Throughout the Laravel documentation, you will see examples of code that interacts with Laravel's features via "facades". Facades provide a "static" interface to classes that are available in the application's [service container](/docs/{{version}}/container). Laravel ships with many facades which provide access to almost all of Laravel's features.
+خلال قراءتك لتوثيق لارافيل ستشاهد أمثلة لأكواد تقوم بالتفاعل مع ميزات لارافيل بواسطة "facades". توفر واجهات لارافيل Facades واجهة ستاتيكية (static interface) للكائنات (classes) المتوافرة في [حاوي خدمات](/docs/{{version}}/container) التطبيق. تحتوي لارافيل العديد من واجهات Facades التي توفر الوصول لمعظم ميزات لارافيل. 
 
-Laravel facades serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods. It's perfectly fine if you don't totally understand how facades work under the hood - just go with the flow and continue learning about Laravel.
+تعمل واجهات لارافيل Facades بصفتها وكيل ستاتيكي ("static proxies") للكائنات الأساسية في حاوي الخدمة، حيث توفر ميزة الصياغة المعبرة والموجزة مع الحفاظ على قابلية الاختبار ومرونة أكبر من الطرق الستاتيكية (static methods) التقليدية. من الطبيعي جداً عدم فهمك بشكل كامل لكيفية عمل Facades ضمنياً، عليك فقط بالمسايرة واكمال تعلمك عن لارافيل. 
 
-All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespace. So, we can easily access a facade like so:
+كل واجهات لارافيل Facades معرفة ضمن نطاق الأسماء `Illuminate\Support\Facades`. أي أنه يمكننا وبسهولة الوصول لـ Facades بالأسلوب التالي: 
 
-    use Illuminate\Support\Facades\Cache;
-    use Illuminate\Support\Facades\Route;
+```php
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 
-    Route::get('/cache', function () {
-        return Cache::get('key');
-    });
-
-Throughout the Laravel documentation, many of the examples will use facades to demonstrate various features of the framework.
+Route::get('/cache', function () {
+    return Cache::get('key');
+});
+```
+خلال توثيق لارافيل يوجد العديد من الأمثلة التي تستعمل واجهات Facades لتوضيح ميزات متنوعة لإطار عمل لارافيل. 
 
 <a name="helper-functions"></a>
-#### Helper Functions
+#### التوابع المساعدة (Helper Functions)
 
-To complement facades, Laravel offers a variety of global "helper functions" that make it even easier to interact with common Laravel features. Some of the common helper functions you may interact with are `view`, `response`, `url`, `config`, and more. Each helper function offered by Laravel is documented with their corresponding feature; however, a complete list is available within the dedicated [helper documentation](/docs/{{version}}/helpers).
+واستكمالاً لواجهات Facades تقدم لارافيل عدة توابع مساعدة متنوعة لتجعل التعامل مع الميزات العامة في لارافيل أكثر سهولة. قد تتعامل مع بعض التوابع المساعدة الشائعة مثل `view`، `response`، `url`، `config` وغيرها المزيد. كل تابع مساعد مقدم من لارافيل يتم توثيقه مع الميزة التي يقدمها، وبكل الأحوال تتوفر لائحة كاملة في [التوثيق المخصص للتوابع المساعدة](/docs/{{version}}/helpers) .
 
-For example, instead of using the `Illuminate\Support\Facades\Response` facade to generate a JSON response, we may simply use the `response` function. Because helper functions are globally available, you do not need to import any classes in order to use them:
+على سبيل المثال، بدلاً من استخدام الـ  Facade التالي `Illuminate\Support\Facades\Response` لانشاء رد (response) من النوع JSON يمكنك ببساطة استخدام التابع المساعد `response`. ولأن التوابع المساعدة متوفرة على نطاق التطبيق (globally available)، لست بحاجة لاستيراد (import) أي صفوف لاستخدمها: 
 
-    use Illuminate\Support\Facades\Response;
+```php
+use Illuminate\Support\Facades\Response;
 
-    Route::get('/users', function () {
-        return Response::json([
-            // ...
-        ]);
-    });
+Route::get('/users', function () {
+    return Response::json([
+        // ...
+    ]);
+});
 
-    Route::get('/users', function () {
-        return response()->json([
-            // ...
-        ]);
-    });
+Route::get('/users', function () {
+    return response()->json([
+        // ...
+    ]);
+});
+```
 
 <a name="when-to-use-facades"></a>
-## When To Use Facades
+## متى تُستخدم واجهات Facades
 
-Facades have many benefits. They provide a terse, memorable syntax that allows you to use Laravel's features without remembering long class names that must be injected or configured manually. Furthermore, because of their unique usage of PHP's dynamic methods, they are easy to test.
+إن واجهات Facades عديدة الفوائد. فهي توفر صياغة موجزة وقابلة للتذكر مما يتيح استخدام ميزات لارافيل بدون تذكر أسماء الكائنات الطويلة التي يجب حقنها أو اعدادها يدوياً. وبسبب استخدامها الفريد لطرائق PHP الديناميكية يجعلها ذلك سهلة الاختبار أيضاً. 
 
-However, some care must be taken when using facades. The primary danger of facades is class "scope creep". Since facades are so easy to use and do not require injection, it can be easy to let your classes continue to grow and use many facades in a single class. Using dependency injection, this potential is mitigated by the visual feedback a large constructor gives you that your class is growing too large. So, when using facades, pay special attention to the size of your class so that its scope of responsibility stays narrow. If your class is getting too large, consider splitting it into multiple smaller classes.
+بكل الأحوال، يجب الاحتياط قليلاً عند استعمال واجهات Facades. لأن خطرها الرئيسي يكمن بتمدد نطاق الكائن ("scope creep"). بما أن واجهات Facades سهلة الاستعمال ولا تحتاج لحقن، فمن السهولة أن تتضخم كائناتك (classes) عند استخدام أكثر من واجهة Facade في كائن واحد. إن استخدام حقن الاعتماديات من المحتمل أن يحد من المشكلة بسبب التحذيرات المرئية التي يصدرها الباني (constructor) الضخم بأن الكائن يتضخم بشكل كبير. فعند استخدامك لواجهات Facades يجب إعارة انتباه خاص لحجم الكائن لكي يبقى نطاق مسؤليته (scope of responsibility) ضيقاً. وفي حال تضخم الكائن كثيراً، قد تحتاج لتقسيمه لعدة كائنات أصغر. 
 
 <a name="facades-vs-dependency-injection"></a>
-### Facades Vs. Dependency Injection
+### مقارنة واجهات Facades مع حقن الاعتماديات
 
-One of the primary benefits of dependency injection is the ability to swap implementations of the injected class. This is useful during testing since you can inject a mock or stub and assert that various methods were called on the stub.
+واحد من الفوائد الأساسية لحقن الاعتمادية هو امكانية تبديل استخدامات (implementations) الكائن الذي تم حقنه. مما يفيد أثناء الاختبار حيث يمكنك حقن غرض مُقلِّد (mock) أو نموذج القابل للاستبدال (stub) وتتحقق من استدعاء مختلف الطرق فيها.
 
-Typically, it would not be possible to mock or stub a truly static class method. However, since facades use dynamic methods to proxy method calls to objects resolved from the service container, we actually can test facades just as we would test an injected class instance. For example, given the following route:
+عملياً، ليس من الممكن استخدام الأغراض المُقلِّدة (mock) أو النماذج القابلة للاستبدال (stubs) على طريقة ستاتيكية للكائن. ولكن ولأن واجهات Facades تستخدم الطرق الديناميكة لتوكيل طرق لاستدعاء الكائنات تم الحصول عليها بواسطة حاوي الخدمة، يمكننا في الواقع اختبار Facades كما يمكننا اختبار نسخة (instance) لكائن تم حقنه. على سبيل المثال ليكن لدينا المسار (route) التالي: 
 
-    use Illuminate\Support\Facades\Cache;
+```php
+use Illuminate\Support\Facades\Cache;
 
-    Route::get('/cache', function () {
-        return Cache::get('key');
-    });
+Route::get('/cache', function () {
+    return Cache::get('key');
+});
+```
 
-Using Laravel's facade testing methods, we can write the following test to verify that the `Cache::get` method was called with the argument we expected:
+باستخدام طرق الاختبار الخاصة بلارافيل Facade، يمكننا كتابة النص التالي للتحقق من أنه تم استدعاء الطريقة `Cache::get` بالوسيط الذي نتوقعه:
 
-    use Illuminate\Support\Facades\Cache;
+```php
+use Illuminate\Support\Facades\Cache;
 
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     */
-    public function testBasicExample()
-    {
-        Cache::shouldReceive('get')
-             ->with('key')
-             ->andReturn('value');
+/**
+ * A basic functional test example.
+ *
+ * @return void
+ */
+public function testBasicExample()
+{
+    Cache::shouldReceive('get')
+         ->with('key')
+         ->andReturn('value');
 
-        $response = $this->get('/cache');
+    $response = $this->get('/cache');
 
-        $response->assertSee('value');
-    }
+    $response->assertSee('value');
+}
+```
 
 <a name="facades-vs-helper-functions"></a>
-### Facades Vs. Helper Functions
+### مقارنة واجهات Facades بالتوابع المساعدة (Helper Functions)
 
-In addition to facades, Laravel includes a variety of "helper" functions which can perform common tasks like generating views, firing events, dispatching jobs, or sending HTTP responses. Many of these helper functions perform the same function as a corresponding facade. For example, this facade call and helper call are equivalent:
+بالإضافة لواجهات Facades تحتوي لارافيل العديد من التوابع المساعدة التي تقوم بالمهام الشائعة كإنشاء واجهات (views)، إطلاق الأحداث (events)، توزيع الأعمال، أو ارسال ردود (responses) من نوع HTTP. والعديد من هذه التوابع المساعدة يقوم بتنفيذ الوظيفة نفسها لواجهة Facade المقابلة لها، فعلى سبيل المثال استدعاء واجهة Facade التالي مطابق  لاستدعاء التابع المساعد: 
 
-    return Illuminate\Support\Facades\View::make('profile');
+```php
+return Illuminate\Support\Facades\View::make('profile');
 
-    return view('profile');
+return view('profile');
+```
 
-There is absolutely no practical difference between facades and helper functions. When using helper functions, you may still test them exactly as you would the corresponding facade. For example, given the following route:
+عملياً لا يوجد أي فرق بين واجهات Facades والتوابع المساعدة. عند استخدام التوابع المساعدة، يمكنك اختبارها بنفس الأسلوب الذي قد تختبر فيه واجهة Facade  الموافقة. على سبيل المثال ليكن لدينا المسار (route) التالي:
 
-    Route::get('/cache', function () {
-        return cache('key');
-    });
+```php
+Route::get('/cache', function () {
+    return cache('key');
+});
+```
+ضمنياً يقوم لتابع المساعد `cache` باستدعاء الطريقة `get` على الكائن المضمن في واجهة Facade التالية `Cache`. مما يعني أنه حتى لو قمنا باستخدام التابع المساعد، يمكننا كتابة الاختبار التالي للتأكد من أنه تم استدعاء الطريقة بالوسيط الذي نتوقعه: 
 
-Under the hood, the `cache` helper is going to call the `get` method on the class underlying the `Cache` facade. So, even though we are using the helper function, we can write the following test to verify that the method was called with the argument we expected:
 
-    use Illuminate\Support\Facades\Cache;
+```php
+use Illuminate\Support\Facades\Cache;
+
+/**
+ * A basic functional test example.
+ *
+ * @return void
+ */
+public function testBasicExample()
+{
+    Cache::shouldReceive('get')
+            ->with('key')
+            ->andReturn('value');
+
+    $response = $this->get('/cache');
+
+    $response->assertSee('value');
+}
+```
+
+<a name="how-facades-work"></a>
+## كيفية عمل واجهات Facades
+
+في تطبيق لارافيل، واجهة Facade هي كائن يوفر الوصول لكائن من حاوي الخدمات. حيث أن الآلية التي تسمح بذلك موجودة في الكائن `Facade`. إن واجهات لارافيل Facades وأي واجهات Facades تقوم بإنشائها، سوف ترث من الكائن الأساسي (base class) `Illuminate\Support\Facades\Facade`. 
+
+الكائن الأساسي `Facade` يستخدم الطريقة الجاهزة (magic-method) `()callStatic__` لتحويل الاستدعاءات من واجهة Facade لكائن يتم الحصول عليه من حاوي الخدمات. في المثال التالي، سيتم استدعاء نظام الذاكرة المؤقت (cache system) الخاص بلارافيل. عند القاء نظرة على هذا الكود قد تظن بأن الطريقة الستاتيكية `get` يتم استدعائها على الصف `Cache`: 
+
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
+
+class UserController extends Controller
+{
+    /**
+     * Show the profile for the given user.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function showProfile($id)
+    {
+        $user = Cache::get('user:'.$id);
+
+        return view('profile', ['user' => $user]);
+    }
+}
+```
+
+لاحظ في أعلى الملف بأننا نقوم باستيراد (importing) واجهة Facade التالية `Cache`. حيث تقوم واجهة Facade بالعمل كوكيل للوصول للاستخدام (implementation) الخاص بالواجهة `Illuminate\Contracts\Cache\Factory`. حيث أن أي استدعاءات نقوم بها باستخدام واجهة Facade سيتم تمريرها للنسخة (instance) الضمنية في خدمة الذاكرة المؤقتة في لارافيل. 
+
+اذا قمنا بإلقاء نظرة على الكائن `Illuminate\Support\Facades\Cache` ستجد بأنه لا وجود للطريقة الستاتيكية `get`: 
+
+```php
+class Cache extends Facade
+{
+    /**
+     * Get the registered name of the component.
+     *
+     * @return string
+     */
+    protected static function getFacadeAccessor() { return 'cache'; }
+}
+```
+بدلاً من ذلك ترث واجهة Facade التالية `Cache` من الصف الأساسي `Facade` وتُعرِّف الطريقة `()getFacadeAccessor`. إن مهمة هذه الطريقة هو إعادة اسم ارتباط خاص بحاوي الخدمات. عندما يشير المستخدم لأي طريقة ستاتيكية في واجهة Facade التالية `Cache` ستقوم لارافيل بالحصول على الارتباط بين `cache` و [حاوي الخدمات](/docs/{{version}}/container) وتنفيذ الطريقة المطلوبة (في هذه الحالة الطريقة `get`) على الكائن. 
+
+<a name="real-time-facades"></a>
+## واجهات Facades أثناء التنفيذ
+
+يمكنك معاملة أي كائن من كائناتك بالتطبيق كما لو كان واجهة Facades باستخدام واجهات Facades أثناء التنفيذ. لتوضيح كيفية استخدام ذلك، دعنا بدايةً نتصفح بعض الأكواد التي لا تستخدم واجهات Facades أثناء التنفيذ. على سبيل المثال لنفترض بأن النموذج (model) التالي `Podcast` يحتوي على طريقة `publish`. حسناً لكي نقوم بنشر بودكاست نحتاج لحقن نسخة (instance) من الناشر `Publisher`: 
+
+
+```php
+<?php
+
+namespace App\Models;
+
+use App\Contracts\Publisher;
+use Illuminate\Database\Eloquent\Model;
+
+class Podcast extends Model
+{
+    /**
+     * Publish the podcast.
+     *
+     * @param  Publisher  $publisher
+     * @return void
+     */
+    public function publish(Publisher $publisher)
+    {
+        $this->update(['publishing' => now()]);
+
+        $publisher->publish($this);
+    }
+}
+```
+ يسمح لنا حقن استخدام (implementation) للناشر publisher في الطريقة باختبار الطريقة على انفراد طالما أننا قادرون على تقليد (mock) الناشر الذي تم حقنه. بكل الأحوال مطلوب بشكل دائم تمرير نسخة (instance) من الناشر publisher في كل مرة نقوم  فيها باستدعاء الطريقة `publish`. لذلك وباستخدام واجهات Facades  أثناء التنفيذ يمكننا المحافظة على قابلية الاختبار بدون أن نكون مطالبين بشكل صريح بتمرير نسخة من `Publisher`. لإنشاء واجهة Facade أثناء التنفيذ أضف كلمة `Facades` كبادئة لنطاق الأسماء (namespace) للكائن المستورد (imported class): 
+
+```php
+<?php
+
+namespace App\Models;
+
+use Facades\App\Contracts\Publisher;
+use Illuminate\Database\Eloquent\Model;
+
+class Podcast extends Model
+{
+    /**
+        * Publish the podcast.
+        *
+        * @return void
+        */
+    public function publish()
+    {
+        $this->update(['publishing' => now()]);
+
+        Publisher::publish($this);
+    }
+}
+```
+
+عند استخدام واجهات Facades  أثناء التنفيذ سيتم الحصول على استخدام (implementation) للواجهة publisher من حاوي الخدمات باستخدام جزء من الواجهة أو اسم الكائن الذي يظهر بعد البادئة `Facades`. عند الاختبار يمكننا استخدام التوابع المساعدة للاختبار المُدمجة بلارافيل لتقليد (mock) استدعاء هذه الطريقة: 
+
+```php
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Podcast;
+use Facades\App\Contracts\Publisher;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class PodcastTest extends TestCase
+{
+    use RefreshDatabase;
 
     /**
-     * A basic functional test example.
+     * A test example.
      *
      * @return void
      */
-    public function testBasicExample()
+    public function test_podcast_can_be_published()
     {
-        Cache::shouldReceive('get')
-             ->with('key')
-             ->andReturn('value');
+        $podcast = Podcast::factory()->create();
 
-        $response = $this->get('/cache');
+        Publisher::shouldReceive('publish')->once()->with($podcast);
 
-        $response->assertSee('value');
+        $podcast->publish();
     }
-
-<a name="how-facades-work"></a>
-## How Facades Work
-
-In a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Illuminate\Support\Facades\Facade` class.
-
-The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to an object resolved from the container. In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static `get` method is being called on the `Cache` class:
-
-    <?php
-
-    namespace App\Http\Controllers;
-
-    use App\Http\Controllers\Controller;
-    use Illuminate\Support\Facades\Cache;
-
-    class UserController extends Controller
-    {
-        /**
-         * Show the profile for the given user.
-         *
-         * @param  int  $id
-         * @return Response
-         */
-        public function showProfile($id)
-        {
-            $user = Cache::get('user:'.$id);
-
-            return view('profile', ['user' => $user]);
-        }
-    }
-
-Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy for accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service.
-
-If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
-
-    class Cache extends Facade
-    {
-        /**
-         * Get the registered name of the component.
-         *
-         * @return string
-         */
-        protected static function getFacadeAccessor() { return 'cache'; }
-    }
-
-Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. This method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
-
-<a name="real-time-facades"></a>
-## Real-Time Facades
-
-Using real-time facades, you may treat any class in your application as if it was a facade. To illustrate how this can be used, let's first examine some code that does not use real-time facades. For example, let's assume our `Podcast` model has a `publish` method. However, in order to publish the podcast, we need to inject a `Publisher` instance:
-
-    <?php
-
-    namespace App\Models;
-
-    use App\Contracts\Publisher;
-    use Illuminate\Database\Eloquent\Model;
-
-    class Podcast extends Model
-    {
-        /**
-         * Publish the podcast.
-         *
-         * @param  Publisher  $publisher
-         * @return void
-         */
-        public function publish(Publisher $publisher)
-        {
-            $this->update(['publishing' => now()]);
-
-            $publisher->publish($this);
-        }
-    }
-
-Injecting a publisher implementation into the method allows us to easily test the method in isolation since we can mock the injected publisher. However, it requires us to always pass a publisher instance each time we call the `publish` method. Using real-time facades, we can maintain the same testability while not being required to explicitly pass a `Publisher` instance. To generate a real-time facade, prefix the namespace of the imported class with `Facades`:
-
-    <?php
-
-    namespace App\Models;
-
-    use Facades\App\Contracts\Publisher;
-    use Illuminate\Database\Eloquent\Model;
-
-    class Podcast extends Model
-    {
-        /**
-         * Publish the podcast.
-         *
-         * @return void
-         */
-        public function publish()
-        {
-            $this->update(['publishing' => now()]);
-
-            Publisher::publish($this);
-        }
-    }
-
-When the real-time facade is used, the publisher implementation will be resolved out of the service container using the portion of the interface or class name that appears after the `Facades` prefix. When testing, we can use Laravel's built-in facade testing helpers to mock this method call:
-
-    <?php
-
-    namespace Tests\Feature;
-
-    use App\Models\Podcast;
-    use Facades\App\Contracts\Publisher;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Tests\TestCase;
-
-    class PodcastTest extends TestCase
-    {
-        use RefreshDatabase;
-
-        /**
-         * A test example.
-         *
-         * @return void
-         */
-        public function test_podcast_can_be_published()
-        {
-            $podcast = Podcast::factory()->create();
-
-            Publisher::shouldReceive('publish')->once()->with($podcast);
-
-            $podcast->publish();
-        }
-    }
+}
+```
 
 <a name="facade-class-reference"></a>
-## Facade Class Reference
+## مرجع لكائنات Facades
 
-Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [service container binding](/docs/{{version}}/container) key is also included where applicable.
+ستجد في الأسفل كل واجهات Facades وكائناتها الضمنية(underlying classes). يوفر هذا أداة سهلة للبحث عن أصل واجهة Facade في توثيق API الخاص بلارافيل. كما يتوفر [مفتاح الارتباط الخاص بحاوي الخدمات](/docs/{{version}}/container) في الأماكن المناسبة:
 
 Facade  |  Class  |  Service Container Binding
 ------------- | ------------- | -------------
