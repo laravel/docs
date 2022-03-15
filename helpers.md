@@ -143,6 +143,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::title](#method-title-case)
 [Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
+[Str::ucsplit](#method-str-ucsplit)
 [Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
@@ -1876,6 +1877,17 @@ The `Str::ucfirst` method returns the given string with the first character capi
     $string = Str::ucfirst('foo bar');
 
     // Foo bar
+
+<a name="method-str-ucsplit"></a>
+#### `Str::ucsplit()` {.collection-method}
+
+The `Str::ucsplit` method split the given string by capitalized characters and returns an array.
+
+    use Illuminate\Support\Str;
+
+    $string = Str::ucsplit('FooBar');
+
+    // [0 => 'Foo', 1 => 'Bar']
 
 <a name="method-str-upper"></a>
 #### `Str::upper()` {.collection-method}
