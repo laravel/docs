@@ -2769,15 +2769,15 @@ The `values` method returns a new collection with the keys reset to consecutive 
 <a name="method-when"></a>
 #### `when()` {.collection-method}
 
-The `when` method will execute the given callback when the first argument given to the method evaluates to `true`:
+The `when` method will execute the given callback when the first argument given to the method evaluates to `true`. The collection instance and the first argument given to the `when` method will be provided to the closure:
 
     $collection = collect([1, 2, 3]);
 
-    $collection->when(true, function ($collection) {
+    $collection->when(true, function ($collection, $value) {
         return $collection->push(4);
     });
 
-    $collection->when(false, function ($collection) {
+    $collection->when(false, function ($collection, $value) {
         return $collection->push(5);
     });
 
@@ -2785,24 +2785,11 @@ The `when` method will execute the given callback when the first argument given 
 
     // [1, 2, 3, 4]
 
-The second callback argument is the original value that was evaluated as `true`:
-
-    $collection = collect([1, 2, 3]);
-    $id = 3;
-
-    $collection->when($id, function ($collection, $id) {
-        return $collection->sortByDesc(fn ($value) => $value === $id);
-    });
-
-    $collection->all();
-
-    // [3, 1, 2]
-
 A second callback may be passed to the `when` method. The second callback will be executed when the first argument given to the `when` method evaluates to `false`:
 
     $collection = collect([1, 2, 3]);
 
-    $collection->when(false, function ($collection) {
+    $collection->when(false, function ($collection, $value) {
         return $collection->push(4);
     }, function ($collection) {
         return $collection->push(5);
