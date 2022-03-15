@@ -2769,15 +2769,15 @@ The `values` method returns a new collection with the keys reset to consecutive 
 <a name="method-when"></a>
 #### `when()` {.collection-method}
 
-The `when` method will execute the given callback when the first argument given to the method evaluates to `true`:
+The `when` method will execute the given callback when the first argument given to the method evaluates to `true`. The collection instance and the first argument given to the `when` method will be provided to the closure:
 
     $collection = collect([1, 2, 3]);
 
-    $collection->when(true, function ($collection) {
+    $collection->when(true, function ($collection, $value) {
         return $collection->push(4);
     });
 
-    $collection->when(false, function ($collection) {
+    $collection->when(false, function ($collection, $value) {
         return $collection->push(5);
     });
 
@@ -2789,7 +2789,7 @@ A second callback may be passed to the `when` method. The second callback will b
 
     $collection = collect([1, 2, 3]);
 
-    $collection->when(false, function ($collection) {
+    $collection->when(false, function ($collection, $value) {
         return $collection->push(4);
     }, function ($collection) {
         return $collection->push(5);
