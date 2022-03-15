@@ -338,6 +338,10 @@ If you would like to verify that the JSON response contains the given data at a 
         }
     }
 
+The `assertJsonPath` method also accepts a closure, which may be used to dynamically determine if the assertion should pass:
+
+    $response->assertJsonPath('team.owner.name', fn ($name) => strlen($name) >= 3);
+
 <a name="fluent-json-testing"></a>
 ### Fluent JSON Testing
 
