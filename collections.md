@@ -2785,6 +2785,19 @@ The `when` method will execute the given callback when the first argument given 
 
     // [1, 2, 3, 4]
 
+The second callback argument is the original value that was evaluated as `true`:
+
+    $collection = collect([1, 2, 3]);
+    $id = 3;
+
+    $collection->when($id, function ($collection, $id) {
+        return $collection->sortByDesc(fn ($value) => $value === $id);
+    });
+
+    $collection->all();
+
+    // [3, 1, 2]
+
 A second callback may be passed to the `when` method. The second callback will be executed when the first argument given to the `when` method evaluates to `false`:
 
     $collection = collect([1, 2, 3]);
