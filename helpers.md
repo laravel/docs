@@ -1881,11 +1881,11 @@ The `Str::ucfirst` method returns the given string with the first character capi
 <a name="method-str-ucsplit"></a>
 #### `Str::ucsplit()` {.collection-method}
 
-The `Str::ucsplit` method split the given string by capitalized characters and returns an array.
+The `Str::ucsplit` method splits the given string into an array by uppercase characters:
 
     use Illuminate\Support\Str;
 
-    $string = Str::ucsplit('FooBar');
+    $segments = Str::ucsplit('FooBar');
 
     // [0 => 'Foo', 1 => 'Bar']
 
