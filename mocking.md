@@ -598,6 +598,9 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
             // Assert one or more files were not stored...
             Storage::disk('photos')->assertMissing('missing.jpg');
             Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
+
+            // Assert that a given directory is empty...
+            Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');
         }
     }
 
