@@ -2309,8 +2309,8 @@ The `kebab` method converts the given string to `kebab-case`:
 
     // foo-bar
     
-<a name="method-str-fluent-lcfirst"></a>
-#### `lcfirst()` {.collection-method}
+<a name="method-fluent-str-lcfirst"></a>
+#### `lcfirst` {.collection-method}
 
 The `lcfirst` method returns the given string with the first character lowercased:
 
