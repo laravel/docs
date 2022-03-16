@@ -1194,6 +1194,8 @@ When retrieving model records, you may wish to limit your results based on the e
     // Retrieve all posts that have at least one comment...
     $posts = Post::has('comments')->get();
 
+> {note} This runs as a [correlated subquery](https://dev.mysql.com/doc/refman/8.0/en/correlated-subqueries.html) which has performance implications when ran over large data sets.
+
 You may also specify an operator and count value to further customize the query:
 
     // Retrieve all posts that have three or more comments...
