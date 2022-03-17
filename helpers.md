@@ -2851,7 +2851,7 @@ The `ucfirst` method returns the given string with the first character capitaliz
 <a name="method-fluent-str-ucsplit"></a>
 #### `ucsplit` {.collection-method}
 
-The `ucsplit` method splits the given string into an array by uppercase characters:
+The `ucsplit` method splits the given string into a collection by uppercase characters:
 
     use Illuminate\Support\Str;
 
