@@ -221,6 +221,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [title](#method-fluent-str-title)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
+[ucsplit](#method-fluent-str-ucsplit)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
 [whenContains](#method-fluent-str-when-contains)
@@ -2846,6 +2847,17 @@ The `ucfirst` method returns the given string with the first character capitaliz
     $string = Str::of('foo bar')->ucfirst();
 
     // Foo bar
+    
+<a name="method-fluent-str-ucsplit"></a>
+#### `ucsplit` {.collection-method}
+
+The `ucsplit` method splits the given string into a collection by uppercase characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Foo Bar')->ucsplit();
+
+    // collect(['Foo', 'Bar'])
 
 <a name="method-fluent-str-upper"></a>
 #### `upper` {.collection-method}
