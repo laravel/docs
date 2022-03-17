@@ -2837,7 +2837,7 @@ The `trim` method trims the given string:
 
     // 'Laravel'
 
-<a name="method-fluent-str-ucfirst"></a>    
+<a name="method-fluent-str-ucfirst"></a>
 #### `ucfirst` {.collection-method}
 
 The `ucfirst` method returns the given string with the first character capitalized:
