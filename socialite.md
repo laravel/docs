@@ -100,7 +100,7 @@ Once the user has been retrieved from the OAuth provider, you may determine if t
 <a name="access-scopes"></a>
 ### Access Scopes
 
-Before redirecting the user, you may use the `scopes` method to specify the "scopes" that should be included in the authentication request. This method will merge all previously specified scopes scopes with the scopes that you specify:
+Before redirecting the user, you may use the `scopes` method to specify the "scopes" that should be included in the authentication request. This method will merge all previously specified scopes with the scopes that you specify:
 
     use Laravel\Socialite\Facades\Socialite;
 
