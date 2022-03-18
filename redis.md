@@ -151,9 +151,7 @@ In addition to the default `host`, `port`, `database`, and `password` server con
 Laravel's `config/app.php` configuration file contains an `aliases` array which defines all of the class aliases that will be registered by the framework. By default, no `Redis` alias is included because it would conflict with the `Redis` class name provided by the phpredis extension. If you are using the Predis client and would like to add a `Redis` alias, you may add it to the `aliases` array in your application's `config/app.php` configuration file:
 
     'aliases' => Facade::defaultAliases()->merge([
-    
         'Redis' => Illuminate\Support\Facades\Redis::class,
-        
     ])->toArray(),
 
 <a name="phpredis"></a>
