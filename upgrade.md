@@ -136,11 +136,11 @@ public function ignore(string $class);
 
 When iterating over a `LazyCollection` instance within a Blade template, the `$loop` variable is no longer available, as accessing this variable causes the entire `LazyCollection` to be loaded into memory, thus rendering the usage of lazy collections pointless in this scenario.
 
-#### Checked / Disabled / Selected blade directives
+#### Checked / Disabled / Selected Blade Directives
 
 **Likelihood Of Impact: Low**
 
-New blade directives may conflict with Vue events with the same name: `@checked`, `@disabled` or `@selected`. The easiest way to avoid conflict is to escape them e.g. `@@selected`.
+The new `@checked`, `@disabled`, and `@selected` Blade directives may conflict with Vue events of the same name. You may use `@@` to escape the directives and avoid this conflict: `@@selected`.
 
 ### Collections
 
