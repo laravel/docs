@@ -608,6 +608,8 @@ For more information on testing file uploads, you may consult the [HTTP testing 
 
 > {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
 
+> {tip} The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php).
+
 <a name="interacting-with-time"></a>
 ## Interacting With Time
 
