@@ -136,6 +136,12 @@ public function ignore(string $class);
 
 When iterating over a `LazyCollection` instance within a Blade template, the `$loop` variable is no longer available, as accessing this variable causes the entire `LazyCollection` to be loaded into memory, thus rendering the usage of lazy collections pointless in this scenario.
 
+#### Checked / Disabled / Selected Blade Directives
+
+**Likelihood Of Impact: Low**
+
+The new `@checked`, `@disabled`, and `@selected` Blade directives may conflict with Vue events of the same name. You may use `@@` to escape the directives and avoid this conflict: `@@selected`.
+
 ### Collections
 
 #### The `Enumerable` Contract
