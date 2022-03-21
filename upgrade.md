@@ -550,6 +550,16 @@ Again, many applications may not be interacting with these methods, as they are 
 
 SwiftMailer offered the ability to define a custom domain to include in generated Message IDs via the `mime.idgenerator.idright` configuration option. This is not supported by Symfony Mailer. Instead, Symfony Mailer will automatically generate a Message ID based on the sender.
 
+##### SES Message IDs
+
+In Laravel v8 and before, the SES Transport generated separate `X-Message-ID` and `X-SES-Message-ID` headers. In Laravel v9, these headers are removed. You should be able to safely rely on the generated header by Symfony Mailer. 
+
+#### MessageSent Event Changes
+
+In Laravel v9, calling `$event->message` on the `MessageSent` event instance will now return a `Symfony\Component\Mime\Email` instance instead of a `Swift_Message` instance. This message contains all information on the email **before** it's sent. 
+
+Additionally, a new `$event->sent` property was added that will return a `Illuminate\Mail\SentMessage` instance that wraps the `Symfony\Component\Mailer\SentMessage` instance and contains all information about the sent email like the message ID.
+
 #### Forced Reconnections
 
 It is no longer possible to force a transport reconnection (for example when the mailer is running via a daemon process). Instead, Symfony Mailer will attempt to reconnect to the transport automatically and throw an exception if the reconnection fails.
