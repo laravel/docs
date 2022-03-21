@@ -342,7 +342,7 @@ public function largestOrder()
 <a name="advanced-has-one-of-many-relationships"></a>
 #### Advanced Has One Of Many Relationships
 
-It is possible to construct more advanced "has one of many" relationships. For example, A `Product` model may have many associated `Price` models that are retained in the system even after new pricing is published. In addition, new pricing data for the product may be able to be published in advance to take effect at a future date via a `published_at` column.
+It is possible to construct more advanced "has one of many" relationships. For example, a `Product` model may have many associated `Price` models that are retained in the system even after new pricing is published. In addition, new pricing data for the product may be able to be published in advance to take effect at a future date via a `published_at` column.
 
 So, in summary, we need to retrieve the latest published pricing where the published date is not in the future. In addition, if two prices have the same published date, we will prefer the price with the greatest ID. To accomplish this, we must pass an array to the `ofMany` method that contains the sortable columns which determine the latest price. In addition, a closure will be provided as the second argument to the `ofMany` method. This closure will be responsible for adding additional publish date constraints to the relationship query:
 
@@ -1633,7 +1633,7 @@ If you are eager loading a `morphTo` relationship, Eloquent will run multiple qu
         ]);
     }])->get();
 
-In this example, Eloquent will only eager load posts that have not been hidden and videos have a `type` value of "educational".
+In this example, Eloquent will only eager load posts that have not been hidden and videos that have a `type` value of "educational".
 
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
