@@ -552,7 +552,11 @@ SwiftMailer offered the ability to define a custom domain to include in generate
 
 ##### SES Message IDs
 
-In Laravel v8 and before, the SES Transport generated separate `X-Message-ID` and `X-SES-Message-ID` headers. In Laravel v9, these headers are removed. You should be able to safely rely on the generated header by Symfony Mailer. 
+In Laravel v8 and before, the SES Transport generated separate `X-Message-ID` and `X-SES-Message-ID` headers. In Laravel v9, these headers are removed. You should be able to safely rely on the generated header by Symfony Mailer. You can access these by calling the `getMessageId` method on the `SentMessage` object after sending an email:
+
+    $message = Mail::to($request->user())->send(new OrderShipped($order));
+    
+    $messageId = $message->getMessageId();
 
 #### MessageSent Event Changes
 
