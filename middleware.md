@@ -180,7 +180,8 @@ php artisan make:middleware EnsureTokenIsValid
         });
     });
 
-الطريقة `withoutMiddleware`  تحذف مسار الكائن الوسيط ولا تقبل ]كائن وسيط عام[ (#global-middleware)
+
+الطريقة `withoutMiddleware`  تحذف مسار الكائن الوسيط ولا تقبل [global middleware](#global-middleware)
 
 
 <a name="middleware-groups"></a>
