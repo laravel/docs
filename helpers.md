@@ -3352,7 +3352,7 @@ The `dump` function dumps the given variables:
 
     dump($value1, $value2, $value3, ...);
 
-If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead.
+If you want to stop executing the script after dumping the variables, use the [`dd`](#method-dd) function instead. This function can interrupt session variables.
 
 <a name="method-encrypt"></a>
 #### `encrypt()` {.collection-method}
