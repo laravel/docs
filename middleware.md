@@ -1,32 +1,36 @@
-# Middleware
+# الكائن الوسيط
 
-- [Introduction](#introduction)
-- [Defining Middleware](#defining-middleware)
-- [Registering Middleware](#registering-middleware)
-    - [Global Middleware](#global-middleware)
-    - [Assigning Middleware To Routes](#assigning-middleware-to-routes)
-    - [Middleware Groups](#middleware-groups)
-    - [Sorting Middleware](#sorting-middleware)
-- [Middleware Parameters](#middleware-parameters)
-- [Terminable Middleware](#terminable-middleware)
+- [المقدمة](#introduction)
+- [تعريف الكائن الوسيط](#defining-middleware)
+- [تسجيل الكائن الوسيط](#registering-middleware)
+    - [الكائن الوسيط العام](#global-middleware)
+    - [تعيين الكائن الوسيط للمسارات](#assigning-middleware-to-routes)
+    - [مجموعات الكائن الوسيط](#middleware-groups)
+    - [ترتيب الكائن الوسيط](#sorting-middleware)
+- [متغيرات الكائن الوسيط](#middleware-parameters)
+- [الكائن الوسيط القابل للإنهاء](#terminable-middleware)
 
 <a name="introduction"></a>
-## Introduction
+## المقدمة 
+يؤمن الكائن الوسيط اّلية مناسبة لفحص وفلترة طلبات بروتوكول HTTP 
+مثال: يتحقق الكائن الوسيط ضمن لارافل من المستخدم إذا كان مسجل ضمن الموقع أو غير مسجل
+إذا كان غير مسجل يحوله إلى صفحة تسجيل الدخول إذا كان مسجل يسمح له بالدخول إلى الموقع
 
-Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to your application's login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application.
-
-Additional middleware can be written to perform a variety of tasks besides authentication. For example, a logging middleware might log all incoming requests to your application. There are several middleware included in the Laravel framework, including middleware for authentication and CSRF protection. All of these middleware are located in the `app/Http/Middleware` directory.
+يتوضع الكائن الوسيط ضمن مجلد `app/Http/Middleware` 
+يوجد كائنات لتنفيذ المهام المتنوعة إلى جانب كائن التحقق من تسجيل الدخول والحماية من ثغرة CSRF (Cross-Site Request Forgery)
 
 <a name="defining-middleware"></a>
-## Defining Middleware
+## تعريف الكائن الوسيط 
 
-To create a new middleware, use the `make:middleware` Artisan command:
+لإنشاء كائن وسيط نستخدم الأمر`make:middleware`  
 
 ```shell
 php artisan make:middleware EnsureTokenIsValid
 ```
 
-This command will place a new `EnsureTokenIsValid` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `token` input matches a specified value. Otherwise, we will redirect the users back to the `home` URI:
+
+أنشأ الأمر السابق صف`EnsureTokenIsValid`  ضمن المجلد`app/Http/Middleware`   
+هذا الكائن الوسيط يسمح بالوصول إلى المسار في حال تساوي`token`  المدخلة مع القيمة الموجودة غير ذلك يقوم بتحويل المستخدم إلى الصفحة الرئيسية`home`  
 
     <?php
 
@@ -53,17 +57,16 @@ This command will place a new `EnsureTokenIsValid` class within your `app/Http/M
         }
     }
 
-As you can see, if the given `token` does not match our secret token, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to "pass"), you should call the `$next` callback with the `$request`.
+كما ترى إذا كان العّلام المُعطى لا يماثل العّلام السري سيقوم الكائن الوسيط بتحويل المستخدم للصفحة الرئيسية غير ذلك يسمح للمستخدم بالدخول إلى صفحات التطبيق نقوم بنداء `$next` و ضمنها `$request`
 
-It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
+من الأفضل تصور الكائن الوسيط كسلسلة طبقات تمر عبرها طلبات HTTP كل طبقة تفحص طلب HTTP و حتى رفضه داخليا 
 
-> {tip} All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor.
 
 <a name="before-after-middleware"></a>
 <a name="middleware-and-responses"></a>
-#### Middleware & Responses
-
-Of course, a middleware can perform tasks before or after passing the request deeper into the application. For example, the following middleware would perform some task **before** the request is handled by the application:
+#### الكائن الوسيط والاستجابة
+ينفذ الكائن الوسيط المهام قبل وبعد تمرير الطلب أعمق بالتطبيق
+في المثال التالي سيقوم الكائن الوسيط بتنفيذ المهمة قبل معالجة الطلب من قبل التطبيق
 
     <?php
 
@@ -81,7 +84,7 @@ Of course, a middleware can perform tasks before or after passing the request de
         }
     }
 
-However, this middleware would perform its task **after** the request is handled by the application:
+هذا الكائن الوسيط يقوم بالتحسين بعد معالجة الطلب
 
     <?php
 
@@ -102,17 +105,17 @@ However, this middleware would perform its task **after** the request is handled
     }
 
 <a name="registering-middleware"></a>
-## Registering Middleware
-
+## تسجيل الكائن الوسيط
 <a name="global-middleware"></a>
-### Global Middleware
+### الكائن الوسيط العام
 
-If you want a middleware to run during every HTTP request to your application, list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
+إذا أردت تشغيل الكائن الوسيط في كل طلب HTTP ضع صف الكائن الوسيط في الخاصية`$middleware` في الصف  `app/Http/Kernel.php`
 
 <a name="assigning-middleware-to-routes"></a>
-### Assigning Middleware To Routes
-
-If you would like to assign middleware to specific routes, you should first assign the middleware a key in your application's `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. You may add your own middleware to this list and assign it a key of your choosing:
+### تعيين الكائن الوسيط للمسارات
+إذا أردت تعيين الكائن الوسيط لمسارات مخصصة يجب تعيين مفتاح للكائن الوسيط ضمن الملف `app/Http/Kernel.php` 
+افتراضيا تحوي الخاصية`$routeMiddleware`  في هذا الصف الكائن الوسيط المضمن في لارافل 
+يمكنك إضافة الوسيط الخاص بك وتعيين مفتاح خاص به
 
     // Within App\Http\Kernel class...
 
@@ -128,19 +131,20 @@ If you would like to assign middleware to specific routes, you should first assi
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 
-Once the middleware has been defined in the HTTP kernel, you may use the `middleware` method to assign middleware to a route:
+الكائن الوسيط الأول تم تعريفه لنستخدم الطريقة`middleware`  في تعيين كائن وسيط للمسار 
 
     Route::get('/profile', function () {
         //
     })->middleware('auth');
 
-You may assign multiple middleware to the route by passing an array of middleware names to the `middleware` method:
+
+يمكن تعيين عدة كائنات وسيطة للمسار بتمرير مصفوفة بأسماء الكائنات الوسيطة للطريقة `middleware`
 
     Route::get('/', function () {
         //
     })->middleware(['first', 'second']);
 
-When assigning middleware, you may also pass the fully qualified class name:
+عند تعيين الكائن الوسيط يمكنك تمرير الاسم الكامل للصف
 
     use App\Http\Middleware\EnsureTokenIsValid;
 
@@ -149,9 +153,9 @@ When assigning middleware, you may also pass the fully qualified class name:
     })->middleware(EnsureTokenIsValid::class);
 
 <a name="excluding-middleware"></a>
-#### Excluding Middleware
+#### استثناء أو استبعاد الكائن الوسيط
 
-When assigning middleware to a group of routes, you may occasionally need to prevent the middleware from being applied to an individual route within the group. You may accomplish this using the `withoutMiddleware` method:
+عند تعيين كائن وسيط لمجموعة مسارات عادة نحتاج استثناء كائن وسيط من أحد المسارات ضمن المجموعة يمكن انجاز ذلك باستخدام الطريقة  `withoutMiddleware’
 
     use App\Http\Middleware\EnsureTokenIsValid;
 
@@ -165,7 +169,8 @@ When assigning middleware to a group of routes, you may occasionally need to pre
         })->withoutMiddleware([EnsureTokenIsValid::class]);
     });
 
-You may also exclude a given set of middleware from an entire [group](/docs/{{version}}/routing#route-groups) of route definitions:
+
+يمكن استبعاد مجموعة كائنات وسيطة معطاة من مجموعة مدخلة للمسار الوجهة
 
     use App\Http\Middleware\EnsureTokenIsValid;
 
@@ -175,14 +180,19 @@ You may also exclude a given set of middleware from an entire [group](/docs/{{ve
         });
     });
 
-The `withoutMiddleware` method can only remove route middleware and does not apply to [global middleware](#global-middleware).
+
+الطريقة `withoutMiddleware`  تحذف مسار الكائن الوسيط ولا تقبل [global middleware](#global-middleware)
+
 
 <a name="middleware-groups"></a>
-### Middleware Groups
+### مجموعات الكائن الوسيط
 
-Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may accomplish this using the `$middlewareGroups` property of your HTTP kernel.
+إذا أردت عمل مجموعة كائن وسيط تحت مفتاح واحد لسهولة تعيينهم للمسارات يمكن انجاز ذلك باستخدام الخاصية `$middlewareGroups` ضمن الصف  HTTP kernel 
 
-Out of the box, Laravel comes with `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, these middleware groups are automatically applied by your application's `App\Providers\RouteServiceProvider` service provider to routes within your corresponding `web` and `api` route files:
+يأتي مع لارافل مجموعات كائن وسيط`web`  و`api`  تحوي كائن وسيط يُطبق على مسارات `api`  و`api`  
+هذه المجموعات تُطبق بشكل اّلي بواسطة مقدم الخدمة `App\Providers\RouteServiceProvider للمسارات `api`  و  `api`  
+
+
 
     /**
      * The application's route middleware groups.
@@ -206,7 +216,8 @@ Out of the box, Laravel comes with `web` and `api` middleware groups that contai
         ],
     ];
 
-Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware. Again, middleware groups make it more convenient to assign many middleware to a route at once:
+مجموعات الكائن الوسيط تستخدم نفس بناء الكود للكائن الوسيط الوحيد
+
 
     Route::get('/', function () {
         //
@@ -216,12 +227,13 @@ Middleware groups may be assigned to routes and controller actions using the sam
         //
     });
 
-> {tip} Out of the box, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `App\Providers\RouteServiceProvider`.
 
 <a name="sorting-middleware"></a>
-### Sorting Middleware
+### ترتيب الكائن الوسيط
 
-Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In this case, you may specify your middleware priority using the `$middlewarePriority` property of your `app/Http/Kernel.php` file. This property may not exist in your HTTP kernel by default. If it does not exist, you may copy its default definition below:
+نادراً ما نحتاج لتنفيذ الوسيط بترتيب معين لا نملك سيطرة على هذا الترتيب عند تعيين المسار
+في هذه الحالة نحدد أولوية للكائن باستخدام الخاصية`$middlewarePriority`   في الملف  `app/Http/Kernel.php` 
+إذا لم تكن موجودة ضمن الملف يمكن وضع الكود الافتراضي في الملف
 
     /**
      * The priority-sorted list of middleware.
@@ -243,11 +255,11 @@ Rarely, you may need your middleware to execute in a specific order but not have
     ];
 
 <a name="middleware-parameters"></a>
-## Middleware Parameters
+## متغيرات الكائن الوسيط
 
-Middleware can also receive additional parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create an `EnsureUserHasRole` middleware that receives a role name as an additional argument.
-
-Additional middleware parameters will be passed to the middleware after the `$next` argument:
+يمكن أن يستقبل الوسيط متغيرات إضافية مثلاً عندما نحتاج لنتحقق من مستخدم مسجل إذا كان لديه وظيفة أو دور "role" 
+ننشئ وسيط EnsureUserHasRole يستقبل اسم الوظيفة كمتغير إضافي
+سيتم تمرير المتغيرات بعد المتغير`$next` 
 
     <?php
 
@@ -276,16 +288,17 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
     }
 
-Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+
+تحديد متغيرات الوسيط عند تعريف المسار بفصل اسم الوسيط و المتغير باستخدام `:`  في حال وجود عدة متغيرات نستخدم الفواصل
 
     Route::put('/post/{id}', function ($id) {
         //
     })->middleware('role:editor');
 
 <a name="terminable-middleware"></a>
-## Terminable Middleware
-
-Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. If you define a `terminate` method on your middleware and your web server is using FastCGI, the `terminate` method will automatically be called after the response is sent to the browser:
+## الوسيط القابل للإنهاء 
+أحيانا يحتاج الوسيط للقيام بعمل ما قبل أن تُرسل استجابة HTTP إلى المتصفح 
+إذا عرفت الطريقة `terminate` في الوسيط ومخدم الويب الذي يستخدم FastCGI سيتم نداء الطريقة بشكل اّلي يعد إرسال الاستجابة للمتصفح 
 
     <?php
 
@@ -320,9 +333,12 @@ Sometimes a middleware may need to do some work after the HTTP response has been
         }
     }
 
-The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in the `app/Http/Kernel.php` file.
 
-When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method. Typically this should be done in the `register` method of your `AppServiceProvider`:
+الطريقة `terminate` تستقبل الطلب والاستجابة. يجب تعريف الوسيط القابل للإنهاء وإضافته إلى قائمة المسارات أو الوسيط العام في ملف `app/Http/Kernel.php`
+
+عند نداء الطريقة `terminate` في الوسيط تقوم لارافل بإنشاء نسخة من الوسيط من [service container](/docs/{{version}}/container)
+إذا أردنا استخدام نفس النسخة من الوسيط عند نداء الطريقتين `handle`  و `terminate`  سجّل الوسيط مع container باستخدام الطريقة `singleton` 
+يتم ذلك في الطريقة `register`  من `AppServiceProvider`
 
     use App\Http\Middleware\TerminatingMiddleware;
 
