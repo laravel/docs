@@ -22,7 +22,7 @@
 <a name="defining-middleware"></a>
 ## تعريف الكائن الوسيط 
 
-لإنشاء كائن وسيط نستخدم الأمر`make:middleware`  
+لإنشاء كائن وسيط نستخدم الأمر `make:middleware`  
 
 ```shell
 php artisan make:middleware EnsureTokenIsValid
