@@ -111,7 +111,7 @@ return back()->withInput();
 
 بعد إعادة توجيه المستخدم يمكنك عرض الرسالة التي تم تخزينها مؤقتاً في [الجلسة](/docs/{{version}}/session). على سبيل المثال باستخدام [تركيب Blade](/docs/{{version}}/blade) التالي: 
 
-```php
+```blade
 @if (session('status'))
     <div class="alert alert-success">
         {{ session('status') }}
