@@ -1492,7 +1492,7 @@ The `Str::lower` method converts the given string to lowercase:
 <a name="method-str-markdown"></a>
 #### `Str::markdown()` {.collection-method}
 
-The `Str::markdown` method converts GitHub flavored Markdown into HTML:
+The `Str::markdown` method converts GitHub flavored Markdown into HTML using [CommonMark](https://commonmark.thephpleague.com/):
 
     use Illuminate\Support\Str;
 
