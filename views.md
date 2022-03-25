@@ -1,85 +1,33 @@
 # Views
 
-- [Introduction](#introduction)
-- [Creating & Rendering Views](#creating-and-rendering-views)
+- [Views](#views)
+  - [Creating & Rendering Views](#creating--rendering-views)
     - [Nested View Directories](#nested-view-directories)
     - [Creating The First Available View](#creating-the-first-available-view)
     - [Determining If A View Exists](#determining-if-a-view-exists)
-- [Passing Data To Views](#passing-data-to-views)
+  - [Passing Data To Views](#passing-data-to-views)
     - [Sharing Data With All Views](#sharing-data-with-all-views)
-- [View Composers](#view-composers)
+  - [View Composers](#view-composers)
+      - [Attaching A Composer To Multiple Views](#attaching-a-composer-to-multiple-views)
     - [View Creators](#view-creators)
-- [Optimizing Views](#optimizing-views)
-
-<a name="introduction"></a>
-## Introduction
-
-Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. A simple view might look something like this:
-
-```blade
-<!-- View stored in resources/views/greeting.blade.php -->
-
-<html>
-    <body>
-        <h1>Hello, {{ $name }}</h1>
-    </body>
-</html>
-```
-
-Since this view is stored at `resources/views/greeting.blade.php`, we may return it using the global `view` helper like so:
-
-    Route::get('/', function () {
-        return view('greeting', ['name' => 'James']);
-    });
-
-> {tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
+  - [Optimizing Views](#optimizing-views)
 
 <a name="creating-and-rendering-views"></a>
 ## Creating & Rendering Views
 
-You may create a view by placing a file with the `.blade.php` extension in your application's `resources/views` directory. The `.blade.php` extension informs the framework that the file contains a [Blade template](/docs/{{version}}/blade). Blade templates contain HTML as well as Blade directives that allow you to easily echo values, create "if" statements, iterate over data, and more.
 
-Once you have created a view, you may return it from one of your application's routes or controllers using the global `view` helper:
-
-    Route::get('/', function () {
-        return view('greeting', ['name' => 'James']);
-    });
-
-Views may also be returned using the `View` facade:
-
-    use Illuminate\Support\Facades\View;
-
-    return View::make('greeting', ['name' => 'James']);
-
-As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view using [Blade syntax](/docs/{{version}}/blade).
 
 <a name="nested-view-directories"></a>
 ### Nested View Directories
 
-Views may also be nested within subdirectories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.blade.php`, you may return it from one of your application's routes / controllers like so:
-
-    return view('admin.profile', $data);
-
-> {note} View directory names should not contain the `.` character.
 
 <a name="creating-the-first-available-view"></a>
 ### Creating The First Available View
 
-Using the `View` facade's `first` method, you may create the first view that exists in a given array of views. This may be useful if your application or package allows views to be customized or overwritten:
-
-    use Illuminate\Support\Facades\View;
-
-    return View::first(['custom.admin', 'admin'], $data);
 
 <a name="determining-if-a-view-exists"></a>
 ### Determining If A View Exists
 
-If you need to determine if a view exists, you may use the `View` facade. The `exists` method will return `true` if the view exists:
-
-    use Illuminate\Support\Facades\View;
-
-    if (View::exists('emails.customer')) {
-        //
     }
 
 <a name="passing-data-to-views"></a>
