@@ -20,12 +20,14 @@ The Laravel framework has a few system requirements. Of course, all of these req
 However, if you are not using Homestead, you will need to make sure your server meets the following requirements:
 
 <div class="content-list" markdown="1">
+
 - PHP >= 7.0.0
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
+
 </div>
 
 <a name="installing-laravel"></a>
