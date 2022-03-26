@@ -17,11 +17,13 @@
 The Laravel framework has a few system requirements. Of course, all of these requirements are satisfied by the [Laravel Homestead](/docs/{{version}}/homestead) virtual machine:
 
 <div class="content-list" markdown="1">
+
 - PHP >= 5.5.9
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
+
 </div>
 
 <a name="install-laravel"></a>
