@@ -15,7 +15,9 @@
 ## المقدمة 
 
 العديد من تطبيقات الويب تطلب من المستخدمين التحقق من عنوان بريدهم الالكتروني قبل استخدام التطبيق
+
 تجبرك لإعادة تحقيق هذه الميزة لكل تطبيق تنشئه
+
 تؤمن لارافل خدمة مضمنة معها لإرسال إيميل التحقق
 
 <a name="model-preparation"></a>
@@ -39,7 +41,7 @@
 
 
 تُضاف هذه الواجهة إلى النموذج، يُرسل إيميل بشكل ألي إلى المستخدمين المسجلين حديثاً يحتوي رابط التحقق من الإيميل
-كما ترى عن طريق فحص application's `App\Providers\EventServiceProvider` تحوي لارافل `SendEmailVerificationNotification` [listener](/docs/{{version}}/events) الملحق بالحدث 
+كما ترى عن طريق فحص `App\Providers\EventServiceProvider` تحوي لارافل `SendEmailVerificationNotification` [listener](/docs/{{version}}/events) الملحق بالحدث 
 `Illuminate\Auth\Events\Registered`
 يُرسل هذا الحدث المستمع رابط التحقق من الإيميل للمستخدم 
 
@@ -53,6 +55,7 @@
 ### تحضير قاعدة البيانات
 
 يجب أن يحوي جدول المستخدمين `users` حقل `email_verified_at` لتخزين تاريخ ووقت التحقق من إيميل المستخدم
+
 افتراضياً يحتوي تهجير جدول المستخدمين المضمن في لارافل هذا الحقل بالفعل لذلك نحتاج فقط لتشغيل تهجير قاعدة البيانات
 
 ```shell
@@ -63,8 +66,11 @@ php artisan migrate
 ## التوجيه
 
 يجب تعريف ثلاث مسارات لتحقق من الإيميل 
+
 المسار الأول لعرض ملاحظة للمستخدم للضغط على رابط التحقق من الإيميل الذي أرسلته لارافل للمستخدم بعد التسجيل
+
 الثاني لمعالجة الطلبات بعد ضغط المستخدم على الرابط
+
 الثالث لإعادة إرسال رابط تحقق في حال فقدان المستخدم الرابط الأول
 
 
@@ -72,7 +78,9 @@ php artisan migrate
 ### ملاحظة أو انذار التحقق من الإيميل
 
 كما ذكرنا سابقاً المسار الأول يعيد واجهة ترشد المستخدم للضغط على إيميل التحقق المرسلة من قبل لارافل بعد عملية التسجيل
-تظهر هذه الواجهة للمستخدم في حال حاول الدخول للتطبيق بدون التحقق من الإيميل 
+
+تظهر هذه الواجهة للمستخدم في حال حاول الدخول للتطبيق بدون التحقق من الإيميل
+ 
 يُرسل هذا الرابط بشكل ألي للمستخدم طالما حقق النموذج `App\Models\User` الواجهة `MustVerifyEmail`
 
     Route::get('/email/verify', function () {
@@ -80,13 +88,16 @@ php artisan migrate
     })->middleware('auth')->name('verification.notice');
 
 يجب تسمية المسار الذي أرسل إنذار التحقق من الإيميل `verification.notice` 
+
 من المهم إعطاء هذا الاسم بالضبط ليقوم الكائن الوسيط `verified` بتحويل المستخدم إلى اسم هذا المسار إذا لم يتحقق المستخدم من الإيميل
 
 <a name="the-email-verification-handler"></a>
 ### معالج التحقق من الإيميل
 
 يجب تعريف المسار الذي سيعالج الطلبات بعد ضغط المستخدم على رابط التحقق من الإيميل الذي أُرسل له
-اسم هذا المسار `verification.verify` 
+
+اسم هذا المسار `verification.verify`
+ 
 وتعيين كائنين وسيطين `auth` و `signed` 
 
 
@@ -98,10 +109,14 @@ php artisan migrate
         return redirect('/home');
     })->middleware(['auth', 'signed'])->name('verification.verify');
 
-استخدمنا في هذا المثال `EmailVerificationRequest` 
+استخدمنا في هذا المثال `EmailVerificationRequest`
+ 
 يأخذ هذا الطلب متغيرين`id`  و `hash`  
+
 نقوم بنداء الطريقة `fulfill` هذه الطريقة تقوم بنداء الطريقة `markEmailAsVerified` على المستخدم المسجل وترسل الحدث `Illuminate\Auth\Events\Verified` 
+
 الطريقة `markEmailAsVerified` متاحة مع النموذج الافتراضي `App\Models\User` عن طريق الصف الأساسي `Illuminate\Foundation\Auth\User`
+
 اذا تم التحقق من الايميل يمكنك توجيه المستخدم للصفحة التي تريدها  
 
 <a name="resending-the-verification-email"></a>
@@ -121,8 +136,11 @@ php artisan migrate
 <a name="protecting-routes"></a>
 ### حماية المسارات
 
- [Route middleware](/docs/{{version}}/middleware)  يسمح الكائن الوسيط للمستخدمين المسجلين بالوصول للمسار المعطى
-اذا تم تسجيل الكائن الوسيط ضمن التطبيق في نواة HTTP كل ما عليك فعله ربط الوسيط بالمسار المعرف
+ يسمح الكائن الوسيط [Route middleware](/docs/{{version}}/middleware)  للمستخدمين المسجلين بالوصول للمسار المعطى
+
+اذا تم تسجيل الكائن الوسيط ضمن التطبيق في نواة HTTP 
+
+كل ما عليك فعله ربط الوسيط بالمسار المعرف
 
     Route::get('/profile', function () {
         // Only verified users may access this route...
@@ -137,9 +155,13 @@ php artisan migrate
 #### تخصيص التحقق من الايميل
 
 تسمح لارافل بتخصيص بنية رسالة ايميل التحقق
+
 مرر closure للطريقة `toMailUsing` الموجودة في `Illuminate\Auth\Notifications\VerifyEmail` 
+
 closure يستقبل نسخة من نموذج الاشعار الذي يرسل اشعار بالرابط الذي يتوجب على المستخدم زيارته ليتم التحقق من الايميل
+
 closure يعيد نسخة من `Illuminate\Notifications\Messages\MailMessage` 
+
 يجب نداء الطريقة `toMailUsing` من الطريقة `boot` بالصف `App\Providers\AuthServiceProvider` 
 
 
@@ -168,7 +190,9 @@ closure يعيد نسخة من `Illuminate\Notifications\Messages\MailMessage`
 ## الأحداث
 
 عند استخدام [Laravel application starter kits](/docs/{{version}}/starter-kits) تقوم لارافل بإرسال Laravel dispatches [events](/docs/{{version}}/events) خلال عملية التحقق من الايميل
+
 إذا تمت معالجة التحقق من الايميل بشكل يدوي يجب ارسال هذه الأحداث يدويا بعد انتهاء عملية التحقق
+
 ربط المستمعات لهذه الأحداث في `EventServiceProvider`
 
     /**
