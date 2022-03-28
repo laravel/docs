@@ -943,7 +943,7 @@ Laravel includes a variety of mail transports; however, you may wish to write yo
          */
         public function __construct(ApiClient $client)
         {
-            $this->client = $client
+            $this->client = $client;
         }
 
         /**
