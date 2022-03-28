@@ -860,6 +860,26 @@ The `restore` method may also be used when building [relationship](/docs/{{versi
 
     $flight->history()->restore();
 
+### Modifying Soft Deleted Models
+
+To update a "soft deleted" model you will need to use direct assignment and avoid using ->update(), increment() or decrement() as your changes will not persist.
+
+For example to update a property on a soft deleted model these methods will not work.
+
+    $model = Flight::withTrashed()->find(1);
+
+    $model->update(['cancellation_date' => 'new_value']);
+
+    $model->increment('property', $increment);
+
+    $model->decrement('property', $decrement);
+
+However direct assignment will persist changes.
+
+    $model = Model::withTrashed()->find(1);
+    $model->cancellation_date = 'new_value';
+    $model->save();
+
 <a name="permanently-deleting-models"></a>
 #### Permanently Deleting Models
 
