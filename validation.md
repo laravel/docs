@@ -1090,7 +1090,7 @@ The field under validation will be excluded from the request data returned by th
 
 The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is equal to _value_.
 
-If you would like to construct a more complex condition for the `exclude_if` rule, you may use the `Rule::excludeIf` method. This method accepts a boolean or a closure. When passed a closure, the closure should return `true` or `false` to indicate if the field under validation is required:
+If complex conditional exclusion logic is required, you may utilize the `Rule::excludeIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be excluded:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
@@ -1353,7 +1353,7 @@ The field under validation must be empty or not present.
 
 The field under validation must be empty or not present if the _anotherfield_ field is equal to any _value_.
 
-If you would like to construct a more complex condition for the `prohibited_if` rule, you may use the `Rule::prohibitedIf` method. This method accepts a boolean or a closure. When passed a closure, the closure should return `true` or `false` to indicate if the field under validation is required:
+If complex conditional prohibition logic is required, you may utilize the `Rule::prohibitedIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be prohibited:
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
