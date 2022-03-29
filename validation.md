@@ -795,6 +795,7 @@ Below is a list of all available validation rules and their function:
 [Exclude](#rule-exclude)
 [Exclude If](#rule-exclude-if)
 [Exclude Unless](#rule-exclude-unless)
+[Exclude With](#rule-exclude-with)
 [Exclude Without](#rule-exclude-without)
 [Exists (Database)](#rule-exists)
 [File](#rule-file)
@@ -1094,6 +1095,11 @@ The field under validation will be excluded from the request data returned by th
 #### exclude_unless:_anotherfield_,_value_
 
 The field under validation will be excluded from the request data returned by the `validate` and `validated` methods unless _anotherfield_'s field is equal to _value_. If _value_ is `null` (`exclude_unless:name,null`), the field under validation will be excluded unless the comparison field is `null` or the comparison field is missing from the request data.
+
+<a name="rule-exclude-with"></a>
+#### exclude_with:_anotherfield_
+
+The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is present.
 
 <a name="rule-exclude-without"></a>
 #### exclude_without:_anotherfield_
