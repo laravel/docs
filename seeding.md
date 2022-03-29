@@ -4,7 +4,7 @@
 - [كتابة الزارعين](#writing-seeders)
     - [استخدام مصانع النموذج](#using-model-factories)
     - [نداء زارعين اضافيين](#calling-additional-seeders)
-    - [كتم أحداث النوذجmuting-model-events)
+    - [كتم أحداث الزارعين](#muting-model-events)
 - [تشغيل الزارعين](#running-seeders)
 
 <a name="introduction"></a>
