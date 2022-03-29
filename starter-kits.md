@@ -71,6 +71,13 @@ npm run dev
 php artisan migrate
 ```
 
+If you would like Breeze to scaffold support for [Inertia SSR](https://inertiajs.com/server-side-rendering), you may provide the `ssr` option when invoking the `breeze:install` command:
+
+```shell
+php artisan breeze:install vue --ssr
+php artisan breeze:install react --ssr
+```
+
 <a name="breeze-and-next"></a>
 ### Breeze & Next.js / API
 
