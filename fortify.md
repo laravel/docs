@@ -294,7 +294,7 @@ If you are building a JavaScript powered frontend, you may make an XHR GET reque
 <a name="confirming-two-factor-authentication"></a>
 #### Confirming Two Factor Authentication
 
-In addition to displaying the user's two factor authentication QR code, you should provide a text input where the user can supply a valid authentication code to "confirm" their two factor authentication configuration. This code should be provided via a POST request to the `/user/confirmed-two-factor-authentication` endpoint defined by Fortify.
+In addition to displaying the user's two factor authentication QR code, you should provide a text input where the user can supply a valid authentication code to "confirm" their two factor authentication configuration. This code should be provided to the Laravel application via a POST request to the `/user/confirmed-two-factor-authentication` endpoint defined by Fortify.
 
 If the request is successful, the user will be redirected back to the previous URL and the `status` session variable will be set to `two-factor-authentication-confirmed`:
 
