@@ -1048,6 +1048,8 @@ Or, you may assert that a given field has a particular validation error message:
         'name' => 'The given name was invalid.'
     ]);
 
+> {tip} The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage.
+
 <a name="assert-session-has-errors-in"></a>
 #### assertSessionHasErrorsIn
 
@@ -1068,6 +1070,8 @@ Assert that the session has no validation errors:
 Assert that the session has no validation errors for the given keys:
 
     $response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
+
+> {tip} The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage.
 
 <a name="assert-session-missing"></a>
 #### assertSessionMissing
