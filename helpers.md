@@ -192,6 +192,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
+[newLine](#method-fluent-str-new-line)
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
 [padRight](#method-fluent-str-padright)
@@ -2447,6 +2448,18 @@ If you specify a matching group within the expression, Laravel will return a col
     // collect(['un', 'ly']);
 
 If no matches are found, an empty collection will be returned.
+
+<a name="method-fluent-str-new-line"></a>
+#### `newLine` {.collection-method}
+
+The `newLine` method appends an "end of line" character to a string:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('Laravel')->newLine()->append('Framework');
+
+    // 'Laravel
+    //  Framework'
 
 <a name="method-fluent-str-padboth"></a>
 #### `padBoth` {.collection-method}
