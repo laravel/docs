@@ -1,6 +1,6 @@
-# Installation
+# Cài đặt
 
-- [Meet Laravel](#meet-laravel)
+- [Gặp gỡ Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
 - [Your First Laravel Project](#your-first-laravel-project)
     - [Getting Started On macOS](#getting-started-on-macos)
@@ -16,7 +16,7 @@
     - [Laravel The API Backend](#laravel-the-api-backend)
 
 <a name="meet-laravel"></a>
-## Meet Laravel
+## Gặp gỡ Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. A web framework provides a structure and starting point for creating your application, allowing you to focus on creating something amazing while we sweat the details.
 
