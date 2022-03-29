@@ -10,6 +10,7 @@
     - [Token Abilities](#token-abilities)
     - [Protecting Routes](#protecting-routes)
     - [Revoking Tokens](#revoking-tokens)
+    - [Token Expiration](#token-expiration)
 - [SPA Authentication](#spa-authentication)
     - [Configuration](#spa-configuration)
     - [Authenticating](#spa-authenticating)
@@ -225,6 +226,15 @@ You may "revoke" tokens by deleting them from your database using the `tokens` r
 
     // Revoke a specific token...
     $user->tokens()->where('id', $tokenId)->delete();
+
+<a name="token-expiration"></a>
+### Token Expiration
+
+By default, Sanctum tokens never expire and may only be invalidated by [revoking the token](#revoking-tokens). However, if you would like to configure an expiration time for your application's API tokens, you may do so via the `expiration` configuration option defined in your application's `sanctum` configuration file. This configuration option defines the number of minutes until an issued token will be considered expired:
+
+```php
+'expiration' => 525600,
+```
 
 <a name="spa-authentication"></a>
 ## SPA Authentication
