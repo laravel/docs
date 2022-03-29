@@ -236,6 +236,12 @@ By default, Sanctum tokens never expire and may only be invalidated by [revoking
 'expiration' => 525600,
 ```
 
+If you have configured a token expiration time for your application, you may also wish to [schedule a task](/docs/{{version}}/scheduling) to prune your application's expired tokens. Thankfully, Sanctum includes a `sanctum:prune-expired` Artisan command that you may use to accomplish this. For example, you may configure a scheduled tasks to delete all expired token database records that have been expired for at least 24 hours:
+
+```php
+$schedule->command('sanctum:prune-expired --hours=24')->daily();
+```
+
 <a name="spa-authentication"></a>
 ## SPA Authentication
 
