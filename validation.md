@@ -1091,6 +1091,19 @@ The field under validation will be excluded from the request data returned by th
 
 The field under validation will be excluded from the request data returned by the `validate` and `validated` methods if the _anotherfield_ field is equal to _value_.
 
+If complex conditional exclusion logic is required, you may utilize the `Rule::excludeIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be excluded:
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rule;
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::excludeIf($request->user()->is_admin),
+    ]);
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::excludeIf(fn () => $request->user()->is_admin),
+    ]);
+
 <a name="rule-exclude-unless"></a>
 #### exclude_unless:_anotherfield_,_value_
 
@@ -1345,6 +1358,19 @@ The field under validation must be empty or not present.
 #### prohibited_if:_anotherfield_,_value_,...
 
 The field under validation must be empty or not present if the _anotherfield_ field is equal to any _value_.
+
+If complex conditional prohibition logic is required, you may utilize the `Rule::prohibitedIf` method. This method accepts a boolean or a closure. When given a closure, the closure should return `true` or `false` to indicate if the field under validation should be prohibited:
+
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rule;
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::prohibitedIf($request->user()->is_admin),
+    ]);
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::prohibitedIf(fn () => $request->user()->is_admin),
+    ]);
 
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
