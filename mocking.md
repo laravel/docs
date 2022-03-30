@@ -422,6 +422,11 @@ You may have noticed that there are two methods for asserting that mail was not 
         return $mail->order->id === $order->id;
     });
 
+<a name="testing-mailable-content"></a>
+#### Testing Mailable Content
+
+We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. To learn how to test the content of your mailables, check out our documentation on the [testing mailables](/docs/{{version}}/mail#testing-mailables).
+
 <a name="notification-fake"></a>
 ## Notification Fake
 
