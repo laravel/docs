@@ -798,19 +798,19 @@ You may also call the `first` method with no arguments to get the first element 
 <a name="method-first-or-fail"></a>
 #### `firstOrFail()` {.collection-method}
 
-The `firstOrFail` method is identical to the `first` method, however, if no result is found, an `Illuminate\Support\ItemNotFoundException` will be thrown:
+The `firstOrFail` method is identical to the `first` method; however, if no result is found, an `Illuminate\Support\ItemNotFoundException` exception will be thrown:
 
     collect([1, 2, 3, 4])->firstOrFail(function ($value, $key) {
         return $value > 5;
     });
 
-    // Throws an ItemNotFoundException
+    // Throws ItemNotFoundException...
 
-You may also call the `firstOrFail` method with no arguments to get the first element in the collection. If the collection is empty, an `Illuminate\Support\ItemNotFoundException` will be thrown:
+You may also call the `firstOrFail` method with no arguments to get the first element in the collection. If the collection is empty, an `Illuminate\Support\ItemNotFoundException` exception will be thrown:
 
     collect([])->firstOrFail();
 
-    // Throws an ItemNotFoundException
+    // Throws ItemNotFoundException...
 
 <a name="method-first-where"></a>
 #### `firstWhere()` {.collection-method}
