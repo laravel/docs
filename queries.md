@@ -1,54 +1,57 @@
-# Database: Query Builder
+# قواعد البيانات: مُنشئ الاستعلام (Query Builder)
 
-- [Introduction](#introduction)
-- [Running Database Queries](#running-database-queries)
-    - [Chunking Results](#chunking-results)
-    - [Streaming Results Lazily](#streaming-results-lazily)
-    - [Aggregates](#aggregates)
-- [Select Statements](#select-statements)
-- [Raw Expressions](#raw-expressions)
-- [Joins](#joins)
-- [Unions](#unions)
-- [Basic Where Clauses](#basic-where-clauses)
-    - [Where Clauses](#where-clauses)
-    - [Or Where Clauses](#or-where-clauses)
-    - [JSON Where Clauses](#json-where-clauses)
-    - [Additional Where Clauses](#additional-where-clauses)
-    - [Logical Grouping](#logical-grouping)
-- [Advanced Where Clauses](#advanced-where-clauses)
-    - [Where Exists Clauses](#where-exists-clauses)
-    - [Subquery Where Clauses](#subquery-where-clauses)
-    - [Full Text Where Clauses](#full-text-where-clauses)
-- [Ordering, Grouping, Limit & Offset](#ordering-grouping-limit-and-offset)
-    - [Ordering](#ordering)
-    - [Grouping](#grouping)
-    - [Limit & Offset](#limit-and-offset)
-- [Conditional Clauses](#conditional-clauses)
-- [Insert Statements](#insert-statements)
-    - [Upserts](#upserts)
-- [Update Statements](#update-statements)
-    - [Updating JSON Columns](#updating-json-columns)
-    - [Increment & Decrement](#increment-and-decrement)
-- [Delete Statements](#delete-statements)
-- [Pessimistic Locking](#pessimistic-locking)
-- [Debugging](#debugging)
+- [المقدمة](#introduction)
+- [تنفيذ استعلامات قاعدة البيانات](#running-database-queries)
+  - [تقسيم النتائج](#chunking-results)
+  - [العرض الكسول للنتائج](#streaming-results-lazily)
+  - [المجمعات](#aggregates)
+- [تحديد البيانات](#select-statements)
+- [التعبيرات الصريحة](#raw-expressions)
+- [الضم](#joins)
+- [الدمج](#unions)
+- [جمل where الأساسية](#basic-where-clauses)
+  - [جمل Where](#where-clauses)
+  - [جمل OrWhere](#or-where-clauses)
+  - [جمل JSON Where](#json-where-clauses)
+  - [جمل Where إضافية](#additional-where-clauses)
+  - [التجميع المنطقي](#logical-grouping)
+- [جمل Where المتقدمة](#advanced-where-clauses)
+  - [جمل Where Exists](#where-exists-clauses)
+  - [جمل Where الفرعية ](#subquery-where-clauses)
+  - [جمل Where لكامل النص](#full-text-where-clauses)
+- [الترتيب, التجميع, الحد و الإزاحة](#ordering-grouping-limit-and-offset)
+  - [الترتيب](#ordering)
+  - [التجميع](#grouping)
+  - [الحد و الإزاحة](#limit-and-offset)
+- [الجمل الشرطية](#conditional-clauses)
+- [جمل الإدخال](#insert-statements)
+  - [إدخال و تحديث](#upserts)
+- [جمل التحديث](#update-statements)
+  - [تحديث أعمدة JSON](#updating-json-columns)
+  - [الزيادة و الانقاص](#increment-and-decrement)
+- [الحذف](#delete-statements)
+- [الإقفال المتشائم](#pessimistic-locking)
+- [ التشخيص (Debugging)](#debugging)
 
 <a name="introduction"></a>
-## Introduction
 
-Laravel's database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application and works perfectly with all of Laravel's supported database systems.
+## المقدمة
 
-The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean or sanitize strings passed to the query builder as query bindings.
+يوفر مُنشئ استعلام قاعدة بيانات لارافل (database Query builder) واجهة مريحة وسلسة لإنشاء استعلامات قاعدة البيانات وتنفيذها. يمكن استخدامه لأداء معظم عمليات قاعدة البيانات في تطبيقك ويعمل بشكل مثالي مع جميع أنظمة قواعد البيانات المدعومة من لارافل.
 
-> {note} PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
+يقوم مُنشئ استعلام لارافل باستخدام ربط المعامل (PDO parameter binding) لحماية تطبيقك من هجمات حقن SQL أو مايعرف ب (SQL injection attacks). لذلك ليست هناك حاجة لتطهير أو تعقيم السلاسل قبل تمريرها إلى مُنشئ الاستعلام كإرتباطات للاستعلام.
+
+> {ملاحظة هامة} لا يدعم PDO ربط أسماء الأعمدة. لذلك ، يجب ألا تسمح أبداً للمستخدم بإدخال أسماء الأعمدة التي تشير إليها الاستعلامات ، بما في ذلك أعمدة "الترتيب حسب" (orderBy).
 
 <a name="running-database-queries"></a>
-## Running Database Queries
+
+## تنفيذ استعلامات قاعدة البيانات
 
 <a name="retrieving-all-rows-from-a-table"></a>
-#### Retrieving All Rows From A Table
 
-You may use the `table` method provided by the `DB` facade to begin a query. The `table` method returns a fluent query builder instance for the given table, allowing you to chain more constraints onto the query and then finally retrieve the results of the query using the `get` method:
+#### استرجاع كل الصفوف من الجدول
+
+يمكنك استخدام الطريقة `table` التي توفرها الواجهة `DB` لبدء الاستعلام. يقدم التابع `table` مُنشئ استعلام (Query Builder) سلس ومرن للجدول المحدد ، مما يسمح لك بربط المزيد من القيود بالاستعلام ثم استرداد نتائج الاستعلام في النهاية باستخدام الطريقة `get`:
 
     <?php
 
@@ -60,7 +63,7 @@ You may use the `table` method provided by the `DB` facade to begin a query. The
     class UserController extends Controller
     {
         /**
-         * Show a list of all of the application's users.
+         * عرض قائمة بجميع مستخدمي التطبيق.
          *
          * @return \Illuminate\Http\Response
          */
@@ -72,7 +75,7 @@ You may use the `table` method provided by the `DB` facade to begin a query. The
         }
     }
 
-The `get` method returns an `Illuminate\Support\Collection` instance containing the results of the query where each result is an instance of the PHP `stdClass` object. You may access each column's value by accessing the column as a property of the object:
+يعيد التابع `get` نسخة `Illuminate\Support\Collection` تحتوي على نتائج الاستعلام حيث تكون كل نتيجة عبارة عن نسخة من كائن PHP `stdClass`. يمكنك الوصول إلى قيمة كل عمود من خلال الوصول إلى العمود كخاصية لهذا الكائن:
 
     use Illuminate\Support\Facades\DB;
 
@@ -82,29 +85,31 @@ The `get` method returns an `Illuminate\Support\Collection` instance containing 
         echo $user->name;
     }
 
-> {tip} Laravel collections provide a variety of extremely powerful methods for mapping and reducing data. For more information on Laravel collections, check out the [collection documentation](/docs/{{version}}/collections).
+> {معلومة} توفر مجموعات لارافل (Laravel Collections) مجموعة متنوعة من الأساليب الفعالة للغاية لإنشاء خرائط للبيانات وتقليلها. لمزيد من المعلومات حول مجموعات لارافل ، راجع ملف [collection documentation](/docs/{{version}}/collections).
 
 <a name="retrieving-a-single-row-column-from-a-table"></a>
-#### Retrieving A Single Row / Column From A Table
 
-If you just need to retrieve a single row from a database table, you may use the `DB` facade's `first` method. This method will return a single `stdClass` object:
+#### استرجاع صف واحد / عمود من جدول
+
+إذا كنت تحتاج إلى استرداد صف واحد فقط من جدول في قاعدة البيانات ، فيمكنك استخدام الطريقة `first` للواجهة` DB`. ستعيد هذه الطريقة كائن `stdClass` واحد:
 
     $user = DB::table('users')->where('name', 'John')->first();
 
     return $user->email;
 
-If you don't need an entire row, you may extract a single value from a record using the `value` method. This method will return the value of the column directly:
+إذا لم تكن بحاجة إلى صف كامل ، فيمكنك استخراج قيمة واحدة من السجل باستخدام الطريقة `value`. ستعيد هذه الطريقة قيمة العمود مباشرة:
 
     $email = DB::table('users')->where('name', 'John')->value('email');
 
-To retrieve a single row by its `id` column value, use the `find` method:
+لاسترداد صف واحد من خلال قيمة عمود المعرف (`id`) ، استخدم الطريقة `find`:
 
     $user = DB::table('users')->find(3);
 
 <a name="retrieving-a-list-of-column-values"></a>
-#### Retrieving A List Of Column Values
 
-If you would like to retrieve an `Illuminate\Support\Collection` instance containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a collection of user titles:
+#### استرداد قائمة بقيم العمود
+
+إذا كنت ترغب باسترداد نسخة `Illuminate\Support\Collection` تحتوي على قيم عمود واحد ، فيمكنك استخدام التابع` pluck`. في هذا المثال ، سنقوم باسترداد مجموعة من عناوين المستخدمين:
 
     use Illuminate\Support\Facades\DB;
 
@@ -114,7 +119,7 @@ If you would like to retrieve an `Illuminate\Support\Collection` instance contai
         echo $title;
     }
 
- You may specify the column that the resulting collection should use as its keys by providing a second argument to the `pluck` method:
+يمكنك تحديد العمود الذي يجب أن تستخدمه المجموعة الناتجة كمفاتيح من خلال توفير وسيط ثانٍ للتابع `pluck`:
 
     $titles = DB::table('users')->pluck('title', 'name');
 
@@ -123,9 +128,10 @@ If you would like to retrieve an `Illuminate\Support\Collection` instance contai
     }
 
 <a name="chunking-results"></a>
-### Chunking Results
 
-If you need to work with thousands of database records, consider using the `chunk` method provided by the `DB` facade. This method retrieves a small chunk of results at a time and feeds each chunk into a closure for processing. For example, let's retrieve the entire `users` table in chunks of 100 records at a time:
+### تقسيم النتائج
+
+إذا كنت بحاجة إلى العمل مع الآلاف من سجلات قاعدة البيانات ، ففكر في استخدام طريقة `chunk` التي توفرها الواجهة `DB`. تسترجع هذه الطريقة جزءاً صغيراً من النتائج في وقت واحد وتضع كل جزء في إغلاق (closure) للمعالجة. على سبيل المثال ، دعنا نسترد جدول `users` بأكمله في أجزاء من 100 سجل في المرة الواحدة:
 
     use Illuminate\Support\Facades\DB;
 
@@ -135,15 +141,15 @@ If you need to work with thousands of database records, consider using the `chun
         }
     });
 
-You may stop further chunks from being processed by returning `false` from the closure:
+يمكنك إيقاف معالجة المزيد من الأجزاء عن طريق إرجاع `false` من الإغلاق (closure):
 
     DB::table('users')->orderBy('id')->chunk(100, function ($users) {
-        // Process the records...
+        // معالجة السجلات...
 
         return false;
     });
 
-If you are updating database records while chunking results, your chunk results could change in unexpected ways. If you plan to update the retrieved records while chunking, it is always best to use the `chunkById` method instead. This method will automatically paginate the results based on the record's primary key:
+إذا كنت تقوم بتحديث سجلات قاعدة البيانات أثناء تقسيم النتائج ، فقد تتغير نتائجك الجماعية بطرق غير متوقعة. لذلك إذا كنت تخطط لتحديث السجلات المستردة أثناء التقسيم ، فمن الأفضل دائماً استخدام الطريقة `chunkById`. ستعمل هذه الطريقة على ترقيم النتائج تلقائياً بناءً على المفتاح الأساسي للسجل:
 
     DB::table('users')->where('active', false)
         ->chunkById(100, function ($users) {
@@ -154,12 +160,13 @@ If you are updating database records while chunking results, your chunk results 
             }
         });
 
-> {note} When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
+> {ملاحظة} عند تحديث أو حذف السجلات أثناء تقسيم النتائج، يمكن أن تؤثر أي تغييرات على المفتاح الأساسي أو المفاتيح الأجنبية على الاستعلام المتقطع (chunk query). مما قد يؤدي إلى عدم تضمين السجلات في النتائج المقسمة.
 
 <a name="streaming-results-lazily"></a>
-### Streaming Results Lazily
 
-The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns a [`LazyCollection`](/docs/{{version}}/collections#lazy-collections), which lets you interact with the results as a single stream:
+### العرض الكسول للنتائج
+
+تعمل طريقة `lazy` بشكل مشابه للطريقة [`chunk`](#chunking-results) بمعنى أنه ينفذ الاستعلام في أجزاء. ومع ذلك ، بدلاً من تمرير كل جزء إلى استرجاع (Callback)(Callback هو الكود الذي يتم تنفيذه ضمن وسيط لتابع آخر)، فإن الطريقة `()lazy` ترجع [`LazyCollection`](/docs/{{version}}/collections#lazy-collections), مما يتيح لك التفاعل مع النتائج دفعة واحدة:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -169,7 +176,7 @@ DB::table('users')->orderBy('id')->lazy()->each(function ($user) {
 });
 ```
 
-Once again, if you plan to update the retrieved records while iterating over them, it is best to use the `lazyById` or `lazyByIdDesc` methods instead. These methods will automatically paginate the results based on the record's primary key:
+كما هو الحال مع `chunk` ، إذا كنت تخطط لتحديث السجلات المستردة أثناء الدوران عليها ، فمن الأفضل استخدام التابعين `lazyById` أو` lazyByIdDesc`. ستقوم هذه الطرق تلقائياً بترقيم النتائج بناءً على المفتاح الأساسي للسجل:
 
 ```php
 DB::table('users')->where('active', false)
@@ -180,12 +187,13 @@ DB::table('users')->where('active', false)
     });
 ```
 
-> {note} When updating or deleting records while iterating over them, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the results.
+> {ملاحظة} عند تحديث السجلات أو حذفها أثناء الدوران عليها ، يمكن أن تؤثر أي تغييرات على المفتاح الأساسي أو المفاتيح الأجنبية على الاستعلام المتقطع (chunk query). من المحتمل أن يؤدي هذا إلى عدم تضمين بعض السجلات في النتائج.
 
 <a name="aggregates"></a>
-### Aggregates
 
-The query builder also provides a variety of methods for retrieving aggregate values like `count`, `max`, `min`, `avg`, and `sum`. You may call any of these methods after constructing your query:
+### المجمعات (Aggregates)
+
+يوفر مُنشئ الاستعلامات (Query builder) أيضاً مجموعة متنوعة من الطرق لاسترداد القيم الإجمالية مثل `count` , `max` , `min` , `avg` , `sum`. يمكنك استدعاء أي من هذه التوابع بعد إنشاء استعلامك:
 
     use Illuminate\Support\Facades\DB;
 
@@ -193,16 +201,17 @@ The query builder also provides a variety of methods for retrieving aggregate va
 
     $price = DB::table('orders')->max('price');
 
-Of course, you may combine these methods with other clauses to fine-tune how your aggregate value is calculated:
+بالطبع ، يمكنك دمج هذه الطرق مع جمل أخرى لضبط كيفية حساب القيمة الإجمالية:
 
     $price = DB::table('orders')
                     ->where('finalized', 1)
                     ->avg('price');
 
 <a name="determining-if-records-exist"></a>
-#### Determining If Records Exist
 
-Instead of using the `count` method to determine if any records exist that match your query's constraints, you may use the `exists` and `doesntExist` methods:
+#### تحديد ما إذا كانت السجلات موجودة
+
+بدلاً من استخدام طريقة `count` لتحديد ما إذا كانت هناك أية سجلات تطابق قيود الاستعلام ، يمكنك استخدام الطريقتين `exists` و `doesntExist`:
 
     if (DB::table('orders')->where('finalized', 1)->exists()) {
         // ...
@@ -213,12 +222,14 @@ Instead of using the `count` method to determine if any records exist that match
     }
 
 <a name="select-statements"></a>
-## Select Statements
+
+## التحديد Select
 
 <a name="specifying-a-select-clause"></a>
-#### Specifying A Select Clause
 
-You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom "select" clause for the query:
+#### وصف جملة select
+
+قد لا ترغب دائماً في تحديد جميع الأعمدة من جدول قاعدة البيانات. باستخدام الطريقة `select` ، يمكنك تخصيص الاستعلام لارجاع أعمدة محددة:
 
     use Illuminate\Support\Facades\DB;
 
@@ -226,20 +237,21 @@ You may not always want to select all columns from a database table. Using the `
                 ->select('name', 'email as user_email')
                 ->get();
 
-The `distinct` method allows you to force the query to return distinct results:
+تسمح لك الطريقة `distinct` بجعل الاستعلام يجلب البيانات بدون تكرار:
 
     $users = DB::table('users')->distinct()->get();
 
-If you already have a query builder instance and you wish to add a column to its existing select clause, you may use the `addSelect` method:
+إذا كان لديك استعلام منشىء مسبقاً وترغب في إضافة عمود إلى جملة `select` الموجودة به ، فيمكنك استخدام طريقة `addSelect`:
 
     $query = DB::table('users')->select('name');
 
     $users = $query->addSelect('age')->get();
 
 <a name="raw-expressions"></a>
-## Raw Expressions
 
-Sometimes you may need to insert an arbitrary string into a query. To create a raw string expression, you may use the `raw` method provided by the `DB` facade:
+## التعبيرات الصريحة
+
+قد تحتاج أحياناً إلى إدخال جملة ما في استعلام لإنشاء تعبير صريح ، للقيام بذلك يمكنك استخدام التابع `raw` الذي توفره الواجهة` DB`:
 
     $users = DB::table('users')
                  ->select(DB::raw('count(*) as user_count, status'))
@@ -247,35 +259,39 @@ Sometimes you may need to insert an arbitrary string into a query. To create a r
                  ->groupBy('status')
                  ->get();
 
-> {note} Raw statements will be injected into the query as strings, so you should be extremely careful to avoid creating SQL injection vulnerabilities.
+> {ملاحطة} سيتم إدخال الجمل الصريحة في الاستعلام كسلاسل بدون تطهير. لذلك يجب أن تكون حذراً للغاية لتجنب إنشاء ثغرات أمنية تسمح بهجمات (SQL injection).
 
 <a name="raw-methods"></a>
-### Raw Methods
 
-Instead of using the `DB::raw` method, you may also use the following methods to insert a raw expression into various parts of your query. **Remember, Laravel can not guarantee that any query using raw expressions is protected against SQL injection vulnerabilities.**
+### الطرق الصريحة
+
+بدلاً من استخدام طريقة `DB::raw` ، يمكنك أيضاً استخدام الطرق التالية لإدراج تعبير صريح في أجزاء مختلفة من استعلامك. ** تذكر أن لارافل لا يضمن أن يكون أي استعلام يستخدم التعبيرات الصريحة محمي ضد ثغرات حقن SQL. **
 
 <a name="selectraw"></a>
-#### `selectRaw`
 
-The `selectRaw` method can be used in place of `addSelect(DB::raw(...))`. This method accepts an optional array of bindings as its second argument:
+#### الطريقة `selectRaw`
+
+يمكن استخدام الطريقة `selectRaw` بدلاً من `addSelect(DB::raw(...))`. يقبل هذا التابع مصفوفة اختيارية من القيم كوسيط ثاني لها:
 
     $orders = DB::table('orders')
                     ->selectRaw('price * ? as price_with_tax', [1.0825])
                     ->get();
 
 <a name="whereraw-orwhereraw"></a>
-#### `whereRaw / orWhereRaw`
 
-The `whereRaw` and `orWhereRaw` methods can be used to inject a raw "where" clause into your query. These methods accept an optional array of bindings as their second argument:
+#### الطرق `whereRaw / orWhereRaw`
+
+يمكن استخدام الطرق `whereRaw` و `orWhereRaw` لإدخال جملة` where` الصريحة في استعلامك. تقبل هذه التوابع مصفوفة اختيارية من القيم كوسيط ثاني لها:
 
     $orders = DB::table('orders')
                     ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
                     ->get();
 
 <a name="havingraw-orhavingraw"></a>
-#### `havingRaw / orHavingRaw`
 
-The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as the value of the "having" clause. These methods accept an optional array of bindings as their second argument:
+#### الطرق `havingRaw / orHavingRaw`
+
+يمكن استخدام التابعين `havingRaw` و `orHavingRaw` لتقديم جملة صريحة كقيمة لجملة `having`. تقبل هذه التوابع مصفوفة اختيارية من القيم كوسيط ثاني لها:
 
     $orders = DB::table('orders')
                     ->select('department', DB::raw('SUM(price) as total_sales'))
@@ -284,18 +300,20 @@ The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as
                     ->get();
 
 <a name="orderbyraw"></a>
-#### `orderByRaw`
 
-The `orderByRaw` method may be used to provide a raw string as the value of the "order by" clause:
+#### الطريقة `orderByRaw`
+
+يمكن استخدام طريقة `orderByRaw` لتقديم جملة صريحة كقيمة لجملة `order by`:
 
     $orders = DB::table('orders')
                     ->orderByRaw('updated_at - created_at DESC')
                     ->get();
 
 <a name="groupbyraw"></a>
-### `groupByRaw`
 
-The `groupByRaw` method may be used to provide a raw string as the value of the `group by` clause:
+### الطريقة `groupByRaw`
+
+يمكن استخدام طريقة `groupByRaw` لتقديم جملة صريحة كقيمة لجملة `group by`:
 
     $orders = DB::table('orders')
                     ->select('city', 'state')
@@ -303,12 +321,14 @@ The `groupByRaw` method may be used to provide a raw string as the value of the 
                     ->get();
 
 <a name="joins"></a>
-## Joins
+
+## الضم (Joins)
 
 <a name="inner-join-clause"></a>
-#### Inner Join Clause
 
-The query builder may also be used to add join clauses to your queries. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You may even join multiple tables in a single query:
+#### الضم الداخلي (Inner Join)
+
+يمكن أيضاً استخدام مُنشئ الاستعلام (Query builder) لإضافة جمل الضم إلى استعلاماتك. لإجراء الضم الداخلي الأساسي، يمكنك استخدام التابع `Join` في مُنشئ الاستعلام. حيث المعامل الأول االذي يتم تمريره إلى الطريقة `Join` هو اسم الجدول الذي تريد الضم إليه ، بينما تحدد الوسائط المتبقية قيود العمود الخاصة بالضم. يمكنك ضم جداول متعددة في استعلام واحد:
 
     use Illuminate\Support\Facades\DB;
 
@@ -319,9 +339,10 @@ The query builder may also be used to add join clauses to your queries. To perfo
                 ->get();
 
 <a name="left-join-right-join-clause"></a>
-#### Left Join / Right Join Clause
 
-If you would like to perform a "left join" or "right join" instead of an "inner join", use the `leftJoin` or `rightJoin` methods. These methods have the same signature as the `join` method:
+#### الضم اليساري والضم اليميني
+
+إذا كنت ترغب في إجراء الضم اليميني "right join" أو الضم اليساري "left join" بدلاً من الضم الداخلي "inner join" ، فاستخدم أساليب `leftJoin` أو `rightJoin`. هذه التوابع لها نفس وسائط الطريقة `join`:
 
     $users = DB::table('users')
                 ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
@@ -332,18 +353,20 @@ If you would like to perform a "left join" or "right join" instead of an "inner 
                 ->get();
 
 <a name="cross-join-clause"></a>
-#### Cross Join Clause
 
-You may use the `crossJoin` method to perform a "cross join". Cross joins generate a cartesian product between the first table and the joined table:
+#### الضم المتقاطع
+
+يمكنك استخدام طريقة `crossJoin` لأداء الضم المتقاطع "cross join". تؤدي هذه الطريقة لإنشاء نتيجة ديكارتيّة (تضم جميع عناصر الجدولين) بين الجدول الأول والجدول المضموم:
 
     $sizes = DB::table('sizes')
                 ->crossJoin('colors')
                 ->get();
 
 <a name="advanced-join-clauses"></a>
-#### Advanced Join Clauses
 
-You may also specify more advanced join clauses. To get started, pass a closure as the second argument to the `join` method. The closure will receive a `Illuminate\Database\Query\JoinClause` instance which allows you to specify constraints on the "join" clause:
+#### جمل الضم المتقدمة
+
+يمكنك أيضاً تحديد شروط ضم أكثر تقدماً. للبدء ، مرر إغلاقاً (closure) كوسيط ثاني لطريقة `join`. سيتلقى الإغلاق(closure) نسخة من `Illuminate\Database\Query\JoinClause` والتي تسمح لك بتحديد قيود على جملة `join`:
 
     DB::table('users')
             ->join('contacts', function ($join) {
@@ -351,7 +374,7 @@ You may also specify more advanced join clauses. To get started, pass a closure 
             })
             ->get();
 
-If you would like to use a "where" clause on your joins, you may use the `where` and `orWhere` methods provided by the `JoinClause` instance. Instead of comparing two columns, these methods will compare the column against a value:
+إذا كنت ترغب في استخدام جملة "where" في جمل الضم الخاصة بك ، فيمكنك استخدام التابعين `where` و `orWhere` المقدمين من الغرض `JoinClause`. بدلاً من مقارنة عمودين ، ستقارن هذه التوابع العمود بقيمة محددة:
 
     DB::table('users')
             ->join('contacts', function ($join) {
@@ -361,9 +384,10 @@ If you would like to use a "where" clause on your joins, you may use the `where`
             ->get();
 
 <a name="subquery-joins"></a>
-#### Subquery Joins
 
-You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receives three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:
+#### الضم الفرعي
+
+يمكنك استخدام أساليب `JoinSub` و `leftJoinSub` و `rightJoinSub` لربط استعلام باستعلام فرعي. تتلقى كل من هذه الطرق ثلاث وسائط: الاستعلام الفرعي والاسم المستعار للجدول الخاص به والإغلاق (closure) الذي يحدد الأعمدة ذات الصلة. في هذا المثال ، سنقوم باسترداد مجموعة من المستخدمين حيث يحتوي كل سجل مستخدم على الطابع الزمني `created_at` لآخر مشاركة مدونة نشرها المستخدم:
 
     $latestPosts = DB::table('posts')
                        ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
@@ -376,9 +400,10 @@ You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a q
             })->get();
 
 <a name="unions"></a>
-## Unions
 
-The query builder also provides a convenient method to "union" two or more queries together. For example, you may create an initial query and use the `union` method to union it with more queries:
+## الدمج (Unions)
+
+يوفر مُنشئ الاستعلام أيضاً طريقة مناسبة لدمج استعلامين أو أكثر معاً. على سبيل المثال ، يمكنك إنشاء استعلام أولي واستخدام التابع `union` لربطه بمزيد من الاستعلامات:
 
     use Illuminate\Support\Facades\DB;
 
@@ -390,28 +415,30 @@ The query builder also provides a convenient method to "union" two or more queri
                 ->union($first)
                 ->get();
 
-In addition to the `union` method, the query builder provides a `unionAll` method. Queries that are combined using the `unionAll` method will not have their duplicate results removed. The `unionAll` method has the same method signature as the `union` method.
+بالإضافة إلى طريقة `union` ، يوفر مُنشئ الاستعلام طريقة `unionAll`. في هذه الطريقة لا تتم إزالة النتائج المكررة للاستعلامات التي تم دمجها. له نفس وسائط الطريقة `union`.
 
 <a name="basic-where-clauses"></a>
-## Basic Where Clauses
+
+## جمل where الأساسية
 
 <a name="where-clauses"></a>
-### Where Clauses
 
-You may use the query builder's `where` method to add "where" clauses to the query. The most basic call to the `where` method requires three arguments. The first argument is the name of the column. The second argument is an operator, which can be any of the database's supported operators. The third argument is the value to compare against the column's value.
+### جمل Where
 
-For example, the following query retrieves users where the value of the `votes` column is equal to `100` and the value of the `age` column is greater than `35`:
+يمكنك استخدام الطريقة `where` لإضافة جمل "where" إلى الاستعلام. يتطلب الاستدعاء الأساسي للطريقة `where` ثلاث وسائط. المعامل الأول هو اسم العمود. المعامل الثاني هو المعامل الرياضي ، والذي يمكن أن يكون أياً من العوامل الرياضية المدعومة من قاعدة البيانات. المعامل الثالث هو القيمة المطلوب مقارنتها بقيمة العمود.
+
+على سبيل المثال ، يقوم طلب البحث التالي بإرجاع المستخدمين بحيث تكون قيمة العمود `votes` مساوية لـ `100` وقيمة العمود `age` أكبر من `35` ضمن السجل الخاص بكل مستخدم:
 
     $users = DB::table('users')
                     ->where('votes', '=', 100)
                     ->where('age', '>', 35)
                     ->get();
 
-For convenience, if you want to verify that a column is `=` to a given value, you may pass the value as the second argument to the `where` method. Laravel will assume you would like to use the `=` operator:
+للسهولة ، إذا كنت تريد التحقق من أن العمود يساوي `=` قيمة معينة ، فيمكنك تمرير القيمة كمتغير ثانٍ إلى طريقة `where`. سيفترض لارافل أنك تريد استخدام المعامل `=` أي إن المعامل `=` هو المعامل الافتراضي للطريقة "where" في حال عدم تمرير أي معامل:
 
     $users = DB::table('users')->where('votes', 100)->get();
 
-As previously mentioned, you may use any operator that is supported by your database system:
+كما ذكرنا سابقاً ، يمكنك استخدام أي معامل يدعمه نظام قاعدة البيانات الخاص بك:
 
     $users = DB::table('users')
                     ->where('votes', '>=', 100)
@@ -425,26 +452,27 @@ As previously mentioned, you may use any operator that is supported by your data
                     ->where('name', 'like', 'T%')
                     ->get();
 
-You may also pass an array of conditions to the `where` function. Each element of the array should be an array containing the three arguments typically passed to the `where` method:
+يمكنك أيضاً تمرير مصفوفة من الشروط إلى الطريقة `where`. يجب أن يكون كل عنصر في المصفوفة هو مصفوفة تحتوي على الوسائط الثلاثة التي يتم تمريرها عادةً للطريقة `where`:
 
     $users = DB::table('users')->where([
         ['status', '=', '1'],
         ['subscribed', '<>', '1'],
     ])->get();
 
-> {note} PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
+> {ملاحظة} لا يدعم PDO ربط أسماء الأعمدة (binding column names). لذلك ، يجب ألا تسمح للمستخدم بإدخال أسماء الأعمدة التي تشير إليها طلبات البحث ، بما في ذلك الأعمدة الخاصة بترتيب النتائج `order by`.
 
 <a name="or-where-clauses"></a>
-### Or Where Clauses
 
-When chaining together calls to the query builder's `where` method, the "where" clauses will be joined together using the `and` operator. However, you may use the `orWhere` method to join a clause to the query using the `or` operator. The `orWhere` method accepts the same arguments as the `where` method:
+### جمل Or Where
+
+عند ربط الاستدعاءات معاً بطريقة "where"، يتم ضم جمل "where" معاً باستخدام المعامل `and`. ومع ذلك ، يمكنك استخدام التابع `orWhere` لربط الاستعلامين باستخدام المعامل `or`. يقبل أسلوب `orWhere` نفس الوسائط مثل طريقة` where`:
 
     $users = DB::table('users')
                         ->where('votes', '>', 100)
                         ->orWhere('name', 'John')
                         ->get();
 
-If you need to group an "or" condition within parentheses, you may pass a closure as the first argument to the `orWhere` method:
+إذا كنت بحاجة إلى تجميع شرط `or` داخل أقواس ، فيمكنك تمرير إغلاق(closure) كوسيط أول للتابع `orWhere`:
 
     $users = DB::table('users')
                 ->where('votes', '>', 100)
@@ -454,36 +482,37 @@ If you need to group an "or" condition within parentheses, you may pass a closur
                 })
                 ->get();
 
-The example above will produce the following SQL:
+المثال أعلاه سيُنتج استعلام SQL التالي:
 
 ```sql
 select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 ```
 
-> {note} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
+> {ملاحظة} يجب عليك دائماً تجميع استدعاءات `orWhere` لتجنب السلوك غير المتوقع عند تطبيق النطاقات العامة (global scopes).
 
 <a name="json-where-clauses"></a>
-### JSON Where Clauses
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7+, PostgreSQL, SQL Server 2016, and SQLite 3.9.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
+### جمل JSON Where
+
+يدعم لارافل أيضاً الاستعلام عن الأعمدة التي تكون من نوع JSON في قواعد البيانات التي توفر دعماً لأنواع أعمدة JSON. حالياً ، يتضمن هذا MySQL 5.7+ و PostgreSQL و SQL Server 2016 و SQLite 3.9.0 (مع [extension JSON1](https://www.sqlite.org/json1.html)). للاستعلام عن عمود JSON ، استخدم معامل التشغيل `<-`:
 
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
 
-You may use `whereJsonContains` to query JSON arrays. This feature is not supported by the SQLite database:
+يمكنك استخدام `whereJsonContains` للاستعلام عن مصفوفات JSON. لا تدعم قاعدة بيانات SQLite هذه الميزة:
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', 'en')
                     ->get();
 
-If your application uses the MySQL or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
+إذا كان تطبيقك يستخدم قواعد بيانات MySQL أو PostgreSQL ، فيمكنك تمرير مجموعة من القيم للتابع `whereJsonContains`:
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', ['en', 'de'])
                     ->get();
 
-You may use `whereJsonLength` method to query JSON arrays by their length:
+يمكنك استخدام التابع `whereJsonLength` للاستعلام عن مصفوفات JSON حسب طولها:
 
     $users = DB::table('users')
                     ->whereJsonLength('options->languages', 0)
@@ -494,101 +523,102 @@ You may use `whereJsonLength` method to query JSON arrays by their length:
                     ->get();
 
 <a name="additional-where-clauses"></a>
-### Additional Where Clauses
 
-**whereBetween / orWhereBetween**
+### جمل Where إضافية
 
-The `whereBetween` method verifies that a column's value is between two values:
+الطريقتين **whereBetween / orWhereBetween**
+
+تتحقق الطريقة `whereBetween` من أن قيمة العمود تقع بين قيمتين:
 
     $users = DB::table('users')
                ->whereBetween('votes', [1, 100])
                ->get();
 
-**whereNotBetween / orWhereNotBetween**
+الطريقتين **whereNotBetween / orWhereNotBetween**
 
-The `whereNotBetween` method verifies that a column's value lies outside of two values:
+تتحقق الطريقة `whereNotBetween` من أن قيمة العمود تقع خارج مجال قيمتين:
 
     $users = DB::table('users')
                         ->whereNotBetween('votes', [1, 100])
                         ->get();
 
-**whereIn / whereNotIn / orWhereIn / orWhereNotIn**
+الطرق **whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
-The `whereIn` method verifies that a given column's value is contained within the given array:
+تتحقق الطريقة `whereIn` من أن قيمة عمود محدد موجودة ضمن قيم مصفوفة محددة:
 
     $users = DB::table('users')
                         ->whereIn('id', [1, 2, 3])
                         ->get();
 
-The `whereNotIn` method verifies that the given column's value is not contained in the given array:
+تتحقق الطريقة `whereNotIn` من أن قيمة عمود محدد غير موجودة ضمن قيم مصفوفة محددة:
 
     $users = DB::table('users')
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
 
-> {note} If you are adding a large array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage.
+> {ملاحظة} إذا كنت تضيف مصفوفة كبيرة من روابط الأعداد الصحيحة إلى استعلامك ، فيمكن استخدام الطرق `whereIntegerInRaw` أو `whereIntegerNotInRaw` لتقليل استخدام الذاكرة بشكل كبير.
 
-**whereNull / whereNotNull / orWhereNull / orWhereNotNull**
+الطرق **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
-The `whereNull` method verifies that the value of the given column is `NULL`:
+تتحقق الطريقة `whereNull` من أن قيمة العمود المحدد هي` NULL`:
 
     $users = DB::table('users')
                     ->whereNull('updated_at')
                     ->get();
 
-The `whereNotNull` method verifies that the column's value is not `NULL`:
+تتحقق الطريقة `whereNotNull` من أن قيمة العمود ليست` NULL`:
 
     $users = DB::table('users')
                     ->whereNotNull('updated_at')
                     ->get();
 
-**whereDate / whereMonth / whereDay / whereYear / whereTime**
+الطرق **whereDate / whereMonth / whereDay / whereYear / whereTime**
 
-The `whereDate` method may be used to compare a column's value against a date:
+يمكن استخدام الطريقة `whereDate` لمقارنة قيمة العمود بتاريخ:
 
     $users = DB::table('users')
                     ->whereDate('created_at', '2016-12-31')
                     ->get();
 
-The `whereMonth` method may be used to compare a column's value against a specific month:
+يمكن استخدام الطريقة `whereMonth` لمقارنة قيمة العمود بشهر معين:
 
     $users = DB::table('users')
                     ->whereMonth('created_at', '12')
                     ->get();
 
-The `whereDay` method may be used to compare a column's value against a specific day of the month:
+يمكن استخدام الطريقة `whereDay` لمقارنة قيمة العمود بيوم معين من الشهر:
 
     $users = DB::table('users')
                     ->whereDay('created_at', '31')
                     ->get();
 
-The `whereYear` method may be used to compare a column's value against a specific year:
+يمكن استخدام الطريقة `whereYear` لمقارنة قيمة العمود بسنة معينة:
 
     $users = DB::table('users')
                     ->whereYear('created_at', '2016')
                     ->get();
 
-The `whereTime` method may be used to compare a column's value against a specific time:
+يمكن استخدام الطريقة `whereTime` لمقارنة قيمة العمود بوقت محدد:
 
     $users = DB::table('users')
                     ->whereTime('created_at', '=', '11:20:45')
                     ->get();
 
-**whereColumn / orWhereColumn**
+الطريقتين **whereColumn / orWhereColumn**
 
-The `whereColumn` method may be used to verify that two columns are equal:
+يمكن استخدام التابع `whereColumn` للتحقق من تساوي عمودين:
 
     $users = DB::table('users')
                     ->whereColumn('first_name', 'last_name')
                     ->get();
 
-You may also pass a comparison operator to the `whereColumn` method:
+يمكنك أيضاً تمرير عامل مقارنة إلى الطريقة `whereColumn`:
 
     $users = DB::table('users')
                     ->whereColumn('updated_at', '>', 'created_at')
                     ->get();
 
-You may also pass an array of column comparisons to the `whereColumn` method. These conditions will be joined using the `and` operator:
+يمكنك أيضاً تمرير مصفوفة من مقارنات الأعمدة إلى الطريقة `whereColumn`. سيتم ضم هذه الشروط باستخدام المعامل `and`:
 
     $users = DB::table('users')
                     ->whereColumn([
@@ -597,9 +627,10 @@ You may also pass an array of column comparisons to the `whereColumn` method. Th
                     ])->get();
 
 <a name="logical-grouping"></a>
-### Logical Grouping
 
-Sometimes you may need to group several "where" clauses within parentheses in order to achieve your query's desired logical grouping. In fact, you should generally always group calls to the `orWhere` method in parentheses in order to avoid unexpected query behavior. To accomplish this, you may pass a closure to the `where` method:
+### التجميع المنطقي
+
+قد تحتاج أحياناً إلى تجميع عدة جمل "where" داخل أقواس من أجل تحقيق التجميع المنطقي المطلوب للاستعلام. في الواقع ، يجب عليك دائماً تجميع الاستدعاءات بالطريقة `orWhere` بين قوسين لتجنب سلوك غير متوقع للاستعلام. لتحقيق ذلك ، يمكنك تمرير إغلاق(closure) للطريقة `where`:
 
     $users = DB::table('users')
                ->where('name', '=', 'John')
@@ -609,21 +640,23 @@ Sometimes you may need to group several "where" clauses within parentheses in or
                })
                ->get();
 
-As you can see, passing a closure into the `where` method instructs the query builder to begin a constraint group. The closure will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
+كما ترى ، فإن تمرير إغلاق في طريقة `where` يوجه مُنشئ الاستعلام(Query builder) لبدء مجموعة قيود. سيتلقى الإغلاق كوسيط له نسخة عن مُنشئ الاستعلام يمكنك استخدامه لتعيين القيود التي يجب تضمينها داخل مجموعة الأقواس. المثال أعلاه سينتج جملة SQL التالية:
 
 ```sql
 select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 ```
 
-> {note} You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
+> {ملاحظة} يجب عليك دائماً تجميع استدعاءات "orWhere" لتجنب السلوك غير المتوقع عند تطبيق النطاقات العامة (global scopes).
 
 <a name="advanced-where-clauses"></a>
-### Advanced Where Clauses
+
+### جمل Where المتقدمة
 
 <a name="where-exists-clauses"></a>
-### Where Exists Clauses
 
-The `whereExists` method allows you to write "where exists" SQL clauses. The `whereExists` method accepts a closure which will receive a query builder instance, allowing you to define the query that should be placed inside of the "exists" clause:
+### جملة Where Exists
+
+تسمح لك الطريقة `whereExists` بكتابة جمل "where exists" الموجودة في لغة SQL. تقبل الطريقة `whereExists` إغلاقاً (closure) يتلقى كوسيط له نسخة عن مُنشئ الاستعلام ، مما يسمح لك بتعريف الاستعلام الذي يجب وضعه داخل جملة"exists":
 
     $users = DB::table('users')
                ->whereExists(function ($query) {
@@ -633,7 +666,7 @@ The `whereExists` method allows you to write "where exists" SQL clauses. The `wh
                })
                ->get();
 
-The query above will produce the following SQL:
+سينتج الاستعلام أعلاه جملة SQL التالية:
 
 ```sql
 select * from users
@@ -645,9 +678,10 @@ where exists (
 ```
 
 <a name="subquery-where-clauses"></a>
-### Subquery Where Clauses
 
-Sometimes you may need to construct a "where" clause that compares the results of a subquery to a given value. You may accomplish this by passing a closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
+### جمل where الفرعية
+
+قد تحتاج في بعض الأحيان إلى إنشاء جملة "where" التي تقارن نتائج استعلام فرعي بقيمة معينة. يمكنك تحقيق ذلك بتمرير إغلاق(closure) وقيمة إلى الطريقة `where`. على سبيل المثال، سيقوم الاستعلام التالي باسترداد جميع المستخدمين الذين لديهم "membership" حديثة من نوع (Pro):
 
     use App\Models\User;
 
@@ -659,7 +693,7 @@ Sometimes you may need to construct a "where" clause that compares the results o
             ->limit(1);
     }, 'Pro')->get();
 
-Or, you may need to construct a "where" clause that compares a column to the results of a subquery. You may accomplish this by passing a column, operator, and closure to the `where` method. For example, the following query will retrieve all income records where the amount is less than average;
+أو قد تحتاج إلى إنشاء جملة "where" تقارن عموداً بنتائج استعلام فرعي. يمكنك تحقيق ذلك بتمرير اسم العمود ومعامل المقارنة وإغلاق إلى طريقة `where`. على سبيل المثال ، سيقوم الاستعلام التالي باسترداد جميع سجلات الدخل حيث يكون المبلغ أقل من المتوسط ؛
 
     use App\Models\Income;
 
@@ -668,32 +702,36 @@ Or, you may need to construct a "where" clause that compares a column to the res
     })->get();
 
 <a name="full-text-where-clauses"></a>
-### Full Text Where Clauses
 
-> {note} Full text where clauses are currently supported by MySQL and PostgreSQL.
+### جمل Where لكامل النص
 
-The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MySQL:
+> {ملاحظة} الطرق `whereFullText` و `orWhereFullText` مدعومة من MySQL و PostgreSQL حالياً.
+
+يمكن استخدام الطريقتين `whereFullText` و `orWhereFullText` لإضافة جمل "Full text where" إلى طلب البحث للأعمدة التي لديها [full text indexes](/docs/{{version}}/migrations#available-index-types). سيتم تحويل هذه التوابع إلى جملة SQL المناسبة لنظام قاعدة البيانات الأساسي بواسطة لارافل. على سبيل المثال ، سيتم إنشاء جملة `MATCH AGAINST` للتطبيقات التي تستخدم MySQL:
 
     $users = DB::table('users')
                ->whereFullText('bio', 'web developer')
                ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
-## Ordering, Grouping, Limit & Offset
+
+## الترتيب, التجميع, الحد و الإزاحة
 
 <a name="ordering"></a>
-### Ordering
+
+### الترتيب
 
 <a name="orderby"></a>
-#### The `orderBy` Method
 
-The `orderBy` method allows you to sort the results of the query by a given column. The first argument accepted by the `orderBy` method should be the column you wish to sort by, while the second argument determines the direction of the sort and may be either `asc` or `desc`:
+#### الطريقة `orderBy`
+
+تسمح لك الطريقة `orderBy` بفرز نتائج الاستعلام حسب عمود معين. يجب أن يكون الوسيط الأول الذي تقبله الطريقة `orderBy` هو العمود الذي تريد الفرز وفقاً له ، بينما يحدد الوسيط الثاني اتجاه الفرز وقد يكون إما تصاعدي `asc` أو تنازلي `desc`:
 
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->get();
 
-To sort by multiple columns, you may simply invoke `orderBy` as many times as necessary:
+للفرز حسب عدة أعمدة ، يمكنك ببساطة استدعاء `orderBy` عدة مرات حسب الضرورة:
 
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
@@ -701,52 +739,57 @@ To sort by multiple columns, you may simply invoke `orderBy` as many times as ne
                     ->get();
 
 <a name="latest-oldest"></a>
-#### The `latest` & `oldest` Methods
 
-The `latest` and `oldest` methods allow you to easily order results by date. By default, the result will be ordered by the table's `created_at` column. Or, you may pass the column name that you wish to sort by:
+#### الطرق `latest` & `oldest`
+
+تسمح لك الطريقتان `latest` و `oldest` بطلب النتائج حسب التاريخ بسهولة. بشكل افتراضي ، سيتم ترتيب النتيجة حسب عمود الجدول "created_at". أو يمكنك تمرير اسم العمود الذي ترغب بالفرز بواسطته:
 
     $user = DB::table('users')
                     ->latest()
                     ->first();
 
 <a name="random-ordering"></a>
-#### Random Ordering
 
-The `inRandomOrder` method may be used to sort the query results randomly. For example, you may use this method to fetch a random user:
+#### الترتيب العشوائي
+
+يمكن استخدام الطريقة `inRandomOrder` لفرز نتائج الاستعلام عشوائياً. على سبيل المثال ، يمكنك استخدام هذا التابع لجلب مستخدم عشوائي:
 
     $randomUser = DB::table('users')
                     ->inRandomOrder()
                     ->first();
 
 <a name="removing-existing-orderings"></a>
-#### Removing Existing Orderings
 
-The `reorder` method removes all of the "order by" clauses that have previously been applied to the query:
+#### إزالة الترتيب المسبق
+
+تزيل الطريقة `reorder` جميع جمل "order by" التي تم تطبيقها مسبقاً على الاستعلام:
 
     $query = DB::table('users')->orderBy('name');
 
     $unorderedUsers = $query->reorder()->get();
 
-You may pass a column and direction when calling the `reorder` method in order to remove all existing "order by" clauses and apply an entirely new order to the query:
+يمكنك تمرير عمود محدد واتجاه ترتيب تصاعدي(asc) أو تنازلي (desc) عند استدعاء التابع `reorder` لإزالة كل جمل "order by" الحالية وتطبيق ترتيب جديد تماماً على الاستعلام:
 
     $query = DB::table('users')->orderBy('name');
 
     $usersOrderedByEmail = $query->reorder('email', 'desc')->get();
 
 <a name="grouping"></a>
-### Grouping
+
+### التجميع
 
 <a name="groupby-having"></a>
-#### The `groupBy` & `having` Methods
 
-As you might expect, the `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
+#### الطرق `groupBy` & `having`
+
+كما قد تتوقع ، يمكن استخدام الطريقتين `groupBy` و `having` لتجميع نتائج الاستعلام. وسائط الطريقة `having` مشابهة لوسائط الطريقة `where`:
 
     $users = DB::table('users')
                     ->groupBy('account_id')
                     ->having('account_id', '>', 100)
                     ->get();
 
-You can use the `havingBetween` method to filter the results within a given range:
+يمكنك استخدام الطريقة `havingBetween` لتصفية النتائج ضمن مجال معين:
 
     $report = DB::table('orders')
                     ->selectRaw('count(id) as number_of_orders, customer_id')
@@ -754,26 +797,28 @@ You can use the `havingBetween` method to filter the results within a given rang
                     ->havingBetween('number_of_orders', [5, 15])
                     ->get();
 
-You may pass multiple arguments to the `groupBy` method to group by multiple columns:
+يمكنك تمرير عدة متغيرات للتابع `groupBy` للتجميع حسب عدة أعمدة:
 
     $users = DB::table('users')
                     ->groupBy('first_name', 'status')
                     ->having('account_id', '>', 100)
                     ->get();
 
-To build more advanced `having` statements, see the [`havingRaw`](#raw-methods) method.
+لإنشاء جمل `having` أكثر تقدماً ، راجع طريقة [`havingRaw`](#raw-methods).
 
 <a name="limit-and-offset"></a>
-### Limit & Offset
+
+### الحد والإزاحة
 
 <a name="skip-take"></a>
-#### The `skip` & `take` Methods
 
-You may use the `skip` and `take` methods to limit the number of results returned from the query or to skip a given number of results in the query:
+#### الطرق `skip` & `take`
+
+يمكنك استخدام الطريقتين `skip` و `take` للحد من عدد النتائج التي يتم إرجاعها من الاستعلام أو لتخطي عدد معين من النتائج في الاستعلام:
 
     $users = DB::table('users')->skip(10)->take(5)->get();
 
-Alternatively, you may use the `limit` and `offset` methods. These methods are functionally equivalent to the `take` and `skip` methods, respectively:
+بدلاً من ذلك ، يمكنك استخدام الطريقتين `Limit` و `Offset`. هاتان الطريقتان مكافئتان وظيفياً للطريقتين `take` و `skip` ، على التوالي:
 
     $users = DB::table('users')
                     ->offset(10)
@@ -781,9 +826,10 @@ Alternatively, you may use the `limit` and `offset` methods. These methods are f
                     ->get();
 
 <a name="conditional-clauses"></a>
-## Conditional Clauses
 
-Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:
+## الجمل الشرطية
+
+قد ترغب أحياناً في تطبيق جمل استعلام معينة على إحدى الاستعلامات بناءً على شرط ما. على سبيل المثال ، قد ترغب في تطبيق جملة `where` فقط إذا كانت هناك قيمة إدخال معينة موجودة في طلب HTTP الوارد. يمكنك القيام بذلك باستخدام الطريقة `when`:
 
     $role = $request->input('role');
 
@@ -793,9 +839,11 @@ Sometimes you may want certain query clauses to apply to a query based on anothe
                     })
                     ->get();
 
-The `when` method only executes the given closure when the first argument is `true`. If the first argument is `false`, the closure will not be executed. So, in the example above, the closure given to the `when` method will only be invoked if the `role` field is present on the incoming request and evaluates to `true`.
+لا تنفذ الطريقة `when` الإغلاق (closure) المحدد إلا عندما يكون تقييم المعامل الأول `true`. أما إذا كان تقييمه `false` ، فلن يتم تنفيذ الإغلاق. لذلك ، في المثال أعلاه ، سيتم استدعاء الإغلاق المعطى للطريقة `when` فقط إذا كان حقل `role` موجوداً في الطلب الوارد وتقييمه `true`.
 
-You may pass another closure as the third argument to the `when` method. This closure will only execute if the first argument evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default ordering of a query:
+يمكنك تمرير إغلاق آخر كمعامل ثالث للتابع `when`. لن يتم تنفيذ هذا الإغلاق إلا إذا تم تقييم المعامل الأول على أنه `false`.<br>
+أي إنه عندما يكون تقييم المعامل الأول `true` سيتم تنفيذ الإغلاق الأول, وإذا كان تقييم المعامل الأول `false` سيتم تنفيذ الإغلاق الثاني.<br>
+لتوضيح كيفية استخدام هذه الميزة ، سنستخدمها لتكوين الترتيب الافتراضي للاستعلام:
 
     $sortByVotes = $request->input('sort_by_votes');
 
@@ -808,71 +856,76 @@ You may pass another closure as the third argument to the `when` method. This cl
                     ->get();
 
 <a name="insert-statements"></a>
-## Insert Statements
 
-The query builder also provides an `insert` method that may be used to insert records into the database table. The `insert` method accepts an array of column names and values:
+## جمل الإدخال
+
+يوفر مُنشئ الاستعلام (Query builder) أيضاً الطريقة `insert` يمكن استخدامها لإدراج السجلات في جدول قاعدة البيانات. تقبل الطريقة `insert` مصفوفة من أسماء الأعمدة والقيم:
 
     DB::table('users')->insert([
         'email' => 'kayla@example.com',
         'votes' => 0
     ]);
 
-You may insert several records at once by passing an array of arrays. Each array represents a record that should be inserted into the table:
+يمكنك إدراج عدة سجلات مرة واحدة عن طريق تمرير مصفوفة من المصفوفات. تمثل كل مصفوفة سجلاً تريد إدراجه في الجدول:
 
     DB::table('users')->insert([
         ['email' => 'picard@example.com', 'votes' => 0],
         ['email' => 'janeway@example.com', 'votes' => 0],
     ]);
 
-The `insertOrIgnore` method will ignore errors while inserting records into the database:
+الطريقة `insertOrIgnore` تتجاهل الأخطاء أثناء إدراج السجلات في قاعدة البيانات:
 
     DB::table('users')->insertOrIgnore([
         ['id' => 1, 'email' => 'sisko@example.com'],
         ['id' => 2, 'email' => 'archer@example.com'],
     ]);
 
-> {note} `insertOrIgnore` will ignore duplicate records and also may ignore other types of errors depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution).
+> {ملاحظة} ستتجاهل الطريقة `insertOrIgnore` السجلات المكررة وقد تتجاهل أيضاً الأنواع الأخرى من الأخطاء اعتماداً على محرك قاعدة البيانات. على سبيل المثال ، "insertOrIgnore` سوف [يتجاوز الوضع الصارم لـ MySQL](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution).
 
 <a name="auto-incrementing-ids"></a>
-#### Auto-Incrementing IDs
 
-If the table has an auto-incrementing id, use the `insertGetId` method to insert a record and then retrieve the ID:
+#### المعرّفات ذات الزيادة التلقائية
+
+إذا كان الجدول يحتوي على معرّف (ID) يتزايد تلقائياً ، فاستخدم الطريقة `insertGetId` لإدراج سجل ثم استرداد المعرّف:
 
     $id = DB::table('users')->insertGetId(
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-> {note} When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the column name as the second parameter to the `insertGetId` method.
+> {ملاحظة} عند استخدام PostgreSQL ، تتوقع طريقة `insertGetId` تسمية عمود الزيادة التلقائية باسم` id`. إذا كنت ترغب في استرداد المعرف من سلسلة مختلفة ، فيمكنك تمرير اسم العمود كمعامل ثاني إلى طريقة `insertGetId`.
 
 <a name="upserts"></a>
-### Upserts
 
-The `upsert` method will insert records that do not exist and update the records that already exist with new values that you may specify. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of columns that should be updated if a matching record already exists in the database:
+### الادخال و التعديل
+
+ستقوم الطريقة `upsert` بإدراج السجلات غير الموجودة وتحديث السجلات الموجودة بالفعل بقيم جديدة تحددها أنت. يتكون المعامل الأول للطريقة من القيم المراد إدراجها أو تحديثها ، بينما يحدد المعامل الثاني العمود (أو الأعمدة) التي تحدد السجلات بشكل فريد ضمن الجدول المرتبط. المعامل الثالث والأخير للطريقة `upsert` عبارة عن مصفوفة من الأعمدة التي يجب تحديثها إذا كان السجل المطابق موجوداً بالفعل في قاعدة البيانات:
 
     DB::table('flights')->upsert([
         ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
         ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
     ], ['departure', 'destination'], ['price']);
 
-In the example above, Laravel will attempt to insert two records. If a record already exists with the same `departure` and `destination` column values, Laravel will update that record's `price` column.
+في المثال أعلاه ، سيحاول لارافل إدخال سجلين. إذا كان السجل موجوداً بالفعل بنفس قيم العمودين `departure` و `destination` ، فسيحدّث لارافل عمود `price` في ذلك السجل.
 
-> {note} All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MySQL database driver ignores the second argument of the `upsert` method and always uses the "primary" and "unique" indexes of the table to detect existing records.
+> {ملاحظة} تتطلب جميع قواعد البيانات باستثناء SQL Server أن يكون للأعمدة الموجودة في المعامل الثاني للطريقة `upsert` فهرس أساسي "primary" أو فريد "unique". بالإضافة إلى ذلك ، يتجاهل مشغل قاعدة بيانات MySQL المعامل الثاني لطريقة `upsert` ويستخدم دائماً الفهارس الأولية والفريدة للجدول لاكتشاف السجلات الموجودة.
 
 <a name="update-statements"></a>
-## Update Statements
 
-In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. The `update` method returns the number of affected rows. You may constrain the `update` query using `where` clauses:
+## التحديث
+
+بالإضافة إلى إدراج السجلات في قاعدة البيانات ، يمكن لمُنشئ الاستعلام (Query builder) أيضاً تحديث السجلات الموجودة باستخدام الطريقة `update`. تقبل الطريقة `update` ، مثل الطريقة `insert` مصفوفة من أزواج الأعمدة والقيم التي تشير إلى الأعمدة المراد تحديثها. تعرض الطريقة `update` عدد الصفوف المتأثرة. يمكنك تقييد استعلام `update` باستخدام جمل `where`:
 
     $affected = DB::table('users')
                   ->where('id', 1)
                   ->update(['votes' => 1]);
 
 <a name="update-or-insert"></a>
-#### Update Or Insert
 
-Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs indicating the columns to be updated.
+#### التحديث أو الإدخال
 
-The `updateOrInsert` method will attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record can not be found, a new record will be inserted with the merged attributes of both arguments:
+قد ترغب أحياناً في تحديث سجل موجود في قاعدة البيانات أو إنشائه في حالة عدم وجود سجل مطابق. في هذا السيناريو ، يمكن استخدام الطريقة `updateOrInsert`. تقبل الطريقة `updateOrInsert` وسيطين: مصفوفة من الشروط يمكن من خلالها العثور على السجل ، ومصفوفة من أزواج الأعمدة والقيم التي تشير إلى الأعمدة المراد تحديثها.
+
+ستحاول الطريقة `updateOrInsert` تحديد موقع سجل قاعدة بيانات مطابق باستخدام أزواج العمود و القيمة المحددة في المعامل الأول. إذا كان السجل موجوداً , فسيتم تحديثه بالقيم الموجودة في المعامل الثاني. إذا تعذر العثور على السجل ، فسيتم إدراج سجل جديد بالسمات المدمجة لكل من المعاملين:
 
     DB::table('users')
         ->updateOrInsert(
@@ -881,18 +934,20 @@ The `updateOrInsert` method will attempt to locate a matching database record us
         );
 
 <a name="updating-json-columns"></a>
-### Updating JSON Columns
 
-When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:
+### تحديث أعمدة JSON
+
+عند تحديث عمود JSON ، يجب استخدام `<-` لتحديث المفتاح المناسب في كائن JSON. هذه العملية مدعومة في MySQL 5.7+ و PostgreSQL 9.5+:
 
     $affected = DB::table('users')
                   ->where('id', 1)
                   ->update(['options->enabled' => true]);
 
 <a name="increment-and-decrement"></a>
-### Increment & Decrement
 
-The query builder also provides convenient methods for incrementing or decrementing the value of a given column. Both of these methods accept at least one argument: the column to modify. A second argument may be provided to specify the amount by which the column should be incremented or decremented:
+### الزيادة و الانقاص
+
+يوفر مُنشئ الاستعلام (Query builder) أيضاً طرقاً ملائمة لزيادة أو إنقاص قيمة عمود معين. تقبل كلتا الطريقتين وسيط واحد على الأقل وهي العمود المراد تعديله. يمكن تقديم وسيط ثاني لتحديد المقدار الذي يجب زيادة العمود به أو إنقاصه:
 
     DB::table('users')->increment('votes');
 
@@ -902,39 +957,42 @@ The query builder also provides convenient methods for incrementing or decrement
 
     DB::table('users')->decrement('votes', 5);
 
-You may also specify additional columns to update during the operation:
+يمكنك أيضاً تحديد أعمدة إضافية لتحديثها أثناء العملية:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
 <a name="delete-statements"></a>
-## Delete Statements
 
-The query builder's `delete` method may be used to delete records from the table. The `delete` method returns the number of affected rows. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
+## الحذف
+
+يمكن استخدام الطريقة `delete` في مُنشئ الاستعلام (Query builder) لحذف السجلات من الجدول. تعرض الطريقة `delete` عدد الصفوف المتأثرة. يمكنك تقييد جمل `delete` بإضافة جمل `where` قبل استدعاء الطريقة `delete`:
 
     $deleted = DB::table('users')->delete();
 
     $deleted = DB::table('users')->where('votes', '>', 100)->delete();
 
-If you wish to truncate an entire table, which will remove all records from the table and reset the auto-incrementing ID to zero, you may use the `truncate` method:
+إذا كنت ترغب في اقتطاع جدول بأكمله ، مما سيؤدي إلى إزالة جميع السجلات من الجدول وإعادة تعيين معرف التزايد التلقائي إلى الصفر ، فيمكنك استخدام طريقة `truncate`:
 
     DB::table('users')->truncate();
 
 <a name="table-truncation-and-postgresql"></a>
-#### Table Truncation & PostgreSQL
 
-When truncating a PostgreSQL database, the `CASCADE` behavior will be applied. This means that all foreign key related records in other tables will be deleted as well.
+#### اقتطاع جدول في PostgreSQL
+
+عند اقتطاع قاعدة بيانات PostgreSQL ، سيتم تطبيق السلوك `CASCADE`. هذا يعني أنه سيتم حذف جميع السجلات ذات الصلة بالمفتاح الأجنبي(foreign key) في الجداول الأخرى أيضاً.
 
 <a name="pessimistic-locking"></a>
-## Pessimistic Locking
 
-The query builder also includes a few functions to help you achieve "pessimistic locking" when executing your `select` statements. To execute a statement with a "shared lock", you may call the `sharedLock` method. A shared lock prevents the selected rows from being modified until your transaction is committed:
+## القفل التشاؤمي (Pessimistic Locking)
+
+يتضمن مُنشئ الاستعلام أيضاً بعض الوظائف لمساعدتك على تحقيق "القفل التشاؤمي" عند تنفيذ جمل `select`. لتنفيذ جملة باستخدام "قفل مشترك" (shared lock) ، يمكنك استدعاء طريقة `sharedLock`. يمنع القفل المشترك تعديل الصفوف المحددة حتى يتم تنفيذ معاملتك (transaction):
 
     DB::table('users')
             ->where('votes', '>', 100)
             ->sharedLock()
             ->get();
 
-Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the selected records from being modified or from being selected with another shared lock:
+بدلاً من ذلك ، يمكنك استخدام طريقة `lockForUpdate`. يمنع قفل "التحديث" تعديل السجلات المحددة أو تحديدها باستخدام قفل مشترك آخر:
 
     DB::table('users')
             ->where('votes', '>', 100)
@@ -942,9 +1000,10 @@ Alternatively, you may use the `lockForUpdate` method. A "for update" lock preve
             ->get();
 
 <a name="debugging"></a>
-## Debugging
 
-You may use the `dd` and `dump` methods while building a query to dump the current query bindings and SQL. The `dd` method will display the debug information and then stop executing the request. The `dump` method will display the debug information but allow the request to continue executing:
+## التشخيص (Debugging)
+
+يمكنك استخدام التابعين `dd` و` dump` أثناء بناء استعلام لتفريغ روابط الاستعلام الحالية و SQL. ستعرض الطريقة `dd` معلومات التشخيص ثم تتوقف عن تنفيذ الطلب. ستعرض الطريقة `dump` معلومات التشخيص ولكنه يسمح للطلب بمتابعة التنفيذ:
 
     DB::table('users')->where('votes', '>', 100)->dd();
 
