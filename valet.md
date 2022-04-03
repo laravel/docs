@@ -218,7 +218,7 @@ If you have multiple projects with varying PHP versions, you may wish to isolate
 valet isolate php@8.0
 ```
 
-> {tip} You can proxy calls to your projects underlying PHP binary using `valet php`. This also works with `valet composer` and `valet which-php`
+> {tip} You can proxy calls to your projects underlying PHP binary using `valet php`. This also works with `valet composer` and `valet which-php`.
 
 ## Sharing Sites
 
