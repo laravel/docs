@@ -8,6 +8,7 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
     - [Serving a Default Site](#serving-a-default-site)
+    - [Isolating Sites](#isolating-sites)
 - [Sharing Sites](#sharing-sites)
     - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
     - [Sharing Sites Via Expose](#sharing-sites-via-expose)
@@ -208,6 +209,17 @@ Sometimes, you may wish to configure Valet to serve a "default" site instead of 
     "default": "/Users/Sally/Sites/foo",
 
 <a name="sharing-sites"></a>
+
+### Isolating Sites
+
+If you have multiple projects with varying PHP versions, you may wish to isolate each site to a specific PHP version. You can do this with the `isolate` command:
+
+```shell
+valet isolate php@8.0
+```
+
+> {tip} You can proxy calls to your projects underlying PHP binary using `valet php`. This also works with `valet composer` and `valet which-php`
+
 ## Sharing Sites
 
 Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
