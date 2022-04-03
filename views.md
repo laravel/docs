@@ -1,23 +1,24 @@
-# Views
+# الواجهات (Views)
 
-- [Introduction](#introduction)
-- [Creating & Rendering Views](#creating-and-rendering-views)
-    - [Nested View Directories](#nested-view-directories)
-    - [Creating The First Available View](#creating-the-first-available-view)
-    - [Determining If A View Exists](#determining-if-a-view-exists)
-- [Passing Data To Views](#passing-data-to-views)
-    - [Sharing Data With All Views](#sharing-data-with-all-views)
-- [View Composers](#view-composers)
-    - [View Creators](#view-creators)
-- [Optimizing Views](#optimizing-views)
+- [الواجهات (Views)](#الواجهات-views)
+  - [مقدمة](#مقدمة)
+  - [إنشاء وتقديم الواجهات](#إنشاء-وتقديم-الواجهات)
+    - [إنشاء أوّل واجهة متاحة](#إنشاء-أوّل-واجهة-متاحة)
+    - [تحديد إن كانت الواجهة موجودة](#تحديد-إن-كانت-الواجهة-موجودة)
+  - [تمرير البيانات للواجهات](#تمرير-البيانات-للواجهات)
+    - [مشاركة البيانات مع جميع الواجهات](#مشاركة-البيانات-مع-جميع-الواجهات)
+  - [مؤلّفو الواجهات (View Composers)](#مؤلّفو-الواجهات-view-composers)
+      - [إرفاق المُؤلّف مع عدّة واجهات](#إرفاق-المُؤلّف-مع-عدّة-واجهات)
+    - [مُنشؤو الواجهات (View creators)](#مُنشؤو-الواجهات-view-creators)
+  - [تحسين الواجهات](#تحسين-الواجهات)
 
 <a name="introduction"></a>
-## Introduction
+## مقدمة
 
-Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files. Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. A simple view might look something like this:
+بالطبع ، ليس من العملي إرجاع سلاسل مستندات HTML بالكامل مباشرةً من المسارات (paths) والمتحكمات الخاصة بك (controllers). لحسن الحظ ، توفر الواجهات طريقة مناسبة لوضع كل HTML في ملفات منفصلة. تفصل الواجهات منطق وحدة التحكم / منطق التطبيق عن منطق عرضك التقديمي  (presentation logic) ويتم تخزين الواجهات في المجلد `resources/view`. قد تشبه الواجهة البسيطة المثال التالي:
 
 ```blade
-<!-- View stored in resources/views/greeting.blade.php -->
+<!-- الواجهات المُخزّنة في resources/views/greeting.blade.php -->
 
 <html>
     <body>
@@ -25,83 +26,88 @@ Of course, it's not practical to return entire HTML documents strings directly f
     </body>
 </html>
 ```
-
-Since this view is stored at `resources/views/greeting.blade.php`, we may return it using the global `view` helper like so:
-
+نظراً لأن هذه الواجهة مخزنة في `resources/views/greeting.blade.php` ، يمكننا ارجاعها باستخدام المساعد العام `view` مثل:
+```php
     Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
     });
+```
 
-> {tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
+> ملاحظة: هل تبحث عن مزيد من المعلومات حول كيفية كتابة قوالب Blade؟ ألق نظرة على [توثيق Blade](/docs/{{version}}/blade) الكامل للبدء.
 
 <a name="creating-and-rendering-views"></a>
-## Creating & Rendering Views
 
-You may create a view by placing a file with the `.blade.php` extension in your application's `resources/views` directory. The `.blade.php` extension informs the framework that the file contains a [Blade template](/docs/{{version}}/blade). Blade templates contain HTML as well as Blade directives that allow you to easily echo values, create "if" statements, iterate over data, and more.
+## إنشاء وتقديم الواجهات
+يمكنك إنشاء واجهة عن طريق وضع ملف بامتداد `.blade.php` في مجلد `resources/views` في تطبيقك. يخبر الامتداد `.blade.php` إطار العمل (framework) بأن الملف يحتوي على [قالب Blade](/docs/{{version}}/blade). تحتوي قوالب الBlade على HTML بالإضافة إلى مجلدات  Blade التي تتيح لك محاكاة القيم بسهولة وإنشاء عبارات "if" والتكرار على البيانات والمزيد.
 
-Once you have created a view, you may return it from one of your application's routes or controllers using the global `view` helper:
-
+بمجرد إنشاء واجهة ، يمكنك إرجاعها من أحد مسارات أو متحكمات في تطبيقك باستخدام  المساعد العام `view`:
+```php
     Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
     });
 
-Views may also be returned using the `View` facade:
+يمكن أيضاً إرجاع الواجهة عبر الواجهة الساكنة `View`:
 
     use Illuminate\Support\Facades\View;
 
     return View::make('greeting', ['name' => 'James']);
-
-As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view using [Blade syntax](/docs/{{version}}/blade).
+````
+كما ترى، يُوافق المّتغيّر الوسيط الأوّل المُمرّر إلى المُساعد view اسم ملف الواجهة في المجلّد resources/views. المتغيّر الوسيط الثاني هو مصفوفة البيانات التي يجب أن تُتاح للواجهة. نقوم في هذه الحالة بتمرير المتغيّر name الذي يُعرض في الواجهة باستخدام [صيغة Blade](/docs/{{version}}/blade). 
 
 <a name="nested-view-directories"></a>
-### Nested View Directories
 
-Views may also be nested within subdirectories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.blade.php`, you may return it from one of your application's routes / controllers like so:
-
+### مجلدات الواجهة المتداخلة(Nested)
+يمكن أيضاً تضمين (nesting) الواجهات ضمن مُجلّدات فرعية من المُجلّد `resources/views`. يمكن استخدام الترميز "نقطة" للإشارة للعروض المتداخلة (nested). مثلا، إن خُزّن عرضك في `resources/views/admin/profile.blade.php`، يمكن ارجاعه من أحد مسارات/ متحكمات تطبيقك على النحو التالي:
+```php
     return view('admin.profile', $data);
-
-> {note} View directory names should not contain the `.` character.
+```
+> ملاحظة: يجب ألا تحتوي مجلدات الواجهة على نقطة `.`
 
 <a name="creating-the-first-available-view"></a>
-### Creating The First Available View
 
-Using the `View` facade's `first` method, you may create the first view that exists in a given array of views. This may be useful if your application or package allows views to be customized or overwritten:
+### إنشاء أوّل واجهة متاحة 
+
+يمكنك إنشاء `الواجهة` الأولى في مصفوفة معيّنة من الواجهات باستخدام التابع `first`. يُفيدك هذا إن سمح تطبيقك أو حزمتك بتخصيص الواجهات أو إعادة تعريفها (overwritten):
 
     use Illuminate\Support\Facades\View;
 
     return View::first(['custom.admin', 'admin'], $data);
 
 <a name="determining-if-a-view-exists"></a>
-### Determining If A View Exists
 
-If you need to determine if a view exists, you may use the `View` facade. The `exists` method will return `true` if the view exists:
+### تحديد إن كانت الواجهة موجودة
 
+إن كنت بحاجة لتحديد إن كانت الواجهة موجودة، يمكنك استخدام الواجهة الساكنة View (أي `View` facade). سيرد التابع `exists` بالقيمة true إن وُجدت الواجهة:
+```php
     use Illuminate\Support\Facades\View;
 
     if (View::exists('emails.customer')) {
         //
     }
-
+```
 <a name="passing-data-to-views"></a>
-## Passing Data To Views
 
-As you saw in the previous examples, you may pass an array of data to views to make that data available to the view:
+## تمرير البيانات للواجهات
 
+كما رأيت في الأمثلة السابقة، يمكنك تمرير مصفوفة من البيانات للواجهات لجعل تلك البيانات متوفرة للواجهة:
+```php
     return view('greetings', ['name' => 'Victoria']);
-
-When passing information in this manner, the data should be an array with key / value pairs. After providing data to a view, you can then access each value within your view using the data's keys, such as `<?php echo $name; ?>`.
-
-As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view. The `with` method returns an instance of the view object so that you can continue chaining methods before returning the view:
-
+```
+عند تمرير المعلومات بهذه الطريقة ، يجب أن تكون البيانات مصفوفة من الأزواج مفتاح / قيمة (key/value). بعد تمرير البيانات للواجهة
+ يمكنك الوصول لكل قيمة باستخدام مفتاحها المُوافق داخل واجهتك، مثل `<?;php echo $key ?>`. كبديل لتمرير مصفوفة كاملة من البيانات إلى دالّة المُساعد `view،` يمكنك استخدام التابع `with` لإضافة أجزاء منفردة من البيانات للواجهة. يرجع التابع `with` نسخة من كائن الواجهة (view object) بحيث يمكنك متابعة تسلسل التوابع قبل إرجاع الواجهة:
+```php
     return view('greeting')
                 ->with('name', 'Victoria')
                 ->with('occupation', 'Astronaut');
+```
 
 <a name="sharing-data-with-all-views"></a>
-### Sharing Data With All Views
 
-Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `View` facade's `share` method. Typically, you should place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `App\Providers\AppServiceProvider` class or generate a separate service provider to house them:
+### مشاركة البيانات مع جميع الواجهات
+في بعض الأحيان ، قد تحتاج إلى مشاركة البيانات مع جميع واجهات تطبيقك.
+يمكنك استخدام التابع `share` من واجهة العرض الساكنة (view facade) للقيام بذلك. عادة، عليك وضع نداءات التابع `share` داخل تابع مقدّم الخدمات `boot`. لك حريّة إضافتها إلى `App\Providers\AppServiceProvider class` أو إنشاء مُقدّم خدمة منفصل لإيوائها:
 
+```php
     <?php
 
     namespace App\Providers;
@@ -111,7 +117,7 @@ Occasionally, you may need to share data with all views that are rendered by you
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register any application services.
+         * تسجيل أي خدمة تطبيق
          *
          * @return void
          */
@@ -130,16 +136,14 @@ Occasionally, you may need to share data with all views that are rendered by you
             View::share('key', 'value');
         }
     }
-
+```
 <a name="view-composers"></a>
-## View Composers
 
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer can help you organize that logic into a single location. View composers may prove particularly useful if the same view is returned by multiple routes or controllers within your application and always needs a particular piece of data.
-
-Typically, view composers will be registered within one of your application's [service providers](/docs/{{version}}/providers). In this example, we'll assume that we have created a new `App\Providers\ViewServiceProvider` to house this logic.
-
-We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class based view composers, so you are free to organize them however you wish. For example, you could create an `app/View/Composers` directory to house all of your application's view composers:
-
+## مؤلّفو الواجهات (View Composers)
+مُؤلّفو الواجهات هم عمليات نداء (callbacks)  أو دوال أصناف (class methods) تُستدعى عند عرض الواجهة. إذا كانت لديك بيانات تريد ربطها بواجهة في كل مرة يتم فيها عرض هذا الواجهة ، فيمكن أن يساعدك مؤلف الواجهة في تنظيم هذا المنطق في مكان واحد. قد يكون مؤلفو الواجهة ذو فائدة بشكل خاص إذا تم إرجاع نفس الواجهة من خلال مسارات أو متحكمات متعددة داخل تطبيقك وتحتاج دائماً إلى جزء معين من البيانات.
+عادةً ، سيتم تسجيل مؤلفي الواجهات في أحد [مزودي الخدمة](/docs/{{version}}/providers)  لتطبيقك. في هذا المثال ، سنفترض أننا أنشأنا `App\Providers\ViewServiceProvider` جديدًا لإيواء هذا المنطق.
+سنستخدم التابع `composer` للواجهة الساكنة View لتسجيل مؤلف الواجهة تذكر أن Laravel لا يحتوي على مجلّد افتراضي لمؤلّفي الواجهات المعتمدة على الأصناف (class based).  لديك حريّة تنظيمها كما شئت. على سبيل المثال ، يمكنك إنشاء دليل `app/View/Composers` لإيواء جميع مؤلفي واجهات تطبيقك:
+```php
     <?php
 
     namespace App\Providers;
@@ -151,7 +155,7 @@ We'll use the `View` facade's `composer` method to register the view composer. L
     class ViewServiceProvider extends ServiceProvider
     {
         /**
-         * Register any application services.
+         * تسجيل أي خدمات تطبيق.
          *
          * @return void
          */
@@ -167,21 +171,23 @@ We'll use the `View` facade's `composer` method to register the view composer. L
          */
         public function boot()
         {
-            // Using class based composers...
+            // استخدام المؤلّفين على أساس الصنف ...
+
             View::composer('profile', ProfileComposer::class);
 
-            // Using closure based composers...
+            // Closure استخدام المؤلّفين على أساس 
             View::composer('dashboard', function ($view) {
                 //
             });
         }
     }
 
-> {note} Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
+```
+> ملاحظة: تذكر أنه إن أنشأت مقدّم خدمات جديد لاحتواء تسجيلات مؤلف واجهاتك ستحتاج لإضافة مُقدّم الخدمات إلى مصفوفة `providers` في ملف الإعدادات `config/app.php.`.
 
-Now that we have registered the composer, the `compose` method of the `App\View\Composers\ProfileComposer` class will be executed each time the `profile` view is being rendered. Let's take a look at an example of the composer class:
-
-    <?php
+ بعد تسجيلنا للمؤلّف سيُنفّذ الآن سينفذ التابع `compose` من الصنف `App\View\Composers\ProfileComposer` في كل مرة يتم عرض واجهة `profile`.  لذا فلنتعرف على صنف المؤلف:
+```php
+   <?php
 
     namespace App\View\Composers;
 
@@ -198,7 +204,7 @@ Now that we have registered the composer, the `compose` method of the `App\View\
         protected $users;
 
         /**
-         * Create a new profile composer.
+         * profile أنشئ مؤلّف جديد من
          *
          * @param  \App\Repositories\UserRepository  $users
          * @return void
@@ -210,7 +216,7 @@ Now that we have registered the composer, the `compose` method of the `App\View\
         }
 
         /**
-         * Bind data to the view.
+         * إربط البيانات بالواجهة
          *
          * @param  \Illuminate\View\View  $view
          * @return void
@@ -221,50 +227,54 @@ Now that we have registered the composer, the `compose` method of the `App\View\
         }
     }
 
-As you can see, all view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor.
+```
+كما ترى، يُستبين كل مؤلّفو الواجهة عبر  [حاوي الخدمات](/docs/{{version}}/container)، لذا تستطيع التلميح على نوع أي إعتماديّة تحتاجها داخل تابع بناء المؤلّف (composer's constructor).
+
 
 <a name="attaching-a-composer-to-multiple-views"></a>
-#### Attaching A Composer To Multiple Views
 
-You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
-
+#### إرفاق المُؤلّف مع عدّة واجهات
+يمكنك إرفاق أحد مؤلّفي الواجهة بعدة واجهات مرّة واحدة بتمرير مصفوفة من الواجهات كالمُتغيّر الوسيط الأوّل للتابع `composer`:
+```php
     use App\Views\Composers\MultiComposer;
 
     View::composer(
         ['profile', 'dashboard'],
         MultiComposer::class
     );
-
-The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
+```
+يقبل التابع `composer` أيضاً الحرف `*` كحرف بدل خاص (wildcard)، مما يتيح لك إرفاق مُؤلّف لكل الواجهات:
+```php
 
     View::composer('*', function ($view) {
         //
     });
+```
 
 <a name="view-creators"></a>
-### View Creators
 
-View "creators" are very similar to view composers; however, they are executed immediately after the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
-
+### مُنشؤو الواجهات (View creators)
+يشبه مُنشؤو الواجهات مؤلّفي الواجهات جداً؛ مع فارق أنّها تُنفّذ مباشرة بعد إنشاء نسخة (instantiating) الواجهة بدلاً من الانتظار حتى ينتهي عرضه. لتسجيل منشئ واجهة استخدم التابع `creator`:
+```php
     use App\View\Creators\ProfileCreator;
     use Illuminate\Support\Facades\View;
 
     View::creator('profile', ProfileCreator::class);
+```
 
 <a name="optimizing-views"></a>
-## Optimizing Views
 
-By default, Blade template views are compiled on demand. When a request is executed that renders a view, Laravel will determine if a compiled version of the view exists. If the file exists, Laravel will then determine if the uncompiled view has been modified more recently than the compiled view. If the compiled view either does not exist, or the uncompiled view has been modified, Laravel will recompile the view.
+## تحسين الواجهات
 
-Compiling views during the request may have a small negative impact on performance, so Laravel provides the `view:cache` Artisan command to precompile all of the views utilized by your application. For increased performance, you may wish to run this command as part of your deployment process:
+بشكل افتراضي ، يتم ترجمة واجهات قالب Blade عند الطلب. عندما يتم تنفيذ طلب الذي يعرض واجهة ، سيحدد Laravel ما إذا كانت هناك نسخة مترجمة موجودة من الواجهة.  إذا كان الملف موجوداً ، فسيحدد Laravel بعد ذلك ما إذا كان الواجهة الغير مترجمة قد تم تعديلها مؤخراً عن الواجهة المترجمة. إذا كانت الواجهة المترجمة إما غير موجود ، أو تم تعديل الواجهة الغير مترجمة ، فسيعيد Laravel ترجمة الواجهة.
+
+قد يكون ترجمة الواجهات أثناء الطلب تأثير سلبي بسيط على الأداء ، لذلك يوفر Laravel أمر `view: cache` Artisan لإجراء ترجمة مسبقة لجميع الواجهات التي يستخدمها تطبيقك. لزيادة الأداء ، قد ترغب في تشغيل هذا الأمر كجزء من عملية النشر الخاصة بك:
 
 ```shell
 php artisan view:cache
 ```
-
-You may use the `view:clear` command to clear the view cache:
+يمكنك استخدام الأمر `view: clear` لمسح ذاكرة التخزين المؤقت للواجهة:
 
 ```shell
 php artisan view:clear
 ```
-
