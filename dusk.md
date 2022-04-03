@@ -568,7 +568,7 @@ The `attach` method may be used to attach a file to a `file` input element. Like
 <a name="pressing-buttons"></a>
 ### Pressing Buttons
 
-The `press` method may be used to click a button element on the page. The first argument given to the `press` method may be either the display text of the button or a CSS / Dusk selector:
+The `press` method may be used to click a button element on the page. The argument given to the `press` method may be either the display text of the button or a CSS / Dusk selector:
 
     $browser->press('Login');
 
