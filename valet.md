@@ -26,6 +26,8 @@
 
 In other words, Valet is a blazing fast Laravel development environment that uses roughly 7 MB of RAM. Valet isn't a complete replacement for [Sail](/docs/{{version}}/sail) or [Homestead](/docs/{{version}}/homestead), but provides a great alternative if you want flexible basics, prefer extreme speed, or are working on a machine with a limited amount of RAM.
 
+ Valet has upgraded to version 3, which includes new features like Multiple/Parallel PHP Version Support to improve your development experience.
+
 Out of the box, Valet support includes, but is not limited to:
 
 <style>
@@ -96,27 +98,6 @@ Once Valet is installed, try pinging any `*.test` domain on your terminal using 
 
 Valet will automatically start its required services each time your machine boots.
 
-<a name="php-versions"></a>
-#### PHP Versions
-
-Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Homebrew if it is not already installed:
-
-```shell
-valet use php@7.2
-
-valet use php
-```
-
-You may also create a `.valetphprc` file in the root of your project. The `.valetphprc` file should contain the PHP version the site should use:
-
-```shell
-php@7.2
-```
-
-Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
-
-> {note} Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
-
 <a name="database"></a>
 #### Database
 
@@ -131,6 +112,19 @@ If you are having trouble getting your Valet installation to run properly, execu
 ### Upgrading Valet
 
 You may update your Valet installation by executing the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
+
+#### Upgrading from Valet 2
+If you are an old Valet user and are not used to upgrading your `composer` dependencies, we recommend upgrading Valet to the last version. You can verify your current installed Valet version through the following command:
+
+```shell
+composer global info laravel/valet
+```
+
+To upgrade to the latest version, execute the following `composer` command to allow Valet to upgrade to the newest major version (Currently 3.x):
+
+```shell
+composer global require laravel/valet:"^3.0"
+```
 
 <a name="serving-sites"></a>
 ## Serving Sites
@@ -183,6 +177,51 @@ The `unlink` command may be used to destroy the symbolic link for a site:
 cd ~/Sites/laravel
 
 valet unlink
+```
+
+<a name="php-versions"></a>
+### PHP Versions
+
+Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Homebrew if it is not already installed:
+
+```shell
+valet use php@7.2
+valet use php
+```
+
+You may also create a `.valetphprc` file in the root of your project. The `.valetphprc` file should contain the PHP version the site should use:
+
+```shell
+php@7.2
+```
+
+Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
+
+> {note} ~Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.~ Not Anymore.
+#### Isolate Versions
+
+From version 3.x, you can now run different PHP versions on any valet served site using the `isolate` option from your `valet` command.
+
+You can set the desired PHP version by running the `valet isolate` command on the existing site directory or running the `site` flag globally from anywhere on your command line.
+
+Imagine an existing directory called `my-laravel-project,` and you use `valet link` to serve this directory. You can define the specific PHP version to PHP 7.4 by running the following command on your command line in the site directory:
+
+```shell
+valet isolate -- php@7.4
+```
+
+Or from anywhere in your command line by running:
+
+```shell
+valet isolate --site my-laravel-project -- php@7.4
+```
+
+Once you run this command, your desired PHP version will serve the site with PHP 7.4.
+
+You can verify all the isolated sites and their running PHP versions with the following command:
+
+```shell
+valet isolated
 ```
 
 <a name="securing-sites"></a>
