@@ -10,7 +10,6 @@
     - [Conditional Attributes](#conditional-attributes)
     - [Conditional Relationships](#conditional-relationships)
     - [Adding Meta Data](#adding-meta-data)
-- [Macros](#macros)
 - [Resource Responses](#resource-responses)
 
 <a name="introduction"></a>
