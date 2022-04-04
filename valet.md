@@ -130,7 +130,7 @@ If you are having trouble getting your Valet installation to run properly, execu
 <a name="upgrading-valet"></a>
 ### Upgrading Valet
 
-You may update your Valet installation by executing the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
+You may update your Valet installation by executing the `composer global update` command in your terminal. After upgrading, it is good practice to restart your computer and afterwards run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
 
 <a name="serving-sites"></a>
 ## Serving Sites
