@@ -209,7 +209,6 @@ Sometimes, you may wish to configure Valet to serve a "default" site instead of 
     "default": "/Users/Sally/Sites/foo",
 
 <a name="isolating-sites"></a>
-
 ### Isolating Sites
 
 By default, Valet uses your global PHP version to serve your projects. However, if you wish to support multiple PHP versions for multiple projects, you may use the `isolate` command. This command configures Valet to use the specified PHP version for the current working directory. For example, if your global PHP version is 8.1 and have a project running on PHP 8.0, you should run the following command to serve it using PHP 8.0:
@@ -245,7 +244,6 @@ valet unisolate
 ```
 
 <a name="sharing-sites"></a>
-
 ## Sharing Sites
 
 Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
