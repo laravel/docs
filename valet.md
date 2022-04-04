@@ -8,7 +8,7 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
     - [Serving a Default Site](#serving-a-default-site)
-    - [Isolating Sites](#isolating-sites)
+    - [Per-Site PHP Versions](#per-site-php-versions)
 - [Sharing Sites](#sharing-sites)
     - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
     - [Sharing Sites Via Expose](#sharing-sites-via-expose)
@@ -206,21 +206,26 @@ valet unsecure laravel
 
 Sometimes, you may wish to configure Valet to serve a "default" site instead of a `404` when visiting an unknown `test` domain. To accomplish this, you may add a `default` option to your `~/.config/valet/config.json` configuration file containing the path to the site that should serve as your default site:
 
-    "default": "/Users/Sally/Sites/foo",
+    "default": "/Users/Sally/Sites/example-site",
 
-<a name="sharing-sites"></a>
+<a name="per-site-php-versions"></a>
+### Per-Site PHP Versions
 
-### Isolating Sites
-
-By default, Valet uses your global PHP version to serve your projects. However, if you wish to support multiple PHP versions for multiple projects, you may use the `isolate` command. This command configures Valet to use the specified PHP version for the current working directory. For example, if your global PHP version is 8.1 and have a project running on PHP 8.0, you should run the following command to serve it using PHP 8.0:
+By default, Valet uses your global PHP installation to serve your sites. However, if you need to support multiple PHP versions across various sites, you may use the `isolate` command to specify which PHP version a particular site should use. The `isolate` command configures Valet to use the specified PHP version for the site located in your current working directory:
 
 ```shell
+cd ~/Sites/example-site
+
 valet isolate php@8.0
 ```
 
-> {tip} If you have specified a different site name to your projects directory name, you may specify the site name using the `--site=<your-site>` command option.
+If your site name does not match the name of the directory that contains it, you may specify the site name using the `--site` option:
 
-Once a site is "isolated", you can use valet to proxy calls the the underlying PHP version for the project:
+```shell
+valet isolate php@8.0 --site="site-name"
+```
+
+For convenience, you may use the `valet php`, `composer`, and `which-php` commands to proxy calls to the appropriate PHP CLI or tool based on the site's configured PHP version:
 
 ```shell
 valet php
@@ -230,13 +235,13 @@ valet composer
 valet which-php
 ```
 
-You may execute the `isolated` command to display all your isolated sites and their PHP versions:
+You may execute the `isolated` command to display a list of all of your isolated sites and their PHP versions:
 
 ```shell
 valet isolated
 ```
 
-If you wish to stop customizing the PHP version Valet uses for the current working directory and revert to the Valet global PHP version, use the `unisolate` command. This command doesn't require passing the PHP version as an argument:
+To revert a site back to Valet's globally installed PHP version, you may invoke the `unisolate` command from the site's root directory:
 
 ```shell
 valet unisolate
