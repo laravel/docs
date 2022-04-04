@@ -8,7 +8,11 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
     - [Serving a Default Site](#serving-a-default-site)
+<<<<<<< HEAD
     - [Per-Site PHP Versions](#per-site-php-versions)
+=======
+    - [Isolating Sites](#isolating-sites)
+>>>>>>> ff662b0cc0e9c847a67e0ccd5a980231dd94b9ef
 - [Sharing Sites](#sharing-sites)
     - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
     - [Sharing Sites Via Expose](#sharing-sites-via-expose)
@@ -247,6 +251,7 @@ To revert a site back to Valet's globally installed PHP version, you may invoke 
 valet unisolate
 ```
 
+<a name="sharing-sites"></a>
 ## Sharing Sites
 
 Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
