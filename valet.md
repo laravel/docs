@@ -8,6 +8,7 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
     - [Serving a Default Site](#serving-a-default-site)
+    - [Isolating Sites](#isolating-sites)
 - [Sharing Sites](#sharing-sites)
     - [Sharing Sites Via Ngrok](#sharing-sites-via-ngrok)
     - [Sharing Sites Via Expose](#sharing-sites-via-expose)
@@ -207,7 +208,44 @@ Sometimes, you may wish to configure Valet to serve a "default" site instead of 
 
     "default": "/Users/Sally/Sites/foo",
 
+<a name="isolating-sites"></a>
+
+### Isolating Sites
+
+By default, Valet uses your global PHP version to serve your projects. However, if you wish to support multiple PHP versions for multiple projects, you may use the `isolate` command. This command configures Valet to use the specified PHP version for the current working directory. For example, if your global PHP version is 8.1 and have a project running on PHP 8.0, you should run the following command to serve it using PHP 8.0:
+
+```shell
+valet isolate php@8.0
+```
+
+If you're using a `.valetphprc` file, Valet will also automatically detect the PHP version your project requires. Refer the to the [PHP Versions documentation](#php-versions) for more information on `.valetphprc` file usage.
+
+> {tip} If you have specified a different site name to your projects directory name, you may specify the site name using the `--site=<your-site>` command option.
+
+Once a site is "isolated", you can use valet to proxy calls the the underlying PHP version for the project:
+
+```shell
+valet php
+
+valet composer
+
+valet which-php
+```
+
+You may execute the `isolated` command to display all your isolated sites and their PHP versions:
+
+```shell
+valet isolated
+```
+
+If you wish to stop customizing the PHP version Valet uses for the current working directory and revert to the Valet global PHP version, use the `unisolate` command. This command doesn't require passing the PHP version as an argument:
+
+```shell
+valet unisolate
+```
+
 <a name="sharing-sites"></a>
+
 ## Sharing Sites
 
 Valet even includes a command to share your local sites with the world, providing an easy way to test your site on mobile devices or share it with team members and clients.
