@@ -229,9 +229,7 @@ For convenience, you may use the `valet php`, `composer`, and `which-php` comman
 
 ```shell
 valet php
-
 valet composer
-
 valet which-php
 ```
 
