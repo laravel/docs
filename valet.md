@@ -212,7 +212,7 @@ Sometimes, you may wish to configure Valet to serve a "default" site instead of 
 
 ### Isolating Sites
 
-By default, Valet uses your machines global PHP version to serve your projects. However, if you wish to support multiple PHP versions for multiple projects, you may use the `isolate` command. This command configures Valet to use the specified PHP version for the current working directory. For example, if your machines global PHP version is 8.1 and have a project running on PHP 8.0, you should run the following command to serve it using PHP 8.0:
+By default, Valet uses your global PHP version to serve your projects. However, if you wish to support multiple PHP versions for multiple projects, you may use the `isolate` command. This command configures Valet to use the specified PHP version for the current working directory. For example, if your global PHP version is 8.1 and have a project running on PHP 8.0, you should run the following command to serve it using PHP 8.0:
 
 ```shell
 valet isolate php@8.0
