@@ -10,6 +10,7 @@
     - [Conditional Attributes](#conditional-attributes)
     - [Conditional Relationships](#conditional-relationships)
     - [Adding Meta Data](#adding-meta-data)
+- [Macros](#macros)
 - [Resource Responses](#resource-responses)
 
 <a name="introduction"></a>
@@ -524,6 +525,11 @@ The `when` method also accepts a closure as its second argument, allowing you to
         return 'secret-value';
     }),
 
+You can also use the convenience method `whenNotNull` to load an attribute only if
+it's present on the resource model (for example, during a select statement):
+
+    'name' => $this->whenNotNull($this->name),
+
 <a name="merging-conditional-attributes"></a>
 #### Merging Conditional Attributes
 
@@ -702,6 +708,39 @@ You may also add top-level data when constructing resource instances in your rou
                     ->additional(['meta' => [
                         'key' => 'value',
                     ]]);
+
+<a name="macros"></a>
+## Macros
+You can also define "macros", which can serve as a fluent, expressive mechanism to configure common methods to get reused in your Resources. To get started, you may define the macro within the `boot` method of a Service Provider:
+
+    use Illuminate\Http\Resources\Json\JsonResource;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        JsonResource::macro('foo', function () {
+            return 'foo';
+        });
+    }
+
+Once your macro has been configured, you may invoke it from within any Resource:
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
+    public function toArray($request)
+    {
+        return [
+            'foo' => $this->foo(),
+        ];
+    }
 
 <a name="resource-responses"></a>
 ## Resource Responses
