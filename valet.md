@@ -6,7 +6,6 @@
 - [Serving Sites](#serving-sites)
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
-    - [Serving Sites with Subdomains](#subdomain-routing)
     - [Securing Sites With TLS](#securing-sites)
     - [Serving a Default Site](#serving-a-default-site)
     - [Per-Site PHP Versions](#per-site-php-versions)
@@ -206,19 +205,6 @@ To "unsecure" a site and revert back to serving its traffic over plain HTTP, use
 
 ```shell
 valet unsecure laravel
-```
-
-<a name="subdomain-routing"></a>
-### Subdomain Routing
-
-Sometimes, you may want to route a specific subdomain to your applications working directory. For example, you may wish to serve your application on `http://application.test`, and host an API on `http://api.application.test`. Valet allows us to do this with the `link` command:
-
-```shell
-cd ~/Sites/laravel
-
-valet link application
-
-valet link api.application
 ```
 
 <a name="serving-a-default-site"></a>
