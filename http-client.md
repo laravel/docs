@@ -181,8 +181,20 @@ If you would like HTTP client to automatically retry the request if a client or 
 
 If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:
 
-    $response = Http::retry(3, 100, function ($exception) {
+    $response = Http::retry(3, 100, function ($exception, $request) {
         return $exception instanceof ConnectionException;
+    })->post(...);
+
+If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
+
+    $response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {
+        if (! $exception instanceof RequestException || $request->response->status() !== 401) {
+            return false;
+        }
+
+        $request->withToken($this->getNewToken());
+
+        return true;
     })->post(...);
 
 If all of the requests fail, an instance of `Illuminate\Http\Client\RequestException` will be thrown. If you would like to disable this behavior, you may provide a `throw` argument with a value of `false`. When disabled, the last response received by the client will be returned after all retries have been attempted:
