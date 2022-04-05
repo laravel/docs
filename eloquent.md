@@ -1383,6 +1383,17 @@ This command will place the new observer in your `App/Observers` directory. If t
         {
             //
         }
+        
+        /**
+         * Handle the User "restored" event.
+         *
+         * @param  \App\Models\User  $user
+         * @return void
+         */
+        public function restored(User $user)
+        {
+            //
+        }
 
         /**
          * Handle the User "forceDeleted" event.
