@@ -172,6 +172,12 @@ cd ~/Sites/laravel
 valet link application
 ```
 
+Of course, you may also serve applications on subdomains using the `link` command:
+
+```shell
+valet link api.application
+```
+
 You may execute the `links` command to display a list of all of your linked directories:
 
 ```shell
