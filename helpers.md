@@ -133,6 +133,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
 [Str::snake](#method-snake-case)
+[Str::squish](#method-str-squish)
 [Str::start](#method-str-start)
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
@@ -211,6 +212,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [slug](#method-fluent-str-slug)
 [snake](#method-fluent-str-snake)
 [split](#method-fluent-str-split)
+[squish](#method-fluent-str-squish)
 [start](#method-fluent-str-start)
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
@@ -1757,6 +1759,17 @@ The `Str::snake` method converts the given string to `snake_case`:
 
     // foo-bar
 
+<a name="method-str-squish"></a>
+#### `Str::squish()` {.collection-method}
+
+The `Str::squish` method remove all extraneous white space from a string, including extraneous white space between words:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::squish('    laravel    framework    ');
+
+    // laravel framework
+
 <a name="method-str-start"></a>
 #### `Str::start()` {.collection-method}
 
@@ -2714,6 +2727,17 @@ The `split` method splits a string into a collection using a regular expression:
     $segments = Str::of('one, two, three')->split('/[\s,]+/');
 
     // collect(["one", "two", "three"])
+
+<a name="method-fluent-str-squish"></a>
+#### `squish` {.collection-method}
+
+The `squish` method remove all extraneous white space from a string, including extraneous white space between words:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('    laravel    framework    ')->squish();
+
+    // laravel framework
 
 <a name="method-fluent-str-start"></a>
 #### `start` {.collection-method}
