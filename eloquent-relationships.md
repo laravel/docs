@@ -292,6 +292,12 @@ However, you may find it more convenient to use the `whereBelongsTo` method, whi
 
     $posts = Post::whereBelongsTo($user)->get();
 
+You may also provide a [collection](/docs/{{version}}/eloquent-collections) instance to the `whereBelongsTo` method. When doing so, Laravel will retrieve models that belong to any of the parent models within the collection:
+
+    $users = User::where('vip', true)->get();
+
+    $posts = Post::whereBelongsTo($users)->get();
+
 By default, Laravel will determine the relationship associated with the given model based on the class name of the model; however, you may specify the relationship name manually by providing it as the second argument to the `whereBelongsTo` method:
 
     $posts = Post::whereBelongsTo($user, 'author')->get();
