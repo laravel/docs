@@ -187,7 +187,7 @@ If needed, you may pass a third argument to the `retry` method. The third argume
 
 If an attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying the second parameter of the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error response:
 
-    $response = Http::withToken($this->getToken())->retry(2, null, function ($exception, $request) {
+    $response = Http::withToken($this->getToken())->retry(2, 0, function ($exception, $request) {
         if (! $exception instanceof RequestException || $request->response->status() !== 401) {
             return false;
         }
