@@ -1152,9 +1152,9 @@ If you would like to customize the query executed by the validation rule, you ma
     use Illuminate\Validation\Rule;
 
     Validator::make($data, [
-        'email' => [
+        'email_key' => [
             'required',
-            Rule::exists('staff')->where(function ($query) {
+            Rule::exists('staff', 'email_field_name')->where(function ($query) {
                 return $query->where('account_id', 1);
             }),
         ],
