@@ -1509,7 +1509,7 @@ The invoice will be immediately charged against the user's default payment metho
         'default_tax_rates' => ['txr_id'],
     ]);
 
-Similarly to `invoicePrice`, you may use the `tabPrice` method to create a one-time charge for multiple items (up to 250 items per invoice) by adding them to the customer's "tab" and then invoicing the customer. For example, we may invoice a customer for two different products five shirts and two mugs:
+Similarly to `invoicePrice`, you may use the `tabPrice` method to create a one-time charge for multiple items (up to 250 items per invoice) by adding them to the customer's "tab" and then invoicing the customer. For example, we may invoice a customer for five shirts and two mugs:
 
     $user->tabPrice('price_tshirt', 5);
     $user->tabPrice('price_mug', 2);
