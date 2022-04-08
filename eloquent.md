@@ -275,6 +275,46 @@ By default, a newly instantiated model instance will not contain any attribute v
             'delayed' => false,
         ];
     }
+    
+    
+    
+<a name="default-attribute-values-for-casted-attributes"></a>
+### Default Attribute Values for Casted Attributes
+
+If you would like to define default value for an attribute that has a [custom cast class defined](/docs/{{version}}/eloquent-mutators#array-object-and-collection-casting), you will have to write in a format that would be stored in a database. 
+
+For example, you may have an `options` field on your User model that is a JSON field in the database and has a `AsArrayObject::class` cast defined, in such case you will have to provide default value as a JSON string:
+
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+
+    class User extends Model
+    {
+        /**
+         * The model's default values for attributes.
+         *
+         * @var array
+         */
+        protected $attributes = [
+            'options' => '{\"key\":\"value\"}',
+        ];
+        
+        /**
+         * The attributes that should be cast.
+         *
+         * @var array
+         */
+        protected $casts = [
+            'options' => AsArrayObject::class,
+        ];
+    }
+    
+    
 
 <a name="retrieving-models"></a>
 ## Retrieving Models
