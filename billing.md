@@ -1513,12 +1513,12 @@ Alternatively, you may use the `invoiceFor` method to make a "one-off" charge ag
 
     $user->invoiceFor('One Time Fee', 500);
 
-Similarly to `invoicePrice` you can make a one-time charge for multiple items (up to 250 items per invoice) and generate a PDF receipt as well. The `tabPrice` method
-enables you to do so. For example, let's invoice a customer for two different products five shirts and 2 mugs:
+Similarly to `invoicePrice`, you may use the `tabPrice` method to create a one-time charge for multiple items (up to 250 items per invoice) by adding them to the customer's "tab" and then invoicing the customer. For example, we may invoice a customer for two different products five shirts and two mugs:
 
     $user->tabPrice('price_tshirt', 5);
     $user->tabPrice('price_mug', 2);
-    
+    $user->invoice();
+
 Although the `invoiceFor` method is available for you to use, it is recommendeded that you use the `invoicePrice` and `tabPrice` methods with pre-defined prices. By doing so, you will have access to better analytics and data within your Stripe dashboard regarding your sales on a per-product basis.
 
 > {note} The `invoiceFor`, `invoicePrice` and `tabPrice` methods will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
