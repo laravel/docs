@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Laravel Breeze](#laravel-breeze)
     - [Installation](#laravel-breeze-installation)
-    - [Breeze & Inertia](#breeze-and-inertia)
+    - [Breeze & React / Vue](#breeze-and-inertia)
     - [Breeze & Next.js / API](#breeze-and-next)
 - [Laravel Jetstream](#laravel-jetstream)
 
