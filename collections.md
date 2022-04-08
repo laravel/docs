@@ -138,6 +138,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [keyBy](#method-keyby)
 [keys](#method-keys)
 [last](#method-last)
+[lazy](#method-lazy)
 [macro](#method-macro)
 [make](#method-make)
 [map](#method-map)
@@ -1228,6 +1229,31 @@ You may also call the `last` method with no arguments to get the last element in
     collect([1, 2, 3, 4])->last();
 
     // 4
+
+<a name="method-lazy"></a>
+#### `lazy()` {.collection-method}
+
+The `lazy` method returns a new [`LazyCollection`](#lazy-collections) instance from the underlying array of items:
+
+    $lazyCollection = collect([1, 2, 3, 4])->lazy();
+
+    get_class($lazyCollection);
+
+    // Illuminate\Support\LazyCollection
+
+    $lazyCollection->all();
+
+    // [1, 2, 3, 4]
+
+This is especially useful when you need to perform transformations on a huge `Collection` that contains many items:
+
+    $count = $hugeCollection()
+        ->lazy()
+        ->where('country', 'FR')
+        ->where('balance', '>', '100')
+        ->count();
+
+By converting the collection to a `LazyCollection`, though the original values are all held in memory, subsequent filters do not need to store their values in memory. Therefore, virtually no additional memory will be allocated when filtering the collection's results.
 
 <a name="method-macro"></a>
 #### `macro()` {.collection-method}
