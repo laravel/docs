@@ -1233,7 +1233,7 @@ You may also call the `last` method with no arguments to get the last element in
 <a name="method-lazy"></a>
 #### `lazy()` {.collection-method}
 
-The `lazy` method returns a new [`LazyCollection`](#lazy-collections) from the underlying array of items:
+The `lazy` method returns a new [`LazyCollection`](#lazy-collections) instance from the underlying array of items:
 
     $lazyCollection = collect([1, 2, 3, 4])->lazy();
 
@@ -1245,7 +1245,7 @@ The `lazy` method returns a new [`LazyCollection`](#lazy-collections) from the u
 
     // [1, 2, 3, 4]
 
-This is especially useful when dealing with a huge `Collection`, and doing some transformations on it:
+This is especially useful when you need to perform transformations on a huge `Collection` that contains many items:
 
     $count = $hugeCollection()
         ->lazy()
@@ -1253,7 +1253,7 @@ This is especially useful when dealing with a huge `Collection`, and doing some 
         ->where('balance', '>', '100')
         ->count();
 
-Even though the original values are all held in memory, the subsequent filters shouldn't have to store their values in memory. By first converting it to a `LazyCollection`, virtually no additional memory will be allocated when we filter its results.
+By converting the collection to a `LazyCollection`, though the original values are all held in memory, subsequent filters do not need to store their values in memory. Therefore, virtually no additional memory will be allocated when filtering the collection's results.
 
 <a name="method-macro"></a>
 #### `macro()` {.collection-method}
