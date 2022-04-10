@@ -76,7 +76,7 @@ Within both of these methods, you may use the Laravel schema builder to expressi
     use Illuminate\Database\Schema\Blueprint;
     use Illuminate\Support\Facades\Schema;
 
-    return new class extends Migration
+    class CreateFlightsTable extends Migration
     {
         /**
          * Run the migrations.
