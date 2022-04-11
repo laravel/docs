@@ -75,6 +75,12 @@ Name | Description | Default
 `locking` | Attempt to lock the log file before writing to it | `false`
 `permission` | The log file's permissions | `0644`
 
+Additionally, the retention policy for the `daily` channel can be configured with the `days` option:
+
+Name | Description                                                       | Default
+------------- |-------------------------------------------------------------------| -------------
+`days` | Sets the amount of maximum days of daily log files to be retained | `7`
+
 <a name="configuring-the-papertrail-channel"></a>
 #### Configuring The Papertrail Channel
 
