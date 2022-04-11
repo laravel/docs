@@ -104,20 +104,6 @@ Within both of these methods, you may use the Laravel schema builder to expressi
         }
     };
 
-<a name="anonymous-migrations"></a>
-#### Anonymous Migrations
-
-As you may have noticed in the example above, Laravel will automatically assign a class name to all of the migrations that you generate using the `make:migration` command. However, if you wish, you may return an anonymous class from your migration file. This is primarily useful if your application accumulates many migrations and two of them have a class name collision:
-
-    <?php
-
-    use Illuminate\Database\Migrations\Migration;
-
-    return new class extends Migration
-    {
-        //
-    };
-
 <a name="setting-the-migration-connection"></a>
 #### Setting The Migration Connection
 
