@@ -1247,13 +1247,13 @@ The `lazy` method returns a new [`LazyCollection`](#lazy-collections) instance f
 
 This is especially useful when you need to perform transformations on a huge `Collection` that contains many items:
 
-    $count = $hugeCollection()
+    $count = $hugeCollection
         ->lazy()
         ->where('country', 'FR')
         ->where('balance', '>', '100')
         ->count();
 
-By converting the collection to a `LazyCollection`, though the original values are all held in memory, subsequent filters do not need to store their values in memory. Therefore, virtually no additional memory will be allocated when filtering the collection's results.
+By converting the collection to a `LazyCollection`, we avoid having to allocate a ton of additional memory. Though the original collection still keeps _its_ values in memory, the subsequent filters will not. Therefore, virtually no additional memory will be allocated when filtering the collection's results.
 
 <a name="method-macro"></a>
 #### `macro()` {.collection-method}
