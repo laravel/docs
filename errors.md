@@ -125,7 +125,7 @@ When messages are written to your application's [logs](/docs/{{version}}/logging
 
 As noted above, even when you register a custom exception reporting callback using the `reportable` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at.
 
-To accomplish this, you may specify an array of exception types and their associated log levels within your application's exception handler's `$levels` property:
+To accomplish this, you may define an array of exception types and their associated log levels within the `$levels` property of your application's exception handler:
 
     use PDOException;
     use Psr\Log\LogLevel;
