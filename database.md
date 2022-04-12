@@ -153,6 +153,15 @@ The `select` method will always return an `array` of results. Each result within
         echo $user->name;
     }
 
+<a name="selecting-scalar-values"></a>
+#### Selecting Scalar Values
+
+Sometimes your database query may result in a single, scalar value. Instead of being required to retrieve the query's scalar result from a record object, Laravel allows you to retrieve this value directly using the `scalar` method:
+
+    $burgers = DB::scalar(
+        "select count(case when food = 'burger' then 1 end) as burgers from menu"
+    );
+
 <a name="using-named-bindings"></a>
 #### Using Named Bindings
 
