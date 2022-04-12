@@ -3487,6 +3487,14 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an [
 
     $value = old('value', 'default');
 
+Since the "default value" provided as the second argument to the `old` function is often an attribute of an Eloquent model, Laravel allows you to simply pass the entire Eloquent model as the second argument to the `old` function. When doing so, Laravel will assume the first argument provided to the `old` function is the name of the Eloquent attribute that should be considered the "default value":
+
+    {{ old('name', $user->name) }}
+
+    // Is equivalent to...
+
+    {{ old('name', $user) }}
+
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
 
