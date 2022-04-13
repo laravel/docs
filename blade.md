@@ -1344,7 +1344,7 @@ The `anonymousComponentNamespace` method accepts the "path" to the anonymous com
      */
     public function boot()
     {
-        Blade::anonymousComponentNamespace('flights.bookings', 'flights');
+        Blade::anonymousComponentNamespace('flights.bookings.components', 'flights');
     }
 
 Given the example above, you may render a `panel` component that exists within the newly registered component directory like so:
