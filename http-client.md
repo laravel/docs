@@ -250,6 +250,17 @@ If you would like to perform some additional logic before the exception is throw
         //
     })->json();
 
+Alternatively, if you want to specify before the request is sent that you want to throw an instance of `Illuminate\Http\Client\RequestException` if the response status code indicates a client or server error on the request, you can use the `throw` method on the `PendingRequest` class:
+
+    // Throw an exception if a client or server error occurs...
+    $response = Http::throw()->post(...);
+
+The `throw` method also accepts an optional closure that you can use to perform additional logic if the request encounters a client or server error:
+
+    return Http::throw(function ($response, $e) {
+        //
+    })->post(...);
+
 <a name="guzzle-options"></a>
 ### Guzzle Options
 
