@@ -97,8 +97,6 @@ Once Valet is installed, try pinging any `*.test` domain on your terminal using 
 
 Valet will automatically start its required services each time your machine boots.
 
-> {note}: even though it's possible to configure a different tld than `.test`, we only offer support for `.test` tld usage. Using a custom tld can lead to unexpected results with your Valet installation and should be used at your own risk.
-
 <a name="php-versions"></a>
 #### PHP Versions
 
