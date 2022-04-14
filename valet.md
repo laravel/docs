@@ -485,7 +485,7 @@ This directory contains custom Valet extensions / commands.
 
 #### `~/.config/valet/Nginx/`
 
-This directory contains all of Valet's Nginx site configurations. These files are rebuilt when running the `install`, `secure`, and `tld` commands.
+This directory contains all of Valet's Nginx site configurations. These files are rebuilt when running the `install` and `secure` commands.
 
 #### `~/.config/valet/Sites/`
 
