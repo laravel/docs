@@ -342,7 +342,7 @@ In addition to conditional statements, Blade provides simple directives for work
 
 > {tip} While iterating through a `foreach` loop, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
-When using loops you may also end the loop or skip the current iteration using the `@continue` and `@break` directives:
+When using loops you may also skip the current iteration or end the loop using the `@continue` and `@break` directives:
 
 ```blade
 @foreach ($users as $user)
