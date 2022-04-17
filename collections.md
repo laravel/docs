@@ -1034,7 +1034,7 @@ Multiple grouping criteria may be passed as an array. Each array element will be
 
     $result = $data->groupBy(['skill', function ($item) {
         return $item['roles'];
-    }], $preserveKeys = true);
+    }], preserveKeys: true);
 
     /*
     [
