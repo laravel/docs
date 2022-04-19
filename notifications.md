@@ -340,6 +340,9 @@ You may specify a plain-text view for the mail message by passing the view name 
             ['invoice' => $this->invoice]
         );
     }
+    
+When defining a plain-text view for your notification, HTML and plain-text versions will be sent out together as one email that includes both an HTML and plain-text using Multi-Part MIME.
+    
 
 <a name="error-messages"></a>
 #### Error Messages

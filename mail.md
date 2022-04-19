@@ -236,6 +236,20 @@ If you would like to define a plain-text version of your email, you may use the 
                     ->text('emails.orders.shipped_plain');
     }
 
+When defining both an HTML and plain-text versions at the same time, they will be sent out together as one email that includes both an HTML and plain-text part using Multi-Part MIME.
+
+It is also possible to send an email with only a plain-text part:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->text('emails.orders.shipped_plain');
+    }
+
 <a name="view-data"></a>
 ### View Data
 
