@@ -568,7 +568,7 @@ The `attach` method may be used to attach a file to a `file` input element. Like
 <a name="pressing-buttons"></a>
 ### Pressing Buttons
 
-The `press` method may be used to click a button element on the page. The first argument given to the `press` method may be either the display text of the button or a CSS / Dusk selector:
+The `press` method may be used to click a button element on the page. The argument given to the `press` method may be either the display text of the button or a CSS / Dusk selector:
 
     $browser->press('Login');
 
@@ -825,7 +825,7 @@ You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) 
     $browser->waitForRoute($routeName, $parameters);
 
 <a name="waiting-for-page-reloads"></a>
-#### Waiting for Page Reloads
+#### Waiting For Page Reloads
 
 If you need to wait for a page to reload after performing an action, use the `waitForReload` method:
 
@@ -862,6 +862,32 @@ The `waitUntilVue` and `waitUntilVueIsNot` methods may be used to wait until a [
 
     // Wait until the component attribute doesn't contain the given value...
     $browser->waitUntilVueIsNot('user.name', null, '@user');
+
+<a name="waiting-for-javascript-events"></a>
+#### Waiting For JavaScript Events
+
+The `waitForEvent` method can be used to pause the execution of a test until a JavaScript event occurs:
+
+    $browser->waitForEvent('load');
+
+The event listener is attached to the current scope, which is the `body` element by default. When using a scoped selector, the event listener will be attached to the matching element:
+
+    $browser->with('iframe', function ($iframe) {
+        // Wait for the iframe's load event...
+        $iframe->waitForEvent('load');
+    });
+
+You may also provide a selector as the second argument to the `waitForEvent` method to attach the event listener to a specific element:
+
+    $browser->waitForEvent('load', '.selector');
+
+You may also wait for events on the `document` and `window` objects:
+
+    // Wait until the document is scrolled...
+    $browser->waitForEvent('scroll', 'document');
+
+    // Wait a maximum of five seconds until the window is resized...
+    $browser->waitForEvent('resize', 'window', 5);
 
 <a name="waiting-with-a-callback"></a>
 #### Waiting With A Callback

@@ -372,6 +372,7 @@ Method  |  Description
 `$paginator->nextCursor()`  |  Get the cursor instance for the next set of items.
 `$paginator->nextPageUrl()`  |  Get the URL for the next page.
 `$paginator->onFirstPage()`  |  Determine if the paginator is on the first page.
+`$paginator->onLastPage()`  |  Determine if the paginator is on the last page.
 `$paginator->perPage()`  |  The number of items to be shown per page.
 `$paginator->previousCursor()`  |  Get the cursor instance for the previous set of items.
 `$paginator->previousPageUrl()`  |  Get the URL for the previous page.

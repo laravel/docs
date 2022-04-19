@@ -422,6 +422,11 @@ You may have noticed that there are two methods for asserting that mail was not 
         return $mail->order->id === $order->id;
     });
 
+<a name="testing-mailable-content"></a>
+#### Testing Mailable Content
+
+We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. To learn how to test the content of your mailables, check out our documentation on the [testing mailables](/docs/{{version}}/mail#testing-mailables).
+
 <a name="notification-fake"></a>
 ## Notification Fake
 
@@ -598,17 +603,22 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
             // Assert one or more files were not stored...
             Storage::disk('photos')->assertMissing('missing.jpg');
             Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
+
+            // Assert that a given directory is empty...
+            Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');
         }
     }
 
-For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
+By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
 
-> {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
+> {note} The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php).
 
 <a name="interacting-with-time"></a>
 ## Interacting With Time
 
 When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\Support\Carbon::now()`. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time:
+
+    use Illuminate\Support\Carbon;
 
     public function testTimeCanBeManipulated()
     {
@@ -620,6 +630,11 @@ When testing, you may occasionally need to modify the time returned by helpers s
         $this->travel(5)->days();
         $this->travel(5)->weeks();
         $this->travel(5)->years();
+
+        // Freeze time and resume normal time after executing closure...
+        $this->freezeTime(function (Carbon $time) {
+            // ...
+        });
 
         // Travel into the past...
         $this->travel(-5)->hours();

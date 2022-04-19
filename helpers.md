@@ -43,6 +43,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::hasAny](#method-array-hasany)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
+[Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
@@ -75,6 +76,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [base_path](#method-base-path)
 [config_path](#method-config-path)
 [database_path](#method-database-path)
+[lang_path](#method-lang-path)
 [mix](#method-mix)
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
@@ -97,6 +99,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
 [Str::between](#method-str-between)
+[Str::betweenFirst](#method-str-between-first)
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
@@ -108,6 +111,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::isAscii](#method-str-is-ascii)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
+[Str::lcfirst](#method-str-lcfirst)
 [Str::length](#method-str-length)
 [Str::limit](#method-str-limit)
 [Str::lower](#method-str-lower)
@@ -129,6 +133,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
 [Str::snake](#method-snake-case)
+[Str::squish](#method-str-squish)
 [Str::start](#method-str-start)
 [Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
@@ -139,6 +144,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::title](#method-title-case)
 [Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
+[Str::ucsplit](#method-str-ucsplit)
 [Str::upper](#method-str-upper)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
@@ -162,6 +168,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [before](#method-fluent-str-before)
 [beforeLast](#method-fluent-str-before-last)
 [between](#method-fluent-str-between)
+[betweenFirst](#method-fluent-str-between-first)
 [camel](#method-fluent-str-camel)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
@@ -177,6 +184,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
+[lcfirst](#method-fluent-str-lcfirst)
 [length](#method-fluent-str-length)
 [limit](#method-fluent-str-limit)
 [lower](#method-fluent-str-lower)
@@ -185,6 +193,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
+[newLine](#method-fluent-str-new-line)
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
 [padRight](#method-fluent-str-padright)
@@ -203,6 +212,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [slug](#method-fluent-str-slug)
 [snake](#method-fluent-str-snake)
 [split](#method-fluent-str-split)
+[squish](#method-fluent-str-squish)
 [start](#method-fluent-str-start)
 [startsWith](#method-fluent-str-starts-with)
 [studly](#method-fluent-str-studly)
@@ -214,6 +224,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [title](#method-fluent-str-title)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
+[ucsplit](#method-fluent-str-ucsplit)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
 [whenContains](#method-fluent-str-when-contains)
@@ -595,6 +606,27 @@ The `Arr::isList` method returns `true` if the given array's keys are sequential
     $isAssoc = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 
     // false
+
+<a name="method-array-keyby"></a>
+#### `Arr::keyBy()` {.collection-method}
+
+The `Arr::keyBy` method keys the array by the given key. If multiple items have the same key, only the last one will appear in the new array:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        ['product_id' => 'prod-100', 'name' => 'Desk'],
+        ['product_id' => 'prod-200', 'name' => 'Chair'],
+    ];
+
+    $keyed = Arr::keyBy($array, 'product_id');
+
+    /*
+        [
+            'prod-100' => ['product_id' => 'prod-100', 'name' => 'Desk'],
+            'prod-200' => ['product_id' => 'prod-200', 'name' => 'Chair'],
+        ]
+    */
 
 <a name="method-array-last"></a>
 #### `Arr::last()` {.collection-method}
@@ -1068,6 +1100,15 @@ The `database_path` function returns the fully qualified path to your applicatio
 
     $path = database_path('factories/UserFactory.php');
 
+<a name="method-lang-path"></a>
+#### `lang_path()` {.collection-method}
+
+The `lang_path` function returns the fully qualified path to your application's `lang` directory. You may also use the `lang_path` function to generate a fully qualified path to a given file within the directory:
+
+    $path = lang_path();
+
+    $path = lang_path('en/messages.php');
+
 <a name="method-mix"></a>
 #### `mix()` {.collection-method}
 
@@ -1210,6 +1251,17 @@ The `Str::between` method returns the portion of a string between two values:
     $slice = Str::between('This is my name', 'This', 'name');
 
     // ' is my '
+
+<a name="method-str-between-first"></a>
+#### `Str::betweenFirst()` {.collection-method}
+
+The `Str::betweenFirst` method returns the smallest possible portion of a string between two values:
+
+    use Illuminate\Support\Str;
+
+    $slice = Str::betweenFirst('[a] bc [d]', '[', ']');
+
+    // 'a'
 
 <a name="method-camel-case"></a>
 #### `Str::camel()` {.collection-method}
@@ -1388,6 +1440,17 @@ The `Str::kebab` method converts the given string to `kebab-case`:
 
     // foo-bar
 
+<a name="method-str-lcfirst"></a>
+#### `Str::lcfirst()` {.collection-method}
+
+The `Str::lcfirst` method returns the given string with the first character lowercased:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::lcfirst('Foo Bar');
+
+    // foo Bar
+
 <a name="method-str-length"></a>
 #### `Str::length()` {.collection-method}
 
@@ -1432,7 +1495,7 @@ The `Str::lower` method converts the given string to lowercase:
 <a name="method-str-markdown"></a>
 #### `Str::markdown()` {.collection-method}
 
-The `Str::markdown` method converts GitHub flavored Markdown into HTML:
+The `Str::markdown` method converts GitHub flavored Markdown into HTML using [CommonMark](https://commonmark.thephpleague.com/):
 
     use Illuminate\Support\Str;
 
@@ -1696,6 +1759,17 @@ The `Str::snake` method converts the given string to `snake_case`:
 
     // foo-bar
 
+<a name="method-str-squish"></a>
+#### `Str::squish()` {.collection-method}
+
+The `Str::squish` method removes all extraneous white space from a string, including extraneous white space between words:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::squish('    laravel    framework    ');
+
+    // laravel framework
+
 <a name="method-str-start"></a>
 #### `Str::start()` {.collection-method}
 
@@ -1768,10 +1842,10 @@ The `Str::substrReplace` method replaces text within a portion of a string, star
 
     use Illuminate\Support\Str;
 
-    $result = Str::substrReplace('1300', ':', 2); 
+    $result = Str::substrReplace('1300', ':', 2);
     // 13:
-    
-    $result = Str::substrReplace('1300', ':', 2, 0); 
+
+    $result = Str::substrReplace('1300', ':', 2, 0);
     // 13:00
 
 <a name="method-str-swap"></a>
@@ -1818,6 +1892,17 @@ The `Str::ucfirst` method returns the given string with the first character capi
     $string = Str::ucfirst('foo bar');
 
     // Foo bar
+
+<a name="method-str-ucsplit"></a>
+#### `Str::ucsplit()` {.collection-method}
+
+The `Str::ucsplit` method splits the given string into an array by uppercase characters:
+
+    use Illuminate\Support\Str;
+
+    $segments = Str::ucsplit('FooBar');
+
+    // [0 => 'Foo', 1 => 'Bar']
 
 <a name="method-str-upper"></a>
 #### `Str::upper()` {.collection-method}
@@ -1994,6 +2079,17 @@ The `between` method returns the portion of a string between two values:
     $converted = Str::of('This is my name')->between('This', 'name');
 
     // ' is my '
+
+<a name="method-fluent-str-between-first"></a>
+#### `betweenFirst` {.collection-method}
+
+The `betweenFirst` method returns the smallest possible portion of a string between two values:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('[a] bc [d]')->betweenFirst('[', ']');
+
+    // 'a'
 
 <a name="method-fluent-str-camel"></a>
 #### `camel` {.collection-method}
@@ -2228,6 +2324,18 @@ The `kebab` method converts the given string to `kebab-case`:
 
     // foo-bar
 
+<a name="method-fluent-str-lcfirst"></a>
+#### `lcfirst` {.collection-method}
+
+The `lcfirst` method returns the given string with the first character lowercased:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Foo Bar')->lcfirst();
+
+    // foo Bar
+
+
 <a name="method-fluent-str-length"></a>
 #### `length` {.collection-method}
 
@@ -2353,6 +2461,18 @@ If you specify a matching group within the expression, Laravel will return a col
     // collect(['un', 'ly']);
 
 If no matches are found, an empty collection will be returned.
+
+<a name="method-fluent-str-new-line"></a>
+#### `newLine` {.collection-method}
+
+The `newLine` method appends an "end of line" character to a string:
+
+    use Illuminate\Support\Str;
+
+    $padded = Str::of('Laravel')->newLine()->append('Framework');
+
+    // 'Laravel
+    //  Framework'
 
 <a name="method-fluent-str-padboth"></a>
 #### `padBoth` {.collection-method}
@@ -2608,6 +2728,17 @@ The `split` method splits a string into a collection using a regular expression:
 
     // collect(["one", "two", "three"])
 
+<a name="method-fluent-str-squish"></a>
+#### `squish` {.collection-method}
+
+The `squish` method removes all extraneous white space from a string, including extraneous white space between words:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('    laravel    framework    ')->squish();
+
+    // laravel framework
+
 <a name="method-fluent-str-start"></a>
 #### `start` {.collection-method}
 
@@ -2753,6 +2884,17 @@ The `ucfirst` method returns the given string with the first character capitaliz
     $string = Str::of('foo bar')->ucfirst();
 
     // Foo bar
+
+<a name="method-fluent-str-ucsplit"></a>
+#### `ucsplit` {.collection-method}
+
+The `ucsplit` method splits the given string into a collection by uppercase characters:
+
+    use Illuminate\Support\Str;
+
+    $string = Str::of('Foo Bar')->ucsplit();
+
+    // collect(['Foo', 'Bar'])
 
 <a name="method-fluent-str-upper"></a>
 #### `upper` {.collection-method}
@@ -3344,6 +3486,14 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an [
     $value = old('value');
 
     $value = old('value', 'default');
+
+Since the "default value" provided as the second argument to the `old` function is often an attribute of an Eloquent model, Laravel allows you to simply pass the entire Eloquent model as the second argument to the `old` function. When doing so, Laravel will assume the first argument provided to the `old` function is the name of the Eloquent attribute that should be considered the "default value":
+
+    {{ old('name', $user->name) }}
+
+    // Is equivalent to...
+
+    {{ old('name', $user) }}
 
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}

@@ -136,6 +136,12 @@ public function ignore(string $class);
 
 When iterating over a `LazyCollection` instance within a Blade template, the `$loop` variable is no longer available, as accessing this variable causes the entire `LazyCollection` to be loaded into memory, thus rendering the usage of lazy collections pointless in this scenario.
 
+#### Checked / Disabled / Selected Blade Directives
+
+**Likelihood Of Impact: Low**
+
+The new `@checked`, `@disabled`, and `@selected` Blade directives may conflict with Vue events of the same name. You may use `@@` to escape the directives and avoid this conflict: `@@selected`.
+
 ### Collections
 
 #### The `Enumerable` Contract
@@ -320,7 +326,19 @@ Before using the S3, FTP, or SFTP drivers, you will need to install the appropri
 
 #### Overwriting Existing Files
 
-Write operations such as `put`, `write`, `writeStream` now overwrite existing files by default. If you do not want to overwrite existing files, you should manually check for the file's existence before performing the write operation.
+Write operations such as `put`, `write`, and `writeStream` now overwrite existing files by default. If you do not want to overwrite existing files, you should manually check for the file's existence before performing the write operation.
+
+#### Write Exceptions
+
+Write operations such as `put`, `write`, and `writeStream` no longer throw an exception when a write operation fails. Instead, `false` is returned. If you would like to preserve the previous behavior which threw exceptions, you may define the `throw` option within a filesystem disk's configuration array:
+
+```php
+'public' => [
+    'driver' => 'local',
+    // ...
+    'throw' => true,
+],
+```
 
 #### Reading Missing Files
 
@@ -365,9 +383,9 @@ use Spatie\Dropbox\Client as DropboxClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 
 Storage::extend('dropbox', function ($app, $config) {
-    $adapter = new DropboxAdapter(new DropboxClient(
-        $config['authorization_token']
-    ););
+    $adapter = new DropboxAdapter(
+        new DropboxClient($config['authorization_token'])
+    );
 
     return new FilesystemAdapter(
         new Filesystem($adapter, $config),
@@ -537,6 +555,12 @@ Again, many applications may not be interacting with these methods, as they are 
 #### Generated Messages IDs
 
 SwiftMailer offered the ability to define a custom domain to include in generated Message IDs via the `mime.idgenerator.idright` configuration option. This is not supported by Symfony Mailer. Instead, Symfony Mailer will automatically generate a Message ID based on the sender.
+
+#### `MessageSent` Event Changes
+
+The `message` property of the `Illuminate\Mail\Events\MessageSent` event now contains an instance of `Symfony\Component\Mime\Email` instead of an instance of `Swift_Message`. This message represents the email **before** it is sent.
+
+Additionally, a new `sent` property has been added to the `MessageSent` event. This property contains an instance of `Illuminate\Mail\SentMessage` and contains information about the sent email, such as the message ID.
 
 #### Forced Reconnections
 

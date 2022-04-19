@@ -338,6 +338,10 @@ If you would like to verify that the JSON response contains the given data at a 
         }
     }
 
+The `assertJsonPath` method also accepts a closure, which may be used to dynamically determine if the assertion should pass:
+
+    $response->assertJsonPath('team.owner.name', fn ($name) => strlen($name) >= 3);
+
 <a name="fluent-json-testing"></a>
 ### Fluent JSON Testing
 
@@ -651,7 +655,6 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSessionHasNoErrors](#assert-session-has-no-errors)
 [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors)
 [assertSessionMissing](#assert-session-missing)
-[assertSimilarJson](#assert-similar-json)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
 [assertUnauthorized](#assert-unauthorized)
@@ -954,7 +957,7 @@ Assert whether the response is redirecting to a URI that contains the given stri
 <a name="assert-redirect-to-signed-route"></a>
 #### assertRedirectToSignedRoute
 
-Assert that the response is a redirect to the given signed route:
+Assert that the response is a redirect to the given [signed route](/docs/{{version}}/urls#signed-urls):
 
     $response->assertRedirectToSignedRoute($name = null, $parameters = []);
 
@@ -1045,6 +1048,8 @@ Or, you may assert that a given field has a particular validation error message:
         'name' => 'The given name was invalid.'
     ]);
 
+> {tip} The more generic [assertInvalid](#assert-invalid) method may be used to assert that a response has validation errors returned as JSON **or** that errors were flashed to session storage.
+
 <a name="assert-session-has-errors-in"></a>
 #### assertSessionHasErrorsIn
 
@@ -1065,6 +1070,8 @@ Assert that the session has no validation errors:
 Assert that the session has no validation errors for the given keys:
 
     $response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
+
+> {tip} The more generic [assertValid](#assert-valid) method may be used to assert that a response does not have validation errors that were returned as JSON **and** that no errors were flashed to session storage.
 
 <a name="assert-session-missing"></a>
 #### assertSessionMissing

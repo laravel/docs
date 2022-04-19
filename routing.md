@@ -3,6 +3,7 @@
 - [Basic Routing](#basic-routing)
     - [Redirect Routes](#redirect-routes)
     - [View Routes](#view-routes)
+    - [The Route List](#the-route-list)
 - [Route Parameters](#route-parameters)
     - [Required Parameters](#required-parameters)
     - [Optional Parameters](#parameters-optional-parameters)
@@ -124,6 +125,27 @@ If your route only needs to return a [view](/docs/{{version}}/views), you may us
 
 > {note} When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
 
+<a name="the-route-list"></a>
+### The Route List
+
+The `route:list` Artisan command can easily provide an overview of all of the routes that are defined by your application:
+
+```shell
+php artisan route:list
+```
+
+By default, the route middleware that are assigned to each route will not be displayed in the `route:list` output; however, you can instruct Laravel to display the route middleware by adding the `-v` option to the command:
+
+```shell
+php artisan route:list -v
+```
+
+In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:
+
+```shell
+php artisan route:list --except-vendor
+```
+
 <a name="route-parameters"></a>
 ## Route Parameters
 
@@ -198,6 +220,10 @@ For convenience, some commonly used regular expression patterns have helper meth
     Route::get('/user/{id}', function ($id) {
         //
     })->whereUuid('id');
+
+    Route::get('/category/{category}', function ($category) {
+        //
+    })->whereIn('category', ['movie', 'song', 'painting']);
 
 If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
 
@@ -488,7 +514,7 @@ Typically, a 404 HTTP response will be generated if an implicitly bound model is
 <a name="implicit-enum-binding"></a>
 ### Implicit Enum Binding
 
-PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint an Enum on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
+PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To compliment this feature, Laravel allows you to type-hint a [backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
 
 ```php
 <?php

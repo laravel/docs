@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Laravel Breeze](#laravel-breeze)
     - [Installation](#laravel-breeze-installation)
-    - [Breeze & Inertia](#breeze-and-inertia)
+    - [Breeze & React / Vue](#breeze-and-inertia)
     - [Breeze & Next.js / API](#breeze-and-next)
 - [Laravel Jetstream](#laravel-jetstream)
 
@@ -55,20 +55,29 @@ Next, you may navigate to your application's `/login` or `/register` URLs in you
 > {tip} To learn more about compiling your application's CSS and JavaScript, check out the [Laravel Mix documentation](/docs/{{version}}/mix#running-mix).
 
 <a name="breeze-and-inertia"></a>
-### Breeze & Inertia
+### Breeze & React / Vue
 
-Laravel Breeze also offers an [Inertia.js](https://inertiajs.com) frontend implementation powered by Vue or React. To use an Inertia stack, specify `vue` or `react` as your desired stack when executing the `breeze:install` Artisan command:
+Laravel Breeze also offers React and Vue scaffolding via an [Inertia.js](https://inertiajs.com) frontend implementation. Inertia allows you to build modern, single-page React and Vue applications using classic server-side routing and controllers.
+
+Inertia lets you enjoy the frontend power of React and Vue combined with the incredible backend productivity of Laravel. To use an Inertia stack, specify `vue` or `react` as your desired stack when executing the `breeze:install` Artisan command:
 
 ```shell
 php artisan breeze:install vue
 
-// Or...
+# Or...
 
 php artisan breeze:install react
 
 npm install
 npm run dev
 php artisan migrate
+```
+
+If you would like Breeze to scaffold support for [Inertia SSR](https://inertiajs.com/server-side-rendering), you may provide the `ssr` option when invoking the `breeze:install` command:
+
+```shell
+php artisan breeze:install vue --ssr
+php artisan breeze:install react --ssr
 ```
 
 <a name="breeze-and-next"></a>

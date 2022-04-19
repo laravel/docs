@@ -143,16 +143,6 @@ Let's take a look at an example command. Note that we are able to request any de
         protected $description = 'Send a marketing email to a user';
 
         /**
-         * Create a new command instance.
-         *
-         * @return void
-         */
-        public function __construct()
-        {
-            parent::__construct();
-        }
-
-        /**
          * Execute the console command.
          *
          * @param  \App\Support\DripEmailer  $drip

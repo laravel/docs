@@ -73,7 +73,9 @@ During local and staging development, you should [register a Paddle Sandbox acco
 
 When using the Paddle Sandbox environment, you should set the `PADDLE_SANDBOX` environment variable to `true` within your application's `.env` file:
 
+```ini
 PADDLE_SANDBOX=true
+```
 
 After you have finished developing your application you may [apply for a Paddle vendor account](https://paddle.com). Before your application is placed into production, Paddle will need to approve your application's domain.
 
