@@ -33,7 +33,7 @@ By default, Laravel's sample [environment configuration](/docs/{{version}}/confi
 <a name="sqlite-configuration"></a>
 #### SQLite Configuration
 
-SQLite databases are contained within a single file on your filesystem. You can create a new SQLite database using the `touch` command in your terminal: `touch database/database.sqlite`. After the database has been created, you may easily configure your environment variables to point to this database by placing the absolute path to the database in the `DB_DATABASE` environment variable:
+SQLite databases are contained within a single file on your filesystem. You can create a new SQLite database using the `touch` command in your terminal: `touch database/database.sqlite` (For windows, use this command `type nul >> database/database.sqlite`). After the database has been created, you may easily configure your environment variables to point to this database by placing the absolute path to the database in the `DB_DATABASE` environment variable:
 
 ```ini
 DB_CONNECTION=sqlite
