@@ -837,20 +837,20 @@ You may insert several records at once by passing an array of arrays. Each array
         ['email' => 'janeway@example.com', 'votes' => 0],
     ]);
 
-The `insertOrIgnore` method will ignore errors while inserting records into the database:
+The `insertOrIgnore` method will ignore errors while inserting records into the database. When using this method, you should be aware that duplicate record errors will be ignored and other types of errors may also be ignored depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution):
 
     DB::table('users')->insertOrIgnore([
         ['id' => 1, 'email' => 'sisko@example.com'],
         ['id' => 2, 'email' => 'archer@example.com'],
     ]);
 
-> {note} `insertOrIgnore` will ignore duplicate records and also may ignore other types of errors depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution).
-
-The `insertUsing` method will insert new records into the table using a subquery. In the example below, we want to copy the users to a table before pruning.
+The `insertUsing` method will insert new records into the table while using a subquery to determine the data that should be inserted:
 
     DB::table('pruned_users')->insertUsing([
         'id', 'name', 'email', 'email_verified_at'
-    ], DB::table('users')->select('id', 'name', 'email', 'email_verified_at')->where('updated_at', '<=', now()->subMonth()));
+    ], DB::table('users')->select(
+        'id', 'name', 'email', 'email_verified_at'
+    )->where('updated_at', '<=', now()->subMonth()));
 
 <a name="auto-incrementing-ids"></a>
 #### Auto-Incrementing IDs
