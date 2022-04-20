@@ -846,6 +846,12 @@ The `insertOrIgnore` method will ignore errors while inserting records into the 
 
 > {note} `insertOrIgnore` will ignore duplicate records and also may ignore other types of errors depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution).
 
+The `insertUsing` method will insert new records into the table using a subquery. In the example below, we want to copy the users to a table before pruning.
+
+    DB::table('pruned_users')->insertUsing([
+        'id', 'name', 'email', 'email_verified_at'
+    ], DB::table('users')->select('id', 'name', 'email', 'email_verified_at')->where('updated_at', '<=', now()->subMonth()));
+
 <a name="auto-incrementing-ids"></a>
 #### Auto-Incrementing IDs
 
