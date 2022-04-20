@@ -119,7 +119,7 @@ When the `balance` option is set to `false`, the default Laravel behavior will b
 <a name="dashboard-authorization"></a>
 ### Dashboard Authorization
 
-Horizon exposes a dashboard at the `/horizon` URI. By default, you will always be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
+Horizon exposes a dashboard at the `/horizon` URI. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
 
     /**
      * Register the Horizon gate.
