@@ -45,6 +45,7 @@
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Verifying Webhook Signatures](#verifying-webhook-signatures)
 - [Single Charges](#single-charges)
+    - [Creating Payments](#creating-payments)
     - [Simple Charge](#simple-charge)
     - [Charge With Invoice](#charge-with-invoice)
     - [Refunding Charges](#refunding-charges)
@@ -1455,10 +1456,39 @@ To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environm
 <a name="single-charges"></a>
 ## Single Charges
 
+> {note} The `pay` and `charge` methods accept the amount you would like to charge in the lowest denominator of the currency used by your application. For example, when using United States Dollars, amounts should be specified in pennies.
+
+<a name="creating-payments"></a>
+### Creating Payments
+
+You can simply create a new payment for a customer by calling the `pay` method on a billable model instance. Calling this method will create a payment intent that's wrapped in a `Laravel\Cashier\Payment` object:
+
+    use Illuminate\Http\Request;
+
+    Route::post('/pay', function (Request $request) {
+        $payment = $request->user()->pay(
+            $request->get('amount')
+        );
+
+        return $payment->client_secret;
+    });
+
+After creating the payment intent, you can return the client secret to your front-end to complete the payment in the browser. See [a full guide by Stripe](https://stripe.com/docs/payments/accept-a-payment?platform=web) on this
+
+Using the above `pay` method, the default payment methods that are enabled in the dashboard will be available to the customer to collect payment. Alternatively, if you only want to allow for some specific payment methods to be used, you may use the `payWith` method instead:
+
+    use Illuminate\Http\Request;
+
+    Route::post('/pay', function (Request $request) {
+        $payment = $request->user()->payWith(
+            $request->get('amount'), ['card', 'bancontact']
+        );
+
+        return $payment->client_secret;
+    });
+
 <a name="simple-charge"></a>
 ### Simple Charge
-
-> {note} The `charge` method accepts the amount you would like to charge in the lowest denominator of the currency used by your application. For example, when using United States Dollars, amounts should be specified in pennies.
 
 If you would like to make a one-time charge against a customer, you may use the `charge` method on a billable model instance. You will need to [provide a payment method identifier](#payment-methods-for-single-charges) as the second argument to the `charge` method:
 
