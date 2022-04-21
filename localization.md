@@ -67,6 +67,29 @@ You may use the `currentLocale` and `isLocale` methods on the `App` facade to de
         //
     }
 
+<a name="changing-pluralization-rules"></a>
+### Changing Pluralization rules
+
+It's also possible to change Laravels's default pluralization rules from a set of available languages other than english: 'french', 'norwegian-bokmal', 'portuguese', 'spanish' and 'turkish', see [Doctrine/Inflector](https://www.doctrine-project.org/projects/inflector.html) for details. This can be done at the `boot` method within your application's `App\Providers\AppServiceProvider`:
+
+    use Illuminate\Support\Pluralizer;
+
+    // ...   
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Pluralizer::useLanguage('spanish');     
+
+        // ...     
+    }
+
+> {note} When using a different language rule, the `User` model might need to have its [table name](/docs/{{version}}/eloquent#table-names) manually set to `users`, as the word "user" may have a different plural form in other languages.
+
 <a name="defining-translation-strings"></a>
 ## Defining Translation Strings
 
