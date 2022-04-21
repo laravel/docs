@@ -1456,7 +1456,7 @@ To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environm
 <a name="single-charges"></a>
 ## Single Charges
 
-> {note} The `pay` and `charge` methods accept the amount you would like to charge in the lowest denominator of the currency used by your application. For example, when using United States Dollars, amounts should be specified in pennies.
+> {note} The `pay`, `payWith`, `charge`, `invoiceFor` and `refund` methods accept the amount you would like to use in the lowest denominator of the currency used by your application. For example, when using United States Dollars, amounts should be specified in pennies.
 
 <a name="creating-payments"></a>
 ### Creating Payments
