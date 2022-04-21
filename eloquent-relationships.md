@@ -38,6 +38,7 @@
     - [Belongs To Relationships](#updating-belongs-to-relationships)
     - [Many To Many Relationships](#updating-many-to-many-relationships)
 - [Touching Parent Timestamps](#touching-parent-timestamps)
+- [Cheat Sheet](#cheat-sheet)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1931,3 +1932,26 @@ For example, when a `Comment` model is updated, you may want to automatically "t
     }
 
 > {note} Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method.
+
+<a name="cheat-sheet"></a>
+## Cheat Sheet
+
+### Relationships
+
+| Relationship     | Primary          | Inverse         | Attach     | Detach     |
+|------------------|------------------|-----------------|------------|------------|
+| One To One       | `hasOne`         | `belongsTo`     | `save()`   | `delete()` |
+| One To Many      | `hasMany`        | `belongsTo`     | `save()`   | `delete()` |
+| Has One Of Many  | `hasOne`         | `belongsTo`     | `save()`   | `delete()` |
+| Has One Through  | `hasOneThrough`  | `belongsTo`     | `save()`   | `delete()` |
+| Has Many Through | `hasManyThrough` | `belongsTo`     | `attach()` | `detach()` |
+| Belongs To Many  | `belongsToMany`  | `belongsToMany` | `attach()` | `detach()` |
+
+### Polymorphic Relationships
+
+| Relationship     | Primary       | Inverse         | Attach     | Detach     |
+|------------------|---------------|-----------------|------------|------------|
+| One To One       | `morphOne`    | `morphTo`       | `save()`   | `delete()` |
+| One To Many      | `morphMany`   | `morphTo`       | `attach()` | `detach()` |
+| One Of Many      | `morphOne`    | `morphTo`       | `save()`   | `delete()` |
+| Many To Many     | `morphToMany` | `morphedByMany` | `attach()` | `detach()` |
