@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
     - [Configuring The Locale](#configuring-the-locale)
+    - [Pluralization Language](#pluralization-language)
 - [Defining Translation Strings](#defining-translation-strings)
     - [Using Short Keys](#using-short-keys)
     - [Using Translation Strings As Keys](#using-translation-strings-as-keys)
@@ -66,6 +67,27 @@ You may use the `currentLocale` and `isLocale` methods on the `App` facade to de
     if (App::isLocale('en')) {
         //
     }
+
+<a name="pluralization-language"></a>
+### Pluralization Language
+
+You may instruct Laravel's "pluralizer", which is used by Eloquent and other portions of the framework to convert singular strings to plural strings, to use a language other than English. This may be accomplished by invoking the `useLanguage` method within the `boot` method of one of your application's service providers. The pluralizer's currently supported languages are: `french`, `norwegian-bokmal`, `portuguese`, `spanish`, and `turkish`:
+
+    use Illuminate\Support\Pluralizer;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Pluralizer::useLanguage('spanish');     
+
+        // ...     
+    }
+
+> {note} If you customize the pluralizer's language, you should explicitly define your Eloquent model's [table names](/docs/{{version}}/eloquent#table-names).
 
 <a name="defining-translation-strings"></a>
 ## Defining Translation Strings
