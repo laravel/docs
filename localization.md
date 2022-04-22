@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
     - [Configuring The Locale](#configuring-the-locale)
+    - [Pluralization Language](#pluralization-language)
 - [Defining Translation Strings](#defining-translation-strings)
     - [Using Short Keys](#using-short-keys)
     - [Using Translation Strings As Keys](#using-translation-strings-as-keys)
@@ -67,14 +68,12 @@ You may use the `currentLocale` and `isLocale` methods on the `App` facade to de
         //
     }
 
-<a name="changing-pluralization-rules"></a>
-### Changing Pluralization rules
+<a name="pluralization-language"></a>
+### Pluralization Language
 
-It's also possible to change Laravels's default pluralization rules from a set of available languages other than english: 'french', 'norwegian-bokmal', 'portuguese', 'spanish' and 'turkish', see [Doctrine/Inflector](https://www.doctrine-project.org/projects/inflector.html) for details. This can be done at the `boot` method within your application's `App\Providers\AppServiceProvider`:
+You may instruct Laravel's "pluralizer", which is used by Eloquent and other portions of the framework to convert singular strings to plural strings, to use a language other than English. This may be accomplished by invoking the `useLanguage` method within the `boot` method of one of your application's service providers. The pluralizer's currently supported languages are: `french`, `norwegian-bokmal`, `portuguese`, `spanish`, and `turkish`:
 
     use Illuminate\Support\Pluralizer;
-
-    // ...   
 
     /**
      * Bootstrap any application services.
@@ -88,7 +87,7 @@ It's also possible to change Laravels's default pluralization rules from a set o
         // ...     
     }
 
-> {note} When using a different language rule, the `User` model might need to have its [table name](/docs/{{version}}/eloquent#table-names) manually set to `users`, as the word "user" may have a different plural form in other languages.
+> {note} If you customize the pluralizer's language, you should explicitly define your Eloquent model's [table names](/docs/{{version}}/eloquent#table-names).
 
 <a name="defining-translation-strings"></a>
 ## Defining Translation Strings

@@ -343,7 +343,7 @@ By default, `Route::resource` will create resource URIs using English verbs and 
         // ...
     }
 
-It's also possible to [change the pluralization rules](/docs/{{version}}/localization#changing-pluralization-rules) for better parameter names. Once the verbs and pluralization language have been customized, a resource route registration such as `Route::resource('publicacion', PublicacionController::class)` will produce the following URIs:
+Laravel's pluralizer supports [several different languages which you may configure based on your needs](/docs/{{version}}/localization#pluralization-language). Once the verbs and pluralization language have been customized, a resource route registration such as `Route::resource('publicacion', PublicacionController::class)` will produce the following URIs:
 
     /publicacion/crear
 
