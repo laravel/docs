@@ -21,6 +21,8 @@ While you are welcome to use these starter kits, they are not required. You are 
 
 Breeze provides a wonderful starting point for beginning a fresh Laravel application and is also great choice for projects that plan to take their Blade templates to the next level with [Laravel Livewire](https://laravel-livewire.com).
 
+<img src="https://laravel.com/img/docs/breeze-register.png">
+
 <a name="laravel-breeze-installation"></a>
 ### Installation
 
