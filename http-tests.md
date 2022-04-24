@@ -386,8 +386,8 @@ To assert that an attribute is present or absent, you may use the `has` and `mis
 In addition, the `hasAll` and `missingAll` methods allow asserting the presence or absence of multiple attributes simultaneously:
 
     $response->assertJson(fn (AssertableJson $json) =>
-        $json->hasAll('status', 'data')
-             ->missingAll('message', 'code')
+        $json->hasAll(['status', 'data'])
+             ->missingAll(['message', 'code'])
     );
 
 You may use the `hasAny` method to determine if at least one of a given list of attributes is present:
