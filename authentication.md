@@ -298,13 +298,12 @@ When this value is `true`, Laravel will keep the user authenticated indefinitely
         // The user is being remembered...
     }
 
-
-If you are "remembering" users, you may use the `viaRemember`  method to determine if the user was authenticated using the "remember me" cookie:
+If your application offers "remember me" functionality, you may use the `viaRemember`  method to determine if the currently authenticated user was authenticated using the "remember me" cookie:
 
     use Illuminate\Support\Facades\Auth;
 
     if (Auth::viaRemember()) {
-        //
+        // ...
     }
 
 <a name="other-authentication-methods"></a>
