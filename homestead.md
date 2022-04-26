@@ -527,6 +527,7 @@ Supported `policy` values include: `none`, `download`, `upload`, and `public`.
 By default, the following ports are forwarded to your Homestead environment:
 
 <div class="content-list" markdown="1">
+
 - **SSH:** 2222 &rarr; Forwards To 22
 - **ngrok UI:** 4040 &rarr; Forwards To 4040
 - **HTTP:** 8000 &rarr; Forwards To 80
@@ -536,6 +537,7 @@ By default, the following ports are forwarded to your Homestead environment:
 - **MongoDB:** 27017 &rarr; Forwards To 27017
 - **Mailhog:** 8025 &rarr; Forwards To 8025
 - **Minio:** 9600 &rarr; Forwards To 9600
+
 </div>
 
 #### Forwarding Additional Ports
@@ -608,7 +610,7 @@ Homestead includes the Postfix mail transfer agent, which is listening on port `
 <a name="debugging-web-requests"></a>
 ### Debugging Web Requests With Xdebug
 
-Homestead includes support for step debugging using [Xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect to your IDE to allow inspection and modification of the running code. 
+Homestead includes support for step debugging using [Xdebug](https://xdebug.org). For example, you can load a web page from a browser, and PHP will connect to your IDE to allow inspection and modification of the running code.
 
 By default Xdebug is already running and ready to accept connections. If you need to enable Xdebug on the CLI run the `sudo phpenmod xdebug` command within your Vagrant box. Next, follow your IDE's instructions to enable debugging. Finally, configure your browser to trigger Xdebug with an extension or [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
