@@ -36,6 +36,7 @@
 Database tables are often related to one another. For example, a blog post may have many comments, or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy, and supports several different types of relationships:
 
 <div class="content-list" markdown="1">
+
 - [One To One](#one-to-one)
 - [One To Many](#one-to-many)
 - [Many To Many](#many-to-many)
@@ -44,6 +45,7 @@ Database tables are often related to one another. For example, a blog post may h
 - [One To One (Polymorphic)](#one-to-one-polymorphic-relations)
 - [One To Many (Polymorphic)](#one-to-many-polymorphic-relations)
 - [Many To Many (Polymorphic)](#many-to-many-polymorphic-relations)
+
 </div>
 
 <a name="defining-relationships"></a>
@@ -842,7 +844,7 @@ As demonstrated in the example above, you are free to add additional constraints
             ->orWhere('votes', '>=', 100)
             ->get();
 
-    // select * from posts 
+    // select * from posts
     // where user_id = ? and active = 1 or votes >= 100
 
 In most situations, you likely intend to use [constraint groups](/docs/{{version}}/queries#parameter-grouping) to logically group the conditional checks between parentheses:
@@ -856,7 +858,7 @@ In most situations, you likely intend to use [constraint groups](/docs/{{version
             })
             ->get();
 
-    // select * from posts 
+    // select * from posts
     // where user_id = ? and (active = 1 or votes >= 100)
 
 <a name="relationship-methods-vs-dynamic-properties"></a>
@@ -936,8 +938,8 @@ To query the existence of `MorphTo` relationships, you may use the `whereHasMorp
 
     // Retrieve comments associated to posts or videos with a title like foo%...
     $comments = App\Comment::whereHasMorph(
-        'commentable', 
-        ['App\Post', 'App\Video'], 
+        'commentable',
+        ['App\Post', 'App\Video'],
         function (Builder $query) {
             $query->where('title', 'like', 'foo%');
         }
@@ -945,29 +947,29 @@ To query the existence of `MorphTo` relationships, you may use the `whereHasMorp
 
     // Retrieve comments associated to posts with a title not like foo%...
     $comments = App\Comment::whereDoesntHaveMorph(
-        'commentable', 
-        'App\Post', 
+        'commentable',
+        'App\Post',
         function (Builder $query) {
             $query->where('title', 'like', 'foo%');
         }
-    )->get();    
-    
+    )->get();
+
 You may use the `$type` parameter to add different constraints depending on the related model:
 
     use Illuminate\Database\Eloquent\Builder;
 
     $comments = App\Comment::whereHasMorph(
-        'commentable', 
-        ['App\Post', 'App\Video'], 
+        'commentable',
+        ['App\Post', 'App\Video'],
         function (Builder $query, $type) {
             $query->where('title', 'like', 'foo%');
-    
+
             if ($type === 'App\Post') {
                 $query->orWhere('content', 'like', 'foo%');
             }
         }
     )->get();
-    
+
 Instead of passing an array of possible polymorphic models, you may provide `*` as a wildcard and let Laravel retrieve all the possible polymorphic types from the database. Laravel will execute an additional query in order to perform this operation:
 
     use Illuminate\Database\Eloquent\Builder;
@@ -1148,7 +1150,7 @@ Sometimes you might want to always load some relationships when retrieving a mod
             return $this->belongsTo('App\Author');
         }
     }
-   
+
 If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:
 
     $books = App\Book::without('author')->get();

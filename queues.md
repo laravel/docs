@@ -98,9 +98,11 @@ Adjusting this value based on your queue load can be more efficient than continu
 The following dependencies are needed for the listed queue drivers:
 
 <div class="content-list" markdown="1">
+
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~4.0`
 - Redis: `predis/predis ~1.0`
+
 </div>
 
 <a name="creating-jobs"></a>
@@ -350,7 +352,7 @@ You may chain the `onConnection` and `onQueue` methods to specify the connection
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
                   ->onQueue('processing');
-                  
+
 Alternatively, you may specify the `connection` as a property on the job class:
 
     <?php
