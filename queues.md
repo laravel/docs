@@ -1684,6 +1684,8 @@ You may easily configure "exponential" backoffs by returning an array of backoff
     {
         return [1, 5, 10];
     }
+    
+When using an array of backoff values, remember to also set an amount of `$tries` equal to or more than the amount of number of seconds values in that array.
 
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Cleaning Up After Failed Jobs
