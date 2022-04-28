@@ -171,6 +171,8 @@ By default, the entire `toArray` form of a given model will be persisted to its 
             return $array;
         }
     }
+    
+> {note} When using a database engine, don't use `toArray` to define `toSearchableArray`, or implement `toArray` with the specific columns for your table. `toArray` will return an empty result as it is called before the table data is loaded.
 
 <a name="configuring-the-model-id"></a>
 ### Configuring The Model ID
