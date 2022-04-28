@@ -464,6 +464,8 @@ If you would like model binding to always use a database column other than `id` 
     {
         return 'slug';
     }
+    
+> {note} Even if you specify a custom key, any [pattern](#parameters-global-constraints) defined for the model will still apply.
 
 <a name="implicit-model-binding-scoping"></a>
 #### Custom Keys & Scoping
