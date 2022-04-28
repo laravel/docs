@@ -346,7 +346,7 @@ Attempting to read from a file that does not exist now returns `null`. In previo
 
 #### Deleting Missing Files
 
-Attempting to `delete` a file that does not exist now returns `true`.
+Attempting to `delete` a file that does not exist now returns `false`.
 
 #### Cached Adapters
 
