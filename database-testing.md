@@ -300,6 +300,7 @@ Within a sequence closure, you may access the `$index` or `$count` properties on
 
 <a name="factory-relationships"></a>
 ## Factory Relationships
+> {note} Currently the only reliable method of generating a foreign key for a related model is to persist the relation to the database. Due to this, when using `make()` on a factory with a relationship, the relationship will be persisted to the database.
 
 <a name="has-many-relationships"></a>
 ### Has Many Relationships
