@@ -204,7 +204,7 @@ sail yarn
 
 As you may have noticed, your application's `docker-compose.yml` file contains an entry for a MySQL container. This container uses a [Docker volume](https://docs.docker.com/storage/volumes/) so that the data stored in your database is persisted even when stopping and restarting your containers.
 
-In addition, the first time the MySQL container starts, it will create two databases for you you. The first is named using the value of your `DB_DATABASE` environment variable and is for your local development. The second is a dedicated database named `testing` and will ensure that your tests do not interfere with your development data.
+In addition, the first time the MySQL container starts, it will create two databases for you. The first database is named using the value of your `DB_DATABASE` environment variable and is for your local development. The second is a dedicated testing database named `testing` and will ensure that your tests do not interfere with your development data.
 
 Once you have started your containers, you may connect to the MySQL instance within your application by setting your `DB_HOST` environment variable within your application's `.env` file to `mysql`.
 
@@ -258,7 +258,7 @@ The Sail `test` command is equivalent to running the `test` Artisan command:
 sail artisan test
 ```
 
-By default, Sail will create a dedicated `testing` database when you selected your database server. In a default Laravel installation, Sail will also configure your `phpunit.xml` file to use this database. If you need to configure this manually, ensure that the `DB_DATABASE` environment variable is set to `testing`:
+By default, Sail will create a dedicated `testing` database that your tests do not interfere with the current state of your database. In a default Laravel installation, Sail will also configure your `phpunit.xml` file to use this database when executing your tests:
 
 ```xml
 <env name="DB_DATABASE" value="testing"/>
