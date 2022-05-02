@@ -282,6 +282,13 @@ When sending JSON requests to your application, you may access the JSON data via
 
     $name = $request->input('user.name');
 
+<a name="retrieving-stringable-input-values"></a>
+#### Retrieving Stringable Input Values
+
+Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\Support\Stringable`](/docs/{{version}}/helpers#fluent-strings):
+
+    $name = $request->string('name')->trim();
+
 <a name="retrieving-boolean-input-values"></a>
 #### Retrieving Boolean Input Values
 
