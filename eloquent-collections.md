@@ -40,13 +40,15 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 In addition, the `Illuminate\Database\Eloquent\Collection` class provides a superset of methods to aid with managing your model collections. Most methods return `Illuminate\Database\Eloquent\Collection` instances; however, some methods, like `modelKeys`, return an `Illuminate\Support\Collection` instance.
 
 <style>
-    #collection-method-list > p {
-        column-count: 1; -moz-column-count: 1; -webkit-column-count: 1;
-        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    .collection-method-list > p {
+        columns: 14.4em 1; -moz-columns: 14.4em 1; -webkit-columns: 14.4em 1;
     }
 
-    #collection-method-list a {
+    .collection-method-list a {
         display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .collection-method code {
@@ -58,7 +60,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
     }
 </style>
 
-<div id="collection-method-list" markdown="1">
+<div class="collection-method-list" markdown="1">
 
 [contains](#method-contains)
 [diff](#method-diff)
