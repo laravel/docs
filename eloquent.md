@@ -476,9 +476,13 @@ In addition to retrieving all of the records matching a given query, you may als
     // Alternative to retrieving the first model matching the query constraints...
     $flight = Flight::firstWhere('active', 1);
 
-Sometimes you may wish to retrieve the first result of a query or perform some other action if no results are found. The `firstOr` method will return the first result matching the query or, if no results are found, execute the given closure. The value returned by the closure will be considered the result of the `firstOr` method:
+Sometimes you may wish to perform some other action if no results are found. The `findOr` and `firstOr` methods will return a single model instance or, if no results are found, execute the given closure. The value returned by the closure will be considered the result of the method:
 
-    $model = Flight::where('legs', '>', 3)->firstOr(function () {
+    $flight = Flight::findOr(1, function () {
+        // ...
+    });
+
+    $flight = Flight::where('legs', '>', 3)->firstOr(function () {
         // ...
     });
 
