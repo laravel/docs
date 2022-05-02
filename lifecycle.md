@@ -47,7 +47,6 @@ Laravel will iterate through this list of providers and instantiate each of them
 Essentially every major feature offered by Laravel is bootstrapped and configured by a service provider. Since they bootstrap and configure so many features offered by the framework, service providers are the most important aspect of the entire Laravel bootstrap process.
 
 <a name="routing"></a>
-
 ### Routing
 
 One of the most important service providers in your application is the `App\Providers\RouteServiceProvider`. This service provider loads the route files contained within your application's `routes` directory. Go ahead, crack open the `RouteServiceProvider` code and take a look at how it works!
