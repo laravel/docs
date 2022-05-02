@@ -552,6 +552,12 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
             OrderShipped::dispatch($order);
         }
     }
+    
+ If you would like to conditionally dispatch an event, you may use the `dispatchIf` and `dispatchUnless` methods:
+
+    OrderShipped::dispatchIf($condition, $order);
+
+    OrderShipped::dispatchUnless($condition, $order);
 
 > {tip} When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#event-fake) makes it a cinch.
 
