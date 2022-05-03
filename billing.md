@@ -665,11 +665,53 @@ If you would like to apply a coupon when creating the subscription, you may use 
          ->withCoupon('code')
          ->create($paymentMethod);
 
-Or, if you would like to apply a [Stripe promotion code](https://stripe.com/docs/billing/subscriptions/discounts/codes), you may use the `withPromotionCode` method. The given promotion code ID should be the Stripe API ID assigned to the promotion code and not the customer facing promotion code:
+Or, if you would like to apply a [Stripe promotion code](https://stripe.com/docs/billing/subscriptions/discounts/codes), you may use the `withPromotionCode` method:
 
     $user->newSubscription('default', 'price_monthly')
-         ->withPromotionCode('promo_code')
+         ->withPromotionCode('promo_code_id')
          ->create($paymentMethod);
+
+The given promotion code ID should be the Stripe API ID assigned to the promotion code and not the customer facing promotion code. If you need to find a promotion code ID based on a given customer facing promotion code, you may use the `findPromotionCode` method:
+
+    // Find a promotion code ID by its customer facing code...
+    $promotionCode = $user->findPromotionCode('SUMMERSALE');
+
+    // Find an active promotion code ID by its customer facing code...
+    $promotionCode = $user->findActivePromotionCode('SUMMERSALE');
+
+In the example above, the returned `$promotionCode` object is an instance of `Laravel\Cashier\PromotionCode`. This class decorates an underlying `Stripe\PromotionCode` object. You can retrieve the coupon related to the promotion code by invoking the `coupon` method:
+
+    $coupon = $user->findPromotionCode('SUMMERSALE')->coupon();
+
+The coupon instance allows you to determine the discount amount and whether the coupon represents a fixed discount or percentage based discount:
+
+    if ($coupon->isPercentage()) {
+        return $coupon->percentOff().'%'; // 21.5%
+    } else {
+        return $coupon->amountOff(); // $5.99
+    }
+
+You can also retrieve the discounts that are currently applied to a customer or subscription:
+
+    $discount = $billable->discount();
+
+    $discount = $subscription->discount();
+
+The returned `Laravel\Cashier\Discount` instances decorate an underlying `Stripe\Discount` object instance. You may retrieve the coupon related to this discount by invoking the `coupon` method:
+
+    $coupon = $subscription->discount()->coupon();
+
+If you would like to apply a new coupon or promotion code to a customer or subscription, you may do so via the `applyCoupon` or `applyPromotionCode` methods:
+
+    $billable->applyCoupon('coupon_id');
+    $billable->applyPromotionCode('promotion_code_id');
+
+    $subscription->applyCoupon('coupon_id');
+    $subscription->applyPromotionCode('promotion_code_id');
+
+Remember, you should use the Stripe API ID assigned to the promotion code and not the customer facing promotion code. Only one coupon or promotion code can be applied to a customer or subscription at a given time.
+
+For more info on this subject, please consult the Stripe documentation regarding [coupons](https://stripe.com/docs/billing/subscriptions/coupons) and [promotion codes](https://stripe.com/docs/billing/subscriptions/coupons/codes).
 
 <a name="adding-subscriptions"></a>
 #### Adding Subscriptions
