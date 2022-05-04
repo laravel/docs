@@ -479,18 +479,13 @@ You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in ord
 <a name="on-demand-notifications"></a>
 #### On-Demand Notifications
 
-If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you will need to assert that the notification was sent to an `Illuminate\Notifications\AnonymousNotifiable` instance:
+If the code you are testing sends [on-demand notifications](/docs/{{version}}/notifications#on-demand-notifications), you can test it using the `assertSentOnDemand` method:
 
-    use Illuminate\Notifications\AnonymousNotifiable;
+    Notification::assertSentOnDemand(OrderShipped::class);
 
-    Notification::assertSentTo(
-        new AnonymousNotifiable, OrderShipped::class
-    );
-
-By passing a closure as the third argument to the notification assertion methods, you may determine if an on-demand notification was sent to the correct "route" address:
+By passing a closure as the second argument to the notification assertion methods, you may determine if an on-demand notification was sent to the correct "route" address:
 
     Notification::assertSentTo(
-        new AnonymousNotifiable,
         OrderShipped::class,
         function ($notification, $channels, $notifiable) use ($user) {
             return $notifiable->routes['mail'] === $user->email;
