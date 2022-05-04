@@ -153,6 +153,8 @@ Given our configuration, the `syslog` channel will write the message to the syst
 
     Log::emergency('The system is down!');
 
+Laravel also supports the `action_level` configuration option for channels. This allows a channel to collect all logs above a certain level, but only pass them on once a certain level threshold has been reached. For instance, a papertrail channel could be set to collect all debug and above logs, but only actually send data to papertrail once an error log is sent. This has the advantage of not reporting potentially noisy debug information all the time, but still providing additional information with higher log levels.
+
 <a name="writing-log-messages"></a>
 ## Writing Log Messages
 
