@@ -160,7 +160,10 @@ Next, you should configure your Stripe API keys in your application's `.env` fil
 ```ini
 STRIPE_KEY=your-stripe-key
 STRIPE_SECRET=your-stripe-secret
+STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
 ```
+
+> {note} You should ensure that the `STRIPE_WEBHOOK_SECRET` environment variable is defined in your application's `.env` file, as this variable is used to ensure that incoming webhooks are actually from Stripe.
 
 <a name="currency-configuration"></a>
 ### Currency Configuration
