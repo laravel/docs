@@ -1752,7 +1752,8 @@ When a customer visits this route they will be redirected to Stripe's Checkout p
     use Illuminate\Http\Request;
 
     Route::get('/product-checkout', function (Request $request) {
-        return $request->user()->checkout(['price_tshirt' => 1], [
+        return $request->user()->checkout([
+            'price_tshirt' => 1,
             'success_url' => route('your-success-route'),
             'cancel_url' => route('your-cancel-route'),
         ]);
@@ -1765,7 +1766,8 @@ When defining your `success_url` checkout option, you may instruct Stripe to add
     use Stripe\Customer;
 
     Route::get('/product-checkout', function (Request $request) {
-        return $request->user()->checkout(['price_tshirt' => 1], [
+        return $request->user()->checkout([
+            'price_tshirt' => 1,
             'success_url' => route('checkout-success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout-cancel'),
         ]);
