@@ -97,6 +97,8 @@ As you can see, in their most basic form, factories are classes that extend Lara
 
 Via the `faker` property, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
+> {note} Factories may rely heavily on Faker functions that randomly generate data. While writing tests, you should always keep in mind that the attributes you are testing have not been randomly generated. Otherwise you could encounter situations where a test succeeds in one case, but fails at another occasion.
+
 > {tip} You can set your application's Faker locale by adding a `faker_locale` option to your `config/app.php` configuration file.
 
 <a name="generating-factories"></a>
