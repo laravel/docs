@@ -3353,6 +3353,7 @@ Almost all methods available on the `Collection` class are also available on the
 [shuffle](#method-shuffle)
 [skip](#method-skip)
 [slice](#method-slice)
+[sole](#method-sole)
 [some](#method-some)
 [sort](#method-sort)
 [sortBy](#method-sortby)
