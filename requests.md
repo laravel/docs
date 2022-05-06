@@ -464,6 +464,8 @@ By default, Laravel includes the `App\Http\Middleware\TrimStrings` and `App\Http
 
 If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
 
+> {tip} If you only want to disable this behavior for part of your application, you can register the `TrimStrings::skipWhen` callback in the `boot` method of your application's `App\Providers\AppServiceProvider` class.
+
 <a name="files"></a>
 ## Files
 
