@@ -846,6 +846,9 @@ Below is a list of all available validation rules and their function:
 [Unique (Database)](#rule-unique)
 [URL](#rule-url)
 [UUID](#rule-uuid)
+[Words Min](#rule-words-min)
+[Words Between](#rule-words-between)
+[Words Min](#rule-words-max)
 
 </div>
 
@@ -1586,6 +1589,23 @@ Alternatively, you may use the `exclude_unless` rule to not validate a given fie
         'appointment_date' => 'exclude_unless:has_appointment,true|required|date',
         'doctor_name' => 'exclude_unless:has_appointment,true|required|string',
     ]);
+
+
+
+<a name="rule-words-min"></a>
+#### Words Min
+
+The file under validation must have a minumum count of alphabetic words.
+
+<a name="rule-words-between"></a>
+#### Words Between
+
+The file under validation must have a count of alphabetic words between the given amounts.
+
+<a name="rule-uuid"></a>
+#### Words Max
+
+The file under validation must have a maximum count of alphabetic words.
 
 <a name="validating-when-present"></a>
 #### Validating When Present
