@@ -1566,6 +1566,21 @@ The field under validation must be a valid URL.
 
 The field under validation must be a valid RFC 4122 (version 1, 3, 4, or 5) universally unique identifier (UUID).
 
+<a name="rule-words-min"></a>
+#### Words Min
+
+The file under validation must have a minumum count of alphabetic words.
+
+<a name="rule-words-between"></a>
+#### Words Between
+
+The file under validation must have a count of alphabetic words between the given amounts.
+
+<a name="rule-uuid"></a>
+#### Words Max
+
+The file under validation must have a maximum count of alphabetic words.
+
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules
 
@@ -1589,23 +1604,6 @@ Alternatively, you may use the `exclude_unless` rule to not validate a given fie
         'appointment_date' => 'exclude_unless:has_appointment,true|required|date',
         'doctor_name' => 'exclude_unless:has_appointment,true|required|string',
     ]);
-
-
-
-<a name="rule-words-min"></a>
-#### Words Min
-
-The file under validation must have a minumum count of alphabetic words.
-
-<a name="rule-words-between"></a>
-#### Words Between
-
-The file under validation must have a count of alphabetic words between the given amounts.
-
-<a name="rule-uuid"></a>
-#### Words Max
-
-The file under validation must have a maximum count of alphabetic words.
 
 <a name="validating-when-present"></a>
 #### Validating When Present
