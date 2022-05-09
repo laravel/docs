@@ -192,14 +192,13 @@ php artisan vendor:publish --tag=passport-config
 After the configuration file has been published, you may load your application's encryption keys by defining them as environment variables:
 
 ```ini
-PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
-<private key here>
------END RSA PRIVATE KEY-----"
+PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n<private key here>\n-----END RSA PRIVATE KEY-----"
 
-PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
-<public key here>
------END PUBLIC KEY-----"
+PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n<public key here>\n-----END PUBLIC KEY-----"
 ```
+
+> {note} .env files don't support regular multiline strings, every environment variable has to be on one line. You can replace all newlines with the literal `\n` character to store multiline strings.
+
 
 <a name="migration-customization"></a>
 ### Migration Customization
