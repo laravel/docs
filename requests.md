@@ -12,6 +12,7 @@
     - [Retrieving Input](#retrieving-input)
     - [Determining If Input Is Present](#determining-if-input-is-present)
     - [Merging Additional Input](#merging-additional-input)
+    - [Replace Input](#replace-input)
     - [Old Input](#old-input)
     - [Cookies](#cookies)
     - [Input Trimming & Normalization](#input-trimming-and-normalization)
@@ -404,6 +405,13 @@ Sometimes you may need to manually merge additional input into the request's exi
 The `mergeIfMissing` method may be used to merge input into the request if the corresponding keys do not already exist within the request's input data:
 
     $request->mergeIfMissing(['votes' => 0]);
+    
+<a name="replace-input"></a>
+### Replace Input
+
+Sometimes you may need to manually replace input with request's existing input Data. To Accomplish this, you may use the `replace` method:
+
+    $request->replace(['votes' => 0]);
 
 <a name="old-input"></a>
 ### Old Input
