@@ -206,7 +206,7 @@ An array of contextual data may be passed to the log methods. This contextual da
 
     Log::info('User failed to login.', ['id' => $user->id]);
 
-Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:
+Occasionally, you may wish to specify some contextual information that should be included with all subsequent log entries in a particular channel. For example, you may wish to log a request ID that is associated with each incoming request to your application. To accomplish this, you may call the `Log` facade's `withContext` method:
 
     <?php
 
@@ -234,6 +234,18 @@ Occasionally, you may wish to specify some contextual information that should be
             ]);
 
             return $next($request)->header('Request-Id', $requestId);
+        }
+    }
+
+If you would like to share contextual information across _all_ logging channels, as opposed to a channel by channel basis as seen with the `Log::withContext()` method, you may call the `Log::shareContext()` method. This will provide the context to all built channels, and any channels that are created in the future.
+
+    class AppServiceProvider
+    {
+        public function boot()
+        {
+            Log::shareContext([
+                'invocation-id' => (string) Str::uuid(),
+            ]);
         }
     }
 
