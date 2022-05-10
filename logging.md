@@ -237,10 +237,18 @@ Occasionally, you may wish to specify some contextual information that should be
         }
     }
 
-If you would like to share contextual information across _all_ logging channels, as opposed to a channel by channel basis as seen with the `Log::withContext()` method, you may call the `Log::shareContext()` method. This will provide the context to all built channels, and any channels that are created in the future.
+If you would like to share contextual information across _all_ logging channels, you may call the `Log::shareContext()` method. This method will provide the contextual information to all created channels and any channels that are created subsequently. Typically, the `shareContext` method should be called from the `boot` method of an application service provider:
+
+    use Illuminate\Support\Facades\Log;
+    use Illuminate\Support\Str;
 
     class AppServiceProvider
     {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
         public function boot()
         {
             Log::shareContext([
