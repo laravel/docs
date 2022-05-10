@@ -154,11 +154,19 @@ Once the `ShouldQueue` interface has been added to your notification, you may se
 
     $user->notify(new InvoicePaid($invoice));
 
+When queueing notifications, a queued job will be created for each recipient and channel combination. For example, six jobs will be dispatched to the queue if your notification has three recipients and two channels.
+
+<a name="delaying-notifications"></a>
+#### Delaying Notifications
+
 If you would like to delay the delivery of the notification, you may chain the `delay` method onto your notification instantiation:
 
     $delay = now()->addMinutes(10);
 
     $user->notify((new InvoicePaid($invoice))->delay($delay));
+
+<a name="delaying-notifications-per-channel"></a>
+#### Delaying Notifications Per Channel
 
 You may pass an array to the `delay` method to specify the delay amount for specific channels:
 
@@ -167,7 +175,21 @@ You may pass an array to the `delay` method to specify the delay amount for spec
         'sms' => now()->addMinutes(10),
     ]));
 
-When queueing notifications, a queued job will be created for each recipient and channel combination. For example, six jobs will be dispatched to the queue if your notification has three recipients and two channels.
+Alternatively, you may define a `withDelay` method on the notification class itself. The `withDelay` method should return an array of channel names and delay values:
+
+    /**
+     * Determine the notification's delivery delay.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function withDelay($notifiable)
+    {
+        return [
+            'mail' => now()->addMinutes(5),
+            'sms' => now()->addMinutes(10),
+        ];
+    }
 
 <a name="customizing-the-notification-queue-connection"></a>
 #### Customizing The Notification Queue Connection
