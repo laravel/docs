@@ -14,6 +14,7 @@
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
     - [Inspecting Requests](#inspecting-requests)
+    - [Preventing Stray Requests](#prevent-stray-requests)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -399,6 +400,23 @@ If you require more complicated logic to determine what responses to return for 
     Http::fake(function (Request $request) {
         return Http::response('Hello World', 200);
     });
+
+<a name="prevent-stray-requests"></a>
+#### Preventing Stray Requests
+
+If you would like to ensure that all requests sent via the Http client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a fake stub in place will throw an exception rather than making the actual http request.
+
+        Http::preventStrayRequests();
+
+        Http::fake([
+            'github.com/*' => Http::response('ok'),
+        ]);
+
+        // The "ok" response is returned...
+        Http::get('https://github.com/laravel/framework');
+
+        // An exception is thrown...
+        Http::get('https://laravel.com');
 
 <a name="inspecting-requests"></a>
 ### Inspecting Requests
