@@ -262,6 +262,8 @@ If needed, you may specify how many minutes must pass before the "without overla
 
     $schedule->command('emails:send')->withoutOverlapping(10);
 
+> {info} You can clear the locks by using the `schedule:clear-cache` Artisan command. This can be useful if your task is stuck due to an unexpected server restart.
+
 <a name="running-tasks-on-one-server"></a>
 ### Running Tasks On One Server
 
