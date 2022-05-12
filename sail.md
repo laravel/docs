@@ -469,8 +469,16 @@ Since Sail is just Docker, you are free to customize nearly everything about it.
 sail artisan sail:publish
 ```
 
-After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. After customizing your Sail installation, you may wish to change the image name for the application container in your application's `docker-compose.yml` file. After doing so, rebuild your application's containers using the `build` command. Assigning a unique name to the application image is particularly important if you are using Sail to develop multiple Laravel applications on a single machine:
+After running this command, the Dockerfiles and other configuration files used by Laravel Sail will be placed within a `docker` directory in your application's root directory. In your newly-created `docker-compose.yml` file, you'll find your Laravel application under a service with the default name `laravel.test`.
+
+You are free to rename this service to a name of your choice with a `.test` extension. Doing so is particularly important if you're using Sail to develop multiple applications on a single machine. After renaming your service, rebuild your application's containers using the `build` command:
 
 ```shell
 sail build --no-cache
+```
+
+You'll also need to set `APP_SERVICE` in your `.env` file to match your service's new name:
+
+```ini
+APP_SERVICE=examplename.test
 ```
