@@ -527,7 +527,7 @@ Unlike attaching files in mailable objects, you may not attach a file directly f
     {
         return (new InvoicePaidMailable($this->invoice))
                     ->to($notifiable->email)
-                    ->attachFromStorage('/path/to/file');
+                    ->attach('/path/to/file');
     }
 
 <a name="raw-data-attachments"></a>
