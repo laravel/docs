@@ -296,7 +296,9 @@ Finally, you should ensure your application's session cookie domain configuratio
 <a name="csrf-protection"></a>
 #### CSRF Protection
 
-To authenticate your SPA, your SPA's "login" page should first make a request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection for the application:
+> {tip} If your application is a first-party SPA there is no need to call the bellow endpoint, the App\Http\Middleware\VerifyCsrfToken middleware, which is included in the web middleware group by default, will automatically verify that the token in the request input matches the token stored in the session.
+
+If your application is a third-party SPA or a mobile application, your "login" page should first make a request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection for the application:
 
 ```js
 axios.get('/sanctum/csrf-cookie').then(response => {

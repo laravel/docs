@@ -65,7 +65,7 @@ The `App\Http\Middleware\VerifyCsrfToken` [middleware](/docs/{{version}}/middlew
 <a name="csrf-tokens-and-spas"></a>
 ### CSRF Tokens & SPAs
 
-If you are building a SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
+If you are building a third-party SPA or mobile application that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
 
 <a name="csrf-excluding-uris"></a>
 ### Excluding URIs From CSRF Protection
