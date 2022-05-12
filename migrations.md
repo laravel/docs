@@ -927,7 +927,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
         }
     };
 
-> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation. Be aware that is strongly recommended to not use `DB::raw()` for specifying the default value as Laravel utilizes doctrine/dbal to do migration changes and there is no guarantee for raw statements to be formatted correctly.
 
 <a name="column-order"></a>
 #### Column Order
