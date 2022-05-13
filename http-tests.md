@@ -634,6 +634,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
 [assertJsonPath](#assert-json-path)
+[assertJsonMissingPath](#assert-json-missing-path)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
@@ -834,6 +835,27 @@ For example, if the JSON response returned by your application contains the foll
 You may assert that the `name` property of the `user` object matches a given value like so:
 
     $response->assertJsonPath('user.name', 'Steve Schoger');
+
+<a name="assert-json-missing-path"></a>
+#### assertJsonMissingPath
+
+Assert that the response does not contain the given path:
+
+    $response->assertJsonMissingPath($path);
+
+For example, if the JSON response returned by your application contains the following data:
+
+```js
+{
+    "user": {
+        "name": "Steve Schoger"
+    }
+}
+```
+
+You may assert that it does not contain the `email` property of the `user` object matches:
+
+    $response->assertJsonMissingPath('user.email');
 
 <a name="assert-json-structure"></a>
 #### assertJsonStructure
