@@ -296,15 +296,15 @@ Finally, you should ensure your application's session cookie domain configuratio
 <a name="csrf-protection"></a>
 #### CSRF Protection
 
-To authenticate your SPA, your SPA's "login" page should first make a request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection for the application:
+Laravel [automatically sets](/docs/{{version}}/csrf#csrf-x-xsrf-token) an `XSRF-TOKEN` cookie containing the current CSRF token after a GET request. In the case that your your SPA is performing a POST request without having previously performed a GET, you should first make a request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection for the application:
 
 ```js
 axios.get('/sanctum/csrf-cookie').then(response => {
-    // Login...
+    // POST...
 });
 ```
 
-During this request, Laravel will set an `XSRF-TOKEN` cookie containing the current CSRF token. This token should then be passed in an `X-XSRF-TOKEN` header on subsequent requests, which some HTTP client libraries like Axios and the Angular HttpClient will do automatically for you. If your JavaScript HTTP library does not set the value for you, you will need to manually set the `X-XSRF-TOKEN` header to match the value of the `XSRF-TOKEN` cookie that is set by this route.
+During this, or any other successful GET request, Laravel will set an `XSRF-TOKEN` cookie containing the current CSRF token. This token should then be passed in an `X-XSRF-TOKEN` header on subsequent requests, which some HTTP client libraries like Axios and the Angular HttpClient will do automatically for you. If your JavaScript HTTP library does not set the value for you, you will need to manually set the `X-XSRF-TOKEN` header to match the value of the `XSRF-TOKEN` cookie that is set by this route.
 
 <a name="logging-in"></a>
 #### Logging In
