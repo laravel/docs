@@ -853,7 +853,7 @@ For example, if the JSON response returned by your application contains the foll
 }
 ```
 
-You may assert that it does not contain the `email` property of the `user` object matches:
+You may assert that it does not contain the `email` property of the `user` object:
 
     $response->assertJsonMissingPath('user.email');
 
