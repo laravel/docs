@@ -927,7 +927,7 @@ The `default` modifier accepts a value or an `Illuminate\Database\Query\Expressi
         }
     };
 
-> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+> {note} Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation. Be aware that it is currently not possible to chain the `change()` on to the default method combined with an raw statement or expression. `default(new Expression('(JSON_ARRAY())'))->change()` or `default(DB::raw('(JSON_ARRAY())')))->change()` are currently not supported due to the way Laravel utilizes doctrine/dbal under the hood.
 
 <a name="column-order"></a>
 #### Column Order
