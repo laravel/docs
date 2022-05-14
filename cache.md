@@ -187,6 +187,44 @@ If you need to retrieve an item from the cache and then delete the item, you may
 
     $value = Cache::pull('key');
 
+<a name="retrieve-update"></a>
+#### Retrieve & Update
+
+With a cache driver supporting [Atomic Locks](#atomic-locks), you will be able to retrieve and update an item from the cache using the `refresh` method.
+
+This method accepts the cache key, a callback, and an optional lifetime to refresh. The callback receives the cached item, or `null` if it doesn't exist, and it should return the updated value.
+
+    $item = Cache::refresh('message', function ($message) {
+        $message ??= 'Hello';
+        
+        return $message . ' world!';
+    }, 60);
+    
+    // "Hello world!"
+
+The callback accepts a second argument to compute the key lifetime. The `in` and `at` methods accept the new extended lifetime, the `never` method will store the result forever, and using `now` will forget the item from the cache.
+
+    Cache::refresh('mission', function ($mission, $expire) {
+	    if ($mission->isStillDangerous()) {
+    		$expire->in(60);
+    	}
+	
+    	if ($mission->isCompleted()) {
+		    $expire->now();
+	    }
+    	
+	    return $mission;
+    });
+
+You may further configure the atomic lock by omiting the callback, which will return an object to alter the lock properties and waiting time.
+
+    Cache::refresh('mission')
+        ->lock('mission_lock', 30)
+	    ->waitFor(20)
+	    ->put(function ($mission) {
+    	    // ...
+    	});
+
 <a name="storing-items-in-the-cache"></a>
 ### Storing Items In The Cache
 
