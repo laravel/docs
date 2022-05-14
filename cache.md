@@ -190,9 +190,9 @@ If you need to retrieve an item from the cache and then delete the item, you may
 <a name="retrieve-update"></a>
 #### Retrieve & Update
 
-With a cache driver supporting [Atomic Locks](#atomic-locks), you will be able to retrieve and update an item from the cache using the `refresh` method.
+If your driver supports [atomic locks](#atomic-locks), you will be able to retrieve and update an item without race conditions, avoiding any change on the value by other process while it's being manipulated.
 
-This method accepts the cache key, a callback, and an optional lifetime to refresh. The callback receives the cached item, or `null` if it doesn't exist, and it should return the updated value.
+The `refresh` method accepts the cache key of the item, a callback, and an optional lifetime. The callback receives the cached item, or `null` if it doesn't exist, and it should return the updated value.
 
     $item = Cache::refresh('message', function ($message) {
         $message ??= 'Hello';
@@ -202,24 +202,28 @@ This method accepts the cache key, a callback, and an optional lifetime to refre
     
     // "Hello world!"
 
-The callback accepts a second argument to compute the key lifetime. The `in` and `at` methods accept the new extended lifetime, the `never` method will store the result forever, and using `now` will forget the item from the cache.
+The callback accepts a second argument to modify the refreshed lifetime. The `in` and `at` methods accept the new extended time or seconds, the `never` method will store the updated value forever, and using `now` will forget the item from the cache instead of refreshing it.
 
     Cache::refresh('mission', function ($mission, $expire) {
-	    if ($mission->isStillDangerous()) {
+        $mission ??= new Mission();
+
+	    if ($mission->isAborted()) {
     		$expire->in(60);
     	}
 	
-    	if ($mission->isCompleted()) {
+    	if ($mission->isAccomplished()) {
 		    $expire->now();
 	    }
     	
 	    return $mission;
     });
 
-You may further configure the atomic lock by omiting the callback, which will return an object to alter the lock properties and waiting time.
+> {tip} If you don't want to refresh the item and its lifetime, you can return `null`.
+
+When the lock cannot be acquired immediately, it waits for a maximum of 10 seconds. You may further configure the atomic lock by omiting the callback, which will return an object to alter the lock properties and waiting time.
 
     Cache::refresh('mission')
-        ->lock('mission_lock', 30)
+        ->lock('mission_lock', 30, 'agent_taylor')
 	    ->waitFor(20)
 	    ->put(function ($mission) {
     	    // ...
